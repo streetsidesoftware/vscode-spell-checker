@@ -30,16 +30,14 @@ describe('fib generator', () => {
     });
 
     it('fib from span', () => {
-        let result: number[] = [];
-
-        Rx.Observable.range(1, 10)
-            .scan((a) => [a[1], a[0] + a[1]], [0, 1])
+        return Rx.Observable.range(1, 10)
+            .scan(a => [a[1], a[0] + a[1]], [0, 1])
             .map(a => a[0])
-            .subscribe(function (x) {
-                result.push(x);
+            .toArray()
+            .toPromise()
+            .then(result => {
+                expect(result).to.be.deep.equal([ 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 ]);
             });
-
-        expect(result).to.be.deep.equal([ 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 ]);
     });
 
 });

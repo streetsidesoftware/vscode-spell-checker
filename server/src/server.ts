@@ -2,10 +2,8 @@ import {
     IPCMessageReader, IPCMessageWriter,
     createConnection, IConnection,
     TextDocuments, TextDocument,
-    InitializeResult,
-    CompletionItem, CompletionItemKind
+    InitializeResult
 } from 'vscode-languageserver';
-import * as LangServer from 'vscode-languageserver';
 import * as Validator from './validator';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -15,8 +13,8 @@ const connection: IConnection = createConnection(new IPCMessageReader(process), 
 // supports full document sync only
 const documents: TextDocuments = new TextDocuments();
 
-// After the server has started the client sends an initilize request. The server receives
-// in the passed params the rootPath of the workspace plus the client capabilites.
+// After the server has started the client sends an initialize request. The server receives
+// in the passed params the rootPath of the workspace plus the client capabilities.
 let workspaceRoot: string;
 connection.onInitialize((params): InitializeResult => {
     workspaceRoot = params.rootPath;
@@ -29,7 +27,7 @@ connection.onInitialize((params): InitializeResult => {
                 resolveProvider: true
             }
         }
-    }
+    };
 });
 
 // The settings interface describe the server relevant settings part
@@ -48,7 +46,6 @@ interface SpellSettings {
 // as well.
 connection.onDidChangeConfiguration((change) => {
     connection.console.log('onDidChangeConfiguration');
-    const settings = <Settings>change.settings;
     // Revalidate any open text documents
     documents.all().forEach(validateTextDocument);
 });
@@ -62,43 +59,7 @@ function validateTextDocument(textDocument: TextDocument): void {
 
 connection.onDidChangeWatchedFiles((change) => {
     // Monitored files have change in VSCode
-    connection.console.log('We recevied an file change event');
-});
-
-
-// This handler provides the initial list of the completion items.
-connection.onCompletion((textDocumentPosition: LangServer.TextDocumentPositionParams): CompletionItem[] => {
-    connection.console.log('onCompletion');
-    // The pass parameter contains the position of the text document in
-    // which code complete got requested. For the example we ignore this
-    // info and always provide the same completion items.
-    return [
-        {
-            label: 'TypeScript',
-            kind: CompletionItemKind.Text,
-            data: 1
-        },
-        {
-            label: 'JavaScript',
-            kind: CompletionItemKind.Text,
-            data: 2
-        }
-    ]
-});
-
-// This handler resolve additional information for the item selected in
-// the completion list.
-connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
-    connection.console.log('onCompletionResolve');
-    console.log(JSON.stringify(item));
-    if (item.data === 1) {
-        item.detail = 'TypeScript details',
-            item.documentation = 'TypeScript Documentation 1'
-    } else if (item.data === 2) {
-        item.detail = 'JavaScript details',
-            item.documentation = 'JavaScript documentation'
-    }
-    return item;
+    connection.console.log('We received an file change event');
 });
 
 // Make the text document manager listen on the connection

@@ -1,0 +1,14 @@
+direname
+direnames
+filename
+filenames
+chai
+mocha
+util
+src
+test
+run
+npm
+node
+typescript
+vscode

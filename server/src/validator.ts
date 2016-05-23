@@ -37,10 +37,10 @@ export function validateTextDocumentAsync(textDocument: TextDocument): Rx.Observ
             }
         }))
         // Convert it to a Diagnostic
-        .map(word => ({
-            severity: DiagnosticSeverity.Warning,
-            range: word.range,
-            message: 'Spelling Error',
+        .map(({word, range}) => ({
+            severity: DiagnosticSeverity.Information,
+            range: range,
+            message: `Unknown word: "${word}"`,
             source: 'Spell Checker'
         }))
     ;

@@ -1,5 +1,6 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import { isWordInDictionary } from '../src/spellChecker';
+import * as Rx from 'rx';
 
 describe('Verify Spell Checker', () => {
     it('did load', () => {
@@ -14,4 +15,16 @@ describe('Verify Spell Checker', () => {
         });
     });
 
+    it('Works with Typescript reserved words', () => {
+        return Rx.Observable.fromArray([
+            isWordInDictionary('const').then(isFound => {
+                expect(isFound).to.be.true;
+            }),
+            isWordInDictionary('stringify').then(isFound => {
+                expect(isFound).to.be.true;
+            }),
+        ])
+        .flatMap(a => a)
+        .toPromise();
+    });
 });

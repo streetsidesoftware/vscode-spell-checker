@@ -3,7 +3,7 @@ import * as Text from '../../src/util/text';
 import {expect} from 'chai';
 
 describe('Util Text', () => {
-    it('splitword', () => {
+    it('splits words', () => {
         expect(splitCamelCaseWord('hello')).to.deep.equal(['hello']);
         expect(splitCamelCaseWord('helloThere')).to.deep.equal(['hello', 'There']);
         expect(splitCamelCaseWord('HelloThere')).to.deep.equal(['Hello', 'There']);
@@ -74,5 +74,15 @@ describe('Util Text', () => {
             { word: 'a', offset: 20 },
             { word: 'HELLO', offset: 21 },
         ]);
+    });
+
+    it('splits words like HTMLInput', () => {
+        return Text.extractWordsFromCodeRx('var value = HTMLInput.value;')
+            .map(({word}) => word)
+            .toArray()
+            .toPromise()
+            .then(words => {
+                expect(words).to.deep.equal(['var', 'value', 'HTML', 'Input', 'value']);
+            });
     });
 });

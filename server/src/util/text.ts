@@ -8,6 +8,7 @@ export interface WordOffset {
 }
 
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
+const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}+)', 'g');
 const regExWords = XRegExp('\\p{L}+', 'g');
 
 export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<WordOffset> {
@@ -18,9 +19,10 @@ export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<Word
 }
 
 export function splitCamelCaseWord(word: string): string[] {
-    const seperator = '_<^*_*^>_';
-    const anotatedWord = XRegExp.replace(word, regExSplitWords, '$1' + seperator + '$2');
-    return XRegExp.split(anotatedWord, seperator);
+    const separator = '_<^*_*^>_';
+    const pass1 = XRegExp.replace(word, regExSplitWords, '$1' + separator + '$2');
+    const pass2 = XRegExp.replace(pass1, regExSplitWords2, '$1' + separator + '$2');
+    return XRegExp.split(pass2, separator);
 }
 
 
