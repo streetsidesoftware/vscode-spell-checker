@@ -1,0 +1,52 @@
+{
+  "name": "vscode-spell-checker",
+  "description": "Simple spell checker for source code",
+  "author": "Jason Dent",
+  "license": "MIT",
+  "version": "0.0.1",
+  "publisher": "jason-rev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jason-Rev/vscode-spell-checker"
+  },
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Example configuration",
+      "properties": {
+        "spellChecker.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "typescript": "^1.8.9",
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "rx": "^4.1.0",
+    "tsmerge": "^1.0.4",
+    "vscode-languageclient": "^2.0.0",
+    "xregexp": "^3.1.1"
+  }
+}
