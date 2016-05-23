@@ -16,25 +16,25 @@ and limitations under the License.
 ***************************************************************************** */
 
 /**
- * The Thenable (E.g. PromiseLike) and Promise declarions are taken from TypeScript's
+ * The Thenable (E.g. PromiseLike) and Promise declarations are taken from TypeScript's
  * lib.core.es6.d.ts file. See above Copyright notice.
  */
 
 /**
- * Thenable is a common denominator between ES6 promises, Q, jquery.Deferred, WinJS.Promise,
- * and others. This API makes no assumption about what promise libary is being used which
+ * Thenable is a common denominator between ES6 promises, Q, jQuery.Deferred, WinJS.Promise,
+ * and others. This API makes no assumption about what promise library is being used which
  * enables reusing existing code without migrating to a specific promise implementation. Still,
- * we recommand the use of native promises which are available in VS Code.
+ * we recommend the use of native promises which are available in VS Code.
  */
 interface Thenable<R> {
     /**
     * Attaches callbacks for the resolution and/or rejection of the Promise.
-    * @param onfulfilled The callback to execute when the Promise is resolved.
-    * @param onrejected The callback to execute when the Promise is rejected.
+    * @param onFulfilled The callback to execute when the Promise is resolved.
+    * @param onRejected The callback to execute when the Promise is rejected.
     * @returns A Promise for the completion of which ever callback is executed.
     */
-    then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>;
-    then<TResult>(onfulfilled?: (value: R) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Thenable<TResult>;
+    then<TResult>(onFulfilled?: (value: R) => TResult | Thenable<TResult>, onRejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>;
+    then<TResult>(onFulfilled?: (value: R) => TResult | Thenable<TResult>, onRejected?: (reason: any) => void): Thenable<TResult>;
 }
 
 

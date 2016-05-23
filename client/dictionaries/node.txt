@@ -12,3 +12,8 @@ npm
 node
 typescript
 vscode
+MERCHANTABLITY
+http
+https
+websocket
+www
