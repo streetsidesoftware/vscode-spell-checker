@@ -3,6 +3,9 @@ validator
 workspace
 microsoft
 internet
+NONINFRINGEMENT
+sublicense
+Spanish
 google
 euro
 a

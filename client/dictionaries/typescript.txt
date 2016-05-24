@@ -75,3 +75,7 @@ void
 while
 with
 yield
+JSX
+TSX
+tsc
+namespace

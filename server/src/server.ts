@@ -21,11 +21,7 @@ connection.onInitialize((params): InitializeResult => {
     return {
         capabilities: {
             // Tell the client that the server works in FULL text document sync mode
-            textDocumentSync: documents.syncKind,
-            // Tell the client that the server support code complete
-            completionProvider: {
-                resolveProvider: true
-            }
+            textDocumentSync: documents.syncKind
         }
     };
 });
@@ -45,7 +41,6 @@ interface SpellSettings {
 // The settings have changed. Is send on server activation
 // as well.
 connection.onDidChangeConfiguration((change) => {
-    connection.console.log('onDidChangeConfiguration');
     // Revalidate any open text documents
     documents.all().forEach(validateTextDocument);
 });
@@ -57,11 +52,6 @@ function validateTextDocument(textDocument: TextDocument): void {
     });
 }
 
-connection.onDidChangeWatchedFiles((change) => {
-    // Monitored files have change in VSCode
-    connection.console.log('We received an file change event');
-});
-
 // Make the text document manager listen on the connection
 // for open, change and close text document events
 documents.listen(connection);
@@ -69,7 +59,6 @@ documents.listen(connection);
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent((change) => {
-    connection.console.log('## onDidChangeContent');
     validateTextDocument(change.document);
 });
 

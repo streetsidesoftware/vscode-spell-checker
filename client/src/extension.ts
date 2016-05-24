@@ -7,7 +7,6 @@ export function activate(context: ExtensionContext) {
 
 	// The server is implemented in node
 	const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
-	console.log(serverModule);
 	// The debug options for the server
 	const debugOptions = { execArgv: ["--nolazy", "--debug=6004"] };
 
@@ -21,7 +20,15 @@ export function activate(context: ExtensionContext) {
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
-		documentSelector: ['typescript', 'typescriptreact'],
+		documentSelector: [
+			'typescript',
+			'typescriptreact',
+			'javascript',
+			'javascriptreact',
+			"plaintext",
+			"markdown",
+			"text",
+		],
 		synchronize: {
 			// Synchronize the setting section 'languageServerExample' to the server
 			configurationSection: 'spellChecker',

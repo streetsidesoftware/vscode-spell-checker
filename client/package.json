@@ -3,21 +3,25 @@
   "description": "Simple spell checker for source code",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.0.1",
-  "publisher": "jason-rev",
+  "version": "0.1.0",
+  "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
     "url": "https://github.com/Jason-Rev/vscode-spell-checker"
   },
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.1.1"
   },
   "categories": [
     "Other"
   ],
   "activationEvents": [
     "onLanguage:typescript",
-    "onLanguage:typescriptreact"
+    "onLanguage:typescriptreact",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:markdown",
+    "onLanguage:plaintext"
   ],
   "main": "./out/src/extension",
   "contributes": {

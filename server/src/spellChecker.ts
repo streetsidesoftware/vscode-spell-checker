@@ -13,9 +13,7 @@ export function loadWords(filename: string): Rx.Observable<string> {
 
     return reader(filename, 'utf-8')
         .flatMap(text => Rx.Observable.from(match(/(.+)(\r?\n)?/g, text)))
-        .map(regExpExecArray =>
-            regExpExecArray[1]
-            )
+        .map(regExpExecArray => regExpExecArray[1])
         .map(line => line.trim())
         .filter(line => line !== '');
 }
@@ -41,5 +39,7 @@ const wordList: Rx.Promise<WordDictionary> =
         path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'node.txt'),
+        path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt'),
+        path.join(__dirname, '..', '..', 'dictionaries', 'html.txt'),
     ])
     .toPromise();
