@@ -6,6 +6,10 @@ internet
 NONINFRINGEMENT
 sublicense
 Spanish
+spellcheck
+spellchecked
+spellchecker
+spellcheckers
 google
 euro
 a
