@@ -1,4 +1,6 @@
 JSON
+JSX
+TSX
 any
 argc
 args
@@ -9,6 +11,7 @@ break
 case
 catch
 class
+concat
 const
 constructor
 continue
@@ -40,6 +43,7 @@ iterator
 iterators
 let
 module
+namespace
 new
 null
 number
@@ -64,6 +68,7 @@ this
 throw
 true
 try
+tsc
 type
 typeof
 typescript
@@ -75,7 +80,3 @@ void
 while
 with
 yield
-JSX
-TSX
-tsc
-namespace

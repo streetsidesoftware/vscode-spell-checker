@@ -18,13 +18,15 @@ export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<Word
             { word: '', offset: wo.offset } );
 }
 
+/**
+ * Split camelCase words into an array of strings.
+ */
 export function splitCamelCaseWord(word: string): string[] {
     const separator = '_<^*_*^>_';
     const pass1 = XRegExp.replace(word, regExSplitWords, '$1' + separator + '$2');
     const pass2 = XRegExp.replace(pass1, regExSplitWords2, '$1' + separator + '$2');
     return XRegExp.split(pass2, separator);
 }
-
 
 /**
  * Extract out whole words from a string of text.
@@ -46,6 +48,9 @@ export function extractWordsFromText1(text: string): WordOffset[] {
 }
 
 
+/**
+ * This function lets you iterate over regular expression matches.
+ */
 export function *match(reg: RegExp, text: string): Iterable<RegExpExecArray> {
     let match: RegExpExecArray;
     while ( match = reg.exec(text) ) {
