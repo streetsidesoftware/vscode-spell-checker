@@ -10,6 +10,9 @@ spellcheck
 spellchecked
 spellchecker
 spellcheckers
+disposables
+life cycle
+light bulb
 google
 euro
 a
