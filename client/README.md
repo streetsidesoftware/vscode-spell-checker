@@ -9,7 +9,7 @@ a squiggly underline.
 
 ## Install
 
-Open up VS Code and hit `F1` and type `ext` select install and type `spell` hit enter and reload window to enable.
+Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-checker` hit enter and reload window to enable.
 
 ## Supported Languages
 
