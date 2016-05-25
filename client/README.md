@@ -7,7 +7,7 @@ A basic spell checker that works well with camelCase code.
 Load a Typescript, Javascript, Text or Markdown file.  Words not in the dictionary files will have
 a squiggly underline.
 
-![Example](https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/images/example.gif)
+![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/example.gif)
 
 ## Install
 
