@@ -23,6 +23,7 @@ dirname
 do
 else
 enum
+eval
 export
 extends
 false
