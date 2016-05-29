@@ -1,13 +1,15 @@
 /**
  * See: https://en.wikipedia.org/wiki/Trie
  */
-
 interface TrieNode {
     k: number;
     w: string;
     c: TrieNode[];
 }
 
+/**
+ * See: https://en.wikipedia.org/wiki/Trie
+ */
 interface Trie {
     c: TrieNode[];
 }
