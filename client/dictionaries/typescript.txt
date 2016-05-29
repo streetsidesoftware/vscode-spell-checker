@@ -61,6 +61,7 @@ set
 static
 string
 stringify
+substr
 super
 switch
 symbol

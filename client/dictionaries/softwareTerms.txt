@@ -1,8 +1,12 @@
 DOM
+Levenshtein
 ORM
 app
+auth
+autosuggest
 bar
 cache
+codelens
 dest
 dst
 else
@@ -12,6 +16,10 @@ foreach
 getter
 github
 google
+grep
+grepped
+grepping
+greps
 hash
 hover
 init
@@ -21,6 +29,8 @@ jpeg
 jpg
 jumbotron
 lang
+lightbulb
+lightbulbs
 map
 menu
 menubar
@@ -32,6 +42,8 @@ nav
 plaintext
 png
 quicksort
+regex
+regexp
 scala
 set
 setter
@@ -46,4 +58,3 @@ typescript
 typescriptreact
 xml
 yahoo
-Levenshtein

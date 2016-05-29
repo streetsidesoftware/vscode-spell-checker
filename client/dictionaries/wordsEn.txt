@@ -11,6 +11,7 @@ spellchecked
 spellchecker
 spellcheckers
 disposables
+analytics
 life cycle
 light bulb
 google
