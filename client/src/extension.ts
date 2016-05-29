@@ -3,6 +3,8 @@ import * as path from 'path';
 import { workspace, Disposable, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind } from 'vscode-languageclient';
 
+const CONFIGFILE = workspace.rootPath + "/.vscode/code_spell.json";
+
 export function activate(context: ExtensionContext) {
 
 	// The server is implemented in node

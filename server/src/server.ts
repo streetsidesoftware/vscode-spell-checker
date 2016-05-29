@@ -2,7 +2,7 @@ import {
     IPCMessageReader, IPCMessageWriter,
     createConnection, IConnection,
     TextDocuments, TextDocument,
-    InitializeResult
+    InitializeResult, TextEdit, Command
 } from 'vscode-languageserver';
 import * as Validator from './validator';
 
@@ -21,7 +21,8 @@ connection.onInitialize((params): InitializeResult => {
     return {
         capabilities: {
             // Tell the client that the server works in FULL text document sync mode
-            textDocumentSync: documents.syncKind
+            textDocumentSync: documents.syncKind,
+            codeActionProvider: true
         }
     };
 });
@@ -62,6 +63,10 @@ documents.onDidChangeContent((change) => {
     validateTextDocument(change.document);
 });
 
+connection.onCodeAction((params) => {
+    const commands: Command[] = [];
+    return commands;
+});
 
 // Listen on the connection
 connection.listen();
