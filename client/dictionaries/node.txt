@@ -13,10 +13,12 @@ jshint
 jslint
 json
 lint
+lodash
 login
 logout
 mocha
 node
+nolazy
 npm
 password
 pwd
@@ -34,4 +36,3 @@ util
 vscode
 websocket
 www
-nolazy
