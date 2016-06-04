@@ -12,7 +12,7 @@ export function activate(context: ExtensionContext) {
 	// The debug options for the server
 	const debugOptions = { execArgv: ["--nolazy", "--debug=6004"] };
 
-	// If the extension is launch in debug mode the debug server options are use
+	// If the extension is launched in debug mode the debug server options are use
 	// Otherwise the run options are used
 	const serverOptions: ServerOptions = {
 		run : { module: serverModule, transport: TransportKind.ipc },
@@ -23,13 +23,15 @@ export function activate(context: ExtensionContext) {
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
 		documentSelector: [
-			'typescript',
-			'typescriptreact',
+			'go',
 			'javascript',
 			'javascriptreact',
-			"plaintext",
-			"markdown",
-			"text",
+			'markdown',
+			'php',
+			'plaintext',
+			'text',
+			'typescript',
+			'typescriptreact',
 		],
 		synchronize: {
 			// Synchronize the setting section 'languageServerExample' to the server

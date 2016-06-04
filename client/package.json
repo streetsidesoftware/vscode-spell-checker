@@ -22,12 +22,16 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:typescript",
-        "onLanguage:typescriptreact",
+        "onLanguage:csharp",
+        "onLanguage:go",
         "onLanguage:javascript",
         "onLanguage:javascriptreact",
         "onLanguage:markdown",
-        "onLanguage:plaintext"
+        "onLanguage:php",
+        "onLanguage:plaintext",
+        "onLanguage:text",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact"
     ],
     "main": "./out/src/extension",
     "contributes": {
