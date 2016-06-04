@@ -2,11 +2,15 @@ DOM
 Levenshtein
 ORM
 app
+asc
 auth
 autosuggest
 bar
 cache
 codelens
+desc
+descriptor
+descriptors
 dest
 dst
 else
@@ -21,8 +25,11 @@ grepped
 grepping
 greps
 hash
+hashmap
+hashmaps
 hover
 init
+isomorphic
 javascript
 javascriptreact
 jpeg
@@ -56,5 +63,8 @@ thunk
 trie
 typescript
 typescriptreact
+util
+utils
 xml
 yahoo
+yyyy
