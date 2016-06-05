@@ -17,11 +17,14 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 * English
 
-## Supported File Types
+## Enabled File Types
 * Typescript
 * Javascript
 * Text
 * Markdown
+* C#
+* Go
+* PHP
 
 ## How it works with camelCase
 
@@ -35,10 +38,49 @@ The concept is simple, split camelCase words before checking them against a list
 ## Things to note
 
 * This spellchecker is case insensitive.  It will not catch errors like english which should be English.
-  The main reason for that is case has a different meaning in source code than in standard prose.
 * The spellchecker uses a local word dictionary.  It does not send anything outside your machine.
 * The words in the dictionary can and do contain errors.
 * There are missing words.
 * Only words longer than 3 characters are checked.  "jsj" is ok, while "jsja" is not.
 * All symbols and punctuation are ignored.
 * It currently checks ALL text in a document.
+ 
+## Customization
+
+### Configuration Settings
+
+```javascript
+    //-------- Code Spell Checker Configuration --------
+
+    // Controls the maximum number of spelling errors per document.
+    "cSpell.maxNumberOfProblems": 100,
+
+    // The minimum length of a word before checking it against a dictionary.
+    "cSpell.minWordLength": 4,
+
+    // Specify file types to spell check.
+    "cSpell.enabledLanguageIds": [
+        "csharp",
+        "go",
+        "javascript",
+        "javascriptreact",
+        "markdown",
+        "php",
+        "plaintext",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yml"
+    ],
+
+    // Words to add to dictionary for a workspace.
+    "cSpell.words": [],
+
+    // User words to add to dictionary.  Should only be in the user settings.
+    "cSpell.userWords": [],
+
+    // Specify paths/files to ignore.
+    "cSpell.ignorePaths": [
+        "node_modules"
+    ],
+```
