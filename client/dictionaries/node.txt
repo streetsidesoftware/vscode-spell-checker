@@ -1,4 +1,5 @@
 MERCHANTABLITY
+README
 addon
 addons
 chai
