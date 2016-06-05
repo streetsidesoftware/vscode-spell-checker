@@ -33,7 +33,7 @@
                 "cSpell.maxNumberOfProblems": {
                     "type": "number",
                     "default": 100,
-                    "description": "Controls the maximum number of problems produced by the server."
+                    "description": "Controls the maximum number of spelling errors per document."
                 },
                 "cSpell.minWordLength": {
                     "type": "number",
@@ -60,7 +60,7 @@
                 "cSpell.words": {
                     "type": "array",
                     "default": [],
-                    "description": "Words to add to dictionary."
+                    "description": "Words to add to dictionary for a workspace."
                 },
                 "cSpell.userWords": {
                     "type": "array",
@@ -72,7 +72,7 @@
                     "default": [
                         "node_modules"
                     ],
-                    "description": "Sepecify paths/files to ignore."
+                    "description": "Specify paths/files to ignore."
                 }
             }
         }
