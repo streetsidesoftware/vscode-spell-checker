@@ -71,7 +71,7 @@ function shouldValidateDocument(textDocument: TextDocument): boolean {
 
 function validateTextDocument(textDocument: TextDocument): void {
     if (shouldValidateDocument(textDocument)) {
-        Validator.validateTextDocument(textDocument).then(diagnostics => {
+        Validator.validateTextDocument(textDocument, settings.maxNumberOfProblems).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
             connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
         });

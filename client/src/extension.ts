@@ -3,7 +3,17 @@ import * as path from 'path';
 import { workspace, Disposable, ExtensionContext } from 'vscode';
 import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind } from 'vscode-languageclient';
 
+
 const CONFIG_FILE = workspace.rootPath + "/.vscode/code_spell.json";
+
+interface CSpellSettings {
+    enabledLanguageIds: string[];
+    ignorePaths?: string[];
+    maxNumberOfProblems?: number;
+    words?: string[];
+    userWords?: string[];
+    minWordLength?: number;
+}
 
 export function activate(context: ExtensionContext) {
 
@@ -19,10 +29,12 @@ export function activate(context: ExtensionContext) {
 		debug: { module: serverModule, transport: TransportKind.ipc, options: debugOptions }
 	}
 
+	const settings: CSpellSettings = workspace.getConfiguration().get('cSpell') as CSpellSettings;
+
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
-		documentSelector: ['*'],
+		documentSelector: settings.enabledLanguageIds,
 		synchronize: {
 			// Synchronize the setting section 'spellChecker' to the server
 			configurationSection: 'cSpell',

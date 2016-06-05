@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Validator from '../src/validator';
+const loremIpsum = require('lorem-ipsum');
 
 describe('Validator', () => {
     it('validates the validator', () => {
@@ -12,5 +13,15 @@ describe('Validator', () => {
             });
     });
 
-
+    it('validate limit', () => {
+        return Validator.validateText(
+            loremIpsum({ count: 5, unit: 'paragraphs' }),
+            { maxNumberOfProblems: 10 }
+        )
+        .toArray()
+        .toPromise()
+        .then(results => {
+            expect(results).to.be.lengthOf(10);
+        });
+    });
 });
