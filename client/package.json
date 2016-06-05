@@ -22,27 +22,51 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:csharp",
-        "onLanguage:go",
-        "onLanguage:javascript",
-        "onLanguage:javascriptreact",
-        "onLanguage:markdown",
-        "onLanguage:php",
-        "onLanguage:plaintext",
-        "onLanguage:text",
-        "onLanguage:typescript",
-        "onLanguage:typescriptreact"
+        "*"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "configuration": {
             "type": "object",
-            "title": "Example configuration",
+            "title": "Code Spell Checker Configuration",
             "properties": {
-                "spellChecker.maxNumberOfProblems": {
+                "cSpell.maxNumberOfProblems": {
                     "type": "number",
                     "default": 100,
                     "description": "Controls the maximum number of problems produced by the server."
+                },
+                "cSpell.enabledLanguageIds": {
+                    "type": "array",
+                    "default": [
+                        "csharp",
+                        "go",
+                        "javascript",
+                        "javascriptreact",
+                        "markdown",
+                        "php",
+                        "plaintext",
+                        "text",
+                        "typescript",
+                        "typescriptreact"
+                    ],
+                    "description": "Specify file types to spell check."
+                },
+                "cSpell.words": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Words to add to dictionary."
+                },
+                "cSpell.userWords": {
+                    "type": "array",
+                    "default": [],
+                    "description": "User words to add to dictionary.  Should only be in the user settings."
+                },
+                "cSpell.ignorePaths": {
+                    "type": "array",
+                    "default": [
+                        "node_modules"
+                    ],
+                    "description": "Sepecify paths/files to ignore."
                 }
             }
         }
