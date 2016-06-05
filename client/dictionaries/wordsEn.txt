@@ -12,6 +12,7 @@ spellchecker
 spellcheckers
 disposables
 analytics
+extensibility
 life cycle
 light bulb
 google
