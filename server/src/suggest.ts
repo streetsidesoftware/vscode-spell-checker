@@ -1,7 +1,7 @@
 /**
  * See: https://en.wikipedia.org/wiki/Trie
  */
-interface TrieNode {
+export interface TrieNode {
     k: number;
     w: string;
     c: TrieNode[];
@@ -10,13 +10,13 @@ interface TrieNode {
 /**
  * See: https://en.wikipedia.org/wiki/Trie
  */
-interface Trie {
+export interface Trie {
     c: TrieNode[];
 }
 
 const baseCost = 100;
 
-interface SuggestionResult {
+export interface SuggestionResult {
     word: string;
     cost: number;
 }
