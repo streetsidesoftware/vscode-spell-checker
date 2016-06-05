@@ -10,8 +10,11 @@ autosuggest
 bar
 bool
 boolean
+c
 cache
 codelens
+cpp
+csharp
 desc
 descriptor
 descriptors
@@ -21,10 +24,13 @@ double
 dst
 else
 elseif
+enum
+enums
 expr
 facebook
 float
 foreach
+fsharp
 func
 getter
 github
@@ -40,11 +46,13 @@ hover
 init
 int
 integer
+ipsum
 isomorphic
 javascript
 javascriptreact
 jpeg
 jpg
+json
 jumbotron
 lang
 light bulb
@@ -52,10 +60,12 @@ light bulbs
 long
 longdouble
 longint
+lorem
 map
 menu
 menubar
 menuitem
+metadata
 microsoft
 middleware
 mouseover
