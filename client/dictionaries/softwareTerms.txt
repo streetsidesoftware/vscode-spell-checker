@@ -1,3 +1,4 @@
+DNS
 DOM
 Levenshtein
 MYSQL
@@ -43,8 +44,10 @@ hash
 hashmap
 hashmaps
 homepage
+hostname
 hover
 init
+inline
 int
 integer
 ipsum
@@ -58,6 +61,9 @@ jumbotron
 lang
 light bulb
 light bulbs
+localhost
+login
+logout
 long
 longdouble
 longint
@@ -71,11 +77,15 @@ microsoft
 middleware
 mouseover
 nav
+offline
+online
+pathname
 plaintext
 png
 quicksort
 regex
 regexp
+runtime
 scala
 set
 setter
@@ -85,6 +95,7 @@ sort
 src
 stack
 stacktrace
+sugs
 textarea
 thunk
 tooltip

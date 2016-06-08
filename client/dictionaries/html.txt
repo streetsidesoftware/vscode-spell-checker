@@ -58,6 +58,7 @@ header
 hgroup
 hidden
 hr
+href
 html
 hyperlink
 i
