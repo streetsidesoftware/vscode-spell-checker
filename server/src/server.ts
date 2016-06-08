@@ -3,12 +3,13 @@ import {
     createConnection, IConnection,
     TextDocuments, TextDocument,
     InitializeResult, TextEdit, Command,
-    InitializeParams
+    InitializeParams, CodeActionParams
 } from 'vscode-languageserver';
+import * as LangServer from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import {CSpellSettings} from './CSpellSettings';
-import { setUserWords } from './spellChecker';
+import { setUserWords, suggest } from './spellChecker';
 
 const settings: CSpellSettings = {
     enabledLanguageIds: [
@@ -90,8 +91,41 @@ documents.onDidChangeContent((change) => {
     validateTextDocument(change.document);
 });
 
-connection.onCodeAction((params) => {
+function extractText(textDocument: TextDocument, range: LangServer.Range) {
+    const { start, end } = range;
+    const offStart = textDocument.offsetAt(start);
+    const offEnd = textDocument.offsetAt(end);
+    return textDocument.getText().slice(offStart, offEnd);
+}
+
+connection.onCodeAction((params: CodeActionParams) => {
     const commands: Command[] = [];
+    const { context, textDocument: { uri } } = params;
+    const { diagnostics } = context;
+    const textDocument = documents.get(uri);
+
+    function replaceText(range: LangServer.Range, text) {
+        return LangServer.TextEdit.replace(range, text || '');
+    }
+
+    for (const diag of diagnostics) {
+        const word = extractText(textDocument, diag.range);
+        const sugs: string[] = suggest(word);
+        sugs.forEach(sugWord => {
+            commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
+                uri,
+                textDocument.version,
+                [ replaceText(diag.range, sugWord) ]
+            ));
+        });
+    }
+    commands.push(LangServer.Command.create(
+        'Add: ' + extractText(textDocument, params.range) + ' to dictionary',
+        'cSpell.editText',
+        uri,
+        textDocument.version,
+        [ replaceText(params.range, 'WORD') ]
+    ));
     return commands;
 });
 

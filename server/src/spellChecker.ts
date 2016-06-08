@@ -2,6 +2,8 @@ import * as Rx from 'rx';
 import * as fs from 'fs';
 import * as path from 'path';
 import { match } from './util/text';
+import { Trie, addWordToTrie } from './suggest';
+import * as sug from './suggest';
 
 export interface WordDictionary {
     [index: string]: boolean;
@@ -21,6 +23,7 @@ export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary
     return Rx.Observable.fromArray(filenames)
         .flatMap(loadWords)
         .map(line => line.toLowerCase().trim())
+        .tap(word => { trie = addWordToTrie(trie, word); })
         .reduce((wordList, word): WordDictionary => {
             wordList[word] = true;
             return wordList;
@@ -44,6 +47,8 @@ export function setUserWords(...wordSets: string[][]) {
     });
 }
 
+let trie: Trie = { c: [] };
+
 let userWords: WordDictionary = Object.create(null);
 
 const wordList: Rx.Promise<WordDictionary> =
@@ -56,3 +61,8 @@ const wordList: Rx.Promise<WordDictionary> =
         path.join(__dirname, '..', '..', 'dictionaries', 'php.txt'),
     ])
     .toPromise();
+
+export function suggest(word: string): string[] {
+    const searchWord = word.toLowerCase();
+    return sug.suggest(trie, searchWord).map(sr => sr.word);
+}

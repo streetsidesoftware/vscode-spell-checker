@@ -51,7 +51,7 @@ export function addWordToTrie(trie: Trie, word: string): Trie {
 
 
 export function wordListToTrie(words: string[]): Trie {
-    let trie: Trie = { c: [] }
+    let trie: Trie = { c: [] };
     for (const word of words) {
         trie = addWordToTrie(trie, word);
     }
@@ -67,7 +67,7 @@ export function wordsToTrie(words: Rx.Observable<string>): Rx.Promise<Trie> {
 }
 
 
-export function suggest(trie: Trie, word: string, numSuggestions: number = 10): SuggestionResult[] {
+export function suggest(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
     let costLimit = Math.min(baseCost * word.length / 2, baseCost * maxNumChanges);
 
     const sugs: SuggestionResult[] = [];

@@ -1,7 +1,10 @@
 import * as path from 'path';
 
-import { workspace, Disposable, ExtensionContext } from 'vscode';
-import { LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind } from 'vscode-languageclient';
+import { workspace, Disposable, ExtensionContext, commands, window } from 'vscode';
+import {
+	LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind,
+	TextEdit, Protocol2Code
+} from 'vscode-languageclient';
 
 
 const CONFIG_FILE = workspace.rootPath + "/.vscode/code_spell.json";
@@ -46,7 +49,30 @@ export function activate(context: ExtensionContext) {
 	// Create the language client and start the client.
 	const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions).start();
 
+
+	function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
+		const textEditor = window.activeTextEditor;
+		if (textEditor && textEditor.document.uri.toString() === uri) {
+			if (textEditor.document.version !== documentVersion) {
+				window.showInformationMessage(`Spelling changes are outdated and cannot be applied to the document.`);
+			}
+			textEditor.edit(mutator => {
+				for (const edit of edits) {
+					mutator.replace(Protocol2Code.asRange(edit.range), edit.newText);
+				}
+			}).then((success) => {
+				if (!success) {
+					window.showErrorMessage('Failed to apply spelling changes to the document.');
+				}
+			});
+		}
+	}
+
 	// Push the disposable to the context's subscriptions so that the
 	// client can be deactivated on extension deactivation
-	context.subscriptions.push(client);
+	context.subscriptions.push(
+		client,
+		// commands.registerCommand('cSpell.editText', applyTextEdits)
+		commands.registerCommand('cSpell.editText', applyTextEdits)
+	);
 }
