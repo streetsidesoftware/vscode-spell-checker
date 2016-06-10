@@ -2,7 +2,7 @@ import {
     IPCMessageReader, IPCMessageWriter,
     createConnection, IConnection,
     TextDocuments, TextDocument,
-    InitializeResult, TextEdit, Command,
+    InitializeResult, Command,
     InitializeParams, CodeActionParams
 } from 'vscode-languageserver';
 import * as LangServer from 'vscode-languageserver';
@@ -10,6 +10,7 @@ import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import {CSpellSettings} from './CSpellSettings';
 import { setUserWords, suggest } from './spellChecker';
+import * as Text from './util/text';
 
 const settings: CSpellSettings = {
     enabledLanguageIds: [
@@ -99,6 +100,7 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 }
 
 connection.onCodeAction((params: CodeActionParams) => {
+    const startTime = Date.now();
     const commands: Command[] = [];
     const { context, textDocument: { uri } } = params;
     const { diagnostics } = context;
@@ -108,17 +110,49 @@ connection.onCodeAction((params: CodeActionParams) => {
         return LangServer.TextEdit.replace(range, text || '');
     }
 
+    function genMultiWordSugs(words: string[]): string[] {
+        const snakeCase = words.join('_').toLowerCase();
+        const camelCase = Text.snakeToCamel(snakeCase);
+        return [
+            snakeCase,
+            Text.ucFirst(camelCase),
+            Text.lcFirst(camelCase)
+        ];
+    }
+
     for (const diag of diagnostics) {
         const word = extractText(textDocument, diag.range);
         const sugs: string[] = suggest(word);
-        sugs.forEach(sugWord => {
-            commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
-                uri,
-                textDocument.version,
-                [ replaceText(diag.range, sugWord) ]
-            ));
-        });
+        sugs
+            .map(sug => Text.matchCase(word, sug))
+            .forEach(sugWord => {
+                commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
+                    uri,
+                    textDocument.version,
+                    [ replaceText(diag.range, sugWord) ]
+                ));
+                const words = sugWord.replace(/[ \-_.]/, '_').split('_');
+                if (words.length > 1) {
+                    if (Text.isUpperCase(word)) {
+                        const sug = words.join('_').toUpperCase();
+                        commands.unshift(LangServer.Command.create(sug, 'cSpell.editText',
+                            uri,
+                            textDocument.version,
+                            [ replaceText(diag.range, sug) ]
+                        ));
+                    } else {
+                        genMultiWordSugs(words).forEach(sugWord => {
+                            commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
+                                uri,
+                                textDocument.version,
+                                [ replaceText(diag.range, sugWord) ]
+                            ));
+                        });
+                    }
+                }
+            });
     }
+    /*
     commands.push(LangServer.Command.create(
         'Add: ' + extractText(textDocument, params.range) + ' to dictionary',
         'cSpell.editText',
@@ -126,6 +160,9 @@ connection.onCodeAction((params: CodeActionParams) => {
         textDocument.version,
         [ replaceText(params.range, 'WORD') ]
     ));
+    */
+    const diffTime = Date.now() - startTime;
+    // connection.console.log(`Suggestions Calculated in : ${diffTime}ms`);
     return commands;
 });
 

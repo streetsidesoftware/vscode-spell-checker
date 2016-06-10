@@ -10,6 +10,9 @@ export interface WordOffset {
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
 const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}+)', 'g');
 const regExWords = XRegExp('\\p{L}+', 'g');
+const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}+$');
+const regExAllUpper = XRegExp('^\\p{Lu}+$');
+const regExAllLower = XRegExp('^\\p{Ll}+$');
 
 export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<WordOffset> {
     return Rx.Observable.fromArray(splitCamelCaseWord(wo.word))
@@ -86,4 +89,58 @@ export function extractWordsFromCodeRx(text: string): Rx.Observable<WordOffset> 
 
 export function extractWordsFromCode(text: string): WordOffset[] {
     return observableToArray(extractWordsFromCodeRx(text));
+}
+
+export function isUpperCase(word: string) {
+    return word.match(regExAllUpper);
+}
+
+export function isLowerCase(word: string) {
+    return word.match(regExAllLower);
+}
+
+export function isFirstCharacterUpper(word: string) {
+    return isUpperCase(word.slice(0, 1));
+}
+
+export function isFirstCharacterLower(word: string) {
+    return isLowerCase(word.slice(0, 1));
+}
+
+export function ucFirst(word: string) {
+    return word.slice(0, 1).toUpperCase() + word.slice(1);
+}
+
+export function lcFirst(word: string) {
+    return word.slice(0, 1).toLowerCase() + word.slice(1);
+}
+
+export function snakeToCamel(word: string) {
+    return word.split('_').map(ucFirst).join('');
+}
+
+export function camelToSnake(word: string) {
+    return splitCamelCaseWord(word).join('_').toLowerCase();
+}
+
+export function matchCase(example: string, word: string): string {
+    if (example.match(regExFirstUpper)) {
+        return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    if (example.match(regExAllLower)) {
+        return word.toLowerCase();
+    }
+    if (example.match(regExAllUpper)) {
+        return word.toUpperCase();
+    }
+
+    if (isFirstCharacterUpper(example)) {
+        return ucFirst(word);
+    }
+
+    if (isFirstCharacterLower(example)) {
+        return lcFirst(word);
+    }
+
+    return word;
 }

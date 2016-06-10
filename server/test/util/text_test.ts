@@ -85,4 +85,12 @@ describe('Util Text', () => {
                 expect(words).to.deep.equal(['var', 'value', 'HTML', 'Input', 'value']);
             });
     });
+
+    it('tests matchCase', () => {
+        expect(Text.matchCase('Apple', 'orange')).to.be.equal('Orange');
+        expect(Text.matchCase('apple', 'ORANGE')).to.be.equal('orange');
+        expect(Text.matchCase('apple', 'orange')).to.be.equal('orange');
+        expect(Text.matchCase('APPLE', 'orange')).to.be.equal('ORANGE');
+        expect(Text.matchCase('ApPlE', 'OrangE')).to.be.equal('OrangE');
+    });
 });

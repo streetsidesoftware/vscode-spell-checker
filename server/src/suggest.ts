@@ -123,3 +123,4 @@ export function suggest(trie: Trie, word: string, numSuggestions: number = 5): S
     sugs.sort((a, b) => a.cost - b.cost);
     return sugs;
 }
+
