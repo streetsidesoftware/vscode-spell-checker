@@ -2,8 +2,12 @@ DNS
 DOM
 Levenshtein
 MYSQL
+Microsoft
+Mongo
+Mongo DB
 ORM
 SQL
+Yahoo
 app
 asc
 auth
@@ -43,6 +47,7 @@ greps
 hash
 hashmap
 hashmaps
+homebrew
 homepage
 hostname
 hover
@@ -58,6 +63,7 @@ jpeg
 jpg
 json
 jumbotron
+keybindings
 lang
 light bulb
 light bulbs
@@ -73,7 +79,6 @@ menu
 menubar
 menuitem
 metadata
-microsoft
 middleware
 mouseover
 nav
@@ -82,7 +87,9 @@ online
 pathname
 plaintext
 png
+prepublish
 quicksort
+real time
 regex
 regexp
 runtime
@@ -107,5 +114,4 @@ utils
 whitespace
 wiki
 xml
-yahoo
 yyyy
