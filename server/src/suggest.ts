@@ -66,14 +66,17 @@ export function wordsToTrie(words: Rx.Observable<string>): Rx.Promise<Trie> {
         .toPromise();
 }
 
-
 export function suggest(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
+    return suggestA(trie, word, numSuggestions);
+}
+
+export function suggestA(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
     let costLimit = Math.min(baseCost * word.length / 2, baseCost * maxNumChanges);
 
     const sugs: SuggestionResult[] = [];
 
     const matrix: number[][] = [[]];
-    const x = (' ' + word).split('');
+    const x = ' ' + word;
     const mx = x.length - 1;
     const curSug: string[] = [''];
 
@@ -81,16 +84,77 @@ export function suggest(trie: Trie, word: string, numSuggestions: number = 5): S
         matrix[0][i] = i * baseCost;
     }
 
-    function *processTrie(trie: TrieNode, d: number): IterableIterator<SuggestionResult> {
+    function processTrie(trie: TrieNode, d: number) {
         const { w, c } = trie;
         if (! w) {
             const cost = matrix[d - 1][mx];
             if (cost <= costLimit) {
-                yield { word: curSug.slice(1, d).join(''), cost };
+                emitSug({ word: curSug.slice(1, d).join(''), cost });
             }
         } else {
             curSug[d] = w;
-            matrix[d] = [];
+            matrix[d] = matrix[d] || [];
+            matrix[d][0] = matrix[d - 1][0] + baseCost;
+            let min = matrix[d][0];
+            for (let i = 1; i <= mx; ++i) {
+                const subCost = w === x[i] ? 0 : baseCost;
+                matrix[d][i] = Math.min(
+                    matrix[d - 1][i - 1] + subCost, // substitute
+                    matrix[d - 1][i] + baseCost,    // insert
+                    matrix[d][i - 1] + baseCost     // delete
+                );
+                min = Math.min(min, matrix[d][i]);
+            }
+            if (min <= costLimit) {
+                processTries(c, d + 1);
+            }
+        }
+    }
+
+    function processTries(tries: TrieNode[], d: number) {
+        for (const trie of tries) {
+            processTrie(trie, d);
+        }
+    }
+
+    function emitSug(sug: SuggestionResult) {
+        sugs.push(sug);
+        if (sugs.length > numSuggestions) {
+            sugs.sort((a, b) => a.cost - b.cost);
+            sugs.length = numSuggestions;
+            costLimit = sugs[sugs.length - 1].cost;
+        }
+    }
+
+    processTries(trie.c, 1);
+    sugs.sort((a, b) => a.cost - b.cost);
+    return sugs;
+}
+
+export function suggestAlt(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
+    let costLimit = Math.min(baseCost * word.length / 2, baseCost * maxNumChanges);
+
+    const sugs: SuggestionResult[] = [];
+
+    const matrix: number[][] = [[]];
+    const x = ' ' + word;
+    const mx = x.length - 1;
+    const curSug: string[] = [''];
+
+    for (let i = 0; i <= mx; ++i) {
+        matrix[0][i] = i * baseCost;
+    }
+
+    function processTrie(trie: TrieNode, d: number) {
+        const { w, c } = trie;
+        if (! w) {
+            const cost = matrix[d - 1][mx];
+            if (cost <= costLimit) {
+                emitSug({ word: curSug.slice(1, d).join(''), cost });
+            }
+        } else {
+            curSug[d] = w;
+            matrix[d] = matrix[d] || [];
             matrix[d][0] = matrix[d - 1][0] + baseCost;
             for (let i = 1; i <= mx; ++i) {
                 const subCost = w === x[i] ? 0 : baseCost;
@@ -100,27 +164,28 @@ export function suggest(trie: Trie, word: string, numSuggestions: number = 5): S
                     matrix[d][i - 1] + baseCost     // delete
                 );
             }
-            if (Math.min(...matrix[d]) <= costLimit) {
-                yield *processTries(c, d + 1);
+            if (Math.min.apply(null, matrix[d]) <= costLimit) {
+                processTries(c, d + 1);
             }
         }
     }
 
-    function *processTries(tries: TrieNode[], d: number): IterableIterator<SuggestionResult> {
+    function processTries(tries: TrieNode[], d: number) {
         for (const trie of tries) {
-            yield *processTrie(trie, d);
+            processTrie(trie, d);
         }
     }
 
-    for (const sug of processTries(trie.c, 1)) {
+    function emitSug(sug: SuggestionResult) {
         sugs.push(sug);
         if (sugs.length > numSuggestions) {
             sugs.sort((a, b) => a.cost - b.cost);
             sugs.length = numSuggestions;
+            costLimit = sugs[sugs.length - 1].cost;
         }
     }
 
+    processTries(trie.c, 1);
     sugs.sort((a, b) => a.cost - b.cost);
     return sugs;
 }
-

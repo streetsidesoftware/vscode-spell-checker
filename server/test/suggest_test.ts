@@ -1,7 +1,20 @@
 import { expect } from 'chai';
 import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
+import * as Suggest from '../src/suggest';
 import { loadWords } from '../src/spellChecker';
-import * as Rx from 'rx';
+
+function timeFn(a) {
+    return function (...args) {
+        const startTime = Date.now();
+        const r = a(...args);
+        const diff = Date.now() - startTime;
+        console.log('Time: ' + diff + 'ms');
+        return r;
+    };
+}
+
+const suggestA = timeFn(Suggest.suggest);
+const suggestB = timeFn(Suggest.suggestAlt);
 
 describe('test building tries', () => {
     it('build', () => {
@@ -65,7 +78,7 @@ describe('test suggestions for large vocab', () => {
 
     it('Makes suggestions for "recieve"', () => {
         return pTrie.then(trie => {
-            const results = suggest(trie, 'recieve');
+            const results = suggestA(trie, 'recieve');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('receive');
             console.log(suggestions);
@@ -74,7 +87,26 @@ describe('test suggestions for large vocab', () => {
 
     it('Makes suggestions for "relasionchip"', () => {
         return pTrie.then(trie => {
-            const results = suggest(trie, 'relasionchip');
+            const results = suggestA(trie, 'relasionchip');
+            const suggestions = results.map(({word}) => word);
+            expect(suggestions).to.contain('relationship');
+            expect(suggestions[0]).to.equal('relationship');
+            console.log(suggestions);
+        });
+    });
+
+    it('Alt Makes suggestions for "recieve"', () => {
+        return pTrie.then(trie => {
+            const results = suggestB(trie, 'recieve');
+            const suggestions = results.map(({word}) => word);
+            expect(suggestions).to.contain('receive');
+            console.log(suggestions);
+        });
+    });
+
+    it('Alt Makes suggestions for "relasionchip"', () => {
+        return pTrie.then(trie => {
+            const results = suggestB(trie, 'relasionchip');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
