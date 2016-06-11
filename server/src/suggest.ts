@@ -93,17 +93,22 @@ export function suggestA(trie: Trie, word: string, numSuggestions: number = 5): 
             }
         } else {
             curSug[d] = w;
+            const lastSugLetter = curSug[d - 1];
             matrix[d] = matrix[d] || [];
             matrix[d][0] = matrix[d - 1][0] + baseCost;
+            let lastLetter = x[0];
             let min = matrix[d][0];
             for (let i = 1; i <= mx; ++i) {
-                const subCost = w === x[i] ? 0 : baseCost;
+                const curLetter = x[i];
+                const subCost = (w === curLetter || (curLetter === lastSugLetter && w === lastLetter))
+                    ? 0 : baseCost;
                 matrix[d][i] = Math.min(
                     matrix[d - 1][i - 1] + subCost, // substitute
                     matrix[d - 1][i] + baseCost,    // insert
                     matrix[d][i - 1] + baseCost     // delete
                 );
                 min = Math.min(min, matrix[d][i]);
+                lastLetter = curLetter;
             }
             if (min <= costLimit) {
                 processTries(c, d + 1);

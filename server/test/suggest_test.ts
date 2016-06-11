@@ -76,6 +76,15 @@ describe('test suggestions for large vocab', () => {
     const pWords = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
     const pTrie = wordsToTrie(pWords);
 
+    it('tests character swaps', () => {
+        return pTrie.then(trie => {
+            const results = suggestA(trie, 'colunm');
+            const suggestions = results.map(({word}) => word);
+            expect(suggestions).to.contain('column');
+            console.log(suggestions);
+        });
+    });
+
     it('Makes suggestions for "recieve"', () => {
         return pTrie.then(trie => {
             const results = suggestA(trie, 'recieve');
