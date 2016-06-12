@@ -1,0 +1,961 @@
+3M Company
+A.P. Moller-Maersk Group
+ABB
+ACS
+AECOM Technology Corporation
+AEON
+AGCO Corporation
+AK Steel Holding Corporation
+AMR
+AT&T
+AXA
+AbbVie Inc.
+Abbott Laboratories
+Accenture
+Adecco Group
+Advance Auto Parts, Inc.
+Advanced Micro Devices, Inc.
+Aegon
+Aetna
+Aetna Inc.
+Aflac
+Aflac Incorporated
+Agilent Technologies, Inc.
+Agricultural Bank of China
+Air France-KLM Group
+Air Products & Chemicals, Inc.
+Airgas, Inc.
+Aisin Seiki
+Alaska Air Group, Inc.
+Alcoa
+Alcoa Inc.
+Alfresa Holdings
+Alleghany Corporation
+Allergan, Inc.
+Alliance Boots
+Allianz
+Allstate
+Ally Financial Inc.
+Alstom
+Altria Group, Inc.
+Aluminum Corp. of China
+Amazon.com
+Ameren Corporation
+America Movil
+American Airlines Group Inc.
+American Electric Power Company, Inc.
+American Express
+American Express Company
+American Family Ins. Group
+American Financial Group, Inc.
+American International Group
+Ameriprise Financial, Inc.
+AmerisourceBergen
+Amgen Inc.
+Anadarko Petroleum Corporation
+Anglo American
+Anheuser-Busch InBev
+Anixter International Inc.
+Ansteel Group
+Apache Corporation
+Apple
+Apple
+Applied Materials, Inc.
+Aramark Holdings Corporation
+ArcelorMittal
+Archer Daniels Midland
+Archer Daniels Midland
+Arrow Electronics, Inc
+Asbury Automotive Group, Inc.
+Ashland Inc.
+Assicurazioni Generali
+Assurant, Inc.
+AstraZeneca
+Australia & New Zealand Banking Group
+Auto-Owners Insurance Group
+AutoNation, Inc.
+AutoZone, Inc.
+Autoliv, Inc.
+Automatic Data Processing, Inc.
+Avery Dennison Corporation
+Aviation Industry Corp. of China
+Avis Budget Group, Inc.
+Aviva
+Avnet
+Avnet, Inc.
+Avon Products, Inc.
+BAE Systems
+BASF
+BB&T Corporation
+BHP Billiton
+BMW
+BNP Paribas
+BP
+BT Group
+Baker Hughes Incorporated
+Ball Corporation
+Banco Bilbao Vizcaya Argentaria
+Banco Bradesco
+Banco Santander
+Banco do Brasil
+Bank of America
+Bank of America Corp.
+Bank of China
+Bank of Communications
+Bank of Nova Scotia
+Baosteel Group
+Barclays
+Barnes & Noble, Inc.
+Baxter International Inc.
+Bayer
+Becton, Dickinson and Company
+Bed Bath & Beyond Inc.
+Bemis Company, Inc.
+Berkshire Hathaway
+Bertelsmann
+Best Buy
+Best Buy Co., Inc.
+Bharat Petroleum
+Big Lots, Inc.
+Biogen Idec Inc.
+BlackRock, Inc.
+Boeing
+Booz Allen Hamilton Holding Corp.
+BorgWarner Inc.
+Boston Scientific Corporation
+Bouygues
+Brazilian Distribution
+Bridgestone
+Bristol-Myers Squibb Company
+British American Tobacco
+Broadcom Corporation
+Buckeye Partners, L.P.
+Bunge
+C. H. Robinson Worldwide, Inc.
+CBRE Group, Inc.
+CBS Corporation
+CC Media Holdings, Inc.
+CDW Corporation
+CF Industries Holdings, Inc.
+CFE
+CH2M HILL Companies, Ltd.
+CHS
+CHS Inc.
+CIGNA Corporation
+CITIC Group
+CMS Energy Corporation
+CNP Assurances
+COFCO
+CONSOL Energy Inc.
+CPC
+CRH
+CST Brands, Inc.
+CSX Corporation
+CVS Caremark
+CVS Caremark
+Cablevision Systems Corporation
+Caesars Entertainment Corporation
+Calpine Corporation
+Caltex Australia
+Calumet Specialty Products Partners, L.P.
+Cameron International Corporation
+Campbell Soup Company
+Canon
+Capital One Financial Corporation
+CarMax, Inc.
+Cardinal Health
+Cardinal Health
+Carrefour
+Casey's General Stores, Inc.
+Caterpillar
+Caterpillar
+Celanese Corporation
+Celgene Corporation
+Centene Corporation
+CenterPoint Energy, Inc.
+Centrica
+CenturyLink, Inc.
+Charter Communications, Inc.
+ChemChina
+Chesapeake Energy Corporation
+Chevron
+Chevron
+China Communications Construction
+China Construction Bank
+China Datang
+China Electronics
+China FAW Group
+China Guodian
+China Huadian
+China Huaneng Group
+China Life Insurance
+China Merchants Bank
+China Metallurgical Group
+China Minmetals
+China Mobile Communications
+China National Aviation Fuel Group
+China National Building Materials Group
+China National Offshore Oil
+China National Petroleum
+China North Industries Group
+China Ocean Shipping
+China Pacific Insurance (Group)
+China Post Group
+China Power Investment
+China Railway Construction
+China Railway Group
+China Railway Materials
+China Resources National
+China Shipbuilding Industry
+China South Industries Group
+China Southern Power Grid
+China State Construction Engineering
+China Telecommunications
+China United Network Communications
+Christian Dior
+Chubu Electric Power
+Cisco Systems
+Cisco Systems, Inc.
+Citigroup
+Cliffs Natural Resources Inc.
+Coach, Inc.
+Coca-Cola
+Coca-Cola Enterprises, Inc.
+Cognizant Technology Solutions Corporation
+Colgate-Palmolive Company
+Comcast
+Commercial Metals Company
+Commerzbank
+Commonwealth Bank of Australia
+Community Health Systems, Inc.
+Compal Electronics
+Compass Group
+Computer Sciences Corporation
+Con-way Inc.
+ConAgra Foods, Inc.
+ConocoPhillips
+Consolidated Edison, Inc.
+Continental
+Coop Group
+Core-Mark Holding Company, Inc.
+Corning Incorporated
+Cosmo Oil
+Costco Wholesale
+Credit Agricole
+Credit Suisse Group
+Crown Holdings, Inc.
+Cummins Inc.
+D.R. Horton, Inc.
+DIRECTV
+DISH Network Corporation
+DTE Energy Company
+DZ Bank
+DaVita HealthCare Partners Inc.
+Dai-ichi Life Insurance
+Daimler
+Daiwa House Industry
+Dana Holding Corporation
+Danaher Corporation
+Danone
+Darden Restaurants, Inc.
+Dean Foods Company
+Deere
+Deere & Company
+Delhaize Group
+Dell
+Delta Air Lines
+Delta Air Lines, Inc.
+Denso
+Deutsche Bahn
+Deutsche Bank
+Deutsche Post
+Deutsche Telekom
+Devon Energy Corporation
+Dexia Group
+Dick's Sporting Goods, Inc.
+Dillard's, Inc.
+DirecTV
+Discover Financial Services
+Discovery Communications, Inc.
+Dollar General Corporation
+Dollar Tree, Inc.
+Dominion Resources, Inc.
+Domtar Corporation
+Dongfeng Motor Group
+Dover Corporation
+Dow Chemical
+Dr Pepper Snapple Group, Inc.
+DuPont
+Duke Energy Corporation
+E.I. du Pont de Nemours and Company
+E.ON
+EADS
+EMC Corporation
+EMCOR Group, Inc.
+ENI
+EOG Resources, Inc.
+EXOR Group
+East Japan Railway
+Eastman Chemical Company
+Ecolab Inc.
+Ecopetrol
+Edeka Zentrale
+Edison International
+Electricite de France
+Eli Lilly
+Eli Lilly and Company
+Emerson Electric
+Emerson Electric Co.
+Enel
+Energie Baden-Wurttemberg
+Energy Future Holdings Corp.
+Energy Transfer Equity, L.P.
+Entergy Corporation
+Enterprise Products Partners
+Enterprise Products Partners L.P.
+Erie Insurance Group
+Exelon Corporation
+Expeditors International of Washington, Inc.
+Express Scripts Holding
+Exxon Mobil
+FMC Technologies, Inc.
+Facebook, Inc.
+Family Dollar Stores, Inc.
+Fannie Mae
+FedEx
+FedEx Corporation
+Fidelity National Financial, Inc.
+Fidelity National Information Services, Inc.
+Fifth Third Bancorp
+Finmeccanica
+First American Financial Corporation
+First Data Corporation
+FirstEnergy Corp.
+Flextronics International
+Fluor
+Fluor Corporation
+Foncire Euris
+Foot Locker, Inc.
+Ford Motor
+Formosa Petrochemical
+France Telecom
+Franklin Resources, Inc.
+Franz Haniel
+Freddie Mac
+Freeport-McMoRan Copper & Gold Inc.
+Fresenius
+Fujifilm Holdings
+Fujitsu
+GDF Suez
+GS Caltex
+GameStop Corp.
+Gannett Co., Inc.
+Gas Natural Fenosa
+GasTerra
+Gazprom
+General Cable Corporation
+General Dynamics
+General Dynamics Corporation
+General Electric
+General Mills, Inc.
+General Motors
+Genuine Parts Company
+Genworth Financial, Inc.
+George Weston
+Gilead Sciences, Inc.
+GlaxoSmithKline
+Glencore International
+Global Partners LP
+Goldman Sachs Group
+Goodyear Tire & Rubber
+Google
+Graybar Electric Company, Inc.
+Greenland Holding Group
+Group 1 Automotive, Inc.
+Groupe Auchan
+Groupe BPCE
+Guardian Life Ins. Co. of America
+H.J. Heinz Company
+HCA Holdings
+HCA Holdings, Inc.
+HD Supply Holdings, Inc.
+HSBC Holdings
+Halliburton
+Halliburton Company
+Harbinger Group Inc.
+Harley-Davidson, Inc.
+Harris Corporation
+HeBei Iron & Steel Group
+Health Net, Inc.
+Heineken Holding
+Henan Coal & Chemical
+Henry Schein, Inc.
+Heraeus Holding
+Hertz Global Holdings, Inc.
+Hess
+Hess Corporation
+Hewlett-Packard
+Hilton Worldwide Holdings Inc.
+Hindustan Petroleum
+Hitachi
+Holcim
+HollyFrontier Corporation
+Home Depot
+Hon Hai Precision Industry
+Honda Motor
+Honeywell International
+Honeywell International Inc.
+Hormel Foods Corporation
+Host Hotels & Resorts, Inc.
+Huawei Investment & Holding
+Humana
+Humana Inc.
+Huntington Ingalls Industries, Inc.
+Huntsman Corporation
+Husky Energy
+Hutchison Whampoa
+Hyundai Heavy Industries
+Hyundai Mobis
+Hyundai Motor
+ING Group
+INTL FCStone
+INTL FCStone Inc.
+Iberdrola
+Icahn Enterprises L.P.
+Idemitsu Kosan
+Illinois Tool Works Inc.
+Imperial Tobacco Group
+Indian Oil
+Industrial & Commercial Bank of China
+Ineos Group Holdings
+Ingram Micro
+Ingram Micro Inc.
+Ingredion Incorporated
+Insight Enterprises, Inc.
+Integrys Energy Group, Inc.
+Intel
+Intel Corporation
+International Airlines Group
+International Business Machines
+International Paper
+International Paper Company
+International Petroleum Investment
+Intesa Sanpaolo
+Itausa-Investimentos
+Itochu
+J. Sainsbury
+J.B. Hunt Transport Services, Inc.
+J.C. Penney Company, Inc.
+J.P. Morgan Chase & Co.
+J.P. Morgan Chase & Co.
+JBS
+JFE Holdings
+JX Holdings
+Jabil Circuit, Inc.
+Jacobs Engineering Group Inc.
+Japan Post Holdings
+Japan Tobacco
+Jarden Corporation
+Jardine Matheson
+JetBlue Airways Corporation
+Jiangsu Shagang Group
+Jizhong Energy Group
+Johnson & Johnson
+Johnson Controls
+Johnson Controls, Inc.
+Joy Global Inc.
+KBC Group
+KBR, Inc.
+KDDI
+KFW Bankengruppe
+KKR & Co. L.P.
+Kailuan Group
+Kansai Electric Power
+Kellogg Company
+Kelly Services, Inc.
+Kia Motors
+Kimberly-Clark Corporation
+Kinder Morgan, Inc.
+Kindred Healthcare, Inc.
+Kobe Steel
+Kohl's Corporation
+Komatsu
+Koo Holding
+Korea Electric Power
+Korea Gas
+Kraft Foods
+Kraft Foods Group, Inc.
+Kroger
+L Brands, Inc.
+L'Oreal
+L-3 Communications Holdings, Inc.
+L.M. Ericsson
+LG Electronics
+LKQ Corporation
+La Poste
+Laboratory Corporation of America Holdings
+Lafarge
+Land O'Lakes, Inc.
+Landesbank Baden-Wurttemberg
+Las Vegas Sands Corp.
+Lear Corporation
+Legal & General Group
+Leidos Holdings Inc.
+Lennar Corporation
+Lenovo Group
+Leucadia National Corporation
+Level 3 Communications, Inc.
+Liberty Interactive Corporation
+Liberty Mutual Holding Company Inc.
+Liberty Mutual Insurance Group
+Lincoln National Corporation
+Live Nation Entertainment, Inc.
+Lloyds Banking Group
+Lockheed Martin
+Lockheed Martin Corporation
+Loews Corporation
+Lorillard, Inc.
+Lowe's
+Lowe's Companies
+Lufthansa Group
+Lukoil
+LyondellBasell Industries
+MGM Resorts International
+MRC Global Inc.
+MS&AD Insurance Group Holdings
+Macy's
+Macy's, Inc.
+Magna International
+Manpower
+ManpowerGroup Inc.
+Manulife Financial
+Mapfre Group
+Marathon Oil Corporation
+Marathon Petroleum
+Marquard & Bahls
+Marriott International, Inc.
+Marsh & McLennan Companies, Inc.
+Marubeni
+Maruhan
+Masco Corporation
+Massachusetts Mutual Life Insurance
+Massachusetts Mutual Life Insurance Company
+MasterCard Incorporated
+Mattel, Inc.
+Mazda Motor
+McDonald's
+McDonald's Corporation
+McGraw Hill Financial, Inc.
+McKesson
+MeadWestvaco Corporation
+Medco Health Solutions
+Medipal Holdings
+Medtronic, Inc.
+Meiji Yasuda Life Insurance
+Merck
+Merck & Co., Inc.
+MetLife
+Metro
+Michelin
+Micron Technology, Inc.
+Microsoft
+Migros Group
+Mitsubishi
+Mitsubishi Chemical Holdings
+Mitsubishi Electric
+Mitsubishi Heavy Industries
+Mitsubishi Motors
+Mitsubishi UFJ Financial Group
+Mitsui
+Mizuho Financial Group
+Mohawk Industries, Inc.
+Mol Hungarian Oil & Gas
+Molina Healthcare, Inc.
+Mondelez International, Inc.
+Monsanto Company
+Morgan Stanley
+Motorola Solutions, Inc.
+Munich Re Group
+Murphy Oil
+Murphy Oil Corporation
+Murphy USA Inc.
+Mutual of Omaha Insurance Company
+Mylan Inc.
+NCR Corporation
+NEC
+NII Holdings, Inc.
+NKSJ Holdings
+NRG Energy, Inc.
+National Australia Bank
+National Grid
+National Oilwell Varco, Inc.
+Nationwide
+Nationwide Mutual Insurance Co.
+Navistar International Corporation
+Nestle
+NetApp, Inc.
+New York Life Insurance
+New York Life Insurance Company
+Newell Rubbermaid Inc.
+Newmont Mining Corporation
+News Corp.
+NextEra Energy, Inc.
+NiSource Inc.
+Nike, Inc.
+Nippon Life Insurance
+Nippon Steel
+Nippon Telegraph & Telephone
+Nippon Yusen Kabushiki Kaisha
+Nissan Motor
+Noble Energy, Inc.
+Noble Group
+Nokia
+Nomura Holdings
+Nordea Bank
+Nordstrom, Inc.
+Norfolk Southern Corporation
+Northeast Utilities
+Northrop Grumman
+Northrop Grumman Corporation
+Northwestern Mutual
+Northwestern Mutual Life Insurance Company,Inc.
+Novartis
+Nucor Corporation
+O'Reilly Automotive, Inc.
+OMV Group
+ONEOK, Inc.
+Oaktree Capital Group, LLC
+Occidental Petroleum
+Occidental Petroleum Corporation
+Office Depot, Inc.
+Oil & Natural Gas
+Old Republic International Corporation
+Omnicare, Inc.
+Omnicom Group Inc.
+Onex
+Oracle
+Oracle Corporation
+Oshkosh Corporation
+Owens & Minor, Inc.
+Owens Corning
+Owens-Illinois, Inc.
+PACCAR Inc
+PBF Energy Inc.
+PDVSA
+PG&E Corporation
+PKN ORLEN Group
+POSCO
+PPG Industries, Inc.
+PPL Corporation
+PTT
+PVH Corp.
+Pacific Life
+Panasonic
+Parker-Hannifin Corporation
+Peabody Energy Corporation
+Pemex
+Penske Automotive Group, Inc.
+People's Insurance Co. of China
+Pepsi
+PepsiCo
+PetSmart, Inc.
+Peter Kiewit Sons', Inc.
+Petrobras
+Petronas
+Peugeot
+Pfizer
+Pfizer
+Philip Morris International
+Philip Morris International Inc.
+Phillips 66
+Phoenix Pharmahandel
+Ping An Insurance
+Plains All American Pipeline
+Plains GP Holdings, L.P.
+Poste Italiane
+Power China
+Power Corp. of Canada
+Praxair, Inc.
+Precision Castparts Corp.
+Principal Financial Group, Inc.
+Procter & Gamble
+Prudential
+Prudential Financial
+Prudential Financial, Inc.
+Public Service Enterprise Group Incorporated
+Publix Super Markets
+Publix Super Markets, Inc.
+PulteGroup, Inc.
+Qualcomm Incorporated
+Quanta Computer
+Quanta Services, Inc.
+Quest Diagnostics Incorporated
+Quintiles Transnational Holdings Inc.
+R.R. Donnelley & Sons Company
+RWE
+Rabobank Group
+Ralph Lauren Corporation
+Randstad Holding
+Raytheon
+Raytheon Company
+Realogy Holdings Corp.
+Regions Financial Corporation
+Reinsurance Group of America, Incorporated
+Reliance Industries
+Reliance Steel & Aluminum Co.
+Renault
+Repsol YPF
+Republic Services, Inc.
+Reynolds American Inc.
+Ricoh
+Rio Tinto Group
+Rite Aid
+Rite Aid Corporation
+Robert Bosch
+Roche Group
+Rock-Tenn Company
+Rockwell Automation, Inc.
+Rosneft Oil
+Ross Stores, Inc.
+Royal Ahold
+Royal Bank of Canada
+Royal Bank of Scotland Group
+Royal Dutch Shell
+Royal Philips Electronics
+Ryder System, Inc.
+S-Oil
+SAIC Motor
+SHV Holdings
+SK Holdings
+SLM Corporation
+SNCF
+SSE
+Sabic
+Safeway
+Safeway Inc.
+Saint-Gobain
+Samsung Electronics
+SanDisk Corporation
+Sanmina
+Sanofi
+Sberbank
+Schlumberger
+Schneider Electric
+Seaboard Corporation
+Sealed Air Corporation
+Sears Holdings
+Sears Holdings Corporation
+Sempra Energy
+Seven & I Holdings
+Shandong Energy Group
+Shandong Weiqiao Pioneering Group
+Shanxi Coal Transportation & Sales Group
+Sharp
+Shenhua Group
+Shougang Group
+Showa Shell Sekiyu
+Siemens
+Simon Property Group, Inc.
+Sinochem Group
+Sinomach
+Sinopec Group
+Sistema
+Smithfield Foods, Inc.
+Societe Generale
+Sodexo
+Softbank
+Sonic Automotive, Inc.
+Sony
+Southwest Airlines Co.
+Spectra Energy Corp
+Spectrum Group International, Inc.
+Sprint Nextel
+St. Jude Medical, Inc.
+Standard Chartered Group
+Stanley Black & Decker, Inc.
+Staples
+Staples, Inc.
+Starbucks Corporation
+Starwood Hotels & Resorts Worldwide, Inc.
+State Bank of India
+State Farm Insurance Cos.
+State Farm Insurance Cos.
+State Grid
+State Street Corporation
+Statoil
+Steel Dynamics, Inc.
+Stryker Corporation
+Sumitomo
+Sumitomo Chemical
+Sumitomo Electric Industries
+Sumitomo Life Insurance
+Sumitomo Mitsui Financial Group
+Sun Life Financial
+SunTrust Banks, Inc.
+Suncor Energy
+Sunoco
+Supervalu
+Supervalu Inc.
+Surgutneftegas
+Susser Holdings Corporation
+Suzuken
+Suzuki Motor
+Swiss Re
+Symantec Corporation
+Synnex Corporation
+Sysco
+Sysco Corporation
+T&D Holdings
+TIAA-CREF
+TIAA-CREF
+TJX
+TNK-BP International
+TRW Automotive Holdings Corp.
+TUI
+Targa Resources Corp.
+Target
+Target
+Tata Motors
+Tata Steel
+Tech Data
+Tech Data Corporation
+Telecom Italia
+Telefonica
+Telstra
+Tenet Healthcare Corporation
+Tenneco Inc.
+Terex Corporation
+Tesco
+Tesoro
+Tesoro Corporation
+Tewoo Group
+Texas Instruments Incorporated
+Textron Inc.
+The AES Corporation
+The Allstate Corporation
+The Andersons, Inc.
+The Bank of New York Mellon Corporation
+The Blackstone Group L.P.
+The Charles Schwab Corporation
+The Chubb Corporation
+The Clorox Company
+The Coca-Cola Company
+The EstΓö£ΓîÉe Lauder Companies Inc.
+The Gap, Inc.
+The Goldman Sachs Group, Inc.
+The Goodyear Tire & Rubber Company
+The Hartford Financial Services Group, Inc.
+The Hershey Company
+The Interpublic Group of Companies, Inc.
+The J.M. Smucker Company
+The Jones Financial Companies,L.L.L.P.
+The Mosaic Company
+The PNC Financial Services Group, Inc.
+The Pantry, Inc.
+The Priceline Group Inc.
+The Progressive Corporation
+The Sherwin-Williams Company
+The Southern Company
+The TJX Companies, Inc.
+The Travelers Companies, Inc.
+The Walt Disney Company
+The Western Union Company
+The Williams Companies, Inc.
+Thermo Fisher Scientific Inc.
+Thrivent Financial for Lutherans
+ThyssenKrupp
+Time Warner
+Time Warner Cable Inc.
+Time Warner Inc.
+Tokio Marine Holdings
+Tokyo Electric Power
+Tokyo Gas
+Toronto-Dominion Bank
+Toshiba
+Total
+Toyota Motor
+Toys "R" Us, Inc.
+Tractor Supply Company
+TravelCenters of America LLC
+Travelers Cos.
+Twenty-First Century Fox, Inc.
+Tyson Foods
+Tyson Foods, Inc.
+U.S. Bancorp
+U.S. Postal Service
+UBS
+UGI Corporation
+URS Corporation
+US Foods, Inc.
+Ultrapar Holdings
+UniCredit Group
+Unilever
+Union Pacific Corporation
+United Continental Holdings
+United Continental Holdings, Inc.
+United Natural Foods, Inc.
+United Parcel Service
+United Rentals, Inc.
+United Services Automobile Association
+United States Steel Corporation
+United Stationers Inc.
+United Technologies
+United Technologies
+UnitedHealth Group
+Universal Health Services, Inc.
+Unum Group
+V.F. Corporation
+Vale
+Valero Energy
+Vanguard Health Systems, Inc.
+Vattenfall
+Veolia Environnement
+Verizon Communications
+Viacom Inc.
+Vinci
+Visa Inc.
+Visteon Corporation
+Vivendi
+Vodafone Group
+Volkswagen
+Volvo
+W.R. Berkley Corporation
+W.W. Grainger, Inc.
+WESCO International, Inc.
+Wal-Mart Stores
+Walgreen
+Walgreen Co.
+Walt Disney
+Waste Management, Inc.
+WellCare Health Plans, Inc.
+WellPoint
+Wells Fargo
+Wesfarmers
+Western Digital Corporation
+Western Refining, Inc.
+Westpac Banking
+Weyerhaeuser Company
+Whirlpool Corporation
+Whole Foods Market, Inc.
+Wilmar International
+Windstream Holdings, Inc.
+Wistron
+Wm. Morrison Supermarkets
+Woolworths
+Woori Finance Holdings
+World Fuel Services
+World Fuel Services Corporation
+Wuhan Iron & Steel
+Wyndham Worldwide Corporation
+Wynn Resorts, Limited
+Xcel Energy Inc.
+Xerox
+Xerox Corporation
+Xinxing Cathay International Group
+Xstrata
+Yamada Denki
+Yum! Brands, Inc.
+Zhejiang Geely Holding Group
+Zhejiang Materials Industry Group
+Zurich Insurance Group
+eBay Inc.

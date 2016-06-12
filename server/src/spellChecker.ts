@@ -4,10 +4,13 @@ import * as path from 'path';
 import { match } from './util/text';
 import { Trie, addWordToTrie } from './suggest';
 import * as sug from './suggest';
+import * as Text from './util/text';
 
 export interface WordDictionary {
     [index: string]: boolean;
 }
+
+const minWordLength = 3;
 
 export function loadWords(filename: string): Rx.Observable<string> {
     const reader = Rx.Observable.fromNodeCallback<string>(fs.readFile);
@@ -23,6 +26,12 @@ export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary
     return Rx.Observable.fromArray(filenames)
         .flatMap(loadWords)
         .map(line => line.toLowerCase().trim())
+        .flatMap(line => Rx.Observable.concat(
+            // Add the line
+            Rx.Observable.just(line),
+            // Add the individual words in the line
+            Text.extractWordsFromTextRx(line).map(({word}) => word).filter(word => word.length > minWordLength)
+        ))
         .tap(word => { trie = addWordToTrie(trie, word); })
         .reduce((wordList, word): WordDictionary => {
             wordList[word] = true;
@@ -59,6 +68,7 @@ const wordList: Rx.Promise<WordDictionary> =
         path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'html.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'php.txt'),
+        path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt'),
     ])
     .toPromise();
 
