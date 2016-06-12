@@ -18,4 +18,7 @@ export interface CSpellSettings {
 
     // The minimum length of a word before checking it against a dictionary.
     minWordLength?: number;
+
+    // Number of suggestions to make
+    numSuggestions?: number;
 }

@@ -22,6 +22,7 @@ export interface SuggestionResult {
 }
 
 const maxNumChanges = 4;
+const defaultNumberOfSuggestions = 5;
 
 let trieNextId = 1;
 
@@ -66,11 +67,14 @@ export function wordsToTrie(words: Rx.Observable<string>): Rx.Promise<Trie> {
         .toPromise();
 }
 
-export function suggest(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
+export function suggest(trie: Trie, word: string, numSuggestions: number = defaultNumberOfSuggestions): SuggestionResult[] {
     return suggestA(trie, word, numSuggestions);
 }
 
-export function suggestA(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
+export function suggestA(
+        trie: Trie, word: string,
+        numSuggestions: number = defaultNumberOfSuggestions
+    ): SuggestionResult[] {
     let costLimit = Math.min(baseCost * word.length / 2, baseCost * maxNumChanges);
 
     const sugs: SuggestionResult[] = [];
@@ -136,7 +140,7 @@ export function suggestA(trie: Trie, word: string, numSuggestions: number = 5): 
     return sugs;
 }
 
-export function suggestAlt(trie: Trie, word: string, numSuggestions: number = 5): SuggestionResult[] {
+export function suggestAlt(trie: Trie, word: string, numSuggestions: number = defaultNumberOfSuggestions): SuggestionResult[] {
     let costLimit = Math.min(baseCost * word.length / 2, baseCost * maxNumChanges);
 
     const sugs: SuggestionResult[] = [];

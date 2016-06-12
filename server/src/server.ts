@@ -18,6 +18,7 @@ const settings: CSpellSettings = {
         'php', 'plaintext', 'text', 'typescript', 'typescriptreact'
     ],
     maxNumberOfProblems: 100,
+    numSuggestions: 10,
     words: [],
     userWords: [],
     ignorePaths: []
@@ -84,8 +85,6 @@ validationRequestStream
 
 validationFinishedStream.onNext({uri: 'start', version: 0});
 
-// validationFinishedStream.subscribe(doc => connection.console.log(`Done:      ${doc.uri}:${doc.version}:${Date.now()}`));
-
 function shouldValidateDocument(textDocument: TextDocument): boolean {
     const { enabledLanguageIds, ignorePaths } = settings;
     const { uri, languageId } = textDocument;
@@ -113,7 +112,7 @@ documents.onDidChangeContent((change) => {
     validationRequestStream.onNext(change.document);
 });
 
-connection.onCodeAction(onCodeActionHandler(documents));
+connection.onCodeAction(onCodeActionHandler(documents, settings));
 
 // Listen on the connection
 connection.listen();

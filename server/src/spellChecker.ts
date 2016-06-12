@@ -72,7 +72,7 @@ const wordList: Rx.Promise<WordDictionary> =
     ])
     .toPromise();
 
-export function suggest(word: string): string[] {
+export function suggest(word: string, numSuggestions?: number): string[] {
     const searchWord = word.toLowerCase();
-    return sug.suggest(trie, searchWord).map(sr => sr.word);
+    return sug.suggest(trie, searchWord, numSuggestions).map(sr => sr.word);
 }
