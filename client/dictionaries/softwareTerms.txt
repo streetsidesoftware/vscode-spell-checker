@@ -7,6 +7,9 @@ Mongo
 Mongo DB
 ORM
 SQL
+Wikimedia
+Wikipedia
+Wiktionary
 Yahoo
 app
 asc
@@ -23,6 +26,7 @@ cache
 codelens
 cpp
 csharp
+debounce
 desc
 descriptor
 descriptors
@@ -91,6 +95,7 @@ pathname
 plaintext
 png
 prepublish
+prev
 quicksort
 real time
 regex
