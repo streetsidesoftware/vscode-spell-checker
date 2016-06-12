@@ -159,17 +159,31 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = 5)
             }
         } else {
             curSug[d] = w;
+            const lastSugLetter = curSug[d - 1];
             matrix[d] = matrix[d] || [];
-            matrix[d][0] = matrix[d - 1][0] + baseCost;
+            let diag = matrix[d - 1][0];
+            matrix[d][0] = diag + baseCost;
+            let lastLetter = x[0];
+            let min = matrix[d][0];
+            let lastCost = min;
+            // declare these here for performance reasons
+            let curLetter, subCost, above;
             for (let i = 1; i <= mx; ++i) {
-                const subCost = w === x[i] ? 0 : baseCost;
-                matrix[d][i] = Math.min(
-                    matrix[d - 1][i - 1] + subCost, // substitute
-                    matrix[d - 1][i] + baseCost,    // insert
-                    matrix[d][i - 1] + baseCost     // delete
+                curLetter = x[i];
+                subCost = (w === curLetter || (curLetter === lastSugLetter && w === lastLetter))
+                    ? 0 : baseCost;
+                above = matrix[d - 1][i];
+                lastCost = Math.min(
+                    diag + subCost,     // substitute
+                    above + baseCost,   // insert
+                    lastCost + baseCost // delete
                 );
+                diag = above;
+                matrix[d][i] = lastCost;
+                min = Math.min(min, lastCost);
+                lastLetter = curLetter;
             }
-            if (Math.min.apply(null, matrix[d]) <= costLimit) {
+            if (min <= costLimit) {
                 processTries(c, d + 1);
             }
         }
