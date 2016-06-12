@@ -11,6 +11,7 @@ import * as Validator from './validator';
 import {CSpellSettings} from './CSpellSettings';
 import { setUserWords, suggest } from './spellChecker';
 import * as Text from './util/text';
+import * as Rx from 'rx';
 
 const settings: CSpellSettings = {
     enabledLanguageIds: [
@@ -22,6 +23,10 @@ const settings: CSpellSettings = {
     userWords: [],
     ignorePaths: []
 };
+
+// debounce buffer
+const validationRequestStream: Rx.ReplaySubject<TextDocument> = new Rx.ReplaySubject<TextDocument>(1);
+const validationFinishedStream: Rx.ReplaySubject<{uri: string; version: number}> = new Rx.ReplaySubject<{uri: string; version: number}>(1);
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
@@ -58,9 +63,31 @@ connection.onDidChangeConfiguration((change) => {
     setUserWords(settings.userWords, settings.words);
 
     // Revalidate any open text documents
-    documents.all().forEach(validateTextDocument);
+    documents.all().forEach(doc => validationRequestStream.onNext(doc));
 });
 
+const debounce = 200;
+
+// validate documents
+validationRequestStream
+    // .tap(doc => connection.console.log(`A Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+    .filter(shouldValidateDocument)
+    // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+    .groupByUntil( doc => doc.uri, doc => doc, () => validationFinishedStream.delay(5))
+    .flatMap(group => group.last())
+    // .tap(doc => connection.console.log(`C Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+    .subscribe(validateTextDocument);
+
+// Clear the diagnostics for documents we do not want to validate
+validationRequestStream
+    .filter(doc => ! shouldValidateDocument(doc))
+    .subscribe(doc => {
+        connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
+    });
+
+validationFinishedStream.onNext({uri: 'start', version: 0});
+
+// validationFinishedStream.subscribe(doc => connection.console.log(`Done:      ${doc.uri}:${doc.version}:${Date.now()}`));
 
 function shouldValidateDocument(textDocument: TextDocument): boolean {
     const { enabledLanguageIds, ignorePaths } = settings;
@@ -72,14 +99,11 @@ function shouldValidateDocument(textDocument: TextDocument): boolean {
 }
 
 function validateTextDocument(textDocument: TextDocument): void {
-    if (shouldValidateDocument(textDocument)) {
-        Validator.validateTextDocument(textDocument, settings.maxNumberOfProblems).then(diagnostics => {
-            // Send the computed diagnostics to VSCode.
-            connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-        });
-    } else {
-        connection.sendDiagnostics({ uri: textDocument.uri, diagnostics: [] });
-    }
+    Validator.validateTextDocument(textDocument, settings.maxNumberOfProblems).then(diagnostics => {
+        // Send the computed diagnostics to VSCode.
+        validationFinishedStream.onNext(textDocument);
+        connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    });
 }
 
 // Make the text document manager listen on the connection
@@ -89,7 +113,7 @@ documents.listen(connection);
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent((change) => {
-    validateTextDocument(change.document);
+    validationRequestStream.onNext(change.document);
 });
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
