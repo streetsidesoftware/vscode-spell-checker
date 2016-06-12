@@ -3,12 +3,15 @@ import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
 import * as Suggest from '../src/suggest';
 import { loadWords } from '../src/spellChecker';
 
-function timeFn(a) {
+function timeFn(a, n = 100) {
     return function (...args) {
+        let r;
         const startTime = Date.now();
-        const r = a(...args);
+        for (let i = 0; i < n; ++i) {
+            r = a(...args);
+        }
         const diff = Date.now() - startTime;
-        console.log('Time: ' + diff + 'ms');
+        console.log('Time: ' + diff / n + 'ms');
         return r;
     };
 }
@@ -68,11 +71,32 @@ describe('test suggestions', () => {
     });
 });
 
-/* */
+describe('test for duplicate suggestions', () => {
+    const words = [
+        'apple', 'ape', 'able', 'apples', 'banana', 'orange', 'pear', 'aim', 'approach', 'bear'
+    ];
+
+    const trie = wordListToTrie(words);
+
+    it('tests ', () => {
+        const word = 'beaet';
+        const expectWord = 'beeeet';
+        const extraWords = [ expectWord ];
+        const trie = wordListToTrie([...words, ...extraWords]);
+        const results = suggest(trie, word);
+        const suggestions = results.map(({word}) => word);
+        console.log(suggestions);
+        expect(results).to.not.be.null;
+        expect(suggestions).to.contain(expectWord);
+    });
+});
 
 /* */
 
-describe('test suggestions for large vocab', () => {
+/* */
+
+describe('test suggestions for large vocab', function() {
+    this.timeout(10000);
     const pWords = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
     const pTrie = wordsToTrie(pWords);
 
