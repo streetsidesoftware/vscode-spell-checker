@@ -85,6 +85,8 @@ json
 jumbotron
 keybindings
 lang
+life cycle
+life cycles
 light bulb
 light bulbs
 localhost
