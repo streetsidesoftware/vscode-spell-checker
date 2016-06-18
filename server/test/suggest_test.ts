@@ -71,6 +71,19 @@ describe('test suggestions', () => {
     });
 });
 
+describe('matching hte', () => {
+    const words = [
+        'ate', 'hoe', 'hot', 'the', 'how', 'toe'
+    ];
+
+    const trie = wordListToTrie(words);
+
+    it('checks best match', () => {
+        const results = suggest(trie, 'hte');
+        console.log(JSON.stringify(results, null, 4));
+    });
+});
+
 describe('test for duplicate suggestions', () => {
     const words = [
         'apple', 'ape', 'able', 'apples', 'banana', 'orange', 'pear', 'aim', 'approach', 'bear'
@@ -144,6 +157,13 @@ describe('test suggestions for large vocab', function() {
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
             console.log(suggestions);
+        });
+    });
+
+    it('checks best match for "hte"', () => {
+        return pTrie.then(trie => {
+            const results = suggest(trie, 'hte');
+            console.log(JSON.stringify(results, null, 4));
         });
     });
 });

@@ -15,6 +15,8 @@ export interface Trie {
 }
 
 const baseCost = 100;
+const swapCost = 75;
+const postSwapCost = swapCost - baseCost;
 
 export interface SuggestionResult {
     word: string;
@@ -104,8 +106,10 @@ export function suggestA(
             let min = matrix[d][0];
             for (let i = 1; i <= mx; ++i) {
                 const curLetter = x[i];
-                const subCost = (w === curLetter || (curLetter === lastSugLetter && w === lastLetter))
-                    ? 0 : baseCost;
+                const subCost =
+                    (w === curLetter)
+                    ? 0 : ((curLetter === lastSugLetter && w === lastLetter)
+                    ? postSwapCost : baseCost);
                 matrix[d][i] = Math.min(
                     matrix[d - 1][i - 1] + subCost, // substitute
                     matrix[d - 1][i] + baseCost,    // insert
