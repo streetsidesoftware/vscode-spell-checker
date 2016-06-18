@@ -1,4 +1,7 @@
 # Spelling Checker for Visual Studio Code
+[![Current Version](http://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![Install Count](http://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![Open Issues](http://vsmarketplacebadge.apphb.com/rating/streetsidesoftware.code-spell-checker.svg) ](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 A basic spell checker that works well with camelCase code.
 
@@ -44,7 +47,7 @@ The concept is simple, split camelCase words before checking them against a list
 * Only words longer than 3 characters are checked.  "jsj" is ok, while "jsja" is not.
 * All symbols and punctuation are ignored.
 * It currently checks ALL text in a document.
- 
+
 ## Customization
 
 ### Configuration Settings

@@ -1,0 +1,8 @@
+{
+  "name": "code-spell-checker",
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
+    "mkdirp": "registry:npm/mkdirp#0.5.0+20160222053049"
+  },
+  "globalDependencies": {}
+}

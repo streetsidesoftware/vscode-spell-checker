@@ -1,97 +1,114 @@
 {
-    "name": "code-spell-checker",
-    "description": "Simple spellchecker for source code",
-    "displayName": "Source Code Spell Checker",
-    "icon": "images/icon2.png",
-    "author": "Jason Dent",
-    "license": "MIT",
-    "version": "0.9.0",
-    "publisher": "streetsidesoftware",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Jason-Rev/vscode-spell-checker"
-    },
-    "bugs": {
-        "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
-    },
-    "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
-    "engines": {
-        "vscode": "^1.1.1"
-    },
-    "categories": [
-        "Other"
+  "name": "code-spell-checker",
+  "description": "Simple spellchecker for source code",
+  "displayName": "Source Code Spell Checker",
+  "icon": "images/icon2.png",
+  "author": "Jason Dent",
+  "license": "MIT",
+  "version": "0.9.0",
+  "publisher": "streetsidesoftware",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jason-Rev/vscode-spell-checker"
+  },
+  "bugs": {
+    "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
+  },
+  "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
+  "engines": {
+    "vscode": "^1.2.1"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "spell",
+    "checker",
+    "spellchecker"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {"command": "cSpell.addWordToDictionary", "title": "Add Word to Dictionary"}
     ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "Code Spell Checker Configuration",
-            "properties": {
-                "cSpell.maxNumberOfProblems": {
-                    "type": "number",
-                    "default": 100,
-                    "description": "Controls the maximum number of spelling errors per document."
-                },
-                "cSpell.minWordLength": {
-                    "type": "number",
-                    "default": 4,
-                    "description": "The minimum length of a word before checking it against a dictionary."
-                },
-                "cSpell.enabledLanguageIds": {
-                    "type": "array",
-                    "default": [
-                        "csharp",
-                        "go",
-                        "javascript",
-                        "javascriptreact",
-                        "markdown",
-                        "php",
-                        "plaintext",
-                        "text",
-                        "typescript",
-                        "typescriptreact",
-                        "yml"
-                    ],
-                    "description": "Specify file types to spell check."
-                },
-                "cSpell.words": {
-                    "type": "array",
-                    "default": [],
-                    "description": "Words to add to dictionary for a workspace."
-                },
-                "cSpell.userWords": {
-                    "type": "array",
-                    "default": [],
-                    "description": "User words to add to dictionary.  Should only be in the user settings."
-                },
-                "cSpell.ignorePaths": {
-                    "type": "array",
-                    "default": [
-                        "node_modules"
-                    ],
-                    "description": "Specify paths/files to ignore."
-                }
-            }
+    "configuration": {
+      "type": "object",
+      "title": "Code Spell Checker Configuration",
+      "properties": {
+        "cSpell.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of spelling errors per document."
+        },
+        "cSpell.numSuggestions": {
+          "type": "number",
+          "default": 8,
+          "description": "Controls the number of suggestions shown."
+        },
+        "cSpell.minWordLength": {
+          "type": "number",
+          "default": 4,
+          "description": "The minimum length of a word before checking it against a dictionary."
+        },
+        "cSpell.enabledLanguageIds": {
+          "type": "array",
+          "default": [
+            "csharp",
+            "go",
+            "javascript",
+            "javascriptreact",
+            "markdown",
+            "php",
+            "plaintext",
+            "text",
+            "typescript",
+            "typescriptreact",
+            "yml"
+          ],
+          "description": "Specify file types to spell check."
+        },
+        "cSpell.words": {
+          "type": "array",
+          "default": [],
+          "description": "Words to add to dictionary for a workspace."
+        },
+        "cSpell.userWords": {
+          "type": "array",
+          "default": [],
+          "description": "User words to add to dictionary.  Should only be in the user settings."
+        },
+        "cSpell.ignorePaths": {
+          "type": "array",
+          "default": [
+            "node_modules"
+          ],
+          "description": "Specify paths/files to ignore."
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "devDependencies": {
-        "chai": "^3.5.0",
-        "lorem-ipsum": "^1.0.3",
-        "typescript": "^1.8.9",
-        "vscode": "^0.11.0"
-    },
-    "dependencies": {
-        "rx": "^4.1.0",
-        "tsmerge": "^1.0.4",
-        "vscode-languageclient": "^2.0.0",
-        "xregexp": "^3.1.1"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "lorem-ipsum": "^1.0.3",
+    "typescript": "^1.8.9",
+    "vscode": "^0.11.13"
+  },
+  "dependencies": {
+    "comment-json": "^1.1.3",
+    "lodash": "^4.13.1",
+    "mkdirp": "^0.5.1",
+    "rx": "^4.1.0",
+    "tsmerge": "^1.0.4",
+    "vscode-languageclient": "^2.0.0",
+    "xregexp": "^3.1.1"
+  }
 }

@@ -12,6 +12,7 @@
     "node": "*"
   },
   "dependencies": {
+    "comment-json": "^1.1.3",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",
     "vscode-languageserver": "^2.2.0",

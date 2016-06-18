@@ -1,0 +1,11 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/typed-typings/npm-mkdirp/198dc9b86004c5a4995ac28ee782c3391fb7ee56/typings.json",
+    "raw": "registry:npm/mkdirp#0.5.0+20160222053049",
+    "main": "index.d.ts",
+    "global": false,
+    "name": "mkdirp",
+    "type": "typings"
+  }
+}

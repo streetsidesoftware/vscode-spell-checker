@@ -7,7 +7,6 @@ import {
 import * as LangServer from 'vscode-languageserver';
 import { suggest } from './spellChecker';
 import * as Text from './util/text';
-import {CSpellSettings} from './CSpellSettings';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
@@ -16,10 +15,10 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
     return textDocument.getText().slice(offStart, offEnd);
 }
 
-export function onCodeActionHandler(documents: TextDocuments, settings: CSpellSettings) {
+export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPackageSettings) {
     return (params: CodeActionParams) => {
         const { numSuggestions } = settings;
-        const startTime = Date.now();
+        // const startTime = Date.now();
         const commands: Command[] = [];
         const { context, textDocument: { uri } } = params;
         const { diagnostics } = context;
@@ -79,9 +78,9 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellSe
             textDocument.version,
             [ replaceText(params.range, 'WORD') ]
         ));
-        */
         const diffTime = Date.now() - startTime;
-        // connection.console.log(`Suggestions Calculated in : ${diffTime}ms`);
+        connection.console.log(`Suggestions Calculated in : ${diffTime}ms`);
+        */
         return commands;
     };
 }
