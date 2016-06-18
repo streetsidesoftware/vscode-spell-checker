@@ -14,6 +14,8 @@ const defaultMinWordLength       = 4;
 export interface ValidationOptions {
     maxNumberOfProblems?: number;
     minWordLength?: number;
+    // words to always flag as an error
+    flagWords?: string[];
 }
 
 export function validateTextDocument(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Promise<Diagnostic[]> {
@@ -25,12 +27,15 @@ export function validateTextDocument(textDocument: TextDocument, options: Valida
 export function validateText(text: string, options: ValidationOptions = {}): Rx.Observable<Text.WordOffset> {
     const {
         maxNumberOfProblems = defaultMaxNumberOfProblems,
-        minWordLength       = defaultMinWordLength
+        minWordLength       = defaultMinWordLength,
+        flagWords           = [],
     } = options;
+    const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, {});
     return Text.extractWordsFromCodeRx(text)
-        .filter(word => word.word.length >= minWordLength )
+        .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] }))
+        .filter(word => word.isFlagged || word.word.length >= minWordLength )
         .flatMap(word => isWordInDictionary(word.word).then(isFound => merge(word, { isFound })))
-        .filter(word => ! word.isFound )
+        .filter(word => word.isFlagged || ! word.isFound )
         .take(maxNumberOfProblems);
 }
 
