@@ -4,13 +4,13 @@ import * as json from 'comment-json';
 import * as Rx from 'rx';
 import * as _ from 'lodash';
 
-import { workspace, extensions, Disposable, ExtensionContext, commands, window } from 'vscode';
+import { workspace, ExtensionContext, commands, window } from 'vscode';
 import {
-    LanguageClient, LanguageClientOptions, SettingMonitor, ServerOptions, TransportKind,
+    LanguageClient, LanguageClientOptions, ServerOptions, TransportKind,
     TextEdit, Protocol2Code
 } from 'vscode-languageclient';
 
-const extensionId = 'streetsidesoftware.code-spell-checker'
+// const extensionId = 'streetsidesoftware.code-spell-checker'
 const baseConfigName = CSpellSettings.defaultFileName;
 const findConfig = `**/${baseConfigName}`;
 const defaultWorkspaceConfig =  path.join(workspace.rootPath, '.vscode', baseConfigName);

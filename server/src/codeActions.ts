@@ -70,17 +70,12 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
                     }
                 });
         }
-        /*
-        commands.push(LangServer.Command.create(
-            'Add: ' + extractText(textDocument, params.range) + ' to dictionary',
-            'cSpell.editText',
-            uri,
-            textDocument.version,
-            [ replaceText(params.range, 'WORD') ]
+        commands.unshift(LangServer.Command.create(
+            'Add: "' + extractText(textDocument, params.range) + '" to dictionary',
+            'cSpell.addWordToDictionarySilent',
+            extractText(textDocument, params.range)
         ));
-        const diffTime = Date.now() - startTime;
-        connection.console.log(`Suggestions Calculated in : ${diffTime}ms`);
-        */
+        // const diffTime = Date.now() - startTime;
         return commands;
     };
 }

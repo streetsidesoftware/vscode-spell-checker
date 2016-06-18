@@ -12,19 +12,19 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     '//^': [
         '// cSpell Settings'
     ],
-    '//version': ['// Version of the setting file.'],
+    '// version': ['// Version of the setting file.'],
     version: currentSettingsFileVersion,
 
-    '//language': ['// current active spelling language'],
+    '// language': ['// current active spelling language'],
     language: 'en',
 
-    '//words': ['// list of words to be always considered correct'],
+    '// words': ['// list of words to be always considered correct'],
     words: ['wasn'],
 
-    '//flagWords': ['// list of words to be always considered correct'],
+    '// flagWords': ['// list of words to be always considered correct'],
     flagWords: ['hte'],
 
-    '//ignorePaths': ['// matching file paths will to be ignored'],
+    '// ignorePaths': ['// matching file paths will to be ignored'],
     ignorePaths: ['./node_modules', './typings'],
 };
 
