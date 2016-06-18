@@ -103,7 +103,7 @@ function run() {
     }
 
     function validateTextDocument(textDocument: TextDocument): void {
-        Validator.validateTextDocument(textDocument, settings.maxNumberOfProblems).then(diagnostics => {
+        Validator.validateTextDocument(textDocument, settings).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
             validationFinishedStream.onNext(textDocument);
             connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
