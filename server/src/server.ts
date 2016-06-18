@@ -66,13 +66,11 @@ function run() {
         documents.all().forEach(doc => validationRequestStream.onNext(doc));
     });
 
-    connection.onDidChangeWatchedFiles(({changes}) => {
-        changes.forEach(change => connection.console.log(`${change.type} - ${change.uri}`));
-    });
-
+    /*
+    // Listen for event messages from the client.
     connection.onNotification({ method: 'applySettings'}, type => {
-        connection.console.log(JSON.stringify(type, null, 2));
     });
+    */
 
     // validate documents
     validationRequestStream

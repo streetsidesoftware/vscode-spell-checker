@@ -26,10 +26,9 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     language: 'en',
 
     '// words': [`
-    // words - list of words to be always considered correct
-    // "wasn\'t" becomes "wasn" "t" after splitting`
+    // words - list of words to be always considered correct`
     ],
-    words: ['wasn'],
+    words: [],
 
     '// flagWords': [`
     // flagWords - list of words to be always considered incorrect
@@ -37,9 +36,6 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     // For example "hte" should be "the"`
     ],
     flagWords: ['hte'],
-
-    '// ignorePaths': ['\n    // matching file paths will to be ignored'],
-    ignorePaths: ['node_modules', 'typings'],
 };
 
 export function getDefaultSettings(): CSpellUserSettings {
@@ -53,6 +49,8 @@ export function readSettings(filename: string): Promise<CSpellUserSettings> {
             () => json.stringify(defaultSettings, null, 4)
         )
         .then(json.parse)
+        // covert parse errors into the defaultSettings
+        .then(a => a, error => defaultSettings)
         .then(settings => merge(defaultSettings, settings));
 }
 

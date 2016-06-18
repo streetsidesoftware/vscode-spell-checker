@@ -84,7 +84,7 @@
         "cSpell.ignorePaths": {
           "type": "array",
           "default": [
-            "node_modules"
+            "node_modules", "vscode-extension", ".git"
           ],
           "description": "Specify paths/files to ignore."
         }

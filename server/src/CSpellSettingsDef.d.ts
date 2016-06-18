@@ -2,7 +2,7 @@
 /**
  * These settings come from user and workspace settings.
  */
-interface CSpellPackageSettings {
+interface CSpellPackageSettings extends CSpellUserSettings {
     // languageIds for the files to spell check.
     enabledLanguageIds: string[];
 
@@ -28,19 +28,19 @@ interface CSpellPackageSettings {
 
 interface CSpellUserSettings {
     // Version of the setting file.
-    version: string;
+    version?: string;
 
     // current active spelling language
-    language: string;
+    language?: string;
 
     // list of words to be always considered correct
-    words: string[];
+    words?: string[];
 
     // matching file paths will to be ignored
     ignorePaths?: string[];
 
     // list of words to always be considered incorrect.
-    flagWords: string[];
+    flagWords?: string[];
 }
 
 

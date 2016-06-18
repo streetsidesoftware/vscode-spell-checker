@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as CSpellSettings from './CSpellSettings';
-import * as json from 'comment-json';
 import * as Rx from 'rx';
 import * as _ from 'lodash';
 
@@ -12,7 +11,7 @@ import {
 
 // const extensionId = 'streetsidesoftware.code-spell-checker'
 const baseConfigName = CSpellSettings.defaultFileName;
-const findConfig = `**/${baseConfigName}`;
+const findConfig = `.vscode/${baseConfigName}`;
 const defaultWorkspaceConfig =  path.join(workspace.rootPath, '.vscode', baseConfigName);
 
 const settingsStream = new Rx.ReplaySubject<CSpellUserSettings>(1);
