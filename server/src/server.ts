@@ -73,7 +73,7 @@ function run() {
     */
 
     // validate documents
-    validationRequestStream
+    const disposeValidationStream = validationRequestStream
         // .tap(doc => connection.console.log(`A Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         .filter(shouldValidateDocument)
         // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
@@ -85,7 +85,7 @@ function run() {
         .subscribe(validateTextDocument);
 
     // Clear the diagnostics for documents we do not want to validate
-    validationRequestStream
+    const disposeSkipValidationStream = validationRequestStream
         .filter(doc => ! shouldValidateDocument(doc))
         .subscribe(doc => {
             connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
@@ -124,6 +124,12 @@ function run() {
 
     // Listen on the connection
     connection.listen();
+
+    // Free up the validation streams on shutdown.
+    connection.onShutdown(() => {
+        disposeSkipValidationStream.dispose();
+        disposeValidationStream.dispose();
+    });
 }
 
 run();
