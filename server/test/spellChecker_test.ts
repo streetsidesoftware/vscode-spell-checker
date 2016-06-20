@@ -16,15 +16,12 @@ describe('Verify Spell Checker', () => {
     });
 
     it('Works with Typescript reserved words', () => {
-        return Rx.Observable.fromArray([
-            isWordInDictionary('const').then(isFound => {
-                expect(isFound).to.be.true;
-            }),
-            isWordInDictionary('stringify').then(isFound => {
-                expect(isFound).to.be.true;
-            }),
-        ])
-        .flatMap(a => a)
-        .toPromise();
+        const reservedWords = ['const', 'stringify', 'constructor', 'delete', 'prototype', 'type'];
+
+        return Rx.Observable.fromArray(reservedWords)
+            .flatMap(word => isWordInDictionary(word).then(isFound => ({ word, isFound })))
+            .tap(wf => expect(wf.isFound, 'Expect to be found: ' + wf.word).to.be.true)
+            .toArray()
+            .toPromise();
     });
 });

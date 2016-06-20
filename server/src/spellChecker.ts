@@ -25,13 +25,14 @@ export function loadWords(filename: string): Rx.Observable<string> {
 export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary> {
     return Rx.Observable.fromArray(filenames)
         .flatMap(loadWords)
-        .map(line => line.toLowerCase().trim())
         .flatMap(line => Rx.Observable.concat(
             // Add the line
             Rx.Observable.just(line),
             // Add the individual words in the line
             Text.extractWordsFromTextRx(line).map(({word}) => word).filter(word => word.length > minWordLength)
         ))
+        .map(word => word.trim())
+        .map(word => word.toLowerCase())
         .tap(word => { trie = addWordToTrie(trie, word); })
         .reduce((wordList, word): WordDictionary => {
             wordList[word] = true;
@@ -40,8 +41,8 @@ export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary
 }
 
 export function isWordInDictionary(word: string): Rx.Promise<boolean> {
+    const nWord = word.toLocaleLowerCase();
     return wordList.then(wordList => {
-        const nWord = word.toLowerCase();
         return wordList[nWord] === true
             || userWords[nWord] === true;
     });
@@ -49,11 +50,18 @@ export function isWordInDictionary(word: string): Rx.Promise<boolean> {
 
 export function setUserWords(...wordSets: string[][]) {
     userWords = Object.create(null);
-    wordSets.forEach(words => {
-        words.forEach(word => {
-            userWords[word.toLowerCase()] = true;
-        });
-    });
+    Rx.Observable.fromArray(wordSets)
+        .flatMap(a => a)
+        .flatMap(line => Rx.Observable.concat(
+            // Add the line
+            Rx.Observable.just(line),
+            // Add the individual words in the line
+            Text.extractWordsFromTextRx(line).map(({word}) => word)
+        ))
+        .map(word => word.trim())
+        .map(word => word.toLocaleLowerCase())
+        // .tap(word => { trie = addWordToTrie(trie, word); })
+        .subscribe(nWord => { userWords[nWord] = true; });
 }
 
 let trie: Trie = { c: [] };

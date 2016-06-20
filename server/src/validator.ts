@@ -30,9 +30,9 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
         minWordLength       = defaultMinWordLength,
         flagWords           = [],
     } = options;
-    const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, {});
+    const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, Object.create(null));
     return Text.extractWordsFromCodeRx(text)
-        .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] }))
+        .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] === true }))
         .filter(word => word.isFlagged || word.word.length >= minWordLength )
         .flatMap(word => isWordInDictionary(word.word).then(isFound => merge(word, { isFound })))
         .filter(word => word.isFlagged || ! word.isFound )

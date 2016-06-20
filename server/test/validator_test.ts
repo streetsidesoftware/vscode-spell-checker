@@ -24,4 +24,16 @@ describe('Validator', () => {
             expect(results).to.be.lengthOf(10);
         });
     });
+
+    it('validates reserved words', () => {
+        return Validator.validateText(
+            'constructor const prototype type typeof null undefined',
+            { maxNumberOfProblems: 10 }
+        )
+        .toArray()
+        .toPromise()
+        .then(results => {
+            expect(results).to.be.lengthOf(0);
+        });
+    });
 });
