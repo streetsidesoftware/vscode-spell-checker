@@ -7,7 +7,7 @@ A basic spell checker that works well with camelCase code.
 
 ## Functionality
 
-Load a Typescript, Javascript, Text or Markdown file.  Words not in the dictionary files will have
+Load a Typescript, Javascript, Text, etc.. file.  Words not in the dictionary files will have
 a squiggly underline.
 
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/example.gif)
@@ -50,6 +50,17 @@ The concept is simple, split camelCase words before checking them against a list
 
 ## Customization
 
+### Adding words to the Workspace Dictionary
+
+You have the option to add you own words to the workspace dictionary.  The easiest, is to put your cursor
+on the word you wish to add, when you light-bulb shows up, hit `Ctrl+.` (windows) / `Cmd+.` (Mac) to get a list
+of suggestions and the option to add the word.
+
+### cSpell.json
+
+Words added to the dictionary are placed in the `cSpell.json` file under `.vscode`.
+Note, the settings in cSpell.json will override the equivalent cSpell settings in settings.json.
+
 ### Configuration Settings
 
 ```javascript
@@ -57,6 +68,9 @@ The concept is simple, split camelCase words before checking them against a list
 
     // Controls the maximum number of spelling errors per document.
     "cSpell.maxNumberOfProblems": 100,
+
+    // Controls the number of suggestions shown.
+    "cSpell.numSuggestions": 8,
 
     // The minimum length of a word before checking it against a dictionary.
     "cSpell.minWordLength": 4,
@@ -84,6 +98,22 @@ The concept is simple, split camelCase words before checking them against a list
 
     // Specify paths/files to ignore.
     "cSpell.ignorePaths": [
-        "node_modules"
+        "node_modules",
+        "vscode-extension",
+        ".git"
     ],
+
+    // flagWords - list of words to be always considered incorrect
+    // This is useful for offensive words and common spelling errors.
+    // For example "hte" should be "the"`
+    "cSpell.flagWords": ['hte'],
 ```
+
+## Release Notes
+
+### 0.11.0
+* Minor bug fix
+
+### 0.10.0
+* Feature: Suggestions
+* Feature: Add to Dictionary
