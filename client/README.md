@@ -53,13 +53,42 @@ The concept is simple, split camelCase words before checking them against a list
 ### Adding words to the Workspace Dictionary
 
 You have the option to add you own words to the workspace dictionary.  The easiest, is to put your cursor
-on the word you wish to add, when you light-bulb shows up, hit `Ctrl+.` (windows) / `Cmd+.` (Mac) to get a list
+on the word you wish to add, when you light-bulb shows up, hit `Ctrl+.` (windows) / `Cmd+.` (Mac).  You will get a list
 of suggestions and the option to add the word.
+
+You can also type in a word you want to add to the dictionary: `F1` `add word` -- select `Add Word to Dictionary` and type in the word you wish to add.
 
 ### cSpell.json
 
-Words added to the dictionary are placed in the `cSpell.json` file under `.vscode`.
+Words added to the dictionary are placed in the `cSpell.json` file in the `.vscode` folder found in the _workspace_.
 Note, the settings in cSpell.json will override the equivalent cSpell settings in settings.json.
+
+#### Example _cSpell.json_ file
+
+```javascript
+// cSpell Settings
+{
+    // Version of the setting file.  Always 0.1
+    "version": "0.1",
+    // language - current active spelling language
+    "language": "en",
+    // words - list of words to be always considered correct
+    "words": [
+        "mkdirp",
+        "tsmerge",
+        "githubusercontent",
+        "streetsidesoftware",
+        "vsmarketplacebadge",
+        "visualstudio"
+    ],
+    // flagWords - list of words to be always considered incorrect
+    // This is useful for offensive words and common spelling errors.
+    // For example "hte" should be "the"
+    "flagWords": [
+        "hte"
+    ]
+}
+```
 
 ### Configuration Settings
 
@@ -111,7 +140,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
-### 0.11.0
+### 0.10.1
 * Minor bug fix
 
 ### 0.10.0
