@@ -7,6 +7,7 @@ Microsoft
 Mongo
 Mongo DB
 ORM
+Redis
 SQL
 Wikimedia
 Wikipedia
@@ -21,6 +22,7 @@ autocompleted
 autocompletion
 autosuggest
 bar
+blog
 bool
 boolean
 bubble
@@ -30,8 +32,16 @@ class
 codelens
 const
 cpp
+cron
+cronjob
+cronjobs
+crons
 csharp
 debounce
+dequeue
+dequeued
+dequeueing
+dequeuing
 desc
 descriptor
 descriptors
@@ -51,6 +61,8 @@ expr
 facebook
 float
 foreach
+freq
+frontend
 fsharp
 func
 function
@@ -97,7 +109,10 @@ longdouble
 longint
 lorem
 map
+map
 member
+memcache
+memcached
 menu
 menubar
 menuitem
@@ -112,19 +127,29 @@ param
 pathname
 plaintext
 png
+popup
 prepublish
 prev
 private
 protected
 public
+queuing
 quicksort
 real time
+reduce
 regex
 regexp
+requeue
+requeued
+requeueing
+requeuing
+retweet
 runtime
 scala
 set
 setter
+shard
+sharding
 short
 shortint
 sort
@@ -135,6 +160,8 @@ static
 sugs
 textarea
 thunk
+timeline
+timelines
 todo
 tooltip
 trie

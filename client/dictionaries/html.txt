@@ -35,6 +35,8 @@ details
 dfn
 div
 dl
+dropdown
+dropdowns
 dt
 em
 email
@@ -74,6 +76,7 @@ label
 legend
 li
 link
+mailto
 map
 mark
 menu
@@ -89,6 +92,9 @@ noscript
 number
 object
 ol
+onchange
+onclick
+onfocus
 optgroup
 option
 output
@@ -117,6 +123,8 @@ source
 span
 strong
 style
+stylesheet
+stylesheets
 sub
 submit
 summary
