@@ -16,6 +16,8 @@ Yahoo
 app
 array
 asc
+asynchronous
+asynchronously
 auth
 autocomplete
 autocompleted
@@ -30,6 +32,7 @@ c
 cache
 class
 codelens
+concurrency
 const
 cpp
 cron
@@ -48,9 +51,17 @@ descriptors
 dest
 diff
 double
+downloadable
+downloaded
+downloader
+downloading
 dst
 else
 elseif
+enqueue
+enqueued
+enqueueing
+enqueuing
 enum
 enums
 error
@@ -158,6 +169,8 @@ stack
 stacktrace
 static
 sugs
+synchronous
+synchronously
 textarea
 thunk
 timeline
