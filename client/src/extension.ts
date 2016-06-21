@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as CSpellSettings from './CSpellSettings';
 import * as Rx from 'rx';
 import * as _ from 'lodash';
+import * as os from 'os';
 
 import { workspace, ExtensionContext, commands, window } from 'vscode';
 import {
@@ -12,7 +13,6 @@ import {
 // const extensionId = 'streetsidesoftware.code-spell-checker'
 const baseConfigName = CSpellSettings.defaultFileName;
 const findConfig = `.vscode/${baseConfigName}`;
-const defaultWorkspaceConfig =  path.join(workspace.rootPath, '.vscode', baseConfigName);
 
 const settingsStream = new Rx.ReplaySubject<CSpellUserSettings>(1);
 
@@ -21,13 +21,22 @@ interface SettingsInfo {
     settings: CSpellUserSettings;
 }
 
-function getSettings() {
+function getDefaultWorkspaceConfigLocation() {
+    const userHome = os.homedir();
+    const { rootPath = userHome } = workspace;
+    return rootPath
+        ? path.join(rootPath, '.vscode', baseConfigName)
+        : undefined;
+}
+
+function getSettings(): Rx.Observable<SettingsInfo> {
     return Rx.Observable.fromPromise(workspace.findFiles(findConfig, '{**/node_modules,**/.git}'))
         .flatMap(matches => {
-            if (!matches.length) {
-                const path = defaultWorkspaceConfig;
+            if (!matches || !matches.length) {
                 const settings = CSpellSettings.getDefaultSettings();
-                return Rx.Observable.just(<SettingsInfo>{ path, settings });
+                return Rx.Observable.just(getDefaultWorkspaceConfigLocation())
+                    .filter(a => !!a)
+                    .map(path => (<SettingsInfo>{ path, settings}));
             } else {
                 const path = matches[0].path;
                 return Rx.Observable.fromPromise(CSpellSettings.readSettings(path))
@@ -130,5 +139,6 @@ export function activate(context: ExtensionContext) {
         configWatcher.onDidDelete(triggerGetSettings)
     );
 
-    triggerGetSettings();
+    // For now, triggering the settings isn't necessary.  This will become more important later.
+    // triggerGetSettings();
 }
