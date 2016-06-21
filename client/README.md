@@ -145,8 +145,8 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
-### 0.10.1
-* Minor bug fix
+### 0.10.1 and 0.10.2
+* Minor bug fixes
 
 ### 0.10.0
 * Feature: Suggestions
