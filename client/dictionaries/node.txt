@@ -12,6 +12,7 @@ eslint
 expect
 filename
 filenames
+homedir
 http
 https
 install
@@ -40,6 +41,7 @@ stdout
 test
 tslint
 typescript
+uniq
 user
 username
 util
