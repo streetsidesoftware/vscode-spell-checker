@@ -91,6 +91,9 @@ export function suggestA(
     }
 
     function processTrie(trie: TrieNode, d: number) {
+        const bc = baseCost;
+        const psc = postSwapCost;
+        let subCost, curLetter;
         const { w, c } = trie;
         if (! w) {
             const cost = matrix[d - 1][mx];
@@ -101,19 +104,18 @@ export function suggestA(
             curSug[d] = w;
             const lastSugLetter = curSug[d - 1];
             matrix[d] = matrix[d] || [];
-            matrix[d][0] = matrix[d - 1][0] + baseCost;
+            matrix[d][0] = matrix[d - 1][0] + bc;
             let lastLetter = x[0];
             let min = matrix[d][0];
             for (let i = 1; i <= mx; ++i) {
-                const curLetter = x[i];
-                const subCost =
+                curLetter = x[i];
+                subCost =
                     (w === curLetter)
-                    ? 0 : ((curLetter === lastSugLetter && w === lastLetter)
-                    ? postSwapCost : baseCost);
+                    ? 0 : (curLetter === lastSugLetter ? (w === lastLetter ? psc : bc) : bc);
                 matrix[d][i] = Math.min(
                     matrix[d - 1][i - 1] + subCost, // substitute
-                    matrix[d - 1][i] + baseCost,    // insert
-                    matrix[d][i - 1] + baseCost     // delete
+                    matrix[d - 1][i] + bc,    // insert
+                    matrix[d][i - 1] + bc     // delete
                 );
                 min = Math.min(min, matrix[d][i]);
                 lastLetter = curLetter;
@@ -159,6 +161,8 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = de
     }
 
     function processTrie(trie: TrieNode, d: number) {
+        const bc = baseCost;
+        const psc = postSwapCost;
         const { w, c } = trie;
         if (! w) {
             const cost = matrix[d - 1][mx];
@@ -170,7 +174,7 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = de
             const lastSugLetter = curSug[d - 1];
             matrix[d] = matrix[d] || [];
             let diag = matrix[d - 1][0];
-            matrix[d][0] = diag + baseCost;
+            matrix[d][0] = diag + bc;
             let lastLetter = x[0];
             let min = matrix[d][0];
             let lastCost = min;
@@ -178,13 +182,12 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = de
             let curLetter, subCost, above;
             for (let i = 1; i <= mx; ++i) {
                 curLetter = x[i];
-                subCost = (w === curLetter || (curLetter === lastSugLetter && w === lastLetter))
-                    ? 0 : baseCost;
+                subCost = (w === curLetter) ? 0 : (curLetter === lastSugLetter && w === lastLetter ? psc : bc);
                 above = matrix[d - 1][i];
                 lastCost = Math.min(
                     diag + subCost,     // substitute
-                    above + baseCost,   // insert
-                    lastCost + baseCost // delete
+                    above + bc,   // insert
+                    lastCost + bc // delete
                 );
                 diag = above;
                 matrix[d][i] = lastCost;

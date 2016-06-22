@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
 import * as Suggest from '../src/suggest';
-import { loadWords } from '../src/spellChecker';
+import { loadWords, processWordListLines } from '../src/spellChecker';
 
 function timeFn(a, n = 100) {
     return function (...args) {
@@ -104,6 +104,26 @@ describe('test for duplicate suggestions', () => {
     });
 });
 
+describe('test suggestions for GO', function() {
+    this.timeout(10000);
+    const pWords = loadWords(__dirname + '/../../dictionaries/go.txt');
+    const pTrie = wordsToTrie(
+        processWordListLines(pWords)
+        .map(({word}) => word)
+        .tap(word => console.log(word))
+    );
+
+    it('test PHP suggestions', () => {
+        return pTrie.then(trie => {
+            const results = suggest(trie, 'Umarshaller');
+            const suggestions = results.map(({word}) => word);
+            expect(suggestions).to.contain('unmarshaler');
+            console.log(suggestions);
+        });
+    });
+
+});
+
 /* */
 
 /* */
@@ -169,3 +189,5 @@ describe('test suggestions for large vocab', function() {
 });
 
 /*  */
+
+

@@ -23,21 +23,13 @@ export function loadWords(filename: string): Rx.Observable<string> {
 }
 
 export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary> {
-    return Rx.Observable.fromArray(filenames)
-        .flatMap(loadWords)
-        .flatMap(line => Rx.Observable.concat(
-            // Add the line
-            Rx.Observable.just(line),
-            // Add the individual words in the line
-            Text.extractWordsFromTextRx(line).map(({word}) => word).filter(word => word.length > minWordLength)
-        ))
-        .map(word => word.trim())
-        .map(word => word.toLowerCase())
-        .tap(word => { trie = addWordToTrie(trie, word); })
-        .reduce((wordList, word): WordDictionary => {
-            wordList[word] = true;
-            return wordList;
-        }, <WordDictionary>Object.create(null) );
+    return processWordListLines(
+            Rx.Observable.fromArray(filenames)
+                .flatMap(loadWords)
+        )
+        .tap(({word}) => { trie = addWordToTrie(trie, word); })
+        .last()
+        .map(({setOfWords}) => setOfWords);
 }
 
 export function isWordInDictionary(word: string): Rx.Promise<boolean> {
@@ -48,20 +40,35 @@ export function isWordInDictionary(word: string): Rx.Promise<boolean> {
     });
 }
 
-export function setUserWords(...wordSets: string[][]) {
-    userWords = Object.create(null);
-    Rx.Observable.fromArray(wordSets)
-        .flatMap(a => a)
+export function processWordListLines(lines: Rx.Observable<string>) {
+    return lines
         .flatMap(line => Rx.Observable.concat(
             // Add the line
             Rx.Observable.just(line),
             // Add the individual words in the line
-            Text.extractWordsFromTextRx(line).map(({word}) => word)
+            Text.extractWordsFromTextRx(line)
+                .flatMap(Text.splitCamelCaseWordWithOffset)
+                .map(({word}) => word)
+                .filter(word => word.length > minWordLength)
         ))
         .map(word => word.trim())
-        .map(word => word.toLocaleLowerCase())
-        // .tap(word => { trie = addWordToTrie(trie, word); })
-        .subscribe(nWord => { userWords[nWord] = true; });
+        .map(word => word.toLowerCase())
+        .scan((pair: { setOfWords: WordDictionary; found: boolean; word: string; }, word: string) => {
+            const { setOfWords } = pair;
+            const found = setOfWords[word] === true;
+            setOfWords[word] = true;
+            return { found , word, setOfWords };
+        }, { setOfWords: Object.create(null), found: false, word: '' })
+        .filter(({found}) => !found);
+}
+
+export function setUserWords(...wordSets: string[][]) {
+    userWords = Object.create(null);
+    processWordListLines(
+            Rx.Observable.fromArray(wordSets).flatMap(a => a)
+        )
+        .tap(({word}) => { trie = addWordToTrie(trie, word); })
+        .subscribe(({setOfWords}) => { userWords = setOfWords; });
 }
 
 let trie: Trie = { c: [] };
