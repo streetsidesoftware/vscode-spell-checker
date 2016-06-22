@@ -1,6 +1,8 @@
+Bruijn
 DNS
 DOM
 Google
+Knuth
 Levenshtein
 MYSQL
 Microsoft
@@ -14,6 +16,10 @@ Wikipedia
 Wiktionary
 Yahoo
 app
+approximant
+arccosine
+arcsine
+arctangent
 array
 asc
 asynchronous
@@ -34,6 +40,7 @@ class
 codelens
 concurrency
 const
+cos
 cpp
 cron
 cronjob
@@ -93,6 +100,7 @@ homepage
 hostname
 hover
 import
+incrementally
 info
 init
 inline
@@ -100,6 +108,7 @@ int
 integer
 ipsum
 isomorphic
+iteratively
 javascript
 javascriptreact
 jpeg
@@ -139,6 +148,8 @@ pathname
 plaintext
 png
 popup
+precomputing
+prepends
 prepublish
 prev
 private
@@ -163,6 +174,7 @@ shard
 sharding
 short
 shortint
+sin
 sort
 src
 stack
@@ -171,6 +183,7 @@ static
 sugs
 synchronous
 synchronously
+tan
 textarea
 thunk
 timeline
