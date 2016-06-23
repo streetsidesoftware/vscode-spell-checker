@@ -1,8 +1,26 @@
 import { expect } from 'chai';
 import { isWordInDictionary } from '../src/spellChecker';
+import { processWordListLines } from '../src/spellChecker';
 import * as Rx from 'rx';
 
-describe('Verify Spell Checker', () => {
+describe('Verify Contractions', function() {
+    it('tests contractions', () => {
+        const words = ['apple', 'banana', 'orange', 'pear', 'grape', "doesn't", "can't", "won't"];
+        return processWordListLines(Rx.Observable.fromArray(words))
+            .map(({setOfWords}) => setOfWords)
+            .toPromise()
+            .then(wordSet => {
+                expect(wordSet).to.have.property('apple');
+                expect(wordSet).to.have.property("doesn't");
+                expect(wordSet).to.not.have.property('doesn');
+            });
+    });
+
+});
+
+describe('Verify Spell Checker', function() {
+    // this.timeout(10000);
+
     it('did load', () => {
         return isWordInDictionary('yes').then(isFound => {
             expect(isFound).to.be.true;
@@ -11,6 +29,12 @@ describe('Verify Spell Checker', () => {
 
     it('will ignore case.', () => {
         return isWordInDictionary('netherlands').then(isFound => {
+            expect(isFound).to.be.true;
+        });
+    });
+
+    it("has wasn't", () => {
+        return isWordInDictionary("wasn't").then(isFound => {
             expect(isFound).to.be.true;
         });
     });

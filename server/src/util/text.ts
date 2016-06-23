@@ -9,7 +9,7 @@ export interface WordOffset {
 
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
 const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}+)', 'g');
-const regExWords = XRegExp('\\p{L}+', 'g');
+const regExWords = XRegExp("\\p{L}(?:[']\\p{L}|\\p{L})+", 'g');
 const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}+$');
 const regExAllUpper = XRegExp('^\\p{Lu}+$');
 const regExAllLower = XRegExp('^\\p{Ll}+$');

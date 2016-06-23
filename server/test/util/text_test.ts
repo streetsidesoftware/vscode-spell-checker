@@ -10,6 +10,19 @@ describe('Util Text', () => {
         expect(splitCamelCaseWord('BigÁpple')).to.deep.equal(['Big', 'Ápple']);
     });
 
+    it('extract word from text', () => {
+        expect(Text.extractWordsFromText(`
+            // could've, would've, couldn't've, wasn't, y'all, 'twas
+        `)).to.deep.equal([
+            { word: "could've", offset: 16 },
+            { word: "would've", offset: 26 },
+            { word: "couldn't've", offset: 36 },
+            { word: "wasn't", offset: 49 },
+            { word: "y'all", offset: 57 },
+            { word: "twas", offset: 65 },
+        ]);
+    });
+
     it('extract words', () => {
         expect(Text.extractWordsFromText(`
             expect(splitCamelCaseWord('hello')).to.deep.equal(['hello']);

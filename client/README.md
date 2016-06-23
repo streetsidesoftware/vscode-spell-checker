@@ -145,9 +145,12 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.10.6
+* Added support for contractions like wasn't, hasn't, could've.
+
 ### 0.10.5
 * *GO* - keywords and library words added -- Special thanks to: AlekSi
-* *PHP* - many keywords and library functions added to word list. 
+* *PHP* - many keywords and library functions added to word list.
 * Word Lists now support CamelCase words.
 
 ### 0.10.1 and 0.10.2
