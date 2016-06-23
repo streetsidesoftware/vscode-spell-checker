@@ -101,6 +101,7 @@ do
 echo
 else
 elseif
+endif
 endswitch
 endwhile
 eval

@@ -2,6 +2,7 @@ a
 abbr
 abbreviation
 address
+ajax
 area
 article
 aside
@@ -23,6 +24,7 @@ code
 col
 colgroup
 color
+colspan
 command
 content
 datalist
@@ -70,6 +72,7 @@ image-map
 img
 input
 ins
+jquery
 kbd
 keygen
 label
@@ -79,6 +82,7 @@ link
 mailto
 map
 mark
+maxlength
 menu
 menuitem
 meta
@@ -89,6 +93,7 @@ name
 nav
 nbsp
 noscript
+nowrap
 number
 object
 ol
@@ -101,12 +106,15 @@ output
 p
 param
 password
+placeholder
+placeholders
 pre
 progress
 q
 radio
 radiobutton
 range
+raquo
 refresh
 reset
 rp
@@ -151,3 +159,4 @@ var
 video
 wbr
 week
+xmlns
