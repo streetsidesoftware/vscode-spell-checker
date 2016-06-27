@@ -13,6 +13,7 @@ expect
 filename
 filenames
 homedir
+hrtime
 http
 https
 install
