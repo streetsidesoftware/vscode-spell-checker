@@ -2,6 +2,9 @@ import { expect } from 'chai';
 import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
 import * as Suggest from '../src/suggest';
 import { loadWords, processWordListLines } from '../src/spellChecker';
+import * as Rx from 'rx';
+
+const showLog = false;
 
 function timeFn(a, n = 100) {
     return function (...args) {
@@ -11,7 +14,7 @@ function timeFn(a, n = 100) {
             r = a(...args);
         }
         const diff = Date.now() - startTime;
-        console.log('Time: ' + diff / n + 'ms');
+        log('Time: ' + diff / n + 'ms');
         return r;
     };
 }
@@ -24,16 +27,29 @@ describe('test building tries', () => {
         const words = [
             'apple', 'ape', 'able', 'apple', 'banana', 'orange', 'pear', 'aim', 'approach'
         ];
-
-
         const trie = wordListToTrie(words);
-
-        const x = trie;
-
         expect(trie).to.not.be.null;
     });
 });
 
+
+describe('test building trie for large vocab', function() {
+    this.timeout(10000);
+
+    it ('tests the speed of loading a large vocab', () => {
+        let startTime = process.hrtime();
+        return Rx.Observable.just(loadWords(__dirname + '/../../dictionaries/wordsEn.txt'))
+            .tap(() => { startTime = process.hrtime(); })
+            .concatMap(pWords => wordsToTrie(pWords))
+            .last()
+            .toPromise()
+            .then(() => {
+                const loadTime = timeDiff(process.hrtime(startTime));
+                log(`Trie loaded in ${loadTime}`);
+                expect(loadTime).to.be.lessThan(1.0);
+            });
+    });
+});
 
 /* */
 
@@ -80,7 +96,7 @@ describe('matching hte', () => {
 
     it('checks best match', () => {
         const results = suggest(trie, 'hte');
-        console.log(JSON.stringify(results, null, 4));
+        log(JSON.stringify(results, null, 4));
     });
 });
 
@@ -98,7 +114,7 @@ describe('test for duplicate suggestions', () => {
         const trie = wordListToTrie([...words, ...extraWords]);
         const results = suggest(trie, word);
         const suggestions = results.map(({word}) => word);
-        console.log(suggestions);
+        log(suggestions);
         expect(results).to.not.be.null;
         expect(suggestions).to.contain(expectWord);
     });
@@ -110,7 +126,7 @@ describe('test suggestions for GO', function() {
     const pTrie = wordsToTrie(
         processWordListLines(pWords)
         .map(({word}) => word)
-        .tap(word => console.log(word))
+        // .tap(word => log(word))
     );
 
     it('test PHP suggestions', () => {
@@ -118,7 +134,7 @@ describe('test suggestions for GO', function() {
             const results = suggest(trie, 'Umarshaller');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('unmarshaler');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
@@ -138,7 +154,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestA(trie, 'colunm');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('column');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
@@ -147,7 +163,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestA(trie, 'recieve');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('receive');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
@@ -157,7 +173,7 @@ describe('test suggestions for large vocab', function() {
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
@@ -166,7 +182,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestB(trie, 'recieve');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('receive');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
@@ -176,18 +192,26 @@ describe('test suggestions for large vocab', function() {
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
-            console.log(suggestions);
+            log(suggestions);
         });
     });
 
     it('checks best match for "hte"', () => {
         return pTrie.then(trie => {
             const results = suggest(trie, 'hte');
-            console.log(JSON.stringify(results, null, 4));
+            log(JSON.stringify(results, null, 4));
         });
     });
 });
 
 /*  */
 
+function timeDiff([seconds, nanoseconds]: number[]) {
+    return seconds + nanoseconds / 1000000000.0;
+}
 
+function log(message: any) {
+    if (showLog) {
+        console.log(message);
+    }
+}

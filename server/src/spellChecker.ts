@@ -2,11 +2,11 @@ import * as Rx from 'rx';
 import * as fs from 'fs';
 import * as path from 'path';
 import { match } from './util/text';
-import { Trie, addWordToTrie } from './suggest';
+import { Trie, addWordToTrie, TrieMap } from './suggest';
 import * as sug from './suggest';
 import * as Text from './util/text';
 
-export interface WordDictionary {
+export interface WordSet {
     [index: string]: boolean;
 }
 
@@ -22,7 +22,7 @@ export function loadWords(filename: string): Rx.Observable<string> {
         .filter(line => line !== '');
 }
 
-export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary> {
+export function loadWordLists(filenames: string[]): Rx.Observable<WordSet> {
     return processWordListLines(
             Rx.Observable.fromArray(filenames)
                 .flatMap(loadWords)
@@ -53,7 +53,7 @@ export function processWordListLines(lines: Rx.Observable<string>) {
         ))
         .map(word => word.trim())
         .map(word => word.toLowerCase())
-        .scan((pair: { setOfWords: WordDictionary; found: boolean; word: string; }, word: string) => {
+        .scan((pair: { setOfWords: WordSet; found: boolean; word: string; }, word: string) => {
             const { setOfWords } = pair;
             const found = setOfWords[word] === true;
             setOfWords[word] = true;
@@ -71,11 +71,11 @@ export function setUserWords(...wordSets: string[][]) {
         .subscribe(({setOfWords}) => { userWords = setOfWords; });
 }
 
-let trie: Trie = { c: [] };
+let trie: Trie = { c: new TrieMap() };
 
-let userWords: WordDictionary = Object.create(null);
+let userWords: WordSet = Object.create(null);
 
-const wordList: Rx.Promise<WordDictionary> =
+const wordList: Rx.Promise<WordSet> =
     loadWordLists([
         path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt'),
