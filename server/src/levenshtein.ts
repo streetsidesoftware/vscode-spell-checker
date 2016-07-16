@@ -35,7 +35,11 @@ export function calcLevenshteinMatrixAsText(a: string, b: string) {
     const rows = [ rowSeparator, header ];
     for (const i of col.keys()) {
         rows.push(rowSeparator);
-        rows.push(col[i] + separator + matrix[i].join(separator));
+        const rowAsStr = (col[i]
+            + separator
+            + matrix[i].join(separator)
+        ).replace(/\s(\d\d)/g, '$1');
+        rows.push(rowAsStr);
     }
     rows.push(rowSeparator);
 
