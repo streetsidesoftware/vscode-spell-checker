@@ -1,11 +1,11 @@
 ALL
 Array
 Attr
-Capistrano
 CLASS
 COMPILE
 CORE
 Caching
+Capistrano
 Cdata
 Character
 Comment
@@ -56,9 +56,9 @@ Parent
 Path
 Processing
 Processor
+RELEASE
 Recursive
 Reference
-RELEASE
 Result
 SIZE
 STRICT
@@ -155,6 +155,7 @@ use
 user
 var
 while
+xdebug
 xor
 yield
 
