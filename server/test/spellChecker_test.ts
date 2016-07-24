@@ -19,7 +19,7 @@ describe('Verify Contractions', function() {
 });
 
 describe('Verify Spell Checker', function() {
-    // this.timeout(10000);
+    this.timeout(10000);
 
     it('did load', () => {
         return isWordInDictionary('yes').then(isFound => {
