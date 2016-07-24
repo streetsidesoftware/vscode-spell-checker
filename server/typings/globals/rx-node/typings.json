@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/4e4e65dd4c672b346e64e950bd5c6109e85fd165/rx-node/rx-node.d.ts",
+    "raw": "registry:dt/rx-node#0.0.0+20160513125029",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/4e4e65dd4c672b346e64e950bd5c6109e85fd165/rx-node/rx-node.d.ts"
+  }
+}

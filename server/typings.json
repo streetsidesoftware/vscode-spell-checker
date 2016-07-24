@@ -9,6 +9,7 @@
   },
   "globalDependencies": {
     "node": "registry:dt/node#6.0.0+20160514165920",
+    "rx-node": "registry:dt/rx-node#0.0.0+20160513125029",
     "xregexp": "registry:dt/xregexp#3.0.0+20160317120654"
   }
 }

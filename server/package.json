@@ -14,6 +14,7 @@
   "dependencies": {
     "comment-json": "^1.1.3",
     "rx": "^4.1.0",
+    "rx-node": "^1.0.2",
     "tsmerge": "^1.0.4",
     "vscode-languageserver": "^2.2.1",
     "xregexp": "^3.1.1"
