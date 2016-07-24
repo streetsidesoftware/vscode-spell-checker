@@ -10,9 +10,13 @@ export interface WordOffset {
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
 const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}+)', 'g');
 const regExWords = XRegExp("\\p{L}(?:[']\\p{L}|\\p{L})+", 'g');
+const regExIsWord = XRegExp("^\\p{L}+(?:[']\\p{L}|\\p{L})+$", 'g');
+const regExIsSimpleWord = /^[A-Za-z']$/;
 const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}+$');
 const regExAllUpper = XRegExp('^\\p{Lu}+$');
 const regExAllLower = XRegExp('^\\p{Ll}+$');
+
+const regExWordsPool: RegExp[] = [];
 
 export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<WordOffset> {
     return Rx.Observable.fromArray(splitCamelCaseWord(wo.word))
@@ -25,19 +29,25 @@ export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<Word
  * Split camelCase words into an array of strings.
  */
 export function splitCamelCaseWord(word: string): string[] {
-    const separator = '_<^*_*^>_';
-    const pass1 = XRegExp.replace(word, regExSplitWords, '$1' + separator + '$2');
-    const pass2 = XRegExp.replace(pass1, regExSplitWords2, '$1' + separator + '$2');
-    return XRegExp.split(pass2, separator);
+    if (!regExSplitWords.test(word) && !regExSplitWords2.test(word)) {
+        return [word];
+    }
+    const separator = '<;_>';
+    const pass1 = word.replace(regExSplitWords, '$1' + separator + '$2');
+    const pass2 = pass1.replace(regExSplitWords2, '$1' + separator + '$2');
+    return pass2.split(separator);
 }
 
 /**
  * Extract out whole words from a string of text.
  */
-export function extractWordsFromText1(text: string): WordOffset[] {
-    const words: WordOffset[] = [];
+export function extractWordsFromText(text: string): WordOffset[] {
+    if (regExIsSimpleWord.test(text) || regExIsWord.test(text)) {
+        return [{ word: text, offset: 0 }];
+    }
 
-    const reg = XRegExp(regExWords);
+    const words: WordOffset[] = [];
+    const reg = regExWordsPool.pop() || XRegExp(regExWords);
     let match: RegExpExecArray;
 
     while ( match = reg.exec(text) ) {
@@ -46,6 +56,10 @@ export function extractWordsFromText1(text: string): WordOffset[] {
             offset: match.index
         });
     }
+
+    // Add it to the pool so it can be reused.
+    reg.lastIndex = 0;
+    regExWordsPool.push(reg);
 
     return words;
 }
@@ -66,19 +80,17 @@ export function *match(reg: RegExp, text: string): Iterable<RegExpExecArray> {
  * Extract out whole words from a string of text.
  */
 export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> {
-    const reg = XRegExp(regExWords);
+    const reg = regExWordsPool.pop() || XRegExp(regExWords);
     return Rx.Observable.from(match(reg, text))
         .map(m => ({
             word: m[0],
             offset: m.index
-        }));
-}
-
-/**
- * Extract out whole words from a string of text.
- */
-export function extractWordsFromText(text: string): WordOffset[] {
-    return observableToArray(extractWordsFromTextRx(text));
+        }))
+        .tapOnCompleted(() => {
+            // Add it to the pool
+            reg.lastIndex = 0;
+            regExWordsPool.push(reg);
+        });
 }
 
 export function extractWordsFromCodeRx(text: string): Rx.Observable<WordOffset> {
