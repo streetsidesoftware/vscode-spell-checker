@@ -92,6 +92,25 @@
                         ".git"
                     ],
                     "description": "Specify paths/files to ignore."
+                },
+                "cSpell.spokenLanguage": {
+                    "type": "string",
+                    "default": "en",
+                    "description": "The default spoken language. (two letter iso code)"
+                },
+                "cSpell.dictionaries": {
+                    "type": "array",
+                    "default": [
+                        ["(php|html|*react)", "*", "$/dictionaries/html.txt"],
+                        ["(typescript*|javascript*)", "*", "$/dictionaries/"],
+                        ["*", "*", "$/dictionaries/companies.txt"],
+                        ["*", "*", "$/dictionaries/node.txt"],
+                        ["*", "*", "$/dictionaries/softwareTerms.txt"],
+                        ["*", "en", "$/dictionaries/wordsEn.txt"],
+                        ["go", "*", "$/dictionaries/go.txt"],
+                        ["php", "*", "$/dictionaries/php.txt"]
+                    ],
+                    "description": "Word Dictionaries to include. format: [\"programming language\", \"spoken language\", \"path\"]."
                 }
             }
         }
