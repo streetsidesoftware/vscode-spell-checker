@@ -1,6 +1,8 @@
 {
   "name": "vscode-spell-checker-server",
-  "dependencies": {},
+  "dependencies": {
+    "minimatch": "registry:npm/minimatch#3.0.0+20160723033700"
+  },
   "devDependencies": {
     "chai": "registry:npm/chai#3.5.0+20160415060238"
   },

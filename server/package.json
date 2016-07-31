@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "comment-json": "^1.1.3",
+    "minimatch": "^3.0.2",
     "rx": "^4.1.0",
     "rx-node": "^1.0.2",
     "tsmerge": "^1.0.4",
