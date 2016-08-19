@@ -23,6 +23,9 @@ interface CSpellPackageSettings extends CSpellUserSettings {
 
     // Number of suggestions to make
     numSuggestions?: number;
+
+    // Spoken Language
+    spokenLanguage?: string;
 }
 
 
@@ -41,6 +44,9 @@ interface CSpellUserSettings {
 
     // list of words to always be considered incorrect.
     flagWords?: string[];
+
+    // list of enabled dictionaries
+    dictionaries?: [string, string, string][];
 }
 
 
@@ -62,6 +68,9 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
 
     // list of words to always be considered incorrect.
     '// flagWords'?: string[];
+
+    // list of enabled dictionaries
+    '// dictionaries'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];

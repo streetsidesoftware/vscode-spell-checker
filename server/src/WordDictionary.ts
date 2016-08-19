@@ -95,3 +95,18 @@ export function suggestions(dictionaries: WordDictionary[], word: string, numSug
         });
     return result;
 }
+
+export function setHasWord(
+    dictionaries: Rx.Promise<WordDictionary>[] | Iterable<Rx.Promise<WordDictionary>>,
+    word: string
+): Promise<boolean> {
+    return Promise.all<WordDictionary>(dictionaries).then(dictionaries => has(dictionaries, word));
+}
+
+export function setSuggestions(
+    dictionaries: Rx.Promise<WordDictionary>[] | Iterable<Rx.Promise<WordDictionary>>,
+    word: string,
+    numSuggestions: number
+): Promise<SuggestionResult[]> {
+    return Promise.all<WordDictionary>(dictionaries).then(dictionaries => suggestions(dictionaries, word, numSuggestions));
+}

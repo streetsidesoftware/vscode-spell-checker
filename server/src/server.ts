@@ -7,9 +7,12 @@ import {
 } from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
-import { setUserWords } from './spellChecker';
+import { setUserWords, configWordDictionaryFn } from './spellChecker';
 import * as Rx from 'rx';
 import { onCodeActionHandler } from './codeActions';
+import {WordDictionary} from './WordDictionary';
+import {DictionaryAssociation} from './DictionaryAssociation';
+
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -28,7 +31,6 @@ interface Settings {
     cSpell: CSpellPackageSettings;
 }
 
-
 function run() {
     // debounce buffer
     const validationRequestStream: Rx.ReplaySubject<TextDocument> = new Rx.ReplaySubject<TextDocument>(1);
@@ -41,6 +43,24 @@ function run() {
     // Create a simple text document manager. The text document manager
     // supports full document sync only
     const documents: TextDocuments = new TextDocuments();
+    const dictionaries = new Map<string, () => Rx.Promise<WordDictionary>>();
+    const dictAssociations: DictionaryAssociation[] = [];
+
+    function setupAssociations(cSpellSettings: CSpellPackageSettings) {
+        dictAssociations.length = 0; // reset the associations
+
+        const dictDef = cSpellSettings.dictionaries || [];
+
+        dictDef.forEach(([progLang, spokenLang, path]) => {
+            dictAssociations.push(new DictionaryAssociation(progLang, spokenLang, path));
+        });
+
+        dictAssociations.forEach(assoc => {
+            if (! dictionaries.has(assoc.pathToDictionary)) {
+                dictionaries.set(assoc.pathToDictionary, configWordDictionaryFn(assoc.pathToDictionary, !!assoc.matchSpokenLang));
+            }
+        });
+    }
 
     // After the server has started the client sends an initialize request. The server receives
     // in the passed params the rootPath of the workspace plus the client capabilities.
@@ -59,6 +79,7 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration((change) => {
         const { cSpell = {} } = change.settings;
+        setupAssociations(cSpell as CSpellPackageSettings);
         Object.assign(settings, cSpell);
         setUserWords(settings.userWords, settings.words);
 

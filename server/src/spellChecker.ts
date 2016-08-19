@@ -95,3 +95,63 @@ export function suggest(word: string, numSuggestions?: number): string[] {
     const searchWord = word.toLowerCase();
     return sug.suggest(trie, searchWord, numSuggestions).map(sr => sr.word);
 }
+
+let wordDictionaryListPromise: Promise<WordDictionary.WordDictionary[]>;
+let wordDictionaryList: WordDictionary.WordDictionary[];
+
+
+export function createWordDictionaryForHumanLanguage(filename: string) {
+    return WordDictionary.WordDictionary.create(readWords(filename), a => a);
+}
+
+export function createWordDictionaryForProgrammingLanguage(filename: string) {
+    return WordDictionary.WordDictionary.create(normalizeKeywordList(readWords(filename)), a => a);
+}
+
+function createWordDictionaryList() {
+    const list = [
+        createWordDictionaryForHumanLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
+        createWordDictionaryForHumanLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
+        createWordDictionaryForProgrammingLanguage(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
+    ];
+
+    return list;
+}
+
+function getWordDictionaryListPromise() {
+    wordDictionaryListPromise = wordDictionaryListPromise
+        || Promise.all<WordDictionary.WordDictionary>(createWordDictionaryList())
+            .then(list => {
+                wordDictionaryList = list;
+                return list;
+            });
+    return wordDictionaryListPromise;
+}
+
+const dictionaryRootPath = path.join(__dirname, '..', '..');
+
+export function configWordDictionaryFn(path: string, isSpokenLanguage: boolean) {
+    const fullPath = path.replace('$', dictionaryRootPath);
+    let wordDictionary: Rx.Promise<WordDictionary.WordDictionary>;
+
+    return () => {
+        wordDictionary = wordDictionary
+            || WordDictionary.WordDictionary.create(
+                isSpokenLanguage ? readWords(fullPath) : normalizeKeywordList(readWords(fullPath))
+            );
+        return wordDictionary;
+    };
+}
+
+export function configWordDictionary(path: string, isSpokenLanguage: boolean) {
+    const fullPath = path.replace('$', dictionaryRootPath);
+
+    return WordDictionary.WordDictionary.create(
+        isSpokenLanguage ? readWords(fullPath) : normalizeKeywordList(readWords(fullPath))
+    );
+}

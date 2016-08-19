@@ -37,7 +37,8 @@ describe('validate Levenshtein', () => {
         ];
         words.forEach(w => {
             const sMatrix = calcLevenshteinMatrixAsText(word, w);
-            console.log(sMatrix);
+            // console.log(sMatrix);
+            expect(sMatrix).to.not.be.empty;
         });
     });
 });

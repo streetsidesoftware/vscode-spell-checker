@@ -101,14 +101,14 @@
                 "cSpell.dictionaries": {
                     "type": "array",
                     "default": [
-                        ["(php|html|*react)", "*", "$/dictionaries/html.txt"],
-                        ["(typescript*|javascript*)", "*", "$/dictionaries/"],
-                        ["*", "*", "$/dictionaries/companies.txt"],
-                        ["*", "*", "$/dictionaries/node.txt"],
-                        ["*", "*", "$/dictionaries/softwareTerms.txt"],
+                        ["@(php|html|*react)", null, "$/dictionaries/html.txt"],
+                        ["@(typescript|javascript)?(react)", null, "$/dictionaries/"],
+                        ["*", null, "$/dictionaries/companies.txt"],
+                        ["*", null, "$/dictionaries/node.txt"],
+                        ["*", null, "$/dictionaries/softwareTerms.txt"],
                         ["*", "en", "$/dictionaries/wordsEn.txt"],
-                        ["go", "*", "$/dictionaries/go.txt"],
-                        ["php", "*", "$/dictionaries/php.txt"]
+                        ["go", null, "$/dictionaries/go.txt"],
+                        ["php", null, "$/dictionaries/php.txt"]
                     ],
                     "description": "Word Dictionaries to include. format: [\"programming language\", \"spoken language\", \"path\"]."
                 }
