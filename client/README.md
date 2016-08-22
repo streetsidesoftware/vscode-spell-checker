@@ -145,6 +145,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.10.7
+*
+
 ### 0.10.6
 * Added support for contractions like wasn't, hasn't, could've.
 
