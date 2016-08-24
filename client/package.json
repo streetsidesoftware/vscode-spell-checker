@@ -89,7 +89,9 @@
                     "default": [
                         "node_modules",
                         "vscode-extension",
-                        ".git"
+                        ".git",
+                        ".vscode",
+                        "typings"
                     ],
                     "description": "Specify paths/files to ignore."
                 }
