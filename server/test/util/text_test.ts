@@ -19,7 +19,7 @@ describe('Util Text', () => {
             { word: "couldn't've", offset: 36 },
             { word: "wasn't", offset: 49 },
             { word: "y'all", offset: 57 },
-            { word: "twas", offset: 65 },
+            { word: 'twas', offset: 65 },
         ]);
     });
 
@@ -105,5 +105,26 @@ describe('Util Text', () => {
         expect(Text.matchCase('apple', 'orange')).to.be.equal('orange');
         expect(Text.matchCase('APPLE', 'orange')).to.be.equal('ORANGE');
         expect(Text.matchCase('ApPlE', 'OrangE')).to.be.equal('OrangE');
+    });
+
+    it('tests skipping Chinese characters', () => {
+        expect(Text.extractWordsFromCode(`
+            <a href="http://www.ctrip.com" title="携程旅行网">携程旅行网</a>
+        `).map(wo => wo.word)).to.deep.equal(
+            ['a', 'href', 'http', 'www', 'ctrip', 'com', 'title', 'a']
+        );
+    });
+
+    it('tests Greek characters', () => {
+        expect(Text.extractWordsFromCode(`
+            Γ γ	gamma, γάμμα
+        `).map(wo => wo.word)).to.deep.equal(
+            ['Γ', 'γ', 'gamma', 'γάμμα']
+        );
+    });
+
+    it('test case of Chinese characters', () => {
+        expect(Text.isUpperCase('携程旅行网')).to.be.false;
+        expect(Text.isLowerCase('携程旅行网')).to.be.false;
     });
 });
