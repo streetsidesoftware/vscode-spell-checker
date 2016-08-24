@@ -2,6 +2,7 @@ Bruijn
 DNS
 DOM
 Google
+Hunspell
 Knuth
 Levenshtein
 MYSQL
