@@ -145,7 +145,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
-### 0.10.8
+### 0.10.9
 * Fix issue #15: Windows users can now add words though the UI.
 
 ### 0.10.7
