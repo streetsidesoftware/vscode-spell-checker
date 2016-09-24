@@ -1,14 +1,15 @@
 {
   "name": "vscode-spell-checker-server",
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160415060238"
+    "chai": "registry:npm/chai#3.5.0+20160723033700"
   },
   "globalDevDependencies": {
-    "mocha": "registry:dt/mocha#2.2.5+20160317120654"
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353"
   },
   "globalDependencies": {
-    "node": "registry:dt/node#6.0.0+20160514165920",
+    "node": "registry:dt/node#6.0.0+20160923124626",
     "xregexp": "registry:dt/xregexp#3.0.0+20160317120654"
   }
 }
