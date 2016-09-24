@@ -1,11 +1,11 @@
 {
   "name": "code-spell-checker",
-  "description": "Simple spellchecker for source code",
-  "displayName": "Source Code Spell Checker",
+  "description": "Spelling checker designed for source code",
+  "displayName": "cSpell",
   "icon": "images/icon2.png",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.10.10",
+  "version": "0.10.11",
   "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
