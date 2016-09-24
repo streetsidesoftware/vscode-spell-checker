@@ -1,11 +1,10 @@
 {
   "resolution": "main",
   "tree": {
-    "src": "https://raw.githubusercontent.com/typed-typings/npm-lodash/7ccf9dc406a792d702067f4eab0fa8df4109fcaa/typings.json",
-    "raw": "registry:npm/lodash#4.0.0+20160416211519",
+    "src": "https://raw.githubusercontent.com/types/npm-lodash/9b83559bbd3454f0cd9e4020c920e36eee80d5a3/typings.json",
+    "raw": "registry:npm/lodash#4.0.0+20160723033700",
     "main": "index.d.ts",
     "version": "4.0.0",
-    "global": false,
     "name": "lodash",
     "type": "typings"
   }
