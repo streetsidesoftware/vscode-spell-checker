@@ -15,18 +15,18 @@
     "comment-json": "^1.1.3",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",
-    "vscode-languageserver": "^2.2.0",
+    "vscode-languageserver": "^2.5.1",
     "xregexp": "^3.1.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.2",
     "typescript": "^2.0.3",
     "typings": "^1.4.0"
   },
   "scripts": {
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
-    "test": "./node_modules/.bin/mocha --recursive ../client/server/test"
+    "test": "mocha --recursive ../client/server/test"
   }
 }
