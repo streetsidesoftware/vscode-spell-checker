@@ -38,7 +38,7 @@ function getSettings(): Rx.Observable<SettingsInfo> {
                     .filter(a => !!a)
                     .map(path => (<SettingsInfo>{ path, settings}));
             } else {
-                const path = matches[0].path;
+                const path = matches[0].fsPath;
                 return Rx.Observable.fromPromise(CSpellSettings.readSettings(path))
                     .map(settings => (<SettingsInfo>{ path, settings }));
             }
