@@ -5,7 +5,7 @@
   "icon": "images/icon2.png",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.10.11",
+  "version": "0.10.12",
   "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
   "engines": {
-    "vscode": "^1.2.1"
+    "vscode": "^1.5.0"
   },
   "categories": [
     "Linters",
@@ -99,8 +99,8 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
@@ -108,11 +108,13 @@
     "lorem-ipsum": "^1.0.3",
     "typescript": "^2.0.3",
     "typings": "^1.4.0",
-    "vscode": "^0.11.18"
+    "vscode": "^1.0.0",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "lodash": "^4.16.1",
+    "lodash": "^4.16.4",
     "mkdirp": "^0.5.1",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",

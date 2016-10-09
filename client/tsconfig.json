@@ -4,8 +4,11 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"outDir": "out",
-		"noLib": true,
-		"sourceMap": true
+		"lib": [ 
+			"es6" 
+		],
+		"sourceMap": true,
+		"rootDir": "."
 	},
 	"exclude": [
 		"node_modules",
