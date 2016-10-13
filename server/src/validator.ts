@@ -7,6 +7,7 @@ import * as Text from './util/text';
 import * as Rx from 'rx';
 import { merge } from 'tsmerge';
 
+export const diagSource = 'cSpell Checker';
 
 const defaultMaxNumberOfProblems = 200;
 const defaultMinWordLength       = 4;
@@ -55,7 +56,7 @@ export function validateTextDocumentAsync(textDocument: TextDocument, options: V
             severity: DiagnosticSeverity.Information,
             range: range,
             message: `Unknown word: "${word}"`,
-            source: 'Spell Checker'
+            source: diagSource
         }))
     ;
 }

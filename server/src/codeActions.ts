@@ -7,6 +7,7 @@ import {
 import * as LangServer from 'vscode-languageserver';
 import { suggest } from './spellChecker';
 import * as Text from './util/text';
+import * as Validator from './validator';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
@@ -18,7 +19,6 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPackageSettings) {
     return (params: CodeActionParams) => {
         const { numSuggestions } = settings;
-        // const startTime = Date.now();
         const commands: Command[] = [];
         const { context, textDocument: { uri } } = params;
         const { diagnostics } = context;
@@ -38,13 +38,16 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
             ];
         }
 
-        for (const diag of diagnostics) {
+        const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
+        let altWord: string;
+        for (const diag of spellCheckerDiags) {
             const word = extractText(textDocument, diag.range);
+            altWord = altWord || word;
             const sugs: string[] = suggest(word, numSuggestions);
             sugs
                 .map(sug => Text.matchCase(word, sug))
                 .forEach(sugWord => {
-                    commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
+                    commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
                         uri,
                         textDocument.version,
                         [ replaceText(diag.range, sugWord) ]
@@ -53,14 +56,14 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
                     if (words.length > 1) {
                         if (Text.isUpperCase(word)) {
                             const sug = words.join('_').toUpperCase();
-                            commands.unshift(LangServer.Command.create(sug, 'cSpell.editText',
+                            commands.push(LangServer.Command.create(sug, 'cSpell.editText',
                                 uri,
                                 textDocument.version,
                                 [ replaceText(diag.range, sug) ]
                             ));
                         } else {
                             genMultiWordSugs(words).forEach(sugWord => {
-                                commands.unshift(LangServer.Command.create(sugWord, 'cSpell.editText',
+                                commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
                                     uri,
                                     textDocument.version,
                                     [ replaceText(diag.range, sugWord) ]
@@ -70,12 +73,13 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
                     }
                 });
         }
+        const word = extractText(textDocument, params.range) || altWord;
+        // add it to the front or it might get lost
         commands.unshift(LangServer.Command.create(
-            'Add: "' + extractText(textDocument, params.range) + '" to dictionary',
+            'Add: "' + word + '" to dictionary',
             'cSpell.addWordToDictionarySilent',
-            extractText(textDocument, params.range)
+            word
         ));
-        // const diffTime = Date.now() - startTime;
         return commands;
     };
 }
