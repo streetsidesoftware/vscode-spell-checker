@@ -145,6 +145,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.10.12
+* Hot fix issue #20.  The latest release of Visual Studio Code broke suggestions.
+
 ### 0.10.9
 * Fix issue #15: Windows users can now add words though the UI.
 
