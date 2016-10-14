@@ -5,7 +5,7 @@
   "icon": "images/icon2.png",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.10.12",
+  "version": "0.10.13",
   "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
@@ -109,6 +109,7 @@
     "typescript": "^2.0.3",
     "typings": "^1.4.0",
     "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
     "@types/node": "^6.0.40",
     "@types/mocha": "^2.2.32"
   },
