@@ -145,6 +145,11 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.10.13
+* Fix issue #21. Words added when editing a stand alone file, are now added to the user's words.
+* Due to a change in the way vscode reads config files, it will no longer find your ~/.vscode/cSpell.json file.  To keep
+the words you added, you need to copy them to your user settings file and add them to cSpell.userWords.
+
 ### 0.10.12
 * Hot fix issue #20.  The latest release of Visual Studio Code broke suggestions.
 
