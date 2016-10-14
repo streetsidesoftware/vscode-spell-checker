@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
   "engines": {
-    "vscode": "^1.5.0"
+    "vscode": "^1.6.0"
   },
   "categories": [
     "Linters",
@@ -36,6 +36,10 @@
       {
         "command": "cSpell.addWordToDictionary",
         "title": "Add Word to Dictionary"
+      },
+      {
+        "command": "cSpell.addWordToUserDictionary",
+        "title": "Add Word to Global Dictionary"
       }
     ],
     "configuration": {

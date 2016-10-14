@@ -22,8 +22,7 @@ interface SettingsInfo {
 }
 
 function getDefaultWorkspaceConfigLocation() {
-    const userHome = os.homedir();
-    const { rootPath = userHome } = workspace;
+    const { rootPath } = workspace;
     return rootPath
         ? path.join(rootPath, '.vscode', baseConfigName)
         : undefined;
@@ -35,7 +34,6 @@ function getSettings(): Rx.Observable<SettingsInfo> {
             if (!matches || !matches.length) {
                 const settings = CSpellSettings.getDefaultSettings();
                 return Rx.Observable.just(getDefaultWorkspaceConfigLocation())
-                    .filter(a => !!a)
                     .map(path => (<SettingsInfo>{ path, settings}));
             } else {
                 const path = matches[0].fsPath;
@@ -74,18 +72,33 @@ function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[])
 function addWordToDictionary(word: string) {
     getSettings().subscribe(settingsInfo => {
         const {path, settings} = settingsInfo;
-        settings.words.push(word);
-        settings.words = _.uniq(settings.words);
-        CSpellSettings.updateSettings(path, settings);
+        if (path === undefined) {
+            // The path is undefined if the workspace consists of a single file.  In that case, we need to add the word
+            // to the global userWords.
+            addWordToUserDictionary(word);
+        } else {
+            settings.words.push(word);
+            settings.words = _.uniq(settings.words);
+            CSpellSettings.updateSettings(path, settings);
+        }
     });
 }
 
-function userCommandAddWordToDictionary() {
-    window.showInputBox({prompt: 'Word:', value: ''}).then(word => {
-        if (word) {
-            addWordToDictionary(word);
-        }
-    });
+function addWordToUserDictionary(word: string) {
+    const config = workspace.getConfiguration();
+    const userWords = config.get<string[]>('cSpell.userWords');
+    userWords.push(word);
+    config.update('cSpell.userWords', _.uniq(userWords), true);
+}
+
+function userCommandAddWordToDictionary(fnAddWord) {
+    return function () {
+        window.showInputBox({prompt: 'Word:', value: ''}).then(word => {
+            if (word) {
+                fnAddWord(word);
+            }
+        });
+    };
 }
 
 
@@ -105,8 +118,9 @@ export function activate(context: ExtensionContext) {
 
 
     const configWatcher = workspace.createFileSystemWatcher(findConfig);
+    const workspaceConfig = workspace.getConfiguration();
+    const settings: CSpellPackageSettings = workspaceConfig.get('cSpell') as CSpellPackageSettings;
 
-    const settings: CSpellPackageSettings = workspace.getConfiguration().get('cSpell') as CSpellPackageSettings;
 
     // Options to control the language client
     const clientOptions: LanguageClientOptions = {
@@ -132,7 +146,8 @@ export function activate(context: ExtensionContext) {
         clientDispose,
         commands.registerCommand('cSpell.editText', applyTextEdits),
         commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToDictionary),
-        commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary),
+        commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary(addWordToDictionary)),
+        commands.registerCommand('cSpell.addWordToUserDictionary', userCommandAddWordToDictionary(addWordToUserDictionary)),
         disposableSettingsSubscription,
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),

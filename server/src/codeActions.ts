@@ -74,12 +74,14 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
                 });
         }
         const word = extractText(textDocument, params.range) || altWord;
-        // add it to the front or it might get lost
-        commands.unshift(LangServer.Command.create(
-            'Add: "' + word + '" to dictionary',
-            'cSpell.addWordToDictionarySilent',
-            word
-        ));
+        if (word !== undefined) {
+            // add it to the front or it might get lost
+            commands.unshift(LangServer.Command.create(
+                'Add: "' + word + '" to dictionary',
+                'cSpell.addWordToDictionarySilent',
+                word
+            ));
+        }
         return commands;
     };
 }
