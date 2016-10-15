@@ -128,7 +128,7 @@ export function activate(context: ExtensionContext) {
         documentSelector: settings.enabledLanguageIds,
         synchronize: {
             // Synchronize the setting section 'spellChecker' to the server
-            configurationSection: 'cSpell'
+            configurationSection: ['cSpell', 'search', 'file']
         }
     };
 
@@ -146,6 +146,7 @@ export function activate(context: ExtensionContext) {
         clientDispose,
         commands.registerCommand('cSpell.editText', applyTextEdits),
         commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToDictionary),
+        commands.registerCommand('cSpell.addWordToUserDictionarySilent', addWordToUserDictionary),
         commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary(addWordToDictionary)),
         commands.registerCommand('cSpell.addWordToUserDictionary', userCommandAddWordToDictionary(addWordToUserDictionary)),
         disposableSettingsSubscription,

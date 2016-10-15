@@ -75,9 +75,16 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
         }
         const word = extractText(textDocument, params.range) || altWord;
         if (word !== undefined) {
-            // add it to the front or it might get lost
+            // add it to the front or it might get lost.  The is due to 1.6 changes
+            // Once VS Code 1.7 is release, we can add this to the end.
             commands.unshift(LangServer.Command.create(
                 'Add: "' + word + '" to dictionary',
+                'cSpell.addWordToUserDictionarySilent',
+                word
+            ));
+            // Allow the them to add it to the project dictionary.
+            commands.push(LangServer.Command.create(
+                'Add: "' + word + '" to project dictionary',
                 'cSpell.addWordToDictionarySilent',
                 word
             ));
