@@ -10,6 +10,12 @@ import * as Validator from './validator';
 import { setUserWords } from './spellChecker';
 import * as Rx from 'rx';
 import { onCodeActionHandler } from './codeActions';
+import {
+    ExcludeFilesGlobMap,
+    ExclusionFunction,
+    extractGlobsFromExcludeFilesGlobMap,
+    generateExclusionFunction
+ } from './exclusionHelper';
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -25,14 +31,19 @@ const settings: CSpellPackageSettings = {
 
 // The settings interface describe the server relevant settings part
 interface Settings {
-    cSpell: CSpellPackageSettings;
+    cSpell?: CSpellPackageSettings;
+    search?: {
+        exclude?: ExcludeFilesGlobMap;
+    }
 }
 
 interface VsCodeSettings {
     [key: string]: any;
 }
 
-let vsCodeSettings: VsCodeSettings = {};
+
+let fnFileExclusionTest: ExclusionFunction = () => false;
+
 
 
 function run() {
@@ -64,8 +75,11 @@ function run() {
 
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration((change) => {
-        const { cSpell = {} } = change.settings;
-        vsCodeSettings = change.settings;
+        const { cSpell = {}, search = {} } = change.settings as Settings;
+        const { exclude = {} } = search;
+        const { ignorePaths = [] } = cSpell;
+        const globs = ignorePaths.concat(extractGlobsFromExcludeFilesGlobMap( exclude ));
+        fnFileExclusionTest = generateExclusionFunction(globs);
         Object.assign(settings, cSpell);
         setUserWords(settings.userWords, settings.words);
 
@@ -101,12 +115,10 @@ function run() {
     validationFinishedStream.onNext({uri: 'start', version: 0});
 
     function shouldValidateDocument(textDocument: TextDocument): boolean {
-        const { enabledLanguageIds, ignorePaths } = settings;
+        const { enabledLanguageIds } = settings;
         const { uri, languageId } = textDocument;
         return enabledLanguageIds.indexOf(languageId) >= 0
-            && ignorePaths.reduce((prev: boolean, path: string) => {
-                return prev && uri.indexOf(path) < 0;
-            }, true);
+            && !fnFileExclusionTest(uri);
     }
 
     function validateTextDocument(textDocument: TextDocument): void {

@@ -107,7 +107,7 @@ export function activate(context: ExtensionContext) {
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
     // The debug options for the server
-    const debugOptions = { execArgv: ['--nolazy', '--debug=60047'] };
+    const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
 
     // If the extension is launched in debug mode the debug server options are use
     // Otherwise the run options are used
@@ -128,12 +128,12 @@ export function activate(context: ExtensionContext) {
         documentSelector: settings.enabledLanguageIds,
         synchronize: {
             // Synchronize the setting section 'spellChecker' to the server
-            configurationSection: ['cSpell', 'search', 'file']
+            configurationSection: ['cSpell', 'search']
         }
     };
 
     // Create the language client and start the client.
-    const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions);
+    const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions, true);
     const clientDispose = client.start();
 
     const disposableSettingsSubscription = settingsStream.subscribe(settings => {

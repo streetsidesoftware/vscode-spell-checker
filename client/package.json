@@ -97,7 +97,7 @@
             ".vscode",
             "typings"
           ],
-          "description": "Specify paths/files to ignore."
+          "description": "Specify paths/files to ignore. (Supports Globs)"
         }
       }
     }

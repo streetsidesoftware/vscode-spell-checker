@@ -4,7 +4,7 @@
  */
 interface CSpellPackageSettings extends CSpellUserSettings {
     // languageIds for the files to spell check.
-    enabledLanguageIds: string[];
+    enabledLanguageIds?: string[];
 
     // matching file paths will to be ignored
     ignorePaths?: string[];
