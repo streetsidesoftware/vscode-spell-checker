@@ -28,6 +28,12 @@ interface Settings {
     cSpell: CSpellPackageSettings;
 }
 
+interface VsCodeSettings {
+    [key: string]: any;
+}
+
+let vsCodeSettings: VsCodeSettings = {};
+
 
 function run() {
     // debounce buffer
@@ -59,6 +65,7 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration((change) => {
         const { cSpell = {} } = change.settings;
+        vsCodeSettings = change.settings;
         Object.assign(settings, cSpell);
         setUserWords(settings.userWords, settings.words);
 
