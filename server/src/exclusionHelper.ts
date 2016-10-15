@@ -16,7 +16,7 @@ export function extractGlobsFromExcludeFilesGlobMap(globMap: ExcludeFilesGlobMap
 }
 
 
-export function generateExclusionFunction(globs: Glob[]): ExclusionFunction {
+export function generateExclusionFunction(globs: Glob[], root: string): ExclusionFunction {
     const fns = globs.map(glob => minimatch.filter(glob, { matchBase: true }));
 
     function testPath(path: string) {
@@ -24,6 +24,10 @@ export function generateExclusionFunction(globs: Glob[]): ExclusionFunction {
     }
 
     function recursiveMatch(fullPath: string): boolean {
+        // do not match against the root.
+        if (fullPath === root) {
+            return false;
+        }
         const baseDir = path.dirname(fullPath);
         if (baseDir === fullPath) {
             return testPath(fullPath);

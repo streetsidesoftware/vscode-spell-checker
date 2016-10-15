@@ -24,10 +24,11 @@ describe('Verify Exclusion Helper functions', function() {
             '.vscode',
         ];
         const filesMatching = [
-            '~/project/node_modules',
-            '~/project/node_modules/test/test.js',
+            '~/project/myProject/node_modules',
+            '~/project/myProject/node_modules/test/test.js',
+            '~/project/myProject/.vscode/cSpell.json',
         ];
-        const fn = generateExclusionFunction(globs);
+        const fn = generateExclusionFunction(globs, '~/project/myProject');
 
         filesMatching.forEach(filepath => {
             const r = fn(filepath);

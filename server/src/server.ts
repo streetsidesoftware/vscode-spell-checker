@@ -79,7 +79,7 @@ function run() {
         const { exclude = {} } = search;
         const { ignorePaths = [] } = cSpell;
         const globs = ignorePaths.concat(extractGlobsFromExcludeFilesGlobMap( exclude ));
-        fnFileExclusionTest = generateExclusionFunction(globs);
+        fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
         Object.assign(settings, cSpell);
         setUserWords(settings.userWords, settings.words);
 
