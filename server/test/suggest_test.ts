@@ -3,7 +3,11 @@ import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
 import * as Suggest from '../src/suggest';
 import { loadWords, processWordListLines } from '../src/spellChecker';
 
-function timeFn(a, n = 100) {
+const loggingOn = false;
+
+const consoleLog = loggingOn ? console.log : () => {};
+
+function timeFn(a, n = 1) {
     return function (...args) {
         let r;
         const startTime = Date.now();
@@ -11,7 +15,7 @@ function timeFn(a, n = 100) {
             r = a(...args);
         }
         const diff = Date.now() - startTime;
-        console.log('Time: ' + diff / n + 'ms');
+        consoleLog('Time: ' + diff / n + 'ms');
         return r;
     };
 }
@@ -80,7 +84,7 @@ describe('matching hte', () => {
 
     it('checks best match', () => {
         const results = suggest(trie, 'hte');
-        console.log(JSON.stringify(results, null, 4));
+        consoleLog(JSON.stringify(results, null, 4));
     });
 });
 
@@ -98,7 +102,7 @@ describe('test for duplicate suggestions', () => {
         const trie = wordListToTrie([...words, ...extraWords]);
         const results = suggest(trie, word);
         const suggestions = results.map(({word}) => word);
-        console.log(suggestions);
+        consoleLog(suggestions);
         expect(results).to.not.be.null;
         expect(suggestions).to.contain(expectWord);
     });
@@ -110,7 +114,7 @@ describe('test suggestions for GO', function() {
     const pTrie = wordsToTrie(
         processWordListLines(pWords)
         .map(({word}) => word)
-        .tap(word => console.log(word))
+        .tap(word => consoleLog(word))
     );
 
     it('test PHP suggestions', () => {
@@ -118,7 +122,7 @@ describe('test suggestions for GO', function() {
             const results = suggest(trie, 'Umarshaller');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('unmarshaler');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
@@ -138,7 +142,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestA(trie, 'colunm');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('column');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
@@ -147,7 +151,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestA(trie, 'recieve');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('receive');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
@@ -157,7 +161,7 @@ describe('test suggestions for large vocab', function() {
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
@@ -166,7 +170,7 @@ describe('test suggestions for large vocab', function() {
             const results = suggestB(trie, 'recieve');
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('receive');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
@@ -176,14 +180,14 @@ describe('test suggestions for large vocab', function() {
             const suggestions = results.map(({word}) => word);
             expect(suggestions).to.contain('relationship');
             expect(suggestions[0]).to.equal('relationship');
-            console.log(suggestions);
+            consoleLog(suggestions);
         });
     });
 
     it('checks best match for "hte"', () => {
         return pTrie.then(trie => {
             const results = suggest(trie, 'hte');
-            console.log(JSON.stringify(results, null, 4));
+            consoleLog(JSON.stringify(results, null, 4));
         });
     });
 });
