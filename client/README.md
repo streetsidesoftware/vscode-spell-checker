@@ -145,6 +145,11 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.11.0
+* Updated Extension Icon
+* Implemented #16 -- Files that are excluded in search.exclude, will not be spellchecked.
+* Adding words to the dictionary via command (F1 Add Word) will default to the currently selected text in the editor.
+
 ### 0.10.13
 * Fix issue #21. Words added when editing a stand alone file, are now added to the user's words.
 * Due to a change in the way vscode reads config files, it will no longer find your ~/.vscode/cSpell.json file.

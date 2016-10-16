@@ -4,7 +4,7 @@ import * as Rx from 'rx';
 import * as _ from 'lodash';
 import * as os from 'os';
 
-import { workspace, ExtensionContext, commands, window } from 'vscode';
+import { workspace, ExtensionContext, commands, window, TextEditor } from 'vscode';
 import {
     LanguageClient, LanguageClientOptions, ServerOptions, TransportKind,
     TextEdit, Protocol2Code
@@ -91,9 +91,13 @@ function addWordToUserDictionary(word: string) {
     config.update('cSpell.userWords', _.uniq(userWords), true);
 }
 
-function userCommandAddWordToDictionary(fnAddWord) {
+function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
     return function () {
-        window.showInputBox({prompt: 'Word:', value: ''}).then(word => {
+        const { activeTextEditor = {} } = window;
+        const { selection, document } = activeTextEditor as TextEditor;
+        const range = selection && document ? document.getWordRangeAtPosition(selection.active) : undefined;
+        const value = range ? document.getText(selection) || document.getText(range) : '';
+        window.showInputBox({prompt, value}).then(word => {
             if (word) {
                 fnAddWord(word);
             }
@@ -147,8 +151,8 @@ export function activate(context: ExtensionContext) {
         commands.registerCommand('cSpell.editText', applyTextEdits),
         commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToDictionary),
         commands.registerCommand('cSpell.addWordToUserDictionarySilent', addWordToUserDictionary),
-        commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary(addWordToDictionary)),
-        commands.registerCommand('cSpell.addWordToUserDictionary', userCommandAddWordToDictionary(addWordToUserDictionary)),
+        commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary('Add Word to Workspace Dictionary', addWordToDictionary)),
+        commands.registerCommand('cSpell.addWordToUserDictionary', userCommandAddWordToDictionary('Add Word to Dictionary', addWordToUserDictionary)),
         disposableSettingsSubscription,
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),
