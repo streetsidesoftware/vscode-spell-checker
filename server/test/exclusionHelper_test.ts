@@ -35,4 +35,22 @@ describe('Verify Exclusion Helper functions', function() {
             expect(r).to.be.true;
         });
     });
+
+    it('Test against generated files', function() {
+        const globs = [
+            'debug:/**',
+            '**/*.rendered',
+        ];
+        const files = [
+            'debug://internal/1014/extHostCommands.ts',
+            '~/project/myProject/README.md.rendered',
+        ];
+
+        const fn = generateExclusionFunction(globs, '~/project/myProject');
+
+        files.forEach(filepath => {
+            const r = fn(filepath);
+            expect(r).to.be.true;
+        });
+    });
 });

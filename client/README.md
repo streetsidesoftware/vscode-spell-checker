@@ -149,11 +149,13 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 * Updated Extension Icon
 * Implemented #16 -- Files that are excluded in search.exclude, will not be spellchecked.
 * Adding words to the dictionary via command (F1 Add Word) will default to the currently selected text in the editor.
+* By default, words are now added to the User Settings.  At the bottom of the list of suggestions is the ability to add the word to the workspace.
+  We are waiting for VS Code 1.7 to release to fix the suggestions list. 
 
 ### 0.10.13
 * Fix issue #21. Words added when editing a stand alone file, are now added to the user's words.
 * Due to a change in the way vscode reads config files, it will no longer find your ~/.vscode/cSpell.json file.
-To keep the words you added, you need to copy them to your user settings file and add them to cSpell.userWords.
+  To keep the words you added, you need to copy them to your user settings file and add them to cSpell.userWords.
 
 ### 0.10.12
 * Hot fix issue #20.  The latest release of Visual Studio Code broke suggestions.

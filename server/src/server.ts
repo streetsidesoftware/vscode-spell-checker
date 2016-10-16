@@ -14,7 +14,8 @@ import {
     ExcludeFilesGlobMap,
     ExclusionFunction,
     extractGlobsFromExcludeFilesGlobMap,
-    generateExclusionFunction
+    generateExclusionFunction,
+    Glob
  } from './exclusionHelper';
 
 const settings: CSpellPackageSettings = {
@@ -28,6 +29,12 @@ const settings: CSpellPackageSettings = {
     userWords: [],
     ignorePaths: []
 };
+
+const defaultExclude: Glob[] = [
+    'debug:/**',
+    '**/*.rendered',
+    '*.*.rendered',
+];
 
 // The settings interface describe the server relevant settings part
 interface Settings {
@@ -75,7 +82,7 @@ function run() {
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
         const { ignorePaths = [] } = cSpell;
-        const globs = ignorePaths.concat(extractGlobsFromExcludeFilesGlobMap( exclude ));
+        const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap( exclude ));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
         Object.assign(settings, cSpell);
         setUserWords(settings.userWords, settings.words);
