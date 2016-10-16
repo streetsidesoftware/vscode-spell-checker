@@ -34,17 +34,14 @@ interface Settings {
     cSpell?: CSpellPackageSettings;
     search?: {
         exclude?: ExcludeFilesGlobMap;
-    }
+    };
 }
 
 interface VsCodeSettings {
     [key: string]: any;
 }
 
-
 let fnFileExclusionTest: ExclusionFunction = () => false;
-
-
 
 function run() {
     // debounce buffer
