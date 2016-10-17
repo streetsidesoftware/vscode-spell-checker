@@ -101,14 +101,19 @@
           "default": true,
           "description": "Enable / Disable the spell checker."
         },
+        "cSpell.showStatus": {
+          "type": "boolean",
+          "default": true,
+          "description": "Display the spell checker status on the status bar."
+        },
         "cSpell.ignorePaths": {
           "type": "array",
           "default": [
             "**/node_modules/**",
             "**/vscode-extension/**",
             "**/.git/**",
-            "**/.vscode/**",
-            "**/typings/**"
+            ".vscode",
+            "typings"
           ],
           "description": "Specify paths/files to ignore. (Supports Globs)"
         }

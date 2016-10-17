@@ -124,6 +124,12 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
         "yml"
     ],
 
+    // Enable / Disable the spell checker.
+    "cSpell.enabled": true,
+
+    // Display the spell checker status on the status bar.
+    "cSpell.showStatus": true,
+
     // Words to add to dictionary for a workspace.
     "cSpell.words": [],
 
@@ -132,9 +138,14 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
     // Specify paths/files to ignore.
     "cSpell.ignorePaths": [
-        "node_modules",
-        "vscode-extension",
-        ".git"
+        "node_modules",        // this will ignore anything the node_modules directory
+        "**/node_modules",     // the same for this one
+        "**/node_modules/**",  // the same for this one
+        "node_modules/**",     // Doesn't currently work due to how the current working directory is determined.
+        "vscode-extension",    //
+        ".git",                // Ignore the .git directory
+        "*.dll",               // Ignore all .dll files.
+        "**/*.dll"             // Ignore all .dll files
     ],
 
     // flagWords - list of words to be always considered incorrect
@@ -148,9 +159,13 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 ### 0.11.0
 * Updated Extension Icon
 * Implemented #16 -- Files that are excluded in search.exclude, will not be spellchecked.
+* Glob support for the ignorePaths has been improved
 * Adding words to the dictionary via command (F1 Add Word) will default to the currently selected text in the editor.
-* By default, words are now added to the User Settings.  At the bottom of the list of suggestions is the ability to add the word to the workspace.
-  We are waiting for VS Code 1.7 to release to fix the suggestions list. 
+* By default, words are now added to the User Settings.
+  At the bottom of the list of suggestions is the ability to add the word to the workspace.
+  We are waiting for VS Code 1.7 to release to fix the suggestions list.
+* The spellchecker can be enabled / disabled at the workspace level.
+* Added information to the status bar (this can be hidden using settings.json).
 
 ### 0.10.13
 * Fix issue #21. Words added when editing a stand alone file, are now added to the user's words.

@@ -134,14 +134,14 @@ function initStatusBar(context: ExtensionContext, client: LanguageClient) {
                         const { languageEnabled = true, fileEnabled = true } = response;
                         const isChecked = languageEnabled && fileEnabled;
                         const isCheckedText = isChecked ? 'is' : 'is NOT';
-                        const langReason = languageEnabled ? '' : `${languageId} language is not enabled`;
-                        const fileReason = fileEnabled ? '' : `file path is excluded in settings`;
-                        const reason = [langReason, fileReason].filter(a => !!a).join(' and ');
+                        const langReason = languageEnabled ? '' : `The "${languageId}" language is not enabled.`;
+                        const fileReason = fileEnabled ? '' : `The file path is excluded in settings.`;
                         const fileName = path.basename(uri.fsPath);
                         const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
                         const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
+                        const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
                         sbCheck.text = `${langText} | ${fileText}`;
-                        sbCheck.tooltip = `${fileName} ${isCheckedText} spell checked. ${reason}`;
+                        sbCheck.tooltip = reason;
                         sbCheck.show();
                     }
                 }
@@ -150,7 +150,13 @@ function initStatusBar(context: ExtensionContext, client: LanguageClient) {
 
     function onDidChangeActiveTextEditor(e: TextEditor) {
         const settings: CSpellPackageSettings = workspace.getConfiguration().get('cSpell') as CSpellPackageSettings;
-        const { enabled } = settings;
+        const { enabled, showStatus = true } = settings;
+
+        if (!showStatus) {
+            sbCheck.hide();
+            return;
+        }
+
         if (enabled) {
             updateStatusBarWithSpellCheckStatus(e);
         } else {

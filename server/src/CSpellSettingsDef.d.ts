@@ -44,6 +44,9 @@ interface CSpellUserSettings {
 
     // Enabled
     enabled?: boolean;
+
+    // Show status
+    showStatus?: boolean;
 }
 
 
@@ -68,6 +71,9 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
 
     // Enabled
     '// enabled'?: string[];
+
+    // Show status
+    '// showStatus'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];
