@@ -41,6 +41,9 @@ interface CSpellUserSettings {
 
     // list of words to always be considered incorrect.
     flagWords?: string[];
+
+    // Enabled
+    enabled?: boolean;
 }
 
 
@@ -62,6 +65,9 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
 
     // list of words to always be considered incorrect.
     '// flagWords'?: string[];
+
+    // Enabled
+    '// enabled'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];

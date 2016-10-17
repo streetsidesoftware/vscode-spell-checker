@@ -1,10 +1,10 @@
 import * as path from 'path';
 import * as CSpellSettings from './CSpellSettings';
 import * as Rx from 'rx';
-import * as _ from 'lodash';
-import * as os from 'os';
+import * as R from 'ramda';
 
 import { workspace, ExtensionContext, commands, window, TextEditor } from 'vscode';
+import * as vscode from 'vscode';
 import {
     LanguageClient, LanguageClientOptions, ServerOptions, TransportKind,
     TextEdit, Protocol2Code
@@ -69,7 +69,7 @@ function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[])
     }
 }
 
-function addWordToDictionary(word: string) {
+function addWordToWorkspaceDictionary(word: string) {
     getSettings().subscribe(settingsInfo => {
         const {path, settings} = settingsInfo;
         if (path === undefined) {
@@ -78,7 +78,7 @@ function addWordToDictionary(word: string) {
             addWordToUserDictionary(word);
         } else {
             settings.words.push(word);
-            settings.words = _.uniq(settings.words);
+            settings.words = R.uniq(settings.words);
             CSpellSettings.updateSettings(path, settings);
         }
     });
@@ -88,7 +88,7 @@ function addWordToUserDictionary(word: string) {
     const config = workspace.getConfiguration();
     const userWords = config.get<string[]>('cSpell.userWords');
     userWords.push(word);
-    config.update('cSpell.userWords', _.uniq(userWords), true);
+    config.update('cSpell.userWords', R.uniq(userWords), true);
 }
 
 function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
@@ -105,6 +105,82 @@ function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
     };
 }
 
+function setEnableSpellChecking(enabled: boolean) {
+    workspace.getConfiguration().update('cSpell.enabled', enabled);
+}
+
+interface ServerResponseIsSpellCheckEnabled {
+    languageEnabled?: boolean;
+    fileEnabled?: boolean;
+}
+
+function initStatusBar(context: ExtensionContext, client: LanguageClient) {
+
+    const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+
+    function updateStatusBarWithSpellCheckStatus(e: TextEditor) {
+        const { uri, languageId } = e.document;
+        const genOnOffIcon = (on: boolean) => on ? '$(checklist)' : '$(stop)';
+        sbCheck.color = 'white';
+        sbCheck.text = '$(clock)';
+        sbCheck.tooltip = 'cSpell waiting...';
+        sbCheck.show();
+        client.sendRequest({method: 'isSpellCheckEnabled'}, { uri: uri.toString(), languageId })
+            .then((response: ServerResponseIsSpellCheckEnabled) => {
+                const { activeTextEditor } = window;
+                if (activeTextEditor) {
+                    const { document } = activeTextEditor;
+                    if (document.uri === uri) {
+                        const { languageEnabled = true, fileEnabled = true } = response;
+                        const isChecked = languageEnabled && fileEnabled;
+                        const isCheckedText = isChecked ? 'is' : 'is NOT';
+                        const langReason = languageEnabled ? '' : `${languageId} language is not enabled`;
+                        const fileReason = fileEnabled ? '' : `file path is excluded in settings`;
+                        const reason = [langReason, fileReason].filter(a => !!a).join(' and ');
+                        const fileName = path.basename(uri.fsPath);
+                        const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
+                        const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
+                        sbCheck.text = `${langText} | ${fileText}`;
+                        sbCheck.tooltip = `${fileName} ${isCheckedText} spell checked. ${reason}`;
+                        sbCheck.show();
+                    }
+                }
+            });
+    }
+
+    function onDidChangeActiveTextEditor(e: TextEditor) {
+        const settings: CSpellPackageSettings = workspace.getConfiguration().get('cSpell') as CSpellPackageSettings;
+        const { enabled } = settings;
+        if (enabled) {
+            updateStatusBarWithSpellCheckStatus(e);
+        } else {
+            sbCheck.text = '$(stop) cSpell';
+            sbCheck.tooltip = 'Enable spell checking';
+            sbCheck.command = 'cSpell.enableForWorkspace';
+            sbCheck.show();
+        }
+    }
+
+    function onDidChangeConfiguration() {
+        if (window.activeTextEditor) {
+            onDidChangeActiveTextEditor(window.activeTextEditor);
+        }
+    }
+
+    sbCheck.text = '$(clock)';
+    sbCheck.show();
+
+    context.subscriptions.push(
+        window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor),
+        workspace.onDidChangeConfiguration(onDidChangeConfiguration),
+        sbCheck
+    );
+
+    if (window.activeTextEditor) {
+        onDidChangeActiveTextEditor(window.activeTextEditor);
+    }
+
+}
 
 export function activate(context: ExtensionContext) {
 
@@ -144,15 +220,22 @@ export function activate(context: ExtensionContext) {
         client.sendNotification({method: 'applySettings'}, settings);
     });
 
+    const actionAddWordToWorkspace = userCommandAddWordToDictionary('Add Word to Workspace Dictionary', addWordToWorkspaceDictionary);
+    const actionAddWordToDictionary = userCommandAddWordToDictionary('Add Word to Dictionary', addWordToUserDictionary);
+
+    initStatusBar(context, client);
+
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
         clientDispose,
         commands.registerCommand('cSpell.editText', applyTextEdits),
-        commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToDictionary),
+        commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToWorkspaceDictionary),
         commands.registerCommand('cSpell.addWordToUserDictionarySilent', addWordToUserDictionary),
-        commands.registerCommand('cSpell.addWordToDictionary', userCommandAddWordToDictionary('Add Word to Workspace Dictionary', addWordToDictionary)),
-        commands.registerCommand('cSpell.addWordToUserDictionary', userCommandAddWordToDictionary('Add Word to Dictionary', addWordToUserDictionary)),
+        commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
+        commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
+        commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true)),
+        commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false)),
         disposableSettingsSubscription,
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),
