@@ -50,7 +50,6 @@ function triggerGetSettings() {
         .subscribe(settings => settingsStream.onNext(settings));
 }
 
-
 function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
     const textEditor = window.activeTextEditor;
     if (textEditor && textEditor.document.uri.toString() === uri) {
@@ -219,7 +218,7 @@ export function activate(context: ExtensionContext) {
     };
 
     // Create the language client and start the client.
-    const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions, true);
+    const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions);
     const clientDispose = client.start();
 
     const disposableSettingsSubscription = settingsStream.subscribe(settings => {
