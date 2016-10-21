@@ -156,6 +156,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.11.4
+* Hot fix for #25.  
+
 ### 0.11.2
 * Updated Extension Icon
 * Implemented #16 -- Files that are excluded in search.exclude, will not be spellchecked.

@@ -118,7 +118,10 @@ function initStatusBar(context: ExtensionContext, client: LanguageClient) {
     const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
     function updateStatusBarWithSpellCheckStatus(e: TextEditor) {
-        const { uri, languageId } = e.document;
+        if (!e) {
+            return;
+        }
+        const { uri = { fsPath: undefined }, languageId = '' } = e.document || {uri: { fsPath: undefined }, languageId: ''};
         const genOnOffIcon = (on: boolean) => on ? '$(checklist)' : '$(stop)';
         sbCheck.color = 'white';
         sbCheck.text = '$(clock)';
@@ -127,7 +130,7 @@ function initStatusBar(context: ExtensionContext, client: LanguageClient) {
         client.sendRequest({method: 'isSpellCheckEnabled'}, { uri: uri.toString(), languageId })
             .then((response: ServerResponseIsSpellCheckEnabled) => {
                 const { activeTextEditor } = window;
-                if (activeTextEditor) {
+                if (activeTextEditor && activeTextEditor.document) {
                     const { document } = activeTextEditor;
                     if (document.uri === uri) {
                         const { languageEnabled = true, fileEnabled = true } = response;
