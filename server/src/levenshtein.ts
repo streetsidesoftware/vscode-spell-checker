@@ -1,5 +1,11 @@
 
-export function calcLevenshteinMatrix(a: string, b: string) {
+export interface LevenshteinResultMatrix {
+    matrix: number[][];   // the matrix values
+    wordTop: string;      // the word across the top of the matrix
+    wordSide: string;     // the word down the left side of the matrix
+}
+
+export function calcLevenshteinMatrix(a: string, b: string): LevenshteinResultMatrix {
     const matrix: number[][] = [[]];
     const x = (' ' + a).split('');
     const y = (' ' + b).split('');
@@ -21,13 +27,19 @@ export function calcLevenshteinMatrix(a: string, b: string) {
         }
     }
 
-    return matrix;
+    return { matrix, wordTop: a, wordSide: b };
 }
 
 
 export function calcLevenshteinMatrixAsText(a: string, b: string) {
+    return levenshteinMatrixAsText(
+        calcLevenshteinMatrix(a, b)
+    );
+}
+
+export function levenshteinMatrixAsText(matrixResult: LevenshteinResultMatrix) {
+    const { matrix, wordTop: a, wordSide: b } = matrixResult;
     const separator = ' | ';
-    const matrix = calcLevenshteinMatrix(a, b);
     const header = ('  ' + a).split('').join(separator);
     const col = (' ' + b).split('');
     const rowSeparator = '-'.repeat(header.length);
@@ -41,5 +53,4 @@ export function calcLevenshteinMatrixAsText(a: string, b: string) {
 
     return rows.join('\n') + '\n';
 }
-
 
