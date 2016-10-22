@@ -2,7 +2,7 @@ import * as Rx from 'rx';
 import * as fs from 'fs';
 import * as path from 'path';
 import { match } from './util/text';
-import { Trie, addWordToTrie } from './suggest';
+import { Trie, addWordToTrie, TrieMap } from './suggest';
 import * as sug from './suggest';
 import * as Text from './util/text';
 
@@ -71,7 +71,7 @@ export function setUserWords(...wordSets: string[][]) {
         .subscribe(({setOfWords}) => { userWords = setOfWords; });
 }
 
-let trie: Trie = { c: [] };
+let trie: Trie = { c: new TrieMap };
 
 let userWords: WordDictionary = Object.create(null);
 
