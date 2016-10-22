@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
 import * as Suggest from '../src/suggest';
-import { loadWords, processWordListLines } from '../src/spellChecker';
+import { loadWords, processWordListLines } from '../src/wordListHelper';
 
 const loggingOn = false;
 
 const consoleLog = loggingOn ? console.log : () => {};
+
+const minWordLength = 3;
 
 function timeFn(a, n = 1) {
     return function (...args) {
@@ -112,7 +114,7 @@ describe('test suggestions for GO', function() {
     this.timeout(10000);
     const pWords = loadWords(__dirname + '/../../dictionaries/go.txt');
     const pTrie = wordsToTrie(
-        processWordListLines(pWords)
+        processWordListLines(pWords, minWordLength)
         .map(({word}) => word)
         .tap(word => consoleLog(word))
     );

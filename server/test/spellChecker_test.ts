@@ -1,12 +1,14 @@
 import { expect } from 'chai';
 import { isWordInDictionary } from '../src/spellChecker';
-import { processWordListLines } from '../src/spellChecker';
+import { processWordListLines } from '../src/wordListHelper';
 import * as Rx from 'rx';
+
+const minWordLength = 3;
 
 describe('Verify Contractions', function() {
     it('tests contractions', () => {
         const words = ['apple', 'banana', 'orange', 'pear', 'grape', "doesn't", "can't", "won't"];
-        return processWordListLines(Rx.Observable.fromArray(words))
+        return processWordListLines(Rx.Observable.fromArray(words), minWordLength)
             .map(({setOfWords}) => setOfWords)
             .toPromise()
             .then(wordSet => {
