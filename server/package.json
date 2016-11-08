@@ -15,6 +15,7 @@
     "comment-json": "^1.1.3",
     "lodash": "^4.16.4",
     "minimatch": "^3.0.3",
+    "ramda": "^0.22.1",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",
     "vscode-jsonrpc": "^2.4.0",
@@ -27,12 +28,12 @@
     "@types/minimatch": "^2.0.29",
     "@types/mocha": "^2.2",
     "@types/node": "^6.0",
+    "@types/ramda": "0.0.2",
     "@types/xregexp": "^3.0",
     "chai": "^3.5",
     "mocha": "^3.1",
-    "typescript": "^2.0.3",
-    "typings": "^1.4.0",
-    "vscode": "^1.0.0"
+    "typescript": "^2.0.7",
+    "vscode": "^1.0.3"
   },
   "scripts": {
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
