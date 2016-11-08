@@ -49,6 +49,7 @@ const wordList: Rx.Promise<WordDictionary> =
         path.join(__dirname, '..', '..', 'dictionaries', 'php.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'go.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt'),
+        path.join(__dirname, '..', '..', 'dictionaries', 'python.txt'),
     ])
     .toPromise();
 

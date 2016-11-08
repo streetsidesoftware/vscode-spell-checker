@@ -21,7 +21,7 @@ import {
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
         'csharp', 'go', 'javascript', 'javascriptreact', 'markdown',
-        'php', 'plaintext', 'text', 'typescript', 'typescriptreact'
+        'php', 'plaintext', 'python', 'text', 'typescript', 'typescriptreact'
     ],
     maxNumberOfProblems: 100,
     numSuggestions: 10,
