@@ -79,6 +79,7 @@
             "markdown",
             "php",
             "plaintext",
+            "python", 
             "text",
             "typescript",
             "typescriptreact",
