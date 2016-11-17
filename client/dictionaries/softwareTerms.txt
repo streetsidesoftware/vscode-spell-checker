@@ -160,6 +160,7 @@ pathname
 plaintext
 png
 popup
+pragma
 precomputing
 prepends
 prepublish
