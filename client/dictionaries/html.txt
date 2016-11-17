@@ -37,6 +37,7 @@ details
 dfn
 div
 dl
+DOCTYPE
 dropdown
 dropdowns
 dt
