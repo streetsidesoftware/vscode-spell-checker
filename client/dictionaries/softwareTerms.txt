@@ -1,21 +1,3 @@
-Bruijn
-DNS
-DOM
-Google
-Hunspell
-Knuth
-Levenshtein
-MYSQL
-Microsoft
-Mongo
-Mongo DB
-ORM
-Redis
-SQL
-Wikimedia
-Wikipedia
-Wiktionary
-Yahoo
 app
 approximant
 arccosine
@@ -25,12 +7,16 @@ array
 asc
 asynchronous
 asynchronously
+attr
+attrs
 auth
 autocomplete
 autocompleted
 autocompletion
 autosuggest
 bar
+basedir
+bashrc
 blog
 bookmark
 bookmarked
@@ -39,15 +25,22 @@ bookmarking
 bookmarks
 bool
 boolean
+branch
+Bruijn
 bubble
 c
 cache
 class
+clint
+codebase
 codelens
+compile
+compiler
 concurrency
 const
 cos
 cpp
+crlf
 cron
 cronjob
 cronjobs
@@ -63,6 +56,8 @@ descriptor
 descriptors
 dest
 diff
+DNS
+DOM
 double
 downloadable
 downloaded
@@ -85,21 +80,26 @@ enum
 enums
 error
 error level
+eslint
 event
 export
 expr
 facebook
+fixme
 float
 foreach
+fork
 freq
 frontend
 fsharp
 func
 function
 getter
+git
 github
 global
 globals
+Google
 grep
 grepped
 grepping
@@ -111,6 +111,7 @@ homebrew
 homepage
 hostname
 hover
+Hunspell
 import
 incrementally
 info
@@ -125,14 +126,20 @@ javascript
 javascriptreact
 jpeg
 jpg
+jslint
 json
 jumbotron
 keybindings
+Knuth
 lang
+Levenshtein
+lex
 life cycle
 life cycles
 light bulb
 light bulbs
+lint
+linter
 localhost
 login
 logout
@@ -140,6 +147,7 @@ long
 longdouble
 longint
 lorem
+make
 map
 map
 member
@@ -148,13 +156,21 @@ memcached
 menu
 menubar
 menuitem
+meta
 metadata
+Microsoft
 middleware
+mixin
+Mongo
+Mongo DB
 mouse
 mouseover
+MYSQL
 nav
+noinspection
 offline
 online
+ORM
 param
 pathname
 plaintext
@@ -170,7 +186,10 @@ protected
 public
 queuing
 quicksort
+readme
+readthedocs
 real time
+Redis
 reduce
 regex
 regexp
@@ -189,6 +208,7 @@ short
 shortint
 sin
 sort
+SQL
 src
 stack
 stacktrace
@@ -206,12 +226,20 @@ timelines
 todo
 tooltip
 trie
+tslint
 typescript
 typescriptreact
+urlencoded
 util
 utils
 warning
+wget
 whitespace
 wiki
+Wikimedia
+Wikipedia
+Wiktionary
 xml
+yacc
+Yahoo
 yyyy
