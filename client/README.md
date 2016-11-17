@@ -156,8 +156,13 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.11.5
+* Add Python support -- Special Thanks to @wheerd
+* Move the "Add to Dictionary" suggestion back down to the bottom.
+* Add some terms to the dictionary
+
 ### 0.11.4
-* Hot fix for #25.  
+* Hot fix for #25.
 
 ### 0.11.2
 * Updated Extension Icon
@@ -183,14 +188,14 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ### 0.10.7
 * Added all words from en_US Hunspell English Dictionary
-* *GO* - 1.7 words added -- Special thanks to: AlekSi
+* *GO* - 1.7 words added -- Special thanks to: @AlekSi
 * Ignore Chinese/Japanese characters -- Issue: #17
 
 ### 0.10.6
 * Added support for contractions like wasn't, hasn't, could've.
 
 ### 0.10.5
-* *GO* - keywords and library words added -- Special thanks to: AlekSi
+* *GO* - keywords and library words added -- Special thanks to: @AlekSi
 * *PHP* - many keywords and library functions added to word list.
 * Word Lists now support CamelCase words.
 
