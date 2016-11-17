@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
@@ -79,7 +79,7 @@
             "markdown",
             "php",
             "plaintext",
-            "python", 
+            "python",
             "text",
             "typescript",
             "typescriptreact",
