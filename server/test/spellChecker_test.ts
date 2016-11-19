@@ -12,9 +12,9 @@ describe('Verify Contractions', function() {
             .map(({setOfWords}) => setOfWords)
             .toPromise()
             .then(wordSet => {
-                expect(wordSet).to.have.property('apple');
-                expect(wordSet).to.have.property("doesn't");
-                expect(wordSet).to.not.have.property('doesn');
+                expect([...wordSet.keys()]).to.include('apple');
+                expect([...wordSet.keys()]).to.include("doesn't");
+                expect([...wordSet.keys()]).to.not.include('doesn');
             });
     });
 

@@ -2,14 +2,18 @@ import * as Rx from 'rx';
 import * as path from 'path';
 import { Trie, addWordToTrie, TrieMap } from './suggest';
 import * as sug from './suggest';
-import { loadWords, processWordListLines, WordDictionary } from '../src/wordListHelper';
+import { loadWords, processWordListLines, WordSet } from '../src/wordListHelper';
 
 const minWordLength = 3;
 
-export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary> {
+export function loadWordListsFromFilenames(filenames: string[]): Rx.Observable<WordSet> {
+    const wordLists = filenames.map(loadWords);
+    return loadWordLists(wordLists);
+}
+
+export function loadWordLists(wordLists: Rx.Observable<string>[]): Rx.Observable<WordSet> {
     return processWordListLines(
-            Rx.Observable.fromArray(filenames)
-                .flatMap(loadWords),
+            Rx.Observable.fromArray(wordLists).flatMap(a=>a),
             minWordLength
         )
         .tap(({word}) => { trie = addWordToTrie(trie, word); })
@@ -20,13 +24,13 @@ export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary
 export function isWordInDictionary(word: string): Rx.Promise<boolean> {
     const nWord = word.toLocaleLowerCase();
     return wordList.then(wordList => {
-        return wordList[nWord] === true
-            || userWords[nWord] === true;
+        return wordList.has(nWord)
+            || userWords.has(nWord);
     });
 }
 
 export function setUserWords(...wordSets: string[][]) {
-    userWords = Object.create(null);
+    userWords = new Set<string>();
     processWordListLines(
             Rx.Observable.fromArray(wordSets).flatMap(a => a),
             minWordLength
@@ -37,10 +41,10 @@ export function setUserWords(...wordSets: string[][]) {
 
 let trie: Trie = { c: new TrieMap };
 
-let userWords: WordDictionary = Object.create(null);
+let userWords: WordSet = new Set<string>();
 
-const wordList: Rx.Promise<WordDictionary> =
-    loadWordLists([
+const wordList: Rx.Promise<WordSet> =
+    loadWordListsFromFilenames([
         path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt'),
         path.join(__dirname, '..', '..', 'dictionaries', 'node.txt'),
