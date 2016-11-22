@@ -107,6 +107,11 @@
           "default": true,
           "description": "Display the spell checker status on the status bar."
         },
+        "cSpell.spellCheckDelayMs": {
+          "type": "number",
+          "default": 50,
+          "description": "// Delay in ms after a document has changed before checking it for spelling errors."
+        },
         "cSpell.ignorePaths": {
           "type": "array",
           "default": [
