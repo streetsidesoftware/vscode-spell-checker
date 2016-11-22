@@ -62,19 +62,19 @@ describe('Perf tests for Word List Helper', function() {
             });
     });
 
-    it('Loads the English words', () => {
+    it('Loads the PHP words', () => {
 
-            const rxWords0 = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
-            const rxWords1 = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
+            const rxWords0 = loadWords(__dirname + '/../../dictionaries/php.txt');
+            const rxWords1 = loadWords(__dirname + '/../../dictionaries/php.txt');
 
             const p = Rx.Observable.concat([
-                wlh.processWordListLines(rxWords0, minWordLength)
+                wlh.processWords(rxWords0)
                     .scan(scanTimer, {})
                     .last()
                     .map(({elapsedTs}) => elapsedTs)
                     .map(diffToMs)
                 ,
-                wlh.processWordListLinesOld(rxWords1, minWordLength)
+                wlh.processWordListLines(rxWords1, minWordLength)
                     .scan(scanTimer, {})
                     .last()
                     .map(({elapsedTs}) => elapsedTs)

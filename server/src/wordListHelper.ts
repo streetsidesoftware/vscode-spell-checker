@@ -19,78 +19,40 @@ export function loadWords(filename: string): Rx.Observable<string> {
         .filter(line => line !== '');
 }
 
+
+export function splitLine(line: string) {
+    return Text.extractWordsFromText(line).map(({word}) => word);
+}
+
+export function splitCodeWords(words: string[]) {
+    return words
+        .map(Text.splitCamelCaseWord)
+        .reduce((a, b) => a.concat(b), []);
+}
+
+export function splitLineIntoCodeWordsRx(line: string) {
+    const asWords = splitLine(line);
+    const splitWords = splitCodeWords(asWords);
+    const wordsToAdd = [...asWords, ...splitWords];
+    return Rx.Observable.fromArray(wordsToAdd);
+}
+
+export function splitLineIntoWordsRx(line: string) {
+    const asWords = splitLine(line);
+    const wordsToAdd = [line, ...asWords];
+    return Rx.Observable.fromArray(wordsToAdd);
+}
+
 export function processWordListLines(lines: Rx.Observable<string>, minWordLength: number) {
-    return lines
-        .flatMap(line => {
-            const asWords = Text.extractWordsFromText(line).map(({word}) => word);
-            const splitWords = asWords
-                .map(Text.splitCamelCaseWord)
-                .reduce((a, b) => a.concat(b), []);
-            const wordsToAdd = [line, ...asWords, ...splitWords];
-            return Rx.Observable.fromArray(wordsToAdd);
-        })
-        .map(word => word.trim().toLowerCase())
-        .scan((pair: { setOfWords: WordSet; found: boolean; word: string; }, word: string) => {
-            const { setOfWords } = pair;
-            const found = setOfWords.has(word);
-            if (!found) {
-                setOfWords.add(word);
-            }
-            return { found , word, setOfWords };
-        }, { setOfWords: new Set<string>(), found: false, word: '' })
-        .filter(({found}) => !found)
-        ;
+    return processWords(
+        lines.flatMap(splitLineIntoCodeWordsRx)
+    );
 }
-
-
-export function processWordListLinesOld(lines: Rx.Observable<string>, minWordLength: number) {
-    return lines
-        .flatMap(line => {
-            const asWords = Text.extractWordsFromText(line).map(({word}) => word);
-            const splitWords = asWords
-                .map(Text.splitCamelCaseWord)
-                .reduce((a, b) => a.concat(b), []);
-            const wordsToAdd = [line, ...asWords, ...splitWords];
-            return Rx.Observable.fromArray(wordsToAdd);
-        })
-        .map(word => word.trim())
-        .map(word => word.toLowerCase())
-        .scan((pair: { setOfWords: WordDictionary; found: boolean; word: string; }, word: string) => {
-            const { setOfWords } = pair;
-            const found = setOfWords[word] === true;
-            setOfWords[word] = true;
-            return { found , word, setOfWords };
-        }, { setOfWords: Object.create(null), found: false, word: '' })
-        .filter(({found}) => !found);
-}
-
-export function processWordListLinesOld0(lines: Rx.Observable<string>, minWordLength: number) {
-    return lines
-        .flatMap(line => Rx.Observable.concat(
-            // Add the line
-            Rx.Observable.just(line),
-            // Add the individual words in the line
-            Text.extractWordsFromTextRx(line)
-                .flatMap(Text.splitCamelCaseWordWithOffsetRx)
-                .map(({word}) => word)
-                .filter(word => word.length > minWordLength)
-        ))
-        .map(word => word.trim())
-        .map(word => word.toLowerCase())
-        .scan((pair: { setOfWords: WordDictionary; found: boolean; word: string; }, word: string) => {
-            const { setOfWords } = pair;
-            const found = setOfWords[word] === true;
-            setOfWords[word] = true;
-            return { found , word, setOfWords };
-        }, { setOfWords: Object.create(null), found: false, word: '' })
-        .filter(({found}) => !found);
-}
-
 
 
 export function processWords(lines: Rx.Observable<string>) {
     return lines
-        .map(word => word.trim())
+        .map(word => word.trim().toLowerCase())
         .scan((acc: { setOfWords: Set<string>; found: boolean; word: string; }, word: string) => {
             const { setOfWords } = acc;
             const found = setOfWords.has(word);
