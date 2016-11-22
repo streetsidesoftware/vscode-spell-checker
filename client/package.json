@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
   "engines": {
-    "vscode": "^1.6.0"
+    "vscode": "^1.7.0"
   },
   "categories": [
     "Linters",
@@ -129,23 +129,22 @@
   "devDependencies": {
     "@types/chai": "^3.4",
     "@types/mocha": "^2.2",
-    "@types/node": "^6.0.40",
+    "@types/node": "^6.0.49",
     "@types/ramda": "0.0.2",
     "chai": "^3.5",
     "lorem-ipsum": "^1.0.3",
     "mocha": "^3.1",
-    "typescript": "^2.0.7",
-    "typings": "^1.4.0",
+    "typescript": "^2.0.10",
     "vscode": "^1.0.3"
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "lodash": "^4.16.4",
+    "lodash": "^4.17.2",
     "mkdirp": "^0.5.1",
     "ramda": "^0.22.1",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",
-    "vscode-languageclient": "^2.6.0",
+    "vscode-languageclient": "^2.6.3",
     "xregexp": "^3.1.1"
   }
 }
