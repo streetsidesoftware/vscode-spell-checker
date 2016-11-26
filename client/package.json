@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "MIT",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "publisher": "streetsidesoftware",
   "repository": {
     "type": "git",
@@ -138,7 +138,7 @@
     "@types/ramda": "0.0.2",
     "chai": "^3.5",
     "lorem-ipsum": "^1.0.3",
-    "mocha": "^3.1",
+    "mocha": "^3.2",
     "typescript": "^2.0.10",
     "vscode": "^1.0.3"
   },
