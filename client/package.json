@@ -133,6 +133,7 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4",
+    "@types/mkdirp": "^0.3.29",
     "@types/mocha": "^2.2",
     "@types/node": "^6.0.49",
     "@types/ramda": "0.0.2",
