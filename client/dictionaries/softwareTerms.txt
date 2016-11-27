@@ -17,6 +17,7 @@ autosuggest
 bar
 basedir
 bashrc
+blacklist
 blog
 bookmark
 bookmarked
@@ -234,6 +235,7 @@ util
 utils
 warning
 wget
+whitelist
 whitespace
 wiki
 Wikimedia
@@ -243,3 +245,4 @@ xml
 yacc
 Yahoo
 yyyy
+sudo

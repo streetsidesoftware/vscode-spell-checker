@@ -90,9 +90,12 @@ catch
 class
 clone
 compiler
+composer
 const
 constants
 continue
+curl
+curlwrappers
 declare
 default
 defined
@@ -116,6 +119,7 @@ for
 foreach
 function
 get
+getcomposer
 global
 goto
 halt
@@ -126,8 +130,11 @@ inherit doc
 instanceof
 insteadof
 interface
+ioncube
 isset
+libcurl
 list
+mbstring
 method
 namespace
 new
@@ -135,6 +142,7 @@ object
 once
 or
 php
+packagist
 print
 private
 property
@@ -143,6 +151,7 @@ public
 reflection
 require
 return
+sigchild
 static
 std
 switch
@@ -155,6 +164,7 @@ use
 user
 var
 while
+xdebug
 xor
 yield
 

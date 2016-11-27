@@ -85,6 +85,7 @@ AXA
 BAE Systems
 Baker Hughes Incorporated
 Ball Corporation
+Baltimore CyberTrust
 Banco Bilbao Vizcaya Argentaria
 Banco Bradesco
 Banco do Brasil
@@ -135,6 +136,7 @@ Caesars Entertainment Corporation
 Calpine Corporation
 Caltex Australia
 Calumet Specialty Products Partners, L.P.
+Camerfirma
 Cameron International Corporation
 Campbell Soup Company
 Canon
@@ -154,9 +156,11 @@ Centene Corporation
 CenterPoint Energy, Inc.
 Centrica
 CenturyLink, Inc.
+Certum
 CF Industries Holdings, Inc.
 CFE
 CH2M HILL Companies, Ltd.
+Chambersign
 Charter Communications, Inc.
 ChemChina
 Chesapeake Energy Corporation
@@ -216,6 +220,7 @@ Commercial Metals Company
 Commerzbank
 Commonwealth Bank of Australia
 Community Health Systems, Inc.
+Comodo AAA Services
 Compal Electronics
 Compass Group
 Computer Sciences Corporation
@@ -263,6 +268,7 @@ Deutsche Telekom
 Devon Energy Corporation
 Dexia Group
 Dick's Sporting Goods, Inc.
+DigiCert
 Dillard's, Inc.
 DirecTV
 Discover Financial Services
@@ -305,7 +311,9 @@ ENI
 Entergy Corporation
 Enterprise Products Partners
 Enterprise Products Partners L.P.
+Entrust.net
 EOG Resources, Inc.
+Equifax Secure
 Erie Insurance Group
 Exelon Corporation
 EXOR Group
@@ -324,6 +332,7 @@ Finmeccanica
 First American Financial Corporation
 First Data Corporation
 FirstEnergy Corp.
+Flattr
 Flextronics International
 Fluor
 Fluor Corporation
@@ -355,10 +364,12 @@ General Motors
 Genuine Parts Company
 Genworth Financial, Inc.
 George Weston
+GeoTrust Global
 Gilead Sciences, Inc.
 GlaxoSmithKline
 Glencore International
 Global Partners LP
+GlobalSign
 Goldman Sachs Group
 Goodyear Tire & Rubber
 Google
@@ -491,6 +502,7 @@ Land O'Lakes, Inc.
 Landesbank Baden-Wurttemberg
 Las Vegas Sands Corp.
 Lear Corporation
+Leaseweb
 Legal & General Group
 Leidos Holdings Inc.
 Lennar Corporation
@@ -567,6 +579,7 @@ Mondelez International, Inc.
 Monsanto Company
 Morgan Stanley
 Motorola Solutions, Inc.
+Mouseflow
 MRC Global Inc.
 MS&AD Insurance Group Holdings
 Munich Re Group
@@ -658,6 +671,7 @@ Philip Morris International Inc.
 Phillips 66
 Phoenix Pharmahandel
 Ping An Insurance
+Pingdom
 PKN ORLEN Group
 Plains All American Pipeline
 Plains GP Holdings, L.P.
@@ -685,8 +699,10 @@ Quanta Computer
 Quanta Services, Inc.
 Quest Diagnostics Incorporated
 Quintiles Transnational Holdings Inc.
+QuoVadis
 R.R. Donnelley & Sons Company
 Rabobank Group
+Rackspace
 Ralph Lauren Corporation
 Randstad Holding
 Raytheon
@@ -757,6 +773,7 @@ SNCF
 Societe Generale
 Sodexo
 Softbank
+Sonera
 Sonic Automotive, Inc.
 Sony
 Southwest Airlines Co.
@@ -765,11 +782,13 @@ Spectrum Group International, Inc.
 Sprint Nextel
 SSE
 St. Jude Medical, Inc.
+Staat der Nederlanden
 Standard Chartered Group
 Stanley Black & Decker, Inc.
 Staples
 Staples, Inc.
 Starbucks Corporation
+Starfield
 Starwood Hotels & Resorts Worldwide, Inc.
 State Bank of India
 State Farm Insurance Cos.
@@ -795,6 +814,7 @@ Susser Holdings Corporation
 Suzuken
 Suzuki Motor
 Swiss Re
+Swisscom
 Symantec Corporation
 Synnex Corporation
 Sysco
@@ -904,6 +924,8 @@ Valero Energy
 Vanguard Health Systems, Inc.
 Vattenfall
 Veolia Environnement
+VeriSign
+Verisign
 Verizon Communications
 Viacom Inc.
 Vinci
