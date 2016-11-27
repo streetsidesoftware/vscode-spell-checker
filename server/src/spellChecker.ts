@@ -58,7 +58,7 @@ const wordList: Rx.Promise<WordSet> =
         loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
         loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
         loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
-        loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
         loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')),
     ])
     .toPromise();
