@@ -25,6 +25,12 @@ export function validateTextDocument(textDocument: TextDocument, options: Valida
         .toPromise();
 }
 
+interface WordRangeAcc {
+    word?: Text.WordOffset;
+    isIncluded: boolean;
+    rangePos: number;
+};
+
 export function validateText(text: string, options: ValidationOptions = {}): Rx.Observable<Text.WordOffset> {
     const {
         maxNumberOfProblems = defaultMaxNumberOfProblems,
@@ -32,11 +38,35 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
         flagWords           = [],
     } = options;
     const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, Object.create(null));
+    const includeRanges = Text.excludeRanges(
+        [
+            { startPos: 0, endPos: text.length },
+        ],
+        Text.findMatchingRangesForPatterns([
+            Text.regExSpellingGuard,
+            Text.regExMatchUrls,
+            Text.regExPublicKey,
+            Text.regExCert,
+        ], text)
+    );
     return Text.extractWordsFromCodeRx(text)
+        // Filter out any words that are NOT in the include ranges.
+        .scan<WordRangeAcc>((acc, word) => {
+            let { rangePos } = acc;
+            const wordEndPos = word.offset + word.word.length;
+            while (includeRanges[rangePos] && includeRanges[rangePos].endPos <= wordEndPos) {
+                rangePos += 1;
+            }
+            const isIncluded = includeRanges[rangePos] && includeRanges[rangePos].startPos <= word.offset;
+            return { rangePos, isIncluded, word };
+        }, { isIncluded: false, rangePos: 0})
+        .filter(wr => wr.isIncluded)
+        .map(wr => wr.word)
         .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] === true }))
         .filter(word => word.isFlagged || word.word.length >= minWordLength )
         .flatMap(word => isWordInDictionary(word.word).then(isFound => merge(word, { isFound })))
         .filter(word => word.isFlagged || ! word.isFound )
+        .filter(word => !Text.regExHexValues.test(word.word))  // Filter out any hex numbers
         .take(maxNumberOfProblems);
 }
 

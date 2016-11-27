@@ -36,4 +36,35 @@ describe('Validator', () => {
             expect(results).to.be.lengthOf(0);
         });
     });
+
+    it('validates regex inclusions/exclusions', () => {
+        return Validator.validateText(sampleCode)
+        .toArray()
+        .toPromise()
+        .then(results => {
+            const words = results.map(wo => wo.word);
+            expect(words).to.contain('wrongg');
+            expect(words).to.contain('mispelled');
+            expect(words).to.not.contain('xaccd');
+            expect(words).to.not.contain('ctrip');
+        });
+    });
 });
+
+const sampleCode = `
+
+// Verify urls do not get checked.
+const url = 'http://ctrip.com?q=words';
+
+// Verify hex values.
+const value = 0xaccd;
+
+/* spell-checker:disable */
+
+const weirdWords = ['ctrip', 'xebia', 'zando', 'zooloo'];
+
+/* spell-checker:enable */
+
+const wrongg = 'mispelled';
+
+`;

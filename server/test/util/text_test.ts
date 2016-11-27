@@ -155,7 +155,7 @@ describe('Util Text', () => {
         const ranges = Text.findMatchingRangesForPatterns([
             Text.regExMatchUrls,
             Text.regExSpellingGuard,
-            Text.regExMatchHexValues,
+            Text.regExMatchCommonHexFormats,
         ], text);
         expect(ranges.length).to.be.equal(7);
     });
@@ -170,10 +170,10 @@ describe('Util Text', () => {
         const excludeRanges = Text.findMatchingRangesForPatterns([
             Text.regExSpellingGuard,
             Text.regExMatchUrls,
-            Text.regExMatchHexValues,
+            Text.regExMatchCommonHexFormats,
         ], text);
         const mergedRanges = Text.excludeRanges(includeRanges, excludeRanges);
-        const stopHere = 1;
+        expect(mergedRanges.length).to.be.equal(20);
     });
 });
 
