@@ -15,11 +15,28 @@ const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}+$');
 const regExAllUpper = XRegExp('^\\p{Lu}+$');
 const regExAllLower = XRegExp('^\\p{Ll}+$');
 
-export function splitCamelCaseWordWithOffset(wo: WordOffset): Rx.Observable<WordOffset> {
+
+function scan<T, U>(accFn: (acc: T, value: U) => T, init: T) {
+    let acc = init;
+    return function(value: U): T {
+        acc = accFn(acc, value);
+        return acc;
+    };
+}
+
+
+export function splitCamelCaseWordWithOffsetRx(wo: WordOffset): Rx.Observable<WordOffset> {
     return Rx.Observable.fromArray(splitCamelCaseWord(wo.word))
         .scan(
             (last, word) => ({ word, offset: last.offset + last.word.length }),
             { word: '', offset: wo.offset } );
+}
+
+export function splitCamelCaseWordWithOffset(wo: WordOffset): Array<WordOffset> {
+    return splitCamelCaseWord(wo.word)
+        .map(scan<WordOffset, string>(
+            (last, word) => ({ word, offset: last.offset + last.word.length }),
+            { word: '', offset: wo.offset } ));
 }
 
 /**
@@ -85,17 +102,30 @@ export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> 
  * Extract out whole words from a string of text.
  */
 export function extractWordsFromText(text: string): WordOffset[] {
-    return observableToArray(extractWordsFromTextRx(text));
+    const reg = XRegExp(regExWords);
+    return [...match(reg, text)]
+        .map(m => ({
+            word: m[0],
+            offset: m.index
+        }))
+        // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
+        .map(wo => ({
+            word: XRegExp.replace(wo.word, regExIgnoreCharacters, match => ' '.repeat(match.length)).trim(),
+            offset: wo.offset
+        }))
+        .filter(wo => !!wo.word);
 }
 
 export function extractWordsFromCodeRx(text: string): Rx.Observable<WordOffset> {
     return extractWordsFromTextRx(text)
-        .concatMap(word => splitCamelCaseWordWithOffset(word));
+        .concatMap(word => splitCamelCaseWordWithOffsetRx(word));
 }
 
 
 export function extractWordsFromCode(text: string): WordOffset[] {
-    return observableToArray(extractWordsFromCodeRx(text));
+    return extractWordsFromText(text)
+        .map(splitCamelCaseWordWithOffset)
+        .reduce((a, b) => a.concat(b), []);
 }
 
 export function isUpperCase(word: string) {

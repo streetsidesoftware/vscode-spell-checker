@@ -1,31 +1,26 @@
 import * as Rx from 'rx';
-import * as fs from 'fs';
 import * as path from 'path';
-import { match } from './util/text';
-import { Trie, addWordToTrie } from './suggest';
+import { Trie, addWordToTrie, TrieMap } from './suggest';
 import * as sug from './suggest';
-import * as Text from './util/text';
-
-export interface WordDictionary {
-    [index: string]: boolean;
-}
+import { loadWords, processWordListLines, processWords, WordSet, splitLineIntoWordsRx, splitLineIntoCodeWordsRx } from '../src/wordListHelper';
 
 const minWordLength = 3;
 
-export function loadWords(filename: string): Rx.Observable<string> {
-    const reader = Rx.Observable.fromNodeCallback<string>(fs.readFile);
-
-    return reader(filename, 'utf-8')
-        .flatMap(text => Rx.Observable.from(match(/(.+)(\r?\n)?/g, text)))
-        .map(regExpExecArray => regExpExecArray[1])
-        .map(line => line.trim())
-        .filter(line => line !== '');
+export function loadSimpleWordList(filename: string) {
+    return loadWords(filename);
 }
 
-export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary> {
-    return processWordListLines(
-            Rx.Observable.fromArray(filenames)
-                .flatMap(loadWords)
+export function loadWordList(filename: string) {
+    return loadWords(filename).flatMap(splitLineIntoWordsRx);
+}
+
+export function loadCodeWordList(filename: string) {
+    return loadWords(filename).flatMap(splitLineIntoCodeWordsRx);
+}
+
+export function loadWordLists(wordLists: Rx.Observable<string>[]): Rx.Observable<WordSet> {
+    return processWords(
+            Rx.Observable.fromArray(wordLists).flatMap(a => a)
         )
         .tap(({word}) => { trie = addWordToTrie(trie, word); })
         .last()
@@ -35,57 +30,36 @@ export function loadWordLists(filenames: string[]): Rx.Observable<WordDictionary
 export function isWordInDictionary(word: string): Rx.Promise<boolean> {
     const nWord = word.toLocaleLowerCase();
     return wordList.then(wordList => {
-        return wordList[nWord] === true
-            || userWords[nWord] === true;
+        return wordList.has(nWord)
+            || userWords.has(nWord);
     });
 }
 
-export function processWordListLines(lines: Rx.Observable<string>) {
-    return lines
-        .flatMap(line => Rx.Observable.concat(
-            // Add the line
-            Rx.Observable.just(line),
-            // Add the individual words in the line
-            Text.extractWordsFromTextRx(line)
-                .flatMap(Text.splitCamelCaseWordWithOffset)
-                .map(({word}) => word)
-                .filter(word => word.length > minWordLength)
-        ))
-        .map(word => word.trim())
-        .map(word => word.toLowerCase())
-        .scan((pair: { setOfWords: WordDictionary; found: boolean; word: string; }, word: string) => {
-            const { setOfWords } = pair;
-            const found = setOfWords[word] === true;
-            setOfWords[word] = true;
-            return { found , word, setOfWords };
-        }, { setOfWords: Object.create(null), found: false, word: '' })
-        .filter(({found}) => !found);
-}
-
 export function setUserWords(...wordSets: string[][]) {
-    userWords = Object.create(null);
+    userWords = new Set<string>();
     processWordListLines(
-            Rx.Observable.fromArray(wordSets).flatMap(a => a)
+            Rx.Observable.fromArray(wordSets).flatMap(a => a),
+            minWordLength
         )
         .tap(({word}) => { trie = addWordToTrie(trie, word); })
         .subscribe(({setOfWords}) => { userWords = setOfWords; });
 }
 
-let trie: Trie = { c: [] };
+let trie: Trie = { c: new TrieMap };
 
-let userWords: WordDictionary = Object.create(null);
+let userWords: WordSet = new Set<string>();
 
-const wordList: Rx.Promise<WordDictionary> =
+const wordList: Rx.Promise<WordSet> =
     loadWordLists([
-        path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'node.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'html.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'php.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'go.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt'),
-        path.join(__dirname, '..', '..', 'dictionaries', 'python.txt'),
+        loadSimpleWordList(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')),
+        loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
+        loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
+        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')),
     ])
     .toPromise();
 

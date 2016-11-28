@@ -156,6 +156,10 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.12.0
+* Greatly reduce the amount of time it takes to load this extension
+* Add the ability to change the time delay for checking document changes.  See Issue #28.
+
 ### 0.11.5
 * Add Python support -- Special Thanks to @wheerd
 * Move the "Add to Dictionary" suggestion back down to the bottom.

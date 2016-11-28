@@ -25,6 +25,7 @@ const settings: CSpellPackageSettings = {
     ],
     maxNumberOfProblems: 100,
     numSuggestions: 10,
+    spellCheckDelayMs: 50,
     words: [],
     userWords: [],
     ignorePaths: []
@@ -118,7 +119,9 @@ function run() {
         .filter(shouldValidateDocument)
         // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         // De-dupe and backed up request by waiting for 50ms.
-        .groupByUntil( doc => doc.uri, doc => doc, () => Rx.Observable.timer(50))
+        .groupByUntil( doc => doc.uri, doc => doc, function() {
+            return Rx.Observable.timer(settings.spellCheckDelayMs || 50);
+        })
         // keep only the last request in a group.
         .flatMap(group => group.last())
         // .tap(doc => connection.console.log(`C Validate ${doc.uri}:${doc.version}:${Date.now()}`))

@@ -1,31 +1,28 @@
 3M Company
 A.P. Moller-Maersk Group
 ABB
-ACS
-AECOM Technology Corporation
-AEON
-AGCO Corporation
-AK Steel Holding Corporation
-AMR
-AT&T
-AXA
-AbbVie Inc.
 Abbott Laboratories
+AbbVie Inc.
 Accenture
+ACS
 Adecco Group
 Advance Auto Parts, Inc.
 Advanced Micro Devices, Inc.
+AECOM Technology Corporation
 Aegon
+AEON
 Aetna
 Aetna Inc.
 Aflac
 Aflac Incorporated
+AGCO Corporation
 Agilent Technologies, Inc.
 Agricultural Bank of China
 Air France-KLM Group
 Air Products & Chemicals, Inc.
 Airgas, Inc.
 Aisin Seiki
+AK Steel Holding Corporation
 Alaska Air Group, Inc.
 Alcoa
 Alcoa Inc.
@@ -52,6 +49,7 @@ American International Group
 Ameriprise Financial, Inc.
 AmerisourceBergen
 Amgen Inc.
+AMR
 Anadarko Petroleum Corporation
 Anglo American
 Anheuser-Busch InBev
@@ -59,11 +57,9 @@ Anixter International Inc.
 Ansteel Group
 Apache Corporation
 Apple
-Apple
 Applied Materials, Inc.
 Aramark Holdings Corporation
 ArcelorMittal
-Archer Daniels Midland
 Archer Daniels Midland
 Arrow Electronics, Inc
 Asbury Automotive Group, Inc.
@@ -71,12 +67,13 @@ Ashland Inc.
 Assicurazioni Generali
 Assurant, Inc.
 AstraZeneca
+AT&T
 Australia & New Zealand Banking Group
 Auto-Owners Insurance Group
-AutoNation, Inc.
-AutoZone, Inc.
 Autoliv, Inc.
 Automatic Data Processing, Inc.
+AutoNation, Inc.
+AutoZone, Inc.
 Avery Dennison Corporation
 Aviation Industry Corp. of China
 Avis Budget Group, Inc.
@@ -84,20 +81,14 @@ Aviva
 Avnet
 Avnet, Inc.
 Avon Products, Inc.
+AXA
 BAE Systems
-BASF
-BB&T Corporation
-BHP Billiton
-BMW
-BNP Paribas
-BP
-BT Group
 Baker Hughes Incorporated
 Ball Corporation
 Banco Bilbao Vizcaya Argentaria
 Banco Bradesco
-Banco Santander
 Banco do Brasil
+Banco Santander
 Bank of America
 Bank of America Corp.
 Bank of China
@@ -106,8 +97,10 @@ Bank of Nova Scotia
 Baosteel Group
 Barclays
 Barnes & Noble, Inc.
+BASF
 Baxter International Inc.
 Bayer
+BB&T Corporation
 Becton, Dickinson and Company
 Bed Bath & Beyond Inc.
 Bemis Company, Inc.
@@ -116,43 +109,27 @@ Bertelsmann
 Best Buy
 Best Buy Co., Inc.
 Bharat Petroleum
+BHP Billiton
 Big Lots, Inc.
 Biogen Idec Inc.
 BlackRock, Inc.
+BMW
+BNP Paribas
 Boeing
 Booz Allen Hamilton Holding Corp.
 BorgWarner Inc.
 Boston Scientific Corporation
 Bouygues
+BP
 Brazilian Distribution
 Bridgestone
 Bristol-Myers Squibb Company
 British American Tobacco
 Broadcom Corporation
+BT Group
 Buckeye Partners, L.P.
 Bunge
 C. H. Robinson Worldwide, Inc.
-CBRE Group, Inc.
-CBS Corporation
-CC Media Holdings, Inc.
-CDW Corporation
-CF Industries Holdings, Inc.
-CFE
-CH2M HILL Companies, Ltd.
-CHS
-CHS Inc.
-CIGNA Corporation
-CITIC Group
-CMS Energy Corporation
-CNP Assurances
-COFCO
-CONSOL Energy Inc.
-CPC
-CRH
-CST Brands, Inc.
-CSX Corporation
-CVS Caremark
-CVS Caremark
 Cablevision Systems Corporation
 Caesars Entertainment Corporation
 Calpine Corporation
@@ -162,23 +139,27 @@ Cameron International Corporation
 Campbell Soup Company
 Canon
 Capital One Financial Corporation
+Cardinal Health
 CarMax, Inc.
-Cardinal Health
-Cardinal Health
 Carrefour
 Casey's General Stores, Inc.
 Caterpillar
-Caterpillar
+CBRE Group, Inc.
+CBS Corporation
+CC Media Holdings, Inc.
+CDW Corporation
 Celanese Corporation
 Celgene Corporation
 Centene Corporation
 CenterPoint Energy, Inc.
 Centrica
 CenturyLink, Inc.
+CF Industries Holdings, Inc.
+CFE
+CH2M HILL Companies, Ltd.
 Charter Communications, Inc.
 ChemChina
 Chesapeake Energy Corporation
-Chevron
 Chevron
 China Communications Construction
 China Construction Bank
@@ -213,14 +194,21 @@ China State Construction Engineering
 China Telecommunications
 China United Network Communications
 Christian Dior
+CHS
+CHS Inc.
 Chubu Electric Power
+CIGNA Corporation
 Cisco Systems
 Cisco Systems, Inc.
+CITIC Group
 Citigroup
 Cliffs Natural Resources Inc.
+CMS Energy Corporation
+CNP Assurances
 Coach, Inc.
 Coca-Cola
 Coca-Cola Enterprises, Inc.
+COFCO
 Cognizant Technology Solutions Corporation
 Colgate-Palmolive Company
 Comcast
@@ -234,6 +222,7 @@ Computer Sciences Corporation
 Con-way Inc.
 ConAgra Foods, Inc.
 ConocoPhillips
+CONSOL Energy Inc.
 Consolidated Edison, Inc.
 Continental
 Coop Group
@@ -241,16 +230,16 @@ Core-Mark Holding Company, Inc.
 Corning Incorporated
 Cosmo Oil
 Costco Wholesale
+CPC
 Credit Agricole
 Credit Suisse Group
+CRH
 Crown Holdings, Inc.
+CST Brands, Inc.
+CSX Corporation
 Cummins Inc.
+CVS Caremark
 D.R. Horton, Inc.
-DIRECTV
-DISH Network Corporation
-DTE Energy Company
-DZ Bank
-DaVita HealthCare Partners Inc.
 Dai-ichi Life Insurance
 Daimler
 Daiwa House Industry
@@ -258,6 +247,7 @@ Dana Holding Corporation
 Danaher Corporation
 Danone
 Darden Restaurants, Inc.
+DaVita HealthCare Partners Inc.
 Dean Foods Company
 Deere
 Deere & Company
@@ -277,6 +267,7 @@ Dillard's, Inc.
 DirecTV
 Discover Financial Services
 Discovery Communications, Inc.
+DISH Network Corporation
 Dollar General Corporation
 Dollar Tree, Inc.
 Dominion Resources, Inc.
@@ -285,18 +276,16 @@ Dongfeng Motor Group
 Dover Corporation
 Dow Chemical
 Dr Pepper Snapple Group, Inc.
-DuPont
+DTE Energy Company
 Duke Energy Corporation
+DuPont
+DZ Bank
 E.I. du Pont de Nemours and Company
 E.ON
 EADS
-EMC Corporation
-EMCOR Group, Inc.
-ENI
-EOG Resources, Inc.
-EXOR Group
 East Japan Railway
 Eastman Chemical Company
+eBay Inc.
 Ecolab Inc.
 Ecopetrol
 Edeka Zentrale
@@ -304,21 +293,25 @@ Edison International
 Electricite de France
 Eli Lilly
 Eli Lilly and Company
+EMC Corporation
+EMCOR Group, Inc.
 Emerson Electric
 Emerson Electric Co.
 Enel
 Energie Baden-Wurttemberg
 Energy Future Holdings Corp.
 Energy Transfer Equity, L.P.
+ENI
 Entergy Corporation
 Enterprise Products Partners
 Enterprise Products Partners L.P.
+EOG Resources, Inc.
 Erie Insurance Group
 Exelon Corporation
+EXOR Group
 Expeditors International of Washington, Inc.
 Express Scripts Holding
 Exxon Mobil
-FMC Technologies, Inc.
 Facebook, Inc.
 Family Dollar Stores, Inc.
 Fannie Mae
@@ -334,6 +327,7 @@ FirstEnergy Corp.
 Flextronics International
 Fluor
 Fluor Corporation
+FMC Technologies, Inc.
 Foncire Euris
 Foot Locker, Inc.
 Ford Motor
@@ -346,13 +340,12 @@ Freeport-McMoRan Copper & Gold Inc.
 Fresenius
 Fujifilm Holdings
 Fujitsu
-GDF Suez
-GS Caltex
 GameStop Corp.
 Gannett Co., Inc.
 Gas Natural Fenosa
 GasTerra
 Gazprom
+GDF Suez
 General Cable Corporation
 General Dynamics
 General Dynamics Corporation
@@ -374,19 +367,19 @@ Greenland Holding Group
 Group 1 Automotive, Inc.
 Groupe Auchan
 Groupe BPCE
+GS Caltex
 Guardian Life Ins. Co. of America
 H.J. Heinz Company
-HCA Holdings
-HCA Holdings, Inc.
-HD Supply Holdings, Inc.
-HSBC Holdings
 Halliburton
 Halliburton Company
 Harbinger Group Inc.
 Harley-Davidson, Inc.
 Harris Corporation
-HeBei Iron & Steel Group
+HCA Holdings
+HCA Holdings, Inc.
+HD Supply Holdings, Inc.
 Health Net, Inc.
+HeBei Iron & Steel Group
 Heineken Holding
 Henan Coal & Chemical
 Henry Schein, Inc.
@@ -407,6 +400,7 @@ Honeywell International
 Honeywell International Inc.
 Hormel Foods Corporation
 Host Hotels & Resorts, Inc.
+HSBC Holdings
 Huawei Investment & Holding
 Humana
 Humana Inc.
@@ -417,9 +411,6 @@ Hutchison Whampoa
 Hyundai Heavy Industries
 Hyundai Mobis
 Hyundai Motor
-ING Group
-INTL FCStone
-INTL FCStone Inc.
 Iberdrola
 Icahn Enterprises L.P.
 Idemitsu Kosan
@@ -428,6 +419,7 @@ Imperial Tobacco Group
 Indian Oil
 Industrial & Commercial Bank of China
 Ineos Group Holdings
+ING Group
 Ingram Micro
 Ingram Micro Inc.
 Ingredion Incorporated
@@ -441,6 +433,8 @@ International Paper
 International Paper Company
 International Petroleum Investment
 Intesa Sanpaolo
+INTL FCStone
+INTL FCStone Inc.
 Itausa-Investimentos
 Itochu
 J. Sainsbury
@@ -448,35 +442,35 @@ J.B. Hunt Transport Services, Inc.
 J.C. Penney Company, Inc.
 J.P. Morgan Chase & Co.
 J.P. Morgan Chase & Co.
-JBS
-JFE Holdings
-JX Holdings
 Jabil Circuit, Inc.
 Jacobs Engineering Group Inc.
 Japan Post Holdings
 Japan Tobacco
 Jarden Corporation
 Jardine Matheson
+JBS
 JetBlue Airways Corporation
+JFE Holdings
 Jiangsu Shagang Group
 Jizhong Energy Group
 Johnson & Johnson
 Johnson Controls
 Johnson Controls, Inc.
 Joy Global Inc.
+JX Holdings
+Kailuan Group
+Kansai Electric Power
 KBC Group
 KBR, Inc.
 KDDI
-KFW Bankengruppe
-KKR & Co. L.P.
-Kailuan Group
-Kansai Electric Power
 Kellogg Company
 Kelly Services, Inc.
+KFW Bankengruppe
 Kia Motors
 Kimberly-Clark Corporation
 Kinder Morgan, Inc.
 Kindred Healthcare, Inc.
+KKR & Co. L.P.
 Kobe Steel
 Kohl's Corporation
 Komatsu
@@ -487,11 +481,9 @@ Kraft Foods
 Kraft Foods Group, Inc.
 Kroger
 L Brands, Inc.
-L'Oreal
 L-3 Communications Holdings, Inc.
 L.M. Ericsson
-LG Electronics
-LKQ Corporation
+L'Oreal
 La Poste
 Laboratory Corporation of America Holdings
 Lafarge
@@ -505,11 +497,13 @@ Lennar Corporation
 Lenovo Group
 Leucadia National Corporation
 Level 3 Communications, Inc.
+LG Electronics
 Liberty Interactive Corporation
 Liberty Mutual Holding Company Inc.
 Liberty Mutual Insurance Group
 Lincoln National Corporation
 Live Nation Entertainment, Inc.
+LKQ Corporation
 Lloyds Banking Group
 Lockheed Martin
 Lockheed Martin Corporation
@@ -520,9 +514,6 @@ Lowe's Companies
 Lufthansa Group
 Lukoil
 LyondellBasell Industries
-MGM Resorts International
-MRC Global Inc.
-MS&AD Insurance Group Holdings
 Macy's
 Macy's, Inc.
 Magna International
@@ -556,6 +547,7 @@ Merck
 Merck & Co., Inc.
 MetLife
 Metro
+MGM Resorts International
 Michelin
 Micron Technology, Inc.
 Microsoft
@@ -575,23 +567,22 @@ Mondelez International, Inc.
 Monsanto Company
 Morgan Stanley
 Motorola Solutions, Inc.
+MRC Global Inc.
+MS&AD Insurance Group Holdings
 Munich Re Group
 Murphy Oil
 Murphy Oil Corporation
 Murphy USA Inc.
 Mutual of Omaha Insurance Company
 Mylan Inc.
-NCR Corporation
-NEC
-NII Holdings, Inc.
-NKSJ Holdings
-NRG Energy, Inc.
 National Australia Bank
 National Grid
 National Oilwell Varco, Inc.
 Nationwide
 Nationwide Mutual Insurance Co.
 Navistar International Corporation
+NCR Corporation
+NEC
 Nestle
 NetApp, Inc.
 New York Life Insurance
@@ -600,13 +591,15 @@ Newell Rubbermaid Inc.
 Newmont Mining Corporation
 News Corp.
 NextEra Energy, Inc.
-NiSource Inc.
+NII Holdings, Inc.
 Nike, Inc.
 Nippon Life Insurance
 Nippon Steel
 Nippon Telegraph & Telephone
 Nippon Yusen Kabushiki Kaisha
+NiSource Inc.
 Nissan Motor
+NKSJ Holdings
 Noble Energy, Inc.
 Noble Group
 Nokia
@@ -620,10 +613,9 @@ Northrop Grumman Corporation
 Northwestern Mutual
 Northwestern Mutual Life Insurance Company,Inc.
 Novartis
+NRG Energy, Inc.
 Nucor Corporation
 O'Reilly Automotive, Inc.
-OMV Group
-ONEOK, Inc.
 Oaktree Capital Group, LLC
 Occidental Petroleum
 Occidental Petroleum Corporation
@@ -632,6 +624,8 @@ Oil & Natural Gas
 Old Republic International Corporation
 Omnicare, Inc.
 Omnicom Group Inc.
+OMV Group
+ONEOK, Inc.
 Onex
 Oracle
 Oracle Corporation
@@ -640,41 +634,39 @@ Owens & Minor, Inc.
 Owens Corning
 Owens-Illinois, Inc.
 PACCAR Inc
-PBF Energy Inc.
-PDVSA
-PG&E Corporation
-PKN ORLEN Group
-POSCO
-PPG Industries, Inc.
-PPL Corporation
-PTT
-PVH Corp.
 Pacific Life
 Panasonic
 Parker-Hannifin Corporation
+PBF Energy Inc.
+PDVSA
 Peabody Energy Corporation
 Pemex
 Penske Automotive Group, Inc.
 People's Insurance Co. of China
 Pepsi
 PepsiCo
-PetSmart, Inc.
 Peter Kiewit Sons', Inc.
 Petrobras
 Petronas
+PetSmart, Inc.
 Peugeot
 Pfizer
 Pfizer
+PG&E Corporation
 Philip Morris International
 Philip Morris International Inc.
 Phillips 66
 Phoenix Pharmahandel
 Ping An Insurance
+PKN ORLEN Group
 Plains All American Pipeline
 Plains GP Holdings, L.P.
+POSCO
 Poste Italiane
 Power China
 Power Corp. of Canada
+PPG Industries, Inc.
+PPL Corporation
 Praxair, Inc.
 Precision Castparts Corp.
 Principal Financial Group, Inc.
@@ -682,17 +674,18 @@ Procter & Gamble
 Prudential
 Prudential Financial
 Prudential Financial, Inc.
+PTT
 Public Service Enterprise Group Incorporated
 Publix Super Markets
 Publix Super Markets, Inc.
 PulteGroup, Inc.
+PVH Corp.
 Qualcomm Incorporated
 Quanta Computer
 Quanta Services, Inc.
 Quest Diagnostics Incorporated
 Quintiles Transnational Holdings Inc.
 R.R. Donnelley & Sons Company
-RWE
 Rabobank Group
 Ralph Lauren Corporation
 Randstad Holding
@@ -722,17 +715,13 @@ Royal Bank of Canada
 Royal Bank of Scotland Group
 Royal Dutch Shell
 Royal Philips Electronics
+RWE
 Ryder System, Inc.
 S-Oil
-SAIC Motor
-SHV Holdings
-SK Holdings
-SLM Corporation
-SNCF
-SSE
 Sabic
 Safeway
 Safeway Inc.
+SAIC Motor
 Saint-Gobain
 Samsung Electronics
 SanDisk Corporation
@@ -754,13 +743,17 @@ Sharp
 Shenhua Group
 Shougang Group
 Showa Shell Sekiyu
+SHV Holdings
 Siemens
 Simon Property Group, Inc.
 Sinochem Group
 Sinomach
 Sinopec Group
 Sistema
+SK Holdings
+SLM Corporation
 Smithfield Foods, Inc.
+SNCF
 Societe Generale
 Sodexo
 Softbank
@@ -770,6 +763,7 @@ Southwest Airlines Co.
 Spectra Energy Corp
 Spectrum Group International, Inc.
 Sprint Nextel
+SSE
 St. Jude Medical, Inc.
 Standard Chartered Group
 Stanley Black & Decker, Inc.
@@ -791,9 +785,9 @@ Sumitomo Electric Industries
 Sumitomo Life Insurance
 Sumitomo Mitsui Financial Group
 Sun Life Financial
-SunTrust Banks, Inc.
 Suncor Energy
 Sunoco
+SunTrust Banks, Inc.
 Supervalu
 Supervalu Inc.
 Surgutneftegas
@@ -806,12 +800,6 @@ Synnex Corporation
 Sysco
 Sysco Corporation
 T&D Holdings
-TIAA-CREF
-TIAA-CREF
-TJX
-TNK-BP International
-TRW Automotive Holdings Corp.
-TUI
 Targa Resources Corp.
 Target
 Target
@@ -850,8 +838,8 @@ The Interpublic Group of Companies, Inc.
 The J.M. Smucker Company
 The Jones Financial Companies,L.L.L.P.
 The Mosaic Company
-The PNC Financial Services Group, Inc.
 The Pantry, Inc.
+The PNC Financial Services Group, Inc.
 The Priceline Group Inc.
 The Progressive Corporation
 The Sherwin-Williams Company
@@ -864,9 +852,13 @@ The Williams Companies, Inc.
 Thermo Fisher Scientific Inc.
 Thrivent Financial for Lutherans
 ThyssenKrupp
+TIAA-CREF
+TIAA-CREF
 Time Warner
 Time Warner Cable Inc.
 Time Warner Inc.
+TJX
+TNK-BP International
 Tokio Marine Holdings
 Tokyo Electric Power
 Tokyo Gas
@@ -878,6 +870,8 @@ Toys "R" Us, Inc.
 Tractor Supply Company
 TravelCenters of America LLC
 Travelers Cos.
+TRW Automotive Holdings Corp.
+TUI
 Twenty-First Century Fox, Inc.
 Tyson Foods
 Tyson Foods, Inc.
@@ -885,8 +879,6 @@ U.S. Bancorp
 U.S. Postal Service
 UBS
 UGI Corporation
-URS Corporation
-US Foods, Inc.
 Ultrapar Holdings
 UniCredit Group
 Unilever
@@ -904,6 +896,8 @@ United Technologies
 UnitedHealth Group
 Universal Health Services, Inc.
 Unum Group
+URS Corporation
+US Foods, Inc.
 V.F. Corporation
 Vale
 Valero Energy
@@ -921,7 +915,6 @@ Volkswagen
 Volvo
 W.R. Berkley Corporation
 W.W. Grainger, Inc.
-WESCO International, Inc.
 Wal-Mart Stores
 Walgreen
 Walgreen Co.
@@ -930,6 +923,7 @@ Waste Management, Inc.
 WellCare Health Plans, Inc.
 WellPoint
 Wells Fargo
+WESCO International, Inc.
 Wesfarmers
 Western Digital Corporation
 Western Refining, Inc.
@@ -958,4 +952,3 @@ Yum! Brands, Inc.
 Zhejiang Geely Holding Group
 Zhejiang Materials Industry Group
 Zurich Insurance Group
-eBay Inc.

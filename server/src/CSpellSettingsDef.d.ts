@@ -47,6 +47,9 @@ interface CSpellUserSettings {
 
     // Show status
     showStatus?: boolean;
+
+    // Delay in ms after a document has changed before checking it for spelling errors.
+    spellCheckDelayMs?: number;
 }
 
 
@@ -74,6 +77,9 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
 
     // Show status
     '// showStatus'?: string[];
+
+    // Delay after a document has changed before checking it for spelling errors.
+    '// spellCheckDelayMs'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];

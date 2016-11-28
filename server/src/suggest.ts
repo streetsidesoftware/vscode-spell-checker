@@ -1,17 +1,20 @@
+
+export class TrieMap extends Map<string, TrieNode> {};
+
 /**
  * See: https://en.wikipedia.org/wiki/Trie
  */
 export interface TrieNode {
     k: number;
     w: string;
-    c: TrieNode[];
+    c?: TrieMap;
 }
 
 /**
  * See: https://en.wikipedia.org/wiki/Trie
  */
 export interface Trie {
-    c: TrieNode[];
+    c: TrieMap;
 }
 
 const baseCost = 100;
@@ -32,16 +35,16 @@ let trieNextId = 1;
  *
  */
 export function addWordToTrie(trie: Trie, word: string): Trie {
-    function buildTrie(word: string, trieNodes: TrieNode[]) {
+    function buildTrie(word: string, trieNodes: TrieMap = new TrieMap()): TrieMap {
         const head = word.slice(0, 1);
         const tail = word.slice(1);
-        const found = trieNodes.find(t => t.w === head);
+        const found = trieNodes.get(head);
         if (found) {
             found.c = head ? buildTrie(tail, found.c) : found.c;
         } else {
-            const children = head ? buildTrie(tail, []) : [];
-            const node: TrieNode = { k: trieNextId++, w: head, c: children };
-            trieNodes.push(node);
+            const c = head ? buildTrie(tail) : undefined;
+            const node: TrieNode = { k: trieNextId++, w: head, c };
+            trieNodes.set(head, node);
         }
 
         return trieNodes;
@@ -54,7 +57,7 @@ export function addWordToTrie(trie: Trie, word: string): Trie {
 
 
 export function wordListToTrie(words: string[]): Trie {
-    let trie: Trie = { c: [] };
+    let trie: Trie = { c: new TrieMap() };
     for (const word of words) {
         trie = addWordToTrie(trie, word);
     }
@@ -63,7 +66,7 @@ export function wordListToTrie(words: string[]): Trie {
 }
 
 export function wordsToTrie(words: Rx.Observable<string>): Rx.Promise<Trie> {
-    const trie: Trie = { c: [] };
+    const trie: Trie = { c: new TrieMap() };
     return words
         .reduce(addWordToTrie, trie)
         .toPromise();
@@ -126,9 +129,11 @@ export function suggestA(
         }
     }
 
-    function processTries(tries: TrieNode[], d: number) {
-        for (const trie of tries) {
-            processTrie(trie, d);
+    function processTries(tries: TrieMap, d: number) {
+        if (tries) {
+            for (const trie of tries.values()) {
+                processTrie(trie, d);
+            }
         }
     }
 
@@ -200,9 +205,11 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = de
         }
     }
 
-    function processTries(tries: TrieNode[], d: number) {
-        for (const trie of tries) {
-            processTrie(trie, d);
+    function processTries(tries: TrieMap, d: number) {
+        if (tries) {
+            for (const trie of tries.values()) {
+                processTrie(trie, d);
+            }
         }
     }
 
