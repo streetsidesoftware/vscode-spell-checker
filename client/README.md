@@ -152,6 +152,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"`
     "cSpell.flagWords": ['hte'],
+    
+    // Set the delay before spell checking the document. Default is 50.
+    "cSpell.spellCheckDelayMs": 50
 ```
 
 ## Release Notes
