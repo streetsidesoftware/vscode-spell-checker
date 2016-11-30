@@ -90,11 +90,14 @@ var liep = 1;
 // cSpell:enable
 // It is now enabled
 
-// spell-checker:enable -- doesn't do anything
+const str = "goededag";  // <-- will be flagged as an error.
 
-// cSPELL:DISABLE -- also works.
+// spell-checker:enable <-- doesn't do anything
+
+// cSPELL:DISABLE <-- also works.
 
 // if there isn't an enable, spelling is disabled till the end of the file.
+const str = "goedemorgen";  // <-- will NOT be flagged as an error.
 
 ```
 <!--- cSpell:enable -->
@@ -206,6 +209,8 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 ## Release Notes
 
 ### 0.12.1
+* Ignore anything that looks like a hex value
+* In-document disable / enable the spell checker.
 
 ### 0.12.0
 * Greatly reduce the amount of time it takes to load this extension
