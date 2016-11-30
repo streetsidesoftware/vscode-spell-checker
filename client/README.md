@@ -33,6 +33,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * C#
 * Go
 * PHP
+* Python
 
 ## How it works with camelCase
 
@@ -52,6 +53,51 @@ The concept is simple, split camelCase words before checking them against a list
 * Only words longer than 3 characters are checked.  "jsj" is ok, while "jsja" is not.
 * All symbols and punctuation are ignored.
 * It currently checks ALL text in a document.
+
+## Enable / Disable checking sections of code
+It is possible to disable / enable the spell checker by adding comments to your code.
+
+### Disable Checking
+* `/* cSpell:disable */`
+* `/* spell-checker: disable */`
+* `/* spellchecker: disable */`
+<!--- cSpell:enable -->
+
+
+### Enable Checking
+* `/* cSpell:enable */`
+* `/* spell-checker: enable */`
+* `/* spellchecker: enable */`
+
+### Example
+
+```javascript
+
+// cSpell:disable
+const wackyWord = ['zaallano', 'wooorrdd', 'zzooommmmmmmm'];
+/* cSpell:enable */
+
+// Nest disable / enable is not Supported
+
+// spell-checker:disable
+// It is now disabled.
+
+var liep = 1;
+
+/* cspell:disable */
+// It is still disabled
+
+// cSpell:enable
+// It is now enabled
+
+// spell-checker:enable -- doesn't do anything
+
+// cSPELL:DISABLE -- also works.
+
+// if there isn't an enable, spelling is disabled till the end of the file.
+
+```
+<!--- cSpell:enable -->
 
 ## Customization
 
@@ -152,7 +198,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"`
     "cSpell.flagWords": ['hte'],
-    
+
     // Set the delay before spell checking the document. Default is 50.
     "cSpell.spellCheckDelayMs": 50
 ```
