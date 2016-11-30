@@ -32,10 +32,14 @@
     "@types/xregexp": "^3.0",
     "chai": "^3.5",
     "mocha": "^3.1",
+    "rimraf": "^2.5.4",
     "typescript": "^2.0.10",
     "vscode": "^1.0.3"
   },
   "scripts": {
+    "clean": "rimraf ../client/server",
+    "build": "npm run compile",
+    "clean-build": "npm run clean && npm run build",
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
