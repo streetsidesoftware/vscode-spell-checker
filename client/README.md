@@ -208,8 +208,11 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.12.2
+* Minor fix to hex test.
+
 ### 0.12.1
-* Ignore anything that looks like a hex value
+* Ignore anything that looks like a hex value: 0xBADC0FFEE
 * In-document disable / enable the spell checker.
 
 ### 0.12.0

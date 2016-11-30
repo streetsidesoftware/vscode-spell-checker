@@ -47,6 +47,7 @@ describe('Validator', () => {
             expect(words).to.contain('mispelled');
             expect(words).to.not.contain('xaccd');
             expect(words).to.not.contain('ctrip');
+            expect(words).to.not.contain('FFEE');
         });
     });
 });
@@ -66,5 +67,7 @@ const weirdWords = ['ctrip', 'xebia', 'zando', 'zooloo'];
 /* spell-checker:enable */
 
 const wrongg = 'mispelled';
+
+const hex = 0xBADC0FFEE;
 
 `;

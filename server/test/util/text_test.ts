@@ -175,6 +175,10 @@ describe('Util Text', () => {
         const mergedRanges = Text.excludeRanges(includeRanges, excludeRanges);
         expect(mergedRanges.length).to.be.equal(21);
     });
+
+    it('test for hex values', () => {
+        expect(Text.regExHexValues.test('FFEE')).to.be.true;
+    });
 });
 
 const sampleCode = `
