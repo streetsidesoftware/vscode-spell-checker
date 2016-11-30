@@ -141,7 +141,7 @@ describe('Util Text', () => {
         expect(hexRanges[2].startPos).to.be.equal(text.indexOf('0xbadc0ffee'));
 
         const disableChecker = Text.findMatchingRanges(Text.regExSpellingGuard, text);
-        expect(disableChecker.length).to.be.equal(2);
+        expect(disableChecker.length).to.be.equal(3);
 
         const hereDocs = Text.findMatchingRanges(Text.regExPhpHereDoc, text);
         expect(hereDocs.length).to.be.equal(3);
@@ -157,7 +157,7 @@ describe('Util Text', () => {
             Text.regExSpellingGuard,
             Text.regExMatchCommonHexFormats,
         ], text);
-        expect(ranges.length).to.be.equal(7);
+        expect(ranges.length).to.be.equal(8);
     });
 
     it('tests merging inclusion and exclusion patterns into an inclusion list', () => {
@@ -173,7 +173,7 @@ describe('Util Text', () => {
             Text.regExMatchCommonHexFormats,
         ], text);
         const mergedRanges = Text.excludeRanges(includeRanges, excludeRanges);
-        expect(mergedRanges.length).to.be.equal(20);
+        expect(mergedRanges.length).to.be.equal(21);
     });
 });
 
@@ -225,7 +225,6 @@ can contain " and '
 
  \`;
 
-
 $phpHereDocString = <<<SQL
     SELECT * FROM users WHERE id in :ids;
 SQL;
@@ -237,5 +236,9 @@ SQL;
 $phpNowDocString = <<<'SQL'
     SELECT * FROM users WHERE id in :ids;
 SQL;
+
+// cSpell:disable
+
+Not checked.
 
 `;

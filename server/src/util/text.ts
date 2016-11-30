@@ -22,7 +22,7 @@ const regExMatchRegExParts = /^\/(.*)\/([gimuy]*)$/;
 export const regExMatchUrls = /(?:https?|ftp):\/\/\S+/gi;
 export const regExHexValues = /^x?[0-1a-f]+$/gi;
 export const regExMatchCommonHexFormats = /(?:#[0-9a-f]{3,8})|(?:0x[0-9a-f]+)|(?:\\u[0-9a-f]{4})|(?:\\x\{[0-9a-f]{4}\})/gi;
-export const regExSpellingGuard = /spell-?checker:\s*disable(?:.|\s)*?spell-?checker:\s*enable/gi;
+export const regExSpellingGuard = /(?:spell-?checker|cSpell):\s*disable(?:.|\s)*?(?:(?:spell-?checker|cSpell):\s*enable|$)/gi;
 export const regExPublicKey = /BEGIN\s+PUBLIC\s+KEY(?:.|\s)+?END\s+PUBLIC\s+KEY/gi;
 export const regExCert = /BEGIN\s+CERTIFICATE(?:.|\s)+?END\s+CERTIFICATE/gi;
 
