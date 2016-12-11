@@ -57,6 +57,8 @@ descriptor
 descriptors
 dest
 diff
+dll
+dlls
 DNS
 DOM
 double
@@ -177,6 +179,7 @@ pathname
 plaintext
 png
 popup
+powershell
 pragma
 precomputing
 prepends
@@ -214,6 +217,7 @@ src
 stack
 stacktrace
 static
+sudo
 sugs
 synchronous
 synchronously
@@ -245,4 +249,3 @@ xml
 yacc
 Yahoo
 yyyy
-sudo
