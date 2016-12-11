@@ -8,6 +8,13 @@ export interface WordOffset {
     offset: number;
 }
 
+export interface TextOffset {
+    text: string;
+    offset: number;
+}
+
+const regExLines = /.*\r?\n/g;
+const regExIdentifiers = XRegExp('(?:\\p{L}|[0-9_\'])+', 'gi');
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
 const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}+)', 'g');
 const regExWords = XRegExp("\\p{L}(?:[']\\p{L}|\\p{L})+|\\p{L}", 'g');
@@ -37,6 +44,7 @@ export const matchUrl = regExMatchUrls.source;
 export const matchHexValues = regExMatchCommonHexFormats.source;
 export const matchSpellingGuard = regExSpellingGuard.source;
 
+export type STW = string | TextOffset | WordOffset;
 
 function scan<T, U>(accFn: (acc: T, value: U) => T, init: T) {
     let acc = init;
@@ -48,10 +56,7 @@ function scan<T, U>(accFn: (acc: T, value: U) => T, init: T) {
 
 
 export function splitCamelCaseWordWithOffsetRx(wo: WordOffset): Rx.Observable<WordOffset> {
-    return Rx.Observable.fromArray(splitCamelCaseWord(wo.word))
-        .scan(
-            (last, word) => ({ word, offset: last.offset + last.word.length }),
-            { word: '', offset: wo.offset } );
+    return Rx.Observable.fromArray(splitCamelCaseWordWithOffset(wo));
 }
 
 export function splitCamelCaseWordWithOffset(wo: WordOffset): Array<WordOffset> {
@@ -94,7 +99,7 @@ export function extractWordsFromText1(text: string): WordOffset[] {
 /**
  * This function lets you iterate over regular expression matches.
  */
-export function *match(reg: RegExp, text: string): Iterable<RegExpExecArray> {
+export function *match(reg: RegExp, text: string) {
     const regex = new RegExp(reg);
     let match: RegExpExecArray;
     while ( match = regex.exec(text) ) {
@@ -102,17 +107,35 @@ export function *match(reg: RegExp, text: string): Iterable<RegExpExecArray> {
     }
 }
 
+export function *matchToTextOffset(reg: RegExp, text: STW): IterableIterator<TextOffset> {
+    const textOffset = toTextOffset(text);
+    const fnOffsetMap = offsetMap(textOffset.offset);
+    for (let m of match(reg, textOffset.text)) {
+        yield fnOffsetMap({ text: m[0], offset: m.index });
+    }
+
+}
+
+export function *matchToWordOffset(reg: RegExp, text: STW): IterableIterator<WordOffset> {
+    for (let t of matchToTextOffset(reg, text)) {
+        yield { word: t.text, offset: t.offset };
+    }
+}
+
+export function *extractLinesOfText(text: STW): IterableIterator<TextOffset> {
+    yield* matchToTextOffset(regExLines, text);
+}
+
+export function extractLinesOfTextRx(text: string): Rx.Observable<TextOffset> {
+    return Rx.Observable.from(extractLinesOfText(text));
+}
 
 /**
  * Extract out whole words from a string of text.
  */
 export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> {
     const reg = XRegExp(regExWords);
-    return Rx.Observable.from(match(reg, text))
-        .map(m => ({
-            word: m[0],
-            offset: m.index
-        }))
+    return Rx.Observable.from(matchToWordOffset(reg, text))
         // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
         .map(wo => ({
             word: XRegExp.replace(wo.word, regExIgnoreCharacters, match => ' '.repeat(match.length)).trim(),
@@ -126,11 +149,7 @@ export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> 
  */
 export function extractWordsFromText(text: string): WordOffset[] {
     const reg = XRegExp(regExWords);
-    return [...match(reg, text)]
-        .map(m => ({
-            word: m[0],
-            offset: m.index
-        }))
+    return [...matchToWordOffset(reg, text)]
         // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
         .map(wo => ({
             word: XRegExp.replace(wo.word, regExIgnoreCharacters, match => ' '.repeat(match.length)).trim(),
@@ -321,3 +340,34 @@ export function excludeRanges(includeRanges: MatchRange[], excludeRanges: MatchR
     return result.ranges;
 }
 
+export function isTextOffset(x): x is TextOffset {
+    return typeof x === 'object' && typeof x.text === 'string' && typeof x.offset === 'number';
+}
+
+export function isWordOffset(x): x is WordOffset {
+    return typeof x === 'object' && typeof x.word === 'string' && typeof x.offset === 'number';
+}
+
+export function toWordOffset(text: string | WordOffset | TextOffset): WordOffset {
+    if (typeof text === 'string') {
+        return { word: text, offset: 0 };
+    }
+    if (isWordOffset(text)) {
+        return text;
+    }
+    return { word: text.text, offset: text.offset };
+}
+
+export function toTextOffset(text: string | WordOffset | TextOffset): TextOffset {
+    if (typeof text === 'string') {
+        return { text: text, offset: 0 };
+    }
+    if (isTextOffset(text)) {
+        return text;
+    }
+    return { text: text.word, offset: text.offset };
+}
+
+function offsetMap(offset: number) {
+    return <T extends {offset: number}>(xo: T) => merge(xo, { offset: xo.offset + offset });
+}
