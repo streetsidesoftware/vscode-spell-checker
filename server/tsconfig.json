@@ -5,6 +5,8 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
         "declaration": true,
+		"noImplicitAny": false,
+		"strictNullChecks": true,
 		"outDir": "../client/server",
 		"lib": ["es6", "dom"]
 	},

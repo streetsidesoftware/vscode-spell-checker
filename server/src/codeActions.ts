@@ -39,7 +39,7 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
         }
 
         const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
-        let altWord: string;
+        let altWord: string | undefined;
         for (const diag of spellCheckerDiags) {
             const word = extractText(textDocument, diag.range);
             altWord = altWord || word;

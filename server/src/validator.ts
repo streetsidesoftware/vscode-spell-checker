@@ -26,7 +26,7 @@ export function validateTextDocument(textDocument: TextDocument, options: Valida
 }
 
 interface WordRangeAcc {
-    word?: Text.WordOffset;
+    word: Text.WordOffset;
     isIncluded: boolean;
     rangePos: number;
 };
@@ -59,7 +59,7 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
             }
             const isIncluded = includeRanges[rangePos] && includeRanges[rangePos].startPos <= word.offset;
             return { rangePos, isIncluded, word };
-        }, { isIncluded: false, rangePos: 0})
+        }, { word: { word: '', offset: 0 }, isIncluded: false, rangePos: 0})
         .filter(wr => wr.isIncluded)
         .map(wr => wr.word)
         .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] === true }))

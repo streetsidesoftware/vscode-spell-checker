@@ -89,7 +89,7 @@ function run() {
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap( exclude ));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
         Object.assign(settings, cSpell);
-        setUserWords(settings.userWords, settings.words);
+        setUserWords(settings.userWords || [], settings.words || []);
 
         // Revalidate any open text documents
         documents.all().forEach(doc => validationRequestStream.onNext(doc));
@@ -138,12 +138,12 @@ function run() {
 
     function shouldValidateDocument(textDocument: TextDocument): boolean {
         const { uri, languageId } = textDocument;
-        return settings.enabled && isLanguageEnabled(languageId)
+        return !!settings.enabled && isLanguageEnabled(languageId)
             && !isUriExcluded(uri);
     }
 
     function isLanguageEnabled(languageId: string) {
-        const { enabledLanguageIds } = settings;
+        const { enabledLanguageIds = [] } = settings;
         return enabledLanguageIds.indexOf(languageId) >= 0;
     }
 

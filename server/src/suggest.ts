@@ -129,7 +129,7 @@ export function suggestA(
         }
     }
 
-    function processTries(tries: TrieMap, d: number) {
+    function processTries(tries: TrieMap | undefined, d: number) {
         if (tries) {
             for (const trie of tries.values()) {
                 processTrie(trie, d);
@@ -205,7 +205,7 @@ export function suggestAlt(trie: Trie, word: string, numSuggestions: number = de
         }
     }
 
-    function processTries(tries: TrieMap, d: number) {
+    function processTries(tries: TrieMap | undefined, d: number) {
         if (tries) {
             for (const trie of tries.values()) {
                 processTrie(trie, d);
