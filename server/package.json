@@ -33,7 +33,7 @@
     "chai": "^3.5",
     "mocha": "^3.1",
     "rimraf": "^2.5.4",
-    "typescript": "^2.0.10",
+    "typescript": "^2.1.4",
     "vscode": "^1.0.3"
   },
   "scripts": {
