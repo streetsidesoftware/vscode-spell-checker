@@ -179,11 +179,32 @@ describe('Util Text', () => {
     it('test for hex values', () => {
         expect(Text.regExHexValues.test('FFEE')).to.be.true;
     });
+
+    it('tests breaking up text into lines', () => {
+        const parts = [
+            '',
+            '/*',
+            ' * this is a comment.\r',
+            ' */',
+            '',
+        ];
+        const sampleText = parts.join('\n');
+        const i = Text.extractLinesOfText(sampleText);
+        const r = [
+            i.next().value.text,
+            i.next().value.text,
+            i.next().value.text,
+            i.next().value.text,
+        ];
+        expect(r.join('')).to.be.equal(parts.join('\n'));
+        const lines = [...Text.extractLinesOfText(sampleCode)].map(m => m.text);
+        expect(lines.length).to.be.equal(64);
+    });
 });
 
 const sampleCode = `
 /*
- * this is a comment.
+ * this is a comment.\r
  */
 
 const text = 'some nice text goes here';
