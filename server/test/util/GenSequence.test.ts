@@ -87,4 +87,10 @@ describe('GenSequence Tests', function() {
         expect(a.toArray()).to.deep.equal([2, 4, 6]);
         expect(b.toArray()).to.deep.equal([4, 5, 6]);
     });
+
+    it('test concatMap', () => {
+        const values = [1, 2, 3];
+        const gs = GenSequence(values).concatMap(a => [a, a, a]);
+        expect(gs.toArray()).to.deep.equal([1, 1, 1, 2, 2, 2, 3, 3, 3]);
+    });
 });
