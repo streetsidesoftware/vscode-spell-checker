@@ -2,6 +2,7 @@ import * as XRegExp from 'xregexp';
 import * as Rx from 'rx';
 import * as R from 'ramda';
 import {merge} from 'tsmerge';
+import {GenSequence, scanMap} from './GenSequence';
 
 export interface WordOffset {
     word: string;
@@ -46,13 +47,6 @@ export const matchSpellingGuard = regExSpellingGuard.source;
 
 export type STW = string | TextOffset | WordOffset;
 
-function scan<T, U>(accFn: (acc: T, value: U) => T, init: T) {
-    let acc = init;
-    return function(value: U): T {
-        acc = accFn(acc, value);
-        return acc;
-    };
-}
 
 
 export function splitCamelCaseWordWithOffsetRx(wo: WordOffset): Rx.Observable<WordOffset> {
@@ -61,9 +55,10 @@ export function splitCamelCaseWordWithOffsetRx(wo: WordOffset): Rx.Observable<Wo
 
 export function splitCamelCaseWordWithOffset(wo: WordOffset): Array<WordOffset> {
     return splitCamelCaseWord(wo.word)
-        .map(scan<WordOffset, string>(
+        .map(scanMap<string, WordOffset>(
             (last, word) => ({ word, offset: last.offset + last.word.length }),
-            { word: '', offset: wo.offset } ));
+            { word: '', offset: wo.offset }
+        ));
 }
 
 /**
@@ -83,7 +78,7 @@ export function extractWordsFromText1(text: string): WordOffset[] {
     const words: WordOffset[] = [];
 
     const reg = XRegExp(regExWords);
-    let match: RegExpExecArray;
+    let match: RegExpExecArray | null;
 
     while ( match = reg.exec(text) ) {
         words.push({
@@ -99,57 +94,51 @@ export function extractWordsFromText1(text: string): WordOffset[] {
 /**
  * This function lets you iterate over regular expression matches.
  */
-export function *match(reg: RegExp, text: string) {
-    const regex = new RegExp(reg);
-    let match: RegExpExecArray;
-    while ( match = regex.exec(text) ) {
-        yield match;
+export function match(reg: RegExp, text: string) {
+    function* doMatch() {
+        const regex = new RegExp(reg);
+        let match: RegExpExecArray | null;
+        while ( match = regex.exec(text) ) {
+            yield match;
+        }
     }
+
+    return GenSequence(doMatch());
 }
 
-export function *matchToTextOffset(reg: RegExp, text: STW): IterableIterator<TextOffset> {
+export function matchToTextOffset(reg: RegExp, text: STW): GenSequence<TextOffset> {
     const textOffset = toTextOffset(text);
     const fnOffsetMap = offsetMap(textOffset.offset);
-    for (let m of match(reg, textOffset.text)) {
-        yield fnOffsetMap({ text: m[0], offset: m.index });
-    }
-
+    return match(reg, textOffset.text)
+        .map(m => fnOffsetMap({ text: m[0], offset: m.index }));
 }
 
-export function *matchToWordOffset(reg: RegExp, text: STW): IterableIterator<WordOffset> {
-    for (let t of matchToTextOffset(reg, text)) {
-        yield { word: t.text, offset: t.offset };
-    }
+export function matchToWordOffset(reg: RegExp, text: STW): GenSequence<WordOffset> {
+    return GenSequence(matchToTextOffset(reg, text))
+        .map(t => ({ word: t.text, offset: t.offset }));
 }
 
-export function *extractLinesOfText(text: STW): IterableIterator<TextOffset> {
-    yield* matchToTextOffset(regExLines, text);
+export function extractLinesOfText(text: STW): GenSequence<TextOffset> {
+    return matchToTextOffset(regExLines, text);
 }
 
 export function extractLinesOfTextRx(text: string): Rx.Observable<TextOffset> {
-    return Rx.Observable.from(extractLinesOfText(text));
+    return Rx.Observable.from(extractLinesOfText(text).toIterable());
 }
 
 /**
  * Extract out whole words from a string of text.
  */
 export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> {
-    const reg = XRegExp(regExWords);
-    return Rx.Observable.from(matchToWordOffset(reg, text))
-        // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
-        .map(wo => ({
-            word: XRegExp.replace(wo.word, regExIgnoreCharacters, match => ' '.repeat(match.length)).trim(),
-            offset: wo.offset
-        }))
-        .filter(wo => !!wo.word);
+    return Rx.Observable.from(extractWordsFromText(text).toIterable());
 }
 
 /**
  * Extract out whole words from a string of text.
  */
-export function extractWordsFromText(text: string): WordOffset[] {
+export function extractWordsFromText(text: string): GenSequence<WordOffset> {
     const reg = XRegExp(regExWords);
-    return [...matchToWordOffset(reg, text)]
+    return matchToWordOffset(reg, text)
         // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
         .map(wo => ({
             word: XRegExp.replace(wo.word, regExIgnoreCharacters, match => ' '.repeat(match.length)).trim(),
@@ -164,10 +153,9 @@ export function extractWordsFromCodeRx(text: string): Rx.Observable<WordOffset> 
 }
 
 
-export function extractWordsFromCode(text: string): WordOffset[] {
+export function extractWordsFromCode(text: string): GenSequence<WordOffset> {
     return extractWordsFromText(text)
-        .map(splitCamelCaseWordWithOffset)
-        .reduce((a, b) => a.concat(b), []);
+        .concatMap(splitCamelCaseWordWithOffset);
 }
 
 export function isUpperCase(word: string) {

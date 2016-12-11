@@ -13,7 +13,7 @@ export function loadWords(filename: string): Rx.Observable<string> {
     const reader = Rx.Observable.fromNodeCallback<string>(fs.readFile);
 
     return reader(filename, 'utf-8')
-        .flatMap(text => Rx.Observable.from(match(/(.+)(\r?\n)?/g, text)))
+        .flatMap(text => Rx.Observable.from(match(/(.+)(\r?\n)?/g, text).toIterable()))
         .map(regExpExecArray => regExpExecArray[1])
         .map(line => line.trim())
         .filter(line => line !== '');
@@ -21,7 +21,7 @@ export function loadWords(filename: string): Rx.Observable<string> {
 
 
 export function splitLine(line: string) {
-    return Text.extractWordsFromText(line).map(({word}) => word);
+    return Text.extractWordsFromText(line).map(({word}) => word).toArray();
 }
 
 export function splitCodeWords(words: string[]) {
