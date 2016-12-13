@@ -93,4 +93,18 @@ describe('GenSequence Tests', function() {
         const gs = GenSequence(values).concatMap(a => [a, a, a]);
         expect(gs.toArray()).to.deep.equal([1, 1, 1, 2, 2, 2, 3, 3, 3]);
     });
+
+    it('tests skip', () => {
+        const values = [1, 2, 3, 4, 5];
+        for (let i = 0; i < values.length + 2; ++i) {
+            expect(GenSequence(values).skip(i).toArray()).to.deep.equal(values.slice(i));
+        }
+    });
+
+    it('tests take', () => {
+        const values = [1, 2, 3, 4, 5];
+        for (let i = 0; i < values.length + 2; ++i) {
+            expect(GenSequence(values).take(i).toArray()).to.deep.equal(values.slice(0, i));
+        }
+    });
 });

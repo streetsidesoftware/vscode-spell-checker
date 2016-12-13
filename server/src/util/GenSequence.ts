@@ -2,8 +2,11 @@
 export type Maybe<T> = T | undefined;
 
 export interface GenSequence<T> extends IterableIterator<T> {
+    /** map values from type T to type U */
     map<U>(fnMap: (t: T) => U): GenSequence<U>;
+    /** keep values where the fnFilter(t) returns true */
     filter(fnFilter: (t: T) => boolean): GenSequence<T>;
+    /** reduce function see Array.reduce */
     reduce(fnReduce: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T, initialValue?: T): Maybe<T>;
     reduce<U>(fnReduce: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): Maybe<U>;
     scan(fnReduce: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T, initialValue?: T): GenSequence<T>;
@@ -11,6 +14,8 @@ export interface GenSequence<T> extends IterableIterator<T> {
     combine<U, V>(fn: (t: T, u?: U) => V, j: Iterable<U>): GenSequence<V>;
     concat(j: Iterable<T>): GenSequence<T>;
     concatMap<U>(fn: (t: T) => Iterable<U>): GenSequence<U>;
+    skip(n: number): GenSequence<T>;
+    take(n: number): GenSequence<T>;
     toArray(): T[];
     toIterable(): IterableIterator<T>;
 }
@@ -39,6 +44,12 @@ export function GenSequence<T>(i: GenIterable<T>): GenSequence<T> {
         },
         concatMap: <U>(fn: (t: T) => Iterable<U>) => {
             return GenSequence(concatMap(fn, i));
+        },
+        skip: (n: number) => {
+            return GenSequence(skip(n, i));
+        },
+        take: (n: number) => {
+            return GenSequence(take(n, i));
         },
         toArray: () => [...i[Symbol.iterator]()],
         toIterable: () => {
@@ -148,6 +159,31 @@ export function scanMap<T>(accFn: (acc: T, value: T) => T, init?: T): ((value: T
         acc = accFn(acc as T, value);
         return acc;
     };
+}
+
+
+export function* skip<T>(n: number, i: Iterable<T>): IterableIterator<T> {
+    let a = 0;
+    for (let t of i) {
+        if (a >= n) {
+            yield t;
+        }
+        a += 1;
+    }
+}
+
+
+export function* take<T>(n: number, i: Iterable<T>): IterableIterator<T> {
+    let a = 0;
+    if (n) {
+        for (let t of i) {
+            if (a >= n) {
+                break;
+            }
+            yield t;
+            a += 1;
+        }
+    }
 }
 
 
