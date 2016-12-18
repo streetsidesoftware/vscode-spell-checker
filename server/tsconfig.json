@@ -9,7 +9,6 @@
 		"noImplicitThis": false,
 		"strictNullChecks": true,
 		"outDir": "../client/server",
-		"baseUrl": "../client/server/node_modules",
 		"lib": ["es6", "dom"]
 	},
 	"exclude": [

@@ -2,7 +2,7 @@ import * as XRegExp from 'xregexp';
 import * as Rx from 'rx';
 import * as R from 'ramda';
 import {merge} from 'tsmerge';
-import {GenSequence, scanMap} from 'gensequence';
+import {genSequence, scanMap, Sequence} from 'genSequence';
 
 export interface WordOffset {
     word: string;
@@ -103,22 +103,22 @@ export function match(reg: RegExp, text: string) {
         }
     }
 
-    return GenSequence(doMatch());
+    return genSequence(doMatch());
 }
 
-export function matchToTextOffset(reg: RegExp, text: STW): GenSequence<TextOffset> {
+export function matchToTextOffset(reg: RegExp, text: STW): Sequence<TextOffset> {
     const textOffset = toTextOffset(text);
     const fnOffsetMap = offsetMap(textOffset.offset);
     return match(reg, textOffset.text)
         .map(m => fnOffsetMap({ text: m[0], offset: m.index }));
 }
 
-export function matchToWordOffset(reg: RegExp, text: STW): GenSequence<WordOffset> {
-    return GenSequence(matchToTextOffset(reg, text))
+export function matchToWordOffset(reg: RegExp, text: STW): Sequence<WordOffset> {
+    return genSequence(matchToTextOffset(reg, text))
         .map(t => ({ word: t.text, offset: t.offset }));
 }
 
-export function extractLinesOfText(text: STW): GenSequence<TextOffset> {
+export function extractLinesOfText(text: STW): Sequence<TextOffset> {
     return matchToTextOffset(regExLines, text);
 }
 
@@ -136,7 +136,7 @@ export function extractWordsFromTextRx(text: string): Rx.Observable<WordOffset> 
 /**
  * Extract out whole words from a string of text.
  */
-export function extractWordsFromText(text: string): GenSequence<WordOffset> {
+export function extractWordsFromText(text: string): Sequence<WordOffset> {
     const reg = XRegExp(regExWords);
     return matchToWordOffset(reg, text)
         // remove characters that match against \p{L} but are not letters (Chinese characters are an example).
@@ -153,7 +153,7 @@ export function extractWordsFromCodeRx(text: string): Rx.Observable<WordOffset> 
 }
 
 
-export function extractWordsFromCode(text: string): GenSequence<WordOffset> {
+export function extractWordsFromCode(text: string): Sequence<WordOffset> {
     return extractWordsFromText(text)
         .concatMap(splitCamelCaseWordWithOffset);
 }
