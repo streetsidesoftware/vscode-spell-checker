@@ -47,6 +47,7 @@ iterator
 iterators
 JSON
 JSX
+keyof
 let
 module
 namespace
