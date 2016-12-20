@@ -2,7 +2,7 @@ import * as XRegExp from 'xregexp';
 import * as Rx from 'rx';
 import * as R from 'ramda';
 import {merge} from 'tsmerge';
-import {genSequence, scanMap, Sequence} from 'genSequence';
+import {genSequence, scanMap, Sequence} from 'gensequence';
 
 export interface WordOffset {
     word: string;
