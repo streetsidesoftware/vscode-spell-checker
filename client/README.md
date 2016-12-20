@@ -208,6 +208,12 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ## Release Notes
 
+### 0.13.0
+* Fix for #39 - cSpell.flagWords Unknown configuration setting
+* Added a list of fonts to the spelling words.  Font favorites like Webdings and Verdana
+  will pass the spell checker.
+
+
 ### 0.12.2
 * Minor fix to hex test.
 
