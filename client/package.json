@@ -110,7 +110,7 @@
                 "cSpell.spellCheckDelayMs": {
                     "type": "number",
                     "default": 50,
-                    "description": "// Delay in ms after a document has changed before checking it for spelling errors."
+                    "description": "Delay in ms after a document has changed before checking it for spelling errors."
                 },
                 "cSpell.ignorePaths": {
                     "type": "array",
@@ -122,6 +122,13 @@
                         "typings"
                     ],
                     "description": "Specify paths/files to ignore. (Supports Globs)"
+                },
+                "cSpell.flagWords": {
+                    "type": "array",
+                    "default": [
+                        "hte"
+                    ],
+                    "description": "Words to always be flagged as an error."
                 }
             }
         }
