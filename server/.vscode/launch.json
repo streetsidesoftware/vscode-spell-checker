@@ -10,7 +10,7 @@
 			"address": "localhost",
 			"port": 60048,
 			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/../client/server"
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ]
         },
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
@@ -29,7 +29,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -51,7 +51,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -73,7 +73,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -95,7 +95,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -117,7 +117,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -139,7 +139,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -161,7 +161,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
@@ -183,7 +183,7 @@
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			"outDir": "${workspaceRoot}/../client/server",
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
