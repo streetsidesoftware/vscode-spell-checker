@@ -39,6 +39,7 @@ compile
 compiler
 concurrency
 const
+coroutines
 cos
 cpp
 crlf
