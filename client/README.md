@@ -5,52 +5,6 @@
 
 A basic spell checker that works well with camelCase code.
 
-## Note:
-Note: with the release of [VS Code 1.8](https://code.visualstudio.com/updates#_settings), the settings stored in cSpell.json have stopped loading.
-I am working on a fix, but in the meantime, it is possible to add the same settings in VS Code _project_ or _user_ settings.
-
-Settings in: cSpell.json
-
-```javascript
-{
-    "enabledLanguageIds": [
-        "csharp",
-        "go",
-        "javascript",
-        "javascriptreact",
-        "markdown",
-        "php",
-        "plaintext",
-        "python",
-        "text",
-        "typescript",
-        "typescriptreact",
-        "yml"
-    ]
-}
-```
-
-Becomes: in the VS Code settings files.
-
-```javascript
-{
-    "cSpell.enabledLanguageIds": [
-        "csharp",
-        "go",
-        "javascript",
-        "javascriptreact",
-        "markdown",
-        "php",
-        "plaintext",
-        "python",
-        "text",
-        "typescript",
-        "typescriptreact",
-        "yml"
-    ]
-}
-```
-
 ## Functionality
 
 Load a Typescript, Javascript, Text, etc.. file.  Words not in the dictionary files will have
@@ -164,7 +118,7 @@ Words added to the dictionary are placed in the `cSpell.json` file in the `.vsco
 Note, the settings in cSpell.json will override the equivalent cSpell settings in settings.json.
 
 #### Example _cSpell.json_ file
-
+<!--- cSpell:disable -->
 ```javascript
 // cSpell Settings
 {
@@ -189,6 +143,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     ]
 }
 ```
+<!--- cSpell:enable -->
 
 ### Configuration Settings
 
@@ -253,6 +208,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 ```
 
 ## Release Notes
+
+### 0.13.3
+* Fix for #40 and #44 - manually load the cSpell.json file and merge it will any project settings.
 
 ### 0.13.1
 * Fix for #42 - cSpell will not load on case sensitive file systems.
