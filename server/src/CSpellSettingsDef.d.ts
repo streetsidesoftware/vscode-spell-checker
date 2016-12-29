@@ -3,26 +3,6 @@
  * These settings come from user and workspace settings.
  */
 interface CSpellPackageSettings extends CSpellUserSettings {
-    // languageIds for the files to spell check.
-    enabledLanguageIds?: string[];
-
-    // matching file paths will to be ignored
-    ignorePaths?: string[];
-
-    // The maximum number of problems to report in a file.
-    maxNumberOfProblems?: number;
-
-    // Words to add to dictionary
-    words?: string[];
-
-    // Words to add to dictionary -- should only be in the user config file.
-    userWords?: string[];
-
-    // The minimum length of a word before checking it against a dictionary.
-    minWordLength?: number;
-
-    // Number of suggestions to make
-    numSuggestions?: number;
 }
 
 
@@ -50,6 +30,21 @@ interface CSpellUserSettings {
 
     // Delay in ms after a document has changed before checking it for spelling errors.
     spellCheckDelayMs?: number;
+
+    // languageIds for the files to spell check.
+    enabledLanguageIds?: string[];
+
+    // The maximum number of problems to report in a file.
+    maxNumberOfProblems?: number;
+
+    // Words to add to dictionary -- should only be in the user config file.
+    userWords?: string[];
+
+    // The minimum length of a word before checking it against a dictionary.
+    minWordLength?: number;
+
+    // Number of suggestions to make
+    numSuggestions?: number;
 }
 
 
@@ -80,6 +75,21 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
 
     // Delay after a document has changed before checking it for spelling errors.
     '// spellCheckDelayMs'?: string[];
+
+    // languageIds for the files to spell check.
+    '// enabledLanguageIds'?: string[];
+
+    // The maximum number of problems to report in a file.
+    '// maxNumberOfProblems'?: string[];
+
+    // Words to add to dictionary -- should only be in the user config file.
+    '// userWords'?: string[];
+
+    // The minimum length of a word before checking it against a dictionary.
+    '// minWordLength'?: string[];
+
+    // Number of suggestions to make
+    '// numSuggestions'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];
