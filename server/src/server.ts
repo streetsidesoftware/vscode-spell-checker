@@ -17,6 +17,9 @@ import {
     generateExclusionFunction,
     Glob
  } from './exclusionHelper';
+import * as path from 'path';
+
+import * as CSpellSettings from './CSpellSettingsServer';
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -83,12 +86,15 @@ function run() {
 
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration((change) => {
+        const configPath = path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName);
+        const cSpellSettingsFile = CSpellSettings.readSettings(configPath);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
-        const { ignorePaths = [] } = cSpell;
+        const mergedSettings = CSpellSettings.mergeSettings(cSpellSettingsFile, cSpell);
+        const { ignorePaths = [] } = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap( exclude ));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
-        Object.assign(settings, cSpell);
+        Object.assign(settings, mergedSettings);
         setUserWords(settings.userWords || [], settings.words || []);
 
         // Revalidate any open text documents

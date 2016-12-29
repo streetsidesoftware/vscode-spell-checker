@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import {merge} from 'tsmerge';
 import * as json from 'comment-json';
 
 const currentSettingsFileVersion = '0.1';
@@ -10,13 +9,9 @@ export const defaultFileName = 'cSpell.json';
 
 const defaultSettings: CSpellUserSettingsWithComments = {
     version: currentSettingsFileVersion,
-    language: 'en',
-    words: ['wasn'],
-    flagWords: ['hte'],
-    ignorePaths: ['./node_modules', './typings'],
 };
 
-export function readSettings(filename: string): CSpellUserSettings {
+export function readSettings(filename: string, defaultValues: CSpellUserSettingsWithComments = defaultSettings): CSpellUserSettings {
     const settings: CSpellUserSettings = readJsonFile(filename);
 
     function readJsonFile(file): any {
@@ -25,9 +20,27 @@ export function readSettings(filename: string): CSpellUserSettings {
         }
         catch (err) {
         }
-        return defaultSettings;
+        return defaultValues;
     }
 
-    return merge(defaultSettings, settings);
+    return {...defaultValues, ...settings};
 }
 
+/**
+ * Merges two lists of strings and removes duplicates.  Order is NOT preserved.
+ */
+function mergeList(left: string[] = [], right: string[] = []) {
+    const setOfWords = new Set([...left, ...right]);
+    return [...setOfWords.keys()];
+}
+
+export function mergeSettings(left: CSpellUserSettings, right: CSpellUserSettings): CSpellUserSettings {
+    return {
+        ...left,
+        ...right,
+        words:     mergeList(left.words,     right.words),
+        userWords: mergeList(left.userWords, right.userWords),
+        flagWords: mergeList(left.flagWords, right.flagWords),
+        enabledLanguageIds: mergeList(left.enabledLanguageIds, right.enabledLanguageIds),
+    };
+}
