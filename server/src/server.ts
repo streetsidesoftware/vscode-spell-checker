@@ -46,7 +46,7 @@ const defaultExclude: Glob[] = [
 const extensionPath = path.join(__dirname, '..', '..');
 const dictionaryPath = path.join(extensionPath, 'dictionaries');
 
-const dictionaryFiles = [
+const dictionaryFiles: DictionaryFileDescriptor[] = [
     { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
     { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
     { name: 'node',           file: 'node.txt',             type: 'C' },
@@ -60,15 +60,19 @@ const dictionaryFiles = [
     { name: 'css',            file: 'css.txt',              type: 'S' },
 ];
 
-const dictionaryAssociation = [
-    { match: '*',                       dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'] },
-    { match: 'javascript|typescript',   dictionaries: ['typescript']},
-    { match: 'php|html',                dictionaries: ['html']},
-    { match: 'php',                     dictionaries: ['php']},
-    { match: 'go',                      dictionaries: ['go']},
-    { match: 'python',                  dictionaries: ['python']},
-    { match: 'css|less|scss|html|php',  dictionaries: ['fonts']},
-    { match: 'css|html',                dictionaries: ['css']}
+const languageSettings: LanguageSettings = [
+    { languageId: '*',      allowCompoundWords: false,   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
+    { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python'], },
+    { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
+    { languageId: 'javascript',                          dictionaries: ['typescript'] },
+    { languageId: 'javascriptreact',                     dictionaries: ['typescript'] },
+    { languageId: 'typescript',                          dictionaries: ['typescript'] },
+    { languageId: 'typescriptreact',                     dictionaries: ['typescript'] },
+    { languageId: 'html',                                dictionaries: ['html', 'fonts', 'typescript', 'css'] },
+    { languageId: 'php',                                 dictionaries: ['php', 'html', 'fonts', 'css', 'typescript'] },
+    { languageId: 'css',                                 dictionaries: ['fonts', 'css'] },
+    { languageId: 'less',                                dictionaries: ['fonts', 'css'] },
+    { languageId: 'scss',                                dictionaries: ['fonts', 'css'] },
 ];
 
 
