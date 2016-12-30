@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
+import { suggest } from '../src/suggest';
+import { wordListToTrie, wordsToTrie } from '../src/Trie';
 import * as Suggest from '../src/suggest';
 import { loadWords, processWordListLines } from '../src/wordListHelper';
 

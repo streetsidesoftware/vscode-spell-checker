@@ -1,8 +1,11 @@
 import * as Rx from 'rx';
 import * as path from 'path';
-import { Trie, addWordToTrie, TrieMap } from './suggest';
+import { Trie, addWordToTrie, TrieMap } from './Trie';
 import * as sug from './suggest';
-import { loadWords, processWordListLines, processWords, WordSet, splitLineIntoWordsRx, splitLineIntoCodeWordsRx } from '../src/wordListHelper';
+import {
+    loadWords, processWordListLines, processWords, WordSet,
+    splitLineIntoWordsRx, splitLineIntoCodeWordsRx
+} from '../src/wordListHelper';
 
 const minWordLength = 3;
 

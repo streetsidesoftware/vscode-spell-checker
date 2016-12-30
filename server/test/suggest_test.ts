@@ -1,29 +1,10 @@
 import { expect } from 'chai';
-import { wordListToTrie, suggest, wordsToTrie } from '../src/suggest';
-import * as Suggest from '../src/suggest';
-import { loadWords, processWordListLines } from '../src/wordListHelper';
+import { suggest } from '../src/suggest';
+import { wordListToTrie } from '../src/Trie';
 
 const loggingOn = false;
 
 const consoleLog = loggingOn ? console.log : () => {};
-
-const minWordLength = 3;
-
-function timeFn(a, n = 1) {
-    return function (...args) {
-        let r;
-        const startTime = Date.now();
-        for (let i = 0; i < n; ++i) {
-            r = a(...args);
-        }
-        const diff = Date.now() - startTime;
-        consoleLog('Time: ' + diff / n + 'ms');
-        return r;
-    };
-}
-
-const suggestA = timeFn(Suggest.suggest);
-const suggestB = timeFn(Suggest.suggestAlt);
 
 describe('test building tries', () => {
     it('build', () => {
