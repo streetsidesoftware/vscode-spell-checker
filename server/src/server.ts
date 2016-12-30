@@ -16,7 +16,7 @@ import {
     extractGlobsFromExcludeFilesGlobMap,
     generateExclusionFunction,
     Glob
- } from './exclusionHelper';
+} from './exclusionHelper';
 import * as path from 'path';
 
 import * as CSpellSettings from './CSpellSettingsServer';
@@ -43,6 +43,35 @@ const defaultExclude: Glob[] = [
     '**/*.*.rendered',
 ];
 
+const extensionPath = path.join(__dirname, '..', '..');
+const dictionaryPath = path.join(extensionPath, 'dictionaries');
+
+const dictionaryFiles = [
+    { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
+    { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
+    { name: 'node',           file: 'node.txt',             type: 'C' },
+    { name: 'softwareTerms',  file: 'softwareTerms.txt',    type: 'W' },
+    { name: 'html',           file: 'html.txt',             type: 'S' },
+    { name: 'php',            file: 'php.txt',              type: 'C' },
+    { name: 'go',             file: 'go.txt',               type: 'C' },
+    { name: 'companies',      file: 'companies.txt',        type: 'C' },
+    { name: 'python',         file: 'python.txt',           type: 'C' },
+    { name: 'fonts',          file: 'fonts.txt',            type: 'C' },
+    { name: 'css',            file: 'css.txt',              type: 'S' },
+];
+
+const dictionaryAssociation = [
+    { match: '*',                       dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'] },
+    { match: 'javascript|typescript',   dictionaries: ['typescript']},
+    { match: 'php|html',                dictionaries: ['html']},
+    { match: 'php',                     dictionaries: ['php']},
+    { match: 'go',                      dictionaries: ['go']},
+    { match: 'python',                  dictionaries: ['python']},
+    { match: 'css|less|scss|html|php',  dictionaries: ['fonts']},
+    { match: 'css|html',                dictionaries: ['css']}
+];
+
+
 // The settings interface describe the server relevant settings part
 interface Settings {
     cSpell?: CSpellPackageSettings;
@@ -60,8 +89,8 @@ let fnFileExclusionTest: ExclusionFunction = () => false;
 function run() {
     // debounce buffer
     const validationRequestStream: Rx.ReplaySubject<TextDocument> = new Rx.ReplaySubject<TextDocument>(1);
-    const validationFinishedStream: Rx.ReplaySubject<{uri: string; version: number}> =
-        new Rx.ReplaySubject<{uri: string; version: number}>(1);
+    const validationFinishedStream: Rx.ReplaySubject<{ uri: string; version: number }> =
+        new Rx.ReplaySubject<{ uri: string; version: number }>(1);
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     const connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
@@ -91,8 +120,8 @@ function run() {
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
         const mergedSettings = CSpellSettings.mergeSettings(cSpellSettingsFile, cSpell);
-        const { ignorePaths = [] } = mergedSettings;
-        const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap( exclude ));
+        const { ignorePaths = []} = mergedSettings;
+        const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
         Object.assign(settings, mergedSettings);
         setUserWords(settings.userWords || [], settings.words || []);
@@ -111,7 +140,7 @@ function run() {
     connection.onNotification({ method: 'applySettings'}, type => {
     });
     */
-    connection.onRequest({ method: 'isSpellCheckEnabled'}, (params: TextDocumentInfo) => {
+    connection.onRequest({ method: 'isSpellCheckEnabled' }, (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
         return {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
@@ -125,7 +154,7 @@ function run() {
         .filter(shouldValidateDocument)
         // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         // De-dupe and backed up request by waiting for 50ms.
-        .groupByUntil( doc => doc.uri, doc => doc, function() {
+        .groupByUntil(doc => doc.uri, doc => doc, function () {
             return Rx.Observable.timer(settings.spellCheckDelayMs || 50);
         })
         // keep only the last request in a group.
@@ -135,12 +164,12 @@ function run() {
 
     // Clear the diagnostics for documents we do not want to validate
     const disposeSkipValidationStream = validationRequestStream
-        .filter(doc => ! shouldValidateDocument(doc))
+        .filter(doc => !shouldValidateDocument(doc))
         .subscribe(doc => {
             connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
         });
 
-    validationFinishedStream.onNext({uri: 'start', version: 0});
+    validationFinishedStream.onNext({ uri: 'start', version: 0 });
 
     function shouldValidateDocument(textDocument: TextDocument): boolean {
         const { uri, languageId } = textDocument;
@@ -149,7 +178,7 @@ function run() {
     }
 
     function isLanguageEnabled(languageId: string) {
-        const { enabledLanguageIds = [] } = settings;
+        const { enabledLanguageIds = []} = settings;
         return enabledLanguageIds.indexOf(languageId) >= 0;
     }
 
