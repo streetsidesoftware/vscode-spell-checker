@@ -100,11 +100,36 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     // List of patterns to exclude from spell checking
     '// ignoreRegExpList'?: string[];
 
+    // Compound Word settings
+    '// compoundWords'?: string[];
+
     // comment at the end of the file
     '//$'?: string[];
 }
 
-interface CompoundWordSettings {
-    maxNumberOfWords: number;
-    minWordLength: number;
+type CompoundWordSettings = boolean;
+
+interface DictionaryFileDescriptor {
+    // The reference name of the dictionary, used with program language settings
+    name: string;
+    // Path to the file, if undefined the path to the extension dictionaries is assumed
+    path?: string;
+    // File name
+    file: string;
+    // Default is C for code words. S - single word per line, W - each line can contain one or more word separated by space, C - each line is treated like code (Camel Case is allowed)
+    // C is the slowest to load due to the need to split each line based upon code splitting rules.
+    type?: 'S'|'W'|'C';
 }
+
+interface LanguageSetting {
+    // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
+    languageId: string;
+    // True to enable compound word checking.
+    allowCompoundWords?: boolean;
+    // Optional list of dictionaries to use.
+    dictionaries?: string[];
+}
+
+// LanguageSettings are a collection of LanguageSetting.  They are applied in order, matching against the languageId.
+// Dictionaries are concatenated together.
+type LanguageSettings = LanguageSetting[];
