@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createSpellingDictionary } from '../src/SpellingDictionary';
+import { createSpellingDictionaryRx } from '../src/SpellingDictionary';
 import * as Rx from 'rx';
 
 describe('Verify building Dictionary', () => {
@@ -8,7 +8,7 @@ describe('Verify building Dictionary', () => {
             'apple', 'ape', 'able', 'apple', 'banana', 'orange', 'pear', 'aim', 'approach', 'bear'
         ];
 
-        return createSpellingDictionary(Rx.Observable.fromArray(words))
+        return createSpellingDictionaryRx(Rx.Observable.fromArray(words))
             .then(dict => {
                 expect(dict.words).to.be.instanceof(Set);
                 expect(dict.trie.c).to.be.instanceof(Map);

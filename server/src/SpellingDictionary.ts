@@ -16,7 +16,19 @@ export class SpellingDictionary {
     }
 }
 
-export function createSpellingDictionary(words: Rx.Observable<string>): Rx.Promise<SpellingDictionary> {
+export function createSpellingDictionary(wordList: string[]): SpellingDictionary {
+    const {words, trie} = genSequence(wordList)
+        .reduce(({words, trie}, word) => {
+            if (! words.has(word)) {
+                words.add(word);
+                addWordToTrie(trie, word);
+            }
+            return {words, trie};
+        }, { words: new Set<string>(), trie: createTrie() });
+    return new SpellingDictionary(words, trie);
+}
+
+export function createSpellingDictionaryRx(words: Rx.Observable<string>): Rx.Promise<SpellingDictionary> {
     const promise = words
         .reduce(({words, trie}, word) => {
             if (! words.has(word)) {
