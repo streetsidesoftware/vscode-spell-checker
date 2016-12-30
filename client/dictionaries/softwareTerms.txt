@@ -1,3 +1,4 @@
+ada
 app
 approximant
 arccosine
@@ -5,6 +6,7 @@ arcsine
 arctangent
 array
 asc
+assembly
 asynchronous
 asynchronously
 attr
@@ -17,6 +19,7 @@ autosuggest
 bar
 basedir
 bashrc
+basic
 blacklist
 blog
 bookmark
@@ -33,6 +36,7 @@ c
 cache
 class
 clint
+cobol
 codebase
 codelens
 compile
@@ -48,6 +52,7 @@ cronjob
 cronjobs
 crons
 csharp
+css
 debounce
 dequeue
 dequeued
@@ -93,6 +98,7 @@ fixme
 float
 foreach
 fork
+fortran
 freq
 frontend
 fsharp
@@ -115,6 +121,7 @@ homebrew
 homepage
 hostname
 hover
+html
 Hunspell
 import
 incrementally
@@ -126,6 +133,7 @@ integer
 ipsum
 isomorphic
 iteratively
+java
 javascript
 javascriptreact
 jpeg
@@ -136,6 +144,7 @@ jumbotron
 keybindings
 Knuth
 lang
+less
 Levenshtein
 lex
 life cycle
@@ -176,7 +185,9 @@ offline
 online
 ORM
 param
+pascal
 pathname
+perl
 plaintext
 png
 popup
@@ -189,6 +200,7 @@ prev
 private
 protected
 public
+python
 queuing
 quicksort
 readme
@@ -203,8 +215,10 @@ requeued
 requeueing
 requeuing
 retweet
+ruby
 runtime
 scala
+scss
 set
 setter
 shard
@@ -238,6 +252,7 @@ typescriptreact
 urlencoded
 util
 utils
+vax
 warning
 wget
 whitelist
