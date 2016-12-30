@@ -154,7 +154,9 @@
                     "description": "List of regular expressions used to exclude the matching text from being checked.\n Example: \"0x[a-f0-9]+\" to skip 0x hex values.\n By default the flags are 'gim'.\n You can specify them like this:\n \"/0x[A-F0-9]/g\" to match only upper case hex numbers.\n Example to match email: \"<?[\\\\w.\\\\-+]+@\\\\w+(\\\\.\\\\w+)+>?\" "
                 },
                 "cSpell.allowCompoundWords": {
-                    ""
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false mean it would not pass."
                 }
             }
         }
