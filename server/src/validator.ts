@@ -17,6 +17,7 @@ export interface ValidationOptions {
     minWordLength?: number;
     // words to always flag as an error
     flagWords?: string[];
+    ignoreRegExpList?: (RegExp|string)[];
 }
 
 export function validateTextDocument(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Promise<Diagnostic[]> {
@@ -36,6 +37,7 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
         maxNumberOfProblems = defaultMaxNumberOfProblems,
         minWordLength       = defaultMinWordLength,
         flagWords           = [],
+        ignoreRegExpList    = [],
     } = options;
     const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, Object.create(null));
     const includeRanges = Text.excludeRanges(
@@ -47,6 +49,8 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
             Text.regExMatchUrls,
             Text.regExPublicKey,
             Text.regExCert,
+            Text.regExEscapeCharacters,
+            ...ignoreRegExpList,
         ], text)
     );
     return Text.extractWordsFromCodeRx(text)

@@ -48,6 +48,44 @@ describe('Validator', () => {
             expect(words).to.not.contain('xaccd');
             expect(words).to.not.contain('ctrip');
             expect(words).to.not.contain('FFEE');
+            expect(words).to.not.contain('nmove');
+        });
+    });
+
+    it('validates ignoreRegExpList', () => {
+        return Validator.validateText(sampleCode, { ignoreRegExpList: ['^const [wy]RON[g]+', 'mis.*led'] })
+        .toArray()
+        .toPromise()
+        .then(results => {
+            const words = results.map(wo => wo.word);
+            expect(words).to.not.contain('wrongg');
+            expect(words).to.not.contain('mispelled');
+            expect(words).to.contain('mischecked');
+        });
+    });
+
+    it('validates ignoreRegExpList 2', () => {
+        return Validator.validateText(sampleCode, { ignoreRegExpList: ['/^const [wy]ron[g]+/gim', '/MIS...LED/g', '/mischecked'] })
+        .toArray()
+        .toPromise()
+        .then(results => {
+            const words = results.map(wo => wo.word);
+            expect(words).to.not.contain('wrongg');
+            expect(words).to.contain('mispelled');
+            expect(words).to.contain('mischecked');
+        });
+    });
+
+
+    it('validates malformed ignoreRegExpList', () => {
+        return Validator.validateText(sampleCode, { ignoreRegExpList: ['/wrong[/gim', 'mis.*led'] })
+        .toArray()
+        .toPromise()
+        .then(results => {
+            const words = results.map(wo => wo.word);
+            expect(words).to.contain('wrongg');
+            expect(words).to.not.contain('mispelled');
+            expect(words).to.contain('mischecked');
         });
     });
 });
@@ -67,6 +105,8 @@ const weirdWords = ['ctrip', 'xebia', 'zando', 'zooloo'];
 /* spell-checker:enable */
 
 const wrongg = 'mispelled';
+const check = 'mischecked';
+const message = "\\nmove to next line";
 
 const hex = 0xBADC0FFEE;
 

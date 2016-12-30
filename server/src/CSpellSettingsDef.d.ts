@@ -45,6 +45,12 @@ interface CSpellUserSettings {
 
     // Number of suggestions to make
     numSuggestions?: number;
+
+    // List of patterns to exclude from spell checking
+    ignoreRegExpList?: string[];
+
+    // Compound Word settings
+    compoundWords?: CompoundWordSettings;
 }
 
 
@@ -91,7 +97,14 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     // Number of suggestions to make
     '// numSuggestions'?: string[];
 
+    // List of patterns to exclude from spell checking
+    '// ignoreRegExpList'?: string[];
+
     // comment at the end of the file
     '//$'?: string[];
 }
 
+interface CompoundWordSettings {
+    maxNumberOfWords: number;
+    minWordLength: number;
+}

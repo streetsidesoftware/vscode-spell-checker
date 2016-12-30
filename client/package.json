@@ -71,6 +71,9 @@
                 },
                 "cSpell.enabledLanguageIds": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [
                         "csharp",
                         "go",
@@ -89,11 +92,17 @@
                 },
                 "cSpell.words": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [],
                     "description": "Words to add to dictionary for a workspace."
                 },
                 "cSpell.userWords": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [],
                     "description": "User words to add to dictionary.  Should only be in the user settings."
                 },
@@ -114,6 +123,9 @@
                 },
                 "cSpell.ignorePaths": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [
                         "**/node_modules/**",
                         "**/vscode-extension/**",
@@ -125,10 +137,24 @@
                 },
                 "cSpell.flagWords": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [
                         "hte"
                     ],
                     "description": "Words to always be flagged as an error."
+                },
+                "cSpell.ignoreRegExpList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of regular expressions used to exclude the matching text from being checked.\n Example: \"0x[a-f0-9]+\" to skip 0x hex values.\n By default the flags are 'gim'.\n You can specify them like this:\n \"/0x[A-F0-9]/g\" to match only upper case hex numbers.\n Example to match email: \"<?[\\\\w.\\\\-+]+@\\\\w+(\\\\.\\\\w+)+>?\" "
+                },
+                "cSpell.allowCompoundWords": {
+                    ""
                 }
             }
         }

@@ -33,6 +33,7 @@ export const regExMatchCommonHexFormats = /(?:#[0-9a-f]{3,8})|(?:0x[0-9a-f]+)|(?
 export const regExSpellingGuard = /(?:spell-?checker|cSpell):\s*disable(?:.|\s)*?(?:(?:spell-?checker|cSpell):\s*enable|$)/gi;
 export const regExPublicKey = /BEGIN\s+PUBLIC\s+KEY(?:.|\s)+?END\s+PUBLIC\s+KEY/gi;
 export const regExCert = /BEGIN\s+CERTIFICATE(?:.|\s)+?END\s+CERTIFICATE/gi;
+export const regExEscapeCharacters = /\\(?:[anrvtbf]|[xu][a-f0-9]+)/gi;
 
 // Include Expressions
 export const regExPhpHereDoc = /<<<['"]?(\w+)['"]?(?:.|\s)+?^\1;/gim;
@@ -222,12 +223,20 @@ export interface MatchRangeWithText extends MatchRange {
 }
 
 export function findMatchingRanges(pattern: string | RegExp, text: string) {
-    const regex = pattern instanceof RegExp ? new RegExp(pattern) : new RegExp(pattern, 'gim');
-
     const ranges: MatchRangeWithText[] = [];
 
-    for (const found of match(regex, text)) {
-        ranges.push({ startPos: found.index, endPos: found.index + found[0].length, text: found[0] });
+    try {
+        const regexParts = typeof pattern === 'string' ? [...(pattern.match(regExMatchRegExParts) || ['', pattern, 'gim']), 'g'] : [];
+        const regex =
+            pattern instanceof RegExp ? new RegExp(pattern)
+            : new RegExp(regexParts[1], regexParts[2]);
+
+        for (const found of match(regex, text)) {
+            ranges.push({ startPos: found.index, endPos: found.index + found[0].length, text: found[0] });
+        }
+    } catch (e) {
+        // ignore any malformed regexp from the user.
+        // console.log(e.message);
     }
 
     return ranges;
