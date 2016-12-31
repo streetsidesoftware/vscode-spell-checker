@@ -9,28 +9,13 @@ import { merge } from 'tsmerge';
 
 export const diagSource = 'cSpell Checker';
 
-const defaultMaxNumberOfProblems = 200;
-const defaultMinWordLength       = 4;
-
-export interface ValidationOptions {
-    maxNumberOfProblems?: number;
-    minWordLength?: number;
-    // words to always flag as an error
-    flagWords?: string[];
-    ignoreRegExpList?: (RegExp|string)[];
-}
+import { ValidationOptions, defaultMaxNumberOfProblems, defaultMinWordLength, WordRangeAcc } from './textValidator';
 
 export function validateTextDocument(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
         .toArray()
         .toPromise();
 }
-
-interface WordRangeAcc {
-    word: Text.WordOffset;
-    isIncluded: boolean;
-    rangePos: number;
-};
 
 export function validateText(text: string, options: ValidationOptions = {}): Rx.Observable<Text.WordOffset> {
     const {
@@ -73,6 +58,7 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
         .filter(word => !Text.regExHexValues.test(word.word))  // Filter out any hex numbers
         .take(maxNumberOfProblems);
 }
+
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Observable<Diagnostic> {
     return validateText(textDocument.getText(), options)
