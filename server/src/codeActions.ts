@@ -74,7 +74,8 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
                 });
         }
         const word = extractText(textDocument, params.range) || altWord;
-        if (word !== undefined) {
+        // Only suggest adding if it is our diagnostic and there is a word.
+        if (word && spellCheckerDiags.length) {
             commands.push(LangServer.Command.create(
                 'Add: "' + word + '" to dictionary',
                 'cSpell.addWordToUserDictionarySilent',
