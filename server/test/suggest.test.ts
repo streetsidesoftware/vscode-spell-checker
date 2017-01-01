@@ -11,12 +11,7 @@ describe('test building tries', () => {
         const words = [
             'apple', 'ape', 'able', 'apple', 'banana', 'orange', 'pear', 'aim', 'approach'
         ];
-
-
         const trie = wordListToTrie(words);
-
-        const x = trie;
-
         expect(trie).to.not.be.null;
     });
 });
@@ -74,8 +69,6 @@ describe('test for duplicate suggestions', () => {
     const words = [
         'apple', 'ape', 'able', 'apples', 'banana', 'orange', 'pear', 'aim', 'approach', 'bear'
     ];
-
-    const trie = wordListToTrie(words);
 
     it('tests ', () => {
         const word = 'beaet';

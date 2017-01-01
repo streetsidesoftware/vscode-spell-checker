@@ -1,5 +1,5 @@
 import * as Text from './util/text';
-import { SpellingDictionary } from './SpellingDictionary'
+import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
 
 
