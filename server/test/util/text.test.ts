@@ -2,8 +2,8 @@ import { splitCamelCaseWord } from '../../src/util/text';
 import * as Text from '../../src/util/text';
 import { expect } from 'chai';
 
-const matchUrl = Text.matchUrl;
-const matchHexValues = Text.matchHexValues;
+const matchUrl = Text.regExMatchUrls.source;
+const matchHexValues = Text.regExMatchCommonHexFormats.source;
 
 describe('Util Text', () => {
     it('splits words', () => {

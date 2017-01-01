@@ -42,10 +42,6 @@ export const regExString = /(?:(['"])(?:\\\\|(?:\\\1)|[^\1\n])+\1)|(?:([`])(?:\\
 // Note: the C Style Comments incorrectly considers '/*' and '//' inside of strings as comments.
 export const regExCStyleComments = /(?:\/\/.*$)|(?:\/\*(?:.|\s)+?\*\/)/gim;
 
-export const matchUrl = regExMatchUrls.source;
-export const matchHexValues = regExMatchCommonHexFormats.source;
-export const matchSpellingGuard = regExSpellingGuard.source;
-
 export type STW = string | TextOffset | WordOffset;
 
 
