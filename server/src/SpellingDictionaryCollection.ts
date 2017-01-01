@@ -1,8 +1,8 @@
-import { SpellingDictionary } from './SpellingDictionary';
+import { SpellingDictionary, createSpellingDictionaryRx } from './SpellingDictionary';
 import { genSequence } from 'gensequence';
 import { SuggestionResult } from './suggest';
 
-export class SpellingDictionaryCollection {
+export class SpellingDictionaryCollection implements SpellingDictionary {
     constructor(readonly dictionaries: SpellingDictionary[]) {
     }
 
@@ -15,6 +15,9 @@ export class SpellingDictionaryCollection {
     }
 }
 
+export function createCollection(dictionaries: SpellingDictionary[]) {
+    return new SpellingDictionaryCollection(dictionaries);
+}
 
 export function isWordInAnyDictionary(dicts: SpellingDictionary[], word: string) {
     return !!genSequence(dicts)
@@ -39,3 +42,8 @@ export function makeSuggestions(dicts: SpellingDictionary[], word: string, numSu
     return allSuggestions.slice(0, numSuggestions);
 }
 
+export function createCollectionRx(wordLists: Rx.Observable<string>[]): Promise<SpellingDictionaryCollection> {
+    const dictionaries = wordLists.map(words => createSpellingDictionaryRx(words));
+    return Promise.all(dictionaries)
+        .then(dicts => new SpellingDictionaryCollection(dicts));
+}

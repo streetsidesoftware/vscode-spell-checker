@@ -1,9 +1,14 @@
 import { suggest, SuggestionResult } from './suggest';
 import { Trie, createTrie, addWordToTrie } from './Trie';
-import { genSequence } from 'gensequence';
+import { genSequence, Sequence } from 'gensequence';
 import * as Rx from 'rx';
 
-export class SpellingDictionary {
+export interface SpellingDictionary {
+    has(word: string): boolean;
+    suggest(word: string, numSuggestions?: number): SuggestionResult[];
+}
+
+export class SpellingDictionaryInstance implements SpellingDictionary {
     constructor(readonly words: Set<string>, readonly trie: Trie) {
     }
 
@@ -16,7 +21,7 @@ export class SpellingDictionary {
     }
 }
 
-export function createSpellingDictionary(wordList: string[]): SpellingDictionary {
+export function createSpellingDictionary(wordList: string[] | Sequence<string>): SpellingDictionary {
     const {words, trie} = genSequence(wordList)
         .reduce(({words, trie}, word) => {
             if (! words.has(word)) {
@@ -25,7 +30,7 @@ export function createSpellingDictionary(wordList: string[]): SpellingDictionary
             }
             return {words, trie};
         }, { words: new Set<string>(), trie: createTrie() });
-    return new SpellingDictionary(words, trie);
+    return new SpellingDictionaryInstance(words, trie);
 }
 
 export function createSpellingDictionaryRx(words: Rx.Observable<string>): Rx.Promise<SpellingDictionary> {
@@ -37,7 +42,7 @@ export function createSpellingDictionaryRx(words: Rx.Observable<string>): Rx.Pro
             }
             return {words, trie};
         }, { words: new Set<string>(), trie: createTrie() })
-        .map(({words, trie}) => new SpellingDictionary(words, trie))
+        .map(({words, trie}) => new SpellingDictionaryInstance(words, trie))
         .toPromise();
     return promise;
 }
