@@ -74,7 +74,7 @@ const colors = ['red', 'green', 'blue', 'black', 'white', 'orange', 'purple', 'y
 const fruit = [
     'apple', 'banana', 'orange', 'pear', 'pineapple', 'mango', 'avocado', 'grape', 'strawberry', 'blueberry', 'blackberry', 'berry'
 ];
-const animals = ['ape', 'lion', 'tiger', 'elephant', 'monkey', 'gazelle', 'antelope', 'aardvark', 'hyena'];
+const animals = ['ape', 'lion', 'tiger', 'Elephant', 'monkey', 'gazelle', 'antelope', 'aardvark', 'hyena'];
 const insects = ['ant', 'snail', 'beetle', 'worm', 'stink bug', 'centipede', 'millipede', 'flea', 'fly'];
 const words = ['the', 'and', 'is', 'has', 'ate', 'light', 'dark', 'little', 'big'];
 

@@ -13,7 +13,7 @@ export class SpellingDictionaryInstance implements SpellingDictionary {
     }
 
     public has(word: string) {
-        return this.words.has(word);
+        return this.words.has(word.toLowerCase());
     }
 
     public suggest(word: string, numSuggestions?: number): SuggestionResult[] {
@@ -21,27 +21,27 @@ export class SpellingDictionaryInstance implements SpellingDictionary {
     }
 }
 
+function reduceWordsToTrieSet(ws: {words: Set<string>, trie: Trie}, word: string): {words: Set<string>, trie: Trie} {
+    // @todo: figure out dealing with case in source words
+    word = word.toLowerCase();
+
+    const {words, trie} = ws;
+    if (! words.has(word)) {
+        words.add(word);
+        addWordToTrie(trie, word);
+    }
+    return {words, trie};
+}
+
 export function createSpellingDictionary(wordList: string[] | Sequence<string>): SpellingDictionary {
     const {words, trie} = genSequence(wordList)
-        .reduce(({words, trie}, word) => {
-            if (! words.has(word)) {
-                words.add(word);
-                addWordToTrie(trie, word);
-            }
-            return {words, trie};
-        }, { words: new Set<string>(), trie: createTrie() });
+        .reduce(reduceWordsToTrieSet, { words: new Set<string>(), trie: createTrie() });
     return new SpellingDictionaryInstance(words, trie);
 }
 
 export function createSpellingDictionaryRx(words: Rx.Observable<string>): Rx.Promise<SpellingDictionary> {
     const promise = words
-        .reduce(({words, trie}, word) => {
-            if (! words.has(word)) {
-                words.add(word);
-                addWordToTrie(trie, word);
-            }
-            return {words, trie};
-        }, { words: new Set<string>(), trie: createTrie() })
+        .reduce(reduceWordsToTrieSet, { words: new Set<string>(), trie: createTrie() })
         .map(({words, trie}) => new SpellingDictionaryInstance(words, trie))
         .toPromise();
     return promise;

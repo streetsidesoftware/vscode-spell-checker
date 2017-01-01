@@ -10,6 +10,13 @@ describe('Validator', () => {
         expect(results).to.be.deep.equal(['brouwn', 'jumpped', 'lazzy']);
     });
 
+    it('validates ignore Case', () => {
+        const results = Validator.validateText('The Quick brown fox Jumped over the lazy dog.')
+            .map(({word}) => word)
+            .toArray();
+        expect(results).to.be.deep.equal([]);
+    });
+
     it('validate limit', () => {
         const results = Validator.validateText(
             loremIpsum({ count: 5, unit: 'paragraphs' }),
