@@ -31,7 +31,8 @@ const settings: CSpellPackageSettings = {
     spellCheckDelayMs: 50,
     words: [],
     userWords: [],
-    ignorePaths: []
+    ignorePaths: [],
+    compoundWords: false,
 };
 
 const defaultExclude: Glob[] = [
