@@ -77,3 +77,11 @@ function updateActiveDictionary() {
     activeDictionary = createCollection([dictionaries, userDictionary]);
     return activeDictionary;
 }
+
+export function onDictionaryReady(): Promise<boolean> {
+    return dictionariesP.then(() => true);
+}
+
+export function getActiveDictionary(): SpellingDictionary {
+    return activeDictionary;
+}
