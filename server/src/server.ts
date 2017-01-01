@@ -21,6 +21,7 @@ import * as path from 'path';
 
 import * as CSpellSettings from './CSpellSettingsServer';
 import { calcSettingsForLanguage, defaultLanguageSettings } from './LanguageSettings';
+import { CSpellPackageSettings, DictionaryFileDescriptor, CSpellUserSettings } from './CSpellSettingsDef';
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -178,7 +179,11 @@ function run() {
 
     function validateTextDocument(textDocument: TextDocument): void {
         const langSettings = calcSettingsForLanguage(defaultLanguageSettings, textDocument.languageId);
-        const settingsToUse = {...settings, compoundWords: langSettings.allowCompoundWords};
+        const settingsToUse: CSpellUserSettings = {
+            ...settings,
+            compoundWords: langSettings.allowCompoundWords,
+            ignorePaths:  (settings.ignorePaths || []).concat(langSettings.ignorePaths || []),
+        };
         Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
             validationFinishedStream.onNext(textDocument);

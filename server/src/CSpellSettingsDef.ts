@@ -2,11 +2,11 @@
 /**
  * These settings come from user and workspace settings.
  */
-interface CSpellPackageSettings extends CSpellUserSettings {
+export interface CSpellPackageSettings extends CSpellUserSettings {
 }
 
 
-interface CSpellUserSettings {
+export interface CSpellUserSettings {
     // Version of the setting file.
     version?: string;
 
@@ -54,7 +54,7 @@ interface CSpellUserSettings {
 }
 
 
-interface CSpellUserSettingsWithComments extends CSpellUserSettings {
+export interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     // comment at the beginning of the file
     '//^'?: string[];
 
@@ -107,29 +107,21 @@ interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     '//$'?: string[];
 }
 
-type CompoundWordSettings = boolean;
+export type CompoundWordSettings = boolean;
 
-interface DictionaryFileDescriptor {
+export interface DictionaryFileDescriptor {
     // The reference name of the dictionary, used with program language settings
     name: string;
     // Path to the file, if undefined the path to the extension dictionaries is assumed
     path?: string;
     // File name
     file: string;
-    // Default is C for code words. S - single word per line, W - each line can contain one or more word separated by space, C - each line is treated like code (Camel Case is allowed)
+    // Type of file:
+    //  S - single word per line,
+    //  W - each line can contain one or more word separated by space,
+    //  C - each line is treated like code (Camel Case is allowed)
+    // Default is C
     // C is the slowest to load due to the need to split each line based upon code splitting rules.
     type?: 'S'|'W'|'C';
 }
 
-interface LanguageSetting {
-    // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
-    languageId: string;
-    // True to enable compound word checking.
-    allowCompoundWords?: boolean;
-    // Optional list of dictionaries to use.
-    dictionaries?: string[];
-}
-
-// LanguageSettings are a collection of LanguageSetting.  They are applied in order, matching against the languageId.
-// Dictionaries are concatenated together.
-type LanguageSettings = LanguageSetting[];

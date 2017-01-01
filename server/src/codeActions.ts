@@ -8,6 +8,8 @@ import * as LangServer from 'vscode-languageserver';
 import { suggest } from './spellChecker';
 import * as Text from './util/text';
 import * as Validator from './validator';
+import { CSpellPackageSettings } from './CSpellSettingsDef';
+
 
 const defaultNumSuggestions = 10;
 

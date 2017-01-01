@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as CSpellSettings from './CSpellSettings';
+import {CSpellUserSettings, CSpellPackageSettings} from './CSpellSettings';
 import * as Rx from 'rx';
 import * as R from 'ramda';
 

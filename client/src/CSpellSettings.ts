@@ -4,6 +4,8 @@ import * as json from 'comment-json';
 import mkdirp = require('mkdirp');
 import path = require('path');
 import {asPromise} from './asPromise';
+import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server/src/CSpellSettingsDef';
+export * from '../server/src/CSpellSettingsDef';
 
 const currentSettingsFileVersion = '0.1';
 

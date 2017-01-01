@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as json from 'comment-json';
 
+import {CSpellUserSettingsWithComments, CSpellUserSettings} from './CSpellSettingsDef';
+
 const currentSettingsFileVersion = '0.1';
 
 export const sectionCSpell = 'cSpell';
