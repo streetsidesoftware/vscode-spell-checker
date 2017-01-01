@@ -187,6 +187,7 @@ ORM
 param
 pascal
 pathname
+perf
 perl
 plaintext
 png
