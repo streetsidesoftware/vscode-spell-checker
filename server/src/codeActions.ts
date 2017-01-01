@@ -9,6 +9,8 @@ import { suggest } from './spellChecker';
 import * as Text from './util/text';
 import * as Validator from './validator';
 
+const defaultNumSuggestions = 10;
+
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
     const offStart = textDocument.offsetAt(start);
@@ -18,7 +20,7 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 
 export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPackageSettings) {
     return (params: CodeActionParams) => {
-        const { numSuggestions } = settings;
+        const { numSuggestions = defaultNumSuggestions } = settings;
         const commands: Command[] = [];
         const { context, textDocument: { uri } } = params;
         const { diagnostics } = context;

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { loadWords, processWords } from '../src/wordListHelper';
+import { loadWordsRx, processWordsRx } from '../src/wordListHelper';
 import * as wlh from '../src/wordListHelper';
 import * as Rx from 'rx';
 
@@ -37,11 +37,11 @@ describe('Perf tests for Word List Helper', function() {
 
     it('Loads the English words', () => {
 
-            const rxWords0 = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
-            const rxWords1 = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
+            const rxWords0 = loadWordsRx(__dirname + '/../../dictionaries/wordsEn.txt');
+            const rxWords1 = loadWordsRx(__dirname + '/../../dictionaries/wordsEn.txt');
 
             const p = Rx.Observable.concat([
-                processWords(rxWords0)
+                processWordsRx(rxWords0)
                     .scan(scanTimer, {})
                     .last()
                     .map(({elapsedTs}) => elapsedTs)
@@ -64,17 +64,17 @@ describe('Perf tests for Word List Helper', function() {
 
     it('Loads the PHP words', () => {
 
-            const rxWords0 = loadWords(__dirname + '/../../dictionaries/php.txt');
-            const rxWords1 = loadWords(__dirname + '/../../dictionaries/php.txt');
+            const rxWords0 = loadWordsRx(__dirname + '/../../dictionaries/php.txt');
+            const rxWords1 = loadWordsRx(__dirname + '/../../dictionaries/php.txt');
 
             const p = Rx.Observable.concat([
-                wlh.processWords(rxWords0)
+                wlh.processWordsRx(rxWords0)
                     .scan(scanTimer, {})
                     .last()
                     .map(({elapsedTs}) => elapsedTs)
                     .map(diffToMs)
                 ,
-                wlh.processWordListLines(rxWords1, minWordLength)
+                wlh.processWordListLinesRx(rxWords1, minWordLength)
                     .scan(scanTimer, {})
                     .last()
                     .map(({elapsedTs}) => elapsedTs)

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { suggest } from '../src/suggest';
 import { wordListToTrie, wordsToTrie } from '../src/Trie';
 import * as Suggest from '../src/suggest';
-import { loadWords, processWordListLines } from '../src/wordListHelper';
+import { loadWordsRx, processWordListLinesRx } from '../src/wordListHelper';
 
 const loggingOn = false;
 
@@ -43,9 +43,9 @@ describe('test building tries', () => {
 
 describe('test suggestions for GO', function() {
     this.timeout(10000);
-    const pWords = loadWords(__dirname + '/../../dictionaries/go.txt');
+    const pWords = loadWordsRx(__dirname + '/../../dictionaries/go.txt');
     const pTrie = wordsToTrie(
-        processWordListLines(pWords, minWordLength)
+        processWordListLinesRx(pWords, minWordLength)
         .map(({word}) => word)
         .tap(word => consoleLog(word))
     );
@@ -67,7 +67,7 @@ describe('test suggestions for GO', function() {
 
 describe('test suggestions for large vocab', function() {
     this.timeout(10000);
-    const pWords = loadWords(__dirname + '/../../dictionaries/wordsEn.txt');
+    const pWords = loadWordsRx(__dirname + '/../../dictionaries/wordsEn.txt');
     const pTrie = wordsToTrie(pWords);
 
     it('tests character swaps', () => {

@@ -9,7 +9,7 @@ export interface WordDictionary {
 
 export type WordSet = Set<string>;
 
-export function loadWords(filename: string): Rx.Observable<string> {
+export function loadWordsRx(filename: string): Rx.Observable<string> {
     const reader = Rx.Observable.fromNodeCallback<string>(fs.readFile);
 
     return reader(filename, 'utf-8')
@@ -43,14 +43,14 @@ export function splitLineIntoWordsRx(line: string) {
     return Rx.Observable.fromArray(wordsToAdd);
 }
 
-export function processWordListLines(lines: Rx.Observable<string>, minWordLength: number) {
-    return processWords(
+export function processWordListLinesRx(lines: Rx.Observable<string>, minWordLength: number) {
+    return processWordsRx(
         lines.flatMap(splitLineIntoCodeWordsRx)
     );
 }
 
 
-export function processWords(lines: Rx.Observable<string>) {
+export function processWordsRx(lines: Rx.Observable<string>) {
     return lines
         .map(word => word.trim().toLowerCase())
         .scan((acc: { setOfWords: Set<string>; found: boolean; word: string; }, word: string) => {
@@ -66,7 +66,7 @@ export function processWords(lines: Rx.Observable<string>) {
 }
 
 
-export function processCodeWords(entries: Rx.Observable<string>, minWordLength: number) {
+export function processCodeWordsRx(entries: Rx.Observable<string>, minWordLength: number) {
     return entries
         .flatMap(line => Rx.Observable.concat(
             // Add the line

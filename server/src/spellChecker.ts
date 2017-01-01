@@ -1,73 +1,75 @@
 import * as Rx from 'rx';
 import * as path from 'path';
-import { Trie, addWordToTrie, TrieMap } from './Trie';
-import * as sug from './suggest';
 import {
-    loadWords, processWordListLines, processWords, WordSet,
+    loadWordsRx,
     splitLineIntoWordsRx, splitLineIntoCodeWordsRx
 } from '../src/wordListHelper';
+import { genSequence } from 'gensequence';
 
-const minWordLength = 3;
+import { SpellingDictionary, createSpellingDictionary } from './SpellingDictionary';
+import { createCollectionRx, createCollection } from './SpellingDictionaryCollection';
 
 export function loadSimpleWordList(filename: string) {
-    return loadWords(filename);
+    return loadWordsRx(filename);
 }
 
 export function loadWordList(filename: string) {
-    return loadWords(filename).flatMap(splitLineIntoWordsRx);
+    return loadWordsRx(filename).flatMap(splitLineIntoWordsRx);
 }
 
 export function loadCodeWordList(filename: string) {
-    return loadWords(filename).flatMap(splitLineIntoCodeWordsRx);
+    return loadWordsRx(filename).flatMap(splitLineIntoCodeWordsRx);
 }
 
-export function loadWordLists(wordLists: Rx.Observable<string>[]): Rx.Observable<WordSet> {
-    return processWords(
-            Rx.Observable.fromArray(wordLists).flatMap(a => a)
-        )
-        .tap(({word}) => { trie = addWordToTrie(trie, word); })
-        .last()
-        .map(({setOfWords}) => setOfWords);
-}
-
-export function isWordInDictionary(word: string): Rx.Promise<boolean> {
-    const nWord = word.toLocaleLowerCase();
-    return wordList.then(wordList => {
-        return wordList.has(nWord)
-            || userWords.has(nWord);
-    });
+export function isWordInDictionary(word: string): Promise<boolean> {
+    return dictionariesP.then(() => activeDictionary.has(word));
 }
 
 export function setUserWords(...wordSets: string[][]) {
-    userWords = new Set<string>();
-    processWordListLines(
-            Rx.Observable.fromArray(wordSets).flatMap(a => a),
-            minWordLength
-        )
-        .tap(({word}) => { trie = addWordToTrie(trie, word); })
-        .subscribe(({setOfWords}) => { userWords = setOfWords; });
+    const words = genSequence(wordSets)
+        .concatMap(processWords);
+    userDictionary = createSpellingDictionary(words);
+    updateActiveDictionary();
 }
 
-let trie: Trie = { c: new TrieMap };
+const wordListRx = [
+    loadSimpleWordList(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')),
+    loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')),
+    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'fonts.txt')),
+];
 
-let userWords: WordSet = new Set<string>();
+export function suggest(word: string, numSuggestions: number): string[] {
+    return activeDictionary.suggest(word, numSuggestions)
+        .map(sr => sr.word);
+}
 
-const wordList: Rx.Promise<WordSet> =
-    loadWordLists([
-        loadSimpleWordList(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')),
-        loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')),
-        loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'fonts.txt')),
-    ])
-    .toPromise();
+function processWords(words: string[]): string[] {
+    return words.map(processWord);
+}
 
-export function suggest(word: string, numSuggestions?: number): string[] {
-    const searchWord = word.toLowerCase();
-    return sug.suggest(trie, searchWord, numSuggestions).map(sr => sr.word);
+function processWord(word: string) {
+    return word.trim().toLowerCase();
+}
+
+// @todo: implement using dependency injection.  For now this is used for the refactoring.
+
+let userDictionary = createSpellingDictionary([]);
+let dictionaries = createCollection([]);
+let activeDictionary = createCollection([dictionaries, userDictionary]);
+const dictionariesP: Promise<SpellingDictionary> = createCollectionRx(wordListRx.map(words => words.map(processWord)))
+    .then(loadedDictionary => {
+        dictionaries = loadedDictionary;
+        return updateActiveDictionary();
+    });
+
+function updateActiveDictionary() {
+    activeDictionary = createCollection([dictionaries, userDictionary]);
+    return activeDictionary;
 }
