@@ -1,5 +1,5 @@
 import * as Text from './util/text';
-import { SpellingDictionaryCollection } from './SpellingDictionaryCollection'
+import { SpellingDictionary } from './SpellingDictionary'
 import { Sequence, genSequence } from 'gensequence';
 
 
@@ -25,7 +25,7 @@ export const minWordSplitLen            = 3;
 
 export function validateText(
     text: string,
-    dicts: SpellingDictionaryCollection,
+    dict: SpellingDictionary,
     options: ValidationOptions = {}
 ): Sequence<Text.WordOffset> {
     const {
@@ -64,12 +64,20 @@ export function validateText(
         .map(wr => wr.word)
         .map(word => ({...word, isFlagged: mapOfFlagWords[word.word] === true }))
         .filter(wordOffset => wordOffset.isFlagged || wordOffset.word.length >= minWordLength )
-        .map(wordOffset => ({...wordOffset, isFound: dicts.has(wordOffset.word)}))
+        .map(wordOffset => ({...wordOffset, isFound: hasWordCheck(dict, wordOffset.word, compoundWords)}))
         .filter(word => word.isFlagged || ! word.isFound )
         .filter(word => !Text.regExHexValues.test(word.word))  // Filter out any hex numbers
         .take(maxNumberOfProblems);
 }
 
+export function hasWordCheck(dict: SpellingDictionary, word: string, allowCompounds: boolean) {
+    return dict.has(word) || (allowCompounds && hasCompoundWord(dict, word) );
+}
+
+export function hasCompoundWord(dict: SpellingDictionary, word: string) {
+    const foundPair = wordSplitter(word).first(([a, b]) => dict.has(a) && dict.has(b));
+    return !!foundPair;
+}
 
 export function wordSplitter(word: string): Sequence<[string, string]> {
     function* split(word: string): IterableIterator<[string, string]> {
