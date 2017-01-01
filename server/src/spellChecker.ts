@@ -21,8 +21,12 @@ export function loadCodeWordList(filename: string) {
     return loadWordsRx(filename).flatMap(splitLineIntoCodeWordsRx);
 }
 
-export function isWordInDictionary(word: string): Promise<boolean> {
+export function isWordInDictionaryP(word: string): Promise<boolean> {
     return dictionariesP.then(() => activeDictionary.has(word));
+}
+
+export function isWordInDictionary(word: string): boolean {
+    return activeDictionary.has(word);
 }
 
 export function setUserWords(...wordSets: string[][]) {

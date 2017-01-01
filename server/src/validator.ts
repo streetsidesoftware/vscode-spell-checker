@@ -1,7 +1,7 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import { isWordInDictionary } from './spellChecker';
+import { isWordInDictionaryP } from './spellChecker';
 import * as Text from './util/text';
 
 import * as Rx from 'rx';
@@ -53,7 +53,7 @@ export function validateText(text: string, options: ValidationOptions = {}): Rx.
         .map(wr => wr.word)
         .map(word => merge(word, { isFlagged: mapOfFlagWords[word.word] === true }))
         .filter(word => word.isFlagged || word.word.length >= minWordLength )
-        .flatMap(word => isWordInDictionary(word.word).then(isFound => merge(word, { isFound })))
+        .flatMap(word => isWordInDictionaryP(word.word).then(isFound => merge(word, { isFound })))
         .filter(word => word.isFlagged || ! word.isFound )
         .filter(word => !Text.regExHexValues.test(word.word))  // Filter out any hex numbers
         .take(maxNumberOfProblems);

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { isWordInDictionary } from '../src/spellChecker';
+import { isWordInDictionaryP } from '../src/spellChecker';
 import { processWordListLinesRx } from '../src/wordListHelper';
 import * as Rx from 'rx';
 
@@ -24,19 +24,19 @@ describe('Verify Spell Checker', function() {
     // this.timeout(10000);
 
     it('did load', () => {
-        return isWordInDictionary('yes').then(isFound => {
+        return isWordInDictionaryP('yes').then(isFound => {
             expect(isFound).to.be.true;
         });
     });
 
     it('will ignore case.', () => {
-        return isWordInDictionary('netherlands').then(isFound => {
+        return isWordInDictionaryP('netherlands').then(isFound => {
             expect(isFound).to.be.true;
         });
     });
 
     it("has wasn't", () => {
-        return isWordInDictionary("wasn't").then(isFound => {
+        return isWordInDictionaryP("wasn't").then(isFound => {
             expect(isFound).to.be.true;
         });
     });
@@ -45,7 +45,7 @@ describe('Verify Spell Checker', function() {
         const reservedWords = ['const', 'stringify', 'constructor', 'delete', 'prototype', 'type'];
 
         return Rx.Observable.fromArray(reservedWords)
-            .flatMap(word => isWordInDictionary(word).then(isFound => ({ word, isFound })))
+            .flatMap(word => isWordInDictionaryP(word).then(isFound => ({ word, isFound })))
             .tap(wf => expect(wf.isFound, 'Expect to be found: ' + wf.word).to.be.true)
             .toArray()
             .toPromise();
