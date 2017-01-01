@@ -1,4 +1,4 @@
-import {Trie, TrieMap, TrieNode, createTrie} from './Trie';
+import {Trie, TrieMap, TrieNode} from './Trie';
 
 const baseCost = 100;
 const swapCost = 75;
