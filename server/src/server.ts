@@ -20,6 +20,7 @@ import {
 import * as path from 'path';
 
 import * as CSpellSettings from './CSpellSettingsServer';
+import { calcSettingsForLanguage, defaultLanguageSettings } from './LanguageSettings';
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -47,7 +48,7 @@ const defaultExclude: Glob[] = [
 const extensionPath = path.join(__dirname, '..', '..');
 const dictionaryPath = path.join(extensionPath, 'dictionaries');
 
-const dictionaryFiles: DictionaryFileDescriptor[] = [
+const defaulDictionaryFiles: DictionaryFileDescriptor[] = [
     { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
     { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
     { name: 'node',           file: 'node.txt',             type: 'C' },
@@ -60,22 +61,6 @@ const dictionaryFiles: DictionaryFileDescriptor[] = [
     { name: 'fonts',          file: 'fonts.txt',            type: 'C' },
     { name: 'css',            file: 'css.txt',              type: 'S' },
 ];
-
-const languageSettings: LanguageSettings = [
-    { languageId: '*',      allowCompoundWords: false,   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
-    { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python'], },
-    { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
-    { languageId: 'javascript',                          dictionaries: ['typescript'] },
-    { languageId: 'javascriptreact',                     dictionaries: ['typescript'] },
-    { languageId: 'typescript',                          dictionaries: ['typescript'] },
-    { languageId: 'typescriptreact',                     dictionaries: ['typescript'] },
-    { languageId: 'html',                                dictionaries: ['html', 'fonts', 'typescript', 'css'] },
-    { languageId: 'php',                                 dictionaries: ['php', 'html', 'fonts', 'css', 'typescript'] },
-    { languageId: 'css',                                 dictionaries: ['fonts', 'css'] },
-    { languageId: 'less',                                dictionaries: ['fonts', 'css'] },
-    { languageId: 'scss',                                dictionaries: ['fonts', 'css'] },
-];
-
 
 // The settings interface describe the server relevant settings part
 interface Settings {
@@ -192,7 +177,9 @@ function run() {
     }
 
     function validateTextDocument(textDocument: TextDocument): void {
-        Validator.validateTextDocument(textDocument, settings).then(diagnostics => {
+        const langSettings = calcSettingsForLanguage(defaultLanguageSettings, textDocument.languageId);
+        const settingsToUse = {...settings, compoundWords: langSettings.allowCompoundWords};
+        Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
             validationFinishedStream.onNext(textDocument);
             connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
