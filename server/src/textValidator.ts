@@ -2,6 +2,8 @@ import * as Text from './util/text';
 import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
 
+const regExMatchRegEx = /\/.*\/[gimuy]*/;
+
 
 export interface ValidationOptions {
     maxNumberOfProblems?: number;
@@ -123,6 +125,13 @@ export function getIgnoreWordsSetFromDocument(text: string) {
 export function getIgnoreRegExpFromDocument(text: string) {
     const matches = Text.match(regExIgnoreRegExpPattern, text)
         .map(a => a[1])
+        .map(a => {
+            const m = a.match(regExMatchRegEx);
+            if (m && m[0]) {
+                return m[0];
+            }
+            return a.split(/\s+/g).filter(a => !!a)[0];
+        })
         .toArray();
     return matches;
 }

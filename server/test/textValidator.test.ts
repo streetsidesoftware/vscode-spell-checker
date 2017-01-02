@@ -72,17 +72,21 @@ describe('Validate textValidator functions', () => {
             '/\\/\\/\\/.*/',
             'w\\w+berry',
             '/',
-        ]);
+            '\\w+s{4}\\w+',
+            '/faullts[/]?/ */',
+         ]);
         const regExpList = matches.map(s => Text.stringToRegExp(s)).map(a => a && a.toString() || '');
         expect(regExpList).to.deep.equal([
             (/\/\/\/.*/g).toString(),
             (/w\w+berry/gim).toString(),
             (/\//gim).toString(),
+            (/\w+s{4}\w+/gim).toString(),
+            (/faullts[/]?\/ */g).toString(),
         ]);
         const ranges = Text.findMatchingRangesForPatterns(matches, sampleCode);
         console.log(ranges);
         console.log(replaceRangesWith(sampleCode, ranges));
-        expect(ranges.length).to.be.equal(18);
+        expect(ranges.length).to.be.equal(27);
         expect(TV.getIgnoreWordsFromDocument('Hello')).to.be.deep.equal([]);
     });
 });
@@ -114,6 +118,8 @@ const sampleText = `
     The orange tiger ate the whiteberry and the redberry.
 `;
 
+// cSpell:ignore faullts straange
+// cSpell:ignoreRegExp \w+s{4}\w+
 // cSpell:ignoreRegExp /\/\/\/.*/
 // cSpell:ignoreRegExp  weird
 const sampleCode = `
@@ -121,11 +127,14 @@ const sampleCode = `
     // cSpell:ignoreRegExp /\\/\\/\\/.*/
     // cSpell:ignoreRegExp w\\w+berry
     // cSpell::ignoreRegExp  /
+    /* cSpell:ignoreRegExp \\w+s{4}\\w+ */
+    /* cSpell:ignoreRegExp /faullts[/]?/ */
     const berries = ['whiteberry', 'redberry', 'blueberry'];
 
     /* cSpell:ignoreWords tripe, comment */
     /// ignore triple comment, with misssspellings and faullts
     /// mooree prooobleems onn thisss line tooo with wordberry
+    // misssspellings faullts
 
     // weirdberry can be straange.
 
