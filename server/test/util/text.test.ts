@@ -6,6 +6,25 @@ const matchUrl = Text.regExMatchUrls.source;
 const matchHexValues = Text.regExMatchCommonHexFormats.source;
 
 describe('Util Text', () => {
+    it('tests match', () => {
+        const matchComment = [...Text.match(/comment/, sampleCode)];
+        expect(matchComment.map(m => m[0])).to.be.deep.equal(['comment']);
+        const matchComments = [...Text.match(/comment/g, sampleCode)];
+        expect(matchComments.map(m => m[0])).to.be.deep.equal(['comment', 'comment']);
+        const matchNotFound = [...Text.match(/_{10}/, sampleCode)];
+        expect(matchNotFound).to.be.deep.equal([]);
+    });
+
+    it('tests build regexp from string', () => {
+        const regEx1 = Text.stringToRegExp('');
+        expect(regEx1).to.be.undefined;
+        const regEx2 = Text.stringToRegExp('a');
+        expect(regEx2!.toString()).to.be.equal('/a/gim');
+        const regEx3 = Text.stringToRegExp('/');
+        expect(regEx3).not.to.be.undefined;
+        expect(regEx3!.toString()).to.be.equal('/\\//gim');
+    });
+
     it('splits words', () => {
         expect(splitCamelCaseWord('hello')).to.deep.equal(['hello']);
         expect(splitCamelCaseWord('helloThere')).to.deep.equal(['hello', 'There']);
@@ -199,6 +218,21 @@ describe('Util Text', () => {
         expect(r.join('')).to.be.equal(parts.join('\n'));
         const lines = [...Text.extractLinesOfText(sampleCode)].map(m => m.text);
         expect(lines.length).to.be.equal(64);
+    });
+
+    it('tests unionRanges', () => {
+        const result1 = Text.unionRanges([]);
+        expect(result1).to.deep.equal([]);
+        const result2 = Text.unionRanges([{startPos: 0, endPos: 10}]);
+        expect(result2).to.deep.equal([{startPos: 0, endPos: 10}]);
+        const result3 = Text.unionRanges([{startPos: 0, endPos: 10}, {startPos: 0, endPos: 10}]);
+        expect(result3).to.deep.equal([{startPos: 0, endPos: 10}]);
+        const result4 = Text.unionRanges([{startPos: 5, endPos: 15}, {startPos: 0, endPos: 10}]);
+        expect(result4).to.deep.equal([{startPos: 0, endPos: 15}]);
+        const result5 = Text.unionRanges([{startPos: 11, endPos: 15}, {startPos: 0, endPos: 10}]);
+        expect(result5).to.deep.equal([{startPos: 0, endPos: 10}, {startPos: 11, endPos: 15}]);
+        const result6 = Text.unionRanges([{startPos: 10, endPos: 15}, {startPos: 0, endPos: 10}]);
+        expect(result6).to.deep.equal([{startPos: 0, endPos: 15}]);
     });
 });
 

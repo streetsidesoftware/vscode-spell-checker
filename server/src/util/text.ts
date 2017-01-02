@@ -30,7 +30,7 @@ const regExMatchRegExParts = /^\/(.*)\/([gimuy]*)$/;
 export const regExMatchUrls = /(?:https?|ftp):\/\/\S+/gi;
 export const regExHexValues = /^x?[0-1a-f]+$/i;
 export const regExMatchCommonHexFormats = /(?:#[0-9a-f]{3,8})|(?:0x[0-9a-f]+)|(?:\\u[0-9a-f]{4})|(?:\\x\{[0-9a-f]{4}\})/gi;
-export const regExSpellingGuard = /(?:spell-?checker|cSpell):\s*disable(?:.|\s)*?(?:(?:spell-?checker|cSpell):\s*enable|$)/gi;
+export const regExSpellingGuard = /(?:spell-?checker|cSpell)::?\s*disable(?:.|\s)*?(?:(?:spell-?checker|cSpell)::?\s*enable|$)/gi;
 export const regExPublicKey = /BEGIN\s+PUBLIC\s+KEY(?:.|\s)+?END\s+PUBLIC\s+KEY/gi;
 export const regExCert = /BEGIN\s+CERTIFICATE(?:.|\s)+?END\s+CERTIFICATE/gi;
 export const regExEscapeCharacters = /\\(?:[anrvtbf]|[xu][a-f0-9]+)/gi;
@@ -95,7 +95,13 @@ export function match(reg: RegExp, text: string) {
     function* doMatch() {
         const regex = new RegExp(reg);
         let match: RegExpExecArray | null;
+        let lastIndex: number | undefined = undefined;
         while ( match = regex.exec(text) ) {
+            // Make sure it stops if the index does not move forward.
+            if (match.index === lastIndex) {
+                break;
+            }
+            lastIndex = match.index;
             yield match;
         }
     }
@@ -222,13 +228,14 @@ export function findMatchingRanges(pattern: string | RegExp, text: string) {
     const ranges: MatchRangeWithText[] = [];
 
     try {
-        const regexParts = typeof pattern === 'string' ? [...(pattern.match(regExMatchRegExParts) || ['', pattern, 'gim']), 'g'] : [];
-        const regex =
-            pattern instanceof RegExp ? new RegExp(pattern)
-            : new RegExp(regexParts[1], regexParts[2]);
-
-        for (const found of match(regex, text)) {
-            ranges.push({ startPos: found.index, endPos: found.index + found[0].length, text: found[0] });
+        const regex = pattern instanceof RegExp ? new RegExp(pattern) : stringToRegExp(pattern, 'gim', 'g');
+        if (regex) {
+            for (const found of match(regex, text)) {
+                ranges.push({ startPos: found.index, endPos: found.index + found[0].length, text: found[0] });
+                if (!regex.global) {
+                    break;
+                }
+            }
         }
     } catch (e) {
         // ignore any malformed regexp from the user.
@@ -251,7 +258,7 @@ export function unionRanges(ranges: MatchRange[]) {
         } else if (next.endPos > last.endPos) {
             acc[acc.length - 1] = {
                 startPos: last.startPos,
-                endPos: last.endPos,
+                endPos: Math.max(last.endPos, next.endPos),
             };
         }
         return acc;
@@ -307,8 +314,8 @@ export function excludeRanges(includeRanges: MatchRange[], excludeRanges: MatchR
     const tExclude: 'e' = 'e';
 
     const sortedRanges: MatchRangeWithType[] = [
-        ...includeRanges.map(r => merge(r, { type: tInclude })),
-        ...excludeRanges.map(r => merge(r, { type: tExclude }))].sort(fnSortRanges);
+        ...includeRanges.map(r => ({...r, type: tInclude })),
+        ...excludeRanges.map(r => ({...r, type: tExclude }))].sort(fnSortRanges);
 
     const result = sortedRanges.reduce((acc: Result, range: MatchRangeWithType) => {
         const { ranges, lastExclude } = acc;
@@ -363,4 +370,18 @@ export function toTextOffset(text: string | WordOffset | TextOffset): TextOffset
 
 function offsetMap(offset: number) {
     return <T extends {offset: number}>(xo: T) => merge(xo, { offset: xo.offset + offset });
+}
+
+export function stringToRegExp(pattern: string, defaultFlags = 'gim', forceFlags = 'g') {
+    try {
+        const [, pat, flag] = [...(pattern.match(regExMatchRegExParts) || ['', pattern, defaultFlags]), forceFlags];
+        // Make sure the flags are unique.
+        const flags = [...(new Set(forceFlags + flag))].join('').replace(/[^gimuy]/g, '');
+        if (pat) {
+            const regex = new RegExp(pat, flags);
+            return regex;
+        }
+    } catch (e) {
+    }
+    return undefined;
 }
