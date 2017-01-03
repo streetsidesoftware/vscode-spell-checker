@@ -9,7 +9,9 @@ describe('Validate InDocSettings', () => {
     it('tests extracting in file settings for compound words', () => {
         expect(InDoc.getInDocumentSettings('')).to.deep.equal(emptySettings);
         expect(InDoc.getInDocumentSettings('cSpell:enableCompoundWords')).to.deep.equal({...emptySettings, allowCompoundWords: true });
+        expect(InDoc.getInDocumentSettings('cSpell:ENABLECompoundWords')).to.deep.equal({...emptySettings, allowCompoundWords: true });
         expect(InDoc.getInDocumentSettings('cSpell:disableCompoundWords')).to.deep.equal({...emptySettings, allowCompoundWords: false });
+        expect(InDoc.getInDocumentSettings('cSpell:disableCompoundWORDS')).to.deep.equal({...emptySettings, allowCompoundWords: false });
     });
 
     it('tests finding words to ignore', () => {

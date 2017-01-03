@@ -27,11 +27,18 @@ export const inDocSettings: InDocSettings = {
 
 export function getInDocumentSettings(text: string): CSpellUserSettings {
     const settingMap = new Map(objectToSequence(inDocSettings));
+    const keysNormalized = objectToSequence(inDocSettings)
+        .map(([k]) => ([k.toString().toLowerCase(), k]) as [string, keyof InDocSettings]);
+    const settingKeyLookup = new Map(keysNormalized);
 
     const settings = Text.match(regExInFileSetting, text)
-        .map(a => a[1] as keyof InDocSettings)
-        .map((k) => settingMap.get(k))
+        .map(a => a[1] || '')
+        // Normalize the setting
+        .map(a => a.toLowerCase())
+        // Look it up in the map
+        .map(a => settingKeyLookup.get(a))
         .filter(k => !!k)
+        .map((k) => settingMap.get(k!))
         .map(setting => ({[setting!.setting]: setting!.value}))
         .reduce((s, setting) => {
             return mergeSettings(s, setting);
