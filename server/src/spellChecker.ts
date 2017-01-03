@@ -9,7 +9,7 @@ import { genSequence } from 'gensequence';
 import { SpellingDictionary, createSpellingDictionary } from './SpellingDictionary';
 import { createCollectionRx, createCollection } from './SpellingDictionaryCollection';
 
-export function loadSimpleWordList(filename: string) {
+export function loadSimpleWordList(filename: string): Rx.Observable<string> {
     return loadWordsRx(filename);
 }
 
