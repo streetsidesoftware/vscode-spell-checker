@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "gensequence": "^0.2.2",
-    "lodash": "^4.17.3",
+    "gensequence": "^0.2.3",
+    "lodash": "^4.17.4",
     "minimatch": "^3.0.3",
-    "ramda": "^0.22.1",
+    "ramda": "^0.23.0",
     "rx": "^4.1.0",
     "tsmerge": "^1.0.4",
     "vscode-jsonrpc": "^2.4.0",
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4",
-    "@types/lodash": "^4.14.44",
+    "@types/lodash": "^4.14.45",
     "@types/minimatch": "^2.0.29",
     "@types/mocha": "^2.2",
     "@types/node": "^6.0",
