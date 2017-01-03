@@ -18,8 +18,8 @@ export function validateTextDocument(textDocument: TextDocument, options: Valida
         .toPromise();
 }
 
-export function validateText(text: string, options: ValidationOptions = {}): Sequence<Text.WordOffset> {
-    return TV.validateText(text, getActiveDictionary(), options);
+export function validateText(text: string, options: ValidationOptions = {}): Text.WordOffset[] {
+    return [...TV.validateText(text, getActiveDictionary(), options)];
 }
 
 
