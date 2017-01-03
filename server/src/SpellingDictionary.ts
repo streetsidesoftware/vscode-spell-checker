@@ -17,7 +17,7 @@ export class SpellingDictionaryInstance implements SpellingDictionary {
     }
 
     public suggest(word: string, numSuggestions?: number): SuggestionResult[] {
-        return suggest(this.trie, word, numSuggestions);
+        return suggest(this.trie, word.toLowerCase(), numSuggestions);
     }
 }
 
