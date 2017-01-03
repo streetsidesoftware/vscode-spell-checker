@@ -12,6 +12,12 @@ describe('Validate InDocSettings', () => {
         expect(InDoc.getInDocumentSettings('cSpell:ENABLECompoundWords')).to.deep.equal({...emptySettings, allowCompoundWords: true });
         expect(InDoc.getInDocumentSettings('cSpell:disableCompoundWords')).to.deep.equal({...emptySettings, allowCompoundWords: false });
         expect(InDoc.getInDocumentSettings('cSpell:disableCompoundWORDS')).to.deep.equal({...emptySettings, allowCompoundWords: false });
+        expect(InDoc.getInDocumentSettings('cSpell:ENABLECompoundWords\ncSpell:disableCompoundWords'))
+            .to.deep.equal({...emptySettings, allowCompoundWords: false });
+        expect(InDoc.getInDocumentSettings('cSpell:disableCompoundWords\ncSpell:enableCompoundWords'))
+            .to.deep.equal({...emptySettings, allowCompoundWords: true });
+        expect(InDoc.getInDocumentSettings(sampleText)).to.deep.equal({...emptySettings, allowCompoundWords: true });
+        expect(InDoc.getInDocumentSettings(sampleCode).allowCompoundWords).to.be.true;
     });
 
     it('tests finding words to ignore', () => {
@@ -70,6 +76,12 @@ const sampleCode = `
 
 `;
 
+
+const sampleText = `
+# cSpell:disableCompoundWords
+# cSpell:enableCOMPOUNDWords
+# happydays arehere againxx
+`;
 
 export function replaceRangesWith(text: string, ranges: Text.MatchRange[], w: string = '_') {
     let pos = 0;

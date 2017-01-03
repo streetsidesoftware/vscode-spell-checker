@@ -5,7 +5,7 @@ import { mergeSettings } from './CSpellSettingsServer';
 import { createSpellingDictionary, SpellingDictionary } from './SpellingDictionary';
 
 const regExMatchRegEx = /\/.*\/[gimuy]*/;
-const regExInFileSetting = /(?:spell-?checker|cSpell)::?([^\s]+)(?:\s+(.+))?/gi;
+const regExInFileSetting = /(?:spell-?checker|cSpell)::?([^\s]+)(.*)/gi;
 const regExIgnoreRegExpPattern = /(?:spell-?checker|cSpell)::?ignore_?Reg_?Exp\s+(.+)/gi;
 const regExIgnoreWords = /(?:spell-?checker|cSpell)::?(?:ignore_?(?:\s?Words?)?|words?)\s+(.+)/gi;
 
