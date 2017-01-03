@@ -1,17 +1,17 @@
 import * as Text from './util/text';
 import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
-
-const regExMatchRegEx = /\/.*\/[gimuy]*/;
-
+import { getIgnoreWordsSetFromDocument } from './InDocSettings';  // @todo, move this out of here.
 
 export interface ValidationOptions {
     maxNumberOfProblems?: number;
+    maxDuplicateProblems?: number;
     minWordLength?: number;
     // words to always flag as an error
     flagWords?: string[];
     ignoreRegExpList?: (RegExp|string)[];
-    compoundWords?: boolean;
+    includeRegExpList?: (RegExp|string)[];
+    allowCompoundWords?: boolean;
 }
 
 export interface WordRangeAcc {
@@ -20,10 +20,8 @@ export interface WordRangeAcc {
     rangePos: number;
 };
 
-const regExIgnoreRegExpPattern = /(?:spell-?checker|cSpell)::?ignore_?Reg_?Exp\s+(.+)/gi;
-const regExIgnoreWords = /(?:spell-?checker|cSpell)::?ignore_?(?:\s?Words?)?\s+(.+)/gi;
-
 export const defaultMaxNumberOfProblems = 200;
+export const defaultMaxDuplicateProblems = 5;
 export const defaultMinWordLength       = 4;
 export const minWordSplitLen            = 3;
 
@@ -34,13 +32,15 @@ export function validateText(
     options: ValidationOptions = {}
 ): Sequence<Text.WordOffset> {
     const {
-        maxNumberOfProblems = defaultMaxNumberOfProblems,
-        minWordLength       = defaultMinWordLength,
-        flagWords           = [],
-        ignoreRegExpList    = [],
-        compoundWords       = false,
+        maxNumberOfProblems  = defaultMaxNumberOfProblems,
+        maxDuplicateProblems = defaultMaxDuplicateProblems,
+        minWordLength        = defaultMinWordLength,
+        flagWords            = [],
+        ignoreRegExpList     = [],
+        allowCompoundWords   = false,
     } = options;
-    const mapOfFlagWords = flagWords.reduce((m, w) => { m[w] = true; return m; }, Object.create(null));
+    const setOfFlagWords = new Set(flagWords);
+    const mapOfProblems = new Map<string, number>();
     const includeRanges = Text.excludeRanges(
         [
             { startPos: 0, endPos: text.length },
@@ -52,7 +52,6 @@ export function validateText(
             Text.regExCert,
             Text.regExEscapeCharacters,
             ...ignoreRegExpList,
-            ...getIgnoreRegExpFromDocument(text),
         ], text)
     );
     const ignoreWords = getIgnoreWordsSetFromDocument(text);
@@ -81,14 +80,20 @@ export function validateText(
         }, { word: { word: '', offset: 0 }, isIncluded: false, rangePos: 0})
         .filter(wr => wr.isIncluded)
         .map(wr => wr.word)
-        .map(word => ({...word, isFlagged: mapOfFlagWords[word.word] === true }))
-        .filter(wordOffset => wordOffset.isFlagged || wordOffset.word.length >= minWordLength )
-        .map(wordOffset => ({
-            ...wordOffset,
-            isFound: hasWordCheck(dict, wordOffset.word, compoundWords) || ignoreWords.has(wordOffset.word)
+        .map(wo => ({...wo, isFlagged: setOfFlagWords.has(wo.word) }))
+        .filter(wo => wo.isFlagged || wo.word.length >= minWordLength )
+        .map(wo => ({
+            ...wo,
+            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWords.has(wo.word)
         }))
-        .filter(word => word.isFlagged || ! word.isFound )
-        .filter(word => !Text.regExHexValues.test(word.word))  // Filter out any hex numbers
+        .filter(wo => wo.isFlagged || ! wo.isFound )
+        .filter(wo => !Text.regExHexValues.test(wo.word))  // Filter out any hex numbers
+        .filter(wo => {
+            // Keep track of the number of times we have seen the same problem
+            mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);
+            // Filter out if there is too many
+            return mapOfProblems.get(wo.word) < maxDuplicateProblems;
+        })
         .take(maxNumberOfProblems);
 }
 
@@ -110,28 +115,4 @@ export function wordSplitter(word: string): Sequence<[string, string]> {
     return genSequence(split(word));
 }
 
-export function getIgnoreWordsFromDocument(text: string) {
-    const matches = Text.match(regExIgnoreWords, text)
-        .map(a => a[1])
-        .concatMap(words => words.split(/[,\s]+/g))
-        .toArray();
-    return matches;
-}
 
-export function getIgnoreWordsSetFromDocument(text: string) {
-    return new Set(getIgnoreWordsFromDocument(text).map(a => a.toLowerCase()));
-}
-
-export function getIgnoreRegExpFromDocument(text: string) {
-    const matches = Text.match(regExIgnoreRegExpPattern, text)
-        .map(a => a[1])
-        .map(a => {
-            const m = a.match(regExMatchRegEx);
-            if (m && m[0]) {
-                return m[0];
-            }
-            return a.split(/\s+/g).filter(a => !!a)[0];
-        })
-        .toArray();
-    return matches;
-}

@@ -50,7 +50,7 @@ export interface CSpellUserSettings {
     ignoreRegExpList?: string[];
 
     // Compound Word settings
-    compoundWords?: CompoundWordSettings;
+    allowCompoundWords?: boolean;
 }
 
 
@@ -101,13 +101,11 @@ export interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     '// ignoreRegExpList'?: string[];
 
     // Compound Word settings
-    '// compoundWords'?: string[];
+    '// allowCompoundWords'?: string[];
 
     // comment at the end of the file
     '//$'?: string[];
 }
-
-export type CompoundWordSettings = boolean;
 
 export interface DictionaryFileDescriptor {
     // The reference name of the dictionary, used with program language settings
