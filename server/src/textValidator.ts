@@ -1,7 +1,9 @@
 import * as Text from './util/text';
+import * as TextRange from './util/TextRange';
 import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
 import { getIgnoreWordsSetFromDocument } from './InDocSettings';  // @todo, move this out of here.
+import * as InDoc from './InDocSettings';
 
 export interface ValidationOptions {
     maxNumberOfProblems?: number;
@@ -41,16 +43,16 @@ export function validateText(
     } = options;
     const setOfFlagWords = new Set(flagWords);
     const mapOfProblems = new Map<string, number>();
-    const includeRanges = Text.excludeRanges(
+    const includeRanges = TextRange.excludeRanges(
         [
             { startPos: 0, endPos: text.length },
         ],
-        Text.findMatchingRangesForPatterns([
-            Text.regExSpellingGuard,
-            Text.regExMatchUrls,
-            Text.regExPublicKey,
-            Text.regExCert,
-            Text.regExEscapeCharacters,
+        TextRange.findMatchingRangesForPatterns([
+            InDoc.regExSpellingGuard,
+            InDoc.regExMatchUrls,
+            InDoc.regExPublicKey,
+            InDoc.regExCert,
+            InDoc.regExEscapeCharacters,
             ...ignoreRegExpList,
         ], text)
     );
@@ -84,10 +86,10 @@ export function validateText(
         .filter(wo => wo.isFlagged || wo.word.length >= minWordLength )
         .map(wo => ({
             ...wo,
-            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWords.has(wo.word)
+            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWords.has(wo.word.toLowerCase())
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
-        .filter(wo => !Text.regExHexValues.test(wo.word))  // Filter out any hex numbers
+        .filter(wo => !InDoc.regExHexValues.test(wo.word))  // Filter out any hex numbers
         .filter(wo => {
             // Keep track of the number of times we have seen the same problem
             mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);

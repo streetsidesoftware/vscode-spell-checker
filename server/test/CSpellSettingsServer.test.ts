@@ -6,6 +6,7 @@ describe('Validate CSpellSettingsServer', () => {
         expect(mergeSettings({}, {})).to.be.deep.equal({
             words: [],
             userWords: [],
+            ignoreWords: [],
             flagWords: [],
             enabledLanguageIds: [],
             ignoreRegExpList: [],

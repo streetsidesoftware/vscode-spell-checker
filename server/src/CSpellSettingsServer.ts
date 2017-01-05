@@ -42,6 +42,7 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
         words:     mergeList(left.words,     right.words),
         userWords: mergeList(left.userWords, right.userWords),
         flagWords: mergeList(left.flagWords, right.flagWords),
+        ignoreWords: mergeList(left.ignoreWords, right.ignoreWords),
         enabledLanguageIds: mergeList(left.enabledLanguageIds, right.enabledLanguageIds),
         ignoreRegExpList: mergeList(left.ignoreRegExpList, right.ignoreRegExpList),
     }), left);

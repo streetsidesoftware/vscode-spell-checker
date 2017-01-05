@@ -16,6 +16,9 @@ export interface CSpellUserSettings {
     // list of words to be always considered correct
     words?: string[];
 
+    // list of words to be ignored
+    ignoreWords?: string[];
+
     // matching file paths will to be ignored
     ignorePaths?: string[];
 
@@ -48,6 +51,12 @@ export interface CSpellUserSettings {
 
     // List of patterns to exclude from spell checking
     ignoreRegExpList?: string[];
+
+    // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
+    patterns?: RegExpPatternDefinition[];
+
+    // List of available dictionaries
+    dictionaries?: DictionaryDefinition[];
 
     // Compound Word settings
     allowCompoundWords?: boolean;
@@ -107,7 +116,7 @@ export interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     '//$'?: string[];
 }
 
-export interface DictionaryFileDescriptor {
+export interface DictionaryDefinition {
     // The reference name of the dictionary, used with program language settings
     name: string;
     // Path to the file, if undefined the path to the extension dictionaries is assumed
@@ -123,3 +132,17 @@ export interface DictionaryFileDescriptor {
     type?: 'S'|'W'|'C';
 }
 
+export interface LanguageSetting {
+    // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
+    languageId: string;
+    // True to enable compound word checking.
+    allowCompoundWords?: boolean;
+    // Optional list of dictionaries to use.
+    dictionaries?: string[];
+}
+
+
+export interface RegExpPatternDefinition {
+    name: string;
+    pattern: string | RegExp;
+}

@@ -2,19 +2,7 @@ import { splitCamelCaseWord } from '../../src/util/text';
 import * as Text from '../../src/util/text';
 import { expect } from 'chai';
 
-const matchUrl = Text.regExMatchUrls.source;
-const matchHexValues = Text.regExMatchCommonHexFormats.source;
-
 describe('Util Text', () => {
-    it('tests match', () => {
-        const matchComment = [...Text.match(/comment/, sampleCode)];
-        expect(matchComment.map(m => m[0])).to.be.deep.equal(['comment']);
-        const matchComments = [...Text.match(/comment/g, sampleCode)];
-        expect(matchComments.map(m => m[0])).to.be.deep.equal(['comment', 'comment']);
-        const matchNotFound = [...Text.match(/_{10}/, sampleCode)];
-        expect(matchNotFound).to.be.deep.equal([]);
-    });
-
     it('tests build regexp from string', () => {
         const regEx1 = Text.stringToRegExp('');
         expect(regEx1).to.be.undefined;
@@ -150,55 +138,6 @@ describe('Util Text', () => {
         expect(Text.isLowerCase('携程旅行网')).to.be.false;
     });
 
-    it('tests finding matching positions', () => {
-        const text = sampleCode;
-        const urls = Text.findMatchingRanges(matchUrl, text);
-        expect(urls.length).equals(2);
-
-        const hexRanges = Text.findMatchingRanges(matchHexValues, text);
-        expect(hexRanges.length).to.be.equal(5);
-        expect(hexRanges[2].startPos).to.be.equal(text.indexOf('0xbadc0ffee'));
-
-        const disableChecker = Text.findMatchingRanges(Text.regExSpellingGuard, text);
-        expect(disableChecker.length).to.be.equal(3);
-
-        const hereDocs = Text.findMatchingRanges(Text.regExPhpHereDoc, text);
-        expect(hereDocs.length).to.be.equal(3);
-
-        const strings = Text.findMatchingRanges(Text.regExString, text);
-        expect(strings.length).to.be.equal(12);
-    });
-
-    it('tests finding a set of matching positions', () => {
-        const text = sampleCode;
-        const ranges = Text.findMatchingRangesForPatterns([
-            Text.regExMatchUrls,
-            Text.regExSpellingGuard,
-            Text.regExMatchCommonHexFormats,
-        ], text);
-        expect(ranges.length).to.be.equal(8);
-    });
-
-    it('tests merging inclusion and exclusion patterns into an inclusion list', () => {
-        const text = sampleCode;
-        const includeRanges = Text.findMatchingRangesForPatterns([
-            Text.regExString,
-            Text.regExPhpHereDoc,
-            Text.regExCStyleComments,
-        ], text);
-        const excludeRanges = Text.findMatchingRangesForPatterns([
-            Text.regExSpellingGuard,
-            Text.regExMatchUrls,
-            Text.regExMatchCommonHexFormats,
-        ], text);
-        const mergedRanges = Text.excludeRanges(includeRanges, excludeRanges);
-        expect(mergedRanges.length).to.be.equal(21);
-    });
-
-    it('test for hex values', () => {
-        expect(Text.regExHexValues.test('FFEE')).to.be.true;
-    });
-
     it('tests breaking up text into lines', () => {
         const parts = [
             '',
@@ -218,21 +157,6 @@ describe('Util Text', () => {
         expect(r.join('')).to.be.equal(parts.join('\n'));
         const lines = [...Text.extractLinesOfText(sampleCode)].map(m => m.text);
         expect(lines.length).to.be.equal(64);
-    });
-
-    it('tests unionRanges', () => {
-        const result1 = Text.unionRanges([]);
-        expect(result1).to.deep.equal([]);
-        const result2 = Text.unionRanges([{startPos: 0, endPos: 10}]);
-        expect(result2).to.deep.equal([{startPos: 0, endPos: 10}]);
-        const result3 = Text.unionRanges([{startPos: 0, endPos: 10}, {startPos: 0, endPos: 10}]);
-        expect(result3).to.deep.equal([{startPos: 0, endPos: 10}]);
-        const result4 = Text.unionRanges([{startPos: 5, endPos: 15}, {startPos: 0, endPos: 10}]);
-        expect(result4).to.deep.equal([{startPos: 0, endPos: 15}]);
-        const result5 = Text.unionRanges([{startPos: 11, endPos: 15}, {startPos: 0, endPos: 10}]);
-        expect(result5).to.deep.equal([{startPos: 0, endPos: 10}, {startPos: 11, endPos: 15}]);
-        const result6 = Text.unionRanges([{startPos: 10, endPos: 15}, {startPos: 0, endPos: 10}]);
-        expect(result6).to.deep.equal([{startPos: 0, endPos: 15}]);
     });
 });
 

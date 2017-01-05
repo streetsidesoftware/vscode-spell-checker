@@ -21,7 +21,7 @@ import * as path from 'path';
 
 import * as CSpellSettings from './CSpellSettingsServer';
 import { calcSettingsForLanguage, defaultLanguageSettings } from './LanguageSettings';
-import { CSpellPackageSettings, DictionaryFileDescriptor } from './CSpellSettingsDef';
+import { CSpellPackageSettings, DictionaryDefinition } from './CSpellSettingsDef';
 import { getInDocumentSettings } from './InDocSettings';
 
 const settings: CSpellPackageSettings = {
@@ -46,12 +46,13 @@ const defaultExclude: Glob[] = [
     'git-index:/**',    // Ignore files loaded for git indexing
     '**/*.rendered',
     '**/*.*.rendered',
+    '__pycache__/**',   // ignore cache files.
 ];
 
 const extensionPath = path.join(__dirname, '..', '..');
 const dictionaryPath = path.join(extensionPath, 'dictionaries');
 
-const defaulDictionaryFiles: DictionaryFileDescriptor[] = [
+const defaulDictionaryFiles: DictionaryDefinition[] = [
     { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
     { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
     { name: 'node',           file: 'node.txt',             type: 'C' },
@@ -180,7 +181,8 @@ function run() {
     }
 
     function validateTextDocument(textDocument: TextDocument): void {
-        const langSettings = calcSettingsForLanguage(defaultLanguageSettings, textDocument.languageId);
+        const { allowCompoundWords } = calcSettingsForLanguage(defaultLanguageSettings, textDocument.languageId);
+        const langSettings = { allowCompoundWords };
         const settingsToUse = CSpellSettings.mergeSettings(settings, langSettings, getInDocumentSettings(textDocument.getText()));
         Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
