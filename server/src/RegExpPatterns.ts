@@ -1,4 +1,4 @@
-import { RegExpPatternDefinition } from './CSpellSettingsDef';
+import { RegExpPatternDefinition, CSpellUserSettings } from './CSpellSettingsDef';
 
 // Exclude Expressions
 export const regExMatchUrls = /(?:https?|ftp):\/\/\S+/gi;
@@ -31,4 +31,15 @@ export const defaultRegExpPatterns: RegExpPatternDefinition[] = [
     { name: 'string', pattern: regExString },
 ];
 
+export const defaultRegExpExcludeList = [
+    'SpellCheckerDisable',
+    'Urls',
+    'PublicKey',
+    'RsaCert',
+    'EscapeCharacters',
+];
 
+export const defaultSettings: CSpellUserSettings = {
+    patterns: defaultRegExpPatterns,
+    ignoreRegExpList: defaultRegExpExcludeList,
+};
