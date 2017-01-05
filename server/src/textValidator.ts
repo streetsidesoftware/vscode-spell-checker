@@ -3,7 +3,7 @@ import * as TextRange from './util/TextRange';
 import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
 import { getIgnoreWordsSetFromDocument } from './InDocSettings';  // @todo, move this out of here.
-import * as InDoc from './InDocSettings';
+import * as RxPat from './RegExpPatterns';
 
 export interface ValidationOptions {
     maxNumberOfProblems?: number;
@@ -48,11 +48,11 @@ export function validateText(
             { startPos: 0, endPos: text.length },
         ],
         TextRange.findMatchingRangesForPatterns([
-            InDoc.regExSpellingGuard,
-            InDoc.regExMatchUrls,
-            InDoc.regExPublicKey,
-            InDoc.regExCert,
-            InDoc.regExEscapeCharacters,
+            RxPat.regExSpellingGuard,
+            RxPat.regExMatchUrls,
+            RxPat.regExPublicKey,
+            RxPat.regExCert,
+            RxPat.regExEscapeCharacters,
             ...ignoreRegExpList,
         ], text)
     );
@@ -89,7 +89,7 @@ export function validateText(
             isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWords.has(wo.word.toLowerCase())
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
-        .filter(wo => !InDoc.regExHexValues.test(wo.word))  // Filter out any hex numbers
+        .filter(wo => !RxPat.regExHexValues.test(wo.word))  // Filter out any hex numbers
         .filter(wo => {
             // Keep track of the number of times we have seen the same problem
             mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);

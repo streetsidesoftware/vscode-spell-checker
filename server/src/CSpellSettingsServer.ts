@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as json from 'comment-json';
-import {CSpellUserSettingsWithComments, CSpellUserSettings} from './CSpellSettingsDef';
+import {CSpellUserSettingsWithComments, CSpellUserSettings, RegExpPatternDefinition} from './CSpellSettingsDef';
 
 const currentSettingsFileVersion = '0.1';
 
@@ -45,5 +45,23 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
         ignoreWords: mergeList(left.ignoreWords, right.ignoreWords),
         enabledLanguageIds: mergeList(left.enabledLanguageIds, right.enabledLanguageIds),
         ignoreRegExpList: mergeList(left.ignoreRegExpList, right.ignoreRegExpList),
+        patterns: mergeList(left.patterns, right.patterns),
     }), left);
+}
+
+export function finalizeSettings(settings: CSpellUserSettings): CSpellUserSettings {
+    // apply patterns to any RegExpLists.
+
+    return {
+        ...settings,
+        ignoreRegExpList: applyPatterns(settings.ignoreRegExpList, settings.patterns),
+    };
+}
+
+function applyPatterns(regExpList: (string | RegExp)[] = [], patterns: RegExpPatternDefinition[] = []): (string|RegExp)[] {
+    const patternMap = new Map(patterns
+        .map(def => [def.name, def.pattern] as [string, string|RegExp])
+    );
+
+    return regExpList.map(p => patternMap.get(p.toString()) || p);
 }

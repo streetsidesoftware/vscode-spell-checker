@@ -8,6 +8,7 @@ describe('Validate CSpellSettingsServer', () => {
             userWords: [],
             ignoreWords: [],
             flagWords: [],
+            patterns: [],
             enabledLanguageIds: [],
             ignoreRegExpList: [],
         });

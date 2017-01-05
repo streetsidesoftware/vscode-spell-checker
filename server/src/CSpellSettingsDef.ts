@@ -50,7 +50,10 @@ export interface CSpellUserSettings {
     numSuggestions?: number;
 
     // List of patterns to exclude from spell checking
-    ignoreRegExpList?: string[];
+    ignoreRegExpList?: (string|RegExp)[];
+
+    // List of patterns to define the text to be included for spell checking
+    includeRegExpList?: (string|RegExp)[];
 
     // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
     patterns?: RegExpPatternDefinition[];

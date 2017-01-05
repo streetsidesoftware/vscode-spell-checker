@@ -216,7 +216,10 @@ function offsetMap(offset: number) {
     return <T extends {offset: number}>(xo: T) => merge(xo, { offset: xo.offset + offset });
 }
 
-export function stringToRegExp(pattern: string, defaultFlags = 'gim', forceFlags = 'g') {
+export function stringToRegExp(pattern: string | RegExp, defaultFlags = 'gim', forceFlags = 'g') {
+    if (pattern instanceof RegExp) {
+        return pattern;
+    }
     try {
         const [, pat, flag] = [...(pattern.match(regExMatchRegExParts) || ['', pattern, defaultFlags]), forceFlags];
         // Make sure the flags are unique.
