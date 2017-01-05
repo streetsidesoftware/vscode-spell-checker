@@ -43,6 +43,7 @@ compile
 compiler
 concurrency
 const
+coroutine
 coroutines
 cos
 cpp
