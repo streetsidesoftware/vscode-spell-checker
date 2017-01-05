@@ -35,7 +35,7 @@ describe('Validate InDocSettings', () => {
     });
 
     it('test for hex values', () => {
-        expect(RegPat.regExHexValues.test('FFEE')).to.be.true;
+        expect(RegPat.regExHexDigits.test('FFEE')).to.be.true;
     });
 
     it('tests finding matching positions', () => {

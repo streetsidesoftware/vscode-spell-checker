@@ -4,9 +4,8 @@ import {
     loadWordsRx,
     splitLineIntoWordsRx, splitLineIntoCodeWordsRx
 } from '../src/wordListHelper';
-import { genSequence } from 'gensequence';
 
-import { SpellingDictionary, createSpellingDictionary } from './SpellingDictionary';
+import { SpellingDictionary } from './SpellingDictionary';
 import { createCollectionRx, createCollection } from './SpellingDictionaryCollection';
 
 export function loadSimpleWordList(filename: string): Rx.Observable<string> {
@@ -29,13 +28,6 @@ export function isWordInDictionary(word: string): boolean {
     return activeDictionary.has(word);
 }
 
-export function setUserWords(...wordSets: string[][]) {
-    const words = genSequence(wordSets)
-        .concatMap(processWords);
-    userDictionary = createSpellingDictionary(words);
-    updateActiveDictionary();
-}
-
 const wordListRx = [
     loadSimpleWordList(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
     loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
@@ -54,32 +46,23 @@ export function suggest(word: string, numSuggestions: number): string[] {
         .map(sr => sr.word);
 }
 
-function processWords(words: string[]): string[] {
-    return words.map(processWord);
-}
-
-function processWord(word: string) {
-    return word.trim().toLowerCase();
-}
-
 // @todo: implement using dependency injection.  For now this is used for the refactoring.
 
-let userDictionary = createSpellingDictionary([]);
 let dictionaries = createCollection([]);
-let activeDictionary = createCollection([dictionaries, userDictionary]);
-const dictionariesP: Promise<SpellingDictionary> = createCollectionRx(wordListRx.map(words => words.map(processWord)))
+let activeDictionary = dictionaries;
+const dictionariesP: Promise<SpellingDictionary> = createCollectionRx(wordListRx)
     .then(loadedDictionary => {
         dictionaries = loadedDictionary;
         return updateActiveDictionary();
     });
 
 function updateActiveDictionary() {
-    activeDictionary = createCollection([dictionaries, userDictionary]);
+    activeDictionary = dictionaries;
     return activeDictionary;
 }
 
-export function onDictionaryReady(): Promise<boolean> {
-    return dictionariesP.then(() => true);
+export function onDictionaryReady(): Promise<SpellingDictionary> {
+    return dictionariesP;
 }
 
 export function getActiveDictionary(): SpellingDictionary {

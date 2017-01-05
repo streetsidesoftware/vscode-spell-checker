@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { mergeSettings } from '../src/CSpellSettingsServer';
+import { mergeInDocSettings } from '../src/CSpellSettingsServer';
 import * as Text from '../src/util/text';
 import * as TextRange from '../src/util/TextRange';
 import * as InDoc from '../src/InDocSettings';
 
-const emptySettings = mergeSettings({}, {});
+const emptySettings = mergeInDocSettings({}, {});
 
 describe('Validate InDocSettings', () => {
     it('tests matching settings', () => {

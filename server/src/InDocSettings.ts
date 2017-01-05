@@ -1,7 +1,7 @@
 import { Sequence } from 'gensequence';
 import * as Text from './util/text';
 import { CSpellUserSettings } from './CSpellSettingsDef';
-import { mergeSettings } from './CSpellSettingsServer';
+import { mergeInDocSettings } from './CSpellSettingsServer';
 import { createSpellingDictionary, SpellingDictionary } from './SpellingDictionary';
 
 const regExMatchRegEx = /\/.*\/[gimuy]*/;
@@ -15,7 +15,7 @@ export function getInDocumentSettings(text: string): CSpellUserSettings {
         .map(a => a[1] || '')
         .concatMap(a => parseSettingMatch(a))
         .reduce((s, setting) => {
-            return mergeSettings(s, setting);
+            return mergeInDocSettings(s, setting);
         }, {} as CSpellUserSettings);
     return settings;
 }
@@ -26,6 +26,7 @@ function parseSettingMatch(possibleSetting: string): CSpellUserSettings[] {
         [ /^words?\s/i , parseWords ],
         [ /^ignore(?:words?)?\s/i, parseIgnoreWords ],
         [ /^ignore_?Reg_?Exp\s+.+$/i, parseIgnoreRegExp ],
+        [ /^include_?Reg_?Exp\s+.+$/i, parseIncludeRegExp ],
     ];
 
     return settingParsers
@@ -49,18 +50,27 @@ function parseIgnoreWords(match: string): CSpellUserSettings {
     return { ignoreWords: wordsSetting.words };
 }
 
-function parseIgnoreRegExp(match: string): CSpellUserSettings {
-    const ignoreRegExpList = [ match.replace(/^[^\s]+\s+/, '') ]
+function parseRegEx(match: string): string[] {
+    const patterns = [ match.replace(/^[^\s]+\s+/, '') ]
         .map(a => {
             const m = a.match(regExMatchRegEx);
             if (m && m[0]) {
                 return m[0];
             }
-            return a.split(/\s+/g).filter(a => !!a)[0];
+            return a.replace(/((?:[^\s]|\\ )+).*/, '$1');
         });
+    return patterns;
+}
+
+function parseIgnoreRegExp(match: string): CSpellUserSettings {
+    const ignoreRegExpList = parseRegEx(match);
     return { ignoreRegExpList };
 }
 
+function parseIncludeRegExp(match: string): CSpellUserSettings {
+    const includeRegExpList = parseRegEx(match);
+    return { includeRegExpList };
+}
 
 function getPossibleInDocSettings(text): Sequence<RegExpExecArray> {
     return Text.match(regExInFileSetting, text);

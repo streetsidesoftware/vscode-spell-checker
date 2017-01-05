@@ -1,31 +1,32 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import { onDictionaryReady, getActiveDictionary } from './spellChecker';
+import { onDictionaryReady } from './spellChecker';
 import * as Text from './util/text';
 import * as Rx from 'rx';
-import { Sequence } from 'gensequence';
+import * as tds from './TextDocumentSettings';
 
 export const diagSource = 'cSpell Checker';
 
-
-import { ValidationOptions } from './textValidator';
+import { CSpellUserSettings } from './CSpellSettingsDef';
 import * as TV from './textValidator';
 
-export function validateTextDocument(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Promise<Diagnostic[]> {
+export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Rx.Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
         .toArray()
         .toPromise();
 }
 
-export function validateText(text: string, options: ValidationOptions = {}): Text.WordOffset[] {
-    return [...TV.validateText(text, getActiveDictionary(), options)];
+export function validateText(text: string, languageId: string, options: CSpellUserSettings): Text.WordOffset[] {
+    const settings = tds.getSettings(options, text, languageId);
+    const dict = tds.getDictionary(settings);
+    return [...TV.validateText(text, dict, settings)];
 }
 
 
-export function validateTextDocumentAsync(textDocument: TextDocument, options: ValidationOptions = {}): Rx.Observable<Diagnostic> {
+export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
     return Rx.Observable.fromPromise(onDictionaryReady())
-        .flatMap(() => validateText(textDocument.getText(), options))
+        .flatMap(() => validateText(textDocument.getText(), textDocument.languageId, options))
         .filter(a => !!a)
         .map(a => a!)
         // Convert the offset into a position

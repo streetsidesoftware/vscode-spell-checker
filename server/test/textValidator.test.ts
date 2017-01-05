@@ -47,7 +47,7 @@ describe('Validate textValidator functions', () => {
 
     it('tests textValidator no word compounds', () => {
         const dictCol = getSpellingDictionaryCollection();
-        const result = validateText(sampleText, dictCol);
+        const result = validateText(sampleText, dictCol, {});
         const errors = result.map(wo => wo.word).toArray();
         expect(errors).to.deep.equal(['giraffe', 'lightbrown', 'whiteberry', 'redberry']);
     });

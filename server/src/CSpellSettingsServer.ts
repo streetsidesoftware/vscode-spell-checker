@@ -49,12 +49,22 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
     }), left);
 }
 
+export function mergeInDocSettings(left: CSpellUserSettings, right: CSpellUserSettings): CSpellUserSettings {
+    const merged = {
+        ...mergeSettings(left, right),
+        includeRegExpList: mergeList(left.includeRegExpList, right.includeRegExpList),
+    };
+    return merged;
+}
+
+
 export function finalizeSettings(settings: CSpellUserSettings): CSpellUserSettings {
     // apply patterns to any RegExpLists.
 
     return {
         ...settings,
         ignoreRegExpList: applyPatterns(settings.ignoreRegExpList, settings.patterns),
+        includeRegExpList: applyPatterns(settings.includeRegExpList, settings.patterns),
     };
 }
 

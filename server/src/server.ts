@@ -1,3 +1,5 @@
+// cSpell:ignore pycache
+
 import {
     IPCMessageReader, IPCMessageWriter,
     createConnection, IConnection,
@@ -7,7 +9,6 @@ import {
 } from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
-import { setUserWords } from './spellChecker';
 import * as Rx from 'rx';
 import { onCodeActionHandler } from './codeActions';
 import {
@@ -23,6 +24,8 @@ import * as CSpellSettings from './CSpellSettingsServer';
 import { calcSettingsForLanguage, defaultLanguageSettings } from './LanguageSettings';
 import { CSpellPackageSettings, DictionaryDefinition } from './CSpellSettingsDef';
 import { getInDocumentSettings } from './InDocSettings';
+import * as RxPat from './RegExpPatterns';
+
 
 const settings: CSpellPackageSettings = {
     enabledLanguageIds: [
@@ -65,6 +68,7 @@ const defaulDictionaryFiles: DictionaryDefinition[] = [
     { name: 'fonts',          file: 'fonts.txt',            type: 'C' },
     { name: 'css',            file: 'css.txt',              type: 'S' },
 ];
+
 
 // The settings interface describe the server relevant settings part
 interface Settings {
@@ -118,7 +122,6 @@ function run() {
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
         Object.assign(settings, mergedSettings);
-        setUserWords(settings.userWords || [], settings.words || []);
 
         // Revalidate any open text documents
         documents.all().forEach(doc => validationRequestStream.onNext(doc));
@@ -180,10 +183,12 @@ function run() {
         return fnFileExclusionTest(uri);
     }
 
+    function getBaseSettings() {
+        return CSpellSettings.mergeSettings(RxPat.defaultSettings, settings);
+    }
+
     function validateTextDocument(textDocument: TextDocument): void {
-        const { allowCompoundWords } = calcSettingsForLanguage(defaultLanguageSettings, textDocument.languageId);
-        const langSettings = { allowCompoundWords };
-        const settingsToUse = CSpellSettings.mergeSettings(settings, langSettings, getInDocumentSettings(textDocument.getText()));
+        const settingsToUse = getBaseSettings();
         Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
             // Send the computed diagnostics to VSCode.
             validationFinishedStream.onNext(textDocument);
@@ -201,7 +206,7 @@ function run() {
         validationRequestStream.onNext(change.document);
     });
 
-    connection.onCodeAction(onCodeActionHandler(documents, settings));
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings()));
 
     // Listen on the connection
     connection.listen();

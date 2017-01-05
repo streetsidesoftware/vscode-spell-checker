@@ -5,11 +5,11 @@ import {
     CodeActionParams
 } from 'vscode-languageserver';
 import * as LangServer from 'vscode-languageserver';
-import { suggest } from './spellChecker';
 import * as Text from './util/text';
 import * as Validator from './validator';
-import { CSpellPackageSettings } from './CSpellSettingsDef';
-
+import { CSpellUserSettings } from './CSpellSettingsDef';
+import { SpellingDictionary } from './SpellingDictionary';
+import * as tds from './TextDocumentSettings';
 
 const defaultNumSuggestions = 10;
 
@@ -20,13 +20,28 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
     return textDocument.getText().slice(offStart, offEnd);
 }
 
-export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPackageSettings) {
+
+export function onCodeActionHandler(documents: TextDocuments, settings: CSpellUserSettings) {
+
+    const settingsCache = new Map<string, {version: number, settings: [CSpellUserSettings, SpellingDictionary]}>();
+
+    function getSettings(doc: TextDocument): [CSpellUserSettings, SpellingDictionary] {
+        const cached = settingsCache.get(doc.uri);
+        if (!cached || cached.version !== doc.version) {
+            const docSetting = tds.getSettingsForDocument(settings, doc);
+            const dict = tds.getDictionary(docSetting);
+            settingsCache.set(doc.uri, { version: doc.version, settings: [docSetting, dict] });
+        }
+        return settingsCache.get(doc.uri)!.settings;
+    }
+
     return (params: CodeActionParams) => {
-        const { numSuggestions = defaultNumSuggestions } = settings;
         const commands: Command[] = [];
         const { context, textDocument: { uri } } = params;
         const { diagnostics } = context;
         const textDocument = documents.get(uri);
+        const [ docSetting, dictionary ] = getSettings(textDocument);
+        const { numSuggestions = defaultNumSuggestions } = docSetting;
 
         function replaceText(range: LangServer.Range, text) {
             return LangServer.TextEdit.replace(range, text || '');
@@ -47,7 +62,7 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellPa
         for (const diag of spellCheckerDiags) {
             const word = extractText(textDocument, diag.range);
             altWord = altWord || word;
-            const sugs: string[] = suggest(word, numSuggestions);
+            const sugs: string[] = dictionary.suggest(word, numSuggestions).map(sr => sr.word);
             sugs
                 .map(sug => Text.matchCase(word, sug))
                 .forEach(sugWord => {

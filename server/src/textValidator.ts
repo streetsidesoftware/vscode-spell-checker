@@ -2,7 +2,6 @@ import * as Text from './util/text';
 import * as TextRange from './util/TextRange';
 import { SpellingDictionary } from './SpellingDictionary';
 import { Sequence, genSequence } from 'gensequence';
-import { getIgnoreWordsSetFromDocument } from './InDocSettings';  // @todo, move this out of here.
 import * as RxPat from './RegExpPatterns';
 
 export interface ValidationOptions {
@@ -13,6 +12,9 @@ export interface ValidationOptions {
     flagWords?: string[];
     ignoreRegExpList?: (RegExp|string)[];
     includeRegExpList?: (RegExp|string)[];
+    ignoreWords?: string[];
+    words?: string[];
+    userWords?: string[];
     allowCompoundWords?: boolean;
 }
 
@@ -31,7 +33,7 @@ export const minWordSplitLen            = 3;
 export function validateText(
     text: string,
     dict: SpellingDictionary,
-    options: ValidationOptions = {}
+    options: ValidationOptions
 ): Sequence<Text.WordOffset> {
     const {
         maxNumberOfProblems  = defaultMaxNumberOfProblems,
@@ -39,24 +41,22 @@ export function validateText(
         minWordLength        = defaultMinWordLength,
         flagWords            = [],
         ignoreRegExpList     = [],
+        includeRegExpList    = [],
+        ignoreWords          = [],
         allowCompoundWords   = false,
     } = options;
+
+    const filteredIncludeList = includeRegExpList.filter(a => !!a);
+    const finalIncludeList = filteredIncludeList.length ? filteredIncludeList : ['.*'];
+
     const setOfFlagWords = new Set(flagWords);
     const mapOfProblems = new Map<string, number>();
     const includeRanges = TextRange.excludeRanges(
-        [
-            { startPos: 0, endPos: text.length },
-        ],
-        TextRange.findMatchingRangesForPatterns([
-            RxPat.regExSpellingGuard,
-            RxPat.regExMatchUrls,
-            RxPat.regExPublicKey,
-            RxPat.regExCert,
-            RxPat.regExEscapeCharacters,
-            ...ignoreRegExpList,
-        ], text)
+        TextRange.findMatchingRangesForPatterns(finalIncludeList, text),
+        TextRange.findMatchingRangesForPatterns(ignoreRegExpList, text)
     );
-    const ignoreWords = getIgnoreWordsSetFromDocument(text);
+    const ignoreWordsSet = new Set(ignoreWords.map(a => a.toLowerCase()));
+
     return Text.extractWordsFromCode(text)
         // Filter out any words that are NOT in the include ranges.
         .scan<WordRangeAcc>((acc, word) => {
@@ -86,10 +86,10 @@ export function validateText(
         .filter(wo => wo.isFlagged || wo.word.length >= minWordLength )
         .map(wo => ({
             ...wo,
-            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWords.has(wo.word.toLowerCase())
+            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWordsSet.has(wo.word.toLowerCase())
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
-        .filter(wo => !RxPat.regExHexValues.test(wo.word))  // Filter out any hex numbers
+        .filter(wo => !RxPat.regExHexDigits.test(wo.word))  // Filter out any hex numbers
         .filter(wo => {
             // Keep track of the number of times we have seen the same problem
             mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);
