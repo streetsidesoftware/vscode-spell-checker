@@ -63,6 +63,9 @@ export interface CSpellUserSettings {
 
     // Compound Word settings
     allowCompoundWords?: boolean;
+
+    // Additional settings for individual languages.
+    languageSettings?: LanguageSetting[];
 }
 
 

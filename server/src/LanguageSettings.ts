@@ -1,4 +1,5 @@
-import { LanguageSetting } from './CSpellSettingsDef';
+import { LanguageSetting, CSpellUserSettings } from './CSpellSettingsDef';
+import * as SpellSettings from './CSpellSettingsServer';
 
 // LanguageSettings are a collection of LanguageSetting.  They are applied in order, matching against the languageId.
 // Dictionaries are concatenated together.
@@ -19,14 +20,24 @@ export const defaultLanguageSettings: LanguageSettings = [
     { languageId: 'scss',                                dictionaries: ['fonts', 'css'] },
 ];
 
+export function getDefaultLanguageSettings(): CSpellUserSettings {
+    return { languageSettings: defaultLanguageSettings };
+}
+
 export function calcSettingsForLanguage(languageSettings: LanguageSettings, languageId: string): LanguageSetting {
-    return languageSettings
+    return defaultLanguageSettings.concat(languageSettings)
         .filter(s => s.languageId === '*' || s.languageId === languageId)
         .reduce((langSetting, setting) => {
             const { allowCompoundWords = langSetting.allowCompoundWords } = setting;
             const dictionaries = mergeUnique(langSetting.dictionaries, setting.dictionaries);
             return { languageId, allowCompoundWords, dictionaries };
         });
+}
+
+export function calcUserSettingsForLanguage(settings: CSpellUserSettings, languageId: string): CSpellUserSettings {
+    const { languageSettings = [] } = settings;
+    const { allowCompoundWords } = calcSettingsForLanguage(languageSettings, languageId);
+    return  SpellSettings.mergeSettings(settings, { allowCompoundWords });
 }
 
 function mergeUnique(a: string[] = [], b: string[] = []) {
