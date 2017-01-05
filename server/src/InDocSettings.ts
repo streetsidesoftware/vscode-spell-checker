@@ -9,6 +9,7 @@ const regExInFileSetting = /(?:spell-?checker|cSpell)::?\s*(.*)/gi;
 
 export type CSpellUserSettingsKeys = keyof CSpellUserSettings;
 
+
 export function getInDocumentSettings(text: string): CSpellUserSettings {
     const settings = getPossibleInDocSettings(text)
         .map(a => a[1] || '')
@@ -21,7 +22,7 @@ export function getInDocumentSettings(text: string): CSpellUserSettings {
 
 function parseSettingMatch(possibleSetting: string): CSpellUserSettings[] {
     const settingParsers: [RegExp, (m: string) => CSpellUserSettings][] = [
-        [ /^(?:allow|enable|disable)?CompoundWords/i, parseCompoundWords ],
+        [ /^(?:enable|disable)(?:allow)?CompoundWords/i, parseCompoundWords ],
         [ /^words?\s/i , parseWords ],
         [ /^ignore(?:words?)?\s/i, parseIgnoreWords ],
         [ /^ignore_?Reg_?Exp\s+.+$/i, parseIgnoreRegExp ],
