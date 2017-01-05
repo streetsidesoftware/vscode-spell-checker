@@ -70,8 +70,8 @@ export function finalizeSettings(settings: CSpellUserSettings): CSpellUserSettin
 
 function applyPatterns(regExpList: (string | RegExp)[] = [], patterns: RegExpPatternDefinition[] = []): (string|RegExp)[] {
     const patternMap = new Map(patterns
-        .map(def => [def.name, def.pattern] as [string, string|RegExp])
+        .map(def => [def.name.toLowerCase(), def.pattern] as [string, string|RegExp])
     );
 
-    return regExpList.map(p => patternMap.get(p.toString()) || p);
+    return regExpList.map(p => patternMap.get(p.toString().toLowerCase()) || p);
 }
