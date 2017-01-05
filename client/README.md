@@ -134,7 +134,7 @@ const wackyWord = ['zaallano', 'wooorrdd', 'zzooommmmmmmm'];
 
 ### Words
 
-The words list allows you to add words that will be considered correct and will be suggested.
+The words list allows you to add words that will be considered correct and will be used as suggestions.
 
 ```javascript
 // cSpell:words woorxs sweeetbeat
@@ -162,6 +162,11 @@ By default, the entire document is checked for spelling.
 `cSpell:disable`/`cSpell:enable` above allows you to block off sections of the document.
 `ignoreRegExp` and `includeRegExp` give you the ability to ignore or include patterns of text.
 By default the flags `gim` are added if no flags are given.
+
+The spell checker works in the following way:
+1. Find all text matching `includeRegExp`
+2. Remove any text matching `excludeRegExp`
+3. Check the remaining text.
 
 #### Exclude Example
 
