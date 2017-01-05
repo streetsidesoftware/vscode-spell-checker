@@ -36,7 +36,7 @@
 		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
-			"name": "Run mocha suggest_test",
+			"name": "Run mocha suggest.test",
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "node",
             // Request type "launch" or "attach"
@@ -46,7 +46,7 @@
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
 			// Command line arguments passed to the program.
-			"args": ["../client/server/test/suggest_test.js"],
+			"args": ["../client/server/test/suggest.test.js"],
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
@@ -58,7 +58,7 @@
 		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
-			"name": "Run mocha WordDictionary_test",
+			"name": "Run mocha WordDictionary.test",
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "node",
             // Request type "launch" or "attach"
@@ -68,7 +68,7 @@
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
 			// Command line arguments passed to the program.
-			"args": ["../client/server/test/WordDictionary_test.js"],
+			"args": ["../client/server/test/WordDictionary.test.js"],
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
@@ -80,7 +80,7 @@
 		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
-			"name": "Run mocha text_test",
+			"name": "Run mocha text.test",
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "node2",
             // Request type "launch" or "attach"
@@ -102,7 +102,7 @@
 		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
-			"name": "Run mocha validator_test",
+			"name": "Run mocha validator.test",
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "node2",
             // Request type "launch" or "attach"
@@ -112,7 +112,7 @@
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
 			// Command line arguments passed to the program.
-			"args": ["../client/server/test/validator_test.js"],
+			"args": ["../client/server/test/validator.test.js"],
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
 			"cwd": "${workspaceRoot}",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
