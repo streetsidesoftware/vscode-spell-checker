@@ -145,6 +145,19 @@
                     ],
                     "description": "Words to always be flagged as an error."
                 },
+                "cSpell.patterns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "items": [
+                            {"id": "name", "type": "string", "description": "The pattern identifier."},
+                            {"id": "pattern", "type": "string", "description": "Regular expression, default flags are: 'gim'"}
+                        ],
+                        "description": "Define a pattern"
+                    },
+                    "default": [],
+                    "description": "Defines a list of named regular expression patterns that can be used in exclusion or inclusion lists."
+                },
                 "cSpell.ignoreRegExpList": {
                     "type": "array",
                     "items": {
@@ -153,10 +166,18 @@
                     "default": [],
                     "description": "List of regular expressions used to exclude the matching text from being checked.\n Example: \"0x[a-f0-9]+\" to skip 0x hex values.\n By default the flags are 'gim'.\n You can specify them like this:\n \"/0x[A-F0-9]/g\" to match only upper case hex numbers.\n Example to match email: \"<?[\\\\w.\\\\-+]+@\\\\w+(\\\\.\\\\w+)+>?\" "
                 },
+                "cSpell.includeRegExpList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of regular expressions used to include text to be spell checked.\nBy default, all text is checked.  Adding regular expresses to this list will limit the text to be spell checked to only text that matches any of the expressions in the list.\nLogic: text to be checked = include - exclude\nNote: Slashes need to be double: \\\\ because it is in a json string. \nExamples:\n* \".*\" -- include everything.\n* \"'(?:[^'\\\\n]|\\\\\\\\')*'\" -- single quote strings. \n"
+                },
                 "cSpell.allowCompoundWords": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false mean it would not pass."
+                    "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false means it would not pass."
                 }
             }
         }
