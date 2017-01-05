@@ -6,6 +6,7 @@ import * as Rx from 'rx';
 export interface SpellingDictionary {
     has(word: string): boolean;
     suggest(word: string, numSuggestions?: number): SuggestionResult[];
+    size: number;
 }
 
 export class SpellingDictionaryInstance implements SpellingDictionary {
@@ -18,6 +19,10 @@ export class SpellingDictionaryInstance implements SpellingDictionary {
 
     public suggest(word: string, numSuggestions?: number): SuggestionResult[] {
         return suggest(this.trie, word.toLowerCase(), numSuggestions);
+    }
+
+    public get size() {
+        return this.words.size;
     }
 }
 

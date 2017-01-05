@@ -4,6 +4,7 @@ import { SuggestionResult } from './suggest';
 
 export class SpellingDictionaryCollection implements SpellingDictionary {
     constructor(readonly dictionaries: SpellingDictionary[]) {
+        this.dictionaries = this.dictionaries.filter(a => !!a.size);
     }
 
     public has(word: string) {
@@ -12,6 +13,10 @@ export class SpellingDictionaryCollection implements SpellingDictionary {
 
     public suggest(word: string, numSuggestions: number) {
         return makeSuggestions(this.dictionaries, word, numSuggestions);
+    }
+
+    public get size() {
+        return this.dictionaries.reduce((a, b) => a + b.size, 0);
     }
 }
 
