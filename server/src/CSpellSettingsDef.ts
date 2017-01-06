@@ -11,7 +11,7 @@ export interface CSpellUserSettings {
     version?: string;
 
     // current active spelling language
-    language?: string;
+    language?: LocalId;
 
     // list of words to be always considered correct
     words?: string[];
@@ -20,7 +20,7 @@ export interface CSpellUserSettings {
     ignoreWords?: string[];
 
     // matching file paths will to be ignored
-    ignorePaths?: string[];
+    ignorePaths?: Glob[];
 
     // list of words to always be considered incorrect.
     flagWords?: string[];
@@ -35,7 +35,7 @@ export interface CSpellUserSettings {
     spellCheckDelayMs?: number;
 
     // languageIds for the files to spell check.
-    enabledLanguageIds?: string[];
+    enabledLanguageIds?: LanguageId[];
 
     // The maximum number of problems to report in a file.
     maxNumberOfProblems?: number;
@@ -50,10 +50,10 @@ export interface CSpellUserSettings {
     numSuggestions?: number;
 
     // List of patterns to exclude from spell checking
-    ignoreRegExpList?: (string|RegExp)[];
+    ignoreRegExpList?: RegExpList;
 
     // List of patterns to define the text to be included for spell checking
-    includeRegExpList?: (string|RegExp)[];
+    includeRegExpList?: RegExpList;
 
     // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
     patterns?: RegExpPatternDefinition[];
@@ -66,6 +66,71 @@ export interface CSpellUserSettings {
 
     // Additional settings for individual languages.
     languageSettings?: LanguageSetting[];
+}
+
+
+export interface DictionaryDefinition {
+    // The reference name of the dictionary, used with program language settings
+    name: DictionaryId;
+    // Path to the file, if undefined the path to the extension dictionaries is assumed
+    path?: string;
+    // File name
+    file: string;
+    // Type of file:
+    //  S - single word per line,
+    //  W - each line can contain one or more word separated by space,
+    //  C - each line is treated like code (Camel Case is allowed)
+    // Default is C
+    // C is the slowest to load due to the need to split each line based upon code splitting rules.
+    type?: 'S'|'W'|'C';
+}
+
+export interface LanguageSetting {
+    // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
+    languageId: string;
+
+    // True to enable compound word checking.
+    allowCompoundWords?: boolean;
+
+    // Optional list of dictionaries to use.
+    dictionaries?: DictionaryId[];
+
+    // List of patterns to exclude from spell checking
+    ignoreRegExpList?: RegExpList;
+
+    // List of patterns to define the text to be included for spell checking
+    includeRegExpList?: RegExpList;
+
+    // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
+    patterns?: RegExpPatternDefinition[];
+
+}
+
+export type RegExpList = PatternRef[];
+
+// A PatternRef is a Pattern or PatternId.
+export type PatternRef = Pattern | PatternId;
+
+export type Pattern = string | RegExp;
+
+// This matches the name in a pattern definition
+export type PatternId = string;
+
+// This matches the name in a dictionary definition
+export type DictionaryId = string;
+
+// This is a written language local like: 'en', 'en-UK', 'fr', 'es', 'de', etc.
+export type LocalId = string;
+
+// These are glob expressions
+export type Glob = string;
+
+// This can be '*', 'typescript', 'cpp', 'json', etc.
+export type LanguageId = string;
+
+export interface RegExpPatternDefinition {
+    name: PatternId;
+    pattern: PatternRef;
 }
 
 
@@ -122,33 +187,3 @@ export interface CSpellUserSettingsWithComments extends CSpellUserSettings {
     '//$'?: string[];
 }
 
-export interface DictionaryDefinition {
-    // The reference name of the dictionary, used with program language settings
-    name: string;
-    // Path to the file, if undefined the path to the extension dictionaries is assumed
-    path?: string;
-    // File name
-    file: string;
-    // Type of file:
-    //  S - single word per line,
-    //  W - each line can contain one or more word separated by space,
-    //  C - each line is treated like code (Camel Case is allowed)
-    // Default is C
-    // C is the slowest to load due to the need to split each line based upon code splitting rules.
-    type?: 'S'|'W'|'C';
-}
-
-export interface LanguageSetting {
-    // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
-    languageId: string;
-    // True to enable compound word checking.
-    allowCompoundWords?: boolean;
-    // Optional list of dictionaries to use.
-    dictionaries?: string[];
-}
-
-
-export interface RegExpPatternDefinition {
-    name: string;
-    pattern: string | RegExp;
-}
