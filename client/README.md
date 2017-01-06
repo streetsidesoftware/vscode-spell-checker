@@ -307,6 +307,9 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     // Words to add to dictionary for a workspace.
     "cSpell.words": [],
 
+    // Enable / Disable compound words like 'errormessage'
+    "cSpell.allowCompoundWords": false,
+
     // Words to be ignored and not suggested.
     "cSpell.ignoreWords": ["behaviour"],
 
@@ -337,6 +340,25 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 ```
 
 ## Release Notes
+
+### 0.14.0
+* This release includes a large amount of refactoring in order to support greater flexability with the configuration.
+* Ability to add file level settings:
+    * ignore -- list of words to ignore
+    * words -- list of words to consider correct
+    * compound words -- can now turn on / off compound word checking.
+    * disable / enable the spell checker
+    * control which text in a file is checked.
+* Ability to add new Dictionary files
+* Per programming language level settings.
+    * the ability to control which dictionaries are used.
+    * enable / disable compound words
+    * define `ignoreRegExpList` / `includeRegExpList` per language.
+* define reusable patterns to be used with RegExpLists.
+* Fixes #7, #31 String with escape characters like, "\nmessage", would be flagged as an error.
+* Addresses #3 Option to spell check only string and comments
+* Addresses #27 Regexp Ignore
+* Addresses #45 Adding custom dictionaries
 
 ### 0.13.3
 * Fix for #40 and #44 - manually load the cSpell.json file and merge it will any project settings.
