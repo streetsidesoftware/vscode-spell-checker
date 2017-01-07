@@ -24,21 +24,10 @@ import * as Dictionaries from './Dictionaries';
 import * as CSpellSettings from './CSpellSettingsServer';
 import { CSpellPackageSettings } from './CSpellSettingsDef';
 import * as RxPat from './RegExpPatterns';
+import { getDefaultSettings } from './DefaultSettings';
 
-
-const settings: CSpellPackageSettings = {
-    enabledLanguageIds: [
-        'csharp', 'go', 'javascript', 'javascriptreact', 'markdown',
-        'php', 'plaintext', 'python', 'text', 'typescript', 'typescriptreact'
-    ],
-    maxNumberOfProblems: 100,
-    numSuggestions: 10,
-    spellCheckDelayMs: 50,
-    words: [],
-    userWords: [],
-    ignorePaths: [],
-    allowCompoundWords: false,
-};
+const defaultSettings = getDefaultSettings();
+const settings: CSpellPackageSettings = {...defaultSettings};
 
 const defaultExclude: Glob[] = [
     'debug:/**',        // Files that are generated while debugging (generally from a .map file)
@@ -100,7 +89,7 @@ function run() {
         const cSpellSettingsFile = CSpellSettings.readSettings(configPath);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
-        const mergedSettings = CSpellSettings.mergeSettings(cSpellSettingsFile, cSpell);
+        const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
