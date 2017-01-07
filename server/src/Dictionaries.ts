@@ -1,6 +1,5 @@
 import { DictionaryDefinition, DictionaryId, CSpellUserSettings } from './CSpellSettingsDef';
 import { loadDictionary } from './DictionaryLoader';
-import { createCollectionP } from './SpellingDictionaryCollection';
 import { SpellingDictionary } from './SpellingDictionary';
 import * as path from 'path';
 
@@ -27,13 +26,12 @@ export const defaultSettings: CSpellUserSettings = {
     dictionaryDefinitions: defaultDictionaryDefs,
 };
 
-export function loadDictionaries(dictIds: DictionaryId[], defs: DictionaryDefinition[]): Promise<SpellingDictionary> {
+export function loadDictionaries(dictIds: DictionaryId[], defs: DictionaryDefinition[]): Promise<SpellingDictionary>[] {
     const defsToLoad = filterDictDefsToLoad(dictIds, defs);
 
-    return createCollectionP(defsToLoad
+    return defsToLoad
         .map(e => e[1])
-        .map(def => loadDictionary(def.path!, { type: def.type}))
-    );
+        .map(def => loadDictionary(def.path!, { type: def.type}));
 }
 
 export type DefMapArrayItem = [string, DictionaryDefinition];
