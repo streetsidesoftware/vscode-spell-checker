@@ -21,9 +21,7 @@ import {
 import * as path from 'path';
 
 import * as CSpellSettings from './CSpellSettingsServer';
-import { calcSettingsForLanguage, defaultLanguageSettings } from './LanguageSettings';
-import { CSpellPackageSettings, DictionaryDefinition } from './CSpellSettingsDef';
-import { getInDocumentSettings } from './InDocSettings';
+import { CSpellPackageSettings } from './CSpellSettingsDef';
 import * as RxPat from './RegExpPatterns';
 
 
