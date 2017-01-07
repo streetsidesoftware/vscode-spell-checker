@@ -1,6 +1,7 @@
 import { suggest, SuggestionResult } from './suggest';
 import { Trie, createTrie, addWordToTrie } from './Trie';
 import { genSequence, Sequence } from 'gensequence';
+import {} from './DictionaryLoader';
 import * as Rx from 'rx';
 
 export interface SpellingDictionary {
@@ -44,11 +45,11 @@ export function createSpellingDictionary(wordList: string[] | Sequence<string>):
     return new SpellingDictionaryInstance(words, trie);
 }
 
-export function createSpellingDictionaryRx(words: Rx.Observable<string>): Rx.Promise<SpellingDictionary> {
+export function createSpellingDictionaryRx(words: Rx.Observable<string>): Promise<SpellingDictionary> {
     const promise = words
         .reduce(reduceWordsToTrieSet, { words: new Set<string>(), trie: createTrie() })
         .map(({words, trie}) => new SpellingDictionaryInstance(words, trie))
         .toPromise();
-    return promise;
+    return Promise.all([promise]).then(a => a[0]);
 }
 
