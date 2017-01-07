@@ -6,60 +6,32 @@ import {
 } from '../src/wordListHelper';
 
 import { SpellingDictionary } from './SpellingDictionary';
-import { createCollectionRx, createCollection } from './SpellingDictionaryCollection';
+import { createCollection, createCollectionP } from './SpellingDictionaryCollection';
+import { loadDictionary } from './DictionaryLoader';
 
-export function loadSimpleWordList(filename: string): Rx.Observable<string> {
-    return loadWordsRx(filename);
-}
-
-export function loadWordList(filename: string) {
-    return loadWordsRx(filename).flatMap(splitLineIntoWordsRx);
-}
-
-export function loadCodeWordList(filename: string) {
-    return loadWordsRx(filename).flatMap(splitLineIntoCodeWordsRx);
-}
-
-export function isWordInDictionaryP(word: string): Promise<boolean> {
-    return dictionariesP.then(() => activeDictionary.has(word));
-}
-
-export function isWordInDictionary(word: string): boolean {
-    return activeDictionary.has(word);
-}
-
-const wordListRx = [
-    loadSimpleWordList(path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')),
-    loadWordList(path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')),
-    loadCodeWordList(path.join(__dirname, '..', '..', 'dictionaries', 'fonts.txt')),
+const dictionaryFiles: ['C' | 'S' | 'W', string][] = [
+    ['S', path.join(__dirname, '..', '..', 'dictionaries', 'wordsEn.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'typescript.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'node.txt')],
+    ['W', path.join(__dirname, '..', '..', 'dictionaries', 'softwareTerms.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'html.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'php.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'go.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'companies.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'python.txt')],
+    ['C', path.join(__dirname, '..', '..', 'dictionaries', 'fonts.txt')],
 ];
 
-export function suggest(word: string, numSuggestions: number): string[] {
-    return activeDictionary.suggest(word, numSuggestions)
-        .map(sr => sr.word);
+function loadDictionaries(): Promise<SpellingDictionary> {
+    return createCollectionP(dictionaryFiles
+        .map(([type, filename]) => loadDictionary(filename, { type }))
+    );
 }
 
 // @todo: implement using dependency injection.  For now this is used for the refactoring.
 
-let dictionaries = createCollection([]);
-let activeDictionary = dictionaries;
-const dictionariesP: Promise<SpellingDictionary> = createCollectionRx(wordListRx)
-    .then(loadedDictionary => {
-        dictionaries = loadedDictionary;
-        return updateActiveDictionary();
-    });
-
-function updateActiveDictionary() {
-    activeDictionary = dictionaries;
-    return activeDictionary;
-}
+let activeDictionary: SpellingDictionary = createCollection([]);
+const dictionariesP: Promise<SpellingDictionary> = loadDictionaries().then(dictionaries => activeDictionary = dictionaries);
 
 export function onDictionaryReady(): Promise<SpellingDictionary> {
     return dictionariesP;

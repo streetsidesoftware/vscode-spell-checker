@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { isWordInDictionaryP } from '../src/spellChecker';
+import { onDictionaryReady } from '../src/spellChecker';
 import { processWordListLinesRx } from '../src/wordListHelper';
 import * as Rx from 'rx';
 
@@ -19,6 +19,10 @@ describe('Verify Contractions', function() {
     });
 
 });
+
+function isWordInDictionaryP(word: string): Promise<boolean> {
+    return onDictionaryReady().then(dict => dict.has(word));
+}
 
 describe('Verify Spell Checker', function() {
     // this.timeout(10000);
