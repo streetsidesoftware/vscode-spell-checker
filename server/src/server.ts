@@ -92,7 +92,9 @@ function run() {
     });
 
     // The settings have changed. Is sent on server activation as well.
-    connection.onDidChangeConfiguration((change) => {
+    connection.onDidChangeConfiguration(onConfigChange);
+
+    function onConfigChange(change) {
         const configPath = path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName);
         const cSpellSettingsFile = CSpellSettings.readSettings(configPath);
         const { cSpell = {}, search = {} } = change.settings as Settings;
@@ -105,18 +107,16 @@ function run() {
 
         // Revalidate any open text documents
         documents.all().forEach(doc => validationRequestStream.onNext(doc));
-    });
+    }
 
     interface TextDocumentInfo {
         uri?: string;
         languageId?: string;
     }
 
-    /*
     // Listen for event messages from the client.
-    connection.onNotification({ method: 'applySettings'}, type => {
-    });
-    */
+    connection.onNotification({ method: 'applySettings'}, onConfigChange);
+
     connection.onRequest({ method: 'isSpellCheckEnabled' }, (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
         return {

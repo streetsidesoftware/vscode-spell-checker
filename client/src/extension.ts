@@ -13,9 +13,8 @@ import {
 
 // const extensionId = 'streetsidesoftware.code-spell-checker'
 const baseConfigName = CSpellSettings.defaultFileName;
+const configFileGlob = `**/${baseConfigName}`;
 const findConfig = `.vscode/${baseConfigName}`;
-
-const settingsStream = new Rx.ReplaySubject<CSpellUserSettings>(1);
 
 interface SettingsInfo {
     path: string;
@@ -42,13 +41,6 @@ function getSettings(): Rx.Observable<SettingsInfo> {
                     .map(settings => (<SettingsInfo>{ path, settings }));
             }
         });
-}
-
-function triggerGetSettings() {
-    // Send the current settings to the server.
-    return getSettings()
-        .map(({settings}) => settings)
-        .subscribe(settings => settingsStream.onNext(settings));
 }
 
 function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
@@ -206,7 +198,7 @@ export function activate(context: ExtensionContext) {
     };
 
 
-    const configWatcher = workspace.createFileSystemWatcher(findConfig);
+    const configWatcher = workspace.createFileSystemWatcher(configFileGlob);
     const workspaceConfig = workspace.getConfiguration();
     const settings: CSpellPackageSettings = workspaceConfig.get('cSpell') as CSpellPackageSettings;
 
@@ -225,9 +217,11 @@ export function activate(context: ExtensionContext) {
     const client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions);
     const clientDispose = client.start();
 
-    const disposableSettingsSubscription = settingsStream.subscribe(settings => {
-        client.sendNotification({method: 'applySettings'}, settings);
-    });
+    function triggerGetSettings() {
+        const cSpell = workspaceConfig.get('cSpell') as CSpellPackageSettings;
+        const search = workspaceConfig.get('search') as CSpellPackageSettings;
+        client.sendNotification({method: 'applySettings'}, { settings: { cSpell, search }});
+    }
 
     const actionAddWordToWorkspace = userCommandAddWordToDictionary('Add Word to Workspace Dictionary', addWordToWorkspaceDictionary);
     const actionAddWordToDictionary = userCommandAddWordToDictionary('Add Word to Dictionary', addWordToUserDictionary);
@@ -245,12 +239,8 @@ export function activate(context: ExtensionContext) {
         commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
         commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true)),
         commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false)),
-        disposableSettingsSubscription,
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),
         configWatcher.onDidDelete(triggerGetSettings)
     );
-
-    // For now, triggering the settings isn't necessary.  This will become more important later.
-    // triggerGetSettings();
 }
