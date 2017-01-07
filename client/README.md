@@ -1,6 +1,7 @@
 <!--- cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ -->
 <!--- cSpell:enableCompoundWords -->
 <!--- cSpell:includeRegExp Everything -->
+<!--- cSpell:ignoreRegExp "hte" -->
 # Spelling Checker for Visual Studio Code
 [![Current Version](http://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![Install Count](http://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
@@ -331,7 +332,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"`
-    "cSpell.flagWords": ['hte'],
+    "cSpell.flagWords": ["hte"],
 
     // Set the delay before spell checking the document. Default is 50.
     "cSpell.spellCheckDelayMs": 50,
@@ -354,11 +355,12 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     * the ability to control which dictionaries are used.
     * enable / disable compound words
     * define `ignoreRegExpList` / `includeRegExpList` per language.
-* define reusable patterns to be used with RegExpLists.
-* Fixes #7, #31 String with escape characters like, "\nmessage", would be flagged as an error.
-* Addresses #3 Option to spell check only string and comments
-* Addresses #27 Regexp Ignore
-* Addresses #45 Adding custom dictionaries
+* Ability to define reusable patterns to be used with RegExpLists.
+* Fixes #7, #31 -- String with escape characters like, "\nmessage", would be flagged as an error.
+* Addresses #3 -- Option to spell check only string and comments
+* Addresses #27 -- Regexp Ignore
+* Addresses #45 -- Adding custom dictionaries
+* Fix issue $44 -- Settings in cSpell.json were not being applied without a reload.
 
 ### 0.13.3
 * Fix for #40 and #44 - manually load the cSpell.json file and merge it will any project settings.
