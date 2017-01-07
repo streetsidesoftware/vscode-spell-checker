@@ -147,7 +147,7 @@ const companyName = 'woorxs sweeetbeat';
 
 In some programing language it is common to glue words together.
 
-```cpp
+```c
 // cSpell:enableCompoundWords
 char * errormessage;  // Is ok with cSpell:enableCompoundWords
 int    errornumber;   // Is also ok.
