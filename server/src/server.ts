@@ -52,24 +52,6 @@ const defaultExclude: Glob[] = [
     '__pycache__/**',   // ignore cache files.
 ];
 
-const extensionPath = path.join(__dirname, '..', '..');
-const dictionaryPath = path.join(extensionPath, 'dictionaries');
-
-const defaulDictionaryFiles: DictionaryDefinition[] = [
-    { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
-    { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
-    { name: 'node',           file: 'node.txt',             type: 'C' },
-    { name: 'softwareTerms',  file: 'softwareTerms.txt',    type: 'W' },
-    { name: 'html',           file: 'html.txt',             type: 'S' },
-    { name: 'php',            file: 'php.txt',              type: 'C' },
-    { name: 'go',             file: 'go.txt',               type: 'C' },
-    { name: 'companies',      file: 'companies.txt',        type: 'C' },
-    { name: 'python',         file: 'python.txt',           type: 'C' },
-    { name: 'fonts',          file: 'fonts.txt',            type: 'C' },
-    { name: 'css',            file: 'css.txt',              type: 'S' },
-];
-
-
 // The settings interface describe the server relevant settings part
 interface Settings {
     cSpell?: CSpellPackageSettings;
