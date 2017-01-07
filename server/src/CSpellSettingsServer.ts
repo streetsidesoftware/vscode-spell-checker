@@ -46,6 +46,8 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
         enabledLanguageIds: mergeList(left.enabledLanguageIds, right.enabledLanguageIds),
         ignoreRegExpList: mergeList(left.ignoreRegExpList, right.ignoreRegExpList),
         patterns: mergeList(left.patterns, right.patterns),
+        dictionaryDefinitions: mergeList(left.dictionaryDefinitions, right.dictionaryDefinitions),
+        dictionaries: mergeList(left.dictionaries, right.dictionaries),
     }), left);
 }
 

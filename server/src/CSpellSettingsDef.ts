@@ -6,7 +6,7 @@ export interface CSpellPackageSettings extends CSpellUserSettings {
 }
 
 
-export interface CSpellUserSettings {
+export interface CSpellUserSettings extends BaseSetting {
     // Version of the setting file.
     version?: string;
 
@@ -49,6 +49,21 @@ export interface CSpellUserSettings {
     // Number of suggestions to make
     numSuggestions?: number;
 
+    // Additional settings for individual languages.
+    languageSettings?: LanguageSetting[];
+}
+
+
+export interface BaseSetting {
+    // True to enable compound word checking.
+    allowCompoundWords?: boolean;
+
+    // Define additional available dictionaries
+    dictionaryDefinitions?: DictionaryDefinition[];
+
+    // Optional list of dictionaries to use.
+    dictionaries?: DictionaryId[];
+
     // List of patterns to exclude from spell checking
     ignoreRegExpList?: RegExpList;
 
@@ -57,17 +72,9 @@ export interface CSpellUserSettings {
 
     // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
     patterns?: RegExpPatternDefinition[];
-
-    // List of available dictionaries
-    dictionaries?: DictionaryDefinition[];
-
-    // Compound Word settings
-    allowCompoundWords?: boolean;
-
-    // Additional settings for individual languages.
-    languageSettings?: LanguageSetting[];
 }
 
+export type DictionaryFileTypes = 'S'|'W'|'C';
 
 export interface DictionaryDefinition {
     // The reference name of the dictionary, used with program language settings
@@ -82,28 +89,12 @@ export interface DictionaryDefinition {
     //  C - each line is treated like code (Camel Case is allowed)
     // Default is C
     // C is the slowest to load due to the need to split each line based upon code splitting rules.
-    type?: 'S'|'W'|'C';
+    type?: DictionaryFileTypes;
 }
 
-export interface LanguageSetting {
+export interface LanguageSetting extends BaseSetting {
     // The language id.  Ex: "typescript", "html", or "php".  "*" -- will match all languages
     languageId: string;
-
-    // True to enable compound word checking.
-    allowCompoundWords?: boolean;
-
-    // Optional list of dictionaries to use.
-    dictionaries?: DictionaryId[];
-
-    // List of patterns to exclude from spell checking
-    ignoreRegExpList?: RegExpList;
-
-    // List of patterns to define the text to be included for spell checking
-    includeRegExpList?: RegExpList;
-
-    // Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
-    patterns?: RegExpPatternDefinition[];
-
 }
 
 export type RegExpList = PatternRef[];

@@ -11,6 +11,8 @@ describe('Validate CSpellSettingsServer', () => {
             patterns: [],
             enabledLanguageIds: [],
             ignoreRegExpList: [],
+            dictionaries: [],
+            dictionaryDefinitions: [],
         });
     });
 });
