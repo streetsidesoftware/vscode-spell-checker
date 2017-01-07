@@ -49,6 +49,10 @@ export function makeSuggestions(dicts: SpellingDictionary[], word: string, numSu
 
 export function createCollectionRx(wordLists: Rx.Observable<string>[]): Promise<SpellingDictionaryCollection> {
     const dictionaries = wordLists.map(words => createSpellingDictionaryRx(words));
-    return Promise.all(dictionaries)
+    return createCollectionP(dictionaries);
+}
+
+export function createCollectionP(dicts: Promise<SpellingDictionary>[]): Promise<SpellingDictionaryCollection> {
+    return Promise.all(dicts)
         .then(dicts => new SpellingDictionaryCollection(dicts));
 }
