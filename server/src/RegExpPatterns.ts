@@ -1,5 +1,3 @@
-import { RegExpPatternDefinition, CSpellUserSettings } from './CSpellSettingsDef';
-
 // Exclude Expressions
 export const regExMatchUrls = /(?:https?|ftp):\/\/\S+/gi;
 export const regExHexDigits = /^x?[0-1a-f]+$/i;
@@ -17,38 +15,5 @@ export const regExString = /(?:(['"])(?:\\\\|(?:\\\1)|[^\1\n])+\1)|(?:([`])(?:\\
 // Note: the C Style Comments incorrectly considers '/*' and '//' inside of strings as comments.
 export const regExCStyleComments = /(?:\/\/.*$)|(?:\/\*(?:.|\s)+?\*\/)/gim;
 
-const regExEmail = /<?[\w.\-+]+@\w+(\.\w+)+>?/gi;
+export const regExEmail = /<?[\w.\-+]+@\w+(\.\w+)+>?/gi;
 
-
-export const defaultRegExpPatterns: RegExpPatternDefinition[] = [
-    // Exclude patterns
-    { name: 'Urls', pattern: regExMatchUrls },
-    { name: 'HexDigits', pattern: regExHexDigits },
-    { name: 'HexValues', pattern: regExMatchCommonHexFormats },
-    { name: 'SpellCheckerDisable', pattern: regExSpellingGuard },
-    { name: 'PublicKey', pattern: regExPublicKey },
-    { name: 'RsaCert', pattern: regExCert },
-    { name: 'EscapeCharacters', pattern: regExEscapeCharacters },
-    { name: 'Base64', pattern: regExBase64 },
-    { name: 'Email', pattern: regExEmail },
-
-    // Include Patterns
-    { name: 'PhpHereDoc', pattern: regExPhpHereDoc },
-    { name: 'string', pattern: regExString },
-    { name: 'CStyleComment', pattern: regExCStyleComments },
-    { name: 'Everything', pattern: '.*' },
-];
-
-export const defaultRegExpExcludeList = [
-    'SpellCheckerDisable',
-    'Urls',
-    'PublicKey',
-    'RsaCert',
-    'EscapeCharacters',
-    'Base64',
-];
-
-export const defaultSettings: CSpellUserSettings = {
-    patterns: defaultRegExpPatterns,
-    ignoreRegExpList: defaultRegExpExcludeList,
-};

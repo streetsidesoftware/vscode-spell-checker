@@ -17,16 +17,16 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
         .toPromise();
 }
 
-export function validateText(text: string, languageId: string, options: CSpellUserSettings): Text.WordOffset[] {
+export function validateText(text: string, languageId: string, options: CSpellUserSettings): Promise<Text.WordOffset[]> {
     const settings = tds.getSettings(options, text, languageId);
     const dict = tds.getDictionary(settings);
-    return [...TV.validateText(text, dict, settings)];
+    return dict.then(dict => [...TV.validateText(text, dict, settings)]);
 }
 
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
-    return Rx.Observable.fromPromise(onDictionaryReady())
-        .flatMap(() => validateText(textDocument.getText(), textDocument.languageId, options))
+    return Rx.Observable.fromPromise(validateText(textDocument.getText(), textDocument.languageId, options))
+        .flatMap(a => a)
         .filter(a => !!a)
         .map(a => a!)
         // Convert the offset into a position

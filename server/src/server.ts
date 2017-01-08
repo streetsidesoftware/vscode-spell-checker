@@ -19,11 +19,9 @@ import {
     Glob
 } from './exclusionHelper';
 import * as path from 'path';
-import * as Dictionaries from './Dictionaries';
 
 import * as CSpellSettings from './CSpellSettingsServer';
 import { CSpellPackageSettings } from './CSpellSettingsDef';
-import * as RxPat from './RegExpPatterns';
 import { getDefaultSettings } from './DefaultSettings';
 
 const defaultSettings = getDefaultSettings();
@@ -154,7 +152,7 @@ function run() {
     }
 
     function getBaseSettings() {
-        return CSpellSettings.mergeSettings(RxPat.defaultSettings, Dictionaries.defaultSettings, settings);
+        return CSpellSettings.mergeSettings(defaultSettings, settings);
     }
 
     function validateTextDocument(textDocument: TextDocument): void {

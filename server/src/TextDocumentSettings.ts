@@ -4,8 +4,9 @@ import { calcUserSettingsForLanguage } from './LanguageSettings';
 import { CSpellUserSettings } from './CSpellSettingsDef';
 import * as CSpellSettings from './CSpellSettingsServer';
 import { getInDocumentSettings } from './InDocSettings';
-import { createCollection } from './SpellingDictionaryCollection';
+import { createCollectionP } from './SpellingDictionaryCollection';
 import { createSpellingDictionary, SpellingDictionary } from './SpellingDictionary';
+import { loadDictionaries } from './Dictionaries';
 
 export function getSettingsForDocument(settings: CSpellUserSettings, document: TextDocument) {
     return getSettings(settings, document.getText(), document.languageId);
@@ -18,9 +19,9 @@ export function getSettings(settings: CSpellUserSettings, text: string, language
     );
 }
 
-export function getDictionary(settings: CSpellUserSettings): SpellingDictionary {
-    const activeDictionary = SpellChecker.getActiveDictionary();
-    const { words = [] } = settings;
-    const settingsDictionary = createSpellingDictionary([...words]);
-    return createCollection([activeDictionary, settingsDictionary]);
+export function getDictionary(settings: CSpellUserSettings): Promise<SpellingDictionary> {
+    const { words = [], dictionaries = [], dictionaryDefinitions = [] } = settings;
+    const spellDictionaries = loadDictionaries(dictionaries, dictionaryDefinitions);
+    const settingsDictionary = Promise.resolve(createSpellingDictionary(words));
+    return createCollectionP([...spellDictionaries, settingsDictionary]);
 }

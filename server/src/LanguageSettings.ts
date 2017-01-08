@@ -36,8 +36,8 @@ export function calcSettingsForLanguage(languageSettings: LanguageSettings, lang
 
 export function calcUserSettingsForLanguage(settings: CSpellUserSettings, languageId: string): CSpellUserSettings {
     const { languageSettings = [] } = settings;
-    const { allowCompoundWords } = calcSettingsForLanguage(languageSettings, languageId);
-    return  SpellSettings.mergeSettings(settings, { allowCompoundWords });
+    const { allowCompoundWords, dictionaries, dictionaryDefinitions } = calcSettingsForLanguage(languageSettings, languageId);
+    return  SpellSettings.mergeSettings(settings, { allowCompoundWords, dictionaries, dictionaryDefinitions });
 }
 
 function mergeUnique(a: string[] = [], b: string[] = []) {

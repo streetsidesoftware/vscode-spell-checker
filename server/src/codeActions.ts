@@ -23,9 +23,9 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 
 export function onCodeActionHandler(documents: TextDocuments, settings: CSpellUserSettings) {
 
-    const settingsCache = new Map<string, {version: number, settings: [CSpellUserSettings, SpellingDictionary]}>();
+    const settingsCache = new Map<string, {version: number, settings: [CSpellUserSettings, Promise<SpellingDictionary>]}>();
 
-    function getSettings(doc: TextDocument): [CSpellUserSettings, SpellingDictionary] {
+    function getSettings(doc: TextDocument): [CSpellUserSettings, Promise<SpellingDictionary>] {
         const cached = settingsCache.get(doc.uri);
         if (!cached || cached.version !== doc.version) {
             const docSetting = tds.getSettingsForDocument(settings, doc);
@@ -57,56 +57,58 @@ export function onCodeActionHandler(documents: TextDocuments, settings: CSpellUs
             ];
         }
 
-        const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
-        let altWord: string | undefined;
-        for (const diag of spellCheckerDiags) {
-            const word = extractText(textDocument, diag.range);
-            altWord = altWord || word;
-            const sugs: string[] = dictionary.suggest(word, numSuggestions).map(sr => sr.word);
-            sugs
-                .map(sug => Text.matchCase(word, sug))
-                .forEach(sugWord => {
-                    commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
-                        uri,
-                        textDocument.version,
-                        [ replaceText(diag.range, sugWord) ]
-                    ));
-                    const words = sugWord.replace(/[ \-_.]/, '_').split('_');
-                    if (words.length > 1) {
-                        if (Text.isUpperCase(word)) {
-                            const sug = words.join('_').toUpperCase();
-                            commands.push(LangServer.Command.create(sug, 'cSpell.editText',
-                                uri,
-                                textDocument.version,
-                                [ replaceText(diag.range, sug) ]
-                            ));
-                        } else {
-                            genMultiWordSugs(words).forEach(sugWord => {
-                                commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
+        return dictionary.then(dictionary => {
+            const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
+            let altWord: string | undefined;
+            for (const diag of spellCheckerDiags) {
+                const word = extractText(textDocument, diag.range);
+                altWord = altWord || word;
+                const sugs: string[] = dictionary.suggest(word, numSuggestions).map(sr => sr.word);
+                sugs
+                    .map(sug => Text.matchCase(word, sug))
+                    .forEach(sugWord => {
+                        commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
+                            uri,
+                            textDocument.version,
+                            [ replaceText(diag.range, sugWord) ]
+                        ));
+                        const words = sugWord.replace(/[ \-_.]/, '_').split('_');
+                        if (words.length > 1) {
+                            if (Text.isUpperCase(word)) {
+                                const sug = words.join('_').toUpperCase();
+                                commands.push(LangServer.Command.create(sug, 'cSpell.editText',
                                     uri,
                                     textDocument.version,
-                                    [ replaceText(diag.range, sugWord) ]
+                                    [ replaceText(diag.range, sug) ]
                                 ));
-                            });
+                            } else {
+                                genMultiWordSugs(words).forEach(sugWord => {
+                                    commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
+                                        uri,
+                                        textDocument.version,
+                                        [ replaceText(diag.range, sugWord) ]
+                                    ));
+                                });
+                            }
                         }
-                    }
-                });
-        }
-        const word = extractText(textDocument, params.range) || altWord;
-        // Only suggest adding if it is our diagnostic and there is a word.
-        if (word && spellCheckerDiags.length) {
-            commands.push(LangServer.Command.create(
-                'Add: "' + word + '" to dictionary',
-                'cSpell.addWordToUserDictionarySilent',
-                word
-            ));
-            // Allow the them to add it to the project dictionary.
-            commands.push(LangServer.Command.create(
-                'Add: "' + word + '" to project dictionary',
-                'cSpell.addWordToDictionarySilent',
-                word
-            ));
-        }
-        return commands;
+                    });
+            }
+            const word = extractText(textDocument, params.range) || altWord;
+            // Only suggest adding if it is our diagnostic and there is a word.
+            if (word && spellCheckerDiags.length) {
+                commands.push(LangServer.Command.create(
+                    'Add: "' + word + '" to dictionary',
+                    'cSpell.addWordToUserDictionarySilent',
+                    word
+                ));
+                // Allow the them to add it to the project dictionary.
+                commands.push(LangServer.Command.create(
+                    'Add: "' + word + '" to project dictionary',
+                    'cSpell.addWordToDictionarySilent',
+                    word
+                ));
+            }
+            return commands;
+        });
     };
 }
