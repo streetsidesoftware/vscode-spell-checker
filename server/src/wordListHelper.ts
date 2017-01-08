@@ -1,7 +1,7 @@
-import * as fs from 'fs';
+// cSpell:enableCompoundWords
 import * as Rx from 'rx';
-import { match } from './util/text';
 import * as Text from './util/text';
+import { lineReader } from './util/fileReader';
 
 export interface WordDictionary {
     [index: string]: boolean;
@@ -10,15 +10,8 @@ export interface WordDictionary {
 export type WordSet = Set<string>;
 
 export function loadWordsRx(filename: string): Rx.Observable<string> {
-    const reader = Rx.Observable.fromNodeCallback<string>(fs.readFile);
-
-    return reader(filename, 'utf-8')
-        .flatMap(text => Rx.Observable.from(match(/(.+)(\r?\n)?/g, text).toIterable()))
-        .map(regExpExecArray => regExpExecArray[1])
-        .map(line => line.trim())
-        .filter(line => line !== '');
+    return lineReader(filename);
 }
-
 
 export function splitLine(line: string) {
     return Text.extractWordsFromText(line).map(({word}) => word).toArray();

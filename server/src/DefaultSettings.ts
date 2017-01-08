@@ -33,7 +33,7 @@ const defaultRegExpPatterns: RegExpPatternDefinition[] = [
 ];
 
 const defaultDictionaryDefs: DictionaryDefinition[] = [
-    { name: 'wordsEn',        file: 'wordsEn.txt',          type: 'S' },
+    { name: 'wordsEn',        file: 'wordsEn.txt.gz',       type: 'S' },
     { name: 'typescript',     file: 'typescript.txt',       type: 'C' },
     { name: 'node',           file: 'node.txt',             type: 'C' },
     { name: 'softwareTerms',  file: 'softwareTerms.txt',    type: 'W' },

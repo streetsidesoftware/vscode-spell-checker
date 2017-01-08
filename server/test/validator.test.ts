@@ -6,7 +6,9 @@ import { getDefaultSettings } from '../src/DefaultSettings';
 
 const defaultSettings = getDefaultSettings();
 
-describe('Validator', () => {
+describe('Validator', function() {
+    this.timeout(5000);
+
     it('validates the validator', () => {
         const results = Validator.validateText('The quick brouwn fox jumpped over the lazzy dog.', 'plaintext', defaultSettings);
         return results.then(results => {
