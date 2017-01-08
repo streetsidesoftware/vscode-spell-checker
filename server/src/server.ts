@@ -28,6 +28,7 @@ const defaultSettings = getDefaultSettings();
 const settings: CSpellPackageSettings = {...defaultSettings};
 
 const defaultExclude: Glob[] = [
+    'debug:*',
     'debug:/**',        // Files that are generated while debugging (generally from a .map file)
     'vscode:/**',       // VS Code generated files (settings.json for example)
     'private:/**',
