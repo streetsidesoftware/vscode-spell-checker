@@ -336,8 +336,53 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
     // Set the delay before spell checking the document. Default is 50.
     "cSpell.spellCheckDelayMs": 50,
+```
 
+## Dictionaries
 
+The spell checker includes a set of default dictionaries.
+
+### General Dictionaries
+
+* **wordsEn** - Derived from Hunspell US English words.
+* **companies** - List of well known companies
+* **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
+* **node** - terms related to using nodejs.
+
+### Programming Language Dictionaries
+
+* **typescript** - keywords for Typescript and Javascript
+* **php** - *php* keywords and library methods
+* **go** - *go* keywords and library methods
+* **python** - *python* keywords
+* **powershell** - *powershell* keywords
+* **html** - *html* related keywords
+* **css** - *css*, *less*, and *scss* related keywords
+
+### Miscellaneous Dictionaries
+* **fonts** - long list of fonts - to assist with *css*
+
+Based upon the programming language, different dictionaries will be loaded.
+
+Here are the default rules: "*" matches any language.
+
+```javascript
+{
+"cSpell.languageSettings": [
+    { languageId: "*",                                   dictionaries: ["wordsEn", "companies", "softwareTerms", "node"], },
+    { languageId: "python", allowCompoundWords: true,    dictionaries: ["python"]},
+    { languageId: "go",     allowCompoundWords: true,    dictionaries: ["go"], },
+    { languageId: "javascript",                          dictionaries: ["typescript"] },
+    { languageId: "javascriptreact",                     dictionaries: ["typescript"] },
+    { languageId: "typescript",                          dictionaries: ["typescript"] },
+    { languageId: "typescriptreact",                     dictionaries: ["typescript"] },
+    { languageId: "html",                                dictionaries: ["html", "fonts", "typescript", "css"] },
+    { languageId: "php",                                 dictionaries: ["php", "html", "fonts", "css", "typescript"] },
+    { languageId: "css",                                 dictionaries: ["fonts", "css"] },
+    { languageId: "less",                                dictionaries: ["fonts", "css"] },
+    { languageId: "scss",                                dictionaries: ["fonts", "css"] },
+];
+}
 ```
 
 ## Release Notes
