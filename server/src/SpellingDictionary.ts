@@ -1,7 +1,6 @@
 import { suggest, SuggestionResult } from './suggest';
 import { Trie, createTrie, addWordToTrie } from './Trie';
 import { genSequence, Sequence } from 'gensequence';
-import {} from './DictionaryLoader';
 import * as Rx from 'rx';
 
 export interface SpellingDictionary {

@@ -1,4 +1,4 @@
-declare module "comment-json" {
+declare module 'comment-json' {
     type Reviver = (k: number | string, v: any) => any;
 
     export interface CommentedObject {

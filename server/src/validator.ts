@@ -1,7 +1,6 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import { onDictionaryReady } from './spellChecker';
 import * as Text from './util/text';
 import * as Rx from 'rx';
 import * as tds from './TextDocumentSettings';

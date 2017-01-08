@@ -1,5 +1,4 @@
 import { TextDocument } from 'vscode-languageserver';
-import * as SpellChecker from './spellChecker';
 import { calcUserSettingsForLanguage } from './LanguageSettings';
 import { CSpellUserSettings } from './CSpellSettingsDef';
 import * as CSpellSettings from './CSpellSettingsServer';

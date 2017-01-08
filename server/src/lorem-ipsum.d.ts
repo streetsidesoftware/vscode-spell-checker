@@ -1,4 +1,4 @@
-declare module "lorem-ipsum" {
+declare module 'lorem-ipsum' {
 
     interface Options {
         count: number;                  // default (1): Number of words, sentences, or paragraphs to generate.

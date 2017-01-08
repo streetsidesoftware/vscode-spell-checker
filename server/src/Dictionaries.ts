@@ -1,4 +1,4 @@
-import { DictionaryDefinition, DictionaryId, CSpellUserSettings } from './CSpellSettingsDef';
+import { DictionaryDefinition, DictionaryId } from './CSpellSettingsDef';
 import { loadDictionary } from './DictionaryLoader';
 import { SpellingDictionary } from './SpellingDictionary';
 import * as path from 'path';
