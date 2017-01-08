@@ -86,10 +86,12 @@ export function validateText(
         .filter(wo => wo.isFlagged || wo.word.length >= minWordLength )
         .map(wo => ({
             ...wo,
-            isFound: hasWordCheck(dict, wo.word, allowCompoundWords) || ignoreWordsSet.has(wo.word.toLowerCase())
+            isFound: hasWordCheck(dict, wo.word, allowCompoundWords)
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
         .filter(wo => !RxPat.regExHexDigits.test(wo.word))  // Filter out any hex numbers
+        // Remove anything that is in the ignore list.
+        .filter(wo => !ignoreWordsSet.has(wo.word.toLowerCase()))
         .filter(wo => {
             // Keep track of the number of times we have seen the same problem
             mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);
