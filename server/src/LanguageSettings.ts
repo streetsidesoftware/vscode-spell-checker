@@ -6,7 +6,7 @@ import * as SpellSettings from './CSpellSettingsServer';
 export type LanguageSettings = LanguageSetting[];
 
 export const defaultLanguageSettings: LanguageSettings = [
-    { languageId: '*',      allowCompoundWords: false,   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
+    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
     { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python']},
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
     { languageId: 'javascript',                          dictionaries: ['typescript'] },
@@ -36,7 +36,7 @@ export function calcSettingsForLanguage(languageSettings: LanguageSettings, lang
 
 export function calcUserSettingsForLanguage(settings: CSpellUserSettings, languageId: string): CSpellUserSettings {
     const { languageSettings = [] } = settings;
-    const { allowCompoundWords, dictionaries, dictionaryDefinitions } = calcSettingsForLanguage(languageSettings, languageId);
+    const { allowCompoundWords = settings.allowCompoundWords, dictionaries, dictionaryDefinitions } = calcSettingsForLanguage(languageSettings, languageId);
     return  SpellSettings.mergeSettings(settings, { allowCompoundWords, dictionaries, dictionaryDefinitions });
 }
 
