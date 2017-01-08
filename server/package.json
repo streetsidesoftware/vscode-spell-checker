@@ -41,6 +41,7 @@
   },
   "scripts": {
     "clean": "rimraf ../client/server",
+    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run compile",
     "clean-build": "npm run clean && npm run build",
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
