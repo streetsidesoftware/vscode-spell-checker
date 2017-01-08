@@ -8,7 +8,7 @@ describe('Validate LanguageSettings', () => {
         expect((sPython.dictionaries || []).sort()).to.be.deep.equal(['wordsEn', 'companies', 'softwareTerms', 'node', 'python'].sort());
 
         const sPhp = calcSettingsForLanguage(defaultLanguageSettings, 'php');
-        expect(sPhp.allowCompoundWords).to.be.false;
+        expect(sPhp.allowCompoundWords).to.be.undefined;
         expect((sPhp.dictionaries || []).sort())
             .to.be.deep.equal(['wordsEn', 'companies', 'softwareTerms', 'node', 'php', 'html', 'fonts', 'css', 'typescript'].sort());
     });
