@@ -1,7 +1,8 @@
 <!--- cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ -->
 <!--- cSpell:enableCompoundWords -->
 <!--- cSpell:includeRegExp Everything -->
-<!--- cSpell:ignoreRegExp "hte" -->
+<!--- cSpell:ignore hte -->
+<!--- cSpell:words Verdana -->
 # Spelling Checker for Visual Studio Code
 [![Current Version](http://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![Install Count](http://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
@@ -56,7 +57,6 @@ The concept is simple, split camelCase words before checking them against a list
 * There are missing words.
 * Only words longer than 3 characters are checked.  "jsj" is ok, while "jsja" is not.
 * All symbols and punctuation are ignored.
-* It currently checks ALL text in a document.
 
 ## In Document Settings
 
@@ -355,6 +355,7 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
     * the ability to control which dictionaries are used.
     * enable / disable compound words
     * define `ignoreRegExpList` / `includeRegExpList` per language.
+    * ability to define per language patterns
 * Ability to define reusable patterns to be used with RegExpLists.
 * Fixes #7, #31 -- String with escape characters like, "\nmessage", would be flagged as an error.
 * Addresses #3 -- Option to spell check only string and comments
