@@ -2126,9 +2126,11 @@ area
 areas
 aren
 arg
+argc
 argument
 argument_type
 arguments
+argv
 arithmetic
 around
 array
