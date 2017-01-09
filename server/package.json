@@ -46,6 +46,7 @@
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run compile",
     "clean-build": "npm run clean && npm run build",
+    "build-dics": "rimraf ../client/dictionaries && cp -R dictionaries ../client/ && gzip ../client/dictionaries/*.txt",
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
