@@ -1,7 +1,7 @@
 import * as Rx from 'rx';
 import * as XRegExp from 'xregexp';
 import { genSequence, Sequence } from 'gensequence';
-import * as Text from './util/Text';
+import * as Text from './util/text';
 
 const regNonWordOrSpace = XRegExp("[^\\p{L}' ]+", 'gi');
 
