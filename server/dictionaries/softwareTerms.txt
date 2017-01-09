@@ -38,6 +38,8 @@ class
 clint
 cobol
 codebase
+codec
+codecs
 codelens
 compile
 compiler
