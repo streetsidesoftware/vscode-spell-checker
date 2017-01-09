@@ -6,7 +6,7 @@ import * as SpellSettings from './CSpellSettingsServer';
 export type LanguageSettings = LanguageSetting[];
 
 export const defaultLanguageSettings: LanguageSettings = [
-    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
+    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node', 'misc'], },
     { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python']},
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
     { languageId: 'c',      allowCompoundWords: true,    dictionaries: ['cpp'], },
