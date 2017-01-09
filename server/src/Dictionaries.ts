@@ -30,3 +30,17 @@ function getFullPathName(def: DictionaryDefinition) {
     const { path: filePath = dictionaryPath, file } = def;
     return path.join(filePath, file);
 }
+
+export function normalizePathForDictDefs(defs: DictionaryDefinition[], defaultPath: string): DictionaryDefinition[] {
+    return defs
+        .map(def => normalizePathForDictDef(def, defaultPath));
+}
+
+export function normalizePathForDictDef(def: DictionaryDefinition, defaultPath: string): DictionaryDefinition {
+        const { path: relPath = '.' } = def;
+        const absPath = relPath.match(/^\./) ? path.join(defaultPath, relPath) : relPath;
+        return {
+            ...def,
+            path:  absPath
+        };
+}

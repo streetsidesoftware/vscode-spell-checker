@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { mergeSettings } from '../src/CSpellSettingsServer';
+import { mergeSettings, readSettings } from '../src/CSpellSettingsServer';
+import * as path from 'path';
 
 describe('Validate CSpellSettingsServer', () => {
     it('tests mergeSettings', () => {
@@ -14,5 +15,11 @@ describe('Validate CSpellSettingsServer', () => {
             dictionaries: [],
             dictionaryDefinitions: [],
         });
+    });
+
+    it('tests loading a cSpell.json file', () => {
+        const filename = path.join(__dirname, '..', '..', '..', 'server', 'sampleSourceFiles', 'cSpell.json');
+        const settings = readSettings(filename);
+        const x = settings;
     });
 });

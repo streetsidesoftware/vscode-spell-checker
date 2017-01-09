@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as json from 'comment-json';
 import {CSpellUserSettingsWithComments, CSpellUserSettings, RegExpPatternDefinition} from './CSpellSettingsDef';
+import * as path from 'path';
+import { normalizePathForDictDefs, normalizePathForDictDef } from './Dictionaries';
 
 const currentSettingsFileVersion = '0.1';
 
@@ -14,6 +16,7 @@ const defaultSettings: CSpellUserSettingsWithComments = {
 
 export function readSettings(filename: string, defaultValues: CSpellUserSettingsWithComments = defaultSettings): CSpellUserSettings {
     const settings: CSpellUserSettings = readJsonFile(filename);
+    const pathToSettings = path.dirname(filename);
 
     function readJsonFile(file): any {
         try {
@@ -24,7 +27,15 @@ export function readSettings(filename: string, defaultValues: CSpellUserSettings
         return defaultValues;
     }
 
-    return {...defaultValues, ...settings};
+    // Fix up dictionaryDefinitions
+    const dictionaryDefinitions = normalizePathForDictDefs(settings.dictionaryDefinitions || [], pathToSettings);
+    const languageSettings = (settings.languageSettings || [])
+        .map(langSetting => ({
+            ...langSetting,
+            dictionaryDefinitions: normalizePathForDictDefs(langSetting.dictionaryDefinitions || [], pathToSettings)
+        }));
+
+    return {...defaultValues, ...settings, dictionaryDefinitions, languageSettings};
 }
 
 /**
