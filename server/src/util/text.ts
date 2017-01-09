@@ -231,3 +231,4 @@ export function stringToRegExp(pattern: string | RegExp, defaultFlags = 'gim', f
     }
     return undefined;
 }
+

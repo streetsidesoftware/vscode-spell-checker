@@ -1,27 +1,27 @@
 import * as Rx from 'rx';
+import * as XRegExp from 'xregexp';
+import { genSequence, Sequence } from 'gensequence';
+import * as Text from './util/Text';
+
+const regNonWordOrSpace = XRegExp("[^\\p{L}' ]+", 'gi');
 
 
-interface CompiledWords {
-    setOfWords: Set<string>;
-
-}
-
-export function wordListCompiler(words: Rx.Observable<string>): Rx.Promise<string> {
-    return words
-        .reduce((acc: CompiledWords, word) => {
-            acc.setOfWords.add(word);
-            return acc;
-        }, { setOfWords: new Set<string>() })
-        .map(compiledWordsToTs)
-        .toPromise();
+export function normalizeWords(lines: Rx.Observable<string>) {
+    return lines.flatMap(line => lineToWords(line).toArray());
 }
 
 
-function compiledWordsToTs(cw: CompiledWords): string {
-    const jsonWords = JSON.stringify([...cw.setOfWords.values()]);
-    return `
-    const export words = ${jsonWords};
-    const export setOfWords = new Set(words);
-`;
+export function lineToWords(line: string): Sequence<string> {
+    // Remove punctuation and non-letters.
+    const filteredLine = line.replace(regNonWordOrSpace, '|');
+    const wordGroups = filteredLine.split('|');
+
+    const words = genSequence(wordGroups)
+        .concatMap(a => [a, ...a.split(/\s+/g)])
+        .concatMap(a => [a, ...Text.splitCamelCaseWord(a)])
+        .map(a => a.toLowerCase())
+        .reduceToSequence<string, Set<string>>((s, w) => s.add(w), new Set<string>());
+
+    return words;
 }
 

@@ -36,6 +36,9 @@ export function splitLineIntoWordsRx(line: string) {
     return Rx.Observable.fromArray(wordsToAdd);
 }
 
+/**
+ * @deprecated
+ */
 export function processWordListLinesRx(lines: Rx.Observable<string>, minWordLength: number) {
     return processWordsRx(
         lines.flatMap(splitLineIntoCodeWordsRx)
@@ -43,6 +46,9 @@ export function processWordListLinesRx(lines: Rx.Observable<string>, minWordLeng
 }
 
 
+/**
+ * @deprecated
+ */
 export function processWordsRx(lines: Rx.Observable<string>) {
     return lines
         .map(word => word.trim().toLowerCase())
@@ -59,6 +65,9 @@ export function processWordsRx(lines: Rx.Observable<string>) {
 }
 
 
+/**
+ * @deprecated
+ */
 export function processCodeWordsRx(entries: Rx.Observable<string>, minWordLength: number) {
     return entries
         .flatMap(line => Rx.Observable.concat(
