@@ -163,6 +163,7 @@ long
 longdouble
 longint
 lorem
+macosx
 make
 map
 map
