@@ -19,8 +19,8 @@ export function getSettings(settings: CSpellUserSettings, text: string, language
 }
 
 export function getDictionary(settings: CSpellUserSettings): Promise<SpellingDictionary> {
-    const { words = [], dictionaries = [], dictionaryDefinitions = [] } = settings;
+    const { words = [], userWords = [], dictionaries = [], dictionaryDefinitions = [] } = settings;
     const spellDictionaries = loadDictionaries(dictionaries, dictionaryDefinitions);
-    const settingsDictionary = Promise.resolve(createSpellingDictionary(words));
+    const settingsDictionary = Promise.resolve(createSpellingDictionary(words.concat(userWords)));
     return createCollectionP([...spellDictionaries, settingsDictionary]);
 }
