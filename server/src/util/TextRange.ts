@@ -1,4 +1,4 @@
-import * as GS from 'genSequence';
+import * as GS from 'gensequence';
 import * as Text from './text';
 
 export interface MatchRange {
