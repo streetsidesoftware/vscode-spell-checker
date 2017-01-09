@@ -49,6 +49,7 @@
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
+    "tsc": "tsc -p .",
     "test": "mocha --recursive ../client/server/test"
   }
 }
