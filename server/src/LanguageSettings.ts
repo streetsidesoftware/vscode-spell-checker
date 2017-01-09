@@ -9,6 +9,8 @@ export const defaultLanguageSettings: LanguageSettings = [
     { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node'], },
     { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python']},
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
+    { languageId: 'c',      allowCompoundWords: true,    dictionaries: ['cpp'], },
+    { languageId: 'cpp',    allowCompoundWords: true,    dictionaries: ['cpp'], },
     { languageId: 'javascript',                          dictionaries: ['typescript'] },
     { languageId: 'javascriptreact',                     dictionaries: ['typescript'] },
     { languageId: 'typescript',                          dictionaries: ['typescript'] },
