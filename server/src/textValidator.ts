@@ -95,7 +95,7 @@ export function validateText(
         .filter(wo => {
             const word = wo.word.toLowerCase();
             // Keep track of the number of times we have seen the same problem
-            mapOfProblems.set(word, (mapOfProblems.get(wo.word) || 0) + 1);
+            mapOfProblems.set(word, (mapOfProblems.get(word) || 0) + 1);
             // Filter out if there is too many
             return mapOfProblems.get(word) < maxDuplicateProblems;
         })
