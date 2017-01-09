@@ -1,2 +1,4 @@
+argc
+argv
 def
 defs
