@@ -387,6 +387,17 @@ Here are the default rules: "*" matches any language.
 
 ## Release Notes
 
+### 0.14.3
+* Turn on C and CPP by default.
+* Improve the CPP dictionary
+
+### 0.14.2
+* Fix #49
+* Add support for CPP and C files.
+
+### 0.14.1
+* Fix #47
+
 ### 0.14.0
 * This release includes a large amount of refactoring in order to support greater flexability with the configuration.
 * Ability to add file level settings:
