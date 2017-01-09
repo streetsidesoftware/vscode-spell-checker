@@ -2,6 +2,4 @@ language: node_js
 node_js:
   - "node"
   - "6"
-install:
-  - npm install
-  - npm run tsc
+script: cd server && npm install && npm run tsc && npm test
