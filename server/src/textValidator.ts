@@ -93,10 +93,11 @@ export function validateText(
         // Remove anything that is in the ignore list.
         .filter(wo => !ignoreWordsSet.has(wo.word.toLowerCase()))
         .filter(wo => {
+            const word = wo.word.toLowerCase();
             // Keep track of the number of times we have seen the same problem
-            mapOfProblems.set(wo.word, (mapOfProblems.get(wo.word) || 0) + 1);
+            mapOfProblems.set(word, (mapOfProblems.get(wo.word) || 0) + 1);
             // Filter out if there is too many
-            return mapOfProblems.get(wo.word) < maxDuplicateProblems;
+            return mapOfProblems.get(word) < maxDuplicateProblems;
         })
         .take(maxNumberOfProblems);
 }
