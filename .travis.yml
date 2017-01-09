@@ -8,5 +8,5 @@ script:
   - cd ..
   - cd server
   - npm install
-  - npm run tsc
+  - npm run build
   - npm test
