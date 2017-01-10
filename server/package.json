@@ -48,7 +48,7 @@
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run compile",
     "clean-build": "npm run clean && npm run build && npm run build-tools",
-    "build-dictionaries": "rimraf ../client/dictionaries && node tools/out/app.js compile ./dictionaries/*.txt -o ../client/dictionaries/",
+    "build-dictionaries": "node tools/out/app.js compile ./dictionaries/*.txt -o ../client/dictionaries/",
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
