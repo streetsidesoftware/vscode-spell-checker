@@ -1,8 +1,3 @@
-<!--- cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ -->
-<!--- cSpell:enableCompoundWords -->
-<!--- cSpell:includeRegExp Everything -->
-<!--- cSpell:ignore hte -->
-<!--- cSpell:words Verdana -->
 # Spelling Checker for Visual Studio Code
 [![Current Version](http://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![Install Count](http://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
@@ -109,14 +104,14 @@ var liep = 1;
 // cSpell:enable
 // It is now enabled
 
-const str = "goededag";  // <-- will be flagged as an error.
+const str = "goededag";  // <- will be flagged as an error.
 
-// spell-checker:enable <-- doesn't do anything
+// spell-checker:enable <- doesn't do anything
 
 // cSPELL:DISABLE <-- also works.
 
 // if there isn't an enable, spelling is disabled till the end of the file.
-const str = "goedemorgen";  // <-- will NOT be flagged as an error.
+const str = "goedemorgen";  // <- will NOT be flagged as an error.
 
 ```
 <!--- cSpell:enable -->
@@ -493,3 +488,13 @@ Here are the default rules: "*" matches any language.
 ### 0.10.0
 * Feature: Suggestions
 * Feature: Add to Dictionary
+
+<!---
+    These are at the bottom because the VSCode Marketplace leaves a bit space at the top
+
+    cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ
+    cSpell:enableCompoundWords
+    cSpell:includeRegExp Everything
+    cSpell:ignore hte
+    cSpell:words Verdana
+-->
