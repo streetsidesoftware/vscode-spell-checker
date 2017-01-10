@@ -15,12 +15,12 @@ export interface TextOffset {
 
 const regExLines = /.*\r?\n/g;
 // const regExIdentifiers = XRegExp('(?:\\p{L}|[0-9_\'])+', 'gi');
-const regExUpperSOrIng = XRegExp('(\\p{Lu}+(?:s|ing|ies|es|ings))(?!\\p{Ll})', 'g');
+const regExUpperSOrIng = XRegExp('(\\p{Lu}+\'?(?:s|ing|ies|es|ings|ed|ning))(?!\\p{Ll})', 'g');
 const regExSplitWords = XRegExp('(\\p{Ll})(\\p{Lu})', 'g');
-const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll}{2,})', 'g');
+const regExSplitWords2 = XRegExp('(\\p{Lu})(\\p{Lu}\\p{Ll})', 'g');
 const regExWords = XRegExp("\\p{L}(?:[']\\p{L}|\\p{L})+|\\p{L}", 'g');
 const regExIgnoreCharacters = XRegExp('\\p{Hiragana}|\\p{Han}|\\p{Katakana}', 'g');
-const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}{2,}$');
+const regExFirstUpper = XRegExp('^\\p{Lu}\\p{Ll}+$');
 const regExAllUpper = XRegExp('^\\p{Lu}+$');
 const regExAllLower = XRegExp('^\\p{Ll}+$');
 

@@ -18,6 +18,9 @@ describe('Util Text', () => {
         expect(splitCamelCaseWord('helloThere')).to.deep.equal(['hello', 'There']);
         expect(splitCamelCaseWord('HelloThere')).to.deep.equal(['Hello', 'There']);
         expect(splitCamelCaseWord('BigÁpple')).to.deep.equal(['Big', 'Ápple']);
+        expect(splitCamelCaseWord('ASCIIToUTF16')).to.deep.equal(['ASCII', 'To', 'UTF16']);
+        expect(splitCamelCaseWord('URLsAndDBAs')).to.deep.equal(['Urls', 'And', 'Dbas']);
+        expect(splitCamelCaseWord('WALKingRUNning')).to.deep.equal(['Walking', 'Running']);
     });
 
     it('extract word from text', () => {
