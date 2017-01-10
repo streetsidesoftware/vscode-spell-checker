@@ -34,19 +34,19 @@ const defaultRegExpPatterns: RegExpPatternDefinition[] = [
 
 const defaultDictionaryDefs: DictionaryDefinition[] = [
     { name: 'wordsEn',        file: 'wordsEn.txt.gz',       type: 'S' },
-    { name: 'typescript',     file: 'typescript.txt.gz',    type: 'C' },
-    { name: 'node',           file: 'node.txt.gz',          type: 'C' },
-    { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'W' },
-    { name: 'misc',           file: 'miscTerms.txt.gz',     type: 'W' },
+    { name: 'typescript',     file: 'typescript.txt.gz',    type: 'S' },
+    { name: 'node',           file: 'node.txt.gz',          type: 'S' },
+    { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'S' },
+    { name: 'misc',           file: 'miscTerms.txt.gz',     type: 'S' },
     { name: 'html',           file: 'html.txt.gz',          type: 'S' },
-    { name: 'php',            file: 'php.txt.gz',           type: 'C' },
-    { name: 'go',             file: 'go.txt.gz',            type: 'C' },
-    { name: 'cpp',            file: 'cpp.txt.gz',           type: 'C' },
-    { name: 'companies',      file: 'companies.txt.gz',     type: 'C' },
-    { name: 'python',         file: 'python.txt.gz',        type: 'C' },
-    { name: 'fonts',          file: 'fonts.txt.gz',         type: 'C' },
+    { name: 'php',            file: 'php.txt.gz',           type: 'S' },
+    { name: 'go',             file: 'go.txt.gz',            type: 'S' },
+    { name: 'cpp',            file: 'cpp.txt.gz',           type: 'S' },
+    { name: 'companies',      file: 'companies.txt.gz',     type: 'S' },
+    { name: 'python',         file: 'python.txt.gz',        type: 'S' },
+    { name: 'fonts',          file: 'fonts.txt.gz',         type: 'S' },
     { name: 'css',            file: 'css.txt.gz',           type: 'S' },
-    { name: 'powershell',     file: 'powershell.txt.gz',    type: 'C' },
+    { name: 'powershell',     file: 'powershell.txt.gz',    type: 'S' },
 ];
 
 
