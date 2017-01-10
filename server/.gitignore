@@ -2,3 +2,5 @@ out
 node_modules
 !.vscode
 typings
+temp
+

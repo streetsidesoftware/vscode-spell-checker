@@ -2,3 +2,9 @@ argc
 argv
 def
 defs
+gunzip
+gzip
+iconv
+unzip
+zip
+zlib
