@@ -6,15 +6,15 @@ import * as SpellSettings from './CSpellSettingsServer';
 export type LanguageSettings = LanguageSetting[];
 
 export const defaultLanguageSettings: LanguageSettings = [
-    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'node', 'misc'], },
+    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'misc'], },
     { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python']},
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
     { languageId: 'c',      allowCompoundWords: true,    dictionaries: ['cpp'], },
     { languageId: 'cpp',    allowCompoundWords: true,    dictionaries: ['cpp'], },
-    { languageId: 'javascript',                          dictionaries: ['typescript'] },
-    { languageId: 'javascriptreact',                     dictionaries: ['typescript'] },
-    { languageId: 'typescript',                          dictionaries: ['typescript'] },
-    { languageId: 'typescriptreact',                     dictionaries: ['typescript'] },
+    { languageId: 'javascript',                          dictionaries: ['typescript', 'node'] },
+    { languageId: 'javascriptreact',                     dictionaries: ['typescript', 'node'] },
+    { languageId: 'typescript',                          dictionaries: ['typescript', 'node'] },
+    { languageId: 'typescriptreact',                     dictionaries: ['typescript', 'node'] },
     { languageId: 'html',                                dictionaries: ['html', 'fonts', 'typescript', 'css'] },
     { languageId: 'php',                                 dictionaries: ['php', 'html', 'fonts', 'css', 'typescript'] },
     { languageId: 'css',                                 dictionaries: ['fonts', 'css'] },
