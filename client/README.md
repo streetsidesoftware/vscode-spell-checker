@@ -369,13 +369,13 @@ Here are the default rules: "*" matches any language.
 ```javascript
 {
 "cSpell.languageSettings": [
-    { languageId: "*",                                   dictionaries: ["wordsEn", "companies", "softwareTerms", "node"], },
+    { languageId: "*",                                   dictionaries: ["wordsEn", "companies", "softwareTerms", "misc"], },
     { languageId: "python", allowCompoundWords: true,    dictionaries: ["python"]},
     { languageId: "go",     allowCompoundWords: true,    dictionaries: ["go"], },
-    { languageId: "javascript",                          dictionaries: ["typescript"] },
-    { languageId: "javascriptreact",                     dictionaries: ["typescript"] },
-    { languageId: "typescript",                          dictionaries: ["typescript"] },
-    { languageId: "typescriptreact",                     dictionaries: ["typescript"] },
+    { languageId: "javascript",                          dictionaries: ["typescript", "node"] },
+    { languageId: "javascriptreact",                     dictionaries: ["typescript", "node"] },
+    { languageId: "typescript",                          dictionaries: ["typescript", "node"] },
+    { languageId: "typescriptreact",                     dictionaries: ["typescript", "node"] },
     { languageId: "html",                                dictionaries: ["html", "fonts", "typescript", "css"] },
     { languageId: "php",                                 dictionaries: ["php", "html", "fonts", "css", "typescript"] },
     { languageId: "css",                                 dictionaries: ["fonts", "css"] },
@@ -389,7 +389,9 @@ Here are the default rules: "*" matches any language.
 
 ### 0.14.3
 * Turn on C and CPP by default.
-* Improve the CPP dictionary
+* Improve the CPP dictionary.
+* Compress dictionaries
+* Speed up dictionary load
 
 ### 0.14.2
 * Fix #49
