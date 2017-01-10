@@ -4,6 +4,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"sourceMap": true,
+		"alwaysStrict": true,
         "declaration": true,
 		"noImplicitAny": false,
 		"noImplicitThis": false,
@@ -11,7 +12,8 @@
 		"outDir": "../client/server",
 		"lib": ["es6", "dom"]
 	},
-	"exclude": [
-		"node_modules"
+	"include": [
+		"src",
+		"test"
 	]
 }
