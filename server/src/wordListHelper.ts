@@ -2,6 +2,10 @@
 import * as Rx from 'rx';
 import * as Text from './util/text';
 import { lineReader } from './util/fileReader';
+import * as XRegExp from 'xregexp';
+
+
+const regExpWordsWithSpaces = XRegExp('^\\s*\\p{L}+(?:\\s+\\p{L}+){0,3}$');
 
 export interface WordDictionary {
     [index: string]: boolean;
@@ -28,9 +32,10 @@ export function splitCodeWords(words: string[]) {
 }
 
 export function splitLineIntoCodeWordsRx(line: string) {
+    const asMultiWord = regExpWordsWithSpaces.test(line) ? [ line ] : [];
     const asWords = splitLine(line);
     const splitWords = splitCodeWords(asWords);
-    const wordsToAdd = [...asWords, ...splitWords];
+    const wordsToAdd = [...asMultiWord, ...asWords, ...splitWords];
     return Rx.Observable.fromArray(wordsToAdd);
 }
 
