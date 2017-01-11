@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as json from 'comment-json';
 import {CSpellUserSettingsWithComments, CSpellUserSettings, RegExpPatternDefinition} from './CSpellSettingsDef';
 import * as path from 'path';
-import { normalizePathForDictDefs, normalizePathForDictDef } from './Dictionaries';
+import { normalizePathForDictDefs } from './Dictionaries';
 
 const currentSettingsFileVersion = '0.1';
 
@@ -38,6 +38,10 @@ export function readSettings(filename: string, defaultValues: CSpellUserSettings
     return {...defaultValues, ...settings, dictionaryDefinitions, languageSettings};
 }
 
+export function readSettingsFiles(filenames: string[]): CSpellUserSettings {
+    return filenames.map(filename => readSettings(filename)).reduce((a, b) => mergeSettings(a, b), defaultSettings);
+}
+
 /**
  * Merges two lists of strings and removes duplicates.  Order is NOT preserved.
  */
@@ -59,6 +63,7 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
         patterns: mergeList(left.patterns, right.patterns),
         dictionaryDefinitions: mergeList(left.dictionaryDefinitions, right.dictionaryDefinitions),
         dictionaries: mergeList(left.dictionaries, right.dictionaries),
+        languageSettings: mergeList(left.languageSettings, right.languageSettings),
     }), left);
 }
 

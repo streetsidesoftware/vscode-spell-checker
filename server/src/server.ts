@@ -84,8 +84,11 @@ function run() {
     connection.onDidChangeConfiguration(onConfigChange);
 
     function onConfigChange(change) {
-        const configPath = path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName);
-        const cSpellSettingsFile = CSpellSettings.readSettings(configPath);
+        const configPaths = [
+            path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName),
+            path.join(workspaceRoot, CSpellSettings.defaultFileName),
+        ];
+        const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
         const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
@@ -157,12 +160,16 @@ function run() {
     }
 
     function validateTextDocument(textDocument: TextDocument): void {
-        const settingsToUse = getBaseSettings();
-        Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
-            // Send the computed diagnostics to VSCode.
-            validationFinishedStream.onNext(textDocument);
-            connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-        });
+        try {
+            const settingsToUse = getBaseSettings();
+            Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
+                // Send the computed diagnostics to VSCode.
+                validationFinishedStream.onNext(textDocument);
+                connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     // Make the text document manager listen on the connection
@@ -175,7 +182,12 @@ function run() {
         validationRequestStream.onNext(change.document);
     });
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings()));
+    documents.onDidClose((event) => {
+        // A text document was closed we clear the diagnostics
+        connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] });
+    });
+
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings));
 
     // Listen on the connection
     connection.listen();
@@ -186,5 +198,7 @@ function run() {
         disposeValidationStream.dispose();
     });
 }
+
+
 
 run();
