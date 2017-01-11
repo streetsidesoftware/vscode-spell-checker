@@ -6,15 +6,13 @@ import * as Text from './text';
 import { lineReader } from './fileReader';
 import { writeToFile } from './fileWriter';
 
-const regNonWordOrSpace = XRegExp("[^\\p{L}' ]+", 'gi');
-const regExpSpace = /\s+/g;
+const regNonWordOrSpace = XRegExp("[^\\p{L}' \\-]+", 'gi');
+const regExpSpaceOrDash = /(?:\s+)|(?:-+)/g;
 const regExpRepeatChars = /(.)\1{3,}/i;
-
 
 export function normalizeWords(lines: Rx.Observable<string>) {
     return lines.flatMap(line => lineToWords(line).toArray());
 }
-
 
 export function lineToWords(line: string): Sequence<string> {
     // Remove punctuation and non-letters.
@@ -22,7 +20,7 @@ export function lineToWords(line: string): Sequence<string> {
     const wordGroups = filteredLine.split('|');
 
     const words = genSequence(wordGroups)
-        .concatMap(a => [a, ...a.split(regExpSpace)])
+        .concatMap(a => [a, ...a.split(regExpSpaceOrDash)])
         .concatMap(a => splitCamelCase(a))
         .map(a => a.trim())
         .filter(s => s.length > 2)
@@ -36,8 +34,8 @@ export function lineToWords(line: string): Sequence<string> {
 function splitCamelCase(word: string): Sequence<string> | string[] {
     const splitWords = Text.splitCamelCaseWord(word);
     // We only want to preserve this: "New York" and not "Namespace DNSLookup"
-    if (splitWords.length > 1 && regExpSpace.test(word)) {
-        return genSequence(splitWords).concatMap(w => w.split(regExpSpace));
+    if (splitWords.length > 1 && regExpSpaceOrDash.test(word)) {
+        return genSequence(splitWords).concatMap(w => w.split(regExpSpaceOrDash));
     }
     return splitWords;
 }

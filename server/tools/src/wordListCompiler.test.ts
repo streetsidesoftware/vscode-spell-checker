@@ -23,10 +23,10 @@ describe('Validate the wordListCompiler', function() {
         expect(lineToWords('AVGAspect').toArray()).to.deep.equal(['avg', 'aspect']);
         expect(lineToWords('New York').toArray()).to.deep.equal(['new york', 'new', 'york']);
         expect(lineToWords('Namespace DNSLookup').toArray()).to.deep.equal(['namespace', 'dns', 'lookup']);
+        expect(lineToWords('well-educated').toArray()).to.deep.equal(['well-educated', 'well', 'educated']);
         // Sadly we cannot do this one correctly
         expect(lineToWords('CURLcode').toArray()).to.deep.equal(['cur', 'lcode']);
         expect(lineToWords('kDNSServiceErr_BadSig').toArray()).to.deep.equal([
-            'k',
             'dns',
             'service',
             'err',
