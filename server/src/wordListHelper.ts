@@ -10,7 +10,11 @@ export interface WordDictionary {
 export type WordSet = Set<string>;
 
 export function loadWordsRx(filename: string): Rx.Observable<string> {
-    return lineReader(filename);
+    return lineReader(filename).tapOnError(logError).catch(Rx.Observable.fromArray<string>([]));
+}
+
+function logError(e: any) {
+    console.log(e);
 }
 
 export function splitLine(line: string) {

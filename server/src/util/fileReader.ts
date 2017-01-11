@@ -21,9 +21,19 @@ export function textFileStream(filename: string, encoding: string = 'UTF-8'): Rx
     }
     pipes.push(iconv.decodeStream(encoding));
 
-    return RxNode.fromStream<string>(
-        pipes.reduce<NodeJS.ReadableStream>((s, p) => s.pipe(p!), fs.createReadStream(filename))
-    );
+    const subjectPipeErrors = new Rx.Subject<string>();
+    function onError(e: Error) {
+        subjectPipeErrors.onError(e);
+    }
+
+    const fileStream = fs.createReadStream(filename);
+    fileStream.on('error', onError);
+    const stream = pipes.reduce<NodeJS.ReadableStream>((s, p) => s.pipe(p!).on('error', onError), fileStream.on('error', onError));
+
+    const streamRx = RxNode.fromReadableStream<string>(stream) as Rx.Observable<string>;
+
+    // return subject.concat
+    return Rx.Observable.merge(streamRx.tapOnCompleted(() => subjectPipeErrors.onCompleted()), subjectPipeErrors);
 }
 
 
