@@ -27,7 +27,7 @@ export function filterDictDefsToLoad(dictIds: DictionaryId[], defs: DictionaryDe
 }
 
 function getFullPathName(def: DictionaryDefinition) {
-    const { path: filePath = dictionaryPath, file } = def;
+    const { path: filePath = dictionaryPath, file = '' } = def;
     return path.join(filePath, file);
 }
 
