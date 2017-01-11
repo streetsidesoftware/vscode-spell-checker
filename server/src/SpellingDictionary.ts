@@ -28,7 +28,7 @@ export class SpellingDictionaryInstance implements SpellingDictionary {
 
 function reduceWordsToTrieSet(ws: {words: Set<string>, trie: Trie}, word: string): {words: Set<string>, trie: Trie} {
     // @todo: figure out dealing with case in source words
-    word = word.toLowerCase();
+    word = word.toLowerCase().trim();
 
     const {words, trie} = ws;
     if (! words.has(word)) {
