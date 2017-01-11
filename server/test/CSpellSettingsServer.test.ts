@@ -11,6 +11,7 @@ describe('Validate CSpellSettingsServer', () => {
             flagWords: [],
             patterns: [],
             enabledLanguageIds: [],
+            languageSettings: [],
             ignoreRegExpList: [],
             dictionaries: [],
             dictionaryDefinitions: [],
@@ -20,6 +21,6 @@ describe('Validate CSpellSettingsServer', () => {
     it('tests loading a cSpell.json file', () => {
         const filename = path.join(__dirname, '..', '..', '..', 'server', 'sampleSourceFiles', 'cSpell.json');
         const settings = readSettings(filename);
-        const x = settings;
+        expect(settings).to.not.be.empty;
     });
 });
