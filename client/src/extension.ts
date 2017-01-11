@@ -11,10 +11,10 @@ import {
     TextEdit, Protocol2Code
 } from 'vscode-languageclient';
 
-// const extensionId = 'streetsidesoftware.code-spell-checker'
-const baseConfigName = CSpellSettings.defaultFileName;
-const configFileGlob = `**/${baseConfigName}`;
-const findConfig = `.vscode/${baseConfigName}`;
+// const extensionId        = 'streetsidesoftware.code-spell-checker'
+const baseConfigName        = CSpellSettings.defaultFileName;
+const configFileWatcherGlob = `**/${baseConfigName}}`;
+const findConfig            = `{${baseConfigName},.vscode/${baseConfigName}}`;
 
 interface SettingsInfo {
     path: string;
@@ -24,7 +24,7 @@ interface SettingsInfo {
 function getDefaultWorkspaceConfigLocation() {
     const { rootPath } = workspace;
     return rootPath
-        ? path.join(rootPath, '.vscode', baseConfigName)
+        ? path.join(rootPath, baseConfigName)
         : undefined;
 }
 
@@ -62,17 +62,26 @@ function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[])
 }
 
 function addWordToWorkspaceDictionary(word: string) {
-    getSettings().subscribe(settingsInfo => {
-        const {path, settings} = settingsInfo;
-        if (path === undefined) {
-            // The path is undefined if the workspace consists of a single file.  In that case, we need to add the word
-            // to the global userWords.
-            addWordToUserDictionary(word);
-        } else {
-            settings.words.push(word);
-            settings.words = R.uniq(settings.words);
-            CSpellSettings.updateSettings(path, settings);
-        }
+    getSettings()
+        .toArray()
+        .subscribe(foundSettingsInfo => {
+            // find the one with the shortest path
+            const settingsInfo =  foundSettingsInfo.sort((a, b) => {
+                const aLen = (a.path && a.path.length) || 4096;
+                const bLen = (b.path && b.path.length) || 4096;
+                return aLen - bLen;
+            })[0];
+
+            const {path, settings} = settingsInfo;
+            if (path === undefined) {
+                // The path is undefined if the workspace consists of a single file.  In that case, we need to add the word
+                // to the global userWords.
+                addWordToUserDictionary(word);
+            } else {
+                settings.words.push(word);
+                settings.words = R.uniq(settings.words);
+                CSpellSettings.updateSettings(path, settings);
+            }
     });
 }
 
@@ -198,7 +207,7 @@ export function activate(context: ExtensionContext) {
     };
 
 
-    const configWatcher = workspace.createFileSystemWatcher(configFileGlob);
+    const configWatcher = workspace.createFileSystemWatcher(configFileWatcherGlob);
     const workspaceConfig = workspace.getConfiguration();
     const settings: CSpellPackageSettings = workspaceConfig.get('cSpell') as CSpellPackageSettings;
 
@@ -207,6 +216,7 @@ export function activate(context: ExtensionContext) {
     const clientOptions: LanguageClientOptions = {
         // Register the server for plain text documents
         documentSelector: settings.enabledLanguageIds,
+        diagnosticCollectionName: 'cSpell Checker',
         synchronize: {
             // Synchronize the setting section 'spellChecker' to the server
             configurationSection: ['cSpell', 'search']
