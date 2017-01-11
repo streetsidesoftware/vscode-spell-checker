@@ -21,14 +21,14 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 }
 
 
-export function onCodeActionHandler(documents: TextDocuments, settings: CSpellUserSettings) {
+export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => CSpellUserSettings) {
 
     const settingsCache = new Map<string, {version: number, settings: [CSpellUserSettings, Promise<SpellingDictionary>]}>();
 
     function getSettings(doc: TextDocument): [CSpellUserSettings, Promise<SpellingDictionary>] {
         const cached = settingsCache.get(doc.uri);
         if (!cached || cached.version !== doc.version) {
-            const docSetting = tds.getSettingsForDocument(settings, doc);
+            const docSetting = tds.getSettingsForDocument(fnSettings(), doc);
             const dict = tds.getDictionary(docSetting);
             settingsCache.set(doc.uri, { version: doc.version, settings: [docSetting, dict] });
         }
