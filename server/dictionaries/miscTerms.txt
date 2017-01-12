@@ -52,6 +52,10 @@ tslint
 typescript
 uniq
 unzip
+uri
+uris
+url
+urls
 user
 username
 util
