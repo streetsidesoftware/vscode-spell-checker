@@ -5,20 +5,20 @@ For the readme on the plugin: [README](./client/README.md).
 
 ## Contributions
 
-### Building the extension
+## Building the extension
 
 1. Build the server: `cd server && npm install && npm run build && cd ..`
 1. Build the client: `cd client && npm install && npm run build && cd ..`
 1. Launch vscode: `code client`
 1. Run the extension from vscode: `F5`
 
-### Dictionaries / Word List
+## Dictionaries / Word List
 
 Improvements to existing word lists and new word lists are welcome.
 
 The source text for each dictionary is in `./server/dictionaries`.
 
-#### Format for Dictionary Word lists
+### Format for Dictionary Word lists
 
 The simplest format is one word per line.
 
@@ -81,10 +81,19 @@ angles
 Spaces in the compiled dictionary have a special meaning.
 They tell the suggestion algorithm to suggest: 'newYork', 'new_york', 'new york', etc. for 'newyork'.
 
-#### Compiling Word List
+### Compiling Word List
 
 Use the `npm run build-dictionaries` command to build the dictionaries for the extension.
 
+### Locals
+
+The default language is English: `"cSpell.language": "en"`
+
+cSpell currently has English locals: `en-US` and `en-GB`.
+
+Example words differences: behaviour (en-GB) vs behavior (en-US)
+
 <!---
-    cSpell:ignore newyorkx
+    cSpell:ignore newyork
+    cSpell:words behaviour behavior
 -->
