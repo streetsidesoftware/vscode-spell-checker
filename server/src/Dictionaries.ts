@@ -22,13 +22,19 @@ export function filterDictDefsToLoad(dictIds: DictionaryId[], defs: DictionaryDe
     const activeDefs: DefMapArrayItem[] = defs
         .filter(({name}) => dictIdSet.has(name))
         .map(def => ({...def, path: getFullPathName(def)}))
+        // Remove any empty paths.
+        .filter(def => !!def.path)
         .map(def => [ def.name, def] as DefMapArrayItem);
     return [...(new Map(activeDefs))];
 }
 
 function getFullPathName(def: DictionaryDefinition) {
-    const { path: filePath = dictionaryPath, file = '' } = def;
-    return path.join(filePath, file);
+    const { path: filePath = '', file = '' } = def;
+    if (filePath + file === '') {
+        return '';
+    }
+    const dictPath = path.join(filePath || dictionaryPath, file);
+    return dictPath;
 }
 
 export function normalizePathForDictDefs(defs: DictionaryDefinition[], defaultPath: string): DictionaryDefinition[] {

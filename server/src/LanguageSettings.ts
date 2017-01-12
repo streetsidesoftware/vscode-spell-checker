@@ -1,12 +1,17 @@
-import { LanguageSetting, CSpellUserSettings } from './CSpellSettingsDef';
+import { LanguageSetting, CSpellUserSettings, LocalId, LanguageId } from './CSpellSettingsDef';
 import * as SpellSettings from './CSpellSettingsServer';
 
 // LanguageSettings are a collection of LanguageSetting.  They are applied in order, matching against the languageId.
 // Dictionaries are concatenated together.
 export type LanguageSettings = LanguageSetting[];
 
+const defaultLocal: LocalId = 'en';
+
 export const defaultLanguageSettings: LanguageSettings = [
-    { languageId: '*',                                   dictionaries: ['wordsEn', 'companies', 'softwareTerms', 'misc'], },
+    { languageId: '*',      local: 'en',                 dictionaries: ['wordsEn'], },
+    { languageId: '*',      local: 'en-US',              dictionaries: ['wordsEn'], },
+    { languageId: '*',      local: 'en-GB',              dictionaries: ['wordsEnGb'], },
+    { languageId: '*',                                   dictionaries: ['companies', 'softwareTerms', 'misc'], },
     { languageId: 'python', allowCompoundWords: true,    dictionaries: ['python']},
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
     { languageId: 'c',      allowCompoundWords: true,    dictionaries: ['cpp'], },
@@ -26,19 +31,29 @@ export function getDefaultLanguageSettings(): CSpellUserSettings {
     return { languageSettings: defaultLanguageSettings };
 }
 
-export function calcSettingsForLanguage(languageSettings: LanguageSettings, languageId: string): LanguageSetting {
+function NormalizeLocal(local: LocalId): LocalId {
+    return local.toLowerCase().replace(/[^a-z]/g, '');
+}
+
+export function calcSettingsForLanguage(languageSettings: LanguageSettings, languageId: LanguageId, local: LocalId): LanguageSetting {
+    local = NormalizeLocal(local);
     return defaultLanguageSettings.concat(languageSettings)
         .filter(s => s.languageId === '*' || s.languageId === languageId)
+        .filter(s => !s.local || NormalizeLocal(s.local) === local || s.local === '*')
         .reduce((langSetting, setting) => {
             const { allowCompoundWords = langSetting.allowCompoundWords } = setting;
             const dictionaries = mergeUnique(langSetting.dictionaries, setting.dictionaries);
-            return { languageId, allowCompoundWords, dictionaries };
+            return { languageId, local, allowCompoundWords, dictionaries };
         });
 }
 
 export function calcUserSettingsForLanguage(settings: CSpellUserSettings, languageId: string): CSpellUserSettings {
-    const { languageSettings = [] } = settings;
-    const { allowCompoundWords = settings.allowCompoundWords, dictionaries, dictionaryDefinitions } = calcSettingsForLanguage(languageSettings, languageId);
+    const { languageSettings = [], language: local = defaultLocal } = settings;
+    const {
+        allowCompoundWords = settings.allowCompoundWords,
+        dictionaries,
+        dictionaryDefinitions
+    } = calcSettingsForLanguage(languageSettings, languageId, local);
     return  SpellSettings.mergeSettings(settings, { allowCompoundWords, dictionaries, dictionaryDefinitions });
 }
 

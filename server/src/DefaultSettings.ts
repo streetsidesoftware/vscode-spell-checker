@@ -34,6 +34,7 @@ const defaultRegExpPatterns: RegExpPatternDefinition[] = [
 
 const defaultDictionaryDefs: DictionaryDefinition[] = [
     { name: 'wordsEn',        file: 'wordsEn.txt.gz',       type: 'S' },
+    { name: 'wordsEnGb',      file: 'wordsEnGb.txt.gz',     type: 'S' },
     { name: 'typescript',     file: 'typescript.txt.gz',    type: 'S' },
     { name: 'node',           file: 'node.txt.gz',          type: 'S' },
     { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'S' },
@@ -51,6 +52,7 @@ const defaultDictionaryDefs: DictionaryDefinition[] = [
 
 
 const defaultSettings: CSpellUserSettings = {
+    language: 'en',
     enabledLanguageIds: [
         'csharp', 'go', 'javascript', 'javascriptreact', 'markdown',
         'php', 'plaintext', 'python', 'text', 'typescript', 'typescriptreact'
