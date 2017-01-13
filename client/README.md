@@ -363,74 +363,84 @@ Here are the default rules: "*" matches any language.
 ```javascript
 {
 "cSpell.languageSettings": [
-    { languageId: "*",                                   dictionaries: ["wordsEn", "companies", "softwareTerms", "misc"], },
-    { languageId: "python", allowCompoundWords: true,    dictionaries: ["python"]},
-    { languageId: "go",     allowCompoundWords: true,    dictionaries: ["go"], },
-    { languageId: "javascript",                          dictionaries: ["typescript", "node"] },
-    { languageId: "javascriptreact",                     dictionaries: ["typescript", "node"] },
-    { languageId: "typescript",                          dictionaries: ["typescript", "node"] },
-    { languageId: "typescriptreact",                     dictionaries: ["typescript", "node"] },
-    { languageId: "html",                                dictionaries: ["html", "fonts", "typescript", "css"] },
-    { languageId: "php",                                 dictionaries: ["php", "html", "fonts", "css", "typescript"] },
-    { languageId: "css",                                 dictionaries: ["fonts", "css"] },
-    { languageId: "less",                                dictionaries: ["fonts", "css"] },
-    { languageId: "scss",                                dictionaries: ["fonts", "css"] },
+    { "languageId": '*',      "local": 'en',               "dictionaries": ['wordsEn'] },
+    { "languageId": '*',      "local": 'en-US',            "dictionaries": ['wordsEn'] },
+    { "languageId": '*',      "local": 'en-GB',            "dictionaries": ['wordsEnGb'] },
+    { "languageId": '*',                                   "dictionaries": ['companies', 'softwareTerms', 'misc'] },
+    { "languageId": "python", "allowCompoundWords": true,  "dictionaries": ["python"]},
+    { "languageId": "go",     "allowCompoundWords": true,  "dictionaries": ["go"] },
+    { "languageId": "javascript",                          "dictionaries": ["typescript", "node"] },
+    { "languageId": "javascriptreact",                     "dictionaries": ["typescript", "node"] },
+    { "languageId": "typescript",                          "dictionaries": ["typescript", "node"] },
+    { "languageId": "typescriptreact",                     "dictionaries": ["typescript", "node"] },
+    { "languageId": "html",                                "dictionaries": ["html", "fonts", "typescript", "css"] },
+    { "languageId": "php",                                 "dictionaries": ["php", "html", "fonts", "css", "typescript"] },
+    { "languageId": "css",                                 "dictionaries": ["fonts", "css"] },
+    { "languageId": "less",                                "dictionaries": ["fonts", "css"] },
+    { "languageId": "scss",                                "dictionaries": ["fonts", "css"] },
 ];
 }
 ```
 
-## Release Notes
+### How to add your own Dictionaries
 
-### 0.14.4
-* Moved the default location for `cSpell.json` to the workspace root instead of *.vscode*.
-  This makes it easier to have `cSpell.json` files checked into git.
-  The spell checker will look for both `./vscode/cSpell.json` and `./cSpell.json` in the workspace.
-* Fix #54 - Spell checking problems should be removed from the diagnostic window when the editor tab is closed.
+#### Global Dictionary
 
-### 0.14.3
-* Turn on C and CPP by default.
-* Improve the CPP dictionary.
-* Compress dictionaries
-* Speed up dictionary load
+To add a global dictionary, you will need change your user settings.
 
-### 0.14.2
-* Fix #49
-* Add support for CPP and C files.
+##### Define the Dictionary
 
-### 0.14.1
-* Fix #47
+In your user settings, you will need to tell the spell checker where to find your word list.
 
-### 0.14.0
-* This release includes a large amount of refactoring in order to support greater flexability with the configuration.
-* Ability to add file level settings:
-    * ignore -- list of words to ignore
-    * words -- list of words to consider correct
-    * compound words -- can now turn on / off compound word checking.
-    * disable / enable the spell checker
-    * control which text in a file is checked.
-* Ability to add new Dictionary files
-* Per programming language level settings.
-    * the ability to control which dictionaries are used.
-    * enable / disable compound words
-    * define `ignoreRegExpList` / `includeRegExpList` per language.
-    * ability to define per language patterns
-* Ability to define reusable patterns to be used with RegExpLists.
-* Fixes #7, #31 -- String with escape characters like, "\nmessage", would be flagged as an error.
-* Addresses #3 -- Option to spell check only string and comments
-* Addresses #27 -- Regexp Ignore
-* Addresses #45 -- Adding custom dictionaries
-* Fix issue $44 -- Settings in cSpell.json were not being applied without a reload.
+Example adding medical terms, so words like *acanthopterygious* can be found.
 
-### 0.13.3
-* Fix for #40 and #44 - manually load the cSpell.json file and merge it will any project settings.
+```javascript
+// A List of Dictionary Definitions.
+"cSpell.dictionaryDefinitions": [
+    { "name": "medicalTerms", "path": "/Users/jason/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"}
+],
+// List of dictionaries to use when checking files.
+"cSpell.dictionaries": [
+    "medicalTerms"
+]
+```
 
-### 0.13.1
-* Fix for #42 - cSpell will not load on case sensitive file systems.
+**Explained:** In this example, we have told the spell checker where to find the word list file.
+Since it is in the user settings, we have to use absolute paths.
 
-### 0.13.0
-* Fix for #39 - cSpell.flagWords Unknown configuration setting
-* Added a list of fonts to the spelling words.  Font favorites like Webdings and Verdana
-  will pass the spell checker.
+Once the dictionary was defined. We need to tell the spell checker when to use it.
+Adding it to `cSpell.dictionaries` advises the spell checker to always include the medical terms when spell checking.
+
+**Note:** Adding large dictionary files to be always used will slow down the generation of suggestions.
+
+#### Project / Workspace Dictionary
+
+To add a dictionary at the project level, it needs to be in the **cSpell.json** file.
+This file can be either at the project root or in the .vscode directory.
+
+Example adding medical terms, where the terms are checked into the project and we only want to use it for .md files.
+```javascript
+{
+    "dictionaryDefinitions": [
+        { "name": "medicalTerms", "path": "./dictionaries/medicalterms-en.txt"},
+        { "name": "cities", "path": "./dictionaries/cities.txt"}
+    ],
+    "dictionaries": [
+        "cities"
+    ],
+    "languageSettings": [
+        { "languageId": "markdown", "dictionaries": ["medicalTerms"] },
+        { "languageId": "plaintext", "dictionaries": ["medicalTerms"] }
+    ]
+}
+```
+
+**Explained:** In this example, two dictionaries were defined: *cities* and *medicalTerms*.
+The paths are relative to the location of the *cSpell.json* file.  This allows for dictionaries to be checked into the project.
+
+The *cities* dictionary is used for every file type, because it was added to the list to *dictionaries*.
+The *medicalTerms* dictionary is only used when editing *markdown* or *plaintext* files.
+
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
