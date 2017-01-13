@@ -84,10 +84,10 @@ function run() {
     connection.onDidChangeConfiguration(onConfigChange);
 
     function onConfigChange(change) {
-        const configPaths = [
+        const configPaths = workspaceRoot ? [
             path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName),
             path.join(workspaceRoot, CSpellSettings.defaultFileName),
-        ];
+        ] : [];
         const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
