@@ -190,7 +190,6 @@ var email2 = '<emailaddress@myfancynewcompany.com>';
 
 In general you should not need to use `includeRegExp`. But if you are mixing languages then it could come in helpful.
 
-<!--- cSpell:ignore variabele alinea -->
 ```Python
 # cSpell:includeRegExp #.*
 # cSpell:includeRegExp ("""|''')[^\1]*\1
@@ -240,7 +239,6 @@ Words added to the dictionary are placed in the `cSpell.json` file in the `.vsco
 Note, the settings in cSpell.json will override the equivalent cSpell settings in settings.json.
 
 #### Example _cSpell.json_ file
-<!--- cSpell:ignore mkdirp githubusercontent streetsidesoftware vsmarketplacebadge visualstudio -->
 ```javascript
 // cSpell Settings
 {
@@ -440,6 +438,7 @@ Here are the default rules: "*" matches any language.
     cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ
     cSpell:enableCompoundWords
     cSpell:includeRegExp Everything
-    cSpell:ignore hte
+    cSpell:ignore hte variabele alinea
+    cSpell:ignore mkdirp githubusercontent streetsidesoftware vsmarketplacebadge visualstudio
     cSpell:words Verdana
 -->
