@@ -188,6 +188,42 @@
           "type": "boolean",
           "default": false,
           "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false means it would not pass."
+        },
+        "cSpell.languageSettings": {
+          "type": "array",
+          "description": "Define settings on a per programming language basis.",
+          "items": {
+            "type": "object",
+            "items": [
+              {"id": "languageId", "type": "string", "description": "Language Id to apply settings, examples \"*\", \"php\", \"cpp\" "},
+              {"id": "local", "type": "string", "description": "Optionsal: Spoken language local used to select dictionary, example: \"en\", \"en-US\" or \"en-GB\" "},
+              {"id": "allowCompoundWords", "type": "boolean", "description": "Enable / Disable word compounds for a given programming language."},
+              {
+                "id": "dictionaries", "type": "array", "description": "Add dictionaries to be used in spell checking",
+                "items": {"type": "string", "description": "name of dictionary to use"}
+              }
+            ]
+          }
+        },
+        "cSpell.dictionaries": {
+          "type": "array",
+          "description": "List of dictionaries to use when checking files.",
+          "items": {
+            "type": "string",
+            "description": "Name of dictionary to use."
+          }
+        },
+        "cSpell.dictionaryDefinitions": {
+          "type": "array",
+          "description": "A List of Dictionary Definitions.",
+          "items": {
+            "type": "object",
+            "items": [
+              {"id": "name", "type": "string", "description": "Name of dictionary"},
+              {"id": "path", "type": "string", "description": "Path to the dictionary file. Relative paths will be relative to the workspace."}
+            ],
+            "required": ["name", "path"]
+          }
         }
       }
     }
