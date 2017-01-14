@@ -23,7 +23,7 @@ export function pathToUri(filePath: string): string {
 }
 
 export function generateExclusionFunctionForUri(globs: Glob[], root: string): ExclusionFunction {
-    const rootUri = pathToUri(root);
+    const rootUri = pathToUri(root || '/');
     const fns = globs.map(glob => minimatch.filter(glob, { matchBase: true }));
 
     function testPath(path: string): boolean {
