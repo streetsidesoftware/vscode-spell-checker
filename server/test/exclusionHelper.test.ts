@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import {
     extractGlobsFromExcludeFilesGlobMap,
-    generateExclusionFunction
+    generateExclusionFunctionForUri
 } from '../src/exclusionHelper';
 
+// cSpell:words filepath
 
 describe('Verify Exclusion Helper functions', function() {
 
@@ -22,15 +23,33 @@ describe('Verify Exclusion Helper functions', function() {
             '.vscode',
         ];
         const filesMatching = [
-            '~/project/myProject/node_modules',
-            '~/project/myProject/node_modules/test/test.js',
-            '~/project/myProject/.vscode/cSpell.json',
+            'file:///project/myProject/node_modules',
+            'file:///project/myProject/node_modules/test/test.js',
+            'file:///project/myProject/.vscode/cSpell.json',
         ];
-        const fn = generateExclusionFunction(globs, '~/project/myProject');
+        const fn = generateExclusionFunctionForUri(globs, '/project/myProject');
 
         filesMatching.forEach(filepath => {
             const r = fn(filepath);
-            expect(r).to.be.true;
+            expect(r, `Path: ${filepath} to not be included.`).to.be.true;
+        });
+    });
+
+    it('Test the generated matching function for nested projects', function() {
+        const globs = [
+            '**/node_modules',
+            '**/typings',
+            '.vscode',
+        ];
+        const filesMatching = [
+            'file:///User/projects/myProject/node_modules/test/test.js',
+            'file:///User/projects/myProject/node_modules/test/test.json',
+        ];
+        const fn = generateExclusionFunctionForUri(globs, '/User/projects/myProject/node_modules/test');
+
+        filesMatching.forEach(filepath => {
+            const r = fn(filepath);
+            expect(r, `Path: ${filepath} to not be excluded.`).to.be.false;
         });
     });
 
@@ -38,17 +57,20 @@ describe('Verify Exclusion Helper functions', function() {
         const globs = [
             'debug:/**',
             '**/*.rendered',
+            'git-index:/**',
         ];
         const files = [
             'debug://internal/1014/extHostCommands.ts',
-            '~/project/myProject/README.md.rendered',
+            'file:///project/myProject/README.md.rendered',
+            'git-index:///projects/myProject/node_modules/test/test.js',
+            'git-index:///projects/myProject/node_modules/test/test.json',
         ];
 
-        const fn = generateExclusionFunction(globs, '~/project/myProject');
+        const fn = generateExclusionFunctionForUri(globs, '/project/myProject');
 
         files.forEach(filepath => {
             const r = fn(filepath);
-            expect(r).to.be.true;
+            expect(r, `Path: ${filepath} to not be included.`).to.be.true;
         });
     });
 
@@ -62,15 +84,15 @@ describe('Verify Exclusion Helper functions', function() {
             '**/*.*.rendered',
         ];
         const files = [
-            '~/src/extHostCommands.ts',
-            '~/test/test.ts',
+            'file:///src/extHostCommands.ts',
+            'file:///test/test.ts',
         ];
 
-        const fn = generateExclusionFunction(globs, '~/project/myProject');
+        const fn = generateExclusionFunctionForUri(globs, '/project/myProject');
 
         files.forEach(filepath => {
             const r = fn(filepath);
-            expect(r).to.be.false;
+            expect(r, `Path: ${filepath} to not be excluded.`).to.be.false;
         });
     });
 

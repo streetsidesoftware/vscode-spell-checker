@@ -15,7 +15,7 @@ import {
     ExcludeFilesGlobMap,
     ExclusionFunction,
     extractGlobsFromExcludeFilesGlobMap,
-    generateExclusionFunction,
+    generateExclusionFunctionForUri,
     Glob
 } from './exclusionHelper';
 import * as path from 'path';
@@ -94,7 +94,7 @@ function run() {
         const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
-        fnFileExclusionTest = generateExclusionFunction(globs, workspaceRoot);
+        fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot);
         Object.assign(settings, mergedSettings);
 
         // Revalidate any open text documents
