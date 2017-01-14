@@ -12,15 +12,6 @@
 			"sourceMaps": true,
 			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ]
         },
-		{
-			"type": "node2",
-			"request": "launch",
-			"name": "Launch Tools",
-			"program": "${workspaceRoot}/tools/out/app.js",
-			"args": ["compile", "./dictionaries/php.txt", "./dictionaries/wordsEn.txt", "-o", "./temp"],
-			"sourceMaps": true,
-			"cwd": "${workspaceRoot}"
-		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha",
