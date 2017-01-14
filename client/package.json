@@ -54,6 +54,11 @@
       "type": "object",
       "title": "Code Spell Checker Configuration",
       "properties": {
+        "cSpell.language": {
+          "type": "string",
+          "default": "en",
+          "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported. "
+        },
         "cSpell.maxNumberOfProblems": {
           "type": "number",
           "default": 100,

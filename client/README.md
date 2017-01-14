@@ -23,7 +23,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ## Supported Languages
 
-* English
+* English (US)
+* English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
 ## Enabled File Types
 * Typescript
@@ -268,6 +269,8 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
 
 ```javascript
     //-------- Code Spell Checker Configuration --------
+    // The Language local to use when spell checking. "en" and "en-GB" are currently supported.
+    "cSpell.language": "en",
 
     // Controls the maximum number of spelling errors per document.
     "cSpell.maxNumberOfProblems": 100,
@@ -339,13 +342,15 @@ The spell checker includes a set of default dictionaries.
 ### General Dictionaries
 
 * **wordsEn** - Derived from Hunspell US English words.
+* **wordsEnGb** - Derived from Hunspell GB English words.
 * **companies** - List of well known companies
 * **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
-* **node** - terms related to using nodejs.
+* **misc** - Terms that do not belong in the other dictionaries.
 
 ### Programming Language Dictionaries
 
 * **typescript** - keywords for Typescript and Javascript
+* **node** - terms related to using nodejs.
 * **php** - *php* keywords and library methods
 * **go** - *go* keywords and library methods
 * **python** - *python* keywords
