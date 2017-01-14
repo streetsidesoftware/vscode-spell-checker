@@ -2,6 +2,7 @@
 
 ## 0.14.6
 * Updates to documentation
+* Fix #55 - Have the exclude globs check the path relative to the workspace instead of the entire path.
 
 ## 0.14.5
 * Minor fix to README.md

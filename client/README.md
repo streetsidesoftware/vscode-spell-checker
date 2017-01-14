@@ -364,6 +364,7 @@ The spell checker includes a set of default dictionaries.
 Based upon the programming language, different dictionaries will be loaded.
 
 Here are the default rules: "*" matches any language.
+`"local"` is used to filter based upon the `"cSpell.language"` setting.
 
 ```javascript
 {
@@ -402,7 +403,7 @@ Example adding medical terms, so words like *acanthopterygious* can be found.
 ```javascript
 // A List of Dictionary Definitions.
 "cSpell.dictionaryDefinitions": [
-    { "name": "medicalTerms", "path": "/Users/jason/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"}
+    { "name": "medicalTerms", "path": "/Users/guest/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"}
 ],
 // List of dictionaries to use when checking files.
 "cSpell.dictionaries": [
@@ -413,7 +414,7 @@ Example adding medical terms, so words like *acanthopterygious* can be found.
 **Explained:** In this example, we have told the spell checker where to find the word list file.
 Since it is in the user settings, we have to use absolute paths.
 
-Once the dictionary was defined. We need to tell the spell checker when to use it.
+Once the dictionary is defined. We need to tell the spell checker when to use it.
 Adding it to `cSpell.dictionaries` advises the spell checker to always include the medical terms when spell checking.
 
 **Note:** Adding large dictionary files to be always used will slow down the generation of suggestions.
