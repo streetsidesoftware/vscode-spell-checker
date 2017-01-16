@@ -48,3 +48,8 @@ export function getSettings(): Rx.Observable<SettingsInfo> {
             }
         });
 }
+
+export function setEnableSpellChecking(enabled: boolean) {
+    workspace.getConfiguration().update('cSpell.enabled', enabled);
+}
+
