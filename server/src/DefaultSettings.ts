@@ -37,6 +37,7 @@ const defaultDictionaryDefs: DictionaryDefinition[] = [
     { name: 'wordsEnGb',      file: 'wordsEnGb.txt.gz',     type: 'S' },
     { name: 'typescript',     file: 'typescript.txt.gz',    type: 'S' },
     { name: 'node',           file: 'node.txt.gz',          type: 'S' },
+    { name: 'npm',            file: 'npm.txt.gz',           type: 'S' },
     { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'S' },
     { name: 'misc',           file: 'miscTerms.txt.gz',     type: 'S' },
     { name: 'html',           file: 'html.txt.gz',          type: 'S' },
