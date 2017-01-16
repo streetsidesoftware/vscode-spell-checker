@@ -13,8 +13,14 @@ import {
 
 // const extensionId        = 'streetsidesoftware.code-spell-checker'
 const baseConfigName        = CSpellSettings.defaultFileName;
-const configFileWatcherGlob = `**/${baseConfigName}}`;
-const findConfig            = `{${baseConfigName},.vscode/${baseConfigName}}`;
+const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
+const possibleConfigPaths   = [
+    baseConfigName,
+    baseConfigName.toLowerCase(),
+    '.vscode' + baseConfigName,
+    '.vscode' + baseConfigName.toLowerCase()
+].join(',');
+const findConfig            = `{${possibleConfigPaths}}`;
 
 interface SettingsInfo {
     path: string;

@@ -85,7 +85,9 @@ function run() {
 
     function onConfigChange(change) {
         const configPaths = workspaceRoot ? [
+            path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName.toLowerCase()),
             path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName),
+            path.join(workspaceRoot, CSpellSettings.defaultFileName.toLowerCase()),
             path.join(workspaceRoot, CSpellSettings.defaultFileName),
         ] : [];
         const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
