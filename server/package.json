@@ -14,7 +14,6 @@
   "dependencies": {
     "commander": "^2.9.0",
     "comment-json": "^1.1.3",
-    "cspell-tools": "git+ssh://git@github.com/Jason3S/cSpell-Tools.git",
     "gensequence": "^0.2.3",
     "iconv-lite": "^0.4.15",
     "lodash": "^4.17.4",
