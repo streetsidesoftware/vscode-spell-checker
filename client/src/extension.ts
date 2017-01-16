@@ -28,11 +28,18 @@ function getDefaultWorkspaceConfigLocation() {
         : undefined;
 }
 
+function getSettingsFromConfig(): CSpellUserSettings {
+    const config = workspace.getConfiguration();
+    return config.get<CSpellUserSettings>('cSpell') || {};
+}
+
 function getSettings(): Rx.Observable<SettingsInfo> {
     return Rx.Observable.fromPromise(workspace.findFiles(findConfig, '{**/node_modules,**/.git}'))
         .flatMap(matches => {
             if (!matches || !matches.length) {
-                const settings = CSpellSettings.getDefaultSettings();
+                const defaultSettings = CSpellSettings.getDefaultSettings();
+                const { language = defaultSettings.language } = getSettingsFromConfig();
+                const settings = { ...defaultSettings, language };
                 return Rx.Observable.just(getDefaultWorkspaceConfigLocation())
                     .map(path => (<SettingsInfo>{ path, settings}));
             } else {
