@@ -50,6 +50,7 @@ Ameriprise Financial, Inc.
 AmerisourceBergen
 Amgen Inc.
 AMR
+Amtrack
 Anadarko Petroleum Corporation
 Anglo American
 Anheuser-Busch InBev
@@ -204,6 +205,7 @@ Chubu Electric Power
 CIGNA Corporation
 Cisco Systems
 Cisco Systems, Inc.
+Citibank
 CITIC Group
 Citigroup
 Cliffs Natural Resources Inc.
@@ -509,11 +511,14 @@ Lennar Corporation
 Lenovo Group
 Leucadia National Corporation
 Level 3 Communications, Inc.
+Levis
 LG Electronics
 Liberty Interactive Corporation
 Liberty Mutual Holding Company Inc.
 Liberty Mutual Insurance Group
 Lincoln National Corporation
+linkedin
+LinkedIn
 Live Nation Entertainment, Inc.
 LKQ Corporation
 Lloyds Banking Group
@@ -707,6 +712,7 @@ Ralph Lauren Corporation
 Randstad Holding
 Raytheon
 Raytheon Company
+RBS
 Realogy Holdings Corp.
 Regions Financial Corporation
 Reinsurance Group of America, Incorporated
@@ -739,6 +745,7 @@ Safeway
 Safeway Inc.
 SAIC Motor
 Saint-Gobain
+Salesforce
 Samsung Electronics
 SanDisk Corporation
 Sanmina
@@ -819,6 +826,7 @@ Symantec Corporation
 Synnex Corporation
 Sysco
 Sysco Corporation
+T-Mobile
 T&D Holdings
 Targa Resources Corp.
 Target
@@ -897,6 +905,7 @@ Tyson Foods
 Tyson Foods, Inc.
 U.S. Bancorp
 U.S. Postal Service
+Uber
 UBS
 UGI Corporation
 Ultrapar Holdings
@@ -973,4 +982,5 @@ Yamada Denki
 Yum! Brands, Inc.
 Zhejiang Geely Holding Group
 Zhejiang Materials Industry Group
+Ziggo
 Zurich Insurance Group
