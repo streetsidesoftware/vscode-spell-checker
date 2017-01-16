@@ -10,6 +10,6 @@ describe('Validate LanguageSettings', () => {
         const sPhp = calcSettingsForLanguage(defaultLanguageSettings, 'php', 'en-gb');
         expect(sPhp.allowCompoundWords).to.be.undefined;
         expect((sPhp.dictionaries || []).sort())
-            .to.be.deep.equal(['wordsEnGb', 'companies', 'softwareTerms', 'php', 'html', 'fonts', 'css', 'typescript', 'misc'].sort());
+            .to.be.deep.equal(['wordsEnGb', 'companies', 'softwareTerms', 'php', 'html', 'npm', 'fonts', 'css', 'typescript', 'misc'].sort());
     });
 });
