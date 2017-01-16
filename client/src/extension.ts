@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as CSpellSettings from './CSpellSettings';
-import {CSpellUserSettings, CSpellPackageSettings} from './CSpellSettings';
-import * as Rx from 'rx';
+import {CSpellPackageSettings} from './CSpellSettings';
+import {getSettings, configFileWatcherGlob} from './settings';
 import * as R from 'ramda';
 
 import { workspace, ExtensionContext, commands, window, TextEditor } from 'vscode';
@@ -11,50 +11,6 @@ import {
     TextEdit, Protocol2Code
 } from 'vscode-languageclient';
 
-// const extensionId        = 'streetsidesoftware.code-spell-checker'
-const baseConfigName        = CSpellSettings.defaultFileName;
-const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
-const possibleConfigPaths   = [
-    baseConfigName,
-    baseConfigName.toLowerCase(),
-    '.vscode' + baseConfigName,
-    '.vscode' + baseConfigName.toLowerCase()
-].join(',');
-const findConfig            = `{${possibleConfigPaths}}`;
-
-interface SettingsInfo {
-    path: string;
-    settings: CSpellUserSettings;
-}
-
-function getDefaultWorkspaceConfigLocation() {
-    const { rootPath } = workspace;
-    return rootPath
-        ? path.join(rootPath, baseConfigName)
-        : undefined;
-}
-
-function getSettingsFromConfig(): CSpellUserSettings {
-    const config = workspace.getConfiguration();
-    return config.get<CSpellUserSettings>('cSpell') || {};
-}
-
-function getSettings(): Rx.Observable<SettingsInfo> {
-    return Rx.Observable.fromPromise(workspace.findFiles(findConfig, '{**/node_modules,**/.git}'))
-        .flatMap(matches => {
-            if (!matches || !matches.length) {
-                const defaultSettings = CSpellSettings.getDefaultSettings();
-                const { language = defaultSettings.language } = getSettingsFromConfig();
-                const settings = { ...defaultSettings, language };
-                return Rx.Observable.just(getDefaultWorkspaceConfigLocation())
-                    .map(path => (<SettingsInfo>{ path, settings}));
-            } else {
-                const path = matches[0].fsPath;
-                return Rx.Observable.fromPromise(CSpellSettings.readSettings(path))
-                    .map(settings => (<SettingsInfo>{ path, settings }));
-            }
-        });
-}
 
 function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
     const textEditor = window.activeTextEditor;
