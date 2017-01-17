@@ -140,6 +140,7 @@ java
 javascript
 javascriptreact
 jpeg
+jpegs
 jpg
 jslint
 json
@@ -156,6 +157,7 @@ light bulb
 light bulbs
 lint
 linter
+linux
 localhost
 login
 logout
@@ -223,6 +225,9 @@ retweet
 ruby
 runtime
 scala
+schema
+schemas
+schemata
 scss
 set
 setter
@@ -254,9 +259,13 @@ trie
 tslint
 typescript
 typescriptreact
+ubuntu
+unix
 urlencoded
 util
 utils
+variable
+variables
 vax
 warning
 wget
@@ -266,6 +275,7 @@ wiki
 Wikimedia
 Wikipedia
 Wiktionary
+windows
 xml
 yacc
 Yahoo
