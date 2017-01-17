@@ -6,12 +6,18 @@ import * as vscode from 'vscode';
 
 import { CSpellUserSettings } from './CSpellSettings';
 
+import { languageIds } from './languageIds';
+
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
 
 export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
     fileEnabled?: boolean;
+}
+
+function unique<T>(values: T[]): T[] {
+    return [...(new Set<T>(values))];
 }
 
 export class CSpellClient {
@@ -24,9 +30,10 @@ export class CSpellClient {
     constructor(module: string) {
         const workspaceConfig = vscode.workspace.getConfiguration();
         const settings: CSpellUserSettings = workspaceConfig.get('cSpell') as CSpellUserSettings;
+        const documentSelector = unique(languageIds.concat(settings.enabledLanguageIds));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
-            documentSelector: settings.enabledLanguageIds,
+            documentSelector,
             diagnosticCollectionName: 'cSpell Checker',
             synchronize: {
                 // Synchronize the setting section 'spellChecker' to the server
