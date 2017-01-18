@@ -1,19 +1,23 @@
 import { CSpellUserSettings } from './CSpellSettings';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace } from 'vscode';
-import * as Rx from 'rxjs/Rx';
 import * as path from 'path';
+import { Uri } from 'vscode';
+import { unique } from './util';
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
+// This are in preferred order.
 const possibleConfigPaths   = [
     baseConfigName,
     baseConfigName.toLowerCase(),
     '.vscode' + baseConfigName,
     '.vscode' + baseConfigName.toLowerCase()
 ].join(',');
-export const findConfig            = `{${possibleConfigPaths}}`;
 
+const sectionCSpell                   = 'cSpell';
+
+export const findConfig            = `{${possibleConfigPaths}}`;
 
 export interface SettingsInfo {
     path: string;
@@ -27,29 +31,99 @@ export function getDefaultWorkspaceConfigLocation() {
         : undefined;
 }
 
-export function getSettingsFromConfig(): CSpellUserSettings {
-    const config = workspace.getConfiguration();
-    return config.get<CSpellUserSettings>('cSpell') || {};
+export function hasWorkspaceLocation() {
+    return !!workspace.rootPath;
 }
 
-export function getSettings(): Rx.Observable<SettingsInfo> {
-    return Rx.Observable.fromPromise(Promise.resolve(workspace.findFiles(findConfig, '{**/node_modules,**/.git}')))
-        .flatMap(matches => {
-            if (!matches || !matches.length) {
-                const defaultSettings = CSpellSettings.getDefaultSettings();
-                const { language = defaultSettings.language } = getSettingsFromConfig();
-                const settings = { ...defaultSettings, language };
-                return Rx.Observable.of(getDefaultWorkspaceConfigLocation())
-                    .map(path => (<SettingsInfo>{ path, settings}));
-            } else {
-                const path = matches[0].fsPath;
-                return Rx.Observable.fromPromise(CSpellSettings.readSettings(path))
-                    .map(settings => (<SettingsInfo>{ path, settings }));
-            }
+export function getSectionName(subSection?: keyof CSpellUserSettings): string {
+    return [sectionCSpell, subSection].filter(a => !!a).join('.');
+}
+
+export function getSettingsFromConfig(): CSpellUserSettings {
+    const config = workspace.getConfiguration();
+    return config.get<CSpellUserSettings>(sectionCSpell) || {};
+}
+
+export function getSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K): CSpellUserSettings[K] {
+    const section = getSectionName(subSection);
+    const config = workspace.getConfiguration();
+    return config.get<CSpellUserSettings[K]>(section);
+}
+
+export function inspectSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K) {
+    const section = getSectionName(subSection);
+    const config = workspace.getConfiguration();
+    return config.inspect<CSpellUserSettings[K]>(section);
+}
+
+export function setCSpellConfigSetting<K extends keyof CSpellUserSettings>(subSection: K, value: CSpellUserSettings[K], isGlobal: boolean) {
+    const section = getSectionName(subSection);
+    const config = workspace.getConfiguration();
+    config.update(section, value, isGlobal);
+}
+
+export function findSettingsFiles(): Thenable<Uri[]> {
+    return workspace.findFiles(findConfig, '{**/node_modules,**/.git}');
+}
+
+export function findSettingsFileLocation(): Thenable<string> {
+    return findSettingsFiles()
+        .then(uris => uris.map(uri => uri.fsPath))
+        .then(paths => paths.sort((a, b) => a.length - b.length))
+        .then(paths => paths[0] || getDefaultWorkspaceConfigLocation());
+}
+
+export function loadTheSettingsFile(): Thenable<SettingsInfo | undefined> {
+    return findSettingsFileLocation()
+        .then(path => {
+            return path && CSpellSettings.readSettings(path).then(settings => (path && { path, settings }));
         });
 }
 
-export function setEnableSpellChecking(enabled: boolean) {
-    workspace.getConfiguration().update('cSpell.enabled', enabled);
+export function getSettings(): Thenable<SettingsInfo> {
+    return loadTheSettingsFile()
+        .then(info => {
+            if (!info) {
+                const defaultSettings = CSpellSettings.getDefaultSettings();
+                const { language = defaultSettings.language } = getSettingsFromConfig();
+                const settings = { ...defaultSettings, language };
+                const path = getDefaultWorkspaceConfigLocation();
+                return { path, settings};
+            }
+            return info;
+        });
 }
 
+export function setEnableSpellChecking(enabled: boolean, isGlobal: boolean) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    setCSpellConfigSetting('enabled', enabled, useGlobal);
+}
+
+export function getEnabledLanguagesFromConfig(isGlobal: boolean) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    const inspect = inspectSettingFromConfig('enabledLanguageIds');
+    return (useGlobal ? undefined : inspect.workspaceValue) || inspect.globalValue || inspect.defaultValue || [];
+}
+
+function enableLanguageIdInConfig(isGlobal: boolean, languageId: string) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    const langs = unique([languageId, ...getEnabledLanguagesFromConfig(useGlobal)]);
+    setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal);
+    return langs;
+}
+
+export function enableLanguage(isGlobal: boolean, languageId: string) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    enableLanguageIdInConfig(useGlobal, languageId);
+    if (!useGlobal) {
+        findSettingsFileLocation()
+        .then(settingsFilename => settingsFilename && CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true));
+    }
+}
+
+export function addWordToSettings(isGlobal: boolean, word: string) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
+    const words = getSettingFromConfig(section) || [];
+    setCSpellConfigSetting(section, unique(words.concat([word])), useGlobal);
+}

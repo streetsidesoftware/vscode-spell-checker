@@ -1,11 +1,10 @@
 import * as CSpellSettings from './CSpellSettings';
 import * as Settings from './settings';
 
-import { workspace, window, TextEditor } from 'vscode';
+import { window, TextEditor } from 'vscode';
 import {
     TextEdit, Protocol2Code
 } from 'vscode-languageclient';
-import { unique } from './util';
 
 
 export function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
@@ -27,35 +26,20 @@ export function applyTextEdits(uri: string, documentVersion: number, edits: Text
 }
 
 export function addWordToWorkspaceDictionary(word: string) {
+    if (!Settings.hasWorkspaceLocation()) {
+        return addWordToUserDictionary(word);
+    }
     Settings.getSettings()
-        .toArray()
-        .subscribe(foundSettingsInfo => {
-            // find the one with the shortest path
-            const settingsInfo =  foundSettingsInfo.sort((a, b) => {
-                const aLen = (a.path && a.path.length) || 4096;
-                const bLen = (b.path && b.path.length) || 4096;
-                return aLen - bLen;
-            })[0];
-
-            const {path, settings} = settingsInfo;
-            if (path === undefined) {
-                // The path is undefined if the workspace consists of a single file.  In that case, we need to add the word
-                // to the global userWords.
-                addWordToUserDictionary(word);
-            } else {
-                settings.words.push(word);
-                settings.words = unique(settings.words);
-                CSpellSettings.updateSettings(path, settings);
-            }
+    .then(foundSettingsInfo => {
+        const path = foundSettingsInfo.path;
+        if (path) {
+            CSpellSettings.addWordToSettingsAndUpdate(path, word);
+        }
     });
 }
 
 export function addWordToUserDictionary(word: string) {
-
-    const config = workspace.getConfiguration();
-    const userWords = config.get<string[]>('cSpell.userWords');
-    userWords.push(word);
-    config.update('cSpell.userWords', unique(userWords), true);
+    Settings.addWordToSettings(true, word);
 }
 
 export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
