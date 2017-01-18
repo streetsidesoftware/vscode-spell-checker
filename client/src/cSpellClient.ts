@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { CSpellUserSettings } from './CSpellSettings';
 
 import { languageIds } from './languageIds';
+import { unique } from './util';
 
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
@@ -14,10 +15,6 @@ const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
 export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
     fileEnabled?: boolean;
-}
-
-function unique<T>(values: T[]): T[] {
-    return [...(new Set<T>(values))];
 }
 
 export class CSpellClient {
