@@ -12,7 +12,6 @@ import {userCommandAddWordToDictionary, addWordToUserDictionary, addWordToWorksp
 
 export function activate(context: ExtensionContext) {
 
-
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
 
@@ -20,12 +19,12 @@ export function activate(context: ExtensionContext) {
     const client = new CSpellClient(serverModule);
 
     const configWatcher = workspace.createFileSystemWatcher(configFileWatcherGlob);
-    const workspaceConfig = workspace.getConfiguration();
 
     // Start the client.
     const clientDispose = client.start();
 
     function triggerGetSettings() {
+        const workspaceConfig = workspace.getConfiguration();
         const cSpell = workspaceConfig.get('cSpell') as CSpellPackageSettings;
         const search = workspaceConfig.get('search');
         client.applySettings({ cSpell, search });
@@ -45,8 +44,8 @@ export function activate(context: ExtensionContext) {
         commands.registerCommand('cSpell.addWordToUserDictionarySilent', addWordToUserDictionary),
         commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
         commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
-        commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true)),
-        commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false)),
+        commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true, false)),
+        commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false, false)),
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),
         configWatcher.onDidDelete(triggerGetSettings)

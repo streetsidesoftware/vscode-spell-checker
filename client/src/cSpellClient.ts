@@ -5,6 +5,7 @@ import {
 import * as vscode from 'vscode';
 
 import { CSpellUserSettings } from './CSpellSettings';
+import * as Settings from './settings';
 
 import { languageIds } from './languageIds';
 import { unique } from './util';
@@ -25,9 +26,8 @@ export class CSpellClient {
      * @param: {string} module -- absolute path to the server module.
      */
     constructor(module: string) {
-        const workspaceConfig = vscode.workspace.getConfiguration();
-        const settings: CSpellUserSettings = workspaceConfig.get('cSpell') as CSpellUserSettings;
-        const documentSelector = unique(languageIds.concat(settings.enabledLanguageIds));
+        const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
+        const documentSelector = unique(languageIds.concat(enabledLanguageIds));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
