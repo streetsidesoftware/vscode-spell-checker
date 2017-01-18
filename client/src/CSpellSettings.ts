@@ -6,6 +6,7 @@ import path = require('path');
 import {asPromise} from './asPromise';
 import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server/src/CSpellSettingsDef';
 export * from '../server/src/CSpellSettingsDef';
+import { unique } from './util';
 
 const currentSettingsFileVersion = '0.1';
 
@@ -21,10 +22,13 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     '//^': [
         '// cSpell Settings'
     ],
-    '// version': ['\n    // Version of the setting file.  Always 0.1'],
+    '// version': [`
+    // Version of the setting file.  Always 0.1`
+    ],
     version: currentSettingsFileVersion,
 
-    '// language': ['\n    // language - current active spelling language'],
+    '// language': [`
+    // language - current active spelling language`],
     language: 'en',
 
     '// words': [`
@@ -57,8 +61,50 @@ export function readSettings(filename: string): Promise<CSpellUserSettings> {
 }
 
 export function updateSettings(filename: string, settings: CSpellUserSettings) {
-    return mkDirP(path.dirname(filename)).then(() =>
-            writeFile(filename, json.stringify(settings, null, 4))
-        )
+    return mkDirP(path.dirname(filename))
+        .then(() => writeFile(filename, json.stringify(settings, null, 4)))
         .then(() => settings);
+}
+
+export function addWordToSettingsAndUpdate(filename: string, word: string) {
+    return readSettings(filename)
+        .then(settings => addWordsToSettings(settings, [word]))
+        .then(settings => updateSettings(filename, settings));
+}
+
+export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wordsToAdd: string[]) {
+    const words = unique(settings.words.concat(wordsToAdd));
+    return {...settings, words};
+}
+export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComments, languageIds: string[], onlyIfExits: boolean) {
+    if (settings.enabledLanguageIds || !onlyIfExits) {
+        const enabledLanguageIds = unique((settings.enabledLanguageIds || []).concat(languageIds));
+        return { ...settings, enabledLanguageIds };
+    }
+    return settings;
+}
+
+export function removeLanguageIdsFromSettings(settings: CSpellUserSettingsWithComments, languageIds: string[]) {
+    if (settings.enabledLanguageIds) {
+        const excludeLangIds = new Set(languageIds);
+        const enabledLanguageIds = settings.enabledLanguageIds.filter(a => !excludeLangIds.has(a));
+        const newSettings = {...settings, enabledLanguageIds};
+        if (!newSettings.enabledLanguageIds.length) {
+            delete newSettings.enabledLanguageIds;
+        }
+        return newSettings;
+    }
+    return settings;
+}
+
+export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean) {
+    return readSettings(filename)
+        .then(settings => addLanguageIdsToSettings(settings, languageIds, onlyIfExits))
+        .then(settings => updateSettings(filename, settings));
+}
+
+export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]) {
+    return readSettings(filename)
+        .then(settings => removeLanguageIdsFromSettings(settings, languageIds))
+        .then(settings => updateSettings(filename, settings));
 }
