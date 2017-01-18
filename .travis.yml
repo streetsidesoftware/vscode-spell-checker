@@ -10,3 +10,7 @@ script:
   - npm install
   - npm run build
   - npm test
+  - cd ..
+  - cd client
+  - npm run build
+  - npm test
