@@ -1,11 +1,11 @@
 import * as CSpellSettings from './CSpellSettings';
-import {getSettings} from './settings';
-import * as R from 'ramda';
+import * as Settings from './settings';
 
 import { workspace, window, TextEditor } from 'vscode';
 import {
     TextEdit, Protocol2Code
 } from 'vscode-languageclient';
+import { unique } from './util';
 
 
 export function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
@@ -27,7 +27,7 @@ export function applyTextEdits(uri: string, documentVersion: number, edits: Text
 }
 
 export function addWordToWorkspaceDictionary(word: string) {
-    getSettings()
+    Settings.getSettings()
         .toArray()
         .subscribe(foundSettingsInfo => {
             // find the one with the shortest path
@@ -44,17 +44,18 @@ export function addWordToWorkspaceDictionary(word: string) {
                 addWordToUserDictionary(word);
             } else {
                 settings.words.push(word);
-                settings.words = R.uniq(settings.words);
+                settings.words = unique(settings.words);
                 CSpellSettings.updateSettings(path, settings);
             }
     });
 }
 
 export function addWordToUserDictionary(word: string) {
+
     const config = workspace.getConfiguration();
     const userWords = config.get<string[]>('cSpell.userWords');
     userWords.push(word);
-    config.update('cSpell.userWords', R.uniq(userWords), true);
+    config.update('cSpell.userWords', unique(userWords), true);
 }
 
 export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
@@ -70,4 +71,5 @@ export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
         });
     };
 }
+
 
