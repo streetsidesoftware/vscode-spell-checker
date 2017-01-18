@@ -3,6 +3,7 @@ import * as escapeHtml from 'escape-html';
 import * as path from 'path';
 import { CSpellClient } from './cSpellClient';
 import * as Rx from 'rxjs/Rx';
+import * as preview from './pugCSpellInfoPreview';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -37,31 +38,19 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             const spellingErrors = [...(new Set(allSpellingErrors))].sort();
             return client.isSpellCheckEnabled(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false } = response;
-                return `
-                    <body>
-                        <h1>Spell Checker Configuration Information</h1>
-                        <div>
-                            <table>
-                                <tr>
-                                    <td>File Name:</td>
-                                    <td><b>${escapeHtml(filename)}</b></td>
-                                </tr>
-                                <tr>
-                                    <td>Spell Checker enabled for Path:</td>
-                                    <td>${fileEnabled ? 'Yes' : 'No'}</td>
-                                </tr>
-                                <tr>
-                                    <td>Spell Checker enabled for file type (${document.languageId}):</td>
-                                    <td>${languageEnabled ? 'Yes' : 'No'}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div>
-                            <h2>Issues:</h2>
-                            <div>${spellingErrors.length ? escapeHtml(spellingErrors.join(', ')) : '<b>None</b>'}</div>
-                        </div>
-                    </body>
-                `;
+                return preview.render({
+                    fileEnabled,
+                    languageEnabled,
+                    languageId: document.languageId,
+                    filename,
+                    spellingErrors
+                });
+                /*
+                    <div>
+                        <h2>Issues:</h2>
+                        <div>${spellingErrors.length ? escapeHtml(spellingErrors.join(', ')) : '<b>None</b>'}</div>
+                    </div>
+                */
             });
         }
     }

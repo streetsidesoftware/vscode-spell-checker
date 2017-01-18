@@ -1,0 +1,19 @@
+body
+    h1 Spell Checker Configuration Information
+    div
+        h2 Information
+        table
+            tr
+                td File Name:
+                td #{filename}
+            tr
+                td Spell Checker enabled for Path:
+                td #{fileEnabled ? 'Yes' : 'No'}
+            tr
+                td Spell Checker enabled for file type (#{languageId})
+                td #{languageEnabled ? 'Yes' : 'No'}
+    div
+        h2 Issues:
+        ul
+            each val in spellingErrors.slice(0,10)
+                li= val
