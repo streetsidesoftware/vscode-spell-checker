@@ -95,8 +95,7 @@ function run() {
         const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
-        const enabledLanguageIds = cSpellSettingsFile.enabledLanguageIds || cSpell.enabledLanguageIds || defaultSettings.enabledLanguageIds;
-        const mergedSettings = {...CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell), enabledLanguageIds};
+        const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot);

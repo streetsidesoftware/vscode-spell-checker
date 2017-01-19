@@ -50,6 +50,14 @@ function mergeList<T>(left: T[] = [], right: T[] = []) {
     return [...setOfWords.keys()];
 }
 
+function replaceIfNotEmpty<T>(left: Array<T> = [], right: Array<T> = []) {
+    const filtered = right.filter(a => !!a);
+    if (filtered.length) {
+        return filtered;
+    }
+    return left;
+}
+
 export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserSettings[]): CSpellUserSettings {
     return settings.reduce((left, right) => ({
         ...left,
@@ -58,7 +66,7 @@ export function mergeSettings(left: CSpellUserSettings, ...settings: CSpellUserS
         userWords: mergeList(left.userWords, right.userWords),
         flagWords: mergeList(left.flagWords, right.flagWords),
         ignoreWords: mergeList(left.ignoreWords, right.ignoreWords),
-        enabledLanguageIds: mergeList(left.enabledLanguageIds, right.enabledLanguageIds),
+        enabledLanguageIds: replaceIfNotEmpty(left.enabledLanguageIds, right.enabledLanguageIds),
         ignoreRegExpList: mergeList(left.ignoreRegExpList, right.ignoreRegExpList),
         patterns: mergeList(left.patterns, right.patterns),
         dictionaryDefinitions: mergeList(left.dictionaryDefinitions, right.dictionaryDefinitions),
