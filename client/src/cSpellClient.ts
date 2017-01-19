@@ -82,4 +82,11 @@ export class CSpellClient {
     get diagnostics(): vscode.DiagnosticCollection {
         return this.client.diagnostics;
     }
+
+    public triggerGetSettings() {
+        const workspaceConfig = vscode.workspace.getConfiguration();
+        const cSpell = workspaceConfig.get('cSpell') as CSpellUserSettings;
+        const search = workspaceConfig.get('search');
+        this.applySettings({ cSpell, search });
+    }
 }

@@ -4,17 +4,20 @@ import * as path from 'path';
 import { CSpellClient } from './cSpellClient';
 import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
+import * as commands from './commands';
 
 const schemeCSpellInfo = 'cspell-info';
 
-export const previewCommand = 'cSpell.displayCSpellInfo';
+export const commandDisplayCSpellInfo = 'cSpell.displayCSpellInfo';
+export const commandEnableLanguage    = 'cSpell.enableLanguageFromCSpellInfo';
+export const commandDisableLanguage   = 'cSpell.disableLanguageFromCSpellInfo';
 
-function generateEnableDisableLanguageLink(enable: boolean, languageId: string) {
+function generateEnableDisableLanguageLink(enable: boolean, languageId: string, uri: vscode.Uri) {
     const links = [
-        'command:cSpell.disableLanguage?',
-        'command:cSpell.enableLanguage?',
+        `command:${commandDisableLanguage}?`,
+        `command:${commandEnableLanguage}?`,
     ];
-    return encodeURI(links[enable ? 1 : 0] + JSON.stringify([languageId]));
+    return encodeURI(links[enable ? 1 : 0] + JSON.stringify([languageId, uri.toString()]));
 }
 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
@@ -55,14 +58,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     languageId,
                     filename,
                     spellingErrors,
-                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
+                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
                 });
-                /*
-                    <div>
-                        <h2>Issues:</h2>
-                        <div>${spellingErrors.length ? escapeHtml(spellingErrors.join(', ')) : '<b>None</b>'}</div>
-                    </div>
-                */
             });
         }
     }
@@ -86,7 +83,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     });
 
-    const disposable = vscode.commands.registerCommand(previewCommand, () => {
+
+    function displayCSpellInfo() {
         return vscode.commands
             .executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'Spell Checker Info')
             .then(
@@ -95,7 +93,32 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     vscode.window.showErrorMessage(reason);
                 }
             );
-    });
+    }
+
+    function changeFocus(uri: string) {
+        const promises = vscode.window.visibleTextEditors
+            .filter(editor => editor.document && (editor.document.uri.toString() === uri))
+            .map(editor => vscode.window.showTextDocument(editor.document, editor.viewColumn, false))
+        return Promise.all(promises);
+    }
+
+    function triggerSettingsRefresh(uri: vscode.Uri) {
+        client.triggerGetSettings();
+    }
+
+    function enableLanguage(languageId: string, uri: string) {
+        const uriObj = uri && vscode.Uri.parse(uri);
+        commands.enableLanguageId(languageId)
+        .then(() => triggerSettingsRefresh(uriObj))
+        .then(() => changeFocus(uri));
+    }
+
+    function disableLanguage(languageId: string, uri: string) {
+        const uriObj = uri && vscode.Uri.parse(uri);
+        commands.disableLanguageId(languageId)
+        .then(() => triggerSettingsRefresh(uriObj))
+        .then(() => changeFocus(uri));
+    }
 
     function makeDisposable(sub: Rx.Subscription) {
         return {
@@ -104,7 +127,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     context.subscriptions.push(
-        disposable,
+        vscode.commands.registerCommand(commandDisplayCSpellInfo, displayCSpellInfo),
+        vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
+        vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );

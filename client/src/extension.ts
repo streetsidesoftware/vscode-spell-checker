@@ -26,10 +26,7 @@ export function activate(context: ExtensionContext) {
     const clientDispose = client.start();
 
     function triggerGetSettings() {
-        const workspaceConfig = workspace.getConfiguration();
-        const cSpell = workspaceConfig.get('cSpell') as CSpellPackageSettings;
-        const search = workspaceConfig.get('search');
-        client.applySettings({ cSpell, search });
+        client.triggerGetSettings();
     }
 
     const actionAddWordToWorkspace = userCommandAddWordToDictionary(

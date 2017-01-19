@@ -25,7 +25,7 @@ export function applyTextEdits(uri: string, documentVersion: number, edits: Text
     }
 }
 
-export function addWordToWorkspaceDictionary(word: string) {
+export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
     if (!Settings.hasWorkspaceLocation()) {
         return addWordToUserDictionary(word);
     }
@@ -33,25 +33,41 @@ export function addWordToWorkspaceDictionary(word: string) {
     .then(foundSettingsInfo => {
         const path = foundSettingsInfo.path;
         if (path) {
-            CSpellSettings.addWordToSettingsAndUpdate(path, word);
+            return CSpellSettings.addWordToSettingsAndUpdate(path, word);
         }
     });
 }
 
-export function addWordToUserDictionary(word: string) {
-    Settings.addWordToSettings(true, word);
+export function addWordToUserDictionary(word: string): Thenable<void> {
+    return Settings.addWordToSettings(true, word);
 }
 
-export function enableLanguageId(languageId: string) {
+export function enableLanguageId(languageId: string): Thenable<void> {
     if (languageId) {
-        Settings.enableLanguage(true, languageId);
+        return Settings.enableLanguage(true, languageId)
+        .then(() => {
+            // Add it from the workspace as well if necessary
+            const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
+            if (allSettings.workspaceValue) {
+                return Settings.enableLanguage(false, languageId);
+            }
+        });
     }
+    return Promise.resolve();
 }
 
-export function disableLanguageId(languageId: string) {
+export function disableLanguageId(languageId: string): Thenable<void> {
     if (languageId) {
-        Settings.disableLanguage(true, languageId);
+        return Settings.disableLanguage(true, languageId)
+        .then(() => {
+            // Remove it from the workspace as well if necessary
+            const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
+            if (allSettings.workspaceValue) {
+                return Settings.disableLanguage(false, languageId);
+            }
+        });
     }
+    return Promise.resolve();
 }
 
 export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {

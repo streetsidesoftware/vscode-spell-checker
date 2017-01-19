@@ -36,7 +36,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
                         const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
                         sbCheck.text = `${langText} | ${fileText}`;
                         sbCheck.tooltip = reason;
-                        sbCheck.command = cSpellInfo.previewCommand;
+                        sbCheck.command = cSpellInfo.commandDisplayCSpellInfo;
                         sbCheck.show();
                     }
                 }
