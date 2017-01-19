@@ -42,6 +42,18 @@ export function addWordToUserDictionary(word: string) {
     Settings.addWordToSettings(true, word);
 }
 
+export function enableLanguageId(languageId: string) {
+    if (languageId) {
+        Settings.enableLanguage(true, languageId);
+    }
+}
+
+export function disableLanguageId(languageId: string) {
+    if (languageId) {
+        Settings.disableLanguage(true, languageId);
+    }
+}
+
 export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
     return function () {
         const { activeTextEditor = {} } = window;

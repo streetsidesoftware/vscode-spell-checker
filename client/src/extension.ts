@@ -1,14 +1,16 @@
 import * as path from 'path';
 import {CSpellPackageSettings} from './CSpellSettings';
 import {configFileWatcherGlob, setEnableSpellChecking} from './settings';
-import * as cSpellInfoPreview from './cSpellInfoPreview';
+import * as cSpellInfoPreview from './cSpellInfo';
 import {CSpellClient} from './cSpellClient';
 
-import { workspace, ExtensionContext, commands } from 'vscode';
+import { workspace, ExtensionContext } from 'vscode';
+import * as vscode from 'vscode';
 
 import { initStatusBar } from './statusbar';
 
-import {userCommandAddWordToDictionary, addWordToUserDictionary, addWordToWorkspaceDictionary, applyTextEdits} from './commands';
+import {userCommandAddWordToDictionary, applyTextEdits} from './commands';
+import * as commands from './commands';
 
 export function activate(context: ExtensionContext) {
 
@@ -30,8 +32,11 @@ export function activate(context: ExtensionContext) {
         client.applySettings({ cSpell, search });
     }
 
-    const actionAddWordToWorkspace = userCommandAddWordToDictionary('Add Word to Workspace Dictionary', addWordToWorkspaceDictionary);
-    const actionAddWordToDictionary = userCommandAddWordToDictionary('Add Word to Dictionary', addWordToUserDictionary);
+    const actionAddWordToWorkspace = userCommandAddWordToDictionary(
+        'Add Word to Workspace Dictionary',
+        commands.addWordToWorkspaceDictionary
+    );
+    const actionAddWordToDictionary = userCommandAddWordToDictionary('Add Word to Dictionary', commands.addWordToUserDictionary);
 
     initStatusBar(context, client);
 
@@ -39,13 +44,15 @@ export function activate(context: ExtensionContext) {
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
         clientDispose,
-        commands.registerCommand('cSpell.editText', applyTextEdits),
-        commands.registerCommand('cSpell.addWordToDictionarySilent', addWordToWorkspaceDictionary),
-        commands.registerCommand('cSpell.addWordToUserDictionarySilent', addWordToUserDictionary),
-        commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
-        commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
-        commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true, false)),
-        commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false, false)),
+        vscode.commands.registerCommand('cSpell.editText', applyTextEdits),
+        vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToWorkspaceDictionary),
+        vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
+        vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
+        vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
+        vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
+        vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
+        vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true, false)),
+        vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false, false)),
         configWatcher.onDidChange(triggerGetSettings),
         configWatcher.onDidCreate(triggerGetSettings),
         configWatcher.onDidDelete(triggerGetSettings)

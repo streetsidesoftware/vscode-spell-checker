@@ -8,6 +8,7 @@ export interface TemplateVariables {
     languageEnabled: boolean;
     languageId: string;
     spellingErrors: string[];
+    linkEnableDisableLanguage: string;
 }
 
 export function render(params: TemplateVariables) {

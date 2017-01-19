@@ -1,7 +1,7 @@
 body
-    h1 Spell Checker Configuration Information
+    h1 Spell Checker Information
     div
-        h2 Information
+        h2 File Information
         table
             tr
                 td File Name:
@@ -11,9 +11,16 @@ body
                 td #{fileEnabled ? 'Yes' : 'No'}
             tr
                 td Spell Checker enabled for file type (#{languageId})
-                td #{languageEnabled ? 'Yes' : 'No'}
+                td
+                    = languageEnabled ? 'Yes' : 'No'
+                    | &nbsp; | &nbsp;
+                    a(href=linkEnableDisableLanguage)
+                        = languageEnabled ? 'Disable' : 'Enable'
     div
         h2 Issues:
-        ul
-            each val in spellingErrors.slice(0,10)
-                li= val
+        if spellingErrors.length
+            ul
+                each val in spellingErrors.slice(0,10)
+                    li= val
+        else
+            b None!

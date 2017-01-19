@@ -112,12 +112,30 @@ function enableLanguageIdInConfig(isGlobal: boolean, languageId: string) {
     return langs;
 }
 
+function disableLanguageIdInConfig(isGlobal: boolean, languageId: string) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    const langs = getEnabledLanguagesFromConfig(useGlobal).filter(a => a !== languageId);
+    setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal);
+    return langs;
+}
+
 export function enableLanguage(isGlobal: boolean, languageId: string) {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     enableLanguageIdInConfig(useGlobal, languageId);
     if (!useGlobal) {
         findSettingsFileLocation()
         .then(settingsFilename => settingsFilename && CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true));
+    }
+}
+
+export function disableLanguage(isGlobal: boolean, languageId: string) {
+    const useGlobal = isGlobal || !hasWorkspaceLocation();
+    disableLanguageIdInConfig(useGlobal, languageId);
+    if (!useGlobal) {
+        findSettingsFileLocation()
+        .then(settingsFilename =>
+            settingsFilename && CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId])
+        );
     }
 }
 

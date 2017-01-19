@@ -1,11 +1,21 @@
+// cSpell:words rxjs cspell diags
 import * as vscode from 'vscode';
-import * as escapeHtml from 'escape-html';
 import * as path from 'path';
 import { CSpellClient } from './cSpellClient';
 import * as Rx from 'rxjs/Rx';
-import * as preview from './pugCSpellInfoPreview';
+import * as preview from './pugCSpellInfo';
 
 const schemeCSpellInfo = 'cspell-info';
+
+export const previewCommand = 'cSpell.displayCSpellInfo';
+
+function generateEnableDisableLanguageLink(enable: boolean, languageId: string) {
+    const links = [
+        'command:cSpell.disableLanguage?',
+        'command:cSpell.enableLanguage?',
+    ];
+    return encodeURI(links[enable ? 1 : 0] + JSON.stringify([languageId]));
+}
 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
 
@@ -38,12 +48,14 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             const spellingErrors = [...(new Set(allSpellingErrors))].sort();
             return client.isSpellCheckEnabled(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false } = response;
+                const languageId = document.languageId;
                 return preview.render({
                     fileEnabled,
                     languageEnabled,
-                    languageId: document.languageId,
+                    languageId,
                     filename,
-                    spellingErrors
+                    spellingErrors,
+                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
                 });
                 /*
                     <div>
@@ -74,7 +86,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     });
 
-    const disposable = vscode.commands.registerCommand('cSpell.displayCSpellInfo', () => {
+    const disposable = vscode.commands.registerCommand(previewCommand, () => {
         return vscode.commands
             .executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'Spell Checker Info')
             .then(

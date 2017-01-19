@@ -3,7 +3,7 @@ import {CSpellPackageSettings} from './CSpellSettings';
 import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
-
+import * as cSpellInfo from './cSpellInfo';
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
 
@@ -36,6 +36,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
                         const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
                         sbCheck.text = `${langText} | ${fileText}`;
                         sbCheck.tooltip = reason;
+                        sbCheck.command = cSpellInfo.previewCommand;
                         sbCheck.show();
                     }
                 }
