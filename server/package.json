@@ -40,8 +40,10 @@
     "chai": "^3.5",
     "cspell-tools": "git+https://github.com/Jason3S/cSpell-Tools.git",
     "fs-promise": "^1.0.0",
+    "lorem-ipsum": "^1.0.3",
     "mocha": "^3.2",
     "rimraf": "^2.5.4",
+    "ts-node": "^2.0.0",
     "typescript": "^2.1.5",
     "vscode": "^1.0.3"
   },
@@ -55,6 +57,8 @@
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
     "tsc": "tsc -p .",
+    "test2": "mocha --compilers ts:ts-node/register --recursive test/*.test.ts test/**/*.test.ts",
+    "test-watch": "npm run build && mocha --compilers ts:ts-node/register --watch --recursive src/**/*.test.ts",
     "test": "mocha --recursive ../client/server/test"
   }
 }
