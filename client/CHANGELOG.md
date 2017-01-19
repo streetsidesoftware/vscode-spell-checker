@@ -1,5 +1,13 @@
 # Release Notes:
 
+## 0.14.7
+* Enabled language pug [#60](https://github.com/Jason-Rev/vscode-spell-checker/issues/60)
+* As a stop-gap for csharp, use the typescript dictionary. Issue [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
+* Add a dictionary for popular npm libraries
+* Make sure most languages can be enabled / disabled without the need to restart vscode.
+* Added a command to show an information page about the Spell Checker.
+  It can be triggered by clicking on the statusbar or by `F1` `Show Spell Checker Configuration Info`
+
 ## 0.14.6
 * Updates to documentation
 * Fix #55 - Have the exclude globs check the path relative to the workspace instead of the entire path.
