@@ -51,7 +51,7 @@
     "clean": "rimraf ../client/server && rimraf ./tools/out",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run compile",
-    "clean-build": "npm run clean && npm run build && npm run build-tools",
+    "clean-build": "npm run clean && npm run build",
     "build-dictionaries": "cspell-tools compile ./dictionaries/*.txt -o ../client/dictionaries/",
     "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
