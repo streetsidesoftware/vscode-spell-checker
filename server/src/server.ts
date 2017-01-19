@@ -23,6 +23,8 @@ import * as path from 'path';
 import * as CSpellSettings from './CSpellSettingsServer';
 import { CSpellPackageSettings } from './CSpellSettingsDef';
 import { getDefaultSettings } from './DefaultSettings';
+import * as tds from './TextDocumentSettings';
+
 
 const defaultSettings = getDefaultSettings();
 const settings: CSpellPackageSettings = {...defaultSettings};
@@ -93,7 +95,8 @@ function run() {
         const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
-        const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
+        const enabledLanguageIds = cSpellSettingsFile.enabledLanguageIds || cSpell.enabledLanguageIds || defaultSettings.enabledLanguageIds;
+        const mergedSettings = {...CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell), enabledLanguageIds};
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot);
@@ -119,6 +122,18 @@ function run() {
         };
     });
 
+    connection.onRequest({ method: 'getConfigurationForDocument' }, (params: TextDocumentInfo) => {
+        const { uri, languageId } = params;
+        const doc = uri && documents.get(uri);
+        const docSettings = doc && getSettingsToUseForDocument(doc);
+        const settings = getBaseSettings();
+        return {
+            languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
+            fileEnabled: uri ? !isUriExcluded(uri) : undefined,
+        };
+    });
+
+
     // validate documents
     const disposeValidationStream = validationRequestStream
         // .tap(doc => connection.console.log(`A Validate ${doc.uri}:${doc.version}:${Date.now()}`))
@@ -134,7 +149,7 @@ function run() {
         .subscribe(validateTextDocument);
 
     // Clear the diagnostics for documents we do not want to validate
-    const disposeSkipValidationStream = validationRequestStream
+    const disposableSkipValidationStream = validationRequestStream
         .filter(doc => !shouldValidateDocument(doc))
         .subscribe(doc => {
             connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
@@ -158,12 +173,17 @@ function run() {
     }
 
     function getBaseSettings() {
-        return CSpellSettings.mergeSettings(defaultSettings, settings);
+        return {...CSpellSettings.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds};
+    }
+
+    function getSettingsToUseForDocument(doc: TextDocument) {
+        return tds.getSettings(getBaseSettings(), doc.getText(), doc.languageId);
     }
 
     function validateTextDocument(textDocument: TextDocument): void {
         try {
-            const settingsToUse = getBaseSettings();
+            const settingsToUse = getSettingsToUseForDocument(textDocument);
+
             Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
                 // Send the computed diagnostics to VSCode.
                 validationFinishedStream.onNext(textDocument);
@@ -196,7 +216,7 @@ function run() {
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
-        disposeSkipValidationStream.dispose();
+        disposableSkipValidationStream.dispose();
         disposeValidationStream.dispose();
     });
 }
