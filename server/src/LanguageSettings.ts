@@ -16,12 +16,14 @@ export const defaultLanguageSettings: LanguageSettings = [
     { languageId: 'go',     allowCompoundWords: true,    dictionaries: ['go'], },
     { languageId: 'c',      allowCompoundWords: true,    dictionaries: ['cpp'], },
     { languageId: 'cpp',    allowCompoundWords: true,    dictionaries: ['cpp'], },
-    { languageId: 'csharp', allowCompoundWords: true,    dictionaries: ['typescript'], },    // Until we get something better.
+    { languageId: 'csharp', allowCompoundWords: true,    dictionaries: ['typescript', 'node', 'npm'] },    // Until we get something better.
     { languageId: 'javascript',                          dictionaries: ['typescript', 'node', 'npm'] },
     { languageId: 'javascriptreact',                     dictionaries: ['typescript', 'node', 'npm'] },
     { languageId: 'typescript',                          dictionaries: ['typescript', 'node', 'npm'] },
     { languageId: 'typescriptreact',                     dictionaries: ['typescript', 'node', 'npm'] },
     { languageId: 'html',                                dictionaries: ['html', 'fonts', 'typescript', 'css', 'npm'] },
+    { languageId: 'jade',                                dictionaries: ['html', 'fonts', 'typescript', 'css', 'npm'] },
+    { languageId: 'pug',                                 dictionaries: ['html', 'fonts', 'typescript', 'css', 'npm'] },
     { languageId: 'php',                                 dictionaries: ['php', 'html', 'fonts', 'css', 'typescript', 'npm'] },
     { languageId: 'css',                                 dictionaries: ['fonts', 'css'] },
     { languageId: 'less',                                dictionaries: ['fonts', 'css'] },
