@@ -16,8 +16,7 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
         .toPromise();
 }
 
-export function validateText(text: string, languageId: string, options: CSpellUserSettings): Promise<Text.WordOffset[]> {
-    const settings = tds.getSettings(options, text, languageId);
+export function validateText(text: string, languageId: string, settings: CSpellUserSettings): Promise<Text.WordOffset[]> {
     const dict = tds.getDictionary(settings);
     return dict.then(dict => [...TV.validateText(text, dict, settings)]);
 }

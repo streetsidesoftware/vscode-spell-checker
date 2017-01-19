@@ -2,10 +2,9 @@ import { DictionaryDefinition, DictionaryId } from './CSpellSettingsDef';
 import { loadDictionary } from './DictionaryLoader';
 import { SpellingDictionary } from './SpellingDictionary';
 import * as path from 'path';
+import { serverEnv } from './serverEnv';
 
-
-const extensionPath = path.join(__dirname, '..', '..');
-const dictionaryPath = path.join(extensionPath, 'dictionaries');
+const dictionaryPath = () => serverEnv.dictionaries;
 
 export function loadDictionaries(dictIds: DictionaryId[], defs: DictionaryDefinition[]): Promise<SpellingDictionary>[] {
     const defsToLoad = filterDictDefsToLoad(dictIds, defs);
@@ -33,7 +32,7 @@ function getFullPathName(def: DictionaryDefinition) {
     if (filePath + file === '') {
         return '';
     }
-    const dictPath = path.join(filePath || dictionaryPath, file);
+    const dictPath = path.join(filePath || dictionaryPath(), file);
     return dictPath;
 }
 
