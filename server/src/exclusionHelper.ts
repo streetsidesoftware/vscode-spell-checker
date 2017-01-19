@@ -34,7 +34,6 @@ export function generateExclusionFunctionForUri(globs: Glob[], root: string): Ex
         const parts = path.split(separator);
         for (let i = 0; i < parts.length; ++i) {
             const p = parts.slice(0, i + 1).join(separator);
-            console.log(p);
             if (testPath(p)) {
                 return true;
             }
