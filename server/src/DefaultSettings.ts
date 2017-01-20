@@ -33,22 +33,24 @@ const defaultRegExpPatterns: RegExpPatternDefinition[] = [
 ];
 
 const defaultDictionaryDefs: DictionaryDefinition[] = [
-    { name: 'wordsEn',        file: 'wordsEn.txt.gz',       type: 'S' },
-    { name: 'wordsEnGb',      file: 'wordsEnGb.txt.gz',     type: 'S' },
-    { name: 'typescript',     file: 'typescript.txt.gz',    type: 'S' },
+    { name: 'companies',      file: 'companies.txt.gz',     type: 'S' },
+    { name: 'cpp',            file: 'cpp.txt.gz',           type: 'S' },
+    { name: 'css',            file: 'css.txt.gz',           type: 'S' },
+    { name: 'csharp',         file: 'csharp.txt.gz',        type: 'S' },
+    { name: 'dotnet',         file: 'dotnet.txt.gz',        type: 'S' },
+    { name: 'fonts',          file: 'fonts.txt.gz',         type: 'S' },
+    { name: 'go',             file: 'go.txt.gz',            type: 'S' },
+    { name: 'html',           file: 'html.txt.gz',          type: 'S' },
+    { name: 'misc',           file: 'miscTerms.txt.gz',     type: 'S' },
     { name: 'node',           file: 'node.txt.gz',          type: 'S' },
     { name: 'npm',            file: 'npm.txt.gz',           type: 'S' },
-    { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'S' },
-    { name: 'misc',           file: 'miscTerms.txt.gz',     type: 'S' },
-    { name: 'html',           file: 'html.txt.gz',          type: 'S' },
     { name: 'php',            file: 'php.txt.gz',           type: 'S' },
-    { name: 'go',             file: 'go.txt.gz',            type: 'S' },
-    { name: 'cpp',            file: 'cpp.txt.gz',           type: 'S' },
-    { name: 'companies',      file: 'companies.txt.gz',     type: 'S' },
-    { name: 'python',         file: 'python.txt.gz',        type: 'S' },
-    { name: 'fonts',          file: 'fonts.txt.gz',         type: 'S' },
-    { name: 'css',            file: 'css.txt.gz',           type: 'S' },
     { name: 'powershell',     file: 'powershell.txt.gz',    type: 'S' },
+    { name: 'python',         file: 'python.txt.gz',        type: 'S' },
+    { name: 'softwareTerms',  file: 'softwareTerms.txt.gz', type: 'S' },
+    { name: 'typescript',     file: 'typescript.txt.gz',    type: 'S' },
+    { name: 'wordsEn',        file: 'wordsEn.txt.gz',       type: 'S' },
+    { name: 'wordsEnGb',      file: 'wordsEnGb.txt.gz',     type: 'S' },
 ];
 
 
