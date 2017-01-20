@@ -129,6 +129,8 @@ function run() {
         return {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
+            settings,
+            docSettings,
         };
     });
 
