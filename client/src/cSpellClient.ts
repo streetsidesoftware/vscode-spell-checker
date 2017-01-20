@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import { CSpellUserSettings } from './CSpellSettings';
 import * as Settings from './settings';
 
-import { languageIds } from './languageIds';
+import * as LanguageIds from './languageIds';
 import { unique } from './util';
 
 // The debug options for the server
@@ -20,14 +20,14 @@ export interface ServerResponseIsSpellCheckEnabled {
 
 export class CSpellClient {
 
-    readonly client: LanguageClient;
+    private client: LanguageClient;
 
     /**
      * @param: {string} module -- absolute path to the server module.
      */
-    constructor(module: string) {
+    constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
-        const documentSelector = unique(languageIds.concat(enabledLanguageIds));
+        const documentSelector = unique(languageIds.concat(enabledLanguageIds).concat(LanguageIds.languageIds));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
@@ -88,5 +88,9 @@ export class CSpellClient {
         const cSpell = workspaceConfig.get('cSpell') as CSpellUserSettings;
         const search = workspaceConfig.get('search');
         this.applySettings({ cSpell, search });
+    }
+
+    public static create(module: string) {
+        return vscode.languages.getLanguages().then(langIds => new CSpellClient(module, langIds));
     }
 }
