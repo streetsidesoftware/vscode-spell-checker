@@ -20,12 +20,14 @@ diff
 direname
 direnames
 dockerfile
+dotnet
 errorlog
 eslint
 expect
 filename
 filenames
 fsharp
+git
 git-commit
 git-rebase
 go

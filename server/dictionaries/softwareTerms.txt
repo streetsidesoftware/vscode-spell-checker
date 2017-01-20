@@ -1,4 +1,8 @@
 ada
+aggregation
+aggregations
+aggregator
+aggregators
 app
 approximant
 arccosine
