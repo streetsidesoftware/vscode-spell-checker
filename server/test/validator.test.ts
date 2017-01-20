@@ -8,6 +8,8 @@ import * as tds from '../src/TextDocumentSettings';
 import { getDefaultSettings } from '../src/DefaultSettings';
 import { serverEnv } from '../src/serverEnv';
 
+// cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
+
 const defaultSettings: CSpellUserSettings = { ...getDefaultSettings(), enabledLanguageIds: ['plaintext', 'javascript']};
 
 function getSettings(text: string, languageId: string) {
