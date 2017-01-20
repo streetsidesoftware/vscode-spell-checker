@@ -1,6 +1,7 @@
 a
 abbr
 abbreviation
+accept-charset
 acronym
 address
 after
@@ -16,7 +17,9 @@ aside
 attribute
 audio
 autocapitalize
+autocomplete
 autocorrect
+autofocus
 b
 bad
 base
@@ -83,6 +86,7 @@ em
 email
 embed
 embedded
+enctype
 end
 endCaptures
 ensure
@@ -97,6 +101,11 @@ file
 font
 footer
 form
+formaction
+formenctype
+formmethod
+formnovalidate
+formtarget
 frame
 frameset
 function
@@ -166,6 +175,7 @@ nav
 nbsp
 noframes
 noscript
+novalidate
 nowrap
 number
 object
