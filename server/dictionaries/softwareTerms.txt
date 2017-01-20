@@ -130,6 +130,8 @@ hostname
 hover
 html
 Hunspell
+immutable
+immutables
 import
 incrementally
 info
@@ -140,6 +142,8 @@ integer
 ipsum
 isomorphic
 iteratively
+invariant
+invariants
 java
 javascript
 javascriptreact
@@ -189,6 +193,7 @@ Mongo DB
 mouse
 mouseover
 MYSQL
+namespace
 nav
 noinspection
 offline
@@ -265,6 +270,11 @@ typescript
 typescriptreact
 ubuntu
 unix
+unselect
+unselected
+unselects
+unselecting
+unselectings
 urlencoded
 util
 utils
