@@ -11,6 +11,7 @@ const schemeCSpellInfo = 'cspell-info';
 export const commandDisplayCSpellInfo = 'cSpell.displayCSpellInfo';
 export const commandEnableLanguage    = 'cSpell.enableLanguageFromCSpellInfo';
 export const commandDisableLanguage   = 'cSpell.disableLanguageFromCSpellInfo';
+export const commandTest              = 'cSpell.test';
 
 function generateEnableDisableLanguageLink(enable: boolean, languageId: string, uri: vscode.Uri) {
     const links = [
@@ -72,13 +73,13 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         .subscribe(() => provider.update(previewUri));
 
     vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
-        if (e.document === vscode.window.activeTextEditor.document && e.document) {
+        if (vscode.window.activeTextEditor && e.document && e.document === vscode.window.activeTextEditor.document) {
             onRefresh.next(e.document.uri);
         }
     });
 
     vscode.window.onDidChangeActiveTextEditor((editor: vscode.TextEditor) => {
-        if (editor === vscode.window.activeTextEditor && editor.document) {
+        if (editor && editor === vscode.window.activeTextEditor && editor.document) {
             onRefresh.next(editor.document.uri);
         }
     });
@@ -98,7 +99,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     function changeFocus(uri: string) {
         const promises = vscode.window.visibleTextEditors
             .filter(editor => editor.document && (editor.document.uri.toString() === uri))
-            .map(editor => vscode.window.showTextDocument(editor.document, editor.viewColumn, false))
+            .map(editor => vscode.window.showTextDocument(editor.document, editor.viewColumn, false));
         return Promise.all(promises);
     }
 
@@ -126,10 +127,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         };
     }
 
+    function testCommand(...args: any[]) {
+        const stopHere = args;
+    }
+
     context.subscriptions.push(
         vscode.commands.registerCommand(commandDisplayCSpellInfo, displayCSpellInfo),
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
+        vscode.commands.registerCommand(commandTest, testCommand),
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
