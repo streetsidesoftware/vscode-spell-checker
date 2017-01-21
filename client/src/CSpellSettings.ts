@@ -18,6 +18,8 @@ const mkDirP = asPromise(mkdirp);
 const writeFile = asPromise<void, string, any>(fs.writeFile);
 const readFile = asPromise(fs.readFile);
 
+
+// cSpell:ignore hte
 const defaultSettings: CSpellUserSettingsWithComments = {
     '//^': [
         '// cSpell Settings'
