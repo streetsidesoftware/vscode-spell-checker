@@ -1,5 +1,11 @@
 # Release Notes:
 
+## 0.15.0
+* Fix some issues with the spell checker info viewer
+* Fix [#51](https://github.com/Jason-Rev/vscode-spell-checker/issues/51)
+* Fix an issue finding the cSpell.json file.
+* Add some terms to the dictionaries.
+
 ## 0.14.9
 * Add a dictionary for C# and for .Net [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
 * Turn on .json by default [#63](https://github.com/Jason-Rev/vscode-spell-checker/issues/63)
