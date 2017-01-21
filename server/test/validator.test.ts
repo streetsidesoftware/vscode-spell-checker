@@ -72,7 +72,7 @@ describe('Validator', function() {
             expect(words).to.not.contain('xaccd');
             expect(words).to.not.contain('ctrip');
             expect(words).to.not.contain('FFEE');
-            // expect(words).to.not.contain('nmove');  // Figure out a way to fix this later.
+            expect(words).to.not.contain('nmove');
         });
     });
 
@@ -102,7 +102,6 @@ describe('Validator', function() {
             expect(words).to.contain('mischecked');
         });
     });
-
 
     it('validates malformed ignoreRegExpList', () => {
         const results = Validator.validateText(sampleCode, 'plaintext', { ignoreRegExpList: ['/wrong[/gim', 'mis.*led'] });

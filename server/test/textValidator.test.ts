@@ -64,12 +64,29 @@ describe('Validate textValidator functions', () => {
         expect(errors).to.deep.equal(['giraffe']);
     });
 
+    // cSpell:ignore xxxkxxxx xxxbxxxx
     it('tests ignoring words that consist of a single repeated letter', () => {
         const dictCol = getSpellingDictionaryCollection();
         const text = ' tttt gggg xxxxxxx jjjjj xxxkxxxx xxxbxxxx \n' + sampleText;
         const result = validateText(text, dictCol, { allowCompoundWords: true });
         const errors = result.map(wo => wo.word).toArray().sort();
         expect(errors).to.deep.equal(['giraffe', 'xxxbxxxx', 'xxxkxxxx']);
+    });
+
+    it('tests trailing s, ed, ing, etc. are attached to the words', () => {
+        const dictEmpty = createSpellingDictionary([]);
+        const text = 'We have PUBLISHed multiple FIXesToThePROBLEMs';
+        const result = validateText(text, dictEmpty, { allowCompoundWords: true });
+        const errors = result.map(wo => wo.word).toArray();
+        expect(errors).to.deep.equal(['have', 'Published', 'multiple', 'Fixes', 'Problems']);
+    });
+
+    it('tests trailing s, ed, ing, etc.', () => {
+        const dictWords = getSpellingDictionaryCollection();
+        const text = 'We have PUBLISHed multiple FIXesToThePROBLEMs';
+        const result = validateText(text, dictWords, { allowCompoundWords: true });
+        const errors = result.map(wo => wo.word).toArray().sort();
+        expect(errors).to.deep.equal([]);
     });
 
 });
@@ -92,7 +109,7 @@ const fruit = [
 ];
 const animals = ['ape', 'lion', 'tiger', 'Elephant', 'monkey', 'gazelle', 'antelope', 'aardvark', 'hyena'];
 const insects = ['ant', 'snail', 'beetle', 'worm', 'stink bug', 'centipede', 'millipede', 'flea', 'fly'];
-const words = ['the', 'and', 'is', 'has', 'ate', 'light', 'dark', 'little', 'big'];
+const words = ['the', 'and', 'is', 'has', 'ate', 'light', 'dark', 'little', 'big', 'we', 'have', 'published', 'multiple', 'fixes', 'to', 'the', 'problems'];
 
 const sampleText = `
     The elephant and giraffe

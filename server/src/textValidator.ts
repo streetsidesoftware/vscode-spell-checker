@@ -86,7 +86,7 @@ export function validateText(
         .filter(wo => wo.isFlagged || wo.word.length >= minWordLength )
         .map(wo => ({
             ...wo,
-            isFound: hasWordCheck(dict, wo.word, allowCompoundWords)
+            isFound: isWordValid(dict, wo, text, allowCompoundWords)
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
         .filter(wo => !ignoreWordsSet.has(wo.word.toLowerCase()))
@@ -101,6 +101,13 @@ export function validateText(
             return mapOfProblems.get(word) < maxDuplicateProblems;
         })
         .take(maxNumberOfProblems);
+}
+
+export function isWordValid(dict: SpellingDictionary, wo: Text.WordOffset, text: string, allowCompounds: boolean) {
+    const firstTry = hasWordCheck(dict, wo.word, allowCompounds);
+    return firstTry
+        // Drop the first letter if it is preceded by a '\'.
+        || (text[wo.offset - 1] === '\\') && hasWordCheck(dict, wo.word.slice(1), allowCompounds);
 }
 
 export function hasWordCheck(dict: SpellingDictionary, word: string, allowCompounds: boolean) {
