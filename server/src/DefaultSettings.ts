@@ -8,7 +8,6 @@ const defaultRegExpExcludeList = [
     'Urls',
     'PublicKey',
     'RsaCert',
-    'EscapeCharacters',
     'Base64',
 ];
 
