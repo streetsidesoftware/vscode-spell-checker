@@ -8,7 +8,7 @@ describe('Verify Template Renders', () => {
             fileEnabled: true,
             languageEnabled: true,
             languageId: 'typescript',
-            spellingErrors: ['one', 'two', 'three'],
+            spellingErrors: [['one', 1], ['two', 2], ['three', 3],],
             linkEnableDisableLanguage: 'command:cSpell',
         });
         expect(html).to.not.be.empty;
@@ -21,7 +21,7 @@ describe('Verify Template Renders', () => {
             fileEnabled: true,
             languageEnabled: true,
             languageId: 'cpp',
-            spellingErrors: ['one', 'two', 'three', '<code>'],
+            spellingErrors: [['one', 1], ['two', 2], ['three', 3], ['<code>', 5]],
             linkEnableDisableLanguage: 'command:cSpell',
          });
         expect(html).to.not.be.empty;
