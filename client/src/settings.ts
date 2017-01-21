@@ -11,8 +11,8 @@ export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toL
 const possibleConfigPaths   = [
     baseConfigName,
     baseConfigName.toLowerCase(),
-    '.vscode' + baseConfigName,
-    '.vscode' + baseConfigName.toLowerCase()
+    path.join('.vscode', baseConfigName),
+    path.join('.vscode', baseConfigName.toLowerCase()),
 ].join(',');
 
 const sectionCSpell                   = 'cSpell';
