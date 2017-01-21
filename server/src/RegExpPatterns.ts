@@ -1,4 +1,5 @@
 // Exclude Expressions
+// cSpell:ignore anrvtbf
 export const regExMatchUrls = /(?:https?|ftp):\/\/\S+/gi;
 export const regExHexDigits = /^x?[0-1a-f]+$/i;
 export const regExMatchCommonHexFormats = /(?:#[0-9a-f]{3,8})|(?:0x[0-9a-f]+)|(?:\\u[0-9a-f]{4})|(?:\\x\{[0-9a-f]{4}\})/gi;
@@ -17,3 +18,4 @@ export const regExCStyleComments = /(?:\/\/.*$)|(?:\/\*(?:.|\s)+?\*\/)/gim;
 
 export const regExEmail = /<?[\w.\-+]+@\w+(\.\w+)+>?/gi;
 
+export const regExRepeatedChar = /^(\w)\1{3,}$/;

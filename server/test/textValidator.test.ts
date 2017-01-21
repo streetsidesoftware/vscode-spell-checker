@@ -64,6 +64,14 @@ describe('Validate textValidator functions', () => {
         expect(errors).to.deep.equal(['giraffe']);
     });
 
+    it('tests ignoring words that consist of a single repeated letter', () => {
+        const dictCol = getSpellingDictionaryCollection();
+        const text = ' tttt gggg xxxxxxx jjjjj xxxkxxxx xxxbxxxx \n' + sampleText;
+        const result = validateText(text, dictCol, { allowCompoundWords: true });
+        const errors = result.map(wo => wo.word).toArray().sort();
+        expect(errors).to.deep.equal(['giraffe', 'xxxbxxxx', 'xxxkxxxx']);
+    });
+
 });
 
 function getSpellingDictionaryCollection() {

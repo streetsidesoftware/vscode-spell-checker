@@ -89,9 +89,10 @@ export function validateText(
             isFound: hasWordCheck(dict, wo.word, allowCompoundWords)
         }))
         .filter(wo => wo.isFlagged || ! wo.isFound )
-        .filter(wo => !RxPat.regExHexDigits.test(wo.word))  // Filter out any hex numbers
-        // Remove anything that is in the ignore list.
         .filter(wo => !ignoreWordsSet.has(wo.word.toLowerCase()))
+        .filter(wo => !RxPat.regExHexDigits.test(wo.word))  // Filter out any hex numbers
+        .filter(wo => !RxPat.regExRepeatedChar.test(wo.word))  // Filter out any repeated characters like xxxxxxxxxx
+        // Remove anything that is in the ignore list.
         .filter(wo => {
             const word = wo.word.toLowerCase();
             // Keep track of the number of times we have seen the same problem
