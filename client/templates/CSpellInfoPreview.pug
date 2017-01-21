@@ -22,13 +22,15 @@ html
                             = languageEnabled ? 'Disable' : 'Enable'
         div
             h2 Issues:
-            if spellingErrors.length
-                ul
-                    each val in spellingErrors.slice(0,200)
-                        li= `${val[0]} (${val[1]})`
+            if spellingErrors
+                if spellingErrors.length
+                    ul
+                        each val in spellingErrors.slice(0,200)
+                            li= `${val[0]} (${val[1]})`
+                else
+                    b None!
             else
-                b None!
-
+                b Analyzing...
         div#output
     //-
         script.

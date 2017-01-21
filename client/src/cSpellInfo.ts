@@ -53,11 +53,11 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             }
             const uri = document.uri;
             const filename = path.basename(uri.path);
-            const diags = client.diagnostics;
-            const allSpellingErrors = (diags.get(uri) || [])
+            const diags = client.diagnostics.get(uri);
+            const allSpellingErrors = (diags || [])
                 .map(d => d.range)
                 .map(range => document.getText(range));
-            const spellingErrors = util.freqCount(allSpellingErrors);
+            const spellingErrors = diags && util.freqCount(allSpellingErrors);
             autoRefresh(uri);  // Since the diags can change, we need to setup a refresh.
             return client.isSpellCheckEnabled(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false } = response;
