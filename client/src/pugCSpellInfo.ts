@@ -9,6 +9,7 @@ export interface TemplateVariables {
     languageId: string;
     spellingErrors: [string, number][];
     linkEnableDisableLanguage: string;
+    imagesPath: string;
 }
 
 export function render(params: TemplateVariables) {

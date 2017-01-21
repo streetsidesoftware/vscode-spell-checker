@@ -28,6 +28,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const onRefresh = new Rx.Subject<vscode.Uri>();
 
     let lastDocumentUri: vscode.Uri = undefined;
+    const imagesUri = vscode.Uri.file(context.asAbsolutePath('images'));
+    const imagesPath = imagesUri.path;
 
     class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
@@ -69,6 +71,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     filename,
                     spellingErrors,
                     linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
+                    imagesPath,
                 });
             });
         }
