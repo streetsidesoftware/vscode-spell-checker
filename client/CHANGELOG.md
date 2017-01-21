@@ -1,5 +1,12 @@
 # Release Notes:
 
+## 0.14.9
+* Add a dictionary for C# and for .Net [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
+* Turn on .json by default [#63](https://github.com/Jason-Rev/vscode-spell-checker/issues/63)
+
+## 0.14.8
+* Fix an issue with the displaying the spell checker info.
+
 ## 0.14.7
 * Enabled language pug [#60](https://github.com/Jason-Rev/vscode-spell-checker/issues/60)
 * As a stop-gap for csharp, use the typescript dictionary. Issue [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
