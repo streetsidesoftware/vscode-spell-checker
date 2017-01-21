@@ -24,7 +24,7 @@ export function activate(context: ExtensionContext) {
         const clientDispose = client.start();
 
         function triggerGetSettings() {
-            client.triggerGetSettings();
+            client.triggerSettingsRefresh();
         }
 
         const actionAddWordToWorkspace = userCommandAddWordToDictionary(

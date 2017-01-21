@@ -7,7 +7,7 @@ export interface TemplateVariables {
     fileEnabled: boolean;
     languageEnabled: boolean;
     languageId: string;
-    spellingErrors: string[];
+    spellingErrors: [string, number][];
     linkEnableDisableLanguage: string;
 }
 

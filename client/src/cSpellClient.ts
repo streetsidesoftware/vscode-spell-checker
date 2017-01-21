@@ -83,7 +83,7 @@ export class CSpellClient {
         return this.client.diagnostics;
     }
 
-    public triggerGetSettings() {
+    public triggerSettingsRefresh() {
         const workspaceConfig = vscode.workspace.getConfiguration();
         const cSpell = workspaceConfig.get('cSpell') as CSpellUserSettings;
         const search = workspaceConfig.get('search');
