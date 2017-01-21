@@ -13,7 +13,7 @@ describe('Verify Template Renders', () => {
         });
         expect(html).to.not.be.empty;
         expect(html).to.contain('test.ts');
-        expect(html).to.contain('<li>two</li>');
+        expect(html).to.contain('<li>two (2)</li>');
     });
     it('Renders the template to html again', () => {
         const html = t.render({
