@@ -1,5 +1,7 @@
 addon
 addons
+api
+apis
 argc
 argv
 basename
@@ -53,6 +55,8 @@ gunzip
 gzip
 handlebars
 homedir
+homogenous
+homogenously
 href
 html
 http
@@ -88,8 +92,10 @@ logout
 lua
 makefile
 markdown
+mdn
 MERCHANTABLITY
 mocha
+msdn
 newline
 node
 nodejs
@@ -139,6 +145,7 @@ typescriptreact
 unescape
 unescaped
 uniq
+unschedule
 unzip
 uri
 uris
