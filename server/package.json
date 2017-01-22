@@ -38,7 +38,7 @@
     "@types/ramda": "0.0.2",
     "@types/xregexp": "^3.0",
     "chai": "^3.5",
-    "cspell-tools": "git+https://github.com/Jason3S/cSpell-Tools.git",
+    "cspell-tools": "^1.0.3",
     "fs-promise": "^1.0.0",
     "lorem-ipsum": "^1.0.3",
     "mocha": "^3.2",
