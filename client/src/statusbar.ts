@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {CSpellPackageSettings} from './CSpellSettings';
+import {CSpellUserSettings} from './CSpellSettings';
 import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
@@ -44,7 +44,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
     }
 
     function onDidChangeActiveTextEditor(e: TextEditor) {
-        const settings: CSpellPackageSettings = workspace.getConfiguration().get('cSpell') as CSpellPackageSettings;
+        const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
         const { enabled, showStatus = true } = settings;
 
         if (!showStatus) {
