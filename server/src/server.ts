@@ -11,23 +11,26 @@ import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import * as Rx from 'rx';
 import { onCodeActionHandler } from './codeActions';
+import { ExclusionHelper } from 'cspell';
 import {
     ExcludeFilesGlobMap,
     ExclusionFunction,
-    extractGlobsFromExcludeFilesGlobMap,
-    generateExclusionFunctionForUri,
     Glob
-} from './exclusionHelper';
+} from 'cspell';
 import * as path from 'path';
 
-import * as CSpellSettings from './CSpellSettingsServer';
-import { CSpellPackageSettings } from './CSpellSettingsDef';
-import { getDefaultSettings } from './DefaultSettings';
-import * as tds from './TextDocumentSettings';
+import * as CSpell from 'cspell';
+import { CSpellUserSettings } from 'cspell';
+import { getDefaultSettings } from 'cspell';
+const {
+    extractGlobsFromExcludeFilesGlobMap,
+    generateExclusionFunctionForUri,
+} = ExclusionHelper;
 
+const tds = CSpell;
 
 const defaultSettings = getDefaultSettings();
-const settings: CSpellPackageSettings = {...defaultSettings};
+const settings: CSpellUserSettings = {...defaultSettings};
 
 const defaultExclude: Glob[] = [
     'debug:*',
@@ -43,7 +46,7 @@ const defaultExclude: Glob[] = [
 
 // The settings interface describe the server relevant settings part
 interface Settings {
-    cSpell?: CSpellPackageSettings;
+    cSpell?: CSpellUserSettings;
     search?: {
         exclude?: ExcludeFilesGlobMap;
     };
@@ -87,15 +90,15 @@ function run() {
 
     function onConfigChange(change) {
         const configPaths = workspaceRoot ? [
-            path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName.toLowerCase()),
-            path.join(workspaceRoot, '.vscode', CSpellSettings.defaultFileName),
-            path.join(workspaceRoot, CSpellSettings.defaultFileName.toLowerCase()),
-            path.join(workspaceRoot, CSpellSettings.defaultFileName),
+            path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
+            path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
+            path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
+            path.join(workspaceRoot, CSpell.defaultSettingsFilename),
         ] : [];
-        const cSpellSettingsFile = CSpellSettings.readSettingsFiles(configPaths);
+        const cSpellSettingsFile = CSpell.readSettingsFiles(configPaths);
         const { cSpell = {}, search = {} } = change.settings as Settings;
         const { exclude = {} } = search;
-        const mergedSettings = CSpellSettings.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
+        const mergedSettings = CSpell.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot);
@@ -174,11 +177,11 @@ function run() {
     }
 
     function getBaseSettings() {
-        return {...CSpellSettings.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds};
+        return {...CSpell.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds};
     }
 
     function getSettingsToUseForDocument(doc: TextDocument) {
-        return tds.getSettings(getBaseSettings(), doc.getText(), doc.languageId);
+        return tds.constructSettingsForText(getBaseSettings(), doc.getText(), doc.languageId);
     }
 
     function validateTextDocument(textDocument: TextDocument): void {

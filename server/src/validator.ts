@@ -1,14 +1,12 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import * as Text from './util/text';
 import * as Rx from 'rx';
-import * as tds from './TextDocumentSettings';
+import { validateText } from 'cspell';
 
 export const diagSource = 'cSpell Checker';
-
-import { CSpellUserSettings } from './CSpellSettingsDef';
-import * as TV from './textValidator';
+export {validateText} from 'cspell';
+import { CSpellUserSettings } from 'cspell';
 
 export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Rx.Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
@@ -16,14 +14,8 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
         .toPromise();
 }
 
-export function validateText(text: string, languageId: string, settings: CSpellUserSettings): Promise<Text.WordOffset[]> {
-    const dict = tds.getDictionary(settings);
-    return dict.then(dict => [...TV.validateText(text, dict, settings)]);
-}
-
-
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
-    return Rx.Observable.fromPromise(validateText(textDocument.getText(), textDocument.languageId, options))
+    return Rx.Observable.fromPromise(validateText(textDocument.getText(), options))
         .flatMap(a => a)
         .filter(a => !!a)
         .map(a => a!)

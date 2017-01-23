@@ -5,11 +5,11 @@ import {
     CodeActionParams
 } from 'vscode-languageserver';
 import * as LangServer from 'vscode-languageserver';
-import * as Text from './util/text';
+import { Text } from 'cspell';
 import * as Validator from './validator';
-import { CSpellUserSettings } from './CSpellSettingsDef';
-import { SpellingDictionary } from './SpellingDictionary';
-import * as tds from './TextDocumentSettings';
+import { CSpellUserSettings } from 'cspell';
+import { SpellingDictionary } from 'cspell';
+import * as cspell from 'cspell';
 
 const defaultNumSuggestions = 10;
 
@@ -28,8 +28,8 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
     function getSettings(doc: TextDocument): [CSpellUserSettings, Promise<SpellingDictionary>] {
         const cached = settingsCache.get(doc.uri);
         if (!cached || cached.version !== doc.version) {
-            const docSetting = tds.getSettingsForDocument(fnSettings(), doc);
-            const dict = tds.getDictionary(docSetting);
+            const docSetting = cspell.constructSettingsForText(fnSettings(), doc.getText(), doc.languageId);
+            const dict = cspell.getDictionary(docSetting);
             settingsCache.set(doc.uri, { version: doc.version, settings: [docSetting, dict] });
         }
         return settingsCache.get(doc.uri)!.settings;
