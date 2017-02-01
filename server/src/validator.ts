@@ -1,21 +1,22 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs/Rx';
 import { validateText } from 'cspell';
 
 export const diagSource = 'cSpell Checker';
 export {validateText} from 'cspell';
 import { CSpellUserSettings } from 'cspell';
+import * as cspell from 'cspell';
 
-export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Rx.Promise<Diagnostic[]> {
+export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
         .toArray()
         .toPromise();
 }
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
-    return Rx.Observable.fromPromise(validateText(textDocument.getText(), options))
+    return Rx.Observable.fromPromise<cspell.TextOffset[]>(validateText(textDocument.getText(), options))
         .flatMap(a => a)
         .filter(a => !!a)
         .map(a => a!)
@@ -26,14 +27,14 @@ export function validateTextDocumentAsync(textDocument: TextDocument, options: C
             ...word,
             range: {
                 start: word.position,
-                end: ({...word.position, character: word.position.character + word.word.length })
+                end: ({...word.position, character: word.position.character + word.text.length })
             }
         }))
         // Convert it to a Diagnostic
-        .map(({word, range}) => ({
+        .map(({text, range}) => ({
             severity: DiagnosticSeverity.Information,
             range: range,
-            message: `Unknown word: "${word}"`,
+            message: `Unknown word: "${text}"`,
             source: diagSource
         }))
     ;

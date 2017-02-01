@@ -9,7 +9,7 @@ import {
 } from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs/Rx';
 import { onCodeActionHandler } from './codeActions';
 import { ExclusionHelper } from 'cspell';
 import {
@@ -105,7 +105,7 @@ function run() {
         Object.assign(settings, mergedSettings);
 
         // Revalidate any open text documents
-        documents.all().forEach(doc => validationRequestStream.onNext(doc));
+        documents.all().forEach(doc => validationRequestStream.next(doc));
     }
 
     interface TextDocumentInfo {
@@ -144,9 +144,11 @@ function run() {
         .filter(shouldValidateDocument)
         // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         // De-dupe and backed up request by waiting for 50ms.
-        .groupByUntil(doc => doc.uri, doc => doc, function () {
-            return Rx.Observable.timer(settings.spellCheckDelayMs || 50);
-        })
+        .groupBy(
+            doc => doc.uri,     // key by uri
+            doc => doc,         // pass the doc through
+            () => Rx.Observable.timer(settings.spellCheckDelayMs || 50)
+        )
         // keep only the last request in a group.
         .flatMap(group => group.last())
         // .tap(doc => connection.console.log(`C Validate ${doc.uri}:${doc.version}:${Date.now()}`))
@@ -159,7 +161,7 @@ function run() {
             connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
         });
 
-    validationFinishedStream.onNext({ uri: 'start', version: 0 });
+    validationFinishedStream.next({ uri: 'start', version: 0 });
 
     function shouldValidateDocument(textDocument: TextDocument): boolean {
         const { uri, languageId } = textDocument;
@@ -190,7 +192,7 @@ function run() {
 
             Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
                 // Send the computed diagnostics to VSCode.
-                validationFinishedStream.onNext(textDocument);
+                validationFinishedStream.next(textDocument);
                 connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
             });
         } catch (e) {
@@ -205,7 +207,7 @@ function run() {
     // The content of a text document has changed. This event is emitted
     // when the text document first opened or when its content has changed.
     documents.onDidChangeContent((change) => {
-        validationRequestStream.onNext(change.document);
+        validationRequestStream.next(change.document);
     });
 
     documents.onDidClose((event) => {
@@ -220,8 +222,8 @@ function run() {
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
-        disposableSkipValidationStream.dispose();
-        disposeValidationStream.dispose();
+        disposableSkipValidationStream.unsubscribe();
+        disposeValidationStream.unsubscribe();
     });
 }
 
