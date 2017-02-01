@@ -2,8 +2,13 @@
 
 ## 0.16.0
 * The spell checking engine was moved to its own repository [cspell](https://github.com/Jason3S/cspell)
-* Added LaTex support
-
+  * [#58](https://github.com/Jason-Rev/vscode-spell-checker/issues/58) Provide npm package with CLI
+  * [#34](https://github.com/Jason-Rev/vscode-spell-checker/issues/34) grunt plugin or a new library repository
+* Added LaTex support [#65](https://github.com/Jason-Rev/vscode-spell-checker/issues/65)
+* Migrate from rxjs 4 to rxjs 5.
+* Greatly extended the Typescript / Javascript dictionaries.
+* Added a dictionary of file types to avoid common file types from being marked as spelling errors.
+* Extend the *node* dictionary.
 
 ## 0.15.0
 * Fix some issues with the spell checker info viewer
