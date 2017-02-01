@@ -23,7 +23,7 @@ describe('Validator', function() {
         const settings = getSettings(text, languageId);
         const results = Validator.validateText(text, settings);
         return results.then(results => {
-            const words = results.map(({word}) => word);
+            const words = results.map(({text}) => text);
             expect(words).to.be.deep.equal(['brouwn', 'jumpped', 'lazzy']);
         });
     });
@@ -34,7 +34,7 @@ describe('Validator', function() {
         const settings = getSettings(text, languageId);
         const results = Validator.validateText(text, settings);
         return results.then(results => {
-            const words = results.map(({word}) => word);
+            const words = results.map(({text}) => text);
             expect(words).to.be.deep.equal([]);
         });
     });
@@ -61,7 +61,7 @@ describe('Validator', function() {
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
         const results = Validator.validateText(text, settings);
         return results.then(results => {
-            const words = results.map(wo => wo.word);
+            const words = results.map(wo => wo.text);
             expect(words).to.contain('wrongg');
             expect(words).to.contain('mispelled');
             expect(words).to.not.contain('xaccd');
@@ -77,7 +77,7 @@ describe('Validator', function() {
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10, ignoreRegExpList: ['^const [wy]RON[g]+', 'mis.*led'] };
         const results = Validator.validateText(text, settings);
         return results.then(results => {
-            const words = results.map(wo => wo.word);
+            const words = results.map(wo => wo.text);
             expect(words).to.not.contain('wrongg');
             expect(words).to.not.contain('mispelled');
             expect(words).to.contain('mischecked');
@@ -90,7 +90,7 @@ describe('Validator', function() {
             { ignoreRegExpList: ['/^const [wy]ron[g]+/gim', '/MIS...LED/g', '/mischecked'] }
         );
         return results.then(results => {
-            const words = results.map(wo => wo.word);
+            const words = results.map(wo => wo.text);
             expect(words).to.not.contain('wrongg');
             expect(words).to.contain('mispelled');
             expect(words).to.contain('mischecked');
@@ -100,7 +100,7 @@ describe('Validator', function() {
     it('validates malformed ignoreRegExpList', () => {
         const results = Validator.validateText(sampleCode, { ignoreRegExpList: ['/wrong[/gim', 'mis.*led'] });
         return results.then(results => {
-            const words = results.map(wo => wo.word);
+            const words = results.map(wo => wo.text);
             expect(words).to.contain('wrongg');
             expect(words).to.not.contain('mispelled');
             expect(words).to.contain('mischecked');
