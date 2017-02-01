@@ -10,7 +10,7 @@
 		"noImplicitThis": false,
 		"strictNullChecks": true,
 		"outDir": "../client/server",
-		"lib": ["es6", "dom"],
+		"lib": ["es2015", "dom"],
 		"forceConsistentCasingInFileNames": true
 	},
 	"include": [
