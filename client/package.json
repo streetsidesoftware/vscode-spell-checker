@@ -1,308 +1,308 @@
 {
-  "name": "code-spell-checker",
-  "description": "Spelling checker for source code",
-  "displayName": "Code Spellchecker",
-  "icon": "images/SpellCheck.png",
-  "author": "Jason Dent",
-  "license": "MIT",
-  "version": "0.15.1",
-  "publisher": "streetsidesoftware",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Jason-Rev/vscode-spell-checker"
-  },
-  "bugs": {
-    "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
-  },
-  "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
-  "engines": {
-    "vscode": "^1.8.1"
-  },
-  "categories": [
-    "Linters",
-    "Other"
-  ],
-  "keywords": [
-    "spell",
-    "checker",
-    "spellchecker"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "cSpell.addWordToDictionary",
-        "title": "Add Word to Dictionary"
-      },
-      {
-        "command": "cSpell.addWordToUserDictionary",
-        "title": "Add Word to Global Dictionary"
-      },
-      {
-        "command": "cSpell.enableForWorkspace",
-        "title": "Enable Spell Checking For Workspace"
-      },
-      {
-        "command": "cSpell.disableForWorkspace",
-        "title": "Disable Spell Checking For Workspace"
-      },
-      {
-        "command": "cSpell.displayCSpellInfo",
-        "title": "Show Spell Checker Configuration Info"
-      }
+    "name": "code-spell-checker",
+    "description": "Spelling checker for source code",
+    "displayName": "Code Spellchecker",
+    "icon": "images/SpellCheck.png",
+    "author": "Jason Dent",
+    "license": "MIT",
+    "version": "0.16.0",
+    "publisher": "streetsidesoftware",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Jason-Rev/vscode-spell-checker"
+    },
+    "bugs": {
+        "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
+    },
+    "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
+    "engines": {
+        "vscode": "^1.8.1"
+    },
+    "categories": [
+        "Linters",
+        "Other"
     ],
-    "configuration": {
-      "type": "object",
-      "title": "Code Spell Checker Configuration",
-      "properties": {
-        "cSpell.language": {
-          "type": "string",
-          "default": "en",
-          "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported. "
-        },
-        "cSpell.maxNumberOfProblems": {
-          "type": "number",
-          "default": 100,
-          "description": "Controls the maximum number of spelling errors per document."
-        },
-        "cSpell.numSuggestions": {
-          "type": "number",
-          "default": 8,
-          "description": "Controls the number of suggestions shown."
-        },
-        "cSpell.minWordLength": {
-          "type": "number",
-          "default": 4,
-          "description": "The minimum length of a word before checking it against a dictionary."
-        },
-        "cSpell.enabledLanguageIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "c",
-            "cpp",
-            "csharp",
-            "go",
-            "javascript",
-            "javascriptreact",
-            "json",
-            "latex",
-            "markdown",
-            "php",
-            "plaintext",
-            "python",
-            "text",
-            "typescript",
-            "typescriptreact",
-            "yml"
-          ],
-          "description": "Specify file types to spell check."
-        },
-        "cSpell.words": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Words to add to dictionary for a workspace."
-        },
-        "cSpell.userWords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "User words to add to dictionary.  Should only be in the user settings."
-        },
-        "cSpell.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable / Disable the spell checker."
-        },
-        "cSpell.showStatus": {
-          "type": "boolean",
-          "default": true,
-          "description": "Display the spell checker status on the status bar."
-        },
-        "cSpell.spellCheckDelayMs": {
-          "type": "number",
-          "default": 50,
-          "description": "Delay in ms after a document has changed before checking it for spelling errors."
-        },
-        "cSpell.ignorePaths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "**/node_modules/**",
-            "**/vscode-extension/**",
-            "**/.git/**",
-            ".vscode",
-            "typings"
-          ],
-          "description": "Specify paths/files to ignore. (Supports Globs)"
-        },
-        "cSpell.flagWords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "hte"
-          ],
-          "description": "Words to always be flagged as an error."
-        },
-        "cSpell.patterns": {
-          "type": "array",
-          "items": {
+    "keywords": [
+        "spell",
+        "checker",
+        "spellchecker"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "cSpell.addWordToDictionary",
+                "title": "Add Word to Dictionary"
+            },
+            {
+                "command": "cSpell.addWordToUserDictionary",
+                "title": "Add Word to Global Dictionary"
+            },
+            {
+                "command": "cSpell.enableForWorkspace",
+                "title": "Enable Spell Checking For Workspace"
+            },
+            {
+                "command": "cSpell.disableForWorkspace",
+                "title": "Disable Spell Checking For Workspace"
+            },
+            {
+                "command": "cSpell.displayCSpellInfo",
+                "title": "Show Spell Checker Configuration Info"
+            }
+        ],
+        "configuration": {
             "type": "object",
-            "items": [
-              {
-                "id": "name",
-                "type": "string",
-                "description": "The pattern identifier."
-              },
-              {
-                "id": "pattern",
-                "type": "string",
-                "description": "Regular expression, default flags are: 'gim'"
-              }
-            ],
-            "description": "Define a pattern"
-          },
-          "default": [],
-          "description": "Defines a list of named regular expression patterns that can be used in exclusion or inclusion lists."
-        },
-        "cSpell.ignoreRegExpList": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "List of regular expressions used to exclude the matching text from being checked.\n Example: \"0x[a-f0-9]+\" to skip 0x hex values.\n By default the flags are 'gim'.\n You can specify them like this:\n \"/0x[A-F0-9]/g\" to match only upper case hex numbers.\n Example to match email: \"<?[\\\\w.\\\\-+]+@\\\\w+(\\\\.\\\\w+)+>?\" "
-        },
-        "cSpell.includeRegExpList": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "List of regular expressions used to include text to be spell checked.\nBy default, all text is checked.  Adding regular expresses to this list will limit the text to be spell checked to only text that matches any of the expressions in the list.\nLogic: text to be checked = include - exclude\nNote: Slashes need to be double: \\\\ because it is in a json string. \nExamples:\n* \".*\" -- include everything.\n* \"'(?:[^'\\\\n]|\\\\\\\\')*'\" -- single quote strings. \n"
-        },
-        "cSpell.allowCompoundWords": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false means it would not pass."
-        },
-        "cSpell.languageSettings": {
-          "type": "array",
-          "description": "Define settings on a per programming language basis.",
-          "items": {
-            "type": "object",
-            "items": [
-              {
-                "id": "languageId",
-                "type": "string",
-                "description": "Language Id to apply settings, examples \"*\", \"php\", \"cpp\" "
-              },
-              {
-                "id": "local",
-                "type": "string",
-                "description": "Optionsal: Spoken language local used to select dictionary, example: \"en\", \"en-US\" or \"en-GB\" "
-              },
-              {
-                "id": "allowCompoundWords",
-                "type": "boolean",
-                "description": "Enable / Disable word compounds for a given programming language."
-              },
-              {
-                "id": "dictionaries",
-                "type": "array",
-                "description": "Add dictionaries to be used in spell checking",
-                "items": {
-                  "type": "string",
-                  "description": "name of dictionary to use"
+            "title": "Code Spell Checker Configuration",
+            "properties": {
+                "cSpell.language": {
+                    "type": "string",
+                    "default": "en",
+                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported. "
+                },
+                "cSpell.maxNumberOfProblems": {
+                    "type": "number",
+                    "default": 100,
+                    "description": "Controls the maximum number of spelling errors per document."
+                },
+                "cSpell.numSuggestions": {
+                    "type": "number",
+                    "default": 8,
+                    "description": "Controls the number of suggestions shown."
+                },
+                "cSpell.minWordLength": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "The minimum length of a word before checking it against a dictionary."
+                },
+                "cSpell.enabledLanguageIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "c",
+                        "cpp",
+                        "csharp",
+                        "go",
+                        "javascript",
+                        "javascriptreact",
+                        "json",
+                        "latex",
+                        "markdown",
+                        "php",
+                        "plaintext",
+                        "python",
+                        "text",
+                        "typescript",
+                        "typescriptreact",
+                        "yml"
+                    ],
+                    "description": "Specify file types to spell check."
+                },
+                "cSpell.words": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "Words to add to dictionary for a workspace."
+                },
+                "cSpell.userWords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "User words to add to dictionary.  Should only be in the user settings."
+                },
+                "cSpell.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable / Disable the spell checker."
+                },
+                "cSpell.showStatus": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Display the spell checker status on the status bar."
+                },
+                "cSpell.spellCheckDelayMs": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Delay in ms after a document has changed before checking it for spelling errors."
+                },
+                "cSpell.ignorePaths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "**/node_modules/**",
+                        "**/vscode-extension/**",
+                        "**/.git/**",
+                        ".vscode",
+                        "typings"
+                    ],
+                    "description": "Specify paths/files to ignore. (Supports Globs)"
+                },
+                "cSpell.flagWords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "hte"
+                    ],
+                    "description": "Words to always be flagged as an error."
+                },
+                "cSpell.patterns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "items": [
+                            {
+                                "id": "name",
+                                "type": "string",
+                                "description": "The pattern identifier."
+                            },
+                            {
+                                "id": "pattern",
+                                "type": "string",
+                                "description": "Regular expression, default flags are: 'gim'"
+                            }
+                        ],
+                        "description": "Define a pattern"
+                    },
+                    "default": [],
+                    "description": "Defines a list of named regular expression patterns that can be used in exclusion or inclusion lists."
+                },
+                "cSpell.ignoreRegExpList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of regular expressions used to exclude the matching text from being checked.\n Example: \"0x[a-f0-9]+\" to skip 0x hex values.\n By default the flags are 'gim'.\n You can specify them like this:\n \"/0x[A-F0-9]/g\" to match only upper case hex numbers.\n Example to match email: \"<?[\\\\w.\\\\-+]+@\\\\w+(\\\\.\\\\w+)+>?\" "
+                },
+                "cSpell.includeRegExpList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of regular expressions used to include text to be spell checked.\nBy default, all text is checked.  Adding regular expresses to this list will limit the text to be spell checked to only text that matches any of the expressions in the list.\nLogic: text to be checked = include - exclude\nNote: Slashes need to be double: \\\\ because it is in a json string. \nExamples:\n* \".*\" -- include everything.\n* \"'(?:[^'\\\\n]|\\\\\\\\')*'\" -- single quote strings. \n"
+                },
+                "cSpell.allowCompoundWords": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false means it would not pass."
+                },
+                "cSpell.languageSettings": {
+                    "type": "array",
+                    "description": "Define settings on a per programming language basis.",
+                    "items": {
+                        "type": "object",
+                        "items": [
+                            {
+                                "id": "languageId",
+                                "type": "string",
+                                "description": "Language Id to apply settings, examples \"*\", \"php\", \"cpp\" "
+                            },
+                            {
+                                "id": "local",
+                                "type": "string",
+                                "description": "Optional: Spoken language local used to select dictionary, example: \"en\", \"en-US\" or \"en-GB\" "
+                            },
+                            {
+                                "id": "allowCompoundWords",
+                                "type": "boolean",
+                                "description": "Enable / Disable word compounds for a given programming language."
+                            },
+                            {
+                                "id": "dictionaries",
+                                "type": "array",
+                                "description": "Add dictionaries to be used in spell checking",
+                                "items": {
+                                    "type": "string",
+                                    "description": "name of dictionary to use"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "cSpell.dictionaries": {
+                    "type": "array",
+                    "description": "List of dictionaries to use when checking files.",
+                    "items": {
+                        "type": "string",
+                        "description": "Name of dictionary to use."
+                    }
+                },
+                "cSpell.dictionaryDefinitions": {
+                    "type": "array",
+                    "description": "A List of Dictionary Definitions.",
+                    "items": {
+                        "type": "object",
+                        "items": [
+                            {
+                                "id": "name",
+                                "type": "string",
+                                "description": "Name of dictionary"
+                            },
+                            {
+                                "id": "path",
+                                "type": "string",
+                                "description": "Path to the dictionary file. Relative paths will be relative to the workspace."
+                            }
+                        ],
+                        "required": [
+                            "name",
+                            "path"
+                        ]
+                    }
                 }
-              }
-            ]
-          }
-        },
-        "cSpell.dictionaries": {
-          "type": "array",
-          "description": "List of dictionaries to use when checking files.",
-          "items": {
-            "type": "string",
-            "description": "Name of dictionary to use."
-          }
-        },
-        "cSpell.dictionaryDefinitions": {
-          "type": "array",
-          "description": "A List of Dictionary Definitions.",
-          "items": {
-            "type": "object",
-            "items": [
-              {
-                "id": "name",
-                "type": "string",
-                "description": "Name of dictionary"
-              },
-              {
-                "id": "path",
-                "type": "string",
-                "description": "Path to the dictionary file. Relative paths will be relative to the workspace."
-              }
-            ],
-            "required": [
-              "name",
-              "path"
-            ]
-          }
+            }
         }
-      }
+    },
+    "scripts": {
+        "clean": "rimraf out",
+        "clean-build": "npm run clean && npm run build",
+        "build": "tsc -p ./",
+        "vscode:prepublish": "npm run clean-build",
+        "watch": "tsc -watch -p ./",
+        "test": "npm run build && mocha --compilers ts:ts-node/register --recursive src/**/*.test.ts",
+        "test-watch": "npm run build && mocha --compilers ts:ts-node/register --watch --recursive src/**/*.test.ts",
+        "postinstall": "node ./node_modules/vscode/bin/install"
+    },
+    "devDependencies": {
+        "@types/chai": "^3.4",
+        "@types/escape-html": "0.0.19",
+        "@types/mkdirp": "^0.3.29",
+        "@types/mocha": "^2.2",
+        "@types/node": "^6.0",
+        "@types/pug": "^2.0.4",
+        "chai": "^3.5",
+        "fs-promise": "^1.0.0",
+        "lorem-ipsum": "^1.0.3",
+        "mocha": "^3.2",
+        "pug-cli": "^1.0.0-alpha6",
+        "pug-lint": "^2.3.0",
+        "rimraf": "^2.5.4",
+        "ts-node": "^2.0.0",
+        "typescript": "^2.1.4"
+    },
+    "dependencies": {
+        "comment-json": "^1.1.3",
+        "cspell": "^1.0.4",
+        "escape-html": "^1.0.3",
+        "mkdirp": "^0.5.1",
+        "pug": "^2.0.0-beta6",
+        "rxjs": "^5.0.3",
+        "tsmerge": "^1.0.4",
+        "vscode": "^1.0.3",
+        "vscode-languageclient": "^2.6.3"
     }
-  },
-  "scripts": {
-    "clean": "rimraf out",
-    "clean-build": "npm run clean && npm run build",
-    "build": "tsc -p ./",
-    "vscode:prepublish": "npm run clean-build",
-    "watch": "tsc -watch -p ./",
-    "test": "npm run build && mocha --compilers ts:ts-node/register --recursive src/**/*.test.ts",
-    "test-watch": "npm run build && mocha --compilers ts:ts-node/register --watch --recursive src/**/*.test.ts",
-    "postinstall": "node ./node_modules/vscode/bin/install"
-  },
-  "devDependencies": {
-    "@types/chai": "^3.4",
-    "@types/escape-html": "0.0.19",
-    "@types/mkdirp": "^0.3.29",
-    "@types/mocha": "^2.2",
-    "@types/node": "^6.0",
-    "@types/pug": "^2.0.4",
-    "chai": "^3.5",
-    "fs-promise": "^1.0.0",
-    "lorem-ipsum": "^1.0.3",
-    "mocha": "^3.2",
-    "pug-cli": "^1.0.0-alpha6",
-    "pug-lint": "^2.3.0",
-    "rimraf": "^2.5.4",
-    "ts-node": "^2.0.0",
-    "typescript": "^2.1.4"
-  },
-  "dependencies": {
-    "comment-json": "^1.1.3",
-    "cspell": "^1.0.4",
-    "escape-html": "^1.0.3",
-    "mkdirp": "^0.5.1",
-    "pug": "^2.0.0-beta6",
-    "rxjs": "^5.0.3",
-    "tsmerge": "^1.0.4",
-    "vscode": "^1.0.3",
-    "vscode-languageclient": "^2.6.3"
-  }
 }
