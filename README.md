@@ -1,4 +1,6 @@
 # vscode-spell-checker
+[![Build Status](https://travis-ci.org/Jason-Rev/vscode-spell-checker.svg?branch=master)](https://travis-ci.org/Jason-Rev/vscode-spell-checker)
+
 A simple source code spell checker for typescript and javascript.
 
 For the readme on the plugin: [README](./client/README.md).
