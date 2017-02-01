@@ -1,5 +1,10 @@
 # Release Notes:
 
+## 0.16.0
+* The spell checking engine was moved to its own repository [cspell](https://github.com/Jason3S/cspell)
+* Added LaTex support
+
+
 ## 0.15.0
 * Fix some issues with the spell checker info viewer
 * Fix [#51](https://github.com/Jason-Rev/vscode-spell-checker/issues/51)
