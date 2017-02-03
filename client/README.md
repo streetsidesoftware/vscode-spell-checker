@@ -41,10 +41,14 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 ### Enable / Disable File Types
 
 To *Enable* or *Disable* spell checking for a file type:
+
 1. Click on the Spell Checker status in the status bar:
-   ![Spell Checker Status](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/StatusBarJsonDisabled.png)
+   
+   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
+
 2. On the Info screen, click the ***Enable*** link.
-   ![Spell Checker Status](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/CSpellInfoJsonDisabled.png)
+   
+   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
 
 
 ## How it works with camelCase
