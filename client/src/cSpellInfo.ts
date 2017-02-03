@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const imagesUri = vscode.Uri.file(context.asAbsolutePath('images'));
     const imagesPath = imagesUri.path;
 
-    class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
+    class CSpellInfoTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
         public provideTextDocumentContent(uri: vscode.Uri): Thenable<string> {
@@ -64,7 +64,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             return client.isSpellCheckEnabled(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false } = response;
                 const languageId = document.languageId;
-                return preview.render({
+                const html = preview.render({
                     fileEnabled,
                     languageEnabled,
                     languageId,
@@ -73,11 +73,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
                     imagesPath,
                 });
+                return html;
             });
         }
     }
 
-    const provider = new TextDocumentContentProvider();
+    const provider = new CSpellInfoTextDocumentContentProvider();
     const registration = vscode.workspace.registerTextDocumentContentProvider(schemeCSpellInfo, provider);
 
     const subOnDidChangeTextDocument = onRefresh

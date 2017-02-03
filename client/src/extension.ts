@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 
 import { initStatusBar } from './statusbar';
 
-import {userCommandAddWordToDictionary, applyTextEdits} from './commands';
+import {userCommandAddWordToDictionary, handlerApplyTextEdits} from './commands';
 import * as commands from './commands';
 
 export function activate(context: ExtensionContext) {
@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
         // client can be deactivated on extension deactivation
         context.subscriptions.push(
             clientDispose,
-            vscode.commands.registerCommand('cSpell.editText', applyTextEdits),
+            vscode.commands.registerCommand('cSpell.editText', handlerApplyTextEdits(client.client)),
             vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToWorkspaceDictionary),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
             vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),

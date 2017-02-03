@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
     "engines": {
-        "vscode": "^1.8.1"
+        "vscode": "^1.9.0"
     },
     "categories": [
         "Linters",
@@ -303,6 +303,6 @@
         "rxjs": "^5.1.0",
         "tsmerge": "^1.0.4",
         "vscode": "^1.0.3",
-        "vscode-languageclient": "^2.6.3"
+        "vscode-languageclient": "^3.0.3"
     }
 }
