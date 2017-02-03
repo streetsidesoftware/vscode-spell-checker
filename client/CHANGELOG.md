@@ -1,5 +1,9 @@
 # Release Notes:
 
+## 0.17.1
+* Reduce the size of the extension by not including cspell twice.
+* Removed unused packages.
+
 ## 0.17.0
 * Minnor changes to fix issues introduced by VS Code 1.9
 
