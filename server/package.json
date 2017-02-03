@@ -17,9 +17,7 @@
     "cspell": "^1.2.1",
     "gensequence": "^0.2.4",
     "iconv-lite": "^0.4.15",
-    "lodash": "^4.17.4",
     "minimatch": "^3.0.3",
-    "ramda": "^0.23.0",
     "rxjs": "^5.1.0",
     "tsmerge": "^1.0.4",
     "vscode-jsonrpc": "^3.0.4",
@@ -44,8 +42,7 @@
     "mocha": "^3.2",
     "rimraf": "^2.5.4",
     "ts-node": "^2.0.0",
-    "typescript": "^2.1.5",
-    "vscode": "^1.0.3"
+    "typescript": "^2.1.5"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",

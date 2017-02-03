@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "0.17.0",
+    "version": "0.17.1",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -296,11 +296,9 @@
     },
     "dependencies": {
         "comment-json": "^1.1.3",
-        "cspell": "^1.0.4",
-        "escape-html": "^1.0.3",
         "mkdirp": "^0.5.1",
-        "pug": "^2.0.0-beta6",
-        "rxjs": "^5.0.3",
+        "pug": "^2.0.0-beta10",
+        "rxjs": "^5.1.0",
         "tsmerge": "^1.0.4",
         "vscode": "^1.0.3",
         "vscode-languageclient": "^3.0.3"
