@@ -5,7 +5,9 @@ import {
     createConnection, IConnection,
     TextDocuments, TextDocument,
     InitializeResult,
-    InitializeParams
+    InitializeParams,
+    NotificationType,
+    RequestType,
 } from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
@@ -73,9 +75,9 @@ function run() {
 
     // After the server has started the client sends an initialize request. The server receives
     // in the passed params the rootPath of the workspace plus the client capabilities.
-    let workspaceRoot: string;
+    let workspaceRoot: string | undefined;
     connection.onInitialize((params: InitializeParams, token: CancellationToken): InitializeResult => {
-        workspaceRoot = params.rootPath;
+        workspaceRoot = params.rootPath || undefined;
         return {
             capabilities: {
                 // Tell the client that the server works in FULL text document sync mode
@@ -88,7 +90,8 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration(onConfigChange);
 
-    function onConfigChange(change) {
+    interface OnChangeParam { settings: Settings; }
+    function onConfigChange(change: OnChangeParam) {
         const configPaths = workspaceRoot ? [
             path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
             path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
@@ -101,7 +104,7 @@ function run() {
         const mergedSettings = CSpell.mergeSettings(defaultSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
-        fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot);
+        fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot || '');
         Object.assign(settings, mergedSettings);
 
         // Revalidate any open text documents
@@ -114,9 +117,9 @@ function run() {
     }
 
     // Listen for event messages from the client.
-    connection.onNotification({ method: 'applySettings'}, onConfigChange);
+    connection.onNotification('applySettings', onConfigChange);
 
-    connection.onRequest({ method: 'isSpellCheckEnabled' }, (params: TextDocumentInfo) => {
+    connection.onRequest('isSpellCheckEnabled', (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
         return {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
@@ -124,7 +127,7 @@ function run() {
         };
     });
 
-    connection.onRequest({ method: 'getConfigurationForDocument' }, (params: TextDocumentInfo) => {
+    connection.onRequest('getConfigurationForDocument', (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
         const docSettings = doc && getSettingsToUseForDocument(doc);

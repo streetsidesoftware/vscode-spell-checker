@@ -64,7 +64,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             return client.isSpellCheckEnabled(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false } = response;
                 const languageId = document.languageId;
-                return preview.render({
+                const html = preview.render({
                     fileEnabled,
                     languageEnabled,
                     languageId,
@@ -73,6 +73,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
                     imagesPath,
                 });
+                return html;
             });
         }
     }

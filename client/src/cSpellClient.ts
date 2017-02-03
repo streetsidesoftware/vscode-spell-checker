@@ -20,7 +20,7 @@ export interface ServerResponseIsSpellCheckEnabled {
 
 export class CSpellClient {
 
-    private client: LanguageClient;
+    readonly client: LanguageClient;
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -69,14 +69,14 @@ export class CSpellClient {
         }
 
         return this.client.sendRequest(
-            {method: 'isSpellCheckEnabled'},
+            'isSpellCheckEnabled',
             { uri: uri.toString(), languageId }
         )
         .then((response: ServerResponseIsSpellCheckEnabled) => response);
     }
 
     public applySettings(settings: { cSpell: CSpellUserSettings, search: any }) {
-        this.client.sendNotification({method: 'applySettings'}, { settings });
+        this.client.sendNotification('applySettings', { settings });
     }
 
     get diagnostics(): vscode.DiagnosticCollection {
