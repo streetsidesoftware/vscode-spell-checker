@@ -1,5 +1,8 @@
 # Release Notes:
 
+## 0.17.0
+* Minnor changes to fix issues introduced by VS Code 1.9
+
 ## 0.16.0
 * The spell checking engine was moved to its own repository [cspell](https://github.com/Jason3S/cspell)
   * [#58](https://github.com/Jason-Rev/vscode-spell-checker/issues/58) Provide npm package with CLI
