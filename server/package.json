@@ -15,7 +15,7 @@
     "commander": "^2.9.0",
     "comment-json": "^1.1.3",
     "cspell": "^1.2.1",
-    "gensequence": "^0.2.4",
+    "gensequence": "^1.0.0",
     "iconv-lite": "^0.4.15",
     "lodash": "^4.17.4",
     "minimatch": "^3.0.3",
