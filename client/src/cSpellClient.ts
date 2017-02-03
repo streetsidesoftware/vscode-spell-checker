@@ -68,15 +68,15 @@ export class CSpellClient {
             return Promise.resolve({});
         }
 
-        return this.client.sendRequest(
+        return this.client.onReady().then(() => this.client.sendRequest(
             'isSpellCheckEnabled',
             { uri: uri.toString(), languageId }
-        )
+        ))
         .then((response: ServerResponseIsSpellCheckEnabled) => response);
     }
 
     public applySettings(settings: { cSpell: CSpellUserSettings, search: any }) {
-        this.client.sendNotification('applySettings', { settings });
+        return this.client.onReady().then(() => this.client.sendNotification('applySettings', { settings }));
     }
 
     get diagnostics(): vscode.DiagnosticCollection {
