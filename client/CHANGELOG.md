@@ -1,5 +1,8 @@
 # Release Notes:
 
+## 0.17.2
+* Update README to indicate that LaTex by default.
+
 ## 0.17.1
 * Reduce the size of the extension by not including cspell twice.
 * Removed unused packages.
