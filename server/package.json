@@ -42,7 +42,7 @@
     "mocha": "^3.2",
     "rimraf": "^2.5.4",
     "ts-node": "^2.0.0",
-    "typescript": "^2.1.5"
+    "typescript": "2.1.5"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
