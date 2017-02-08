@@ -12,7 +12,6 @@
     "node": "*"
   },
   "dependencies": {
-    "commander": "^2.9.0",
     "comment-json": "^1.1.3",
     "cspell": "^1.2.1",
     "gensequence": "^1.0.0",
@@ -27,13 +26,10 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4",
-    "@types/commander": "^2.3.31",
     "@types/fs-promise": "^1.0.1",
-    "@types/lodash": "^4.14.45",
     "@types/minimatch": "^2.0.29",
     "@types/mocha": "^2.2",
     "@types/node": "^6.0",
-    "@types/ramda": "0.0.2",
     "@types/xregexp": "^3.0",
     "chai": "^3.5",
     "cspell-tools": "^1.0.3",
@@ -42,7 +38,7 @@
     "mocha": "^3.2",
     "rimraf": "^2.5.4",
     "ts-node": "^2.0.0",
-    "typescript": "2.1.5"
+    "typescript": "^2.2.0"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
