@@ -58,7 +58,6 @@ To *Enable* or *Disable* spell checking for a file type:
 The concept is simple, split camelCase words before checking them against a list of known English words.
 * camelCase -> camel case
 * HTMLInput -> html input
-* srcCode -> src code
 * snake_case_words -> snake case words
 * camel2snake -> camel snake -- (the 2 is ignored)
 
