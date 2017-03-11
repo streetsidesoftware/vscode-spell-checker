@@ -27,7 +27,7 @@ export interface SettingsInfo {
 export function getDefaultWorkspaceConfigLocation() {
     const { rootPath } = workspace;
     return rootPath
-        ? path.join(rootPath, baseConfigName)
+        ? path.join(rootPath, '.vscode', baseConfigName)
         : undefined;
 }
 
