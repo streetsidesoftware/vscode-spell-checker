@@ -5,6 +5,8 @@
 
 A basic spell checker that works well with camelCase code.
 
+The goal of this spell checker is to help with catching common spelling errors while keeping the number of false positives low.
+
 ## Functionality
 
 Load a Typescript, Javascript, Text, etc.. file.  Words not in the dictionary files will have
@@ -57,9 +59,18 @@ To *Enable* or *Disable* spell checking for a file type:
 
 The concept is simple, split camelCase words before checking them against a list of known English words.
 * camelCase -> camel case
-* HTMLInput -> html input
+* HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
 * snake_case_words -> snake case words
 * camel2snake -> camel snake -- (the 2 is ignored)
+
+### Special case will ALL CAPS words
+
+There are a few special cases to help will common spelling practices for ALL CAPS words.
+
+Trailing `s`, `ing`, `ies`, `es`, `ed` are kept with the previous word.
+
+* CURLs -> curls -- trailing `s`
+* CURLedRequest -> curled request -- trailing `ed`
 
 ## Things to note
 
