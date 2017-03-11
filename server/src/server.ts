@@ -6,8 +6,6 @@ import {
     TextDocuments, TextDocument,
     InitializeResult,
     InitializeParams,
-    NotificationType,
-    RequestType,
 } from 'vscode-languageserver';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
