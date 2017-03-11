@@ -1,5 +1,11 @@
 # Release Notes:
 
+## 1.0.1
+* Update Readme and changelog.
+
+## 1.0.0
+* Update to the latest version of cspell to handle large dictionary files.
+
 ## 0.17.2
 * Update README to indicate that LaTex by default.
 
