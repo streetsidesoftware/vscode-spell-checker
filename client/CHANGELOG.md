@@ -1,5 +1,8 @@
 # Release Notes:
 
+## 1.0.2
+* Updated `cspell` to fix an issue where some misspelled words were considered correct even if they were not. See: [#7](https://github.com/Jason3S/cspell/issues/7)
+
 ## 1.0.1
 * Update Readme and changelog.
 
