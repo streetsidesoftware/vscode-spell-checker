@@ -8,7 +8,7 @@ import { CSpellUserSettings } from './CSpellSettings';
 import * as Settings from './settings';
 
 import * as LanguageIds from './languageIds';
-import { unique } from './util';
+import { unique, Maybe } from './util';
 
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
@@ -27,7 +27,7 @@ export class CSpellClient {
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
-        const documentSelector = unique(languageIds.concat(enabledLanguageIds).concat(LanguageIds.languageIds));
+        const documentSelector = unique(languageIds.concat(enabledLanguageIds || []).concat(LanguageIds.languageIds));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
@@ -79,8 +79,8 @@ export class CSpellClient {
         return this.client.onReady().then(() => this.client.sendNotification('applySettings', { settings }));
     }
 
-    get diagnostics(): vscode.DiagnosticCollection {
-        return this.client.diagnostics;
+    get diagnostics(): Maybe<vscode.DiagnosticCollection> {
+        return (this.client && this.client.diagnostics) || undefined;
     }
 
     public triggerSettingsRefresh() {

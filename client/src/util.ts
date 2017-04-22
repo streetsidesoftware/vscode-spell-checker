@@ -8,3 +8,5 @@ export function freqCount<T>(values: T[]): [T, number][] {
     values.forEach(v => map.set(v, (map.get(v) || 0) + 1));
     return [...map.entries()];
 }
+
+export type Maybe<T> = T | undefined;

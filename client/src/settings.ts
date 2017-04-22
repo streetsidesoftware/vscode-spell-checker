@@ -78,7 +78,7 @@ export function findSettingsFileLocation(): Thenable<string> {
 export function loadTheSettingsFile(): Thenable<SettingsInfo | undefined> {
     return findSettingsFileLocation()
         .then(path => {
-            return path && CSpellSettings.readSettings(path).then(settings => (path && { path, settings }));
+            return path ? CSpellSettings.readSettings(path).then(settings => (path ? { path, settings } : undefined)) : undefined;
         });
 }
 
@@ -108,7 +108,7 @@ export function getEnabledLanguagesFromAllConfigs() {
 
 export function getEnabledLanguagesFromConfig(isGlobal: boolean) {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
-    const inspect = getEnabledLanguagesFromAllConfigs();
+    const inspect = getEnabledLanguagesFromAllConfigs() || {key: ''};
     return (useGlobal ? undefined : inspect.workspaceValue) || inspect.globalValue || inspect.defaultValue || [];
 }
 

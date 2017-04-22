@@ -6,6 +6,7 @@ import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
 import * as commands from './commands';
 import * as util from './util';
+import {Maybe} from './util';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -27,7 +28,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const previewUri = vscode.Uri.parse(`${schemeCSpellInfo}://authority/cspell-info-preview`);
     const onRefresh = new Rx.Subject<vscode.Uri>();
 
-    let lastDocumentUri: vscode.Uri = undefined;
+    let lastDocumentUri: Maybe<vscode.Uri> = undefined;
     const imagesUri = vscode.Uri.file(context.asAbsolutePath('images'));
     const imagesPath = imagesUri.path;
 
@@ -48,14 +49,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             this._onDidChange.fire(uri);
         }
 
-        private createInfoHtml(editor: vscode.TextEditor): Thenable<string> {
-            const document = editor.document;
+        private createInfoHtml(editor: vscode.TextEditor | undefined): Thenable<string> {
+            const document = editor && editor.document;
             if (!document) {
                 return Promise.resolve('<body>Document has been closed.</body>');
             }
             const uri = document.uri;
             const filename = path.basename(uri.path);
-            const diags = client.diagnostics.get(uri);
+            const diagnostics = client.diagnostics;
+            const diags = diagnostics && diagnostics.get(uri);
             const allSpellingErrors = (diags || [])
                 .map(d => d.range)
                 .map(range => document.getText(range));
@@ -121,23 +123,28 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return Promise.all(promises);
     }
 
-    function triggerSettingsRefresh(uri: vscode.Uri) {
+    function triggerSettingsRefresh(uri: Maybe<vscode.Uri>) {
         client.triggerSettingsRefresh();
     }
 
     function enableLanguage(languageId: string, uri: string) {
-        const uriObj = uri && vscode.Uri.parse(uri);
         commands.enableLanguageId(languageId)
-        .then(() => triggerSettingsRefresh(uriObj))
-        .then(() => changeFocus(uri));
+        .then(() => triggerRefresh(uri));
     }
 
     function disableLanguage(languageId: string, uri: string) {
-        const uriObj = uri && vscode.Uri.parse(uri);
         commands.disableLanguageId(languageId)
-        .then(() => triggerSettingsRefresh(uriObj))
-        .then(() => changeFocus(uri));
+        .then(() => triggerRefresh(uri));
     }
+
+    function triggerRefresh(uri: string) {
+        if (uri) {
+            triggerSettingsRefresh(vscode.Uri.parse(uri));
+            changeFocus(uri);
+        }
+    }
+
+
 
     function makeDisposable(sub: Rx.Subscription) {
         return {

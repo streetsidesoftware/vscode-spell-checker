@@ -56,7 +56,7 @@ describe('Validate CSpellSettings functions', () => {
         expect(s1.enabledLanguageIds).to.be.undefined;
         const s2 = CSS.addLanguageIdsToSettings(defaultSettings, ids, false);
         expect(s2.enabledLanguageIds).to.not.be.empty;
-        expect(s2.enabledLanguageIds.sort()).to.be.deep.equal(unique(ids).sort());
+        expect(s2.enabledLanguageIds!.sort()).to.be.deep.equal(unique(ids).sort());
     });
 
     it('tests removing languageIds', () => {
@@ -68,9 +68,11 @@ describe('Validate CSpellSettings functions', () => {
         expect(defaultSettings.enabledLanguageIds).to.be.undefined;
         const s2 = CSS.addLanguageIdsToSettings(defaultSettings, ids, false);
         Object.freeze(s2);
-        expect(s2.enabledLanguageIds.sort()).to.be.deep.equal(unique(ids).sort());
+        expect(s2.enabledLanguageIds).to.not.be.empty;
+        expect(s2.enabledLanguageIds!.sort()).to.be.deep.equal(unique(ids).sort());
         const s3 = CSS.removeLanguageIdsFromSettings(s2, toRemove);
-        expect(s3.enabledLanguageIds.sort()).to.be.deep.equal(expected);
+        expect(s3.enabledLanguageIds).to.not.be.empty;
+        expect(s3.enabledLanguageIds!.sort()).to.be.deep.equal(expected);
         const s4 = CSS.removeLanguageIdsFromSettings(defaultSettings, toRemove);
         expect(s4.enabledLanguageIds).to.be.undefined;
         const s5 = CSS.removeLanguageIdsFromSettings(s2, ids);

@@ -75,7 +75,7 @@ export function addWordToSettingsAndUpdate(filename: string, word: string) {
 }
 
 export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wordsToAdd: string[]) {
-    const words = unique(settings.words.concat(wordsToAdd));
+    const words = unique((settings.words || []).concat(wordsToAdd));
     return {...settings, words};
 }
 export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComments, languageIds: string[], onlyIfExits: boolean) {

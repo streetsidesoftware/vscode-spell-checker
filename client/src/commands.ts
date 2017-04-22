@@ -31,11 +31,12 @@ export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
     if (!Settings.hasWorkspaceLocation()) {
         return addWordToUserDictionary(word);
     }
-    Settings.getSettings()
+    return Settings.getSettings()
     .then(foundSettingsInfo => {
         const path = foundSettingsInfo.path;
         if (path) {
-            return CSpellSettings.addWordToSettingsAndUpdate(path, word);
+            return CSpellSettings.addWordToSettingsAndUpdate(path, word)
+                .then(_ => {});
         }
     });
 }
@@ -50,7 +51,7 @@ export function enableLanguageId(languageId: string): Thenable<void> {
         .then(() => {
             // Add it from the workspace as well if necessary
             const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
-            if (allSettings.workspaceValue) {
+            if (allSettings && allSettings.workspaceValue) {
                 return Settings.enableLanguage(false, languageId);
             }
         });
@@ -64,7 +65,7 @@ export function disableLanguageId(languageId: string): Thenable<void> {
         .then(() => {
             // Remove it from the workspace as well if necessary
             const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
-            if (allSettings.workspaceValue) {
+            if (allSettings && allSettings.workspaceValue) {
                 return Settings.disableLanguage(false, languageId);
             }
         });
