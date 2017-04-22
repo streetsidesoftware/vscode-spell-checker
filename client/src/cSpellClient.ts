@@ -27,7 +27,13 @@ export class CSpellClient {
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
-        const documentSelector = unique(languageIds.concat(enabledLanguageIds || []).concat(LanguageIds.languageIds));
+        const schema = 'file';
+        const documentSelector =
+            unique(languageIds
+                .concat(enabledLanguageIds || [])
+                .concat(LanguageIds.languageIds)
+            )
+            .map(language => ({ language, schema }));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
