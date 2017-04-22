@@ -4,16 +4,17 @@ import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
 import * as cSpellInfo from './cSpellInfo';
+import { Maybe } from './util';
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
 
     const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
-    function updateStatusBarWithSpellCheckStatus(e: TextEditor) {
-        if (!e) {
-            return;
-        }
-        const { uri = { fsPath: undefined }, languageId = '' } = e.document || {uri: { fsPath: undefined }, languageId: ''};
+    function updateStatusBarWithSpellCheckStatus(e: Maybe<TextEditor>) {
+        if (!e || !e.document) return;
+        const document = e.document;
+        if (document.uri.scheme !== 'file') return;
+        const { uri, languageId = '' } = document;
         const genOnOffIcon = (on: boolean) => on ? '$(checklist)' : '$(stop)';
         sbCheck.color = 'white';
         sbCheck.text = '$(clock)';
@@ -22,28 +23,30 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
         client.isSpellCheckEnabled(e.document)
             .then((response) => {
                 const { activeTextEditor } = window;
-                if (activeTextEditor && activeTextEditor.document) {
-                    const { document } = activeTextEditor;
-                    if (document.uri === uri) {
-                        const { languageEnabled = true, fileEnabled = true } = response;
-                        const isChecked = languageEnabled && fileEnabled;
-                        const isCheckedText = isChecked ? 'is' : 'is NOT';
-                        const langReason = languageEnabled ? '' : `The "${languageId}" language is not enabled.`;
-                        const fileReason = fileEnabled ? '' : `The file path is excluded in settings.`;
-                        const fileName = path.basename(uri.fsPath);
-                        const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
-                        const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
-                        const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
-                        sbCheck.text = `${langText} | ${fileText}`;
-                        sbCheck.tooltip = reason;
-                        sbCheck.command = cSpellInfo.commandDisplayCSpellInfo;
-                        sbCheck.show();
-                    }
+                const document = activeTextEditor && activeTextEditor.document;
+                const docUri = document && document.uri;
+                if (docUri === uri || !docUri || docUri.scheme !== 'file') {
+                    const { languageEnabled = true, fileEnabled = true } = response;
+                    const isChecked = languageEnabled && fileEnabled;
+                    const isCheckedText = isChecked ? 'is' : 'is NOT';
+                    const langReason = languageEnabled ? '' : `The "${languageId}" language is not enabled.`;
+                    const fileReason = fileEnabled ? '' : `The file path is excluded in settings.`;
+                    const fileName = path.basename(uri.fsPath);
+                    const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
+                    const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
+                    const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
+                    sbCheck.text = `${langText} | ${fileText}`;
+                    sbCheck.tooltip = reason;
+                    sbCheck.command = cSpellInfo.commandDisplayCSpellInfo;
+                    sbCheck.show();
                 }
             });
     }
 
     function onDidChangeActiveTextEditor(e: TextEditor) {
+        if (!e || !e.document) return;
+        const document = e.document;
+        if (document.uri.scheme !== 'file') return;
         const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
         const { enabled, showStatus = true } = settings;
 
