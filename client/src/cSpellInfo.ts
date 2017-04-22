@@ -35,10 +35,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     class CSpellInfoTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
-        public provideTextDocumentContent(uri: vscode.Uri): Thenable<string> {
-            const editor = lastDocumentUri && findMatchingVisibleTextEditors(lastDocumentUri.toString())[0]
-                || vscode.window.activeTextEditor;
-            return this.createInfoHtml(editor);
+        public provideTextDocumentContent(_: vscode.Uri): Thenable<string> {
+            // console.log(_);
+            const editor = vscode.window.activeTextEditor;
+            const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri.toString())
+                || (editor && editor.document);
+            return this.createInfoHtml(doc);
         }
 
         get onDidChange(): vscode.Event<vscode.Uri> {
@@ -49,10 +51,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             this._onDidChange.fire(uri);
         }
 
-        private createInfoHtml(editor: vscode.TextEditor | undefined): Thenable<string> {
-            const document = editor && editor.document;
+        private createInfoHtml(document: Maybe<vscode.TextDocument>): Thenable<string> {
             if (!document) {
-                return Promise.resolve('<body>Document has been closed.</body>');
+                return Promise.resolve('<body>Select an editor tab.</body>');
             }
             const uri = document.uri;
             const filename = path.basename(uri.path);
@@ -84,17 +85,19 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const registration = vscode.workspace.registerTextDocumentContentProvider(schemeCSpellInfo, provider);
 
     const subOnDidChangeTextDocument = onRefresh
+        .filter(uri => uri.scheme === 'file')
+        // .do(uri => console.log('subOnDidChangeTextDocument: ' + uri.toString()))
         .do(uri => lastDocumentUri = uri)
         .debounceTime(250)
         .subscribe(() => provider.update(previewUri));
 
-    vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
+    const subOnDidChangeDoc = vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
         if (vscode.window.activeTextEditor && e.document && e.document === vscode.window.activeTextEditor.document) {
             onRefresh.next(e.document.uri);
         }
     });
 
-    vscode.window.onDidChangeActiveTextEditor((editor: vscode.TextEditor) => {
+    const subOnDidChangeEditor = vscode.window.onDidChangeActiveTextEditor((editor: vscode.TextEditor) => {
         if (editor && editor === vscode.window.activeTextEditor && editor.document) {
             onRefresh.next(editor.document.uri);
         }
@@ -112,13 +115,30 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             );
     }
 
-    function findMatchingVisibleTextEditors(uri: string) {
-        return vscode.window.visibleTextEditors
-            .filter(editor => editor.document && (editor.document.uri.toString() === uri));
+    function findVisibleTextEditors(uri: string): vscode.TextEditor[] {
+        const editors = vscode.window.visibleTextEditors
+            .filter(e => !!e.document)
+            .filter(e => e.document.uri.toString() === uri);
+        return editors;
+    }
+
+    function findDocumentInVisibleTextEditors(uri: string):  Maybe<vscode.TextDocument> {
+        const docs = vscode.window.visibleTextEditors
+            .map(e => e.document)
+            .filter(doc => !!doc)
+            .filter(doc => doc.uri.toString() === uri);
+        return docs[0];
+    }
+
+    function findMatchingDocument(uri: string): Maybe<vscode.TextDocument> {
+        const workspace = vscode.workspace || {};
+        const docs = (workspace.textDocuments || [])
+            .filter(doc => doc.uri.toString() === uri);
+        return docs[0] || findDocumentInVisibleTextEditors(uri);
     }
 
     function changeFocus(uri: string) {
-        const promises = findMatchingVisibleTextEditors(uri)
+        const promises = findVisibleTextEditors(uri)
             .map(editor => vscode.window.showTextDocument(editor.document, editor.viewColumn, false));
         return Promise.all(promises);
     }
@@ -144,8 +164,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     }
 
-
-
     function makeDisposable(sub: Rx.Subscription) {
         return {
             dispose: () => sub.unsubscribe()
@@ -166,6 +184,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     context.subscriptions.push(
+        subOnDidChangeEditor,
+        subOnDidChangeDoc,
         vscode.commands.registerCommand(commandDisplayCSpellInfo, displayCSpellInfo),
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
