@@ -28,6 +28,7 @@ export const languageIds: string[] = [
     'perl',
     'perl6',
     'php',
+    'plaintext',
     'powershell',
     'properties',
     'pug',

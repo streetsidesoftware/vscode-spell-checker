@@ -33,7 +33,8 @@ export class CSpellClient {
                 .concat(enabledLanguageIds || [])
                 .concat(LanguageIds.languageIds)
             )
-            .map(language => ({ language, schema }));
+            .map(language => ({ language, schema }))
+            .concat([{ language: 'plaintext', schema: 'untitled' }]);
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,

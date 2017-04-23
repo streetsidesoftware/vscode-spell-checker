@@ -7,6 +7,7 @@ import * as preview from './pugCSpellInfo';
 import * as commands from './commands';
 import * as util from './util';
 import {Maybe} from './util';
+import { isSupportedUri } from './uriHelper';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -85,7 +86,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const registration = vscode.workspace.registerTextDocumentContentProvider(schemeCSpellInfo, provider);
 
     const subOnDidChangeTextDocument = onRefresh
-        .filter(uri => uri.scheme === 'file')
+        .filter(uri => isSupportedUri(uri))
         // .do(uri => console.log('subOnDidChangeTextDocument: ' + uri.toString()))
         .do(uri => lastDocumentUri = uri)
         .debounceTime(250)

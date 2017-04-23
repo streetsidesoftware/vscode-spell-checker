@@ -5,6 +5,8 @@ import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
 import * as cSpellInfo from './cSpellInfo';
 import { Maybe } from './util';
+import { isSupportedUri } from './uriHelper';
+
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
 
@@ -13,7 +15,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
     function updateStatusBarWithSpellCheckStatus(e: Maybe<TextEditor>) {
         if (!e || !e.document) return;
         const document = e.document;
-        if (document.uri.scheme !== 'file') return;
+        if (! isSupportedUri(document.uri)) return;
         const { uri, languageId = '' } = document;
         const genOnOffIcon = (on: boolean) => on ? '$(checklist)' : '$(stop)';
         sbCheck.color = 'white';
@@ -46,7 +48,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
     function onDidChangeActiveTextEditor(e: TextEditor) {
         if (!e || !e.document) return;
         const document = e.document;
-        if (document.uri.scheme !== 'file') return;
+        if (! isSupportedUri(document.uri)) return;
         const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
         const { enabled, showStatus = true } = settings;
 
