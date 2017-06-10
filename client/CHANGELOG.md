@@ -1,5 +1,10 @@
 # Release Notes:
 
+## 1.2.0
+* Fix an issue with themes
+* Update cspell library to support language specifice overrides.
+* Support Python unicode and byte strings.
+
 ## 1.1.0
 * Fix Issue with cspell Info pane that prevented it from showing up. [#88](https://github.com/Jason-Rev/vscode-spell-checker/issues/88)
 
@@ -13,7 +18,7 @@
 * Update to the latest version of cspell to handle large dictionary files.
 
 ## 0.17.2
-* Update README to indicate that LaTex by default.
+* Update README to indicate that LaTex is enabled by default.
 
 ## 0.17.1
 * Reduce the size of the extension by not including cspell twice.

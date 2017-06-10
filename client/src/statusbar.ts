@@ -1,6 +1,6 @@
 import * as path from 'path';
 import {CSpellUserSettings} from './CSpellSettings';
-import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
+import { workspace, ExtensionContext, window, TextEditor, ThemeColor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
 import * as cSpellInfo from './cSpellInfo';
@@ -18,7 +18,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
         if (! isSupportedUri(document.uri)) return;
         const { uri, languageId = '' } = document;
         const genOnOffIcon = (on: boolean) => on ? '$(checklist)' : '$(stop)';
-        sbCheck.color = 'white';
+        sbCheck.color = new ThemeColor('statusBar.foreground');
         sbCheck.text = '$(clock)';
         sbCheck.tooltip = 'cSpell waiting...';
         sbCheck.show();
