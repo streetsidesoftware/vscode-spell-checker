@@ -1,13 +1,72 @@
 doctype html
 html
     head
-        // script(src='https://code.jquery.com/jquery-3.1.1.slim.min.js')
         style(type='text/css').
             .logo {
                 vertical-align: top;
                 width: 60px;
                 height: 60px;
                 margin-right: 10px;
+            }
+            .onoffswitch {
+                position: relative; width: 90px;
+                -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+            }
+            .onoffswitch-checkbox {
+                display: none;
+            }
+            .onoffswitch-label {
+                display: block; overflow: hidden; cursor: pointer;
+                border: 2px solid #777; border-radius: 20px;
+            }
+            .onoffswitch-inner {
+                display: block; width: 200%; margin-left: -100%;
+                transition: margin 0.3s ease-in 0s;
+            }
+            .onoffswitch-inner:before, .onoffswitch-inner:after {
+                display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+                font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+                box-sizing: border-box;
+            }
+            .onoffswitch-inner:before {
+                content: "ON";
+                padding-left: 10px;
+                background-color: #7EB050; color: #FFFFFF;
+            }
+            .onoffswitch-inner:after {
+                content: "OFF";
+                padding-right: 10px;
+                background-color: #EEEEEE; color: #999999;
+                text-align: right;
+            }
+            .yes-no .onoffswitch-inner:before {
+                content: "YES";
+            }
+            .yes-no .onoffswitch-inner:after {
+                content: "NO";
+            }
+            .onoffswitch-switch {
+                display: block; width: 18px; margin: 6px;
+                background: #FFFFFF;
+                position: absolute; top: 0; bottom: 0;
+                right: 56px;
+                border: 2px solid #999999; border-radius: 20px;
+                transition: all 0.3s ease-in 0s;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+                margin-left: 0;
+            }
+            .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+                right: 0px;
+            }
+            .hidden {
+                display: none;
+            }
+        script.
+            function triggerLang() {
+                var elem = document.getElementById('langOnOffSwitch');
+                var linkId = elem.checked ? 'enableLang' : 'disableLang';
+                document.getElementById(linkId).click();
             }
     body
         h1
@@ -25,10 +84,22 @@ html
                 tr
                     td Spell Checker enabled for file type (#{languageId})
                     td
-                        = languageEnabled ? 'Yes' : 'No'
-                        | &nbsp; | &nbsp;
-                        a(href=linkEnableDisableLanguage)
-                            = languageEnabled ? 'Disable' : 'Enable'
+                        div.onoffswitch.yes-no
+                            input(
+                                type="checkbox"
+                                name="onoffswitch"
+                                class="onoffswitch-checkbox"
+                                id="langOnOffSwitch"
+                                checked=languageEnabled
+                                onchange="triggerLang()")
+                            label.onoffswitch-label(for="langOnOffSwitch")
+                                span.onoffswitch-inner
+                                span.onoffswitch-switch
+                        a#enableLang.hidden(href=linkEnableLanguage)
+                            | Enable
+                        a#disableLang.hidden(href=linkDisableLanguage)
+                            | Disable
+
         div
             h2 Issues:
             if spellingErrors
@@ -41,27 +112,3 @@ html
             else
                 b Analyzing...
         div#output
-    //-
-        script.
-            (function () {
-                function log(message) {
-                    $("<div>")
-                        .text(message)
-                        .appendTo("#output");
-                }
-                $('form').submit(function(e){
-                    e.preventDefault();
-                    log('Hello');
-                });
-                $('#output').text('Go');
-                $( "a" ).click(function( event ) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    log('Stopped' + this.href);
-                    $('#hidden_link')
-                        .attr('href', this.href)
-                        .text(this.href)
-                        .click();
-                });
-                $('body').append('<a href="" id="hidden_link"></a>');
-            }());

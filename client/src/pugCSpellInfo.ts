@@ -9,6 +9,8 @@ export interface TemplateVariables {
     languageId: string;
     spellingErrors: [string, number][] | undefined;
     linkEnableDisableLanguage: string;
+    linkEnableLanguage: string;
+    linkDisableLanguage: string;
     imagesPath: string;
 }
 

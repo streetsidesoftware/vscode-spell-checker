@@ -13,6 +13,8 @@ describe('Verify Template Renders', () => {
             languageId: 'typescript',
             spellingErrors: [['one', 1], ['two', 2], ['three', 3], ],
             linkEnableDisableLanguage: 'command:cSpell',
+            linkEnableLanguage: 'command:cSpell',
+            linkDisableLanguage: 'command:cSpell',
             imagesPath,
         });
         expect(html).to.not.be.empty;
@@ -28,6 +30,8 @@ describe('Verify Template Renders', () => {
             languageId: 'cpp',
             spellingErrors: [['one', 1], ['two', 2], ['three', 3], ['<code>', 5]],
             linkEnableDisableLanguage: 'command:cSpell',
+            linkEnableLanguage: 'command:cSpell',
+            linkDisableLanguage: 'command:cSpell',
             imagesPath,
          });
         expect(html).to.not.be.empty;

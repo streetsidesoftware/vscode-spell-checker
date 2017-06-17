@@ -75,6 +75,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     filename,
                     spellingErrors,
                     linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
+                    linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId, document.uri),
+                    linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId, document.uri),
                     imagesPath,
                 });
                 return html;
@@ -144,26 +146,28 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return Promise.all(promises);
     }
 
-    function triggerSettingsRefresh(uri: Maybe<vscode.Uri>) {
-        client.triggerSettingsRefresh();
-    }
-
     function enableLanguage(languageId: string, uri: string) {
         commands.enableLanguageId(languageId)
-        .then(() => triggerRefresh(uri));
+        .then(() => restoreFocus(uri));
     }
 
     function disableLanguage(languageId: string, uri: string) {
         commands.disableLanguageId(languageId)
-        .then(() => triggerRefresh(uri));
+        .then(() => restoreFocus(uri));
     }
 
-    function triggerRefresh(uri: string) {
+    function restoreFocus(uri: string) {
         if (uri) {
-            triggerSettingsRefresh(vscode.Uri.parse(uri));
+            // triggerSettingsRefresh(vscode.Uri.parse(uri));
             changeFocus(uri);
         }
     }
+
+    /*
+    function triggerSettingsRefresh(uri: Maybe<vscode.Uri>) {
+        client.triggerSettingsRefresh();
+    }
+    */
 
     function makeDisposable(sub: Rx.Subscription) {
         return {
@@ -172,7 +176,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     function testCommand(...args: any[]) {
-        const stopHere = args;
+        const _stopHere = args;
     }
 
     function autoRefresh(uri: vscode.Uri) {
