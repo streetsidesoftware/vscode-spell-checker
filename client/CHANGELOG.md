@@ -1,5 +1,9 @@
 # Release Notes:
 
+## 1,2.1
+* Fix issue [#96](https://github.com/Jason-Rev/vscode-spell-checker/issues/96)
+* Added a FAQ file.
+
 ## 1.2.0
 * Fix an issue with themes
 * Update cspell library to support language specifice overrides.

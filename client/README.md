@@ -473,6 +473,8 @@ The paths are relative to the location of the *cSpell.json* file.  This allows f
 The *cities* dictionary is used for every file type, because it was added to the list to *dictionaries*.
 The *medicalTerms* dictionary is only used when editing *markdown* or *plaintext* files.
 
+## FAQ
+See: [FAQ](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/FAQ.md)
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
