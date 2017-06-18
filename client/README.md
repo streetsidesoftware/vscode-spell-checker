@@ -474,7 +474,7 @@ The *cities* dictionary is used for every file type, because it was added to the
 The *medicalTerms* dictionary is only used when editing *markdown* or *plaintext* files.
 
 ## FAQ
-See: [FAQ](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/FAQ.md)
+See: [FAQ](https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/FAQ.md)
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
