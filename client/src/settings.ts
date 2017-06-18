@@ -153,5 +153,5 @@ export function addWordToSettings(isGlobal: boolean, word: string): Thenable<voi
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const words = getSettingFromConfig(section) || [];
-    return setCSpellConfigSetting(section, unique(words.concat([word])), useGlobal);
+    return setCSpellConfigSetting(section, unique(words.concat([word]).sort()), useGlobal);
 }

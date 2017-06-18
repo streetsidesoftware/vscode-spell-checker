@@ -3,6 +3,7 @@
 ## 1,2.1
 * Fix issue [#96](https://github.com/Jason-Rev/vscode-spell-checker/issues/96)
 * Added a FAQ file.
+* User word lists are now sorted: [#91](https://github.com/Jason-Rev/vscode-spell-checker/issues/91)
 
 ## 1.2.0
 * Fix an issue with themes
