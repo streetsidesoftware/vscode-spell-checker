@@ -50,6 +50,14 @@
                 "title": "Disable Spell Checking For Workspace"
             },
             {
+                "command": "cSpell.enableCurrentLanguage",
+                "title": "Enable Spell Checking Document Language"
+            },
+            {
+                "command": "cSpell.disableCurrentLanguage",
+                "title": "Disable Spell Checking Document Language"
+            },
+            {
                 "command": "cSpell.displayCSpellInfo",
                 "title": "Show Spell Checker Configuration Info"
             },

@@ -6,7 +6,7 @@ import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
 
-export { toggleEnableSpellChecker } from './settings';
+export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
 
 export function handlerApplyTextEdits(client: LanguageClient) {

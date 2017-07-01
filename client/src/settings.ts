@@ -3,6 +3,7 @@ import * as CSpellSettings from './CSpellSettings';
 import { workspace } from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
+import * as vscode from 'vscode';
 import { unique } from './util';
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
@@ -159,4 +160,20 @@ export function addWordToSettings(isGlobal: boolean, word: string): Thenable<voi
 export function toggleEnableSpellChecker(): Thenable<void> {
     const curr = getSettingFromConfig('enabled');
     return setCSpellConfigSetting('enabled', !curr, false);
+}
+
+export function enableCurrentLanguage(): Thenable<void> {
+    const editor = vscode.window && vscode.window.activeTextEditor;
+    if (editor && editor.document && editor.document.languageId) {
+        return enableLanguage(false, editor.document.languageId);
+    }
+    return Promise.resolve();
+}
+
+export function disableCurrentLanguage(): Thenable<void> {
+    const editor = vscode.window && vscode.window.activeTextEditor;
+    if (editor && editor.document && editor.document.languageId) {
+        return disableLanguage(false, editor.document.languageId);
+    }
+    return Promise.resolve();
 }
