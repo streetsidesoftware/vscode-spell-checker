@@ -155,3 +155,8 @@ export function addWordToSettings(isGlobal: boolean, word: string): Thenable<voi
     const words = getSettingFromConfig(section) || [];
     return setCSpellConfigSetting(section, unique(words.concat([word]).sort()), useGlobal);
 }
+
+export function toggleEnableSpellChecker(): Thenable<void> {
+    const curr = getSettingFromConfig('enabled');
+    return setCSpellConfigSetting('enabled', !curr, false);
+}

@@ -6,6 +6,8 @@ import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
 
+export { toggleEnableSpellChecker } from './settings';
+
 
 export function handlerApplyTextEdits(client: LanguageClient) {
     return function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {

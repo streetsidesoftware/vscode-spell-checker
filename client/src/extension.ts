@@ -48,6 +48,7 @@ export function activate(context: ExtensionContext) {
             vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
             vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true, false)),
             vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false, false)),
+            vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', commands.toggleEnableSpellChecker),
             configWatcher.onDidChange(triggerGetSettings),
             configWatcher.onDidCreate(triggerGetSettings),
             configWatcher.onDidDelete(triggerGetSettings)

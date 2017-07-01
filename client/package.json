@@ -52,6 +52,10 @@
             {
                 "command": "cSpell.displayCSpellInfo",
                 "title": "Show Spell Checker Configuration Info"
+            },
+            {
+                "command": "cSpell.toggleEnableSpellChecker",
+                "title": "Toggle Spell Checking For the Current Workspace"
             }
         ],
         "configuration": {
