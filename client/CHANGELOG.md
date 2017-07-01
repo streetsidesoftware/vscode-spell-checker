@@ -4,6 +4,8 @@
 * Fix issue [#96](https://github.com/Jason-Rev/vscode-spell-checker/issues/96)
 * Added a FAQ file.
 * User word lists are now sorted: [#91](https://github.com/Jason-Rev/vscode-spell-checker/issues/91)
+* Add commands to toggle the spell checker with key assignments [#64](https://github.com/Jason-Rev/vscode-spell-checker/issues/64)
+* Only use https links in .md files. [#103](https://github.com/Jason-Rev/vscode-spell-checker/issues/103)
 
 ## 1.2.0
 * Fix an issue with themes
