@@ -1,7 +1,7 @@
 # Spelling Checker for Visual Studio Code
-[![Current Version](http://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
-[![Install Count](http://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
-[![Open Issues](http://vsmarketplacebadge.apphb.com/rating/streetsidesoftware.code-spell-checker.svg) ](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![Current Version](https://vsmarketplacebadge.apphb.com/version/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![Install Count](https://vsmarketplacebadge.apphb.com/installs/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![Open Issues](https://vsmarketplacebadge.apphb.com/rating/streetsidesoftware.code-spell-checker.svg) ](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 A basic spell checker that works well with camelCase code.
 
