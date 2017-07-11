@@ -10,13 +10,14 @@
 			"address": "localhost",
 			"port": 60048,
 			"sourceMaps": true,
-			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ]
+			"outFiles": [ "${workspaceRoot}/../client/server/**/*.js" ],
+			"protocol": "legacy"
         },
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -60,7 +61,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha fileReader.test",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -104,7 +105,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha text.test",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -126,7 +127,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha validator.test",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -148,7 +149,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha GenSequence Tests",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -170,7 +171,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha wordListCompiler Tests",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -192,7 +193,7 @@
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run Perf Tests",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.

@@ -29,7 +29,7 @@ const {
 
 const tds = CSpell;
 
-const defaultSettings = getDefaultSettings();
+const defaultSettings = CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings());
 const settings: CSpellUserSettings = {...defaultSettings};
 
 const defaultExclude: Glob[] = [
