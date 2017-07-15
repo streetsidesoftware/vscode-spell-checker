@@ -3,6 +3,7 @@
 ## 1.3.0
 * Upgraded to cspell 1.7.1 to get import support and global dictionaries.
 * Adding cspell-dicts is now relatively simple.
+* Change the delay to be delay after typing finishes. [#90](https://github.com/Jason-Rev/vscode-spell-checker/issues/90)
 
 ## 1.2.1
 * Fix issue [#96](https://github.com/Jason-Rev/vscode-spell-checker/issues/96)

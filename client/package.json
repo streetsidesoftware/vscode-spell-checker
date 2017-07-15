@@ -115,6 +115,14 @@
                     ],
                     "description": "Specify file types to spell check."
                 },
+                "cSpell.import": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of paths of cspell.json files to import."
+                },
                 "cSpell.words": {
                     "type": "array",
                     "items": {
