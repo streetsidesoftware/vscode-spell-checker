@@ -144,6 +144,9 @@ function run() {
         // .tap(doc => connection.console.log(`A Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         .filter(shouldValidateDocument)
         // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+        .debounce(() => Rx.Observable.timer(settings.spellCheckDelayMs || 50))
+        /*
+        For now, just try using debounce.
         // De-dupe and backed up request by waiting for 50ms.
         .groupBy(
             doc => doc.uri,     // key by uri
@@ -152,6 +155,7 @@ function run() {
         )
         // keep only the last request in a group.
         .flatMap(group => group.last())
+        */
         // .tap(doc => connection.console.log(`C Validate ${doc.uri}:${doc.version}:${Date.now()}`))
         .subscribe(validateTextDocument);
 
