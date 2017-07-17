@@ -13,3 +13,6 @@ This is a place to capture common questions and possible confusions. Please feel
 
 ### *Can I use the spell checker with other languages like Spanish or French?*
 > Yes, please visit [cspell-dicts](https://github.com/Jason3S/cspell-dicts)
+
+### *Is it possible to only spell check comments*
+> Yes. It is necessary to define `includeRegExpList` for each language. See [#107](https://github.com/Jason-Rev/vscode-spell-checker/issues/107)
