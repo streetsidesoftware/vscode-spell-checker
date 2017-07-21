@@ -26,7 +26,7 @@ export function handlerApplyTextEdits(client: LanguageClient) {
                 }
             });
         }
-    }
+    };
 }
 
 export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
