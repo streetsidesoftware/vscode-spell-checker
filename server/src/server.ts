@@ -90,6 +90,7 @@ function run() {
 
     interface OnChangeParam { settings: Settings; }
     function onConfigChange(change: OnChangeParam) {
+        CSpell.clearCachedSettings();
         const configPaths = workspaceRoot ? [
             path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
             path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
