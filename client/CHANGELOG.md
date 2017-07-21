@@ -1,5 +1,10 @@
 # Release Notes:
 
+## 1.3.1
+* Fix issue [#112](https://github.com/Jason-Rev/vscode-spell-checker/issues/112)
+* Fix issue [#113](https://github.com/Jason-Rev/vscode-spell-checker/issues/113)
+* Fix issue [#110](https://github.com/Jason-Rev/vscode-spell-checker/issues/110)
+
 ## 1.3.0
 * Upgraded to cspell 1.7.1 to get import support and global dictionaries.
 * Adding cspell-dicts is now relatively simple.
