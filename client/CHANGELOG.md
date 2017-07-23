@@ -1,5 +1,8 @@
 # Release Notes:
 
+## 1.3.2
+* Fix issue [#80](https://github.com/Jason-Rev/vscode-spell-checker/issues/80)
+
 ## 1.3.1
 * Fix issue [#112](https://github.com/Jason-Rev/vscode-spell-checker/issues/112)
 * Fix issue [#113](https://github.com/Jason-Rev/vscode-spell-checker/issues/113)
