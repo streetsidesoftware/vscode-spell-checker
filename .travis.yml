@@ -1,16 +1,15 @@
 language: node_js
 node_js:
   - "node"
+  - "7"
   - "6"
 script:
-  - cd client
-  - npm install
-  - cd ..
   - cd server
   - npm install
   - npm run build
   - npm test
   - cd ..
   - cd client
+  - npm install
   - npm run build
   - npm test
