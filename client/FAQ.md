@@ -12,7 +12,8 @@ This is a place to capture common questions and possible confusions. Please feel
 > No, the spell checker is self contained. It does not send your code off to a service to be checked.
 
 ### *Can I use the spell checker with other languages like Spanish or French?*
-> Yes, please visit [cspell-dicts](https://github.com/Jason3S/cspell-dicts)
+> Yes, please visit [cspell-dicts](https://github.com/Jason3S/cspell-dicts).
+> See also: [#119](https://github.com/Jason-Rev/vscode-spell-checker/issues/119)
 
 ### *Is it possible to only spell check comments*
-> Yes. It is necessary to define `includeRegExpList` for each language. See [#107](https://github.com/Jason-Rev/vscode-spell-checker/issues/107)
+> Yes. It is necessary to define `includeRegExpList` for each language. See [#107](https://github.com/Jason-Rev/vscode-spell-checker/issues/107) and [#116](https://github.com/Jason-Rev/vscode-spell-checker/issues/116)
