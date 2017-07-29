@@ -9,7 +9,7 @@ The goal of this spell checker is to help with catching common spelling errors w
 
 ## Functionality
 
-Load a Typescript, Javascript, Text, etc.. file.  Words not in the dictionary files will have
+Load a TypeScript, JavaScript, Text, etc.. file.  Words not in the dictionary files will have
 a squiggly underline.
 
 #### Example
@@ -29,9 +29,10 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
 ## Enabled File Types
-* Typescript
-* Javascript
-* Json
+
+* TypeScript
+* JavaScript
+* JSON
 * Text
 * Markdown
 * LaTex
@@ -40,7 +41,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * Go
 * PHP
 * Python
-* Yaml
+* YAML
 
 ### Enable / Disable File Types
 
