@@ -1,7 +1,7 @@
 {
     "name": "code-spell-checker",
     "description": "Spelling checker for source code",
-    "displayName": "Code Spellchecker",
+    "displayName": "Code Spell Checker",
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
@@ -27,6 +27,7 @@
         "checker",
         "spellchecker"
     ],
+    "qna": "marketplace",
     "activationEvents": [
         "*"
     ],
@@ -318,7 +319,7 @@
     "dependencies": {
         "comment-json": "^1.1.3",
         "mkdirp": "^0.5.1",
-        "pug": "^2.0.0-rc.2",
+        "pug": "^2.0.0-rc.3",
         "rxjs": "^5.4.2",
         "tsmerge": "^1.0.4",
         "vscode": "^1.1.2",

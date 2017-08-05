@@ -21,6 +21,7 @@ export interface ServerResponseIsSpellCheckEnabled {
 export class CSpellClient {
 
     readonly client: LanguageClient;
+    readonly import: Set<string> = new Set();
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -84,6 +85,10 @@ export class CSpellClient {
 
     public applySettings(settings: { cSpell: CSpellUserSettings, search: any }) {
         return this.client.onReady().then(() => this.client.sendNotification('applySettings', { settings }));
+    }
+
+    public registerConfiguration(path: string) {
+        return this.client.onReady().then(() => this.client.sendNotification('registerConfigurationFile', path));
     }
 
     get diagnostics(): Maybe<vscode.DiagnosticCollection> {

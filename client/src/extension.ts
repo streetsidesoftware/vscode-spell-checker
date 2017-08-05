@@ -17,7 +17,7 @@ export function activate(context: ExtensionContext) {
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
 
     // Get the cSpell Client
-    CSpellClient.create(serverModule).then(client => {
+    const server = CSpellClient.create(serverModule).then(client => {
         const configWatcher = workspace.createFileSystemWatcher(configFileWatcherGlob);
 
         // Start the client.
@@ -58,5 +58,21 @@ export function activate(context: ExtensionContext) {
 
         cSpellInfoPreview.activate(context, client);
 
+        function registerConfig(path: string) {
+            client.registerConfiguration(path);
+        }
+
+        return {
+            registerConfig,
+            triggerGetSettings,
+            enableLanguageId: commands.enableLanguageId,
+            disableLanguageId: commands.disableLanguageId,
+            enableCurrentLanguage: commands.enableCurrentLanguage,
+            disableCurrentLanguage: commands.disableCurrentLanguage,
+            addWordToUserDictionary: commands.addWordToUserDictionary,
+            addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
+        };
     });
+
+    return server;
 }

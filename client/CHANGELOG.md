@@ -1,6 +1,10 @@
 # Release Notes:
 
-## 1.3.2
+## [Unreleased]
+* Fix an issue with words still showing up as incorrect after they have been added to user or project dictionary.
+* Progress towards enabling Dictionary extensions.
+
+## [1.3.2]
 * Fix issue [#80](https://github.com/Jason-Rev/vscode-spell-checker/issues/80)
 
 ## 1.3.1
