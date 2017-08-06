@@ -110,7 +110,7 @@ function run() {
         const { cSpell = {}, search = {} } = vscodeSettings;
         const { exclude = {} } = search;
         const importPaths = [...configsToImport.keys()].sort();
-        const importSettings = { import: importPaths };
+        const importSettings = CSpell.readSettingsFiles(importPaths);
         const mergedSettings = CSpell.mergeSettings(defaultSettings, importSettings, cSpellSettingsFile, cSpell);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
