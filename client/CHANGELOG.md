@@ -1,6 +1,6 @@
 # Release Notes:
 
-## [Unreleased]
+## [1.3.3]
 * Fix an issue with words still showing up as incorrect after they have been added to user or project dictionary.
 * Progress towards enabling Dictionary extensions.
 
