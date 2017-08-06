@@ -1,5 +1,8 @@
 # Release Notes:
 
+## [1.3.4]
+* Minor fix to the spell checking server related to importing settings from other extensions.
+
 ## [1.3.3]
 * Fix an issue with words still showing up as incorrect after they have been added to user or project dictionary.
 * Progress towards enabling Dictionary extensions.
