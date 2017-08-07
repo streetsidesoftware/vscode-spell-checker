@@ -1,6 +1,6 @@
 # Release Notes:
 
-## [Unreleased]
+## [1.3.5]
 * Add Extension API functions:
   - registerConfig - Register a cspell.json file to be loaded
   - triggerGetSettings - Causes all settings to be reloaded
