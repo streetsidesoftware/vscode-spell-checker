@@ -1,5 +1,19 @@
 # Release Notes:
 
+## [Unreleased]
+* Add Extension API functions:
+  - registerConfig - Register a cspell.json file to be loaded
+  - triggerGetSettings - Causes all settings to be reloaded
+  - enableLanguageId - Enables a programming language
+  - disableLanguageId - Disables a programming language
+  - enableCurrentLanguage - Enables the programming language associated with the active editor.
+  - disableCurrentLanguage - Disables the programming language associated with the active editor.
+  - addWordToUserDictionary - Adds a word to the User Dictionary
+  - addWordToWorkspaceDictionary - Adds a word to the Workspace Dictionary
+  - enableLocal - Enable Language Local like "en" or "es". Example: `enableLocal(true, 'es')`
+  - disableLocal - Disables a Language Local. Example: `disableLocal(true, 'es')`
+  - updateSettings - Update spelling settings by field. Example: `updateSettings(true, { language: "en", enable: true })`
+
 ## [1.3.4]
 * Minor fix to the spell checking server related to importing settings from other extensions.
 

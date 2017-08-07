@@ -4,7 +4,7 @@ import { workspace } from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { unique } from './util';
+import { unique, uniqueFilter } from './util';
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
@@ -113,18 +113,23 @@ export function getEnabledLanguagesFromConfig(isGlobal: boolean) {
     return (useGlobal ? undefined : inspect.workspaceValue) || inspect.globalValue || inspect.defaultValue || [];
 }
 
-function enableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
+export function enableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const langs = unique([languageId, ...getEnabledLanguagesFromConfig(useGlobal)]).sort();
     return setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
 }
 
-function disableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
+export function disableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const langs = getEnabledLanguagesFromConfig(useGlobal).filter(a => a !== languageId).sort();
     return setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
 }
 
+/**
+ * @description Enable a programming language
+ * @param isGlobal - true: User settings, false: workspace settings
+ * @param languageId
+ */
 export function enableLanguage(isGlobal: boolean, languageId: string): Thenable<void> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     return enableLanguageIdInConfig(useGlobal, languageId).then(() => {
@@ -162,6 +167,9 @@ export function toggleEnableSpellChecker(): Thenable<void> {
     return setCSpellConfigSetting('enabled', !curr, false);
 }
 
+/**
+ * Enables the current programming language of the active file in the editor.
+ */
 export function enableCurrentLanguage(): Thenable<void> {
     const editor = vscode.window && vscode.window.activeTextEditor;
     if (editor && editor.document && editor.document.languageId) {
@@ -170,10 +178,41 @@ export function enableCurrentLanguage(): Thenable<void> {
     return Promise.resolve();
 }
 
+/**
+ * Disables the current programming language of the active file in the editor.
+ */
 export function disableCurrentLanguage(): Thenable<void> {
     const editor = vscode.window && vscode.window.activeTextEditor;
     if (editor && editor.document && editor.document.languageId) {
         return disableLanguage(false, editor.document.languageId);
     }
     return Promise.resolve();
+}
+
+
+export function enableLocal(isGlobal: boolean, local: string) {
+    const currentLanguage = getSettingFromConfig('language') || '';
+    const languages = currentLanguage.split(',')
+        .concat(local.split(','))
+        .map(a => a.trim())
+        .filter(uniqueFilter())
+        .join(',');
+    return setCSpellConfigSetting('language', languages, isGlobal);
+}
+
+export function disableLocal(isGlobal: boolean, local: string) {
+    function normalize(a: string) { return a.toLowerCase().replace(/[\-_]/, ''); }
+
+    local = normalize(local);
+    const currentLanguage = getSettingFromConfig('language') || '';
+    const languages = currentLanguage.split(',')
+        .map(a => a.trim())
+        .filter(a => normalize(a) !== local)
+        .join(',');
+    return setCSpellConfigSetting('language', languages, isGlobal);
+}
+
+export function updateSettings(isGlobal: boolean, settings: CSpellUserSettings) {
+    const keys = Object.keys(settings) as (keyof CSpellUserSettings)[];
+    return Promise.all(keys.map(key => setCSpellConfigSetting(key, settings[key], isGlobal)));
 }

@@ -1,5 +1,6 @@
 import * as path from 'path';
 import {configFileWatcherGlob, setEnableSpellChecking} from './settings';
+import * as settings from './settings';
 import * as cSpellInfoPreview from './cSpellInfo';
 import {CSpellClient} from './cSpellClient';
 
@@ -71,6 +72,9 @@ export function activate(context: ExtensionContext) {
             disableCurrentLanguage: commands.disableCurrentLanguage,
             addWordToUserDictionary: commands.addWordToUserDictionary,
             addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
+            enableLocal: settings.enableLocal,
+            disableLocal: settings.disableLocal,
+            updateSettings: settings.updateSettings,
         };
     });
 
