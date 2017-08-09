@@ -8,7 +8,7 @@ import { CSpellUserSettings } from './CSpellSettings';
 import * as Settings from './settings';
 
 import * as LanguageIds from './languageIds';
-import { unique, Maybe } from './util';
+import { unique, Maybe, uniqueFilter } from './util';
 
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
@@ -28,14 +28,14 @@ export class CSpellClient {
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
-        const schema = 'file';
+        const scheme = 'file';
+        const uniqueLangIds = languageIds
+            .concat(enabledLanguageIds || [])
+            .concat(LanguageIds.languageIds)
+            .filter(uniqueFilter());
         const documentSelector =
-            unique(languageIds
-                .concat(enabledLanguageIds || [])
-                .concat(LanguageIds.languageIds)
-            )
-            .map(language => ({ language, schema }))
-            .concat([{ language: 'plaintext', schema: 'untitled' }]);
+            uniqueLangIds.map(language => ({ language, scheme }))
+            .concat(uniqueLangIds.map(language => ({ language, scheme: 'untitled' })));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,

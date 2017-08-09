@@ -1,5 +1,8 @@
 # Release Notes:
 
+## [unreleased]
+* Update cspell to enabled spelling checking 'untitled' files. See issue: [#99](https://github.com/Jason-Rev/vscode-spell-checker/issues/99)
+
 ## [1.3.5]
 * Add Extension API functions:
   - registerConfig - Register a cspell.json file to be loaded
