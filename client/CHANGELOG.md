@@ -1,6 +1,6 @@
 # Release Notes:
 
-## [unreleased]
+## [1.3.6]
 * Update cspell to enabled spelling checking 'untitled' files. See issue: [#99](https://github.com/Jason-Rev/vscode-spell-checker/issues/99)
 
 ## [1.3.5]
