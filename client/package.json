@@ -101,6 +101,7 @@
                         "cpp",
                         "csharp",
                         "go",
+                        "handlebars",
                         "javascript",
                         "javascriptreact",
                         "json",
