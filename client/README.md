@@ -28,6 +28,14 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * English (US)
 * English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
+## Add-On Dictionaries
+* [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
+* [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
+* [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+* [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
+* [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
+* [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
+
 ## Enabled File Types
 
 * TypeScript
@@ -35,6 +43,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * JSON
 * Text
 * Markdown
+* Handlebars
 * LaTex
 * C, C++
 * C#
