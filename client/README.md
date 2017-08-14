@@ -18,6 +18,11 @@ a squiggly underline.
 #### Suggestions
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/suggestions.gif)
 
+To see the list of suggestions:
+- Click on the 💡 (lightbulb) in the left had margin.
+- Mac: `⌘`+`.` or `cmd`+`.`
+- PC: `ctrl`+`.`
+
 
 ## Install
 
@@ -265,7 +270,7 @@ def sum_it(self, seq):
 ### Adding words to the Workspace Dictionary
 
 You have the option to add you own words to the workspace dictionary.  The easiest, is to put your cursor
-on the word you wish to add, when you light-bulb shows up, hit `Ctrl+.` (windows) / `Cmd+.` (Mac).  You will get a list
+on the word you wish to add, when you lightbulb shows up, hit `Ctrl+.` (windows) / `Cmd+.` (Mac).  You will get a list
 of suggestions and the option to add the word.
 
 You can also type in a word you want to add to the dictionary: `F1` `add word` -- select `Add Word to Dictionary` and type in the word you wish to add.
