@@ -19,9 +19,10 @@ a squiggly underline.
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/suggestions.gif)
 
 To see the list of suggestions:
-- Click on the 💡 (lightbulb) in the left had margin.
-- Mac: `⌘`+`.` or `cmd`+`.`
-- PC: `ctrl`+`.`
+- After positioning the cursor in the word, any of the following should dsiplay the list:
+  - Click on the 💡 (lightbulb) in the left had margin.
+  - Mac: `⌘`+`.` or `cmd`+`.`
+  - PC: `ctrl`+`.`
 
 
 ## Install
