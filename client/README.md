@@ -12,10 +12,10 @@ The goal of this spell checker is to help with catching common spelling errors w
 Load a TypeScript, JavaScript, Text, etc.. file.  Words not in the dictionary files will have
 a squiggly underline.
 
-#### Example
+### Example
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/example.gif)
 
-#### Suggestions
+## Suggestions
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/suggestions.gif)
 
 To see the list of suggestions:
