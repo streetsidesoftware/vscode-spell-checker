@@ -20,7 +20,7 @@ import {
 import * as path from 'path';
 
 import * as CSpell from 'cspell';
-import { CSpellUserSettings } from 'cspell';
+import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 const {
     extractGlobsFromExcludeFilesGlobMap,
@@ -29,10 +29,19 @@ const {
 
 const tds = CSpell;
 
-const defaultSettings = CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings());
+const defaultCheckLimit = 500;
+
+// Turn off the spell checker by default. The setting files should have it set.
+// This prevents the spell checker from running too soon.
+const defaultSettings: CSpellUserSettings = {
+    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings()),
+    checkLimit: defaultCheckLimit,
+    enabled: false,
+};
 const activeSettings: CSpellUserSettings = {...defaultSettings};
 const vscodeSettings: Settings = {};
 const defaultDebounce = 50;
+let activeSettingsNeedUpdating = false;
 
 const defaultExclude: Glob[] = [
     'debug:*',
@@ -62,14 +71,29 @@ interface VsCodeSettings {
 
 let fnFileExclusionTest: ExclusionFunction = () => false;
 
+let g_connection: IConnection;
+
+const startTs = Date.now();
+const enableLogging = false;
+
+function log(msg: string) {
+    if (enableLogging && g_connection) {
+        const ts = Date.now() - startTs;
+        g_connection.console.log(`${ts} ${msg}`);
+    }
+};
+
 function run() {
     // debounce buffer
     const validationRequestStream = new Rx.ReplaySubject<TextDocument>(1);
     const validationFinishedStream = new Rx.ReplaySubject<{ uri: string; version: number }>(1);
-    const triggerUpdateConfig: Rx.ReplaySubject<void> = new Rx.ReplaySubject<void>(1);
+    const triggerUpdateConfig = new Rx.ReplaySubject<void>(1);
+    const triggerValidateAll = new Rx.ReplaySubject<void>(1);
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     const connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
+    g_connection = connection;
+    log('Start');
 
     // Create a simple text document manager. The text document manager
     // supports full document sync only
@@ -94,11 +118,14 @@ function run() {
 
     interface OnChangeParam { settings: Settings; }
     function onConfigChange(change: OnChangeParam) {
+        log('onConfigChange');
         Object.assign(vscodeSettings, change.settings || {});
+        log(`Enabled: ${vscodeSettings.cSpell && vscodeSettings.cSpell.enabled ? 'True' : 'False'}`);
         triggerUpdateConfig.next(undefined);
     }
 
     function updateActiveSettings() {
+        log('updateActiveSettings');
         CSpell.clearCachedSettings();
         const configPaths = workspaceRoot ? [
             path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
@@ -116,12 +143,21 @@ function run() {
         const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
         fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot || '');
         Object.assign(activeSettings, mergedSettings);
+        activeSettingsNeedUpdating = false;
 
-        documents.all().forEach(doc => validationRequestStream.next(doc));
+        triggerValidateAll.next(undefined);
+    }
+
+    function getActiveSettings() {
+        if (activeSettingsNeedUpdating) {
+            updateActiveSettings();
+        }
+        return activeSettings;
     }
 
     function registerConfigurationFile(path: string) {
         configsToImport.add(path);
+        log(`Load: ${path}`);
         triggerUpdateConfig.next(undefined);
     }
 
@@ -160,9 +196,9 @@ function run() {
     let lastValidated = '';
     let lastDurationSelector: Rx.Subject<number> | undefined;
     const disposeValidationStream = validationRequestStream
-        // .tap(doc => connection.console.log(`A Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+        .do(doc => log(`A Validate ${doc.uri}:${doc.version}`))
         .filter(shouldValidateDocument)
-        // .tap(doc => connection.console.log(`B Validate ${doc.uri}:${doc.version}:${Date.now()}`))
+        .do(doc => log(`B Validate ${doc.uri}:${doc.version}`))
         .debounce(doc => {
             if (doc.uri !== lastValidated && lastDurationSelector) {
                 lastDurationSelector.next(0);
@@ -171,32 +207,43 @@ function run() {
             Rx.Observable.timer(activeSettings.spellCheckDelayMs || defaultDebounce).subscribe(lastDurationSelector);
             return lastDurationSelector;
         })
+        .do(doc => log(`Validate: ${doc.uri}`))
         .do(() => lastDurationSelector = undefined)
         .subscribe(validateTextDocument);
 
     // Clear the diagnostics for documents we do not want to validate
     const disposableSkipValidationStream = validationRequestStream
         .filter(doc => !shouldValidateDocument(doc))
+        .do(doc => log(`Skip Validate: ${doc.uri}`))
         .subscribe(doc => {
             connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
         });
 
     const disposableTriggerUpdateConfigStream = triggerUpdateConfig
+        .do(() => log('Trigger Update Config'))
+        .do(() => activeSettingsNeedUpdating = true)
         .debounceTime(100)
         .subscribe(() => {
             updateActiveSettings();
+        });
+
+    const disposableTriggerValidateAll = triggerValidateAll
+        .debounceTime(250)
+        .subscribe(() => {
+            log('Validate all documents');
+            documents.all().forEach(doc => validationRequestStream.next(doc));
         });
 
     validationFinishedStream.next({ uri: 'start', version: 0 });
 
     function shouldValidateDocument(textDocument: TextDocument): boolean {
         const { uri, languageId } = textDocument;
-        return !!activeSettings.enabled && isLanguageEnabled(languageId)
+        return !!getActiveSettings().enabled && isLanguageEnabled(languageId)
             && !isUriExcluded(uri);
     }
 
     function isLanguageEnabled(languageId: string) {
-        const { enabledLanguageIds = []} = activeSettings;
+        const { enabledLanguageIds = []} = getActiveSettings();
         return enabledLanguageIds.indexOf(languageId) >= 0;
     }
 
@@ -205,7 +252,7 @@ function run() {
     }
 
     function getBaseSettings() {
-        return {...CSpell.mergeSettings(defaultSettings, activeSettings), enabledLanguageIds: activeSettings.enabledLanguageIds};
+        return {...CSpell.mergeSettings(defaultSettings, getActiveSettings()), enabledLanguageIds: getActiveSettings().enabledLanguageIds};
     }
 
     function getSettingsToUseForDocument(doc: TextDocument) {
@@ -215,12 +262,13 @@ function run() {
     function validateTextDocument(textDocument: TextDocument): void {
         try {
             const settingsToUse = getSettingsToUseForDocument(textDocument);
-
-            Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
-                // Send the computed diagnostics to VSCode.
-                validationFinishedStream.next(textDocument);
-                connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-            });
+            if (settingsToUse.enabled) {
+                Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
+                    // Send the computed diagnostics to VSCode.
+                    validationFinishedStream.next(textDocument);
+                    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+                });
+                }
         } catch (e) {
             console.log(e);
         }
@@ -251,6 +299,7 @@ function run() {
         disposableSkipValidationStream.unsubscribe();
         disposeValidationStream.unsubscribe();
         disposableTriggerUpdateConfigStream.unsubscribe();
+        disposableTriggerValidateAll.unsubscribe();
     });
 }
 
