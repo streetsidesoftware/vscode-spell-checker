@@ -6,7 +6,7 @@ import { validateText } from 'cspell';
 
 export const diagSource = 'cSpell Checker';
 export {validateText} from 'cspell';
-import { CSpellUserSettings } from 'cspell';
+import { CSpellUserSettings } from './cspellConfig';
 import * as cspell from 'cspell';
 
 export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
@@ -16,7 +16,9 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
 }
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
-    return Rx.Observable.fromPromise<cspell.TextOffset[]>(validateText(textDocument.getText(), options))
+    const limit = (options.checkLimit || 500) * 1024;
+    const text = textDocument.getText().slice(0, limit);
+    return Rx.Observable.fromPromise<cspell.TextOffset[]>(validateText(text, options))
         .flatMap(a => a)
         .filter(a => !!a)
         .map(a => a!)

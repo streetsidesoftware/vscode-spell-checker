@@ -81,6 +81,11 @@
                     "default": 100,
                     "description": "Controls the maximum number of spelling errors per document."
                 },
+                "cSpell.checkLimit": {
+                    "type": "number",
+                    "default": 500,
+                    "description": "The limit in K Bytes to be checked in a file."
+                },
                 "cSpell.numSuggestions": {
                     "type": "number",
                     "default": 8,
