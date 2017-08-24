@@ -33,6 +33,15 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "cSpell.displayCSpellInfo",
+                    "when": "editorTextFocus",
+                    "group": "A_cspell"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "cSpell.addWordToDictionary",
