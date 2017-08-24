@@ -9,6 +9,8 @@ export {validateText} from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import * as cspell from 'cspell';
 
+export const defaultCheckLimit = 500;
+
 export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
         .toArray()
@@ -16,7 +18,7 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
 }
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
-    const limit = (options.checkLimit || 500) * 1024;
+    const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const text = textDocument.getText().slice(0, limit);
     return Rx.Observable.fromPromise<cspell.TextOffset[]>(validateText(text, options))
         .flatMap(a => a)

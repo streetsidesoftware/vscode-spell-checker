@@ -29,7 +29,7 @@ const {
 
 const tds = CSpell;
 
-const defaultCheckLimit = 500;
+const defaultCheckLimit = Validator.defaultCheckLimit;
 
 // Turn off the spell checker by default. The setting files should have it set.
 // This prevents the spell checker from running too soon.
