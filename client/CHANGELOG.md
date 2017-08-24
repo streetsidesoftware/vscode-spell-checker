@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [Unreleased]
+* Update `README.md` to make finding suggestions a bit easier.
+* Add link to German extension.
+
 ## [1.3.7]
 * Add new setting to limit the amount of text checked in a single file. `cSpell.checkLimit` can be used to set the limit in K-Bytes. By default it is 500KB.
 * On startup, the spell checker is disabled and will be enabled only after the settings are read.

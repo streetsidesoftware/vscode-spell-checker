@@ -19,10 +19,12 @@ a squiggly underline.
 ![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/suggestions.gif)
 
 To see the list of suggestions:
-- After positioning the cursor in the word, any of the following should display the list of suggestions:
-  - Click on the 💡 (lightbulb) in the left had margin.
-  - Mac: `⌘`+`.` or `Cmd`+`.`
-  - PC: `Ctrl`+`.`
+
+After positioning the cursor in the word, any of the following should display the list of suggestions:
+- Click on the 💡 (lightbulb) in the left had margin.
+- [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
+    - Mac: `⌘`+`.` or `Cmd`+`.`
+    - PC: `Ctrl`+`.`
 
 
 ## Install
@@ -40,6 +42,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
 * [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
 * [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
+* [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
 * [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
 
 ## Enabled File Types
