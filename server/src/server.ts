@@ -268,7 +268,7 @@ function run() {
                     validationFinishedStream.next(textDocument);
                     connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
                 });
-                }
+            }
         } catch (e) {
             console.log(e);
         }
