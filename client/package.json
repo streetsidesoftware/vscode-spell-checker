@@ -84,7 +84,7 @@
                 "cSpell.checkLimit": {
                     "type": "number",
                     "default": 500,
-                    "description": "The limit in K Bytes to be checked in a file."
+                    "description": "The limit in K-Bytes to be checked in a file."
                 },
                 "cSpell.numSuggestions": {
                     "type": "number",
@@ -115,6 +115,7 @@
                         "php",
                         "plaintext",
                         "python",
+                        "restructuredtext",
                         "text",
                         "typescript",
                         "typescriptreact",
