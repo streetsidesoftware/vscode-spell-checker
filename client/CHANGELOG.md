@@ -2,7 +2,7 @@
 
 ## [1.3.7]
 * Add new setting to limit the amount of text checked in a single file. `cSpell.checkLimit` can be used to set the limit in K-Bytes. By default it is 500KB.
-* On startup, the spell checker is disabled and will be inabled only after the settings are read.
+* On startup, the spell checker is disabled and will be enabled only after the settings are read.
   This is to prevent the checking of file before all the configuration has been loaded.
 * Improvements to the loading process has been to reduce repeated checking of documents during configuration changes.
 * Checking of `handlebars` files have been turned on by default.
