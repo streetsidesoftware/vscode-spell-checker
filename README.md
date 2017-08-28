@@ -18,7 +18,8 @@ For the readme on the plugin: [README](./client/README.md).
 
 Improvements to existing word lists and new word lists are welcome.
 
-The source text for each dictionary is in `./server/dictionaries`.
+All dictionaries are being migrated to [cspell-dicts](https://github.com/Jason3S/cspell-dicts).
+Some dictionaries are still located at [cspell](https://github.com/Jason3S/cspell)/dictionaries.
 
 ### Format for Dictionary Word lists
 
@@ -82,10 +83,6 @@ angles
 
 Spaces in the compiled dictionary have a special meaning.
 They tell the suggestion algorithm to suggest: 'newYork', 'new_york', 'new york', etc. for 'newyork'.
-
-### Compiling Word List
-
-Use the `npm run build-dictionaries` command to build the dictionaries for the extension.
 
 ### Locals
 
