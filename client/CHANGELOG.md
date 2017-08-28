@@ -1,8 +1,10 @@
 # Release Notes:
 
-## [Unreleased]
+## [1.3.8]
 * Update `README.md` to make finding suggestions a bit easier.
 * Add link to German extension.
+* Update cspell to support Python Django Framework.
+* Update cspell to support Go 1.9, thanks to @AlekSi
 
 ## [1.3.7]
 * Add new setting to limit the amount of text checked in a single file. `cSpell.checkLimit` can be used to set the limit in K-Bytes. By default it is 500KB.
