@@ -14,6 +14,17 @@ For the readme on the plugin: [README](./client/README.md).
 1. Launch vscode: `code client`
 1. Run the extension from vscode: `F5`
 
+### Debugging the Client
+
+1. Launch vscode: `code client`
+1. Run the extension from vscode: `F5`
+
+### Debugging the Server
+
+1. Launch vscode for the server: `code server`
+1. Launch the client as specified above.
+1. Attach to the server: `F5` or `Debug -> Attach Server`
+
 ## Dictionaries / Word List
 
 Improvements to existing word lists and new word lists are welcome.
