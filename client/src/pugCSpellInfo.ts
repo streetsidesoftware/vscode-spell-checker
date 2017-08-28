@@ -12,6 +12,8 @@ export interface TemplateVariables {
     linkEnableLanguage: string;
     linkDisableLanguage: string;
     imagesPath: string;
+    local?: string[];
+    availableLocals?: string[];
 }
 
 export function render(params: TemplateVariables) {

@@ -22,6 +22,7 @@ import * as path from 'path';
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
+import { GetConfigurationForDocumentResult, IsSpellCheckEnabledResult } from './api';
 const {
     extractGlobsFromExcludeFilesGlobMap,
     generateExclusionFunctionForUri,
@@ -164,6 +165,7 @@ function run() {
     interface TextDocumentInfo {
         uri?: string;
         languageId?: string;
+        text?: string;
     }
 
     // Listen for event messages from the client.
@@ -172,23 +174,25 @@ function run() {
 
     connection.onRequest('isSpellCheckEnabled', (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
-        return {
+        const result: IsSpellCheckEnabledResult = {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
         };
+        return result;
     });
 
     connection.onRequest('getConfigurationForDocument', (params: TextDocumentInfo) => {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
-        const docSettings = doc && getSettingsToUseForDocument(doc);
+        const docSettings = doc && getSettingsToUseForDocument(doc) || undefined;
         const settings = activeSettings;
-        return {
+        const result: GetConfigurationForDocumentResult =  {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
             settings,
             docSettings,
         };
+        return result;
     });
 
 

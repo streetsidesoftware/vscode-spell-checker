@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from './CSpellSettings';
+import { CSpellUserSettings } from './server';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace } from 'vscode';
 import * as path from 'path';

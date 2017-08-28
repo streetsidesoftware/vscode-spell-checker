@@ -8,6 +8,7 @@ import * as commands from './commands';
 import * as util from './util';
 import {Maybe} from './util';
 import { isSupportedUri } from './uriHelper';
+import * as serverSettings from './serverSettings';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -65,9 +66,11 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 .map(range => document.getText(range));
             const spellingErrors = diags && util.freqCount(allSpellingErrors);
             autoRefresh(uri);  // Since the diags can change, we need to setup a refresh.
-            return client.isSpellCheckEnabled(document).then(response => {
-                const { fileEnabled = false, languageEnabled = false } = response;
+            return client.getConfigurationForDocument(document).then(response => {
+                const { fileEnabled = false, languageEnabled = false, settings } = response;
                 const languageId = document.languageId;
+                const local = serverSettings.extractLanguage(settings);
+                const availableLocals = serverSettings.extractLocals(settings);
                 const html = preview.render({
                     fileEnabled,
                     languageEnabled,
@@ -78,6 +81,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId, document.uri),
                     linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId, document.uri),
                     imagesPath,
+                    local,
+                    availableLocals,
                 });
                 return html;
             });

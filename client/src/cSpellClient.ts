@@ -4,7 +4,7 @@ import {
 
 import * as vscode from 'vscode';
 
-import { CSpellUserSettings } from './CSpellSettings';
+import { CSpellUserSettings, GetConfigurationForDocumentResult } from './server';
 import * as Settings from './settings';
 
 import * as LanguageIds from './languageIds';
@@ -81,6 +81,19 @@ export class CSpellClient {
             { uri: uri.toString(), languageId }
         ))
         .then((response: ServerResponseIsSpellCheckEnabled) => response);
+    }
+
+    public getConfigurationForDocument(document: vscode.TextDocument): Thenable<GetConfigurationForDocumentResult> {
+        const { uri, languageId = '' } = document;
+
+        if (!uri || !languageId) {
+            return Promise.resolve({});
+        }
+
+        return this.client.onReady().then(() => this.client.sendRequest(
+            'getConfigurationForDocument',
+            { uri: uri.toString(), languageId }
+        ));
     }
 
     public applySettings(settings: { cSpell: CSpellUserSettings, search: any }) {
