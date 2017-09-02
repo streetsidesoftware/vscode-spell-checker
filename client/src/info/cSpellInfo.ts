@@ -1,7 +1,7 @@
 // cSpell:words rxjs cspell diags
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { CSpellClient } from '../cSpellClient';
+import { CSpellClient } from '../client';
 import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
 import * as commands from '../commands';

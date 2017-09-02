@@ -2,7 +2,7 @@ import * as path from 'path';
 import {CSpellUserSettings} from './server';
 import { workspace, ExtensionContext, window, TextEditor, ThemeColor } from 'vscode';
 import * as vscode from 'vscode';
-import { CSpellClient } from './cSpellClient';
+import { CSpellClient } from './client';
 import * as cSpellInfo from './info/cSpellInfo';
 import { isSupportedUri, isSupportedDoc } from './util';
 
