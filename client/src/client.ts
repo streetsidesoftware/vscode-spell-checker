@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from './server';
 import * as Settings from './settings';
 
-import * as LanguageIds from './languageIds';
+import * as LanguageIds from './settings/languageIds';
 import { unique, Maybe, uniqueFilter } from './util';
 
 // The debug options for the server

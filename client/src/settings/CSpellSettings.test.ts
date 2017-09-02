@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as path from 'path';
 import { readSettings, updateSettings } from './CSpellSettings';
 import * as CSS from './CSpellSettings';
-import {unique} from './util';
+import {unique} from '../util';
 
 
 describe('Validate CSpellSettings functions', () => {
@@ -82,9 +82,9 @@ describe('Validate CSpellSettings functions', () => {
 
 
 function getPathToSample(baseFilename: string) {
-    return path.join(__dirname, '..', 'samples', baseFilename);
+    return path.join(__dirname, '..', '..', 'samples', baseFilename);
 }
 
 function getPathToTemp(baseFilename: string) {
-    return path.join(__dirname, '..', 'temp', baseFilename);
+    return path.join(__dirname, '..', '..', 'temp', baseFilename);
 }

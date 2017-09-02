@@ -1,10 +1,10 @@
-import { CSpellUserSettings } from './server';
+import { CSpellUserSettings } from '../server';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace } from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { unique, uniqueFilter } from './util';
+import { unique, uniqueFilter } from '../util';
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;

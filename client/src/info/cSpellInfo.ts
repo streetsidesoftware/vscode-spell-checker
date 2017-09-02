@@ -1,14 +1,14 @@
 // cSpell:words rxjs cspell diags
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { CSpellClient } from './cSpellClient';
+import { CSpellClient } from '../cSpellClient';
 import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
-import * as commands from './commands';
-import * as util from './util';
-import {Maybe, uniqueFilter} from './util';
-import { isSupportedUri } from './uriHelper';
-import * as serverSettings from './serverSettings';
+import * as commands from '../commands';
+import * as util from '../util';
+import {Maybe, uniqueFilter} from '../util';
+import { isSupportedUri } from '../util';
+import * as serverSettings from '../server';
 import * as langCode from './languageCodes';
 // import { LocalInfo } from './pugCSpellInfo';
 // import * as gs from 'gensequence';

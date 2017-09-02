@@ -3,9 +3,9 @@ import {merge} from 'tsmerge';
 import * as json from 'comment-json';
 import mkdirp = require('mkdirp');
 import path = require('path');
-import {asPromise} from './asPromise';
-import {CSpellUserSettingsWithComments, CSpellUserSettings} from './server';
-import { unique } from './util';
+import {asPromise} from '../util/asPromise';
+import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server';
+import { unique } from '../util';
 
 const currentSettingsFileVersion = '0.1';
 

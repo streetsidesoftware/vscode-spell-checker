@@ -1,4 +1,4 @@
-import * as CSpellSettings from './CSpellSettings';
+import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 
 import { window, TextEditor } from 'vscode';

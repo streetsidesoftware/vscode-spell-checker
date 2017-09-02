@@ -1,8 +1,8 @@
 import * as path from 'path';
 import {configFileWatcherGlob, setEnableSpellChecking} from './settings';
 import * as settings from './settings';
-import * as cSpellInfoPreview from './cSpellInfo';
-import {CSpellClient} from './cSpellClient';
+import * as cSpellInfoPreview from './info/cSpellInfo';
+import {CSpellClient} from './client';
 
 import { workspace, ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';

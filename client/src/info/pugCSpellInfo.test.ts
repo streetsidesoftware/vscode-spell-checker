@@ -16,6 +16,8 @@ describe('Verify Template Renders', () => {
             linkEnableLanguage: 'command:cSpell',
             linkDisableLanguage: 'command:cSpell',
             imagesPath,
+            local: ['English'],
+            availableLocals: ['English'],
         });
         expect(html).to.not.be.empty;
         expect(html).to.contain('test.ts');
@@ -33,6 +35,8 @@ describe('Verify Template Renders', () => {
             linkEnableLanguage: 'command:cSpell',
             linkDisableLanguage: 'command:cSpell',
             imagesPath,
+            local: ['English'],
+            availableLocals: ['English'],
          });
         expect(html).to.not.be.empty;
         expect(html).to.contain('main.cpp');

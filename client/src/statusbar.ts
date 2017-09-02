@@ -3,8 +3,8 @@ import {CSpellUserSettings} from './server';
 import { workspace, ExtensionContext, window, TextEditor, ThemeColor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './cSpellClient';
-import * as cSpellInfo from './cSpellInfo';
-import { isSupportedUri, isSupportedDoc } from './uriHelper';
+import * as cSpellInfo from './info/cSpellInfo';
+import { isSupportedUri, isSupportedDoc } from './util';
 
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
