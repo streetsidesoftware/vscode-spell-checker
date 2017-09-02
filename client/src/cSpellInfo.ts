@@ -6,9 +6,12 @@ import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
 import * as commands from './commands';
 import * as util from './util';
-import {Maybe} from './util';
+import {Maybe, uniqueFilter} from './util';
 import { isSupportedUri } from './uriHelper';
 import * as serverSettings from './serverSettings';
+import * as langCode from './languageCodes';
+// import { LocalInfo } from './pugCSpellInfo';
+// import * as gs from 'gensequence';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -69,8 +72,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             return client.getConfigurationForDocument(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false, settings } = response;
                 const languageId = document.languageId;
-                const local = serverSettings.extractLanguage(settings);
-                const availableLocals = serverSettings.extractLocals(settings);
+                const local = friendlyLocals(serverSettings.extractLanguage(settings));
+                const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
                 const html = preview.render({
                     fileEnabled,
                     languageEnabled,
@@ -191,6 +194,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 onRefresh.next(uri);
             }
         }, 1000);
+    }
+
+    function friendlyLocals(locals: string[] = []) {
+        return locals
+            .filter(a => !!a.trim())
+            .map(code => langCode.lookupCode(code) || code)
+            .map(lang => lang.replace(/\s*[,]\s*/, ' - '))
+            .map(lang => lang.trim())
+            .filter(uniqueFilter())
+            .sort();
     }
 
     context.subscriptions.push(

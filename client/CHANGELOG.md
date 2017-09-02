@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.3.9]
+* Fixed and issue with incorrect suggestions when the misspelled word started with a capitol letter.
+* Improvements to the Info screen.
+
 ## [1.3.8]
 * Update `README.md` to make finding suggestions a bit easier.
 * Add link to German extension.

@@ -5,10 +5,7 @@ export function extractLanguage(config?: server.CSpellUserSettings): string[] | 
     return (
         config &&
         config.language &&
-        config.language
-            .replace(/[|]/g, ',')
-            .replace(/\s/g, '')
-            .split(',')
+        normalizeLang(config.language)
     ) || undefined;
 }
 
@@ -20,12 +17,18 @@ export function extractLocals(config?: server.CSpellUserSettings): string[] {
 export function extractLocalsFromLanguageSettings(langSettings?: server.LanguageSetting[]): string[] {
     if (!langSettings) return [];
 
-    const values = langSettings
+    const langs = langSettings
         .map(s => s.local || '')
         .filter(s => !!s)
         .map(s => Array.isArray(s) ? s.join(',') : s)
-        .join(',')
+        .join(',');
+    return normalizeLang(langs);
+}
+
+function normalizeLang(lang: string) {
+    return lang
         .replace(/[|]/g, ',')
-        .replace(/[\s*]/g, '');
-    return values.split(',');
+        .replace(/[\s*]/g, '')
+        .replace(/[_]/g, '-')
+        .split(',');
 }

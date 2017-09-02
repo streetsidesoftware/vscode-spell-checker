@@ -2,6 +2,13 @@ import * as ph from './pugHelper';
 
 const templateName = 'CSpellInfoPreview.pug';
 
+export interface LocalInfo {
+    code: string;
+    name: string;
+    enabled: boolean;
+    dictionaryNames: string[];
+}
+
 export interface TemplateVariables {
     filename: string;
     fileEnabled: boolean;
