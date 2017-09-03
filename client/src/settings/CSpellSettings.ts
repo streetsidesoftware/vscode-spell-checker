@@ -1,9 +1,7 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import {merge} from 'tsmerge';
 import * as json from 'comment-json';
-import mkdirp = require('mkdirp');
 import path = require('path');
-import {asPromise} from '../util/asPromise';
 import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server';
 import { unique } from '../util';
 
@@ -12,11 +10,6 @@ const currentSettingsFileVersion = '0.1';
 export const sectionCSpell = 'cSpell';
 
 export const defaultFileName = 'cSpell.json';
-
-const mkDirP = asPromise(mkdirp);
-const writeFile = asPromise<void, string, any>(fs.writeFile);
-const readFile = asPromise(fs.readFile);
-
 
 // cSpell:ignore hte
 const defaultSettings: CSpellUserSettingsWithComments = {
@@ -50,7 +43,7 @@ export function getDefaultSettings(): CSpellUserSettings {
 }
 
 export function readSettings(filename: string): Promise<CSpellUserSettings> {
-    return readFile(filename)
+    return fs.readFile(filename)
         .then(
             buffer => buffer.toString(),
             () => json.stringify(defaultSettings, null, 4)
@@ -62,8 +55,8 @@ export function readSettings(filename: string): Promise<CSpellUserSettings> {
 }
 
 export function updateSettings(filename: string, settings: CSpellUserSettings) {
-    return mkDirP(path.dirname(filename))
-        .then(() => writeFile(filename, json.stringify(settings, null, 4)))
+    return fs.mkdirp(path.dirname(filename))
+        .then(() => fs.writeFile(filename, json.stringify(settings, null, 4)))
         .then(() => settings);
 }
 
