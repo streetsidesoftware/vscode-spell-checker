@@ -7,24 +7,24 @@ export function getSectionName(subSection?: keyof CSpellUserSettings): string {
     return [sectionCSpell, subSection].filter(a => !!a).join('.');
 }
 
-export function getSettingsFromConfig(): CSpellUserSettings {
+export function getSettingsFromVSConfig(): CSpellUserSettings {
     const config = workspace.getConfiguration();
     return config.get<CSpellUserSettings>(sectionCSpell) || {};
 }
 
-export function getSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K): CSpellUserSettings[K] {
+export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(subSection: K): CSpellUserSettings[K] {
     const section = getSectionName(subSection);
     const config = workspace.getConfiguration();
     return config.get<CSpellUserSettings[K]>(section);
 }
 
-export function inspectSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K) {
+export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(subSection: K) {
     const section = getSectionName(subSection);
     const config = workspace.getConfiguration();
     return config.inspect<CSpellUserSettings[K]>(section);
 }
 
-export function setCSpellConfigSetting<K extends keyof CSpellUserSettings>(
+export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K, value: CSpellUserSettings[K], isGlobal: boolean
 ): Thenable<void> {
     const section = getSectionName(subSection);

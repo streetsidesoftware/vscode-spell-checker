@@ -27,7 +27,7 @@ export class CSpellClient {
      * @param: {string} module -- absolute path to the server module.
      */
     constructor(module: string, languageIds: string[]) {
-        const enabledLanguageIds = Settings.getSettingFromConfig('enabledLanguageIds');
+        const enabledLanguageIds = Settings.getSettingFromVSConfig('enabledLanguageIds');
         const scheme = 'file';
         const uniqueLangIds = languageIds
             .concat(enabledLanguageIds || [])
