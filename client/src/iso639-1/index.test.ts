@@ -5,18 +5,20 @@ describe('Validation', () => {
     it('tests normalizeCode', () => {
         expect(normalizeCode('en')).to.be.equal('en');
         expect(normalizeCode('en-US')).to.be.equal('en-US');
-        expect(normalizeCode('en-uk')).to.be.equal('en-UK');
+        expect(normalizeCode('en-gb')).to.be.equal('en-GB');
         expect(normalizeCode('en_US')).to.be.equal('en-US');
         expect(normalizeCode('EN_us')).to.be.equal('en-US');
         expect(normalizeCode('enUS')).to.be.equal('en-US');
         expect(normalizeCode('bad-code')).to.be.equal('bad-code');
         expect(normalizeCode('eses')).to.be.equal('es-ES');
         expect(normalizeCode('walk')).to.be.equal('wa-LK');
+        expect(normalizeCode('four')).to.be.equal('fo-UR');
     });
 
     it('tests isValidCode', () => {
         expect(isValidCode('en'), 'en').to.be.true;
-        expect(isValidCode('en-UK'), 'en-UK').to.be.true;
+        expect(isValidCode('en-UK'), 'en-UK').to.be.false;
+        expect(isValidCode('en-GB'), 'en-GB').to.be.true;
         expect(isValidCode('walk'), 'walk').to.be.false;
     });
 

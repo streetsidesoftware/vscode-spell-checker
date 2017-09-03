@@ -181,7 +181,6 @@ export const codes: string[][] = [
     ['en-TV', 'English', 'Tuvalu'],
     ['en-TZ', 'English', 'Tanzania'],
     ['en-UG', 'English', 'Uganda'],
-    ['en-UK', 'English', 'United Kingdom'],
     ['en-UM', 'English', 'Baker Island'],
     ['en-US', 'English', 'United States'],
     ['en-VC', 'English', 'Saint Vincent and the Grenadines'],
