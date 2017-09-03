@@ -9,7 +9,7 @@ import * as util from '../util';
 import {Maybe, uniqueFilter} from '../util';
 import { isSupportedUri } from '../util';
 import * as serverSettings from '../server';
-import * as langCode from './languageCodes';
+import * as langCode from '../iso639-1';
 // import { LocalInfo } from './pugCSpellInfo';
 // import * as gs from 'gensequence';
 
@@ -199,8 +199,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     function friendlyLocals(locals: string[] = []) {
         return locals
             .filter(a => !!a.trim())
-            .map(code => langCode.lookupCode(code) || code)
-            .map(lang => lang.replace(/\s*[,]\s*/, ' - '))
+            .map(code => langCode.lookupCode(code) || { lang: code, country: '' })
+            .map(({lang, country}) => country ? `${lang} - ${country}` : lang)
             .map(lang => lang.trim())
             .filter(uniqueFilter())
             .sort();

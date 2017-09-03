@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings, normalizeLocal } from '../server';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace } from 'vscode';
 import * as path from 'path';
@@ -16,9 +16,9 @@ const possibleConfigPaths   = [
     path.join('.vscode', baseConfigName.toLowerCase()),
 ].join(',');
 
-const sectionCSpell                   = 'cSpell';
+const sectionCSpell = 'cSpell';
 
-export const findConfig            = `{${possibleConfigPaths}}`;
+export const findConfig = `{${possibleConfigPaths}}`;
 
 export interface SettingsInfo {
     path: string;
@@ -201,13 +201,11 @@ export function enableLocal(isGlobal: boolean, local: string) {
 }
 
 export function disableLocal(isGlobal: boolean, local: string) {
-    function normalize(a: string) { return a.toLowerCase().replace(/[\-_]/, ''); }
-
-    local = normalize(local);
+    local = normalizeLocal(local);
     const currentLanguage = getSettingFromConfig('language') || '';
-    const languages = currentLanguage.split(',')
-        .map(a => a.trim())
-        .filter(a => normalize(a) !== local)
+    const languages = normalizeLocal(currentLanguage)
+        .split(',')
+        .filter(lang => lang !== local)
         .join(',');
     return setCSpellConfigSetting('language', languages, isGlobal);
 }
