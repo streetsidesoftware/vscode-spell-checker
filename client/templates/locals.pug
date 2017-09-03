@@ -1,0 +1,31 @@
+div.mdl-cell.mdl-cell--12-col.mdl-grid
+    table.mdl-data-table.mdl-cell--12-col
+        tr
+            th Language
+            th Global
+            th Workspace
+            th Actual
+        each local in localInfo
+            tr
+                td= local.name
+                td
+                    label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                        input(
+                            class="mdl-switch__input"
+                            type="checkbox"
+                            checked= local.isInUserSettings)
+                        span.mdl-switch__label
+
+                td
+                    label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                        input(
+                            class="mdl-switch__input"
+                            type="checkbox"
+                            checked= local.isInWorkspaceSettings)
+                        span.mdl-switch__label
+                td
+                    if local.enabled
+                        span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
+                    else
+                        span.mdl-chip__contact.mdl-color--grey.mdl-color-text--white ✘
+

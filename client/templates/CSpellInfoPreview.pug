@@ -2,71 +2,14 @@ doctype html
 html
     include head.pug
     body
-        h1
-            img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
-            | Spell Checker Information
-        div
-            table
-                tr
-                    - var localList = local.join(", ")
-                    td.align-top Enabled Language Locals:
-                    td.align-top= localList
-                tr
-                    td.align-top Available Dictionary Locals:
-                    td.align-top
-                        each local in availableLocals
-                            | #{local}
-                            br
-            table
-                tr
-                    th Language
-                    th Global
-                    th Workspace
-                    th Actual
-                each local in localInfo
-                    tr
-                        td= local.name
-                        td= local.isInUserSettings ? '☑️' : ''
-                        td= local.isInWorkspaceSettings ? '☑️' : ''
-                        td= local.enabled ? '☑️' : ''
-
-        div
-            h2 File Information
-            table
-                tr
-                    td File Name:
-                    td #{filename}
-                tr
-                    td Spell Checker enabled for Path:
-                    td #{fileEnabled ? 'Yes' : 'No'}
-                tr
-                    td Spell Checker enabled for file type (#{languageId})
-                    td
-                        div.onoffswitch.yes-no
-                            input(
-                                type="checkbox"
-                                name="onoffswitch"
-                                class="onoffswitch-checkbox"
-                                id="langOnOffSwitch"
-                                checked=languageEnabled
-                                onchange="triggerLang()")
-                            label.onoffswitch-label(for="langOnOffSwitch")
-                                span.onoffswitch-inner
-                                span.onoffswitch-switch
-                        a#enableLang.hidden(href=linkEnableLanguage)
-                            | Enable
-                        a#disableLang.hidden(href=linkDisableLanguage)
-                            | Disable
-
-        div
-            h2 Issues:
-            if spellingErrors
-                if spellingErrors.length
-                    ul
-                        each val in spellingErrors.slice(0,200)
-                            li= `${val[0]} (${val[1]})`
-                else
-                    b None!
-            else
-                b Analyzing...
-        div#output
+        div.mdl-layout.mdl-js-layout
+            main.mdl-layout__content
+                div.mdl-grid
+                    div.mdl-cell.mdl-cell--12-col.mdl-grid
+                        h2
+                            img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+                            | Spell Checker Information
+                div.mdl-grid
+                    include locals.pug
+                    include fileInfo.pug
+                    include issues.pug

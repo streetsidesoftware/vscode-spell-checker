@@ -1,8 +1,14 @@
 head
-    link(href=templateDir + '/common.css', rel='stylesheet')
+    link(href=templateDir + '/mdl/material.min.css', rel='stylesheet')
+    script(src=templateDir + '/mdl/material.js')
     style(type='text/css').
+        html>body {
+            font-family: 'Roboto','Helvetica','Arial',sans-serif!important;
+            background-color: #FAFAFA;
+            color: #111111;
+        }
         .logo {
-            vertical-align: top;
+            vertical-align: center;
             width: 60px;
             height: 60px;
             margin-right: 10px;
@@ -65,8 +71,7 @@ head
             vertical-align: top;
         }
     script.
-        function triggerLang() {
-            var elem = document.getElementById('langOnOffSwitch');
-            var linkId = elem.checked ? 'enableLang' : 'disableLang';
+        function triggerLang(checked) {
+            var linkId = checked ? 'enableLang' : 'disableLang';
             document.getElementById(linkId).click();
         }

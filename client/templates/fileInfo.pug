@@ -1,0 +1,28 @@
+div.mdl-cell.mdl-cell--12-col.mdl-grid
+    h3 File Information
+    ul.mdl-list.mdl-cell.mdl-cell--12-col
+        li.mdl-list__item
+            span.mdl-list__item-primary-content File Name:
+            span.mdl-list__item-secondary-content= filename
+        li.mdl-list__item
+            span.mdl-list__item-primary-content Spell Checker enabled for Path:
+            span.mdl-list__item-secondary-content
+                if local.enabled
+                    span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
+                else
+                    span.mdl-chip__contact.mdl-color--grey.mdl-color-text--white ✘
+        li.mdl-list__item
+            span.mdl-list__item-primary-content
+                | Spell Checker enabled for file type (#{languageId})
+            span.mdl-list__item-secondary-action
+                label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                    input(
+                        class="mdl-switch__input"
+                        type="checkbox"
+                        checked= languageEnabled
+                        onchange="triggerLang(this.checked)")
+                    span.mdl-switch__label
+                a#enableLang.hidden(href=linkEnableLanguage)
+                    | Enable
+                a#disableLang.hidden(href=linkDisableLanguage)
+                    | Disable

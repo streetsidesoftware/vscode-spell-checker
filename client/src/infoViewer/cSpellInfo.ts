@@ -160,15 +160,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     function enableLanguage(languageId: string, uri: string) {
         commands.enableLanguageId(languageId)
-        .then(() => restoreFocus(uri));
+        // .then(() => restoreFocus());
     }
 
     function disableLanguage(languageId: string, uri: string) {
         commands.disableLanguageId(languageId)
-        .then(() => restoreFocus(uri));
+        // .then(() => restoreFocus());
     }
 
-    function restoreFocus(uri: string) {
+    function restoreFocus(uri?: string) {
+        uri = uri || (lastDocumentUri && lastDocumentUri.toString());
         if (uri) {
             // triggerSettingsRefresh(vscode.Uri.parse(uri));
             changeFocus(uri);
@@ -235,8 +236,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         const workspaceLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.workspaceValue), { isInWorkspaceSettings: true });
 
         function resetKnownLocals() {
-            [...knownLocals]
-                .map(([, info]) => info)
+            [...knownLocals.values()]
                 .forEach(info => {
                     delete info.enabled;
                     delete info.isInUserSettings;
@@ -253,7 +253,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         )
         .forEach(info => knownLocals.set(info.code, {...knownLocals.get(info.code), ...info}));
 
-        return [...knownLocals.values()];
+        if (workspaceLocals.length) {
+            // Force values to false.
+            [...knownLocals.values()].forEach(info => info.isInWorkspaceSettings = info.isInWorkspaceSettings || false);
+        }
+
+        return [...knownLocals.values()].sort((a, b) => a.name.localeCompare(b.name));
     }
 
     context.subscriptions.push(
