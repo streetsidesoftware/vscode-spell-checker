@@ -42,7 +42,7 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"`
     ],
-    flagWords: ['hte'],
+    flagWords: [],
 };
 
 export function getDefaultSettings(): CSpellUserSettings {

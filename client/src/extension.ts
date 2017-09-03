@@ -1,7 +1,7 @@
 import * as path from 'path';
 import {configFileWatcherGlob, setEnableSpellChecking} from './settings';
 import * as settings from './settings';
-import * as cSpellInfoPreview from './info/cSpellInfo';
+import * as infoViewer from './infoViewer';
 import {CSpellClient} from './client';
 
 import { workspace, ExtensionContext } from 'vscode';
@@ -57,7 +57,7 @@ export function activate(context: ExtensionContext) {
             configWatcher.onDidDelete(triggerGetSettings)
         );
 
-        cSpellInfoPreview.activate(context, client);
+        infoViewer.activate(context, client);
 
         function registerConfig(path: string) {
             client.registerConfiguration(path);

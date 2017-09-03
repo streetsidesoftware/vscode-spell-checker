@@ -5,6 +5,7 @@ import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { unique, uniqueFilter } from '../util';
+import * as config from './config';
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
@@ -15,8 +16,6 @@ const possibleConfigPaths   = [
     path.join('.vscode', baseConfigName),
     path.join('.vscode', baseConfigName.toLowerCase()),
 ].join(',');
-
-const sectionCSpell = 'cSpell';
 
 export const findConfig = `{${possibleConfigPaths}}`;
 
@@ -34,35 +33,6 @@ export function getDefaultWorkspaceConfigLocation() {
 
 export function hasWorkspaceLocation() {
     return !!workspace.rootPath;
-}
-
-export function getSectionName(subSection?: keyof CSpellUserSettings): string {
-    return [sectionCSpell, subSection].filter(a => !!a).join('.');
-}
-
-export function getSettingsFromConfig(): CSpellUserSettings {
-    const config = workspace.getConfiguration();
-    return config.get<CSpellUserSettings>(sectionCSpell) || {};
-}
-
-export function getSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K): CSpellUserSettings[K] {
-    const section = getSectionName(subSection);
-    const config = workspace.getConfiguration();
-    return config.get<CSpellUserSettings[K]>(section);
-}
-
-export function inspectSettingFromConfig<K extends keyof CSpellUserSettings>(subSection: K) {
-    const section = getSectionName(subSection);
-    const config = workspace.getConfiguration();
-    return config.inspect<CSpellUserSettings[K]>(section);
-}
-
-export function setCSpellConfigSetting<K extends keyof CSpellUserSettings>(
-    subSection: K, value: CSpellUserSettings[K], isGlobal: boolean
-): Thenable<void> {
-    const section = getSectionName(subSection);
-    const config = workspace.getConfiguration();
-    return config.update(section, value, isGlobal);
 }
 
 export function findSettingsFiles(): Thenable<Uri[]> {
@@ -88,7 +58,7 @@ export function getSettings(): Thenable<SettingsInfo> {
         .then(info => {
             if (!info) {
                 const defaultSettings = CSpellSettings.getDefaultSettings();
-                const { language = defaultSettings.language } = getSettingsFromConfig();
+                const { language = defaultSettings.language } = config.getSettingsFromConfig();
                 const settings = { ...defaultSettings, language };
                 const path = getDefaultWorkspaceConfigLocation();
                 return { path, settings};
@@ -99,11 +69,11 @@ export function getSettings(): Thenable<SettingsInfo> {
 
 export function setEnableSpellChecking(enabled: boolean, isGlobal: boolean): Thenable<void> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
-    return setCSpellConfigSetting('enabled', enabled, useGlobal);
+    return config.setCSpellConfigSetting('enabled', enabled, useGlobal);
 }
 
 export function getEnabledLanguagesFromAllConfigs() {
-    const inspect = inspectSettingFromConfig('enabledLanguageIds');
+    const inspect = config.inspectSettingFromConfig('enabledLanguageIds');
     return inspect;
 }
 
@@ -116,13 +86,13 @@ export function getEnabledLanguagesFromConfig(isGlobal: boolean) {
 export function enableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const langs = unique([languageId, ...getEnabledLanguagesFromConfig(useGlobal)]).sort();
-    return setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
+    return config.setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
 }
 
 export function disableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const langs = getEnabledLanguagesFromConfig(useGlobal).filter(a => a !== languageId).sort();
-    return setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
+    return config.setCSpellConfigSetting('enabledLanguageIds', langs, useGlobal).then(() => langs);
 }
 
 /**
@@ -158,13 +128,13 @@ export function disableLanguage(isGlobal: boolean, languageId: string): Thenable
 export function addWordToSettings(isGlobal: boolean, word: string): Thenable<void> {
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const words = getSettingFromConfig(section) || [];
-    return setCSpellConfigSetting(section, unique(words.concat([word]).sort()), useGlobal);
+    const words = config.getSettingFromConfig(section) || [];
+    return config.setCSpellConfigSetting(section, unique(words.concat([word]).sort()), useGlobal);
 }
 
 export function toggleEnableSpellChecker(): Thenable<void> {
-    const curr = getSettingFromConfig('enabled');
-    return setCSpellConfigSetting('enabled', !curr, false);
+    const curr = config.getSettingFromConfig('enabled');
+    return config.setCSpellConfigSetting('enabled', !curr, false);
 }
 
 /**
@@ -191,26 +161,26 @@ export function disableCurrentLanguage(): Thenable<void> {
 
 
 export function enableLocal(isGlobal: boolean, local: string) {
-    const currentLanguage = getSettingFromConfig('language') || '';
+    const currentLanguage = config.getSettingFromConfig('language') || '';
     const languages = currentLanguage.split(',')
         .concat(local.split(','))
         .map(a => a.trim())
         .filter(uniqueFilter())
         .join(',');
-    return setCSpellConfigSetting('language', languages, isGlobal);
+    return config.setCSpellConfigSetting('language', languages, isGlobal);
 }
 
 export function disableLocal(isGlobal: boolean, local: string) {
     local = normalizeLocal(local);
-    const currentLanguage = getSettingFromConfig('language') || '';
+    const currentLanguage = config.getSettingFromConfig('language') || '';
     const languages = normalizeLocal(currentLanguage)
         .split(',')
         .filter(lang => lang !== local)
         .join(',');
-    return setCSpellConfigSetting('language', languages, isGlobal);
+    return config.setCSpellConfigSetting('language', languages, isGlobal);
 }
 
 export function updateSettings(isGlobal: boolean, settings: CSpellUserSettings) {
     const keys = Object.keys(settings) as (keyof CSpellUserSettings)[];
-    return Promise.all(keys.map(key => setCSpellConfigSetting(key, settings[key], isGlobal)));
+    return Promise.all(keys.map(key => config.setCSpellConfigSetting(key, settings[key], isGlobal)));
 }

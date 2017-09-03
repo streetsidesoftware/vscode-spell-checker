@@ -3,7 +3,7 @@ import {CSpellUserSettings} from './server';
 import { workspace, ExtensionContext, window, TextEditor, ThemeColor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient } from './client';
-import * as cSpellInfo from './info/cSpellInfo';
+import * as infoViewer from './infoViewer';
 import { isSupportedUri, isSupportedDoc } from './util';
 
 
@@ -40,7 +40,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
                     const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
                     sbCheck.text = `${langText} | ${fileText}`;
                     sbCheck.tooltip = reason;
-                    sbCheck.command = cSpellInfo.commandDisplayCSpellInfo;
+                    sbCheck.command = infoViewer.commandDisplayCSpellInfo;
                     sbCheck.show();
                 }
             });

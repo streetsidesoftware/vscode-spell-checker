@@ -4,11 +4,11 @@ import {
 
 import * as vscode from 'vscode';
 
-import { CSpellUserSettings, GetConfigurationForDocumentResult } from './server';
-import * as Settings from './settings';
+import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
+import * as Settings from '../settings';
 
-import * as LanguageIds from './settings/languageIds';
-import { unique, Maybe, uniqueFilter } from './util';
+import * as LanguageIds from '../settings/languageIds';
+import { Maybe, uniqueFilter } from '../util';
 
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };

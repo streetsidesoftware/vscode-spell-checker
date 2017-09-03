@@ -3,7 +3,7 @@ import * as pug from 'pug';
 
 const cache = new Map<string, pug.compileTemplate>();
 
-const baseDir = __dirname.replace(/(?:out.)?src.info$/, '');
+const baseDir = __dirname.replace(/(?:out.)?src.*$/, '');
 
 export const templateDir = path.join(baseDir, 'templates');
 
