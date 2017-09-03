@@ -39,7 +39,7 @@ export function findSettingsFiles(): Thenable<Uri[]> {
     return workspace.findFiles(findConfig, '{**/node_modules,**/.git}');
 }
 
-export function findSettingsFileLocation(): Thenable<string> {
+export function findSettingsFileLocation(): Thenable<string | undefined> {
     return findSettingsFiles()
         .then(uris => uris.map(uri => uri.fsPath))
         .then(paths => paths.sort((a, b) => a.length - b.length))
@@ -60,7 +60,7 @@ export function getSettings(): Thenable<SettingsInfo> {
                 const defaultSettings = CSpellSettings.getDefaultSettings();
                 const { language = defaultSettings.language } = config.getSettingsFromVSConfig();
                 const settings = { ...defaultSettings, language };
-                const path = getDefaultWorkspaceConfigLocation();
+                const path = getDefaultWorkspaceConfigLocation() || '';
                 return { path, settings};
             }
             return info;

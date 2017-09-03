@@ -329,7 +329,7 @@
         "pug-lint": "^2.4.0",
         "rimraf": "^2.6.1",
         "ts-node": "^3.3.0",
-        "typescript": "^2.3.4"
+        "typescript": "^2.5.2"
     },
     "dependencies": {
         "comment-json": "^1.1.3",
