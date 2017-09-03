@@ -5,8 +5,9 @@ const templateName = 'CSpellInfoPreview.pug';
 export interface LocalInfo {
     code: string;
     name: string;
-    enabled: boolean;
-    dictionaryNames: string[];
+    enabled?: boolean;
+    isInUserSettings?: boolean;
+    isInWorkspaceSettings?: boolean;
 }
 
 export interface TemplateVariables {
@@ -19,6 +20,7 @@ export interface TemplateVariables {
     linkEnableLanguage: string;
     linkDisableLanguage: string;
     imagesPath: string;
+    localInfo: LocalInfo[];
     local: string[];
     availableLocals: string[];
 }

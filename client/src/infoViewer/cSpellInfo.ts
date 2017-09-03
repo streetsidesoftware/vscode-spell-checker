@@ -10,8 +10,8 @@ import {Maybe, uniqueFilter} from '../util';
 import { isSupportedUri } from '../util';
 import * as serverSettings from '../server';
 import * as langCode from '../iso639-1';
-// import { LocalInfo } from './pugCSpellInfo';
-// import * as gs from 'gensequence';
+import * as config from '../settings';
+import { LocalInfo } from './pugCSpellInfo';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -36,6 +36,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     let lastDocumentUri: Maybe<vscode.Uri> = undefined;
     const imagesUri = vscode.Uri.file(context.asAbsolutePath('images'));
     const imagesPath = imagesUri.path;
+
+    let knownLocals = new Map<string, LocalInfo>();
 
     class CSpellInfoTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
@@ -74,6 +76,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 const languageId = document.languageId;
                 const local = friendlyLocals(serverSettings.extractLanguage(settings));
                 const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
+                const localInfo = composeLocalInfo(settings);
                 const html = preview.render({
                     fileEnabled,
                     languageEnabled,
@@ -84,6 +87,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId, document.uri),
                     linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId, document.uri),
                     imagesPath,
+                    localInfo,
                     local,
                     availableLocals,
                 });
@@ -204,6 +208,52 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             .map(lang => lang.trim())
             .filter(uniqueFilter())
             .sort();
+    }
+
+    type PartialLocalInfo = {
+        [K in keyof LocalInfo]?: LocalInfo[K];
+    };
+
+    function localInfo(locals: string[] = [], defaults: PartialLocalInfo = {}): LocalInfo[] {
+        return locals
+            .filter(a => !!a.trim())
+            .filter(uniqueFilter())
+            .sort()
+            .map(code => ({ code }))
+            .map(info => {
+                const {lang, country} = langCode.lookupCode(info.code) || { lang: info.code, country: '' };
+                const name = country ? `${lang} - ${country}` : lang;
+                return {...defaults, ...info, name };
+            });
+    }
+
+    function composeLocalInfo(settingsFromServer?: serverSettings.CSpellUserSettings): LocalInfo[] {
+        const availableLocals = localInfo(serverSettings.extractLocals(settingsFromServer));
+        const localsFromServer = localInfo(serverSettings.extractLanguage(settingsFromServer), { enabled: true });
+        const fromConfig = config.inspectSettingFromVSConfig('language') || { key: ''};
+        const globalLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.globalValue), { isInUserSettings: true });
+        const workspaceLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.workspaceValue), { isInWorkspaceSettings: true });
+
+        function resetKnownLocals() {
+            [...knownLocals]
+                .map(([, info]) => info)
+                .forEach(info => {
+                    delete info.enabled;
+                    delete info.isInUserSettings;
+                    delete info.isInWorkspaceSettings;
+                });
+        }
+
+        resetKnownLocals();
+        // Add all the available locals
+        availableLocals.concat(
+            localsFromServer,
+            globalLocals,
+            workspaceLocals,
+        )
+        .forEach(info => knownLocals.set(info.code, {...knownLocals.get(info.code), ...info}));
+
+        return [...knownLocals.values()];
     }
 
     context.subscriptions.push(

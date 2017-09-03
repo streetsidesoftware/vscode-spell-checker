@@ -16,6 +16,7 @@ describe('Verify Template Renders', () => {
             linkEnableLanguage: 'command:cSpell',
             linkDisableLanguage: 'command:cSpell',
             imagesPath,
+            localInfo: [],
             local: ['English'],
             availableLocals: ['English'],
         });
@@ -35,6 +36,7 @@ describe('Verify Template Renders', () => {
             linkEnableLanguage: 'command:cSpell',
             linkDisableLanguage: 'command:cSpell',
             imagesPath,
+            localInfo: [],
             local: ['English'],
             availableLocals: ['English'],
          });

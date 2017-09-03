@@ -17,5 +17,5 @@ export function compile(templateName: string) {
 
 export function render(templateName: string, params: pug.LocalsObject) {
     const fn = compile(templateName);
-    return fn(params);
+    return fn({...params, templateDir});
 }

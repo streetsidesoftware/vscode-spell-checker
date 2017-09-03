@@ -17,6 +17,19 @@ html
                         each local in availableLocals
                             | #{local}
                             br
+            table
+                tr
+                    th Language
+                    th Global
+                    th Workspace
+                    th Actual
+                each local in localInfo
+                    tr
+                        td= local.name
+                        td= local.isInUserSettings ? '☑️' : ''
+                        td= local.isInWorkspaceSettings ? '☑️' : ''
+                        td= local.enabled ? '☑️' : ''
+
         div
             h2 File Information
             table
