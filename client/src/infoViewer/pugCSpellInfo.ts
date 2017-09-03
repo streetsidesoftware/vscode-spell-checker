@@ -23,6 +23,7 @@ export interface TemplateVariables {
     localInfo: LocalInfo[];
     local: string[];
     availableLocals: string[];
+    genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
 }
 
 export function render(params: TemplateVariables) {

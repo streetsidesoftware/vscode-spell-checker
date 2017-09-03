@@ -1,10 +1,11 @@
+a#local-link
 div.mdl-cell.mdl-cell--12-col.mdl-grid
     table.mdl-data-table.mdl-cell--12-col
         tr
             th Language
-            th Global
-            th Workspace
-            th Actual
+            th.align-left Global
+            th.align-left Workspace
+            th.align-left Actual
         each local in localInfo
             tr
                 td= local.name
@@ -13,16 +14,25 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                         input(
                             class="mdl-switch__input"
                             type="checkbox"
+                            data-link-enable= genSetLocal(local.code, true, true)
+                            data-link-disable= genSetLocal(local.code, false, true)
+                            onchange="triggerLocalChange(this)"
                             checked= local.isInUserSettings)
                         span.mdl-switch__label
 
                 td
-                    label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
-                        input(
-                            class="mdl-switch__input"
-                            type="checkbox"
-                            checked= local.isInWorkspaceSettings)
-                        span.mdl-switch__label
+                    if (local.isInWorkspaceSettings == undefined)
+                        span.align-center -
+                    else
+                        label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                            input(
+                                class="mdl-switch__input"
+                                type="checkbox"
+                                data-link-enable= genSetLocal(local.code, true, false)
+                                data-link-disable= genSetLocal(local.code, false, false)
+                                onchange="triggerLocalChange(this)"
+                                checked= local.isInWorkspaceSettings)
+                            span.mdl-switch__label
                 td
                     if local.enabled
                         span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔

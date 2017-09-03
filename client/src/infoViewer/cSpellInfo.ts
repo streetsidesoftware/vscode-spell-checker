@@ -18,14 +18,20 @@ const schemeCSpellInfo = 'cspell-info';
 export const commandDisplayCSpellInfo = 'cSpell.displayCSpellInfo';
 export const commandEnableLanguage    = 'cSpell.enableLanguageFromCSpellInfo';
 export const commandDisableLanguage   = 'cSpell.disableLanguageFromCSpellInfo';
-export const commandTest              = 'cSpell.test';
+export const commandSetLocal          = 'cSpell.setLocal';
 
-function generateEnableDisableLanguageLink(enable: boolean, languageId: string, uri: vscode.Uri) {
+function genCommandLink(command: string, paramValues?: any[]) {
+    const cmd = `command:${command}?`;
+    const params = paramValues ? JSON.stringify(paramValues) : '';
+    return encodeURI(cmd + params);
+}
+
+function generateEnableDisableLanguageLink(enable: boolean, languageId: string) {
     const links = [
-        `command:${commandDisableLanguage}?`,
-        `command:${commandEnableLanguage}?`,
+        commandDisableLanguage,
+        commandEnableLanguage,
     ];
-    return encodeURI(links[enable ? 1 : 0] + JSON.stringify([languageId, uri.toString()]));
+    return genCommandLink(links[enable ? 1 : 0], [languageId]);
 }
 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
@@ -83,13 +89,14 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     languageId,
                     filename,
                     spellingErrors,
-                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId, document.uri),
-                    linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId, document.uri),
-                    linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId, document.uri),
+                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
+                    linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId),
+                    linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId),
                     imagesPath,
                     localInfo,
                     local,
                     availableLocals,
+                    genSetLocal,
                 });
                 return html;
             });
@@ -130,13 +137,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             );
     }
 
-    function findVisibleTextEditors(uri: string): vscode.TextEditor[] {
-        const editors = vscode.window.visibleTextEditors
-            .filter(e => !!e.document)
-            .filter(e => e.document.uri.toString() === uri);
-        return editors;
-    }
-
     function findDocumentInVisibleTextEditors(uri: string):  Maybe<vscode.TextDocument> {
         const docs = vscode.window.visibleTextEditors
             .map(e => e.document)
@@ -152,44 +152,30 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return docs[0] || findDocumentInVisibleTextEditors(uri);
     }
 
-    function changeFocus(uri: string) {
-        const promises = findVisibleTextEditors(uri)
-            .map(editor => vscode.window.showTextDocument(editor.document, editor.viewColumn, false));
-        return Promise.all(promises);
-    }
-
     function enableLanguage(languageId: string, uri: string) {
-        commands.enableLanguageId(languageId)
-        // .then(() => restoreFocus());
+        commands.enableLanguageId(languageId);
     }
 
     function disableLanguage(languageId: string, uri: string) {
-        commands.disableLanguageId(languageId)
-        // .then(() => restoreFocus());
+        commands.disableLanguageId(languageId);
     }
 
-    function restoreFocus(uri?: string) {
-        uri = uri || (lastDocumentUri && lastDocumentUri.toString());
-        if (uri) {
-            // triggerSettingsRefresh(vscode.Uri.parse(uri));
-            changeFocus(uri);
+    function setLocal(local: string, enable: boolean, isGlobal: boolean) {
+        if (enable) {
+            config.enableLocal(isGlobal, local);
+        } else {
+            config.disableLocal(isGlobal, local);
         }
     }
 
-    /*
-    function triggerSettingsRefresh(uri: Maybe<vscode.Uri>) {
-        client.triggerSettingsRefresh();
+    function genSetLocal(code: string, enable: boolean, isGlobal: boolean) {
+        return genCommandLink(commandSetLocal, [code, enable, isGlobal])
     }
-    */
 
     function makeDisposable(sub: Rx.Subscription) {
         return {
             dispose: () => sub.unsubscribe()
         };
-    }
-
-    function testCommand(...args: any[]) {
-        const _stopHere = args;
     }
 
     function autoRefresh(uri: vscode.Uri) {
@@ -267,7 +253,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         vscode.commands.registerCommand(commandDisplayCSpellInfo, displayCSpellInfo),
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
-        vscode.commands.registerCommand(commandTest, testCommand),
+        vscode.commands.registerCommand(commandSetLocal, setLocal),
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
