@@ -1,15 +1,10 @@
-doctype html
-html
-    include head.pug
-    body
-        div.mdl-layout.mdl-js-layout
-            main.mdl-layout__content
-                div.mdl-grid
-                    div.mdl-cell.mdl-cell--12-col.mdl-grid
-                        h2
-                            img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
-                            | Spell Checker Information
-                div.mdl-grid
-                    include locals.pug
-                    include fileInfo.pug
-                    include issues.pug
+extends layoutTabs.pug
+
+block locals
+    include locals.pug
+
+block fileInfo
+    include fileInfo.pug
+
+block issues
+    include issues.pug

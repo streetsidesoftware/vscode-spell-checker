@@ -9,7 +9,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         each local in localInfo
             tr
                 td= local.name
-                td
+                td.align-left
                     label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
                         input(
                             class="mdl-switch__input"
@@ -20,7 +20,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                             checked= local.isInUserSettings)
                         span.mdl-switch__label
 
-                td
+                td.align-left
                     if (local.isInWorkspaceSettings == undefined)
                         span.align-center -
                     else
@@ -33,7 +33,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                                 onchange="triggerLocalChange(this)"
                                 checked= local.isInWorkspaceSettings)
                             span.mdl-switch__label
-                td
+                td.align-left
                     if local.enabled
                         span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
                     else

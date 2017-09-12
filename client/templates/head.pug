@@ -1,11 +1,13 @@
 head
     link(href=templateDir + '/mdl/material.min.css', rel='stylesheet')
-    script(src=templateDir + '/mdl/material.js')
+    link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
     style(type='text/css').
         html>body {
             font-family: 'Roboto','Helvetica','Arial',sans-serif!important;
             background-color: #FAFAFA;
             color: #111111;
+            padding: 0;
+            margin: 0;
         }
         .logo {
             vertical-align: center;
@@ -28,6 +30,14 @@ head
         th.align-left {
             text-align: left;
         }
+        td.align-left {
+            text-align: left;
+        }
+        .min-40 {
+            min-width: 40px;
+        }
+
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     script.
         function triggerLang(checked) {
             var linkId = checked ? 'enableLang' : 'disableLang';

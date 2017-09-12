@@ -6,7 +6,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
             span.mdl-list__item-secondary-content= filename
         li.mdl-list__item
             span.mdl-list__item-primary-content Spell Checker enabled for Path:
-            span.mdl-list__item-secondary-content
+            span.mdl-list__item-secondary-content.min-40
                 if local.enabled
                     span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
                 else
@@ -14,7 +14,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         li.mdl-list__item
             span.mdl-list__item-primary-content
                 | Spell Checker enabled for file type (#{languageId})
-            span.mdl-list__item-secondary-action
+            span.mdl-list__item-secondary-action.min-40
                 label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
                     input(
                         class="mdl-switch__input"

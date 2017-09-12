@@ -169,7 +169,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     function genSetLocal(code: string, enable: boolean, isGlobal: boolean) {
-        return genCommandLink(commandSetLocal, [code, enable, isGlobal])
+        return genCommandLink(commandSetLocal, [code, enable, isGlobal]);
     }
 
     function makeDisposable(sub: Rx.Subscription) {

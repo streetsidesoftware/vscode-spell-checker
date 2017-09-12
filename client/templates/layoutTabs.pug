@@ -1,0 +1,39 @@
+doctype html
+html
+    include head.pug
+    body
+        div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+            header.mdl-layout__header
+                div.mdl-layout__header-row
+                    span.mdl-layout-title Title
+                div.mdl-layout__tab-bar.mdl-js-ripple-effect
+                    a.mdl-layout__tab.is-active(href="#scroll-tab-1")  Language
+                    a.mdl-layout__tab(href="#scroll-tab-2")  File Info
+                    a.mdl-layout__tab(href="#scroll-tab-3")  Issues
+            main.mdl-layout__content
+                section.mdl-layout__tab-panel.is-active#scroll-tab-1
+                    div.page-content
+                        div.mdl-grid
+                            div.mdl-cell.mdl-cell--12-col.mdl-grid
+                                h2
+                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+                                    | Information
+                            block locals
+                section.mdl-layout__tab-panel.is-active#scroll-tab-2
+                    div.page-content
+                        div.mdl-grid
+                            div.mdl-cell.mdl-cell--12-col.mdl-grid
+                                h2
+                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+                                    | Information
+                            block fileInfo
+                section.mdl-layout__tab-panel.is-active#scroll-tab-3
+                    div.page-content
+                        div.mdl-grid
+                            div.mdl-cell.mdl-cell--12-col.mdl-grid
+                                h2
+                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+                                    | Information
+                            block issues
+
+        script(src=templateDir + '/mdl/material.min.js' defer)
