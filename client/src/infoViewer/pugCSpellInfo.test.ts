@@ -43,6 +43,8 @@ describe('Verify Template Renders', () => {
             local: ['English'],
             availableLocals: ['English'],
             genSetLocal,
+            genSelectInfoTabLink,
+            activeTab: 'FileInfo',
         });
         expect(html).to.not.be.empty;
         expect(html).to.contain('test.ts');
@@ -64,6 +66,8 @@ describe('Verify Template Renders', () => {
             local: ['English'],
             availableLocals: ['English'],
             genSetLocal,
+            genSelectInfoTabLink,
+            activeTab: 'FileInfo',
         });
         expect(html).to.not.be.empty;
         expect(html).to.contain('main.cpp');
@@ -81,4 +85,8 @@ function getPathToTemp(baseFilename: string) {
 
 function getPathToImages() {
     return path.join(__dirname, '..', '..', 'images');
+}
+
+function genSelectInfoTabLink(tab) {
+    return '#' + tab;
 }

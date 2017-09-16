@@ -10,6 +10,8 @@ export interface LocalInfo {
     isInWorkspaceSettings?: boolean;
 }
 
+export type ActiveTab = 'LocalInfo' | 'FileInfo' | 'IssuesInfo';
+
 export interface TemplateVariables {
     filename: string;
     fileEnabled: boolean;
@@ -23,7 +25,9 @@ export interface TemplateVariables {
     localInfo: LocalInfo[];
     local: string[];
     availableLocals: string[];
+    activeTab: ActiveTab;
     genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
+    genSelectInfoTabLink: (tab: string) => string;
 }
 
 export function render(params: TemplateVariables) {

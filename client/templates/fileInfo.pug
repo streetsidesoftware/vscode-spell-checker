@@ -1,5 +1,7 @@
 div.mdl-cell.mdl-cell--12-col.mdl-grid
-    h3 File Information
+    h2
+        img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+        | File Information
     ul.mdl-list.mdl-cell.mdl-cell--12-col
         li.mdl-list__item
             span.mdl-list__item-primary-content File Name:
@@ -7,7 +9,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         li.mdl-list__item
             span.mdl-list__item-primary-content Spell Checker enabled for Path:
             span.mdl-list__item-secondary-content.min-40
-                if local.enabled
+                if fileEnabled
                     span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
                 else
                     span.mdl-chip__contact.mdl-color--grey.mdl-color-text--white ✘

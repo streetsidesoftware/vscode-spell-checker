@@ -4,35 +4,21 @@ html
     body
         div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
             header.mdl-layout__header
-                div.mdl-layout__header-row
-                    span.mdl-layout-title Title
                 div.mdl-layout__tab-bar.mdl-js-ripple-effect
-                    a.mdl-layout__tab.is-active(href="#scroll-tab-1")  Language
-                    a.mdl-layout__tab(href="#scroll-tab-2")  File Info
-                    a.mdl-layout__tab(href="#scroll-tab-3")  Issues
+                    a.mdl-layout__tab(class={"is-active": activeTab == "LocalInfo"}  href="#LocalInfo"  data-link=genSelectInfoTabLink('LocalInfo'))  Language
+                    a.mdl-layout__tab(class={"is-active": activeTab == "FileInfo"}   href="#FileInfo"   data-link=genSelectInfoTabLink('FileInfo'))   File Info
+                    a.mdl-layout__tab(class={"is-active": activeTab == "IssuesInfo"} href="#IssuesInfo" data-link=genSelectInfoTabLink('IssuesInfo')) Issues
             main.mdl-layout__content
-                section.mdl-layout__tab-panel.is-active#scroll-tab-1
+                section.mdl-layout__tab-panel#LocalInfo(class={"is-active": activeTab == "LocalInfo"})
                     div.page-content
                         div.mdl-grid
-                            div.mdl-cell.mdl-cell--12-col.mdl-grid
-                                h2
-                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
-                                    | Information
                             block locals
-                section.mdl-layout__tab-panel.is-active#scroll-tab-2
+                section.mdl-layout__tab-panel#FileInfo(class={"is-active": activeTab == "FileInfo"})
                     div.page-content
                         div.mdl-grid
-                            div.mdl-cell.mdl-cell--12-col.mdl-grid
-                                h2
-                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
-                                    | Information
                             block fileInfo
-                section.mdl-layout__tab-panel.is-active#scroll-tab-3
+                section.mdl-layout__tab-panel#IssuesInfo(class={"is-active": activeTab == "IssuesInfo"})
                     div.page-content
                         div.mdl-grid
-                            div.mdl-cell.mdl-cell--12-col.mdl-grid
-                                h2
-                                    img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
-                                    | Information
                             block issues
 

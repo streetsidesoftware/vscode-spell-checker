@@ -44,11 +44,19 @@ head
             document.getElementById(linkId).click();
         }
         function triggerLocalChange(elem) {
-            triggerToggle('local-link', elem.checked, elem.dataset.linkEnable, elem.dataset.linkDisable);
+            callCommand(elem.checked ? elem.dataset.linkEnable : elem.dataset.linkDisable);
         }
-        function triggerToggle(id, checked, enableLink, disableLink) {
-            var elem = document.getElementById(id);
-            elem.setAttribute('href', checked ? enableLink : disableLink);
+        function callCommand(commandURI) {
+            const id = 'local-link';
+            const elem = document.getElementById(id);
+            elem.setAttribute('href', commandURI);
             elem.click();
         }
     script(src='file://' + templateDir + '/mdl/material.min.js' defer)
+    script(src='file://' + templateDir + '/js/jquery-3.2.1.min.js')
+    script.
+        $(() => {
+            $("body").on("click", "a[data-link]", function() {
+                callCommand(this.dataset.link);
+            });
+        });

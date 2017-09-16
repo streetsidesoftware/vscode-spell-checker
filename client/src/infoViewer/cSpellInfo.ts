@@ -11,7 +11,7 @@ import { isSupportedUri } from '../util';
 import * as serverSettings from '../server';
 import * as langCode from '../iso639-1';
 import * as config from '../settings';
-import { LocalInfo } from './pugCSpellInfo';
+import { LocalInfo, ActiveTab } from './pugCSpellInfo';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -19,6 +19,7 @@ export const commandDisplayCSpellInfo = 'cSpell.displayCSpellInfo';
 export const commandEnableLanguage    = 'cSpell.enableLanguageFromCSpellInfo';
 export const commandDisableLanguage   = 'cSpell.disableLanguageFromCSpellInfo';
 export const commandSetLocal          = 'cSpell.setLocal';
+export const commandSelectInfoTab     = 'cSpell.selectInfoTab';
 
 function genCommandLink(command: string, paramValues?: any[]) {
     const cmd = `command:${command}?`;
@@ -40,6 +41,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const onRefresh = new Rx.Subject<vscode.Uri>();
 
     let lastDocumentUri: Maybe<vscode.Uri> = undefined;
+    let activeTab: ActiveTab = 'LocalInfo';
     const imagesUri = vscode.Uri.file(context.asAbsolutePath('images'));
     const imagesPath = imagesUri.path;
 
@@ -97,6 +99,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     local,
                     availableLocals,
                     genSetLocal,
+                    genSelectInfoTabLink,
+                    activeTab,
                 });
                 return html;
             });
@@ -170,6 +174,14 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     function genSetLocal(code: string, enable: boolean, isGlobal: boolean) {
         return genCommandLink(commandSetLocal, [code, enable, isGlobal]);
+    }
+
+    function selectInfoTab(tab: ActiveTab) {
+        activeTab = tab;
+    }
+
+    function genSelectInfoTabLink(tab: ActiveTab) {
+        return genCommandLink(commandSelectInfoTab, [tab]);
     }
 
     function makeDisposable(sub: Rx.Subscription) {
@@ -254,6 +266,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
         vscode.commands.registerCommand(commandSetLocal, setLocal),
+        vscode.commands.registerCommand(commandSelectInfoTab, selectInfoTab),
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
