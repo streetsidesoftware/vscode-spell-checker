@@ -8,7 +8,8 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
             th Language
             th.align-left Global
             th.align-left Workspace
-            th.align-left Actual
+            th.align-left Dictionaries
+            th.align-left Enabled
         each local in localInfo
             tr
                 td= local.name
@@ -36,6 +37,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                                 onchange="triggerLocalChange(this)"
                                 checked= local.isInWorkspaceSettings)
                             span.mdl-switch__label
+                td.align-left= local.dictionaries.join(', ')
                 td.align-left
                     if local.enabled
                         span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔

@@ -17,6 +17,15 @@ const localInfo: t.LocalInfo[] = [
         enabled: true,
         isInUserSettings: true,
         isInWorkspaceSettings: undefined,
+        dictionaries: ['English', 'Misc'],
+    },
+    {
+        code: 'en-US',
+        name: 'English, United States',
+        enabled: true,
+        isInUserSettings: true,
+        isInWorkspaceSettings: undefined,
+        dictionaries: ['English'],
     },
     {
         code: 'es',
@@ -24,28 +33,35 @@ const localInfo: t.LocalInfo[] = [
         enabled: true,
         isInUserSettings: false,
         isInWorkspaceSettings: undefined,
+        dictionaries: ['Spanish'],
     },
 ];
 
+const dictionariesForFile = ['English', 'Html', 'Typescript'];
+
+const info: t.TemplateVariables = {
+    useDarkTheme: true,
+    filename: 'test.ts',
+    fileEnabled: true,
+    dictionariesForFile,
+    languageEnabled: true,
+    languageId: 'typescript',
+    spellingErrors: [['one', 1], ['two', 2], ['three', 3], ],
+    linkEnableDisableLanguage: 'command:cSpell',
+    linkEnableLanguage: 'command:cSpell',
+    linkDisableLanguage: 'command:cSpell',
+    imagesPath,
+    localInfo,
+    local: ['English'],
+    availableLocals: ['English'],
+    genSetLocal,
+    genSelectInfoTabLink,
+    activeTab: 'FileInfo',
+};
+
 describe('Verify Template Renders', () => {
     it('Renders the template to html', async () => {
-        const html = t.render({
-            filename: 'test.ts',
-            fileEnabled: true,
-            languageEnabled: true,
-            languageId: 'typescript',
-            spellingErrors: [['one', 1], ['two', 2], ['three', 3], ],
-            linkEnableDisableLanguage: 'command:cSpell',
-            linkEnableLanguage: 'command:cSpell',
-            linkDisableLanguage: 'command:cSpell',
-            imagesPath,
-            localInfo,
-            local: ['English'],
-            availableLocals: ['English'],
-            genSetLocal,
-            genSelectInfoTabLink,
-            activeTab: 'FileInfo',
-        });
+        const html = t.render(info);
         expect(html).to.not.be.empty;
         expect(html).to.contain('test.ts');
         expect(html).to.contain('<li>two (2)</li>');
@@ -53,8 +69,10 @@ describe('Verify Template Renders', () => {
     });
     it('Renders the template to html again', async () => {
         const html = t.render({
+            useDarkTheme: true,
             filename: 'main.cpp',
             fileEnabled: true,
+            dictionariesForFile,
             languageEnabled: true,
             languageId: 'cpp',
             spellingErrors: [['one', 1], ['two', 2], ['three', 3], ['<code>', 5]],

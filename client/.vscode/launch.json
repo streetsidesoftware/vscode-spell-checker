@@ -14,21 +14,23 @@
 			"preLaunchTask": "npm"
 		},
 		{
-			"name": "Launch Tests",
-			"type": "extensionHost",
+			"type": "node",
 			"request": "launch",
-			"runtimeExecutable": "${execPath}",
-			"args": ["--extensionDevelopmentPath=${workspaceRoot}", "--extensionTestsPath=${workspaceRoot}/out/test" ],
-			"stopOnEntry": false,
-			"sourceMaps": true,
-			"outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
-			"preLaunchTask": "npm"
+			"name": "Run Mocha Test",
+			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+			"args": [
+				"--timeout","999999",
+				"--colors",
+				"--compilers", "ts:ts-node/register",
+				"${file}"
+			],
+			"internalConsoleOptions": "openOnSessionStart"
 		},
         {
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha",
 			// Type of configuration. Possible values: "node", "mono".
-			"type": "node2",
+			"type": "node",
             // Request type "launch" or "attach"
             "request": "launch",
 			// Workspace relative or absolute path to the program.
@@ -45,6 +47,17 @@
 			"sourceMaps": true,
 			// Environment variables passed to the program.
 			"env": { "NODE_ENV": "test"}
+		},
+		{
+			"name": "Launch Extension Tests",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}", "--extensionTestsPath=${workspaceRoot}/out/test" ],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
+			"preLaunchTask": "npm"
 		}
 	]
 }

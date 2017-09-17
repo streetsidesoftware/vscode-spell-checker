@@ -80,12 +80,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             const spellingErrors = diags && util.freqCount(allSpellingErrors);
             autoRefresh(uri);  // Since the diags can change, we need to setup a refresh.
             return client.getConfigurationForDocument(document).then(response => {
-                const { fileEnabled = false, languageEnabled = false, settings } = response;
+                const { fileEnabled = false, languageEnabled = false, settings = {}, docSettings = {} } = response;
                 const languageId = document.languageId;
                 const local = friendlyLocals(serverSettings.extractLanguage(settings));
                 const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
                 const localInfo = composeLocalInfo(settings);
+                const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
+                const useDarkTheme = isDarkTheme();
                 const html = preview.render({
+                    useDarkTheme,
                     fileEnabled,
                     languageEnabled,
                     languageId,
@@ -100,6 +103,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     availableLocals,
                     genSetLocal,
                     genSelectInfoTabLink,
+                    dictionariesForFile,
                     activeTab,
                 });
                 return html;
@@ -222,11 +226,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             .map(info => {
                 const {lang, country} = langCode.lookupCode(info.code) || { lang: info.code, country: '' };
                 const name = country ? `${lang} - ${country}` : lang;
-                return {...defaults, ...info, name };
+                return {dictionaries: [], ...defaults, ...info, name };
             });
     }
 
     function composeLocalInfo(settingsFromServer?: serverSettings.CSpellUserSettings): LocalInfo[] {
+        const dictByLocal = serverSettings.extractDictionariesByLocal(settingsFromServer);
         const availableLocals = localInfo(serverSettings.extractLocals(settingsFromServer));
         const localsFromServer = localInfo(serverSettings.extractLanguage(settingsFromServer), { enabled: true });
         const fromConfig = config.inspectSettingFromVSConfig('language') || { key: ''};
@@ -256,7 +261,17 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             [...knownLocals.values()].forEach(info => info.isInWorkspaceSettings = info.isInWorkspaceSettings || false);
         }
 
-        return [...knownLocals.values()].sort((a, b) => a.name.localeCompare(b.name));
+        const locals = [...knownLocals.values()].sort((a, b) => a.name.localeCompare(b.name));
+
+        return augmentLocals(locals, dictByLocal);
+    }
+
+    function augmentLocals(locals: preview.LocalInfo[], dictByLocal: Map<string, string[]>) {
+        locals.forEach(local => {
+            local.dictionaries = (dictByLocal.get(local.code) || []).sort();
+        });
+
+        return locals;
     }
 
     context.subscriptions.push(
@@ -270,4 +285,10 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
+}
+
+function isDarkTheme() {
+    const config = vscode.workspace.getConfiguration();
+    const theme = (config.get('workbench.colorTheme') || '').toString();
+    return (/dark|black|midnight|graphite/i).test(theme);
 }

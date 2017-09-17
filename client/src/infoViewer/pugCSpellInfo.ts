@@ -5,6 +5,7 @@ const templateName = 'CSpellInfoPreview.pug';
 export interface LocalInfo {
     code: string;
     name: string;
+    dictionaries: string[];
     enabled?: boolean;
     isInUserSettings?: boolean;
     isInWorkspaceSettings?: boolean;
@@ -13,8 +14,10 @@ export interface LocalInfo {
 export type ActiveTab = 'LocalInfo' | 'FileInfo' | 'IssuesInfo';
 
 export interface TemplateVariables {
+    useDarkTheme: boolean;
     filename: string;
     fileEnabled: boolean;
+    dictionariesForFile: string[];
     languageEnabled: boolean;
     languageId: string;
     spellingErrors: [string, number][] | undefined;

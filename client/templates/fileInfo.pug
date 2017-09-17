@@ -28,3 +28,8 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                     | Enable
                 a#disableLang.hidden(href=linkDisableLanguage)
                     | Disable
+    h3 Active Dictionaries
+    ul.mdl-list.mdl-cell.mdl-cell--12-col
+        each dictionary in dictionariesForFile
+            li.mdl-list__item
+                span.mdl-list__item-primary-content= dictionary
