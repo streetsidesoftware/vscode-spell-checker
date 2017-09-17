@@ -1,4 +1,3 @@
-a#local-link
 div.mdl-cell.mdl-cell--12-col.mdl-grid
     h2
         img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
@@ -11,7 +10,7 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
             th.align-left Enabled
         each local in localInfo
             tr
-                td.mdl-data-table__cell--non-numeric
+                td
                     span.language= local.name
                     br
                     span.info= local.dictionaries.join(', ')

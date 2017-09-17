@@ -2,23 +2,29 @@ doctype html
 html
     include head.pug
     body(class={useDarkTheme: useDarkTheme})
+        a#local-link
         div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
             header.mdl-layout__header
                 div.mdl-layout__tab-bar.mdl-js-ripple-effect
-                    a.mdl-layout__tab(class={"is-active": activeTab == "LocalInfo"}  href="#LocalInfo"  data-link=genSelectInfoTabLink('LocalInfo'))  Language
-                    a.mdl-layout__tab(class={"is-active": activeTab == "FileInfo"}   href="#FileInfo"   data-link=genSelectInfoTabLink('FileInfo'))   File Info
-                    a.mdl-layout__tab(class={"is-active": activeTab == "IssuesInfo"} href="#IssuesInfo" data-link=genSelectInfoTabLink('IssuesInfo')) Issues
+                    a.mdl-layout__tab(class={"is-active": activeTab == "LocalInfo"}        href="#LocalInfo"        data-link=genSelectInfoTabLink('LocalInfo'))  Language
+                    a.mdl-layout__tab(class={"is-active": activeTab == "FileInfo"}         href="#FileInfo"         data-link=genSelectInfoTabLink('FileInfo'))   File Info
+                    a.mdl-layout__tab(class={"is-active": activeTab == "IssuesInfo"}       href="#IssuesInfo"       data-link=genSelectInfoTabLink('IssuesInfo')) Issues
+                    a.mdl-layout__tab(class={"is-active": activeTab == "DictionariesInfo"} href="#DictionariesInfo" data-link=genSelectInfoTabLink('DictionariesInfo'))  Dictionaries
             main.mdl-layout__content
                 section.mdl-layout__tab-panel#LocalInfo(class={"is-active": activeTab == "LocalInfo"})
                     div.page-content
                         div.mdl-grid
-                            block locals
+                            block tabLocals
                 section.mdl-layout__tab-panel#FileInfo(class={"is-active": activeTab == "FileInfo"})
                     div.page-content
                         div.mdl-grid
-                            block fileInfo
+                            block tabFileInfo
                 section.mdl-layout__tab-panel#IssuesInfo(class={"is-active": activeTab == "IssuesInfo"})
                     div.page-content
                         div.mdl-grid
-                            block issues
+                            block tabIssues
+                section.mdl-layout__tab-panel#DictionariesInfo(class={"is-active": activeTab == "DictionariesInfo"})
+                    div.page-content
+                        div.mdl-grid
+                            block tabDictionaries
 

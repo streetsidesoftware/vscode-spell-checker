@@ -1,0 +1,15 @@
+div.mdl-cell.mdl-cell--12-col.mdl-grid
+    h2
+        img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
+        | Dictionaries
+    table.mdl-data-table.mdl-cell--12-col
+        tr
+            th Dictionary
+            th.align-left Description
+        each local in localInfo
+            tr
+                td
+                    span= local.name
+                td.mdl-data-table__cell--non-numeric
+                    span= local.enabled
+
