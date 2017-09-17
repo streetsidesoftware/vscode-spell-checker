@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
     "engines": {
-        "vscode": "^1.14.0"
+        "vscode": "^1.16.0"
     },
     "categories": [
         "Linters",
@@ -317,28 +317,28 @@
     "devDependencies": {
         "@types/chai": "^4.0.4",
         "@types/comment-json": "^1.1.0",
-        "@types/fs-extra": "^4.0.1",
+        "@types/fs-extra": "^4.0.2",
         "@types/mkdirp": "^0.3.29",
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^8.0.26",
+        "@types/mocha": "^2.2.43",
+        "@types/node": "^8.0.28",
         "@types/pug": "^2.0.4",
         "chai": "^4.1.2",
         "lorem-ipsum": "^1.0.4",
-        "mocha": "^3.5.0",
+        "mocha": "^3.5.3",
         "pug-cli": "^1.0.0-alpha6",
-        "pug-lint": "^2.4.0",
-        "rimraf": "^2.6.1",
+        "pug-lint": "^2.5.0",
+        "rimraf": "^2.6.2",
         "ts-node": "^3.3.0",
         "typescript": "^2.5.2"
     },
     "dependencies": {
         "comment-json": "^1.1.3",
-        "fs-extra": "^4.0.1",
+        "fs-extra": "^4.0.2",
         "mkdirp": "^0.5.1",
-        "pug": "^2.0.0-rc.3",
+        "pug": "^2.0.0-rc.4",
         "rxjs": "^5.4.3",
         "tsmerge": "^1.0.4",
-        "vscode": "^1.1.4",
-        "vscode-languageclient": "^3.3.0"
+        "vscode": "^1.1.5",
+        "vscode-languageclient": "^3.4.2"
     }
 }
