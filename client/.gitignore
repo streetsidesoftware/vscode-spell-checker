@@ -1,4 +1,4 @@
 out
-server
+/server/*
 node_modules
 temp
