@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.4.0]
+* Improved the information screen to make it easier to turn on/off languages.
+* Use MDL for the theme of the information screen.
+
 ## [1.3.9]
 * Fixed and issue with incorrect suggestions when the misspelled word started with a capitol letter.
 * Improvements to the Info screen.
