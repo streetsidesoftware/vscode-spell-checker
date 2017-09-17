@@ -6,10 +6,10 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         tr
             th Dictionary
             th.align-left Description
-        each local in localInfo
+        each dict in dictionaries
             tr
                 td
-                    span= local.name
+                    span= dict.name
                 td.mdl-data-table__cell--non-numeric
-                    span= local.enabled
+                    span= dict.description
 

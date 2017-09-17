@@ -37,6 +37,12 @@ const localInfo: t.LocalInfo[] = [
     },
 ];
 
+const dictionaries: t.DictionaryEntry[] = [
+    { name: 'cpp', description: 'C & CPP Keywords and Function names.'},
+    { name: 'en-es', description: 'Spanish Dictionary (Spain)'},
+    { name: 'en-us', description: 'American English Dictionary'},
+    { name: 'php', description: 'PHP Keywords and Function names.'},
+];
 const dictionariesForFile = ['English', 'Html', 'Typescript'];
 
 const info: t.TemplateVariables = {
@@ -44,6 +50,7 @@ const info: t.TemplateVariables = {
     filename: 'test.ts',
     fileEnabled: true,
     dictionariesForFile,
+    dictionaries,
     languageEnabled: true,
     languageId: 'typescript',
     spellingErrors: [['one', 1], ['two', 2], ['three', 3], ],
@@ -73,6 +80,7 @@ describe('Verify Template Renders', () => {
             filename: 'main.cpp',
             fileEnabled: true,
             dictionariesForFile,
+            dictionaries,
             languageEnabled: true,
             languageId: 'cpp',
             spellingErrors: [['one', 1], ['two', 2], ['three', 3], ['<code>', 5]],

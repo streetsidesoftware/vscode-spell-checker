@@ -82,6 +82,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             return client.getConfigurationForDocument(document).then(response => {
                 const { fileEnabled = false, languageEnabled = false, settings = {}, docSettings = {} } = response;
                 const languageId = document.languageId;
+                const dictionaries = settings.dictionaryDefinitions || [];
                 const local = friendlyLocals(serverSettings.extractLanguage(settings));
                 const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
                 const localInfo = composeLocalInfo(settings);
@@ -104,6 +105,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     genSetLocal,
                     genSelectInfoTabLink,
                     dictionariesForFile,
+                    dictionaries,
                     activeTab,
                 });
                 return html;

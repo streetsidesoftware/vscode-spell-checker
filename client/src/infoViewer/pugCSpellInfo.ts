@@ -13,11 +13,17 @@ export interface LocalInfo {
 
 export type ActiveTab = 'LocalInfo' | 'FileInfo' | 'IssuesInfo';
 
+export interface DictionaryEntry {
+    name: string;
+    description?: string;
+}
+
 export interface TemplateVariables {
     useDarkTheme: boolean;
     filename: string;
     fileEnabled: boolean;
     dictionariesForFile: string[];
+    dictionaries: DictionaryEntry[];
     languageEnabled: boolean;
     languageId: string;
     spellingErrors: [string, number][] | undefined;
