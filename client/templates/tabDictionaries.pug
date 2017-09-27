@@ -4,11 +4,17 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         | Dictionaries
     table.mdl-data-table.mdl-cell--12-col
         tr
-            th Dictionary
+            th In Use
+            th.align-left Dictionary
             th.align-left Description
         each dict in dictionaries
             tr
                 td
+                    if isDictionaryInUse(dict.name)
+                        span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔
+                    else
+                        span.mdl-chip__contact.mdl-color--grey.mdl-color-text--white ✘
+                td.mdl-data-table__cell--non-numeric
                     span= dict.name
                 td.mdl-data-table__cell--non-numeric
                     span= dict.description

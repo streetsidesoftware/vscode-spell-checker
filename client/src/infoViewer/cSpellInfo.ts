@@ -87,6 +87,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
                 const localInfo = composeLocalInfo(settings);
                 const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
+                const dictionariesInUse = new Set(dictionariesForFile);
+                const isDictionaryInUse = dict => dictionariesInUse.has(dict);
                 const useDarkTheme = isDarkTheme();
                 const html = preview.render({
                     useDarkTheme,
@@ -105,6 +107,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     genSetLocal,
                     genSelectInfoTabLink,
                     dictionariesForFile,
+                    isDictionaryInUse,
                     dictionaries,
                     activeTab,
                 });

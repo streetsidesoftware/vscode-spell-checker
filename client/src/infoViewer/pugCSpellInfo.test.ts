@@ -42,14 +42,19 @@ const dictionaries: t.DictionaryEntry[] = [
     { name: 'en-es', description: 'Spanish Dictionary (Spain)'},
     { name: 'en-us', description: 'American English Dictionary'},
     { name: 'php', description: 'PHP Keywords and Function names.'},
+    { name: 'html', description: 'HTML Keywords'},
+    { name: 'typescript', description: 'TypeScript Keywords and Function names.'},
 ];
-const dictionariesForFile = ['English', 'Html', 'Typescript'];
+const dictionariesForFile = ['en-us', 'html', 'typescript'];
+const dictionariesInUse = new Set(dictionariesForFile);
+const isDictionaryInUse = dict => dictionariesInUse.has(dict);
 
 const info: t.TemplateVariables = {
     useDarkTheme: true,
     filename: 'test.ts',
     fileEnabled: true,
     dictionariesForFile,
+    isDictionaryInUse,
     dictionaries,
     languageEnabled: true,
     languageId: 'typescript',
@@ -80,6 +85,7 @@ describe('Verify Template Renders', () => {
             filename: 'main.cpp',
             fileEnabled: true,
             dictionariesForFile,
+            isDictionaryInUse,
             dictionaries,
             languageEnabled: true,
             languageId: 'cpp',

@@ -23,6 +23,7 @@ export interface TemplateVariables {
     filename: string;
     fileEnabled: boolean;
     dictionariesForFile: string[];
+    isDictionaryInUse: (dictId: string) => boolean;
     dictionaries: DictionaryEntry[];
     languageEnabled: boolean;
     languageId: string;
