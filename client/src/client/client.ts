@@ -4,7 +4,7 @@ import {
 
 import * as vscode from 'vscode';
 
-import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
+import { CSpellUserSettings, GetConfigurationForDocumentResult, RequestMethodConstants, SplitTextIntoWordsResult } from '../server';
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
@@ -17,6 +17,13 @@ export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
     fileEnabled?: boolean;
 }
+
+const methodNames: RequestMethodConstants = {
+    isSpellCheckEnabled: 'isSpellCheckEnabled',
+    getConfigurationForDocument: 'getConfigurationForDocument',
+    splitTextIntoWords: 'splitTextIntoWords',
+};
+
 
 export class CSpellClient {
 
@@ -77,7 +84,7 @@ export class CSpellClient {
         }
 
         return this.client.onReady().then(() => this.client.sendRequest(
-            'isSpellCheckEnabled',
+            methodNames.isSpellCheckEnabled,
             { uri: uri.toString(), languageId }
         ))
         .then((response: ServerResponseIsSpellCheckEnabled) => response);
@@ -91,8 +98,15 @@ export class CSpellClient {
         }
 
         return this.client.onReady().then(() => this.client.sendRequest(
-            'getConfigurationForDocument',
+            methodNames.getConfigurationForDocument,
             { uri: uri.toString(), languageId }
+        ));
+    }
+
+    public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
+        return this.client.onReady().then(() => this.client.sendRequest(
+            methodNames.splitTextIntoWords,
+            text
         ));
     }
 

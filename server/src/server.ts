@@ -11,7 +11,7 @@ import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import * as Rx from 'rxjs/Rx';
 import { onCodeActionHandler } from './codeActions';
-import { ExclusionHelper } from 'cspell';
+import { ExclusionHelper, Text } from 'cspell';
 import {
     ExcludeFilesGlobMap,
     ExclusionFunction,
@@ -23,6 +23,14 @@ import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 import { GetConfigurationForDocumentResult, IsSpellCheckEnabledResult } from './api';
+import * as Api from './api';
+
+const methodNames: Api.RequestMethodConstants = {
+    isSpellCheckEnabled: 'isSpellCheckEnabled',
+    getConfigurationForDocument: 'getConfigurationForDocument',
+    splitTextIntoWords: 'splitTextIntoWords',
+};
+
 const {
     extractGlobsFromExcludeFilesGlobMap,
     generateExclusionFunctionForUri,
@@ -172,29 +180,41 @@ function run() {
     connection.onNotification('applySettings', onConfigChange);
     connection.onNotification('registerConfigurationFile', registerConfigurationFile);
 
-    connection.onRequest('isSpellCheckEnabled', (params: TextDocumentInfo) => {
+    connection.onRequest(methodNames.isSpellCheckEnabled, (params: TextDocumentInfo): Api.IsSpellCheckEnabledResult => {
         const { uri, languageId } = params;
-        const result: IsSpellCheckEnabledResult = {
+        return {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
         };
-        return result;
     });
 
-    connection.onRequest('getConfigurationForDocument', (params: TextDocumentInfo) => {
+    connection.onRequest(methodNames.getConfigurationForDocument, (params: TextDocumentInfo): Api.GetConfigurationForDocumentResult => {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
         const docSettings = doc && getSettingsToUseForDocument(doc) || undefined;
         const settings = activeSettings;
-        const result: GetConfigurationForDocumentResult =  {
+        return {
             languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
             settings,
             docSettings,
         };
-        return result;
     });
 
+    function textToWords(text: string): string[] {
+        const setOfWords = new Set(
+            Text.extractWordsFromCode(text)
+                .map(t => t.text)
+                .map(t => t.toLowerCase())
+            );
+        return [...setOfWords];
+    }
+
+    connection.onRequest(methodNames.splitTextIntoWords, (text: string): Api.SplitTextIntoWordsResult => {
+        return {
+            words: textToWords(text),
+        };
+    });
 
     // validate documents
     let lastValidated = '';

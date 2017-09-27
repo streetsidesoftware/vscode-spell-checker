@@ -28,11 +28,23 @@ export function activate(context: ExtensionContext) {
             client.triggerSettingsRefresh();
         }
 
+        function splitTextFn(apply: (word: string) => Thenable<void>): (word: string) => Thenable<void> {
+            return (word: string) => {
+                return client.splitTextIntoDictionaryWords(word)
+                .then(result => result.words)
+                .then(words => apply(words.join(' ')))
+                .then(_ => {});
+            };
+        }
+
         const actionAddWordToWorkspace = userCommandAddWordToDictionary(
             'Add Word to Workspace Dictionary',
-            commands.addWordToWorkspaceDictionary
+            splitTextFn(commands.addWordToWorkspaceDictionary)
         );
-        const actionAddWordToDictionary = userCommandAddWordToDictionary('Add Word to Dictionary', commands.addWordToUserDictionary);
+        const actionAddWordToDictionary = userCommandAddWordToDictionary(
+            'Add Word to Dictionary',
+            splitTextFn(commands.addWordToUserDictionary)
+        );
 
         initStatusBar(context, client);
 

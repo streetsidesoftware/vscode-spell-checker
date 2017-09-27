@@ -12,3 +12,11 @@ export interface IsSpellCheckEnabledResult {
     fileEnabled: boolean | undefined;
 }
 
+export interface SplitTextIntoWordsResult {
+    words: string[];
+}
+
+export type RequestMethods = 'isSpellCheckEnabled' | 'getConfigurationForDocument' | 'splitTextIntoWords';
+export type RequestMethodConstants = {
+    [key in RequestMethods]: RequestMethods;
+};

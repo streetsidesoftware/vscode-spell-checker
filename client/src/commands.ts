@@ -33,14 +33,12 @@ export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
     if (!Settings.hasWorkspaceLocation()) {
         return addWordToUserDictionary(word);
     }
-    return Settings.getSettings()
-    .then(foundSettingsInfo => {
-        const path = foundSettingsInfo.path;
-        if (path) {
-            return CSpellSettings.addWordToSettingsAndUpdate(path, word)
-                .then(_ => {});
-        }
-    });
+    return Settings.addWordToSettings(false, word)
+    .then(_ => Settings.findExistingSettingsFileLocation())
+    .then(path => path
+            ? CSpellSettings.addWordToSettingsAndUpdate(path, word).then(_ => {})
+            : undefined
+    );
 }
 
 export function addWordToUserDictionary(word: string): Thenable<void> {
@@ -75,18 +73,15 @@ export function disableLanguageId(languageId: string): Thenable<void> {
     return Promise.resolve();
 }
 
-export function userCommandAddWordToDictionary(prompt: string, fnAddWord) {
+export function userCommandAddWordToDictionary(prompt: string, fnAddWord: (text: string) => Thenable<void>): () => Thenable<void> {
     return function () {
         const { activeTextEditor = {} } = window;
         const { selection, document } = activeTextEditor as TextEditor;
         const range = selection && document ? document.getWordRangeAtPosition(selection.active) : undefined;
-        const value = range ? document.getText(selection) || document.getText(range) : '';
-        window.showInputBox({prompt, value}).then(word => {
-            if (word) {
-                fnAddWord(word);
-            }
-        });
+        const value = range ? document.getText(selection) || document.getText(range) : selection && document.getText(selection) || '';
+        return (selection && !selection.isEmpty)
+            ? fnAddWord(value)
+            : window.showInputBox({prompt, value}).then(word => { word && fnAddWord(word); });
     };
 }
-
 
