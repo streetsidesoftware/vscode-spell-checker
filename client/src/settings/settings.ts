@@ -39,19 +39,29 @@ export function findSettingsFiles(): Thenable<Uri[]> {
     return workspace.findFiles(findConfig, '{**/node_modules,**/.git}');
 }
 
-export function findSettingsFileLocation(): Thenable<string | undefined> {
+export function findExistingSettingsFileLocation(): Thenable<string | undefined> {
     return findSettingsFiles()
-        .then(uris => uris.map(uri => uri.fsPath))
-        .then(paths => paths.sort((a, b) => a.length - b.length))
-        .then(paths => paths[0] || getDefaultWorkspaceConfigLocation());
+    .then(uris => uris.map(uri => uri.fsPath))
+    .then(paths => paths.sort((a, b) => a.length - b.length))
+    .then(paths => paths[0]);
+}
+
+export function findSettingsFileLocation(): Thenable<string | undefined> {
+    return findExistingSettingsFileLocation()
+        .then(path => path || getDefaultWorkspaceConfigLocation());
 }
 
 export function loadTheSettingsFile(): Thenable<SettingsInfo | undefined> {
     return findSettingsFileLocation()
-        .then(path => {
-            return path ? CSpellSettings.readSettings(path).then(settings => (path ? { path, settings } : undefined)) : undefined;
-        });
+        .then(loadSettingsFile);
 }
+
+export function loadSettingsFile(path: string): Thenable<SettingsInfo | undefined> {
+    return path
+        ? CSpellSettings.readSettings(path).then(settings => (path ? { path, settings } : undefined))
+        : Promise.resolve(undefined);
+}
+
 
 export function getSettings(): Thenable<SettingsInfo> {
     return loadTheSettingsFile()
@@ -104,7 +114,7 @@ export function enableLanguage(isGlobal: boolean, languageId: string): Thenable<
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     return enableLanguageIdInConfig(useGlobal, languageId).then(() => {
         if (!useGlobal) {
-            findSettingsFileLocation()
+            findExistingSettingsFileLocation()
             .then(settingsFilename =>
                 settingsFilename && CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true))
             .then(() => {});
@@ -116,7 +126,7 @@ export function disableLanguage(isGlobal: boolean, languageId: string): Thenable
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     return disableLanguageIdInConfig(useGlobal, languageId).then(() => {
         if (!useGlobal) {
-            return findSettingsFileLocation()
+            return findExistingSettingsFileLocation()
             .then(settingsFilename =>
                 settingsFilename && CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId])
             )
@@ -129,7 +139,7 @@ export function addWordToSettings(isGlobal: boolean, word: string): Thenable<voi
     const useGlobal = isGlobal || !hasWorkspaceLocation();
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const words = config.getSettingFromVSConfig(section) || [];
-    return config.setSettingInVSConfig(section, unique(words.concat([word]).sort()), useGlobal);
+    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), useGlobal);
 }
 
 export function toggleEnableSpellChecker(): Thenable<void> {
