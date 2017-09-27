@@ -54,7 +54,7 @@ export class CSpellClient {
         };
 
         // Create the language client and start the client.
-        this.client = new LanguageClient('Code Spell Checker', serverOptions, clientOptions);
+        this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
     }
 
     public needsStart() {

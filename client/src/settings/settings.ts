@@ -176,7 +176,7 @@ export function disableLocal(isGlobal: boolean, local: string) {
     const languages = normalizeLocal(currentLanguage)
         .split(',')
         .filter(lang => lang !== local)
-        .join(',');
+        .join(',') || undefined;
     return config.setSettingInVSConfig('language', languages, isGlobal);
 }
 
