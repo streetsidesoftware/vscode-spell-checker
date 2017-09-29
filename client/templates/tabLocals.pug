@@ -6,7 +6,27 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
         tr
             th Language
             th.align-left Global
+                br
+                label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                    input(
+                        class="mdl-switch__input"
+                        type="checkbox"
+                        data-link-enable= genOverrideLocal(true, true)
+                        data-link-disable= genOverrideLocal(false, true)
+                        onchange="triggerLocalChange(this)"
+                        checked= local.user)
+                    span.mdl-switch__label
             th.align-left Workspace
+                br
+                label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                    input(
+                        class="mdl-switch__input"
+                        type="checkbox"
+                        data-link-enable= genOverrideLocal(true, false)
+                        data-link-disable= genOverrideLocal(false, false)
+                        onchange="triggerLocalChange(this)"
+                        checked= local.workspace)
+                    span.mdl-switch__label
             th.align-left Enabled
         each local in localInfo
             tr

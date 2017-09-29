@@ -171,7 +171,10 @@ export function disableCurrentLanguage(): Thenable<void> {
 
 
 export function enableLocal(isGlobal: boolean, local: string) {
-    const currentLanguage = config.getSettingFromVSConfig('language') || '';
+    const currentLanguage = config.getSettingFromVSConfig(
+        'language',
+        isGlobal ? 'globalValue' : 'workspaceValue'
+    ) || '';
     const languages = currentLanguage.split(',')
         .concat(local.split(','))
         .map(a => a.trim())
@@ -182,12 +185,25 @@ export function enableLocal(isGlobal: boolean, local: string) {
 
 export function disableLocal(isGlobal: boolean, local: string) {
     local = normalizeLocal(local);
-    const currentLanguage = config.getSettingFromVSConfig('language') || '';
+    const currentLanguage = config.getSettingFromVSConfig(
+        'language',
+        isGlobal ? 'globalValue' : 'workspaceValue'
+    ) || '';
     const languages = normalizeLocal(currentLanguage)
         .split(',')
         .filter(lang => lang !== local)
         .join(',') || undefined;
     return config.setSettingInVSConfig('language', languages, isGlobal);
+}
+
+export function overrideLocal(enable: boolean, isGlobal: boolean) {
+    const inspectLang = config.inspectSettingFromVSConfig('language');
+
+    const lang = enable && inspectLang
+        ? (isGlobal ? inspectLang.defaultValue : inspectLang.globalValue || inspectLang.defaultValue )
+        : undefined ;
+
+    return config.setSettingInVSConfig('language', lang, isGlobal);
 }
 
 export function updateSettings(isGlobal: boolean, settings: CSpellUserSettings) {

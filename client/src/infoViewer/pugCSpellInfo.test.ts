@@ -10,6 +10,10 @@ function genSetLocal(code: string, enabled: boolean, isGlobal: boolean) {
     return `command:SetLocal?${JSON.stringify([code, enabled, isGlobal])}`;
 }
 
+function genOverrideLocal(enable: boolean, isGlobal: boolean) {
+    return `command:overrideLocalSetting?${JSON.stringify([enable, isGlobal])}`;
+}
+
 const localInfo: t.LocalInfo[] = [
     {
         code: 'en',
@@ -49,6 +53,12 @@ const dictionariesForFile = ['en-us', 'html', 'typescript'];
 const dictionariesInUse = new Set(dictionariesForFile);
 const isDictionaryInUse = dict => dictionariesInUse.has(dict);
 
+const local: t.LocalSetting = {
+    default: 'en',
+    user: 'en,de',
+    workspace: undefined
+};
+
 const info: t.TemplateVariables = {
     useDarkTheme: true,
     filename: 'test.ts',
@@ -64,10 +74,11 @@ const info: t.TemplateVariables = {
     linkDisableLanguage: 'command:cSpell',
     imagesPath,
     localInfo,
-    local: ['English'],
+    local,
     availableLocals: ['English'],
     genSetLocal,
     genSelectInfoTabLink,
+    genOverrideLocal,
     activeTab: 'FileInfo',
 };
 
@@ -95,10 +106,11 @@ describe('Verify Template Renders', () => {
             linkDisableLanguage: 'command:cSpell',
             imagesPath,
             localInfo,
-            local: ['English'],
+            local,
             availableLocals: ['English'],
             genSetLocal,
             genSelectInfoTabLink,
+            genOverrideLocal,
             activeTab: 'FileInfo',
         });
         expect(html).to.not.be.empty;

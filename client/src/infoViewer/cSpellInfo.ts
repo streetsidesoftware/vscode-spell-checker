@@ -15,11 +15,12 @@ import { LocalInfo, ActiveTab } from './pugCSpellInfo';
 
 const schemeCSpellInfo = 'cspell-info';
 
-export const commandDisplayCSpellInfo = 'cSpell.displayCSpellInfo';
-export const commandEnableLanguage    = 'cSpell.enableLanguageFromCSpellInfo';
-export const commandDisableLanguage   = 'cSpell.disableLanguageFromCSpellInfo';
-export const commandSetLocal          = 'cSpell.setLocal';
-export const commandSelectInfoTab     = 'cSpell.selectInfoTab';
+export const commandDisplayCSpellInfo    = 'cSpell.displayCSpellInfo';
+export const commandEnableLanguage       = 'cSpell.enableLanguageFromCSpellInfo';
+export const commandDisableLanguage      = 'cSpell.disableLanguageFromCSpellInfo';
+export const commandSetLocal             = 'cSpell.setLocal';
+export const commandOverrideLocalSetting = 'cSpell.overrideLocalSetting';
+export const commandSelectInfoTab        = 'cSpell.selectInfoTab';
 
 function genCommandLink(command: string, paramValues?: any[]) {
     const cmd = `command:${command}?`;
@@ -83,7 +84,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 const { fileEnabled = false, languageEnabled = false, settings = {}, docSettings = {} } = response;
                 const languageId = document.languageId;
                 const dictionaries = settings.dictionaryDefinitions || [];
-                const local = friendlyLocals(serverSettings.extractLanguage(settings));
+                const local = getLocalSetting();
                 const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
                 const localInfo = composeLocalInfo(settings);
                 const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
@@ -106,6 +107,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     availableLocals,
                     genSetLocal,
                     genSelectInfoTabLink,
+                    genOverrideLocal,
                     dictionariesForFile,
                     isDictionaryInUse,
                     dictionaries,
@@ -181,8 +183,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     }
 
+    function overrideLocalSetting(enable: boolean, isGlobal: boolean) {
+        config.overrideLocal(enable, isGlobal);
+    }
+
     function genSetLocal(code: string, enable: boolean, isGlobal: boolean) {
         return genCommandLink(commandSetLocal, [code, enable, isGlobal]);
+    }
+
+    function genOverrideLocal(enable: boolean, isGlobal: boolean) {
+        return genCommandLink(commandOverrideLocalSetting, [enable, isGlobal]);
     }
 
     function selectInfoTab(tab: ActiveTab) {
@@ -235,11 +245,25 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             });
     }
 
+    function getLocalSetting() {
+        const langSettings = getLanguageSettingFromVSCode();
+
+        return {
+            default: langSettings.defaultValue,
+            user: langSettings.globalValue,
+            workspace: langSettings.workspaceValue,
+        };
+    }
+
+    function getLanguageSettingFromVSCode(): config.Inspect<config.CSpellUserSettings['language']> {
+        return config.inspectSettingFromVSConfig('language') || { key: ''};
+    }
+
     function composeLocalInfo(settingsFromServer?: serverSettings.CSpellUserSettings): LocalInfo[] {
         const dictByLocal = serverSettings.extractDictionariesByLocal(settingsFromServer);
         const availableLocals = localInfo(serverSettings.extractLocals(settingsFromServer));
         const localsFromServer = localInfo(serverSettings.extractLanguage(settingsFromServer), { enabled: true });
-        const fromConfig = config.inspectSettingFromVSConfig('language') || { key: ''};
+        const fromConfig = getLanguageSettingFromVSCode();
         const globalLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.globalValue), { isInUserSettings: true });
         const workspaceLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.workspaceValue), { isInWorkspaceSettings: true });
 
@@ -286,6 +310,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),
         vscode.commands.registerCommand(commandSetLocal, setLocal),
+        vscode.commands.registerCommand(commandOverrideLocalSetting, overrideLocalSetting),
         vscode.commands.registerCommand(commandSelectInfoTab, selectInfoTab),
         registration,
         makeDisposable(subOnDidChangeTextDocument),

@@ -18,6 +18,12 @@ export interface DictionaryEntry {
     description?: string;
 }
 
+export interface LocalSetting {
+    default?: string;
+    user?: string;
+    workspace?: string;
+}
+
 export interface TemplateVariables {
     useDarkTheme: boolean;
     filename: string;
@@ -33,11 +39,12 @@ export interface TemplateVariables {
     linkDisableLanguage: string;
     imagesPath: string;
     localInfo: LocalInfo[];
-    local: string[];
+    local: LocalSetting;
     availableLocals: string[];
     activeTab: ActiveTab;
     genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
     genSelectInfoTabLink: (tab: string) => string;
+    genOverrideLocal: (enable: boolean, isGlobal: boolean) => string;
 }
 
 export function render(params: TemplateVariables) {
