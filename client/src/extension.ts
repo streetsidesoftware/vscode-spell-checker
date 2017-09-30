@@ -1,10 +1,10 @@
 import * as path from 'path';
-import {configFileWatcherGlob, setEnableSpellChecking} from './settings';
+import {setEnableSpellChecking} from './settings';
 import * as settings from './settings';
 import * as infoViewer from './infoViewer';
 import {CSpellClient} from './client';
 
-import { workspace, ExtensionContext } from 'vscode';
+import { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 
 import { initStatusBar } from './statusbar';
@@ -19,8 +19,6 @@ export function activate(context: ExtensionContext) {
 
     // Get the cSpell Client
     const server = CSpellClient.create(serverModule).then(client => {
-        const configWatcher = workspace.createFileSystemWatcher(configFileWatcherGlob);
-
         // Start the client.
         const clientDispose = client.start();
 
@@ -64,9 +62,7 @@ export function activate(context: ExtensionContext) {
             vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', commands.toggleEnableSpellChecker),
             vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),
             vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
-            configWatcher.onDidChange(triggerGetSettings),
-            configWatcher.onDidCreate(triggerGetSettings),
-            configWatcher.onDidDelete(triggerGetSettings)
+            settings.watchSettingsFiles(triggerGetSettings),
         );
 
         infoViewer.activate(context, client);

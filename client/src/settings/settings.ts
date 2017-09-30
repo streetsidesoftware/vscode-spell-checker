@@ -5,23 +5,37 @@ import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { unique, uniqueFilter } from '../util';
+import * as watcher from '../util/watcher';
 import * as config from './config';
+import * as Rx from 'rxjs/Rx';
+
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
-export const configFileWatcherGlob = `**/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
-// This are in preferred order.
-const possibleConfigPaths   = [
+export const configFileWatcherGlob = [
     baseConfigName,
     baseConfigName.toLowerCase(),
-    path.join('.vscode', baseConfigName),
-    path.join('.vscode', baseConfigName.toLowerCase()),
-].join(',');
+    `.vscode/${baseConfigName}`,
+    `.vscode/${baseConfigName.toLowerCase()}`,
+];
 
-export const findConfig = `{${possibleConfigPaths}}`;
+export const findConfig = `.vscode/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
 
 export interface SettingsInfo {
     path: string;
     settings: CSpellUserSettings;
+}
+
+export function watchSettingsFiles(callback: () => void): vscode.Disposable {
+    const d = Rx.Observable.interval(1000)
+        .flatMap(findSettingsFiles)
+        .flatMap(a => a)
+        .map(uri => uri.fsPath)
+        .filter(file => !watcher.isWatching(file))
+        .subscribe(file => watcher.add(file, callback));
+
+    return vscode.Disposable.from({ dispose: () => {
+        watcher.dispose();
+    } });
 }
 
 export function getDefaultWorkspaceConfigLocation() {

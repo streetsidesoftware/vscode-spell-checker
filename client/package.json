@@ -345,6 +345,7 @@
         "comment-json": "^1.1.3",
         "fs-extra": "^4.0.2",
         "mkdirp": "^0.5.1",
+        "node-watch": "^0.5.5",
         "pug": "^2.0.0-rc.4",
         "rxjs": "^5.4.3",
         "tsmerge": "^1.0.4",
