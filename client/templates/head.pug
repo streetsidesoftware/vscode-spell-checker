@@ -8,28 +8,63 @@ head
             padding: 0;
             margin: 0;
         }
-        html>body.useDarkTheme {
+        html>body.vscode-dark {
             background-color: #111111;
             color: #FAFAFA;
         }
-        body.useDarkTheme .mdl-list__item {
+        body.vscode-dark .mdl-list__item {
             color: rgba(255,255,255,0.87) !important;
         }
-        body.useDarkTheme .mdl-data-table {
+        body.vscode-dark .mdl-data-table {
             background-color: #222222
         }
-        body.useDarkTheme .mdl-data-table th {
+        body.vscode-dark .mdl-data-table th {
             color: rgba(255,255,255,0.54) !important;
         }
-        body.useDarkTheme .mdl-data-table tbody tr:hover {
+        body.vscode-dark .mdl-data-table tbody tr:hover {
             background-color: #444
         }
-        body.useDarkTheme .mdl-switch__track {
+        body.vscode-dark .mdl-switch__track {
             background-color: #666
         }
-        body.useDarkTheme .mdl-data-table td {
+        body.vscode-dark .mdl-data-table td {
             border-top: 1px solid rgba(255,255,255,.12);
             border-bottom: 1px solid rgba(255,255,255,.12);
+        }
+        html>body.vscode-high-contrast {
+            background-color: #000;
+            color: #FFF;
+        }
+        body.vscode-high-contrast .mdl-list__item {
+            color: rgba(255,255,255,0.87) !important;
+        }
+        body.vscode-high-contrast .mdl-data-table {
+            background-color: #111
+        }
+        body.vscode-high-contrast .mdl-data-table th {
+            color: #999 !important;
+        }
+        body.vscode-high-contrast .mdl-data-table tr:hover th {
+            border-top: 0px solid orange;
+            border-bottom: 2px solid orange;
+            background-color: #000;
+            color: #999 !important;
+        }
+        body.vscode-high-contrast .mdl-switch__track {
+            background-color: #666
+        }
+        body.vscode-high-contrast .mdl-data-table tr:hover {
+            border-bottom: 2px solid orange;
+            background-color: #000;
+        }
+        body.vscode-high-contrast .mdl-data-table tr:hover td {
+            border-top: 2px solid orange;
+            border-bottom: 2px solid orange;
+            background-color: #000;
+        }
+        body.vscode-high-contrast .mdl-data-table tr td {
+            border-top: 2px solid #222;
+            border-bottom: 2px solid #222;
         }
         .language {
             font-size: 15px;
