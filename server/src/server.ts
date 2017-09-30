@@ -22,7 +22,6 @@ import * as path from 'path';
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
-import { GetConfigurationForDocumentResult, IsSpellCheckEnabledResult } from './api';
 import * as Api from './api';
 
 const methodNames: Api.RequestMethodConstants = {
