@@ -3,7 +3,11 @@
 ## [1.4.1]
 * Fix part of issue [#74](https://github.com/Jason-Rev/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.
 * Enhanced the information screen.
-* Add a right click option to add a word to the dictionary.
+* Add a right click option to add a word to the dictionary. If multiple words are selected, all of them will be added.
+  This should fix issue [#59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59).
+* Improve startup performance by limited the settings watcher.
+  This addresses:
+  - [#77](https://github.com/Jason-Rev/vscode-spell-checker/issues/77)
 
 ## [1.4.0]
 * Improved the information screen to make it easier to turn on/off languages.
