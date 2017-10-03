@@ -1,7 +1,9 @@
 # Release Notes:
 
-## [1.4.2]
+## [1.4.2 - 1.4.5]
 * Patch to fix issue with detecting changes to settings files.
+* Fix issue [Spawns too many "find" processes #143](https://github.com/Jason-Rev/vscode-spell-checker/issues/143)
+* Possible fix for [CPU usage extremely high, on close memory usage skyrockets #77](https://github.com/Jason-Rev/vscode-spell-checker/issues/77)
 
 ## [1.4.1]
 * Fix part of issue [#74](https://github.com/Jason-Rev/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.

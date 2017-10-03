@@ -1,4 +1,4 @@
-// const watch = require('node-watch');
+const watch = require('node-watch');
 
 export type Events = 'update' | 'remove' | 'error';
 
@@ -10,7 +10,7 @@ export type Callback = (name: string, event: Events) => void;
 
 interface FileWatcher {
     watcher: Watcher;
-    callbacks: Callback[];
+    callbacks: Set<Callback>;
 }
 
 const watchedFiles = new Map<string, FileWatcher>();
@@ -35,16 +35,14 @@ export function stopWatching(fileName: string) {
 }
 
 export function add(fileName: string, callback: Callback) {
-    /*
     if (!watchedFiles.has(fileName)) {
         watchedFiles.set(fileName, {
             watcher: watch(fileName, listener) as Watcher,
-            callbacks: [],
+            callbacks: new Set<Callback>(),
         });
     }
     const watcher = watchedFiles.get(fileName);
-    watcher!.callbacks.push(callback);
-    */
+    watcher!.callbacks.add(callback);
 }
 
 export function dispose() {
