@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.4.6]
+* Fix issue [Add all words in the current document to dictionary #59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59)
+  This is now possible by selecting the words you want to add and right click to choose which dictionary to add them to.
+
 ## [1.4.2 - 1.4.5]
 * Patch to fix issue with detecting changes to settings files.
 * Fix issue [Spawns too many "find" processes #143](https://github.com/Jason-Rev/vscode-spell-checker/issues/143)
