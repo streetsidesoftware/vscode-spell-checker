@@ -27,15 +27,17 @@ export interface SettingsInfo {
 }
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
+    /*
     const d = Rx.Observable.interval(10000)
         .flatMap(findSettingsFiles)
         .flatMap(a => a)
         .map(uri => uri.fsPath)
         .filter(file => !watcher.isWatching(file))
         .subscribe(file => watcher.add(file, callback));
+    */
 
     return vscode.Disposable.from({ dispose: () => {
-        watcher.dispose();
+        // watcher.dispose();
     } });
 }
 

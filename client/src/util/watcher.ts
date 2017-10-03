@@ -1,4 +1,4 @@
-const watch = require('node-watch');
+// const watch = require('node-watch');
 
 export type Events = 'update' | 'remove' | 'error';
 
@@ -35,6 +35,7 @@ export function stopWatching(fileName: string) {
 }
 
 export function add(fileName: string, callback: Callback) {
+    /*
     if (!watchedFiles.has(fileName)) {
         watchedFiles.set(fileName, {
             watcher: watch(fileName, listener) as Watcher,
@@ -43,6 +44,7 @@ export function add(fileName: string, callback: Callback) {
     }
     const watcher = watchedFiles.get(fileName);
     watcher!.callbacks.push(callback);
+    */
 }
 
 export function dispose() {
