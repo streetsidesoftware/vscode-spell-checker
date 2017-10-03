@@ -8,10 +8,11 @@ import { unique, uniqueFilter } from '../util';
 import * as watcher from '../util/watcher';
 import * as config from './config';
 import * as Rx from 'rxjs/Rx';
+import * as fs from 'fs-extra';
 
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
-export const configFileWatcherGlob = [
+export const configFileLocations = [
     baseConfigName,
     baseConfigName.toLowerCase(),
     `.vscode/${baseConfigName}`,
@@ -26,8 +27,8 @@ export interface SettingsInfo {
 }
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
-    const d = Rx.Observable.interval(1000)
-        .flatMap(findSettingsFilesX)
+    const d = Rx.Observable.interval(10000)
+        .flatMap(findSettingsFiles)
         .flatMap(a => a)
         .map(uri => uri.fsPath)
         .filter(file => !watcher.isWatching(file))
@@ -49,12 +50,22 @@ export function hasWorkspaceLocation() {
     return !!workspace.rootPath;
 }
 
-function findSettingsFilesX(): Thenable<Uri[]> {
-    return Promise.resolve([]);
-}
-
 export function findSettingsFiles(): Thenable<Uri[]> {
-    return workspace.findFiles(findConfig, '{**/node_modules,**/.git}');
+    const { rootPath } = workspace;
+    if (rootPath === undefined) {
+        return Promise.resolve([]);
+    }
+
+    const found = configFileLocations
+        .map(rel => path.join(rootPath, rel))
+        .map(filename => fs.pathExists(filename)
+        .then(exists => ({ filename, exists })));
+
+    return Promise.all(found).then(found => found
+        .filter(found => found.exists)
+        .map(found => found.filename)
+        .map(filename => Uri.file(filename))
+    );
 }
 
 export function findExistingSettingsFileLocation(): Thenable<string | undefined> {
