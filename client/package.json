@@ -330,7 +330,7 @@
         "@types/fs-extra": "^4.0.2",
         "@types/mkdirp": "^0.3.29",
         "@types/mocha": "^2.2.43",
-        "@types/node": "^8.0.30",
+        "@types/node": "^8.0.31",
         "@types/pug": "^2.0.4",
         "chai": "^4.1.2",
         "lorem-ipsum": "^1.0.4",
@@ -339,7 +339,7 @@
         "pug-lint": "^2.5.0",
         "rimraf": "^2.6.2",
         "ts-node": "^3.3.0",
-        "typescript": "^2.5.2"
+        "typescript": "^2.5.3"
     },
     "dependencies": {
         "comment-json": "^1.1.3",
