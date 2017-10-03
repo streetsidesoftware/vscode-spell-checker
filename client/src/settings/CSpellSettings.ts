@@ -3,7 +3,7 @@ import {merge} from 'tsmerge';
 import * as json from 'comment-json';
 import path = require('path');
 import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server';
-import { unique } from '../util';
+import { unique, uniqueFilter } from '../util';
 
 const currentSettingsFileVersion = '0.1';
 
@@ -62,12 +62,17 @@ export function updateSettings(filename: string, settings: CSpellUserSettings) {
 
 export function addWordToSettingsAndUpdate(filename: string, word: string) {
     return readSettings(filename)
-        .then(settings => addWordsToSettings(settings, [word]))
+        .then(settings => addWordsToSettings(settings, word.split(' ')))
         .then(settings => updateSettings(filename, settings));
 }
 
 export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wordsToAdd: string[]) {
-    const words = unique((settings.words || []).concat(wordsToAdd).sort());
+    const words = (settings.words || [])
+        .concat(wordsToAdd)
+        .map(a => a.trim())
+        .filter(a => !!a)
+        .filter(uniqueFilter())
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     return {...settings, words};
 }
 export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComments, languageIds: string[], onlyIfExits: boolean) {
