@@ -1,5 +1,8 @@
 # Release Notes:
 
+## [1.4.2]
+* Patch to fix issue with detecting changes to settings files.
+
 ## [1.4.1]
 * Fix part of issue [#74](https://github.com/Jason-Rev/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.
 * Enhanced the information screen.

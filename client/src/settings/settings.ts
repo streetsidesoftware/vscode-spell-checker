@@ -27,7 +27,7 @@ export interface SettingsInfo {
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     const d = Rx.Observable.interval(1000)
-        .flatMap(findSettingsFiles)
+        .flatMap(findSettingsFilesX)
         .flatMap(a => a)
         .map(uri => uri.fsPath)
         .filter(file => !watcher.isWatching(file))
@@ -47,6 +47,10 @@ export function getDefaultWorkspaceConfigLocation() {
 
 export function hasWorkspaceLocation() {
     return !!workspace.rootPath;
+}
+
+function findSettingsFilesX(): Thenable<Uri[]> {
+    return Promise.resolve([]);
 }
 
 export function findSettingsFiles(): Thenable<Uri[]> {
