@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.4.7]
+* Improved the support for compound words with languages like Dutch and German. This is still a work in progress.
+* Enable spell checking longer word compounds like: networkerrorexecption. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
+
 ## [1.4.6]
 * Fix issue [Add all words in the current document to dictionary #59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59)
   This is now possible by selecting the words you want to add and right click to choose which dictionary to add them to.
@@ -265,7 +269,7 @@
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
 
-    cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ
+    cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ networkerrorexecption
     cSpell:enableCompoundWords
     cSpell:includeRegExp Everything
     cSpell:ignore hte
