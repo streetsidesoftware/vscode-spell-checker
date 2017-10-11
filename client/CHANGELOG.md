@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.4.8]
+* The spell checker will now give reasonable suggestions for compound words. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
+* Fixed [Words in the forbidden list are being shown as suggested spelling corrections #89](https://github.com/Jason-Rev/vscode-spell-checker/issues/89)
+
 ## [1.4.7]
 * Improved the support for compound words with languages like Dutch and German. This is still a work in progress.
 * Enable spell checking longer word compounds like: networkerrorexecption. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
