@@ -13,6 +13,12 @@ import * as cspell from 'cspell';
 
 const defaultNumSuggestions = 10;
 
+const regexJoinedWords = /[+]/g;
+
+const maxWordLengthForSuggestions = 20;
+const wordLengthForLimitingSuggestions = 15;
+const maxNumberOfSuggestionsForLongWords = 1;
+
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
     const offStart = textDocument.offsetAt(start);
@@ -47,14 +53,21 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
             return LangServer.TextEdit.replace(range, text || '');
         }
 
-        function genMultiWordSugs(words: string[]): string[] {
+        function genMultiWordSugs(word: string, words: string[]): string[] {
             const snakeCase = words.join('_').toLowerCase();
             const camelCase = Text.snakeToCamel(snakeCase);
+            const sug = Text.isFirstCharacterUpper(word) ? Text.ucFirst(camelCase) : Text.lcFirst(camelCase);
             return [
-                snakeCase,
-                Text.ucFirst(camelCase),
-                Text.lcFirst(camelCase)
+                sug,
             ];
+        }
+
+        function getSuggestions(dictionary: SpellingDictionary, word: string, numSuggestions: number): string[] {
+            if (word.length > maxWordLengthForSuggestions) {
+                return [];
+            }
+            const numSugs = word.length > wordLengthForLimitingSuggestions ? maxNumberOfSuggestionsForLongWords : numSuggestions;
+            return dictionary.suggest(word, numSugs).map(sr => sr.word.replace(regexJoinedWords, ''));
         }
 
         return dictionary.then(dictionary => {
@@ -63,7 +76,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
             for (const diag of spellCheckerDiags) {
                 const word = extractText(textDocument, diag.range);
                 altWord = altWord || word;
-                const sugs: string[] = dictionary.suggest(word, numSuggestions).map(sr => sr.word);
+                const sugs: string[] = getSuggestions(dictionary, word, numSuggestions);
                 sugs
                     .map(sug => Text.matchCase(word, sug))
                     .forEach(sugWord => {
@@ -72,7 +85,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
                             textDocument.version,
                             [ replaceText(diag.range, sugWord) ]
                         ));
-                        const words = sugWord.replace(/[ \-_.]/, '_').split('_');
+                        const words = sugWord.replace(/[ _.]/g, '_').split('_');
                         if (words.length > 1) {
                             if (Text.isUpperCase(word)) {
                                 const sug = words.join('_').toUpperCase();
@@ -82,7 +95,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
                                     [ replaceText(diag.range, sug) ]
                                 ));
                             } else {
-                                genMultiWordSugs(words).forEach(sugWord => {
+                                genMultiWordSugs(word, words).forEach(sugWord => {
                                     commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
                                         uri,
                                         textDocument.version,
