@@ -179,6 +179,12 @@
                     "default": true,
                     "description": "Enable / Disable the spell checker."
                 },
+                "cSpell.diagnosticLevel": {
+                    "type": "string",
+                    "enum": ["Error", "Warning", "Information", "Hint"],
+                    "default": "Information",
+                    "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle."
+                },
                 "cSpell.showStatus": {
                     "type": "boolean",
                     "default": true,

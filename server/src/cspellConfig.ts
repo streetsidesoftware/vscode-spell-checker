@@ -5,6 +5,7 @@ export { LanguageSetting } from 'cspell';
 
 export interface SpellCheckerSettings {
     checkLimit?: number;
+    diagnosticLevel?: string;
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}

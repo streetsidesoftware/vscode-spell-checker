@@ -1,5 +1,8 @@
 # Release Notes:
 
+## [1.4.10]
+* Allow the diagnostic level to be configured. In reference to [Highlight color #128](https://github.com/Jason-Rev/vscode-spell-checker/issues/128) and [disable scrollbar annotations #144](https://github.com/Jason-Rev/vscode-spell-checker/issues/144)
+
 ## [1.4.9]
 * Make it easier to add ignore words to the settings. [Option to ignore words #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
 

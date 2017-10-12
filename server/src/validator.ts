@@ -11,6 +11,13 @@ import * as cspell from 'cspell';
 
 export const defaultCheckLimit = 500;
 
+const diagSeverityMap = new Map<string, DiagnosticSeverity>([
+    ['error',       DiagnosticSeverity.Error],
+    ['warning',     DiagnosticSeverity.Warning],
+    ['information', DiagnosticSeverity.Information],
+    ['hint',        DiagnosticSeverity.Hint],
+]);
+
 export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
     return validateTextDocumentAsync(textDocument, options)
         .toArray()
@@ -18,6 +25,8 @@ export function validateTextDocument(textDocument: TextDocument, options: CSpell
 }
 
 export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Rx.Observable<Diagnostic> {
+    const { diagnosticLevel = DiagnosticSeverity.Information.toString() } = options;
+    const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const text = textDocument.getText().slice(0, limit);
     return Rx.Observable.fromPromise<cspell.TextOffset[]>(validateText(text, options))
@@ -36,7 +45,7 @@ export function validateTextDocumentAsync(textDocument: TextDocument, options: C
         }))
         // Convert it to a Diagnostic
         .map(({text, range}) => ({
-            severity: DiagnosticSeverity.Information,
+            severity,
             range: range,
             message: `Unknown word: "${text}"`,
             source: diagSource
