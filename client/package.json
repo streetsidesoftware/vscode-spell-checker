@@ -166,6 +166,14 @@
                     "default": [],
                     "description": "User words to add to dictionary.  Should only be in the user settings."
                 },
+                "cSpell.ignoreWords": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "A list of words to be ignored by the spell checker."
+                },
                 "cSpell.enabled": {
                     "type": "boolean",
                     "default": true,
