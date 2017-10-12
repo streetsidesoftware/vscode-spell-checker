@@ -1,5 +1,8 @@
 # Release Notes:
 
+## [1.4.9]
+* Make it easier to add ignore words to the settings. [Option to ignore words #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
+
 ## [1.4.8]
 * The spell checker will now give reasonable suggestions for compound words. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
 * Fixed [Words in the forbidden list are being shown as suggested spelling corrections #89](https://github.com/Jason-Rev/vscode-spell-checker/issues/89)
