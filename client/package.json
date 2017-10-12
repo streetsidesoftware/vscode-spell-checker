@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.4.9",
+    "version": "1.4.10",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -181,7 +181,12 @@
                 },
                 "cSpell.diagnosticLevel": {
                     "type": "string",
-                    "enum": ["Error", "Warning", "Information", "Hint"],
+                    "enum": [
+                        "Error",
+                        "Warning",
+                        "Information",
+                        "Hint"
+                    ],
                     "default": "Information",
                     "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle."
                 },
