@@ -17,3 +17,15 @@ This is a place to capture common questions and possible confusions. Please feel
 
 ### *Is it possible to only spell check comments*
 > Yes. It is necessary to define `includeRegExpList` for each language. See [#107](https://github.com/Jason-Rev/vscode-spell-checker/issues/107) and [#116](https://github.com/Jason-Rev/vscode-spell-checker/issues/116)
+
+### Can I use the spell checker as a linter or part of the build process?
+> Yes you can: [Spell Checker as Npm package #137](https://github.com/Jason-Rev/vscode-spell-checker/issues/137)
+
+### Can I remove a word from the dictionary?
+> [How to remove word from dictionary? #117](https://github.com/Jason-Rev/vscode-spell-checker/issues/117)
+
+### Can I add a many words to the dictionary at once?
+> Yes, select the words and right click to get the menu. Choose `Add Word to Dictionary` or `Add Word to Global Dictionary`. [Add all words in the current document to dictionary #59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59)
+
+### Can I ignore words.
+> See: [Option to ignore words #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
