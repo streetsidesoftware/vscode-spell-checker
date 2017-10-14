@@ -25,6 +25,19 @@ For the readme on the plugin: [README](./client/README.md).
 1. Launch the client as specified above.
 1. Attach to the server: `F5` or `Debug -> Attach Server`
 
+Sometimes the ports get stuck. You can see if they are being used with:
+
+```
+netstat -anp tcp | grep 60048
+```
+
+Use the following command to find the process id (PID):
+```
+lsof -i tcp:60048
+```
+
+If anything shows up, then the port is still locked.
+
 ## Dictionaries / Word List
 
 Improvements to existing word lists and new word lists are welcome.

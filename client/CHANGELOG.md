@@ -1,5 +1,11 @@
 # Release Notes:
 
+## [unreleased]
+* Added Multi-Root Support
+
+## [1.4.12]
+* Speed up suggestions.
+
 ## [1.4.12]
 * Speed up suggestions.
 
@@ -286,8 +292,7 @@
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
 
-    cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ networkerrorexecption
-    cSpell:enableCompoundWords
+    cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ networkerrorexecption scrollbar
     cSpell:includeRegExp Everything
     cSpell:ignore hte
     cSpell:words Verdana

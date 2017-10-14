@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
     "engines": {
-        "vscode": "^1.16.0"
+        "vscode": "^1.17.0"
     },
     "categories": [
         "Linters",
@@ -92,31 +92,37 @@
             "properties": {
                 "cSpell.language": {
                     "type": "string",
+                    "scope": "resource",
                     "default": "en",
-                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported. "
+                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported."
                 },
                 "cSpell.maxNumberOfProblems": {
                     "type": "number",
+                    "scope": "resource",
                     "default": 100,
                     "description": "Controls the maximum number of spelling errors per document."
                 },
                 "cSpell.checkLimit": {
                     "type": "number",
+                    "scope": "resource",
                     "default": 500,
                     "description": "The limit in K-Bytes to be checked in a file."
                 },
                 "cSpell.numSuggestions": {
                     "type": "number",
+                    "scope": "resource",
                     "default": 8,
                     "description": "Controls the number of suggestions shown."
                 },
                 "cSpell.minWordLength": {
                     "type": "number",
+                    "scope": "resource",
                     "default": 4,
                     "description": "The minimum length of a word before checking it against a dictionary."
                 },
                 "cSpell.enabledLanguageIds": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -144,6 +150,7 @@
                 },
                 "cSpell.import": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -152,6 +159,7 @@
                 },
                 "cSpell.words": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -160,6 +168,7 @@
                 },
                 "cSpell.userWords": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -168,6 +177,7 @@
                 },
                 "cSpell.ignoreWords": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -176,11 +186,13 @@
                 },
                 "cSpell.enabled": {
                     "type": "boolean",
+                    "scope": "resource",
                     "default": true,
                     "description": "Enable / Disable the spell checker."
                 },
                 "cSpell.diagnosticLevel": {
                     "type": "string",
+                    "scope": "resource",
                     "enum": [
                         "Error",
                         "Warning",
@@ -192,6 +204,7 @@
                 },
                 "cSpell.showStatus": {
                     "type": "boolean",
+                    "scope": "resource",
                     "default": true,
                     "description": "Display the spell checker status on the status bar."
                 },
@@ -202,6 +215,7 @@
                 },
                 "cSpell.ignorePaths": {
                     "type": "array",
+                    "scope": "window",
                     "items": {
                         "type": "string"
                     },
@@ -216,6 +230,7 @@
                 },
                 "cSpell.flagWords": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -226,6 +241,7 @@
                 },
                 "cSpell.patterns": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "object",
                         "items": [
@@ -247,6 +263,7 @@
                 },
                 "cSpell.ignoreRegExpList": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -255,6 +272,7 @@
                 },
                 "cSpell.includeRegExpList": {
                     "type": "array",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
@@ -263,11 +281,13 @@
                 },
                 "cSpell.allowCompoundWords": {
                     "type": "boolean",
+                    "scope": "resource",
                     "default": false,
                     "description": "Enable / Disable allowing word compounds. true means 'arraylength' would be ok, false means it would not pass."
                 },
                 "cSpell.languageSettings": {
                     "type": "array",
+                    "scope": "resource",
                     "description": "Define settings on a per programming language basis.",
                     "items": {
                         "type": "object",
@@ -301,6 +321,7 @@
                 },
                 "cSpell.dictionaries": {
                     "type": "array",
+                    "scope": "resource",
                     "description": "List of dictionaries to use when checking files.",
                     "items": {
                         "type": "string",
@@ -309,6 +330,7 @@
                 },
                 "cSpell.dictionaryDefinitions": {
                     "type": "array",
+                    "scope": "resource",
                     "description": "A List of Dictionary Definitions.",
                     "items": {
                         "type": "object",

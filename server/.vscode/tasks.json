@@ -9,7 +9,8 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": "$tsc"
         },
         {
             "type": "npm",
@@ -18,6 +19,11 @@
                 "kind": "test",
                 "isDefault": true
             }
+        },
+        {
+            "type": "npm",
+            "script": "watch",
+            "problemMatcher": ["$tsc-watch"]
         }
     ]
 }

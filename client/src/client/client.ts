@@ -11,7 +11,7 @@ import * as LanguageIds from '../settings/languageIds';
 import { Maybe, uniqueFilter } from '../util';
 
 // The debug options for the server
-const debugOptions = { execArgv: ['--nolazy', '--debug=60048'] };
+const debugOptions = { execArgv: ['--nolazy', '--inspect=60048'] };
 
 export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
@@ -62,6 +62,7 @@ export class CSpellClient {
 
         // Create the language client and start the client.
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
+        this.client.registerProposedFeatures();
     }
 
     public needsStart() {

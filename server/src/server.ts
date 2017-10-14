@@ -1,20 +1,19 @@
 // cSpell:ignore pycache
 
 import {
-    IPCMessageReader, IPCMessageWriter,
     createConnection, IConnection,
     TextDocuments, TextDocument,
     InitializeResult,
     InitializeParams,
 } from 'vscode-languageserver';
+import * as vscode from 'vscode-languageserver';
+import { TextDocumentUri, TextDocumentUriLangId } from './vscode.workspaceFolders';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import * as Rx from 'rxjs/Rx';
 import { onCodeActionHandler } from './codeActions';
 import { ExclusionHelper, Text } from 'cspell';
 import {
-    ExcludeFilesGlobMap,
-    ExclusionFunction,
     Glob
 } from 'cspell';
 import * as path from 'path';
@@ -23,6 +22,7 @@ import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 import * as Api from './api';
+import { DocumentSettings, Settings } from './documentSettings';
 
 const methodNames: Api.RequestMethodConstants = {
     isSpellCheckEnabled: 'isSpellCheckEnabled',
@@ -46,8 +46,6 @@ const defaultSettings: CSpellUserSettings = {
     checkLimit: defaultCheckLimit,
     enabled: false,
 };
-const activeSettings: CSpellUserSettings = {...defaultSettings};
-const vscodeSettings: Settings = {};
 const defaultDebounce = 50;
 let activeSettingsNeedUpdating = false;
 
@@ -65,19 +63,9 @@ const defaultExclude: Glob[] = [
 
 const configsToImport = new Set<string>();
 
-// The settings interface describe the server relevant settings part
-interface Settings {
-    cSpell?: CSpellUserSettings;
-    search?: {
-        exclude?: ExcludeFilesGlobMap;
-    };
-}
-
 interface VsCodeSettings {
     [key: string]: any;
 }
-
-let fnFileExclusionTest: ExclusionFunction = () => false;
 
 let g_connection: IConnection;
 
@@ -99,9 +87,11 @@ function run() {
     const triggerValidateAll = new Rx.ReplaySubject<void>(1);
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
-    const connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
+    const connection = createConnection(vscode.ProposedFeatures.all);
     g_connection = connection;
     log('Start');
+
+    const documentSettings = new DocumentSettings(connection, defaultSettings);
 
     // Create a simple text document manager. The text document manager
     // supports full document sync only
@@ -127,40 +117,25 @@ function run() {
     interface OnChangeParam { settings: Settings; }
     function onConfigChange(change: OnChangeParam) {
         log('onConfigChange');
-        Object.assign(vscodeSettings, change.settings || {});
-        log(`Enabled: ${vscodeSettings.cSpell && vscodeSettings.cSpell.enabled ? 'True' : 'False'}`);
         triggerUpdateConfig.next(undefined);
     }
 
     function updateActiveSettings() {
         log('updateActiveSettings');
-        CSpell.clearCachedSettings();
-        const configPaths = workspaceRoot ? [
-            path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
-            path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
-            path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
-            path.join(workspaceRoot, CSpell.defaultSettingsFilename),
-        ] : [];
-        const cSpellSettingsFile = CSpell.readSettingsFiles(configPaths);
-        const { cSpell = {}, search = {} } = vscodeSettings;
-        const { exclude = {} } = search;
-        const importPaths = [...configsToImport.keys()].sort();
-        const importSettings = CSpell.readSettingsFiles(importPaths);
-        const mergedSettings = CSpell.mergeSettings(defaultSettings, importSettings, cSpellSettingsFile, cSpell);
-        const { ignorePaths = []} = mergedSettings;
-        const globs = defaultExclude.concat(ignorePaths, extractGlobsFromExcludeFilesGlobMap(exclude));
-        fnFileExclusionTest = generateExclusionFunctionForUri(globs, workspaceRoot || '');
-        Object.assign(activeSettings, mergedSettings);
+        documentSettings.resetSettings();
         activeSettingsNeedUpdating = false;
-
         triggerValidateAll.next(undefined);
     }
 
-    function getActiveSettings() {
+    function getActiveSettings(doc: TextDocumentUri) {
+        return getActiveUriSettings(doc.uri);
+    }
+
+    function getActiveUriSettings(uri?: string) {
         if (activeSettingsNeedUpdating) {
             updateActiveSettings();
         }
-        return activeSettings;
+        return documentSettings.getUriSettings(uri);
     }
 
     function registerConfigurationFile(path: string) {
@@ -179,21 +154,21 @@ function run() {
     connection.onNotification('applySettings', onConfigChange);
     connection.onNotification('registerConfigurationFile', registerConfigurationFile);
 
-    connection.onRequest(methodNames.isSpellCheckEnabled, (params: TextDocumentInfo): Api.IsSpellCheckEnabledResult => {
+    connection.onRequest(methodNames.isSpellCheckEnabled, async (params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> => {
         const { uri, languageId } = params;
         return {
-            languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
+            languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
         };
     });
 
-    connection.onRequest(methodNames.getConfigurationForDocument, (params: TextDocumentInfo): Api.GetConfigurationForDocumentResult => {
+    connection.onRequest(methodNames.getConfigurationForDocument, async (params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> => {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
-        const docSettings = doc && getSettingsToUseForDocument(doc) || undefined;
-        const settings = activeSettings;
+        const docSettings = doc && await getSettingsToUseForDocument(doc) || undefined;
+        const settings = await getActiveUriSettings(uri);
         return {
-            languageEnabled: languageId ? isLanguageEnabled(languageId) : undefined,
+            languageEnabled: languageId && doc ? await isLanguageEnabled(doc) : undefined,
             fileEnabled: uri ? !isUriExcluded(uri) : undefined,
             settings,
             docSettings,
@@ -215,21 +190,31 @@ function run() {
         };
     });
 
+    interface DocSettingPair {
+        doc: TextDocument,
+        settings: CSpellUserSettings;
+    }
+
     // validate documents
     let lastValidated = '';
     let lastDurationSelector: Rx.Subject<number> | undefined;
     const disposeValidationStream = validationRequestStream
         .do(doc => log(`A Validate ${doc.uri}:${doc.version}`))
-        .filter(shouldValidateDocument)
-        .do(doc => log(`B Validate ${doc.uri}:${doc.version}`))
-        .debounce(doc => {
+        .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc)}) as DocSettingPair )
+        .flatMap(async dsp => await shouldValidateDocument(dsp.doc) ? dsp : undefined)
+        .filter(dsp => !!dsp)
+        .map(dsp => dsp!)
+        .do(dsp => log(`B Validate ${dsp.doc.uri}:${dsp.doc.version}`))
+        .debounce(dsp => {
+            const { doc, settings } = dsp;
             if (doc.uri !== lastValidated && lastDurationSelector) {
                 lastDurationSelector.next(0);
             }
             lastDurationSelector = new Rx.Subject<number>();
-            Rx.Observable.timer(activeSettings.spellCheckDelayMs || defaultDebounce).subscribe(lastDurationSelector);
+            Rx.Observable.timer(settings.spellCheckDelayMs || defaultDebounce).subscribe(lastDurationSelector);
             return lastDurationSelector;
         })
+        .map(dsp => dsp.doc)
         .do(doc => log(`Validate: ${doc.uri}`))
         .do(() => lastDurationSelector = undefined)
         .subscribe(validateTextDocument);
@@ -259,32 +244,34 @@ function run() {
 
     validationFinishedStream.next({ uri: 'start', version: 0 });
 
-    function shouldValidateDocument(textDocument: TextDocument): boolean {
-        const { uri, languageId } = textDocument;
-        return !!getActiveSettings().enabled && isLanguageEnabled(languageId)
+    async function shouldValidateDocument(textDocument: TextDocument): Promise<boolean> {
+        const { uri } = textDocument;
+        const settings = await getActiveSettings(textDocument);
+        return !!settings.enabled && isLanguageEnabled(textDocument)
             && !isUriExcluded(uri);
     }
 
-    function isLanguageEnabled(languageId: string) {
-        const { enabledLanguageIds = []} = getActiveSettings();
-        return enabledLanguageIds.indexOf(languageId) >= 0;
+    async function isLanguageEnabled(textDocument: TextDocumentUriLangId) {
+        const { enabledLanguageIds = []} = await getActiveSettings(textDocument);
+        return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
     }
 
     function isUriExcluded(uri: string) {
-        return fnFileExclusionTest(uri);
+        return documentSettings.isExcluded(uri);
     }
 
-    function getBaseSettings() {
-        return {...CSpell.mergeSettings(defaultSettings, getActiveSettings()), enabledLanguageIds: getActiveSettings().enabledLanguageIds};
+    async function getBaseSettings(doc: TextDocument) {
+        const settings = await getActiveSettings(doc);
+        return {...CSpell.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds};
     }
 
-    function getSettingsToUseForDocument(doc: TextDocument) {
-        return tds.constructSettingsForText(getBaseSettings(), doc.getText(), doc.languageId);
+    async function getSettingsToUseForDocument(doc: TextDocument) {
+        return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
     }
 
-    function validateTextDocument(textDocument: TextDocument): void {
+    async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         try {
-            const settingsToUse = getSettingsToUseForDocument(textDocument);
+            const settingsToUse = await getSettingsToUseForDocument(textDocument);
             if (settingsToUse.enabled) {
                 Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
                     // Send the computed diagnostics to VSCode.
