@@ -18,6 +18,7 @@ const regexJoinedWords = /[+]/g;
 const maxWordLengthForSuggestions = 20;
 const wordLengthForLimitingSuggestions = 15;
 const maxNumberOfSuggestionsForLongWords = 1;
+const maxEdits = 3;
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
@@ -67,7 +68,8 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
                 return [];
             }
             const numSugs = word.length > wordLengthForLimitingSuggestions ? maxNumberOfSuggestionsForLongWords : numSuggestions;
-            return dictionary.suggest(word, numSugs).map(sr => sr.word.replace(regexJoinedWords, ''));
+            const numEdits = maxEdits;
+            return dictionary.suggest(word, numSugs, undefined, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
         }
 
         return dictionary.then(dictionary => {
