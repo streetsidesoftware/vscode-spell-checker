@@ -1,5 +1,9 @@
 # Release Notes:
 
+## [1.4.11]
+* Improve suggests for words with accents.
+* Improve spell checking on compound words.
+
 ## [1.4.10]
 * Allow the diagnostic level to be configured. In reference to [Highlight color #128](https://github.com/Jason-Rev/vscode-spell-checker/issues/128) and [disable scrollbar annotations #144](https://github.com/Jason-Rev/vscode-spell-checker/issues/144)
 
