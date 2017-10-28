@@ -51,7 +51,7 @@ const dictionaries: t.DictionaryEntry[] = [
 ];
 const dictionariesForFile = ['en-us', 'html', 'typescript'];
 const dictionariesInUse = new Set(dictionariesForFile);
-const isDictionaryInUse = dict => dictionariesInUse.has(dict);
+const isDictionaryInUse = (dict: string) => dictionariesInUse.has(dict);
 
 const local: t.LocalSetting = {
     default: 'en',
@@ -131,6 +131,6 @@ function getPathToImages() {
     return path.join(__dirname, '..', '..', 'images');
 }
 
-function genSelectInfoTabLink(tab) {
+function genSelectInfoTabLink(tab: string) {
     return '#' + tab;
 }

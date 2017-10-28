@@ -89,7 +89,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 const localInfo = composeLocalInfo(settings);
                 const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
                 const dictionariesInUse = new Set(dictionariesForFile);
-                const isDictionaryInUse = dict => dictionariesInUse.has(dict);
+                const isDictionaryInUse = (dict: string) => dictionariesInUse.has(dict);
                 const useDarkTheme = isDarkTheme();
                 const html = preview.render({
                     useDarkTheme,

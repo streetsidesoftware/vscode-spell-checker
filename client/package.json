@@ -346,14 +346,14 @@
     "devDependencies": {
         "@types/chai": "^4.0.4",
         "@types/comment-json": "^1.1.0",
-        "@types/fs-extra": "^4.0.2",
+        "@types/fs-extra": "^4.0.3",
         "@types/mkdirp": "^0.3.29",
-        "@types/mocha": "^2.2.43",
-        "@types/node": "^8.0.34",
+        "@types/mocha": "^2.2.44",
+        "@types/node": "^8.0.47",
         "@types/pug": "^2.0.4",
         "chai": "^4.1.2",
         "lorem-ipsum": "^1.0.4",
-        "mocha": "^3.5.3",
+        "mocha": "^4.0.1",
         "pug-cli": "^1.0.0-alpha6",
         "pug-lint": "^2.5.0",
         "rimraf": "^2.6.2",
@@ -366,9 +366,9 @@
         "mkdirp": "^0.5.1",
         "node-watch": "^0.5.5",
         "pug": "^2.0.0-rc.4",
-        "rxjs": "^5.4.3",
+        "rxjs": "^5.5.2",
         "tsmerge": "^1.0.4",
-        "vscode": "^1.1.5",
+        "vscode": "^1.1.6",
         "vscode-languageclient": "^3.4.5"
     }
 }

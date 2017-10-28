@@ -28,6 +28,6 @@ export function isValidCode(code: string) {
     return langCodes.has(code);
 }
 
-export function lookupCode(code) {
+export function lookupCode(code: string) {
     return langCodes.get(code);
 }

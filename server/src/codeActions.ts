@@ -49,7 +49,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: () => 
         const [ docSetting, dictionary ] = getSettings(textDocument);
         const { numSuggestions = defaultNumSuggestions } = docSetting;
 
-        function replaceText(range: LangServer.Range, text) {
+        function replaceText(range: LangServer.Range, text?: string) {
             return LangServer.TextEdit.replace(range, text || '');
         }
 

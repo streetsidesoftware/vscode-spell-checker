@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
-		"target": "es2015",
+		"target": "es2017",
 		"strictNullChecks": true,
+		"strict": true,
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"outDir": "out",

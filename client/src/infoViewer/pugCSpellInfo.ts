@@ -43,7 +43,7 @@ export interface TemplateVariables {
     availableLocals: string[];
     activeTab: ActiveTab;
     genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
-    genSelectInfoTabLink: (tab: string) => string;
+    genSelectInfoTabLink: (tab: ActiveTab) => string;
     genOverrideLocal: (enable: boolean, isGlobal: boolean) => string;
 }
 
