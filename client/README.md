@@ -34,12 +34,14 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
 ## Add-On Dictionaries
-* [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
-* [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
-* [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
-* [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
 * [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
+* [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
+* [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
+* [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
 * [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
+* [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+* [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
+* [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
 * [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
 
 ## Enabled File Types
