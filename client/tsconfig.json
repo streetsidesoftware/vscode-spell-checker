@@ -3,6 +3,7 @@
 		"target": "es2017",
 		"strictNullChecks": true,
 		"strict": true,
+		"strictFunctionTypes": false,
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"outDir": "out",

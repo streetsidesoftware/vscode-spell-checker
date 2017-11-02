@@ -10,6 +10,7 @@
 		"noImplicitAny": true,
 		"noImplicitThis": true,
 		"strictNullChecks": true,
+		"strictFunctionTypes": false,
 		"outDir": "../client/server",
 		"forceConsistentCasingInFileNames": true
 	},
