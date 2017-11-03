@@ -247,8 +247,8 @@ function run() {
     async function shouldValidateDocument(textDocument: TextDocument): Promise<boolean> {
         const { uri } = textDocument;
         const settings = await getActiveSettings(textDocument);
-        return !!settings.enabled && isLanguageEnabled(textDocument)
-            && !isUriExcluded(uri);
+        return !!settings.enabled && await isLanguageEnabled(textDocument)
+            && !await isUriExcluded(uri);
     }
 
     async function isLanguageEnabled(textDocument: TextDocumentUriLangId) {
