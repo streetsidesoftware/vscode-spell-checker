@@ -60,8 +60,13 @@ export function getDocumentSettings(connection: Connection, document: TextDocume
     return getConfiguration(connection, document.uri);
 }
 
-export function getConfiguration(connection: Connection, uri: string): Thenable<any> {
-    return connection.workspace.getConfiguration({ scopeUri: uri });
+export function getConfiguration(connection: Connection, uri?: string): Thenable<any> {
+	if (uri) {
+		connection.console.log(`getConfiguration: ${uri}`);
+		return connection.workspace.getConfiguration({ scopeUri: uri });
+	}
+	connection.console.log('getConfiguration');
+    return connection.workspace.getConfiguration();
 }
 
 export function getWorkspaceFolders(connection: Connection): Thenable<WorkspaceFolder[] | null> {

@@ -22,7 +22,7 @@ import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 import * as Api from './api';
-import { DocumentSettings, Settings } from './documentSettings';
+import { DocumentSettings, SettingsCspell } from './documentSettings';
 
 const methodNames: Api.RequestMethodConstants = {
     isSpellCheckEnabled: 'isSpellCheckEnabled',
@@ -114,7 +114,7 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration(onConfigChange);
 
-    interface OnChangeParam { settings: Settings; }
+    interface OnChangeParam { settings: SettingsCspell; }
     function onConfigChange(change: OnChangeParam) {
         log('onConfigChange');
         triggerUpdateConfig.next(undefined);

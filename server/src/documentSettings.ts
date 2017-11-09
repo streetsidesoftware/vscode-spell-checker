@@ -13,8 +13,11 @@ import { CSpellUserSettings } from './cspellConfig';
 import Uri from 'vscode-uri'
 
 // The settings interface describe the server relevant settings part
-export interface Settings {
+export interface SettingsCspell {
     cSpell?: CSpellUserSettings;
+}
+
+export interface SettingsVSCode {
     search?: {
         exclude?: ExcludeFilesGlobMap;
     };
@@ -26,7 +29,7 @@ interface VsCodeSettings {
 
 interface ExtSettings {
     uri: string;
-    vscodeSettings: Settings;
+    vscodeSettings: SettingsCspell;
     settings: CSpellUserSettings;
     fnFileExclusionTest: ExclusionFunction;
 }
@@ -131,9 +134,11 @@ export class DocumentSettings {
         const folders = await this.fetchFolders();
         const workplaceSettings = readAllWorkspaceFolderSettings(folders);
         const extSettings = workplaceSettings.map(async ([uri, settings]) => {
-            const vsCodeSetting: Settings = await vscode.getConfiguration(this.connection, uri);
-
-            const { search = {}, cSpell = {} } = vsCodeSetting;
+            const cspellSettings: SettingsCspell = await vscode.getConfiguration(this.connection, uri);
+            const vsCodeSettings: VsCodeSettings = await vscode.getConfiguration(this.connection);
+            
+            const { cSpell = {} } = cspellSettings;
+            const { search = {} } = vsCodeSettings;
             const { exclude = {} } = search;
 
             const mergedSettings = CSpell.mergeSettings(settings, cSpell);
@@ -144,7 +149,7 @@ export class DocumentSettings {
 
             const ext: ExtSettings = {
                 uri,
-                vscodeSettings: vsCodeSetting,
+                vscodeSettings: cspellSettings,
                 settings: mergedSettings,
                 fnFileExclusionTest,
             };

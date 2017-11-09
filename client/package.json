@@ -215,7 +215,7 @@
                 },
                 "cSpell.ignorePaths": {
                     "type": "array",
-                    "scope": "window",
+                    "scope": "resource",
                     "items": {
                         "type": "string"
                     },
