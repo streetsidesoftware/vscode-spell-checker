@@ -93,7 +93,11 @@
                 "cSpell.language": {
                     "type": "string",
                     "default": "en",
-                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported. "
+                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported.",
+                    "enum": [
+                        "en",
+                        "en-GB"
+                    ]
                 },
                 "cSpell.maxNumberOfProblems": {
                     "type": "number",
