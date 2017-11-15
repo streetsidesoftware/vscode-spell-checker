@@ -1,0 +1,29 @@
+{
+  "name": "vscode-spell-checker",
+  "version": "1.0.0",
+  "description": "Spell checker for VS Code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jason-Rev/vscode-spell-checker.git"
+  },
+  "keywords": [
+    "Spell",
+    "Checker",
+    "Extension",
+    "VSCode"
+  ],
+  "author": "Jason Dent",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
+  },
+  "homepage": "https://github.com/Jason-Rev/vscode-spell-checker#readme",
+  "devDependencies": {
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
+  }
+}
