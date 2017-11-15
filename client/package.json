@@ -361,8 +361,8 @@
         "build": "tsc -p ./",
         "vscode:prepublish": "npm run clean-build",
         "watch": "tsc -watch -p ./",
-        "test": "npm run build && mocha --compilers ts:ts-node/register \"src/**/*.test.ts\"",
-        "test-watch": "npm run build && mocha --compilers ts:ts-node/register --watch \"src/**/*.test.ts\"",
+        "test": "mocha --require ts-node/register \"src/**/*.test.ts\"",
+        "test-watch": "npm run build && mocha --require ts-node/register --watch \"src/**/*.test.ts\"",
         "postinstall": "node ./node_modules/vscode/bin/install"
     },
     "devDependencies": {

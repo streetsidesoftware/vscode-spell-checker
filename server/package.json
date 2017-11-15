@@ -46,8 +46,8 @@
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "perf": "mocha --recursive ../client/server/perf",
     "tsc": "tsc -p .",
-    "test2": "mocha --compilers ts:ts-node/register --recursive test/*.test.ts test/**/*.test.ts",
-    "test-watch": "npm run build && mocha --compilers ts:ts-node/register --watch --recursive src/**/*.test.ts",
+    "test2": "mocha --register ts-node/register --recursive test/*.test.ts test/**/*.test.ts",
+    "test-watch": "npm run build && mocha --register ts-node/register --watch --recursive src/**/*.test.ts",
     "test": "mocha --recursive ../client/server/test"
   }
 }
