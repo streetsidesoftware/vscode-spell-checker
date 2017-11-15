@@ -4,7 +4,12 @@
   "description": "Spell checker for VS Code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build-server ; npm run build-client",
+    "build-client": "cd client && npm run build",
+    "build-server": "cd server && npm run build",
+    "test-client": "cd client && npm run test",
+    "test-server": "cd server && npm run test",
+    "test": "npm run test-server && npm run test-client"
   },
   "repository": {
     "type": "git",
