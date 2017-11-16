@@ -1,4 +1,4 @@
-import { workspace } from 'vscode';
+import { workspace, Uri } from 'vscode';
 import { CSpellUserSettings } from '../server';
 export { CSpellUserSettings } from '../server';
 
@@ -30,15 +30,15 @@ export function getSectionName(subSection?: keyof CSpellUserSettings): string {
     return [sectionCSpell, subSection].filter(a => !!a).join('.');
 }
 
-export function getSettingsFromVSConfig(): CSpellUserSettings {
-    const config = workspace.getConfiguration();
-    return config.get<CSpellUserSettings>(sectionCSpell) || {};
+export function getSettingsFromVSConfig(resource?: Uri): CSpellUserSettings {
+    const config = workspace.getConfiguration(undefined, resource);
+    return config.get<CSpellUserSettings>(sectionCSpell, {});
 }
 
 export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K, source?: SettingScope
 ): CSpellUserSettings[K] {
-    if (!source || source == 'value') {
+    if (!source || source === 'value') {
         const section = getSectionName(subSection);
         const config = workspace.getConfiguration();
         return config.get<CSpellUserSettings[K]>(section);
@@ -76,6 +76,7 @@ function shadowSetSetting<K extends keyof CSpellUserSettings>(
     return config[scope];
 }
 
-export function inspectConfig(): Inspect<CSpellUserSettings> {
-    return workspace.getConfiguration().inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
+export function inspectConfig(resource?: Uri): Inspect<CSpellUserSettings> {
+    const config = workspace.getConfiguration(undefined, resource);
+    return config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
 }
