@@ -25,10 +25,10 @@
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.4",
+    "@types/chai": "^4.0.5",
     "@types/minimatch": "^3.0.1",
     "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.51",
+    "@types/node": "^8.0.53",
     "@types/xregexp": "^3.0",
     "chai": "^4.1.2",
     "lorem-ipsum": "^1.0.4",
