@@ -3,22 +3,22 @@ import * as vscode from 'vscode-languageserver';
 import {_} from 'vscode-languageserver';
 
 export interface WorkspaceFolder {
-	/**
-	 * The associated URI for this workspace folder.
-	 */
+    /**
+     * The associated URI for this workspace folder.
+     */
     uri: string;
 
-	/**
-	 * The name of the workspace folder. Defaults to the
-	 * uri's basename.
-	 */
+    /**
+     * The name of the workspace folder. Defaults to the
+     * uri's basename.
+     */
     name: string;
 }
 
 export interface DidChangeWorkspaceFoldersParams {
-	/**
-	 * The actual workspace folder change event.
-	 */
+    /**
+     * The actual workspace folder change event.
+     */
     event: WorkspaceFoldersChangeEvent;
 }
 
@@ -26,14 +26,14 @@ export interface DidChangeWorkspaceFoldersParams {
  * The workspace folder change event.
  */
 export interface WorkspaceFoldersChangeEvent {
-	/**
-	 * The array of added workspace folders
-	 */
+    /**
+     * The array of added workspace folders
+     */
     added: WorkspaceFolder[];
 
-	/**
-	 * The array of the removed workspace folders
-	 */
+    /**
+     * The array of the removed workspace folders
+     */
     removed: WorkspaceFolder[];
 }
 
@@ -56,21 +56,25 @@ export interface TextDocumentUriLangId extends TextDocumentUri {
     languageId: string;
 }
 
-export function getDocumentSettings(connection: Connection, document: TextDocumentUri): Thenable<any> {
-    return getConfiguration(connection, document.uri);
-}
-
-export function getConfiguration(connection: Connection, uri?: string): Thenable<any> {
-	if (uri) {
-		connection.console.log(`getConfiguration: ${uri}`);
-		return connection.workspace.getConfiguration({ scopeUri: uri });
-	}
-	connection.console.log('getConfiguration');
+export type GetConfigurationParams = string | vscode.Proposed.ConfigurationItem | vscode.Proposed.ConfigurationItem[];
+export function getConfiguration(connection: Connection): Thenable<any>;
+export function getConfiguration(connection: Connection, section: string): Thenable<any>;
+export function getConfiguration(connection: Connection, item: vscode.Proposed.ConfigurationItem): Thenable<any>;
+export function getConfiguration(connection: Connection, items: vscode.Proposed.ConfigurationItem[]): Thenable<any[]>;
+export function getConfiguration(connection: Connection, params?: GetConfigurationParams ): Thenable<any> {
+    connection.console.log('getConfiguration');
+    if (typeof params === 'string') {
+        return connection.workspace.getConfiguration(params);
+    }
+    if (Array.isArray(params)) {
+        return connection.workspace.getConfiguration(params);
+    }
+    if (params) {
+        return connection.workspace.getConfiguration(params);
+    }
     return connection.workspace.getConfiguration();
 }
 
 export function getWorkspaceFolders(connection: Connection): Thenable<WorkspaceFolder[] | null> {
     return connection.workspace.getWorkspaceFolders();
 }
-
-

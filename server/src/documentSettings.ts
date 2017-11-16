@@ -10,7 +10,7 @@ import * as path from 'path';
 
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
-import Uri from 'vscode-uri'
+import Uri from 'vscode-uri';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {
@@ -59,7 +59,7 @@ export class DocumentSettings {
 
     async getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
         return this.getUriSettings(document.uri);
-    };
+    }
 
     async getUriSettings(uri?: string): Promise<CSpellUserSettings> {
         if (!uri) {
@@ -84,7 +84,7 @@ export class DocumentSettings {
         this.settingsByDoc.clear();
         this._folders = undefined;
         this._importSettings = undefined;
-    };
+    }
 
     get folders(): Promise<vscode.WorkspaceFolder[]> {
         if (!this._folders) {
@@ -134,11 +134,11 @@ export class DocumentSettings {
         const folders = await this.fetchFolders();
         const workplaceSettings = readAllWorkspaceFolderSettings(folders);
         const extSettings = workplaceSettings.map(async ([uri, settings]) => {
-            const cspellSettings: SettingsCspell = await vscode.getConfiguration(this.connection, uri);
-            const vsCodeSettings: VsCodeSettings = await vscode.getConfiguration(this.connection);
-            
-            const { cSpell = {} } = cspellSettings;
-            const { search = {} } = vsCodeSettings;
+            const configs = await vscode.getConfiguration(this.connection, [
+                { scopeUri: uri, section: 'cSpell' },
+                { section: 'search' }
+            ]) as [CSpellUserSettings, VsCodeSettings];
+            const [ cSpell, search ] = configs;
             const { exclude = {} } = search;
 
             const mergedSettings = CSpell.mergeSettings(settings, cSpell);
@@ -149,7 +149,7 @@ export class DocumentSettings {
 
             const ext: ExtSettings = {
                 uri,
-                vscodeSettings: cspellSettings,
+                vscodeSettings: { cSpell },
                 settings: mergedSettings,
                 fnFileExclusionTest,
             };
