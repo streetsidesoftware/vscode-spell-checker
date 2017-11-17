@@ -16,38 +16,52 @@ export interface Inspect<T> extends InspectValues<T> {
     key: string;
 }
 
-export type SettingScope = keyof InspectValues<CSpellUserSettings> | 'value';
+export type InspectScope = keyof InspectValues<CSpellUserSettings>;
+
+export type SettingScope = InspectScope | 'value';
 
 let config: Inspect<CSpellUserSettings> = inspectConfig();
+let workspaceFolders = workspace.workspaceFolders;
 
 workspace.onDidChangeConfiguration(() => {
     config = inspectConfig();
 });
 
+workspace.onDidChangeWorkspaceFolders(() => {
+    workspaceFolders = workspace.workspaceFolders;
+});
+
 export type InspectResult<T> = Inspect<T> | undefined;
 
-export function getSectionName(subSection?: keyof CSpellUserSettings): string {
+export function getSectionName(
+    subSection?: keyof CSpellUserSettings
+): string {
     return [sectionCSpell, subSection].filter(a => !!a).join('.');
 }
 
-export function getSettingsFromVSConfig(resource?: Uri): CSpellUserSettings {
+export function getSettingsFromVSConfig(
+    resource?: Uri
+): CSpellUserSettings {
     const config = workspace.getConfiguration(undefined, resource);
     return config.get<CSpellUserSettings>(sectionCSpell, {});
 }
 
 export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
-    subSection: K, source?: SettingScope
+    subSection: K,
+    source?: SettingScope
 ): CSpellUserSettings[K] {
     if (!source || source === 'value') {
         const section = getSectionName(subSection);
-        const config = workspace.getConfiguration();
+        const config = workspace.getConfiguration(undefined, toAny(null));
         return config.get<CSpellUserSettings[K]>(section);
     }
     const ins = inspectSettingFromVSConfig(subSection);
     return ins && ins[source];
 }
 
-export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(subSection: K): Inspect<CSpellUserSettings[K]> {
+export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
+    subSection: K
+): Inspect<CSpellUserSettings[K]> {
     const { defaultValue = {}, globalValue = {}, workspaceValue = {}, workspaceFolderValue = {} } = config;
     return {
         key: config.key + '.' + subSection,
@@ -59,7 +73,9 @@ export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(s
 }
 
 export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
-    subSection: K, value: CSpellUserSettings[K], isGlobal: boolean
+    subSection: K,
+    value: CSpellUserSettings[K],
+    isGlobal: boolean
 ): Thenable<void> {
     shadowSetSetting(subSection, value, isGlobal);
     const section = getSectionName(subSection);
@@ -68,7 +84,9 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
 }
 
 function shadowSetSetting<K extends keyof CSpellUserSettings>(
-    subSection: K, value: CSpellUserSettings[K], isGlobal: boolean
+    subSection: K,
+    value: CSpellUserSettings[K],
+    isGlobal: boolean
 ) {
     const scope: SettingScope = isGlobal ? 'globalValue' : 'workspaceValue';
     const curr = config[scope] || {};
@@ -76,7 +94,13 @@ function shadowSetSetting<K extends keyof CSpellUserSettings>(
     return config[scope];
 }
 
-export function inspectConfig(resource?: Uri): Inspect<CSpellUserSettings> {
+export function inspectConfig(
+    resource?: Uri
+): Inspect<CSpellUserSettings> {
     const config = workspace.getConfiguration(undefined, resource);
     return config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
+}
+
+function toAny(value: any): any {
+    return value;
 }
