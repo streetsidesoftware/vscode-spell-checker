@@ -156,9 +156,10 @@ function run() {
 
     connection.onRequest(methodNames.isSpellCheckEnabled, async (params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> => {
         const { uri, languageId } = params;
+        const fileEnabled = uri ? !await isUriExcluded(uri) : undefined;
         return {
             languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }) : undefined,
-            fileEnabled: uri ? !isUriExcluded(uri) : undefined,
+            fileEnabled,
         };
     });
 
@@ -169,7 +170,7 @@ function run() {
         const settings = await getActiveUriSettings(uri);
         return {
             languageEnabled: languageId && doc ? await isLanguageEnabled(doc) : undefined,
-            fileEnabled: uri ? !isUriExcluded(uri) : undefined,
+            fileEnabled: uri ? !await isUriExcluded(uri) : undefined,
             settings,
             docSettings,
         };
@@ -256,7 +257,7 @@ function run() {
         return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
     }
 
-    function isUriExcluded(uri: string) {
+    async function isUriExcluded(uri: string) {
         return documentSettings.isExcluded(uri);
     }
 
