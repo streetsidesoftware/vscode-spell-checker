@@ -77,7 +77,7 @@ function log(msg: string) {
         const ts = Date.now() - startTs;
         g_connection.console.log(`${ts} ${msg}`);
     }
-};
+}
 
 function run() {
     // debounce buffer
@@ -98,10 +98,10 @@ function run() {
     const documents: TextDocuments = new TextDocuments();
 
     // After the server has started the client sends an initialize request. The server receives
-    // in the passed params the rootPath of the workspace plus the client capabilities.
-    let workspaceRoot: string | undefined;
+    // in the passed params the rootUri of the workspace plus the client capabilities.
+    let rootUri: string | undefined;
     connection.onInitialize((params: InitializeParams, token: CancellationToken): InitializeResult => {
-        workspaceRoot = params.rootPath || undefined;
+        rootUri = params.rootUri || undefined;
         return {
             capabilities: {
                 // Tell the client that the server works in FULL text document sync mode
@@ -192,7 +192,7 @@ function run() {
     });
 
     interface DocSettingPair {
-        doc: TextDocument,
+        doc: TextDocument;
         settings: CSpellUserSettings;
     }
 
@@ -200,12 +200,10 @@ function run() {
     let lastValidated = '';
     let lastDurationSelector: Rx.Subject<number> | undefined;
     const disposeValidationStream = validationRequestStream
-        .do(doc => log(`A Validate ${doc.uri}:${doc.version}`))
         .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc)}) as DocSettingPair )
         .flatMap(async dsp => await shouldValidateDocument(dsp.doc) ? dsp : undefined)
         .filter(dsp => !!dsp)
         .map(dsp => dsp!)
-        .do(dsp => log(`B Validate ${dsp.doc.uri}:${dsp.doc.version}`))
         .debounce(dsp => {
             const { doc, settings } = dsp;
             if (doc.uri !== lastValidated && lastDurationSelector) {

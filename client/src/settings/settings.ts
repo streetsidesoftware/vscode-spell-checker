@@ -42,24 +42,33 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
 }
 
 export function getDefaultWorkspaceConfigLocation() {
-    const { rootPath } = workspace;
-    return rootPath
-        ? path.join(rootPath, '.vscode', baseConfigName)
+    const { workspaceFolders } = workspace;
+    const root = workspaceFolders
+        && workspaceFolders[0]
+        && workspaceFolders[0].uri.fsPath;
+    return root
+        ? path.join(root, '.vscode', baseConfigName)
         : undefined;
 }
 
 export function hasWorkspaceLocation() {
-    return !!workspace.rootPath;
+    const { workspaceFolders } = workspace;
+    return !!(workspaceFolders && workspaceFolders[0]);
 }
 
 export function findSettingsFiles(): Thenable<Uri[]> {
-    const { rootPath } = workspace;
-    if (rootPath === undefined) {
+    const { workspaceFolders } = workspace;
+    if (!workspaceFolders || !hasWorkspaceLocation()) {
         return Promise.resolve([]);
     }
 
-    const found = configFileLocations
-        .map(rel => path.join(rootPath, rel))
+
+    const possibleLocations = workspaceFolders
+        .map(folder => folder.uri.fsPath)
+        .map(root => configFileLocations.map(rel => path.join(root, rel)))
+        .reduce((a, b) => a.concat(b));
+
+    const found = possibleLocations
         .map(filename => fs.pathExists(filename)
         .then(exists => ({ filename, exists })));
 
