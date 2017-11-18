@@ -62,7 +62,6 @@ export function findSettingsFiles(): Thenable<Uri[]> {
         return Promise.resolve([]);
     }
 
-
     const possibleLocations = workspaceFolders
         .map(folder => folder.uri.fsPath)
         .map(root => configFileLocations.map(rel => path.join(root, rel)))

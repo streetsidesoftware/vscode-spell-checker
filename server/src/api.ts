@@ -20,3 +20,8 @@ export type RequestMethods = 'isSpellCheckEnabled' | 'getConfigurationForDocumen
 export type RequestMethodConstants = {
     [key in RequestMethods]: RequestMethods;
 };
+
+export type NotifyServerMethods = 'onConfigChange' | 'registerConfigurationFile';
+export type NotifyServerMethodConstants = {
+    [key in NotifyServerMethods]: NotifyServerMethods;
+};

@@ -4,7 +4,14 @@ import {
 
 import * as vscode from 'vscode';
 
-import { CSpellUserSettings, GetConfigurationForDocumentResult, RequestMethodConstants, SplitTextIntoWordsResult } from '../server';
+import {
+    CSpellUserSettings,
+    GetConfigurationForDocumentResult,
+    NotifyServerMethods,
+    RequestMethods,
+    RequestMethodConstants,
+    SplitTextIntoWordsResult,
+} from '../server';
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
@@ -84,7 +91,7 @@ export class CSpellClient {
             return Promise.resolve({});
         }
 
-        return this.client.onReady().then(() => this.client.sendRequest(
+        return this.client.onReady().then(() => this.sendRequest(
             methodNames.isSpellCheckEnabled,
             { uri: uri.toString(), languageId }
         ))
@@ -98,25 +105,25 @@ export class CSpellClient {
             return Promise.resolve({});
         }
 
-        return this.client.onReady().then(() => this.client.sendRequest(
+        return this.client.onReady().then(() => this.sendRequest(
             methodNames.getConfigurationForDocument,
             { uri: uri.toString(), languageId }
         ));
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
-        return this.client.onReady().then(() => this.client.sendRequest(
+        return this.client.onReady().then(() => this.sendRequest(
             methodNames.splitTextIntoWords,
             text
         ));
     }
 
-    public applySettings(settings: { cSpell: CSpellUserSettings, search: any }) {
-        return this.client.onReady().then(() => this.client.sendNotification('applySettings', { settings }));
+    public notifySettingsChanged() {
+        return this.client.onReady().then(() => this.sendNotification('onConfigChange'));
     }
 
     public registerConfiguration(path: string) {
-        return this.client.onReady().then(() => this.client.sendNotification('registerConfigurationFile', path));
+        return this.client.onReady().then(() => this.sendNotification('registerConfigurationFile', path));
     }
 
     get diagnostics(): Maybe<vscode.DiagnosticCollection> {
@@ -124,10 +131,15 @@ export class CSpellClient {
     }
 
     public triggerSettingsRefresh() {
-        const workspaceConfig = vscode.workspace.getConfiguration();
-        const cSpell = workspaceConfig.get('cSpell') as CSpellUserSettings;
-        const search = workspaceConfig.get('search');
-        this.applySettings({ cSpell, search });
+        return this.notifySettingsChanged();
+    }
+
+    private sendRequest(method: RequestMethods, param?: any) {
+        return this.client.sendRequest(method, param);
+    }
+
+    private sendNotification(method: NotifyServerMethods, params?: any): void {
+        this.client.sendNotification(method, params);
     }
 
     public static create(module: string) {

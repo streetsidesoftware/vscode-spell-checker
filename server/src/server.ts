@@ -30,6 +30,11 @@ const methodNames: Api.RequestMethodConstants = {
     splitTextIntoWords: 'splitTextIntoWords',
 };
 
+const notifyMethodNames: Api.NotifyServerMethodConstants = {
+    onConfigChange: 'onConfigChange',
+    registerConfigurationFile: 'registerConfigurationFile',
+};
+
 const {
     extractGlobsFromExcludeFilesGlobMap,
     generateExclusionFunctionForUri,
@@ -151,8 +156,8 @@ function run() {
     }
 
     // Listen for event messages from the client.
-    connection.onNotification('applySettings', onConfigChange);
-    connection.onNotification('registerConfigurationFile', registerConfigurationFile);
+    connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
+    connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
 
     connection.onRequest(methodNames.isSpellCheckEnabled, async (params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> => {
         const { uri, languageId } = params;
