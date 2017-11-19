@@ -176,10 +176,11 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     function setLocal(local: string, enable: boolean, isGlobal: boolean) {
+        const target = isGlobal ? config.Target.Global : config.Target.Workspace;
         if (enable) {
-            config.enableLocal(isGlobal, local);
+            config.enableLocal(target, local);
         } else {
-            config.disableLocal(isGlobal, local);
+            config.disableLocal(target, local);
         }
     }
 
@@ -256,7 +257,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     function getLanguageSettingFromVSCode(): config.Inspect<config.CSpellUserSettings['language']> {
-        return config.inspectSettingFromVSConfig('language') || { key: ''};
+        return config.inspectSettingFromVSConfig('language', null) || { key: ''};
     }
 
     function composeLocalInfo(settingsFromServer?: serverSettings.CSpellUserSettings): LocalInfo[] {

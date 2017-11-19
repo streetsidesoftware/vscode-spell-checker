@@ -1,6 +1,6 @@
 import { CSpellUserSettings, normalizeLocal } from '../server';
 import * as CSpellSettings from './CSpellSettings';
-import { workspace } from 'vscode';
+import { workspace, ConfigurationTarget } from 'vscode';
 import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
@@ -9,6 +9,9 @@ import * as watcher from '../util/watcher';
 import * as config from './config';
 import * as Rx from 'rxjs/Rx';
 import * as fs from 'fs-extra';
+import { InspectScope } from './config';
+
+export { ConfigTarget, InspectScope, Scope } from './config';
 
 
 export const baseConfigName        = CSpellSettings.defaultFileName;
@@ -29,7 +32,7 @@ export interface SettingsInfo {
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     // Every 10 seconds see if we have new files to watch.
     const d = Rx.Observable.interval(10000)
-        .flatMap(findSettingsFiles)
+        .flatMap(() => findSettingsFiles())
         .flatMap(a => a)
         .map(uri => uri.fsPath)
         .filter(file => !watcher.isWatching(file))
@@ -56,13 +59,17 @@ export function hasWorkspaceLocation() {
     return !!(workspaceFolders && workspaceFolders[0]);
 }
 
-export function findSettingsFiles(): Thenable<Uri[]> {
+export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
     const { workspaceFolders } = workspace;
     if (!workspaceFolders || !hasWorkspaceLocation()) {
         return Promise.resolve([]);
     }
 
-    const possibleLocations = workspaceFolders
+    const folders = uri
+        ? [workspace.getWorkspaceFolder(uri)!].filter(a => !!a)
+        : workspaceFolders;
+
+    const possibleLocations = folders
         .map(folder => folder.uri.fsPath)
         .map(root => configFileLocations.map(rel => path.join(root, rel)))
         .reduce((a, b) => a.concat(b));
@@ -78,8 +85,8 @@ export function findSettingsFiles(): Thenable<Uri[]> {
     );
 }
 
-export function findExistingSettingsFileLocation(): Thenable<string | undefined> {
-    return findSettingsFiles()
+export function findExistingSettingsFileLocation(uri?: Uri): Thenable<string | undefined> {
+    return findSettingsFiles(uri)
     .then(uris => uris.map(uri => uri.fsPath))
     .then(paths => paths.sort((a, b) => a.length - b.length))
     .then(paths => paths[0]);
@@ -101,59 +108,36 @@ export function loadSettingsFile(path: string): Thenable<SettingsInfo | undefine
         : Promise.resolve(undefined);
 }
 
-
-export function getSettings(): Thenable<SettingsInfo> {
-    return loadTheSettingsFile()
-        .then(info => {
-            if (!info) {
-                const defaultSettings = CSpellSettings.getDefaultSettings();
-                const { language = defaultSettings.language } = config.getSettingsFromVSConfig();
-                const settings = { ...defaultSettings, language };
-                const path = getDefaultWorkspaceConfigLocation() || '';
-                return { path, settings};
-            }
-            return info;
-        });
+export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Thenable<void> {
+    return config.setSettingInVSConfig('enabled', enabled, target);
 }
 
-export function setEnableSpellChecking(enabled: boolean, isGlobal: boolean): Thenable<void> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    return config.setSettingInVSConfig('enabled', enabled, useGlobal);
+export function getEnabledLanguagesFromConfig(scope: InspectScope) {
+    return config.getScopedSettingFromVSConfig('enabledLanguageIds', scope) || [];
 }
 
-export function getEnabledLanguagesFromAllConfigs() {
-    const inspect = config.inspectSettingFromVSConfig('enabledLanguageIds');
-    return inspect;
+export function enableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Thenable<string[]> {
+    const scope = config.configTargetToScope(target);
+    const langs = unique([languageId, ...getEnabledLanguagesFromConfig(scope)]).sort();
+    return config.setSettingInVSConfig('enabledLanguageIds', langs, target).then(() => langs);
 }
 
-export function getEnabledLanguagesFromConfig(isGlobal: boolean) {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    const inspect = getEnabledLanguagesFromAllConfigs() || {key: ''};
-    return (useGlobal ? undefined : inspect.workspaceValue) || inspect.globalValue || inspect.defaultValue || [];
-}
-
-export function enableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    const langs = unique([languageId, ...getEnabledLanguagesFromConfig(useGlobal)]).sort();
-    return config.setSettingInVSConfig('enabledLanguageIds', langs, useGlobal).then(() => langs);
-}
-
-export function disableLanguageIdInConfig(isGlobal: boolean, languageId: string): Thenable<string[]> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    const langs = getEnabledLanguagesFromConfig(useGlobal).filter(a => a !== languageId).sort();
-    return config.setSettingInVSConfig('enabledLanguageIds', langs, useGlobal).then(() => langs);
+export function disableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Thenable<string[]> {
+    const scope = config.configTargetToScope(target);
+    const langs = getEnabledLanguagesFromConfig(scope).filter(a => a !== languageId).sort();
+    return config.setSettingInVSConfig('enabledLanguageIds', langs, target).then(() => langs);
 }
 
 /**
  * @description Enable a programming language
- * @param isGlobal - true: User settings, false: workspace settings
- * @param languageId
+ * @param target - which level of setting to set
+ * @param languageId - the language id, e.g. 'typescript'
  */
-export function enableLanguage(isGlobal: boolean, languageId: string): Thenable<void> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    return enableLanguageIdInConfig(useGlobal, languageId).then(() => {
-        if (!useGlobal) {
-            findExistingSettingsFileLocation()
+export function enableLanguage(target: config.ConfigTarget, languageId: string): Thenable<void> {
+    const updateFile = config.isFolderLevelTarget(target);
+    return enableLanguageIdInConfig(target, languageId).then(() => {
+        if (config.isConfigTargetWithResource(target) && updateFile) {
+            findExistingSettingsFileLocation(target.uri)
             .then(settingsFilename =>
                 settingsFilename && CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true))
             .then(() => {});
@@ -161,11 +145,11 @@ export function enableLanguage(isGlobal: boolean, languageId: string): Thenable<
     });
 }
 
-export function disableLanguage(isGlobal: boolean, languageId: string): Thenable<void> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
-    return disableLanguageIdInConfig(useGlobal, languageId).then(() => {
-        if (!useGlobal) {
-            return findExistingSettingsFileLocation()
+export function disableLanguage(target: config.ConfigTarget, languageId: string): Thenable<void> {
+    const updateFile = config.isFolderLevelTarget(target);
+    return disableLanguageIdInConfig(target, languageId).then(() => {
+        if (config.isConfigTargetWithResource(target) && updateFile) {
+            return findExistingSettingsFileLocation(target.uri)
             .then(settingsFilename =>
                 settingsFilename && CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId])
             )
@@ -174,16 +158,18 @@ export function disableLanguage(isGlobal: boolean, languageId: string): Thenable
     });
 }
 
-export function addWordToSettings(isGlobal: boolean, word: string): Thenable<void> {
-    const useGlobal = isGlobal || !hasWorkspaceLocation();
+export function addWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {
+    const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
+    target = useGlobal ? config.ConfigurationTarget.Global : target;
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const words = config.getSettingFromVSConfig(section) || [];
-    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), useGlobal);
+    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
+    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
 }
 
-export function toggleEnableSpellChecker(): Thenable<void> {
-    const curr = config.getSettingFromVSConfig('enabled');
-    return config.setSettingInVSConfig('enabled', !curr, false);
+export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
+    const resource = config.isConfigTargetWithResource(target) ? target.uri : null;
+    const curr = config.getSettingFromVSConfig('enabled', resource);
+    return config.setSettingInVSConfig('enabled', !curr, target);
 }
 
 /**
@@ -192,7 +178,8 @@ export function toggleEnableSpellChecker(): Thenable<void> {
 export function enableCurrentLanguage(): Thenable<void> {
     const editor = vscode.window && vscode.window.activeTextEditor;
     if (editor && editor.document && editor.document.languageId) {
-        return enableLanguage(false, editor.document.languageId);
+        const target = config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
+        return enableLanguage(target, editor.document.languageId);
     }
     return Promise.resolve();
 }
@@ -203,49 +190,50 @@ export function enableCurrentLanguage(): Thenable<void> {
 export function disableCurrentLanguage(): Thenable<void> {
     const editor = vscode.window && vscode.window.activeTextEditor;
     if (editor && editor.document && editor.document.languageId) {
-        return disableLanguage(false, editor.document.languageId);
+        const target = config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
+        return disableLanguage(target, editor.document.languageId);
     }
     return Promise.resolve();
 }
 
 
-export function enableLocal(isGlobal: boolean, local: string) {
-    const currentLanguage = config.getSettingFromVSConfig(
+export function enableLocal(target: config.ConfigTarget, local: string) {
+    const scope = config.configTargetToScope(target);
+    const currentLanguage = config.getScopedSettingFromVSConfig(
         'language',
-        isGlobal ? 'globalValue' : 'workspaceValue'
+        scope,
     ) || '';
     const languages = currentLanguage.split(',')
         .concat(local.split(','))
         .map(a => a.trim())
         .filter(uniqueFilter())
         .join(',');
-    return config.setSettingInVSConfig('language', languages, isGlobal);
+    return config.setSettingInVSConfig('language', languages, target);
 }
 
-export function disableLocal(isGlobal: boolean, local: string) {
+export function disableLocal(target: config.ConfigTarget, local: string) {
+    const scope = config.configTargetToScope(target);
     local = normalizeLocal(local);
-    const currentLanguage = config.getSettingFromVSConfig(
+    const currentLanguage = config.inspectScopedSettingFromVSConfig(
         'language',
-        isGlobal ? 'globalValue' : 'workspaceValue'
+        scope,
     ) || '';
     const languages = normalizeLocal(currentLanguage)
         .split(',')
         .filter(lang => lang !== local)
         .join(',') || undefined;
-    return config.setSettingInVSConfig('language', languages, isGlobal);
+    return config.setSettingInVSConfig('language', languages, target);
 }
 
 export function overrideLocal(enable: boolean, isGlobal: boolean) {
-    const inspectLang = config.inspectSettingFromVSConfig('language');
+    const inspectLang = config.getScopedSettingFromVSConfig(
+        'language',
+        isGlobal ? config.Scopes.Global : config.Scopes.Workspace,
+    );
 
-    const lang = enable && inspectLang
-        ? (isGlobal ? inspectLang.defaultValue : inspectLang.globalValue || inspectLang.defaultValue )
-        : undefined ;
+    const target = isGlobal ? ConfigurationTarget.Global : ConfigurationTarget.Workspace;
 
-    return config.setSettingInVSConfig('language', lang, isGlobal);
-}
+    const lang = (enable && inspectLang) || undefined;
 
-export function updateSettings(isGlobal: boolean, settings: CSpellUserSettings) {
-    const keys = Object.keys(settings) as (keyof CSpellUserSettings)[];
-    return Promise.all(keys.map(key => config.setSettingInVSConfig(key, settings[key], isGlobal)));
+    return config.setSettingInVSConfig('language', lang, target);
 }

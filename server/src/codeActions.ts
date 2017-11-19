@@ -127,13 +127,15 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
                 commands.push(LangServer.Command.create(
                     'Add: "' + word + '" to dictionary',
                     'cSpell.addWordToUserDictionarySilent',
-                    word
+                    word,
+                    textDocument.uri
                 ));
                 // Allow the them to add it to the project dictionary.
                 commands.push(LangServer.Command.create(
                     'Add: "' + word + '" to project dictionary',
                     'cSpell.addWordToDictionarySilent',
-                    word
+                    word,
+                    textDocument.uri
                 ));
             }
             return commands;

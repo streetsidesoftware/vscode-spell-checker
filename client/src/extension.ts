@@ -51,14 +51,15 @@ export function activate(context: ExtensionContext) {
         context.subscriptions.push(
             clientDispose,
             vscode.commands.registerCommand('cSpell.editText', handlerApplyTextEdits(client.client)),
-            vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToWorkspaceDictionary),
+            vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToFolderDictionary),
+            vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionarySilent', commands.addWordToWorkspaceDictionary),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
             vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
             vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
             vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
-            vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(true, false)),
-            vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(false, false)),
+            vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
+            vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
             vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', commands.toggleEnableSpellChecker),
             vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),
             vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
@@ -82,7 +83,7 @@ export function activate(context: ExtensionContext) {
             addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
             enableLocal: settings.enableLocal,
             disableLocal: settings.disableLocal,
-            updateSettings: settings.updateSettings,
+            updateSettings: () => false,
         };
     });
 

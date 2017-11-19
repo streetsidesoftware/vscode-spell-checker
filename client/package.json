@@ -54,6 +54,10 @@
         },
         "commands": [
             {
+                "command": "cSpell.addWordToWorkspaceDictionary",
+                "title": "Add Word to Workspace Dictionary"
+            },
+            {
                 "command": "cSpell.addWordToDictionary",
                 "title": "Add Word to Dictionary"
             },

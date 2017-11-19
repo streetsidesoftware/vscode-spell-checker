@@ -1,7 +1,7 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 
-import { window, TextEditor } from 'vscode';
+import { window, TextEditor, Uri } from 'vscode';
 import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
@@ -29,11 +29,27 @@ export function handlerApplyTextEdits(client: LanguageClient) {
     };
 }
 
-export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
+export function addWordToFolderDictionary(word: string, uri?: string | null | Uri): Thenable<void> {
+    if (!uri || !Settings.hasWorkspaceLocation()) {
+        return addWordToWorkspaceDictionary(word);
+    }
+    uri = pathToUri(uri);
+    const target = Settings.createTargetForUri(Settings.Target.WorkspaceFolder, uri);
+    return Settings.addWordToSettings(target, word)
+    .then(_ => Settings.findExistingSettingsFileLocation())
+    .then(path => path
+            ? CSpellSettings.addWordToSettingsAndUpdate(path, word).then(_ => {})
+            : undefined
+    );
+}
+
+export function addWordToWorkspaceDictionary(word: string, uri?: string | null | Uri): Thenable<void> {
     if (!Settings.hasWorkspaceLocation()) {
         return addWordToUserDictionary(word);
     }
-    return Settings.addWordToSettings(false, word)
+    uri = typeof uri === 'string' ? pathToUri(uri) : uri;
+    const target = uri ? Settings.createTargetForUri(Settings.Target.Workspace, uri) : Settings.Target.Workspace;
+    return Settings.addWordToSettings(target, word)
     .then(_ => Settings.findExistingSettingsFileLocation())
     .then(path => path
             ? CSpellSettings.addWordToSettingsAndUpdate(path, word).then(_ => {})
@@ -42,17 +58,17 @@ export function addWordToWorkspaceDictionary(word: string): Thenable<void> {
 }
 
 export function addWordToUserDictionary(word: string): Thenable<void> {
-    return Settings.addWordToSettings(true, word);
+    return Settings.addWordToSettings(Settings.Target.Global, word);
 }
 
 export function enableLanguageId(languageId: string): Thenable<void> {
     if (languageId) {
-        return Settings.enableLanguage(true, languageId)
+        return Settings.enableLanguage(Settings.Target.Global, languageId)
         .then(() => {
             // Add it from the workspace as well if necessary
-            const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
-            if (allSettings && allSettings.workspaceValue) {
-                return Settings.enableLanguage(false, languageId);
+            const allSettings = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
+            if (allSettings) {
+                return Settings.enableLanguage(Settings.Target.Workspace, languageId);
             }
         });
     }
@@ -61,12 +77,12 @@ export function enableLanguageId(languageId: string): Thenable<void> {
 
 export function disableLanguageId(languageId: string): Thenable<void> {
     if (languageId) {
-        return Settings.disableLanguage(true, languageId)
+        return Settings.disableLanguage(Settings.Target.Global, languageId)
         .then(() => {
             // Remove it from the workspace as well if necessary
-            const allSettings = Settings.getEnabledLanguagesFromAllConfigs();
-            if (allSettings && allSettings.workspaceValue) {
-                return Settings.disableLanguage(false, languageId);
+            const allSettings = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
+            if (allSettings) {
+                return Settings.disableLanguage(Settings.Target.Workspace, languageId);
             }
         });
     }
@@ -85,3 +101,9 @@ export function userCommandAddWordToDictionary(prompt: string, fnAddWord: (text:
     };
 }
 
+function pathToUri(uri: string | Uri): Uri {
+    if (uri instanceof Uri) {
+        return uri;
+    }
+    return Uri.parse(uri);
+}
