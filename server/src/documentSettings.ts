@@ -11,6 +11,7 @@ import * as path from 'path';
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import Uri from 'vscode-uri';
+import { log } from './core';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {
@@ -62,6 +63,7 @@ export class DocumentSettings {
     }
 
     async getUriSettings(uri?: string): Promise<CSpellUserSettings> {
+        log('getUriSettings:', uri);
         if (!uri) {
             return CSpell.mergeSettings(this.defaultSettings, this.importSettings);
         }
@@ -80,6 +82,7 @@ export class DocumentSettings {
     }
 
     resetSettings() {
+        log(`resetSettings`);
         this._settingsByWorkspaceFolder = undefined;
         this.settingsByDoc.clear();
         this._folders = undefined;
@@ -94,6 +97,7 @@ export class DocumentSettings {
     }
 
     private get settingsByWorkspaceFolder() {
+        log(`settingsByWorkspaceFolder`);
         if (!this._settingsByWorkspaceFolder) {
             this._settingsByWorkspaceFolder = this.fetchFolderSettings();
         }
@@ -101,6 +105,7 @@ export class DocumentSettings {
     }
 
     get importSettings() {
+        log(`importSettings`);
         if (!this._importSettings) {
             const importPaths = [...configsToImport.keys()].sort();
             this._importSettings = CSpell.readSettingsFiles(importPaths);
@@ -109,12 +114,15 @@ export class DocumentSettings {
     }
 
     registerConfigurationFile(path: string) {
+        log('registerConfigurationFile:', path);
         configsToImport.add(path);
     }
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
+        log('Start fetchUriSettings:', uri);
         const folderSettings = (await this.findMatchingFolderSettings(uri)).map(s => s.settings);
         const spellSettings = CSpell.mergeSettings(this.defaultSettings, this.importSettings, ...folderSettings);
+        log('Finish fetchUriSettings:', uri);
         return spellSettings;
     }
 
@@ -162,23 +170,24 @@ export class DocumentSettings {
 const configsToImport = new Set<string>();
 
 function configPathsForRoot(workspaceRoot?: string) {
-    return workspaceRoot ? [
+    const paths = workspaceRoot ? [
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename),
     ] : [];
+    return paths.map(path => Uri.parse(path))
+        .map(uri => uri.fsPath);
 }
 
 function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder[]): [string, CSpellUserSettings][] {
     return workspaceFolders
         .map(folder => folder.uri)
         .map(uri => [uri, configPathsForRoot(uri)] as [string, string[]])
-        .map(([uri, paths]) => [uri, CSpell.readSettingsFiles(paths)] as [string, CSpellUserSettings]);
+        .map(([uri, paths]) => [uri, readSettingsFiles(paths)] as [string, CSpellUserSettings]);
 }
 
-
-
-
-
-
+function readSettingsFiles(paths: string[]) {
+    log(`readSettingsFiles:\t${paths.join('\n\t\t\t')}`);
+    return CSpell.readSettingsFiles(paths);
+}

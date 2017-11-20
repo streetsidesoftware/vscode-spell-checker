@@ -355,6 +355,19 @@
                             "path"
                         ]
                     }
+                },
+                "cSpell.debugLevel": {
+                    "type": "string",
+                    "scope": "window",
+                    "description": "Set the Debug Level for logging messages.",
+                    "enum": [
+                        "None",
+                        "Error",
+                        "Warning",
+                        "Information",
+                        "Debug"
+                    ],
+                    "default": "Debug"
                 }
             }
         }

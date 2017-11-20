@@ -1,6 +1,7 @@
 export * from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
-import {_} from 'vscode-languageserver';
+import { _ } from 'vscode-languageserver';
+import { log } from './core';
 
 export interface WorkspaceFolder {
     /**
@@ -62,7 +63,7 @@ export function getConfiguration(connection: Connection, section: string): Thena
 export function getConfiguration(connection: Connection, item: vscode.Proposed.ConfigurationItem): Thenable<any>;
 export function getConfiguration(connection: Connection, items: vscode.Proposed.ConfigurationItem[]): Thenable<any[]>;
 export function getConfiguration(connection: Connection, params?: GetConfigurationParams ): Thenable<any> {
-    connection.console.log('getConfiguration');
+    log('getConfiguration');
     if (typeof params === 'string') {
         return connection.workspace.getConfiguration(params);
     }

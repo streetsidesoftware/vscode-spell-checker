@@ -11,6 +11,7 @@
 		"noImplicitThis": true,
 		"strictNullChecks": true,
 		"strictFunctionTypes": false,
+		"noUnusedLocals": true,
 		"outDir": "../client/server",
 		"forceConsistentCasingInFileNames": true
 	},
