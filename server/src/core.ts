@@ -7,18 +7,12 @@ let workspaceBase = '';
 let workspaceFolders: string[] = [];
 
 export const logger = new Logger();
-export function log(msg: string, uri?: string) {
-    if (uri) {
-        msg += '\t' + normalizeUri(uri);
-    }
-    logger.log(msg);
+export function log(msg: string, uri?: string | string[]) {
+    logger.log(formatMessage(msg, uri));
 }
 
-export function logError(msg: string, uri?: string) {
-    if (uri) {
-        msg += '\t' + normalizeUri(uri);
-    }
-    logger.error(msg);
+export function logError(msg: string, uri?: string | string[]) {
+    logger.error(formatMessage(msg, uri));
 }
 
 export function setWorkspaceBase(uri: string) {
@@ -31,7 +25,15 @@ export function setWorkspaceFolders(folders: string[]) {
     setWorkspaceBase(findCommonBasis(workspaceFolders));
 }
 
-function normalizeUri(uri: string) {
+function formatMessage(msg: string, uri?: string | string[]) {
+    const uris = Array.isArray(uri) ? uri : [uri];
+    return msg + '\t' + uris.map(normalizeUri).join('\n\t\t\t');
+}
+
+function normalizeUri(uri?: string) {
+    if (!uri) {
+        return '';
+    }
     uri = Uri.parse(uri).fsPath;
     const base = findCommonBase(uri, workspaceBase);
     return uri.replace(base, '...');
@@ -42,16 +44,16 @@ function findCommonBasis(folders: string[]): string {
 }
 
 function findCommonBase(a: string, b: string): string {
-    const limit = matchingLength(a, b);
+    const limit = matchingUriLength(a, b);
     return a.slice(0, limit);
 }
 
-function matchingLength(a: string, b: string): number {
-    const limit = Math.min(a.length, b.length);
-    for (let i = 0; i < limit; i += 1) {
-        if (a[i] !== b[i]) {
-            return i;
-        }
-    }
-    return limit;
+function matchingUriLength(a: string, b: string): number {
+    const sep = '/';
+    const aParts = a.split(sep);
+    const bParts = b.split(sep);
+    const limit = Math.min(aParts.length, bParts.length);
+    let i = 0;
+    for (i = 0; i < limit && aParts[i] === bParts[i]; i += 1) {}
+    return aParts.slice(0, i).join(sep).length;
 }

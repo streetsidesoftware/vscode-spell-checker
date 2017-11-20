@@ -46,7 +46,6 @@ const defaultSettings: CSpellUserSettings = {
     enabled: false,
 };
 const defaultDebounce = 50;
-let activeSettingsNeedUpdating = false;
 
 const configsToImport = new Set<string>();
 
@@ -92,7 +91,6 @@ function run() {
     function updateActiveSettings() {
         log('updateActiveSettings');
         documentSettings.resetSettings();
-        activeSettingsNeedUpdating = false;
         triggerValidateAll.next(undefined);
     }
 
@@ -101,9 +99,6 @@ function run() {
     }
 
     function getActiveUriSettings(uri?: string) {
-        if (activeSettingsNeedUpdating) {
-            updateActiveSettings();
-        }
         return documentSettings.getUriSettings(uri);
     }
 
@@ -204,7 +199,6 @@ function run() {
 
     const disposableTriggerUpdateConfigStream = triggerUpdateConfig
         .do(() => log('Trigger Update Config'))
-        .do(() => activeSettingsNeedUpdating = true)
         .debounceTime(100)
         .subscribe(() => {
             updateActiveSettings();
@@ -297,7 +291,7 @@ function run() {
         (reject) => {
             fetchFolders();
             logger.level = LogLevel.DEBUG;
-            logger.error(`Filed to get config: ${JSON.stringify(reject)}`);
+            logger.error(`Failed to get config: ${JSON.stringify(reject)}`);
             logger.setConnection(connection);
         }
     );

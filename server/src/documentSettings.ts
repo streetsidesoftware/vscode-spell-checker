@@ -63,11 +63,17 @@ export class DocumentSettings {
     }
 
     async getUriSettings(uri?: string): Promise<CSpellUserSettings> {
-        log('getUriSettings:', uri);
-        if (!uri) {
-            return CSpell.mergeSettings(this.defaultSettings, this.importSettings);
+        const key = uri || '';
+        const s = this.settingsByDoc.get(key);
+        if (s) {
+            return s;
         }
-        return this.fetchUriSettings(uri!);
+        log('getUriSettings:', uri);
+        const r = uri
+            ? await this.fetchUriSettings(uri!)
+            : CSpell.mergeSettings(this.defaultSettings, this.importSettings);
+        this.settingsByDoc.set(key, r);
+        return r;
     }
 
     async isExcluded(uri: string): Promise<boolean> {
@@ -97,7 +103,6 @@ export class DocumentSettings {
     }
 
     private get settingsByWorkspaceFolder() {
-        log(`settingsByWorkspaceFolder`);
         if (!this._settingsByWorkspaceFolder) {
             this._settingsByWorkspaceFolder = this.fetchFolderSettings();
         }
@@ -105,8 +110,8 @@ export class DocumentSettings {
     }
 
     get importSettings() {
-        log(`importSettings`);
         if (!this._importSettings) {
+            log(`importSettings`);
             const importPaths = [...configsToImport.keys()].sort();
             this._importSettings = CSpell.readSettingsFiles(importPaths);
         }
@@ -139,6 +144,7 @@ export class DocumentSettings {
     }
 
     private async fetchFolderSettings() {
+        log('fetchFolderSettings');
         const folders = await this.fetchFolders();
         const workplaceSettings = readAllWorkspaceFolderSettings(folders);
         const extSettings = workplaceSettings.map(async ([uri, settings]) => {
@@ -188,6 +194,6 @@ function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder
 }
 
 function readSettingsFiles(paths: string[]) {
-    log(`readSettingsFiles:\t${paths.join('\n\t\t\t')}`);
+    log(`readSettingsFiles:`, paths);
     return CSpell.readSettingsFiles(paths);
 }
