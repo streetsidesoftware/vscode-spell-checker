@@ -187,6 +187,7 @@ function configPathsForRoot(workspaceRoot?: string) {
 }
 
 function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder[]): [string, CSpellUserSettings][] {
+    CSpell.clearCachedSettings();
     return workspaceFolders
         .map(folder => folder.uri)
         .map(uri => [uri, configPathsForRoot(uri)] as [string, string[]])
