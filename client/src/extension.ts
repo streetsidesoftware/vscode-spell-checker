@@ -26,15 +26,24 @@ export function activate(context: ExtensionContext) {
             client.triggerSettingsRefresh();
         }
 
-        function splitTextFn(apply: (word: string) => Thenable<void>): (word: string) => Thenable<void> {
+        function splitTextFn(
+            apply: (word: string, uri: string | vscode.Uri | null) => Thenable<void>
+        ): (word: string) => Thenable<void> {
+            const editor = vscode.window.activeTextEditor;
+            const document = editor && editor.document;
+            const uri = document && document.uri || null;
             return (word: string) => {
                 return client.splitTextIntoDictionaryWords(word)
                 .then(result => result.words)
-                .then(words => apply(words.join(' ')))
+                .then(words => apply(words.join(' '), uri))
                 .then(_ => {});
             };
         }
 
+        const actionAddWordToFolder = userCommandAddWordToDictionary(
+            'Add Word to Workspace Dictionary',
+            splitTextFn(commands.addWordToFolderDictionary)
+        );
         const actionAddWordToWorkspace = userCommandAddWordToDictionary(
             'Add Word to Workspace Dictionary',
             splitTextFn(commands.addWordToWorkspaceDictionary)
@@ -54,7 +63,8 @@ export function activate(context: ExtensionContext) {
             vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToFolderDictionary),
             vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionarySilent', commands.addWordToWorkspaceDictionary),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
-            vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToWorkspace),
+            vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder),
+            vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionary', actionAddWordToWorkspace),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
             vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
             vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
