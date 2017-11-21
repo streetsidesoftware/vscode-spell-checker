@@ -52,9 +52,10 @@ const configsToImport = new Set<string>();
 function run() {
     // debounce buffer
     const validationRequestStream = new Rx.ReplaySubject<TextDocument>(1);
-    const validationFinishedStream = new Rx.ReplaySubject<{ uri: string; version: number }>(1);
     const triggerUpdateConfig = new Rx.ReplaySubject<void>(1);
     const triggerValidateAll = new Rx.ReplaySubject<void>(1);
+    const validationByDoc = new Map<string, Rx.Subscription>();
+    let isValidationBusy = false;
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
@@ -121,8 +122,9 @@ function run() {
     connection.onRequest(methodNames.isSpellCheckEnabled, async (params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> => {
         const { uri, languageId } = params;
         const fileEnabled = uri ? !await isUriExcluded(uri) : undefined;
+        const settings = await getActiveUriSettings(uri);
         return {
-            languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }) : undefined,
+            languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined,
             fileEnabled,
         };
     });
@@ -133,7 +135,7 @@ function run() {
         const docSettings = doc && await getSettingsToUseForDocument(doc) || undefined;
         const settings = await getActiveUriSettings(uri);
         return {
-            languageEnabled: languageId && doc ? await isLanguageEnabled(doc) : undefined,
+            languageEnabled: languageId && doc ? await isLanguageEnabled(doc, settings) : undefined,
             fileEnabled: uri ? !await isUriExcluded(uri) : undefined,
             settings,
             docSettings,
@@ -161,40 +163,25 @@ function run() {
     }
 
     // validate documents
-    const mapRequestTimersByUri = new Map<string, Rx.Observable<number>>();
-    const mapTimersByUri = new Map<string, Rx.Observable<number>>();
-    const disposeValidationStream = validationRequestStream
-        .do(doc => log('Request Validate:', doc.uri))
-        .debounce(doc => {
-            if (!mapRequestTimersByUri.get(doc.uri)) {
-                mapRequestTimersByUri.set(doc.uri, Rx.Observable.timer(50));
-            }
-            return mapRequestTimersByUri.get(doc.uri)!;
-        })
-        .do(doc => log('Request Validate 2:', doc.uri))
-        .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc)}) as DocSettingPair )
-        .flatMap(async dsp => await shouldValidateDocument(dsp.doc) ? dsp : undefined)
-        .filter(dsp => !!dsp)
-        .map(dsp => dsp!)
-        .debounce(dsp => {
-            const { doc, settings } = dsp;
-            if (!mapTimersByUri.get(doc.uri)) {
-                mapTimersByUri.set(doc.uri, Rx.Observable.timer(settings.spellCheckDelayMs || defaultDebounce));
-            }
-            return mapTimersByUri.get(doc.uri)!;
-        })
-        .map(dsp => dsp.doc)
-        .do(doc => log('Validate:', doc.uri))
-        .subscribe(validateTextDocument);
-    disposeValidationStream.add(() => mapRequestTimersByUri.clear());
-    disposeValidationStream.add(() => mapTimersByUri.clear());
-
-    // Clear the diagnostics for documents we do not want to validate
-    const disposableSkipValidationStream = validationRequestStream
-        .filter(doc => !shouldValidateDocument(doc))
-        .do(doc => log('Skip Validate:', doc.uri))
+    const disposableValidate = validationRequestStream
+        .filter(doc => !validationByDoc.has(doc.uri))
         .subscribe(doc => {
-            connection.sendDiagnostics({ uri: doc.uri, diagnostics: [] });
+            if (!validationByDoc.has(doc.uri)) {
+                const uri = doc.uri;
+                validationByDoc.set(doc.uri, validationRequestStream
+                    .filter(doc => uri === doc.uri)
+                    .do(doc => log('Request Validate:', doc.uri))
+                    .debounceTime(50)
+                    .do(doc => log('Request Validate 2:', doc.uri))
+                    .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair)
+                    .debounce(dsp => Rx.Observable
+                        .timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
+                        .filter(() => !isValidationBusy)
+                    )
+                    .flatMap(validateTextDocument)
+                    .subscribe(diag => connection.sendDiagnostics(diag))
+                );
+            }
         });
 
     const disposableTriggerUpdateConfigStream = triggerUpdateConfig
@@ -211,17 +198,14 @@ function run() {
             documents.all().forEach(doc => validationRequestStream.next(doc));
         });
 
-    validationFinishedStream.next({ uri: 'start', version: 0 });
-
-    async function shouldValidateDocument(textDocument: TextDocument): Promise<boolean> {
+    async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
         const { uri } = textDocument;
-        const settings = await getActiveSettings(textDocument);
-        return !!settings.enabled && await isLanguageEnabled(textDocument)
+        return !!settings.enabled && isLanguageEnabled(textDocument, settings)
             && !await isUriExcluded(uri);
     }
 
-    async function isLanguageEnabled(textDocument: TextDocumentUriLangId) {
-        const { enabledLanguageIds = []} = await getActiveSettings(textDocument);
+    function isLanguageEnabled(textDocument: TextDocumentUriLangId, settings: CSpellUserSettings) {
+        const { enabledLanguageIds = []} = settings;
         return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
     }
 
@@ -238,20 +222,35 @@ function run() {
         return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
     }
 
-    async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-        try {
-            const settingsToUse = await getSettingsToUseForDocument(textDocument);
-            if (settingsToUse.enabled) {
-                Validator.validateTextDocument(textDocument, settingsToUse).then(diagnostics => {
-                    log('validateTextDocument done:', textDocument.uri);
-                    // Send the computed diagnostics to VSCode.
-                    validationFinishedStream.next(textDocument);
-                    connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-                });
+    interface ValidationResult extends vscode.PublishDiagnosticsParams {}
+
+    async function validateTextDocument(dsp: DocSettingPair): Promise<ValidationResult> {
+        async function validate() {
+            const { doc, settings } = dsp;
+            const uri = doc.uri;
+            try {
+                const shouldCheck = await shouldValidateDocument(doc, settings);
+                if (!shouldCheck) {
+                    log('validateTextDocument skip:', uri);
+                    return { uri, diagnostics: [] };
+                }
+                const settingsToUse = await getSettingsToUseForDocument(doc);
+                if (settingsToUse.enabled) {
+                    log('validateTextDocument start:', uri);
+                    const diagnostics = await Validator.validateTextDocument(doc, settingsToUse);
+                    log('validateTextDocument done:', uri);
+                    return { uri, diagnostics };
+                }
+            } catch (e) {
+                logError(`validateTextDocument: ${JSON.stringify(e)}`);
             }
-        } catch (e) {
-            logError(`validateTextDocument: ${JSON.stringify(e)}`);
+            return { uri, diagnostics: [] };
         }
+
+        isValidationBusy = true;
+        const r = await validate();
+        isValidationBusy = false;
+        return r;
     }
 
     // Make the text document manager listen on the connection
@@ -265,8 +264,14 @@ function run() {
     });
 
     documents.onDidClose((event) => {
+        const uri = event.document.uri;
+        const sub = validationByDoc.get(uri);
+        if (sub) {
+            validationByDoc.delete(uri);
+            sub.unsubscribe();
+        }
         // A text document was closed we clear the diagnostics
-        connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] });
+        connection.sendDiagnostics({ uri, diagnostics: [] });
     });
 
     connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings));
@@ -276,10 +281,12 @@ function run() {
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
-        disposableSkipValidationStream.unsubscribe();
-        disposeValidationStream.unsubscribe();
+        disposableValidate.unsubscribe();
         disposableTriggerUpdateConfigStream.unsubscribe();
         disposableTriggerValidateAll.unsubscribe();
+        const toDispose = [...validationByDoc.values()];
+        validationByDoc.clear();
+        toDispose.forEach(sub => sub.unsubscribe());
     });
 
     connection.workspace.getConfiguration({ section: 'cSpell.debugLevel',  }).then(
