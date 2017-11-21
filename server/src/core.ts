@@ -15,6 +15,10 @@ export function logError(msg: string, uri?: string | string[]) {
     logger.error(formatMessage(msg, uri));
 }
 
+export function logInfo(msg: string, uri?: string | string[]) {
+    logger.info(formatMessage(msg, uri));
+}
+
 export function setWorkspaceBase(uri: string) {
     workspaceBase = Uri.parse(uri).fsPath;
     log(`setWorkspaceBase: ${workspaceBase}`);

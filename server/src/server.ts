@@ -19,9 +19,17 @@ import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 import * as Api from './api';
 import { DocumentSettings, SettingsCspell } from './documentSettings';
-import { LogLevel, log, logger, logError, setWorkspaceFolders, setWorkspaceBase } from './core';
+import {
+    log,
+    logError,
+    logger,
+    logInfo,
+    LogLevel,
+    setWorkspaceBase,
+    setWorkspaceFolders,
+} from './core';
 
-log('Starting Server');
+log('Starting Spell Checker Server');
 
 const methodNames: Api.RequestMethodConstants = {
     isSpellCheckEnabled: 'isSpellCheckEnabled',
@@ -85,8 +93,9 @@ function run() {
 
     interface OnChangeParam { settings: SettingsCspell; }
     function onConfigChange(change: OnChangeParam) {
-        log('onConfigChange');
+        logInfo('Configuration Change');
         triggerUpdateConfig.next(undefined);
+        updateLogLevel();
     }
 
     function updateActiveSettings() {
@@ -105,7 +114,7 @@ function run() {
 
     function registerConfigurationFile(path: string) {
         configsToImport.add(path);
-        log('Load:', path);
+        logInfo('Register Configuration File', path);
         triggerUpdateConfig.next(undefined);
     }
 
@@ -236,6 +245,7 @@ function run() {
                 }
                 const settingsToUse = await getSettingsToUseForDocument(doc);
                 if (settingsToUse.enabled) {
+                    logInfo('Validate File', uri);
                     log('validateTextDocument start:', uri);
                     const diagnostics = await Validator.validateTextDocument(doc, settingsToUse);
                     log('validateTextDocument done:', uri);
@@ -274,7 +284,9 @@ function run() {
         connection.sendDiagnostics({ uri, diagnostics: [] });
     });
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings));
+    connection.onCodeAction(
+        onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version)
+    );
 
     // Listen on the connection
     connection.listen();
@@ -289,19 +301,21 @@ function run() {
         toDispose.forEach(sub => sub.unsubscribe());
     });
 
-    connection.workspace.getConfiguration({ section: 'cSpell.debugLevel',  }).then(
-        (result: string) => {
-            fetchFolders();
-            logger.level = result;
-            logger.setConnection(connection);
-        },
-        (reject) => {
-            fetchFolders();
-            logger.level = LogLevel.DEBUG;
-            logger.error(`Failed to get config: ${JSON.stringify(reject)}`);
-            logger.setConnection(connection);
-        }
-    );
+    function updateLogLevel() {
+        connection.workspace.getConfiguration({ section: 'cSpell.debugLevel' }).then(
+            (result: string) => {
+                fetchFolders();
+                logger.level = result;
+                logger.setConnection(connection);
+            },
+            (reject) => {
+                fetchFolders();
+                logger.level = LogLevel.DEBUG;
+                logger.error(`Failed to get config: ${JSON.stringify(reject)}`);
+                logger.setConnection(connection);
+            }
+        );
+    }
 
     async function fetchFolders() {
         const folders = await connection.workspace.getWorkspaceFolders();

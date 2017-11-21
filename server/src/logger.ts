@@ -30,6 +30,7 @@ const logLevels: [string, LogLevel][] = [
     [LogLevel[LogLevel.WARNING], LogLevel.WARNING],
     [LogLevel[LogLevel.INFO], LogLevel.INFO],
     [LogLevel[LogLevel.DEBUG], LogLevel.DEBUG],
+    ['INFORMATION', LogLevel.INFO],
 ];
 
 const levelMap = new Map<string, LogLevel>(logLevels);

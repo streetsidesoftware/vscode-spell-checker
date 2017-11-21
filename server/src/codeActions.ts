@@ -28,11 +28,15 @@ function extractText(textDocument: TextDocument, range: LangServer.Range) {
 }
 
 
-export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>) {
-
+export function onCodeActionHandler(
+    documents: TextDocuments,
+    fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
+    fnSettingsVersion: (doc: TextDocument) => number,
+) {
     type SettingsDictPair = [CSpellUserSettings, SpellingDictionary];
     interface CacheEntry {
-        version: number;
+        docVersion: number;
+        settingsVersion: number;
         settings: Promise<SettingsDictPair>;
     }
 
@@ -40,8 +44,10 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
 
     async function getSettings(doc: TextDocument): Promise<[CSpellUserSettings, SpellingDictionary]> {
         const cached = settingsCache.get(doc.uri);
-        if (!cached || cached.version !== doc.version) {
-            settingsCache.set(doc.uri, { version: doc.version, settings: constructSettings(doc) });
+        if (!cached || cached.docVersion !== doc.version) {
+            const settings = constructSettings(doc);
+            const settingsVersion = fnSettingsVersion(doc);
+            settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
         }
         return settingsCache.get(doc.uri)!.settings;
     }
@@ -64,6 +70,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
             return LangServer.TextEdit.replace(range, text || '');
         }
 
+        /*
         function genMultiWordSugs(word: string, words: string[]): string[] {
             const snakeCase = words.join('_').toLowerCase();
             const camelCase = Text.snakeToCamel(snakeCase);
@@ -72,6 +79,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
                 sug,
             ];
         }
+        */
 
         function getSuggestions(dictionary: SpellingDictionary, word: string, numSuggestions: number): string[] {
             if (word.length > maxWordLengthForSuggestions) {
@@ -84,10 +92,10 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
 
         function genSuggestions(dictionary: SpellingDictionary) {
             const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
-            let altWord: string | undefined;
+            let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
                 const word = extractText(textDocument, diag.range);
-                altWord = altWord || word;
+                diagWord = diagWord || word;
                 const sugs: string[] = getSuggestions(dictionary, word, numSuggestions);
                 sugs
                     .map(sug => Text.matchCase(word, sug))
@@ -98,7 +106,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
                             [ replaceText(diag.range, sugWord) ]
                         ));
                         /*
-                        // Turn of making multiple suggestions for the same words.
+                        // Turn off making multiple suggestions for the same words.
                         const words = sugWord.replace(/[ _.]/g, '_').split('_');
                         if (words.length > 1) {
                             if (Text.isUpperCase(word)) {
@@ -121,7 +129,7 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
                         */
                     });
             }
-            const word = extractText(textDocument, params.range) || altWord;
+            const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
                 commands.push(LangServer.Command.create(
@@ -132,8 +140,15 @@ export function onCodeActionHandler(documents: TextDocuments, fnSettings: (doc: 
                 ));
                 // Allow the them to add it to the project dictionary.
                 commands.push(LangServer.Command.create(
-                    'Add: "' + word + '" to project dictionary',
+                    'Add: "' + word + '" to folder dictionary',
                     'cSpell.addWordToDictionarySilent',
+                    word,
+                    textDocument.uri
+                ));
+                // Allow the them to add it to the workspace dictionary.
+                commands.push(LangServer.Command.create(
+                    'Add: "' + word + '" to workspace dictionary',
+                    'cSpell.addWordToWorkspaceDictionarySilent',
                     word,
                     textDocument.uri
                 ));

@@ -55,6 +55,7 @@ export class DocumentSettings {
     private _folders: Promise<vscode.WorkspaceFolder[]> | undefined;
     readonly configsToImport = new Set<string>();
     private _importSettings: CSpellUserSettings | undefined;
+    private _version = 0;
 
     constructor(readonly connection: Connection, readonly defaultSettings: CSpellUserSettings) {}
 
@@ -93,6 +94,7 @@ export class DocumentSettings {
         this.settingsByDoc.clear();
         this._folders = undefined;
         this._importSettings = undefined;
+        this._version += 1;
     }
 
     get folders(): Promise<vscode.WorkspaceFolder[]> {
@@ -116,6 +118,10 @@ export class DocumentSettings {
             this._importSettings = CSpell.readSettingsFiles(importPaths);
         }
         return this._importSettings!;
+    }
+
+    get version() {
+        return this._version;
     }
 
     registerConfigurationFile(path: string) {
