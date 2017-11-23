@@ -11,7 +11,8 @@ import { isSupportedUri } from '../util';
 import * as serverSettings from '../server';
 import * as langCode from '../iso639-1';
 import * as config from '../settings';
-import { LocalInfo, ActiveTab } from './pugCSpellInfo';
+import { LocalInfo, ActiveTab, LocalSetting } from './pugCSpellInfo';
+import { ConfigTarget } from '../settings/config';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -168,15 +169,17 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }
 
     function enableLanguage(languageId: string, uri: string) {
-        commands.enableLanguageId(languageId);
+        commands.enableLanguageId(languageId, uri);
     }
 
     function disableLanguage(languageId: string, uri: string) {
-        commands.disableLanguageId(languageId);
+        commands.disableLanguageId(languageId, uri);
     }
 
-    function setLocal(local: string, enable: boolean, isGlobal: boolean) {
-        const target = isGlobal ? config.Target.Global : config.Target.Workspace;
+    type targetScope = 'folder' | 'workspace' | 'global';
+
+    function setLocal(local: string, enable: boolean, isGlobalOrTarget: boolean | targetScope) {
+        const target = toTarget(isGlobalOrTarget);
         if (enable) {
             config.enableLocal(target, local);
         } else {
@@ -184,16 +187,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     }
 
-    function overrideLocalSetting(enable: boolean, isGlobal: boolean) {
-        config.overrideLocal(enable, isGlobal);
+    function overrideLocalSetting(enable: boolean, isGlobalOrTarget: boolean | targetScope) {
+        config.overrideLocal(enable, toTarget(isGlobalOrTarget));
     }
 
-    function genSetLocal(code: string, enable: boolean, isGlobal: boolean) {
-        return genCommandLink(commandSetLocal, [code, enable, isGlobal]);
+    function genSetLocal(code: string, enable: boolean, isGlobalOrTarget: boolean | targetScope) {
+        return genCommandLink(commandSetLocal, [code, enable, isGlobalOrTarget]);
     }
 
-    function genOverrideLocal(enable: boolean, isGlobal: boolean) {
-        return genCommandLink(commandOverrideLocalSetting, [enable, isGlobal]);
+    function genOverrideLocal(enable: boolean, isGlobalOrTarget: boolean | targetScope) {
+        return genCommandLink(commandOverrideLocalSetting, [enable, isGlobalOrTarget]);
     }
 
     function selectInfoTab(tab: ActiveTab) {
@@ -246,18 +249,19 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             });
     }
 
-    function getLocalSetting() {
+    function getLocalSetting(): LocalSetting {
         const langSettings = getLanguageSettingFromVSCode();
 
         return {
             default: langSettings.defaultValue,
             user: langSettings.globalValue,
             workspace: langSettings.workspaceValue,
+            folder: langSettings.workspaceFolderValue,
         };
     }
 
     function getLanguageSettingFromVSCode(): config.Inspect<config.CSpellUserSettings['language']> {
-        return config.inspectSettingFromVSConfig('language', null) || { key: ''};
+        return config.inspectSettingFromVSConfig('language', determineDocUri() || null) || { key: ''};
     }
 
     function composeLocalInfo(settingsFromServer?: serverSettings.CSpellUserSettings): LocalInfo[] {
@@ -267,6 +271,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         const fromConfig = getLanguageSettingFromVSCode();
         const globalLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.globalValue), { isInUserSettings: true });
         const workspaceLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.workspaceValue), { isInWorkspaceSettings: true });
+        const folderLocals = localInfo(serverSettings.normalizeToLocals(fromConfig.workspaceFolderValue), { isInFolderSettings: true });
 
         function resetKnownLocals() {
             [...knownLocals.values()]
@@ -274,6 +279,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     delete info.enabled;
                     delete info.isInUserSettings;
                     delete info.isInWorkspaceSettings;
+                    delete info.isInFolderSettings;
                 });
         }
 
@@ -283,12 +289,18 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             localsFromServer,
             globalLocals,
             workspaceLocals,
+            folderLocals,
         )
         .forEach(info => knownLocals.set(info.code, {...knownLocals.get(info.code), ...info}));
 
         if (workspaceLocals.length) {
             // Force values to false.
             [...knownLocals.values()].forEach(info => info.isInWorkspaceSettings = info.isInWorkspaceSettings || false);
+        }
+
+        if (folderLocals.length) {
+            // Force values to false.
+            [...knownLocals.values()].forEach(info => info.isInFolderSettings = info.isInFolderSettings || false);
         }
 
         const locals = [...knownLocals.values()].sort((a, b) => a.name.localeCompare(b.name));
@@ -304,6 +316,41 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return locals;
     }
 
+    function determineDoc() {
+        const editor = vscode.window.activeTextEditor;
+        return lastDocumentUri && findMatchingDocument(lastDocumentUri.toString())
+            || (editor && editor.document);
+    }
+
+    function determineDocUri() {
+        const doc = determineDoc();
+        return doc && doc.uri;
+    }
+
+    function toTarget(target: boolean | targetScope): ConfigTarget {
+        if (typeof target === 'boolean') {
+            return target ? config.Target.Global : config.Target.Workspace;
+        }
+
+        const uri = determineDocUri();
+
+        switch (target.toLowerCase()) {
+            case 'folder':
+                return uri
+                    ? {
+                        target: config.Target.WorkspaceFolder,
+                        uri,
+                    }
+                    : config.Target.Workspace;
+            case 'workspace':
+                return config.Target.Workspace;
+            case 'global':
+            default:
+                return config.Target.Global;
+        }
+    }
+
+
     context.subscriptions.push(
         subOnDidChangeEditor,
         subOnDidChangeDoc,
@@ -317,6 +364,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         makeDisposable(subOnDidChangeTextDocument),
     );
 }
+
 
 function isDarkTheme() {
     const config = vscode.workspace.getConfiguration();

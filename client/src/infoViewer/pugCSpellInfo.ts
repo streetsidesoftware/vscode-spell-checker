@@ -9,6 +9,7 @@ export interface LocalInfo {
     enabled?: boolean;
     isInUserSettings?: boolean;
     isInWorkspaceSettings?: boolean;
+    isInFolderSettings?: boolean;
 }
 
 export type ActiveTab = 'LocalInfo' | 'FileInfo' | 'IssuesInfo';
@@ -22,6 +23,7 @@ export interface LocalSetting {
     default?: string;
     user?: string;
     workspace?: string;
+    folder?: string;
 }
 
 export interface TemplateVariables {
@@ -44,7 +46,7 @@ export interface TemplateVariables {
     activeTab: ActiveTab;
     genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
     genSelectInfoTabLink: (tab: ActiveTab) => string;
-    genOverrideLocal: (enable: boolean, isGlobal: boolean) => string;
+    genOverrideLocal: (enable: boolean, isGlobal: boolean | string) => string;
 }
 
 export function render(params: TemplateVariables) {

@@ -84,7 +84,7 @@ export function getSectionName(
 export function getSettingsFromVSConfig(
     resource: Uri | null
 ): CSpellUserSettings {
-    const config = getConfiguration(toAny(resource));
+    const config = getConfiguration(resource);
     return config.get<CSpellUserSettings>(sectionCSpell, {});
 }
 
@@ -92,7 +92,7 @@ export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     resource: Uri | null
 ): CSpellUserSettings[K] | undefined {
-    const config = getConfiguration(toAny(resource));
+    const config = getConfiguration(resource);
     const settings = config.get<CSpellUserSettings>(sectionCSpell, {});
     return settings[subSection];
 }
@@ -155,7 +155,7 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
 function inspectConfig(
     resource: Uri | null
 ): Inspect<CSpellUserSettings> {
-    const config = getConfiguration(toAny(resource));
+    const config = getConfiguration(resource);
     return config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
 }
 

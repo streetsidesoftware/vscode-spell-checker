@@ -225,13 +225,11 @@ export function disableLocal(target: config.ConfigTarget, local: string) {
     return config.setSettingInVSConfig('language', languages, target);
 }
 
-export function overrideLocal(enable: boolean, isGlobal: boolean) {
+export function overrideLocal(enable: boolean, target: config.ConfigTarget) {
     const inspectLang = config.getScopedSettingFromVSConfig(
         'language',
-        isGlobal ? config.Scopes.Global : config.Scopes.Workspace,
+        config.configTargetToScope(target)
     );
-
-    const target = isGlobal ? ConfigurationTarget.Global : ConfigurationTarget.Workspace;
 
     const lang = (enable && inspectLang) || undefined;
 

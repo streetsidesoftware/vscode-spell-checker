@@ -21,6 +21,7 @@ const localInfo: t.LocalInfo[] = [
         enabled: true,
         isInUserSettings: true,
         isInWorkspaceSettings: undefined,
+        isInFolderSettings: true,
         dictionaries: ['English', 'Misc'],
     },
     {
@@ -29,6 +30,7 @@ const localInfo: t.LocalInfo[] = [
         enabled: true,
         isInUserSettings: true,
         isInWorkspaceSettings: undefined,
+        isInFolderSettings: undefined,
         dictionaries: ['English'],
     },
     {
@@ -37,13 +39,14 @@ const localInfo: t.LocalInfo[] = [
         enabled: true,
         isInUserSettings: false,
         isInWorkspaceSettings: undefined,
+        isInFolderSettings: true,
         dictionaries: ['Spanish'],
     },
 ];
 
 const dictionaries: t.DictionaryEntry[] = [
     { name: 'cpp', description: 'C & CPP Keywords and Function names.'},
-    { name: 'en-es', description: 'Spanish Dictionary (Spain)'},
+    { name: 'es', description: 'Spanish Dictionary (Spain)'},
     { name: 'en-us', description: 'American English Dictionary'},
     { name: 'php', description: 'PHP Keywords and Function names.'},
     { name: 'html', description: 'HTML Keywords'},

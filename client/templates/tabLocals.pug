@@ -11,8 +11,8 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                     input(
                         class="mdl-switch__input"
                         type="checkbox"
-                        data-link-enable= genOverrideLocal(true, true)
-                        data-link-disable= genOverrideLocal(false, true)
+                        data-link-enable= genOverrideLocal(true, 'global')
+                        data-link-disable= genOverrideLocal(false, 'global')
                         onchange="triggerLocalChange(this)"
                         checked= local.user)
                     span.mdl-switch__label
@@ -22,10 +22,21 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                     input(
                         class="mdl-switch__input"
                         type="checkbox"
-                        data-link-enable= genOverrideLocal(true, false)
-                        data-link-disable= genOverrideLocal(false, false)
+                        data-link-enable= genOverrideLocal(true, 'workspace')
+                        data-link-disable= genOverrideLocal(false, 'workspace')
                         onchange="triggerLocalChange(this)"
                         checked= local.workspace)
+                    span.mdl-switch__label
+            th.align-left Folder
+                br
+                label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                    input(
+                        class="mdl-switch__input"
+                        type="checkbox"
+                        data-link-enable= genOverrideLocal(true, 'folder')
+                        data-link-disable= genOverrideLocal(false, 'folder')
+                        onchange="triggerLocalChange(this)"
+                        checked= local.folder)
                     span.mdl-switch__label
             th.align-left Enabled
         each local in localInfo
@@ -39,8 +50,8 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                         input(
                             class="mdl-switch__input"
                             type="checkbox"
-                            data-link-enable= genSetLocal(local.code, true, true)
-                            data-link-disable= genSetLocal(local.code, false, true)
+                            data-link-enable= genSetLocal(local.code, true, 'global')
+                            data-link-disable= genSetLocal(local.code, false, 'global')
                             onchange="triggerLocalChange(this)"
                             checked= local.isInUserSettings)
                         span.mdl-switch__label
@@ -53,11 +64,26 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
                             input(
                                 class="mdl-switch__input"
                                 type="checkbox"
-                                data-link-enable= genSetLocal(local.code, true, false)
-                                data-link-disable= genSetLocal(local.code, false, false)
+                                data-link-enable= genSetLocal(local.code, true, 'workspace')
+                                data-link-disable= genSetLocal(local.code, false, 'workspace')
                                 onchange="triggerLocalChange(this)"
                                 checked= local.isInWorkspaceSettings)
                             span.mdl-switch__label
+
+                td.mdl-data-table__cell--non-numeric
+                    if (local.isInFolderSettings == undefined)
+                        span.align-center -
+                    else
+                        label.mdl-switch.mdl-js-switch.mdl-js-ripple-effect
+                            input(
+                                class="mdl-switch__input"
+                                type="checkbox"
+                                data-link-enable= genSetLocal(local.code, true, 'folder')
+                                data-link-disable= genSetLocal(local.code, false, 'folder')
+                                onchange="triggerLocalChange(this)"
+                                checked= local.isInFolderSettings)
+                            span.mdl-switch__label
+
                 td.mdl-data-table__cell--non-numeric
                     if local.enabled
                         span.mdl-chip__contact.mdl-color--light-green.mdl-color-text--white ✔

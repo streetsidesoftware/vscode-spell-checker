@@ -61,7 +61,7 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
     return Settings.addWordToSettings(Settings.Target.Global, word);
 }
 
-export function enableLanguageId(languageId: string): Thenable<void> {
+export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {
     if (languageId) {
         return Settings.enableLanguage(Settings.Target.Global, languageId)
         .then(() => {
@@ -75,7 +75,7 @@ export function enableLanguageId(languageId: string): Thenable<void> {
     return Promise.resolve();
 }
 
-export function disableLanguageId(languageId: string): Thenable<void> {
+export function disableLanguageId(languageId: string, uri?: string): Thenable<void> {
     if (languageId) {
         return Settings.disableLanguage(Settings.Target.Global, languageId)
         .then(() => {
