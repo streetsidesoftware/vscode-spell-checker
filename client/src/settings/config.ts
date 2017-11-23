@@ -1,7 +1,9 @@
-import { workspace, Uri, ConfigurationTarget as Target, TextDocument } from 'vscode';
+import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
 import { CSpellUserSettings } from '../server';
 import { inspect } from 'util';
 import { normalize } from 'path';
+import { workers } from 'cluster';
+
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
 
@@ -53,6 +55,8 @@ export interface FullInspectScope {
 
 export type InspectScope = FullInspectScope | ScopeResourceFree;
 
+const folderSettings = new Map<string, CSpellUserSettings>();
+
 /**
  * ScopeOrder from general to specific.
  */
@@ -66,12 +70,6 @@ const scopeOrder: Scope[] = [
 const scopeToOrderIndex = new Map<string, number>(
     scopeOrder.map((s, i) => [s, i] as [string, number])
 );
-
-let workspaceFolders = workspace.workspaceFolders;
-
-workspace.onDidChangeWorkspaceFolders(() => {
-    workspaceFolders = workspace.workspaceFolders;
-});
 
 export type InspectResult<T> = Inspect<T> | undefined;
 
@@ -149,6 +147,7 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     const uri = extractTargetUri(configTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
+    updateFolderSettings(configTarget, subSection, value);
     return config.update(section, value, target);
 }
 
@@ -156,7 +155,16 @@ function inspectConfig(
     resource: Uri | null
 ): Inspect<CSpellUserSettings> {
     const config = getConfiguration(resource);
-    return config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
+    const settings = config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
+    const { defaultValue = {}, globalValue = {}, workspaceValue = {}, workspaceFolderValue = {}, key } = settings;
+
+    return {
+        key,
+        defaultValue,
+        globalValue: {...globalValue, ...getFolderSettingsForScope(Scopes.Global)},
+        workspaceValue: {...workspaceValue, ...getFolderSettingsForScope(Scopes.Workspace)},
+        workspaceFolderValue: { ...workspaceFolderValue, ...getFolderSettingsForScope({ scope: Scopes.Folder, resource })},
+    };
 }
 
 function toAny(value: any): any {
@@ -263,5 +271,51 @@ export function extractTargetUri(target: ConfigTarget): Uri | null {
 }
 
 export function getConfiguration(uri?: Uri | null) {
+   return fetchConfiguration(uri);
+}
+
+function fetchConfiguration(uri?: Uri | null) {
     return workspace.getConfiguration(undefined, toAny(uri));
 }
+
+function updateFolderSettings<T extends keyof CSpellUserSettings>(
+    target: ConfigTarget,
+    section: T,
+    value: CSpellUserSettings[T]
+) {
+    const key = targetToFolderSettingsKey(target);
+    const s: CSpellUserSettings = folderSettings.get(key) || {};
+    s[section] = value;
+    folderSettings.set(key, s);
+}
+
+function getFolderSettingsForScope(scope: InspectScope) {
+    const key = scopeToFolderSettingsKey(scope);
+    return folderSettings.get(key) || {};
+}
+
+function targetToFolderSettingsKey(target: ConfigTarget) {
+    const scope = configTargetToScope(target);
+    return scopeToFolderSettingsKey(scope);
+}
+
+function scopeToFolderSettingsKey(scope: InspectScope) {
+    scope = normalizeScope(scope);
+    const uri = normalizeResourceUri(scope.resource);
+    return scope.scope + '::' + (uri && uri.path || '');
+}
+
+workspace.onDidChangeConfiguration(event => {
+    if (event.affectsConfiguration(sectionCSpell)) {
+        folderSettings.delete(scopeToFolderSettingsKey(Scopes.Global));
+        folderSettings.delete(scopeToFolderSettingsKey(Scopes.Workspace));
+    }
+    if (workspace.workspaceFolders) {
+        workspace.workspaceFolders.forEach(folder => {
+            if (event.affectsConfiguration(sectionCSpell, folder.uri)) {
+                const key = scopeToFolderSettingsKey({ scope: Scopes.Folder, resource: folder.uri });
+                folderSettings.delete(key);
+            }
+        });
+    }
+});
