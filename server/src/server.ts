@@ -55,8 +55,6 @@ const defaultSettings: CSpellUserSettings = {
 };
 const defaultDebounce = 50;
 
-const configsToImport = new Set<string>();
-
 function run() {
     // debounce buffer
     const validationRequestStream = new Rx.ReplaySubject<TextDocument>(1);
@@ -113,7 +111,7 @@ function run() {
     }
 
     function registerConfigurationFile(path: string) {
-        configsToImport.add(path);
+        documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
         triggerUpdateConfig.next(undefined);
     }

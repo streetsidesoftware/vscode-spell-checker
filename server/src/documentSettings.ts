@@ -127,6 +127,7 @@ export class DocumentSettings {
     registerConfigurationFile(path: string) {
         log('registerConfigurationFile:', path);
         configsToImport.add(path);
+        this._importSettings = undefined;
     }
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
