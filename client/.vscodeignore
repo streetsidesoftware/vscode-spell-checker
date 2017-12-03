@@ -8,4 +8,5 @@ src/**
 tsconfig.json
 vsc-extension-quickstart.md
 temp/**
-
+**/*.ts
+**/*.test.js

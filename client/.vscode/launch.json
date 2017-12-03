@@ -57,7 +57,7 @@
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
-			"preLaunchTask": "npm"
+			"preLaunchTask": "build"
 		}
 	]
 }
