@@ -17,6 +17,7 @@ install:
   - cd client
   - npm install
   - npm run build
+  - cd ..
 
 # Post-install test scripts.
 test_script:
@@ -30,6 +31,7 @@ test_script:
   - cd client
   - npm test
   - npm run test-integration
+  - cd ..
 
 # Don't actually build.
 build: off
