@@ -1,0 +1,35 @@
+# Test against the latest version of this Node.js version
+environment:
+  nodejs_version: "8"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version
+  # install modules
+  - cd client
+  - npm install
+  - cd ..
+  - cd server
+  - npm install
+  - npm run build
+  - cd ..
+  - cd client
+  - npm install
+  - npm run build
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run tests
+  - cd server
+  - npm test
+  - cd ..
+  - cd client
+  - npm test
+  - npm run test-integration
+
+# Don't actually build.
+build: off
