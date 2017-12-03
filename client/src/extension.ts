@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {setEnableSpellChecking} from './settings';
+import {setEnableSpellChecking, ConfigTarget} from './settings';
 import * as settings from './settings';
 import * as infoViewer from './infoViewer';
 import {CSpellClient} from './client';
@@ -12,13 +12,29 @@ import { initStatusBar } from './statusbar';
 import {userCommandAddWordToDictionary, handlerApplyTextEdits} from './commands';
 import * as commands from './commands';
 
-export function activate(context: ExtensionContext) {
+export interface ExtensionApi {
+    registerConfig(path: string): void;
+    triggerGetSettings(): void;
+    enableLanguageId(languageId: string, uri?: string): Thenable<void>;
+    disableLanguageId(languageId: string, uri?: string): Thenable<void>;
+    enableCurrentLanguage(): Thenable<void>;
+    disableCurrentLanguage(): Thenable<void>;
+    addWordToUserDictionary(word: string): Thenable<void>;
+    addWordToWorkspaceDictionary(word: string, uri?: string | null | vscode.Uri): Thenable<void>;
+    enableLocal(target: ConfigTarget, local: string): Thenable<void>;
+    disableLocal(target: ConfigTarget, local: string): Thenable<void>;
+    updateSettings(): false;
+    cSpellClient(): CSpellClient;
+}
+
+export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
 
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
 
     // Get the cSpell Client
-    const server = CSpellClient.create(serverModule).then(client => {
+    const client = CSpellClient.create(serverModule);
+    const server = client.then(client => {
         // Start the client.
         const clientDispose = client.start();
 
@@ -94,6 +110,7 @@ export function activate(context: ExtensionContext) {
             enableLocal: settings.enableLocal,
             disableLocal: settings.disableLocal,
             updateSettings: () => false,
+            cSpellClient: () => client,
         };
     });
 
