@@ -49,7 +49,7 @@ export class Logger {
     };
 
     constructor(
-        private logLevel = LogLevel.ERROR,
+        private logLevel = LogLevel.DEBUG,
         private connection?: IConnection,
     ) {
     }
@@ -64,6 +64,7 @@ export class Logger {
             const message = `${entry.seq}\t${entry.ts.toISOString()}\t${entry.msg}`;
             const logger = this.loggers[entry.level];
             if (logger) {
+                console.log(message);
                 logger(message);
             } else {
                 console.error(`Unknown log level: ${entry.level}; msg: ${entry.msg}`);

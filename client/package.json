@@ -368,7 +368,7 @@
                         "Information",
                         "Debug"
                     ],
-                    "default": "Error"
+                    "default": "Debug"
                 }
             }
         }
