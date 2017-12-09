@@ -300,7 +300,7 @@ function run() {
     });
 
     function updateLogLevel() {
-        connection.workspace.getConfiguration({ section: 'cSpell.debugLevel' }).then(
+        connection.workspace.getConfiguration({ section: 'cSpell.logLevel' }).then(
             (result: string) => {
                 fetchFolders();
                 logger.level = result;

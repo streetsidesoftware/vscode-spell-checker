@@ -357,7 +357,7 @@
                         ]
                     }
                 },
-                "cSpell.debugLevel": {
+                "cSpell.logLevel": {
                     "type": "string",
                     "scope": "window",
                     "description": "Set the Debug Level for logging messages.",
@@ -368,7 +368,7 @@
                         "Information",
                         "Debug"
                     ],
-                    "default": "Debug"
+                    "default": "Error"
                 }
             }
         }
