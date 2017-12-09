@@ -165,7 +165,8 @@ export class DocumentSettings {
             const mergedSettings = CSpell.mergeSettings(settings, cSpell);
             const { ignorePaths = []} = mergedSettings;
             const globs = defaultExclude.concat(ignorePaths, CSpell.ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude));
-            const root = Uri.parse(uri).path;
+            log(`fetchFolderSettings: URI ${uri}`)
+            const root = uri;
             const fnFileExclusionTest = CSpell.ExclusionHelper.generateExclusionFunctionForUri(globs, root);
 
             const ext: ExtSettings = {
@@ -182,21 +183,22 @@ export class DocumentSettings {
 
 const configsToImport = new Set<string>();
 
-function configPathsForRoot(workspaceRoot?: string) {
+function configPathsForRoot(workspaceRootUri?: string) {
+    const workspaceRoot = workspaceRootUri ? Uri.parse(workspaceRootUri).fsPath : '';
     const paths = workspaceRoot ? [
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename),
     ] : [];
-    return paths.map(path => Uri.parse(path))
-        .map(uri => uri.fsPath);
+    return paths;
 }
 
 function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder[]): [string, CSpellUserSettings][] {
     CSpell.clearCachedSettings();
     return workspaceFolders
         .map(folder => folder.uri)
+        .filter(uri => log(`readAllWorkspaceFolderSettings URI ${uri}`) || true)
         .map(uri => [uri, configPathsForRoot(uri)] as [string, string[]])
         .map(([uri, paths]) => [uri, readSettingsFiles(paths)] as [string, CSpellUserSettings]);
 }

@@ -1,7 +1,6 @@
 import { Logger } from './logger';
 
 export { LogLevel } from './logger';
-import Uri from 'vscode-uri';
 
 let workspaceBase = '';
 let workspaceFolders: string[] = [];
@@ -20,12 +19,14 @@ export function logInfo(msg: string, uri?: string | string[]) {
 }
 
 export function setWorkspaceBase(uri: string) {
-    workspaceBase = Uri.parse(uri).fsPath;
+    log(`setWorkspaceBase URI: ${uri}`);
+    workspaceBase = uri;
     log(`setWorkspaceBase: ${workspaceBase}`);
 }
 
 export function setWorkspaceFolders(folders: string[]) {
-    workspaceFolders = folders.map(folder => Uri.parse(folder).fsPath);
+    log(`setWorkspaceFolders folders URI: [${folders.join('\n')}]`);
+    workspaceFolders = folders;
     setWorkspaceBase(findCommonBasis(workspaceFolders));
 }
 
@@ -38,7 +39,6 @@ function normalizeUri(uri?: string) {
     if (!uri) {
         return '';
     }
-    uri = Uri.parse(uri).fsPath;
     const base = findCommonBase(uri, workspaceBase);
     return uri.replace(base, '...');
 }
