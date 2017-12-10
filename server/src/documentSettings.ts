@@ -11,7 +11,7 @@ import * as path from 'path';
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import Uri from 'vscode-uri';
-import { log } from './core';
+import { log } from './util';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {

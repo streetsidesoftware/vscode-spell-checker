@@ -27,7 +27,7 @@ import {
     LogLevel,
     setWorkspaceBase,
     setWorkspaceFolders,
-} from './core';
+} from './util';
 
 log('Starting Spell Checker Server');
 

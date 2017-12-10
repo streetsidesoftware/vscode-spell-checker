@@ -1,7 +1,7 @@
 export * from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
 import { _ } from 'vscode-languageserver';
-import { log } from './core';
+import { log } from './util';
 
 export interface WorkspaceFolder {
     /**
