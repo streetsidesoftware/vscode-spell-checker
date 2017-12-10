@@ -1,5 +1,12 @@
 # Release Notes
 
+## [1.6.0]
+* Release of Multi-Root Support
+* Fixes to support windows.
+
+## [1.5.1]
+* Rollback of Multi-Root support due to issue with Windows.
+
 ## [1.5.0]
 
 * Added Multi-Root Support [Support VSCode Multi Root Workspace #145](https://github.com/Jason-Rev/vscode-spell-checker/issues/145)
