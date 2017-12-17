@@ -1,7 +1,7 @@
 {
   "name": "vscode-spell-checker-server",
   "description": "Spell Checker Server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Jason Dent",
   "license": "MIT",
   "repository": {
@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "cspell": "^2.0.3",
+    "cspell": "^2.0.4",
     "gensequence": "^2.1.1",
     "iconv-lite": "^0.4.19",
     "minimatch": "^3.0.4",
-    "rxjs": "^5.5.2",
+    "rxjs": "^5.5.5",
     "tsmerge": "^1.0.4",
     "vscode-jsonrpc": "^3.5.0",
     "vscode-languageserver": "^3.5.0",
@@ -25,17 +25,17 @@
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.5",
-    "@types/minimatch": "^3.0.1",
+    "@types/chai": "^4.0.10",
+    "@types/minimatch": "^3.0.2",
     "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.5.1",
     "@types/xregexp": "^3.0",
     "chai": "^4.1.2",
     "lorem-ipsum": "^1.0.4",
     "mocha": "^4.0.1",
     "rimraf": "^2.6.2",
     "ts-node": "^3.2.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
