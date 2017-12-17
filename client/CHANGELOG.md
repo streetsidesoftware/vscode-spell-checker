@@ -1,5 +1,8 @@
 # Release Notes
 
+## [1.6.1]
+* Fix: [bug: no spell checking when there's no folder opened #162](https://github.com/Jason-Rev/vscode-spell-checker/issues/162)
+
 ## [1.6.0]
 * Release of Multi-Root Support
 * Fixes to support windows.

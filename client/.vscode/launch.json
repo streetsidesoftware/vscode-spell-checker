@@ -14,6 +14,17 @@
 			"preLaunchTask": "build"
 		},
 		{
+			"name": "Launch Extension Single File",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}", "${workspaceRoot}/README.md" ],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": [ "${workspaceRoot}/out/src/**/*.js" ],
+			"preLaunchTask": "build"
+		},
+		{
 			"type": "node",
 			"request": "launch",
 			"name": "Run Mocha Test",
