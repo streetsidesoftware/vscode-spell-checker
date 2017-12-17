@@ -40,7 +40,7 @@ function normalizeUri(uri?: string) {
         return '';
     }
     const base = findCommonBase(uri, workspaceBase);
-    return uri.replace(base, '...');
+    return base ? uri.replace(base, '...') : uri;
 }
 
 function findCommonBasis(folders: string[]): string {
