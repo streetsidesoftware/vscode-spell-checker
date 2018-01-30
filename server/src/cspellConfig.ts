@@ -9,4 +9,4 @@ export interface SpellCheckerSettings {
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}
-export interface CSpellUserSettings extends cspell.CSpellUserSettings, SpellCheckerSettings {}
+export interface CSpellUserSettings extends cspell.CSpellSettings, SpellCheckerSettings {}
