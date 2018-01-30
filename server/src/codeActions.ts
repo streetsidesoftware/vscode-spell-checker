@@ -10,6 +10,7 @@ import * as Validator from './validator';
 import { CSpellUserSettings } from 'cspell';
 import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
+import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
 
 const defaultNumSuggestions = 10;
 
@@ -87,7 +88,8 @@ export function onCodeActionHandler(
             }
             const numSugs = word.length > wordLengthForLimitingSuggestions ? maxNumberOfSuggestionsForLongWords : numSuggestions;
             const numEdits = maxEdits;
-            return dictionary.suggest(word, numSugs, undefined, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
+            // Turn off compound suggestions for now until it works a bit better.
+            return dictionary.suggest(word, numSugs, CompoundWordsMethod.NONE, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
         }
 
         function genSuggestions(dictionary: SpellingDictionary) {
