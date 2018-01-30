@@ -1,5 +1,10 @@
 # Release Notes
 
+## [1.6.3]
+* Improve LaTex support, special thanks to [James Yu](https://github.com/James-yu)
+* Add ability to disable checking a line: `cspell:disable-line`
+* Add ability to disable the next line: `cspell:disable-next`
+
 ## [1.6.2]
 * Reduce the size of the extension by excluding automatic test files.
 
