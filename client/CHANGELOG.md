@@ -1,5 +1,9 @@
 # Release Notes
 
+## [1.6.4]
+* Add support for Rust
+* Improve LaTeX support.
+
 ## [1.6.3]
 * Improve LaTex support, special thanks to [James Yu](https://github.com/James-yu)
 * Add ability to disable checking a line: `cspell:disable-line`
