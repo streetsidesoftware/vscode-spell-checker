@@ -157,7 +157,7 @@
 ## 1.2.0
 
 * Fix an issue with themes
-* Update cspell library to support language specifice overrides.
+* Update cspell library to support language specific overrides.
 * Support Python unicode and byte strings.
 
 ## 1.1.0
@@ -187,7 +187,7 @@
 
 ## 0.17.0
 
-* Minnor changes to fix issues introduced by VS Code 1.9
+* Minor changes to fix issues introduced by VS Code 1.9
 
 ## 0.16.0
 
@@ -259,7 +259,7 @@
 
 ## 0.14.0
 
-* This release includes a large amount of refactoring in order to support greater flexability with the configuration.
+* This release includes a large amount of refactoring in order to support greater flexibility with the configuration.
 * Ability to add file level settings:
   * ignore -- list of words to ignore
   * words -- list of words to consider correct
