@@ -1,5 +1,8 @@
 # Release Notes
 
+## [1.6.5]
+* Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/Jason-Rev/vscode-spell-checker/pull/191)
+
 ## [1.6.4]
 * Add support for Rust
 * Improve LaTeX support.
