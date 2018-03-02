@@ -89,7 +89,7 @@ Spaces between words in the word list have a special meaning.
 ```text
 New Delhi
 New York
-Las Angles
+Los Angeles
 ```
 
 becomes in the compiled dictionary:
@@ -100,9 +100,9 @@ new
 delhi
 new york
 york
-las angles
-las
-angles
+los angeles
+los
+angeles
 ```
 
 Spaces in the compiled dictionary have a special meaning.
