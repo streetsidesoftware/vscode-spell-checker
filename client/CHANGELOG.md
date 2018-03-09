@@ -1,5 +1,21 @@
 # Release Notes
 
+## [1.6.6]
+* Expose the setting to limit the number of repeated problems.
+
+  To set it:
+  * In the VS Code settings:
+
+  ```
+  "cSpell.maxDuplicateProblems": 5,
+  ```
+
+  * In a cspell.json file:
+
+  ```
+  "maxDuplicateProblems": 5,
+  ```
+
 ## [1.6.5]
 * Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/Jason-Rev/vscode-spell-checker/pull/191)
 

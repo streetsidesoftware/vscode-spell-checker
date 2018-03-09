@@ -125,6 +125,12 @@
                     "default": 4,
                     "description": "The minimum length of a word before checking it against a dictionary."
                 },
+                "cSpell.maxDuplicateProblems": {
+                    "type": "number",
+                    "scope": "resource",
+                    "default": 5,
+                    "description": "The maximum number of times the same word can be flagged as an error in a file."
+                },
                 "cSpell.enabledLanguageIds": {
                     "type": "array",
                     "scope": "resource",
