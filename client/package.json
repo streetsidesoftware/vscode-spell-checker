@@ -138,6 +138,7 @@
                         "type": "string"
                     },
                     "default": [
+                        "asciidoc",
                         "c",
                         "cpp",
                         "csharp",

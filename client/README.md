@@ -59,6 +59,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * PHP
 * Python
 * YAML
+* AsciiDoc
 
 ### Enable / Disable File Types
 
