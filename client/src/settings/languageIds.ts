@@ -1,4 +1,5 @@
 export const languageIds: string[] = [
+    'asciidoc',
     'bat',
     'c',
     'clojure',
