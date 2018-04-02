@@ -1,6 +1,5 @@
 export * from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
-import { _ } from 'vscode-languageserver';
 import { log } from './util';
 
 export interface WorkspaceFolder {
@@ -47,7 +46,7 @@ export function registerOnDidChangeWorkspaceFolders (connection: vscode.Connecti
     connection.onNotification(notificationType, callback);
 }
 
-export type Connection = vscode.Connection<_, _, _, _, _, vscode.ProposedFeatures.WorkspaceFolders & vscode.ProposedFeatures.Configuration>;
+export type Connection = vscode.Connection;
 
 export interface TextDocumentUri {
     uri: string;
@@ -57,11 +56,11 @@ export interface TextDocumentUriLangId extends TextDocumentUri {
     languageId: string;
 }
 
-export type GetConfigurationParams = string | vscode.Proposed.ConfigurationItem | vscode.Proposed.ConfigurationItem[];
+export type GetConfigurationParams = string | vscode.ConfigurationItem | vscode.ConfigurationItem[];
 export function getConfiguration(connection: Connection): Thenable<any>;
 export function getConfiguration(connection: Connection, section: string): Thenable<any>;
-export function getConfiguration(connection: Connection, item: vscode.Proposed.ConfigurationItem): Thenable<any>;
-export function getConfiguration(connection: Connection, items: vscode.Proposed.ConfigurationItem[]): Thenable<any[]>;
+export function getConfiguration(connection: Connection, item: vscode.ConfigurationItem): Thenable<any>;
+export function getConfiguration(connection: Connection, items: vscode.ConfigurationItem[]): Thenable<any[]>;
 export function getConfiguration(connection: Connection, params?: GetConfigurationParams ): Thenable<any> {
     if (typeof params === 'string') {
         log(`getConfiguration\t${params}`);

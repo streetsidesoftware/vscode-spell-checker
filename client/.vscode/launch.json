@@ -27,12 +27,12 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Run Mocha Test",
+			"name": "Run Mocha Test (current file)",
 			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
 			"args": [
 				"--timeout","999999",
 				"--colors",
-				"--compilers", "ts:ts-node/register",
+				"--require", "ts-node/register",
 				"${file}"
 			],
 			"internalConsoleOptions": "openOnSessionStart"
