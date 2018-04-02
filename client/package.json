@@ -401,10 +401,10 @@
     "devDependencies": {
         "@types/chai": "^4.1.2",
         "@types/comment-json": "^1.1.1",
-        "@types/fs-extra": "^4.0.7",
+        "@types/fs-extra": "^4.0.8",
         "@types/mkdirp": "^0.3.29",
         "@types/mocha": "^2.2.48",
-        "@types/node": "^8.9.4",
+        "@types/node": "^8.10.1",
         "@types/pug": "^2.0.4",
         "chai": "^4.1.2",
         "lorem-ipsum": "^1.0.4",
@@ -413,17 +413,17 @@
         "pug-lint": "^2.5.0",
         "rimraf": "^2.6.2",
         "ts-node": "^3.3.0",
-        "typescript": "^2.7.2",
-        "vscode": "^1.1.10"
+        "typescript": "^2.8.1",
+        "vscode": "^1.1.14"
     },
     "dependencies": {
         "comment-json": "^1.1.3",
         "fs-extra": "^4.0.3",
         "mkdirp": "^0.5.1",
-        "node-watch": "^0.5.7",
-        "pug": "^2.0.0-rc.4",
-        "rxjs": "^5.5.6",
+        "node-watch": "^0.5.8",
+        "pug": "^2.0.3",
+        "rxjs": "^5.5.8",
         "tsmerge": "^1.0.4",
-        "vscode-languageclient": "^3.5.0"
+        "vscode-languageclient": "^3.5.1"
     }
 }

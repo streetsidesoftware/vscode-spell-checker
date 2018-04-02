@@ -8,6 +8,7 @@
     "build-client": "cd client && npm run build",
     "build-server": "cd server && npm run build",
     "test-client": "cd client && npm run test",
+    "test-client-integration": "cd client && npm run test && npm run test-integration",
     "test-server": "cd server && npm run test",
     "test": "npm run test-server && npm run test-client"
   },
