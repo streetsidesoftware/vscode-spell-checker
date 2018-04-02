@@ -88,7 +88,6 @@ export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
 export function findExistingSettingsFileLocation(uri?: Uri): Thenable<string | undefined> {
     return findSettingsFiles(uri)
     .then(uris => uris.map(uri => uri.fsPath))
-    .then(paths => paths.sort((a, b) => a.length - b.length))
     .then(paths => paths[0]);
 }
 
@@ -164,6 +163,19 @@ export function addWordToSettings(target: config.ConfigTarget, word: string): Th
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
     return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
+}
+
+export function removeWordFromSettings(target: config.ConfigTarget, word: string): Thenable<void> {
+    const useGlobal = config.isGlobalTarget(target);
+    if (!useGlobal && !hasWorkspaceLocation()) {
+        return Promise.resolve();
+    }
+    target = useGlobal ? config.ConfigurationTarget.Global : target;
+    const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
+    const toRemove = word.split(' ');
+    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
+    const wordsFiltered = CSpellSettings.filterOutWords(words, toRemove);
+    return config.setSettingInVSConfig(section, wordsFiltered, target);
 }
 
 export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {

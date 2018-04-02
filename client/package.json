@@ -60,7 +60,7 @@
             },
             {
                 "command": "cSpell.addWordToDictionary",
-                "title": "Add Word to Dictionary"
+                "title": "Add Word to Folder Dictionary"
             },
             {
                 "command": "cSpell.addWordToUserDictionary",
@@ -89,6 +89,18 @@
             {
                 "command": "cSpell.toggleEnableSpellChecker",
                 "title": "Toggle Spell Checking For the Current Workspace"
+            },
+            {
+                "command": "cSpell.removeWordFromFolderDictionary",
+                "title": "Remove Words from the Folder Dictionary"
+            },
+            {
+                "command": "cSpell.removeWordFromWorkspaceDictionary",
+                "title": "Remove Words from the Workspace Dictionary"
+            },
+            {
+                "command": "cSpell.removeWordFromUserDictionary",
+                "title": "Remove Words from the Global Dictionary"
             }
         ],
         "configuration": {

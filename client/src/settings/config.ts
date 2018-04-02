@@ -1,8 +1,5 @@
-import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
+import { workspace, Uri, ConfigurationTarget as Target, TextDocument } from 'vscode';
 import { CSpellUserSettings } from '../server';
-import { inspect } from 'util';
-import { normalize } from 'path';
-import { workers } from 'cluster';
 
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';

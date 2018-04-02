@@ -17,7 +17,7 @@ const defaultSettings: CSpellUserSettingsWithComments = {
         '// cSpell Settings'
     ],
     '// version': [`
-    // Version of the setting file.  Always 0.1`
+    // Version of the setting file.  Always ${currentSettingsFileVersion}`
     ],
     version: currentSettingsFileVersion,
 
@@ -39,7 +39,7 @@ const defaultSettings: CSpellUserSettingsWithComments = {
 };
 
 export function getDefaultSettings(): CSpellUserSettings {
-    return defaultSettings;
+    return Object.freeze(defaultSettings);
 }
 
 export function readSettings(filename: string): Promise<CSpellUserSettings> {
@@ -75,6 +75,23 @@ export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wor
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     return {...settings, words};
 }
+
+export function removeWordsFromSettings(settings: CSpellUserSettingsWithComments, wordsToRemove: string[]) {
+    const words = filterOutWords(settings.words || [], wordsToRemove);
+    return {...settings, words};
+}
+
+export function filterOutWords(words: string[], wordsToRemove: string[]): string[] {
+    const toRemove = new Set(wordsToRemove.map(w => w.toLowerCase()));
+    return words.filter(w => !toRemove.has(w.toLowerCase()));
+}
+
+export function removeWordFromSettingsAndUpdate(filename: string, word: string) {
+    return readSettings(filename)
+        .then(settings => removeWordsFromSettings(settings, word.split(' ')))
+        .then(settings => updateSettings(filename, settings));
+}
+
 export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComments, languageIds: string[], onlyIfExits: boolean) {
     if (settings.enabledLanguageIds || !onlyIfExits) {
         const enabledLanguageIds = unique((settings.enabledLanguageIds || []).concat(languageIds));

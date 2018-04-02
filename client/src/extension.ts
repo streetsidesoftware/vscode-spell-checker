@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 
 import { initStatusBar } from './statusbar';
 
-import {userCommandAddWordToDictionary, handlerApplyTextEdits} from './commands';
+import {userCommandOnCurrentSelectionOrPrompt, handlerApplyTextEdits} from './commands';
 import * as commands from './commands';
 
 export interface ExtensionApi {
@@ -45,28 +45,40 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
         function splitTextFn(
             apply: (word: string, uri: string | vscode.Uri | null) => Thenable<void>
         ): (word: string) => Thenable<void> {
-            const editor = vscode.window.activeTextEditor;
-            const document = editor && editor.document;
-            const uri = document && document.uri || null;
             return (word: string) => {
+                const editor = vscode.window.activeTextEditor;
+                const document = editor && editor.document;
+                const uri = document && document.uri || null;
                 return client.splitTextIntoDictionaryWords(word)
-                .then(result => result.words)
-                .then(words => apply(words.join(' '), uri))
-                .then(_ => {});
+                    .then(result => result.words)
+                    .then(words => apply(words.join(' '), uri));
             };
         }
 
-        const actionAddWordToFolder = userCommandAddWordToDictionary(
+        const actionAddWordToFolder = userCommandOnCurrentSelectionOrPrompt(
             'Add Word to Workspace Dictionary',
             splitTextFn(commands.addWordToFolderDictionary)
         );
-        const actionAddWordToWorkspace = userCommandAddWordToDictionary(
+        const actionAddWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
             'Add Word to Workspace Dictionary',
             splitTextFn(commands.addWordToWorkspaceDictionary)
         );
-        const actionAddWordToDictionary = userCommandAddWordToDictionary(
+        const actionAddWordToDictionary = userCommandOnCurrentSelectionOrPrompt(
             'Add Word to Dictionary',
             splitTextFn(commands.addWordToUserDictionary)
+        );
+
+        const actionRemoveWordFromFolderDictionary = userCommandOnCurrentSelectionOrPrompt(
+            'Remove Word from Dictionary',
+            splitTextFn(commands.removeWordFromFolderDictionary)
+        );
+        const actionRemoveWordFromWorkspaceDictionary = userCommandOnCurrentSelectionOrPrompt(
+            'Remove Word from Dictionary',
+            splitTextFn(commands.removeWordFromWorkspaceDictionary)
+        );
+        const actionRemoveWordFromDictionary = userCommandOnCurrentSelectionOrPrompt(
+            'Remove Word from Dictionary',
+            splitTextFn(commands.removeWordFromUserDictionary)
         );
 
         initStatusBar(context, client);
@@ -82,6 +94,9 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
             vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder),
             vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionary', actionAddWordToWorkspace),
             vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
+            vscode.commands.registerCommand('cSpell.removeWordFromFolderDictionary', actionRemoveWordFromFolderDictionary),
+            vscode.commands.registerCommand('cSpell.removeWordFromWorkspaceDictionary', actionRemoveWordFromWorkspaceDictionary),
+            vscode.commands.registerCommand('cSpell.removeWordFromUserDictionary', actionRemoveWordFromDictionary),
             vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
             vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
             vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),

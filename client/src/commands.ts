@@ -29,36 +29,65 @@ export function handlerApplyTextEdits(client: LanguageClient) {
     };
 }
 
-export function addWordToFolderDictionary(word: string, uri?: string | null | Uri): Thenable<void> {
-    if (!uri || !Settings.hasWorkspaceLocation()) {
-        return addWordToWorkspaceDictionary(word);
-    }
-    uri = pathToUri(uri);
-    const target = Settings.createTargetForUri(Settings.Target.WorkspaceFolder, uri);
-    return Settings.addWordToSettings(target, word)
-    .then(_ => Settings.findExistingSettingsFileLocation())
-    .then(path => path
-            ? CSpellSettings.addWordToSettingsAndUpdate(path, word).then(_ => {})
-            : undefined
-    );
+export function addWordToFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+    return addWordToTarget(word, Settings.Target.WorkspaceFolder, uri);
 }
 
-export function addWordToWorkspaceDictionary(word: string, uri?: string | null | Uri): Thenable<void> {
-    if (!Settings.hasWorkspaceLocation()) {
-        return addWordToUserDictionary(word);
-    }
-    uri = typeof uri === 'string' ? pathToUri(uri) : uri;
-    const target = uri ? Settings.createTargetForUri(Settings.Target.Workspace, uri) : Settings.Target.Workspace;
-    return Settings.addWordToSettings(target, word)
-    .then(_ => Settings.findExistingSettingsFileLocation())
-    .then(path => path
-            ? CSpellSettings.addWordToSettingsAndUpdate(path, word).then(_ => {})
-            : undefined
-    );
+export function addWordToWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+    return addWordToTarget(word, Settings.Target.Workspace, uri);
 }
 
 export function addWordToUserDictionary(word: string): Thenable<void> {
-    return Settings.addWordToSettings(Settings.Target.Global, word);
+    return addWordToTarget(word, Settings.Target.Global, undefined);
+}
+
+async function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    const actualTarget = resolveTarget(target, uri);
+    await Settings.addWordToSettings(actualTarget, word);
+    if (actualTarget !== Settings.Target.Global) {
+        const useUri = uri ? pathToUri(uri) : undefined;
+        const path = await Settings.findExistingSettingsFileLocation(useUri);
+        if (path) {
+            await CSpellSettings.addWordToSettingsAndUpdate(path, word);
+        }
+    }
+}
+
+export function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+    return removeWordFromTarget(word, Settings.Target.WorkspaceFolder, uri);
+}
+
+export function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+    return removeWordFromTarget(word, Settings.Target.Workspace, uri);
+}
+
+export function removeWordFromUserDictionary(word: string): Thenable<void> {
+    return removeWordFromTarget(word, Settings.Target.Global, undefined);
+}
+
+async function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    const actualTarget = resolveTarget(target, uri);
+    await Settings.removeWordFromSettings(actualTarget, word);
+    if (actualTarget !== Settings.Target.Global) {
+        const useUri = uri ? pathToUri(uri) : undefined;
+        const path = await Settings.findExistingSettingsFileLocation(useUri);
+        if (path) {
+            await CSpellSettings.removeWordFromSettingsAndUpdate(path, word);
+        }
+    }
+}
+
+function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Settings.ConfigTarget {
+    if (target === Settings.Target.Global || !Settings.hasWorkspaceLocation()) {
+        return Settings.Target.Global;
+    }
+
+    if (!uri) {
+        return Settings.Target.Workspace;
+    }
+
+    const resolvedUri = pathToUri(uri);
+    return Settings.createTargetForUri(Settings.Target.Workspace, resolvedUri);
 }
 
 export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {
@@ -89,15 +118,15 @@ export function disableLanguageId(languageId: string, uri?: string): Thenable<vo
     return Promise.resolve();
 }
 
-export function userCommandAddWordToDictionary(prompt: string, fnAddWord: (text: string) => Thenable<void>): () => Thenable<void> {
+export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string) => Thenable<void>): () => Thenable<void> {
     return function () {
         const { activeTextEditor = {} } = window;
         const { selection, document } = activeTextEditor as TextEditor;
         const range = selection && document ? document.getWordRangeAtPosition(selection.active) : undefined;
         const value = range ? document.getText(selection) || document.getText(range) : selection && document.getText(selection) || '';
         return (selection && !selection.isEmpty)
-            ? fnAddWord(value)
-            : window.showInputBox({prompt, value}).then(word => { word && fnAddWord(word); });
+            ? fnAction(value)
+            : window.showInputBox({prompt, value}).then(word => { word && fnAction(word); });
     };
 }
 
