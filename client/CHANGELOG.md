@@ -6,15 +6,23 @@
   To set it:
   * In the VS Code settings:
 
-  ```
-  "cSpell.maxDuplicateProblems": 5,
-  ```
+    ```
+    "cSpell.maxDuplicateProblems": 5,
+    ```
 
   * In a cspell.json file:
 
-  ```
-  "maxDuplicateProblems": 5,
-  ```
+    ```
+    "maxDuplicateProblems": 5,
+    ```
+  See: [Combine repeated unknown words in Problems tab #194](https://github.com/Jason-Rev/vscode-spell-checker/issues/194)
+
+* Turn on support for AsciiDocs by default. See: [Enable AsciiDocs by default](https://github.com/Jason-Rev/vscode-spell-checker/pull/196)
+* Update the English Dictionary
+* Added a command to remove words added to the user dictionary
+   `F1` `Remove Words from `...
+   ![image](https://user-images.githubusercontent.com/3740137/38453511-3397299a-3a57-11e8-94af-4f46ecb544dc.png)
+   See: [How to remove word from dictionary? #117](https://github.com/Jason-Rev/vscode-spell-checker/issues/117)
 
 ## [1.6.5]
 * Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/Jason-Rev/vscode-spell-checker/pull/191)
