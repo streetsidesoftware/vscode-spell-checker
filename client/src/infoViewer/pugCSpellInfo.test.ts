@@ -14,6 +14,12 @@ function genOverrideLocal(enable: boolean, isGlobal: boolean) {
     return `command:overrideLocalSetting?${JSON.stringify([enable, isGlobal])}`;
 }
 
+function genCommandLink(command: string, paramValues?: any[]) {
+    const cmd = `command:${command}?`;
+    const params = paramValues ? JSON.stringify(paramValues) : '';
+    return encodeURI(cmd + params);
+}
+
 const localInfo: t.LocalInfo[] = [
     {
         code: 'en',
@@ -65,6 +71,7 @@ const local: t.LocalSetting = {
 const info: t.TemplateVariables = {
     useDarkTheme: true,
     filename: 'test.ts',
+    fileURI: 'file://test.ts',
     fileEnabled: true,
     dictionariesForFile,
     isDictionaryInUse,
@@ -80,6 +87,7 @@ const info: t.TemplateVariables = {
     local,
     availableLocals: ['English'],
     genSetLocal,
+    genCommandLink,
     genSelectInfoTabLink,
     genOverrideLocal,
     activeTab: 'FileInfo',
@@ -90,13 +98,14 @@ describe('Verify Template Renders', () => {
         const html = t.render(info);
         expect(html).to.not.be.empty;
         expect(html).to.contain('test.ts');
-        expect(html).to.contain('<li>two (2)</li>');
+        expect(html).to.contain('two');
         expect(html).to.contain(imagesPath);
     });
     it('Renders the template to html again', async () => {
         const html = t.render({
             useDarkTheme: true,
             filename: 'main.cpp',
+            fileURI: 'file://main.cpp',
             fileEnabled: true,
             dictionariesForFile,
             isDictionaryInUse,
@@ -112,17 +121,18 @@ describe('Verify Template Renders', () => {
             local,
             availableLocals: ['English'],
             genSetLocal,
+            genCommandLink,
             genSelectInfoTabLink,
             genOverrideLocal,
-            activeTab: 'FileInfo',
+            activeTab: 'IssuesInfo',
         });
+        const indexFile = getPathToTemp('index.html');
+        await fs.mkdirp(path.dirname(indexFile));
+        await fs.writeFile(indexFile, html);
         expect(html).to.not.be.empty;
         expect(html).to.contain('main.cpp');
         expect(html).to.not.contain('<code>');
         expect(html).to.contain('&lt;code&gt;');
-        const indexFile = getPathToTemp('index.html');
-        await fs.mkdirp(path.dirname(indexFile));
-        await fs.writeFile(indexFile, html);
     });
 });
 

@@ -2,13 +2,28 @@ div.mdl-cell.mdl-cell--12-col.mdl-grid
     h2
         img.logo(src='file://'+ imagesPath +'/SpellCheck.png')
         | Issues
-    div.mdl-cell.mdl-cell--12-col
-        if spellingErrors
-            if spellingErrors.length
-                ul
-                    each val in spellingErrors.slice(0,200)
-                        li= `${val[0]} (${val[1]})`
-            else
+
+    if spellingErrors && spellingErrors.length
+        table.mdl-data-table.mdl-cell--12-col
+            tr
+                th.align-left
+                    | Word
+                th Count
+                th.align-left Add to Dictionary
+            each val in spellingErrors.slice(0,200)
+                tr
+                    td.align-left
+                        | #{val[0]}
+                    td= val[1]
+                    td.mdl-data-table__cell--non-numeric
+                        a(onclick="hideRow(this)" href=genCommandLink('cSpell.addWordToDictionarySilent', [val[0], fileURI])) Folder
+                        | &nbsp;
+                        a(onclick="hideRow(this)" href=genCommandLink('cSpell.addWordToWorkspaceDictionarySilent', [val[0], fileURI])) Workspace
+                        | &nbsp;
+                        a(onclick="hideRow(this)" href=genCommandLink('cSpell.addWordToUserDictionarySilent', [val[0], fileURI])) Global
+    else
+        div.mdl-cell.mdl-cell--12-col
+            if spellingErrors
                 b None!
-        else
-            b Analyzing...
+            else
+                b Analyzing...

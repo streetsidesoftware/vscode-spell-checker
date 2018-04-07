@@ -74,6 +74,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             }
             const uri = document.uri;
             const filename = path.basename(uri.path);
+            const fileURI = uri.toString();
             const diagnostics = client.diagnostics;
             const diags = diagnostics && diagnostics.get(uri);
             const allSpellingErrors = (diags || [])
@@ -98,6 +99,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     languageEnabled,
                     languageId,
                     filename,
+                    fileURI,
                     spellingErrors,
                     linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
                     linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId),
@@ -109,6 +111,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     genSetLocal,
                     genSelectInfoTabLink,
                     genOverrideLocal,
+                    genCommandLink,
                     dictionariesForFile,
                     isDictionaryInUse,
                     dictionaries,
@@ -138,6 +141,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const subOnDidChangeEditor = vscode.window.onDidChangeActiveTextEditor((editor: vscode.TextEditor) => {
         if (editor && editor === vscode.window.activeTextEditor && editor.document) {
             onRefresh.next(editor.document.uri);
+        }
+    });
+
+    const subOnDidChangeConfiguration = vscode.workspace.onDidChangeConfiguration((e: vscode.ConfigurationChangeEvent) => {
+        if (e.affectsConfiguration('cSpell')) {
+            onRefresh.next(lastDocumentUri);
         }
     });
 
@@ -354,6 +363,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     context.subscriptions.push(
         subOnDidChangeEditor,
         subOnDidChangeDoc,
+        subOnDidChangeConfiguration,
         vscode.commands.registerCommand(commandDisplayCSpellInfo, displayCSpellInfo),
         vscode.commands.registerCommand(commandEnableLanguage, enableLanguage),
         vscode.commands.registerCommand(commandDisableLanguage, disableLanguage),

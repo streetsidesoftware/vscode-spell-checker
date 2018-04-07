@@ -29,6 +29,7 @@ export interface LocalSetting {
 export interface TemplateVariables {
     useDarkTheme: boolean;
     filename: string;
+    fileURI: string;
     fileEnabled: boolean;
     dictionariesForFile: string[];
     isDictionaryInUse: (dictId: string) => boolean;
@@ -47,6 +48,7 @@ export interface TemplateVariables {
     genSetLocal: (code: string, enabled: boolean, isGlobal: boolean) => string;
     genSelectInfoTabLink: (tab: ActiveTab) => string;
     genOverrideLocal: (enable: boolean, isGlobal: boolean | string) => string;
+    genCommandLink: (command: string, paramValues?: any[]) => string;
 }
 
 export function render(params: TemplateVariables) {

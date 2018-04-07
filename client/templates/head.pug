@@ -118,6 +118,9 @@ head
             elem.setAttribute('href', commandURI);
             elem.click();
         }
+        function hideRow(elem) {
+            $(elem).closest("tr").css("display", "none")
+        }
     script(src='file://' + templateDir + '/mdl/material.min.js' defer)
     script(src='file://' + templateDir + '/js/jquery-3.2.1.min.js')
     script.
