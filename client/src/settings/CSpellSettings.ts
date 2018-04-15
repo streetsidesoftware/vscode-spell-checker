@@ -13,29 +13,34 @@ export const defaultFileName = 'cSpell.json';
 
 // cSpell:ignore hte
 const defaultSettings: CSpellUserSettingsWithComments = {
+    version: currentSettingsFileVersion,
+    language: 'en',
+    words: [],
+    flagWords: [],
+};
+
+// cSpell:ignore hte
+const defaultSettingsWithComments: CSpellUserSettingsWithComments = {
+    ...defaultSettings,
     '//^': [
         '// cSpell Settings'
     ],
     '// version': [`
     // Version of the setting file.  Always ${currentSettingsFileVersion}`
     ],
-    version: currentSettingsFileVersion,
 
     '// language': [`
     // language - current active spelling language`],
-    language: 'en',
 
     '// words': [`
     // words - list of words to be always considered correct`
     ],
-    words: [],
 
     '// flagWords': [`
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"`
     ],
-    flagWords: [],
 };
 
 export function getDefaultSettings(): CSpellUserSettings {
@@ -46,11 +51,11 @@ export function readSettings(filename: string): Promise<CSpellUserSettings> {
     return fs.readFile(filename)
         .then(
             buffer => buffer.toString(),
-            () => json.stringify(defaultSettings, null, 4)
+            () => json.stringify(defaultSettingsWithComments, null, 4)
         )
         .then(json.parse)
         // covert parse errors into the defaultSettings
-        .then(a => a, error => defaultSettings)
+        .then(a => a, error => defaultSettingsWithComments)
         .then(settings => merge(defaultSettings, settings));
 }
 
