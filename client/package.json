@@ -251,6 +251,7 @@
                         "type": "string"
                     },
                     "default": [
+                        "**/package-lock.json",
                         "**/node_modules/**",
                         "**/vscode-extension/**",
                         "**/.git/**",
