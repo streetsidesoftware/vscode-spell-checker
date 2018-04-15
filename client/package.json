@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.6.6",
+    "version": "1.6.7",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -414,14 +414,14 @@
     "devDependencies": {
         "@types/chai": "^4.1.2",
         "@types/comment-json": "^1.1.1",
-        "@types/fs-extra": "^5.0.1",
+        "@types/fs-extra": "^5.0.2",
         "@types/mkdirp": "^0.3.29",
         "@types/mocha": "^5.0.0",
-        "@types/node": "^8.10.1",
+        "@types/node": "^8.10.8",
         "@types/pug": "^2.0.4",
         "chai": "^4.1.2",
         "lorem-ipsum": "^1.0.4",
-        "mocha": "^5.0.5",
+        "mocha": "^5.1.0",
         "pug-cli": "^1.0.0-alpha6",
         "pug-lint": "^2.5.0",
         "rimraf": "^2.6.2",
@@ -435,8 +435,8 @@
         "mkdirp": "^0.5.1",
         "node-watch": "^0.5.8",
         "pug": "^2.0.3",
-        "rxjs": "^5.5.8",
+        "rxjs": "^5.5.10",
         "tsmerge": "^1.0.4",
-        "vscode-languageclient": "^4.0.1"
+        "vscode-languageclient": "^4.1.3"
     }
 }

@@ -1,7 +1,12 @@
 # Release Notes
 
-## [next release]
+## [1.6.7]
 * Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/Jason-Rev/vscode-spell-checker/issues/206)
+- Fix an issue with matching too much text for a url:
+  [Misspelled first word after HTML element with absolute URL is not detected #201](https://github.com/Jason-Rev/vscode-spell-checker/issues/201)
+- [Better LaTeX support](https://github.com/Jason-Rev/vscode-spell-checker/issues/167#issuecomment-373682530)
+- Ignore SHA-1, SHA-256, SHA-512 hashes by default
+- Ignore HTML href urls by default.
 
 ## [1.6.6]
 * Expose the setting to limit the number of repeated problems.
