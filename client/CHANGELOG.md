@@ -1,5 +1,8 @@
 # Release Notes
 
+## [next release]
+* Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/Jason-Rev/vscode-spell-checker/issues/206)
+
 ## [1.6.6]
 * Expose the setting to limit the number of repeated problems.
 
