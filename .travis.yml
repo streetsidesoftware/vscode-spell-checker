@@ -19,4 +19,4 @@ script:
   - npm run build
   - npm test
   # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test-integration; fi
-  - run test-integration
+  - npm run test-integration
