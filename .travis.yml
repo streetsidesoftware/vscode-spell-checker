@@ -1,3 +1,5 @@
+sudo: false
+
 language: node_js
 os:
   - linux
@@ -5,6 +7,14 @@ os:
 node_js:
   - "node"
   - "8"
+
+before_install:
+  - if [ $TRAVIS_OS_NAME == "linux" ]; then
+      export CXX="g++-4.9" CC="gcc-4.9" DISPLAY=:99.0;
+      sh -e /etc/init.d/xvfb start;
+      sleep 3;
+    fi
+
 script:
   - cd client
   - npm install
@@ -16,7 +26,7 @@ script:
   - cd ..
   - cd client
   - npm install
-  - npm run build
+  - npm run vscode:prepublish
   - npm test
   # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test-integration; fi
   - npm run test-integration
