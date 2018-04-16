@@ -15,7 +15,7 @@ import {
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
-import { Maybe, uniqueFilter } from '../util';
+import { Maybe, uniqueFilter, supportedSchemes, setOfSupportedSchemes } from '../util';
 
 // The debug options for the server
 const debugOptions = { execArgv: ['--nolazy', '--inspect=60048'] };
@@ -42,14 +42,17 @@ export class CSpellClient {
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
-        const scheme = 'file';
+        const allowedSchemas = Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes;
+        setOfSupportedSchemes.clear()
+        allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
+
         const uniqueLangIds = languageIds
             .concat(enabledLanguageIds || [])
             .concat(LanguageIds.languageIds)
             .filter(uniqueFilter());
-        const documentSelector =
-            uniqueLangIds.map(language => ({ language, scheme }))
-            .concat(uniqueLangIds.map(language => ({ language, scheme: 'untitled' })));
+        const documentSelector = allowedSchemas
+            .map(schema => uniqueLangIds.map(language => ({ language, schema })))
+            .reduce( (a, b) => a.concat(b));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,

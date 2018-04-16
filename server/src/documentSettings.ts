@@ -47,6 +47,7 @@ const defaultExclude: Glob[] = [
     '__pycache__/**',   // ignore cache files.
 ];
 
+const defaultAllowedSchemas = ['file', 'untitled'];
 
 export class DocumentSettings {
     // Cache per folder settings
@@ -170,10 +171,12 @@ export class DocumentSettings {
 
         const mergedSettings = CSpell.mergeSettings(settings, cSpell);
         const { ignorePaths = []} = mergedSettings;
+        const { allowedSchemas = defaultAllowedSchemas } = cSpell;
+        const allowedSchemasSet = new Set(allowedSchemas);
         const globs = defaultExclude.concat(ignorePaths, CSpell.ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude));
         log(`fetchFolderSettings: URI ${uri}`)
         const root = uri;
-        const fnFileExclusionTest = CSpell.ExclusionHelper.generateExclusionFunctionForUri(globs, root);
+        const fnFileExclusionTest = CSpell.ExclusionHelper.generateExclusionFunctionForUri(globs, root, allowedSchemasSet);
 
         const ext: ExtSettings = {
             uri,
