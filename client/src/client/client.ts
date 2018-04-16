@@ -49,8 +49,7 @@ export class CSpellClient {
             .filter(uniqueFilter());
         const documentSelector =
             uniqueLangIds.map(language => ({ language, scheme }))
-            .concat(uniqueLangIds.map(language => ({ language, scheme: 'untitled' })))
-            .concat(uniqueLangIds.map(language => ({ language, scheme: 'vsls' })));
+            .concat(uniqueLangIds.map(language => ({ language, scheme: 'untitled' })));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
