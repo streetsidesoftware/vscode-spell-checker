@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "cspell": "^2.1.11",
+    "cspell": "^2.1.12",
     "gensequence": "^2.1.1",
     "iconv-lite": "^0.4.21",
     "minimatch": "^3.0.4",
@@ -25,17 +25,17 @@
     "xregexp": "^4.1.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.2",
+    "@types/chai": "^4.1.3",
     "@types/minimatch": "^3.0.3",
-    "@types/mocha": "^5.0.0",
-    "@types/node": "^8.10.8",
+    "@types/mocha": "^5.2.0",
+    "@types/node": "^8.10.9",
     "@types/xregexp": "^3.0",
     "chai": "^4.1.2",
     "lorem-ipsum": "^1.0.4",
-    "mocha": "^5.1.0",
+    "mocha": "^5.1.1",
     "rimraf": "^2.6.2",
     "ts-node": "^5.0.1",
-    "typescript": "^2.8.1"
+    "typescript": "^2.8.3"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
