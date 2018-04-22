@@ -18,7 +18,7 @@ import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell';
 import * as Api from './api';
-import { DocumentSettings, SettingsCspell } from './documentSettings';
+import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed } from './documentSettings';
 import {
     log,
     logError,
@@ -175,19 +175,28 @@ function run() {
         .subscribe(doc => {
             if (!validationByDoc.has(doc.uri)) {
                 const uri = doc.uri;
-                validationByDoc.set(doc.uri, validationRequestStream
-                    .filter(doc => uri === doc.uri)
-                    .do(doc => log('Request Validate:', doc.uri))
-                    .debounceTime(50)
-                    .do(doc => log('Request Validate 2:', doc.uri))
-                    .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair)
-                    .debounce(dsp => Rx.Observable
-                        .timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
-                        .filter(() => !isValidationBusy)
-                    )
-                    .flatMap(validateTextDocument)
-                    .subscribe(diag => connection.sendDiagnostics(diag))
-                );
+                if (isUriBlackListed(uri)) {
+                    validationByDoc.set(doc.uri, validationRequestStream
+                        .filter(doc => uri === doc.uri)
+                        .take(1)
+                        .do(doc => log('Ignoring:', doc.uri))
+                        .subscribe()
+                    );
+                } else {
+                    validationByDoc.set(doc.uri, validationRequestStream
+                        .filter(doc => uri === doc.uri)
+                        .do(doc => log('Request Validate:', doc.uri))
+                        .debounceTime(50)
+                        .do(doc => log('Request Validate 2:', doc.uri))
+                        .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair)
+                        .debounce(dsp => Rx.Observable
+                            .timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
+                            .filter(() => !isValidationBusy)
+                        )
+                        .flatMap(validateTextDocument)
+                        .subscribe(diag => connection.sendDiagnostics(diag))
+                    );
+                }
             }
         });
 
@@ -236,6 +245,11 @@ function run() {
             const { doc, settings } = dsp;
             const uri = doc.uri;
             try {
+                if (!isUriAllowed(uri, settings.allowedSchemas)) {
+                    const schema = uri.split(':')[0];
+                    log(`Schema not allowed (${schema}), skipping:`, uri);
+                    return { uri, diagnostics: [] };
+                }
                 const shouldCheck = await shouldValidateDocument(doc, settings);
                 if (!shouldCheck) {
                     log('validateTextDocument skip:', uri);

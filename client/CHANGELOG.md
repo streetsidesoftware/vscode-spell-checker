@@ -1,5 +1,12 @@
 # Release Notes
 
+## [1.6.9]
+- [spell checker checks spelling on git version of files #214](https://github.com/Jason-Rev/vscode-spell-checker/issues/214)
+
+## [1.6.8]
+- [[Live Share] Restricting language services to local files #209](https://github.com/Jason-Rev/vscode-spell-checker/pull/209)
+- Update the cSpell library.
+
 ## [1.6.7]
 * Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/Jason-Rev/vscode-spell-checker/issues/206)
 - Fix an issue with matching too much text for a url:

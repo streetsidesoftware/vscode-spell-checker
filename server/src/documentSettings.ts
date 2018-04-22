@@ -7,6 +7,7 @@ import {
     Glob
 } from 'cspell';
 import * as path from 'path';
+import * as fs from 'fs-extra';
 
 import * as CSpell from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
@@ -48,6 +49,7 @@ const defaultExclude: Glob[] = [
 ];
 
 const defaultAllowedSchemas = ['file', 'untitled'];
+const schemaBlackList = ['git', 'output', 'debug', 'vscode'];
 
 export class DocumentSettings {
     // Cache per folder settings
@@ -168,13 +170,14 @@ export class DocumentSettings {
         ]) as [CSpellUserSettings, VsCodeSettings];
         const [ cSpell, search ] = configs;
         const { exclude = {} } = search;
+        const cSpellConfigSettings: CSpellUserSettings = { id: 'VSCode-Config', ...cSpell };
 
-        const mergedSettings = CSpell.mergeSettings(settings, cSpell);
+        const mergedSettings = CSpell.mergeSettings(settings, cSpellConfigSettings);
         const { ignorePaths = []} = mergedSettings;
         const { allowedSchemas = defaultAllowedSchemas } = cSpell;
         const allowedSchemasSet = new Set(allowedSchemas);
         const globs = defaultExclude.concat(ignorePaths, CSpell.ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude));
-        log(`fetchFolderSettings: URI ${uri}`)
+        log(`fetchFolderSettings: URI ${uri}`);
         const root = uri;
         const fnFileExclusionTest = CSpell.ExclusionHelper.generateExclusionFunctionForUri(globs, root, allowedSchemasSet);
 
@@ -212,5 +215,20 @@ function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder
 
 function readSettingsFiles(paths: string[]) {
     log(`readSettingsFiles:`, paths);
-    return CSpell.readSettingsFiles(paths);
+    const existingPaths = paths.filter(filename => fs.existsSync(filename));
+    return CSpell.readSettingsFiles(existingPaths);
+}
+
+export function isUriAllowed(uri: string, schemas: string[] | undefined) {
+    schemas = schemas || defaultAllowedSchemas;
+    return doesUriMatchAnySchema(uri, schemas);
+}
+
+export function isUriBlackListed(uri: string, schemas: string[] = schemaBlackList) {
+    return doesUriMatchAnySchema(uri, schemas);
+}
+
+export function doesUriMatchAnySchema(uri: string, schemas: string[]): boolean {
+    const schema = uri.split(':')[0];
+    return schemas.findIndex(v => v === schema) >= 0;
 }
