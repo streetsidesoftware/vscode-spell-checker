@@ -219,7 +219,7 @@ function readSettingsFiles(paths: string[]) {
     return CSpell.readSettingsFiles(existingPaths);
 }
 
-export function isUriAllowed(uri: string, schemas: string[] | undefined) {
+export function isUriAllowed(uri: string, schemas?: string[]) {
     schemas = schemas || defaultAllowedSchemas;
     return doesUriMatchAnySchema(uri, schemas);
 }
