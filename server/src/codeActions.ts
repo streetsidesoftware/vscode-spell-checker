@@ -11,6 +11,7 @@ import { CSpellUserSettings } from 'cspell';
 import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
 import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
+import { isUriAllowed } from './documentSettings';
 
 const defaultNumSuggestions = 10;
 
@@ -62,11 +63,15 @@ export function onCodeActionHandler(
     return async (params: CodeActionParams) => {
         const commands: Command[] = [];
         const { context, textDocument: { uri } } = params;
+        
+        if (!isUriAllowed(uri)) {
+            return [];
+        }
         const { diagnostics } = context;
         const textDocument = documents.get(uri);
         const [ docSetting, dictionary ] = await getSettings(textDocument);
         const { numSuggestions = defaultNumSuggestions } = docSetting;
-
+        
         function replaceText(range: LangServer.Range, text?: string) {
             return LangServer.TextEdit.replace(range, text || '');
         }
