@@ -10,7 +10,8 @@ import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './vscode.workspaceFolders';
 import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
-import * as Rx from 'rxjs/Rx';
+import { ReplaySubject, Subscription, timer } from 'rxjs';
+import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
 import { Text } from 'cspell';
 
@@ -57,10 +58,10 @@ const defaultDebounce = 50;
 
 function run() {
     // debounce buffer
-    const validationRequestStream = new Rx.ReplaySubject<TextDocument>(1);
-    const triggerUpdateConfig = new Rx.ReplaySubject<void>(1);
-    const triggerValidateAll = new Rx.ReplaySubject<void>(1);
-    const validationByDoc = new Map<string, Rx.Subscription>();
+    const validationRequestStream = new ReplaySubject<TextDocument>(1);
+    const triggerUpdateConfig = new ReplaySubject<void>(1);
+    const triggerValidateAll = new ReplaySubject<void>(1);
+    const validationByDoc = new Map<string, Subscription>();
     let isValidationBusy = false;
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -171,44 +172,43 @@ function run() {
 
     // validate documents
     const disposableValidate = validationRequestStream
-        .filter(doc => !validationByDoc.has(doc.uri))
+        .pipe(filter(doc => !validationByDoc.has(doc.uri)))
         .subscribe(doc => {
             if (!validationByDoc.has(doc.uri)) {
                 const uri = doc.uri;
                 if (isUriBlackListed(uri)) {
-                    validationByDoc.set(doc.uri, validationRequestStream
-                        .filter(doc => uri === doc.uri)
-                        .take(1)
-                        .do(doc => log('Ignoring:', doc.uri))
-                        .subscribe()
+                    validationByDoc.set(doc.uri, validationRequestStream.pipe(
+                        filter(doc => uri === doc.uri),
+                        take(1),
+                        tap(doc => log('Ignoring:', doc.uri)),
+                        ).subscribe()
                     );
                 } else {
-                    validationByDoc.set(doc.uri, validationRequestStream
-                        .filter(doc => uri === doc.uri)
-                        .do(doc => log('Request Validate:', doc.uri))
-                        .debounceTime(50)
-                        .do(doc => log('Request Validate 2:', doc.uri))
-                        .flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair)
-                        .debounce(dsp => Rx.Observable
-                            .timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
-                            .filter(() => !isValidationBusy)
-                        )
-                        .flatMap(validateTextDocument)
-                        .subscribe(diag => connection.sendDiagnostics(diag))
+                    validationByDoc.set(doc.uri, validationRequestStream.pipe(
+                        filter(doc => uri === doc.uri),
+                        tap(doc => log('Request Validate:', doc.uri)),
+                        debounceTime(50),
+                        tap(doc => log('Request Validate 2:', doc.uri)),
+                        flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
+                        debounce(dsp => timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
+                            .pipe(filter(() => !isValidationBusy))
+                        ),
+                        flatMap(validateTextDocument),
+                        ).subscribe(diag => connection.sendDiagnostics(diag))
                     );
                 }
             }
         });
 
-    const disposableTriggerUpdateConfigStream = triggerUpdateConfig
-        .do(() => log('Trigger Update Config'))
-        .debounceTime(100)
-        .subscribe(() => {
+    const disposableTriggerUpdateConfigStream = triggerUpdateConfig.pipe(
+        tap(() => log('Trigger Update Config')),
+        debounceTime(100),
+        ).subscribe(() => {
             updateActiveSettings();
         });
 
     const disposableTriggerValidateAll = triggerValidateAll
-        .debounceTime(250)
+        .pipe(debounceTime(250))
         .subscribe(() => {
             log('Validate all documents');
             documents.all().forEach(doc => validationRequestStream.next(doc));

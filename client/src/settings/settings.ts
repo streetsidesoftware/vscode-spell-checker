@@ -7,9 +7,10 @@ import * as vscode from 'vscode';
 import { unique, uniqueFilter } from '../util';
 import * as watcher from '../util/watcher';
 import * as config from './config';
-import * as Rx from 'rxjs/Rx';
 import * as fs from 'fs-extra';
 import { InspectScope } from './config';
+import { interval } from 'rxjs';
+import { flatMap, filter, map } from 'rxjs/operators';
 
 export { ConfigTarget, InspectScope, Scope } from './config';
 
@@ -31,12 +32,12 @@ export interface SettingsInfo {
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     // Every 10 seconds see if we have new files to watch.
-    const d = Rx.Observable.interval(10000)
-        .flatMap(() => findSettingsFiles())
-        .flatMap(a => a)
-        .map(uri => uri.fsPath)
-        .filter(file => !watcher.isWatching(file))
-        .subscribe(file => watcher.add(file, callback));
+    const d = interval(10000).pipe(
+        flatMap(() => findSettingsFiles()),
+        flatMap(a => a),
+        map(uri => uri.fsPath),
+        filter(file => !watcher.isWatching(file)),
+    ).subscribe(file => watcher.add(file, callback));
 
     return vscode.Disposable.from({ dispose: () => {
         watcher.dispose();

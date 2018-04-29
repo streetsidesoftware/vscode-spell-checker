@@ -1,5 +1,4 @@
 import * as fs from 'fs-extra';
-import {merge} from 'tsmerge';
 import * as json from 'comment-json';
 import path = require('path');
 import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server';
@@ -53,10 +52,10 @@ export function readSettings(filename: string): Promise<CSpellUserSettings> {
             buffer => buffer.toString(),
             () => json.stringify(defaultSettingsWithComments, null, 4)
         )
-        .then(json.parse)
+        .then(cfgJson => (json.parse(cfgJson) as CSpellUserSettings))
         // covert parse errors into the defaultSettings
         .then(a => a, error => defaultSettingsWithComments)
-        .then(settings => merge(defaultSettings, settings));
+        .then(settings => ({...defaultSettings, ...settings}));
 }
 
 export function updateSettings(filename: string, settings: CSpellUserSettings) {

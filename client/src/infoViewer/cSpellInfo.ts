@@ -2,7 +2,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { CSpellClient } from '../client';
-import * as Rx from 'rxjs/Rx';
 import * as preview from './pugCSpellInfo';
 import * as commands from '../commands';
 import * as util from '../util';
@@ -13,6 +12,8 @@ import * as langCode from '../iso639-1';
 import * as config from '../settings';
 import { LocalInfo, ActiveTab, LocalSetting } from './pugCSpellInfo';
 import { ConfigTarget } from '../settings/config';
+import { Subject, Subscription } from 'rxjs';
+import { filter, tap, debounceTime } from 'rxjs/operators';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -40,7 +41,7 @@ function generateEnableDisableLanguageLink(enable: boolean, languageId: string) 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
 
     const previewUri = vscode.Uri.parse(`${schemeCSpellInfo}://authority/cspell-info-preview`);
-    const onRefresh = new Rx.Subject<vscode.Uri>();
+    const onRefresh = new Subject<vscode.Uri>();
 
     let lastDocumentUri: Maybe<vscode.Uri> = undefined;
     let activeTab: ActiveTab = 'LocalInfo';
@@ -125,12 +126,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const provider = new CSpellInfoTextDocumentContentProvider();
     const registration = vscode.workspace.registerTextDocumentContentProvider(schemeCSpellInfo, provider);
 
-    const subOnDidChangeTextDocument = onRefresh
-        .filter(uri => isSupportedUri(uri))
-        // .do(uri => console.log('subOnDidChangeTextDocument: ' + uri.toString()))
-        .do(uri => lastDocumentUri = uri)
-        .debounceTime(250)
-        .subscribe(() => provider.update(previewUri));
+    const subOnDidChangeTextDocument = onRefresh.pipe(
+        filter(uri => isSupportedUri(uri)),
+        // .tap(uri => console.log('subOnDidChangeTextDocument: ' + uri.toString())),
+        tap(uri => lastDocumentUri = uri),
+        debounceTime(250),
+    ).subscribe(() => provider.update(previewUri));
 
     const subOnDidChangeDoc = vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
         if (vscode.window.activeTextEditor && e.document && e.document === vscode.window.activeTextEditor.document) {
@@ -216,7 +217,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return genCommandLink(commandSelectInfoTab, [tab]);
     }
 
-    function makeDisposable(sub: Rx.Subscription) {
+    function makeDisposable(sub: Subscription) {
         return {
             dispose: () => sub.unsubscribe()
         };
