@@ -1,16 +1,21 @@
+import { performance } from '../util/perf';
+performance.mark('settings.ts');
 import { CSpellUserSettings, normalizeLocal } from '../server';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace, ConfigurationTarget } from 'vscode';
+performance.mark('settings.ts imports 1');
 import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
+performance.mark('settings.ts imports 2');
 import { unique, uniqueFilter } from '../util';
 import * as watcher from '../util/watcher';
 import * as config from './config';
+performance.mark('settings.ts imports 3');
 import * as fs from 'fs-extra';
 import { InspectScope } from './config';
-import { interval } from 'rxjs';
-import { flatMap, filter, map } from 'rxjs/operators';
+performance.mark('settings.ts imports 4');
+performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './config';
 
@@ -32,16 +37,23 @@ export interface SettingsInfo {
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     // Every 10 seconds see if we have new files to watch.
-    const d = interval(10000).pipe(
-        flatMap(() => findSettingsFiles()),
-        flatMap(a => a),
-        map(uri => uri.fsPath),
-        filter(file => !watcher.isWatching(file)),
-    ).subscribe(file => watcher.add(file, callback));
+    let busy = false;
+    const intervalObj = setInterval(async () => {
+        if (busy) {
+            return;
+        }
+        busy = true;
+        const settingsFiles = await findSettingsFiles();
+        settingsFiles
+            .map(uri => uri.fsPath)
+            .filter(file => !watcher.isWatching(file))
+            .forEach(file => watcher.add(file, callback));
+        busy = false;
+    }, 10000);
 
     return vscode.Disposable.from({ dispose: () => {
         watcher.dispose();
-        d.unsubscribe();
+        clearInterval(intervalObj);
     } });
 }
 
@@ -248,3 +260,5 @@ export function overrideLocal(enable: boolean, target: config.ConfigTarget) {
 
     return config.setSettingInVSConfig('language', lang, target);
 }
+
+performance.mark('settings.ts done');

@@ -1,4 +1,6 @@
 // cSpell:words rxjs cspell diags
+import { performance } from '../util/perf';
+performance.mark('cSpellInfo.ts');
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { CSpellClient } from '../client';
@@ -12,8 +14,8 @@ import * as langCode from '../iso639-1';
 import * as config from '../settings';
 import { LocalInfo, ActiveTab, LocalSetting } from './pugCSpellInfo';
 import { ConfigTarget } from '../settings/config';
-import { Subject, Subscription } from 'rxjs';
-import { filter, tap, debounceTime } from 'rxjs/operators';
+import * as Kefir from 'kefir';
+import { Emitter } from 'vscode-jsonrpc';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -38,10 +40,16 @@ function generateEnableDisableLanguageLink(enable: boolean, languageId: string) 
     return genCommandLink(links[enable ? 1 : 0], [languageId]);
 }
 
+type RefreshEmitter = Kefir.Emitter<vscode.Uri | undefined, Error> | undefined;
+
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
 
+    let refreshEmitter: RefreshEmitter;
     const previewUri = vscode.Uri.parse(`${schemeCSpellInfo}://authority/cspell-info-preview`);
-    const onRefresh = new Subject<vscode.Uri>();
+
+    function onRefresh(uri: vscode.Uri | undefined) {
+        refreshEmitter && refreshEmitter.emit(uri);
+    }
 
     let lastDocumentUri: Maybe<vscode.Uri> = undefined;
     let activeTab: ActiveTab = 'LocalInfo';
@@ -126,28 +134,31 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const provider = new CSpellInfoTextDocumentContentProvider();
     const registration = vscode.workspace.registerTextDocumentContentProvider(schemeCSpellInfo, provider);
 
-    const subOnDidChangeTextDocument = onRefresh.pipe(
-        filter(uri => isSupportedUri(uri)),
+    const subOnDidChangeTextDocument = Kefir.stream((emitter: RefreshEmitter) => {
+        refreshEmitter = emitter;
+        return () => { refreshEmitter = undefined; };
+    })
+        .filter(uri => isSupportedUri(uri))
         // .tap(uri => console.log('subOnDidChangeTextDocument: ' + uri.toString())),
-        tap(uri => lastDocumentUri = uri),
-        debounceTime(250),
-    ).subscribe(() => provider.update(previewUri));
+        .map(uri => lastDocumentUri = uri)
+        .debounce(250)
+        .observe(() => provider.update(previewUri));
 
     const subOnDidChangeDoc = vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
         if (vscode.window.activeTextEditor && e.document && e.document === vscode.window.activeTextEditor.document) {
-            onRefresh.next(e.document.uri);
+            onRefresh(e.document.uri);
         }
     });
 
     const subOnDidChangeEditor = vscode.window.onDidChangeActiveTextEditor((editor: vscode.TextEditor) => {
         if (editor && editor === vscode.window.activeTextEditor && editor.document) {
-            onRefresh.next(editor.document.uri);
+            onRefresh(editor.document.uri);
         }
     });
 
     const subOnDidChangeConfiguration = vscode.workspace.onDidChangeConfiguration((e: vscode.ConfigurationChangeEvent) => {
         if (e.affectsConfiguration('cSpell')) {
-            onRefresh.next(lastDocumentUri);
+            onRefresh(lastDocumentUri);
         }
     });
 
@@ -217,7 +228,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return genCommandLink(commandSelectInfoTab, [tab]);
     }
 
-    function makeDisposable(sub: Subscription) {
+    function makeDisposable(sub: Kefir.Subscription) {
         return {
             dispose: () => sub.unsubscribe()
         };
@@ -227,7 +238,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         lastDocumentUri = uri;
         setTimeout(() => {
             if (uri === lastDocumentUri) {
-                onRefresh.next(uri);
+                onRefresh(uri);
             }
         }, 1000);
     }
@@ -382,3 +393,5 @@ function isDarkTheme() {
     const theme = (config.get('workbench.colorTheme') || '').toString();
     return (/dark|black|midnight|graphite/i).test(theme);
 }
+
+performance.mark('cSpellInfo.ts Done');

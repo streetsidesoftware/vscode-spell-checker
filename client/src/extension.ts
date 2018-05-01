@@ -1,16 +1,30 @@
+import { performance, toMilliseconds, EVENT_TIMELINE_START } from './util/perf';
+performance.mark('cspell_start_extension');
 import * as path from 'path';
+performance.mark('import 1');
 import {setEnableSpellChecking, ConfigTarget} from './settings';
+performance.mark('import 2');
 import * as settings from './settings';
+performance.mark('import 3');
 import * as infoViewer from './infoViewer';
+performance.mark('import 4');
 import {CSpellClient} from './client';
+performance.mark('import 5');
 
 import { ExtensionContext } from 'vscode';
+performance.mark('import 6');
 import * as vscode from 'vscode';
+performance.mark('import 7');
 
 import { initStatusBar } from './statusbar';
+performance.mark('import 8');
 
 import {userCommandOnCurrentSelectionOrPrompt, handlerApplyTextEdits} from './commands';
+performance.mark('import 9');
 import * as commands from './commands';
+performance.mark('import 10');
+
+performance.mark('cspell_done_import');
 
 export interface ExtensionApi {
     registerConfig(path: string): void;
@@ -28,6 +42,7 @@ export interface ExtensionApi {
 }
 
 export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
+    performance.mark('cspell_activate_start');
 
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
@@ -53,6 +68,12 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
                     .then(result => result.words)
                     .then(words => apply(words.join(' '), uri));
             };
+        }
+
+        function dumpPerfTimeline() {
+            performance.getEntries().forEach(entry => {
+                console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
+            });
         }
 
         const actionAddWordToFolder = userCommandOnCurrentSelectionOrPrompt(
@@ -104,6 +125,7 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
             vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', commands.toggleEnableSpellChecker),
             vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),
             vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
+            vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
             settings.watchSettingsFiles(triggerGetSettings),
         );
 
@@ -129,5 +151,8 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
         };
     });
 
+    performance.mark('cspell_activate_end');
+    performance.measure('cspell_activation', 'cspell_activate_start', 'cspell_activate_end');
     return server;
 }
+performance.mark('cspell_done_load');
