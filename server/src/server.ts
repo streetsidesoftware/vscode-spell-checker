@@ -339,4 +339,14 @@ function run() {
     }
 }
 
+function isLookbackSupported() {
+    try {
+        return /(?<=\s)x/.test(' x');
+    } catch (e) {
+        log('Error: ' + e);
+    }
+    return false;
+}
+
+log(`Lookback: ${isLookbackSupported() ? 'Yes' : 'No'}`);
 run();

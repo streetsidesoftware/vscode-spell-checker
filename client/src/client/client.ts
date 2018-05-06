@@ -1,5 +1,6 @@
 import {
-    LanguageClient, LanguageClientOptions, ServerOptions, TransportKind
+    LanguageClient, LanguageClientOptions, ServerOptions, TransportKind,
+    ForkOptions
 } from 'vscode-languageclient';
 
 import * as vscode from 'vscode';
@@ -18,7 +19,7 @@ import * as LanguageIds from '../settings/languageIds';
 import { Maybe, uniqueFilter, supportedSchemes, setOfSupportedSchemes } from '../util';
 
 // The debug options for the server
-const debugOptions = { execArgv: ['--nolazy', '--inspect=60048'] };
+const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
 export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
@@ -43,7 +44,7 @@ export class CSpellClient {
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
         const allowedSchemas = Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes;
-        setOfSupportedSchemes.clear()
+        setOfSupportedSchemes.clear();
         allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
 
         const uniqueLangIds = languageIds
@@ -63,10 +64,15 @@ export class CSpellClient {
             }
         };
 
+        const execArgv = this.calcServerArgs();
+        const options: ForkOptions = { execArgv };
+        // The debug options for the server
+        const debugOptions: ForkOptions = { execArgv: [...execArgv, ...debugExecArgv] };
+
         // If the extension is launched in debug mode the debug server options are use
         // Otherwise the run options are used
         const serverOptions: ServerOptions = {
-            run : { module, transport: TransportKind.ipc },
+            run : { module, transport: TransportKind.ipc, options },
             debug: { module, transport: TransportKind.ipc, options: debugOptions }
         };
 
@@ -147,5 +153,21 @@ export class CSpellClient {
 
     public static create(module: string) {
         return vscode.languages.getLanguages().then(langIds => new CSpellClient(module, langIds));
+    }
+
+    public isLookBackSupported(): boolean {
+        try {
+            return /(?<=\s)x/.test(' x');
+        } catch (_) {
+        }
+        return false;
+    }
+
+    private calcServerArgs(): string[] {
+        const args: string[] = [];
+        if (!this.isLookBackSupported()) {
+            args.push('--harmony_regexp_lookbehind');
+        }
+        return args;
     }
 }
