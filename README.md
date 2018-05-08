@@ -1,5 +1,9 @@
 # vscode-spell-checker
+
 [![Build Status](https://travis-ci.org/Jason-Rev/vscode-spell-checker.svg?branch=master)](https://travis-ci.org/Jason-Rev/vscode-spell-checker)
+[![](https://vsmarketplacebadge.apphb.com/version-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![](https://vsmarketplacebadge.apphb.com/installs-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![](https://vsmarketplacebadge.apphb.com/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 A simple source code spell checker for typescript and javascript.
 
@@ -27,12 +31,13 @@ For the readme on the plugin: [README](./client/README.md).
 
 Sometimes the ports get stuck. You can see if they are being used with:
 
-```
+```bash
 netstat -anp tcp | grep 60048
 ```
 
 Use the following command to find the process id (PID):
-```
+
+```bash
 lsof -i tcp:60048
 ```
 
