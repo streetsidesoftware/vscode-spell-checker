@@ -14,7 +14,6 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
     let lastUri = '';
 
     function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument) {
-        sbCheck.color = new ThemeColor('statusBar.foreground');
         sbCheck.text = '$(clock)';
         sbCheck.tooltip = 'cSpell waiting...';
         sbCheck.show();
