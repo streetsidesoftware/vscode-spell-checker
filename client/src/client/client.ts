@@ -21,6 +21,8 @@ import { Maybe, uniqueFilter, supportedSchemes, setOfSupportedSchemes } from '..
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
+const diagnosticCollectionName = 'cSpell';
+
 export interface ServerResponseIsSpellCheckEnabled {
     languageEnabled?: boolean;
     fileEnabled?: boolean;
@@ -57,7 +59,7 @@ export class CSpellClient {
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
-            diagnosticCollectionName: 'cSpell Checker',
+            diagnosticCollectionName,
             synchronize: {
                 // Synchronize the setting section 'spellChecker' to the server
                 configurationSection: ['cSpell', 'search']

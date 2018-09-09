@@ -5,7 +5,8 @@ import { Observable, from } from 'rxjs';
 import { map, filter, flatMap, toArray } from 'rxjs/operators';
 import { validateText } from 'cspell';
 
-export const diagSource = 'cSpell Checker';
+export const diagnosticCollectionName = 'cSpell';
+export const diagSource = diagnosticCollectionName;
 export {validateText} from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
 import * as cspell from 'cspell';
