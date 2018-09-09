@@ -1,5 +1,9 @@
 # Release Notes
 
+## []
+- [Fixes and issue where the status bar foreground color did not match theme #269](https://github.com/Jason-Rev/vscode-spell-checker/issues/269)
+- [compact problem items listings #267](https://github.com/Jason-Rev/vscode-spell-checker/issues/267)
+
 ## [1.6.9]
 - [spell checker checks spelling on git version of files #214](https://github.com/Jason-Rev/vscode-spell-checker/issues/214)
 
