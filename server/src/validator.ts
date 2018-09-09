@@ -49,7 +49,7 @@ export function validateTextDocumentAsync(textDocument: TextDocument, options: C
         map(({text, range}) => ({
             severity,
             range: range,
-            message: `Unknown word: "${text}"`,
+            message: `"${text}": Unknown word.`,
             source: diagSource
         })),
     );
