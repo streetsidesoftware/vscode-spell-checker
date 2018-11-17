@@ -122,6 +122,8 @@ It is possible to disable / enable the spell checker by adding comments to your 
 * `/* cSpell:disable */`
 * `/* spell-checker: disable */`
 * `/* spellchecker: disable */`
+* `/* cspell: disable-line */`
+* `/* cspell: disable-next-line */`
 <!--- cSpell:enable -->
 
 
