@@ -55,6 +55,10 @@
         },
         "commands": [
             {
+                "command": "cSpell.cat",
+                "title": "Cat Coder"
+            },
+            {
                 "command": "cSpell.addWordToWorkspaceDictionary",
                 "title": "Add Word to Workspace Dictionary"
             },

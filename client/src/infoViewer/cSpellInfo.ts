@@ -4,7 +4,7 @@ performance.mark('cSpellInfo.ts');
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { CSpellClient } from '../client';
-import * as preview from './pugCSpellInfo';
+import * as pugHtml from './pugCSpellInfo';
 import * as commands from '../commands';
 import * as util from '../util';
 import {Maybe, uniqueFilter} from '../util';
@@ -15,7 +15,6 @@ import * as config from '../settings';
 import { LocalInfo, ActiveTab, LocalSetting } from './pugCSpellInfo';
 import { ConfigTarget } from '../settings/config';
 import * as Kefir from 'kefir';
-import { Emitter } from 'vscode-jsonrpc';
 
 const schemeCSpellInfo = 'cspell-info';
 
@@ -101,9 +100,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
                 const dictionariesInUse = new Set(dictionariesForFile);
                 const isDictionaryInUse = (dict: string) => dictionariesInUse.has(dict);
-                const useDarkTheme = isDarkTheme();
-                const html = preview.render({
-                    useDarkTheme,
+                const html = pugHtml.render({
                     fileEnabled,
                     languageEnabled,
                     languageId,
@@ -329,7 +326,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         return augmentLocals(locals, dictByLocal);
     }
 
-    function augmentLocals(locals: preview.LocalInfo[], dictByLocal: Map<string, string[]>) {
+    function augmentLocals(locals: pugHtml.LocalInfo[], dictByLocal: Map<string, string[]>) {
         locals.forEach(local => {
             local.dictionaries = (dictByLocal.get(local.code) || []).sort();
         });
@@ -385,13 +382,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
-}
-
-
-function isDarkTheme() {
-    const config = vscode.workspace.getConfiguration();
-    const theme = (config.get('workbench.colorTheme') || '').toString();
-    return (/dark|black|midnight|graphite/i).test(theme);
 }
 
 performance.mark('cSpellInfo.ts Done');

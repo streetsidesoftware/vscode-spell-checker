@@ -8,7 +8,16 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "settingsViewer"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"devtool",
+			"devtools",
+			"mobx"
+		]
+	}
 }

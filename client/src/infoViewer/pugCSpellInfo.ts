@@ -27,7 +27,6 @@ export interface LocalSetting {
 }
 
 export interface TemplateVariables {
-    useDarkTheme: boolean;
     filename: string;
     fileURI: string;
     fileEnabled: boolean;

@@ -69,7 +69,6 @@ const local: t.LocalSetting = {
 };
 
 const info: t.TemplateVariables = {
-    useDarkTheme: true,
     filename: 'test.ts',
     fileURI: 'file://test.ts',
     fileEnabled: true,
@@ -103,7 +102,6 @@ describe('Verify Template Renders', () => {
     });
     it('Renders the template to html again', async () => {
         const html = t.render({
-            useDarkTheme: true,
             filename: 'main.cpp',
             fileURI: 'file://main.cpp',
             fileEnabled: true,

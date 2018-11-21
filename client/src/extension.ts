@@ -24,6 +24,8 @@ performance.mark('import 9');
 import * as commands from './commands';
 performance.mark('import 10');
 
+import * as catViewer from './infoViewer/infoView';
+
 performance.mark('cspell_done_import');
 
 export interface ExtensionApi {
@@ -130,6 +132,7 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
         );
 
         infoViewer.activate(context, client);
+        catViewer.activate(context);
 
         function registerConfig(path: string) {
             client.registerConfiguration(path);
