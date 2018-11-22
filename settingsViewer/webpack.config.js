@@ -1,6 +1,7 @@
 const path = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const dist = 'dist';
 
@@ -30,8 +31,18 @@ const viewerConfig = {
                 use: 'handlebars-loader',
             },
             {
-                test: /\.s?css$/,
-                use: ['style-loader', 'typings-for-css-modules-loader?modules&namedExport&camelCase'],
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader' },
+                    // { loader: 'typings-for-css-modules-loader?modules' },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            includePaths: ['node_modules'],
+                        },
+                    },
+                ],
             },
         ],
     },
@@ -47,6 +58,12 @@ const viewerConfig = {
             hash: true,
             template: path.join('!!handlebars-loader!src', 'index.hbs'),
             inject: 'body',
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css',
         }),
     ],
 };
