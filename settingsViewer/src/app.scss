@@ -17,3 +17,11 @@ body {
   @include mdc-button-ink-color(teal);
   @include mdc-states(teal);
 }
+
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}

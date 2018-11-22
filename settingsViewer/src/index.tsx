@@ -7,8 +7,21 @@ import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
+import { string } from 'prop-types';
 
 require('./app.scss');
+
+const cats = [
+    { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif'},
+    { title: 'Compiling Cat', image: 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif'},
+    { title: 'Testing Cat', image: 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif'},
+];
+
+const tabs = cats.map(cat => (
+    <Tab>
+        <span className="mdc-tab__text-label">{cat.title}</span>
+    </Tab>
+));
 
 class AppState {
     @observable activeTabIndex = 0;
@@ -29,23 +42,31 @@ class AppState {
 class TimerView extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
+        const activeTab = appState.activeTabIndex || 0;
         return (
             <div>
                 <TabBar
-                    activeIndex={appState.activeTabIndex || 0}
+                    activeIndex={activeTab}
                     handleActiveIndexUpdate={this.activateTab}
                 >
-                    <Tab>
-                        <span className="mdc-tab__text-label">One</span>
-                    </Tab>
-                    <Tab>
-                        <span className="mdc-tab__text-label">Two</span>
-                    </Tab>
-                    <Tab>
-                        <span className="mdc-tab__text-label">Three</span>
-                    </Tab>
+                    {tabs}
                 </TabBar>
 
+                {cats.map((cat, index) => (
+                    <div className={appState.activeTabIndex === index ? 'panel active' : 'panel'}>
+                        <Grid>
+                            <Row>
+                                <Cell columns={12}>
+                                    <img
+                                        src={cat.image}
+                                        alt={cat.title}
+                                        width="300"
+                                    />
+                                </Cell>
+                            </Row>
+                        </Grid>
+                    </div>
+                ))}
                 <Button
                     raised
                     className="button-alternate"
@@ -60,28 +81,6 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
                     Seconds passed: {appState.timer}
                 </Button>
                 <h2>{appState.activeTabIndex}</h2>
-                <Grid>
-                    <Row>
-                        <Cell columns={4}>Tennis</Cell>
-                        <Cell columns={4}>Cricket</Cell>
-                        <Cell columns={4}>StarCraft</Cell>
-                    </Row>
-                    <Row>
-                        <Cell desktopColumns={4} order={2} phoneColumns={4} tabletColumns={4}>Tennis</Cell>
-                        <Cell desktopColumns={4} order={3} phoneColumns={4} tabletColumns={4}>Cricket</Cell>
-                        <Cell desktopColumns={4} order={1} phoneColumns={4} tabletColumns={4}>StarCraft</Cell>
-                    </Row>
-                    <Row>
-                        <Cell columns={4}>
-                            <Row>
-                                <Cell desktopColumns={8} phoneColumns={2} tabletColumns={5}>Tennis</Cell>
-                                <Cell desktopColumns={4} phoneColumns={2} tabletColumns={3}>Cricket</Cell>
-                            </Row>
-                        </Cell>
-                        <Cell columns={4}> - </Cell>
-                        <Cell columns={4}> - </Cell>
-                    </Row>
-                </Grid>
 
                 <DevTools />
             </div>
