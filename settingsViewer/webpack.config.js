@@ -35,14 +35,23 @@ const viewerConfig = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     { loader: 'css-loader' },
-                    // { loader: 'typings-for-css-modules-loader?modules' },
+                    // { loader: 'resolve-url-loader', options: {} },
                     {
                         loader: 'sass-loader',
                         options: {
+                            sourceMap: true,
                             includePaths: ['node_modules'],
                         },
                     },
                 ],
+            },
+            {
+                test: /\.(woff2?|ttf|otf|eot|svg)$/,
+                exclude: /node_modules/,
+                loader: 'file-loader',
+                options: {
+                    name: '[path][name].[ext]'
+                }
             },
         ],
     },

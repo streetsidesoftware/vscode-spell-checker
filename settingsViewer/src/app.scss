@@ -8,6 +8,7 @@
 @import "@material/tab/mdc-tab";
 @import "@material/layout-grid/mdc-layout-grid";
 @import '@material/react-layout-grid/index.scss';
+@import './mld/material-icons.css';
 
 body {
   color: blue;
@@ -25,3 +26,4 @@ body {
 .panel.active {
   display: block;
 }
+

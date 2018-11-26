@@ -7,7 +7,7 @@ import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { string } from 'prop-types';
+import {CSpellSettings} from '../../client/src/settings';
 
 require('./app.scss');
 
@@ -62,6 +62,7 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
                                         alt={cat.title}
                                         width="300"
                                     />
+                                    <i className="material-icons">face</i>
                                 </Cell>
                             </Row>
                         </Grid>

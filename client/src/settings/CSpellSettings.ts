@@ -10,6 +10,9 @@ export const sectionCSpell = 'cSpell';
 
 export const defaultFileName = 'cSpell.json';
 
+export interface CSpellSettings extends CSpellUserSettingsWithComments {
+}
+
 // cSpell:ignore hte
 const defaultSettings: CSpellUserSettingsWithComments = {
     version: currentSettingsFileVersion,
@@ -19,7 +22,7 @@ const defaultSettings: CSpellUserSettingsWithComments = {
 };
 
 // cSpell:ignore hte
-const defaultSettingsWithComments: CSpellUserSettingsWithComments = {
+const defaultSettingsWithComments: CSpellSettings = {
     ...defaultSettings,
     '//^': [
         '// cSpell Settings'
@@ -42,23 +45,23 @@ const defaultSettingsWithComments: CSpellUserSettingsWithComments = {
     ],
 };
 
-export function getDefaultSettings(): CSpellUserSettings {
+export function getDefaultSettings(): CSpellSettings {
     return Object.freeze(defaultSettings);
 }
 
-export function readSettings(filename: string): Promise<CSpellUserSettings> {
+export function readSettings(filename: string): Promise<CSpellSettings> {
     return fs.readFile(filename)
         .then(
             buffer => buffer.toString(),
             () => json.stringify(defaultSettingsWithComments, null, 4)
         )
-        .then(cfgJson => (json.parse(cfgJson) as CSpellUserSettings))
+        .then(cfgJson => (json.parse(cfgJson) as CSpellSettings))
         // covert parse errors into the defaultSettings
         .then(a => a, error => defaultSettingsWithComments)
         .then(settings => ({...defaultSettings, ...settings}));
 }
 
-export function updateSettings(filename: string, settings: CSpellUserSettings) {
+export function updateSettings(filename: string, settings: CSpellSettings) {
     return fs.mkdirp(path.dirname(filename))
         .then(() => fs.writeFile(filename, json.stringify(settings, null, 4)))
         .then(() => settings);
@@ -70,7 +73,7 @@ export function addWordToSettingsAndUpdate(filename: string, word: string) {
         .then(settings => updateSettings(filename, settings));
 }
 
-export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wordsToAdd: string[]) {
+export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]) {
     const words = (settings.words || [])
         .concat(wordsToAdd)
         .map(a => a.trim())
@@ -80,7 +83,7 @@ export function addWordsToSettings(settings: CSpellUserSettingsWithComments, wor
     return {...settings, words};
 }
 
-export function removeWordsFromSettings(settings: CSpellUserSettingsWithComments, wordsToRemove: string[]) {
+export function removeWordsFromSettings(settings: CSpellSettings, wordsToRemove: string[]) {
     const words = filterOutWords(settings.words || [], wordsToRemove);
     return {...settings, words};
 }
@@ -96,7 +99,7 @@ export function removeWordFromSettingsAndUpdate(filename: string, word: string) 
         .then(settings => updateSettings(filename, settings));
 }
 
-export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComments, languageIds: string[], onlyIfExits: boolean) {
+export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean) {
     if (settings.enabledLanguageIds || !onlyIfExits) {
         const enabledLanguageIds = unique((settings.enabledLanguageIds || []).concat(languageIds));
         return { ...settings, enabledLanguageIds };
@@ -104,7 +107,7 @@ export function addLanguageIdsToSettings(settings: CSpellUserSettingsWithComment
     return settings;
 }
 
-export function removeLanguageIdsFromSettings(settings: CSpellUserSettingsWithComments, languageIds: string[]) {
+export function removeLanguageIdsFromSettings(settings: CSpellSettings, languageIds: string[]) {
     if (settings.enabledLanguageIds) {
         const excludeLangIds = new Set(languageIds);
         const enabledLanguageIds = settings.enabledLanguageIds.filter(a => !excludeLangIds.has(a));
