@@ -81,7 +81,7 @@ const testConfig = {
     devtool: 'source-map',
     mode: 'production',
     entry: {
-        test: path.join(__dirname, 'src', 'test.tsx'),
+        test: path.join(__dirname, 'src', 'vsCodeTestWrapper.tsx'),
     },
     output: {
         path: path.join(__dirname, dist),
@@ -113,7 +113,7 @@ const testConfig = {
         new HtmlWebpackPlugin({
             title: 'Tester CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'test.hbs'),
+            template: path.join('!!handlebars-loader!src', 'vsCodeTestWrapper.hbs'),
             inject: 'body',
             filename: 'test.html',
         }),

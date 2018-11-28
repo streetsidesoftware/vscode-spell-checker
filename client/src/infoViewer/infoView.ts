@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn) {
-    const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, { });
+    const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, { enableScripts: true });
     panel.onDidDispose(() => {
         currentPanel = undefined;
     }, null, context.subscriptions);
@@ -62,6 +62,23 @@ function getWebviewContent(cat: keyof typeof cats) {
 </head>
 <body>
     <img src="${cats[cat]}" width="300" />
+    <h1 id="window-keys">Window Keys</h1>
+    <h2 id="window-props">Window Properties</h2>
+    <h2 id="acquire">acquire</h2>
+    <code id="vscode">vscode</code>
+
+    <script>
+        (function() {
+            const windowKeysElm = document.getElementById('window-keys');
+            const windowPropsElm = document.getElementById('window-props');
+            windowKeysElm.textContent = JSON.stringify(Object.keys(window).filter(k => k.match(/^a/)));
+            windowPropsElm.textContent = JSON.stringify(Object.getOwnPropertyNames(window).filter(k => k.match(/^a/)));
+            document.getElementById('acquire').textContent = (acquireVsCodeApi ? 'yes' : 'no') + ' | ' + (global ? 'global' : 'no global');
+            const vscode = acquireVsCodeApi();
+            document.getElementById('vscode').textContent = navigator.userAgent;
+        }())
+    </script>
+
 </body>
 </html>`;
 }

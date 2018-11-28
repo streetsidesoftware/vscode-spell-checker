@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable} from 'mobx';
+import {observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import {CSpellSettings} from '../../client/src/settings';
+import {getVSCodeAPI} from './vscode/vscodeAPI';
 
 require('./app.scss');
 
@@ -98,4 +98,5 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
 }
 
 const appState = new AppState();
+reaction(() => appState.timer, value => getVSCodeAPI().postMessage({ command: 'UpdateCounter', value: value * 2 }));
 ReactDOM.render(<TimerView appState={appState} />, document.getElementById('root'));
