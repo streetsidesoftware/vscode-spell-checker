@@ -13,6 +13,7 @@
   "author": "Jason Dent",
   "license": "MIT",
   "devDependencies": {
+    "@types/material-components-web": "^0.35.0",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
     "awesome-typescript-loader": "^5.2.1",
