@@ -1,11 +1,10 @@
-
-interface VsCodeWebviewAPI {
-  postMessage(msg: any): void;
-}
+interface VsCodeWebviewAPI extends BroadcastChannel {}
 
 declare function acquireVsCodeApi(): VsCodeWebviewAPI;
 
 let vscode: VsCodeWebviewAPI | undefined;
+
+export const channelName = 'settingsViewer';
 
 export function getVSCodeAPI(): VsCodeWebviewAPI {
   vscode = vscode || acquireAPI();
@@ -20,11 +19,5 @@ function acquireAPI(): VsCodeWebviewAPI {
       throw e;
     }
   }
-  return simulatedAPI;
+  return new BroadcastChannel(channelName);
 }
-
-const simulatedAPI: VsCodeWebviewAPI = {
-  postMessage(msg: any) {
-    window.parent.postMessage(msg, window.origin);
-  }
-};

@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
-import { isMessage, isUpdateCounterMessage } from './message';
+import { isUpdateCounterMessage } from './message';
+import { channelName } from './vscode/vscodeAPI';
 
 class AppState {
   @observable counter = 0;
@@ -23,12 +24,12 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
 const appState = new AppState();
 ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getElementById('root'));
 
-window.addEventListener('message', event => {
-    if (event.origin !== window.origin || !isMessage(event.data)) return;
+const channel = new BroadcastChannel(channelName);
 
+channel.onmessage = event => {
     const message = event.data;
 
     if (isUpdateCounterMessage(message)) {
         appState.counter = message.value;
     }
-});
+};
