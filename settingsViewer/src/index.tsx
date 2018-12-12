@@ -6,11 +6,12 @@ import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
-import {Cell, Grid, Row} from '@material/react-layout-grid';
-import {getVSCodeAPI} from './vscode/vscodeAPI';
+import {VsCodeWebviewApi} from './vscode/VsCodeWebviewApi';
 import {CatPanel} from './cat';
 
 require('./app.scss');
+
+const vsCodeApi = new VsCodeWebviewApi();
 
 const cats = [
     { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', icon: 'home'},
@@ -95,5 +96,5 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
 }
 
 const appState = new AppState();
-reaction(() => appState.timer, value => getVSCodeAPI().postMessage({ command: 'UpdateCounter', value: value * 2 }));
+reaction(() => appState.timer, value => vsCodeApi.postMessage({ command: 'UpdateCounter', value: value * 2 }));
 ReactDOM.render(<TimerView appState={appState} />, document.getElementById('root'));

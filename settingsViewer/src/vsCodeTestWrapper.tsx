@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
 import { isUpdateCounterMessage } from './message';
-import { channelName } from './vscode/vscodeAPI';
+import { VsCodeWebviewApi } from './vscode/VsCodeWebviewApi';
 
 class AppState {
   @observable counter = 0;
@@ -24,9 +24,9 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
 const appState = new AppState();
 ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getElementById('root'));
 
-const channel = new BroadcastChannel(channelName);
+const vsCodeApi = new VsCodeWebviewApi();
 
-channel.onmessage = event => {
+vsCodeApi.onmessage = event => {
     const message = event.data;
 
     if (isUpdateCounterMessage(message)) {
