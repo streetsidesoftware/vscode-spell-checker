@@ -52,6 +52,13 @@ const viewerConfig = {
                 options: {
                     name: '[path][name].[ext]'
                 }
+            },{
+                test: /\.(pdf|jpg|png|gif|svg|ico)$/,
+                use: [
+                    {
+                        loader: 'url-loader'
+                    },
+                ]
             },
         ],
     },

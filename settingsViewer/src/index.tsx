@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable, reaction, computed} from 'mobx';
+import {reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
@@ -8,42 +8,19 @@ import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {VsCodeWebviewApi} from './vscode/VsCodeWebviewApi';
 import {CatPanel} from './cat';
+import { isUpdateCounterMessage, isConfigurationChangeMessage, isMessage } from './message';
+import {AppState, tabLabels, cats} from './AppState';
+import { LanguagePanel } from './panelLanguage';
 
 require('./app.scss');
 
 const vsCodeApi = new VsCodeWebviewApi();
-
-const cats = [
-    { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', icon: 'home'},
-    { title: 'Compiling Cat', image: 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif', icon: 'face'},
-    { title: 'Testing Cat', image: 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif', icon: 'favorite'},
-];
-
-const tabLabels = ['Language'].concat(cats.map(cat => cat.title));
 
 const tabs = tabLabels.map(label => (
     <Tab>
         <span className="mdc-tab__text-label">{label}</span>
     </Tab>
 ));
-
-class AppState {
-    @observable activeTabIndex = 0;
-    @observable timer = 0;
-    @computed get activeTab() {
-        return tabLabels[this.activeTabIndex];
-    }
-
-    constructor() {
-        setInterval(() => {
-            this.timer += 1;
-        }, 1000);
-    }
-
-    resetTimer() {
-        this.timer = 0;
-    }
-}
 
 @observer
 class TimerView extends React.Component<{appState: AppState}, {}> {
@@ -60,6 +37,7 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
                 </TabBar>
 
                 <div className={appState.activeTabIndex === 0 ? 'panel active' : 'panel'}>
+                    <LanguagePanel appState={appState}></LanguagePanel>
                 </div>
                 {cats.map((cat, index) => (
                     <div key={index.toString()} className={appState.activeTabIndex === (index + 1) ? 'panel active' : 'panel'}>
@@ -74,12 +52,13 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
                     Click Me!
                 </Button>
                 <Button
-                    className="foo-button"
+                    className="button-alternate"
                     onClick={this.onReset}
                 >
                     Seconds passed: {appState.timer}
                 </Button>
                 <h2>{appState.activeTabIndex}</h2>
+                <h2>{appState.counter}</h2>
 
                 <DevTools />
             </div>
@@ -98,3 +77,23 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
 const appState = new AppState();
 reaction(() => appState.timer, value => vsCodeApi.postMessage({ command: 'UpdateCounter', value: value * 2 }));
 ReactDOM.render(<TimerView appState={appState} />, document.getElementById('root'));
+
+vsCodeApi.onmessage = (msg: MessageEvent) => {
+    const message = msg.data;
+
+    if (!isMessage(message)) {
+        return;
+    }
+
+    console.log(message.command);
+
+    if (isUpdateCounterMessage(message)) {
+        appState.counter = message.value;
+        return;
+    }
+
+    if (isConfigurationChangeMessage(message)) {
+        appState.config = message.value.config;
+        return;
+    }
+};

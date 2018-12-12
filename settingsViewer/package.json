@@ -32,6 +32,7 @@
     "style-loader": "^0.23.1",
     "typescript": "^3.1.6",
     "typings-for-css-modules-loader": "^1.7.0",
+    "url-loader": "^1.1.2",
     "webpack": "^4.26.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
@@ -50,6 +51,7 @@
     "mobx-react": "^5.4.2",
     "mobx-react-devtools": "^6.0.3",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-json-view": "^1.19.1"
   }
 }

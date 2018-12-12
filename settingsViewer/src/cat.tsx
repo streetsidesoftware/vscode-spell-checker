@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-
+import * as spellCheckIcon from './images/SpellCheck.xs.png';
 
 interface CatInfo {
   title: string;
@@ -13,6 +13,7 @@ export function CatPanel(cat: CatInfo) {
     <Grid>
         <Row>
             <Cell columns={12}>
+                <img src={spellCheckIcon}/>
                 <i className="material-icons">{cat.icon}</i>
                 {cat.title} !
             </Cell>

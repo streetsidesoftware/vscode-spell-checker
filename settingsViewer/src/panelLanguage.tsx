@@ -1,32 +1,26 @@
 import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
+import { AppState } from './AppState';
+import * as spellCheckIcon from './images/SpellCheck.xs.png';
+import {tf} from './utils';
 
-
-interface CatInfo {
-  title: string;
-  image: string;
-  icon: string;
-}
-
-export class LanguagePanel extends React.Component<{cat: CatInfo}, {}> {
+export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
-        const cat = this.props.cat;
+        const appState = this.props.appState;
+        const config = appState.config;
         return (
-          <Grid>
-              <Row>
-                  <Cell columns={12}>
-                      <i className="material-icons">{cat.icon}</i>
-                      {cat.title}
-                  </Cell>
-                  <Cell columns={12}>
-                      <img
-                          src={cat.image}
-                          alt={cat.title}
-                          width="300"
-                      />
-                  </Cell>
-              </Row>
-          </Grid>
+            <Grid>
+                <Row>
+                    <Cell columns={12}>
+                        <img src={spellCheckIcon} />
+                    </Cell>
+                </Row>
+                <Row>
+                    <Cell columns={12}>
+                        Language Enabled: {tf(config.languageEnabled)}
+                    </Cell>
+                </Row>
+            </Grid>
         );
      }
 }
