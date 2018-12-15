@@ -23,7 +23,7 @@ const tabs = tabLabels.map(label => (
 ));
 
 @observer
-class TimerView extends React.Component<{appState: AppState}, {}> {
+class SettingsViewer extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const activeTabIndex = appState.activeTabIndex || 0;
@@ -76,7 +76,7 @@ class TimerView extends React.Component<{appState: AppState}, {}> {
 
 const appState = new AppState();
 reaction(() => appState.timer, value => vsCodeApi.postMessage({ command: 'UpdateCounter', value: value * 2 }));
-ReactDOM.render(<TimerView appState={appState} />, document.getElementById('root'));
+ReactDOM.render(<SettingsViewer appState={appState} />, document.getElementById('root'));
 
 vsCodeApi.onmessage = (msg: MessageEvent) => {
     const message = msg.data;
