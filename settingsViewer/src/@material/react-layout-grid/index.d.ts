@@ -26,6 +26,7 @@ declare module '@material/react-layout-grid' {
 
     export interface CellProps {
         align?: 'bottom' | 'middle' | 'top';
+        children?: ReactNodeLike;
         className?: string;
         columns?: ColumnCount;
         desktopColumns?: ColumnCount;
