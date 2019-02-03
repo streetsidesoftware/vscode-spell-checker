@@ -9,7 +9,6 @@ export const diagnosticCollectionName = 'cSpell';
 export const diagSource = diagnosticCollectionName;
 export {validateText} from 'cspell';
 import { CSpellUserSettings } from './cspellConfig';
-import * as cspell from 'cspell';
 
 export const defaultCheckLimit = 500;
 
@@ -31,7 +30,7 @@ export function validateTextDocumentAsync(textDocument: TextDocument, options: C
     const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const text = textDocument.getText().slice(0, limit);
-    return from<cspell.TextOffset[]>(validateText(text, options)).pipe(
+    return from(validateText(text, options)).pipe(
         flatMap(a => a),
         filter(a => !!a),
         map(a => a!),
