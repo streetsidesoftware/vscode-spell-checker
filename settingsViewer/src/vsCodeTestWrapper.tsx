@@ -9,6 +9,7 @@ import { isUpdateCounterMessage, isMessage } from './message';
 import { ConfigurationForDocument } from './settings/';
 import { VsCodeWebviewApi } from './vscode/VsCodeWebviewApi';
 import {tf} from './utils';
+const docSettings = require('./settings/docSettings.json');
 
 require('./app.scss');
 
@@ -18,7 +19,7 @@ class AppState {
       languageEnabled: false,
       fileEnabled: false,
       settings: {},
-      docSettings: {},
+      docSettings: docSettings,
   };
 }
 

@@ -64,6 +64,10 @@ const baseConfig = {
     },
     devServer: {
         contentBase: path.join(__dirname, dist),
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+        },
         compress: true,
         port: 3000,
     },
