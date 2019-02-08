@@ -2,11 +2,11 @@
 
 A basic spell checker that works well with camelCase code.
 
-The goal of this spell checker is to help with catching common spelling errors while keeping the number of false positives low.
+The goal of this spell checker is to help catch common spelling errors while keeping the number of false positives low.
 
 ## Functionality
 
-Load a TypeScript, JavaScript, Text, etc.. file.  Words not in the dictionary files will have
+Load a TypeScript, JavaScript, Text, etc. file.  Words not in the dictionary files will have
 a squiggly underline.
 
 ### Example
@@ -18,7 +18,7 @@ a squiggly underline.
 To see the list of suggestions:
 
 After positioning the cursor in the word, any of the following should display the list of suggestions:
-- Click on the 💡 (lightbulb) in the left had margin.
+- Click on the 💡 (lightbulb) in the left hand margin.
 - [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
     - Mac: `⌘`+`.` or `Cmd`+`.`
     - PC: `Ctrl`+`.`
