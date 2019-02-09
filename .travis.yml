@@ -19,6 +19,10 @@ script:
   - cd client
   - npm install
   - cd ..
+  - cd settingsViewer
+  - npm install
+  - npm test
+  - cd ..
   - cd server
   - npm install
   - npm run build

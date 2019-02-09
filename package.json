@@ -10,7 +10,8 @@
     "test-client": "cd client && npm run test",
     "test-client-integration": "cd client && npm run test && npm run test-integration",
     "test-server": "cd server && npm run test",
-    "test": "npm run test-server && npm run test-client"
+    "test-settings-viewer": "cd settingsViewer && npm run test",
+    "test": "npm run test-server && npm run test-client && npm run test-settings-viewer"
   },
   "repository": {
     "type": "git",
