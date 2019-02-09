@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "Webview for VS Code to edit cspell settings",
   "scripts": {
-    "start": "http-server dist",
-    "start:dev": "webpack-dev-server",
     "build": "webpack",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "coverage": "jest --coverage src",
+    "start:dev": "webpack-dev-server",
+    "start": "http-server dist",
+    "test": "jest src"
   },
   "private": true,
   "keywords": [],
   "author": "Jason Dent",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^24.0.0",
     "@types/node": "^10.12.24",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
@@ -24,6 +27,7 @@
     "handlebars": "^4.1.0",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
+    "jest": "^24.1.0",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "resolve-url-loader": "^3.0.0",
@@ -31,6 +35,7 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "terser": "^3.16.1",
+    "ts-jest": "^23.10.5",
     "typescript": "^3.3.3",
     "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "^1.1.2",

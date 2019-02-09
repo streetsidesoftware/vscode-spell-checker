@@ -14,9 +14,10 @@ export interface UpdateCounterMessage extends Message {
     value: number;
 }
 
-function isA<T extends Message> (cmd: T['command']): (msg: Message) => msg is T {
+function isA<T extends Message> (cmd: T['command'], fields: (keyof T)[]): (msg: Message) => msg is T {
     return function (msg: Message): msg is T {
-        return msg.command === cmd;
+        const t = msg as T;
+        return msg.command === cmd && fields.reduce((success, key) => success && t[key] !== undefined, true);
     };
 }
 
@@ -29,5 +30,5 @@ export interface ConfigurationChangeMessage extends Message {
     value: ConfigurationChange;
 }
 
-export const isUpdateCounterMessage = isA<UpdateCounterMessage>('UpdateCounter');
-export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage');
+export const isUpdateCounterMessage = isA<UpdateCounterMessage>('UpdateCounter', ['value']);
+export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', ['value']);
