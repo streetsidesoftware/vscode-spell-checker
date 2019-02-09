@@ -4,46 +4,38 @@ import {Checkbox} from '@material/react-checkbox';
 import { AppState } from './AppState';
 import * as spellCheckIcon from './images/SpellCheck.xs.png';
 import {tf} from './utils';
+import { LocalInfo } from './settings';
+
+type OptionalBool = boolean | undefined;
+type PropertyNamesOfTypeS<T, S> = { [K in keyof T]: T[K] extends S ? K : never }[keyof T];
+type BooleanKeyOfLocalInfo = Exclude<PropertyNamesOfTypeS<LocalInfo, OptionalBool>, undefined>;
 
 export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
-        const locals = settings.locals.map((local, index) => <Row>
+        const checkbox = (local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) =>
+            <Checkbox
+                checked={!!local[field]}
+                indeterminate={local[field] === undefined}
+                onChange={(e) => {
+                    const v = e.target.indeterminate ? undefined : e.target.checked;
+                    appState.settings.locals[index][field] = v;
+                }}
+                initRipple={(e) => {}}
+            ></Checkbox>;
+
+        const locals = settings.locals.map((local, index) => <Row key={index}>
             <Cell columns={4}>{local.name}</Cell>
             <Cell columns={4}>{local.dictionaries.join(', ')}</Cell>
             <Cell columns={1}>
-                <Checkbox
-                    checked={!!local.isInUserSettings}
-                    indeterminate={local.isInUserSettings === undefined}
-                    onChange={(e) => {
-                        const v = e.target.indeterminate ? undefined : e.target.checked;
-                        appState.settings.locals[index].isInUserSettings = v;
-                    }}
-                    initRipple={(e) => {}}
-                ></Checkbox>
+                {checkbox(local, index, 'isInUserSettings')}
             </Cell>
             <Cell columns={1}>
-                <Checkbox
-                    checked={!!local.isInWorkspaceSettings}
-                    indeterminate={local.isInWorkspaceSettings === undefined}
-                    onChange={(e) => {
-                        const v = e.target.indeterminate ? undefined : e.target.checked;
-                        appState.settings.locals[index].isInWorkspaceSettings = v;
-                    }}
-                    initRipple={(e) => {}}
-                ></Checkbox>
+                {checkbox(local, index, 'isInWorkspaceSettings')}
             </Cell>
             <Cell columns={1}>
-                <Checkbox
-                    checked={!!local.isInFolderSettings}
-                    indeterminate={local.isInFolderSettings === undefined}
-                    onChange={(e) => {
-                        const v = e.target.indeterminate ? undefined : e.target.checked;
-                        appState.settings.locals[index].isInFolderSettings = v;
-                    }}
-                    initRipple={(e) => {}}
-                ></Checkbox>
+                {checkbox(local, index, 'isInFolderSettings')}
             </Cell>
             <Cell columns={1}>{tf(local.enabled)}</Cell>
         </Row>);
