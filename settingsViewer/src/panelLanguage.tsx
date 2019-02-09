@@ -19,7 +19,6 @@ export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
                     onChange={(e) => {
                         const v = e.target.indeterminate ? undefined : e.target.checked;
                         appState.settings.locals[index].isInUserSettings = v;
-                        appState.settings.locals[index].isInFolderSettings = v;
                     }}
                     initRipple={(e) => {}}
                 ></Checkbox>
@@ -54,6 +53,14 @@ export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
                     <Cell columns={12}>
                         <img src={spellCheckIcon} />
                     </Cell>
+                </Row>
+                <Row>
+                    <Cell columns={4}>Language</Cell>
+                    <Cell columns={2}>dictionaries</Cell>
+                    <Cell columns={2}>Global</Cell>
+                    <Cell columns={2}>Workspace</Cell>
+                    <Cell columns={2}>Folder</Cell>
+                    <Cell columns={1}>Enabled</Cell>
                 </Row>
                 {locals}
             </Grid>

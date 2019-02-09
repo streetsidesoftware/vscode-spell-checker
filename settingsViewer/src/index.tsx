@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {reaction} from 'mobx';
+import {reaction, toJS} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
@@ -76,6 +76,14 @@ class SettingsViewer extends React.Component<{appState: AppState}, {}> {
 
 const appState = new AppState();
 reaction(() => appState.timer, value => vsCodeApi.postMessage({ command: 'UpdateCounter', value: value * 2 }));
+reaction(
+    () => toJS(appState.settings),
+    value => (
+        console.log('post ConfigurationChangeMessage'),
+
+        vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
+    )
+);
 ReactDOM.render(<SettingsViewer appState={appState} />, document.getElementById('root'));
 
 vsCodeApi.onmessage = (msg: MessageEvent) => {

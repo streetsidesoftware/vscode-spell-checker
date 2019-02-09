@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage } from './message';
+import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage } from './message';
 import { VsCodeWebviewApi } from './vscode/VsCodeWebviewApi';
 import { Settings } from './settings/';
 import {tf} from './utils';
@@ -47,16 +47,37 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                             {appState.counter}
                         </Cell>
                     </Row>
+                    <Row>
+                        <Cell columns={1}>code</Cell>
+                        <Cell columns={2}>name</Cell>
+                        <Cell columns={2}>dictionaries</Cell>
+                        <Cell columns={2}>user</Cell>
+                        <Cell columns={2}>workspace</Cell>
+                        <Cell columns={2}>folder</Cell>
+                        <Cell columns={1}>enabled</Cell>
+                    </Row>
                     {settings.locals.map((local, index) =>
                         <Row>
-                        <Cell columns={12}>
-                            code: {local.code}
-                            name: {local.name}
-                            dictionaries {local.dictionaries.join(', ')}
-                            user: {tf(local.isInUserSettings)}
-                            workspace: {tf(local.isInWorkspaceSettings)}
-                            folder: {tf(local.isInFolderSettings)}
-                            enabled: {tf(local.enabled)}
+                        <Cell columns={1}>
+                            {local.code}
+                        </Cell>
+                        <Cell columns={2}>
+                            {local.name}
+                        </Cell>
+                        <Cell columns={2}>
+                            {local.dictionaries.join(', ')}
+                        </Cell>
+                        <Cell columns={2}>
+                            {tf(local.isInUserSettings)}
+                        </Cell>
+                        <Cell columns={2}>
+                            {tf(local.isInWorkspaceSettings)}
+                        </Cell>
+                        <Cell columns={2}>
+                            {tf(local.isInFolderSettings)}
+                        </Cell>
+                        <Cell columns={1}>
+                            {tf(local.enabled)}
                         </Cell>
                         </Row>
                     )}
@@ -80,18 +101,21 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
      onUpdateConfig = () => {
          console.log('onUpdateConfig');
          this.props.appState.settings.locals.forEach(local => local.enabled = !local.enabled);
+         vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
      }
 }
 
 const appState = new AppState();
+/*
 reaction(
     () => toJS(appState.settings),
     value => (
         console.log('post ConfigurationChangeMessage'),
 
-        vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
+        vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
     )
 );
+*/
 ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getElementById('root'));
 
 const vsCodeApi = new VsCodeWebviewApi();
@@ -107,6 +131,9 @@ vsCodeApi.onmessage = event => {
 
     if (isUpdateCounterMessage(message)) {
         appState.counter = message.value;
+        // For fun, let's send it back.
         vsCodeApi.postMessage(message);
+    } else if (isConfigurationChangeMessage(message)) {
+        appState.settings = message.value.settings;
     }
 };
