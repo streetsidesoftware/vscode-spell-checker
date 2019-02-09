@@ -65,6 +65,12 @@ function acquireAPI(): VsCodeAPI {
         };
     }
 
+    if (typeof BroadcastChannel !== 'function') {
+        return {
+            postMessage() {}
+        };
+    }
+
     const channel = new BroadcastChannel(channelName);
     channel.onmessage = onMessage;
     return channel;

@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage } from './message';
+import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage } from './message';
 import { VsCodeWebviewApi } from './vscode/VsCodeWebviewApi';
 import { Settings } from './settings/';
 import {tf} from './utils';
@@ -135,5 +135,7 @@ vsCodeApi.onmessage = event => {
         vsCodeApi.postMessage(message);
     } else if (isConfigurationChangeMessage(message)) {
         appState.settings = message.value.settings;
+    } else if (isRequestConfigurationMessage(message)) {
+        vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
     }
 };

@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Language Panel Verification checkboxLocalInfo 1`] = `
+<div
+  className="mdc-checkbox mdc-checkbox--upgraded"
+  onAnimationEnd={[Function]}
+>
+  <input
+    aria-checked="mixed"
+    checked={false}
+    className="mdc-checkbox__native-control"
+    disabled={false}
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <div
+    className="mdc-checkbox__background"
+  >
+    <svg
+      className="mdc-checkbox__checkmark"
+      focusable="false"
+      viewBox="0 0 24 24"
+    >
+      <path
+        className="mdc-checkbox__checkmark-path"
+        d="M1.73,12.91 8.1,19.28 22.79,4.59"
+        fill="none"
+      />
+    </svg>
+    <div
+      className="mdc-checkbox__mixedmark"
+    />
+  </div>
+</div>
+`;
+
 exports[`Language Panel Verification tests the snapshot 1`] = `
 <div
   className="mdc-layout-grid"

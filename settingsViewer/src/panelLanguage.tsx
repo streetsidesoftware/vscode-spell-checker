@@ -10,21 +10,25 @@ type OptionalBool = boolean | undefined;
 type PropertyNamesOfTypeS<T, S> = { [K in keyof T]: T[K] extends S ? K : never }[keyof T];
 type BooleanKeyOfLocalInfo = Exclude<PropertyNamesOfTypeS<LocalInfo, OptionalBool>, undefined>;
 
+
+export function checkboxLocalInfo(appState: AppState, local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) {
+    return <Checkbox
+        checked={!!local[field]}
+        indeterminate={local[field] === undefined}
+        onChange={(e) => {
+            const v = e.target.indeterminate ? undefined : e.target.checked;
+            appState.settings.locals[index][field] = v;
+        }}
+        initRipple={() => {}}
+    ></Checkbox>;
+}
+
 export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
         const checkbox = (local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) =>
-            <Checkbox
-                checked={!!local[field]}
-                indeterminate={local[field] === undefined}
-                onChange={(e) => {
-                    const v = e.target.indeterminate ? undefined : e.target.checked;
-                    appState.settings.locals[index][field] = v;
-                }}
-                initRipple={(e) => {}}
-            ></Checkbox>;
-
+            checkboxLocalInfo(appState, local, index, field);
         const locals = settings.locals.map((local, index) => <Row key={index}>
             <Cell columns={4}>{local.name}</Cell>
             <Cell columns={4}>{local.dictionaries.join(', ')}</Cell>

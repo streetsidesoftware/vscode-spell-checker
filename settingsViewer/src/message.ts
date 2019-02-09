@@ -1,5 +1,5 @@
 import { Settings } from './settings';
-export type Commands = 'UpdateCounter' | 'ConfigurationChangeMessage';
+export type Commands = 'UpdateCounter' | 'ConfigurationChangeMessage' | 'RequestConfigurationMessage';
 
 export interface Message {
     command: Commands;
@@ -30,5 +30,10 @@ export interface ConfigurationChangeMessage extends Message {
     value: ConfigurationChange;
 }
 
+export interface RequestConfigurationMessage extends Message {
+    command: 'RequestConfigurationMessage';
+}
+
 export const isUpdateCounterMessage = isA<UpdateCounterMessage>('UpdateCounter', ['value']);
 export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', ['value']);
+export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
