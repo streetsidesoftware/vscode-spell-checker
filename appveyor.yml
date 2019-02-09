@@ -13,7 +13,7 @@ install:
   - cd ..
   - cd settingsViewer
   - npm install
-  - npm test
+  - npm run build
   - cd ..
   - cd server
   - npm install
@@ -30,6 +30,9 @@ test_script:
   - node --version
   - npm --version
   # run tests
+  - cd settingsViewer
+  - npm test
+  - cd ..
   - cd server
   - npm test
   - cd ..
