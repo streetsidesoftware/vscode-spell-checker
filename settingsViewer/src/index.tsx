@@ -93,7 +93,7 @@ vsCodeApi.onmessage = (msg: MessageEvent) => {
     }
 
     if (isConfigurationChangeMessage(message)) {
-        appState.config = message.value.config;
+        appState.settings = message.value.settings;
         return;
     }
 };

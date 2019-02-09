@@ -1,7 +1,4 @@
-import {
-    ConfigurationForDocument,
-} from './settings/';
-
+import { Settings } from './settings';
 export type Commands = 'UpdateCounter' | 'ConfigurationChangeMessage';
 
 export interface Message {
@@ -24,7 +21,7 @@ function isA<T extends Message> (cmd: T['command']): (msg: Message) => msg is T 
 }
 
 export interface ConfigurationChange {
-    config: ConfigurationForDocument;
+    settings: Settings;
 }
 
 export interface ConfigurationChangeMessage extends Message {

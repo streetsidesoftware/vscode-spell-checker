@@ -1,13 +1,14 @@
-@import "@material/react-button/index.scss";
-@import "@material/button/mdc-button";
+@import '@material/react-checkbox/index.scss';
+@import '@material/react-layout-grid/index.scss';
 @import '@material/react-tab-bar/index.scss';
 @import '@material/react-tab-scroller/index.scss';
-@import "@material/tab-bar/mdc-tab-bar";
-@import "@material/tab-scroller/mdc-tab-scroller";
-@import "@material/tab-indicator/mdc-tab-indicator";
-@import "@material/tab/mdc-tab";
+@import "@material/button/mdc-button";
 @import "@material/layout-grid/mdc-layout-grid";
-@import '@material/react-layout-grid/index.scss';
+@import "@material/react-button/index.scss";
+@import "@material/tab-bar/mdc-tab-bar";
+@import "@material/tab-indicator/mdc-tab-indicator";
+@import "@material/tab-scroller/mdc-tab-scroller";
+@import "@material/tab/mdc-tab";
 @import './mld/material-icons.css';
 
 body {

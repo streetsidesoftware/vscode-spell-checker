@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { ConfigurationForDocument } from './settings/';
+import { Settings } from './settings/';
 
 export const cats = [
     { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', icon: 'home'},
@@ -13,12 +13,25 @@ export class AppState {
     @observable activeTabIndex = 0;
     @observable timer = 0;
     @observable counter = 0;
-    @observable config: ConfigurationForDocument = {
-        languageEnabled: true,
-        fileEnabled: true,
-        settings: {},
-        docSettings: {}
+    @observable settings: Settings = {
+        locals: [
+            {
+                code: 'en',
+                name: 'English',
+                dictionaries: ['en', 'en-us'],
+                enabled: true,
+                isInUserSettings: true,
+            },
+            {
+                code: 'es',
+                name: 'Spanish',
+                dictionaries: ['es', 'es-ES'],
+                enabled: true,
+                isInUserSettings: true,
+            },
+        ],
     };
+
     @computed get activeTab() {
         return tabLabels[this.activeTabIndex];
     }
