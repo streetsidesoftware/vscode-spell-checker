@@ -5,10 +5,10 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage } from './message';
-import { VsCodeWebviewApi } from './vscode/VsCodeWebviewApi';
-import { Settings } from './settings/';
-import {tf} from './utils';
+import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage } from '../api/message';
+import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
+import { Settings } from '../api/settings';
+import {tf} from '../api/utils';
 
 require('./app.scss');
 

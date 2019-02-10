@@ -3,13 +3,13 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const dist = 'dist';
+const dist = path.join('out', 'webapp');
 
 const baseConfig = {
     devtool: 'source-map',
     mode: 'production',
     entry: {
-        index: path.join(__dirname, 'src', 'index.tsx'),
+        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
     },
     output: {
         path: path.join(__dirname, dist),
@@ -46,13 +46,23 @@ const baseConfig = {
                 ],
             },
             {
-                test: /\.(woff2?|ttf|otf|eot|svg)$/,
+                test: /\.(ttf|otf|eot|svg)$/,
                 exclude: /node_modules/,
                 loader: 'file-loader',
                 options: {
                     name: '[path][name].[ext]'
                 }
-            },{
+            },
+            {
+                test: /\.(woff2?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'url-loader'
+                    },
+                ]
+            },
+            {
                 test: /\.(pdf|jpg|png|gif|svg|ico)$/,
                 use: [
                     {
@@ -76,7 +86,7 @@ const baseConfig = {
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'index.hbs'),
+            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
         }),
         new MiniCssExtractPlugin({
@@ -91,14 +101,14 @@ const baseConfig = {
 const viewerConfig = {
     ...baseConfig,
     entry: {
-        index: path.join(__dirname, 'src', 'index.tsx'),
+        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
     },
     plugins: [
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'index.hbs'),
+            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
         }),
         new MiniCssExtractPlugin({
@@ -113,13 +123,13 @@ const viewerConfig = {
 const testConfig = {
     ...baseConfig,
     entry: {
-        test: path.join(__dirname, 'src', 'vsCodeTestWrapper.tsx'),
+        test: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
     },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Tester CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'index.hbs'),
+            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
             filename: 'test.html',
         }),

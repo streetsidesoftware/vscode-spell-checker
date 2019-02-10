@@ -1,0 +1,64 @@
+// These must come before the imports to set the right theme colors.
+$mdc-theme-primary: rgb(16, 78, 16);
+$mdc-theme-secondary: #af6c13;
+$mdc-theme-on-primary: #f3f0ec;
+$mdc-theme-on-secondary: #e2e7e2;
+
+$foreground: var(--vscode-editor-foreground, $mdc-theme-on-secondary);
+$background: var(--vscode-editor-background, $mdc-theme-secondary);
+$foreground-button: var(--vscode-button-foreground, $mdc-theme-on-primary);
+$background-button: var(--vscode-button-background, $mdc-theme-primary);
+
+@import "@material/button/mdc-button";
+@import "@material/layout-grid/mdc-layout-grid";
+@import '@material/react-checkbox/index.scss';
+@import '@material/react-layout-grid/index.scss';
+@import '@material/react-tab-bar/index.scss';
+@import '@material/react-tab-scroller/index.scss';
+@import '@material/react-tab/index.scss';
+@import '@material/react-tab-indicator/index.scss';
+@import "@material/react-button/index.scss";
+@import "@material/tab-bar/mdc-tab-bar";
+@import "@material/tab-indicator/mdc-tab-indicator";
+@import "@material/tab-scroller/mdc-tab-scroller";
+@import "@material/tab/mdc-tab";
+@import './mld/material-icons.css';
+
+
+body {
+  color: $foreground;
+  background-color: $background;
+}
+
+.mdc-checkbox {
+  @include mdc-checkbox-ink-color($foreground-button);
+  @include mdc-checkbox-focus-indicator-color($background-button);
+  @include mdc-checkbox-container-colors($background-button, $background-button, $background-button, $background-button, true);
+}
+
+.mdc-button {
+  @include mdc-button-ink-color($foreground-button);
+  @include mdc-button-container-fill-color($background-button);
+}
+
+.mdc-tab {
+  @include mdc-tab-text-label-color(var(--vscode-tab-inactiveForeground, $foreground));
+
+  // .mdc-tab-indicator {
+  //   @include mdc-tab-indicator-underline-color(yellow);
+  // }
+
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color(var(--vscode-tab-activeForeground, $foreground));
+  }
+
+}
+
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+

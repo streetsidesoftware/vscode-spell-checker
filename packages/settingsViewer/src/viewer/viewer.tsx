@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {reaction, toJS} from 'mobx';
-import {VsCodeWebviewApi} from './vscode/VsCodeWebviewApi';
-import { isUpdateCounterMessage, isConfigurationChangeMessage, isMessage } from './message';
+import {VsCodeWebviewApi} from '../api/vscode/VsCodeWebviewApi';
+import { isUpdateCounterMessage, isConfigurationChangeMessage, isMessage } from '../api/message';
 import {AppState} from './AppState';
 import { SettingsViewer } from './SettingsViewer';
 

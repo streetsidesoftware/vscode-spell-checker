@@ -4,7 +4,7 @@ import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
-import {VsCodeWebviewApi} from './vscode/VsCodeWebviewApi';
+import {VsCodeWebviewApi} from '../api/vscode/VsCodeWebviewApi';
 import {CatPanel} from './cat';
 import {AppState, tabLabels, cats} from './AppState';
 import { LanguagePanel } from './panelLanguage';
@@ -55,7 +55,7 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                 <h2>{appState.activeTabIndex}</h2>
                 <h2>{appState.counter}</h2>
 
-                <DevTools />
+                {/* <DevTools /> */}
             </div>
         );
      }

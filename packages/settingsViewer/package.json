@@ -2,9 +2,11 @@
   "name": "cspell-settings-webview",
   "version": "1.6.10",
   "description": "Webview for VS Code to edit cspell settings",
+  "typings": "out",
+  "main": "out",
   "scripts": {
     "build": "tsc -p . && webpack",
-    "clean": "rimraf dist && rimraf out",
+    "clean": "rimraf viewer && rimraf out",
     "coverage": "jest --coverage src",
     "start:dev": "webpack-dev-server",
     "start": "http-server dist",
@@ -64,8 +66,8 @@
   },
   "dependencies": {},
   "files": [
-    "out/**/*.d.ts",
-    "dist/**",
+    "out/api/**",
+    "out/webapp/**",
     "!**/test*",
     "!**/*.map",
     "!**/*.test.*",

@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings } from './settings/';
+import { Settings } from '../api/settings/';
 
 export const cats = [
     { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', icon: 'home'},

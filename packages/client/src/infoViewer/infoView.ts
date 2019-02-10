@@ -1,5 +1,10 @@
 import * as vscode from 'vscode';
-import { getConfiguration } from '../settings';
+import * as fs from 'fs-extra';
+// import * as x from 'cspell-settings-webview';
+import * as path from 'path';
+
+const root = path.join(path.dirname(require.resolve('cspell-settings-webview')), 'webapp');
+const viewerWebAppHtml = fs.readFile(path.join(root, 'index.html'), 'utf-8');
 
 const cats = {
     'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
@@ -28,7 +33,15 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn) {
-    const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, { enableScripts: true });
+    const extPath = context.extensionPath;
+    const options = {
+        enableScripts: true,
+        localResourceRoots: [
+            vscode.Uri.file(root),
+            vscode.Uri.file(extPath)
+        ],
+    };
+    const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, options);
     panel.onDidDispose(() => {
         currentPanel = undefined;
     }, null, context.subscriptions);
@@ -45,11 +58,12 @@ function getCat(column: vscode.ViewColumn): keyof typeof cats {
     return columnToCat.get(column) || 'Coding Cat';
 }
 
-function updateView(panel: vscode.WebviewPanel) {
+async function updateView(panel: vscode.WebviewPanel) {
     const column = panel.viewColumn || vscode.ViewColumn.Active;
     const cat = getCat(column);
+    const html = getHtml2(root);
     panel.title = cat;
-    panel.webview.html = getWebviewContent(cat);
+    panel.webview.html = html;
 }
 
 function getWebviewContent(cat: keyof typeof cats) {
@@ -81,4 +95,44 @@ function getWebviewContent(cat: keyof typeof cats) {
 
 </body>
 </html>`;
+}
+
+
+function getHtml(root: string) {
+    const resource = vscode.Uri.file(root).with({ scheme: 'vscode-resource' });
+return `
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSpell Settings Viewer</title>
+    <body>
+    <iframe
+        id="viewer-frame"
+        src="${resource}/index.html"
+        frameborder="0"
+        style="display: block; margin: 0px; overflow: hidden; position: absolute; width: 100%; height: 100%; visibility: visible;"
+    >
+    </iframe>
+    </body>
+</html>
+`;
+}
+
+function getHtml2(root: string) {
+    const resource = vscode.Uri.file(root).with({ scheme: 'vscode-resource' });
+return `
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSpell Settings Viewer</title>
+    <link href="${resource}/index.css?0b5b4992f9ef4a32d10c" rel="stylesheet"></head>
+    <body>
+    <div id="root">Root</div>
+    <script type="text/javascript" src="${resource}/index.bundle.js?0b5b4992f9ef4a32d10c"></script></body>
+</html>
+`;
 }
