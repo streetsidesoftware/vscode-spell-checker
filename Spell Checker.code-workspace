@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "server"
-		},
-		{
-			"path": "client"
-		},
-		{
 			"path": "."
 		},
 		{
-			"path": "settingsViewer"
+			"path": "packages/client"
+		},
+		{
+			"path": "packages/server"
+		},
+		{
+			"path": "packages/settingsViewer"
 		}
 	],
 	"settings": {

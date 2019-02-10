@@ -1,16 +1,16 @@
 {
   "name": "vscode-spell-checker",
-  "version": "1.0.0",
+  "version": "1.6.10",
   "description": "Spell checker for VS Code",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "build": "npm run build-server ; npm run build-client",
-    "build-client": "cd client && npm run build",
-    "build-server": "cd server && npm run build",
-    "test-client": "cd client && npm run test",
-    "test-client-integration": "cd client && npm run test && npm run test-integration",
-    "test-server": "cd server && npm run test",
-    "test-settings-viewer": "cd settingsViewer && npm run test",
+    "build-client": "cd packages/client && npm run build",
+    "build-server": "cd packages/server && npm run build",
+    "test-client": "cd packages/client && npm run test",
+    "test-client-integration": "cd packages/client && npm run test && npm run test-integration",
+    "test-server": "cd packages/server && npm run test",
+    "test-settings-viewer": "cd packages/settingsViewer && npm run test",
     "test": "npm run test-server && npm run test-client && npm run test-settings-viewer"
   },
   "repository": {
@@ -30,7 +30,8 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker#readme",
   "devDependencies": {
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.3"
+    "lerna": "^3.11.0",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
   }
 }

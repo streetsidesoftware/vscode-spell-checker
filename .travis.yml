@@ -16,6 +16,7 @@ before_install:
     fi
 
 script:
+  - cd packages
   - cd client
   - npm install
   - cd ..

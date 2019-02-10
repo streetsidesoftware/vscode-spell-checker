@@ -3,3 +3,4 @@ static/bundle.js
 dist
 out
 coverage
+*.tgz

@@ -8,6 +8,7 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version x64
   # install modules
+  - cd packages
   - cd client
   - npm install
   - cd ..
@@ -23,6 +24,7 @@ install:
   - npm install
   - npm run build
   - cd ..
+  - cd ..
 
 # Post-install test scripts.
 test_script:
@@ -30,6 +32,7 @@ test_script:
   - node --version
   - npm --version
   # run tests
+  - cd packages
   - cd settingsViewer
   - npm test
   - cd ..

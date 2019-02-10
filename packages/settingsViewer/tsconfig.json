@@ -4,6 +4,7 @@
         "target": "es2015",
         "noImplicitAny": false,
         "sourceMap": true,
+        "declaration": true,
         "jsx": "react",
         "outDir": "out",
         "experimentalDecorators": true,
