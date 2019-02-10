@@ -5,7 +5,7 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "jsx": "react",
-        "outDir": "dist",
+        "outDir": "out",
         "experimentalDecorators": true,
         "strictNullChecks": true
     },
@@ -14,6 +14,7 @@
     ],
     "exclude": [
       "node_modules",
-      "dist"
+      "dist",
+      "out"
     ]
 }

@@ -4,7 +4,7 @@
   "description": "Webview for VS Code to edit cspell settings",
   "scripts": {
     "build": "webpack",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf out",
     "coverage": "jest --coverage src",
     "start:dev": "webpack-dev-server",
     "start": "http-server dist",
