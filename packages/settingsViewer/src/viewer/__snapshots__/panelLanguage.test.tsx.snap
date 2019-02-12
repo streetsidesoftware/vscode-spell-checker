@@ -53,12 +53,12 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     className="mdc-layout-grid__inner"
   >
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       Language
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       dictionaries
     </div>
@@ -73,7 +73,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       Workspace
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
     >
       Folder
     </div>
@@ -87,17 +87,17 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     className="mdc-layout-grid__inner"
   >
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       English
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       en, en-us
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
     >
       <div
         className="mdc-checkbox mdc-checkbox--upgraded"
@@ -132,7 +132,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
     >
       <div
         className="mdc-checkbox mdc-checkbox--upgraded"
@@ -211,17 +211,17 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     className="mdc-layout-grid__inner"
   >
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       Spanish
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-4"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       es, es-ES
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
     >
       <div
         className="mdc-checkbox mdc-checkbox--upgraded"
@@ -256,7 +256,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
     >
       <div
         className="mdc-checkbox mdc-checkbox--upgraded"
