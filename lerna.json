@@ -1,6 +1,8 @@
 {
   "packages": [
-    "packages/*"
+    "packages/settingsViewer",
+    "packages/server",
+    "packages/client"
   ],
   "version": "1.6.10"
 }

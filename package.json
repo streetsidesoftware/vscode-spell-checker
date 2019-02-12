@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run build",
+    "build": "lerna run build --concurrency 1",
     "build-x": "npm run build-server ; npm run build-client",
     "build-client": "cd packages/client && npm run build",
     "build-server": "cd packages/server && npm run build",
