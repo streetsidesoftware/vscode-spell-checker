@@ -34,7 +34,7 @@ install:
 test_script:
   # run tests
   - npm test
-  - npm run test-integration
+  - npm run test-client-integration
 
   # - cd packages
   # - cd settingsViewer

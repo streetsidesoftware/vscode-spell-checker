@@ -20,7 +20,7 @@ script:
   npm run bootstrap
   npm run build
   npm test
-  npm test-integration
+  npm run test-client-integration
   # - cd packages
   # - cd client
   # - npm install
