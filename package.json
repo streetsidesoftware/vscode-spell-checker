@@ -4,14 +4,17 @@
   "description": "Spell checker for VS Code",
   "private": true,
   "scripts": {
-    "build": "npm run build-server ; npm run build-client",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "build-x": "npm run build-server ; npm run build-client",
     "build-client": "cd packages/client && npm run build",
     "build-server": "cd packages/server && npm run build",
     "test-client": "cd packages/client && npm run test",
     "test-client-integration": "cd packages/client && npm run test && npm run test-integration",
     "test-server": "cd packages/server && npm run test",
     "test-settings-viewer": "cd packages/settingsViewer && npm run test",
-    "test": "npm run test-server && npm run test-client && npm run test-settings-viewer"
+    "test": "lerna run test",
+    "test-x": "npm run test-server && npm run test-client && npm run test-settings-viewer"
   },
   "repository": {
     "type": "git",

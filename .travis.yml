@@ -16,23 +16,27 @@ before_install:
     fi
 
 script:
-  - cd packages
-  - cd client
-  - npm install
-  - cd ..
-  - cd settingsViewer
-  - npm install
-  - npm run build
-  - npm test
-  - cd ..
-  - cd server
-  - npm install
-  - npm run build
-  - npm test
-  - cd ..
-  - cd client
-  - npm install
-  - npm run vscode:prepublish
-  - npm test
-  # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test-integration; fi
-  - npm run test-integration
+  npm install
+  npm run bootstrap
+  npm run build
+  npm test
+  npm test-integration
+  # - cd packages
+  # - cd client
+  # - npm install
+  # - cd ..
+  # - cd settingsViewer
+  # - npm install
+  # - npm run build
+  # - npm test
+  # - cd ..
+  # - cd server
+  # - npm install
+  # - npm run build
+  # - npm test
+  # - cd ..
+  # - cd client
+  # - npm install
+  # - npm run vscode:prepublish
+  # - npm test
+  # - npm run test-integration
