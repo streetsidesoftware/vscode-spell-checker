@@ -54,7 +54,7 @@ export class CSpellClient {
             .concat(LanguageIds.languageIds)
             .filter(uniqueFilter());
         const documentSelector = allowedSchemas
-            .map(schema => uniqueLangIds.map(language => ({ language, schema })))
+            .map(scheme => uniqueLangIds.map(language => ({ language, scheme })))
             .reduce( (a, b) => a.concat(b));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
