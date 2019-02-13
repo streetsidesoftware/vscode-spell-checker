@@ -1,5 +1,5 @@
 import * as Validator from './validator';
-const loremIpsum = require('lorem-ipsum');
+import loremIpsum = require('lorem-ipsum');
 import { CSpellSettings } from 'cspell';
 import * as cspell from 'cspell';
 
@@ -14,7 +14,6 @@ function getSettings(text: string, languageId: string) {
 }
 
 describe('Validator', () => {
-    // this.timeout(5000);
 
     test('validates the validator', () => {
         const text = 'The quick brouwn fox jumpped over the lazzy dog.';
@@ -39,7 +38,7 @@ describe('Validator', () => {
     });
 
     test('validate limit', () => {
-        const text = loremIpsum({ count: 5, unit: 'paragraphs' });
+        const text = loremIpsum({ count: 5, units: 'paragraphs' });
         const languageId = 'plaintext';
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
         const results = Validator.validateText(text, settings);
