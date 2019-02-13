@@ -9,7 +9,7 @@
     "build-x": "npm run build-server ; npm run build-client",
     "build-client": "cd packages/client && npm run build",
     "build-server": "cd packages/server && npm run build",
-    "clean": "lerna clean",
+    "clean": "lerna run clean && lerna clean",
     "test-client": "cd packages/client && npm run test",
     "test-client-integration": "lerna run test-integration",
     "test-server": "cd packages/server && npm run test",

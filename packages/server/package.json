@@ -41,7 +41,7 @@
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build": "npm run compile",
     "clean-build": "npm run clean && npm run build",
-    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
+    "compile": "tsc -p . && installServerIntoExtension ../client ./package.json ./tsconfig.json",
     "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
     "tsc": "tsc -p .",
     "test-watch": "jest --watch",
