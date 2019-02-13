@@ -9,8 +9,9 @@
     "build-x": "npm run build-server ; npm run build-client",
     "build-client": "cd packages/client && npm run build",
     "build-server": "cd packages/server && npm run build",
+    "clean": "lerna clean",
     "test-client": "cd packages/client && npm run test",
-    "test-client-integration": "cd packages/client && npm run test && npm run test-integration",
+    "test-client-integration": "lerna run test-integration",
     "test-server": "cd packages/server && npm run test",
     "test-settings-viewer": "cd packages/settingsViewer && npm run test",
     "test": "lerna run test",
@@ -33,6 +34,33 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker#readme",
   "devDependencies": {
-    "lerna": "^3.11.0"
+    "@types/comment-json": "^1.1.1",
+    "@types/fs-extra": "^5.0.4",
+    "@types/jest": "^24.0.0",
+    "@types/jest-diff": "^20.0.0",
+    "@types/kefir": "^3.8.0",
+    "@types/minimatch": "^3.0.3",
+    "@types/node": "^10.12.24",
+    "@types/pug": "^2.0.4",
+    "@types/source-map-support": "^0.4.1",
+    "@types/xregexp": "^3.0.29",
+    "jest": "^24.1.0",
+    "jest-diff": "^24.0.0",
+    "jest-environment-node": "^24.0.0",
+    "lerna": "^3.11.0",
+    "lorem-ipsum": "^1.0.6",
+    "pug-cli": "^1.0.0-alpha6",
+    "pug-lint": "^2.5.0",
+    "rimraf": "^2.6.3",
+    "source-map-support": "^0.5.10",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3",
+    "vscode": "^1.1.28"
+  },
+  "dependencies": {
+    "code-spell-checker": "file:packages/client",
+    "cspell-settings-webview": "file:packages/settingsViewer",
+    "vscode-spell-checker-server": "file:packages/server"
   }
 }
