@@ -2,8 +2,10 @@
 .vscode-test/**
 .vscode/**
 **/*.map
-**/*.test.js
 **/*.ts
+**/*.test.*
+**/test.*
+**/*.spec.*
 out/test/**
 samples/**
 src/**
@@ -12,3 +14,5 @@ test/**
 tsconfig.json
 typings/**
 vsc-extension-quickstart.md
+coverage/**
+settingsViewer/viewer/**

@@ -1,10 +1,10 @@
 {
   "name": "vscode-spell-checker-server",
+  "private": true,
   "description": "Spell Checker Server",
   "version": "1.6.10",
   "author": "Jason Dent",
   "license": "MIT",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/Jason-Rev/vscode-spell-checker"

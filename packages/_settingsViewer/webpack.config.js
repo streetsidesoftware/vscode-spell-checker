@@ -3,7 +3,11 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const dist = path.join('out', 'webapp');
+const tsConfig = require('./tsconfig.json');
+
+const target = path.resolve(tsConfig['compilerOptions']['outDir']);
+
+const dist = path.join(target, 'webapp');
 
 const baseConfig = {
     devtool: 'source-map',
@@ -12,7 +16,7 @@ const baseConfig = {
         index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
     },
     output: {
-        path: path.join(__dirname, dist),
+        path: dist,
         filename: '[name].bundle.js',
         publicPath: '/',
     },
@@ -73,7 +77,7 @@ const baseConfig = {
         ],
     },
     devServer: {
-        contentBase: path.join(__dirname, dist),
+        contentBase: dist,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',

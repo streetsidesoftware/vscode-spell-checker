@@ -6,7 +6,7 @@
         "sourceMap": true,
         "declaration": true,
         "jsx": "react",
-        "outDir": "out",
+        "outDir": "../client/settingsViewer",
         "experimentalDecorators": true,
         "strictNullChecks": true
     },

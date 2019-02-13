@@ -5,17 +5,10 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run build --concurrency 1",
-    "build-x": "npm run build-server ; npm run build-client",
-    "build-client": "cd packages/client && npm run build",
-    "build-server": "cd packages/server && npm run build",
+    "build": "lerna run build  --no-sort --concurrency 1",
     "clean": "lerna run clean && lerna clean",
-    "test-client": "cd packages/client && npm run test",
     "test-client-integration": "lerna run test-integration",
-    "test-server": "cd packages/server && npm run test",
-    "test-settings-viewer": "cd packages/settingsViewer && npm run test",
-    "test": "lerna run test",
-    "test-x": "npm run test-server && npm run test-client && npm run test-settings-viewer"
+    "test": "lerna run test"
   },
   "repository": {
     "type": "git",

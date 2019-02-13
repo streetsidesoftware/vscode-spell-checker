@@ -1,4 +1,5 @@
 out
-/server/*
+server/*
+settingsViewer/*
 node_modules
 temp

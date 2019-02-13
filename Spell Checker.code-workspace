@@ -7,10 +7,10 @@
 			"path": "packages/client"
 		},
 		{
-			"path": "packages/server"
+			"path": "packages/_server"
 		},
 		{
-			"path": "packages/settingsViewer"
+			"path": "packages/_settingsViewer"
 		}
 	],
 	"settings": {

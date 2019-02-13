@@ -1,18 +1,18 @@
 {
-  "name": "cspell-settings-webview",
+  "name": "code-spell-checker-settings-webview",
+  "private": true,
   "version": "1.6.10",
   "description": "Webview for VS Code to edit cspell settings",
   "typings": "out",
   "main": "out",
   "scripts": {
     "build": "tsc -p . && webpack",
-    "clean": "rimraf viewer && rimraf out",
+    "clean": "rimraf ../client/settingsViewer",
     "coverage": "jest --coverage src",
     "start:dev": "webpack-dev-server",
     "start": "http-server dist",
     "test": "jest src"
   },
-  "private": true,
   "keywords": [],
   "author": "Jason Dent",
   "license": "MIT",
