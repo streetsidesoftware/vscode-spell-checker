@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as t from './pugCSpellInfo';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -93,14 +92,14 @@ const info: t.TemplateVariables = {
 };
 
 describe('Verify Template Renders', () => {
-    it('Renders the template to html', async () => {
+    test('Renders the template to html', async () => {
         const html = t.render(info);
-        expect(html).to.not.be.empty;
-        expect(html).to.contain('test.ts');
-        expect(html).to.contain('two');
-        expect(html).to.contain(imagesPath);
+        expect(Object.keys(html)).not.toHaveLength(0);
+        expect(html).toEqual(expect.stringContaining('test.ts'));
+        expect(html).toEqual(expect.stringContaining('two'));
+        expect(html).toEqual(expect.stringContaining(imagesPath));
     });
-    it('Renders the template to html again', async () => {
+    test('Renders the template to html again', async () => {
         const html = t.render({
             filename: 'main.cpp',
             fileURI: 'file://main.cpp',
@@ -127,10 +126,10 @@ describe('Verify Template Renders', () => {
         const indexFile = getPathToTemp('index.html');
         await fs.mkdirp(path.dirname(indexFile));
         await fs.writeFile(indexFile, html);
-        expect(html).to.not.be.empty;
-        expect(html).to.contain('main.cpp');
-        expect(html).to.not.contain('<code>');
-        expect(html).to.contain('&lt;code&gt;');
+        expect(Object.keys(html)).not.toHaveLength(0);
+        expect(html).toEqual(expect.stringContaining('main.cpp'));
+        expect(html).toEqual(expect.not.stringContaining('<code>'));
+        expect(html).toEqual(expect.stringContaining('&lt;code&gt;'));
     });
 });
 

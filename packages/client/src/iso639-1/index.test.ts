@@ -1,35 +1,38 @@
-import {expect} from 'chai';
 import { normalizeCode, isValidCode, lookupCode } from './index';
 
 describe('Validation', () => {
-    it('tests normalizeCode', () => {
-        expect(normalizeCode('en')).to.be.equal('en');
-        expect(normalizeCode('en-US')).to.be.equal('en-US');
-        expect(normalizeCode('en-gb')).to.be.equal('en-GB');
-        expect(normalizeCode('en_US')).to.be.equal('en-US');
-        expect(normalizeCode('EN_us')).to.be.equal('en-US');
-        expect(normalizeCode('enUS')).to.be.equal('en-US');
-        expect(normalizeCode('bad-code')).to.be.equal('bad-code');
-        expect(normalizeCode('eses')).to.be.equal('es-ES');
-        expect(normalizeCode('walk')).to.be.equal('wa-LK');
-        expect(normalizeCode('four')).to.be.equal('fo-UR');
+    test('tests normalizeCode', () => {
+        expect(normalizeCode('en')).toBe('en');
+        expect(normalizeCode('en-US')).toBe('en-US');
+        expect(normalizeCode('en-gb')).toBe('en-GB');
+        expect(normalizeCode('en_US')).toBe('en-US');
+        expect(normalizeCode('EN_us')).toBe('en-US');
+        expect(normalizeCode('enUS')).toBe('en-US');
+        expect(normalizeCode('bad-code')).toBe('bad-code');
+        expect(normalizeCode('eses')).toBe('es-ES');
+        expect(normalizeCode('walk')).toBe('wa-LK');
+        expect(normalizeCode('four')).toBe('fo-UR');
     });
 
-    it('tests isValidCode', () => {
-        expect(isValidCode('en'), 'en').to.be.true;
-        expect(isValidCode('en-UK'), 'en-UK').to.be.false;
-        expect(isValidCode('en-GB'), 'en-GB').to.be.true;
-        expect(isValidCode('walk'), 'walk').to.be.false;
+    test('tests isValidCode', () => {
+        // 'en'
+        expect(isValidCode('en')).toBe(true);
+        // 'en-UK'
+        expect(isValidCode('en-UK')).toBe(false);
+        // 'en-GB'
+        expect(isValidCode('en-GB')).toBe(true);
+        // 'walk'
+        expect(isValidCode('walk')).toBe(false);
     });
 
-    it('tests lookupCode', () => {
-        expect(lookupCode('')).to.be.undefined;
-        expect(lookupCode('en')).to.not.be.undefined;
-        expect(lookupCode('en')!.lang).to.be.equal('English');
-        expect(lookupCode('en')!.country).to.be.equal('');
-        expect(lookupCode('es_ES')).to.be.undefined;
-        expect(lookupCode('es-ES')).to.not.be.undefined;
-        expect(lookupCode('es-ES')!.lang).to.be.equal('Spanish');
-        expect(lookupCode('es-ES')!.country).to.be.equal('Spain');
+    test('tests lookupCode', () => {
+        expect(lookupCode('')).toBeUndefined();
+        expect(lookupCode('en')).toBeDefined();
+        expect(lookupCode('en')!.lang).toBe('English');
+        expect(lookupCode('en')!.country).toBe('');
+        expect(lookupCode('es_ES')).toBeUndefined();
+        expect(lookupCode('es-ES')).toBeDefined();
+        expect(lookupCode('es-ES')!.lang).toBe('Spanish');
+        expect(lookupCode('es-ES')!.country).toBe('Spain');
     });
 });

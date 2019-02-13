@@ -1,9 +1,8 @@
-import { expect } from 'chai';
 import * as server from './server';
 import * as serverSettings from './serverSettings';
 
 describe('Validate Server Settings', () => {
-    it('Tests extracting dictionaries by local', () => {
+    test('Tests extracting dictionaries by local', () => {
         const langSetting: server.LanguageSetting[]  = [
             { local: 'en,en-US', languageId: '*', dictionaries: ['English'] },
             { local: 'en', languageId: '*', dictionaries: ['Misc'] },
@@ -13,13 +12,13 @@ describe('Validate Server Settings', () => {
 
         const locals = serverSettings.extractDictionariesByLocalLanguageSettings(langSetting);
 
-        expect(locals.get('en')).to.be.not.null;
-        expect(locals.get('en-GB')).to.be.undefined;
-        expect(locals.get('en-US')).to.be.not.null;
-        expect(locals.get('fr')).to.be.not.null;
-        expect(locals.get('*')).to.be.not.null;
-        expect(locals.get('en')).to.contain('English');
-        expect(locals.get('en')).to.contain('Misc');
-        expect(locals.get('en-US')).to.not.contain('Misc');
+        expect(locals.get('en')).not.toBeNull();
+        expect(locals.get('en-GB')).toBeUndefined();
+        expect(locals.get('en-US')).not.toBeNull();
+        expect(locals.get('fr')).not.toBeNull();
+        expect(locals.get('*')).not.toBeNull();
+        expect(locals.get('en')).toEqual(expect.arrayContaining(['English']));
+        expect(locals.get('en')).toEqual(expect.arrayContaining(['Misc']));
+        expect(locals.get('en-US')).toEqual(expect.not.arrayContaining(['Misc']));
     });
 });
