@@ -5,6 +5,8 @@ export interface Message {
     command: Commands;
 }
 
+export type Messages = UpdateCounterMessage | ConfigurationChangeMessage | RequestConfigurationMessage;
+
 export function isMessage(data: any): data is Message {
     return data && typeof data === 'object' && data.hasOwnProperty('command');
 }
