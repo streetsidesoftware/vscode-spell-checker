@@ -1,26 +1,23 @@
 
-export type LocalList = string[];
+export type LocalId = string;
+
+export type LocalList = LocalId[];
 
 export interface LocalSetting {
     user: LocalList;
-    workspace: LocalList;
-    folder: LocalList;
+    workspace: LocalList | undefined;
+    folder: LocalList | undefined;
     file: LocalList;
 }
 
-export interface LocalInfo {
-    code: string;
+export interface DictionaryEntry {
     name: string;
-    dictionaries: string[];
-    enabled?: boolean;
-    isInUserSettings?: boolean;
-    isInWorkspaceSettings?: boolean;
-    isInFolderSettings?: boolean;
+    locals: LocalList;
+    description?: string;
 }
 
 export interface Settings {
-    locals: LocalInfo[];
+    locals: LocalSetting;
+    dictionaries: DictionaryEntry[];
 }
-
-
 

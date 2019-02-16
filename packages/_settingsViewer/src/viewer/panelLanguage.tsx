@@ -4,7 +4,7 @@ import {Checkbox} from '@material/react-checkbox';
 import { AppState } from './AppState';
 import * as spellCheckIcon from './images/SpellCheck.xs.png';
 import {tf} from '../api/utils';
-import { LocalInfo } from '../api/settings';
+import { LocalInfo } from './AppState';
 
 type OptionalBool = boolean | undefined;
 type PropertyNamesOfTypeS<T, S> = { [K in keyof T]: T[K] extends S ? K : never }[keyof T];
@@ -17,7 +17,7 @@ export function checkboxLocalInfo(appState: AppState, local: LocalInfo, index: n
         indeterminate={local[field] === undefined}
         onChange={(e) => {
             const v = e.target.indeterminate ? undefined : e.target.checked;
-            appState.settings.locals[index][field] = v;
+            appState.locals[index][field] = v;
         }}
         initRipple={() => {}}
     ></Checkbox>;
@@ -26,10 +26,9 @@ export function checkboxLocalInfo(appState: AppState, local: LocalInfo, index: n
 export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
-        const settings = appState.settings;
         const checkbox = (local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) =>
             checkboxLocalInfo(appState, local, index, field);
-        const locals = settings.locals.map((local, index) => <Row key={index}>
+        const locals = appState.locals.map((local, index) => <Row key={index}>
             <Cell columns={3}>{local.name}</Cell>
             <Cell columns={3}>{local.dictionaries.join(', ')}</Cell>
             <Cell columns={2}>

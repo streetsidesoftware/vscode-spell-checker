@@ -1,6 +1,17 @@
 import { isConfigurationChangeMessage, UpdateCounterMessage, ConfigurationChangeMessage, isMessage, isUpdateCounterMessage } from './message';
+import { Settings } from './settings';
 
 describe('Validate Messages', () => {
+    const sampleSettings: Settings = {
+        locals: {
+            user: ['en'],
+            workspace: undefined,
+            folder: undefined,
+            file: ['en'],
+        },
+        dictionaries: [],
+    };
+
     it('isMessage', () => {
         const msgUpdateCounter: UpdateCounterMessage = {
             command: 'UpdateCounter',
@@ -8,11 +19,7 @@ describe('Validate Messages', () => {
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
-            value: {
-                settings: {
-                    locals: []
-                }
-            },
+            value: { settings: sampleSettings },
         };
         expect(isMessage({ command: 'UpdateCounter' })).toBe(true);
         expect(isMessage(msgUpdateCounter)).toBe(true);
@@ -27,11 +34,7 @@ describe('Validate Messages', () => {
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
-            value: {
-                settings: {
-                    locals: []
-                }
-            },
+            value: { settings: sampleSettings },
         };
         expect(isConfigurationChangeMessage({ command: 'UpdateCounter' })).toBe(false);
         expect(isConfigurationChangeMessage(msgUpdateCounter)).toBe(false);
@@ -46,11 +49,7 @@ describe('Validate Messages', () => {
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
-            value: {
-                settings: {
-                    locals: []
-                }
-            },
+            value: { settings: sampleSettings },
         };
         expect(isUpdateCounterMessage({ command: 'UpdateCounter' })).toBe(false);
         expect(isUpdateCounterMessage(msgUpdateCounter)).toBe(true);

@@ -1,8 +1,19 @@
 import { MessageBus } from "./MessageBus";
 import { WebviewApi } from "./vscode/VsCodeWebviewApi";
 import { RequestConfigurationMessage, ConfigurationChangeMessage } from "./message";
+import { Settings } from './settings';
 
 describe('Validate MessageBus', () => {
+    const sampleSettings: Settings = {
+        locals: {
+            user: ['en'],
+            workspace: undefined,
+            folder: undefined,
+            file: ['en'],
+        },
+        dictionaries: [],
+    };
+
     test('constructor', () => {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => webviewApi,
@@ -37,7 +48,7 @@ describe('Validate MessageBus', () => {
         const listenerB = bus.listenFor('ConfigurationChangeMessage', onConfigurationChangeMessage);
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
-        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: { locals: [] }} });
+        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
         bus.postMessage({ command: 'UpdateCounter', value: 5 });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
@@ -46,7 +57,7 @@ describe('Validate MessageBus', () => {
         listenerA.dispose();
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
-        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: { locals: [] }} });
+        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
         bus.postMessage({ command: 'UpdateCounter', value: 5 });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
@@ -55,7 +66,7 @@ describe('Validate MessageBus', () => {
         listenerB.dispose();
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
-        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: { locals: [] }} });
+        bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
         bus.postMessage({ command: 'UpdateCounter', value: 5 });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);

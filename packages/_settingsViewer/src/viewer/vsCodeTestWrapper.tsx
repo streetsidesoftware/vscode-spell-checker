@@ -5,34 +5,45 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage } from '../api/message';
+import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage, UpdateCounterMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings } from '../api/settings';
+import { Settings, LocalSetting } from '../api/settings';
 import {tf} from '../api/utils';
+import { MessageBus } from '../api';
 
 require('./app.scss');
 
 class AppState {
-  @observable counter = 0;
-  @observable settings: Settings = {
-    locals: [
-        {
-            code: 'en',
-            name: 'English',
-            dictionaries: ['en', 'en-us'],
-            enabled: true,
-            isInUserSettings: true,
+    @observable counter = 0;
+    @observable settings: Settings = {
+        locals: {
+            user: ['en', 'es'],
+            workspace: undefined,
+            folder: undefined,
+            file: ['en'],
         },
-        {
-            code: 'es',
-            name: 'Spanish',
-            dictionaries: ['es', 'es-ES'],
-            enabled: true,
-            isInUserSettings: true,
-        },
-    ],
-};
+        dictionaries: [
+            {
+                name: 'en_US',
+                locals: ['en', 'en-us'],
+                description: 'US English Dictionary'
+            },
+            {
+                name: 'es_ES',
+                locals: ['es', 'es-es'],
+                description: 'Spanish Dictionary'
+            },
+        ],
+    }
 }
+
+type LocalFields = keyof LocalSetting;
+const localDisplay: [LocalFields, string][] = [
+    ['user', 'Global'],
+    ['workspace', 'Workspace'],
+    ['folder', 'Folder'],
+    ['file', 'File'],
+];
 
 @observer
 class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
@@ -43,44 +54,25 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
             <div>
                 <Grid>
                     <Row>
+                        <Cell columns={2}>
+                            Scope
+                        </Cell>
+                        <Cell columns={10}>
+                            Value
+                        </Cell>
+                    </Row>
+                    {localDisplay.map(([field, name]) => <Row id={field}>
+                        <Cell columns={2}>{name}</Cell>
+                        <Cell columns={10}>{(settings.locals[field] || ['-']).join(', ')}</Cell>
+                    </Row>)}
+
+                </Grid>
+                <Grid>
+                    <Row>
                         <Cell columns={12}>
                             {appState.counter}
                         </Cell>
                     </Row>
-                    <Row>
-                        <Cell columns={1}>code</Cell>
-                        <Cell columns={2}>name</Cell>
-                        <Cell columns={2}>dictionaries</Cell>
-                        <Cell columns={2}>user</Cell>
-                        <Cell columns={2}>workspace</Cell>
-                        <Cell columns={2}>folder</Cell>
-                        <Cell columns={1}>enabled</Cell>
-                    </Row>
-                    {settings.locals.map((local, index) =>
-                        <Row>
-                        <Cell columns={1}>
-                            {local.code}
-                        </Cell>
-                        <Cell columns={2}>
-                            {local.name}
-                        </Cell>
-                        <Cell columns={2}>
-                            {local.dictionaries.join(', ')}
-                        </Cell>
-                        <Cell columns={2}>
-                            {tf(local.isInUserSettings)}
-                        </Cell>
-                        <Cell columns={2}>
-                            {tf(local.isInWorkspaceSettings)}
-                        </Cell>
-                        <Cell columns={2}>
-                            {tf(local.isInFolderSettings)}
-                        </Cell>
-                        <Cell columns={1}>
-                            {tf(local.enabled)}
-                        </Cell>
-                        </Row>
-                    )}
                     <Row>
                         <Cell columns={12}>
                             <Button
@@ -100,8 +92,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
 
      onUpdateConfig = () => {
          console.log('onUpdateConfig');
-         this.props.appState.settings.locals.forEach(local => local.enabled = !local.enabled);
-         vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
+         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
      }
 }
 
@@ -118,24 +109,10 @@ reaction(
 */
 ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getElementById('root'));
 
-const vsCodeApi = new VsCodeWebviewApi();
+const messageBus = new MessageBus();
 
-vsCodeApi.onmessage = event => {
-    const message = event.data;
-
-    if (!isMessage(message)) {
-        return;
-    }
-
-    console.log(message.command);
-
-    if (isUpdateCounterMessage(message)) {
-        appState.counter = message.value;
-        // For fun, let's send it back.
-        vsCodeApi.postMessage(message);
-    } else if (isConfigurationChangeMessage(message)) {
-        appState.settings = message.value.settings;
-    } else if (isRequestConfigurationMessage(message)) {
-        vsCodeApi.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
-    }
-};
+messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => appState.counter = msg.value);
+messageBus.listenFor(
+    'RequestConfigurationMessage',
+    () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
+);

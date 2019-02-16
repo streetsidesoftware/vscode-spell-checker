@@ -16,7 +16,7 @@ export class MessageBus {
         this.vsCodeApi.onmessage = (msg: MessageEvent) => this.respondToMessage(msg);
     }
 
-    listenFor<M extends Message>(cmd: M['command'], fn: (message: M) => any): Listener {
+    listenFor<M extends Messages>(cmd: M['command'], fn: (message: M) => any): Listener {
         const listener = {
             fn,
             cmd,
