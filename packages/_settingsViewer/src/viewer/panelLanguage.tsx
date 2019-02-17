@@ -5,19 +5,21 @@ import { AppState } from './AppState';
 import * as spellCheckIcon from './images/SpellCheck.xs.png';
 import {tf} from '../api/utils';
 import { LocalInfo } from './AppState';
+import { LocalSetting, LocalId } from '../api/settings';
 
-type OptionalBool = boolean | undefined;
-type PropertyNamesOfTypeS<T, S> = { [K in keyof T]: T[K] extends S ? K : never }[keyof T];
-type BooleanKeyOfLocalInfo = Exclude<PropertyNamesOfTypeS<LocalInfo, OptionalBool>, undefined>;
+type LocalSettingField = keyof LocalSetting;
 
 
-export function checkboxLocalInfo(appState: AppState, local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) {
+export function checkboxLocalInfo(appState: AppState, code: LocalId, field: LocalSettingField) {
+    const isEnabled = appState.isLocalEnabled(field, code);
+    const checked = isEnabled || false;
+    const indeterminate =  isEnabled === undefined;
     return <Checkbox
-        checked={!!local[field]}
-        indeterminate={local[field] === undefined}
+        checked={checked}
+        indeterminate={indeterminate}
         onChange={(e) => {
-            const v = e.target.indeterminate ? undefined : e.target.checked;
-            appState.locals[index][field] = v;
+            const checked = e.target.indeterminate ? false : e.target.checked;
+            appState.setLocal(field, code, checked);
         }}
         initRipple={() => {}}
     ></Checkbox>;
@@ -26,19 +28,19 @@ export function checkboxLocalInfo(appState: AppState, local: LocalInfo, index: n
 export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
-        const checkbox = (local: LocalInfo, index: number, field: BooleanKeyOfLocalInfo) =>
-            checkboxLocalInfo(appState, local, index, field);
+        const checkbox = (local: LocalInfo, field: LocalSettingField) =>
+            checkboxLocalInfo(appState, local.code, field);
         const locals = appState.locals.map((local, index) => <Row key={index}>
-            <Cell columns={3}>{local.name}</Cell>
+            <Cell columns={3}>{local.name}<br/>{local.code}</Cell>
             <Cell columns={3}>{local.dictionaries.join(', ')}</Cell>
             <Cell columns={2}>
-                {checkbox(local, index, 'isInUserSettings')}
+                {checkbox(local, 'user')}
             </Cell>
             <Cell columns={2}>
-                {checkbox(local, index, 'isInWorkspaceSettings')}
+                {checkbox(local, 'workspace')}
             </Cell>
             <Cell columns={1}>
-                {checkbox(local, index, 'isInFolderSettings')}
+                {checkbox(local, 'folder')}
             </Cell>
             <Cell columns={1}>{tf(local.enabled)}</Cell>
         </Row>);

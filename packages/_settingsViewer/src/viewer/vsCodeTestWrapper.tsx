@@ -33,6 +33,11 @@ class AppState {
                 locals: ['es', 'es-es'],
                 description: 'Spanish Dictionary'
             },
+            {
+                name: 'fr_fr',
+                locals: ['fr', 'fr-fr'],
+                description: 'French Dictionary'
+            },
         ],
     }
 }
@@ -111,7 +116,10 @@ ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getEleme
 
 const messageBus = new MessageBus();
 
-messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => appState.counter = msg.value);
+messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => {
+    appState.counter = msg.value;
+    messageBus.postMessage({ command: 'UpdateCounter', value: msg.value });
+});
 messageBus.listenFor(
     'RequestConfigurationMessage',
     () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })

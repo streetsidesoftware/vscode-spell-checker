@@ -6,8 +6,8 @@ exports[`Language Panel Verification checkboxLocalInfo 1`] = `
   onAnimationEnd={[Function]}
 >
   <input
-    aria-checked="mixed"
-    checked={false}
+    aria-checked={false}
+    checked={true}
     className="mdc-checkbox__native-control"
     disabled={false}
     onChange={[Function]}
@@ -90,11 +90,13 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
       English
+      <br />
+      en
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      en, en-us
+      en_US
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
@@ -213,12 +215,140 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      Spanish
+      English United States
+      <br />
+      en-US
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      es, es-ES
+      en_US
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked={false}
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      false
+    </div>
+  </div>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      Spanish
+      <br />
+      es
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      es_ES
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
@@ -328,7 +458,385 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
     >
-      true
+      false
+    </div>
+  </div>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      Spanish Spain
+      <br />
+      es-ES
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      es_ES
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked={false}
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      false
+    </div>
+  </div>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      French
+      <br />
+      fr
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      fr_fr
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked={false}
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      false
+    </div>
+  </div>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      French France
+      <br />
+      fr-FR
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
+    >
+      fr_fr
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked={false}
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded"
+        onAnimationEnd={[Function]}
+      >
+        <input
+          aria-checked="mixed"
+          checked={false}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-1"
+    >
+      false
     </div>
   </div>
 </div>
