@@ -5,6 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Viewer Chrome",
+            "url": "http://localhost:3000",
+            "preLaunchTask": "Client Build",
+            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Tester Chrome",
+            "url": "http://localhost:3000/test.html",
+            "preLaunchTask": "Client Build",
+            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Jest All",
