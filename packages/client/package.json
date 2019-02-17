@@ -32,7 +32,7 @@
     "activationEvents": [
         "*"
     ],
-    "main": "./out/src/extension",
+    "main": "./out/extension",
     "contributes": {
         "menus": {
             "editor/context": [

@@ -1,5 +1,5 @@
 import { MessageBus } from "./MessageBus";
-import { WebviewApi } from "./vscode/VsCodeWebviewApi";
+import { WebviewApi } from "./WebviewApi";
 import { RequestConfigurationMessage, ConfigurationChangeMessage } from "./message";
 import { Settings } from './settings';
 
@@ -21,7 +21,6 @@ describe('Validate MessageBus', () => {
         }
 
         expect(new MessageBus(webviewApi).vsCodeApi).toBe(webviewApi);
-        expect(new MessageBus().vsCodeApi).not.toBeUndefined();
     });
 
     test('postMessage', () => {

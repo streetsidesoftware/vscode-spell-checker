@@ -8,11 +8,10 @@
 		"moduleResolution": "node",
 		"outDir": "out",
 		"sourceMap": true,
-		"rootDir": "."
+		"rootDir": "src"
 	},
 	"include": [
-		"src",
-		"test"
+		"src"
 	],
 	"exclude": [
 		"node_modules",

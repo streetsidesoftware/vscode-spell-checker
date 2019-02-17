@@ -1,4 +1,4 @@
-import { VsCodeWebviewApi, WebviewApi } from './vscode/VsCodeWebviewApi';
+import { WebviewApi } from './WebviewApi';
 import { Message, Commands, isMessage, Messages } from './message';
 
 export interface Listener {
@@ -8,11 +8,9 @@ export interface Listener {
 }
 
 export class MessageBus {
-    readonly vsCodeApi: WebviewApi;
     protected listeners = new Map<Commands, Set<Listener>>();
 
-    constructor(_vsCodeApi?: WebviewApi) {
-        this.vsCodeApi = _vsCodeApi || new VsCodeWebviewApi();
+    constructor(readonly vsCodeApi: WebviewApi) {
         this.vsCodeApi.onmessage = (msg: MessageEvent) => this.respondToMessage(msg);
     }
 

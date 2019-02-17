@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs-extra';
-// import * as x from 'cspell-settings-webview';
 import * as path from 'path';
+import { Settings } from '../../settingsViewer/api/settings';
+import * as settingsViewer from '../../settingsViewer';
+import { MessageBus, ConfigurationChangeMessage } from '../../settingsViewer';
+import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 
-const root = path.join(path.dirname(require.resolve('cspell-settings-webview')), 'webapp');
-const viewerWebAppHtml = fs.readFile(path.join(root, 'index.html'), 'utf-8');
+const viewerPath = path.join('settingsViewer', 'webapp');
 
 const cats = {
     'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
@@ -20,7 +22,40 @@ const columnToCat = new Map<vscode.ViewColumn, keyof typeof cats>([
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
+const settings: Settings = {
+    locals: {
+        user: ['en', 'fr'],
+        workspace: undefined,
+        folder: ['de'],
+        file: ['en'],
+    },
+    dictionaries: [
+        {
+            name: 'en_US',
+            locals: ['en', 'en-us'],
+            description: 'US English Dictionary'
+        },
+        {
+            name: 'es_ES',
+            locals: ['es', 'es-es'],
+            description: 'Spanish Dictionary'
+        },
+        {
+            name: 'fr_fr',
+            locals: ['fr', 'fr-fr'],
+            description: 'French Dictionary'
+        },
+        {
+            name: 'de_DE',
+            locals: ['de', 'de_DE'],
+            description: 'German Dictionary'
+        },
+    ],
+};
+
 export function activate(context: vscode.ExtensionContext) {
+    const root = context.asAbsolutePath(viewerPath);
+
     context.subscriptions.push(vscode.commands.registerCommand('cSpell.cat', () => {
         const column = vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn || vscode.ViewColumn.Active;
         if (currentPanel) {
@@ -28,11 +63,13 @@ export function activate(context: vscode.ExtensionContext) {
         } else {
             currentPanel = createView(context, column);
         }
-        updateView(currentPanel);
+        updateView(currentPanel, root);
     }));
 }
 
 function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn) {
+    const root = context.asAbsolutePath(viewerPath);
+
     const extPath = context.extensionPath;
     const options = {
         enableScripts: true,
@@ -48,76 +85,55 @@ function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn)
 
     panel.onDidChangeViewState((e) => {
         const panel = e.webviewPanel;
-        updateView(panel);
+        updateView(panel, root);
+    });
+
+    const messageBus = new MessageBus(webviewApiFromPanel(panel));
+    messageBus.listenFor('RequestConfigurationMessage', (msg) => {
+        vscode.window.showErrorMessage(msg.command);
+        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { settings } });
+    });
+    messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
+        vscode.window.showErrorMessage(msg.command);
+        settings.locals = msg.value.settings.locals;
     });
 
     return panel;
+}
+
+function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
+    let _listener: MessageListener | undefined;
+
+    const disposable = panel.webview.onDidReceiveMessage((msg) => {
+        if (_listener) {
+            _listener({ data: msg });
+        }
+    });
+
+    const webviewApi: WebviewApi = {
+        set onmessage(listener: MessageListener) {
+            _listener = listener;
+        },
+        postMessage(msg) {
+            panel.webview.postMessage(msg);
+            return webviewApi;
+        },
+        // disposable,
+    };
+
+    return webviewApi;
 }
 
 function getCat(column: vscode.ViewColumn): keyof typeof cats {
     return columnToCat.get(column) || 'Coding Cat';
 }
 
-async function updateView(panel: vscode.WebviewPanel) {
+async function updateView(panel: vscode.WebviewPanel, root: string) {
     const column = panel.viewColumn || vscode.ViewColumn.Active;
     const cat = getCat(column);
     const html = getHtml2(root);
     panel.title = cat;
     panel.webview.html = html;
-}
-
-function getWebviewContent(cat: keyof typeof cats) {
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Coding</title>
-</head>
-<body>
-    <img src="${cats[cat]}" width="300" />
-    <h1 id="window-keys">Window Keys</h1>
-    <h2 id="window-props">Window Properties</h2>
-    <h2 id="acquire">acquire</h2>
-    <code id="vscode">vscode</code>
-
-    <script>
-        (function() {
-            const windowKeysElm = document.getElementById('window-keys');
-            const windowPropsElm = document.getElementById('window-props');
-            windowKeysElm.textContent = JSON.stringify(Object.keys(window).filter(k => k.match(/^a/)));
-            windowPropsElm.textContent = JSON.stringify(Object.getOwnPropertyNames(window).filter(k => k.match(/^a/)));
-            document.getElementById('acquire').textContent = (acquireVsCodeApi ? 'yes' : 'no') + ' | ' + (global ? 'global' : 'no global');
-            const vscode = acquireVsCodeApi();
-            document.getElementById('vscode').textContent = navigator.userAgent;
-        }())
-    </script>
-
-</body>
-</html>`;
-}
-
-
-function getHtml(root: string) {
-    const resource = vscode.Uri.file(root).with({ scheme: 'vscode-resource' });
-return `
-<!DOCTYPE html>
-<html>
-    <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSpell Settings Viewer</title>
-    <body>
-    <iframe
-        id="viewer-frame"
-        src="${resource}/index.html"
-        frameborder="0"
-        style="display: block; margin: 0px; overflow: hidden; position: absolute; width: 100%; height: 100%; visibility: visible;"
-    >
-    </iframe>
-    </body>
-</html>
-`;
 }
 
 function getHtml2(root: string) {

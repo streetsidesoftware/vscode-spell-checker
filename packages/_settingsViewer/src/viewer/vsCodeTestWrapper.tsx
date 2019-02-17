@@ -114,7 +114,7 @@ reaction(
 */
 ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getElementById('root'));
 
-const messageBus = new MessageBus();
+const messageBus = new MessageBus(new VsCodeWebviewApi());
 
 messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => {
     appState.counter = msg.value;

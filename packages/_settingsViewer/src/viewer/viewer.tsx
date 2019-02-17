@@ -5,10 +5,11 @@ import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message
 import {AppState} from './AppState';
 import { SettingsViewer } from './SettingsViewer';
 import { MessageBus } from '../api';
+import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 
 require('./app.scss');
 
-const messageBus = new MessageBus();
+const messageBus = new MessageBus(new VsCodeWebviewApi());
 const appState = new AppState();
 reaction(() => appState.timer, value => messageBus.postMessage({ command: 'UpdateCounter', value: value * 2 }));
 reaction(

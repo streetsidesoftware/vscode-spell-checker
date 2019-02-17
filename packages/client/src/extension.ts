@@ -47,7 +47,7 @@ export function activate(context: ExtensionContext): Thenable<ExtensionApi> {
     performance.mark('cspell_activate_start');
 
     // The server is implemented in node
-    const serverModule = context.asAbsolutePath(path.join('server', 'src', 'server.js'));
+    const serverModule = context.asAbsolutePath(path.join('server', 'server.js'));
 
     // Get the cSpell Client
     const client = CSpellClient.create(serverModule);

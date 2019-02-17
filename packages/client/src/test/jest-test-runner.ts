@@ -11,21 +11,25 @@ const fromRoot = (...subPaths: string[]): string => path.resolve(rootDir, ...sub
 
 const jestConfig = {
     rootDir: rootDir,
-    roots: [ '<rootDir>/test' ],
+    roots: [ '<rootDir>/src/test' ],
     verbose: true,
     colors: true,
+    collectCoverage: false,
     transform: JSON.stringify({ '^.+\\.ts$': 'ts-jest' }),
     runInBand: true, // Required due to the way the "vscode" module is injected.
     testRegex: '\\.(test|spec)\\.ts$',
     testEnvironment: fromRoot('out/test/jest-vscode-environment.js'),
     setupTestFrameworkScriptFile: fromRoot('out/test/jest-vscode-framework-setup.js'),
     moduleFileExtensions: [ 'ts', 'tsx', 'js', 'jsx', 'json', 'node' ],
+    testPathIgnorePatterns: [ "/node_modules/", ],
     globals: JSON.stringify({
         'ts-jest': {
             tsConfig: fromRoot('tsconfig.json')
         }
     })
 };
+
+console.error(JSON.stringify(jestConfig, null, 2));
 
 export async function run(_testRoot: string, callback: TestRunnerCallback) {
     // Enable source map support. This is done in the original Mocha test runner,
@@ -36,7 +40,7 @@ export async function run(_testRoot: string, callback: TestRunnerCallback) {
     forwardStdoutStderrStreams();
 
     try {
-        const { globalConfig, results } = await runCLI(jestConfig, [rootDir]);
+        const { results } = await runCLI(jestConfig, [rootDir]);
 
         const failures = collectTestFailureMessages(results);
 
@@ -49,6 +53,10 @@ export async function run(_testRoot: string, callback: TestRunnerCallback) {
     } catch (e) {
         callback(e);
     }
+}
+
+function sleep(milliseconds: number) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 /**

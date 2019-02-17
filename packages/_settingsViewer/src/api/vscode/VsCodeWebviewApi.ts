@@ -1,3 +1,4 @@
+import { WebviewApi, MessageListener } from '../WebviewApi';
 // interface VsCodeWebviewAPI extends BroadcastChannel { }
 
 interface VsCodeAPI {
@@ -10,19 +11,8 @@ declare function acquireVsCodeApi(): VsCodeAPI;
 
 export const channelName = 'settingsViewer';
 
-export interface BaseMessage {
-    data: any;
-}
-
-export type MessageListener = (e: BaseMessage) => any;
-
 const vsCodeApi = acquireAPI();
 const listeners: MessageListener[] = [];
-
-export interface WebviewApi {
-    postMessage(msg: any): WebviewApi;
-    onmessage: MessageListener | undefined;
-}
 
 export class VsCodeWebviewApi implements WebviewApi {
     private _onmessage?: MessageListener;
