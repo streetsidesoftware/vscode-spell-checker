@@ -46,7 +46,7 @@ export class AppState {
         this.settings.dictionaries.forEach(dict => {
             dict.locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
                 const { code, lang: language, country } = lang;
-                const name = country ? `${language} ${country}` : language;
+                const name = country ? `${language} - ${country}` : language;
                 const user = this.isLocalEnabled('user', code);
                 const file = this.isLocalEnabled('file', code);
                 const workspace = this.isLocalEnabled('workspace', code);

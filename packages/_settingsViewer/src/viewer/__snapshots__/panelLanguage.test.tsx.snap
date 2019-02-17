@@ -215,7 +215,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      English United States
+      English - United States
       <br />
       en-US
     </div>
@@ -467,7 +467,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      Spanish Spain
+      Spanish - Spain
       <br />
       es-ES
     </div>
@@ -719,7 +719,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      French France
+      French - France
       <br />
       fr-FR
     </div>

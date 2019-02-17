@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage, UpdateCounterMessage } from '../api/message';
+import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage, UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, LocalSetting } from '../api/settings';
 import {tf} from '../api/utils';
@@ -123,4 +123,11 @@ messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => {
 messageBus.listenFor(
     'RequestConfigurationMessage',
     () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
+);
+
+messageBus.listenFor(
+    'ConfigurationChangeMessage',
+    (msg: ConfigurationChangeMessage) => {
+        appState.settings = msg.value.settings;
+    }
 );
