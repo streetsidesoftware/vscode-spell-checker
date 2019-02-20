@@ -34,6 +34,12 @@ const methodNames: RequestMethodConstants = {
     splitTextIntoWords: 'splitTextIntoWords',
 };
 
+const defaultGetConfigurationForDocumentResult: GetConfigurationForDocumentResult = {
+    languageEnabled: undefined,
+    fileEnabled: undefined,
+    settings: undefined,
+    docSettings: undefined,
+};
 
 export class CSpellClient {
 
@@ -109,17 +115,25 @@ export class CSpellClient {
         .then((response: ServerResponseIsSpellCheckEnabled) => response);
     }
 
-    public getConfigurationForDocument(document: vscode.TextDocument): Thenable<GetConfigurationForDocumentResult> {
+    public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
+        if (!document) {
+            return defaultGetConfigurationForDocumentResult;
+        }
+
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return Promise.resolve({});
+            return defaultGetConfigurationForDocumentResult;
         }
 
-        return this.client.onReady().then(() => this.sendRequest(
+        await this.client.onReady();
+
+        const result = await this.sendRequest(
             methodNames.getConfigurationForDocument,
             { uri: uri.toString(), languageId }
-        ));
+        );
+
+        return result as GetConfigurationForDocumentResult;
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {

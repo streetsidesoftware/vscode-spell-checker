@@ -63,9 +63,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         public provideTextDocumentContent(_: vscode.Uri): Thenable<string> {
             // console.log(_);
             const editor = vscode.window.activeTextEditor;
-            const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri.toString())
+            const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri)
                 || (editor && editor.document);
-            return this.createInfoHtml(doc);
+            return createInfoHtml(doc);
         }
 
         get onDidChange(): vscode.Event<vscode.Uri> {
@@ -74,57 +74,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
         public update(uri: vscode.Uri) {
             this._onDidChange.fire(uri);
-        }
-
-        private createInfoHtml(document: Maybe<vscode.TextDocument>): Thenable<string> {
-            if (!document) {
-                return Promise.resolve('<body>Select an editor tab.</body>');
-            }
-            const uri = document.uri;
-            const filename = path.basename(uri.path);
-            const fileURI = uri.toString();
-            const diagnostics = client.diagnostics;
-            const diags = diagnostics && diagnostics.get(uri);
-            const allSpellingErrors = (diags || [])
-                .map(d => d.range)
-                .map(range => document.getText(range));
-            const spellingErrors = diags && util.freqCount(allSpellingErrors);
-            autoRefresh(uri);  // Since the diags can change, we need to setup a refresh.
-            return client.getConfigurationForDocument(document).then(response => {
-                const { fileEnabled = false, languageEnabled = false, settings = {}, docSettings = {} } = response;
-                const languageId = document.languageId;
-                const dictionaries = settings.dictionaryDefinitions || [];
-                const local = getLocalSetting();
-                const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
-                const localInfo = composeLocalInfo(settings);
-                const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
-                const dictionariesInUse = new Set(dictionariesForFile);
-                const isDictionaryInUse = (dict: string) => dictionariesInUse.has(dict);
-                const html = pugHtml.render({
-                    fileEnabled,
-                    languageEnabled,
-                    languageId,
-                    filename,
-                    fileURI,
-                    spellingErrors,
-                    linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
-                    linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId),
-                    linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId),
-                    imagesPath,
-                    localInfo,
-                    local,
-                    availableLocals,
-                    genSetLocal,
-                    genSelectInfoTabLink,
-                    genOverrideLocal,
-                    genCommandLink,
-                    dictionariesForFile,
-                    isDictionaryInUse,
-                    dictionaries,
-                    activeTab,
-                });
-                return html;
-            });
         }
     }
 
@@ -159,6 +108,56 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         }
     });
 
+    function createInfoHtml(document: Maybe<vscode.TextDocument>): Thenable<string> {
+        if (!document) {
+            return Promise.resolve('<body>Select an editor tab.</body>');
+        }
+        const uri = document.uri;
+        const filename = path.basename(uri.path);
+        const fileURI = uri.toString();
+        const diagnostics = client.diagnostics;
+        const diags = diagnostics && diagnostics.get(uri);
+        const allSpellingErrors = (diags || [])
+            .map(d => d.range)
+            .map(range => document.getText(range));
+        const spellingErrors = diags && util.freqCount(allSpellingErrors);
+        autoRefresh(uri);  // Since the diags can change, we need to setup a refresh.
+        return client.getConfigurationForDocument(document).then(response => {
+            const { fileEnabled = false, languageEnabled = false, settings = {}, docSettings = {} } = response;
+            const languageId = document.languageId;
+            const dictionaries = settings.dictionaryDefinitions || [];
+            const local = getLocalSetting();
+            const availableLocals = friendlyLocals(serverSettings.extractLocals(settings));
+            const localInfo = composeLocalInfo(settings);
+            const dictionariesForFile = [...(docSettings.dictionaries || [])].sort();
+            const dictionariesInUse = new Set(dictionariesForFile);
+            const isDictionaryInUse = (dict: string) => dictionariesInUse.has(dict);
+            const html = pugHtml.render({
+                fileEnabled,
+                languageEnabled,
+                languageId,
+                filename,
+                fileURI,
+                spellingErrors,
+                linkEnableDisableLanguage: generateEnableDisableLanguageLink(!languageEnabled, languageId),
+                linkEnableLanguage: generateEnableDisableLanguageLink(true, languageId),
+                linkDisableLanguage: generateEnableDisableLanguageLink(false, languageId),
+                imagesPath,
+                localInfo,
+                local,
+                availableLocals,
+                genSetLocal,
+                genSelectInfoTabLink,
+                genOverrideLocal,
+                genCommandLink,
+                dictionariesForFile,
+                isDictionaryInUse,
+                dictionaries,
+                activeTab,
+            });
+            return html;
+        });
+    }
 
     function displayCSpellInfo() {
         return vscode.commands
@@ -169,21 +168,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     vscode.window.showErrorMessage(reason);
                 }
             );
-    }
-
-    function findDocumentInVisibleTextEditors(uri: string):  Maybe<vscode.TextDocument> {
-        const docs = vscode.window.visibleTextEditors
-            .map(e => e.document)
-            .filter(doc => !!doc)
-            .filter(doc => doc.uri.toString() === uri);
-        return docs[0];
-    }
-
-    function findMatchingDocument(uri: string): Maybe<vscode.TextDocument> {
-        const workspace = vscode.workspace || {};
-        const docs = (workspace.textDocuments || [])
-            .filter(doc => doc.uri.toString() === uri);
-        return docs[0] || findDocumentInVisibleTextEditors(uri);
     }
 
     function enableLanguage(languageId: string, uri: string) {
@@ -336,7 +320,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     function determineDoc() {
         const editor = vscode.window.activeTextEditor;
-        return lastDocumentUri && findMatchingDocument(lastDocumentUri.toString())
+        return lastDocumentUri && findMatchingDocument(lastDocumentUri)
             || (editor && editor.document);
     }
 
@@ -382,6 +366,23 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         registration,
         makeDisposable(subOnDidChangeTextDocument),
     );
+}
+
+export function findDocumentInVisibleTextEditors(uri: vscode.Uri):  Maybe<vscode.TextDocument> {
+    const u = uri.toString();
+    const docs = vscode.window.visibleTextEditors
+        .map(e => e.document)
+        .filter(doc => !!doc)
+        .filter(doc => doc.uri.toString() === u);
+    return docs[0];
+}
+
+export function findMatchingDocument(uri: vscode.Uri): Maybe<vscode.TextDocument> {
+    const u = uri.toString();
+    const workspace = vscode.workspace || {};
+    const docs = (workspace.textDocuments || [])
+        .filter(doc => doc.uri.toString() === u);
+    return docs[0] || findDocumentInVisibleTextEditors(uri);
 }
 
 performance.mark('cSpellInfo.ts Done');

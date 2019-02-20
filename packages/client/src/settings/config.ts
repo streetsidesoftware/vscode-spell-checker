@@ -148,7 +148,7 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     return config.update(section, value, target);
 }
 
-function inspectConfig(
+export function inspectConfig(
     resource: Uri | null
 ): Inspect<CSpellUserSettings> {
     const config = getConfiguration(resource);

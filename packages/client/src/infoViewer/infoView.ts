@@ -1,10 +1,15 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs-extra';
 import * as path from 'path';
-import { Settings } from '../../settingsViewer/api/settings';
-import * as settingsViewer from '../../settingsViewer';
+import { Settings, LocalSetting, DictionaryEntry } from '../../settingsViewer/api/settings';
+import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, ConfigurationChangeMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
+import { findMatchingDocument } from './cSpellInfo';
+import { CSpellClient } from '../client';
+import { GetConfigurationForDocumentResult, CSpellUserSettings, DictionaryDefinition } from '../server';
+import { inspectConfig, Inspect } from '../settings';
+import { pipe, extract, map, defaultTo } from '../util/pipe';
+import { strict } from 'assert';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 
@@ -22,55 +27,29 @@ const columnToCat = new Map<vscode.ViewColumn, keyof typeof cats>([
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
-const settings: Settings = {
-    locals: {
-        user: ['en', 'fr'],
-        workspace: undefined,
-        folder: ['de'],
-        file: ['en'],
-    },
-    dictionaries: [
-        {
-            name: 'en_US',
-            locals: ['en', 'en-us'],
-            description: 'US English Dictionary'
-        },
-        {
-            name: 'es_ES',
-            locals: ['es', 'es-es'],
-            description: 'Spanish Dictionary'
-        },
-        {
-            name: 'fr_fr',
-            locals: ['fr', 'fr-fr'],
-            description: 'French Dictionary'
-        },
-        {
-            name: 'de_DE',
-            locals: ['de', 'de_DE'],
-            description: 'German Dictionary'
-        },
-    ],
-};
-
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
 
-    context.subscriptions.push(vscode.commands.registerCommand('cSpell.cat', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('cSpell.cat', async () => {
         const column = vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn || vscode.ViewColumn.Active;
         if (currentPanel) {
             currentPanel.reveal(column);
         } else {
-            currentPanel = createView(context, column);
+            currentPanel = await createView(context, column, client);
         }
         updateView(currentPanel, root);
     }));
 }
 
-function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn) {
+async function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
-
+    let settings: Settings = await (() => {
+        const editor = vscode.window.activeTextEditor;
+        return calcSettings(editor && editor.document, client);
+    })();
+    let lastDocumentUri: Maybe<vscode.Uri> = undefined;
     const extPath = context.extensionPath;
+
     const options = {
         enableScripts: true,
         localResourceRoots: [
@@ -79,27 +58,98 @@ function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn)
         ],
     };
     const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, options);
+    const messageBus = new MessageBus(webviewApiFromPanel(panel));
     panel.onDidDispose(() => {
         currentPanel = undefined;
     }, null, context.subscriptions);
 
-    panel.onDidChangeViewState((e) => {
+    panel.onDidChangeViewState(async (e) => {
         const panel = e.webviewPanel;
+        const editor = vscode.window.activeTextEditor;
+        const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri)
+            || (editor && editor.document);
+        settings = await calcSettings(doc, client);
         updateView(panel, root);
     });
 
-    const messageBus = new MessageBus(webviewApiFromPanel(panel));
-    messageBus.listenFor('RequestConfigurationMessage', (msg) => {
-        vscode.window.showErrorMessage(msg.command);
+    messageBus.listenFor('RequestConfigurationMessage', async (msg) => {
+        const editor = vscode.window.activeTextEditor;
+        const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri)
+            || (editor && editor.document);
+        settings = await calcSettings(doc, client);
         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { settings } });
     });
     messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
-        vscode.window.showErrorMessage(msg.command);
         settings.locals = msg.value.settings.locals;
     });
 
     return panel;
 }
+
+const defaultDocConfig: GetConfigurationForDocumentResult = {
+    languageEnabled: undefined,
+    fileEnabled: undefined,
+    settings: undefined,
+    docSettings: undefined,
+};
+
+async function calcSettings(document: Maybe<vscode.TextDocument>, client: CSpellClient): Promise<Settings> {
+    const config = inspectConfig((document && document.uri) || null);
+    const docConfig = await client.getConfigurationForDocument(document);
+    const settings: Settings = {
+        locals: extractLocalInfoFromConfig(config, docConfig.docSettings),
+        dictionaries: extractDictionariesFromConfig(docConfig.settings),
+    }
+    return settings;
+}
+
+function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
+    if (!config) {
+        return [];
+    }
+
+    const dictionaries = config.dictionaryDefinitions || [];
+    const dictionariesByName = new Map(dictionaries
+        .map(e => ({ name: e.name, locals: [], description: e.description }))
+        .map(e => [e.name, e] as [string, DictionaryEntry]));
+    const languageSettings = config.languageSettings || [];
+    languageSettings.forEach(setting => {
+        const locals = normalizeLocals(setting.local);
+        const dicts = setting.dictionaries || [];
+        dicts.forEach(dict => {
+            const dictEntry = dictionariesByName.get(dict);
+            if (dictEntry) {
+                dictEntry.locals = mergeLocals(dictEntry.locals, locals);
+            }
+        });
+    });
+    return [...dictionariesByName.values()];
+}
+
+function normalizeLocals(local: string | string[] | undefined): string[] {
+    return pipe(local,
+        map(local => typeof local === 'string' ? local : local.join(',')),
+        map(local => local.split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
+        defaultTo([])
+    );
+}
+
+function mergeLocals(left: string[], right: string[]): string[] {
+    return left.concat(right).filter(uniqueFilter());
+}
+
+function extractLocalInfoFromConfig(config: Inspect<CSpellUserSettings>, fileSetting: CSpellUserSettings | undefined): LocalSetting {
+    const extractLanguage = (s?: CSpellUserSettings) => pipe(s, extract('language'), map(s => s.split(',').map(a => a.trim())));
+    const local: LocalSetting = {
+        user: extractLanguage(config.globalValue),
+        workspace: extractLanguage(config.workspaceValue),
+        folder: extractLanguage(config.workspaceFolderValue),
+        file: extractLanguage(fileSetting),
+    }
+
+    return local;
+}
+
 
 function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
     let _listener: MessageListener | undefined;
@@ -131,12 +181,12 @@ function getCat(column: vscode.ViewColumn): keyof typeof cats {
 async function updateView(panel: vscode.WebviewPanel, root: string) {
     const column = panel.viewColumn || vscode.ViewColumn.Active;
     const cat = getCat(column);
-    const html = getHtml2(root);
+    const html = getHtml(root);
     panel.title = cat;
     panel.webview.html = html;
 }
 
-function getHtml2(root: string) {
+function getHtml(root: string) {
     const resource = vscode.Uri.file(root).with({ scheme: 'vscode-resource' });
 return `
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 // Export the cspell settings to the client.
 
 import * as cspell from 'cspell';
-export { LanguageSetting } from 'cspell';
+export { LanguageSetting, DictionaryDefinition } from 'cspell';
 
 export interface SpellCheckerSettings {
     checkLimit?: number;
