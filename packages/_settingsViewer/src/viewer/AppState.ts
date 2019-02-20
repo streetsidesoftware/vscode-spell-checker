@@ -43,8 +43,17 @@ export class AppState {
     @computed get locals(): LocalInfo[] {
         const infos = new Map<string, LocalInfo>();
 
-        this.settings.dictionaries.forEach(dict => {
-            dict.locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
+        const settingLocals = this.settings.locals;
+
+        const locals = [
+            ...(settingLocals.user || []),
+            ...(settingLocals.workspace || []),
+            ...(settingLocals.folder || []),
+            ...(settingLocals.file || []),
+        ];
+
+        const addLocalsToInfos = (locals: string[], dictionaryName: string | undefined) => {
+            locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
                 const { code, lang: language, country } = lang;
                 const name = country ? `${language} - ${country}` : language;
                 const user = this.isLocalEnabled('user', code);
@@ -60,10 +69,15 @@ export class AppState {
                     enabled: file,
                     dictionaries: [],
                 };
-                info.dictionaries.push(dict.name);
+                if (dictionaryName) {
+                    info.dictionaries.push(dictionaryName);
+                }
                 infos.set(name, info);
             });
-        });
+        }
+
+        addLocalsToInfos(locals, undefined);
+        this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
 
         return [...infos].map(([_, info]) => info);
     }

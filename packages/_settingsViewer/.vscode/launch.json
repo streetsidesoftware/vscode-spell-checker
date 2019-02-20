@@ -52,16 +52,6 @@
             "windows": {
                 "program": "${workspaceFolder}/node_modules/jest/bin/jest",
             }
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/dist",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ]
         }
     ]
 }

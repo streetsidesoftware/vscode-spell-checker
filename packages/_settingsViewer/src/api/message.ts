@@ -1,5 +1,8 @@
 import { Settings } from './settings';
-export type Commands = 'UpdateCounter' | 'ConfigurationChangeMessage' | 'RequestConfigurationMessage';
+export type Commands = 'UpdateCounter'
+| 'ConfigurationChangeMessage'
+| 'RequestConfigurationMessage'
+;
 
 export interface Message {
     command: Commands;

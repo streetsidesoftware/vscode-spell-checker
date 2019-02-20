@@ -1,45 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable, reaction, toJS} from 'mobx';
+import {observable, toJS} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { isUpdateCounterMessage, isMessage, isConfigurationChangeMessage, isRequestConfigurationMessage, UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
+import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, LocalSetting } from '../api/settings';
-import {tf} from '../api/utils';
 import { MessageBus } from '../api';
+import { sampleSettings } from './sampleSettings';
 
 require('./app.scss');
 
 class AppState {
     @observable counter = 0;
-    @observable settings: Settings = {
-        locals: {
-            user: ['en', 'es'],
-            workspace: undefined,
-            folder: undefined,
-            file: ['en'],
-        },
-        dictionaries: [
-            {
-                name: 'en_US',
-                locals: ['en', 'en-us'],
-                description: 'US English Dictionary'
-            },
-            {
-                name: 'es_ES',
-                locals: ['es', 'es-es'],
-                description: 'Spanish Dictionary'
-            },
-            {
-                name: 'fr_fr',
-                locals: ['fr', 'fr-fr'],
-                description: 'French Dictionary'
-            },
-        ],
-    }
+    @observable settings: Settings = {...sampleSettings};
 }
 
 type LocalFields = keyof LocalSetting;

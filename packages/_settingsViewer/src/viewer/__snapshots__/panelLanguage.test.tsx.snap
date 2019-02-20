@@ -215,14 +215,14 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      English - United States
+      Spanish
       <br />
-      en-US
+      es
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      en_US
+      es_ES
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
@@ -233,7 +233,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       >
         <input
           aria-checked={false}
-          checked={false}
+          checked={true}
           className="mdc-checkbox__native-control"
           disabled={false}
           onChange={[Function]}
@@ -341,14 +341,14 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      Spanish
+      English - United States
       <br />
-      es
+      en-US
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-3"
     >
-      es_ES
+      en_US
     </div>
     <div
       className="mdc-layout-grid__cell mdc-layout-grid__cell--span-2"
@@ -359,7 +359,7 @@ exports[`Language Panel Verification tests the snapshot 1`] = `
       >
         <input
           aria-checked={false}
-          checked={true}
+          checked={false}
           className="mdc-checkbox__native-control"
           disabled={false}
           onChange={[Function]}

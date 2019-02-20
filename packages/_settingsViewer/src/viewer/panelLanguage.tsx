@@ -42,7 +42,7 @@ export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
             <Cell columns={1}>
                 {checkbox(local, 'folder')}
             </Cell>
-            <Cell columns={1}>{tf(local.enabled)}</Cell>
+            <Cell columns={1}>{tf(local && local.enabled)}</Cell>
         </Row>);
         return (
             <Grid>
