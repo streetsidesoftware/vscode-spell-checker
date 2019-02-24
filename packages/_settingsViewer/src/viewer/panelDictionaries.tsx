@@ -18,14 +18,14 @@ export class PanelDictionaries extends React.Component<{appState: AppState}, {}>
                     <Cell><h3>Dictionaries</h3></Cell>
                 </Row>
                 <Row>
-                    {cols.map(col =>
-                    <Cell columns={8}>
+                    {cols.map((col, index) =>
+                    <Cell columns={8} key={index}>
                         <List twoLine>
                             {col.map(dict =>
                             <ListItem key={dict.name}>
                                 <ListItemGraphic graphic={<MaterialIcon icon='import_contacts'/>} />
                                 <ListItemText primaryText={dict.name} secondaryText={dict.description} />
-                                <ListItemMeta meta={<MaterialIcon icon='check_circle'/>} />
+                                {/*<ListItemMeta meta={<MaterialIcon icon='check_circle'/>} />*/}
                             </ListItem>
                             )}
                         </List>
