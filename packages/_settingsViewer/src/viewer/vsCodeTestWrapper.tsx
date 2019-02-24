@@ -9,7 +9,7 @@ import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, LocalSetting } from '../api/settings';
 import { MessageBus } from '../api';
-import { sampleSettings } from '../test/fixtures/sampleSettings';
+import { sampleSettings } from './samples/sampleSettings';
 
 require('./app.scss');
 

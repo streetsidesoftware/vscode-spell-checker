@@ -1,5 +1,10 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "editor.insertSpaces": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "cfml",
+    "fullstack",
+    "restructuredtext"
+  ]
 }

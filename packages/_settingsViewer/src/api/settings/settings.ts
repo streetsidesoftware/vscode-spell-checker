@@ -1,7 +1,9 @@
 
 export type LocalId = string;
-
 export type LocalList = LocalId[];
+
+export type FileType = string;
+export type FileTypeList = FileType[];
 
 export type ConfigTarget = keyof SettingByConfigTarget<void>;
 
@@ -21,6 +23,7 @@ export type Configs = SettingByConfigTarget<Config | undefined>;
 export interface DictionaryEntry {
     name: string;
     locals: LocalList;
+    fileTypes: FileTypeList;
     description?: string;
 }
 
@@ -32,7 +35,7 @@ export interface Settings {
 
 export interface Config {
     locals: Inherited<LocalList>;
-    fileTypesEnabled: Inherited<string[]>;
+    fileTypesEnabled: Inherited<FileTypeList>;
 }
 
 const targetConst = Object.freeze<SettingByConfigTarget<ConfigTarget>>({

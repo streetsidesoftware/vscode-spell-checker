@@ -109,7 +109,7 @@ function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, file
             return undefined;
         }
         const cfg: Config = {
-            locals: (s.language || '').split(/[,;]/).map(s => s.trim()),
+            locals: normalizeLocals(s.language),
             fileTypesEnabled: s.enabledLanguageIds,
         }
 
@@ -131,31 +131,37 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
 
     const dictionaries = config.dictionaryDefinitions || [];
     const dictionariesByName = new Map(dictionaries
-        .map(e => ({ name: e.name, locals: [], description: e.description }))
+        .map(e => ({ name: e.name, locals: [], fileTypes: [], description: e.description }))
         .map(e => [e.name, e] as [string, DictionaryEntry]));
     const languageSettings = config.languageSettings || [];
     languageSettings.forEach(setting => {
         const locals = normalizeLocals(setting.local);
+        const filetypes = normalizeId(setting.languageId);
         const dicts = setting.dictionaries || [];
         dicts.forEach(dict => {
             const dictEntry = dictionariesByName.get(dict);
             if (dictEntry) {
-                dictEntry.locals = mergeLocals(dictEntry.locals, locals);
+                dictEntry.locals = merge(dictEntry.locals, locals);
+                dictEntry.fileTypes = merge(dictEntry.fileTypes, filetypes);
             }
         });
     });
     return [...dictionariesByName.values()];
 }
 
-function normalizeLocals(local: string | string[] | undefined): string[] {
+function normalizeLocals(local: string | string[] | undefined) {
+    return normalizeId(local);
+}
+
+function normalizeId(local: string | string[] | undefined): string[] {
     return pipe(local,
         map(local => typeof local === 'string' ? local : local.join(',')),
-        map(local => local.split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
+        map(local => local.replace(/\*/g, '').split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
         defaultTo([])
     );
 }
 
-function mergeLocals(left: string[], right: string[]): string[] {
+function merge(left: string[], right: string[]): string[] {
     return left.concat(right).filter(uniqueFilter());
 }
 

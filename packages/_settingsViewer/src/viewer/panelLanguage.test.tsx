@@ -4,6 +4,7 @@ import { LanguagePanel, checkboxLocalInfo } from './panelLanguage';
 import { AppState } from './AppState';
 import { create } from 'react-test-renderer';
 import { LocalSetting, Settings } from '../api/settings';
+import { sampleSettings } from './samples/sampleSettings';
 
 describe('Language Panel Verification', () => {
     it('checkboxLocalInfo', () => {
@@ -38,37 +39,6 @@ describe('Language Panel Verification', () => {
     });
 
     function getSampleAppState(): AppState {
-        const sampleSettings: Settings = {
-            configs: {
-                user: undefined,
-                workspace: undefined,
-                file: undefined,
-                folder: undefined,
-            },
-            locals: {
-                user: ['en', 'es'],
-                workspace: undefined,
-                folder: undefined,
-                file: ['en'],
-            },
-            dictionaries: [
-                {
-                    name: 'en_US',
-                    locals: ['en', 'en-us'],
-                    description: 'US English Dictionary'
-                },
-                {
-                    name: 'es_ES',
-                    locals: ['es', 'es-es'],
-                    description: 'Spanish Dictionary'
-                },
-                {
-                    name: 'fr_fr',
-                    locals: ['fr', 'fr-fr'],
-                    description: 'French Dictionary'
-                },
-            ],
-        }
 
         const appState: AppState = new AppState();
         appState.settings = sampleSettings;

@@ -1,13 +1,7 @@
 import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import { AppState } from './AppState';
-import * as spellCheckIcon from './images/SpellCheck.xs.png';
-import {tf} from '../api/utils';
-import { LocalInfo } from './AppState';
-import { LocalSetting, LocalId, ConfigTarget } from '../api/settings';
-
-type LocalSettingField = keyof LocalSetting;
-
+import { ConfigTarget } from '../api/settings';
 
 export class PanelConfig extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
