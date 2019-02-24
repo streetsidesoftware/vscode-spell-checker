@@ -1,4 +1,4 @@
-import { tf } from './utils';
+import { tf } from '.';
 
 describe('Utils', () => {
     it('tf', () => {

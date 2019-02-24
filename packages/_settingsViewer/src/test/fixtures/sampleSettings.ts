@@ -1,7 +1,19 @@
-import { Settings } from '../api/settings';
+import { Settings } from '../../api/settings';
 
 
 export const sampleSettings: Settings = {
+    configs: {
+        user: {
+            locals: ['en'],
+            fileTypesEnabled: ['typescript', 'javascript']
+        },
+        workspace: undefined,
+        folder: {
+            locals: ['en', 'de'],
+            fileTypesEnabled: ['typescript', 'javascript', 'java']
+        },
+        file: undefined,
+    },
     locals: {
         user: ["en"],
         workspace: ["en","da"],

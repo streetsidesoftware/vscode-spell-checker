@@ -1,25 +1,30 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import DevTools from 'mobx-react-devtools';
+// import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {VsCodeWebviewApi} from '../api/vscode/VsCodeWebviewApi';
-import {CatPanel} from './cat';
-import {AppState, tabLabels, cats} from './AppState';
+import {AppState, Tab as AppTab} from './AppState';
 import { LanguagePanel } from './panelLanguage';
+import { PanelConfig } from './panelConfig';
+import { isConfigTarget } from '../api/settings';
+import { PanelDictionaries } from './panelDictionaries';
 
 const vsCodeApi = new VsCodeWebviewApi();
-
-const tabs = tabLabels.map((label, index) => (
-    <Tab key={index}>
-        <span className="mdc-tab__text-label">{label}</span>
-    </Tab>
-));
 
 @observer
 export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
     render() {
+        const renderTab = (tab: AppTab, index: number) =>
+            <div key={tab.label} className={appState.activeTabIndex === index ? 'panel active' : 'panel'}>
+                {isConfigTarget(tab.target)
+                    ? <PanelConfig appState={appState} target={tab.target}></PanelConfig>
+                    : tab.target === 'languages' ? <LanguagePanel appState={appState}></LanguagePanel>
+                    : tab.target === 'dictionaries' ? <PanelDictionaries appState={appState}></PanelDictionaries>
+                    : <div></div>
+                }
+            </div>;
         const appState = this.props.appState;
         const activeTabIndex = appState.activeTabIndex || 0;
         return (
@@ -28,17 +33,15 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                     activeIndex={activeTabIndex}
                     handleActiveIndexUpdate={this.activateTab}
                 >
-                    {tabs}
+                    {appState.tabs.map((tab, index) =>
+                        <Tab key={index}>
+                            <span className="mdc-tab__text-label">{tab.label}</span>
+                        </Tab>
+                    )}
                 </TabBar>
 
-                <div className={appState.activeTabIndex === 0 ? 'panel active' : 'panel'}>
-                    <LanguagePanel appState={appState}></LanguagePanel>
-                </div>
-                {cats.map((cat, index) => (
-                    <div key={index.toString()} className={appState.activeTabIndex === (index + 1) ? 'panel active' : 'panel'}>
-                        <CatPanel {...cat}></CatPanel>
-                    </div>
-                ))}
+                {appState.tabs.map(renderTab)}
+
                 <Button
                     raised
                     className="button-alternate"
@@ -52,9 +55,9 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                 >
                     Seconds passed: {appState.timer}
                 </Button>
-                <h2>{appState.activeTabIndex}</h2>
+                <h2>{appState.activeTab.label}</h2>
                 <h2>{appState.counter}</h2>
-
+                {appState.activeTabIndex}
                 {/* <DevTools /> */}
             </div>
         );

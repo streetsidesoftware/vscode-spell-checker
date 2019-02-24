@@ -3,6 +3,12 @@ import { Settings } from './settings';
 
 describe('Validate Messages', () => {
     const sampleSettings: Settings = {
+        configs: {
+            user: undefined,
+            workspace: undefined,
+            file: undefined,
+            folder: undefined,
+        },
         locals: {
             user: ['en'],
             workspace: undefined,

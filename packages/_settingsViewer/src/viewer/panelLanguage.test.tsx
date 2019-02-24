@@ -39,6 +39,12 @@ describe('Language Panel Verification', () => {
 
     function getSampleAppState(): AppState {
         const sampleSettings: Settings = {
+            configs: {
+                user: undefined,
+                workspace: undefined,
+                file: undefined,
+                folder: undefined,
+            },
             locals: {
                 user: ['en', 'es'],
                 workspace: undefined,

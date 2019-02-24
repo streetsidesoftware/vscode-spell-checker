@@ -7,4 +7,3 @@ export function tf(v?: boolean): string {
     : v === null ? 'null'
     : 'false like';
 }
-

@@ -1,14 +1,21 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, isConfigTarget } from '../api/settings/';
 import { normalizeCode, lookupCode, LangCountryPair } from '../iso639-1';
 
-export const cats = [
-    { title: 'Coding Cat', image: 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif', icon: 'home'},
-    { title: 'Compiling Cat', image: 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif', icon: 'face'},
-    { title: 'Testing Cat', image: 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif', icon: 'favorite'},
-];
 
-export const tabLabels = ['Language'].concat(cats.map(cat => cat.title));
+
+export interface Tab {
+    label: string;
+    target: ConfigTarget | 'dictionaries' | 'languages';
+}
+
+const tabs: Tab[] = [
+    { label: 'User', target: 'user' },
+    { label: 'Workspace', target: 'workspace' },
+    { label: 'Folder', target: 'folder' },
+    { label: 'Dictionaries', target: 'dictionaries' },
+    { label: 'Language', target: 'languages' },
+];
 
 export interface LocalInfo {
     code: string;
@@ -34,10 +41,20 @@ export class AppState {
         },
         dictionaries: [
         ],
+        configs: {
+            user: undefined,
+            workspace: undefined,
+            folder: undefined,
+            file: undefined,
+        }
     };
 
+    @computed get tabs() {
+        return tabs.filter(tab => !isConfigTarget(tab.target) || this.settings.configs[tab.target]);
+    }
+
     @computed get activeTab() {
-        return tabLabels[this.activeTabIndex];
+        return this.tabs[this.activeTabIndex];
     }
 
     @computed get locals(): LocalInfo[] {

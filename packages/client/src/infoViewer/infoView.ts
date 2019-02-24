@@ -1,15 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Settings, LocalSetting, DictionaryEntry } from '../../settingsViewer/api/settings';
+import { Settings, LocalSetting, DictionaryEntry, Configs, Config } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, ConfigurationChangeMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
-import { GetConfigurationForDocumentResult, CSpellUserSettings, DictionaryDefinition } from '../server';
+import { GetConfigurationForDocumentResult, CSpellUserSettings } from '../server';
 import { inspectConfig, Inspect } from '../settings';
 import { pipe, extract, map, defaultTo } from '../util/pipe';
-import { strict } from 'assert';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 
@@ -99,8 +98,30 @@ async function calcSettings(document: Maybe<vscode.TextDocument>, client: CSpell
     const settings: Settings = {
         locals: extractLocalInfoFromConfig(config, docConfig.docSettings),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
+        configs: extractViewerConfigFromConfig(config, docConfig.docSettings),
     }
     return settings;
+}
+
+function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, fileSetting: CSpellUserSettings | undefined): Configs {
+    function extract(s: CSpellUserSettings | undefined): Config | undefined {
+        if (!s) {
+            return undefined;
+        }
+        const cfg: Config = {
+            locals: (s.language || '').split(/[,;]/).map(s => s.trim()),
+            fileTypesEnabled: s.enabledLanguageIds,
+        }
+
+        return cfg;
+    }
+
+    return {
+        user: extract(config.globalValue),
+        workspace: extract(config.workspaceValue),
+        folder: extract(config.workspaceFolderValue),
+        file: extract(fileSetting),
+    }
 }
 
 function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
