@@ -1,10 +1,10 @@
 
 import * as React from 'react';
 import { LanguagePanel, checkboxLocalInfo } from './panelLanguage';
-import { AppState } from './AppState';
+import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { LocalSetting, Settings } from '../api/settings';
-import { sampleSettings } from './samples/sampleSettings';
+import { LocalSetting, Settings } from '../../api/settings';
+import { sampleSettings } from '../samples/sampleSettings';
 
 describe('Language Panel Verification', () => {
     it('checkboxLocalInfo', () => {

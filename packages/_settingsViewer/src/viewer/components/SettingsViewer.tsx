@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import Button from '@material/react-button';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
-import {VsCodeWebviewApi} from '../api/vscode/VsCodeWebviewApi';
-import {AppState, Tab as AppTab} from './AppState';
+import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
+import {AppState, Tab as AppTab} from '../AppState';
 import { LanguagePanel } from './panelLanguage';
 import { PanelConfig } from './panelConfig';
-import { isConfigTarget } from '../api/settings';
+import { isConfigTarget } from '../../api/settings';
 import { PanelDictionaries } from './panelDictionaries';
 
 const vsCodeApi = new VsCodeWebviewApi();

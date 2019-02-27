@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { SettingsViewer } from './SettingsViewer';
-import { AppState } from './AppState';
+import { AppState } from '../AppState';
 // import { create } from 'react-test-renderer';
 
 // function createNodeMock(element) {

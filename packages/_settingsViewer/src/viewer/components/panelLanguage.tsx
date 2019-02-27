@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import {Checkbox} from '@material/react-checkbox';
-import { AppState } from './AppState';
-import * as spellCheckIcon from './images/SpellCheck.xs.png';
-import {tf} from '../api/utils';
-import { LocalInfo } from './AppState';
-import { LocalSetting, LocalId } from '../api/settings';
+import { AppState } from '../AppState';
+import * as spellCheckIcon from '../images/SpellCheck.xs.png';
+import {tf} from '../../api/utils';
+import { LocalInfo } from '../AppState';
+import { LocalSetting, LocalId } from '../../api/settings';
 
 type LocalSettingField = keyof LocalSetting;
 

@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {reaction, toJS} from 'mobx';
 import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
 import {AppState} from './AppState';
-import { SettingsViewer } from './SettingsViewer';
+import { SettingsViewer } from './components/SettingsViewer';
 import { MessageBus } from '../api';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 

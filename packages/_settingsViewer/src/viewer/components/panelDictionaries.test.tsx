@@ -1,8 +1,8 @@
 
 import * as React from 'react';
-import { AppState } from './AppState';
+import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { sampleSettings } from './samples/sampleSettings';
+import { sampleSettings } from '../samples/sampleSettings';
 import { PanelDictionaries } from './panelDictionaries';
 
 describe('Dictionary Panel Verification', () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { AppState } from './AppState';
-import { ConfigTarget } from '../api/settings';
+import { AppState } from '../AppState';
+import { ConfigTarget } from '../../api/settings';
 
 export class PanelConfig extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {

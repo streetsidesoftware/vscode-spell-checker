@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import List, {ListItem, ListItemText, ListItemGraphic, ListItemMeta} from '@material/react-list';
 import MaterialIcon from '@material/react-material-icon';
-import { AppState } from './AppState';
+import { AppState } from '../AppState';
 
 
 export class PanelDictionaries extends React.Component<{appState: AppState}, {}> {
