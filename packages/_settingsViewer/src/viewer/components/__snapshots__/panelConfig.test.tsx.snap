@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Config Panel Verification tests the snapshot 1`] = `
+<div
+  className="mdc-layout-grid"
+>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+    >
+      <h3>
+        Language
+      </h3>
+      <div>
+        en
+      </div>
+    </div>
+  </div>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
+    >
+      <h3>
+        File Types
+      </h3>
+      <div>
+        asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
+      </div>
+    </div>
+  </div>
+</div>
+`;
