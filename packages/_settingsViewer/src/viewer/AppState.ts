@@ -1,8 +1,10 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget } from '../api/settings/';
-import { normalizeCode, lookupCode, LangCountryPair } from '../iso639-1';
+import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget } from '../api/settings/';
+import { normalizeCode, lookupCode } from '../iso639-1';
+import { compareBy, compareEach, reverse, compareByRev } from '../api/utils/Comparable';
 
 
+type Maybe<T> = T | undefined;
 
 export interface Tab {
     label: string;
@@ -17,6 +19,15 @@ const tabs: Tab[] = [
     { label: 'Language', target: 'languages' },
 ];
 
+export interface LanguageInfo {
+    code: string;
+    name: string;
+    dictionaries: string[];
+    enabled: boolean;
+}
+
+export interface LanguageConfig extends SettingByConfigTarget<Maybe<LanguageInfo[]>> {}
+
 export interface LocalInfo {
     code: string;
     name: string;
@@ -28,7 +39,18 @@ export interface LocalInfo {
 }
 
 
-export class AppState {
+export interface State {
+    activeTabIndex: number;
+    timer: number;
+    counter: number;
+    settings: Settings;
+    tabs: Tab[];
+    activeTab: Tab;
+    locals: LocalInfo[];
+    languageConfig: LanguageConfig;
+}
+
+export class AppState implements State {
     @observable activeTabIndex = 0;
     @observable timer = 0;
     @observable counter = 0;
@@ -99,6 +121,50 @@ export class AppState {
         return [...infos].map(([_, info]) => info);
     }
 
+    @computed get languageConfig(): LanguageConfig {
+        const calcConfig = (target: ConfigTarget): Maybe<LanguageInfo[]> => {
+            const config = this.settings.configs[target];
+            if (!config) {
+                return undefined;
+            }
+            const locals = config.locals || []; // todo: calc inheritance
+
+            const infos = new Map<string, LanguageInfo>();
+
+            const addLocalsToInfos = (locals: string[], dictionaryName: string | undefined) => {
+                locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
+                    const { code, lang: language, country } = lang;
+                    const name = country ? `${language} - ${country}` : language;
+                    const enabled = !!this.isLocalEnabled(target, code);
+                    const info: LanguageInfo = infos.get(name) || {
+                        code,
+                        name,
+                        enabled,
+                        dictionaries: [],
+                    };
+                    if (dictionaryName) {
+                        info.dictionaries.push(dictionaryName);
+                    }
+                    infos.set(name, info);
+                });
+            }
+            addLocalsToInfos(locals, undefined);
+            this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
+
+            return [...infos.values()].sort(compareEach(
+                compareByRev('enabled'),
+                compareBy('name'),
+            ));
+        };
+
+        return {
+            user: calcConfig('user'),
+            workspace: calcConfig('workspace'),
+            folder: calcConfig('folder'),
+            file: calcConfig('file'),
+        }
+    }
+
     constructor() {
         setInterval(() => {
             this.timer += 1;
@@ -132,3 +198,5 @@ export class AppState {
 function notUndefined<T>(a : T): a is Exclude<T, undefined> {
     return a !== undefined;
 }
+
+

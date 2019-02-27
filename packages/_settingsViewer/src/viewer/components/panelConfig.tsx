@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
+import { SectionLanguage } from './sectionLangauge';
+import { SectionFiletypes } from './sectionFiletypes';
 
 export class PanelConfig extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
@@ -12,24 +14,10 @@ export class PanelConfig extends React.Component<{appState: AppState, target: Co
             return <div></div>
         }
         return (
-            <Grid>
-                <Row>
-                    <Cell columns={12}>
-                        <h3>Language</h3>
-                        <div>
-                        {config.locals ? config.locals.join(', ') : '- none -'}
-                        </div>
-                    </Cell>
-                </Row>
-                <Row>
-                    <Cell columns={12}>
-                        <h3>File Types</h3>
-                        <div>
-                        {config.fileTypesEnabled ? config.fileTypesEnabled.join(', ') : '- none -'}
-                        </div>
-                    </Cell>
-                </Row>
-            </Grid>
+            <div>
+                <SectionLanguage appState={appState} target={target}></SectionLanguage>
+                <SectionFiletypes appState={appState} target={target}></SectionFiletypes>
+            </div>
         );
      }
 }

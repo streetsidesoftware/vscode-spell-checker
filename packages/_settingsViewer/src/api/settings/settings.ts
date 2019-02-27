@@ -18,7 +18,7 @@ export interface SettingByConfigTarget<T> {
 
 export interface LocalSetting extends SettingByConfigTarget<LocalList | undefined> {}
 
-export type Configs = SettingByConfigTarget<Config | undefined>;
+export interface Configs extends SettingByConfigTarget<Config | undefined> {};
 
 export interface DictionaryEntry {
     name: string;
