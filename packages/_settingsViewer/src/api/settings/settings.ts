@@ -53,6 +53,16 @@ export function isConfigTarget(target: string | undefined): target is ConfigTarg
     return target !== undefined && setOfConfigTargets.has(target);
 }
 
+export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>({
+    user: 0,
+    workspace: 1,
+    folder: 2,
+    file: 3,
+});
+
+
+export const configTargetOrder = Object.freeze(Object.entries(configTargetToIndex).sort((a, b) => a[1] - b[1]).map(a => a[0]) as ConfigTarget[]);
+
 /*
 locals
 filetypes
