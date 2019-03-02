@@ -3,18 +3,10 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const tsConfig = require('./tsconfig.json');
-
-const target = path.resolve(tsConfig['compilerOptions']['outDir']);
-
-const dist = path.join(target, 'webapp');
+const dist = path.join(__dirname, 'out', 'webapp');
 
 const baseConfig = {
-    devtool: 'source-map',
     mode: 'production',
-    entry: {
-        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
-    },
     output: {
         path: dist,
         filename: '[name].bundle.js',
@@ -76,15 +68,6 @@ const baseConfig = {
             },
         ],
     },
-    devServer: {
-        contentBase: dist,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-        },
-        compress: true,
-        port: 3000,
-    },
     plugins: [
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
@@ -102,48 +85,4 @@ const baseConfig = {
     ],
 };
 
-const viewerConfig = {
-    ...baseConfig,
-    entry: {
-        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
-    },
-    plugins: [
-        new CheckerPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'CSpell Settings Viewer',
-            hash: true,
-            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
-            inject: 'body',
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
-    ],
-};
-
-const testConfig = {
-    ...baseConfig,
-    entry: {
-        test: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Tester CSpell Settings Viewer',
-            hash: true,
-            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
-            inject: 'body',
-            filename: 'test.html',
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
-    ],
-};
-
-module.exports = [viewerConfig, testConfig];
+module.exports = baseConfig;

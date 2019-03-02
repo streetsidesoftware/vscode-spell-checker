@@ -6,11 +6,11 @@
   "typings": "out",
   "main": "out",
   "scripts": {
-    "build": "tsc -p . && webpack",
-    "clean": "rimraf ../client/settingsViewer",
+    "build": "tsc -p . && webpack --env.production --config webpack.prod.js",
+    "clean": "rimraf ../client/settingsViewer ./out",
     "coverage": "jest --coverage src",
-    "start:dev": "webpack-dev-server",
-    "start": "http-server dist",
+    "start:dev": "webpack-dev-server --config webpack.dev.js",
+    "start": "http-server out/webapp",
     "test": "jest src"
   },
   "keywords": [],
