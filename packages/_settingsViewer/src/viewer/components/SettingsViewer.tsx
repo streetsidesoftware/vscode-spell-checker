@@ -8,7 +8,7 @@ import { LanguagePanel } from './panelLanguage';
 import { PanelConfig } from './panelConfig';
 import { isConfigTarget } from '../../api/settings';
 import { PanelDictionaries } from './panelDictionaries';
-import { PanelDebug } from './panelDebug';
+import { PanelAbout } from './panelAbout';
 
 @observer
 export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
@@ -21,7 +21,7 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                     ? <PanelConfig appState={appState} target={tab.target}></PanelConfig>
                     : tab.target === 'languages' ? <LanguagePanel appState={appState}></LanguagePanel>
                     : tab.target === 'dictionaries' ? <PanelDictionaries appState={appState}></PanelDictionaries>
-                    : tab.target === 'debug' ? <PanelDebug appState={appState}></PanelDebug>
+                    : tab.target === 'about' ? <PanelAbout appState={appState}></PanelAbout>
                     : <div></div>
                 }
             </div>;

@@ -9,7 +9,7 @@ type Maybe<T> = T | undefined;
 
 export interface Tab {
     label: string;
-    target: ConfigTarget | 'dictionaries' | 'languages' | 'debug';
+    target: ConfigTarget | 'dictionaries' | 'languages' | 'about';
 }
 
 const targetToLabel: SettingByConfigTarget<string> = {
@@ -25,7 +25,7 @@ const tabs: Tab[] = [
     { label: 'Folder', target: 'folder' },
     { label: 'Dictionaries', target: 'dictionaries' },
     { label: 'Language', target: 'languages' },
-    { label: 'Debug', target: 'debug' },
+    { label: 'About', target: 'about' },
 ];
 
 export interface LanguageInfo {
