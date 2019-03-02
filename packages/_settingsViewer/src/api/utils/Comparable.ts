@@ -1,4 +1,4 @@
-export type Comparable = number | string;
+export type Comparable = number | string | boolean;
 export type CompareArg<T> = (keyof T) | ((t: T) => Comparable);
 export type CompareFn<T> = (a: T, b: T) => number;
 

@@ -2,160 +2,173 @@
 
 exports[`Config Panel Verification tests the snapshot 1`] = `
 <div>
-  <div
-    className="mdc-layout-grid"
-  >
-    <div
-      className="mdc-layout-grid__inner"
-    >
-      <div
-        className="mdc-layout-grid__cell"
+  <div>
+    <h3>
+      Language 
+      
+    </h3>
+    <div>
+      <ul
+        aria-orientation="vertical"
+        className="mdc-list mdc-list--two-line"
       >
-        <h3>
-          Language
-        </h3>
-      </div>
-    </div>
-    <div
-      className="mdc-layout-grid__inner"
-    >
-      <div
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8"
-      >
-        <ul
-          aria-orientation="vertical"
-          className="mdc-list mdc-list--two-line"
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={0}
         >
-          <li
-            className="mdc-list-item"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            tabIndex={0}
-          >
-            <i
-              className="material-icons mdc-list-item__graphic"
-              tabIndex={-1}
-            >
-              import_contacts
-            </i>
-            <span
-              className="mdc-list-item__text"
-              tabIndex={-1}
-            >
-              <span
-                className="mdc-list-item__primary-text"
-                tabIndex={-1}
-              >
-                English
-              </span>
-              <span
-                className="mdc-list-item__secondary-text"
-                tabIndex={-1}
-              >
-                en_us
-              </span>
-            </span>
-          </li>
-          <li
-            className="mdc-list-item"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
+          <i
+            className="material-icons mdc-list-item__graphic"
             tabIndex={-1}
           >
-            <i
-              className="material-icons mdc-list-item__graphic"
-              tabIndex={-1}
-            >
-              import_contacts
-            </i>
-            <span
-              className="mdc-list-item__text"
-              tabIndex={-1}
-            >
-              <span
-                className="mdc-list-item__primary-text"
-                tabIndex={-1}
-              >
-                Czech
-              </span>
-              <span
-                className="mdc-list-item__secondary-text"
-                tabIndex={-1}
-              >
-                cs-cz
-              </span>
-            </span>
-          </li>
-          <li
-            className="mdc-list-item"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
             tabIndex={-1}
           >
-            <i
-              className="material-icons mdc-list-item__graphic"
-              tabIndex={-1}
-            >
-              import_contacts
-            </i>
             <span
-              className="mdc-list-item__text"
+              className="mdc-list-item__primary-text"
               tabIndex={-1}
             >
-              <span
-                className="mdc-list-item__primary-text"
-                tabIndex={-1}
-              >
-                English - United Kingdom
-              </span>
-              <span
-                className="mdc-list-item__secondary-text"
-                tabIndex={-1}
-              >
-                en-gb
-              </span>
+              Czech
             </span>
-          </li>
-          <li
-            className="mdc-list-item"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              cs-cz
+            </span>
+          </span>
+          <i
+            className="material-icons mdc-list-item__meta"
             tabIndex={-1}
           >
-            <i
-              className="material-icons mdc-list-item__graphic"
-              tabIndex={-1}
-            >
-              import_contacts
-            </i>
+            check_box_outline_blank
+          </i>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
             <span
-              className="mdc-list-item__text"
+              className="mdc-list-item__primary-text"
               tabIndex={-1}
             >
-              <span
-                className="mdc-list-item__primary-text"
-                tabIndex={-1}
-              >
-                English - United States
-              </span>
-              <span
-                className="mdc-list-item__secondary-text"
-                tabIndex={-1}
-              >
-                en_us
-              </span>
+              English
             </span>
-          </li>
-        </ul>
-      </div>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <i
+            className="material-icons mdc-list-item__meta"
+            tabIndex={-1}
+          >
+            check_box
+          </i>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United Kingdom
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en-gb
+            </span>
+          </span>
+          <i
+            className="material-icons mdc-list-item__meta"
+            tabIndex={-1}
+          >
+            check_box_outline_blank
+          </i>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United States
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <i
+            className="material-icons mdc-list-item__meta"
+            tabIndex={-1}
+          >
+            check_box_outline_blank
+          </i>
+        </li>
+      </ul>
     </div>
   </div>
   <div

@@ -1,7 +1,8 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, configTargetOrder, Config, Configs, LocalList } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
-import { compareBy, compareEach, reverse, compareByRev } from '../api/utils/Comparable';
+import { compareBy, compareEach } from '../api/utils/Comparable';
+import { uniqueFilter } from '../api/utils';
 
 
 type Maybe<T> = T | undefined;
@@ -9,6 +10,13 @@ type Maybe<T> = T | undefined;
 export interface Tab {
     label: string;
     target: ConfigTarget | 'dictionaries' | 'languages';
+}
+
+const targetToLabel: SettingByConfigTarget<string> = {
+    user: 'User',
+    workspace: 'Workspace',
+    folder: 'Folder',
+    file: 'File',
 }
 
 const tabs: Tab[] = [
@@ -26,7 +34,12 @@ export interface LanguageInfo {
     enabled: boolean;
 }
 
-export interface LanguageConfig extends SettingByConfigTarget<Maybe<LanguageInfo[]>> {}
+export interface LanguageConfig {
+    languages: LanguageInfo[];
+    inherited?: ConfigTarget;
+}
+
+export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
 
 export interface LocalInfo {
     code: string;
@@ -47,8 +60,26 @@ export interface State {
     tabs: Tab[];
     activeTab: Tab;
     locals: LocalInfo[];
-    languageConfig: LanguageConfig;
+    languageConfig: LanguageConfigs;
 }
+
+export interface FoundInConfig<T> {
+    value: Exclude<T, undefined>,
+    target: ConfigTarget
+}
+
+type InheritedFromTarget<T> = undefined | {
+    value: Exclude<T, undefined>,
+    target: ConfigTarget;
+}
+
+
+type InheritMembers<T> = {
+    [K in keyof T]: InheritedFromTarget<T[K]>;
+}
+
+type InheritedConfig = InheritMembers<Config>;
+type InheritedConfigs = SettingByConfigTarget<InheritedConfig>;
 
 export class AppState implements State {
     @observable activeTabIndex = 0;
@@ -121,13 +152,14 @@ export class AppState implements State {
         return [...infos].map(([_, info]) => info);
     }
 
-    @computed get languageConfig(): LanguageConfig {
-        const calcConfig = (target: ConfigTarget): Maybe<LanguageInfo[]> => {
-            const config = this.settings.configs[target];
+    @computed get languageConfig(): LanguageConfigs {
+        const calcConfig = (target: ConfigTarget): LanguageConfig => {
+            const config = this.inheritedConfigs[target];
             if (!config) {
-                return undefined;
+                return { languages: [] };
             }
-            const locals = config.locals || []; // todo: calc inheritance
+            const locals = config.locals; // todo: calc inheritance
+            const inherited = locals && locals.target;
 
             const infos = new Map<string, LanguageInfo>();
 
@@ -135,7 +167,8 @@ export class AppState implements State {
                 locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
                     const { code, lang: language, country } = lang;
                     const name = country ? `${language} - ${country}` : language;
-                    const enabled = !!this.isLocalEnabled(target, code);
+                    const found = this.isLocalEnabledEx(target, code);
+                    const enabled = found && found.value || false;
                     const info: LanguageInfo = infos.get(name) || {
                         code,
                         name,
@@ -148,13 +181,18 @@ export class AppState implements State {
                     infos.set(name, info);
                 });
             }
-            addLocalsToInfos(locals, undefined);
+            if (locals) {
+                addLocalsToInfos(locals.value, undefined);
+            }
             this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
 
-            return [...infos.values()].sort(compareEach(
-                compareByRev('enabled'),
-                compareBy('name'),
-            ));
+            return {
+                languages: [...infos.values()].sort(compareEach(
+                    compareBy(info => !info.dictionaries.length),
+                    compareBy('name'),
+                )),
+                inherited
+            };
         };
 
         return {
@@ -165,10 +203,18 @@ export class AppState implements State {
         }
     }
 
+    @computed get inheritedConfigs(): InheritedConfigs {
+        return calcInheritableConfig(this.settings.configs);
+    }
+
     constructor() {
         setInterval(() => {
             this.timer += 1;
         }, 1000);
+    }
+
+    targetToLabel(target: ConfigTarget): string {
+        return targetToLabel[target];
     }
 
     resetTimer() {
@@ -176,23 +222,64 @@ export class AppState implements State {
     }
 
     setLocal(field: ConfigTarget, code: LocalId, checked: boolean) {
+        const inherited = this.inheritedConfigs[field].locals;
+        const locals = inherited && inherited.value || [];
         if (checked) {
-            const locals = this.settings.locals[field] || [];
-            locals.push(code);
-            this.settings.locals[field] = locals;
+            this.setLocals(field, [code, ...locals]);
         } else {
-            const locals = this.settings.locals[field] || [];
-            if (locals.includes(code)) {
-                locals.splice(locals.findIndex(c => c === code), 1);
-                this.settings.locals[field] = locals.length > 0 ? locals : undefined;
+            const filtered = locals.filter(a => a !== code);
+            if (!filtered.length || filtered.length !== locals.length) {
+                this.setLocals(field, filtered);
             }
         }
     }
 
-    isLocalEnabled(field: ConfigTarget, code: LocalId): boolean | undefined {
-        const local = this.settings.locals[field];
-        return local === undefined ? undefined : local.map(normalizeCode).includes(code);
+    setLocals(target: ConfigTarget, locals: LocalList | undefined) {
+        locals = locals ? locals.filter(uniqueFilter()) : undefined;
+        locals = locals && locals.length ? locals : undefined;
+        this.settings.locals[target] = locals;
+        const config = this.settings.configs[target] || {
+            locals: undefined,
+            fileTypesEnabled: undefined,
+        };
+        config.locals = locals;
+        this.settings.configs[target] = config;
     }
+
+    isLocalEnabled(field: ConfigTarget, code: LocalId): boolean | undefined {
+        const found = this.isLocalEnabledEx(field, code);
+        return found === undefined ? undefined : found.value;
+    }
+
+    isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
+        const locals = this.inheritedConfigs[field].locals;
+        if (locals === undefined) return undefined;
+        return  {
+            value: locals.value.map(normalizeCode).includes(code),
+            target: locals.target
+        };
+    }
+}
+
+function calcInheritableConfig(configs: Configs): InheritedConfigs {
+    function peek(target: ConfigTarget, inherited: InheritedConfig): InheritedConfig {
+        const cfg = configs[target];
+        if (cfg == undefined) return inherited;
+        const inCfg = {...inherited};
+        for (const k of Object.keys(inherited) as (keyof InheritedConfig)[]) {
+            const value = cfg[k];
+            if (value !== undefined && value.length > 0) {
+                inCfg[k] = { value, target };
+            }
+        }
+        return inCfg;
+    }
+    const defaultCfg: InheritedConfig = { locals: undefined, fileTypesEnabled: undefined };
+    const user = peek('user', defaultCfg);
+    const workspace = peek('workspace', user);
+    const folder = peek('folder', workspace);
+    const file = peek('file', folder);
+    return { user, workspace, folder, file };
 }
 
 function notUndefined<T>(a : T): a is Exclude<T, undefined> {

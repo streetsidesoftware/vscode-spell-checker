@@ -1,0 +1,826 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: file 1`] = `
+<div>
+  <h3>
+    Language 
+    <span
+      style={
+        Object {
+          "fontSize": "0.65em",
+          "opacity": 0.5,
+        }
+      }
+    >
+      inherited from 
+      workspace
+    </span>
+  </h3>
+  <div>
+    <ul
+      aria-orientation="vertical"
+      className="mdc-list mdc-list--two-line"
+    >
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={0}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Czech
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            cs-cz
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United Kingdom
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en-gb
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United States
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          block
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Danish
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            no dictionaries found
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: folder 1`] = `
+<div>
+  <h3>
+    Language 
+    <span
+      style={
+        Object {
+          "fontSize": "0.65em",
+          "opacity": 0.5,
+        }
+      }
+    >
+      inherited from 
+      workspace
+    </span>
+  </h3>
+  <div>
+    <ul
+      aria-orientation="vertical"
+      className="mdc-list mdc-list--two-line"
+    >
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={0}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Czech
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            cs-cz
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United Kingdom
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en-gb
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United States
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          block
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Danish
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            no dictionaries found
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: user 1`] = `
+<div>
+  <h3>
+    Language 
+    
+  </h3>
+  <div>
+    <ul
+      aria-orientation="vertical"
+      className="mdc-list mdc-list--two-line"
+    >
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={0}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Czech
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            cs-cz
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United Kingdom
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en-gb
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United States
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: workspace 1`] = `
+<div>
+  <h3>
+    Language 
+    
+  </h3>
+  <div>
+    <ul
+      aria-orientation="vertical"
+      className="mdc-list mdc-list--two-line"
+    >
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={0}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Czech
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            cs-cz
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United Kingdom
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en-gb
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          import_contacts
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            English - United States
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            en_us
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box_outline_blank
+        </i>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        role="checkbox"
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          block
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            Danish
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            no dictionaries found
+          </span>
+        </span>
+        <i
+          className="material-icons mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          check_box
+        </i>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

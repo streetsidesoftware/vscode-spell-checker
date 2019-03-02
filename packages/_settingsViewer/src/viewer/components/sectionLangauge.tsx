@@ -10,33 +10,42 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
     render() {
         const appState = this.props.appState;
         const target = this.props.target;
-        const langs = appState.languageConfig[target];
-        if (!langs) {
+        const langConfig = appState.languageConfig[target];
+        const handleSelect = (index) => {
+            console.log(`handelSelect ${index}`);
+            if (!langConfig) return;
+            const langs = langConfig.languages;
+            if (!langs) return;
+            const lang = langs[index];
+            if (!lang) return;
+            this.props.appState.setLocal(target, lang.code, !lang.enabled);
+        };
+        if (!langConfig) {
             return <div></div>
         }
+        const inherited = langConfig.inherited;
+        const note = inherited && inherited !== target ? <span style={{ fontSize: '0.65em', opacity: 0.5}}>inherited from {inherited}</span> : '';
         return (
-            <Grid>
-                <Row>
-                    <Cell><h3>Language</h3></Cell>
-                </Row>
-                <Row>
-                    <Cell columns={8}>
-                        <List twoLine>
-                            {langs.map(entry => {
-                                const hasLocals = entry.dictionaries && entry.dictionaries.length > 0;
-                                const icon = hasLocals ? 'import_contacts' : 'code';
-                                return (
-                                <ListItem key={entry.name}>
-                                    <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
-                                    <ListItemText primaryText={entry.name} secondaryText={entry.dictionaries.join(', ')} />
-                                    {/* <ListItemMeta meta={<Checkbox/>} /> */}
-                                </ListItem>);
+            <div>
+                <h3>Language {note}</h3>
+                <div>
+                    <List twoLine handleSelect={handleSelect}>
+                        {langConfig.languages.map(entry => {
+                            const hasLocals = entry.dictionaries && entry.dictionaries.length > 0;
+                            const icon = hasLocals ? 'import_contacts' : 'block';
+                            const checkbox = entry.enabled ? 'check_box' : 'check_box_outline_blank';
+                            const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
+                            return (
+                            <ListItem key={entry.name} role='checkbox'>
+                                <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
+                                <ListItemText primaryText={entry.name} secondaryText={subText} />
+                                <ListItemMeta meta={<MaterialIcon icon={checkbox}/>}/>
+                            </ListItem>);
 
-                            })}
-                        </List>
-                    </Cell>
-                </Row>
-            </Grid>
+                        })}
+                    </List>
+                </div>
+            </div>
         );
      }
 }

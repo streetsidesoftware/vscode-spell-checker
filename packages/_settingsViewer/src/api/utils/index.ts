@@ -7,3 +7,8 @@ export function tf(v?: boolean): string {
     : v === null ? 'null'
     : 'false like';
 }
+
+export function uniqueFilter<T>() {
+    const seen = new Set<T>();
+    return (v: T) => !!(!seen.has(v) && seen.add(v));
+}

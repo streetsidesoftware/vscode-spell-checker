@@ -24,12 +24,10 @@ describe('Language Panel Verification', () => {
 
         // check what happens when all locals are removed.
         appState.setLocal(field, codeEs, false);
-        instance.props['onChange']({target: { checked: true, indeterminate: true }});
-        expect(appState.isLocalEnabled(field, codeEn)).toBeUndefined();
         instance.props['onChange']({target: { checked: true, indeterminate: false }});
-        expect(appState.isLocalEnabled(field, codeEn)).toBe(true);
-        instance.props['onChange']({target: { checked: false, indeterminate: false }});
-        expect(appState.isLocalEnabled(field, codeEn)).toBeUndefined();
+        const result = appState.isLocalEnabledEx(field, codeEn);
+        expect(result).not.toBeUndefined();
+        expect(result!.target).toBe(field);
     });
 
     it('tests the snapshot', () => {

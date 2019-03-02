@@ -53,6 +53,7 @@ export function isConfigTarget(target: string | undefined): target is ConfigTarg
     return target !== undefined && setOfConfigTargets.has(target);
 }
 
+// Define the order in which configuration is applied.
 export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>({
     user: 0,
     workspace: 1,
