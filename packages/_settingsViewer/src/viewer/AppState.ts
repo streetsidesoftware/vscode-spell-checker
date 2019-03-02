@@ -9,7 +9,7 @@ type Maybe<T> = T | undefined;
 
 export interface Tab {
     label: string;
-    target: ConfigTarget | 'dictionaries' | 'languages' | 'about';
+    target: ConfigTarget | 'dictionaries' | 'about';
 }
 
 const targetToLabel: SettingByConfigTarget<string> = {
@@ -24,7 +24,6 @@ const tabs: Tab[] = [
     { label: 'Workspace', target: 'workspace' },
     { label: 'Folder', target: 'folder' },
     { label: 'Dictionaries', target: 'dictionaries' },
-    { label: 'Language', target: 'languages' },
     { label: 'About', target: 'about' },
 ];
 
@@ -42,17 +41,6 @@ export interface LanguageConfig {
 
 export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
 
-export interface LocalInfo {
-    code: string;
-    name: string;
-    dictionaries: string[];
-    enabled?: boolean;
-    isInUserSettings?: boolean;
-    isInWorkspaceSettings?: boolean;
-    isInFolderSettings?: boolean;
-}
-
-
 export interface State {
     activeTabIndex: number;
     timer: number;
@@ -60,7 +48,6 @@ export interface State {
     settings: Settings;
     tabs: Tab[];
     activeTab: Tab;
-    locals: LocalInfo[];
     languageConfig: LanguageConfigs;
 }
 
@@ -109,48 +96,6 @@ export class AppState implements State {
 
     @computed get activeTab() {
         return this.tabs[this.activeTabIndex];
-    }
-
-    @computed get locals(): LocalInfo[] {
-        const infos = new Map<string, LocalInfo>();
-
-        const settingLocals = this.settings.locals;
-
-        const locals = [
-            ...(settingLocals.user || []),
-            ...(settingLocals.workspace || []),
-            ...(settingLocals.folder || []),
-            ...(settingLocals.file || []),
-        ];
-
-        const addLocalsToInfos = (locals: string[], dictionaryName: string | undefined) => {
-            locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
-                const { code, lang: language, country } = lang;
-                const name = country ? `${language} - ${country}` : language;
-                const user = this.isLocalEnabled('user', code);
-                const file = this.isLocalEnabled('file', code);
-                const workspace = this.isLocalEnabled('workspace', code);
-                const folder = this.isLocalEnabled('folder', code);
-                const info: LocalInfo = infos.get(name) || {
-                    code,
-                    name,
-                    isInFolderSettings: folder,
-                    isInUserSettings: user,
-                    isInWorkspaceSettings: workspace,
-                    enabled: file,
-                    dictionaries: [],
-                };
-                if (dictionaryName) {
-                    info.dictionaries.push(dictionaryName);
-                }
-                infos.set(name, info);
-            });
-        }
-
-        addLocalsToInfos(locals, undefined);
-        this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
-
-        return [...infos].map(([_, info]) => info);
     }
 
     @computed get languageConfig(): LanguageConfigs {

@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {AppState, Tab as AppTab} from '../AppState';
-import { LanguagePanel } from './panelLanguage';
 import { PanelConfig } from './panelConfig';
 import { isConfigTarget } from '../../api/settings';
 import { PanelDictionaries } from './panelDictionaries';
@@ -19,7 +18,6 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
             <div key={tab.label} className={appState.activeTabIndex === index ? 'panel active' : 'panel'}>
                 {isConfigTarget(tab.target)
                     ? <PanelConfig appState={appState} target={tab.target}></PanelConfig>
-                    : tab.target === 'languages' ? <LanguagePanel appState={appState}></LanguagePanel>
                     : tab.target === 'dictionaries' ? <PanelDictionaries appState={appState}></PanelDictionaries>
                     : tab.target === 'about' ? <PanelAbout appState={appState}></PanelAbout>
                     : <div></div>
