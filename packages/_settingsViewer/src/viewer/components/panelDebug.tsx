@@ -1,10 +1,12 @@
 import * as React from 'react';
+import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
 import { Button } from '@material/react-button';
 
 const vsCodeApi = new VsCodeWebviewApi();
 
+@observer
 export class PanelDebug extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;

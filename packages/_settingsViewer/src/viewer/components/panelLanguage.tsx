@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {observer} from 'mobx-react';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import {Checkbox} from '@material/react-checkbox';
 import { AppState } from '../AppState';
@@ -25,6 +26,7 @@ export function checkboxLocalInfo(appState: AppState, code: LocalId, field: Loca
     ></Checkbox>;
 }
 
+@observer
 export class LanguagePanel extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Cell, Grid, Row} from '@material/react-layout-grid';
+import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
@@ -8,20 +8,12 @@ import { Checkbox } from '@material/react-checkbox';
 
 function initRipple(){}
 
+@observer
 export class SectionLanguage extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
-        const appState = this.props.appState;
+        const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
-        const langConfig = appState.languageConfig[target];
-        const handleSelect = (index) => {
-            console.log(`handelSelect ${index}`);
-            if (!langConfig) return;
-            const langs = langConfig.languages;
-            if (!langs) return;
-            const lang = langs[index];
-            if (!lang) return;
-            this.props.appState.setLocal(target, lang.code, !lang.enabled);
-        };
+        const langConfig = this.props.appState.languageConfig[target];
         if (!langConfig) {
             return <div></div>
         }
@@ -49,4 +41,17 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
             </div>
         );
      }
+
+     handleSelect(index: number) {
+        const appState = this.props.appState;
+        const target = this.props.target;
+        const langConfig = appState.languageConfig[target];
+        console.log(`handelSelect ${index} target ${target}`);
+        if (!langConfig) return;
+        const langs = langConfig.languages;
+        if (!langs) return;
+        const lang = langs[index];
+        if (!lang) return;
+        this.props.appState.setLocal(target, lang.code, !lang.enabled);
+    }
 }

@@ -1,9 +1,11 @@
 import * as React from 'react';
+import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import { SectionLanguage } from './sectionLanguage';
 import { SectionFiletypes } from './sectionFiletypes';
 
+@observer
 export class PanelConfig extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
         const appState = this.props.appState;
