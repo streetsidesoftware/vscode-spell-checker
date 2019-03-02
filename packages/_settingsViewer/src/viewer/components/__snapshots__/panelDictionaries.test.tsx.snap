@@ -1,1096 +1,1078 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Dictionary Panel Verification tests the snapshot 1`] = `
-<div
-  className="mdc-layout-grid"
->
-  <div
-    className="mdc-layout-grid__inner"
+<div>
+  <h3>
+    Dictionaries
+  </h3>
+  <ul
+    aria-orientation="vertical"
+    className="mdc-list dictionary_list mdc-list--two-line"
   >
-    <div
-      className="mdc-layout-grid__cell"
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={0}
     >
-      <h3>
-        Dictionaries
-      </h3>
-    </div>
-  </div>
-  <div
-    className="mdc-layout-grid__inner"
-  >
-    <div
-      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-8"
-    >
-      <ul
-        aria-orientation="vertical"
-        className="mdc-list mdc-list--two-line"
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
       >
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          tabIndex={0}
-        >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            select_all
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              companies
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Company names dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+        select_all
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              css
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              CSS Keywords.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          companies
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              csharp
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              C# Keywords and common library functions.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          Company names dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              dotnet
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              .Net keywords.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          css
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            select_all
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              filetypes
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of file types.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          CSS Keywords.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              fonts
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of fonts.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          csharp
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              html
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              HTML keywords.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          C# Keywords and common library functions.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            select_all
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              misc
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of miscellaneous terms.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          dotnet
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              node
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of NodeJS terms.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          .Net keywords.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        select_all
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              npm
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of Top 500 NPM packages.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          filetypes
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            select_all
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              powershell
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Powershell Keywords.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          List of file types.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            select_all
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              softwareTerms
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Common Software Terms.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          fonts
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              typescript
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              JavaScript and Typescript terms.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          List of fonts.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              cpp
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              C/C++ Keywords and common library functions.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          html
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              django
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              List of Python Django Framework keywords.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          HTML keywords.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        select_all
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              elixir
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Elixir dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          misc
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            import_contacts
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              en_us
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              American English Dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            en, en-US
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          List of miscellaneous terms.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            import_contacts
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              en-gb
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              British English Dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            en-GB
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          node
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              fullstack
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Common words encountered during fullstack development
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          List of NodeJS terms.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              golang
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Go Language Dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          npm
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              java
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Java dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          List of Top 500 NPM packages.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        select_all
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              latex
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              LaTeX dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          powershell
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            import_contacts
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              lorem-ipsum
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Lorem-ipsum dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            lorem, lorem-ipsum
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          Powershell Keywords.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        select_all
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              php
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Php dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          softwareTerms
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              python
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Python Keyword Dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          Common Software Terms.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              rust
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Rust Keyword Dictionary
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          typescript
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            code
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              scala
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Scala dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            
-          </span>
-        </li>
-        <li
-          className="mdc-list-item"
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
+          JavaScript and Typescript terms.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
           tabIndex={-1}
         >
-          <i
-            className="material-icons mdc-list-item__graphic"
-            tabIndex={-1}
-          >
-            import_contacts
-          </i>
-          <span
-            className="mdc-list-item__text"
-            tabIndex={-1}
-          >
-            <span
-              className="mdc-list-item__primary-text"
-              tabIndex={-1}
-            >
-              cs-cz
-            </span>
-            <span
-              className="mdc-list-item__secondary-text"
-              tabIndex={-1}
-            >
-              Czech dictionary for cspell.
-            </span>
-          </span>
-          <span
-            className="mdc-list-item__meta"
-            tabIndex={-1}
-          >
-            cs
-          </span>
-        </li>
-      </ul>
-    </div>
-  </div>
+          cpp
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          C/C++ Keywords and common library functions.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          django
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          List of Python Django Framework keywords.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          elixir
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Elixir dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        import_contacts
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          en_us
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          American English Dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        en, en-US
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        import_contacts
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          en-gb
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          British English Dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        en-GB
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          fullstack
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Common words encountered during fullstack development
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          golang
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Go Language Dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          java
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Java dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          latex
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          LaTeX dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        import_contacts
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          lorem-ipsum
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Lorem-ipsum dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        lorem, lorem-ipsum
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          php
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Php dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          python
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Python Keyword Dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          rust
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Rust Keyword Dictionary
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          scala
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Scala dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        
+      </span>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        import_contacts
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        <span
+          className="mdc-list-item__primary-text"
+          tabIndex={-1}
+        >
+          cs-cz
+        </span>
+        <span
+          className="mdc-list-item__secondary-text"
+          tabIndex={-1}
+        >
+          Czech dictionary for cspell.
+        </span>
+      </span>
+      <span
+        className="mdc-list-item__meta"
+        tabIndex={-1}
+      >
+        cs
+      </span>
+    </li>
+  </ul>
 </div>
 `;

@@ -12,16 +12,12 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
             return <div></div>
         }
         return (
-            <Grid>
-                <Row>
-                    <Cell columns={12}>
-                        <h3>File Types</h3>
-                        <div>
-                        {config.fileTypesEnabled ? config.fileTypesEnabled.join(', ') : '- none -'}
-                        </div>
-                    </Cell>
-                </Row>
-            </Grid>
+            <div>
+                <h3>File Types</h3>
+                <div>
+                    {config.fileTypesEnabled ? config.fileTypesEnabled.join(', ') : '- none -'}
+                </div>
+            </div>
         );
      }
 }

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
 import { sampleSettings } from '../samples/sampleSettings';
-import { SectionLanguage } from './sectionLangauge';
+import { SectionLanguage } from './sectionLanguage';
 import { configTargets } from '../../api/settings';
 
 describe('SectionLanguage Verification', () => {

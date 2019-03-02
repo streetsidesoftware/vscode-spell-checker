@@ -6,6 +6,8 @@ import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@ma
 import MaterialIcon from '@material/react-material-icon';
 import { Checkbox } from '@material/react-checkbox';
 
+function initRipple(){}
+
 export class SectionLanguage extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
         const appState = this.props.appState;
@@ -33,13 +35,12 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
                         {langConfig.languages.map(entry => {
                             const hasLocals = entry.dictionaries && entry.dictionaries.length > 0;
                             const icon = hasLocals ? 'import_contacts' : 'block';
-                            const checkbox = entry.enabled ? 'check_box' : 'check_box_outline_blank';
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
                             return (
                             <ListItem key={entry.name} role='checkbox'>
                                 <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
                                 <ListItemText primaryText={entry.name} secondaryText={subText} />
-                                <ListItemMeta meta={<MaterialIcon icon={checkbox}/>}/>
+                                <ListItemMeta meta={<Checkbox checked={entry.enabled} initRipple={initRipple} />}/>
                             </ListItem>);
 
                         })}

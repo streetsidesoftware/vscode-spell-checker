@@ -44,12 +44,38 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               cs-cz
             </span>
           </span>
-          <i
-            className="material-icons mdc-list-item__meta"
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
             tabIndex={-1}
           >
-            check_box_outline_blank
-          </i>
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
         </li>
         <li
           className="mdc-list-item"
@@ -83,12 +109,38 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               en_us
             </span>
           </span>
-          <i
-            className="material-icons mdc-list-item__meta"
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
             tabIndex={-1}
           >
-            check_box
-          </i>
+            <input
+              aria-checked={false}
+              checked={true}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
         </li>
         <li
           className="mdc-list-item"
@@ -122,12 +174,38 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               en-gb
             </span>
           </span>
-          <i
-            className="material-icons mdc-list-item__meta"
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
             tabIndex={-1}
           >
-            check_box_outline_blank
-          </i>
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
         </li>
         <li
           className="mdc-list-item"
@@ -161,32 +239,48 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               en_us
             </span>
           </span>
-          <i
-            className="material-icons mdc-list-item__meta"
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
             tabIndex={-1}
           >
-            check_box_outline_blank
-          </i>
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
         </li>
       </ul>
     </div>
   </div>
-  <div
-    className="mdc-layout-grid"
-  >
-    <div
-      className="mdc-layout-grid__inner"
-    >
-      <div
-        className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12"
-      >
-        <h3>
-          File Types
-        </h3>
-        <div>
-          asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
-        </div>
-      </div>
+  <div>
+    <h3>
+      File Types
+    </h3>
+    <div>
+      asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
     </div>
   </div>
 </div>
