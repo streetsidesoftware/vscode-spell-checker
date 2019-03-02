@@ -1,16 +1,36 @@
-import { compareBy, reverse, compareEach, compareByRev } from './Comparable';
+import { compareBy, reverse, compareEach, compareByRev, compare } from './Comparable';
 
 describe('Validate Comparable', () => {
+    test('compare', () => {
+        expect(compare(1, 2)).toBeLessThan(0);
+        expect(compare(1, 1)).toBe(0);
+        expect(compare(2, 1)).toBeGreaterThan(0);
+        expect(compare('a', 'b')).toBeLessThan(0);
+        expect(compare('a', 'a')).toBe(0);
+        expect(compare('b', 'a')).toBeGreaterThan(0);
+        expect(compare('a', undefined)).toBeLessThan(0);
+        expect(compare(undefined, undefined)).toBe(0);
+        expect(compare(undefined, 'a')).toBeGreaterThan(0);
+        expect(compare(null, undefined)).toBeLessThan(0);
+        expect(compare(undefined, null)).toBeGreaterThan(0);
+        expect(compare('a', null)).toBeLessThan(0);
+        expect(compare(null, null)).toBe(0);
+        expect(compare(null, 'a')).toBeGreaterThan(0);
+        expect(compare(new Date('2018-01-01'), new Date('2018-01-02'))).toBeLessThan(0);
+        expect(compare(new Date('2018-01-01'), new Date('2018-01-01'))).toBe(0);
+        expect(compare(new Date('2018-01-02'), new Date('2018-01-01'))).toBeGreaterThan(0);
+    });
+
     test('compareBy', () => {
         expect(samples().sort(compareBy('name', 'value')).map(a => a.id))
-            .toEqual([0, 1, 3, 2, 4])
+            .toEqual([0, 1, 3, 2, 4]);
         expect(samples().sort(compareBy('value', 'name')).map(a => a.id))
-            .toEqual([3, 4, 2, 0 ,1])
+            .toEqual([3, 4, 2, 0 ,1]);
         expect(samples().sort(compareBy('name', 'maybe')).map(a => a.id))
-            .toEqual([0, 1, 2, 3, 4])
+            .toEqual([0, 1, 2, 3, 4]);
         // Expect undefined to be at the end.
         expect(samples().sort(compareBy('maybe', 'name', 'value')).map(a => a.id))
-            .toEqual([0, 3, 2, 1, 4])
+            .toEqual([0, 3, 2, 1, 4]);
     });
 
     test('reverse', () => {
@@ -24,11 +44,11 @@ describe('Validate Comparable', () => {
         expect(samples().sort(compareEach(
             compareBy('name'),
             compareBy('value')
-        )).map(a => a.id)).toEqual([0, 1, 3, 2, 4])
+        )).map(a => a.id)).toEqual([0, 1, 3, 2, 4]);
         expect(samples().sort(compareEach(
             compareByRev('name'),
             compareBy('value')
-        )).map(a => a.id)).toEqual([4, 3, 2, 0, 1])
+        )).map(a => a.id)).toEqual([4, 3, 2, 0, 1]);
     });
 });
 
