@@ -13,7 +13,7 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
         }
         return (
             <div>
-                <h3>File Types</h3>
+                <h2>File Types</h2>
                 <div>
                     {config.fileTypesEnabled ? config.fileTypesEnabled.join(', ') : '- none -'}
                 </div>

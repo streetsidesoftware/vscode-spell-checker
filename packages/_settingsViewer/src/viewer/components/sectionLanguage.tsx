@@ -21,7 +21,7 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         const note = inherited && inherited !== target ? <span style={{ fontSize: '0.65em', opacity: 0.5}}>inherited from {inherited}</span> : '';
         return (
             <div>
-                <h3>Language {note}</h3>
+                <h2>Language {note}</h2>
                 <div>
                     <List twoLine handleSelect={handleSelect}>
                         {langConfig.languages.map(entry => {

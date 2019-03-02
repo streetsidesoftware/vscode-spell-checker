@@ -2,7 +2,7 @@
 
 exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: file 1`] = `
 <div>
-  <h3>
+  <h2>
     Language 
     <span
       style={
@@ -15,7 +15,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
       inherited from 
       workspace
     </span>
-  </h3>
+  </h2>
   <div>
     <ul
       aria-orientation="vertical"
@@ -353,7 +353,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
 
 exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: folder 1`] = `
 <div>
-  <h3>
+  <h2>
     Language 
     <span
       style={
@@ -366,7 +366,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
       inherited from 
       workspace
     </span>
-  </h3>
+  </h2>
   <div>
     <ul
       aria-orientation="vertical"
@@ -704,10 +704,10 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
 
 exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: user 1`] = `
 <div>
-  <h3>
+  <h2>
     Language 
     
-  </h3>
+  </h2>
   <div>
     <ul
       aria-orientation="vertical"
@@ -980,10 +980,10 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
 
 exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for target: workspace 1`] = `
 <div>
-  <h3>
+  <h2>
     Language 
     
-  </h3>
+  </h2>
   <div>
     <ul
       aria-orientation="vertical"

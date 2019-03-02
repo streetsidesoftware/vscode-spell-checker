@@ -2,9 +2,9 @@
 
 exports[`Dictionary Panel Verification tests the snapshot 1`] = `
 <div>
-  <h3>
+  <h2>
     Dictionaries
-  </h3>
+  </h2>
   <ul
     aria-orientation="vertical"
     className="mdc-list dictionary_list mdc-list--two-line"

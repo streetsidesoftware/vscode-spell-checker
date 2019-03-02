@@ -3,10 +3,10 @@
 exports[`Config Panel Verification tests the snapshot 1`] = `
 <div>
   <div>
-    <h3>
+    <h2>
       Language 
       
-    </h3>
+    </h2>
     <div>
       <ul
         aria-orientation="vertical"
@@ -276,9 +276,9 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
     </div>
   </div>
   <div>
-    <h3>
+    <h2>
       File Types
-    </h3>
+    </h2>
     <div>
       asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
     </div>

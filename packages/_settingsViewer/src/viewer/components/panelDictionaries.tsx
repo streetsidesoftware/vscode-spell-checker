@@ -11,7 +11,7 @@ export class PanelDictionaries extends React.Component<{appState: AppState}, {}>
         const dictionaries = this.props.appState.settings.dictionaries;
         return (
             <div>
-                <h3>Dictionaries</h3>
+                <h2>Dictionaries</h2>
                 <List twoLine className='dictionary_list'>
                     {dictionaries.map(dict => {
                         const hasLocals = dict.locals && dict.locals.length > 0;
