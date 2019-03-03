@@ -11,12 +11,6 @@ describe('Validate MessageBus', () => {
             file: undefined,
             folder: undefined,
         },
-        locals: {
-            user: ['en'],
-            workspace: undefined,
-            folder: undefined,
-            file: ['en'],
-        },
         dictionaries: [],
     };
 

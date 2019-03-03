@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Settings, LocalSetting, DictionaryEntry, Configs, Config } from '../../settingsViewer/api/settings';
+import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, ConfigurationChangeMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
+import { LocalList } from '../../settingsViewer/api/settings';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { GetConfigurationForDocumentResult, CSpellUserSettings } from '../server';
@@ -11,18 +12,7 @@ import { inspectConfig, Inspect } from '../settings';
 import { pipe, extract, map, defaultTo } from '../util/pipe';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
-
-const cats = {
-    'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
-    'Compiling Cat': 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
-    'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif',
-};
-
-const columnToCat = new Map<vscode.ViewColumn, keyof typeof cats>([
-    [vscode.ViewColumn.One,     'Coding Cat'],
-    [vscode.ViewColumn.Two,     'Compiling Cat'],
-    [vscode.ViewColumn.Three,   'Testing Cat'],
-]);
+const title = 'Spell Checker Preferences';
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
@@ -56,7 +46,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             vscode.Uri.file(extPath)
         ],
     };
-    const panel = vscode.window.createWebviewPanel('catCoding', getCat(column), column, options);
+    const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
     const messageBus = new MessageBus(webviewApiFromPanel(panel));
     panel.onDidDispose(() => {
         currentPanel = undefined;
@@ -79,33 +69,26 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { settings } });
     });
     messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
-        settings.locals = msg.value.settings.locals;
+        settings.configs = msg.value.settings.configs;
     });
 
     return panel;
 }
 
-const defaultDocConfig: GetConfigurationForDocumentResult = {
-    languageEnabled: undefined,
-    fileEnabled: undefined,
-    settings: undefined,
-    docSettings: undefined,
-};
-
 async function calcSettings(document: Maybe<vscode.TextDocument>, client: CSpellClient): Promise<Settings> {
     const config = inspectConfig((document && document.uri) || null);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
-        locals: extractLocalInfoFromConfig(config, docConfig.docSettings),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig.docSettings),
+        workspace: mapWorkspace(client.allowedSchemas),
     }
     return settings;
 }
 
 function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, fileSetting: CSpellUserSettings | undefined): Configs {
     function extract(s: CSpellUserSettings | undefined): Config | undefined {
-        if (!s) {
+        if (!s || !Object.keys(s)) {
             return undefined;
         }
         const cfg: Config = {
@@ -165,19 +148,6 @@ function merge(left: string[], right: string[]): string[] {
     return left.concat(right).filter(uniqueFilter());
 }
 
-function extractLocalInfoFromConfig(config: Inspect<CSpellUserSettings>, fileSetting: CSpellUserSettings | undefined): LocalSetting {
-    const extractLanguage = (s?: CSpellUserSettings) => pipe(s, extract('language'), map(s => s.split(',').map(a => a.trim())));
-    const local: LocalSetting = {
-        user: extractLanguage(config.globalValue),
-        workspace: extractLanguage(config.workspaceValue),
-        folder: extractLanguage(config.workspaceFolderValue),
-        file: extractLanguage(fileSetting),
-    }
-
-    return local;
-}
-
-
 function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
     let _listener: MessageListener | undefined;
 
@@ -201,15 +171,41 @@ function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
     return webviewApi;
 }
 
-function getCat(column: vscode.ViewColumn): keyof typeof cats {
-    return columnToCat.get(column) || 'Coding Cat';
+function mapWorkspace(allowedSchemas: Set<string>): Workspace {
+    function mapWorkspaceFolder(wsf: vscode.WorkspaceFolder): WorkspaceFolder {
+        const { name, index } = wsf;
+        return {
+            uri: wsf.uri.toString(true),
+            name,
+            index,
+        }
+    }
+
+    function mapTextDocuments(td: vscode.TextDocument): TextDocument {
+        const { fileName, languageId, isUntitled } = td;
+        return {
+            uri: td.uri.toString(true),
+            fileName,
+            languageId,
+            isUntitled
+        }
+    }
+
+    const { name, workspaceFolders, textDocuments } = vscode.workspace;
+    const workspace: Workspace = {
+        name,
+        workspaceFolders: workspaceFolders
+            ? workspaceFolders.map(mapWorkspaceFolder)
+            : undefined,
+        textDocuments: textDocuments.filter(td => allowedSchemas.has(td.uri.scheme)).map(mapTextDocuments),
+    }
+
+    return workspace;
 }
 
 async function updateView(panel: vscode.WebviewPanel, root: string) {
-    const column = panel.viewColumn || vscode.ViewColumn.Active;
-    const cat = getCat(column);
     const html = getHtml(root);
-    panel.title = cat;
+    panel.title = title;
     panel.webview.html = html;
 }
 
@@ -222,10 +218,10 @@ return `
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSpell Settings Viewer</title>
-    <link href="${resource}/index.css?0b5b4992f9ef4a32d10c" rel="stylesheet"></head>
+    <link href="${resource}/index.css" rel="stylesheet"></head>
     <body>
     <div id="root">Root</div>
-    <script type="text/javascript" src="${resource}/index.bundle.js?0b5b4992f9ef4a32d10c"></script></body>
+    <script type="text/javascript" src="${resource}/index.bundle.js"></script></body>
 </html>
 `;
 }

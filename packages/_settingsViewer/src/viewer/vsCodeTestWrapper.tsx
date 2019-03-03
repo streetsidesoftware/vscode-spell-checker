@@ -7,7 +7,7 @@ import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings, LocalSetting } from '../api/settings';
+import { Settings, ConfigTarget } from '../api/settings';
 import { MessageBus } from '../api';
 import { sampleSettings } from './samples/sampleSettings';
 
@@ -18,8 +18,7 @@ class AppState {
     @observable settings: Settings = {...sampleSettings};
 }
 
-type LocalFields = keyof LocalSetting;
-const localDisplay: [LocalFields, string][] = [
+const localDisplay: [ConfigTarget, string][] = [
     ['user', 'Global'],
     ['workspace', 'Workspace'],
     ['folder', 'Folder'],
@@ -31,6 +30,11 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
+        const getLocals = (target: ConfigTarget) => {
+            const config = settings.configs[target];
+            if (!config) return '-';
+            return (config.locals || ['-']).join(', ');
+        }
         return (
             <div>
                 <Grid>
@@ -44,7 +48,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     </Row>
                     {localDisplay.map(([field, name]) => <Row id={field}>
                         <Cell columns={2}>{name}</Cell>
-                        <Cell columns={10}>{(settings.locals[field] || ['-']).join(', ')}</Cell>
+                        <Cell columns={10}>{getLocals(field)}</Cell>
                     </Row>)}
 
                 </Grid>

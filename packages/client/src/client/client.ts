@@ -45,21 +45,25 @@ export class CSpellClient {
 
     readonly client: LanguageClient;
     readonly import: Set<string> = new Set();
+    readonly languageIds: Set<string>;
+    readonly allowedSchemas: Set<string>;
 
     /**
      * @param: {string} module -- absolute path to the server module.
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
-        const allowedSchemas = Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes;
+        this.allowedSchemas = new Set(Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes);
         setOfSupportedSchemes.clear();
-        allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
+        this.allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
 
-        const uniqueLangIds = languageIds
+        this.languageIds = new Set(
+            languageIds
             .concat(enabledLanguageIds || [])
             .concat(LanguageIds.languageIds)
-            .filter(uniqueFilter());
-        const documentSelector = allowedSchemas
+        );
+        const uniqueLangIds = [...this.languageIds];
+        const documentSelector = [...this.allowedSchemas]
             .map(scheme => uniqueLangIds.map(language => ({ language, scheme })))
             .reduce( (a, b) => a.concat(b));
         // Options to control the language client

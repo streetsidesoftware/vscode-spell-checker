@@ -74,12 +74,6 @@ export class AppState implements State {
     @observable timer = 0;
     @observable counter = 0;
     @observable settings: Settings = {
-        locals: {
-            user: ['en', 'es'],
-            workspace: undefined,
-            folder: undefined,
-            file: ['en'],
-        },
         dictionaries: [
         ],
         configs: {
@@ -183,7 +177,6 @@ export class AppState implements State {
     setLocals(target: ConfigTarget, locals: LocalList | undefined) {
         locals = locals ? locals.filter(uniqueFilter()) : undefined;
         locals = locals && locals.length ? locals : undefined;
-        this.settings.locals[target] = locals;
         const config = this.settings.configs[target] || {
             locals: undefined,
             fileTypesEnabled: undefined,

@@ -1,3 +1,4 @@
+import { Workspace } from './workspace';
 
 export type LocalId = string;
 export type LocalList = LocalId[];
@@ -16,8 +17,6 @@ export interface SettingByConfigTarget<T> {
     file: T;
 }
 
-export interface LocalSetting extends SettingByConfigTarget<LocalList | undefined> {}
-
 export interface Configs extends SettingByConfigTarget<Config | undefined> {};
 
 export interface DictionaryEntry {
@@ -28,9 +27,9 @@ export interface DictionaryEntry {
 }
 
 export interface Settings {
-    locals: LocalSetting;
     dictionaries: DictionaryEntry[];
     configs: Configs;
+    workspace?: Workspace;
 }
 
 export interface Config {

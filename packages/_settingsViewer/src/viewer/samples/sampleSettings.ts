@@ -1,13 +1,23 @@
 import { Settings } from '../../api/settings';
+import { sampleWorkspace } from './sampleWorkspace';
 
+const fileTypesA = [
+    "asciidoc",
+    "c", "cpp", "csharp", "css",
+    "go", "handlebars", "html",
+    "jade", "javascript", "javascriptreact", "json",
+    "latex", "less",
+    "markdown",
+    "php", "plaintext", "pub", "python",
+    "restructuredtext", "rust",
+    "scss",
+    "text", "typescript", "typescriptreact",
+    "yml"].sort();
+const fileTypesB = fileTypesA.concat(["cfml", "java", "scala", "yaml"]).sort();
+const fileTypesUser = fileTypesB;
+const fileTypesWorkspace = fileTypesA;
 
 export const sampleSettings: Settings = Object.freeze({
-    locals: {
-        file: undefined,
-        folder: undefined,
-        user: ["en"],
-        workspace: ["en", "da"],
-    },
     dictionaries: [
         { name: "companies", locals: [], fileTypes: [], description: "Company names dictionary for cspell." },
         { name: "css", locals: [], fileTypes: ["javascriptreact", "typescriptreact", "html", "pug", "jade", "handlebars", "php", "css", "less", "scss"], description: "CSS Keywords." },
@@ -39,10 +49,11 @@ export const sampleSettings: Settings = Object.freeze({
         { name: "cs-cz", locals: ["cs"], fileTypes: [], description: "Czech dictionary for cspell." }
     ],
     configs: {
-        user: { locals: ["en"], fileTypesEnabled: ["asciidoc", "c", "cfml", "cpp", "csharp", "css", "go", "handlebars", "html", "jade", "java", "javascript", "javascriptreact", "json", "latex", "less", "markdown", "php", "plaintext", "pub", "python", "restructuredtext", "rust", "scala", "scss", "text", "typescript", "typescriptreact", "yaml", "yml"] },
-        workspace: { locals: ["en", "da"], fileTypesEnabled: ["asciidoc", "c", "cpp", "csharp", "css", "go", "handlebars", "html", "jade", "javascript", "javascriptreact", "json", "latex", "less", "markdown", "php", "plaintext", "pub", "python", "restructuredtext", "rust", "scss", "text", "typescript", "typescriptreact", "yml"] },
+        user: { locals: ["en"], fileTypesEnabled: fileTypesUser },
+        workspace: { locals: ["en", "da"], fileTypesEnabled: fileTypesWorkspace },
         folder: { locals: [], fileTypesEnabled: undefined },
         file: undefined,
-    }
+    },
+    workspace: sampleWorkspace
 });
 

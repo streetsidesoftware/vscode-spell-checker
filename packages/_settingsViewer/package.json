@@ -64,6 +64,7 @@
     "typescript": "^3.3.3333",
     "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "^1.1.2",
+    "vscode-uri": "^1.0.6",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1",
