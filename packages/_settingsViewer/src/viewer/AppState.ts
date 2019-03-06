@@ -42,7 +42,7 @@ export interface LanguageConfig {
 export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
 
 export interface State {
-    activeTabIndex: number;
+    activeTabName: string;
     timer: number;
     counter: number;
     settings: Settings;
@@ -70,7 +70,7 @@ type InheritedConfig = InheritMembers<Config>;
 type InheritedConfigs = SettingByConfigTarget<InheritedConfig>;
 
 export class AppState implements State {
-    @observable activeTabIndex = 0;
+    @observable activeTabName = '';
     @observable timer = 0;
     @observable counter = 0;
     @observable settings: Settings = {
@@ -89,7 +89,7 @@ export class AppState implements State {
     }
 
     @computed get activeTab() {
-        return this.tabs[this.activeTabIndex];
+        return this.tabs.find(t => t.label === this.activeTabName) || this.tabs[0];
     }
 
     @computed get languageConfig(): LanguageConfigs {
@@ -147,6 +147,11 @@ export class AppState implements State {
         return calcInheritableConfig(this.settings.configs);
     }
 
+    @computed get activeTabIndex(): number {
+        const index = this.tabs.findIndex(t => t.label === this.activeTabName);
+        return index > 0 ? index : 0;
+    }
+
     constructor() {
         setInterval(() => {
             this.timer += 1;
@@ -198,6 +203,18 @@ export class AppState implements State {
             target: locals.target
         };
     }
+
+    activateTabIndex(index: number) {
+        console.log(`activateTabIndex: ${index}`);
+        const tab = this.tabs[index];
+        if (tab) {
+            this.activeTabName = tab.label;
+        }
+    }
+
+    activateTab(tabName: string) {
+        this.activeTabName = tabName;
+    }
 }
 
 function calcInheritableConfig(configs: Configs): InheritedConfigs {
@@ -207,8 +224,12 @@ function calcInheritableConfig(configs: Configs): InheritedConfigs {
         const inCfg = {...inherited};
         for (const k of Object.keys(inherited) as (keyof InheritedConfig)[]) {
             const value = cfg[k];
-            if (value !== undefined && value.length > 0) {
-                inCfg[k] = { value, target };
+            if (value !== undefined) {
+                if (typeof value === 'string') {
+                    inCfg[k] = { value, target };
+                } else if (value.length > 0) {
+                    inCfg[k] = { value, target };
+                }
             }
         }
         return inCfg;

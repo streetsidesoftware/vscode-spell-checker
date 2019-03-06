@@ -42,6 +42,6 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
      }
 
      activateTab = (activeIndex: number) => {
-        this.props.appState.activeTabIndex = activeIndex;
+        this.props.appState.activateTabIndex(activeIndex);
      }
 }

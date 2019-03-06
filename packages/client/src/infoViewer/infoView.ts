@@ -2,14 +2,14 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, ConfigurationChangeMessage } from '../../settingsViewer';
+import { MessageBus, ConfigurationChangeMessage, ChangeTabMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
-import { LocalList } from '../../settingsViewer/api/settings';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
-import { GetConfigurationForDocumentResult, CSpellUserSettings } from '../server';
+import { CSpellUserSettings } from '../server';
 import { inspectConfig, Inspect } from '../settings';
-import { pipe, extract, map, defaultTo } from '../util/pipe';
+import { pipe, map, defaultTo } from '../util/pipe';
+import * as Kefir from 'kefir';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 const title = 'Spell Checker Preferences';
@@ -30,13 +30,24 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     }));
 }
 
+interface State {
+    activeTabName: string;
+    settings: Settings;
+    activeDocumentUri: Maybe<vscode.Uri>;
+    activeFolderUri: Maybe<vscode.Uri>;
+}
+
 async function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
-    let settings: Settings = await (() => {
-        const editor = vscode.window.activeTextEditor;
-        return calcSettings(editor && editor.document, client);
-    })();
-    let lastDocumentUri: Maybe<vscode.Uri> = undefined;
+    const state: State = {
+        activeTabName: 'About',
+        settings: await (() => {
+            const editor = vscode.window.activeTextEditor;
+            return calcSettings(editor && editor.document, client);
+        })(),
+        activeDocumentUri: undefined,
+        activeFolderUri: undefined,
+    }
     const extPath = context.extensionPath;
 
     const options = {
@@ -55,21 +66,25 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     panel.onDidChangeViewState(async (e) => {
         const panel = e.webviewPanel;
         const editor = vscode.window.activeTextEditor;
-        const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri)
+        const doc = state.activeDocumentUri && findMatchingDocument(state.activeDocumentUri)
             || (editor && editor.document);
-        settings = await calcSettings(doc, client);
+        state.settings = await calcSettings(doc, client);
         updateView(panel, root);
     });
 
     messageBus.listenFor('RequestConfigurationMessage', async (msg) => {
         const editor = vscode.window.activeTextEditor;
-        const doc = lastDocumentUri && findMatchingDocument(lastDocumentUri)
+        const doc = state.activeDocumentUri && findMatchingDocument(state.activeDocumentUri)
             || (editor && editor.document);
-        settings = await calcSettings(doc, client);
-        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { settings } });
+            state.settings = await calcSettings(doc, client);
+        const activeTab = state.activeTabName;
+        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings: state.settings } });
     });
     messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
-        settings.configs = msg.value.settings.configs;
+        state.settings.configs = msg.value.settings.configs;
+    });
+    messageBus.listenFor('ChangeTabMessage', (msg: ChangeTabMessage) => {
+        state.activeTabName = msg.value;
     });
 
     return panel;

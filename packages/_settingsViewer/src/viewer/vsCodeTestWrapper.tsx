@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { UpdateCounterMessage, ConfigurationChangeMessage } from '../api/message';
+import { UpdateCounterMessage, ConfigurationChangeMessage, ChangeTabMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget } from '../api/settings';
 import { MessageBus } from '../api';
@@ -16,6 +16,7 @@ require('./app.scss');
 class AppState {
     @observable counter = 0;
     @observable settings: Settings = {...sampleSettings};
+    @observable activeTab: string = 'About';
 }
 
 const localDisplay: [ConfigTarget, string][] = [
@@ -37,6 +38,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
         }
         return (
             <div>
+                <h2>Locals</h2>
                 <Grid>
                     <Row>
                         <Cell columns={2}>
@@ -52,24 +54,20 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     </Row>)}
 
                 </Grid>
-                <Grid>
-                    <Row>
-                        <Cell columns={12}>
-                            {appState.counter}
-                        </Cell>
-                    </Row>
-                    <Row>
-                        <Cell columns={12}>
-                            <Button
-                                raised
-                                className="button-alternate"
-                                onClick={this.onUpdateConfig}
-                            >
-                                Update
-                            </Button>
-                        </Cell>
-                    </Row>
-                </Grid>
+                <div>
+                    <h2>Info</h2>
+                    Panel: {appState.activeTab}
+                </div>
+                <div>
+                    <div>{appState.counter}</div>
+                    <Button
+                        raised
+                        className="button-alternate"
+                        onClick={this.onUpdateConfig}
+                    >
+                        Update
+                    </Button>
+                </div>
                 <DevTools />
             </div>
         );
@@ -77,7 +75,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
 
      onUpdateConfig = () => {
          console.log('onUpdateConfig');
-         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } });
+         postSettings();
      }
 }
 
@@ -100,14 +98,28 @@ messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => {
     appState.counter = msg.value;
     messageBus.postMessage({ command: 'UpdateCounter', value: msg.value });
 });
-messageBus.listenFor(
-    'RequestConfigurationMessage',
-    () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
-);
+messageBus.listenFor( 'RequestConfigurationMessage', postSettings );
+
+function postSettings() {
+    messageBus.postMessage({
+        command: 'ConfigurationChangeMessage',
+        value: {
+            activeTab: toJS(appState.activeTab),
+            settings: toJS(appState.settings),
+        }
+    });
+}
 
 messageBus.listenFor(
     'ConfigurationChangeMessage',
     (msg: ConfigurationChangeMessage) => {
         appState.settings = msg.value.settings;
+    }
+);
+
+messageBus.listenFor(
+    'ChangeTabMessage',
+    (msg: ChangeTabMessage) => {
+        appState.activeTab = msg.value;
     }
 );

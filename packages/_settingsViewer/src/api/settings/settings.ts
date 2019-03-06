@@ -33,6 +33,7 @@ export interface Settings {
 }
 
 export interface Config {
+    uri?: string;
     locals: Inherited<LocalList>;
     fileTypesEnabled: Inherited<FileTypeList>;
 }
