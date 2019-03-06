@@ -39,15 +39,7 @@ interface State {
 
 async function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
-    const state: State = {
-        activeTabName: 'About',
-        settings: await (() => {
-            const editor = vscode.window.activeTextEditor;
-            return calcSettings(editor && editor.document, client);
-        })(),
-        activeDocumentUri: undefined,
-        activeFolderUri: undefined,
-    }
+    const state: State = await calcInitialState();
     const extPath = context.extensionPath;
 
     const options = {
@@ -59,35 +51,78 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     };
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
     const messageBus = new MessageBus(webviewApiFromPanel(panel));
+
+    async function calcStateSettings(activeDocumentUri: Maybe<vscode.Uri>) {
+        const doc = activeDocumentUri && findMatchingDocument(activeDocumentUri);
+        return calcSettings(doc, client);
+    }
+
+    async function refreshState() {
+        state.settings = await calcStateSettings(state.activeDocumentUri);
+    }
+
+    async function notifyView() {
+        const { activeTabName: activeTab, settings } = state;
+        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings } });
+    }
+
+    async function refreshStateAndNotify() {
+        await refreshState();
+        await notifyView();
+    }
+
+    function setActiveDocumentUri(docUri: Maybe<vscode.Uri>) {
+        state.activeDocumentUri = calcActiveDocumentUri(docUri) || state.activeDocumentUri;
+    }
+
+    function setActiveDocumentFromEditor(e: Maybe<vscode.TextEditor>) {
+        setActiveDocumentUri(calcActiveDocumentFromEditor(e));
+    }
+
     panel.onDidDispose(() => {
         currentPanel = undefined;
     }, null, context.subscriptions);
 
     panel.onDidChangeViewState(async (e) => {
+        await refreshState();
         const panel = e.webviewPanel;
-        const editor = vscode.window.activeTextEditor;
-        const doc = state.activeDocumentUri && findMatchingDocument(state.activeDocumentUri)
-            || (editor && editor.document);
-        state.settings = await calcSettings(doc, client);
-        updateView(panel, root);
-    });
+        return updateView(panel, root);
+    }, null, context.subscriptions);
 
-    messageBus.listenFor('RequestConfigurationMessage', async (msg) => {
-        const editor = vscode.window.activeTextEditor;
-        const doc = state.activeDocumentUri && findMatchingDocument(state.activeDocumentUri)
-            || (editor && editor.document);
-            state.settings = await calcSettings(doc, client);
-        const activeTab = state.activeTabName;
-        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings: state.settings } });
-    });
-    messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
-        state.settings.configs = msg.value.settings.configs;
-    });
+    vscode.workspace.onDidChangeConfiguration(() => refreshStateAndNotify(), null, context.subscriptions);
+    vscode.window.onDidChangeActiveTextEditor(async (e: Maybe<vscode.TextEditor>) => {
+        setActiveDocumentFromEditor(e);
+        await refreshStateAndNotify();
+    }, null, context.subscriptions);
+
+    messageBus.listenFor('RequestConfigurationMessage', refreshStateAndNotify);
     messageBus.listenFor('ChangeTabMessage', (msg: ChangeTabMessage) => {
         state.activeTabName = msg.value;
     });
 
     return panel;
+
+    function calcActiveDocumentUri(docUri: Maybe<vscode.Uri>): Maybe<vscode.Uri> {
+        return docUri && client.allowedSchemas.has(docUri.scheme) ? docUri : undefined;
+    }
+
+    function calcActiveDocumentFromEditor(e: Maybe<vscode.TextEditor>) {
+        return calcActiveDocumentUri(e && e.document.uri);
+    }
+
+    async function calcInitialState(): Promise<State> {
+        const activeDocumentUri = calcActiveDocumentFromEditor(vscode.window.activeTextEditor);
+        const folder = (activeDocumentUri && vscode.workspace.getWorkspaceFolder(activeDocumentUri))
+            || (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
+        const activeFolderUri = folder && folder.uri;
+        return {
+            activeTabName: 'About',
+            activeDocumentUri,
+            activeFolderUri,
+            settings: await calcStateSettings(calcActiveDocumentFromEditor(vscode.window.activeTextEditor)),
+        }
+    }
+
 }
 
 async function calcSettings(document: Maybe<vscode.TextDocument>, client: CSpellClient): Promise<Settings> {
