@@ -15,7 +15,7 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
             <div>
                 <h2>File Types</h2>
                 <div>
-                    {config.fileTypesEnabled ? config.fileTypesEnabled.join(', ') : '- none -'}
+                    {config.languageIdsEnabled ? config.languageIdsEnabled.join(', ') : '- none -'}
                 </div>
             </div>
         );

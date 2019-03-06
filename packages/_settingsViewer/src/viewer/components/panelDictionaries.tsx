@@ -15,7 +15,7 @@ export class PanelDictionaries extends React.Component<{appState: AppState}, {}>
                 <List twoLine className='dictionary_list'>
                     {dictionaries.map(dict => {
                         const hasLocals = dict.locals && dict.locals.length > 0;
-                        const hasFileTypes = dict.fileTypes && dict.fileTypes.length > 0;
+                        const hasFileTypes = dict.languageIds && dict.languageIds.length > 0;
                         const icon = hasFileTypes
                             ? 'code'
                             : hasLocals ? 'import_contacts'

@@ -22,7 +22,7 @@ export interface Configs extends SettingByConfigTarget<Config | undefined> {};
 export interface DictionaryEntry {
     name: string;
     locals: LocalList;
-    fileTypes: FileTypeList;
+    languageIds: FileTypeList;
     description?: string;
 }
 
@@ -30,12 +30,15 @@ export interface Settings {
     dictionaries: DictionaryEntry[];
     configs: Configs;
     workspace?: Workspace;
+    activeLanguageId?: string;
+    activeFileUri?: string;
+    activeFolderUri?: string;
 }
 
 export interface Config {
     uri?: string;
     locals: Inherited<LocalList>;
-    fileTypesEnabled: Inherited<FileTypeList>;
+    languageIdsEnabled: Inherited<FileTypeList>;
 }
 
 const targetConst = Object.freeze<SettingByConfigTarget<ConfigTarget>>({

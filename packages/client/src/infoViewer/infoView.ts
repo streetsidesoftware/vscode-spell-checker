@@ -143,7 +143,7 @@ function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, file
         }
         const cfg: Config = {
             locals: normalizeLocals(s.language),
-            fileTypesEnabled: s.enabledLanguageIds,
+            languageIdsEnabled: s.enabledLanguageIds,
         }
 
         return cfg;
@@ -164,18 +164,18 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
 
     const dictionaries = config.dictionaryDefinitions || [];
     const dictionariesByName = new Map(dictionaries
-        .map(e => ({ name: e.name, locals: [], fileTypes: [], description: e.description }))
+        .map(e => ({ name: e.name, locals: [], languageIds: [], description: e.description }))
         .map(e => [e.name, e] as [string, DictionaryEntry]));
     const languageSettings = config.languageSettings || [];
     languageSettings.forEach(setting => {
         const locals = normalizeLocals(setting.local);
-        const filetypes = normalizeId(setting.languageId);
+        const languageIds = normalizeId(setting.languageId);
         const dicts = setting.dictionaries || [];
         dicts.forEach(dict => {
             const dictEntry = dictionariesByName.get(dict);
             if (dictEntry) {
                 dictEntry.locals = merge(dictEntry.locals, locals);
-                dictEntry.fileTypes = merge(dictEntry.fileTypes, filetypes);
+                dictEntry.languageIds = merge(dictEntry.languageIds, languageIds);
             }
         });
     });

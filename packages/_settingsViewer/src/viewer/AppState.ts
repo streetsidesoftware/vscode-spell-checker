@@ -184,7 +184,7 @@ export class AppState implements State {
         locals = locals && locals.length ? locals : undefined;
         const config = this.settings.configs[target] || {
             locals: undefined,
-            fileTypesEnabled: undefined,
+            languageIdsEnabled: undefined,
         };
         config.locals = locals;
         this.settings.configs[target] = config;
@@ -234,7 +234,7 @@ function calcInheritableConfig(configs: Configs): InheritedConfigs {
         }
         return inCfg;
     }
-    const defaultCfg: InheritedConfig = { locals: undefined, fileTypesEnabled: undefined };
+    const defaultCfg: InheritedConfig = { locals: undefined, languageIdsEnabled: undefined };
     const user = peek('user', defaultCfg);
     const workspace = peek('workspace', user);
     const folder = peek('folder', workspace);
