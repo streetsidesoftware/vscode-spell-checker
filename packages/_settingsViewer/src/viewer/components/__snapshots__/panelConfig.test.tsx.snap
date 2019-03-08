@@ -2,6 +2,49 @@
 
 exports[`Config Panel Verification tests the snapshot 1`] = `
 <div>
+  <div
+    className="mdc-select select_folder"
+  >
+    <select
+      className="mdc-select__native-control"
+      disabled={false}
+      label="Folder"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      options={
+        Array [
+          "ripgrep",
+          "dutch",
+        ]
+      }
+      value="ripgrep"
+    >
+      <option
+        value="ripgrep"
+      >
+        ripgrep
+      </option>
+      <option
+        value="dutch"
+      >
+        dutch
+      </option>
+    </select>
+    <label
+      className="mdc-floating-label mdc-floating-label--float-above"
+      onAnimationEnd={[Function]}
+    >
+      Folder
+    </label>
+    <div
+      className="mdc-line-ripple"
+      onTransitionEnd={[Function]}
+      style={Object {}}
+    />
+  </div>
   <div>
     <h2>
       Language 
