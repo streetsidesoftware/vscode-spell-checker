@@ -5,7 +5,7 @@
 [![](https://vsmarketplacebadge.apphb.com/installs-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
-A simple source code spell checker for typescript and javascript.
+A simple source code spell checker for multiple programming languages.
 
 For the readme on the plugin: [README](./client/README.md).
 
