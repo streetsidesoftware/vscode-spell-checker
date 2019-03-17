@@ -34,7 +34,7 @@ messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMess
     appState.settings = settings
 });
 
-messageBus.postMessage({ command: 'RequestConfigurationMessage' });
+messageBus.postMessage({ command: 'RequestConfigurationMessage', value: {} });
 
 ReactDOM.render(<SettingsViewer appState={appState} />, document.getElementById('root'));
 
