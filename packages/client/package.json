@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/README.md",
     "engines": {
-        "vscode": "^1.30.2"
+        "vscode": "^1.32.3"
     },
     "categories": [
         "Linters",
@@ -45,19 +45,10 @@
                     "command": "cSpell.addWordToUserDictionary",
                     "when": "editorTextFocus",
                     "group": "A_cspell"
-                },
-                {
-                    "command": "cSpell.displayCSpellInfo",
-                    "when": "editorTextFocus",
-                    "group": "A_cspell"
                 }
             ]
         },
         "commands": [
-            {
-                "command": "cSpell.cat",
-                "title": "Cat Coder"
-            },
             {
                 "command": "cSpell.addWordToWorkspaceDictionary",
                 "title": "Add Word to Workspace Dictionary"
@@ -85,6 +76,10 @@
             {
                 "command": "cSpell.disableCurrentLanguage",
                 "title": "Disable Spell Checking Document Language"
+            },
+            {
+                "command": "cSpell.cat",
+                "title": "Cat Coder"
             },
             {
                 "command": "cSpell.displayCSpellInfo",
