@@ -3,7 +3,7 @@ import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget,
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
-import { MessageBus } from '../api';
+import { Messenger } from '../api';
 
 
 type Maybe<T> = T | undefined;
@@ -81,7 +81,7 @@ export class AppState implements State {
         }
     };
 
-    constructor(private messageBus: MessageBus) {}
+    constructor(private messageBus: Messenger) {}
 
     @computed get tabs() {
         return tabs.filter(tab => !isConfigTarget(tab.target) || this.settings.configs[tab.target]);

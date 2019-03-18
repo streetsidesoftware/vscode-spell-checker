@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: file 1`] = `<div />`;
+
+exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: folder 1`] = `
+<div>
+  <h2>
+    File Types and Programming Languages
+  </h2>
+  <div>
+    - none -
+  </div>
+</div>
+`;
+
+exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: user 1`] = `
+<div>
+  <h2>
+    File Types and Programming Languages
+  </h2>
+  <div>
+    asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
+  </div>
+</div>
+`;
+
+exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: workspace 1`] = `
+<div>
+  <h2>
+    File Types and Programming Languages
+  </h2>
+  <div>
+    asciidoc, c, cpp, csharp, css, go, handlebars, html, jade, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scss, text, typescript, typescriptreact, yml
+  </div>
+</div>
+`;

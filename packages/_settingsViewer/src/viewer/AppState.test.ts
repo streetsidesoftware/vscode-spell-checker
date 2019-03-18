@@ -1,8 +1,8 @@
 
 import { AppState } from './AppState';
-import { sampleSettings } from './samples/sampleSettings';
 import { WebviewApi } from '../api/WebviewApi';
 import { MessageBus } from '../api';
+import { sampleSettings } from '../test/samples/sampleSettings';
 
 describe('Validate AppState', () => {
     it('tests the snapshots', () => {

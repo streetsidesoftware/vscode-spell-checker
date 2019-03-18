@@ -7,7 +7,12 @@ export interface Listener {
     dispose(): void;
 }
 
-export class MessageBus {
+export interface Messenger {
+    listenFor<M extends Messages>(cmd: M['command'], fn: (message: M) => any): Listener;
+    postMessage<M extends Messages>(msg: M): any;
+}
+
+export class MessageBus implements Messenger {
     protected listeners = new Map<Commands, Set<Listener>>();
 
     constructor(readonly vsCodeApi: WebviewApi) {

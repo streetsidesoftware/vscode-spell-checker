@@ -2,16 +2,16 @@
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { SectionLanguage } from './sectionLanguage';
 import { configTargets } from '../../api/settings';
 import { sampleAppState } from '../../test/fixtures/AppState';
+import { SectionFiletypes } from './sectionFiletypes';
 
-describe('SectionLanguage Verification', () => {
+describe('SectionFileTypes Verification', () => {
     it('tests the snapshots', () => {
         const appState = getSampleAppState();
         configTargets.forEach(target => {
-            const panelRenderer = create(<SectionLanguage appState={appState} target={target}></SectionLanguage>).toJSON()!;
-            expect(panelRenderer).toMatchSnapshot(`<SectionLanguage> for target: ${target}`);
+            const panelRenderer = create(<SectionFiletypes appState={appState} target={target}></SectionFiletypes>).toJSON()!;
+            expect(panelRenderer).toMatchSnapshot(`<SectionFiletypes> for target: ${target}`);
         });
     });
 

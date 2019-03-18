@@ -1,5 +1,5 @@
 import { isConfigurationChangeMessage, ConfigurationChangeMessage, isMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage } from './message';
-import { sampleSettings } from '../viewer/samples/sampleSettings';
+import { sampleSettings } from '../test/samples/sampleSettings';
 
 
 describe('Validate Messages', () => {

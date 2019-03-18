@@ -1,6 +1,6 @@
 import { Workspace } from '../../api/settings';
 
-export const sampleWorkspace: Workspace = {
+const _sampleWorkspace: Workspace = {
     "workspaceFolders": [{
         "uri": "file:///Users/cspell/projects/clones/ripgrep",
         "name": "ripgrep",
@@ -30,3 +30,5 @@ export const sampleWorkspace: Workspace = {
         "languageId": "rust",
     }]
 };
+
+export const sampleWorkspace = Object.freeze(_sampleWorkspace);
