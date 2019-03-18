@@ -1,52 +1,60 @@
-import { isConfigurationChangeMessage, UpdateCounterMessage, ConfigurationChangeMessage, isMessage, isUpdateCounterMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage } from './message';
+import { isConfigurationChangeMessage, ConfigurationChangeMessage, isMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage } from './message';
 import { sampleSettings } from '../viewer/samples/sampleSettings';
 
 
 describe('Validate Messages', () => {
 
     it('isMessage', () => {
-        const msgUpdateCounter: UpdateCounterMessage = {
-            command: 'UpdateCounter',
-            value: 5
+        const msgSelectFolder: SelectFolderMessage = {
+            command: 'SelectFolderMessage',
+            value: '/'
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
             value: { settings: sampleSettings },
         };
+        expect(isMessage({})).toBe(false);
+        expect(isMessage(5)).toBe(false);
+        expect(isMessage(new Date())).toBe(false);
+        expect(isMessage(null)).toBe(false);
+        expect(isMessage(undefined)).toBe(false);
         expect(isMessage({ command: 'UpdateCounter' })).toBe(true);
-        expect(isMessage(msgUpdateCounter)).toBe(true);
+        expect(isMessage({ command: 33 })).toBe(false);
+        expect(isMessage({ command: 'SelectFolderMessage' })).toBe(true);
+        expect(isMessage({ command: 'SelectFolderMessage', value: '/' })).toBe(true);
+        expect(isMessage(msgSelectFolder)).toBe(true);
         expect(isMessage({ command: 'ConfigurationChangeMessage' })).toBe(true);
         expect(isMessage(msgConfigurationChangeMessage)).toBe(true);
     });
 
     it('isConfigurationChangeMessage', () => {
-        const msgUpdateCounter: UpdateCounterMessage = {
-            command: 'UpdateCounter',
-            value: 5
+        const msgSelectFolder: SelectFolderMessage = {
+            command: 'SelectFolderMessage',
+            value: '/'
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
             value: { settings: sampleSettings },
         };
-        expect(isConfigurationChangeMessage({ command: 'UpdateCounter' })).toBe(false);
-        expect(isConfigurationChangeMessage(msgUpdateCounter)).toBe(false);
+        expect(isConfigurationChangeMessage({ command: 'SelectFileMessage' })).toBe(false);
+        expect(isConfigurationChangeMessage(msgSelectFolder)).toBe(false);
         expect(isConfigurationChangeMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
         expect(isConfigurationChangeMessage(msgConfigurationChangeMessage)).toBe(true);
     });
 
-    test('isUpdateCounterMessage', () => {
-        const msgUpdateCounter: UpdateCounterMessage = {
-            command: 'UpdateCounter',
-            value: 5
+    test('isConfigurationChangeMessage', () => {
+        const msgSelectFolder: SelectFolderMessage = {
+            command: 'SelectFolderMessage',
+            value: '/'
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
             value: { settings: sampleSettings },
         };
-        expect(isUpdateCounterMessage({ command: 'UpdateCounter' })).toBe(false);
-        expect(isUpdateCounterMessage(msgUpdateCounter)).toBe(true);
-        expect(isUpdateCounterMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
-        expect(isUpdateCounterMessage(msgConfigurationChangeMessage)).toBe(false);
+        expect(isConfigurationChangeMessage({ command: 'SelectFileMessage' })).toBe(false);
+        expect(isConfigurationChangeMessage(msgSelectFolder)).toBe(false);
+        expect(isConfigurationChangeMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
+        expect(isConfigurationChangeMessage(msgConfigurationChangeMessage)).toBe(true);
     });
 
     test('isSelectFileMessage', () => {
@@ -58,7 +66,7 @@ describe('Validate Messages', () => {
             command: 'ConfigurationChangeMessage',
             value: { settings: sampleSettings },
         };
-        expect(isSelectFileMessage({ command: 'UpdateCounter' })).toBe(false);
+        expect(isSelectFileMessage({ command: 'SelectFileMessage' })).toBe(false);
         expect(isSelectFileMessage(msgUpdateCounter)).toBe(true);
         expect(isSelectFileMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
         expect(isSelectFileMessage(msgConfigurationChangeMessage)).toBe(false);
@@ -73,7 +81,7 @@ describe('Validate Messages', () => {
             command: 'ConfigurationChangeMessage',
             value: { settings: sampleSettings },
         };
-        expect(isSelectFolderMessage({ command: 'UpdateCounter' })).toBe(false);
+        expect(isSelectFolderMessage({ command: 'SelectFolderMessage' })).toBe(false);
         expect(isSelectFolderMessage(msgUpdateCounter)).toBe(true);
         expect(isSelectFolderMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
         expect(isSelectFolderMessage(msgConfigurationChangeMessage)).toBe(false);

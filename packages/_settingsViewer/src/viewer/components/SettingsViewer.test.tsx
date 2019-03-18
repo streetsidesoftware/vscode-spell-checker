@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { SettingsViewer } from './SettingsViewer';
 import { AppState } from '../AppState';
+import { sampleAppState } from '../../test/fixtures/AppState';
 // import { create } from 'react-test-renderer';
 
 // function createNodeMock(element) {
@@ -13,7 +14,7 @@ import { AppState } from '../AppState';
 
 describe('Language Panel Verification', () => {
     it('SettingsViewer', () => {
-        const appState: AppState = new AppState();
+        const appState: AppState = sampleAppState();
         const settingsViewer = <SettingsViewer appState={appState} />;
         // Due to an issue with MDC components, it is challenging to create on for testings.
         // todo: figure out how to test MDC tab components.

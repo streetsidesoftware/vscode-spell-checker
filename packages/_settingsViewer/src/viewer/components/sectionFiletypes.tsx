@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Cell, Grid, Row} from '@material/react-layout-grid';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 
@@ -13,7 +12,7 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
         }
         return (
             <div>
-                <h2>File Types</h2>
+                <h2>File Types and Programming Languages</h2>
                 <div>
                     {config.languageIdsEnabled ? config.languageIdsEnabled.join(', ') : '- none -'}
                 </div>

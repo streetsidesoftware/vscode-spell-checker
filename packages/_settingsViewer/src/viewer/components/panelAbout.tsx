@@ -20,9 +20,8 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                     className="button-alternate"
                     onClick={this.onReset}
                 >
-                    Seconds passed: {appState.timer}
+                    Refresh
                 </Button>
-                <h2>{appState.counter}</h2>
                 {/* <DevTools /> */}
 
                 <h2>Workspace</h2>
@@ -36,7 +35,6 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
      }
 
      onReset = () => {
-        this.props.appState.resetTimer();
         vsCodeApi.postMessage({ command: 'RequestConfigurationMessage'});
     }
 }

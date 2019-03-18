@@ -1,6 +1,8 @@
 
 import { AppState } from './AppState';
 import { sampleSettings } from './samples/sampleSettings';
+import { WebviewApi } from '../api/WebviewApi';
+import { MessageBus } from '../api';
 
 describe('Validate AppState', () => {
     it('tests the snapshots', () => {
@@ -13,7 +15,12 @@ describe('Validate AppState', () => {
     });
 
     function getSampleAppState(): AppState {
-        const appState: AppState = new AppState();
+        const webviewApi: WebviewApi = {
+            postMessage: (msg: any) => webviewApi,
+            onmessage: undefined,
+        };
+        const msgBus = new MessageBus(webviewApi);
+            const appState: AppState = new AppState(msgBus);
         appState.settings = sampleSettings;
         return appState;
     }

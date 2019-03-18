@@ -31,7 +31,7 @@ describe('Validate MessageBus', () => {
         }
 
         const bus = new MessageBus(webviewApi);
-        bus.postMessage({ command: 'UpdateCounter', value: 5 });
+        bus.postMessage({ command: 'SelectFileMessage', value: '/file.txt' });
         expect(postMessageMock.mock.calls.length).toBe(1);
     });
 
@@ -48,7 +48,7 @@ describe('Validate MessageBus', () => {
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
         bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
-        bus.postMessage({ command: 'UpdateCounter', value: 5 });
+        bus.postMessage({ command: 'SelectFileMessage', value: '/file.txt' });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
         expect(onConfigurationChangeMessage.mock.calls.length).toBe(1);
@@ -57,7 +57,7 @@ describe('Validate MessageBus', () => {
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
         bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
-        bus.postMessage({ command: 'UpdateCounter', value: 5 });
+        bus.postMessage({ command: 'SelectFileMessage', value: '/file.txt' });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
         expect(onConfigurationChangeMessage.mock.calls.length).toBe(2);
@@ -66,7 +66,7 @@ describe('Validate MessageBus', () => {
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });
         bus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: sampleSettings } });
-        bus.postMessage({ command: 'UpdateCounter', value: 5 });
+        bus.postMessage({ command: 'SelectFileMessage', value: '/file.txt' });
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
         expect(onConfigurationChangeMessage.mock.calls.length).toBe(2);

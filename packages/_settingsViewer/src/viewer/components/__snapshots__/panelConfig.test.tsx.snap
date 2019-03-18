@@ -2,49 +2,7 @@
 
 exports[`Config Panel Verification tests the snapshot 1`] = `
 <div>
-  <div
-    className="mdc-select select_folder"
-  >
-    <select
-      className="mdc-select__native-control"
-      disabled={false}
-      label="Folder"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
-      options={
-        Array [
-          "ripgrep",
-          "dutch",
-        ]
-      }
-      value="ripgrep"
-    >
-      <option
-        value="ripgrep"
-      >
-        ripgrep
-      </option>
-      <option
-        value="dutch"
-      >
-        dutch
-      </option>
-    </select>
-    <label
-      className="mdc-floating-label mdc-floating-label--float-above"
-      onAnimationEnd={[Function]}
-    >
-      Folder
-    </label>
-    <div
-      className="mdc-line-ripple"
-      onTransitionEnd={[Function]}
-      style={Object {}}
-    />
-  </div>
+  
   <div>
     <h2>
       Language 
@@ -320,7 +278,581 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
   </div>
   <div>
     <h2>
-      File Types
+      File Types and Programming Languages
+    </h2>
+    <div>
+      asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Config Panel Verification tests the snapshot 2`] = `
+<div>
+  
+  <div>
+    <h2>
+      Language 
+      
+    </h2>
+    <div>
+      <ul
+        aria-orientation="vertical"
+        className="mdc-list mdc-list--two-line"
+      >
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={0}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              Czech
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              cs-cz
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={true}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United Kingdom
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en-gb
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United States
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <h2>
+      File Types and Programming Languages
+    </h2>
+    <div>
+      asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Config Panel Verification tests the snapshot 3`] = `
+<div>
+  
+  <div>
+    <h2>
+      Language 
+      
+    </h2>
+    <div>
+      <ul
+        aria-orientation="vertical"
+        className="mdc-list mdc-list--two-line"
+      >
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={0}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              Czech
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              cs-cz
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={true}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United Kingdom
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en-gb
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={-1}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            import_contacts
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            <span
+              className="mdc-list-item__primary-text"
+              tabIndex={-1}
+            >
+              English - United States
+            </span>
+            <span
+              className="mdc-list-item__secondary-text"
+              tabIndex={-1}
+            >
+              en_us
+            </span>
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <h2>
+      File Types and Programming Languages
     </h2>
     <div>
       asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml

@@ -52,6 +52,6 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         if (!langs) return;
         const lang = langs[index];
         if (!lang) return;
-        this.props.appState.setLocal(target, lang.code, !lang.enabled);
+        this.props.appState.actionSetLocal(target, lang.code, !lang.enabled);
     }
 }

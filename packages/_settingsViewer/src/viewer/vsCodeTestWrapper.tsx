@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { UpdateCounterMessage, ConfigurationChangeMessage, SelectTabMessage } from '../api/message';
+import { ConfigurationChangeMessage, SelectTabMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget } from '../api/settings';
 import { MessageBus } from '../api';
@@ -94,10 +94,6 @@ ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getEleme
 
 const messageBus = new MessageBus(new VsCodeWebviewApi());
 
-messageBus.listenFor('UpdateCounter', (msg: UpdateCounterMessage) => {
-    appState.counter = msg.value;
-    messageBus.postMessage({ command: 'UpdateCounter', value: msg.value });
-});
 messageBus.listenFor( 'RequestConfigurationMessage', postSettings );
 
 function postSettings() {

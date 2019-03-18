@@ -1,6 +1,5 @@
 import { Settings } from './settings';
-export type Commands = 'UpdateCounter'
-| 'ConfigurationChangeMessage'
+export type Commands = 'ConfigurationChangeMessage'
 | 'RequestConfigurationMessage'
 | 'SelectTabMessage'
 | 'SelectFolderMessage'
@@ -12,8 +11,7 @@ export interface Message {
 }
 
 export type Messages =
-    UpdateCounterMessage
-    | ConfigurationChangeMessage
+    ConfigurationChangeMessage
     | RequestConfigurationMessage
     | SelectTabMessage
     | SelectFolderMessage
@@ -21,18 +19,18 @@ export type Messages =
     ;
 
 export function isMessage(data: any): data is Message {
-    return data && typeof data === 'object' && data.hasOwnProperty('command');
+    return !!(data
+        && typeof data === 'object'
+        && data.hasOwnProperty('command')
+        && typeof data['command'] === 'string'
+    );
 }
 
-export interface UpdateCounterMessage extends Message {
-    command: 'UpdateCounter';
-    value: number;
-}
-
-function isA<T extends Message> (cmd: T['command'], fields: (keyof T)[]): (msg: Message) => msg is T {
+function isA<T extends Message> (cmd: T['command'], fields: ([keyof T, (v: any) => boolean])[]): (msg: Message) => msg is T {
     return function (msg: Message): msg is T {
         const t = msg as T;
-        return msg.command === cmd && fields.reduce((success, key) => success && t[key] !== undefined, true);
+        return msg.command === cmd
+        && fields.reduce((success, [key, fn]) => success && fn(t[key]), true);
     };
 }
 
@@ -65,9 +63,11 @@ export interface SelectFileMessage extends Message {
     value: string;
 }
 
-export const isUpdateCounterMessage = isA<UpdateCounterMessage>('UpdateCounter', ['value']);
-export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', ['value']);
+export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', [['value', isObject]]);
 export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
-export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', ['value']);
-export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', ['value']);
-export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', ['value']);
+export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
+export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
+export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
+
+function isString(v: any): v is string { return typeof v === 'string'; }
+function isObject(v: any): v is object { return typeof v === 'object' && v !== null; }

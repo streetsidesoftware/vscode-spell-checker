@@ -3,6 +3,7 @@ import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget,
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
+import { MessageBus } from '../api';
 
 
 type Maybe<T> = T | undefined;
@@ -43,8 +44,6 @@ export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {
 
 export interface State {
     activeTabName: string;
-    timer: number;
-    counter: number;
     settings: Settings;
     tabs: Tab[];
     activeTab: Tab;
@@ -71,8 +70,6 @@ type InheritedConfigs = SettingByConfigTarget<InheritedConfig>;
 
 export class AppState implements State {
     @observable activeTabName = '';
-    @observable timer = 0;
-    @observable counter = 0;
     @observable settings: Settings = {
         dictionaries: [
         ],
@@ -83,6 +80,8 @@ export class AppState implements State {
             file: undefined,
         }
     };
+
+    constructor(private messageBus: MessageBus) {}
 
     @computed get tabs() {
         return tabs.filter(tab => !isConfigTarget(tab.target) || this.settings.configs[tab.target]);
@@ -152,21 +151,11 @@ export class AppState implements State {
         return index > 0 ? index : 0;
     }
 
-    constructor() {
-        setInterval(() => {
-            this.timer += 1;
-        }, 1000);
-    }
-
     targetToLabel(target: ConfigTarget): string {
         return targetToLabel[target];
     }
 
-    resetTimer() {
-        this.timer = 0;
-    }
-
-    setLocal(field: ConfigTarget, code: LocalId, checked: boolean) {
+    actionSetLocal(field: ConfigTarget, code: LocalId, checked: boolean) {
         const inherited = this.inheritedConfigs[field].locals;
         const locals = inherited && inherited.value || [];
         if (checked) {
@@ -179,7 +168,7 @@ export class AppState implements State {
         }
     }
 
-    setLocals(target: ConfigTarget, locals: LocalList | undefined) {
+    private setLocals(target: ConfigTarget, locals: LocalList | undefined) {
         locals = locals ? locals.filter(uniqueFilter()) : undefined;
         locals = locals && locals.length ? locals : undefined;
         const config = this.settings.configs[target] || {
@@ -190,12 +179,7 @@ export class AppState implements State {
         this.settings.configs[target] = config;
     }
 
-    isLocalEnabled(field: ConfigTarget, code: LocalId): boolean | undefined {
-        const found = this.isLocalEnabledEx(field, code);
-        return found === undefined ? undefined : found.value;
-    }
-
-    isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
+    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
         const locals = this.inheritedConfigs[field].locals;
         if (locals === undefined) return undefined;
         return  {
@@ -204,16 +188,17 @@ export class AppState implements State {
         };
     }
 
-    activateTabIndex(index: number) {
+    actionActivateTabIndex(index: number) {
         console.log(`activateTabIndex: ${index}`);
         const tab = this.tabs[index];
         if (tab) {
-            this.activeTabName = tab.label;
+            this.actionActivateTab(tab.label);
         }
     }
 
-    activateTab(tabName: string) {
+    actionActivateTab(tabName: string) {
         this.activeTabName = tabName;
+        this.messageBus.postMessage({ command: 'SelectTabMessage', value: this.activeTabName });
     }
 }
 

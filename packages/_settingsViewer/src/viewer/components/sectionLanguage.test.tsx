@@ -5,6 +5,7 @@ import { create } from 'react-test-renderer';
 import { sampleSettings } from '../samples/sampleSettings';
 import { SectionLanguage } from './sectionLanguage';
 import { configTargets } from '../../api/settings';
+import { sampleAppState } from '../../test/fixtures/AppState';
 
 describe('SectionLanguage Verification', () => {
     it('tests the snapshots', () => {
@@ -16,7 +17,7 @@ describe('SectionLanguage Verification', () => {
     });
 
     function getSampleAppState(): AppState {
-        const appState: AppState = new AppState();
+        const appState: AppState = sampleAppState();
         appState.settings = sampleSettings;
         return appState;
     }

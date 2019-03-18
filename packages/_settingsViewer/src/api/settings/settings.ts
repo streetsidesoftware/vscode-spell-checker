@@ -41,14 +41,14 @@ export interface Config {
     languageIdsEnabled: Inherited<FileTypeList>;
 }
 
-const targetConst = Object.freeze<SettingByConfigTarget<ConfigTarget>>({
+export const ConfigTargets = Object.freeze<SettingByConfigTarget<ConfigTarget>>({
     user: 'user',
     workspace: 'workspace',
     folder: 'folder',
     file: 'file',
 });
 
-export const configTargets = Object.freeze(Object.keys(targetConst) as ConfigTarget[]);
+export const configTargets = Object.freeze(Object.keys(ConfigTargets) as ConfigTarget[]);
 
 const setOfConfigTargets = new Set<string>(configTargets);
 
