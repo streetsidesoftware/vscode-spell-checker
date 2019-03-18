@@ -2,14 +2,13 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, ConfigurationChangeMessage, SelectTabMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings } from '../server';
 import { inspectConfig, Inspect } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
-import * as Kefir from 'kefir';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 const title = 'Spell Checker Preferences';
@@ -58,15 +57,18 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     }
 
     async function refreshState() {
+        log(`refreshState: uri "${state.activeDocumentUri}"`);
         state.settings = await calcStateSettings(state.activeDocumentUri);
     }
 
     async function notifyView() {
         const { activeTabName: activeTab, settings } = state;
+        log(`notifyView: tab ${activeTab}`);
         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings } });
     }
 
     async function refreshStateAndNotify() {
+        log('refreshStateAndNotify');
         await refreshState();
         await notifyView();
     }
@@ -83,20 +85,19 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         currentPanel = undefined;
     }, null, context.subscriptions);
 
-    panel.onDidChangeViewState(async (e) => {
-        await refreshState();
-        const panel = e.webviewPanel;
-        return updateView(panel, root);
-    }, null, context.subscriptions);
+    // panel.onDidChangeViewState(() => refreshStateAndNotify(), null, context.subscriptions);
 
     vscode.workspace.onDidChangeConfiguration(() => refreshStateAndNotify(), null, context.subscriptions);
     vscode.window.onDidChangeActiveTextEditor(async (e: Maybe<vscode.TextEditor>) => {
-        setActiveDocumentFromEditor(e);
-        await refreshStateAndNotify();
+        if (e) {
+            setActiveDocumentFromEditor(e);
+            await refreshStateAndNotify();
+        }
     }, null, context.subscriptions);
 
     messageBus.listenFor('RequestConfigurationMessage', refreshStateAndNotify);
     messageBus.listenFor('SelectTabMessage', (msg: SelectTabMessage) => {
+        log(`SelectTabMessage: tab ${msg.value}`);
         state.activeTabName = msg.value;
     });
 
@@ -254,6 +255,7 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
 }
 
 async function updateView(panel: vscode.WebviewPanel, root: string) {
+    log('updateView');
     const html = getHtml(root);
     panel.title = title;
     panel.webview.html = html;
@@ -274,4 +276,9 @@ return `
     <script type="text/javascript" src="${resource}/index.bundle.js"></script></body>
 </html>
 `;
+}
+
+function log(msg: any) {
+    const now = new Date();
+    console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
