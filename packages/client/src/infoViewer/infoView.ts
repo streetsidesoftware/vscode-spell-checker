@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage, SelectFolderMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
@@ -51,14 +51,20 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
     const messageBus = new MessageBus(webviewApiFromPanel(panel));
 
-    async function calcStateSettings(activeDocumentUri: Maybe<vscode.Uri>) {
+    async function calcStateSettings(
+        activeDocumentUri: Maybe<vscode.Uri>,
+        activeFolderUri: Maybe<vscode.Uri>,
+    ) {
         const doc = activeDocumentUri && findMatchingDocument(activeDocumentUri);
-        return calcSettings(doc, client);
+        return calcSettings(
+            doc,
+            activeFolderUri,
+            client);
     }
 
     async function refreshState() {
         log(`refreshState: uri "${state.activeDocumentUri}"`);
-        state.settings = await calcStateSettings(state.activeDocumentUri);
+        state.settings = await calcStateSettings(state.activeDocumentUri, state.activeFolderUri);
     }
 
     async function notifyView() {
@@ -100,6 +106,13 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         log(`SelectTabMessage: tab ${msg.value}`);
         state.activeTabName = msg.value;
     });
+    messageBus.listenFor('SelectFolderMessage', (msg: SelectFolderMessage) => {
+        log(`SelectFolderMessage: folder '${msg.value}'`);
+        const uri = msg.value;
+        const defaultFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
+        state.activeFolderUri = uri && vscode.Uri.parse(uri) || defaultFolder && defaultFolder.uri;
+        refreshStateAndNotify();
+    });
 
     return panel;
 
@@ -120,19 +133,29 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             activeTabName: 'About',
             activeDocumentUri,
             activeFolderUri,
-            settings: await calcStateSettings(calcActiveDocumentFromEditor(vscode.window.activeTextEditor)),
+            settings: await calcStateSettings(
+                activeDocumentUri,
+                activeFolderUri
+            ),
         }
     }
 
 }
 
-async function calcSettings(document: Maybe<vscode.TextDocument>, client: CSpellClient): Promise<Settings> {
-    const config = inspectConfig((document && document.uri) || null);
+async function calcSettings(
+    document: Maybe<vscode.TextDocument>,
+    folderUri: Maybe<vscode.Uri>,
+    client: CSpellClient,
+): Promise<Settings> {
+    const activeFolderUri = folderUri || document && document.uri || null;
+    const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig.docSettings),
         workspace: mapWorkspace(client.allowedSchemas),
+        activeFileUri: document && document.uri.toString(),
+        activeFolderUri: activeFolderUri && activeFolderUri.toString() || undefined,
     }
     return settings;
 }
