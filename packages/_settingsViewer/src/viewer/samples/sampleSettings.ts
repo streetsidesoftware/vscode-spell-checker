@@ -55,7 +55,6 @@ const _sampleSettings: Settings = {
         file: undefined,
     },
     workspace: sampleWorkspace,
-    activeLanguageId: 'typescript',
     activeFolderUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
     activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
 };
