@@ -30,7 +30,6 @@ export interface Settings {
     dictionaries: DictionaryEntry[];
     configs: Configs;
     workspace?: Workspace;
-    activeLanguageId?: string;
     activeFileUri?: string;
     activeFolderUri?: string;
 }

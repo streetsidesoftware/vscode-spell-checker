@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable, toJS} from 'mobx';
+import {observable, toJS, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { ConfigurationChangeMessage, SelectTabMessage } from '../api/message';
+import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings, ConfigTarget } from '../api/settings';
+import { Settings, ConfigTarget, WorkspaceFolder } from '../api/settings';
 import { MessageBus } from '../api';
 import { sampleSettings } from './samples/sampleSettings';
 
@@ -17,6 +17,18 @@ class AppState {
     @observable counter = 0;
     @observable settings: Settings = {...sampleSettings};
     @observable activeTab: string = 'About';
+    @computed get activeFolder(): WorkspaceFolder | undefined {
+        const folders = this.workspaceFolders;
+        const uri = this.activeFoldUri;
+        return folders && folders.filter(f => f.uri === uri)[0];
+    }
+    @computed get workspaceFolders(): WorkspaceFolder[] | undefined {
+        const workspace = this.settings.workspace;
+        return workspace && workspace.workspaceFolders;
+    }
+    @computed get activeFoldUri(): string | undefined {
+        return this.settings.activeFolderUri;
+    }
 }
 
 const localDisplay: [ConfigTarget, string][] = [
@@ -56,7 +68,11 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                 </Grid>
                 <div>
                     <h2>Info</h2>
-                    Panel: {appState.activeTab}
+                    <div>Panel: {appState.activeTab}</div>
+                    <div>
+                        Active Folder:
+                        <pre>{JSON.stringify(toJS(appState.activeFolder), null, 2)}</pre>
+                    </div>
                 </div>
                 <div>
                     <div>{appState.counter}</div>
@@ -67,6 +83,9 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     >
                         Update
                     </Button>
+                </div>
+                <div>
+                    <pre>{JSON.stringify(toJS(appState.settings), null, 2)}</pre>
                 </div>
                 <DevTools />
             </div>
@@ -117,5 +136,12 @@ messageBus.listenFor(
     'SelectTabMessage',
     (msg: SelectTabMessage) => {
         appState.activeTab = msg.value;
+    }
+);
+
+messageBus.listenFor(
+    'SelectFolderMessage',
+    (msg: SelectFolderMessage) => {
+        appState.settings.activeFolderUri = msg.value;
     }
 );

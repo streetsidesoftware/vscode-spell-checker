@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, configTargetOrder, Config, Configs, LocalList } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, configTargetOrder, Config, Configs, LocalList, WorkspaceFolder } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
@@ -151,6 +151,30 @@ export class AppState implements State {
         return index > 0 ? index : 0;
     }
 
+    @computed get workspaceFolderNames(): string[] {
+        const workspace = this.settings.workspace;
+        const folders = workspace && workspace.workspaceFolders || [];
+        return folders.map(f => f.name);
+    }
+
+    @computed get activeWorkspaceFolder(): string | undefined {
+        const folder = this.findMatchingFolder(this.settings.activeFolderUri);
+        return folder && folder.name;
+    }
+
+    @computed get workspaceFolders(): WorkspaceFolder[] {
+        const workspace = this.settings.workspace;
+        return workspace && workspace.workspaceFolders || [];
+    }
+
+    private findMatchingFolder(uri: string | undefined): WorkspaceFolder | undefined {
+        return this.workspaceFolders.filter(f => f.uri === uri)[0];
+    }
+
+    private findMatchingFolderByName(name: string | undefined): WorkspaceFolder | undefined {
+        return this.workspaceFolders.filter(f => f.name === name)[0];
+    }
+
     targetToLabel(target: ConfigTarget): string {
         return targetToLabel[target];
     }
@@ -199,6 +223,15 @@ export class AppState implements State {
     actionActivateTab(tabName: string) {
         this.activeTabName = tabName;
         this.messageBus.postMessage({ command: 'SelectTabMessage', value: this.activeTabName });
+    }
+
+    actionSelectFolder(folderName: string) {
+        const folder = this.findMatchingFolderByName(folderName);
+        const folderUri = folder && folder.uri;
+        this.settings.activeFolderUri = folderUri;
+        if (folderUri !== undefined) {
+            this.messageBus.postMessage({ command: 'SelectFolderMessage', value: folderUri })
+        }
     }
 }
 
