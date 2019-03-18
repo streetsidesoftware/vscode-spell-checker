@@ -22,7 +22,7 @@ reaction(
     () => appState.activeTabName,
     value => {
         console.log(`ChangeTabMessage: ${value}`);
-        messageBus.postMessage({ command: 'ChangeTabMessage', value });
+        messageBus.postMessage({ command: 'SelectTabMessage', value });
     },
 );
 

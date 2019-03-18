@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { UpdateCounterMessage, ConfigurationChangeMessage, ChangeTabMessage } from '../api/message';
+import { UpdateCounterMessage, ConfigurationChangeMessage, SelectTabMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget } from '../api/settings';
 import { MessageBus } from '../api';
@@ -118,8 +118,8 @@ messageBus.listenFor(
 );
 
 messageBus.listenFor(
-    'ChangeTabMessage',
-    (msg: ChangeTabMessage) => {
+    'SelectTabMessage',
+    (msg: SelectTabMessage) => {
         appState.activeTab = msg.value;
     }
 );

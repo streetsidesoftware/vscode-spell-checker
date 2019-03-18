@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, ConfigurationChangeMessage, ChangeTabMessage } from '../../settingsViewer';
+import { MessageBus, ConfigurationChangeMessage, SelectTabMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
@@ -96,7 +96,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     }, null, context.subscriptions);
 
     messageBus.listenFor('RequestConfigurationMessage', refreshStateAndNotify);
-    messageBus.listenFor('ChangeTabMessage', (msg: ChangeTabMessage) => {
+    messageBus.listenFor('SelectTabMessage', (msg: SelectTabMessage) => {
         state.activeTabName = msg.value;
     });
 

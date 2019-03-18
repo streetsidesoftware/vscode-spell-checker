@@ -2,7 +2,9 @@ import { Settings } from './settings';
 export type Commands = 'UpdateCounter'
 | 'ConfigurationChangeMessage'
 | 'RequestConfigurationMessage'
-| 'ChangeTabMessage'
+| 'SelectTabMessage'
+| 'SelectFolderMessage'
+| 'SelectFileMessage'
 ;
 
 export interface Message {
@@ -13,7 +15,9 @@ export type Messages =
     UpdateCounterMessage
     | ConfigurationChangeMessage
     | RequestConfigurationMessage
-    | ChangeTabMessage
+    | SelectTabMessage
+    | SelectFolderMessage
+    | SelectFileMessage
     ;
 
 export function isMessage(data: any): data is Message {
@@ -46,12 +50,24 @@ export interface RequestConfigurationMessage extends Message {
     command: 'RequestConfigurationMessage';
 }
 
-export interface ChangeTabMessage extends Message {
-    command: 'ChangeTabMessage';
+export interface SelectTabMessage extends Message {
+    command: 'SelectTabMessage';
+    value: string;
+}
+
+export interface SelectFolderMessage extends Message {
+    command: 'SelectFolderMessage';
+    value: string;
+}
+
+export interface SelectFileMessage extends Message {
+    command: 'SelectFileMessage';
     value: string;
 }
 
 export const isUpdateCounterMessage = isA<UpdateCounterMessage>('UpdateCounter', ['value']);
 export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', ['value']);
 export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
-export const isChangeTabMessage = isA<ChangeTabMessage>('ChangeTabMessage', ['value']);
+export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', ['value']);
+export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', ['value']);
+export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', ['value']);
