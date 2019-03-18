@@ -1,5 +1,7 @@
 import { Workspace } from '../../api/settings';
 
+// cspell:ignore ripgrep
+
 const _sampleWorkspace: Workspace = {
     "workspaceFolders": [{
         "uri": "file:///Users/cspell/projects/clones/ripgrep",

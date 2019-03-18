@@ -9,13 +9,14 @@ import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage } fro
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget, WorkspaceFolder } from '../api/settings';
 import { MessageBus } from '../api';
-import { sampleSettings } from './samples/sampleSettings';
+import { sampleSettings } from '../test/samples/sampleSettings';
+// import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
+const dcopy: <T>(v: T)=>T = require('deep-copy');
 
 require('./app.scss');
 
 class AppState {
-    @observable counter = 0;
-    @observable settings: Settings = {...sampleSettings};
+    @observable settings: Settings = dcopy(sampleSettings);
     @observable activeTab: string = 'About';
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
@@ -75,7 +76,6 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     </div>
                 </div>
                 <div>
-                    <div>{appState.counter}</div>
                     <Button
                         raised
                         className="button-alternate"

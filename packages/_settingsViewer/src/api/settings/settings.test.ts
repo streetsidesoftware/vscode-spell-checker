@@ -1,4 +1,4 @@
-import { configTargetOrder, configTargetToIndex, ConfigTarget } from './settings';
+import { configTargetOrder, configTargetToIndex, ConfigTarget, isConfigTarget } from './settings';
 
 describe('Validate settings', () => {
     test('config order matches index', () => {
@@ -10,5 +10,9 @@ describe('Validate settings', () => {
     test('config order is immutable', () => {
         const order = configTargetOrder as ConfigTarget[];
         expect(() => order.push('user')).toThrow();
+    });
+    test('isConfigTarget', () => {
+        expect(isConfigTarget('hello')).toBe(false);
+        expect(isConfigTarget('user')).toBe(true);
     });
 });

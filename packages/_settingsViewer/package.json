@@ -43,6 +43,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^1.0.1",
     "css-loader": "^2.1.1",
+    "deep-copy": "^1.4.2",
     "extract-loader": "^3.1.0",
     "file-loader": "^3.0.1",
     "handlebars": "^4.1.1",
