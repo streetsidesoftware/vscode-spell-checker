@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage, SelectFolderMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
@@ -112,6 +112,12 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         const uri = msg.value;
         const defaultFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
         state.activeFolderUri = uri && vscode.Uri.parse(uri) || defaultFolder && defaultFolder.uri;
+        refreshStateAndNotify();
+    });
+    messageBus.listenFor('SelectFileMessage', (msg: SelectFileMessage) => {
+        log(`SelectFolderMessage: folder '${msg.value}'`);
+        const uri = msg.value;
+        state.activeDocumentUri = uri && vscode.Uri.parse(uri) || state.activeDocumentUri;
         refreshStateAndNotify();
     });
 
