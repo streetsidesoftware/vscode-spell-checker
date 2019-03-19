@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About Panel Verification tests the snapshot 1`] = `
+<div>
+  <h1>
+    <img
+      src="test-file-stub"
+    />
+     Code Spell Checker
+  </h1>
+  <button
+    className="mdc-button button-alternate"
+    disabled={false}
+    onClick={[Function]}
+  >
+    <span
+      className="mdc-button__label"
+    >
+      Refresh
+    </span>
+  </button>
+  <h2>
+    Workspace
+  </h2>
+  <pre>
+    {
+  "workspaceFolders": [
+    {
+      "uri": "file:///Users/cspell/projects/clones/ripgrep",
+      "name": "ripgrep",
+      "index": 0
+    },
+    {
+      "index": 1,
+      "name": "dutch",
+      "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch"
+    }
+  ],
+  "name": "ripgrep",
+  "textDocuments": [
+    {
+      "uri": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+      "fileName": "/Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+      "isUntitled": false,
+      "languageId": "jsonc"
+    },
+    {
+      "fileName": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+      "isUntitled": false,
+      "languageId": "typescript",
+      "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
+    },
+    {
+      "uri": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+      "fileName": "/Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+      "isUntitled": false,
+      "languageId": "rust"
+    }
+  ]
+}
+  </pre>
+  <h2>
+    Configs
+  </h2>
+  <pre>
+    {
+  "user": {
+    "locals": [
+      "en"
+    ],
+    "languageIdsEnabled": [
+      "asciidoc",
+      "c",
+      "cfml",
+      "cpp",
+      "csharp",
+      "css",
+      "go",
+      "handlebars",
+      "html",
+      "jade",
+      "java",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "latex",
+      "less",
+      "markdown",
+      "php",
+      "plaintext",
+      "pub",
+      "python",
+      "restructuredtext",
+      "rust",
+      "scala",
+      "scss",
+      "text",
+      "typescript",
+      "typescriptreact",
+      "yaml",
+      "yml"
+    ]
+  },
+  "workspace": {
+    "locals": [
+      "en",
+      "da"
+    ],
+    "languageIdsEnabled": [
+      "asciidoc",
+      "c",
+      "cpp",
+      "csharp",
+      "css",
+      "go",
+      "handlebars",
+      "html",
+      "jade",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "latex",
+      "less",
+      "markdown",
+      "php",
+      "plaintext",
+      "pub",
+      "python",
+      "restructuredtext",
+      "rust",
+      "scss",
+      "text",
+      "typescript",
+      "typescriptreact",
+      "yml"
+    ]
+  },
+  "folder": {
+    "locals": []
+  },
+  "file": {
+    "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+    "fileName": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+    "isUntitled": false,
+    "languageId": "typescript",
+    "dictionaries": [
+      {
+        "name": "node",
+        "locals": [],
+        "languageIds": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "json"
+        ],
+        "description": "List of NodeJS terms."
+      },
+      {
+        "name": "npm",
+        "locals": [],
+        "languageIds": [
+          "csharp",
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "markdown",
+          "asciidoc",
+          "html",
+          "pug",
+          "jade",
+          "json",
+          "php"
+        ],
+        "description": "List of Top 500 NPM packages."
+      },
+      {
+        "name": "typescript",
+        "locals": [],
+        "languageIds": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "html",
+          "pug",
+          "jade",
+          "handlebars",
+          "php"
+        ],
+        "description": "JavaScript and Typescript terms."
+      }
+    ]
+  }
+}
+  </pre>
+</div>
+`;

@@ -8,6 +8,7 @@ import { PanelConfig } from './panelConfig';
 import { isConfigTarget } from '../../api/settings';
 import { PanelDictionaries } from './panelDictionaries';
 import { PanelAbout } from './panelAbout';
+import { PanelFile } from './panelFile';
 
 @observer
 export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
@@ -18,6 +19,7 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
             <div key={tab.label} className={appState.activeTabIndex === index ? 'panel active' : 'panel'}>
                 {isConfigTarget(tab.target)
                     ? <PanelConfig appState={appState} target={tab.target}></PanelConfig>
+                    : tab.target === 'file' ? <PanelFile appState={appState}></PanelFile>
                     : tab.target === 'dictionaries' ? <PanelDictionaries appState={appState}></PanelDictionaries>
                     : tab.target === 'about' ? <PanelAbout appState={appState}></PanelAbout>
                     : <div></div>

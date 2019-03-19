@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`File Panel Verification tests the snapshot 1`] = `
+<div>
+  <div>
+    <div
+      className="mdc-select select_folder"
+    >
+      <select
+        className="mdc-select__native-control"
+        disabled={false}
+        label="File"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "/Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+              "value": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+            },
+            Object {
+              "label": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+              "value": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+            },
+            Object {
+              "label": "/Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+              "value": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+            },
+          ]
+        }
+        value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
+      >
+        <option
+          value="file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json"
+        >
+          /Users/cspell/projects/clones/ripgrep/.vscode/settings.json
+        </option>
+        <option
+          value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
+        >
+          /Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
+        </option>
+        <option
+          value="file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs"
+        >
+          /Users/cspell/projects/clones/ripgrep/src/decoder.rs
+        </option>
+      </select>
+      <label
+        className="mdc-floating-label mdc-floating-label--float-above"
+        onAnimationEnd={[Function]}
+      >
+        File
+      </label>
+      <div
+        className="mdc-line-ripple"
+        onTransitionEnd={[Function]}
+        style={Object {}}
+      />
+    </div>
+  </div>
+  <div>
+    <h2>
+      Active Dictionaries
+    </h2>
+    <ul
+      aria-orientation="vertical"
+      className="mdc-list dictionary_list mdc-list--two-line"
+    >
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={0}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          code
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            node
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            List of NodeJS terms.
+          </span>
+        </span>
+        <span
+          className="mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          
+        </span>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          code
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            npm
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            List of Top 500 NPM packages.
+          </span>
+        </span>
+        <span
+          className="mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          
+        </span>
+      </li>
+      <li
+        className="mdc-list-item"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        tabIndex={-1}
+      >
+        <i
+          className="material-icons mdc-list-item__graphic"
+          tabIndex={-1}
+        >
+          code
+        </i>
+        <span
+          className="mdc-list-item__text"
+          tabIndex={-1}
+        >
+          <span
+            className="mdc-list-item__primary-text"
+            tabIndex={-1}
+          >
+            typescript
+          </span>
+          <span
+            className="mdc-list-item__secondary-text"
+            tabIndex={-1}
+          >
+            JavaScript and Typescript terms.
+          </span>
+        </span>
+        <span
+          className="mdc-list-item__meta"
+          tabIndex={-1}
+        >
+          
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <pre>
+      {
+  "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+  "fileName": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+  "isUntitled": false,
+  "languageId": "typescript",
+  "dictionaries": [
+    {
+      "name": "node",
+      "locals": [],
+      "languageIds": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "json"
+      ],
+      "description": "List of NodeJS terms."
+    },
+    {
+      "name": "npm",
+      "locals": [],
+      "languageIds": [
+        "csharp",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "markdown",
+        "asciidoc",
+        "html",
+        "pug",
+        "jade",
+        "json",
+        "php"
+      ],
+      "description": "List of Top 500 NPM packages."
+    },
+    {
+      "name": "typescript",
+      "locals": [],
+      "languageIds": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html",
+        "pug",
+        "jade",
+        "handlebars",
+        "php"
+      ],
+      "description": "JavaScript and Typescript terms."
+    }
+  ]
+}
+    </pre>
+  </div>
+</div>
+`;

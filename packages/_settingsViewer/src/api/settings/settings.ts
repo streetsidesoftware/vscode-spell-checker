@@ -1,4 +1,4 @@
-import { Workspace } from './workspace';
+import { Workspace, TextDocument } from './workspace';
 
 export type LocalId = string;
 export type LocalList = LocalId[];
@@ -14,10 +14,11 @@ export interface SettingByConfigTarget<T> {
     user: T;
     workspace: T;
     folder: T;
-    file: T;
 }
 
-export interface Configs extends SettingByConfigTarget<Config | undefined> {};
+export interface Configs extends SettingByConfigTarget<Config | undefined> {
+    file: FileConfig | undefined;
+};
 
 export interface DictionaryEntry {
     name: string;
@@ -35,16 +36,18 @@ export interface Settings {
 }
 
 export interface Config {
-    uri?: string;
     locals: Inherited<LocalList>;
     languageIdsEnabled: Inherited<FileTypeList>;
+}
+
+export interface FileConfig extends TextDocument {
+    dictionaries: DictionaryEntry[];
 }
 
 export const ConfigTargets = Object.freeze<SettingByConfigTarget<ConfigTarget>>({
     user: 'user',
     workspace: 'workspace',
     folder: 'folder',
-    file: 'file',
 });
 
 export const configTargets = Object.freeze(Object.keys(ConfigTargets) as ConfigTarget[]);
@@ -60,7 +63,6 @@ export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>(
     user: 0,
     workspace: 1,
     folder: 2,
-    file: 3,
 });
 
 

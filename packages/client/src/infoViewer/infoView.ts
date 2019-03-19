@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument } from '../../settingsViewer/api/settings';
+import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, SelectTabMessage, SelectFolderMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
@@ -9,6 +9,7 @@ import { CSpellClient } from '../client';
 import { CSpellUserSettings } from '../server';
 import { inspectConfig, Inspect } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
+import { commonPrefix } from '../util/commonPrefix';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 const title = 'Spell Checker Preferences';
@@ -142,17 +143,44 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
 }
 
+function getDefaultWorkspaceFolder() {
+    return vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
+}
+
+function getDefaultWorkspaceFolderUri() {
+    const folder = getDefaultWorkspaceFolder();
+    return folder && folder.uri;
+}
+
+function normalizeFileName(filename: string): string {
+    const uri = vscode.Uri.file(filename);
+    const folder = vscode.workspace.getWorkspaceFolder(uri);
+    if (folder) {
+        const folderPath = folder.uri.fsPath;
+        return folder.name + filename.slice(folderPath.length);
+    }
+    if (!vscode.workspace.workspaceFolders || !vscode.workspace.workspaceFolders.length) {
+        return path.basename(filename);
+    }
+    const folders = vscode.workspace.workspaceFolders;
+    const prefix = commonPrefix(folders.map(f => f.uri.fsPath).concat([filename]));
+    return filename.slice(prefix.length);
+}
+
 async function calcSettings(
     document: Maybe<vscode.TextDocument>,
     folderUri: Maybe<vscode.Uri>,
     client: CSpellClient,
 ): Promise<Settings> {
-    const activeFolderUri = folderUri || document && document.uri || null;
+    const activeFolderUri = folderUri
+        || document && document.uri
+        || getDefaultWorkspaceFolderUri()
+        || null;
     const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
-        configs: extractViewerConfigFromConfig(config, docConfig.docSettings),
+        configs: extractViewerConfigFromConfig(config, docConfig.docSettings, document),
         workspace: mapWorkspace(client.allowedSchemas),
         activeFileUri: document && document.uri.toString(),
         activeFolderUri: activeFolderUri && activeFolderUri.toString() || undefined,
@@ -160,7 +188,11 @@ async function calcSettings(
     return settings;
 }
 
-function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, fileSetting: CSpellUserSettings | undefined): Configs {
+function extractViewerConfigFromConfig(
+    config: Inspect<CSpellUserSettings>,
+    fileSetting: CSpellUserSettings | undefined,
+    doc: vscode.TextDocument | undefined,
+): Configs {
     function extract(s: CSpellUserSettings | undefined): Config | undefined {
         if (!s || !Object.keys(s)) {
             return undefined;
@@ -173,11 +205,27 @@ function extractViewerConfigFromConfig(config: Inspect<CSpellUserSettings>, file
         return cfg;
     }
 
+    function extractFileConfig(s: CSpellUserSettings | undefined): FileConfig | undefined {
+        if (!doc || (!s || !Object.keys(s))) {
+            return undefined;
+        }
+        const {uri, fileName, languageId, isUntitled} = doc;
+        const dictionaries = extractDictionariesFromConfig(s).filter(d => d.languageIds.includes(languageId));
+        const cfg: FileConfig = {
+            uri: uri.toString(),
+            fileName,
+            isUntitled,
+            languageId,
+            dictionaries,
+        }
+        return cfg;
+    }
+
     return {
         user: extract(config.globalValue),
         workspace: extract(config.workspaceValue),
         folder: extract(config.workspaceFolderValue),
-        file: extract(fileSetting),
+        file: extractFileConfig(fileSetting),
     }
 }
 
@@ -259,7 +307,7 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
         const { fileName, languageId, isUntitled } = td;
         return {
             uri: td.uri.toString(true),
-            fileName,
+            fileName: normalizeFileName(fileName),
             languageId,
             isUntitled
         }
@@ -305,3 +353,4 @@ function log(msg: any) {
     const now = new Date();
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
+

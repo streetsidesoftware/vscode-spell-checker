@@ -16,18 +16,18 @@ const _sampleWorkspace: Workspace = {
     "name": "ripgrep",
     "textDocuments": [{
         "uri": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
-        "fileName": "/Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+        "fileName": "ripgrep/.vscode/settings.json",
         "isUntitled": false,
         "languageId": "jsonc"
     }, {
-        "fileName": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+        "fileName": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
         "isUntitled": false,
         "languageId": "typescript",
         "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
     },
     {
         "uri": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
-        "fileName": "/Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+        "fileName": "ripgrep/src/decoder.rs",
         "isUntitled": false,
         "languageId": "rust",
     }]

@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder, TextDocument } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
@@ -10,20 +10,20 @@ type Maybe<T> = T | undefined;
 
 export interface Tab {
     label: string;
-    target: ConfigTarget | 'dictionaries' | 'about';
+    target: ConfigTarget | 'file' | 'dictionaries' | 'about';
 }
 
 const targetToLabel: SettingByConfigTarget<string> = {
     user: 'User',
     workspace: 'Workspace',
     folder: 'Folder',
-    file: 'File',
 }
 
 const tabs: Tab[] = [
     { label: 'User', target: 'user' },
     { label: 'Workspace', target: 'workspace' },
     { label: 'Folder', target: 'folder' },
+    { label: 'File', target: 'file' },
     { label: 'Dictionaries', target: 'dictionaries' },
     { label: 'About', target: 'about' },
 ];
@@ -138,7 +138,6 @@ export class AppState implements State {
             user: calcConfig('user'),
             workspace: calcConfig('workspace'),
             folder: calcConfig('folder'),
-            file: calcConfig('file'),
         }
     }
 
@@ -165,6 +164,19 @@ export class AppState implements State {
     @computed get workspaceFolders(): WorkspaceFolder[] {
         const workspace = this.settings.workspace;
         return workspace && workspace.workspaceFolders || [];
+    }
+
+    @computed get activeFileUri(): string | undefined {
+        return this.settings.activeFileUri;
+    }
+
+    @computed get documents(): TextDocument[] {
+        const workspace = this.settings.workspace;
+        return workspace && workspace.textDocuments || [];
+    }
+
+    @computed get documentSelection(): { label: string, value: string }[] {
+        return this.documents.map(doc => ({ label: doc.fileName, value: doc.uri }));
     }
 
     private findMatchingFolder(uri: string | undefined): WorkspaceFolder | undefined {
@@ -233,6 +245,10 @@ export class AppState implements State {
             this.messageBus.postMessage({ command: 'SelectFolderMessage', value: folderUri })
         }
     }
+
+    actionSelectDocument(documentUri: string) {
+        this.messageBus.postMessage({ command: 'SelectFileMessage', value: documentUri });
+    }
 }
 
 function calcInheritableConfig(configs: Configs): InheritedConfigs {
@@ -256,8 +272,7 @@ function calcInheritableConfig(configs: Configs): InheritedConfigs {
     const user = peek('user', defaultCfg);
     const workspace = peek('workspace', user);
     const folder = peek('folder', workspace);
-    const file = peek('file', folder);
-    return { user, workspace, folder, file };
+    return { user, workspace, folder };
 }
 
 function notUndefined<T>(a : T): a is Exclude<T, undefined> {

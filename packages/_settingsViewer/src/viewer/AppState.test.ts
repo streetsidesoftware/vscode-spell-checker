@@ -11,7 +11,6 @@ describe('Validate AppState', () => {
         expect(inheritedConfig.user).not.toBeUndefined();
         expect(inheritedConfig.workspace).not.toBeUndefined();
         expect(inheritedConfig.folder).not.toBeUndefined();
-        expect(inheritedConfig.file).not.toBeUndefined();
     });
 
     function getSampleAppState(): AppState {

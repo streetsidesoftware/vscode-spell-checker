@@ -16,3 +16,4 @@ typings/**
 vsc-extension-quickstart.md
 coverage/**
 settingsViewer/viewer/**
+settingsViewer/test/**

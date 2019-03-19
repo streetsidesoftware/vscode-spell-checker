@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: file 1`] = `<div />`;
-
 exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: folder 1`] = `
 <div>
   <h2>

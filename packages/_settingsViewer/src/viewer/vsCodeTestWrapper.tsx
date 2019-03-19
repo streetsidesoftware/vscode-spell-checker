@@ -5,9 +5,9 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage } from '../api/message';
+import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings, ConfigTarget, WorkspaceFolder } from '../api/settings';
+import { Settings, ConfigTarget, WorkspaceFolder, TextDocument } from '../api/settings';
 import { MessageBus } from '../api';
 import { sampleSettings } from '../test/samples/sampleSettings';
 // import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
@@ -20,15 +20,26 @@ class AppState {
     @observable activeTab: string = 'About';
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
-        const uri = this.activeFoldUri;
-        return folders && folders.filter(f => f.uri === uri)[0];
+        const uri = this.activeFolderUri;
+        return folders.filter(f => f.uri === uri)[0];
     }
-    @computed get workspaceFolders(): WorkspaceFolder[] | undefined {
+    @computed get workspaceFolders(): WorkspaceFolder[] {
         const workspace = this.settings.workspace;
-        return workspace && workspace.workspaceFolders;
+        return workspace && workspace.workspaceFolders || [];
     }
-    @computed get activeFoldUri(): string | undefined {
+    @computed get activeFolderUri(): string | undefined {
         return this.settings.activeFolderUri;
+    }
+    @computed get activeFileUri(): string | undefined {
+        return this.settings.activeFileUri;
+    }
+    @computed get activeDocument(): TextDocument | undefined {
+        const uri = this.activeFileUri;
+        return this.workspaceDocuments.filter(d => d.uri === uri)[0];
+    }
+    @computed get workspaceDocuments(): TextDocument[] {
+        const workspace = this.settings.workspace;
+        return workspace && workspace.textDocuments || [];
     }
 }
 
@@ -36,7 +47,6 @@ const localDisplay: [ConfigTarget, string][] = [
     ['user', 'Global'],
     ['workspace', 'Workspace'],
     ['folder', 'Folder'],
-    ['file', 'File'],
 ];
 
 @observer
@@ -73,6 +83,10 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     <div>
                         Active Folder:
                         <pre>{JSON.stringify(toJS(appState.activeFolder), null, 2)}</pre>
+                    </div>
+                    <div>
+                        Active Document:
+                        <pre>{JSON.stringify(toJS(appState.activeDocument), null, 2)}</pre>
                     </div>
                 </div>
                 <div>
@@ -143,5 +157,12 @@ messageBus.listenFor(
     'SelectFolderMessage',
     (msg: SelectFolderMessage) => {
         appState.settings.activeFolderUri = msg.value;
+    }
+);
+
+messageBus.listenFor(
+    'SelectFileMessage',
+    (msg: SelectFileMessage) => {
+        appState.settings.activeFileUri = msg.value;
     }
 );
