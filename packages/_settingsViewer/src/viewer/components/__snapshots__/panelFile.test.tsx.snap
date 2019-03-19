@@ -18,15 +18,15 @@ exports[`File Panel Verification tests the snapshot 1`] = `
         options={
           Array [
             Object {
-              "label": "/Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+              "label": "ripgrep/.vscode/settings.json",
               "value": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
             },
             Object {
-              "label": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+              "label": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
               "value": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
             },
             Object {
-              "label": "/Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+              "label": "ripgrep/src/decoder.rs",
               "value": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
             },
           ]
@@ -36,17 +36,17 @@ exports[`File Panel Verification tests the snapshot 1`] = `
         <option
           value="file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json"
         >
-          /Users/cspell/projects/clones/ripgrep/.vscode/settings.json
+          ripgrep/.vscode/settings.json
         </option>
         <option
           value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
         >
-          /Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
+          vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
         </option>
         <option
           value="file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs"
         >
-          /Users/cspell/projects/clones/ripgrep/src/decoder.rs
+          ripgrep/src/decoder.rs
         </option>
       </select>
       <label
@@ -190,7 +190,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
     <pre>
       {
   "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-  "fileName": "/Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+  "fileName": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
   "isUntitled": false,
   "languageId": "typescript",
   "dictionaries": [
