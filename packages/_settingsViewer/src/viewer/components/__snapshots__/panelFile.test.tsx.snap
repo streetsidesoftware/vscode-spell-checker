@@ -63,6 +63,123 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       style={Object {}}
     />
   </div>
+  <h2>
+    Settings
+  </h2>
+  <ul
+    aria-orientation="vertical"
+    className="mdc-list"
+  >
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="checkbox"
+      tabIndex={0}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        description
+      </i>
+      <span
+        className="mdc-list-item__text"
+        tabIndex={-1}
+      >
+        File enabled
+      </span>
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded mdc-checkbox--disabled mdc-list-item__meta"
+        onAnimationEnd={[Function]}
+        tabIndex={-1}
+      >
+        <input
+          aria-checked={false}
+          checked={true}
+          className="mdc-checkbox__native-control"
+          disabled={true}
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </li>
+    <li
+      className="mdc-list-item"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="checkbox"
+      tabIndex={-1}
+    >
+      <i
+        className="material-icons mdc-list-item__graphic"
+        tabIndex={-1}
+      >
+        code
+      </i>
+      <label
+        className="mdc-list-item__text"
+        htmlFor="checkbox-language-enabled"
+      >
+        Programming Language: typescript
+      </label>
+      <div
+        className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+        onAnimationEnd={[Function]}
+        tabIndex={-1}
+      >
+        <input
+          aria-checked={false}
+          checked={true}
+          className="mdc-checkbox__native-control"
+          disabled={false}
+          id="checkbox-language-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="mdc-checkbox__background"
+        >
+          <svg
+            className="mdc-checkbox__checkmark"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="mdc-checkbox__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+            />
+          </svg>
+          <div
+            className="mdc-checkbox__mixedmark"
+          />
+        </div>
+      </div>
+    </li>
+  </ul>
   <div>
     <h2>
       Active Dictionaries

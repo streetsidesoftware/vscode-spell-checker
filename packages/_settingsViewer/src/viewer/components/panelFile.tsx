@@ -4,6 +4,12 @@ import { AppState } from '../AppState';
 import Select from '@material/react-select';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
+import { Grid, Row, Cell } from '@material/react-layout-grid';
+import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
+import { Checkbox } from '@material/react-checkbox';
+import MaterialIcon from '@material/react-material-icon';
+
+function initRipple(){}
 
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
@@ -11,6 +17,9 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
         const appState = this.props.appState;
         const settings = appState.settings;
         const config = settings.configs.file;
+        const languageId = config && config.languageId || 'unknown';
+        const languageEnabled = config && config.languageEnabled;
+        const fileEnabled = config && config.fileEnabled;
         const dictionaries = config && config.dictionaries || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
         return (
@@ -24,6 +33,40 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                         onChange={(evt) => select(evt.target as HTMLSelectElement)}
                         value={appState.activeFileUri}
                     />
+                <h2>Settings</h2>
+                {/*
+                <Grid>
+                    <Row>
+                        <Cell columns={8}>
+                        </Cell>
+                    </Row>
+                </Grid>
+                */}
+                        <List>
+                            <ListItem role='checkbox'>
+                                <ListItemGraphic graphic={<MaterialIcon icon='description'/>} />
+                                <ListItemText primaryText={`File enabled`} />
+                                <ListItemMeta meta={
+                                    <Checkbox
+                                        disabled={true}
+                                        checked={fileEnabled}
+                                        onChange={(evt) => 0}
+                                        initRipple={initRipple} />
+                                }/>
+                            </ListItem>
+                            <ListItem role='checkbox'>
+                                <ListItemGraphic graphic={<MaterialIcon icon='code'/>} />
+                                <ListItemText primaryText={<label htmlFor='checkbox-language-enabled'>{`Programming Language: ${languageId}`}</label>} />
+                                <ListItemMeta meta={
+                                    <Checkbox
+                                        nativeControlId='checkbox-language-enabled'
+                                        checked={languageEnabled}
+                                        onChange={(evt) => 0}
+                                        initRipple={initRipple} />
+                                }/>
+                            </ListItem>
+                        </List>
+
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle='Active Dictionaries'></SectionDictionaries>
                 {appState.debugMode ?
                     <div>

@@ -28,22 +28,22 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                     Refresh
                 </Button>
                 <h2>Options</h2>
-                    <Row>
-                        <Cell columns={6}>
-                        <List>
-                            <ListItem role='checkbox'>
-                                <ListItemGraphic graphic={<MaterialIcon icon='settings'/>} />
-                                <ListItemText primaryText='Debug Mode' />
-                                <ListItemMeta meta={
-                                    <Checkbox
-                                        checked={appState.debugMode}
-                                        onChange={(evt) => this.props.appState.actionSetDebugMode(evt.target.checked)}
-                                        initRipple={initRipple} />
-                                }/>
-                            </ListItem>
-                        </List>
-                        </Cell>
-                    </Row>
+                <Row>
+                    <Cell columns={6}>
+                    <List>
+                        <ListItem role='checkbox'>
+                            <ListItemGraphic graphic={<MaterialIcon icon='settings'/>} />
+                            <ListItemText primaryText='Debug Mode' />
+                            <ListItemMeta meta={
+                                <Checkbox
+                                    checked={appState.debugMode}
+                                    onChange={(evt) => this.props.appState.actionSetDebugMode(evt.target.checked)}
+                                    initRipple={initRipple} />
+                            }/>
+                        </ListItem>
+                    </List>
+                    </Cell>
+                </Row>
                 {/* <DevTools /> */}
                 {appState.debugMode ?
                 <div>

@@ -41,6 +41,8 @@ export interface Config {
 }
 
 export interface FileConfig extends TextDocument {
+    languageEnabled: boolean | undefined;
+    fileEnabled: boolean | undefined;
     dictionaries: DictionaryEntry[];
 }
 

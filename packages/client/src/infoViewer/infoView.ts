@@ -6,7 +6,7 @@ import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage } 
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
 import { inspectConfig, Inspect } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
@@ -186,7 +186,7 @@ async function calcSettings(
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
-        configs: extractViewerConfigFromConfig(config, docConfig.docSettings, document),
+        configs: extractViewerConfigFromConfig(config, docConfig, document),
         workspace: mapWorkspace(client.allowedSchemas),
         activeFileUri: document && document.uri.toString(),
         activeFolderUri: activeFolderUri && activeFolderUri.toString() || undefined,
@@ -196,7 +196,7 @@ async function calcSettings(
 
 function extractViewerConfigFromConfig(
     config: Inspect<CSpellUserSettings>,
-    fileSetting: CSpellUserSettings | undefined,
+    docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
 ): Configs {
     function extract(s: CSpellUserSettings | undefined): Config | undefined {
@@ -211,18 +211,20 @@ function extractViewerConfigFromConfig(
         return cfg;
     }
 
-    function extractFileConfig(s: CSpellUserSettings | undefined): FileConfig | undefined {
-        if (!doc || (!s || !Object.keys(s))) {
-            return undefined;
-        }
+    function extractFileConfig(): FileConfig | undefined {
+        const { languageEnabled, docSettings, fileEnabled } = docConfig;
+        if (!doc) return undefined;
         const {uri, fileName, languageId, isUntitled} = doc;
-        const dictionaries = extractDictionariesFromConfig(s).filter(d => d.languageIds.includes(languageId));
+        const enabledDicts = new Set<string>(docSettings && docSettings.dictionaries || []);
+        const dictionaries = extractDictionariesFromConfig(docSettings).filter(dic => enabledDicts.has(dic.name));
         const cfg: FileConfig = {
             uri: uri.toString(),
             fileName,
             isUntitled,
             languageId,
             dictionaries,
+            languageEnabled,
+            fileEnabled,
         }
         return cfg;
     }
@@ -231,7 +233,7 @@ function extractViewerConfigFromConfig(
         user: extract(config.globalValue),
         workspace: extract(config.workspaceValue),
         folder: extract(config.workspaceFolderValue),
-        file: extractFileConfig(fileSetting),
+        file: extractFileConfig(),
     }
 }
 

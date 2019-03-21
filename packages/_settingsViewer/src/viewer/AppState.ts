@@ -248,6 +248,10 @@ export class AppState implements State {
     actionSelectDocument(documentUri: string) {
         this.messageBus.postMessage({ command: 'SelectFileMessage', value: documentUri });
     }
+
+    actionEnableLanguageId(languageId: boolean) {
+
+    }
 }
 
 function calcInheritableConfig(configs: Configs): InheritedConfigs {

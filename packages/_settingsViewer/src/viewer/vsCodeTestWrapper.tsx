@@ -7,9 +7,10 @@ import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings, ConfigTarget, WorkspaceFolder, TextDocument } from '../api/settings';
+import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '../api/settings';
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
+import { extractConfig } from '../api/settings/settingsHelper';
 // import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
 const dcopy: <T>(v: T)=>T = require('deep-copy');
 
@@ -42,6 +43,11 @@ class AppState {
     @computed get workspaceDocuments(): TextDocument[] {
         const workspace = this.settings.workspace;
         return workspace && workspace.textDocuments || [];
+    }
+
+    @computed get enabledLanguageIds(): string[] {
+        const languageIdsEnabled = extractConfig(this.settings.configs, 'languageIdsEnabled');
+        return languageIdsEnabled || [];
     }
 
     nextSample() {
@@ -154,8 +160,11 @@ function calcFileConfig() {
     if (!doc) { return; }
     const languageId = doc.languageId;
     const dictionaries = appState.settings.dictionaries;
+    const languageEnabled = appState.enabledLanguageIds.includes(languageId);
     appState.settings.configs.file = {
         ...doc,
+        fileEnabled: true,
+        languageEnabled,
         dictionaries: dictionaries.filter(dic => dic.languageIds.includes(languageId)),
     };
 }
