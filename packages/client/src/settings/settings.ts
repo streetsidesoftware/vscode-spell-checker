@@ -128,16 +128,18 @@ export function getEnabledLanguagesFromConfig(scope: InspectScope) {
     return config.getScopedSettingFromVSConfig('enabledLanguageIds', scope) || [];
 }
 
-export function enableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Thenable<string[]> {
+export async function enableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Promise<string[]> {
     const scope = config.configTargetToScope(target);
     const langs = unique([languageId, ...getEnabledLanguagesFromConfig(scope)]).sort();
-    return config.setSettingInVSConfig('enabledLanguageIds', langs, target).then(() => langs);
+    await config.setSettingInVSConfig('enabledLanguageIds', langs, target);
+    return langs;
 }
 
-export function disableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Thenable<string[]> {
+export async function disableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Promise<string[]> {
     const scope = config.configTargetToScope(target);
     const langs = getEnabledLanguagesFromConfig(scope).filter(a => a !== languageId).sort();
-    return config.setSettingInVSConfig('enabledLanguageIds', langs, target).then(() => langs);
+    await config.setSettingInVSConfig('enabledLanguageIds', langs, target);
+    return langs;
 }
 
 /**
@@ -146,21 +148,25 @@ export function disableLanguageIdInConfig(target: config.ConfigTarget, languageI
  * @param languageId - the language id, e.g. 'typescript'
  */
 export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
+    const p: Promise<any>[] = [];
     const updateFile = config.isFolderLevelTarget(target);
-    await enableLanguageIdInConfig(target, languageId);
+    p.push(enableLanguageIdInConfig(target, languageId));
     if (config.isConfigTargetWithResource(target) && updateFile) {
         const settingsFilename = await findExistingSettingsFileLocation(target.uri);
-        settingsFilename && await CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true);
+        settingsFilename && p.push(CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true));
     }
+    await Promise.all(p);
 }
 
 export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
+    const p: Promise<any>[] = [];
     const updateFile = config.isFolderLevelTarget(target);
-    await disableLanguageIdInConfig(target, languageId);
+    p.push(disableLanguageIdInConfig(target, languageId));
     if (config.isConfigTargetWithResource(target) && updateFile) {
         const settingsFilename = await findExistingSettingsFileLocation(target.uri);
-        settingsFilename && await CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId]);
+        settingsFilename && p.push(CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId]));
     }
+    await Promise.all(p);
 }
 
 export function addWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {
