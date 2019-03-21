@@ -9,14 +9,16 @@ import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, Sele
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget, WorkspaceFolder, TextDocument } from '../api/settings';
 import { MessageBus } from '../api';
-import { sampleSettings } from '../test/samples/sampleSettings';
+import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 // import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
 const dcopy: <T>(v: T)=>T = require('deep-copy');
 
 require('./app.scss');
 
 class AppState {
-    @observable settings: Settings = dcopy(sampleSettings);
+    @observable currentSample: number = 0;
+    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder];
+    @observable settings: Settings = this.sampleSettings[this.currentSample];
     @observable activeTab: string = 'About';
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
@@ -40,6 +42,12 @@ class AppState {
     @computed get workspaceDocuments(): TextDocument[] {
         const workspace = this.settings.workspace;
         return workspace && workspace.textDocuments || [];
+    }
+
+    nextSample() {
+        this.sampleSettings[this.currentSample] = toJS(this.settings);
+        this.currentSample = (this.currentSample + 1) % this.sampleSettings.length;
+        this.settings = this.sampleSettings[this.currentSample];
     }
 }
 
@@ -95,7 +103,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                         className="button-alternate"
                         onClick={this.onUpdateConfig}
                     >
-                        Update
+                        Toggle Single / Multi Folder Workspace
                     </Button>
                 </div>
                 <div>
@@ -108,6 +116,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
 
      onUpdateConfig = () => {
          console.log('onUpdateConfig');
+         this.props.appState.nextSample();
          postSettings();
      }
 }

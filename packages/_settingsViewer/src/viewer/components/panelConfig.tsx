@@ -19,8 +19,8 @@ export class PanelConfig extends React.Component<{appState: AppState, target: Co
         }
         return (
             <div>
-                {target === ConfigTargets.folder && appState.workspaceFolderNames.length > 1
-                ? <div>
+                {target === ConfigTargets.folder ?
+                <div>
                     <h2>Folder</h2>
                     <Select className='select_folder'
                         label='Folder'

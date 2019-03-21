@@ -1,5 +1,5 @@
 import { Settings, DictionaryEntry } from '../../api/settings';
-import { sampleWorkspace } from './sampleWorkspace';
+import { sampleWorkspace, sampleWorkspaceSingleFolder } from './sampleWorkspace';
 
 const languageIdsA = [
     "asciidoc",
@@ -67,5 +67,26 @@ const _sampleSettings: Settings = {
     activeFolderUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
     activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
 };
-export const sampleSettings = Object.freeze(_sampleSettings);
 
+const _sampleSettingsSingleFolder: Settings = {
+    dictionaries,
+    configs: {
+        user: { locals: ["en"], languageIdsEnabled: languageIdsUser },
+        workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace },
+        folder: { locals: [], languageIdsEnabled: undefined },
+        file: {
+            uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
+            fileName: 'vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
+            isUntitled: false,
+            languageId: 'typescript',
+            dictionaries: dictionaries.filter(e => e.languageIds.includes('typescript')),
+        },
+    },
+    workspace: sampleWorkspaceSingleFolder,
+    activeFolderUri: "file:///Users/cspell/projects/clones/ripgrep",
+    activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
+};
+
+
+export const sampleSettings = Object.freeze(_sampleSettings);
+export const sampleSettingsSingleFolder = Object.freeze(_sampleSettingsSingleFolder);

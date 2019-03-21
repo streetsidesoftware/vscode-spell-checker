@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder, TextDocument } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder, TextDocument, configTargets, ConfigTargets } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
@@ -7,16 +7,11 @@ import { Messenger } from '../api';
 
 
 type Maybe<T> = T | undefined;
+type TabTargets = ConfigTarget | 'file' | 'dictionaries' | 'about';
 
 export interface Tab {
     label: string;
-    target: ConfigTarget | 'file' | 'dictionaries' | 'about';
-}
-
-const targetToLabel: SettingByConfigTarget<string> = {
-    user: 'User',
-    workspace: 'Workspace',
-    folder: 'Folder',
+    target: TabTargets;
 }
 
 const tabs: Tab[] = [
@@ -85,7 +80,11 @@ export class AppState implements State {
     constructor(private messageBus: Messenger) {}
 
     @computed get tabs() {
-        return tabs.filter(tab => !isConfigTarget(tab.target) || this.settings.configs[tab.target]);
+        const hidden = new Set<TabTargets>(configTargets.filter(target => !this.settings.configs[target]));
+        if (this.workspaceFolders.length <= 1) {
+            hidden.add(ConfigTargets.folder);
+        }
+        return tabs.filter(tab => !hidden.has(tab.target));
     }
 
     @computed get activeTab() {
@@ -188,10 +187,6 @@ export class AppState implements State {
         return this.workspaceFolders.filter(f => f.name === name)[0];
     }
 
-    targetToLabel(target: ConfigTarget): string {
-        return targetToLabel[target];
-    }
-
     actionSetLocal(field: ConfigTarget, code: LocalId, checked: boolean) {
         const inherited = this.inheritedConfigs[field].locals;
         const locals = inherited && inherited.value || [];
@@ -230,7 +225,6 @@ export class AppState implements State {
     }
 
     actionActivateTabIndex(index: number) {
-        console.log(`activateTabIndex: ${index}`);
         const tab = this.tabs[index];
         if (tab) {
             this.actionActivateTab(tab.label);
