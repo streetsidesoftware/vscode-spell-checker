@@ -145,29 +145,22 @@ export function disableLanguageIdInConfig(target: config.ConfigTarget, languageI
  * @param target - which level of setting to set
  * @param languageId - the language id, e.g. 'typescript'
  */
-export function enableLanguage(target: config.ConfigTarget, languageId: string): Thenable<void> {
+export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
     const updateFile = config.isFolderLevelTarget(target);
-    return enableLanguageIdInConfig(target, languageId).then(() => {
-        if (config.isConfigTargetWithResource(target) && updateFile) {
-            findExistingSettingsFileLocation(target.uri)
-            .then(settingsFilename =>
-                settingsFilename && CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true))
-            .then(() => {});
-        }
-    });
+    await enableLanguageIdInConfig(target, languageId);
+    if (config.isConfigTargetWithResource(target) && updateFile) {
+        const settingsFilename = await findExistingSettingsFileLocation(target.uri);
+        settingsFilename && await CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true);
+    }
 }
 
-export function disableLanguage(target: config.ConfigTarget, languageId: string): Thenable<void> {
+export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
     const updateFile = config.isFolderLevelTarget(target);
-    return disableLanguageIdInConfig(target, languageId).then(() => {
-        if (config.isConfigTargetWithResource(target) && updateFile) {
-            return findExistingSettingsFileLocation(target.uri)
-            .then(settingsFilename =>
-                settingsFilename && CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId])
-            )
-            .then(() => {});
-        }
-    });
+    await disableLanguageIdInConfig(target, languageId);
+    if (config.isConfigTargetWithResource(target) && updateFile) {
+        const settingsFilename = await findExistingSettingsFileLocation(target.uri);
+        settingsFilename && await CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId]);
+    }
 }
 
 export function addWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {

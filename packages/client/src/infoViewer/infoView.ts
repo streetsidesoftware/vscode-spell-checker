@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
@@ -10,9 +10,13 @@ import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server
 import { inspectConfig, Inspect } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
+import { enableLanguageId, disableLanguageId } from '../commands';
+import * as Kefir from 'kefir';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
 const title = 'Spell Checker Preferences';
+
+type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
@@ -41,6 +45,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     const root = context.asAbsolutePath(viewerPath);
     const state: State = await calcInitialState();
     const extPath = context.extensionPath;
+    let notifyViewEmitter: RefreshEmitter;
 
     const options = {
         enableScripts: true,
@@ -68,11 +73,21 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         state.settings = await calcStateSettings(state.activeDocumentUri, state.activeFolderUri);
     }
 
-    async function notifyView() {
+    function notifyView() {
+        notifyViewEmitter && notifyViewEmitter.emit();
+    }
+
+    const subNotifyView = Kefir.stream((emitter: RefreshEmitter) => {
+        notifyViewEmitter = emitter;
+        return () => { notifyViewEmitter = undefined; };
+    })
+    .debounce(250)
+    .observe(() => {
         const { activeTabName: activeTab, settings } = state;
         log(`notifyView: tab ${activeTab}`);
         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings } });
-    }
+    });
+
 
     async function refreshStateAndNotify() {
         log('refreshStateAndNotify');
@@ -90,6 +105,8 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
     panel.onDidDispose(() => {
         currentPanel = undefined;
+        notifyViewEmitter = undefined;
+        subNotifyView.unsubscribe();
     }, null, context.subscriptions);
 
     // panel.onDidChangeViewState(() => refreshStateAndNotify(), null, context.subscriptions);
@@ -119,6 +136,16 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         const uri = msg.value;
         state.activeDocumentUri = uri && vscode.Uri.parse(uri) || state.activeDocumentUri;
         refreshStateAndNotify();
+    });
+    messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => {
+        const {target, languageId, enabled} = msg.value;
+        log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enabled ? 'enable' : 'disable'}`);
+        const uri = state.activeDocumentUri && state.activeDocumentUri.toString();
+        if (enabled) {
+            enableLanguageId(languageId, uri);
+        } else {
+            disableLanguageId(languageId, uri);
+        }
     });
 
     return panel;

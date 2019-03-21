@@ -1,10 +1,11 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 
-import { window, TextEditor, Uri } from 'vscode';
+import { window, TextEditor, Uri, ConfigurationTarget } from 'vscode';
 import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
+import { ConfigTargetWithResource, configTargetToScope } from './settings';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -90,32 +91,39 @@ function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Sett
     return Settings.createTargetForUri(Settings.Target.Workspace, resolvedUri);
 }
 
-export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {
+async function _enableLanguageId(languageId: string, enable: boolean, uri?: string): Promise<void> {
+    const apply = enable ? Settings.enableLanguage : Settings.disableLanguage;
     if (languageId) {
-        return Settings.enableLanguage(Settings.Target.Global, languageId)
-        .then(() => {
-            // Add it from the workspace as well if necessary
-            const allSettings = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
-            if (allSettings) {
-                return Settings.enableLanguage(Settings.Target.Workspace, languageId);
+        if (uri) {
+            // Add it to the workspace as well if necessary
+            const _uri = Uri.parse(uri);
+            const target: ConfigTargetWithResource = {
+                target: ConfigurationTarget.WorkspaceFolder,
+                uri: _uri,
+            };
+            const scope = configTargetToScope(target);
+            const folderValues = Settings.getEnabledLanguagesFromConfig(scope);
+            if (folderValues) {
+                await apply(target, languageId);
             }
-        });
+        }
+
+        // Add it to the workspace as well if necessary
+        const workspaceValues = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
+        if (workspaceValues) {
+            await apply(Settings.Target.Workspace, languageId);
+        }
+
+        await apply(Settings.Target.Global, languageId);
     }
-    return Promise.resolve();
+}
+
+export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {
+    return _enableLanguageId(languageId, true, uri);
 }
 
 export function disableLanguageId(languageId: string, uri?: string): Thenable<void> {
-    if (languageId) {
-        return Settings.disableLanguage(Settings.Target.Global, languageId)
-        .then(() => {
-            // Remove it from the workspace as well if necessary
-            const allSettings = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
-            if (allSettings) {
-                return Settings.disableLanguage(Settings.Target.Workspace, languageId);
-            }
-        });
-    }
-    return Promise.resolve();
+    return _enableLanguageId(languageId, false, uri);
 }
 
 export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string) => Thenable<void>): () => Thenable<void> {
