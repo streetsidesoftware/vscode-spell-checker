@@ -37,8 +37,9 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                         </Tab>
                     )}
                 </TabBar>
-
-                {appState.tabs.map(renderTab)}
+                <div>
+                    {appState.tabs.map(renderTab)}
+                </div>
             </div>
         );
      }

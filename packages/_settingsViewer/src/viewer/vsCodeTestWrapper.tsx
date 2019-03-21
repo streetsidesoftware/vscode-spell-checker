@@ -139,6 +139,18 @@ function postSettings() {
     });
 }
 
+function calcFileConfig() {
+    const uri = appState.activeFileUri;
+    const doc = appState.workspaceDocuments.filter(doc => doc.uri === uri)[0];
+    if (!doc) { return; }
+    const languageId = doc.languageId;
+    const dictionaries = appState.settings.dictionaries;
+    appState.settings.configs.file = {
+        ...doc,
+        dictionaries: dictionaries.filter(dic => dic.languageIds.includes(languageId)),
+    };
+}
+
 messageBus.listenFor(
     'ConfigurationChangeMessage',
     (msg: ConfigurationChangeMessage) => {
@@ -164,5 +176,7 @@ messageBus.listenFor(
     'SelectFileMessage',
     (msg: SelectFileMessage) => {
         appState.settings.activeFileUri = msg.value;
+        calcFileConfig();
+        postSettings();
     }
 );

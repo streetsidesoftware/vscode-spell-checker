@@ -2,65 +2,66 @@
 
 exports[`File Panel Verification tests the snapshot 1`] = `
 <div>
-  <div>
-    <div
-      className="mdc-select select_folder"
+  <h2>
+    File
+  </h2>
+  <div
+    className="mdc-select select_folder"
+  >
+    <select
+      className="mdc-select__native-control"
+      disabled={false}
+      label="File"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "ripgrep/.vscode/settings.json",
+            "value": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
+          },
+          Object {
+            "label": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+            "value": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
+          },
+          Object {
+            "label": "ripgrep/src/decoder.rs",
+            "value": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
+          },
+        ]
+      }
+      value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
     >
-      <select
-        className="mdc-select__native-control"
-        disabled={false}
-        label="File"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        onMouseDown={[Function]}
-        onTouchStart={[Function]}
-        options={
-          Array [
-            Object {
-              "label": "ripgrep/.vscode/settings.json",
-              "value": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
-            },
-            Object {
-              "label": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-              "value": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-            },
-            Object {
-              "label": "ripgrep/src/decoder.rs",
-              "value": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
-            },
-          ]
-        }
+      <option
+        value="file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json"
+      >
+        ripgrep/.vscode/settings.json
+      </option>
+      <option
         value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
       >
-        <option
-          value="file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json"
-        >
-          ripgrep/.vscode/settings.json
-        </option>
-        <option
-          value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
-        >
-          vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
-        </option>
-        <option
-          value="file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs"
-        >
-          ripgrep/src/decoder.rs
-        </option>
-      </select>
-      <label
-        className="mdc-floating-label mdc-floating-label--float-above"
-        onAnimationEnd={[Function]}
+        vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
+      </option>
+      <option
+        value="file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs"
       >
-        File
-      </label>
-      <div
-        className="mdc-line-ripple"
-        onTransitionEnd={[Function]}
-        style={Object {}}
-      />
-    </div>
+        ripgrep/src/decoder.rs
+      </option>
+    </select>
+    <label
+      className="mdc-floating-label mdc-floating-label--float-above"
+      onAnimationEnd={[Function]}
+    >
+      File
+    </label>
+    <div
+      className="mdc-line-ripple"
+      onTransitionEnd={[Function]}
+      style={Object {}}
+    />
   </div>
   <div>
     <h2>
@@ -186,64 +187,6 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       </li>
     </ul>
   </div>
-  <div>
-    <pre>
-      {
-  "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-  "fileName": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-  "isUntitled": false,
-  "languageId": "typescript",
-  "dictionaries": [
-    {
-      "name": "node",
-      "locals": [],
-      "languageIds": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "json"
-      ],
-      "description": "List of NodeJS terms."
-    },
-    {
-      "name": "npm",
-      "locals": [],
-      "languageIds": [
-        "csharp",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "markdown",
-        "asciidoc",
-        "html",
-        "pug",
-        "jade",
-        "json",
-        "php"
-      ],
-      "description": "List of Top 500 NPM packages."
-    },
-    {
-      "name": "typescript",
-      "locals": [],
-      "languageIds": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "html",
-        "pug",
-        "jade",
-        "handlebars",
-        "php"
-      ],
-      "description": "JavaScript and Typescript terms."
-    }
-  ]
-}
-    </pre>
-  </div>
+  
 </div>
 `;

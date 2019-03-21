@@ -19,13 +19,16 @@ export class PanelConfig extends React.Component<{appState: AppState, target: Co
         }
         return (
             <div>
-                {target === ConfigTargets.folder
-                ? <Select className='select_folder'
+                {target === ConfigTargets.folder && appState.workspaceFolderNames.length > 1
+                ? <div>
+                    <h2>Folder</h2>
+                    <Select className='select_folder'
                         label='Folder'
                         options={appState.workspaceFolderNames}
                         onChange={(evt) => select(evt.target as HTMLSelectElement)}
                         value={appState.activeWorkspaceFolder}
                     />
+                </div>
                 : ''}
                 <SectionLanguage appState={appState} target={target}></SectionLanguage>
                 <SectionFiletypes appState={appState} target={target}></SectionFiletypes>

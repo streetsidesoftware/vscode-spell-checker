@@ -15,18 +15,21 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
         return (
             <div>
-                <div>
-                    <Select className='select_folder'
+                <h2>
+                    File
+                </h2>
+                <Select className='select_folder'
                         label='File'
                         options={appState.documentSelection}
                         onChange={(evt) => select(evt.target as HTMLSelectElement)}
                         value={appState.activeFileUri}
                     />
-                </div>
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle='Active Dictionaries'></SectionDictionaries>
-                <div>
-                    <pre>{JSON.stringify(toJS(config), null, 2)}</pre>
-                </div>
+                {appState.debugMode ?
+                    <div>
+                        <pre>{JSON.stringify(toJS(config), null, 2)}</pre>
+                    </div>
+                : ''}
             </div>
         );
      }

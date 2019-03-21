@@ -1,12 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`About Panel Verification tests the snapshot 1`] = `
-<div>
+<div
+  className="mdc-layout-grid"
+>
   <h1>
     <img
       src="test-file-stub"
+      style={
+        Object {
+          "paddingBottom": "8px",
+          "verticalAlign": "middle",
+        }
+      }
     />
-     Code Spell Checker
+     
+    <span>
+      Code Spell Checker
+    </span>
   </h1>
   <button
     className="mdc-button button-alternate"
@@ -20,180 +31,75 @@ exports[`About Panel Verification tests the snapshot 1`] = `
     </span>
   </button>
   <h2>
-    Workspace
+    Options
   </h2>
-  <pre>
-    {
-  "workspaceFolders": [
-    {
-      "uri": "file:///Users/cspell/projects/clones/ripgrep",
-      "name": "ripgrep",
-      "index": 0
-    },
-    {
-      "index": 1,
-      "name": "dutch",
-      "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch"
-    }
-  ],
-  "name": "ripgrep",
-  "textDocuments": [
-    {
-      "uri": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
-      "fileName": "ripgrep/.vscode/settings.json",
-      "isUntitled": false,
-      "languageId": "jsonc"
-    },
-    {
-      "fileName": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-      "isUntitled": false,
-      "languageId": "typescript",
-      "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
-    },
-    {
-      "uri": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
-      "fileName": "ripgrep/src/decoder.rs",
-      "isUntitled": false,
-      "languageId": "rust"
-    }
-  ]
-}
-  </pre>
-  <h2>
-    Configs
-  </h2>
-  <pre>
-    {
-  "user": {
-    "locals": [
-      "en"
-    ],
-    "languageIdsEnabled": [
-      "asciidoc",
-      "c",
-      "cfml",
-      "cpp",
-      "csharp",
-      "css",
-      "go",
-      "handlebars",
-      "html",
-      "jade",
-      "java",
-      "javascript",
-      "javascriptreact",
-      "json",
-      "latex",
-      "less",
-      "markdown",
-      "php",
-      "plaintext",
-      "pub",
-      "python",
-      "restructuredtext",
-      "rust",
-      "scala",
-      "scss",
-      "text",
-      "typescript",
-      "typescriptreact",
-      "yaml",
-      "yml"
-    ]
-  },
-  "workspace": {
-    "locals": [
-      "en",
-      "da"
-    ],
-    "languageIdsEnabled": [
-      "asciidoc",
-      "c",
-      "cpp",
-      "csharp",
-      "css",
-      "go",
-      "handlebars",
-      "html",
-      "jade",
-      "javascript",
-      "javascriptreact",
-      "json",
-      "latex",
-      "less",
-      "markdown",
-      "php",
-      "plaintext",
-      "pub",
-      "python",
-      "restructuredtext",
-      "rust",
-      "scss",
-      "text",
-      "typescript",
-      "typescriptreact",
-      "yml"
-    ]
-  },
-  "folder": {
-    "locals": []
-  },
-  "file": {
-    "uri": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-    "fileName": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-    "isUntitled": false,
-    "languageId": "typescript",
-    "dictionaries": [
-      {
-        "name": "node",
-        "locals": [],
-        "languageIds": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "json"
-        ],
-        "description": "List of NodeJS terms."
-      },
-      {
-        "name": "npm",
-        "locals": [],
-        "languageIds": [
-          "csharp",
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "markdown",
-          "asciidoc",
-          "html",
-          "pug",
-          "jade",
-          "json",
-          "php"
-        ],
-        "description": "List of Top 500 NPM packages."
-      },
-      {
-        "name": "typescript",
-        "locals": [],
-        "languageIds": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "html",
-          "pug",
-          "jade",
-          "handlebars",
-          "php"
-        ],
-        "description": "JavaScript and Typescript terms."
-      }
-    ]
-  }
-}
-  </pre>
+  <div
+    className="mdc-layout-grid__inner"
+  >
+    <div
+      className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6"
+    >
+      <ul
+        aria-orientation="vertical"
+        className="mdc-list"
+      >
+        <li
+          className="mdc-list-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="checkbox"
+          tabIndex={0}
+        >
+          <i
+            className="material-icons mdc-list-item__graphic"
+            tabIndex={-1}
+          >
+            settings
+          </i>
+          <span
+            className="mdc-list-item__text"
+            tabIndex={-1}
+          >
+            Debug Mode
+          </span>
+          <div
+            className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
+            onAnimationEnd={[Function]}
+            tabIndex={-1}
+          >
+            <input
+              aria-checked={false}
+              checked={false}
+              className="mdc-checkbox__native-control"
+              disabled={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="mdc-checkbox__background"
+            >
+              <svg
+                className="mdc-checkbox__checkmark"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  className="mdc-checkbox__checkmark-path"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                className="mdc-checkbox__mixedmark"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
 </div>
 `;

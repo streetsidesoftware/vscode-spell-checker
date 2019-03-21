@@ -80,6 +80,7 @@ export class AppState implements State {
             file: undefined,
         }
     };
+    @observable debugMode: boolean = false;
 
     constructor(private messageBus: Messenger) {}
 
@@ -202,6 +203,10 @@ export class AppState implements State {
                 this.setLocals(field, filtered);
             }
         }
+    }
+
+    actionSetDebugMode(isEnabled: boolean) {
+        this.debugMode = isEnabled;
     }
 
     private setLocals(target: ConfigTarget, locals: LocalList | undefined) {
