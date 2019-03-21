@@ -46,7 +46,6 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         const appState = this.props.appState;
         const target = this.props.target;
         const langConfig = appState.languageConfig[target];
-        console.log(`handelSelect ${index} target ${target}`);
         if (!langConfig) return;
         const langs = langConfig.languages;
         if (!langs) return;

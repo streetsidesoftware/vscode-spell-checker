@@ -15,6 +15,16 @@ describe('SectionLanguage Verification', () => {
         });
     });
 
+    it('tests the handler', () => {
+        const appState = getSampleAppState();
+        const target = 'user';
+        const panelRenderer = create(<SectionLanguage appState={appState} target={target}></SectionLanguage>);
+        expect(panelRenderer.toJSON()).toMatchSnapshot(`<SectionLanguage> for target: ${target}`);
+        expect(appState.settings.configs.user!.locals).not.toContain('cs');
+        panelRenderer.toTree()!.instance.handleSelect(0);
+        expect(appState.settings.configs.user!.locals).toContain('cs');
+    });
+
     function getSampleAppState(): AppState {
         return sampleAppState();
     }
