@@ -50,7 +50,6 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                                     <Checkbox
                                         disabled={true}
                                         checked={fileEnabled}
-                                        onChange={(evt) => 0}
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>
@@ -61,7 +60,7 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                                     <Checkbox
                                         nativeControlId='checkbox-language-enabled'
                                         checked={languageEnabled}
-                                        onChange={(evt) => 0}
+                                        onChange={(evt) => this.enableLanguageId(evt.target.checked)}
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>
@@ -75,5 +74,13 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                 : ''}
             </div>
         );
-     }
+    }
+
+    enableLanguageId(enable: boolean) {
+        const config = this.props.appState.settings.configs.file;
+        const languageId = config && config.languageId;
+        if (languageId) {
+            this.props.appState.actionEnableLanguageId(languageId, enable);
+        }
+    }
 }

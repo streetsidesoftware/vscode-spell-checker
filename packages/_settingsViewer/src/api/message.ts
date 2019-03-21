@@ -1,9 +1,10 @@
-import { Settings } from './settings';
+import { Settings, ConfigTarget } from './settings';
 export type Commands = 'ConfigurationChangeMessage'
+| 'EnableLanguageIdMessage'
 | 'RequestConfigurationMessage'
-| 'SelectTabMessage'
-| 'SelectFolderMessage'
 | 'SelectFileMessage'
+| 'SelectFolderMessage'
+| 'SelectTabMessage'
 ;
 
 export interface Message {
@@ -12,10 +13,11 @@ export interface Message {
 
 export type Messages =
     ConfigurationChangeMessage
+    | EnableLanguageIdMessage
     | RequestConfigurationMessage
-    | SelectTabMessage
-    | SelectFolderMessage
     | SelectFileMessage
+    | SelectFolderMessage
+    | SelectTabMessage
     ;
 
 export function isMessage(data: any): data is Message {
@@ -63,11 +65,21 @@ export interface SelectFileMessage extends Message {
     value: string;
 }
 
-export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', [['value', isObject]]);
-export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
-export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
-export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
-export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
+export interface EnableLanguageIdMessage extends Message {
+    command: 'EnableLanguageIdMessage';
+    value: {
+        target?: ConfigTarget;
+        languageId: string;
+        enabled: boolean;
+    };
+}
 
-function isString(v: any): v is string { return typeof v === 'string'; }
+export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', [['value', isObject]]);
+export const isEnableLanguageIdMessage = isA<EnableLanguageIdMessage>('EnableLanguageIdMessage', [['value', isObject]]);
+export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
+export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
+export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
+export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
+
 function isObject(v: any): v is object { return typeof v === 'object' && v !== null; }
+function isString(v: any): v is string { return typeof v === 'string'; }

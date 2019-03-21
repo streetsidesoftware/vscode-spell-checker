@@ -249,8 +249,12 @@ export class AppState implements State {
         this.messageBus.postMessage({ command: 'SelectFileMessage', value: documentUri });
     }
 
-    actionEnableLanguageId(languageId: boolean) {
-
+    actionEnableLanguageId(languageId: string, enabled: boolean, target?: ConfigTarget) {
+        const fileConfig = this.settings.configs.file;
+        if (fileConfig && fileConfig.languageId === languageId) {
+            fileConfig.languageEnabled = enabled;
+        }
+        this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enabled, target }});
     }
 }
 

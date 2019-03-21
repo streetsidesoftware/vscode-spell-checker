@@ -1,4 +1,4 @@
-import { isConfigurationChangeMessage, ConfigurationChangeMessage, isMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage } from './message';
+import { isConfigurationChangeMessage, ConfigurationChangeMessage, isMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage, isEnableLanguageIdMessage, EnableLanguageIdMessage } from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
 
 
@@ -85,5 +85,14 @@ describe('Validate Messages', () => {
         expect(isSelectFolderMessage(msgUpdateCounter)).toBe(true);
         expect(isSelectFolderMessage({ command: 'ConfigurationChangeMessage' })).toBe(false);
         expect(isSelectFolderMessage(msgConfigurationChangeMessage)).toBe(false);
+    });
+
+    test('isEnableLanguageIdMessage', () => {
+        const msg: EnableLanguageIdMessage = {
+            command: 'EnableLanguageIdMessage', value: { target: 'folder', languageId: 'typescript', enabled: true }
+        };
+        expect(isEnableLanguageIdMessage({ command: 'SelectFolderMessage' })).toBe(false);
+        expect(isEnableLanguageIdMessage({ command: 'EnableLanguageIdMessage' })).toBe(false);
+        expect(isEnableLanguageIdMessage(msg)).toBe(true);
     });
 });

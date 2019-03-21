@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage } from '../api/message';
+import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage } from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '../api/settings';
 import { MessageBus } from '../api';
@@ -46,8 +46,8 @@ class AppState {
     }
 
     @computed get enabledLanguageIds(): string[] {
-        const languageIdsEnabled = extractConfig(this.settings.configs, 'languageIdsEnabled');
-        return languageIdsEnabled || [];
+        const cfg = extractConfig(this.settings.configs, 'languageIdsEnabled');
+        return cfg.config || [];
     }
 
     nextSample() {
@@ -77,7 +77,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
             <div>
                 <h2>Locals</h2>
                 <Grid>
-                    <Row>
+                    <Row key='title'>
                         <Cell columns={2}>
                             Scope
                         </Cell>
@@ -85,7 +85,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                             Value
                         </Cell>
                     </Row>
-                    {localDisplay.map(([field, name]) => <Row id={field}>
+                    {localDisplay.map(([field, name]) => <Row key={field}>
                         <Cell columns={2}>{name}</Cell>
                         <Cell columns={10}>{getLocals(field)}</Cell>
                     </Row>)}
@@ -101,6 +101,10 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     <div>
                         Active Document:
                         <pre>{JSON.stringify(toJS(appState.activeDocument), null, 2)}</pre>
+                    </div>
+                    <div>
+                        File Config
+                        <pre>{JSON.stringify(toJS(appState.settings.configs.file), null, 2)}</pre>
                     </div>
                 </div>
                 <div>
@@ -194,6 +198,25 @@ messageBus.listenFor(
     'SelectFileMessage',
     (msg: SelectFileMessage) => {
         appState.settings.activeFileUri = msg.value;
+        calcFileConfig();
+        postSettings();
+    }
+);
+
+messageBus.listenFor(
+    'EnableLanguageIdMessage',
+    (msg: EnableLanguageIdMessage) => {
+        const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
+        const { target = foundConfig.target, languageId, enabled } = msg.value;
+        const config: Config = appState.settings.configs[target] || { languageIdsEnabled: undefined, locals: undefined };
+        const ids = new Set(config.languageIdsEnabled || []);
+        if (enabled) {
+            ids.add(languageId);
+        } else {
+            ids.delete(languageId);
+        }
+        const languageIdsEnabled = [...ids].sort();
+        appState.settings.configs[target] = { ...config, languageIdsEnabled };
         calcFileConfig();
         postSettings();
     }
