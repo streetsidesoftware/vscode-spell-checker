@@ -303,7 +303,7 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
     function mapWorkspaceFolder(wsf: vscode.WorkspaceFolder): WorkspaceFolder {
         const { name, index } = wsf;
         return {
-            uri: wsf.uri.toString(true),
+            uri: wsf.uri.toString(),
             name,
             index,
         }
@@ -312,7 +312,7 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
     function mapTextDocuments(td: vscode.TextDocument): TextDocument {
         const { fileName, languageId, isUntitled } = td;
         return {
-            uri: td.uri.toString(true),
+            uri: td.uri.toString(),
             fileName: normalizeFileName(fileName),
             languageId,
             isUntitled
