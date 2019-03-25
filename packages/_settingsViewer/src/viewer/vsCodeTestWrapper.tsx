@@ -176,6 +176,7 @@ function calcFileConfig() {
 messageBus.listenFor(
     'ConfigurationChangeMessage',
     (msg: ConfigurationChangeMessage) => {
+        console.log(`ConfigurationChangeMessage`);
         appState.settings = msg.value.settings;
     }
 );
@@ -183,6 +184,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectTabMessage',
     (msg: SelectTabMessage) => {
+        console.log(`SelectTabMessage`);
         appState.activeTab = msg.value;
     }
 );
@@ -190,6 +192,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectFolderMessage',
     (msg: SelectFolderMessage) => {
+        console.log(`SelectFolderMessage`);
         appState.settings.activeFolderUri = msg.value;
     }
 );
@@ -197,6 +200,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectFileMessage',
     (msg: SelectFileMessage) => {
+        console.log(`SelectFileMessage`);
         appState.settings.activeFileUri = msg.value;
         calcFileConfig();
         postSettings();
@@ -206,6 +210,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'EnableLanguageIdMessage',
     (msg: EnableLanguageIdMessage) => {
+        console.log(`EnableLanguageIdMessage`);
         const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
         const { target = foundConfig.target, languageId, enabled } = msg.value;
         const config: Config = appState.settings.configs[target] || { languageIdsEnabled: undefined, locals: undefined };

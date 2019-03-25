@@ -41,11 +41,16 @@ interface State {
     activeFolderUri: Maybe<vscode.Uri>;
 }
 
+interface Subscription {
+    unsubscribe: () => any;
+}
+
 async function createView(context: vscode.ExtensionContext, column: vscode.ViewColumn, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
     const state: State = await calcInitialState();
     const extPath = context.extensionPath;
     let notifyViewEmitter: RefreshEmitter;
+    const subscriptions: Subscription[] = [];
 
     const options = {
         enableScripts: true,
@@ -77,7 +82,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         notifyViewEmitter && notifyViewEmitter.emit();
     }
 
-    const subNotifyView = Kefir.stream((emitter: RefreshEmitter) => {
+    subscriptions.push(Kefir.stream((emitter: RefreshEmitter) => {
         notifyViewEmitter = emitter;
         return () => { notifyViewEmitter = undefined; };
     })
@@ -86,7 +91,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         const { activeTabName: activeTab, settings } = state;
         log(`notifyView: tab ${activeTab}`);
         messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings } });
-    });
+    }));
 
 
     async function refreshStateAndNotify() {
@@ -103,15 +108,12 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         setActiveDocumentUri(calcActiveDocumentFromEditor(e));
     }
 
-    panel.onDidDispose(() => {
-        currentPanel = undefined;
-        notifyViewEmitter = undefined;
-        subNotifyView.unsubscribe();
-    }, null, context.subscriptions);
+    subscriptions.push(Kefir.stream(emitter => {
+        vscode.workspace.onDidChangeConfiguration(() => emitter.value({}), null, context.subscriptions);
+    })
+    .debounce(500)
+    .observe(() => refreshStateAndNotify()));
 
-    // panel.onDidChangeViewState(() => refreshStateAndNotify(), null, context.subscriptions);
-
-    vscode.workspace.onDidChangeConfiguration(() => refreshStateAndNotify(), null, context.subscriptions);
     vscode.window.onDidChangeActiveTextEditor(async (e: Maybe<vscode.TextEditor>) => {
         if (e) {
             setActiveDocumentFromEditor(e);
@@ -137,7 +139,12 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         state.activeDocumentUri = uri && vscode.Uri.parse(uri) || state.activeDocumentUri;
         refreshStateAndNotify();
     });
-    messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => {
+
+    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLanguageIdMessage, Error>) => {
+        messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => emitter.value(msg));
+    })
+    .debounce(20)
+    .observe((msg: EnableLanguageIdMessage) => {
         const {target, languageId, enabled} = msg.value;
         log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enabled ? 'enable' : 'disable'}`);
         const uri = state.activeDocumentUri && state.activeDocumentUri.toString();
@@ -146,7 +153,13 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         } else {
             disableLanguageId(languageId, uri);
         }
-    });
+    }));
+
+    panel.onDidDispose(() => {
+        currentPanel = undefined;
+        notifyViewEmitter = undefined;
+        subscriptions.forEach(s => s.unsubscribe());
+    }, null, context.subscriptions);
 
     return panel;
 
@@ -244,6 +257,7 @@ function extractViewerConfigFromConfig(
         const {uri, fileName, languageId, isUntitled} = doc;
         const enabledDicts = new Set<string>(docSettings && docSettings.dictionaries || []);
         const dictionaries = extractDictionariesFromConfig(docSettings).filter(dic => enabledDicts.has(dic.name));
+        console.log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
         const cfg: FileConfig = {
             uri: uri.toString(),
             fileName,

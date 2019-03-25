@@ -53,14 +53,15 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>
-                            <ListItem role='checkbox' shouldToggleCheckbox={true} onClick={evt => this.enableLanguageId(!languageEnabled)}>
+                            <ListItem role='checkbox' shouldToggleCheckbox={true} onClick={evt => {
+                                    this.enableLanguageId(!languageEnabled);
+                                }}>
                                 <ListItemGraphic graphic={<MaterialIcon icon='code'/>} />
                                 <ListItemText primaryText={<label htmlFor='checkbox-language-enabled'>{`Programming Language: ${languageId}`}</label>} />
                                 <ListItemMeta meta={
                                     <Checkbox
                                         nativeControlId='checkbox-language-enabled'
                                         checked={languageEnabled}
-                                        onChange={(evt) => this.enableLanguageId(evt.target.checked)}
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>

@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, isConfigTarget, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder, TextDocument, configTargets, ConfigTargets } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, SettingByConfigTarget, Config, Configs, LocalList, WorkspaceFolder, TextDocument, configTargets, ConfigTargets } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';

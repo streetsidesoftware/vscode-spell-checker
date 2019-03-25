@@ -93,10 +93,9 @@ function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Sett
 
 async function _enableLanguageId(languageId: string, enable: boolean, uri?: string): Promise<void> {
     const apply = enable ? Settings.enableLanguage : Settings.disableLanguage;
-    const promises: Promise<void>[] = [];
     if (languageId) {
         if (uri) {
-            // Add it to the workspace fold if necessary
+            // Apply it to the workspace folder if it exists.
             const _uri = Uri.parse(uri);
             const target: ConfigTargetWithResource = {
                 target: ConfigurationTarget.WorkspaceFolder,
@@ -105,20 +104,21 @@ async function _enableLanguageId(languageId: string, enable: boolean, uri?: stri
             const scope = configTargetToScope(target);
             const folderValues = Settings.getEnabledLanguagesFromConfig(scope);
             if (folderValues) {
-                promises.push(apply(target, languageId));
+                await apply(target, languageId);
+                return;
             }
         }
 
-        // Add it to the workspace if necessary
+        // Apply it to the workspace if necessary
         const workspaceValues = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
         if (workspaceValues) {
-            promises.push(apply(Settings.Target.Workspace, languageId));
+            await apply(Settings.Target.Workspace, languageId);
+            return;
         }
 
-        // Add it to User settings.
-        promises.push(apply(Settings.Target.Global, languageId));
+        // Apply it to User settings.
+        apply(Settings.Target.Global, languageId);
     }
-    await Promise.all(promises);
 }
 
 export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {

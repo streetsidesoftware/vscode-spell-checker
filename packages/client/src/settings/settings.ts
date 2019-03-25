@@ -150,22 +150,24 @@ export async function disableLanguageIdInConfig(target: config.ConfigTarget, lan
 export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
     const p: Promise<any>[] = [];
     const updateFile = config.isFolderLevelTarget(target);
-    p.push(enableLanguageIdInConfig(target, languageId));
     if (config.isConfigTargetWithResource(target) && updateFile) {
+        // Write to the cspell settings file first if it exists.
         const settingsFilename = await findExistingSettingsFileLocation(target.uri);
         settingsFilename && p.push(CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true));
     }
+    p.push(enableLanguageIdInConfig(target, languageId));
     await Promise.all(p);
 }
 
 export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
     const p: Promise<any>[] = [];
     const updateFile = config.isFolderLevelTarget(target);
-    p.push(disableLanguageIdInConfig(target, languageId));
     if (config.isConfigTargetWithResource(target) && updateFile) {
+        // Write to the cspell settings file first if it exists.
         const settingsFilename = await findExistingSettingsFileLocation(target.uri);
         settingsFilename && p.push(CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId]));
     }
+    p.push(disableLanguageIdInConfig(target, languageId));
     await Promise.all(p);
 }
 
