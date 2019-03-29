@@ -1,16 +1,15 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig } from '../../settingsViewer/api/settings';
+import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect } from '../settings';
+import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
-import { enableLanguageId, disableLanguageId } from '../commands';
 import * as Kefir from 'kefir';
 
 const viewerPath = path.join('settingsViewer', 'webapp');
@@ -19,6 +18,12 @@ const title = 'Spell Checker Preferences';
 type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
+
+const targetToConfigurationTarget: { [key in ConfigTarget]: vscode.ConfigurationTarget } = {
+    user: vscode.ConfigurationTarget.Global,
+    workspace: vscode.ConfigurationTarget.Workspace,
+    folder: vscode.ConfigurationTarget.WorkspaceFolder
+};
 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
@@ -147,11 +152,12 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     .observe((msg: EnableLanguageIdMessage) => {
         const {target, languageId, enabled} = msg.value;
         log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enabled ? 'enable' : 'disable'}`);
-        const uri = state.activeDocumentUri && state.activeDocumentUri.toString();
-        if (enabled) {
-            enableLanguageId(languageId, uri);
+        const uri = state.activeDocumentUri && vscode.Uri.parse(state.activeDocumentUri.toString());
+        if (target) {
+            const configTarget = { target: targetToConfigurationTarget[target], uri };
+            enableLanguageIdForTarget(languageId, enabled, configTarget, true);
         } else {
-            disableLanguageId(languageId, uri);
+            enableLanguageIdForClosestTarget(languageId, enabled, uri);
         }
     }));
 

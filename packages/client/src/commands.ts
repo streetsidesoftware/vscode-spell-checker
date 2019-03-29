@@ -5,7 +5,7 @@ import { window, TextEditor, Uri, ConfigurationTarget } from 'vscode';
 import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
-import { ConfigTargetWithResource, configTargetToScope } from './settings';
+import { ConfigTargetWithResource, enableLanguageIdForTarget } from './settings';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -91,42 +91,12 @@ function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Sett
     return Settings.createTargetForUri(Settings.Target.Workspace, resolvedUri);
 }
 
-async function _enableLanguageId(languageId: string, enable: boolean, uri?: string): Promise<void> {
-    const apply = enable ? Settings.enableLanguage : Settings.disableLanguage;
-    if (languageId) {
-        if (uri) {
-            // Apply it to the workspace folder if it exists.
-            const _uri = Uri.parse(uri);
-            const target: ConfigTargetWithResource = {
-                target: ConfigurationTarget.WorkspaceFolder,
-                uri: _uri,
-            };
-            const scope = configTargetToScope(target);
-            const folderValues = Settings.getEnabledLanguagesFromConfig(scope);
-            if (folderValues) {
-                await apply(target, languageId);
-                return;
-            }
-        }
-
-        // Apply it to the workspace if necessary
-        const workspaceValues = Settings.getEnabledLanguagesFromConfig(Settings.Scopes.Workspace);
-        if (workspaceValues) {
-            await apply(Settings.Target.Workspace, languageId);
-            return;
-        }
-
-        // Apply it to User settings.
-        apply(Settings.Target.Global, languageId);
-    }
+export function enableLanguageId(languageId: string, uri?: string): Promise<void> {
+    return Settings.enableLanguageIdForClosestTarget(languageId, true, uri ? Uri.parse(uri) : undefined);
 }
 
-export function enableLanguageId(languageId: string, uri?: string): Thenable<void> {
-    return _enableLanguageId(languageId, true, uri);
-}
-
-export function disableLanguageId(languageId: string, uri?: string): Thenable<void> {
-    return _enableLanguageId(languageId, false, uri);
+export function disableLanguageId(languageId: string, uri?: string): Promise<void> {
+    return Settings.enableLanguageIdForClosestTarget(languageId, false, uri ? Uri.parse(uri) : undefined);
 }
 
 export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string) => Thenable<void>): () => Thenable<void> {

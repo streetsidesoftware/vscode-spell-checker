@@ -262,4 +262,50 @@ export function overrideLocal(enable: boolean, target: config.ConfigTarget) {
     return config.setSettingInVSConfig('language', lang, target);
 }
 
+export async function enableLanguageIdForTarget(
+    languageId: string,
+    enable: boolean,
+    target: config.ConfigTarget,
+    isCreateAllowed: boolean
+): Promise<boolean> {
+    const apply = enable ? enableLanguage : disableLanguage;
+    const scope = config.configTargetToScope(target);
+    if (isCreateAllowed || getEnabledLanguagesFromConfig(scope)) {
+        await apply(target, languageId);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Try to enable / disable a programming language id starting at folder level going to global level, stopping when successful.
+ * @param languageId
+ * @param enable
+ * @param uri
+ */
+export async function enableLanguageIdForClosestTarget(
+    languageId: string,
+    enable: boolean,
+    uri: Uri | undefined
+): Promise<void> {
+    if (languageId) {
+        if (uri) {
+            // Apply it to the workspace folder if it exists.
+            const target: config.ConfigTargetWithResource = {
+                target: ConfigurationTarget.WorkspaceFolder,
+                uri,
+            };
+            if (await enableLanguageIdForTarget(languageId, enable, target, false)) return;
+        }
+
+        if (await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false)) return;
+
+        // Apply it to User settings.
+        await enableLanguageIdForTarget(languageId, enable, config.Target.Global, true);
+    }
+    return;
+}
+
+
+
 performance.mark('settings.ts done');

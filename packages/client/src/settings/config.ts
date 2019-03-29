@@ -16,13 +16,17 @@ export interface InspectValues<T> {
 export const GlobalTarget = Target.Global;
 export const WorkspaceTarget = Target.Workspace;
 
-export interface ConfigTargetWithResource {
+export interface ConfigTargetWithOptionalResource {
     target: Target;
+    uri?: Uri;
+}
+
+export interface ConfigTargetWithResource extends ConfigTargetWithOptionalResource {
     uri: Uri;
 }
 
 export type ConfigTargetResourceFree = Target.Global | Target.Workspace;
-export type ConfigTarget = ConfigTargetResourceFree | ConfigTargetWithResource;
+export type ConfigTarget = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
 
 export interface Inspect<T> extends InspectValues<T> {
     key: string;
@@ -173,7 +177,11 @@ export function isFolderLevelTarget(target: ConfigTarget) {
 }
 
 export function isConfigTargetWithResource(target: ConfigTarget): target is ConfigTargetWithResource {
-    return typeof target === 'object';
+    return isConfigTargetWithOptionalResource(target) && target.uri !== undefined;
+}
+
+export function isConfigTargetWithOptionalResource(target: ConfigTarget): target is ConfigTargetWithOptionalResource {
+    return typeof target === 'object' && target.target !== undefined;
 }
 
 const targetToScopeValues: [Target, Scope][] = [
@@ -192,10 +200,10 @@ const targetResourceFreeToScopeValues: [ConfigTargetResourceFree, ScopeResourceF
 const targetResourceFreeToScope = new Map(targetResourceFreeToScopeValues);
 
 export function configTargetToScope(target: ConfigTarget): InspectScope {
-    if (isConfigTargetWithResource(target)) {
+    if (isConfigTargetWithOptionalResource(target)) {
         return {
             scope: toScope(target.target),
-            resource: target.uri,
+            resource: target.uri || null,
         };
     }
     return targetResourceFreeToScope.get(target)!;
@@ -256,7 +264,7 @@ export function createTargetForDocument(target: Target, doc: TextDocument): Conf
 }
 
 export function extractTarget(target: ConfigTarget): Target {
-    return isConfigTargetWithResource(target)
+    return isConfigTargetWithOptionalResource(target)
         ? target.target
         : target;
 }
