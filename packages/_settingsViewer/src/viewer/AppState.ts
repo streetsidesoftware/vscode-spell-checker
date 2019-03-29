@@ -187,17 +187,18 @@ export class AppState implements State {
         return this.workspaceFolders.filter(f => f.name === name)[0];
     }
 
-    actionSetLocal(field: ConfigTarget, code: LocalId, checked: boolean) {
-        const inherited = this.inheritedConfigs[field].locals;
+    actionSetLocal(target: ConfigTarget, local: LocalId, enable: boolean) {
+        const inherited = this.inheritedConfigs[target].locals;
         const locals = inherited && inherited.value || [];
-        if (checked) {
-            this.setLocals(field, [code, ...locals]);
+        if (enable) {
+            this.setLocals(target, [local, ...locals]);
         } else {
-            const filtered = locals.filter(a => a !== code);
+            const filtered = locals.filter(a => a !== local);
             if (!filtered.length || filtered.length !== locals.length) {
-                this.setLocals(field, filtered);
+                this.setLocals(target, filtered);
             }
         }
+        this.messageBus.postMessage({ command: 'EnableLocalMessage', value: { target, local, enable } });
     }
 
     actionSetDebugMode(isEnabled: boolean) {
@@ -249,12 +250,12 @@ export class AppState implements State {
         this.messageBus.postMessage({ command: 'SelectFileMessage', value: documentUri });
     }
 
-    actionEnableLanguageId(languageId: string, enabled: boolean, target?: ConfigTarget) {
+    actionEnableLanguageId(languageId: string, enable: boolean, target?: ConfigTarget) {
         const fileConfig = this.settings.configs.file;
         if (fileConfig && fileConfig.languageId === languageId) {
-            fileConfig.languageEnabled = enabled;
+            fileConfig.languageEnabled = enable;
         }
-        this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enabled, target }});
+        this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enable, target }});
     }
 }
 

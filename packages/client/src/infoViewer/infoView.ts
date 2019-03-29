@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocalMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget } from '../settings';
+import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
@@ -150,14 +150,30 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     })
     .debounce(20)
     .observe((msg: EnableLanguageIdMessage) => {
-        const {target, languageId, enabled} = msg.value;
-        log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enabled ? 'enable' : 'disable'}`);
+        const {target, languageId, enable} = msg.value;
+        log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
         const uri = state.activeDocumentUri && vscode.Uri.parse(state.activeDocumentUri.toString());
         if (target) {
             const configTarget = { target: targetToConfigurationTarget[target], uri };
-            enableLanguageIdForTarget(languageId, enabled, configTarget, true);
+            enableLanguageIdForTarget(languageId, enable, configTarget, true);
         } else {
-            enableLanguageIdForClosestTarget(languageId, enabled, uri);
+            enableLanguageIdForClosestTarget(languageId, enable, uri);
+        }
+    }));
+
+    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLocalMessage, Error>) => {
+        messageBus.listenFor('EnableLocalMessage', (msg: EnableLocalMessage) => emitter.value(msg));
+    })
+    .debounce(20)
+    .observe((msg: EnableLocalMessage) => {
+        const {target, local, enable} = msg.value;
+        log(`EnableLocalMessage: ${target}, ${local}, ${enable ? 'enable' : 'disable'}`);
+        const uri = state.activeDocumentUri && vscode.Uri.parse(state.activeDocumentUri.toString());
+        const configTarget = { target: targetToConfigurationTarget[target], uri };
+        if (enable) {
+            enableLocal(configTarget, local);
+        } else {
+            disableLocal(configTarget, local);
         }
     }));
 

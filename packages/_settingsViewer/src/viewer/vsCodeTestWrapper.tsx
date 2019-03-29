@@ -212,7 +212,7 @@ messageBus.listenFor(
     (msg: EnableLanguageIdMessage) => {
         console.log(`EnableLanguageIdMessage`);
         const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
-        const { target = foundConfig.target, languageId, enabled } = msg.value;
+        const { target = foundConfig.target, languageId, enable: enabled } = msg.value;
         const config: Config = appState.settings.configs[target] || { languageIdsEnabled: undefined, locals: undefined };
         const ids = new Set(config.languageIdsEnabled || []);
         if (enabled) {

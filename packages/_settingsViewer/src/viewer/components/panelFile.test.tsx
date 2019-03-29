@@ -20,7 +20,7 @@ describe('File Panel Verification', () => {
         expect(appState._postedMessages).toEqual([{
             "command": "EnableLanguageIdMessage",
             "value": {
-                "enabled": false,
+                "enable": false,
                 "languageId": "typescript",
                 "target": undefined,
             },
