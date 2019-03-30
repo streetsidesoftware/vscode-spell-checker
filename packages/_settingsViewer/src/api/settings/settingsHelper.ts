@@ -19,6 +19,6 @@ export function extractConfig<K extends keyof Config>(configs: Configs, key: K):
 
     return {
         target: 'user',
-        config: undefined,
+        config: configs.user[key],
     };
 }

@@ -1,19 +1,9 @@
 import { MessageBus } from "./MessageBus";
 import { WebviewApi } from "./WebviewApi";
 import { RequestConfigurationMessage, ConfigurationChangeMessage } from "./message";
-import { Settings } from './settings';
+import { sampleSettings } from '../test/samples/sampleSettings';
 
 describe('Validate MessageBus', () => {
-    const sampleSettings: Settings = {
-        configs: {
-            user: undefined,
-            workspace: undefined,
-            file: undefined,
-            folder: undefined,
-        },
-        dictionaries: [],
-    };
-
     test('constructor', () => {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => webviewApi,

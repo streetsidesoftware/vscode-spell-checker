@@ -7,7 +7,7 @@ import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi
 import { findMatchingDocument } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal } from '../settings';
+import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal, InspectValues } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
@@ -256,20 +256,44 @@ async function calcSettings(
     return settings;
 }
 
+type InspectKeys = keyof InspectValues<CSpellUserSettings>;
+const keyMap: { [k in InspectKeys]: ConfigTarget } = {
+    'defaultValue': 'user',
+    'globalValue' : 'user',
+    'workspaceValue': 'workspace',
+    'workspaceFolderValue': 'folder',
+};
+interface ConfigOrder {
+    0: 'globalValue';
+    1: 'workspaceValue';
+    2: 'workspaceFolderValue';
+}
+const configOrder: ConfigOrder = ['globalValue', 'workspaceValue', 'workspaceFolderValue'];
+
 function extractViewerConfigFromConfig(
     config: Inspect<CSpellUserSettings>,
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
 ): Configs {
-    function extract(s: CSpellUserSettings | undefined): Config | undefined {
-        if (!s || !Object.keys(s)) {
-            return undefined;
+    function findNearestConfigField<K extends keyof CSpellUserSettings>(orderPos: keyof ConfigOrder, key: K): InspectKeys {
+        for (let i = orderPos; i >= 0; --i) {
+            const inspectKey = configOrder[i];
+            const setting = config[inspectKey];
+            if (setting && setting[key]) {
+                return inspectKey;
+            }
         }
-        const cfg: Config = {
-            locals: normalizeLocals(s.language),
-            languageIdsEnabled: s.enabledLanguageIds,
-        }
+        return 'defaultValue';
+    }
 
+    function extractNearestConfig(orderPos: keyof ConfigOrder): Config {
+        const localSource = findNearestConfigField(orderPos, 'language');
+        const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds');
+        const cfg: Config = {
+            inherited: { locals: keyMap[localSource], languageIdsEnabled: keyMap[languageIdsEnabledSource] },
+            locals: normalizeLocals(config[localSource]!.language),
+            languageIdsEnabled: config[languageIdsEnabledSource]!.enabledLanguageIds!,
+        }
         return cfg;
     }
 
@@ -293,9 +317,9 @@ function extractViewerConfigFromConfig(
     }
 
     return {
-        user: extract(config.globalValue),
-        workspace: extract(config.workspaceValue),
-        folder: extract(config.workspaceFolderValue),
+        user: extractNearestConfig(0),
+        workspace: extractNearestConfig(1),
+        folder: extractNearestConfig(2),
         file: extractFileConfig(),
     }
 }

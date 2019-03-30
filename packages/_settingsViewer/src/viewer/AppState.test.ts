@@ -8,14 +8,6 @@ import { Settings } from '../api/settings';
 // cspell:ignore ripgrep
 
 describe('Validate AppState', () => {
-    it('tests the snapshots', () => {
-        const appState = getSampleAppState(sampleSettings);
-        const inheritedConfig = appState.inheritedConfigs;
-        expect(inheritedConfig.user).not.toBeUndefined();
-        expect(inheritedConfig.workspace).not.toBeUndefined();
-        expect(inheritedConfig.folder).not.toBeUndefined();
-    });
-
     test('tabs', () => {
         expect(getSampleAppState(sampleSettings).tabs.map(t => t.target)).toEqual(["user", "workspace", "folder", "file", "dictionaries", "about"])
         expect(getSampleAppState(sampleSettingsSingleFolder).tabs.map(t => t.target)).toEqual(["user", "workspace", "file", "dictionaries", "about"])

@@ -6,7 +6,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     File Types and Programming Languages
   </h2>
   <div>
-    - none -
+    asciidoc, c, cpp, csharp, css, go, handlebars, html, jade, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scss, text, typescript, typescriptreact, yml
   </div>
 </div>
 `;

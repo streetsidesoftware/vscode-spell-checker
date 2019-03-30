@@ -52,9 +52,9 @@ const dictionaries: DictionaryEntry[] = [
 const _sampleSettings: Settings = {
     dictionaries,
     configs: {
-        user: { locals: ["en"], languageIdsEnabled: languageIdsUser },
-        workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace },
-        folder: { locals: [], languageIdsEnabled: undefined },
+        user: { locals: ["en"], languageIdsEnabled: languageIdsUser, inherited: {} },
+        workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: {} },
+        folder: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: { locals: 'workspace', languageIdsEnabled: 'workspace' } },
         file: {
             uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
             fileName: 'vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
@@ -73,9 +73,9 @@ const _sampleSettings: Settings = {
 const _sampleSettingsSingleFolder: Settings = {
     dictionaries,
     configs: {
-        user: { locals: ["en"], languageIdsEnabled: languageIdsUser },
-        workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace },
-        folder: { locals: [], languageIdsEnabled: undefined },
+        user: { locals: ["en"], languageIdsEnabled: languageIdsUser, inherited: {} },
+        workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: {} },
+        folder: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: { locals: 'workspace', languageIdsEnabled: 'workspace' } },
         file: {
             uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
             fileName: 'vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',

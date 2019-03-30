@@ -50,7 +50,7 @@ export interface FoundInConfig<T> {
     target: ConfigTarget
 }
 
-type InheritedFromTarget<T> = undefined | {
+type InheritedFromTarget<T> = {
     value: Exclude<T, undefined>,
     target: ConfigTarget;
 }
@@ -60,8 +60,7 @@ type InheritMembers<T> = {
     [K in keyof T]: InheritedFromTarget<T[K]>;
 }
 
-type InheritedConfig = InheritMembers<Config>;
-type InheritedConfigs = SettingByConfigTarget<InheritedConfig>;
+type InheritedConfigs = SettingByConfigTarget<Config>;
 
 export class AppState implements State {
     @observable activeTabName = '';
@@ -69,9 +68,9 @@ export class AppState implements State {
         dictionaries: [
         ],
         configs: {
-            user: undefined,
-            workspace: undefined,
-            folder: undefined,
+            user: { inherited: {}, locals: [], languageIdsEnabled: [] },
+            workspace: { inherited: { locals: 'user', languageIdsEnabled: 'user' }, locals: [], languageIdsEnabled: [] },
+            folder: { inherited: { locals: 'user', languageIdsEnabled: 'user' }, locals: [], languageIdsEnabled: [] },
             file: undefined,
         }
     };
@@ -93,12 +92,9 @@ export class AppState implements State {
 
     @computed get languageConfig(): LanguageConfigs {
         const calcConfig = (target: ConfigTarget): LanguageConfig => {
-            const config = this.inheritedConfigs[target];
-            if (!config) {
-                return { languages: [] };
-            }
+            const config = this.settings.configs[target];
             const locals = config.locals; // todo: calc inheritance
-            const inherited = locals && locals.target;
+            const inherited = config.inherited.locals;
 
             const infos = new Map<string, LanguageInfo>();
 
@@ -121,7 +117,7 @@ export class AppState implements State {
                 });
             }
             if (locals) {
-                addLocalsToInfos(locals.value, undefined);
+                addLocalsToInfos(locals, undefined);
             }
             this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
 
@@ -139,10 +135,6 @@ export class AppState implements State {
             workspace: calcConfig('workspace'),
             folder: calcConfig('folder'),
         }
-    }
-
-    @computed get inheritedConfigs(): InheritedConfigs {
-        return calcInheritableConfig(this.settings.configs);
     }
 
     @computed get activeTabIndex(): number {
@@ -188,16 +180,9 @@ export class AppState implements State {
     }
 
     actionSetLocal(target: ConfigTarget, local: LocalId, enable: boolean) {
-        const inherited = this.inheritedConfigs[target].locals;
-        const locals = inherited && inherited.value || [];
-        if (enable) {
-            this.setLocals(target, [local, ...locals]);
-        } else {
-            const filtered = locals.filter(a => a !== local);
-            if (!filtered.length || filtered.length !== locals.length) {
-                this.setLocals(target, filtered);
-            }
-        }
+        const localsCurrent = this.settings.configs[target].locals;
+        const locals = (enable ? [...localsCurrent, local] : localsCurrent.filter(v => v !== local)).filter(uniqueFilter());
+        this.settings.configs[target].locals = locals;
         this.messageBus.postMessage({ command: 'EnableLocalMessage', value: { target, local, enable } });
     }
 
@@ -205,25 +190,16 @@ export class AppState implements State {
         this.debugMode = isEnabled;
     }
 
-    private setLocals(target: ConfigTarget, locals: LocalList | undefined) {
-        locals = locals ? locals.filter(uniqueFilter()) : undefined;
-        locals = locals && locals.length ? locals : undefined;
-        const config = this.settings.configs[target] || {
-            locals: undefined,
-            languageIdsEnabled: undefined,
+    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
+        const config = this.settings.configs[field];
+        const target = config.inherited.locals || field;
+        const locals = config.locals;
+        return  {
+            value: locals.map(normalizeCode).includes(code),
+            target
         };
-        config.locals = locals;
-        this.settings.configs[target] = config;
     }
 
-    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
-        const locals = this.inheritedConfigs[field].locals;
-        if (locals === undefined) return undefined;
-        return  {
-            value: locals.value.map(normalizeCode).includes(code),
-            target: locals.target
-        };
-    }
 
     actionActivateTabIndex(index: number) {
         const tab = this.tabs[index];
@@ -257,30 +233,6 @@ export class AppState implements State {
         }
         this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enable, target }});
     }
-}
-
-function calcInheritableConfig(configs: Configs): InheritedConfigs {
-    function peek(target: ConfigTarget, inherited: InheritedConfig): InheritedConfig {
-        const cfg = configs[target];
-        if (cfg == undefined) return inherited;
-        const inCfg = {...inherited};
-        for (const k of Object.keys(inherited) as (keyof InheritedConfig)[]) {
-            const value = cfg[k];
-            if (value !== undefined) {
-                if (typeof value === 'string') {
-                    inCfg[k] = { value, target };
-                } else if (value.length > 0) {
-                    inCfg[k] = { value, target };
-                }
-            }
-        }
-        return inCfg;
-    }
-    const defaultCfg: InheritedConfig = { locals: undefined, languageIdsEnabled: undefined };
-    const user = peek('user', defaultCfg);
-    const workspace = peek('workspace', user);
-    const folder = peek('folder', workspace);
-    return { user, workspace, folder };
 }
 
 function notUndefined<T>(a : T): a is Exclude<T, undefined> {

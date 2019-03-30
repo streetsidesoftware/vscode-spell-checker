@@ -8,7 +8,7 @@ export type FileTypeList = FileType[];
 
 export type ConfigTarget = keyof SettingByConfigTarget<void>;
 
-export type Inherited<T> = T | undefined;
+export type Inherited<T> = T;
 
 export interface SettingByConfigTarget<T> {
     user: T;
@@ -16,7 +16,7 @@ export interface SettingByConfigTarget<T> {
     folder: T;
 }
 
-export interface Configs extends SettingByConfigTarget<Config | undefined> {
+export interface Configs extends SettingByConfigTarget<Config> {
     file: FileConfig | undefined;
 };
 
@@ -36,6 +36,7 @@ export interface Settings {
 }
 
 export interface Config {
+    inherited: { [key in keyof Config]?: ConfigTarget };
     locals: Inherited<LocalList>;
     languageIdsEnabled: Inherited<FileTypeList>;
 }

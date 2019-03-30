@@ -14,9 +14,6 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
-        if (!langConfig) {
-            return <div></div>
-        }
         const inherited = langConfig.inherited;
         const note = inherited && inherited !== target ? <span style={{ fontSize: '0.65em', opacity: 0.5}}>inherited from {inherited}</span> : '';
         return (
