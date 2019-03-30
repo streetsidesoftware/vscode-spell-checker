@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validate AppState languageConfig 1`] = `
+Object {
+  "folder": Object {
+    "inherited": "workspace",
+    "languages": Array [
+      Object {
+        "code": "cs",
+        "dictionaries": Array [
+          "cs-cz",
+        ],
+        "enabled": false,
+        "name": "Czech",
+      },
+      Object {
+        "code": "en",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": true,
+        "name": "English",
+      },
+      Object {
+        "code": "en-GB",
+        "dictionaries": Array [
+          "en-gb",
+        ],
+        "enabled": false,
+        "name": "English - United Kingdom",
+      },
+      Object {
+        "code": "en-US",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": false,
+        "name": "English - United States",
+      },
+      Object {
+        "code": "da",
+        "dictionaries": Array [],
+        "enabled": true,
+        "name": "Danish",
+      },
+    ],
+  },
+  "user": Object {
+    "inherited": undefined,
+    "languages": Array [
+      Object {
+        "code": "cs",
+        "dictionaries": Array [
+          "cs-cz",
+        ],
+        "enabled": false,
+        "name": "Czech",
+      },
+      Object {
+        "code": "en",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": true,
+        "name": "English",
+      },
+      Object {
+        "code": "en-GB",
+        "dictionaries": Array [
+          "en-gb",
+        ],
+        "enabled": false,
+        "name": "English - United Kingdom",
+      },
+      Object {
+        "code": "en-US",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": false,
+        "name": "English - United States",
+      },
+    ],
+  },
+  "workspace": Object {
+    "inherited": undefined,
+    "languages": Array [
+      Object {
+        "code": "cs",
+        "dictionaries": Array [
+          "cs-cz",
+        ],
+        "enabled": false,
+        "name": "Czech",
+      },
+      Object {
+        "code": "en",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": true,
+        "name": "English",
+      },
+      Object {
+        "code": "en-GB",
+        "dictionaries": Array [
+          "en-gb",
+        ],
+        "enabled": false,
+        "name": "English - United Kingdom",
+      },
+      Object {
+        "code": "en-US",
+        "dictionaries": Array [
+          "en_us",
+        ],
+        "enabled": false,
+        "name": "English - United States",
+      },
+      Object {
+        "code": "da",
+        "dictionaries": Array [],
+        "enabled": true,
+        "name": "Danish",
+      },
+    ],
+  },
+}
+`;

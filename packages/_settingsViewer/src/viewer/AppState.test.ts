@@ -4,6 +4,7 @@ import { WebviewApi } from '../api/WebviewApi';
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { Settings } from '../api/settings';
+import { toJS } from 'mobx';
 
 // cspell:ignore ripgrep
 
@@ -48,6 +49,11 @@ describe('Validate AppState', () => {
         expect(appState.activeWorkspaceFolder).toBe(folderName);
         appState.actionSelectFolder('unknown');
         expect(appState.activeWorkspaceFolder).toBeUndefined();
+    });
+
+    test('languageConfig', () => {
+        const appState = getSampleAppState(sampleSettings);
+        expect(toJS(appState.languageConfig)).toMatchSnapshot();
     });
 
     function getSampleAppState(settings: Settings): AppState {
