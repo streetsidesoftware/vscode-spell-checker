@@ -56,6 +56,11 @@ describe('Validate AppState', () => {
         expect(toJS(appState.languageConfig)).toMatchSnapshot();
     });
 
+    test('workspaceFolderNames', () => {
+        const appState = getSampleAppState(sampleSettings);
+        expect(toJS(appState.workspaceFolderNames)).toMatchSnapshot();
+    });
+
     function getSampleAppState(settings: Settings): AppState {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => webviewApi,

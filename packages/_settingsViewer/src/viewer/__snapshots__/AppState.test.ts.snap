@@ -127,3 +127,10 @@ Object {
   },
 }
 `;
+
+exports[`Validate AppState workspaceFolderNames 1`] = `
+Array [
+  "ripgrep",
+  "dutch",
+]
+`;
