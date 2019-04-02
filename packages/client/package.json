@@ -430,8 +430,8 @@
         "@types/comment-json": "^1.1.1",
         "@types/fs-extra": "^5.0.4",
         "@types/jest": "^24.0.11",
-        "@types/kefir": "^3.8.0",
-        "@types/node": "^10.14.1",
+        "@types/kefir": "^3.8.1",
+        "@types/node": "^10.14.4",
         "@types/pug": "^2.0.4",
         "@types/source-map-support": "^0.4.2",
         "jest": "24.1.0",
@@ -441,9 +441,9 @@
         "lorem-ipsum": "^1.0.6",
         "rimraf": "^2.6.3",
         "source-map-support": "^0.5.11",
-        "ts-jest": "^24.0.0",
-        "typescript": "^3.3.3333",
-        "vscode": "^1.1.30"
+        "ts-jest": "^24.0.1",
+        "typescript": "^3.4.1",
+        "vscode": "^1.1.33"
     },
     "dependencies": {
         "comment-json": "^1.1.3",
