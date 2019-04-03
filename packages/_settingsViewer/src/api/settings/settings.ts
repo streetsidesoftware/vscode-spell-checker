@@ -3,6 +3,7 @@ import { Workspace, TextDocument } from './workspace';
 export interface Settings {
     dictionaries: DictionaryEntry[];
     configs: Configs;
+    knownLanguageIds: string[];
     workspace?: Workspace;
     activeFileUri?: string;
     activeFolderUri?: string;

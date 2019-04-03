@@ -247,6 +247,7 @@ async function calcSettings(
     const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
+        knownLanguageIds: [...client.languageIds].sort(),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig, document),
         workspace: mapWorkspace(client.allowedSchemas),

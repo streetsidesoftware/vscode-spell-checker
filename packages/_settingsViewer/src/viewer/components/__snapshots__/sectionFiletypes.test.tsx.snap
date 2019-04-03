@@ -48,6 +48,82 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          avro
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          bash
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -83,6 +159,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           c
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cfml
         </div>
       </div>
       <div
@@ -352,6 +466,82 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jasonc
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          java
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -577,6 +767,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          perl
         </div>
       </div>
       <div
@@ -808,6 +1036,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scala
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -843,6 +1109,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           scss
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          sh
         </div>
       </div>
       <div
@@ -960,6 +1264,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yaml
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -1047,6 +1389,82 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           asciidoc
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          avro
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          bash
         </div>
       </div>
       <div
@@ -1392,6 +1810,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jasonc
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -1655,6 +2111,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          perl
         </div>
       </div>
       <div
@@ -1962,6 +2456,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          sh
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -2204,6 +2736,82 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          avro
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          bash
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -2239,6 +2847,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           c
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cfml
         </div>
       </div>
       <div
@@ -2508,6 +3154,82 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jasonc
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          java
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -2733,6 +3455,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          perl
         </div>
       </div>
       <div
@@ -2964,6 +3724,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         </div>
       </div>
       <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scala
+        </div>
+      </div>
+      <div
         className="mdc-chip mdc-chip--selected"
         disabled={false}
         onBlur={[Function]}
@@ -2999,6 +3797,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           scss
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          sh
         </div>
       </div>
       <div
@@ -3113,6 +3949,44 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
           className="mdc-chip__text"
         >
           typescriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yaml
         </div>
       </div>
       <div

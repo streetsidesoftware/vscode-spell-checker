@@ -1,5 +1,6 @@
 import { Settings, DictionaryEntry } from '../../api/settings';
 import { sampleWorkspace, sampleWorkspaceSingleFolder } from './sampleWorkspace';
+import { uniqueFilter } from '../../api/utils';
 
 const languageIdsA = [
     "asciidoc",
@@ -16,6 +17,7 @@ const languageIdsA = [
 const languageIdsB = languageIdsA.concat(["cfml", "java", "scala", "yaml"]).sort();
 const languageIdsUser = languageIdsB;
 const languageIdsWorkspace = languageIdsA;
+const knownLanguageIds = languageIdsA.concat(languageIdsB).concat(['jasonc', 'perl', 'sh', 'bash', 'avro']).filter(uniqueFilter()).sort();
 
 const dictionaries: DictionaryEntry[] = [
     { name: "companies", locals: [], languageIds: [], description: "Company names dictionary for cspell." },
@@ -51,6 +53,7 @@ const dictionaries: DictionaryEntry[] = [
 
 const _sampleSettings: Settings = {
     dictionaries,
+    knownLanguageIds,
     configs: {
         user: { locals: ["en"], languageIdsEnabled: languageIdsUser, inherited: {} },
         workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: {} },
@@ -72,6 +75,7 @@ const _sampleSettings: Settings = {
 
 const _sampleSettingsSingleFolder: Settings = {
     dictionaries,
+    knownLanguageIds,
     configs: {
         user: { locals: ["en"], languageIdsEnabled: languageIdsUser, inherited: {} },
         workspace: { locals: ["en", "da"], languageIdsEnabled: languageIdsWorkspace, inherited: {} },

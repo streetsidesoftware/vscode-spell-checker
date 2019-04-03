@@ -55,12 +55,11 @@ type InheritedFromTarget<T> = {
     target: ConfigTarget;
 }
 
-
 export class AppState implements State {
     @observable activeTabName = '';
     @observable settings: Settings = {
-        dictionaries: [
-        ],
+        dictionaries: [],
+        knownLanguageIds: [],
         configs: {
             user: { inherited: {}, locals: [], languageIdsEnabled: [] },
             workspace: { inherited: { locals: 'user', languageIdsEnabled: 'user' }, locals: [], languageIdsEnabled: [] },

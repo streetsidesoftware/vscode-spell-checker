@@ -18,9 +18,10 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
                     <ChipSet
                         filter
                         selectedChipIds={config.languageIdsEnabled}
-                        handleSelect={(selectedChipIds) => this.setState({selectedChipIds})}
                     >
-                        {config.languageIdsEnabled.map((lang, index) => (<Chip key={index} id={lang} label={lang} />))}
+                        {appState.settings.knownLanguageIds.map((lang, index) => (
+                            <Chip key={index} id={lang} label={lang}  />
+                        ))}
                     </ChipSet>
                 </div>
             </div>

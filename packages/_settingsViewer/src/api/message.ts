@@ -71,6 +71,7 @@ export interface EnableLanguageIdMessage extends Message {
     command: 'EnableLanguageIdMessage';
     value: {
         target?: ConfigTarget;
+        uri?: string;
         languageId: string;
         enable: boolean;
     };

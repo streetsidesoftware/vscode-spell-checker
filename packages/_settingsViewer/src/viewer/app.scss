@@ -160,6 +160,13 @@ body {
   @include mdc-select-outline-color(var(--vscode-input-border, var(--vscode-dropdown-border, $mdc-theme-on-secondary)));
 }
 
+.mdc-chip {
+  opacity: 0.75;
+  &.mdc-chip--selected {
+    opacity: 1;
+  }
+}
+
 .panel {
   display: none;
 }
@@ -171,3 +178,4 @@ body {
 .select_folder {
   min-width: 200px;
 }
+
