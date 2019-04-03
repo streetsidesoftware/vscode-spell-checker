@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
+import { ChipSet, Chip } from '@material/react-chips';
 
 export class SectionFiletypes extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
@@ -14,7 +15,13 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
             <div>
                 <h2>File Types and Programming Languages</h2>
                 <div>
-                    {config.languageIdsEnabled ? config.languageIdsEnabled.join(', ') : '- none -'}
+                    <ChipSet
+                        filter
+                        selectedChipIds={config.languageIdsEnabled}
+                        handleSelect={(selectedChipIds) => this.setState({selectedChipIds})}
+                    >
+                        {config.languageIdsEnabled.map((lang, index) => (<Chip key={index} id={lang} label={lang} />))}
+                    </ChipSet>
                 </div>
             </div>
         );

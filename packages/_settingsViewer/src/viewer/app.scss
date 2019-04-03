@@ -12,11 +12,13 @@ $foreground-button: var(--vscode-button-foreground, $mdc-theme-on-secondary);
 $background-button: var(--vscode-button-background, $mdc-theme-secondary);
 
 @import '@material/button/mdc-button';
+@import '@material/chips/mdc-chips';
 @import '@material/drawer/mdc-drawer';
 @import '@material/layout-grid/mdc-layout-grid';
 @import '@material/list/mdc-list';
 @import '@material/react-button/index.scss';
 @import '@material/react-checkbox/index.scss';
+@import '@material/react-chips/index.scss';
 @import '@material/react-drawer/index.scss';
 @import '@material/react-layout-grid/index.scss';
 @import '@material/react-list/index.scss';

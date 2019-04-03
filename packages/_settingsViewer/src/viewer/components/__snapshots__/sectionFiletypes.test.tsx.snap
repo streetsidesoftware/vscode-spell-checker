@@ -6,7 +6,998 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     File Types and Programming Languages
   </h2>
   <div>
-    asciidoc, c, cpp, csharp, css, go, handlebars, html, jade, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scss, text, typescript, typescriptreact, yml
+    <div
+      className="mdc-chip-set mdc-chip-set--filter"
+    >
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          asciidoc
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          c
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cpp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          csharp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          css
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          go
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          handlebars
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          html
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jade
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          json
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          latex
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          less
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          php
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          plaintext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          pub
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          python
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          restructuredtext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          rust
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scss
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          text
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yml
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -17,7 +1008,1150 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     File Types and Programming Languages
   </h2>
   <div>
-    asciidoc, c, cfml, cpp, csharp, css, go, handlebars, html, jade, java, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scala, scss, text, typescript, typescriptreact, yaml, yml
+    <div
+      className="mdc-chip-set mdc-chip-set--filter"
+    >
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          asciidoc
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          c
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cfml
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cpp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          csharp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          css
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          go
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          handlebars
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          html
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jade
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          java
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          json
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          latex
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          less
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          php
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          plaintext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          pub
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          python
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          restructuredtext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          rust
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scala
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scss
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          text
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yaml
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yml
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -28,7 +2162,998 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     File Types and Programming Languages
   </h2>
   <div>
-    asciidoc, c, cpp, csharp, css, go, handlebars, html, jade, javascript, javascriptreact, json, latex, less, markdown, php, plaintext, pub, python, restructuredtext, rust, scss, text, typescript, typescriptreact, yml
+    <div
+      className="mdc-chip-set mdc-chip-set--filter"
+    >
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          asciidoc
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          c
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          cpp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          csharp
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          css
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          go
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          handlebars
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          html
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          jade
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          javascriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          json
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          latex
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          less
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          markdown
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          php
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          plaintext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          pub
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          python
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          restructuredtext
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          rust
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          scss
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          text
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescript
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          typescriptreact
+        </div>
+      </div>
+      <div
+        className="mdc-chip mdc-chip--selected"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
+        style={Object {}}
+        tabIndex={0}
+      >
+        <div
+          className="mdc-chip__checkmark"
+        >
+          <svg
+            className="mdc-chip__checkmark-svg"
+            focusable="false"
+            viewBox="-2 -3 30 30"
+          >
+            <path
+              className="mdc-chip__checkmark-path"
+              d="M1.73,12.91 8.1,19.28 22.79,4.59"
+              fill="none"
+              stroke="black"
+            />
+          </svg>
+        </div>
+        <div
+          className="mdc-chip__text"
+        >
+          yml
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
