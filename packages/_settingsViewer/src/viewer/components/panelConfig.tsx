@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
-import { ConfigTarget, ConfigTargets } from '../../api/settings';
+import { ConfigTarget } from '../../api/settings';
+import { ConfigTargets } from '../../api/settings/settingsHelper';
 import { SectionLanguage } from './sectionLanguage';
 import { SectionFiletypes } from './sectionFiletypes';
 import Select from '@material/react-select';

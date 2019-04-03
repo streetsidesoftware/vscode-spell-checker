@@ -1,4 +1,5 @@
-import { configTargetOrder, configTargetToIndex, ConfigTarget, isConfigTarget } from './settings';
+import { ConfigTarget } from './settings';
+import { configTargetOrder, configTargetToIndex, isConfigTarget } from './settingsHelper';
 
 describe('Validate settings', () => {
     test('config order matches index', () => {

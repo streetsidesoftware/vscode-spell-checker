@@ -5,7 +5,7 @@ import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import {AppState, Tab as AppTab} from '../AppState';
 import { PanelConfig } from './panelConfig';
-import { isConfigTarget } from '../../api/settings';
+import { isConfigTarget } from '../../api/settings/settingsHelper';
 import { PanelDictionaries } from './panelDictionaries';
 import { PanelAbout } from './panelAbout';
 import { PanelFile } from './panelFile';

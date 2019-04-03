@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { configTargets } from '../../api/settings';
+import { configTargets } from '../../api/settings/settingsHelper';
 import { sampleAppState } from '../../test/fixtures/AppState';
 import { SectionFiletypes } from './sectionFiletypes';
 

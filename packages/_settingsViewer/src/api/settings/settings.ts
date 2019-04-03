@@ -1,5 +1,13 @@
 import { Workspace, TextDocument } from './workspace';
 
+export interface Settings {
+    dictionaries: DictionaryEntry[];
+    configs: Configs;
+    workspace?: Workspace;
+    activeFileUri?: string;
+    activeFolderUri?: string;
+}
+
 export type LocalId = string;
 export type LocalList = LocalId[];
 
@@ -27,14 +35,6 @@ export interface DictionaryEntry {
     description?: string;
 }
 
-export interface Settings {
-    dictionaries: DictionaryEntry[];
-    configs: Configs;
-    workspace?: Workspace;
-    activeFileUri?: string;
-    activeFolderUri?: string;
-}
-
 export interface Config {
     inherited: { [key in keyof Config]?: ConfigTarget };
     locals: Inherited<LocalList>;
@@ -46,34 +46,4 @@ export interface FileConfig extends TextDocument {
     fileEnabled: boolean | undefined;
     dictionaries: DictionaryEntry[];
 }
-
-export const ConfigTargets = Object.freeze<SettingByConfigTarget<ConfigTarget>>({
-    user: 'user',
-    workspace: 'workspace',
-    folder: 'folder',
-});
-
-export const configTargets = Object.freeze(Object.keys(ConfigTargets) as ConfigTarget[]);
-
-const setOfConfigTargets = new Set<string>(configTargets);
-
-export function isConfigTarget(target: string | undefined): target is ConfigTarget {
-    return target !== undefined && setOfConfigTargets.has(target);
-}
-
-// Define the order in which configuration is applied.
-export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>({
-    user: 0,
-    workspace: 1,
-    folder: 2,
-});
-
-
-export const configTargetOrder = Object.freeze(Object.entries(configTargetToIndex).sort((a, b) => a[1] - b[1]).map(a => a[0]) as ConfigTarget[]);
-
-/*
-locals
-filetypes
-
-*/
 
