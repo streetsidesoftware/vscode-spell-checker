@@ -21,7 +21,6 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
                         selectedChipIds={config.languageIdsEnabled}
                     >
                         {appState.settings.knownLanguageIds.map((lang, index) => (
-                            // <Chip key={index} id={lang} label={lang} leadingIcon={ <MaterialIcon icon='block'/> } />
                             <Chip key={index} id={lang} label={lang} />
                         ))}
                     </ChipSet>
