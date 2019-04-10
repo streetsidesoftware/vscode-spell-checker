@@ -2,7 +2,6 @@ import * as React from 'react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import { ChipSet, Chip } from '@material/react-chips';
-import MaterialIcon from '@material/react-material-icon';
 
 export class SectionFiletypes extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
@@ -13,9 +12,11 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
             return <div></div>
         }
         const setOfEnabledIds = new Set(config.languageIdsEnabled);
+        const inherited = config.inherited.languageIdsEnabled;
+        const note = inherited && inherited !== target ? <span style={{ fontSize: '0.65em', opacity: 0.5}}>inherited from {inherited}</span> : '';
         return (
             <div>
-                <h2>File Types and Programming Languages</h2>
+                <h2>File Types and Programming Languages {note}</h2>
                 <div>
                     <ChipSet filter selectedChipIds={config.languageIdsEnabled} >
                         {appState.settings.knownLanguageIds.map(langId => (
@@ -35,7 +36,6 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
         const target = this.props.target;
         const config = this.props.appState.settings.configs[target];
         const enabled = config.languageIdsEnabled.includes(langId);
-        console.log(`handle file type selection ${langId}, target: ${target}, selected: ${selected ? 'true': 'false'}, enabled: ${enabled ? 'true' : 'false'}`);
         if (enabled !== selected) {
             this.props.appState.actionEnableLanguageId(langId, selected, target)
         }

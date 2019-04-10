@@ -3,7 +3,18 @@
 exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: folder 1`] = `
 <div>
   <h2>
-    File Types and Programming Languages
+    File Types and Programming Languages 
+    <span
+      style={
+        Object {
+          "fontSize": "0.65em",
+          "opacity": 0.5,
+        }
+      }
+    >
+      inherited from 
+      workspace
+    </span>
   </h2>
   <div>
     <div
@@ -1347,7 +1358,8 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
 exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: user 1`] = `
 <div>
   <h2>
-    File Types and Programming Languages
+    File Types and Programming Languages 
+    
   </h2>
   <div>
     <div
@@ -2691,7 +2703,8 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
 exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> for target: workspace 1`] = `
 <div>
   <h2>
-    File Types and Programming Languages
+    File Types and Programming Languages 
+    
   </h2>
   <div>
     <div

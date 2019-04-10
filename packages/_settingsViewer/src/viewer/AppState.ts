@@ -220,7 +220,6 @@ export class AppState implements State {
     }
 
     actionEnableLanguageId(languageId: string, enable: boolean, target?: ConfigTarget) {
-        console.log(`actionEnableLanguageId id: ${languageId}, enabled: ${enable ? 'true': 'false'}, target: "${target}"`);
         const fileConfig = this.settings.configs.file;
         if (!target && fileConfig && fileConfig.languageId === languageId) {
             fileConfig.languageEnabled = enable;

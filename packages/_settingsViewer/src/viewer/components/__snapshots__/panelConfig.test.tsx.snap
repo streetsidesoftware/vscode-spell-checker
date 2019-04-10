@@ -278,7 +278,8 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
   </div>
   <div>
     <h2>
-      File Types and Programming Languages
+      File Types and Programming Languages 
+      
     </h2>
     <div>
       <div
@@ -1898,7 +1899,8 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
   </div>
   <div>
     <h2>
-      File Types and Programming Languages
+      File Types and Programming Languages 
+      
     </h2>
     <div>
       <div
@@ -3518,7 +3520,8 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
   </div>
   <div>
     <h2>
-      File Types and Programming Languages
+      File Types and Programming Languages 
+      
     </h2>
     <div>
       <div
