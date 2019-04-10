@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import { ChipSet, Chip } from '@material/react-chips';
+import MaterialIcon from '@material/react-material-icon';
 
 export class SectionFiletypes extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
     render() {
@@ -20,7 +21,8 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
                         selectedChipIds={config.languageIdsEnabled}
                     >
                         {appState.settings.knownLanguageIds.map((lang, index) => (
-                            <Chip key={index} id={lang} label={lang}  />
+                            // <Chip key={index} id={lang} label={lang} leadingIcon={ <MaterialIcon icon='block'/> } />
+                            <Chip key={index} id={lang} label={lang} />
                         ))}
                     </ChipSet>
                 </div>

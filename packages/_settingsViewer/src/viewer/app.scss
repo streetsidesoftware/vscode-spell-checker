@@ -140,7 +140,7 @@ body {
   mdc-list-item-meta-ink-color($color)	Sets ink color of the meta element within list item.
   mdc-list-item-shape-radius($radius, $rtl-reflexive)	Sets the rounded shape to list item with given radius size. Set $rtl-reflexive to true to flip radius values in RTL context, defaults to false.
   mdc-list-divider-color($color)	Sets divider ink color.
-  mdc-list-group-subheader-ink-color($color)	Sets ink color of subheader text within list group.
+  mdc-list-group-subheader-ink-color($color)	Sets ink color of sub-header text within list group.
   */
 
   $primaryListColor: var(--vscode-editor-foreground, $foreground);

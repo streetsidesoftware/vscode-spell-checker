@@ -2,7 +2,6 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import List, {ListItem, ListItemText, ListItemGraphic, ListItemMeta} from '@material/react-list';
 import MaterialIcon from '@material/react-material-icon';
-import { AppState } from '../AppState';
 import { DictionaryEntry } from '../../api/settings';
 
 
