@@ -78,10 +78,6 @@
                 "title": "Disable Spell Checking Document Language"
             },
             {
-                "command": "cSpell.cat",
-                "title": "Cat Coder"
-            },
-            {
                 "command": "cSpell.displayCSpellInfo",
                 "title": "Show Spell Checker Configuration Info"
             },

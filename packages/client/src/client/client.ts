@@ -6,7 +6,6 @@ import {
 import * as vscode from 'vscode';
 
 import {
-    CSpellUserSettings,
     GetConfigurationForDocumentResult,
     NotifyServerMethods,
     RequestMethods,
@@ -16,7 +15,7 @@ import {
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
-import { Maybe, uniqueFilter, supportedSchemes, setOfSupportedSchemes } from '../util';
+import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];

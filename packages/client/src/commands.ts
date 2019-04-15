@@ -1,11 +1,10 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 
-import { window, TextEditor, Uri, ConfigurationTarget } from 'vscode';
+import { window, TextEditor, Uri } from 'vscode';
 import {
     TextEdit, LanguageClient
 } from 'vscode-languageclient';
-import { ConfigTargetWithResource, enableLanguageIdForTarget } from './settings';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 

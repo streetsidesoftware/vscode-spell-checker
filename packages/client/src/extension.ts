@@ -1,4 +1,4 @@
-import { performance, toMilliseconds, EVENT_TIMELINE_START } from './util/perf';
+import { performance, toMilliseconds } from './util/perf';
 performance.mark('cspell_start_extension');
 import * as path from 'path';
 performance.mark('import 1');
@@ -130,7 +130,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         settings.watchSettingsFiles(triggerGetSettings),
     );
 
-    infoViewer.activate(context, client);
+    // infoViewer.activate(context, client);
     settingsViewer.activate(context, client);
 
     function registerConfig(path: string) {
