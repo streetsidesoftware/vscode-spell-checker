@@ -89,7 +89,7 @@ describe('Validate Messages', () => {
 
     test('isEnableLocalMessage', () => {
         const msg: EnableLocalMessage = {
-            command: 'EnableLocalMessage', value: { target: 'folder', local: 'en', enable: true }
+            command: 'EnableLocalMessage', value: { target: 'folder', uri: 'uri', local: 'en', enable: true }
         };
         expect(isEnableLocalMessage({ command: 'SelectFolderMessage' })).toBe(false);
         expect(isEnableLocalMessage({ command: 'EnableLocalMessage' })).toBe(false);

@@ -176,7 +176,8 @@ export class AppState implements State {
         const localsCurrent = this.settings.configs[target].locals;
         const locals = (enable ? [...localsCurrent, local] : localsCurrent.filter(v => v !== local)).filter(uniqueFilter());
         this.settings.configs[target].locals = locals;
-        this.messageBus.postMessage({ command: 'EnableLocalMessage', value: { target, local, enable } });
+        const uri = this.settings.activeFolderUri;
+        this.messageBus.postMessage({ command: 'EnableLocalMessage', value: { target, local, enable, uri } });
     }
 
     actionSetDebugMode(isEnabled: boolean) {

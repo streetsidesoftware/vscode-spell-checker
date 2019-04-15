@@ -81,6 +81,7 @@ export interface EnableLocalMessage extends Message {
     command: 'EnableLocalMessage';
     value: {
         target: ConfigTarget;
+        uri: string | undefined;
         local: string;
         enable: boolean;
     };

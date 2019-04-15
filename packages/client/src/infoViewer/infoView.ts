@@ -1,10 +1,12 @@
+import { performance } from '../util/perf';
+performance.mark('infoView.ts');
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocalMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
-import { findMatchingDocument } from './cSpellInfo';
+import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
 import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal, InspectValues } from '../settings';
@@ -28,7 +30,8 @@ const targetToConfigurationTarget: { [key in ConfigTarget]: vscode.Configuration
 export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
     const root = context.asAbsolutePath(viewerPath);
 
-    context.subscriptions.push(vscode.commands.registerCommand('cSpell.cat', async () => {
+    context.subscriptions.push(
+        vscode.commands.registerCommand(commandDisplayCSpellInfo, async () => {
         const column = vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn || vscode.ViewColumn.Active;
         if (currentPanel) {
             currentPanel.reveal(column);
@@ -150,14 +153,14 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     })
     .debounce(20)
     .observe((msg: EnableLanguageIdMessage) => {
-        const {target, languageId, enable} = msg.value;
+        const {target, languageId, enable, uri} = msg.value;
         log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
-        const uri = state.activeDocumentUri && vscode.Uri.parse(state.activeDocumentUri.toString());
+        const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
         if (target) {
-            const configTarget = { target: targetToConfigurationTarget[target], uri };
+            const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
             enableLanguageIdForTarget(languageId, enable, configTarget, true);
         } else {
-            enableLanguageIdForClosestTarget(languageId, enable, uri);
+            enableLanguageIdForClosestTarget(languageId, enable, uriFolder);
         }
     }));
 
@@ -166,10 +169,10 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     })
     .debounce(20)
     .observe((msg: EnableLocalMessage) => {
-        const {target, local, enable} = msg.value;
+        const {target, local, enable, uri} = msg.value;
         log(`EnableLocalMessage: ${target}, ${local}, ${enable ? 'enable' : 'disable'}`);
-        const uri = state.activeDocumentUri && vscode.Uri.parse(state.activeDocumentUri.toString());
-        const configTarget = { target: targetToConfigurationTarget[target], uri };
+        const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
+        const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
         if (enable) {
             enableLocal(configTarget, local);
         } else {
@@ -199,7 +202,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             || (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
         const activeFolderUri = folder && folder.uri;
         return {
-            activeTabName: 'About',
+            activeTabName: 'File',
             activeDocumentUri,
             activeFolderUri,
             settings: await calcStateSettings(
@@ -450,3 +453,4 @@ function log(msg: any) {
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
 
+performance.mark('infoView.ts Done');
