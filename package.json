@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/Jason-Rev/vscode-spell-checker#readme",
   "devDependencies": {
-    "lerna": "^3.11.0"
+    "lerna": "^3.13.2"
   }
 }

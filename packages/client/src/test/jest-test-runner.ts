@@ -2,7 +2,10 @@
  * Wires in Jest as the test runner in place of the default Mocha.
  * This is a modification of [Unibeautify/vscode](https://github.com/Unibeautify/vscode/blob/ec013cdf3e1c/test)
  */
-import { ResultsObject, runCLI } from 'jest';
+const jest = require('@jest/core');
+const runCLI = jest.runCLI;
+// import {runCLI} from '@jest/core';
+import { AggregatedResult } from '@jest/test-result';
 import * as path from 'path';
 import * as sourceMapSupport from 'source-map-support';
 
@@ -40,7 +43,7 @@ export async function run(_testRoot: string, callback: TestRunnerCallback) {
     forwardStdoutStderrStreams();
 
     try {
-        const { results } = await runCLI(jestConfig, [rootDir]);
+        const { results } = await runCLI(jestConfig as any, [rootDir]);
 
         const failures = collectTestFailureMessages(results);
 
@@ -64,7 +67,7 @@ function sleep(milliseconds: number) {
  *
  * @param results Jest test results.
  */
-function collectTestFailureMessages(results: ResultsObject): string[] {
+function collectTestFailureMessages(results: AggregatedResult): string[] {
     const failures = results.testResults.reduce<string[]>((acc, testResult) => {
         if (testResult.failureMessage) acc.push(testResult.failureMessage);
         return acc;

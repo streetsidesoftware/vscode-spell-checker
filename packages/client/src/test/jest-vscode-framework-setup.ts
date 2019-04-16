@@ -8,4 +8,4 @@
  *
  * @see jest-vscode-environment.ts
  */
-jest.mock("vscode", () => global.vscode, { virtual: true });
+jest.mock("vscode", () => (<any>global)['vscode'], { virtual: true });
