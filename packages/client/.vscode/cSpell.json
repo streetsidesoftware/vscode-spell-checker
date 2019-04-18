@@ -6,11 +6,15 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
-        "streetsidesoftware",
-        "vsmarketplacebadge",
-        "languageclient",
+        "acanthopterygious",
+        "arraylength",
+        "dict",
         "langs",
-        "onoffswitch"
+        "languageclient",
+        "onoffswitch",
+        "restructuredtext",
+        "streetsidesoftware",
+        "vsmarketplacebadge"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.

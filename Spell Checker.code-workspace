@@ -15,9 +15,13 @@
 	],
 	"settings": {
 		"cSpell.words": [
+			"acanthopterygious",
+			"arraylength",
 			"devtool",
 			"devtools",
-			"mobx"
+			"dict",
+			"mobx",
+			"restructuredtext"
 		],
 		"typescript.tsdk": "client/node_modules/typescript/lib"
 	}
