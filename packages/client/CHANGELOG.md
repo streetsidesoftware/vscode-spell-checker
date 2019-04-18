@@ -1,6 +1,11 @@
 # Release Notes
 
-## []
+## [1.7.0]
+- [Upgrade to VS Code's webview API · Issue #281 · Jason-Rev/vscode-spell-checker](https://github.com/Jason-Rev/vscode-spell-checker/issues/281)
+- Update the cspell library
+- Update the dictionaries
+
+## [1.6.10]
 - [Fixes and issue where the status bar foreground color did not match theme #269](https://github.com/Jason-Rev/vscode-spell-checker/issues/269)
 - [compact problem items listings #267](https://github.com/Jason-Rev/vscode-spell-checker/issues/267)
 

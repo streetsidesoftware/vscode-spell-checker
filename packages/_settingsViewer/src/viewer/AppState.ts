@@ -76,6 +76,12 @@ export class AppState implements State {
         if (this.workspaceFolders.length <= 1) {
             hidden.add(ConfigTargets.folder);
         }
+        if (this.workspaceFolders.length < 1) {
+            hidden.add(ConfigTargets.workspace);
+        }
+        if (!this.settings.activeFileUri) {
+            hidden.add('file');
+        }
         return tabs.filter(tab => !hidden.has(tab.target));
     }
 

@@ -3,3 +3,4 @@ server/*
 settingsViewer/*
 node_modules
 temp
+*.vsix

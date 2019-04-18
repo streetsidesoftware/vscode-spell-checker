@@ -202,7 +202,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             || (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
         const activeFolderUri = folder && folder.uri;
         return {
-            activeTabName: 'File',
+            activeTabName: activeDocumentUri ? 'File' : 'User',
             activeDocumentUri,
             activeFolderUri,
             settings: await calcStateSettings(
@@ -244,7 +244,6 @@ async function calcSettings(
     client: CSpellClient,
 ): Promise<Settings> {
     const activeFolderUri = folderUri
-        || document && document.uri
         || getDefaultWorkspaceFolderUri()
         || null;
     const config = inspectConfig(activeFolderUri);
