@@ -41,10 +41,12 @@
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "npm run compile",
+    "build": "npm run compile && npm run installServerIntoExtension",
+    "installServerIntoExtension": "installServerIntoExtension ../client ./package.json ./tsconfig.json",
     "clean-build": "npm run clean && npm run build",
-    "compile": "tsc -p . && installServerIntoExtension ../client ./package.json ./tsconfig.json",
-    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p .",
+    "clean-build-production": "npm run clean && npm run compile",
+    "compile": "tsc -p .",
+    "watch": "npm run installServerIntoExtension && tsc --watch -p .",
     "tsc": "tsc -p .",
     "test-watch": "jest --watch",
     "test": "jest"
