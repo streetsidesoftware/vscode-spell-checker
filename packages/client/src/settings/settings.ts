@@ -298,7 +298,12 @@ export async function enableLanguageIdForClosestTarget(
             if (await enableLanguageIdForTarget(languageId, enable, target, false)) return;
         }
 
-        if (await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false)) return;
+        if (vscode.workspace.workspaceFolders
+            && vscode.workspace.workspaceFolders.length
+            && await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false)
+        ) {
+            return;
+        }
 
         // Apply it to User settings.
         await enableLanguageIdForTarget(languageId, enable, config.Target.Global, true);
