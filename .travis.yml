@@ -17,8 +17,8 @@ before_install:
 
 script:
   - npm install
-  - npm run bootstrap
-  - npm run build
+  # - npm run bootstrap
+  # - npm run build
   - npm test
   - npm run test-client-integration
   # - cd packages
