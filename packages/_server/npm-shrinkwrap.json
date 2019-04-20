@@ -1147,9 +1147,9 @@
       "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
     },
     "cspell": {
-      "version": "3.2.5",
-      "resolved": "https://registry.npmjs.org/cspell/-/cspell-3.2.5.tgz",
-      "integrity": "sha512-EFkJtrogFXCj4frofKMk2SBKuntiROzlVOjnMf0ea6S0imtbaPJC2KPONcMKYPTRnzoH+2MPPtC8wIcvhR3PEg==",
+      "version": "3.2.6",
+      "resolved": "https://registry.npmjs.org/cspell/-/cspell-3.2.6.tgz",
+      "integrity": "sha512-nlLXCXAkV7NHEnbSOowu9gx42BA37f+HvSX0zMrenaKtb+k0wpUdzP1Oam4S/3oxirj4cq7pXcYJtfK5Fba0fg==",
       "requires": {
         "chalk": "^2.4.2",
         "commander": "^2.20.0",
