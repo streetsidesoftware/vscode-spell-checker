@@ -1,5 +1,11 @@
 # Release Notes
 
+## [1.7.1]
+- Fix [Change cSpell.enabledLanguageIds `yml` to `yaml` · Issue #322 · Jason-Rev/vscode-spell-checker](https://github.com/Jason-Rev/vscode-spell-checker/issues/322)
+- Update to the latest version of `cspell` to update the dictionaries.
+- Support `java` by default.
+- Reduce the overall size of the extension.
+
 ## [1.7.0]
 - [Upgrade to VS Code's webview API · Issue #281 · Jason-Rev/vscode-spell-checker](https://github.com/Jason-Rev/vscode-spell-checker/issues/281)
 - Update the cspell library
