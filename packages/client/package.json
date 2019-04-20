@@ -161,6 +161,7 @@
                         "javascript",
                         "javascriptreact",
                         "json",
+                        "jsonc",
                         "latex",
                         "less",
                         "markdown",
@@ -174,6 +175,7 @@
                         "text",
                         "typescript",
                         "typescriptreact",
+                        "yaml",
                         "yml"
                     ],
                     "description": "Specify file types to spell check."
