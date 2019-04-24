@@ -16,6 +16,7 @@ export type FileType = string;
 export type FileTypeList = FileType[];
 
 export type ConfigTarget = keyof SettingByConfigTarget<void>;
+export type ConfigSource = ConfigTarget | 'default';
 
 export type Inherited<T> = T;
 
@@ -37,7 +38,7 @@ export interface DictionaryEntry {
 }
 
 export interface Config {
-    inherited: { [key in keyof Config]?: ConfigTarget };
+    inherited: { [key in keyof Config]?: ConfigSource };
     locals: Inherited<LocalList>;
     languageIdsEnabled: Inherited<FileTypeList>;
 }

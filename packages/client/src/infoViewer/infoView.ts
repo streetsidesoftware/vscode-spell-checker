@@ -2,7 +2,7 @@ import { performance } from '../util/perf';
 performance.mark('infoView.ts');
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget } from '../../settingsViewer/api/settings';
+import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget, ConfigSource } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
 import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocalMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
@@ -260,8 +260,8 @@ async function calcSettings(
 }
 
 type InspectKeys = keyof InspectValues<CSpellUserSettings>;
-const keyMap: { [k in InspectKeys]: ConfigTarget } = {
-    'defaultValue': 'user',
+const keyMap: { [k in InspectKeys]: ConfigSource } = {
+    'defaultValue': 'default',
     'globalValue' : 'user',
     'workspaceValue': 'workspace',
     'workspaceFolderValue': 'folder',
