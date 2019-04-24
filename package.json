@@ -4,6 +4,7 @@
   "description": "Spell checker for VS Code",
   "private": true,
   "scripts": {
+    "postinstall": "npm run bootstrap && npm run build",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build  --no-sort --concurrency 1",
     "clean": "lerna run clean && lerna clean",
