@@ -208,7 +208,7 @@ function readAllWorkspaceFolderSettings(workspaceFolders: vscode.WorkspaceFolder
     CSpell.clearCachedSettings();
     return workspaceFolders
         .map(folder => folder.uri)
-        .filter(uri => log(`readAllWorkspaceFolderSettings URI ${uri}`), true)
+        .filter(uri => (log(`readAllWorkspaceFolderSettings URI ${uri}`), true))
         .map(uri => [uri, configPathsForRoot(uri)] as [string, string[]])
         .map(([uri, paths]) => [uri, readSettingsFiles(paths)] as [string, CSpellUserSettings]);
 }
