@@ -7,7 +7,7 @@
 
 A simple source code spell checker for multiple programming languages.
 
-For the readme on the plugin: [README](./client/README.md).
+For the readme on the plugin: [README](./packages/client/README.md).
 
 ## Contributions
 
