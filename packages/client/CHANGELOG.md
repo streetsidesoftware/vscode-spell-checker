@@ -1,5 +1,8 @@
 # Release Notes
 
+## [1.7.3]
+- Fix [cspell throws error when languageId is missing from languageSettings. · Issue #333](https://github.com/Jason-Rev/vscode-spell-checker/issues/333)
+
 ## [1.7.2]
 - Fix [1.7.0 no longer reads cSpell.json from root of workspace · Issue #330](https://github.com/Jason-Rev/vscode-spell-checker/issues/330)
 
