@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -105,7 +105,10 @@
         "languages": [
             {
                 "id": "jsonc",
-                "extensions": [ "cspell.json", "cSpell.json" ]
+                "extensions": [
+                    "cspell.json",
+                    "cSpell.json"
+                ]
             }
         ],
         "configuration": {
