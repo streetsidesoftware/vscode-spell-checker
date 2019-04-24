@@ -78,7 +78,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     const actionAddWordToFolder = userCommandOnCurrentSelectionOrPrompt(
-        'Add Word to Workspace Dictionary',
+        'Add Word to Folder Dictionary',
         splitTextFn(commands.addWordToFolderDictionary)
     );
     const actionAddWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
@@ -86,7 +86,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         splitTextFn(commands.addWordToWorkspaceDictionary)
     );
     const actionAddWordToDictionary = userCommandOnCurrentSelectionOrPrompt(
-        'Add Word to Dictionary',
+        'Add Word to User Dictionary',
         splitTextFn(commands.addWordToUserDictionary)
     );
 
