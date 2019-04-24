@@ -10,10 +10,10 @@ Load a TypeScript, JavaScript, Text, etc. file.  Words not in the dictionary fil
 a squiggly underline.
 
 ### Example
-![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/example.gif)
+![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/packages/client/images/example.gif)
 
 ## Suggestions
-![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/suggestions.gif)
+![Example](https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/packages/client/images/suggestions.gif)
 
 To see the list of suggestions:
 
@@ -67,11 +67,11 @@ To *Enable* or *Disable* spell checking for a file type:
 
 1. Click on the Spell Checker status in the status bar:
 
-   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
+   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/packages/client/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
 
 2. On the Info screen, click the ***Enable*** link.
 
-   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/client/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
+   <img src="https://raw.githubusercontent.com/Jason-Rev/vscode-spell-checker/master/packages/client/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
 
 
 ## How it works with camelCase
@@ -495,7 +495,7 @@ The *cities* dictionary is used for every file type, because it was added to the
 The *medicalTerms* dictionary is only used when editing *markdown* or *plaintext* files.
 
 ## FAQ
-See: [FAQ](https://github.com/Jason-Rev/vscode-spell-checker/blob/master/client/FAQ.md)
+See: [FAQ](https://github.com/Jason-Rev/vscode-spell-checker/blob/master/packages/client/FAQ.md)
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
