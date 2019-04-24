@@ -1,6 +1,6 @@
 # Release Notes
 
-## [1.7.3]
+## [1.7.4]
 - Fix [cspell throws error when languageId is missing from languageSettings. · Issue #333](https://github.com/Jason-Rev/vscode-spell-checker/issues/333)
 
 ## [1.7.2]
