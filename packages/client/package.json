@@ -102,6 +102,12 @@
                 "title": "Log cSpell performance times to console"
             }
         ],
+        "languages": [
+            {
+                "id": "jsonc",
+                "extensions": [ "cspell.json", "cSpell.json" ]
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "Code Spell Checker Configuration",
