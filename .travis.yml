@@ -5,7 +5,8 @@ os:
   - linux
   - osx
 node_js:
-  - "node"
+  # - "node"
+  - "10"
   - "8"
 
 before_install:
