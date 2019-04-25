@@ -60,6 +60,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * Python
 * YAML
 * AsciiDoc
+* reStructuredText
 
 ### Enable / Disable File Types
 
