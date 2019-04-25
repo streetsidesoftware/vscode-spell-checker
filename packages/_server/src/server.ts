@@ -297,7 +297,7 @@ function run() {
     });
 
     connection.onCodeAction(
-        onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version)
+        onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, documentSettings)
     );
 
     // Listen on the connection

@@ -13,7 +13,7 @@ import { CSpellUserSettings } from 'cspell';
 import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
 import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
-import { isUriAllowed } from './documentSettings';
+import { isUriAllowed, DocumentSettings } from './documentSettings';
 
 const defaultNumSuggestions = 10;
 
@@ -36,6 +36,7 @@ export function onCodeActionHandler(
     documents: TextDocuments,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
+    documentSettings: DocumentSettings,
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
     type SettingsDictPair = [CSpellUserSettings, SpellingDictionary];
     interface CacheEntry {
@@ -75,6 +76,9 @@ export function onCodeActionHandler(
         const textDocument = optionalTextDocument;
         const [ docSetting, dictionary ] = await getSettings(textDocument);
         const { numSuggestions = defaultNumSuggestions } = docSetting;
+        const folders = await documentSettings.folders;
+        const showAddToWorkspace = folders && folders.length > 1;
+        const showAddToFolder = folders && folders.length > 0;
 
         function replaceText(range: LangServer.Range, text?: string) {
             return LangServer.TextEdit.replace(range, text || '');
@@ -90,7 +94,7 @@ export function onCodeActionHandler(
             return dictionary.suggest(word, numSugs, CompoundWordsMethod.NONE, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
         }
 
-        function createAddWordAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
+        function createAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
             const cmd = LangServer.Command.create(
                 title,
                 command,
@@ -112,16 +116,15 @@ export function onCodeActionHandler(
                 sugs
                     .map(sug => Text.matchCase(word, sug))
                     .forEach(sugWord => {
-                        const command = LangServer.Command.create(
+                        const action = createAction(
                             sugWord,
                             'cSpell.editText',
+                            [diag],
                             uri,
                             textDocument.version,
                             [ replaceText(diag.range, sugWord) ]
                         );
-                        const action = LangServer.CodeAction.create(command.title, command) as CodeAction;
-                        action.diagnostics = [diag];
-                        action.kind = LangServer.CodeActionKind.QuickFix;
+                        // Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
                         // if (!actions.length) {
                         //     action.isPreferred = true;
                         // }
@@ -131,29 +134,33 @@ export function onCodeActionHandler(
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
-                actions.push(createAddWordAction(
+                actions.push(createAction(
                     'Add: "' + word + '" to user dictionary',
                     'cSpell.addWordToUserDictionarySilent',
                     spellCheckerDiags,
                     word,
                     textDocument.uri
                 ));
-                // Allow the them to add it to the project dictionary.
-                actions.push(createAddWordAction(
-                    'Add: "' + word + '" to folder dictionary',
-                    'cSpell.addWordToDictionarySilent',
-                    spellCheckerDiags,
-                    word,
-                    textDocument.uri
-                ));
-                // Allow the them to add it to the workspace dictionary.
-                actions.push(createAddWordAction(
-                    'Add: "' + word + '" to workspace dictionary',
-                    'cSpell.addWordToWorkspaceDictionarySilent',
-                    spellCheckerDiags,
-                    word,
-                    textDocument.uri
-                ));
+                if (showAddToFolder) {
+                    // Allow the them to add it to the project dictionary.
+                    actions.push(createAction(
+                        'Add: "' + word + '" to folder dictionary',
+                        'cSpell.addWordToDictionarySilent',
+                        spellCheckerDiags,
+                        word,
+                        textDocument.uri
+                    ));
+                }
+                if (showAddToWorkspace) {
+                    // Allow the them to add it to the workspace dictionary.
+                    actions.push(createAction(
+                        'Add: "' + word + '" to workspace dictionary',
+                        'cSpell.addWordToWorkspaceDictionarySilent',
+                        spellCheckerDiags,
+                        word,
+                        textDocument.uri
+                    ));
+                }
             }
             return actions;
         }
