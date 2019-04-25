@@ -19,26 +19,5 @@ before_install:
 
 script:
   - npm install
-  # - npm run bootstrap
-  # - npm run build
   - npm test
   - npm run test-client-integration
-  # - cd packages
-  # - cd client
-  # - npm install
-  # - cd ..
-  # - cd settingsViewer
-  # - npm install
-  # - npm run build
-  # - npm test
-  # - cd ..
-  # - cd server
-  # - npm install
-  # - npm run build
-  # - npm test
-  # - cd ..
-  # - cd client
-  # - npm install
-  # - npm run vscode:prepublish
-  # - npm test
-  # - npm run test-integration
