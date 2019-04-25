@@ -9,44 +9,12 @@ install:
   - ps: Install-Product node $env:nodejs_version x64
   # install modules
   - npm install
-  - npm run bootstrap
-  - npm run build
-
-  # - cd packages
-  # - cd client
-  # - npm install
-  # - cd ..
-  # - cd settingsViewer
-  # - npm install
-  # - npm run build
-  # - cd ..
-  # - cd server
-  # - npm install
-  # - npm run build
-  # - cd ..
-  # - cd client
-  # - npm install
-  # - npm run build
-  # - cd ..
-  # - cd ..
 
 # Post-install test scripts.
 test_script:
   # run tests
   - npm test
   - npm run test-client-integration
-
-  # - cd packages
-  # - cd settingsViewer
-  # - npm test
-  # - cd ..
-  # - cd server
-  # - npm test
-  # - cd ..
-  # - cd client
-  # - npm test
-  # - npm run test-integration
-  # - cd ..
 
 # Don't actually build.
 build: off
