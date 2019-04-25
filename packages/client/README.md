@@ -502,9 +502,10 @@ See: [FAQ](https://github.com/Jason-Rev/vscode-spell-checker/blob/master/package
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
 
     cSpell:ignore jsja goededag alek wheerd behaviour tsmerge QQQQQ
-    cSpell:enableCompoundWords
+    cSpell:disableCompoundWords
     cSpell:includeRegExp Everything
     cSpell:ignore hte variabele alinea
-    cSpell:ignore mkdirp githubusercontent streetsidesoftware vsmarketplacebadge visualstudio
+    cSpell:ignore mkdirp githubusercontent streetsidesoftware vsmarketplacebadge visualstudio lightbulb stringlength
+    cSpell:ignore errormessage errornumber medicalterms acanthopterygious
     cSpell:words Verdana
 -->

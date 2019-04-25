@@ -8,6 +8,7 @@ export interface SpellCheckerSettings {
     diagnosticLevel?: string;
     // By default the allowed schemas is ['file', 'untitled']
     allowedSchemas?: string[];
+    logLevel?: "None" | "Error" | "Warning" | "Information" | "Debug";
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}

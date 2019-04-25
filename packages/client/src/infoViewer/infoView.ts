@@ -9,7 +9,7 @@ import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi
 import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal, InspectValues } from '../settings';
+import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal, InspectValues, getSettingFromVSConfig } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
@@ -20,6 +20,7 @@ const title = 'Spell Checker Preferences';
 type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
+let isDebugLogEnabled = false;
 
 const targetToConfigurationTarget: { [key in ConfigTarget]: vscode.ConfigurationTarget } = {
     user: vscode.ConfigurationTarget.Global,
@@ -103,6 +104,8 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
 
     async function refreshStateAndNotify() {
+        const level = getSettingFromVSConfig('logLevel', null);
+        isDebugLogEnabled = level === 'Debug';
         log('refreshStateAndNotify');
         await refreshState();
         await notifyView();
@@ -306,7 +309,7 @@ function extractViewerConfigFromConfig(
         const {uri, fileName, languageId, isUntitled} = doc;
         const enabledDicts = new Set<string>(docSettings && docSettings.dictionaries || []);
         const dictionaries = extractDictionariesFromConfig(docSettings).filter(dic => enabledDicts.has(dic.name));
-        console.log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
+        log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
         const cfg: FileConfig = {
             uri: uri.toString(),
             fileName,
@@ -448,6 +451,9 @@ return `
 }
 
 function log(msg: any) {
+    if (!isDebugLogEnabled) {
+        return;
+    }
     const now = new Date();
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
