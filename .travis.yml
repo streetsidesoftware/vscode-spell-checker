@@ -5,6 +5,7 @@ os:
   - linux
   - osx
 node_js:
+  # Node 11 is turned off  because it blocks building until a security issue with node-sass is fixed.
   # - "node"
   - "10"
   - "8"
