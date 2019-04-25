@@ -18,7 +18,7 @@
     "engines": {
         "vscode": "^1.33.1"
     },
-    "enableProposedApi": true,
+    "enableProposedApi": false,
     "categories": [
         "Linters",
         "Other"
