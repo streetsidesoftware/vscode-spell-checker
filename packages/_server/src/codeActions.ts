@@ -1,9 +1,11 @@
 import {
     TextDocument,
     TextDocuments,
-    Command,
-    CodeActionParams
+    CodeActionParams,
 } from 'vscode-languageserver';
+import {
+    CodeAction,
+} from 'vscode-languageserver-types';
 import * as LangServer from 'vscode-languageserver';
 import { Text } from 'cspell';
 import * as Validator from './validator';
@@ -34,7 +36,7 @@ export function onCodeActionHandler(
     documents: TextDocuments,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
-) {
+): (params: CodeActionParams) => Promise<CodeAction[]> {
     type SettingsDictPair = [CSpellUserSettings, SpellingDictionary];
     interface CacheEntry {
         docVersion: number;
@@ -60,8 +62,8 @@ export function onCodeActionHandler(
         return  [docSetting, dict];
     }
 
-    return async (params: CodeActionParams) => {
-        const commands: Command[] = [];
+    const handler = async (params: CodeActionParams) => {
+        const actions: CodeAction[] = [];
         const { context, textDocument: { uri } } = params;
 
         if (!isUriAllowed(uri)) {
@@ -78,17 +80,6 @@ export function onCodeActionHandler(
             return LangServer.TextEdit.replace(range, text || '');
         }
 
-        /*
-        function genMultiWordSugs(word: string, words: string[]): string[] {
-            const snakeCase = words.join('_').toLowerCase();
-            const camelCase = Text.snakeToCamel(snakeCase);
-            const sug = Text.isFirstCharacterUpper(word) ? Text.ucFirst(camelCase) : Text.lcFirst(camelCase);
-            return [
-                sug,
-            ];
-        }
-        */
-
         function getSuggestions(dictionary: SpellingDictionary, word: string, numSuggestions: number): string[] {
             if (word.length > maxWordLengthForSuggestions) {
                 return [];
@@ -97,6 +88,18 @@ export function onCodeActionHandler(
             const numEdits = maxEdits;
             // Turn off compound suggestions for now until it works a bit better.
             return dictionary.suggest(word, numSugs, CompoundWordsMethod.NONE, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
+        }
+
+        function createAddWordAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
+            const cmd = LangServer.Command.create(
+                title,
+                command,
+                ...args
+            );
+            const action = LangServer.CodeAction.create(title, cmd);
+            action.diagnostics = diags;
+            action.kind = LangServer.CodeActionKind.QuickFix;
+            return action;
         }
 
         function genSuggestions(dictionary: SpellingDictionary) {
@@ -109,62 +112,54 @@ export function onCodeActionHandler(
                 sugs
                     .map(sug => Text.matchCase(word, sug))
                     .forEach(sugWord => {
-                        commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
+                        const command = LangServer.Command.create(
+                            sugWord,
+                            'cSpell.editText',
                             uri,
                             textDocument.version,
                             [ replaceText(diag.range, sugWord) ]
-                        ));
-                        /*
-                        // Turn off making multiple suggestions for the same words.
-                        const words = sugWord.replace(/[ _.]/g, '_').split('_');
-                        if (words.length > 1) {
-                            if (Text.isUpperCase(word)) {
-                                const sug = words.join('_').toUpperCase();
-                                commands.push(LangServer.Command.create(sug, 'cSpell.editText',
-                                    uri,
-                                    textDocument.version,
-                                    [ replaceText(diag.range, sug) ]
-                                ));
-                            } else {
-                                genMultiWordSugs(word, words).forEach(sugWord => {
-                                    commands.push(LangServer.Command.create(sugWord, 'cSpell.editText',
-                                        uri,
-                                        textDocument.version,
-                                        [ replaceText(diag.range, sugWord) ]
-                                    ));
-                                });
-                            }
-                        }
-                        */
+                        );
+                        const action = LangServer.CodeAction.create(command.title, command) as CodeAction;
+                        action.diagnostics = [diag];
+                        action.kind = LangServer.CodeActionKind.QuickFix;
+                        // if (!actions.length) {
+                        //     action.isPreferred = true;
+                        // }
+                        actions.push(action);
                     });
             }
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
-                commands.push(LangServer.Command.create(
-                    'Add: "' + word + '" to dictionary',
+                actions.push(createAddWordAction(
+                    'Add: "' + word + '" to user dictionary',
                     'cSpell.addWordToUserDictionarySilent',
+                    spellCheckerDiags,
                     word,
                     textDocument.uri
                 ));
                 // Allow the them to add it to the project dictionary.
-                commands.push(LangServer.Command.create(
+                actions.push(createAddWordAction(
                     'Add: "' + word + '" to folder dictionary',
                     'cSpell.addWordToDictionarySilent',
+                    spellCheckerDiags,
                     word,
                     textDocument.uri
                 ));
                 // Allow the them to add it to the workspace dictionary.
-                commands.push(LangServer.Command.create(
+                actions.push(createAddWordAction(
                     'Add: "' + word + '" to workspace dictionary',
                     'cSpell.addWordToWorkspaceDictionarySilent',
+                    spellCheckerDiags,
                     word,
                     textDocument.uri
                 ));
             }
-            return commands;
+            return actions;
         }
 
         return genSuggestions(dictionary);
     };
+
+    return handler;
 }

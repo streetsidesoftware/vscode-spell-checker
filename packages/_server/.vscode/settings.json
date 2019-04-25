@@ -7,5 +7,8 @@
         ".vscode",
         "dictionaries",
         "typings"
+    ],
+    "cSpell.words": [
+        "diags"
     ]
 }
