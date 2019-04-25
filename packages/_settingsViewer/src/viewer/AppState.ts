@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, SettingByConfigTarget, WorkspaceFolder, TextDocument } from '../api/settings/';
+import { Settings, ConfigTarget, LocalId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
@@ -32,7 +32,7 @@ export interface LanguageInfo {
 
 export interface LanguageConfig {
     languages: LanguageInfo[];
-    inherited?: ConfigTarget;
+    inherited?: ConfigSource;
 }
 
 export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
@@ -47,12 +47,12 @@ export interface State {
 
 export interface FoundInConfig<T> {
     value: Exclude<T, undefined>,
-    target: ConfigTarget
+    source: ConfigSource
 }
 
-type InheritedFromTarget<T> = {
+type InheritedFromSource<T> = {
     value: Exclude<T, undefined>,
-    target: ConfigTarget;
+    source: ConfigSource;
 }
 
 export class AppState implements State {
@@ -190,13 +190,13 @@ export class AppState implements State {
         this.debugMode = isEnabled;
     }
 
-    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromTarget<boolean> {
+    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromSource<boolean> {
         const config = this.settings.configs[field];
-        const target = config.inherited.locals || field;
+        const source = config.inherited.locals || field;
         const locals = config.locals;
         return  {
             value: locals.map(normalizeCode).includes(code),
-            target
+            source
         };
     }
 
