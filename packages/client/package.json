@@ -38,13 +38,18 @@
         "menus": {
             "editor/context": [
                 {
-                    "command": "cSpell.addWordToDictionary",
-                    "when": "editorTextFocus",
+                    "command": "cSpell.addWordToUserDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
                     "group": "A_cspell"
                 },
                 {
-                    "command": "cSpell.addWordToUserDictionary",
-                    "when": "editorTextFocus",
+                    "command": "cSpell.addWordToWorkspaceDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
+                    "group": "A_cspell"
+                },
+                {
+                    "command": "cSpell.addWordToDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
                     "group": "A_cspell"
                 }
             ]
@@ -60,7 +65,7 @@
             },
             {
                 "command": "cSpell.addWordToUserDictionary",
-                "title": "Add Word to Global Dictionary"
+                "title": "Add Word to User Dictionary"
             },
             {
                 "command": "cSpell.enableForWorkspace",
@@ -396,6 +401,12 @@
                             "path"
                         ]
                     }
+                },
+                "cSpell.showCommandsInEditorContextMenu": {
+                    "type": "boolean",
+                    "scope": "application",
+                    "description": "Show Spell Checker actions in Editor Context Menu",
+                    "default": true
                 },
                 "cSpell.logLevel": {
                     "type": "string",

@@ -1,5 +1,9 @@
 # Release Notes
 
+## []
+- Make the Quick Fix menu and Context menu workspace aware.
+- [Add configuration to hide the right-click menu. · Issue #336](https://github.com/Jason-Rev/vscode-spell-checker/issues/336)
+
 ## [1.7.5]
 - Make all spelling suggestions available via the quick-fix menu. Related to
   [Quick actions stop functioning after clicking result form Problem window · Issue #283](https://github.com/Jason-Rev/vscode-spell-checker/issues/283)
