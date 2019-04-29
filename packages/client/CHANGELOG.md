@@ -1,6 +1,6 @@
 # Release Notes
 
-## []
+## [1.7.6]
 - Make the Quick Fix menu and Context menu workspace aware.
 - [Add configuration to hide the right-click menu. · Issue #336](https://github.com/Jason-Rev/vscode-spell-checker/issues/336)
 
