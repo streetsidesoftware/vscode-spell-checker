@@ -6,7 +6,7 @@ export { LanguageSetting, DictionaryDefinition } from 'cspell';
 export interface SpellCheckerSettings {
     checkLimit?: number;
     diagnosticLevel?: string;
-    // By default the allowed schemas is ['file', 'untitled']
+    // By default the allowed schemas are ['file', 'untitled']
     allowedSchemas?: string[];
     logLevel?: "None" | "Error" | "Warning" | "Information" | "Debug";
 }
