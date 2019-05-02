@@ -4,6 +4,7 @@ A basic spell checker that works well with camelCase code.
 
 The goal of this spell checker is to help catch common spelling errors while keeping the number of false positives low.
 
+## Support Further Development
 [![PayPal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AE7RWCXNQ2ZYC&item_name=Support+VS+Code+Spell+Checker&currency_code=EUR&source=url)
 
 ## Functionality
