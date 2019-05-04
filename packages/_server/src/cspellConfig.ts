@@ -9,6 +9,11 @@ export interface SpellCheckerSettings {
     // By default the allowed schemas are ['file', 'untitled']
     allowedSchemas?: string[];
     logLevel?: "None" | "Error" | "Warning" | "Information" | "Debug";
+    // Show the spell checker status on the status bar.
+    showStatus?: boolean;
+    // Delay between changes before running the spell checker.
+    spellCheckDelayMs?: number;
+    showCommandsInEditorContextMenu?: boolean;
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}
