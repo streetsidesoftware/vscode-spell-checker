@@ -120,13 +120,13 @@ export class CSpellClient {
 
     public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
         if (!document) {
-            return defaultGetConfigurationForDocumentResult;
+            return (await this.sendRequest(methodNames.getConfigurationForDocument, {})) as GetConfigurationForDocumentResult;
         }
 
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return defaultGetConfigurationForDocumentResult;
+            return (await this.sendRequest(methodNames.getConfigurationForDocument, {})) as GetConfigurationForDocumentResult;
         }
 
         await this.client.onReady();
