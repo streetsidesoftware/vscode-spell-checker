@@ -2,9 +2,8 @@
 import mm =  require('micromatch');
 
 export class GlobMatcher {
-    private matcher: (filename: string) => boolean;
+    readonly matcher: (filename: string) => boolean;
     constructor(readonly patterns: string[], readonly root?: string) {
-
         this.matcher = buildMatcherFn(patterns, root);
     }
 
@@ -28,14 +27,7 @@ function buildMatcherFn(patterns: string[], root?: string): (filename: string) =
         const reg = mm.makeRe(pattern);
         const fn = (filename: string) => {
             const match = filename.match(reg);
-            if (!match) {
-                return false;
-            }
-            // With contains we need to make sure it matches the entire path segment.
-            const front = !match.index || filename[match.index -1] === '/';
-            const endIndex = match.index! + match[0].length;
-            const back = endIndex === filename.length || filename[endIndex] === '/';
-            return front && back;
+            return !!match;
         };
         return { neg, fn };
     });

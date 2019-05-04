@@ -1,5 +1,11 @@
 # Release Notes
 
+## [1.7.7]
+- Fix [Ignore paths not working? · Issue #311](https://github.com/Jason-Rev/vscode-spell-checker/issues/311)
+- **Breaking Change:** `cspell.json` settings will take precedence over settings found in VS Code.
+  The logic is that a `cspell.json` can be used for CI/CD processing while VS Code settings cannot.
+  This is a change from previous version. This only applies if you use `cspell.json` files.
+
 ## [1.7.6]
 - Make the Quick Fix menu and Context menu workspace aware.
 - [Add configuration to hide the right-click menu. · Issue #336](https://github.com/Jason-Rev/vscode-spell-checker/issues/336)

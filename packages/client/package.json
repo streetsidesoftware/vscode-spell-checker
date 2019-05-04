@@ -273,8 +273,7 @@
                         "**/node_modules/**",
                         "**/vscode-extension/**",
                         "**/.git/**",
-                        ".vscode",
-                        "typings"
+                        ".vscode"
                     ],
                     "description": "Specify paths/files to ignore. (Supports Globs)"
                 },
