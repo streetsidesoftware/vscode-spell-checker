@@ -44,12 +44,18 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
 async function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     const actualTarget = resolveTarget(target, uri);
     await Settings.addWordToSettings(actualTarget, word);
-    if (actualTarget !== Settings.Target.Global) {
-        const useUri = uri ? pathToUri(uri) : undefined;
-        const path = await Settings.findExistingSettingsFileLocation(useUri);
-        if (path) {
-            await CSpellSettings.addWordToSettingsAndUpdate(path, word);
-        }
+    const path = await determineSettingsPath(actualTarget, uri);
+    if (path) {
+        await CSpellSettings.addWordToSettingsAndUpdate(path, word);
+    }
+}
+
+export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    const actualTarget = resolveTarget(target, uri);
+    await Settings.addIgnoreWordToSettings(actualTarget, word);
+    const path = await determineSettingsPath(actualTarget, uri);
+    if (path) {
+        await CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word);
     }
 }
 
@@ -68,13 +74,21 @@ export function removeWordFromUserDictionary(word: string): Thenable<void> {
 async function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
-    if (actualTarget !== Settings.Target.Global) {
-        const useUri = uri ? pathToUri(uri) : undefined;
-        const path = await Settings.findExistingSettingsFileLocation(useUri);
-        if (path) {
-            await CSpellSettings.removeWordFromSettingsAndUpdate(path, word);
-        }
+    const path = await determineSettingsPath(actualTarget, uri);
+    if (path) {
+        await CSpellSettings.removeWordFromSettingsAndUpdate(path, word);
     }
+}
+
+async function determineSettingsPath(
+    target: Settings.ConfigTarget,
+    uri: string | null | Uri | undefined
+): Promise<string | undefined> {
+    if (target !== Settings.Target.Global) {
+        const useUri = uri ? pathToUri(uri) : undefined;
+        return Settings.findExistingSettingsFileLocation(useUri);
+    }
+    return undefined;
 }
 
 function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Settings.ConfigTarget {
@@ -87,7 +101,7 @@ function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Sett
     }
 
     const resolvedUri = pathToUri(uri);
-    return Settings.createTargetForUri(Settings.Target.Workspace, resolvedUri);
+    return Settings.createTargetForUri(target, resolvedUri);
 }
 
 export function enableLanguageId(languageId: string, uri?: string): Promise<void> {
@@ -98,15 +112,15 @@ export function disableLanguageId(languageId: string, uri?: string): Promise<voi
     return Settings.enableLanguageIdForClosestTarget(languageId, false, uri ? Uri.parse(uri) : undefined);
 }
 
-export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string) => Thenable<void>): () => Thenable<void> {
+export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string, uri: Uri | undefined) => Thenable<void>): () => Thenable<void> {
     return function () {
         const { activeTextEditor = {} } = window;
         const { selection, document } = activeTextEditor as TextEditor;
         const range = selection && document ? document.getWordRangeAtPosition(selection.active) : undefined;
         const value = range ? document.getText(selection) || document.getText(range) : selection && document.getText(selection) || '';
         return (selection && !selection.isEmpty)
-            ? fnAction(value)
-            : window.showInputBox({prompt, value}).then(word => { word && fnAction(word); });
+            ? fnAction(value, document && document.uri)
+            : window.showInputBox({prompt, value}).then(word => { word && fnAction(word, document && document.uri); });
     };
 }
 

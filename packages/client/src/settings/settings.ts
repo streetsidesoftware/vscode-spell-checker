@@ -179,6 +179,14 @@ export function addWordToSettings(target: config.ConfigTarget, word: string): Th
     return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
 }
 
+export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {
+    const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
+    target = useGlobal ? config.ConfigurationTarget.Global : target;
+    const section = 'ignoreWords';
+    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
+    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
+}
+
 export function removeWordFromSettings(target: config.ConfigTarget, word: string): Thenable<void> {
     const useGlobal = config.isGlobalTarget(target);
     if (!useGlobal && !hasWorkspaceLocation()) {

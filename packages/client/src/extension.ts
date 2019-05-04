@@ -59,15 +59,15 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function splitTextFn(
-        apply: (word: string, uri: string | vscode.Uri | null) => Thenable<void>
-    ): (word: string) => Thenable<void> {
-        return (word: string) => {
+        apply: (word: string, uri: string | vscode.Uri | null | undefined) => Thenable<void>
+    ): (word: string, uri: string | vscode.Uri | null | undefined) => Thenable<void> {
+        return (word: string, uri: string | vscode.Uri | null | undefined) => {
             const editor = vscode.window.activeTextEditor;
             const document = editor && editor.document;
-            const uri = document && document.uri || null;
+            const uriToUse = uri || document && document.uri || null;
             return client.splitTextIntoDictionaryWords(word)
                 .then(result => result.words)
-                .then(words => apply(words.join(' '), uri));
+                .then(words => apply(words.join(' '), uriToUse));
         };
     }
 
@@ -90,6 +90,23 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         splitTextFn(commands.addWordToUserDictionary)
     );
 
+    const actionAddIgnoreWord = userCommandOnCurrentSelectionOrPrompt(
+        'Ignore Word',
+        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
+    );
+    const actionAddIgnoreWordToFolder = userCommandOnCurrentSelectionOrPrompt(
+        'Ignore Word in Folder Settings',
+        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
+    );
+    const actionAddIgnoreWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
+        'Ignore Word in Workspace Settings',
+        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Workspace, uri))
+    );
+    const actionAddIgnoreWordToUser = userCommandOnCurrentSelectionOrPrompt(
+        'Ignore Word in User Settings',
+        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Global, uri))
+    );
+
     const actionRemoveWordFromFolderDictionary = userCommandOnCurrentSelectionOrPrompt(
         'Remove Word from Dictionary',
         splitTextFn(commands.removeWordFromFolderDictionary)
@@ -110,15 +127,24 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(
         clientDispose,
         vscode.commands.registerCommand('cSpell.editText', handlerApplyTextEdits(client.client)),
+
         vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToFolderDictionary),
         vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionarySilent', commands.addWordToWorkspaceDictionary),
         vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
+
         vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder),
         vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionary', actionAddWordToWorkspace),
         vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
+
+        vscode.commands.registerCommand('cSpell.addIgnoreWord', actionAddIgnoreWord),
+        vscode.commands.registerCommand('cSpell.addIgnoreWordToFolder', actionAddIgnoreWordToFolder),
+        vscode.commands.registerCommand('cSpell.addIgnoreWordToWorkspace', actionAddIgnoreWordToWorkspace),
+        vscode.commands.registerCommand('cSpell.addIgnoreWordToUser', actionAddIgnoreWordToUser),
+
         vscode.commands.registerCommand('cSpell.removeWordFromFolderDictionary', actionRemoveWordFromFolderDictionary),
         vscode.commands.registerCommand('cSpell.removeWordFromWorkspaceDictionary', actionRemoveWordFromWorkspaceDictionary),
         vscode.commands.registerCommand('cSpell.removeWordFromUserDictionary', actionRemoveWordFromDictionary),
+
         vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
         vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
         vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),

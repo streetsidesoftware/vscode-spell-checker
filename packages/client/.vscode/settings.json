@@ -30,5 +30,5 @@
 		"typescript",
 		"typescriptreact",
 		"yml"
-	] // we want to use the TS server from our node_modules folder to control its version
+	]
 }

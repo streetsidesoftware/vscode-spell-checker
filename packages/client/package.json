@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.7.6",
+    "version": "1.7.7",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -50,6 +50,11 @@
                 {
                     "command": "cSpell.addWordToDictionary",
                     "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
+                    "group": "A_cspell"
+                },
+                {
+                    "command": "cSpell.addIgnoreWord",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
                     "group": "A_cspell"
                 }
             ]
@@ -106,6 +111,22 @@
             {
                 "command": "cSpell.logPerfTimeline",
                 "title": "Log cSpell performance times to console"
+            },
+            {
+                "command": "cSpell.addIgnoreWord",
+                "title": "Ignore Word"
+            },
+            {
+                "command": "cSpell.addIgnoreWordToFolder",
+                "title": "Ignore Word in Folder Settings"
+            },
+            {
+                "command": "cSpell.addIgnoreWordToWorkspace",
+                "title": "Ignore Word in Workspace Settings"
+            },
+            {
+                "command": "cSpell.addIgnoreWordToUser",
+                "title": "Ignore Word in User Settings"
             }
         ],
         "languages": [
@@ -283,9 +304,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "default": [
-                        "hte"
-                    ],
+                    "default": [],
                     "description": "Words to always be flagged as an error."
                 },
                 "cSpell.patterns": {

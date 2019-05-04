@@ -5,6 +5,8 @@
 - **Breaking Change:** `cspell.json` settings will take precedence over settings found in VS Code.
   The logic is that a `cspell.json` can be used for CI/CD processing while VS Code settings cannot.
   This is a change from previous version. This only applies if you use `cspell.json` files.
+- Fix an issue where the available dictionaries were not showing up in the configuration screen if a file wasn't selected.
+- Add UI to ignore words -- [Option to ignore words · Issue #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
 
 ## [1.7.6]
 - Make the Quick Fix menu and Context menu workspace aware.

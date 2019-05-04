@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as json from 'comment-json';
 import path = require('path');
-import {CSpellUserSettingsWithComments, CSpellUserSettings} from '../server';
+import {CSpellUserSettingsWithComments} from '../server';
 import { unique, uniqueFilter } from '../util';
 
 const currentSettingsFileVersion = '0.1';
@@ -18,7 +18,6 @@ const defaultSettings: CSpellUserSettingsWithComments = {
     version: currentSettingsFileVersion,
     language: 'en',
     words: [],
-    flagWords: [],
 };
 
 // cSpell:ignore hte
@@ -36,12 +35,6 @@ const defaultSettingsWithComments: CSpellSettings = {
 
     '// words': [`
     // words - list of words to be always considered correct`
-    ],
-
-    '// flagWords': [`
-    // flagWords - list of words to be always considered incorrect
-    // This is useful for offensive words and common spelling errors.
-    // For example "hte" should be "the"`
     ],
 };
 
@@ -68,19 +61,36 @@ export function updateSettings(filename: string, settings: CSpellSettings) {
 }
 
 export function addWordToSettingsAndUpdate(filename: string, word: string) {
-    return readSettings(filename)
-        .then(settings => addWordsToSettings(settings, word.split(' ')))
-        .then(settings => updateSettings(filename, settings));
+    return readApplyUpdateSettingsFile(
+        filename,
+        settings => addWordsToSettings(settings, word.split(' '))
+    );
 }
 
 export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]) {
-    const words = (settings.words || [])
-        .concat(wordsToAdd)
+    const words = mergeWords(settings.words, wordsToAdd);
+    return {...settings, words};
+}
+
+export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string) {
+    return readApplyUpdateSettingsFile(
+        filename,
+        settings => addIgnoreWordsToSettings(settings, word.split(' '))
+    );
+}
+
+export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]) {
+    const ignoreWords = mergeWords(settings.ignoreWords, wordsToAdd);
+    return {...settings, ignoreWords};
+}
+
+function mergeWords(wordsLeft: string[] | undefined, wordsRight: string[]): string[] {
+    return (wordsLeft || [])
+        .concat(wordsRight)
         .map(a => a.trim())
         .filter(a => !!a)
         .filter(uniqueFilter())
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-    return {...settings, words};
 }
 
 export function removeWordsFromSettings(settings: CSpellSettings, wordsToRemove: string[]) {
@@ -94,9 +104,10 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
 }
 
 export function removeWordFromSettingsAndUpdate(filename: string, word: string) {
-    return readSettings(filename)
-        .then(settings => removeWordsFromSettings(settings, word.split(' ')))
-        .then(settings => updateSettings(filename, settings));
+    return readApplyUpdateSettingsFile(
+        filename,
+        settings => removeWordsFromSettings(settings, word.split(' '))
+    );
 }
 
 export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean) {
@@ -121,13 +132,21 @@ export function removeLanguageIdsFromSettings(settings: CSpellSettings, language
 }
 
 export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean) {
-    return readSettings(filename)
-        .then(settings => addLanguageIdsToSettings(settings, languageIds, onlyIfExits))
-        .then(settings => updateSettings(filename, settings));
+    return readApplyUpdateSettingsFile(
+        filename,
+        settings => addLanguageIdsToSettings(settings, languageIds, onlyIfExits)
+    );
 }
 
 export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]) {
-    return readSettings(filename)
-        .then(settings => removeLanguageIdsFromSettings(settings, languageIds))
-        .then(settings => updateSettings(filename, settings));
+    return readApplyUpdateSettingsFile(
+        filename,
+        settings => removeLanguageIdsFromSettings(settings, languageIds)
+    );
+}
+
+async function readApplyUpdateSettingsFile(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
+    const settings = await readSettings(filename);
+    const newSettings = action(settings);
+    return updateSettings(filename, newSettings);
 }
