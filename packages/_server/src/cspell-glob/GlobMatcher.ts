@@ -21,19 +21,23 @@ export class GlobMatcher {
 function buildMatcherFn(patterns: string[], root?: string): (filename: string) => boolean {
     const r = (root || '').replace(/\/$/, '') as string;
     const patternsEx = patterns.map(p => {
-        const options: Options = {};
+        p = p.trimLeft();
         const matchNeg = p.match(/^!+/);
         const neg = matchNeg && (matchNeg[0].length & 1) && true || false;
-        p = p.replace(/^!+/, '');
-        gitIgnoreOptions.forEach(([regex, option, replace]) => {
-            if (regex.test(p)) {
-                Object.assign(options, option);
-                if (replace !== undefined) {
-                    p = p.replace(regex, replace);
-                }
+        const pattern = mutations.reduce((p, [regex, replace]) => p.replace(regex, replace), p);
+        const reg = mm.makeRe(pattern);
+        const fn = (filename: string) => {
+            const match = filename.match(reg);
+            if (!match) {
+                return false;
             }
-        });
-        return { neg, fn: mm.matcher(p, options) };
+            // With contains we need to make sure it matches the entire path segment.
+            const front = !match.index || filename[match.index -1] === '/';
+            const endIndex = match.index! + match[0].length;
+            const back = endIndex === filename.length || filename[endIndex] === '/';
+            return front && back;
+        };
+        return { neg, fn };
     });
     const negFns = patternsEx.filter(pat => pat.neg).map(pat => pat.fn);
     const fns = patternsEx.filter(pat => !pat.neg).map(pat => pat.fn);
@@ -58,14 +62,11 @@ function buildMatcherFn(patterns: string[], root?: string): (filename: string) =
     }
 }
 
-interface Options extends mm.Options {
-    contains?: boolean;
-}
+type MutationsToSupportGitIgnore = [RegExp, string];
 
-type GitIgnoreTestSetOption = [RegExp, Options, string | undefined];
-
-const gitIgnoreOptions: GitIgnoreTestSetOption[] = [
-    [/^[^/]+$/, { contains: true },,],  // no slashes will match files names or folders
-    [/\/$/, { }, '$&**',],              // if it ends in a slash, make sure matches the folder
-    [/^[^/].*[/]/, { }, '/$&',],        // if it contains a slash, prefix with a slash
+const mutations: MutationsToSupportGitIgnore[] = [
+    [/^!+/, ''],                                   // remove leading !
+    [/^[^/#][^/]*$/, '**/{$&,$&/**}',],            // no slashes will match files names or folders
+    [/\/$/, '$&**',],                              // if it ends in a slash, make sure matches the folder
+    [/^(([^/*])|([*][^*])).*[/]/, '/$&',],         // if it contains a slash, prefix with a slash
 ];

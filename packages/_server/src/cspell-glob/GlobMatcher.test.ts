@@ -2,15 +2,16 @@ import { GlobMatcher } from './GlobMatcher';
 
 describe('Validate GlobMatcher', () => {
     tests().forEach(([patterns, root, filename, expected, description], index) => {
-        test(`test ${index} ${description} filename: "${filename}", root: "${root}"`, () => {
+        test(`test ${index} ${description}, pattern: [${patterns}] filename: "${filename}", root: "${root}"`, () => {
             const matcher = new GlobMatcher(patterns, root);
             expect(matcher.match(filename)).toBe(expected);
         });
-    })
+    });
 });
 
 function tests(): [string[], string | undefined, string, boolean, string][] {
     return [
+
         [['*.json'],                undefined, '/settings.json', true, '*.json'],
         [['.vscode'],               undefined, '/.vscode/settings.json', true, '.vscode'],
         [['/*.json'],               undefined, '/settings.json', true, 'Matches only root level files, /*.json'],            // .
@@ -101,25 +102,28 @@ function tests(): [string[], string | undefined, string, boolean, string][] {
 
         // Special characters
         [['#'],                     '', '/User/code/src/settings.json', false, 'Only comments'],
-        [['#', '*.json', '#'],      '', '/User/code/src/settings.json', true, "with comments ['#', '*.json', '#']"],
-        [['#', '*.json', '*.js'],   '', '/User/code/src/settings.js',   true, '*.js'],
-        [['#', '**/src/', '*.js'],  '', '/User/code/src/settings.js',  true, '*.js'],
-        [['{*.js,*.json}'],         '', '/User/code/src/settings.js',  true, '{*.js,*.json}'],
-        [['{src,dist}'],            '', '/User/code/src/settings.json',  true, '{src,dist}'],
-        [['{src,dist}'],            '', '/User/code/dist/settings.json',  true, '{src,dist}'],
-        [['**/{src,dist}/**'],      '', '/User/code/src/settings.json',  true, '**/{src,dist}/**'],
-        [['**/{src,dist}/**'],      '', '/User/code/dist/settings.json',  true, '**/{src,dist}/**'],
-        [['**/{src,dist}/**'],      '', '/User/code/lib/settings.json',  false, '**/{src,dist}/**'],
-        [['{*.js,*.json}'],         '', '/User/code/src/settings.js',  true, '{*.js,*.json}'],
-        [['#', '**/dist/', '*.js'], '', '/User/code/src/settings.js',  true, "['#', '**/dist/', '*.js']"],
-        [['#', '**/dist/', '*.js'], '', '/User/code/src/settings.json',  true, "['#', '**/dist/', '*.js']"],
+        [[' #'],                    '', '/User/code/src/settings.json', false, 'Only comments'],
+        [['#', '*.json', '#'],      '', '/User/code/src/settings.json', true, 'Comments'],
+        [['#', '*.json', '*.js'],   '', '/User/code/src/settings.js',   true, 'Multiple patterns'],
+        [['#', '**/src/', '*.js'],  '', '/User/code/src/settings.js',  true, 'Multiple patterns'],
+        [['{*.js,*.json}'],         '', '/User/code/src/settings.js',  true, 'Braces'],
+        [['{src,dist}'],            '', '/User/code/src/settings.json',  true, 'Braces'],
+        [['{src,dist}'],            '', '/User/code/dist/settings.json',  true, 'Braces'],
+        [['{src,dist}'],            '', '/User/code/distribution/settings.json',  false, 'Braces'],
+        [['**/{src,dist}/**'],      '', '/User/code/src/settings.json',  true, 'Braces'],
+        [['**/{src,dist}/**'],      '', '/User/code/dist/settings.json',  true, 'Braces'],
+        [['**/{src,dist}/**'],      '', '/User/code/lib/settings.json',  false, 'Braces'],
+        [['{*.js,*.json}'],         '', '/User/code/src/settings.js',  true, 'Braces'],
+        [['#', '**/dist/', '*.js'], '', '/User/code/src/settings.js',  true, 'Multiple patterns'],
+        [['#', '**/dist/', '*.js'], '', '/User/code/src/settings.json',  false, 'Multiple patterns'],
+        [['#', '**/dist/', '*.js*'],'', '/User/code/src/settings.json',  true, 'Multiple patterns'],
         [['settings.js'],           '', '/User/code/src/settings.js',  true, 'settings.js'],
-        [['!settings.js'],          '', '/User/code/src/settings.js',  false, '!settings.js'],
-        [['!!settings.js'],         '', '/User/code/src/settings.js',  true, '!!settings.js'],
-        [['!!!settings.js'],        '', '/User/code/src/settings.js',  false, '!!!settings.js'],
-        [['!/**/settings.js'],      '', '/User/code/src/settings.js',  false, '!/**/settings.js'],
-        [['!!/**/settings.js'],     '', '/User/code/src/settings.js',  true, '!!/**/settings.js'],
-        [['!**/settings.js'],       '', '/User/code/src/settings.js',  false, '!**/settings.js'],
-        [['#', '**/src/', '*.js', '!**/settings.js'], '', '/User/code/src/settings.js',  false, "['#', '**/src/', '*.js', '!**/settings.js']"],
+        [['!settings.js'],          '', '/User/code/src/settings.js',  false, 'Negations'],
+        [['!!settings.js'],         '', '/User/code/src/settings.js',  true, 'Negations'],
+        [['!!!settings.js'],        '', '/User/code/src/settings.js',  false, 'Negations'],
+        [['!/**/settings.js'],      '', '/User/code/src/settings.js',  false, 'Negations'],
+        [['!!/**/settings.js'],     '', '/User/code/src/settings.js',  true, 'Negations'],
+        [['!**/settings.js'],       '', '/User/code/src/settings.js',  false, 'Negations'],
+        [['#', '**/src/', '*.js', '!**/settings.js'], '', '/User/code/src/settings.js',  false, 'Negations'],
     ];
 }
