@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker",
-  "version": "1.7.7",
+  "version": "1.7.8",
   "description": "Spell checker for VS Code",
   "private": true,
   "scripts": {
