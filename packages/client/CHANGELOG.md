@@ -1,5 +1,12 @@
 # Release Notes
 
+## [1.7.8]
+- Fix ["No Code Action Available" when using SFTP · Issue #332](https://github.com/Jason-Rev/vscode-spell-checker/issues/332)
+- Experiment: have spelling correction use VS Code rename provider. This can be enabled with the following user setting:
+  ```
+      "cSpell.fixSpellingWithRenameProvider": true
+  ```
+
 ## [1.7.7]
 - Fix [Ignore paths not working? · Issue #311](https://github.com/Jason-Rev/vscode-spell-checker/issues/311)
 - **Breaking Change:** `cspell.json` settings will take precedence over settings found in VS Code.
