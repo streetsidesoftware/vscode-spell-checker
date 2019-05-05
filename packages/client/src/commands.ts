@@ -8,7 +8,6 @@ import {
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
-
 export function handlerApplyTextEdits(client: LanguageClient) {
     return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
 
@@ -62,7 +61,7 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
         a => a as (WorkspaceEdit | undefined),
         reason => (console.log(reason), undefined)
     );
-    return workspaceEdit && await workspace.applyEdit(workspaceEdit);
+    return workspaceEdit && workspaceEdit.size > 0 && await workspace.applyEdit(workspaceEdit);
 }
 
 export function addWordToFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {

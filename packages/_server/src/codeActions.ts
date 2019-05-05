@@ -9,7 +9,7 @@ import {
 import * as LangServer from 'vscode-languageserver';
 import { Text } from 'cspell';
 import * as Validator from './validator';
-import { CSpellUserSettings } from 'cspell';
+import { CSpellUserSettings } from './cspellConfig';
 import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
 import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
@@ -67,14 +67,14 @@ export function onCodeActionHandler(
         const actions: CodeAction[] = [];
         const { context, textDocument: { uri } } = params;
 
-        if (!isUriAllowed(uri)) {
-            return [];
-        }
         const { diagnostics } = context;
         const optionalTextDocument = documents.get(uri);
         if (!optionalTextDocument) return [];
         const textDocument = optionalTextDocument;
         const [ docSetting, dictionary ] = await getSettings(textDocument);
+        if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
+            return [];
+        }
         const { numSuggestions = defaultNumSuggestions } = docSetting;
         const folders = await documentSettings.folders;
         const showAddToWorkspace = folders && folders.length > 1;
