@@ -1,21 +1,32 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 
-import { window, TextEditor, Uri } from 'vscode';
+import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range } from 'vscode';
 import {
-    TextEdit, LanguageClient
+    TextEdit, LanguageClient,
 } from 'vscode-languageclient';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
 
 export function handlerApplyTextEdits(client: LanguageClient) {
-    return function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
+    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
+
         const textEditor = window.activeTextEditor;
         if (textEditor && textEditor.document.uri.toString() === uri) {
             if (textEditor.document.version !== documentVersion) {
                 window.showInformationMessage(`Spelling changes are outdated and cannot be applied to the document.`);
             }
+            const cfg = workspace.getConfiguration(CSpellSettings.sectionCSpell);
+            if (cfg.get('fixSpellingWithRenameProvider') && edits.length === 1) {
+                console.log('fixSpellingWithRenameProvider Enabled');
+                const edit = edits[0];
+                const range = client.protocol2CodeConverter.asRange(edit.range);
+                if (await attemptRename(textEditor.document, range, edit.newText)) {
+                    return;
+                }
+            }
+
             textEditor.edit(mutator => {
                 for (const edit of edits) {
                     mutator.replace(client.protocol2CodeConverter.asRange(edit.range), edit.newText);
@@ -27,6 +38,31 @@ export function handlerApplyTextEdits(client: LanguageClient) {
             });
         }
     };
+}
+
+async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean | undefined> {
+    if (range.start.line !== range.end.line) {
+        return false;
+    }
+    const wordRange = document.getWordRangeAtPosition(range.start);
+    if (!wordRange || !wordRange.contains(range)) {
+        return false;
+    }
+    const orig = wordRange.start.character;
+    const a = range.start.character - orig;
+    const b = range.end.character - orig;
+    const docText = document.getText(wordRange);
+    const newText = [docText.slice(0, a), text, docText.slice(b)].join('');
+    const workspaceEdit = await commands.executeCommand(
+        'vscode.executeDocumentRenameProvider',
+        document.uri,
+        range.start,
+        newText
+    ).then(
+        a => a as (WorkspaceEdit | undefined),
+        reason => (console.log(reason), undefined)
+    );
+    return workspaceEdit && await workspace.applyEdit(workspaceEdit);
 }
 
 export function addWordToFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {

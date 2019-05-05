@@ -426,6 +426,12 @@
                     "description": "Show Spell Checker actions in Editor Context Menu",
                     "default": true
                 },
+                "cSpell.fixSpellingWithRenameProvider": {
+                    "type": "boolean",
+                    "scope": "application",
+                    "description": "Experimental: Use Rename when fixing spelling issues.",
+                    "default": false
+                },
                 "cSpell.logLevel": {
                     "type": "string",
                     "scope": "window",
