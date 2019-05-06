@@ -3,6 +3,7 @@
 ## [1.7.9]
 - Updated `cspell` and dictionaries.
   - Fixes [Connectedness not recognized · Issue #325](https://github.com/Jason-Rev/vscode-spell-checker/issues/325)
+- Make sure `cspell.json` is updated through the configuration UI settings.
 
 ## [1.7.8]
 - Fix ["No Code Action Available" when using SFTP · Issue #332](https://github.com/Jason-Rev/vscode-spell-checker/issues/332)
