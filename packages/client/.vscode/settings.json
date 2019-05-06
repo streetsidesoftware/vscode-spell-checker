@@ -30,5 +30,14 @@
 		"typescript",
 		"typescriptreact",
 		"yml"
+	],
+	"cSpell.ignoreWords": [
+		"arraylength",
+		"languageclient",
+		"restructuredtext"
+	],
+	"cSpell.language": "en",
+	"cSpell.dictionaries": [
+		"lorem-ipsum"
 	]
 }
