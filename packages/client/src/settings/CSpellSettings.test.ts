@@ -32,7 +32,7 @@ describe('Validate CSpellSettings functions', () => {
 
     test('Validate default settings', () => {
         const defaultSetting = CSS.getDefaultSettings();
-        expect(defaultSetting.words).toHaveLength(0);
+        expect(defaultSetting.words).toBeUndefined();
         expect(defaultSetting.version).toBe('0.1');
     });
 
