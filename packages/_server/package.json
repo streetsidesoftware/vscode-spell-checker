@@ -13,14 +13,14 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.5",
-    "@types/jest": "^24.0.11",
+    "@types/fs-extra": "^5.1.0",
+    "@types/jest": "^24.0.12",
     "@types/jest-diff": "^20.0.1",
     "@types/lorem-ipsum": "^1.0.2",
     "@types/micromatch": "^3.1.0",
-    "@types/node": "^11.13.7",
-    "jest": "^24.7.1",
-    "jest-diff": "^24.7.0",
+    "@types/node": "^11.13.10",
+    "jest": "^24.8.0",
+    "jest-diff": "^24.8.0",
     "lorem-ipsum": "^1.0.6",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "comment-json": "^1.1.3",
-    "cspell": "^3.2.8",
+    "cspell": "^3.2.10",
     "fs-extra": "^7.0.1",
     "gensequence": "^2.1.2",
     "iconv-lite": "^0.4.24",
