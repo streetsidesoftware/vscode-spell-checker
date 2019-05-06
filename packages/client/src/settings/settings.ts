@@ -27,8 +27,6 @@ export const configFileLocations = [
     `.vscode/${baseConfigName.toLowerCase()}`,
 ];
 
-export const findConfig = `.vscode/{${baseConfigName},${baseConfigName.toLowerCase()}}`;
-
 export interface SettingsInfo {
     path: string;
     settings: CSpellUserSettings;
@@ -62,7 +60,7 @@ export function getDefaultWorkspaceConfigLocation() {
         && workspaceFolders[0]
         && workspaceFolders[0].uri.fsPath;
     return root
-        ? path.join(root, '.vscode', baseConfigName)
+        ? path.join(root, baseConfigName)
         : undefined;
 }
 
@@ -208,11 +206,11 @@ export function disableCurrentLanguage(): Thenable<void> {
 
 
 export async function enableLocal(target: config.ConfigTarget, local: string) {
-    await enableLocalForTarget(local, true, target, false);
+    await enableLocalForTarget(local, true, target, true);
 }
 
 export async function disableLocal(target: config.ConfigTarget, local: string) {
-    await enableLocalForTarget(local, false, target, false);
+    await enableLocalForTarget(local, false, target, true);
 }
 
 export function enableLocalForTarget(
@@ -303,6 +301,16 @@ function shouldUpdateCSpell(target: config.ConfigTarget) {
 
 }
 
+/**
+ * Update Config Settings.
+ * Writes to both the VS Config and the `cspell.json` if it exists.
+ * If a `cspell.json` exists, it will be preferred over the VS Code config setting.
+ * @param section the configuration value to set/update.
+ * @param target the configuration level (Global, Workspace, WorkspaceFolder)
+ * @param applyFn the function to calculate the new value.
+ * @param create if the setting does not exist, then create it.
+ * @param updateCSpell update the cspell.json file if it exists.
+ */
 export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     section: K,
     target: config.ConfigTarget,
@@ -314,9 +322,12 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
         value: CSpellUserSettings[K] | undefined,
     }
 
+    const scope = config.configTargetToScope(target);
+    const orig = config.findScopedSettingFromVSConfig(section, scope);
+    const uri = config.isConfigTargetWithOptionalResource(target) && target.uri || undefined;
+    const settingsFilename = updateCSpell && !config.isGlobalLevelTarget(target) && await findExistingSettingsFileLocation(uri) || undefined;
+
     async function updateConfig(): Promise<false | Result> {
-        const scope = config.configTargetToScope(target);
-        const orig = config.findScopedSettingFromVSConfig(section, scope);
         if (create || orig.value !== undefined && orig.scope === config.extractScope(scope)) {
             const newValue = applyFn(orig.value);
             await config.setSettingInVSConfig(section, newValue, target);
@@ -325,31 +336,26 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
         return false;
     }
 
-    async function updateCSpellFile(defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
-        if (updateCSpell && !config.isGlobalLevelTarget(target)) {
-            const settingsFilename = await findExistingSettingsFileLocation(
-                config.isConfigTargetWithOptionalResource(target) && target.uri || undefined
-            );
-            if (settingsFilename) {
-                await CSpellSettings.readApplyUpdateSettingsFile(settingsFilename, settings => {
-                    const v = settings[section];
-                    const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
-                    const newSettings = {...settings };
-                    if (newValue === undefined) {
-                        delete newSettings[section];
-                    } else {
-                        newSettings[section] = newValue;
-                    }
-                    return newSettings;
-                });
-                return true;
-            }
+    async function updateCSpellFile(settingsFilename: string | undefined, defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
+        if (settingsFilename) {
+            await CSpellSettings.readApplyUpdateSettingsFile(settingsFilename, settings => {
+                const v = settings[section];
+                const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
+                const newSettings = {...settings };
+                if (newValue === undefined) {
+                    delete newSettings[section];
+                } else {
+                    newSettings[section] = newValue;
+                }
+                return newSettings;
+            });
+            return true;
         }
         return false;
     }
 
     const configResult = await updateConfig();
-    const cspellResult = await updateCSpellFile(configResult === false ? undefined : configResult.value);
+    const cspellResult = await updateCSpellFile(settingsFilename, orig.value);
 
     return [
         !!configResult,
