@@ -119,6 +119,18 @@ export function getScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>
     subSection: K,
     scope: InspectScope,
 ): CSpellUserSettings[K] | undefined {
+    return findScopedSettingFromVSConfig(subSection, scope).value;
+}
+
+/**
+ * Inspect a scoped setting. It will not merge values.
+ * @param subSection the cspell section
+ * @param scope the scope of the value. A resource is needed to get folder level settings.
+ */
+export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
+    subSection: K,
+    scope: InspectScope,
+): FindBestConfigResult<K> {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
     return findBestConfig(ins, scope.scope);
@@ -172,6 +184,10 @@ function toAny(value: any): any {
     return value;
 }
 
+export function isGlobalLevelTarget(target: ConfigTarget) {
+    return isConfigTargetWithOptionalResource(target) && target.target === Target.Global || target === Target.Global;
+}
+
 export function isFolderLevelTarget(target: ConfigTarget) {
     return isConfigTargetWithResource(target) && target.target === Target.WorkspaceFolder;
 }
@@ -213,6 +229,13 @@ export function toScope(target: Target): Scope {
     return targetToScope.get(target)!;
 }
 
+export function extractScope(inspectScope: InspectScope): Scope {
+    if (isFullInspectScope(inspectScope)) {
+        return inspectScope.scope;
+    }
+    return inspectScope;
+}
+
 function isFullInspectScope(scope: InspectScope): scope is FullInspectScope {
     return typeof scope === 'object';
 }
@@ -235,18 +258,23 @@ function normalizeResourceUri(uri: Uri | null | undefined): Uri | null {
     return null;
 }
 
+export interface FindBestConfigResult<K extends keyof CSpellUserSettings> {
+    scope: Scope;
+    value: CSpellUserSettings[K];
+}
+
 function findBestConfig<K extends keyof CSpellUserSettings>(
     config: Inspect<CSpellUserSettings[K]>,
     scope: Scope,
-): CSpellUserSettings[K] | undefined {
+): FindBestConfigResult<K>{
     for (let p = scopeToOrderIndex.get(scope)!; p >= 0; p -= 1) {
         const k = scopeOrder[p];
         const v = config[k];
         if (v !== undefined) {
-            return v;
+            return { scope: k, value: v };
         }
     }
-    return undefined;
+    return { scope: 'defaultValue', value: undefined };
 }
 
 export function isGlobalTarget(target: ConfigTarget): boolean {

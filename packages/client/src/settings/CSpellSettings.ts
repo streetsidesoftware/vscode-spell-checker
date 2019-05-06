@@ -16,8 +16,6 @@ export interface CSpellSettings extends CSpellUserSettingsWithComments {
 // cSpell:ignore hte
 const defaultSettings: CSpellUserSettingsWithComments = {
     version: currentSettingsFileVersion,
-    language: 'en',
-    words: [],
 };
 
 // cSpell:ignore hte
@@ -145,7 +143,7 @@ export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languag
     );
 }
 
-async function readApplyUpdateSettingsFile(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
+export async function readApplyUpdateSettingsFile(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
     const settings = await readSettings(filename);
     const newSettings = action(settings);
     return updateSettings(filename, newSettings);

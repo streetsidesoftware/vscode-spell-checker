@@ -19,7 +19,6 @@ performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './config';
 
-
 export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileLocations = [
     baseConfigName,
@@ -128,77 +127,54 @@ export function getEnabledLanguagesFromConfig(scope: InspectScope) {
     return config.getScopedSettingFromVSConfig('enabledLanguageIds', scope) || [];
 }
 
-export async function enableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Promise<string[]> {
-    const scope = config.configTargetToScope(target);
-    const langs = unique([languageId, ...getEnabledLanguagesFromConfig(scope)]).sort();
-    await config.setSettingInVSConfig('enabledLanguageIds', langs, target);
-    return langs;
-}
-
-export async function disableLanguageIdInConfig(target: config.ConfigTarget, languageId: string): Promise<string[]> {
-    const scope = config.configTargetToScope(target);
-    const langs = getEnabledLanguagesFromConfig(scope).filter(a => a !== languageId).sort();
-    await config.setSettingInVSConfig('enabledLanguageIds', langs, target);
-    return langs;
-}
-
 /**
  * @description Enable a programming language
  * @param target - which level of setting to set
  * @param languageId - the language id, e.g. 'typescript'
  */
 export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    const p: Promise<any>[] = [];
-    const updateFile = config.isFolderLevelTarget(target);
-    if (config.isConfigTargetWithResource(target) && updateFile) {
-        // Write to the cspell settings file first if it exists.
-        const settingsFilename = await findExistingSettingsFileLocation(target.uri);
-        settingsFilename && p.push(CSpellSettings.writeAddLanguageIdsToSettings(settingsFilename, [languageId], true));
-    }
-    p.push(enableLanguageIdInConfig(target, languageId));
-    await Promise.all(p);
+    await enableLanguageIdForTarget(languageId, true, target, true);
 }
 
 export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    const p: Promise<any>[] = [];
-    const updateFile = config.isFolderLevelTarget(target);
-    if (config.isConfigTargetWithResource(target) && updateFile) {
-        // Write to the cspell settings file first if it exists.
-        const settingsFilename = await findExistingSettingsFileLocation(target.uri);
-        settingsFilename && p.push(CSpellSettings.removeLanguageIdsFromSettingsAndUpdate(settingsFilename, [languageId]));
-    }
-    p.push(disableLanguageIdInConfig(target, languageId));
-    await Promise.all(p);
+    await enableLanguageIdForTarget(languageId, false, target, true);
 }
 
-export function addWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {
+export function addWordToSettings(target: config.ConfigTarget, word: string) {
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    target = useGlobal ? config.ConfigurationTarget.Global : target;
+    const addWords = word.split(' ');
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
-    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
+    return updateSettingInConfig(
+        section,
+        target,
+        words => unique(addWords.concat(words || []).sort()),
+        true
+    );
 }
 
-export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Thenable<void> {
-    const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    target = useGlobal ? config.ConfigurationTarget.Global : target;
-    const section = 'ignoreWords';
-    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
-    return config.setSettingInVSConfig(section, unique(words.concat(word.split(' ')).sort()), target);
+export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string) {
+    const addWords = word.split(' ');
+    return updateSettingInConfig(
+        'ignoreWords',
+        target,
+        words => unique(addWords.concat(words || []).sort()),
+        true
+    );
 }
 
-export function removeWordFromSettings(target: config.ConfigTarget, word: string): Thenable<void> {
+export async function removeWordFromSettings(target: config.ConfigTarget, word: string) {
     const useGlobal = config.isGlobalTarget(target);
-    if (!useGlobal && !hasWorkspaceLocation()) {
-        return Promise.resolve();
-    }
-    target = useGlobal ? config.ConfigurationTarget.Global : target;
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const toRemove = word.split(' ');
-    const words = config.inspectScopedSettingFromVSConfig(section, config.configTargetToScope(target)) || [];
-    const wordsFiltered = CSpellSettings.filterOutWords(words, toRemove);
-    return config.setSettingInVSConfig(section, wordsFiltered, target);
+    return updateSettingInConfig(
+        section,
+        target,
+        words => CSpellSettings.filterOutWords(words || [], toRemove),
+        true
+    );
 }
+
+
 
 export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
     const resource = config.isConfigTargetWithResource(target) ? target.uri : null;
@@ -231,58 +207,51 @@ export function disableCurrentLanguage(): Thenable<void> {
 }
 
 
-export function enableLocal(target: config.ConfigTarget, local: string) {
-    const scope = config.configTargetToScope(target);
-    const currentLanguage = config.getScopedSettingFromVSConfig(
-        'language',
-        scope,
-    ) || '';
-    const languages = currentLanguage.split(',')
-        .concat(local.split(','))
-        .map(a => a.trim())
-        .filter(uniqueFilter())
-        .join(',');
-    return config.setSettingInVSConfig('language', languages, target);
+export async function enableLocal(target: config.ConfigTarget, local: string) {
+    await enableLocalForTarget(local, true, target, false);
 }
 
-export function disableLocal(target: config.ConfigTarget, local: string) {
-    const scope = config.configTargetToScope(target);
-    local = normalizeLocal(local);
-    const currentLanguage = config.inspectScopedSettingFromVSConfig(
-        'language',
-        scope,
-    ) || '';
-    const languages = normalizeLocal(currentLanguage)
-        .split(',')
-        .filter(lang => lang !== local)
-        .join(',') || undefined;
-    return config.setSettingInVSConfig('language', languages, target);
+export async function disableLocal(target: config.ConfigTarget, local: string) {
+    await enableLocalForTarget(local, false, target, false);
 }
 
-export function overrideLocal(enable: boolean, target: config.ConfigTarget) {
-    const inspectLang = config.getScopedSettingFromVSConfig(
+export function enableLocalForTarget(
+    local: string,
+    enable: boolean,
+    target: config.ConfigTarget,
+    isCreateAllowed: boolean
+): Promise<boolean> {
+    const applyFn: (src: string | undefined) => string | undefined = enable
+        ? (currentLanguage) => unique(normalizeLocal(currentLanguage).split(',').concat(local.split(','))).join(',')
+        : (currentLanguage) => unique(normalizeLocal(currentLanguage).split(',')).filter(lang => lang !== local).join(',');
+    return updateSettingInConfig(
         'language',
-        config.configTargetToScope(target)
+        target,
+        applyFn,
+        isCreateAllowed,
+        shouldUpdateCSpell(target)
     );
-
-    const lang = (enable && inspectLang) || undefined;
-
-    return config.setSettingInVSConfig('language', lang, target);
 }
 
-export async function enableLanguageIdForTarget(
+export function enableLanguageIdForTarget(
     languageId: string,
     enable: boolean,
     target: config.ConfigTarget,
     isCreateAllowed: boolean
 ): Promise<boolean> {
-    const apply = enable ? enableLanguage : disableLanguage;
-    const scope = config.configTargetToScope(target);
-    if (isCreateAllowed || getEnabledLanguagesFromConfig(scope)) {
-        await apply(target, languageId);
-        return true;
-    }
-    return false;
+    const fn: (src: string[] | undefined) => string[] | undefined = enable
+        ? (src) => unique([languageId].concat(src || [])).sort()
+        : (src) => {
+            const v = src && unique(src.filter(v => v !== languageId)).sort();
+            return v && v.length > 0 && v || undefined;
+        };
+    return updateSettingInConfig(
+        'enabledLanguageIds',
+        target,
+        fn,
+        isCreateAllowed,
+        shouldUpdateCSpell(target)
+    );
 }
 
 /**
@@ -319,6 +288,73 @@ export async function enableLanguageIdForClosestTarget(
     return;
 }
 
+/**
+ * Determine if we should update the cspell file if it exists.
+ * 1. Update is allowed for WorkspaceFolders
+ * 1. Update is allowed for Workspace if there is only 1 folder.
+ * 1. Update is not allowed for the Global target.
+ * @param target
+ */
+function shouldUpdateCSpell(target: config.ConfigTarget) {
+    const cfgTarget = config.extractTarget(target);
+    return cfgTarget !== config.Target.Global
+        && workspace.workspaceFolders
+        && (cfgTarget === config.Target.WorkspaceFolder || workspace.workspaceFolders.length === 1);
 
+}
+
+export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
+    section: K,
+    target: config.ConfigTarget,
+    applyFn: (origValue: CSpellUserSettings[K]) => CSpellUserSettings[K],
+    create: boolean,
+    updateCSpell: boolean = true
+): Promise<boolean> {
+    interface Result {
+        value: CSpellUserSettings[K] | undefined,
+    }
+
+    async function updateConfig(): Promise<false | Result> {
+        const scope = config.configTargetToScope(target);
+        const orig = config.findScopedSettingFromVSConfig(section, scope);
+        if (create || orig.value !== undefined && orig.scope === config.extractScope(scope)) {
+            const newValue = applyFn(orig.value);
+            await config.setSettingInVSConfig(section, newValue, target);
+            return { value: newValue };
+        }
+        return false;
+    }
+
+    async function updateCSpellFile(defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
+        if (updateCSpell && !config.isGlobalLevelTarget(target)) {
+            const settingsFilename = await findExistingSettingsFileLocation(
+                config.isConfigTargetWithOptionalResource(target) && target.uri || undefined
+            );
+            if (settingsFilename) {
+                await CSpellSettings.readApplyUpdateSettingsFile(settingsFilename, settings => {
+                    const v = settings[section];
+                    const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
+                    const newSettings = {...settings };
+                    if (newValue === undefined) {
+                        delete newSettings[section];
+                    } else {
+                        newSettings[section] = newValue;
+                    }
+                    return newSettings;
+                });
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const configResult = await updateConfig();
+    const cspellResult = await updateCSpellFile(configResult === false ? undefined : configResult.value);
+
+    return [
+        !!configResult,
+        cspellResult
+    ].reduce((a, b) => a || b, false);
+}
 
 performance.mark('settings.ts done');
