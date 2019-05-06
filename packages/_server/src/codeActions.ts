@@ -49,9 +49,9 @@ export function onCodeActionHandler(
 
     async function getSettings(doc: TextDocument): Promise<[CSpellUserSettings, SpellingDictionary]> {
         const cached = settingsCache.get(doc.uri);
-        if (!cached || cached.docVersion !== doc.version) {
+        const settingsVersion = fnSettingsVersion(doc);
+        if (!cached || cached.docVersion !== doc.version || cached.settingsVersion !== settingsVersion) {
             const settings = constructSettings(doc);
-            const settingsVersion = fnSettingsVersion(doc);
             settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
         }
         return settingsCache.get(doc.uri)!.settings;
