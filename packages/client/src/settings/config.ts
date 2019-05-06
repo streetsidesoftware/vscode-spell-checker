@@ -56,7 +56,7 @@ export interface FullInspectScope {
 
 export type InspectScope = FullInspectScope | ScopeResourceFree;
 
-const folderSettings = new Map<string, CSpellUserSettings>();
+const cachedSettings = new Map<string, CSpellUserSettings>();
 
 /**
  * ScopeOrder from general to specific.
@@ -148,7 +148,7 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     const uri = extractTargetUri(configTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
-    updateFolderSettings(configTarget, subSection, value);
+    updateCachedSettings(configTarget, subSection, value);
     return config.update(section, value, target);
 }
 
@@ -283,20 +283,20 @@ function fetchConfiguration(uri?: Uri | null) {
     return workspace.getConfiguration(undefined, toAny(uri));
 }
 
-function updateFolderSettings<T extends keyof CSpellUserSettings>(
+function updateCachedSettings<T extends keyof CSpellUserSettings>(
     target: ConfigTarget,
     section: T,
     value: CSpellUserSettings[T]
 ) {
     const key = targetToFolderSettingsKey(target);
-    const s: CSpellUserSettings = folderSettings.get(key) || {};
+    const s: CSpellUserSettings = cachedSettings.get(key) || {};
     s[section] = value;
-    folderSettings.set(key, s);
+    cachedSettings.set(key, s);
 }
 
 function getFolderSettingsForScope(scope: InspectScope) {
     const key = scopeToFolderSettingsKey(scope);
-    return folderSettings.get(key) || {};
+    return cachedSettings.get(key) || {};
 }
 
 function targetToFolderSettingsKey(target: ConfigTarget) {
@@ -312,14 +312,14 @@ function scopeToFolderSettingsKey(scope: InspectScope) {
 
 workspace.onDidChangeConfiguration(event => {
     if (event.affectsConfiguration(sectionCSpell)) {
-        folderSettings.delete(scopeToFolderSettingsKey(Scopes.Global));
-        folderSettings.delete(scopeToFolderSettingsKey(Scopes.Workspace));
+        cachedSettings.delete(scopeToFolderSettingsKey(Scopes.Global));
+        cachedSettings.delete(scopeToFolderSettingsKey(Scopes.Workspace));
     }
     if (workspace.workspaceFolders) {
         workspace.workspaceFolders.forEach(folder => {
             if (event.affectsConfiguration(sectionCSpell, folder.uri)) {
                 const key = scopeToFolderSettingsKey({ scope: Scopes.Folder, resource: folder.uri });
-                folderSettings.delete(key);
+                cachedSettings.delete(key);
             }
         });
     }
