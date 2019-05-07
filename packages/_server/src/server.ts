@@ -32,11 +32,11 @@ import {
 
 log('Starting Spell Checker Server');
 
-const methodNames: Api.RequestMethodConstants = {
-    isSpellCheckEnabled: 'isSpellCheckEnabled',
-    getConfigurationForDocument: 'getConfigurationForDocument',
-    splitTextIntoWords: 'splitTextIntoWords',
-};
+type RequestResult<T> = T | Promise<T>;
+
+type RequestMethodApi = {
+    [key in keyof Api.ServerMethodRequestResult]: (param: Api.ServerRequestMethodRequests[key]) => RequestResult<Api.ServerRequestMethodResults[key]>;
+}
 
 const notifyMethodNames: Api.NotifyServerMethodConstants = {
     onConfigChange: 'onConfigChange',
@@ -63,6 +63,13 @@ function run() {
     const triggerValidateAll = new ReplaySubject<void>(1);
     const validationByDoc = new Map<string, Subscription>();
     let isValidationBusy = false;
+
+    const requestMethodApi: RequestMethodApi = {
+        isSpellCheckEnabled: handleIsSpellCheckEnabled,
+        getConfigurationForDocument: handleGetConfigurationForDocument,
+        splitTextIntoWords: handleSplitTextIntoWords,
+        spellingSuggestions: handleSpellingSuggestions,
+    }
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
@@ -127,7 +134,7 @@ function run() {
     connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
     connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
 
-    connection.onRequest(methodNames.isSpellCheckEnabled, async (params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> => {
+    async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         const { uri, languageId } = params;
         const fileEnabled = uri ? !await isUriExcluded(uri) : undefined;
         const settings = await getActiveUriSettings(uri);
@@ -135,9 +142,9 @@ function run() {
             languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined,
             fileEnabled,
         };
-    });
+    }
 
-    connection.onRequest(methodNames.getConfigurationForDocument, async (params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> => {
+    async function handleGetConfigurationForDocument(params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
         const docSettings = doc && await getSettingsToUseForDocument(doc) || undefined;
@@ -148,7 +155,8 @@ function run() {
             settings,
             docSettings,
         };
-    });
+    }
+
 
     function textToWords(text: string): string[] {
         const setOfWords = new Set(
@@ -159,10 +167,18 @@ function run() {
         return [...setOfWords];
     }
 
-    connection.onRequest(methodNames.splitTextIntoWords, (text: string): Api.SplitTextIntoWordsResult => {
+    function handleSplitTextIntoWords(text: string): Api.SplitTextIntoWordsResult {
         return {
             words: textToWords(text),
         };
+    }
+
+    async function handleSpellingSuggestions(params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
+        return {};
+    }
+
+    Object.entries(requestMethodApi).forEach(([name, fn]) => {
+        connection.onRequest(name, fn);
     });
 
     interface DocSettingPair {
@@ -339,14 +355,4 @@ function run() {
     }
 }
 
-function isLookbackSupported() {
-    try {
-        return /(?<=\s)x/.test(' x');
-    } catch (e) {
-        log('Error: ' + e);
-    }
-    return false;
-}
-
-log(`Lookback: ${isLookbackSupported() ? 'Yes' : 'No'}`);
 run();

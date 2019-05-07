@@ -8,9 +8,10 @@ import * as vscode from 'vscode';
 import {
     GetConfigurationForDocumentResult,
     NotifyServerMethods,
-    RequestMethods,
-    RequestMethodConstants,
+    ServerRequestMethodResults,
+    ServerRequestMethodConstants,
     SplitTextIntoWordsResult,
+    ServerRequestMethodRequests,
 } from '../server';
 import * as Settings from '../settings';
 
@@ -27,10 +28,11 @@ export interface ServerResponseIsSpellCheckEnabled {
     fileEnabled?: boolean;
 }
 
-const methodNames: RequestMethodConstants = {
+const methodNames: ServerRequestMethodConstants = {
     isSpellCheckEnabled: 'isSpellCheckEnabled',
     getConfigurationForDocument: 'getConfigurationForDocument',
     splitTextIntoWords: 'splitTextIntoWords',
+    spellingSuggestions: 'spellingSuggestions',
 };
 
 const defaultGetConfigurationForDocumentResult: GetConfigurationForDocumentResult = {
@@ -104,29 +106,29 @@ export class CSpellClient {
         return this.client.start();
     }
 
-    public isSpellCheckEnabled(document: vscode.TextDocument): Thenable<ServerResponseIsSpellCheckEnabled> {
+    public async isSpellCheckEnabled(document: vscode.TextDocument): Promise<ServerResponseIsSpellCheckEnabled> {
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return Promise.resolve({});
+            return {};
         }
-
-        return this.client.onReady().then(() => this.sendRequest(
+        await this.client.onReady();
+        const response = (await this.sendRequest(
             methodNames.isSpellCheckEnabled,
             { uri: uri.toString(), languageId }
-        ))
-        .then((response: ServerResponseIsSpellCheckEnabled) => response);
+        )) as ServerResponseIsSpellCheckEnabled;
+        return response;
     }
 
     public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
         if (!document) {
-            return (await this.sendRequest(methodNames.getConfigurationForDocument, {})) as GetConfigurationForDocumentResult;
+            return (await this.sendRequest(methodNames.getConfigurationForDocument, {}));
         }
 
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return (await this.sendRequest(methodNames.getConfigurationForDocument, {})) as GetConfigurationForDocumentResult;
+            return (await this.sendRequest(methodNames.getConfigurationForDocument, {}));
         }
 
         await this.client.onReady();
@@ -136,7 +138,7 @@ export class CSpellClient {
             { uri: uri.toString(), languageId }
         );
 
-        return result as GetConfigurationForDocumentResult;
+        return result;
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
@@ -162,7 +164,7 @@ export class CSpellClient {
         return this.notifySettingsChanged();
     }
 
-    private sendRequest(method: RequestMethods, param?: any) {
+    private sendRequest<K extends keyof ServerRequestMethodRequests>(method: K, param: ServerRequestMethodRequests[K]): Thenable<ServerRequestMethodResults[K]> {
         return this.client.sendRequest(method, param);
     }
 
