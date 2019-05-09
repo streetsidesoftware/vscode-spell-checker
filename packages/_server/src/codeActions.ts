@@ -14,6 +14,7 @@ import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
 import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
+import { SuggestionGenerator } from './SuggestionsGenerator';
 
 const defaultNumSuggestions = 10;
 
@@ -106,7 +107,7 @@ export function onCodeActionHandler(
             return action;
         }
 
-        function genSuggestions(dictionary: SpellingDictionary) {
+        function genCodeActionsForSuggestions(dictionary: SpellingDictionary) {
             const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
@@ -165,7 +166,7 @@ export function onCodeActionHandler(
             return actions;
         }
 
-        return genSuggestions(dictionary);
+        return genCodeActionsForSuggestions(dictionary);
     };
 
     return handler;

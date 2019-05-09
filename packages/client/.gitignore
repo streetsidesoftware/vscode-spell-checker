@@ -1,6 +1,8 @@
 out
+coverage/*
 server/*
 settingsViewer/*
 node_modules
 temp
 *.vsix
+*.cpuprofile

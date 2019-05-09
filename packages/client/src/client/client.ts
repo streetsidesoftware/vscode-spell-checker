@@ -112,7 +112,6 @@ export class CSpellClient {
         if (!uri || !languageId) {
             return {};
         }
-        await this.client.onReady();
         const response = (await this.sendRequest(
             methodNames.isSpellCheckEnabled,
             { uri: uri.toString(), languageId }
@@ -131,8 +130,6 @@ export class CSpellClient {
             return (await this.sendRequest(methodNames.getConfigurationForDocument, {}));
         }
 
-        await this.client.onReady();
-
         const result = await this.sendRequest(
             methodNames.getConfigurationForDocument,
             { uri: uri.toString(), languageId }
@@ -142,10 +139,15 @@ export class CSpellClient {
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
-        return this.client.onReady().then(() => this.sendRequest(
+        return this.sendRequest(
             methodNames.splitTextIntoWords,
             text
-        ));
+        );
+    }
+
+    public async fetchSpellingSuggestions(text: string, languageId: string | undefined, document: vscode.TextDocument | undefined) {
+        await this.client.onReady();
+        return; //  this.sendRequest();
     }
 
     public notifySettingsChanged() {
@@ -164,7 +166,8 @@ export class CSpellClient {
         return this.notifySettingsChanged();
     }
 
-    private sendRequest<K extends keyof ServerRequestMethodRequests>(method: K, param: ServerRequestMethodRequests[K]): Thenable<ServerRequestMethodResults[K]> {
+    private async sendRequest<K extends keyof ServerRequestMethodRequests>(method: K, param: ServerRequestMethodRequests[K]): Promise<ServerRequestMethodResults[K]> {
+        await this.client.onReady();
         return this.client.sendRequest(method, param);
     }
 
