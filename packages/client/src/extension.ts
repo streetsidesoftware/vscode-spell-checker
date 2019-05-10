@@ -25,23 +25,9 @@ import * as commands from './commands';
 performance.mark('import 10');
 
 import * as settingsViewer from './infoViewer/infoView';
+import { ExtensionApi } from './extensionApi';
 
 performance.mark('cspell_done_import');
-
-export interface ExtensionApi {
-    registerConfig(path: string): void;
-    triggerGetSettings(): void;
-    enableLanguageId(languageId: string, uri?: string): Thenable<void>;
-    disableLanguageId(languageId: string, uri?: string): Thenable<void>;
-    enableCurrentLanguage(): Thenable<void>;
-    disableCurrentLanguage(): Thenable<void>;
-    addWordToUserDictionary(word: string): Thenable<void>;
-    addWordToWorkspaceDictionary(word: string, uri?: string | null | vscode.Uri): Thenable<void>;
-    enableLocal(target: ConfigTarget, local: string): Thenable<void>;
-    disableLocal(target: ConfigTarget, local: string): Thenable<void>;
-    updateSettings(): boolean;
-    cSpellClient(): CSpellClient;
-}
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');

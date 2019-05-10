@@ -10,7 +10,8 @@ module.exports = {
     testRegex: "\\.(test|spec|perf)\\.tsx?$",
     testPathIgnorePatterns: [
         "/node_modules/",
-        "<rootDir>/src/test"
+        "<rootDir>/src/test",
+        "<rootDir>/integrationTests"
     ],
     moduleFileExtensions: [
         "ts",

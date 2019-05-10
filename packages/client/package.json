@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.7.9",
+    "version": "1.7.10",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -33,7 +33,7 @@
     "activationEvents": [
         "*"
     ],
-    "main": "./out/extension",
+    "main": "./dist/extension",
     "contributes": {
         "menus": {
             "editor/context": [
@@ -463,13 +463,16 @@
     "scripts": {
         "clean": "rimraf out",
         "clean-build": "npm run clean && npm run build",
-        "build": "tsc -p ./",
-        "vscode:prepublish": "npm run clean-build",
-        "watch": "tsc -watch -p ./",
+        "build": "webpack --mode none",
+        "build-production": "webpack --mode production",
+        "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
+        "vscode:prepublish": "npm run clean && npm run build-production",
+        "watch": "npm run build -- watch",
         "test": "jest",
-        "test-integration": "node ./node_modules/vscode/bin/test",
+        "test-integrationX": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=/Users/jason/projects/vscode-spell-checker/packages/client/../_integrationTests/out CODE_TESTS_DATA_DIR=/Users/jason/projects/vscode-spell-checker/packages/client/temp node ./node_modules/vscode/bin/test",
+        "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
         "test-watch": "jest --watch",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+        "postinstall": "vscode-install"
     },
     "devDependencies": {
         "@types/comment-json": "^1.1.1",
@@ -478,14 +481,18 @@
         "@types/kefir": "^3.8.1",
         "@types/node": "^11.13.6",
         "@types/source-map-support": "^0.4.2",
+        "cross-env": "^5.2.0",
         "jest": "^24.7.1",
         "jest-diff": "^24.7.0",
         "lorem-ipsum": "^1.0.6",
         "rimraf": "^2.6.3",
         "source-map-support": "^0.5.12",
         "ts-jest": "^24.0.2",
+        "ts-loader": "^6.0.0",
         "typescript": "^3.4.4",
-        "vscode": "^1.1.33"
+        "vscode": "^1.1.33",
+        "webpack": "^4.31.0",
+        "webpack-cli": "^3.3.2"
     },
     "dependencies": {
         "comment-json": "^1.1.3",

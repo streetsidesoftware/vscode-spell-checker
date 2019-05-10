@@ -14,6 +14,12 @@
             "problemMatcher":"$tsc"
         },
         {
+            "label": "build-integration-test",
+            "type": "npm",
+            "script": "build-integration-test",
+            "problemMatcher":"$tsc"
+        },
+        {
             "label": "test",
             "type": "npm",
             "script": "test",

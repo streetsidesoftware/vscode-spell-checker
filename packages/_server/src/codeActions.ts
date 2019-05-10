@@ -14,7 +14,7 @@ import { SpellingDictionary } from 'cspell';
 import * as cspell from 'cspell';
 import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
-import { SuggestionGenerator } from './SuggestionsGenerator';
+// import { SuggestionGenerator } from './SuggestionsGenerator';
 
 const defaultNumSuggestions = 10;
 

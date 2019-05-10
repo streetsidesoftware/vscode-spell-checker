@@ -1,0 +1,27 @@
+{
+  "name": "vscode-spell-checker-integration-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for the spell checker extension",
+  "private": true,
+  "main": "out/index.js",
+  "engines": {
+    "vscode": "^1.33.1"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../client CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
+    "postinstall": "vscode-install"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^12.0.0",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mocha": "^6.1.4",
+    "typescript": "^3.4.5",
+    "vscode": "^1.1.34"
+  }
+}
