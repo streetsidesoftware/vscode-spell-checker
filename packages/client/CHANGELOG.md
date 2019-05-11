@@ -1,5 +1,10 @@
 # Release Notes
 
+## [1.7.10]
+- Bundle the VS Code side of the extension in to a single `.js` file. This should address:
+  - [Extension causes high cpu load · Issue #309](https://github.com/Jason-Rev/vscode-spell-checker/issues/309)
+  - [Extension causes high cpu load · Issue #339](https://github.com/Jason-Rev/vscode-spell-checker/issues/339)
+
 ## [1.7.9]
 - Updated `cspell` and dictionaries.
   - Fixes [Connectedness not recognized · Issue #325](https://github.com/Jason-Rev/vscode-spell-checker/issues/325)
