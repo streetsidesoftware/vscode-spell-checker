@@ -6,6 +6,7 @@
     "language": "en-US",
     // words - list of words to be always considered correct
     "words": [
+        "lerna"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
@@ -20,7 +21,9 @@
             "path": "./sampleDictionaries/cities.txt"
         }
     ],
-    "dictionaries": ["cities"],
+    "dictionaries": [
+        "cities"
+    ],
     "languageSettings": [
         {
             "languageId": "*",

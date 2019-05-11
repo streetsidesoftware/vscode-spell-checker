@@ -5200,9 +5200,9 @@
       "dev": true
     },
     "rxjs": {
-      "version": "6.5.1",
-      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-6.5.1.tgz",
-      "integrity": "sha512-y0j31WJc83wPu31vS1VlAFW5JGrnGC+j+TtGAa1fRQphy48+fDYiDmX8tjGloToEsMkxnouOg/1IzXGKkJnZMg==",
+      "version": "6.5.2",
+      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-6.5.2.tgz",
+      "integrity": "sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==",
       "requires": {
         "tslib": "^1.9.0"
       }
@@ -6049,12 +6049,12 @@
       "dev": true
     },
     "url-parse": {
-      "version": "1.4.4",
-      "resolved": "https://registry.npmjs.org/url-parse/-/url-parse-1.4.4.tgz",
-      "integrity": "sha512-/92DTTorg4JjktLNLe6GPS2/RvAd/RGr6LuktmWSMLEOa6rjnlrFXNgSbSmkNvCoL2T028A0a1JaJLzRMlFoHg==",
+      "version": "1.4.7",
+      "resolved": "https://registry.npmjs.org/url-parse/-/url-parse-1.4.7.tgz",
+      "integrity": "sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==",
       "dev": true,
       "requires": {
-        "querystringify": "^2.0.0",
+        "querystringify": "^2.1.1",
         "requires-port": "^1.0.0"
       }
     },
@@ -6108,9 +6108,9 @@
       }
     },
     "vscode": {
-      "version": "1.1.33",
-      "resolved": "https://registry.npmjs.org/vscode/-/vscode-1.1.33.tgz",
-      "integrity": "sha512-sXedp2oF6y4ZvqrrFiZpeMzaCLSWV+PpYkIxjG/iYquNZ9KrLL2LujltGxPLvzn49xu2sZkyC+avVNFgcJD1Iw==",
+      "version": "1.1.34",
+      "resolved": "https://registry.npmjs.org/vscode/-/vscode-1.1.34.tgz",
+      "integrity": "sha512-GuT3tCT2N5Qp26VG4C+iGmWMgg/MuqtY5G5TSOT3U/X6pgjM9LFulJEeqpyf6gdzpI4VyU3ZN/lWPo54UFPuQg==",
       "dev": true,
       "requires": {
         "glob": "^7.1.2",
@@ -6119,7 +6119,7 @@
         "semver": "^5.4.1",
         "source-map-support": "^0.5.0",
         "url-parse": "^1.4.4",
-        "vscode-test": "^0.1.4"
+        "vscode-test": "^0.4.1"
       }
     },
     "vscode-jsonrpc": {
@@ -6151,9 +6151,9 @@
       "integrity": "sha512-lTmS6AlAlMHOvPQemVwo3CezxBp0sNB95KNPkqp3Nxd5VFEnuG1ByM0zlRWos0zjO3ZWtkvhal0COgiV1xIA4A=="
     },
     "vscode-test": {
-      "version": "0.1.5",
-      "resolved": "https://registry.npmjs.org/vscode-test/-/vscode-test-0.1.5.tgz",
-      "integrity": "sha512-s+lbF1Dtasc0yXVB9iQTexBe2JK6HJAUJe3fWezHKIjq+xRw5ZwCMEMBaonFIPy7s95qg2HPTRDR5W4h4kbxGw==",
+      "version": "0.4.1",
+      "resolved": "https://registry.npmjs.org/vscode-test/-/vscode-test-0.4.1.tgz",
+      "integrity": "sha512-uIi/07uG/gmCbD9Y9bFpNzmk4el82xiclijEdL426A3jOFfvwdqgfmtuWYfxEGo0w6JY9EqVDTGQCXwuInXVTQ==",
       "dev": true,
       "requires": {
         "http-proxy-agent": "^2.1.0",

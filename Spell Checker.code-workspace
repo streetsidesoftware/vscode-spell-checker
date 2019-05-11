@@ -23,6 +23,7 @@
 			"devtool",
 			"devtools",
 			"dict",
+			"lerna",
 			"mobx",
 			"restructuredtext"
 		],
