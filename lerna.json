@@ -2,6 +2,7 @@
   "packages": [
     "packages/_settingsViewer",
     "packages/_server",
+    "packages/_integrationTests",
     "packages/client"
   ],
   "version": "1.6.10"

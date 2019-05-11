@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "packages/_settingsViewer"
+		},
+		{
+			"path": "packages/_integrationTests"
 		}
 	],
 	"settings": {
