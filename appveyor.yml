@@ -3,7 +3,6 @@ environment:
   ELECTRON_RUN_AS_NODE: 1
   matrix:
     # node.js
-    - nodejs_version: "8"
     - nodejs_version: "10"
     # - nodejs_version: "12"
 

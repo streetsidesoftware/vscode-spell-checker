@@ -8,7 +8,6 @@ node_js:
   - "node"
   - "12"
   - "10"
-  - "8"
 
 before_install:
   - if [ $TRAVIS_OS_NAME == "linux" ]; then

@@ -3,6 +3,9 @@
   "version": "1.7.9",
   "description": "Spell checker for VS Code",
   "private": true,
+  "engines": {
+    "node": ">10.0.0"
+  },
   "scripts": {
     "postinstall": "npm run bootstrap && npm run build",
     "bootstrap": "lerna bootstrap",
