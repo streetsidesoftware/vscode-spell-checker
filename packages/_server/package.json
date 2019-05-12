@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jason-Rev/vscode-spell-checker"
+    "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
   "engines": {
     "node": ">=8"

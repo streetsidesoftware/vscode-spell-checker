@@ -9,12 +9,12 @@
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Jason-Rev/vscode-spell-checker"
+        "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
     },
     "bugs": {
-        "url": "https://github.com/Jason-Rev/vscode-spell-checker/issues"
+        "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
     },
-    "homepage": "https://github.com/Jason-Rev/vscode-spell-checker/blob/master/packages/client/README.md",
+    "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
         "vscode": "^1.33.1"
     },
@@ -133,6 +133,7 @@
             {
                 "id": "jsonc",
                 "extensions": [
+                    "cspell-ext.json",
                     "cspell.json",
                     "cSpell.json"
                 ]

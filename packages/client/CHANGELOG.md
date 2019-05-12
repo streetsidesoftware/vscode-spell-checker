@@ -2,71 +2,71 @@
 
 ## [1.7.10]
 - Bundle the VS Code side of the extension in to a single `.js` file. This should address:
-  - [Extension causes high cpu load · Issue #309](https://github.com/Jason-Rev/vscode-spell-checker/issues/309)
-  - [Extension causes high cpu load · Issue #339](https://github.com/Jason-Rev/vscode-spell-checker/issues/339)
+  - [Extension causes high cpu load · Issue #309](https://github.com/streetsidesoftware/vscode-spell-checker/issues/309)
+  - [Extension causes high cpu load · Issue #339](https://github.com/streetsidesoftware/vscode-spell-checker/issues/339)
 
 ## [1.7.9]
 - Updated `cspell` and dictionaries.
-  - Fixes [Connectedness not recognized · Issue #325](https://github.com/Jason-Rev/vscode-spell-checker/issues/325)
+  - Fixes [Connectedness not recognized · Issue #325](https://github.com/streetsidesoftware/vscode-spell-checker/issues/325)
 - Make sure `cspell.json` is updated through the configuration UI settings.
 
 ## [1.7.8]
-- Fix ["No Code Action Available" when using SFTP · Issue #332](https://github.com/Jason-Rev/vscode-spell-checker/issues/332)
+- Fix ["No Code Action Available" when using SFTP · Issue #332](https://github.com/streetsidesoftware/vscode-spell-checker/issues/332)
 - Experiment: have spelling correction use VS Code rename provider. This can be enabled with the following user setting:
   ```
       "cSpell.fixSpellingWithRenameProvider": true
   ```
 
 ## [1.7.7]
-- Fix [Ignore paths not working? · Issue #311](https://github.com/Jason-Rev/vscode-spell-checker/issues/311)
+- Fix [Ignore paths not working? · Issue #311](https://github.com/streetsidesoftware/vscode-spell-checker/issues/311)
 - **Breaking Change:** `cspell.json` settings will take precedence over settings found in VS Code.
   The logic is that a `cspell.json` can be used for CI/CD processing while VS Code settings cannot.
   This is a change from previous version. This only applies if you use `cspell.json` files.
 - Fix an issue where the available dictionaries were not showing up in the configuration screen if a file wasn't selected.
-- Add UI to ignore words -- [Option to ignore words · Issue #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
+- Add UI to ignore words -- [Option to ignore words · Issue #146](https://github.com/streetsidesoftware/vscode-spell-checker/issues/146)
 
 ## [1.7.6]
 - Make the Quick Fix menu and Context menu workspace aware.
-- [Add configuration to hide the right-click menu. · Issue #336](https://github.com/Jason-Rev/vscode-spell-checker/issues/336)
+- [Add configuration to hide the right-click menu. · Issue #336](https://github.com/streetsidesoftware/vscode-spell-checker/issues/336)
 
 ## [1.7.5]
 - Make all spelling suggestions available via the quick-fix menu. Related to
-  [Quick actions stop functioning after clicking result form Problem window · Issue #283](https://github.com/Jason-Rev/vscode-spell-checker/issues/283)
-  and [Feedback on VS Code proposed Code Action Auto Fix APIs · Issue #297](https://github.com/Jason-Rev/vscode-spell-checker/issues/297)
+  [Quick actions stop functioning after clicking result form Problem window · Issue #283](https://github.com/streetsidesoftware/vscode-spell-checker/issues/283)
+  and [Feedback on VS Code proposed Code Action Auto Fix APIs · Issue #297](https://github.com/streetsidesoftware/vscode-spell-checker/issues/297)
 
 ## [1.7.4]
-- Fix [cspell throws error when languageId is missing from languageSettings. · Issue #333](https://github.com/Jason-Rev/vscode-spell-checker/issues/333)
+- Fix [cspell throws error when languageId is missing from languageSettings. · Issue #333](https://github.com/streetsidesoftware/vscode-spell-checker/issues/333)
 
 ## [1.7.2]
-- Fix [1.7.0 no longer reads cSpell.json from root of workspace · Issue #330](https://github.com/Jason-Rev/vscode-spell-checker/issues/330)
+- Fix [1.7.0 no longer reads cSpell.json from root of workspace · Issue #330](https://github.com/streetsidesoftware/vscode-spell-checker/issues/330)
 
 ## [1.7.1]
-- Fix [Change cSpell.enabledLanguageIds `yml` to `yaml` · Issue #322](https://github.com/Jason-Rev/vscode-spell-checker/issues/322)
+- Fix [Change cSpell.enabledLanguageIds `yml` to `yaml` · Issue #322](https://github.com/streetsidesoftware/vscode-spell-checker/issues/322)
 - Update to the latest version of `cspell` to update the dictionaries.
 - Support `java` by default.
 - Reduce the overall size of the extension.
 
 ## [1.7.0]
-- [Upgrade to VS Code's webview API · Issue #281](https://github.com/Jason-Rev/vscode-spell-checker/issues/281)
+- [Upgrade to VS Code's webview API · Issue #281](https://github.com/streetsidesoftware/vscode-spell-checker/issues/281)
 - Update the cspell library
 - Update the dictionaries
 
 ## [1.6.10]
-- [Fixes and issue where the status bar foreground color did not match theme #269](https://github.com/Jason-Rev/vscode-spell-checker/issues/269)
-- [compact problem items listings #267](https://github.com/Jason-Rev/vscode-spell-checker/issues/267)
+- [Fixes and issue where the status bar foreground color did not match theme #269](https://github.com/streetsidesoftware/vscode-spell-checker/issues/269)
+- [compact problem items listings #267](https://github.com/streetsidesoftware/vscode-spell-checker/issues/267)
 
 ## [1.6.9]
-- [spell checker checks spelling on git version of files #214](https://github.com/Jason-Rev/vscode-spell-checker/issues/214)
+- [spell checker checks spelling on git version of files #214](https://github.com/streetsidesoftware/vscode-spell-checker/issues/214)
 
 ## [1.6.8]
-- [[Live Share] Restricting language services to local files #209](https://github.com/Jason-Rev/vscode-spell-checker/pull/209)
+- [[Live Share] Restricting language services to local files #209](https://github.com/streetsidesoftware/vscode-spell-checker/pull/209)
 - Update the cSpell library.
 
 ## [1.6.7]
-* Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/Jason-Rev/vscode-spell-checker/issues/206)
+* Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/streetsidesoftware/vscode-spell-checker/issues/206)
 - Fix an issue with matching too much text for a url:
-  [Misspelled first word after HTML element with absolute URL is not detected #201](https://github.com/Jason-Rev/vscode-spell-checker/issues/201)
-- [Better LaTeX support](https://github.com/Jason-Rev/vscode-spell-checker/issues/167#issuecomment-373682530)
+  [Misspelled first word after HTML element with absolute URL is not detected #201](https://github.com/streetsidesoftware/vscode-spell-checker/issues/201)
+- [Better LaTeX support](https://github.com/streetsidesoftware/vscode-spell-checker/issues/167#issuecomment-373682530)
 - Ignore SHA-1, SHA-256, SHA-512 hashes by default
 - Ignore HTML href urls by default.
 
@@ -85,17 +85,17 @@
     ```
     "maxDuplicateProblems": 5,
     ```
-  See: [Combine repeated unknown words in Problems tab #194](https://github.com/Jason-Rev/vscode-spell-checker/issues/194)
+  See: [Combine repeated unknown words in Problems tab #194](https://github.com/streetsidesoftware/vscode-spell-checker/issues/194)
 
-* Turn on support for AsciiDocs by default. See: [Enable AsciiDocs by default](https://github.com/Jason-Rev/vscode-spell-checker/pull/196)
+* Turn on support for AsciiDocs by default. See: [Enable AsciiDocs by default](https://github.com/streetsidesoftware/vscode-spell-checker/pull/196)
 * Update the English Dictionary
 * Added a command to remove words added to the user dictionary
    `F1` `Remove Words from `...
    ![image](https://user-images.githubusercontent.com/3740137/38453511-3397299a-3a57-11e8-94af-4f46ecb544dc.png)
-   See: [How to remove word from dictionary? #117](https://github.com/Jason-Rev/vscode-spell-checker/issues/117)
+   See: [How to remove word from dictionary? #117](https://github.com/streetsidesoftware/vscode-spell-checker/issues/117)
 
 ## [1.6.5]
-* Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/Jason-Rev/vscode-spell-checker/pull/191)
+* Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/streetsidesoftware/vscode-spell-checker/pull/191)
 
 ## [1.6.4]
 * Add support for Rust
@@ -110,8 +110,8 @@
 * Reduce the size of the extension by excluding automatic test files.
 
 ## [1.6.1]
-* Fix: [bug: no spell checking when there's no folder opened #162](https://github.com/Jason-Rev/vscode-spell-checker/issues/162)
-* Fix: [Incorrectly flagged words #160](https://github.com/Jason-Rev/vscode-spell-checker/issues/160)
+* Fix: [bug: no spell checking when there's no folder opened #162](https://github.com/streetsidesoftware/vscode-spell-checker/issues/162)
+* Fix: [Incorrectly flagged words #160](https://github.com/streetsidesoftware/vscode-spell-checker/issues/160)
 
 ## [1.6.0]
 * Release of Multi-Root Support
@@ -122,8 +122,8 @@
 
 ## [1.5.0]
 
-* Added Multi-Root Support [Support VSCode Multi Root Workspace #145](https://github.com/Jason-Rev/vscode-spell-checker/issues/145)
-* Address issue with delay: [cSpell.spellCheckDelayMs seems to be ignored #155](https://github.com/Jason-Rev/vscode-spell-checker/issues/155)
+* Added Multi-Root Support [Support VSCode Multi Root Workspace #145](https://github.com/streetsidesoftware/vscode-spell-checker/issues/145)
+* Address issue with delay: [cSpell.spellCheckDelayMs seems to be ignored #155](https://github.com/streetsidesoftware/vscode-spell-checker/issues/155)
 
 ## [1.4.12]
 
@@ -136,42 +136,42 @@
 
 ## [1.4.10]
 
-* Allow the diagnostic level to be configured. In reference to [Highlight color #128](https://github.com/Jason-Rev/vscode-spell-checker/issues/128) and [disable scrollbar annotations #144](https://github.com/Jason-Rev/vscode-spell-checker/issues/144)
+* Allow the diagnostic level to be configured. In reference to [Highlight color #128](https://github.com/streetsidesoftware/vscode-spell-checker/issues/128) and [disable scrollbar annotations #144](https://github.com/streetsidesoftware/vscode-spell-checker/issues/144)
 
 ## [1.4.9]
 
-* Make it easier to add ignore words to the settings. [Option to ignore words #146](https://github.com/Jason-Rev/vscode-spell-checker/issues/146)
+* Make it easier to add ignore words to the settings. [Option to ignore words #146](https://github.com/streetsidesoftware/vscode-spell-checker/issues/146)
 
 ## [1.4.8]
 
-* The spell checker will now give reasonable suggestions for compound words. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
-* Fixed [Words in the forbidden list are being shown as suggested spelling corrections #89](https://github.com/Jason-Rev/vscode-spell-checker/issues/89)
+* The spell checker will now give reasonable suggestions for compound words. Related to [allowCompoundWords only validates two words #142](https://github.com/streetsidesoftware/vscode-spell-checker/issues/142)
+* Fixed [Words in the forbidden list are being shown as suggested spelling corrections #89](https://github.com/streetsidesoftware/vscode-spell-checker/issues/89)
 
 ## [1.4.7]
 
 * Improved the support for compound words with languages like Dutch and German. This is still a work in progress.
-* Enable spell checking longer word compounds like: networkerrorexecption. Related to [allowCompoundWords only validates two words #142](https://github.com/Jason-Rev/vscode-spell-checker/issues/142)
+* Enable spell checking longer word compounds like: networkerrorexecption. Related to [allowCompoundWords only validates two words #142](https://github.com/streetsidesoftware/vscode-spell-checker/issues/142)
 
 ## [1.4.6]
 
-* Fix issue [Add all words in the current document to dictionary #59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59)
+* Fix issue [Add all words in the current document to dictionary #59](https://github.com/streetsidesoftware/vscode-spell-checker/issues/59)
   This is now possible by selecting the words you want to add and right click to choose which dictionary to add them to.
 
 ## [1.4.2 - 1.4.5]
 
 * Patch to fix issue with detecting changes to settings files.
-* Fix issue [Spawns too many "find" processes #143](https://github.com/Jason-Rev/vscode-spell-checker/issues/143)
-* Possible fix for [CPU usage extremely high, on close memory usage skyrockets #77](https://github.com/Jason-Rev/vscode-spell-checker/issues/77)
+* Fix issue [Spawns too many "find" processes #143](https://github.com/streetsidesoftware/vscode-spell-checker/issues/143)
+* Possible fix for [CPU usage extremely high, on close memory usage skyrockets #77](https://github.com/streetsidesoftware/vscode-spell-checker/issues/77)
 
 ## [1.4.1]
 
-* Fix part of issue [#74](https://github.com/Jason-Rev/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.
+* Fix part of issue [#74](https://github.com/streetsidesoftware/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.
 * Enhanced the information screen.
 * Add a right click option to add a word to the dictionary. If multiple words are selected, all of them will be added.
-  This should fix issue [#59](https://github.com/Jason-Rev/vscode-spell-checker/issues/59).
+  This should fix issue [#59](https://github.com/streetsidesoftware/vscode-spell-checker/issues/59).
 * Improve startup performance by limited the settings watcher.
   This addresses:
-  * [#77](https://github.com/Jason-Rev/vscode-spell-checker/issues/77)
+  * [#77](https://github.com/streetsidesoftware/vscode-spell-checker/issues/77)
 
 ## [1.4.0]
 
@@ -201,7 +201,7 @@
 
 ## [1.3.6]
 
-* Update cspell to enabled spelling checking 'untitled' files. See issue: [#99](https://github.com/Jason-Rev/vscode-spell-checker/issues/99)
+* Update cspell to enabled spelling checking 'untitled' files. See issue: [#99](https://github.com/streetsidesoftware/vscode-spell-checker/issues/99)
 
 ## [1.3.5]
 
@@ -229,27 +229,27 @@
 
 ## [1.3.2]
 
-* Fix issue [#80](https://github.com/Jason-Rev/vscode-spell-checker/issues/80)
+* Fix issue [#80](https://github.com/streetsidesoftware/vscode-spell-checker/issues/80)
 
 ## 1.3.1
 
-* Fix issue [#112](https://github.com/Jason-Rev/vscode-spell-checker/issues/112)
-* Fix issue [#113](https://github.com/Jason-Rev/vscode-spell-checker/issues/113)
-* Fix issue [#110](https://github.com/Jason-Rev/vscode-spell-checker/issues/110)
+* Fix issue [#112](https://github.com/streetsidesoftware/vscode-spell-checker/issues/112)
+* Fix issue [#113](https://github.com/streetsidesoftware/vscode-spell-checker/issues/113)
+* Fix issue [#110](https://github.com/streetsidesoftware/vscode-spell-checker/issues/110)
 
 ## 1.3.0
 
 * Upgraded to cspell 1.7.1 to get import support and global dictionaries.
 * Adding cspell-dicts is now relatively simple.
-* Change the delay to be delay after typing finishes. [#90](https://github.com/Jason-Rev/vscode-spell-checker/issues/90)
+* Change the delay to be delay after typing finishes. [#90](https://github.com/streetsidesoftware/vscode-spell-checker/issues/90)
 
 ## 1.2.1
 
-* Fix issue [#96](https://github.com/Jason-Rev/vscode-spell-checker/issues/96)
+* Fix issue [#96](https://github.com/streetsidesoftware/vscode-spell-checker/issues/96)
 * Added a FAQ file.
-* User word lists are now sorted: [#91](https://github.com/Jason-Rev/vscode-spell-checker/issues/91)
-* Add commands to toggle the spell checker with key assignments [#64](https://github.com/Jason-Rev/vscode-spell-checker/issues/64)
-* Only use https links in .md files. [#103](https://github.com/Jason-Rev/vscode-spell-checker/issues/103)
+* User word lists are now sorted: [#91](https://github.com/streetsidesoftware/vscode-spell-checker/issues/91)
+* Add commands to toggle the spell checker with key assignments [#64](https://github.com/streetsidesoftware/vscode-spell-checker/issues/64)
+* Only use https links in .md files. [#103](https://github.com/streetsidesoftware/vscode-spell-checker/issues/103)
 
 ## 1.2.0
 
@@ -259,7 +259,7 @@
 
 ## 1.1.0
 
-* Fix Issue with cspell Info pane that prevented it from showing up. [#88](https://github.com/Jason-Rev/vscode-spell-checker/issues/88)
+* Fix Issue with cspell Info pane that prevented it from showing up. [#88](https://github.com/streetsidesoftware/vscode-spell-checker/issues/88)
 
 ## 1.0.2
 
@@ -289,9 +289,9 @@
 ## 0.16.0
 
 * The spell checking engine was moved to its own repository [cspell](https://github.com/Jason3S/cspell)
-  * [#58](https://github.com/Jason-Rev/vscode-spell-checker/issues/58) Provide npm package with CLI
-  * [#34](https://github.com/Jason-Rev/vscode-spell-checker/issues/34) grunt plugin or a new library repository
-* Added LaTex support [#65](https://github.com/Jason-Rev/vscode-spell-checker/issues/65)
+  * [#58](https://github.com/streetsidesoftware/vscode-spell-checker/issues/58) Provide npm package with CLI
+  * [#34](https://github.com/streetsidesoftware/vscode-spell-checker/issues/34) grunt plugin or a new library repository
+* Added LaTex support [#65](https://github.com/streetsidesoftware/vscode-spell-checker/issues/65)
 * Migrate from rxjs 4 to rxjs 5.
 * Greatly extended the Typescript / Javascript dictionaries.
 * Added a dictionary of file types to avoid common file types from being marked as spelling errors.
@@ -300,14 +300,14 @@
 ## 0.15.0
 
 * Fix some issues with the spell checker info viewer
-* Fix [#51](https://github.com/Jason-Rev/vscode-spell-checker/issues/51)
+* Fix [#51](https://github.com/streetsidesoftware/vscode-spell-checker/issues/51)
 * Fix an issue finding the cSpell.json file.
 * Add some terms to the dictionaries.
 
 ## 0.14.9
 
-* Add a dictionary for C# and for .Net [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
-* Turn on .json by default [#63](https://github.com/Jason-Rev/vscode-spell-checker/issues/63)
+* Add a dictionary for C# and for .Net [#62](https://github.com/streetsidesoftware/vscode-spell-checker/issues/62)
+* Turn on .json by default [#63](https://github.com/streetsidesoftware/vscode-spell-checker/issues/63)
 
 ## 0.14.8
 
@@ -315,8 +315,8 @@
 
 ## 0.14.7
 
-* Enabled language pug [#60](https://github.com/Jason-Rev/vscode-spell-checker/issues/60)
-* As a stop-gap for csharp, use the typescript dictionary. Issue [#62](https://github.com/Jason-Rev/vscode-spell-checker/issues/62)
+* Enabled language pug [#60](https://github.com/streetsidesoftware/vscode-spell-checker/issues/60)
+* As a stop-gap for csharp, use the typescript dictionary. Issue [#62](https://github.com/streetsidesoftware/vscode-spell-checker/issues/62)
 * Add a dictionary for popular npm libraries
 * Make sure most languages can be enabled / disabled without the need to restart vscode.
 * Added a command to show an information page about the Spell Checker.

@@ -1,6 +1,6 @@
 # vscode-spell-checker
 
-[![Build Status](https://travis-ci.org/Jason-Rev/vscode-spell-checker.svg?branch=master)](https://travis-ci.org/Jason-Rev/vscode-spell-checker)
+[![Build Status](https://travis-ci.org/streetsidesoftware/vscode-spell-checker.svg?branch=master)](https://travis-ci.org/streetsidesoftware/vscode-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/version-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/installs-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
