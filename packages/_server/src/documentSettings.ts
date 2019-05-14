@@ -13,7 +13,7 @@ import { CSpellUserSettings } from './cspellConfig';
 import Uri from 'vscode-uri';
 import { log } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
-import { GlobMatcher } from './cspell-glob';
+import { GlobMatcher } from 'cspell-glob';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {
