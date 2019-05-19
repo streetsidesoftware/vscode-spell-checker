@@ -294,7 +294,7 @@
                         "**/package-lock.json",
                         "**/node_modules/**",
                         "**/vscode-extension/**",
-                        "**/.git/**",
+                        "**/.git/objects/**",
                         ".vscode"
                     ],
                     "description": "Specify paths/files to ignore. (Supports Globs)"
