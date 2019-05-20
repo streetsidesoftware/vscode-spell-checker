@@ -7,12 +7,12 @@ import {
     CodeAction,
 } from 'vscode-languageserver-types';
 import * as LangServer from 'vscode-languageserver';
-import { Text } from 'cspell';
+import { Text } from 'cspell-lib';
 import * as Validator from './validator';
 import { CSpellUserSettings } from './cspellConfig';
-import { SpellingDictionary } from 'cspell';
-import * as cspell from 'cspell';
-import { CompoundWordsMethod } from 'cspell-trie/dist/lib/walker';
+import { SpellingDictionary } from 'cspell-lib';
+import * as cspell from 'cspell-lib';
+import { CompoundWordsMethod } from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
 // import { SuggestionGenerator } from './SuggestionsGenerator';
 

@@ -4,11 +4,11 @@ import * as vscode from './vscode.workspaceFolders';
 import {
     ExcludeFilesGlobMap,
     Glob
-} from 'cspell';
+} from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
-import * as CSpell from 'cspell';
+import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import Uri from 'vscode-uri';
 import { log } from './util';
@@ -79,7 +79,7 @@ export class DocumentSettings {
 
     async isExcluded(uri: string): Promise<boolean> {
         const settingsByWorkspaceFolder = await this.findMatchingFolderSettings(uri);
-        const fnExclTests = settingsByWorkspaceFolder.map(s => s.globMatcher.matcher);
+        const fnExclTests = settingsByWorkspaceFolder.map(s => s.globMatcher.match);
         for (const fn of fnExclTests) {
             if (fn(Uri.parse(uri).path)) {
                 return true;
@@ -147,7 +147,7 @@ export class DocumentSettings {
 
     private async _fetchVSCodeConfiguration(uri: string) {
         return await vscode.getConfiguration(this.connection, [
-            { scopeUri: uri || undefined, section: 'cSpell' },
+            { scopeUri: uri || undefined, section: 'cspell' },
             { section: 'search' }
         ]) as [CSpellUserSettings, VsCodeSettings];
     }

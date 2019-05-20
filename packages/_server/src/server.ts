@@ -13,11 +13,11 @@ import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
-import { Text } from 'cspell';
+import { Text } from 'cspell-lib';
 
-import * as CSpell from 'cspell';
+import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
-import { getDefaultSettings } from 'cspell';
+import { getDefaultSettings } from 'cspell-lib';
 import * as Api from './api';
 import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed } from './documentSettings';
 import {

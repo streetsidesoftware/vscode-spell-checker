@@ -3,13 +3,12 @@ import {
 } from 'vscode-languageserver';
 import { Observable, from } from 'rxjs';
 import { map, filter, flatMap, toArray } from 'rxjs/operators';
-import { validateText } from 'cspell';
+import { validateText } from 'cspell-lib';
+import { CSpellUserSettings } from './cspellConfig';
+export {validateText} from 'cspell-lib';
 
 export const diagnosticCollectionName = 'cSpell';
 export const diagSource = diagnosticCollectionName;
-export {validateText} from 'cspell';
-import { CSpellUserSettings } from './cspellConfig';
-
 export const defaultCheckLimit = 500;
 
 const diagSeverityMap = new Map<string, DiagnosticSeverity>([

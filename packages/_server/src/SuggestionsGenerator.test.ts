@@ -1,4 +1,4 @@
-import * as cspell from 'cspell';
+import * as cspell from 'cspell-lib';
 import { SuggestionGenerator, maxNumberOfSuggestionsForLongWords } from './SuggestionsGenerator';
 
 describe('Validate Suggestions', () => {

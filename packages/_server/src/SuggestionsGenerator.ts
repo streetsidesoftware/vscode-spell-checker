@@ -1,5 +1,5 @@
 import { CSpellUserSettings } from './cspellConfig';
-import { SuggestionResult, getDictionary, CompoundWordsMethod } from 'cspell';
+import { SuggestionResult, getDictionary, CompoundWordsMethod } from 'cspell-lib';
 
 const defaultNumSuggestions = 10;
 

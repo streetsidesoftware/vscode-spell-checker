@@ -1,9 +1,9 @@
 import * as Validator from './validator';
 import loremIpsum = require('lorem-ipsum');
-import { CSpellSettings } from 'cspell';
-import * as cspell from 'cspell';
+import { CSpellSettings } from 'cspell-lib';
+import * as cspell from 'cspell-lib';
 
-import { getDefaultSettings } from 'cspell';
+import { getDefaultSettings } from 'cspell-lib';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
 
