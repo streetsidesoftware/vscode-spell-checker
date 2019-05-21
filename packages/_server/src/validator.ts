@@ -1,10 +1,9 @@
 import {
     TextDocument, Diagnostic, DiagnosticSeverity,
 } from 'vscode-languageserver';
-import { Observable, from } from 'rxjs';
-import { map, filter, flatMap, toArray } from 'rxjs/operators';
 import { validateText } from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
+import { Sequence, genSequence } from 'gensequence';
 export {validateText} from 'cspell-lib';
 
 export const diagnosticCollectionName = 'cSpell';
@@ -18,38 +17,33 @@ const diagSeverityMap = new Map<string, DiagnosticSeverity>([
     ['hint',        DiagnosticSeverity.Hint],
 ]);
 
-export function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
-    return validateTextDocumentAsync(textDocument, options)
-        .pipe(toArray())
-        .toPromise();
+export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
+    return (await validateTextDocumentAsync(textDocument, options)).toArray();
 }
 
-export function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Observable<Diagnostic> {
+export async function validateTextDocumentAsync(textDocument: TextDocument, options: CSpellUserSettings): Promise<Sequence<Diagnostic>> {
     const { diagnosticLevel = DiagnosticSeverity.Information.toString() } = options;
     const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const text = textDocument.getText().slice(0, limit);
-    return from(validateText(text, options)).pipe(
-        flatMap(a => a),
-        filter(a => !!a),
-        map(a => a!),
+    const diags = genSequence(await validateText(text, options))
         // Convert the offset into a position
-        map(offsetWord => ({...offsetWord, position: textDocument.positionAt(offsetWord.offset) })),
+        .map(offsetWord => ({...offsetWord, position: textDocument.positionAt(offsetWord.offset) }))
         // Calculate the range
-        map(word => ({
+        .map(word => ({
             ...word,
             range: {
                 start: word.position,
                 end: ({...word.position, character: word.position.character + word.text.length })
             }
-        })),
+        }))
         // Convert it to a Diagnostic
-        map(({text, range}) => ({
+        .map(({text, range}) => ({
             severity,
             range: range,
             message: `"${text}": Unknown word.`,
             source: diagSource
-        })),
-    );
+        }));
+    return diags;
 }
 

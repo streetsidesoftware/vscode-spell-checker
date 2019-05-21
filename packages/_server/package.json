@@ -29,15 +29,16 @@
   "dependencies": {
     "comment-json": "^1.1.3",
     "cspell-glob": "^0.1.8",
-    "cspell-lib": "^4.0.9",
+    "cspell-lib": "^4.0.10",
     "fs-extra": "^7.0.1",
     "gensequence": "^2.1.2",
     "iconv-lite": "^0.4.24",
     "micromatch": "^4.0.2",
+    "minimatch": "^3.0.4",
+    "rxjs": "^6.5.2",
     "vscode-jsonrpc": "^4.0.0",
     "vscode-languageserver": "^5.2.1",
-    "vscode-uri": "^1.0.6",
-    "xregexp": "^4.2.4"
+    "vscode-uri": "^1.0.6"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",

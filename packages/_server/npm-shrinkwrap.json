@@ -151,15 +151,6 @@
         "@babel/helper-plugin-utils": "^7.0.0"
       }
     },
-    "@babel/runtime-corejs2": {
-      "version": "7.3.1",
-      "resolved": "https://registry.npmjs.org/@babel/runtime-corejs2/-/runtime-corejs2-7.3.1.tgz",
-      "integrity": "sha512-YpO13776h3e6Wy8dl2J8T9Qwlvopr+b4trCEhHE+yek6yIqV8sx6g3KozdHMbXeBpjosbPi+Ii5Z7X9oXFHUKA==",
-      "requires": {
-        "core-js": "^2.5.7",
-        "regenerator-runtime": "^0.12.0"
-      }
-    },
     "@babel/template": {
       "version": "7.4.4",
       "resolved": "https://registry.npmjs.org/@babel/template/-/template-7.4.4.tgz",
@@ -1070,8 +1061,7 @@
     "balanced-match": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.0.tgz",
-      "integrity": "sha1-ibTRmasr7kneFk6gK4nORi1xt2c=",
-      "dev": true
+      "integrity": "sha1-ibTRmasr7kneFk6gK4nORi1xt2c="
     },
     "base": {
       "version": "0.11.2",
@@ -1141,7 +1131,6 @@
       "version": "1.1.11",
       "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz",
       "integrity": "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==",
-      "dev": true,
       "requires": {
         "balanced-match": "^1.0.0",
         "concat-map": "0.0.1"
@@ -1390,8 +1379,7 @@
     "concat-map": {
       "version": "0.0.1",
       "resolved": "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz",
-      "integrity": "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=",
-      "dev": true
+      "integrity": "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s="
     },
     "configstore": {
       "version": "4.0.0",
@@ -1421,11 +1409,6 @@
       "integrity": "sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=",
       "dev": true
     },
-    "core-js": {
-      "version": "2.6.4",
-      "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.6.4.tgz",
-      "integrity": "sha512-05qQ5hXShcqGkPZpXEFLIpxayZscVD2kuMBZewxiIPPEagukO4mqgPA9CWhUvFBJfy3ODdK2p9xyHh7FTU9/7A=="
-    },
     "core-util-is": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz",
@@ -1450,6 +1433,70 @@
       "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
       "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
     },
+    "cspell-dict-companies": {
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-companies/-/cspell-dict-companies-1.0.10.tgz",
+      "integrity": "sha512-mLJnxxtkQt4nX2uWwz1BfAmq03Q0YyM5Gjh4uf4EFhT/8v7KJ/gGWBvjPZuUlOnyqNFG1FdKFNyH23WP3SI6uA==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-cpp": {
+      "version": "1.1.19",
+      "resolved": "https://registry.npmjs.org/cspell-dict-cpp/-/cspell-dict-cpp-1.1.19.tgz",
+      "integrity": "sha512-KaKDc4H7FwjZnGL2kjn7fa6SXbymETKVyDWwq/XmoI2q16ZOrs0pYz/aOVjBwBbFy3QNmDIKODswYe0FSQhDNA==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-django": {
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.11.tgz",
+      "integrity": "sha512-cCVDgYTxHjNGsXOkOXFlIFFYyD/+QKa4P5gjAO+ftVe5YkYLgR/ToIqBjLkeMpd5XLcUp9I2+4qAW4bXUGXvhA==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-elixir": {
+      "version": "1.0.8",
+      "resolved": "https://registry.npmjs.org/cspell-dict-elixir/-/cspell-dict-elixir-1.0.8.tgz",
+      "integrity": "sha512-JDl6uNL3jrJcgnuw69slyh0jV1wyGuainXVjhXxlEZuROoFo3jYpYR6RN5j2Im4FXwB+8TBQ/Pl83EPqSz4B4A==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-en-gb": {
+      "version": "1.1.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en-gb/-/cspell-dict-en-gb-1.1.10.tgz",
+      "integrity": "sha512-Gx6vcaHBnNzYs9W9LlSjomYq1XCw9+aGVsU+Ayl3oMG5zuJGi3I7G5xPyWcTTkWqb6/z6F5LXnW/vFtkTGE5fg==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-en_us": {
+      "version": "1.2.15",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.15.tgz",
+      "integrity": "sha512-jQ3vegv5xwPhyeHtNyfGunRw6/7OuZq/+a+du5v8JjP3IZpTZRsDrNDX8y9xgmNjMYLOazd9WA/IDxgVd72oXA==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-fullstack": {
+      "version": "1.0.13",
+      "resolved": "https://registry.npmjs.org/cspell-dict-fullstack/-/cspell-dict-fullstack-1.0.13.tgz",
+      "integrity": "sha512-2173pXRCNzC6v5ACFlbFAfp5HNcoX5ANYcAHtNa/cBIjP4G0ASdLJY1SRSPBojNh3qxAulwIASck4fX3DgGe1A==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-golang": {
+      "version": "1.1.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-golang/-/cspell-dict-golang-1.1.11.tgz",
+      "integrity": "sha512-dInmq72nAtTBV4B1kX+6STIpKzMNfFTrzC1YBE3x3AKMdyCvKpuoIQHHpm/PFsfIeW2hiu+ZZrTYv1xc+diGlw==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
     "cspell-dict-html-symbol-entities": {
       "version": "1.0.10",
       "resolved": "https://registry.npmjs.org/cspell-dict-html-symbol-entities/-/cspell-dict-html-symbol-entities-1.0.10.tgz",
@@ -1458,10 +1505,66 @@
         "configstore": "^4.0.0"
       }
     },
+    "cspell-dict-java": {
+      "version": "1.0.9",
+      "resolved": "https://registry.npmjs.org/cspell-dict-java/-/cspell-dict-java-1.0.9.tgz",
+      "integrity": "sha512-z3u1SZ9IpwhmQ9wps1qj0BTtkNNz6piMcDxzMOQDkTM+hkK/BSLEJ/+DMsnKr1Kiob1mde8LxHr/MvB9qcWXtQ==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-latex": {
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-latex/-/cspell-dict-latex-1.0.10.tgz",
+      "integrity": "sha512-H2Kdu/7N5rcPpjr/5qBPdWluu2+0SdQaFrqZPWyn8XYXpYAs9YLqvsl+0MgyV3VTUJPAbz1B34UvByLfZy7FWg==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-lorem-ipsum": {
+      "version": "1.0.9",
+      "resolved": "https://registry.npmjs.org/cspell-dict-lorem-ipsum/-/cspell-dict-lorem-ipsum-1.0.9.tgz",
+      "integrity": "sha512-cGZ8vkt6dfZGZm/pMtnvYZ4coPHA/FyYL0cuA8fy30wNTdW00CnWWilQvdh0JH53eSTDDWNO9x8Uz+OFIgOeLA==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-php": {
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-php/-/cspell-dict-php-1.0.10.tgz",
+      "integrity": "sha512-9efe0p3eL8gPtjanYdMqXSj6G7SdIZaz2kiDH3vWP4qc9j4oa67rq/F+WxsLcZuye7Scm9Tw1nZWetvs/u0M8w==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
     "cspell-dict-powershell": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/cspell-dict-powershell/-/cspell-dict-powershell-1.0.1.tgz",
       "integrity": "sha512-uNmnu2wn+Yw6JDnt4jdu08HvEmZjbxbndtkStfDqIdhg/iBFRdm4VUZIY7vL5Z5xPwAgC9QwT6h86mqT8ZnCag==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-python": {
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.11.tgz",
+      "integrity": "sha512-Ox+yWGj5SU9venH2vqvYKfpExnYqkYLUyh2MBjpcUkBn+TYMb6RKLHckjHVbv5xtDGEhrLtBCxFR6NokK3ZXIw==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-rust": {
+      "version": "1.0.8",
+      "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.8.tgz",
+      "integrity": "sha512-cqnzO6/q0bdcrGn8yauJkAEFZCzLVCI59h9nKIy9cI5AS81gKYTnVvdl94zjFijRw4i/OKArz4VTjqxBjuNHMQ==",
+      "requires": {
+        "configstore": "^4.0.0"
+      }
+    },
+    "cspell-dict-scala": {
+      "version": "1.0.8",
+      "resolved": "https://registry.npmjs.org/cspell-dict-scala/-/cspell-dict-scala-1.0.8.tgz",
+      "integrity": "sha512-/t2SyLnl/zaOBilTWlBNsD2X/Sd6+WyUi5REKQhopQ1MoJc9AFUavI17ZIFHq/vCyu1ziO7xslFWYRTwfQ8yBA==",
       "requires": {
         "configstore": "^4.0.0"
       }
@@ -1475,176 +1578,59 @@
       }
     },
     "cspell-io": {
-      "version": "4.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.9.tgz",
-      "integrity": "sha512-/fvrigGvTqBqSAjH1A59IDSK3PiLrNrRqFsxTx8bJfDf+aRIZy1Mr2GRdeRC/PEQEgglzE/RcJPASz+T5Hu+ew==",
+      "version": "4.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.10.tgz",
+      "integrity": "sha512-hKnb/ydPfO/jfLDTZad3P3ZWOHwFnUwPa+yfS692FRP53hzVpAAVJgi56HdDxKMrrK6OB5t+mSlOCkY06OvKCQ==",
       "requires": {
         "iconv-lite": "^0.4.24",
         "iterable-to-stream": "^1.0.1"
       }
     },
     "cspell-lib": {
-      "version": "4.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.9.tgz",
-      "integrity": "sha512-xclcairOW3ihdzpH5cbYldt1wtOKQw8WxJadUGLeLlkQZNdy60j101dg3PSb/SBEpaH8jDRACNdj4RcslJo0Ew==",
+      "version": "4.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.10.tgz",
+      "integrity": "sha512-+duP/NPGu6vNm7PXwlPZTagj9nkTj9lxL9idGFzZNQ+wF6VW3iZIO7SSeImlZoi6deicPlMDKuYojOwjs5hByw==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^4.0.0",
-        "cspell-dict-companies": "^1.0.9",
-        "cspell-dict-cpp": "^1.1.18",
+        "cspell-dict-companies": "^1.0.10",
+        "cspell-dict-cpp": "^1.1.19",
         "cspell-dict-django": "^1.0.11",
         "cspell-dict-elixir": "^1.0.8",
         "cspell-dict-en-gb": "^1.1.10",
-        "cspell-dict-en_us": "^1.2.14",
-        "cspell-dict-fullstack": "^1.0.12",
+        "cspell-dict-en_us": "^1.2.15",
+        "cspell-dict-fullstack": "^1.0.13",
         "cspell-dict-golang": "^1.1.11",
         "cspell-dict-html-symbol-entities": "^1.0.10",
         "cspell-dict-java": "^1.0.9",
         "cspell-dict-latex": "^1.0.10",
-        "cspell-dict-lorem-ipsum": "^1.0.8",
+        "cspell-dict-lorem-ipsum": "^1.0.9",
         "cspell-dict-php": "^1.0.10",
         "cspell-dict-powershell": "^1.0.1",
         "cspell-dict-python": "^1.0.11",
         "cspell-dict-rust": "^1.0.8",
         "cspell-dict-scala": "^1.0.8",
-        "cspell-io": "^4.0.9",
-        "cspell-trie-lib": "^4.0.7",
+        "cspell-io": "^4.0.10",
+        "cspell-trie-lib": "^4.0.8",
+        "cspell-util-bundle": "^4.0.1",
         "fs-extra": "^7.0.1",
         "gensequence": "^2.1.2",
-        "vscode-uri": "^1.0.6",
-        "xregexp": "^4.2.4"
-      },
-      "dependencies": {
-        "cspell-dict-companies": {
-          "version": "1.0.9",
-          "resolved": "https://registry.npmjs.org/cspell-dict-companies/-/cspell-dict-companies-1.0.9.tgz",
-          "integrity": "sha512-DS6AQIZJj0baRhCen+rr1SqInrzTd1wKgy8GI+Ghbr74tjcxsunWRTof01Y/MaGeeYnTY+EmXHw44dvqDqDVQw==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-cpp": {
-          "version": "1.1.18",
-          "resolved": "https://registry.npmjs.org/cspell-dict-cpp/-/cspell-dict-cpp-1.1.18.tgz",
-          "integrity": "sha512-CjMryhlttkh4d1pn8pAgMf5v5cKmTyLR54aHM9ol+/x5C2+yjUPlS/pe9P4qYKtZoa1MTS0gOzi+tBc6Be32hQ==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-django": {
-          "version": "1.0.11",
-          "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.11.tgz",
-          "integrity": "sha512-cCVDgYTxHjNGsXOkOXFlIFFYyD/+QKa4P5gjAO+ftVe5YkYLgR/ToIqBjLkeMpd5XLcUp9I2+4qAW4bXUGXvhA==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-elixir": {
-          "version": "1.0.8",
-          "resolved": "https://registry.npmjs.org/cspell-dict-elixir/-/cspell-dict-elixir-1.0.8.tgz",
-          "integrity": "sha512-JDl6uNL3jrJcgnuw69slyh0jV1wyGuainXVjhXxlEZuROoFo3jYpYR6RN5j2Im4FXwB+8TBQ/Pl83EPqSz4B4A==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-en-gb": {
-          "version": "1.1.10",
-          "resolved": "https://registry.npmjs.org/cspell-dict-en-gb/-/cspell-dict-en-gb-1.1.10.tgz",
-          "integrity": "sha512-Gx6vcaHBnNzYs9W9LlSjomYq1XCw9+aGVsU+Ayl3oMG5zuJGi3I7G5xPyWcTTkWqb6/z6F5LXnW/vFtkTGE5fg==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-en_us": {
-          "version": "1.2.14",
-          "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.14.tgz",
-          "integrity": "sha512-HvIJWYQ/GWKWGhyqApjjDn1MRfFlI1veYeKFLjJsuaymbjEII+qaFZ1/wV+vTaUm9l0LF7dpARLveOkBVzOWOw==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-fullstack": {
-          "version": "1.0.12",
-          "resolved": "https://registry.npmjs.org/cspell-dict-fullstack/-/cspell-dict-fullstack-1.0.12.tgz",
-          "integrity": "sha512-Poz3BSdDupf8GOW4gIeBFdX8mVIY+AQVUEupmU9L7hwSaoZhTL7R9f3Po+dDQdubunurSwhnMV3tLOTotdUVTQ==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-golang": {
-          "version": "1.1.11",
-          "resolved": "https://registry.npmjs.org/cspell-dict-golang/-/cspell-dict-golang-1.1.11.tgz",
-          "integrity": "sha512-dInmq72nAtTBV4B1kX+6STIpKzMNfFTrzC1YBE3x3AKMdyCvKpuoIQHHpm/PFsfIeW2hiu+ZZrTYv1xc+diGlw==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-java": {
-          "version": "1.0.9",
-          "resolved": "https://registry.npmjs.org/cspell-dict-java/-/cspell-dict-java-1.0.9.tgz",
-          "integrity": "sha512-z3u1SZ9IpwhmQ9wps1qj0BTtkNNz6piMcDxzMOQDkTM+hkK/BSLEJ/+DMsnKr1Kiob1mde8LxHr/MvB9qcWXtQ==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-latex": {
-          "version": "1.0.10",
-          "resolved": "https://registry.npmjs.org/cspell-dict-latex/-/cspell-dict-latex-1.0.10.tgz",
-          "integrity": "sha512-H2Kdu/7N5rcPpjr/5qBPdWluu2+0SdQaFrqZPWyn8XYXpYAs9YLqvsl+0MgyV3VTUJPAbz1B34UvByLfZy7FWg==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-lorem-ipsum": {
-          "version": "1.0.8",
-          "resolved": "https://registry.npmjs.org/cspell-dict-lorem-ipsum/-/cspell-dict-lorem-ipsum-1.0.8.tgz",
-          "integrity": "sha512-3EmhgSX69XhS2Y65MnZRL16uyGqRJ/zz5HkK6CNrto0muGqnT4X7HyTP+6lOI8ZTDhrMZjEyHXZRlfYo8jskjg==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-php": {
-          "version": "1.0.10",
-          "resolved": "https://registry.npmjs.org/cspell-dict-php/-/cspell-dict-php-1.0.10.tgz",
-          "integrity": "sha512-9efe0p3eL8gPtjanYdMqXSj6G7SdIZaz2kiDH3vWP4qc9j4oa67rq/F+WxsLcZuye7Scm9Tw1nZWetvs/u0M8w==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-python": {
-          "version": "1.0.11",
-          "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.11.tgz",
-          "integrity": "sha512-Ox+yWGj5SU9venH2vqvYKfpExnYqkYLUyh2MBjpcUkBn+TYMb6RKLHckjHVbv5xtDGEhrLtBCxFR6NokK3ZXIw==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-rust": {
-          "version": "1.0.8",
-          "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.8.tgz",
-          "integrity": "sha512-cqnzO6/q0bdcrGn8yauJkAEFZCzLVCI59h9nKIy9cI5AS81gKYTnVvdl94zjFijRw4i/OKArz4VTjqxBjuNHMQ==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-dict-scala": {
-          "version": "1.0.8",
-          "resolved": "https://registry.npmjs.org/cspell-dict-scala/-/cspell-dict-scala-1.0.8.tgz",
-          "integrity": "sha512-/t2SyLnl/zaOBilTWlBNsD2X/Sd6+WyUi5REKQhopQ1MoJc9AFUavI17ZIFHq/vCyu1ziO7xslFWYRTwfQ8yBA==",
-          "requires": {
-            "configstore": "^4.0.0"
-          }
-        },
-        "cspell-trie-lib": {
-          "version": "4.0.7",
-          "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.7.tgz",
-          "integrity": "sha512-NwTLKwWLR68oW2nfKX8TgGqAftIFg1kZbnfzd6bHBNoIKI807j1YynOnd/fL9A1QdlCfEsQnwPmgkIfQ3ffaGA==",
-          "requires": {
-            "gensequence": "^2.1.2",
-            "js-xxhash": "^1.0.1"
-          }
-        }
+        "vscode-uri": "^1.0.6"
       }
+    },
+    "cspell-trie-lib": {
+      "version": "4.0.8",
+      "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.8.tgz",
+      "integrity": "sha512-Pf8XqVVSYsr8HpnVZsh01qPqHON5AXeXko+QQngGkXxSB21+5h9z2/N+AA4h8EzwHpvyk+FIEHr36KcJ4uq4/g==",
+      "requires": {
+        "gensequence": "^2.1.2",
+        "js-xxhash": "^1.0.1"
+      }
+    },
+    "cspell-util-bundle": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/cspell-util-bundle/-/cspell-util-bundle-4.0.1.tgz",
+      "integrity": "sha512-OKgTL/teC2WwlK6/x7XnPyVOwnOyvd4DcbqaLEvsAfZvf9AH2/Zv2VLnEWmy6n484xpwAiAry5H2PaHz+97/ow=="
     },
     "cssom": {
       "version": "0.3.6",
@@ -4426,7 +4412,6 @@
       "version": "3.0.4",
       "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.0.4.tgz",
       "integrity": "sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==",
-      "dev": true,
       "requires": {
         "brace-expansion": "^1.1.7"
       }
@@ -5064,11 +5049,6 @@
         "util.promisify": "^1.0.0"
       }
     },
-    "regenerator-runtime": {
-      "version": "0.12.1",
-      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz",
-      "integrity": "sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg=="
-    },
     "regex-not": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/regex-not/-/regex-not-1.0.2.tgz",
@@ -5231,6 +5211,14 @@
       "resolved": "https://registry.npmjs.org/rsvp/-/rsvp-4.8.4.tgz",
       "integrity": "sha512-6FomvYPfs+Jy9TfXmBpBuMWNH94SgCsZmJKcanySzgNNP6LjWxBvyLTa9KaMfDDM5oxRfrKDB0r/qeRsLwnBfA==",
       "dev": true
+    },
+    "rxjs": {
+      "version": "6.5.2",
+      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-6.5.2.tgz",
+      "integrity": "sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==",
+      "requires": {
+        "tslib": "^1.9.0"
+      }
     },
     "safe-buffer": {
       "version": "5.1.2",
@@ -5920,6 +5908,11 @@
         }
       }
     },
+    "tslib": {
+      "version": "1.9.3",
+      "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.9.3.tgz",
+      "integrity": "sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ=="
+    },
     "tunnel-agent": {
       "version": "0.6.0",
       "resolved": "https://registry.npmjs.org/tunnel-agent/-/tunnel-agent-0.6.0.tgz",
@@ -6334,14 +6327,6 @@
       "resolved": "https://registry.npmjs.org/xml-name-validator/-/xml-name-validator-3.0.0.tgz",
       "integrity": "sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==",
       "dev": true
-    },
-    "xregexp": {
-      "version": "4.2.4",
-      "resolved": "https://registry.npmjs.org/xregexp/-/xregexp-4.2.4.tgz",
-      "integrity": "sha512-sO0bYdYeJAJBcJA8g7MJJX7UrOZIfJPd8U2SC7B2Dd/J24U0aQNoGp33shCaBSWeb0rD5rh6VBUIXOkGal1TZA==",
-      "requires": {
-        "@babel/runtime-corejs2": "^7.2.0"
-      }
     },
     "y18n": {
       "version": "4.0.0",
