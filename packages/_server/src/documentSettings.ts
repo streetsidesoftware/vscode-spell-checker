@@ -15,6 +15,8 @@ import { log } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
 import { GlobMatcher } from 'cspell-glob';
 
+const cSpellSection: keyof SettingsCspell = 'cSpell';
+
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {
     cSpell?: CSpellUserSettings;
@@ -79,7 +81,7 @@ export class DocumentSettings {
 
     async isExcluded(uri: string): Promise<boolean> {
         const settingsByWorkspaceFolder = await this.findMatchingFolderSettings(uri);
-        const fnExclTests = settingsByWorkspaceFolder.map(s => s.globMatcher.match);
+        const fnExclTests = settingsByWorkspaceFolder.map(s => ((filename: string) => s.globMatcher.match(filename)));
         for (const fn of fnExclTests) {
             if (fn(Uri.parse(uri).path)) {
                 return true;
@@ -146,10 +148,10 @@ export class DocumentSettings {
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
-        return await vscode.getConfiguration(this.connection, [
-            { scopeUri: uri || undefined, section: 'cspell' },
+        return (await vscode.getConfiguration(this.connection, [
+            { scopeUri: uri || undefined, section: cSpellSection },
             { section: 'search' }
-        ]) as [CSpellUserSettings, VsCodeSettings];
+        ])).map(v => v || {}) as [CSpellUserSettings, VsCodeSettings];
     }
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
