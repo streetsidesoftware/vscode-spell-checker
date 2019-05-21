@@ -134,6 +134,7 @@
                 "id": "jsonc",
                 "extensions": [
                     "cspell-ext.json",
+                    "cspell-default.json",
                     "cspell.json",
                     "cSpell.json"
                 ]
