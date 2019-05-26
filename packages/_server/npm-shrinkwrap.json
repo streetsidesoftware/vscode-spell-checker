@@ -1570,26 +1570,26 @@
       }
     },
     "cspell-glob": {
-      "version": "0.1.8",
-      "resolved": "https://registry.npmjs.org/cspell-glob/-/cspell-glob-0.1.8.tgz",
-      "integrity": "sha512-m2gFjbQTkdZfMHXF2iIvm0H3zmWZr0+qohbaQ9r32bK1QCvxAfCE2g6n2DIKGhXXTunLc9QmNxvbk7ggpwvriw==",
+      "version": "0.1.9",
+      "resolved": "https://registry.npmjs.org/cspell-glob/-/cspell-glob-0.1.9.tgz",
+      "integrity": "sha512-8p7IDzH6s5gSxPRzwudUbWGLYZySTOtZLKOph0Pyxqk2+yIEA0uvpzHeaMtUEfW4ho9/CkGYbCsAW8Inf3/t9Q==",
       "requires": {
         "micromatch": "^4.0.2"
       }
     },
     "cspell-io": {
-      "version": "4.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.10.tgz",
-      "integrity": "sha512-hKnb/ydPfO/jfLDTZad3P3ZWOHwFnUwPa+yfS692FRP53hzVpAAVJgi56HdDxKMrrK6OB5t+mSlOCkY06OvKCQ==",
+      "version": "4.0.12",
+      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.12.tgz",
+      "integrity": "sha512-X0ZxvuIEzY/4e13RCEQQqVItmaqPJwaSStv2G0PJckgoxgmeZSLUsrhky7j+rOBtorf7xPCEAyTUWIFoLVqCkw==",
       "requires": {
         "iconv-lite": "^0.4.24",
         "iterable-to-stream": "^1.0.1"
       }
     },
     "cspell-lib": {
-      "version": "4.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.10.tgz",
-      "integrity": "sha512-+duP/NPGu6vNm7PXwlPZTagj9nkTj9lxL9idGFzZNQ+wF6VW3iZIO7SSeImlZoi6deicPlMDKuYojOwjs5hByw==",
+      "version": "4.0.12",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.12.tgz",
+      "integrity": "sha512-m2xo3Wum0m0g6DiQyKL/uq5j0AKpB9siRfiW03jzLaVigA7j+wRcN8HU5bb0BqeRFXnESjqztzBurtBUv3ahnQ==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^4.0.0",
@@ -1610,27 +1610,27 @@
         "cspell-dict-python": "^1.0.11",
         "cspell-dict-rust": "^1.0.8",
         "cspell-dict-scala": "^1.0.8",
-        "cspell-io": "^4.0.10",
-        "cspell-trie-lib": "^4.0.8",
-        "cspell-util-bundle": "^4.0.1",
+        "cspell-io": "^4.0.12",
+        "cspell-trie-lib": "^4.0.10",
+        "cspell-util-bundle": "^4.0.3",
         "fs-extra": "^7.0.1",
         "gensequence": "^2.1.2",
         "vscode-uri": "^1.0.6"
       }
     },
     "cspell-trie-lib": {
-      "version": "4.0.8",
-      "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.8.tgz",
-      "integrity": "sha512-Pf8XqVVSYsr8HpnVZsh01qPqHON5AXeXko+QQngGkXxSB21+5h9z2/N+AA4h8EzwHpvyk+FIEHr36KcJ4uq4/g==",
+      "version": "4.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.10.tgz",
+      "integrity": "sha512-+srEkbDAqRH0bdouOT4rYo024onIfjJSDmf8QYoByciH4uSapWrAfcxi9gwg6KyO2g1zwJg17lG9Xw0nNi/GGw==",
       "requires": {
         "gensequence": "^2.1.2",
         "js-xxhash": "^1.0.1"
       }
     },
     "cspell-util-bundle": {
-      "version": "4.0.1",
-      "resolved": "https://registry.npmjs.org/cspell-util-bundle/-/cspell-util-bundle-4.0.1.tgz",
-      "integrity": "sha512-OKgTL/teC2WwlK6/x7XnPyVOwnOyvd4DcbqaLEvsAfZvf9AH2/Zv2VLnEWmy6n484xpwAiAry5H2PaHz+97/ow=="
+      "version": "4.0.3",
+      "resolved": "https://registry.npmjs.org/cspell-util-bundle/-/cspell-util-bundle-4.0.3.tgz",
+      "integrity": "sha512-te+207n0bIa6J61I7ZQTU3ODN+B4HuGQAxJjTHjI1Q5RUNUpuH8cyeFHa8A57OejLZexzOD2OUlcg5p7cnqPLw=="
     },
     "cssom": {
       "version": "0.3.6",
@@ -6299,9 +6299,9 @@
       "dev": true
     },
     "write-file-atomic": {
-      "version": "2.4.2",
-      "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.2.tgz",
-      "integrity": "sha512-s0b6vB3xIVRLWywa6X9TOMA7k9zio0TMOsl9ZnDkliA/cfJlpHXAscj0gbHVJiTdIuAYpIyqS5GW91fqm6gG5g==",
+      "version": "2.4.3",
+      "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
+      "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
       "requires": {
         "graceful-fs": "^4.1.11",
         "imurmurhash": "^0.1.4",
