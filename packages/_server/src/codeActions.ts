@@ -12,18 +12,9 @@ import * as Validator from './validator';
 import { CSpellUserSettings } from './cspellConfig';
 import { SpellingDictionary } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
-import { CompoundWordsMethod } from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
-// import { SuggestionGenerator } from './SuggestionsGenerator';
-
-const defaultNumSuggestions = 10;
-
-const regexJoinedWords = /[+]/g;
-
-const maxWordLengthForSuggestions = 20;
-const wordLengthForLimitingSuggestions = 15;
-const maxNumberOfSuggestionsForLongWords = 1;
-const maxEdits = 3;
+import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
+import { uniqueFilter } from './util';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
@@ -39,16 +30,17 @@ export function onCodeActionHandler(
     fnSettingsVersion: (doc: TextDocument) => number,
     documentSettings: DocumentSettings,
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
-    type SettingsDictPair = [CSpellUserSettings, SpellingDictionary];
+    type SettingsDictPair = GetSettingsResult;
     interface CacheEntry {
         docVersion: number;
         settingsVersion: number;
         settings: Promise<SettingsDictPair>;
     }
 
+    const sugGen = new SuggestionGenerator(getSettings);
     const settingsCache = new Map<string, CacheEntry>();
 
-    async function getSettings(doc: TextDocument): Promise<[CSpellUserSettings, SpellingDictionary]> {
+    async function getSettings(doc: TextDocument): Promise<GetSettingsResult> {
         const cached = settingsCache.get(doc.uri);
         const settingsVersion = fnSettingsVersion(doc);
         if (!cached || cached.docVersion !== doc.version || cached.settingsVersion !== settingsVersion) {
@@ -59,9 +51,9 @@ export function onCodeActionHandler(
     }
 
     async function constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
-        const docSetting = cspell.constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
-        const dict = await cspell.getDictionary(docSetting);
-        return  [docSetting, dict];
+        const settings = cspell.constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
+        const dictionary = await cspell.getDictionary(settings);
+        return  { settings, dictionary };
     }
 
     const handler = async (params: CodeActionParams) => {
@@ -72,11 +64,10 @@ export function onCodeActionHandler(
         const optionalTextDocument = documents.get(uri);
         if (!optionalTextDocument) return [];
         const textDocument = optionalTextDocument;
-        const [ docSetting, dictionary ] = await getSettings(textDocument);
+        const { settings: docSetting, dictionary } = await getSettings(textDocument);
         if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
             return [];
         }
-        const { numSuggestions = defaultNumSuggestions } = docSetting;
         const folders = await documentSettings.folders;
         const showAddToWorkspace = folders && folders.length > 1;
         const showAddToFolder = folders && folders.length > 0;
@@ -85,14 +76,8 @@ export function onCodeActionHandler(
             return LangServer.TextEdit.replace(range, text || '');
         }
 
-        function getSuggestions(dictionary: SpellingDictionary, word: string, numSuggestions: number): string[] {
-            if (word.length > maxWordLengthForSuggestions) {
-                return [];
-            }
-            const numSugs = word.length > wordLengthForLimitingSuggestions ? maxNumberOfSuggestionsForLongWords : numSuggestions;
-            const numEdits = maxEdits;
-            // Turn off compound suggestions for now until it works a bit better.
-            return dictionary.suggest(word, numSugs, CompoundWordsMethod.NONE, numEdits).map(sr => sr.word.replace(regexJoinedWords, ''));
+        function getSuggestions(word: string) {
+            return sugGen.genWordSuggestions(textDocument, word);
         }
 
         function createAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
@@ -107,15 +92,16 @@ export function onCodeActionHandler(
             return action;
         }
 
-        function genCodeActionsForSuggestions(dictionary: SpellingDictionary) {
+        async function genCodeActionsForSuggestions(dictionary: SpellingDictionary) {
             const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
                 const word = extractText(textDocument, diag.range);
                 diagWord = diagWord || word;
-                const sugs: string[] = getSuggestions(dictionary, word, numSuggestions);
+                const sugs: string[] = await getSuggestions(word);
                 sugs
-                    .map(sug => Text.matchCase(word, sug))
+                    .map(sug => Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug)
+                    .filter(uniqueFilter())
                     .forEach(sugWord => {
                         const action = createAction(
                             sugWord,

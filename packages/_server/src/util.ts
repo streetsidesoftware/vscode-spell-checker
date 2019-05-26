@@ -61,3 +61,17 @@ function matchingUriLength(a: string, b: string): number {
     for (i = 0; i < limit && aParts[i] === bParts[i]; i += 1) {}
     return aParts.slice(0, i).join(sep).length;
 }
+
+export function uniqueFilter<T>(): (v: T) => boolean;
+export function uniqueFilter<T, U>(extractFn: (v: T) => U): (v: T) => boolean;
+export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
+    const values = new Set<T>();
+    const extractor = extractFn || (a => a);
+    return (v: T) => {
+        const vv = extractor(v);
+        const ret = !values.has(vv);
+        values.add(vv);
+        return ret;
+    };
+}
+

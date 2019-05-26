@@ -10,7 +10,7 @@ describe('Validate Suggestions', () => {
     test('genWordSuggestions', async () => {
         const gen = new SuggestionGenerator(getSettings);
         const doc = { languageId: 'typescript', text: '' };
-        const settings = getSettings(doc);
+        const { settings } = await getSettings(doc);
         const result = await gen.genWordSuggestions(doc, 'code');
         expect(result).toContain('code');
         expect(result).toHaveLength(settings.numSuggestions || 0);
@@ -24,7 +24,9 @@ describe('Validate Suggestions', () => {
         expect(result).toContain('acknowledgements');
     });
 
-    function getSettings(doc: DocInfo) {
-        return cspell.constructSettingsForText(cspell.getDefaultSettings(), doc.text || '', doc.languageId);
+    async function getSettings(doc: DocInfo) {
+        const settings = await cspell.constructSettingsForText(cspell.getDefaultSettings(), doc.text || '', doc.languageId);
+        const dictionary = await cspell.getDictionary(settings);
+        return { settings, dictionary };
     }
 });
