@@ -221,7 +221,10 @@ export function enableLocalForTarget(
 ): Promise<boolean> {
     const applyFn: (src: string | undefined) => string | undefined = enable
         ? (currentLanguage) => unique(normalizeLocal(currentLanguage).split(',').concat(local.split(','))).join(',')
-        : (currentLanguage) => unique(normalizeLocal(currentLanguage).split(',')).filter(lang => lang !== local).join(',');
+        : (currentLanguage) => {
+            const value = unique(normalizeLocal(currentLanguage).split(',')).filter(lang => lang !== local).join(',');
+            return value || undefined;
+        };
     return updateSettingInConfig(
         'language',
         target,
