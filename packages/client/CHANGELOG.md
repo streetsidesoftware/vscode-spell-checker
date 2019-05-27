@@ -2,7 +2,7 @@
 
 ## [1.7.12]
 - Add snippets to make it easier to add cspell settings to a doc.
-- Turn on `git-commit` by default so git commit messages can be spell checked.
+- Turn on `git-commit` by default so git commit messages can be spell checked without changing the settings.
 
 ## [1.7.11]
 - Fix [Chinese word in two English words should not be hinted. · Issue #291](https://github.com/streetsidesoftware/vscode-spell-checker/issues/291)
