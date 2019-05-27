@@ -1,5 +1,14 @@
 # Release Notes
 
+## [1.7.12]
+- Add snippets to make it easier to add cspell settings to a doc.
+- Turn on `git-commit` by default so git commit messages can be spell checked.
+
+## [1.7.11]
+- Fix [Chinese word in two English words should not be hinted. · Issue #291](https://github.com/streetsidesoftware/vscode-spell-checker/issues/291)
+- Fix [Does not check Japanese prolonged sound mark · Issue #253](https://github.com/streetsidesoftware/vscode-spell-checker/issues/253)
+- Fix [Support spell checking for English words amongst an unsupported language · Issue #286](https://github.com/streetsidesoftware/vscode-spell-checker/issues/286)
+
 ## [1.7.10]
 - Bundle the VS Code side of the extension in to a single `.js` file. This should address:
   - [Extension causes high cpu load · Issue #309](https://github.com/streetsidesoftware/vscode-spell-checker/issues/309)
