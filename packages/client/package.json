@@ -131,7 +131,7 @@
         ],
         "snippets": [
             {
-                "language": "",
+                "language": "disabled",
                 "path": "./cspell.code-snippets"
             }
         ],

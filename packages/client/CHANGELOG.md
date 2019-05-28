@@ -1,5 +1,8 @@
 # Release Notes
 
+## [1.7.13]
+- Disable snippets until they can be configured.
+
 ## [1.7.12]
 - Add snippets to make it easier to add cspell settings to a doc.
 - Turn on `git-commit` by default so git commit messages can be spell checked without changing the settings.
