@@ -10,7 +10,7 @@ import * as fs from 'fs-extra';
 
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
-import Uri from 'vscode-uri';
+import { URI as Uri } from 'vscode-uri';
 import { log } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
 import { GlobMatcher } from 'cspell-glob';

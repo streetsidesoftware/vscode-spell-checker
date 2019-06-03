@@ -38,7 +38,7 @@
     "rxjs": "^6.5.2",
     "vscode-jsonrpc": "^4.0.0",
     "vscode-languageserver": "^5.2.1",
-    "vscode-uri": "^1.0.8"
+    "vscode-uri": "^2.0.0"
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
