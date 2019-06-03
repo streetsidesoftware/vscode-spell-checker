@@ -2,6 +2,7 @@
 
 ## [1.7.13]
 - Disable snippets until they can be configured.
+- Update `cspell` library to get the latest English dictionary and some performance improvements.
 
 ## [1.7.12]
 - Add snippets to make it easier to add cspell settings to a doc.
