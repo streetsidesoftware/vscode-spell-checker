@@ -716,9 +716,9 @@
       }
     },
     "@types/node": {
-      "version": "11.13.11",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-11.13.11.tgz",
-      "integrity": "sha512-blLeR+KIy26km1OU8yTLUlSyVCOvT6+wPq/77tIA+uSHHa4yYQosn+bbaJqPtWId0wjVClUtD7aXzDbZeKWqig==",
+      "version": "11.13.13",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-11.13.13.tgz",
+      "integrity": "sha512-GFWH7e4Q/OGLAO545bupVju+nE1YtLSwYAdLfSzAXnTPqoqKoXCOEtB7Cluvg9B/h2nGLhyzCDyCInYvrOE2nw==",
       "dev": true
     },
     "@types/stack-utils": {
@@ -1474,9 +1474,9 @@
       }
     },
     "cspell-dict-en_us": {
-      "version": "1.2.15",
-      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.15.tgz",
-      "integrity": "sha512-jQ3vegv5xwPhyeHtNyfGunRw6/7OuZq/+a+du5v8JjP3IZpTZRsDrNDX8y9xgmNjMYLOazd9WA/IDxgVd72oXA==",
+      "version": "1.2.16",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.16.tgz",
+      "integrity": "sha512-qrc5Mh2hWT53jlcDo3hFFvAgC+hpekQnNN5seHohz6yWr2XeAsATZP/2ftnrKadZ1iAkeJU2LABymhzK+ZAIHg==",
       "requires": {
         "configstore": "^4.0.0"
       }
@@ -1546,17 +1546,17 @@
       }
     },
     "cspell-dict-python": {
-      "version": "1.0.11",
-      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.11.tgz",
-      "integrity": "sha512-Ox+yWGj5SU9venH2vqvYKfpExnYqkYLUyh2MBjpcUkBn+TYMb6RKLHckjHVbv5xtDGEhrLtBCxFR6NokK3ZXIw==",
+      "version": "1.0.12",
+      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.12.tgz",
+      "integrity": "sha512-h82By/vlnZvaag0mn+Qoj4yURZ0s/5/hpNwmIWiQWSHK61b9GMcZSmFLoJ7Nc8wi8NkxYJdL3ot5mmjBzHVPiA==",
       "requires": {
         "configstore": "^4.0.0"
       }
     },
     "cspell-dict-rust": {
-      "version": "1.0.8",
-      "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.8.tgz",
-      "integrity": "sha512-cqnzO6/q0bdcrGn8yauJkAEFZCzLVCI59h9nKIy9cI5AS81gKYTnVvdl94zjFijRw4i/OKArz4VTjqxBjuNHMQ==",
+      "version": "1.0.9",
+      "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.9.tgz",
+      "integrity": "sha512-8KiEawwcixyVw8EuTTQIcxHc3GTxQ3PFW+T9D8r+Y4crw5JcJeyOQlRHZcyG2+2qAhamS+tlAh/puaKwANuWWg==",
       "requires": {
         "configstore": "^4.0.0"
       }
@@ -1578,18 +1578,18 @@
       }
     },
     "cspell-io": {
-      "version": "4.0.12",
-      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.12.tgz",
-      "integrity": "sha512-X0ZxvuIEzY/4e13RCEQQqVItmaqPJwaSStv2G0PJckgoxgmeZSLUsrhky7j+rOBtorf7xPCEAyTUWIFoLVqCkw==",
+      "version": "4.0.13",
+      "resolved": "https://registry.npmjs.org/cspell-io/-/cspell-io-4.0.13.tgz",
+      "integrity": "sha512-VcO1FtymVD/vjFc5sm7wsgQ9/diXk7+EeTbRh/r8mGVqqZnpYTKpb1oFhtODNgb5+OuTW10zeQSCPwSYLJn5pg==",
       "requires": {
         "iconv-lite": "^0.4.24",
         "iterable-to-stream": "^1.0.1"
       }
     },
     "cspell-lib": {
-      "version": "4.0.12",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.12.tgz",
-      "integrity": "sha512-m2xo3Wum0m0g6DiQyKL/uq5j0AKpB9siRfiW03jzLaVigA7j+wRcN8HU5bb0BqeRFXnESjqztzBurtBUv3ahnQ==",
+      "version": "4.0.15",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.15.tgz",
+      "integrity": "sha512-6A2XygBP5TuAHO3ZYG0UIwTAqCzN4XsNZXM8n3gmLCNuLPUHo75hxc+4AvnorgseP5lwgljFNnE3Dob7hHKJ5A==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^4.0.0",
@@ -1598,7 +1598,7 @@
         "cspell-dict-django": "^1.0.11",
         "cspell-dict-elixir": "^1.0.8",
         "cspell-dict-en-gb": "^1.1.10",
-        "cspell-dict-en_us": "^1.2.15",
+        "cspell-dict-en_us": "^1.2.16",
         "cspell-dict-fullstack": "^1.0.13",
         "cspell-dict-golang": "^1.1.11",
         "cspell-dict-html-symbol-entities": "^1.0.10",
@@ -1607,21 +1607,21 @@
         "cspell-dict-lorem-ipsum": "^1.0.9",
         "cspell-dict-php": "^1.0.10",
         "cspell-dict-powershell": "^1.0.1",
-        "cspell-dict-python": "^1.0.11",
-        "cspell-dict-rust": "^1.0.8",
+        "cspell-dict-python": "^1.0.12",
+        "cspell-dict-rust": "^1.0.9",
         "cspell-dict-scala": "^1.0.8",
-        "cspell-io": "^4.0.12",
-        "cspell-trie-lib": "^4.0.10",
+        "cspell-io": "^4.0.13",
+        "cspell-trie-lib": "^4.0.11",
         "cspell-util-bundle": "^4.0.3",
         "fs-extra": "^7.0.1",
         "gensequence": "^2.1.2",
-        "vscode-uri": "^1.0.6"
+        "vscode-uri": "^1.0.8"
       }
     },
     "cspell-trie-lib": {
-      "version": "4.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.10.tgz",
-      "integrity": "sha512-+srEkbDAqRH0bdouOT4rYo024onIfjJSDmf8QYoByciH4uSapWrAfcxi9gwg6KyO2g1zwJg17lG9Xw0nNi/GGw==",
+      "version": "4.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-4.0.11.tgz",
+      "integrity": "sha512-8zIRE2V9uOZhCHhKeAKj4D5M/ioHhQvAXxO/lTRHRyc0EM+R7ADaYQvpDhCmOIIRC5UZfb7Vvts06RUcEtUjdA==",
       "requires": {
         "gensequence": "^2.1.2",
         "js-xxhash": "^1.0.1"
@@ -5938,9 +5938,9 @@
       }
     },
     "typescript": {
-      "version": "3.4.5",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.4.5.tgz",
-      "integrity": "sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==",
+      "version": "3.5.1",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-3.5.1.tgz",
+      "integrity": "sha512-64HkdiRv1yYZsSe4xC1WVgamNigVYjlssIoaH2HcZF0+ijsk5YK2g0G34w9wJkze8+5ow4STd22AynfO6ZYYLw==",
       "dev": true
     },
     "uglify-js": {
@@ -6170,9 +6170,9 @@
       }
     },
     "vscode-uri": {
-      "version": "1.0.6",
-      "resolved": "https://registry.npmjs.org/vscode-uri/-/vscode-uri-1.0.6.tgz",
-      "integrity": "sha512-sLI2L0uGov3wKVb9EB+vIQBl9tVP90nqRvxSoJ35vI3NjxE8jfsE5DSOhWgSunHSZmKS4OCi2jrtfxK7uyp2ww=="
+      "version": "1.0.8",
+      "resolved": "https://registry.npmjs.org/vscode-uri/-/vscode-uri-1.0.8.tgz",
+      "integrity": "sha512-obtSWTlbJ+a+TFRYGaUumtVwb+InIUVI0Lu0VBUAPmj2cU5JutEXg3xUE0c2J5Tcy7h2DEKVJBFi+Y9ZSFzzPQ=="
     },
     "w3c-hr-time": {
       "version": "1.0.1",
