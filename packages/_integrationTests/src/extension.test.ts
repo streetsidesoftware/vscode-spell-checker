@@ -26,15 +26,23 @@ const apiSignature: Api = {
     updateSettings: 'updateSettings',
 };
 
-describe('Launch code spell extension', () => {
+describe('Launch code spell extension', function () {
+    this.timeout(60000);
     const docUri = getDocUri('diagnostics.txt');
 
     it('Verify the extension starts', async () => {
-        const context = await activate(docUri)
+        const context = await activate(docUri);
         expect(context).to.not.be.undefined;
         const extApi = context!.extApi;
         expect(extApi).to.not.be.undefined;
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
         expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
-    })
-})
+    });
+
+    // it('Slows down the integration test for manual manipulation.', async () => {
+    //     return new Promise((resolve) => {
+    //         console.log('Waiting 30s');
+    //         setTimeout(resolve, 30000);
+    //     });
+    // });
+});
