@@ -143,7 +143,7 @@ export class DocumentSettings {
         if (matches.length) {
             return Promise.all(matches);
         }
-        const { uri } = (await this.folders)[0] || { uri: '' };
+        const { uri } = (await this.folders)[0] || { uri: docUri };
         return [await this.fetchSettingsForUri(uri)];
     }
 

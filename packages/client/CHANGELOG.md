@@ -1,5 +1,11 @@
 # Release Notes
 
+## []1.7.16]
+- Fix [Error - validateTextDocument · Issue #351](https://github.com/streetsidesoftware/vscode-spell-checker/issues/351)
+
+## [1.7.15]
+- Fix [Multiple misspelled words in a file cause "on save" actions to time out · Issue #349](https://github.com/streetsidesoftware/vscode-spell-checker/issues/349)
+
 ## [1.7.13]
 - Disable snippets until they can be configured.
 - Update `cspell` library to get the latest English dictionary and some performance improvements.
