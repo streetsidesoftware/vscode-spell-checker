@@ -9,7 +9,7 @@ import { ExtensionApi } from './ExtensionApi';
 
 type Api = {
     [K in keyof ExtensionApi]: K;
-}
+};
 
 const apiSignature: Api = {
     addWordToUserDictionary: 'addWordToUserDictionary',
