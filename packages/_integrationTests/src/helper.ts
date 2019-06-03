@@ -20,7 +20,7 @@ export interface DocumentContext {
  * Activates the vscode.lsp-sample extension
  */
 export async function activate(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
-    const extensionId = getExtensionId()
+    const extensionId = getExtensionId();
     const ext = vscode.extensions.getExtension(extensionId)!;
     try {
         const expActivate = await ext.activate();
@@ -33,7 +33,7 @@ export async function activate(docUri: vscode.Uri): Promise<DocumentContext | un
             editor,
             expActivate,
             extApi,
-        }
+        };
     } catch (e) {
         console.error(e);
     }

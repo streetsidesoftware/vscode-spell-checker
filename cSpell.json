@@ -6,7 +6,18 @@
     "language": "en-US",
     // words - list of words to be always considered correct
     "words": [
-        "lerna"
+        "downlevel",
+        "ESNEXT",
+        "languageclient",
+        "lerna",
+        "nospace",
+        "quotemark",
+        "sourcemap",
+        "streetsidesoftware",
+        "typechecking",
+        "Interop",
+        "tslib",
+        "webview"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
