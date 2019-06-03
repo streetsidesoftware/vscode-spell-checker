@@ -129,12 +129,6 @@
                 "title": "Ignore Word in User Settings"
             }
         ],
-        "snippets": [
-            {
-                "language": "disabled",
-                "path": "./cspell.code-snippets"
-            }
-        ],
         "languages": [
             {
                 "id": "jsonc",
