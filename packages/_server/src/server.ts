@@ -2,9 +2,11 @@
 
 import {
     createConnection,
-    TextDocuments, TextDocument,
+    TextDocuments, TextDocument, Disposable,
     InitializeResult,
     InitializeParams,
+    ServerCapabilities,
+    CodeActionKind,
 } from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './vscode.workspaceFolders';
@@ -36,7 +38,7 @@ type RequestResult<T> = T | Promise<T>;
 
 type RequestMethodApi = {
     [key in keyof Api.ServerMethodRequestResult]: (param: Api.ServerRequestMethodRequests[key]) => RequestResult<Api.ServerRequestMethodResults[key]>;
-}
+};
 
 const notifyMethodNames: Api.NotifyServerMethodConstants = {
     onConfigChange: 'onConfigChange',
@@ -62,14 +64,16 @@ function run() {
     const triggerUpdateConfig = new ReplaySubject<void>(1);
     const triggerValidateAll = new ReplaySubject<void>(1);
     const validationByDoc = new Map<string, Subscription>();
+    const blockValidation = new Map<string, number>();
     let isValidationBusy = false;
+    const disposables: Disposable[] = [];
 
     const requestMethodApi: RequestMethodApi = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
         spellingSuggestions: handleSpellingSuggestions,
-    }
+    };
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
@@ -85,13 +89,21 @@ function run() {
         // Hook up the logger to the connection.
         log('onInitialize');
         setWorkspaceBase(params.rootUri ? params.rootUri : '');
-        return {
-            capabilities: {
-                // Tell the client that the server works in FULL text document sync mode
-                textDocumentSync: documents.syncKind,
-                codeActionProvider: true
-            }
+        const capabilities: ServerCapabilities = {
+            // Tell the client that the server works in FULL text document sync mode
+            textDocumentSync:  {
+                openClose: true,
+                change: documents.syncKind,
+                willSave: true,
+                save: { includeText: true },
+            },
+            codeActionProvider: {
+                codeActionKinds: [
+                    CodeActionKind.QuickFix
+                ],
+            },
         };
+        return { capabilities };
     });
 
     // The settings have changed. Is sent on server activation as well.
@@ -177,6 +189,7 @@ function run() {
         return {};
     }
 
+    // Register API Handlers
     Object.entries(requestMethodApi).forEach(([name, fn]) => {
         connection.onRequest(name, fn);
     });
@@ -202,13 +215,13 @@ function run() {
                 } else {
                     validationByDoc.set(doc.uri, validationRequestStream.pipe(
                         filter(doc => uri === doc.uri),
-                        tap(doc => log('Request Validate:', doc.uri)),
-                        debounceTime(50),
-                        tap(doc => log('Request Validate 2:', doc.uri)),
+                        tap(doc => log(`Request Validate: v${doc.version}`, doc.uri)),
                         flatMap(async doc => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
                         debounce(dsp => timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
                             .pipe(filter(() => !isValidationBusy))
                         ),
+                        tap(dsp => log(`blocked? ${blockValidation.has(dsp.doc.uri)}`, dsp.doc.uri)),
+                        filter(dsp => !blockValidation.has(dsp.doc.uri)),
                         flatMap(validateTextDocument),
                         ).subscribe(diag => connection.sendDiagnostics(diag))
                     );
@@ -274,9 +287,9 @@ function run() {
                 const settingsToUse = await getSettingsToUseForDocument(doc);
                 if (settingsToUse.enabled) {
                     logInfo('Validate File', uri);
-                    log('validateTextDocument start:', uri);
+                    log(`validateTextDocument start: v${doc.version}`, uri);
                     const diagnostics = await Validator.validateTextDocument(doc, settingsToUse);
-                    log('validateTextDocument done:', uri);
+                    log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };
                 }
             } catch (e) {
@@ -295,22 +308,40 @@ function run() {
     // for open, change and close text document events
     documents.listen(connection);
 
-    // The content of a text document has changed. This event is emitted
-    // when the text document first opened or when its content has changed.
-    documents.onDidChangeContent((change) => {
-        validationRequestStream.next(change.document);
-    });
+    disposables.push(
+        // The content of a text document has changed. This event is emitted
+        // when the text document first opened or when its content has changed.
+        documents.onDidChangeContent(event => {
+            validationRequestStream.next(event.document);
+        }),
 
-    documents.onDidClose((event) => {
-        const uri = event.document.uri;
-        const sub = validationByDoc.get(uri);
-        if (sub) {
-            validationByDoc.delete(uri);
-            sub.unsubscribe();
-        }
-        // A text document was closed we clear the diagnostics
-        connection.sendDiagnostics({ uri, diagnostics: [] });
-    });
+        // We want to block validation during saving.
+        documents.onWillSave(event => {
+            const { uri, version } = event.document;
+            log(`onWillSave: v${version}`, uri);
+            blockValidation.set(uri, version);
+        }),
+
+        // Enable validation once it is saved.
+        documents.onDidSave(event => {
+            const { uri, version } = event.document;
+            log(`onDidSave: v${version}`, uri);
+            blockValidation.delete(uri);
+            validationRequestStream.next(event.document);
+        }),
+
+        // Remove subscriptions when a document closes.
+        documents.onDidClose(event => {
+            const uri = event.document.uri;
+            const sub = validationByDoc.get(uri);
+            if (sub) {
+                validationByDoc.delete(uri);
+                sub.unsubscribe();
+            }
+            // A text document was closed we clear the diagnostics
+            connection.sendDiagnostics({ uri, diagnostics: [] });
+        }),
+    );
 
     connection.onCodeAction(
         onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, documentSettings)
@@ -321,6 +352,8 @@ function run() {
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
+        disposables.forEach(d => d.dispose());
+        disposables.length = 0;
         disposableValidate.unsubscribe();
         disposableTriggerUpdateConfigStream.unsubscribe();
         disposableTriggerValidateAll.unsubscribe();

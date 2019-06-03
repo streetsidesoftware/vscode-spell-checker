@@ -14,7 +14,7 @@ import { SpellingDictionary } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
-import { uniqueFilter } from './util';
+import { uniqueFilter, log } from './util';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     const { start, end } = range;
@@ -59,10 +59,10 @@ export function onCodeActionHandler(
     const handler = async (params: CodeActionParams) => {
         const actions: CodeAction[] = [];
         const { context, textDocument: { uri } } = params;
-
         const { diagnostics } = context;
+        log(`CodeAction Only: ${context.only} Num: ${diagnostics.length}`, uri);
         const optionalTextDocument = documents.get(uri);
-        if (!optionalTextDocument) return [];
+        if (!optionalTextDocument || !diagnostics.length) return [];
         const textDocument = optionalTextDocument;
         const { settings: docSetting, dictionary } = await getSettings(textDocument);
         if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
@@ -111,10 +111,13 @@ export function onCodeActionHandler(
                             textDocument.version,
                             [ replaceText(diag.range, sugWord) ]
                         );
-                        // Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
-                        // if (!actions.length) {
-                        //     action.isPreferred = true;
-                        // }
+                        /**
+                          * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
+                          * Note we might want this to be a config setting incase someone has `"editor.codeActionsOnSave": { "source.fixAll": true }`
+                          * if (!actions.length) {
+                          *     action.isPreferred = true;
+                          * }
+                          */
                         actions.push(action);
                     });
             }

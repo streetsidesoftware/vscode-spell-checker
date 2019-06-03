@@ -54,7 +54,9 @@ export class CSpellClient {
      */
     constructor(module: string, languageIds: string[]) {
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
-        this.allowedSchemas = new Set(Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes);
+        this.allowedSchemas = new Set(
+            Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes
+        );
         setOfSupportedSchemes.clear();
         this.allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
 
@@ -166,7 +168,10 @@ export class CSpellClient {
         return this.notifySettingsChanged();
     }
 
-    private async sendRequest<K extends keyof ServerRequestMethodRequests>(method: K, param: ServerRequestMethodRequests[K]): Promise<ServerRequestMethodResults[K]> {
+    private async sendRequest<K extends keyof ServerRequestMethodRequests>(
+        method: K,
+        param: ServerRequestMethodRequests[K]
+    ): Promise<ServerRequestMethodResults[K]> {
         await this.client.onReady();
         return this.client.sendRequest(method, param);
     }
