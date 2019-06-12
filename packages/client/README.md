@@ -49,22 +49,28 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ## Enabled File Types
 
-* TypeScript
-* JavaScript
-* JSON
-* Text
-* Markdown
-* Handlebars
-* LaTex
+* AsciiDoc
 * C, C++
 * C#
+* css, less, scss
+* Elixir
 * Go
+* Html
 * Java
+* JavaScript
+* JSON / JSONC
+* LaTex
+* Markdown
 * PHP
+* PowerShell
+* Pug / Jade
 * Python
-* YAML
-* AsciiDoc
 * reStructuredText
+* Rust
+* Scala
+* Text
+* TypeScript
+* YAML
 
 ### Enable / Disable File Types
 
@@ -342,7 +348,6 @@ Note, the settings in cSpell.json will override the equivalent cSpell settings i
         "markdown",
         "php",
         "plaintext",
-        "text",
         "typescript",
         "typescriptreact",
         "yml"
