@@ -11,7 +11,7 @@ import { Grid, Row, Cell } from '@material/react-layout-grid';
 
 const vsCodeApi = new VsCodeWebviewApi();
 
-function initRipple(){}
+function initRipple() {}
 @observer
 export class PanelAbout extends React.Component<{appState: AppState}, {}> {
     render() {
@@ -19,7 +19,10 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
         const workspace = (appState.settings.workspace || {});
         return (
             <Grid>
-                <h1><img style={{ verticalAlign: "middle", paddingBottom: "8px"}} src={spellCheckIcon} /> <span>Code Spell Checker</span></h1>
+                <h1>
+                    <img style={{ verticalAlign: 'middle', paddingBottom: '8px'}} src={spellCheckIcon} />
+                    <span>Code Spell Checker</span>
+                </h1>
 
                 <Button
                     className="button-alternate"
@@ -31,9 +34,9 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                 <Row>
                     <Cell columns={6}>
                     <List>
-                        <ListItem role='checkbox'>
-                            <ListItemGraphic graphic={<MaterialIcon icon='settings'/>} />
-                            <ListItemText primaryText='Debug Mode' />
+                        <ListItem role="checkbox">
+                            <ListItemGraphic graphic={<MaterialIcon icon="settings"/>} />
+                            <ListItemText primaryText="Debug Mode" />
                             <ListItemMeta meta={
                                 <Checkbox
                                     checked={appState.debugMode}

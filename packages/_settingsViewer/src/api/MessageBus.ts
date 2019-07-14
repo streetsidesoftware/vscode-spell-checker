@@ -24,7 +24,7 @@ export class MessageBus implements Messenger {
             fn,
             cmd,
             dispose: () => this.listeners.has(cmd) && this.listeners.get(cmd)!.delete(listener),
-        }
+        };
 
         this.listeners.set(cmd, this.listeners.get(cmd) || new Set());
         const cmdListeners = this.listeners.get(cmd)!;

@@ -4,12 +4,11 @@ import { AppState } from '../AppState';
 import Select from '@material/react-select';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
-import { Grid, Row, Cell } from '@material/react-layout-grid';
 import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
 import { Checkbox } from '@material/react-checkbox';
 import MaterialIcon from '@material/react-material-icon';
 
-function initRipple(){}
+function initRipple() {}
 
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
@@ -27,8 +26,8 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                 <h2>
                     File
                 </h2>
-                <Select className='select_folder'
-                        label='File'
+                <Select className="select_folder"
+                        label="File"
                         options={appState.documentSelection}
                         onChange={(evt) => select(evt.target as HTMLSelectElement)}
                         value={appState.activeFileUri}
@@ -43,8 +42,8 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                 </Grid>
                 */}
                         <List>
-                            <ListItem role='checkbox'>
-                                <ListItemGraphic graphic={<MaterialIcon icon='description'/>} />
+                            <ListItem role="checkbox">
+                                <ListItemGraphic graphic={<MaterialIcon icon="description"/>} />
                                 <ListItemText primaryText={`File enabled`} />
                                 <ListItemMeta meta={
                                     <Checkbox
@@ -53,21 +52,23 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>
-                            <ListItem role='checkbox' shouldToggleCheckbox={true} onClick={evt => {
+                            <ListItem role="checkbox" shouldToggleCheckbox={true} onClick={evt => {
                                     this.enableLanguageId(!languageEnabled);
                                 }}>
-                                <ListItemGraphic graphic={<MaterialIcon icon='code'/>} />
-                                <ListItemText primaryText={<label htmlFor='checkbox-language-enabled'>{`Programming Language: ${languageId}`}</label>} />
+                                <ListItemGraphic graphic={<MaterialIcon icon="code"/>} />
+                                <ListItemText
+                                    primaryText={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
+                                />
                                 <ListItemMeta meta={
                                     <Checkbox
-                                        nativeControlId='checkbox-language-enabled'
+                                        nativeControlId="checkbox-language-enabled"
                                         checked={languageEnabled}
                                         initRipple={initRipple} />
                                 }/>
                             </ListItem>
                         </List>
 
-                <SectionDictionaries dictionaries={dictionaries} sectionTitle='Active Dictionaries'></SectionDictionaries>
+                <SectionDictionaries dictionaries={dictionaries} sectionTitle="Active Dictionaries"></SectionDictionaries>
                 {appState.debugMode ?
                     <div>
                         <pre>{JSON.stringify(toJS(config), null, 2)}</pre>

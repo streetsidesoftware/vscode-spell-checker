@@ -5,14 +5,16 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
-import { ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage } from '../api/message';
+import {
+    ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
+} from '../api/message';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '../api/settings';
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { extractConfig } from '../api/settings/settingsHelper';
 // import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
-const dcopy: <T>(v: T)=>T = require('deep-copy');
+const dcopy: <T>(v: T) => T = require('deep-copy');
 
 require('./app.scss');
 
@@ -72,12 +74,12 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
             const config = settings.configs[target];
             if (!config) return '-';
             return (config.locals || ['-']).join(', ');
-        }
+        };
         return (
             <div>
                 <h2>Locals</h2>
                 <Grid>
-                    <Row key='title'>
+                    <Row key="title">
                         <Cell columns={2}>
                             Scope
                         </Cell>
