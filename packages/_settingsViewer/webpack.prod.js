@@ -5,8 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const baseConfig = require('./webpack.base');
 
 const tsConfig = require('./tsconfig.json');
-const target = path.resolve(tsConfig['compilerOptions']['outDir']);
+const target = path.resolve(tsConfig[ 'compilerOptions' ][ 'outDir' ]);
 const dist = path.join(target, 'webapp');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const viewerConfig = {
     ...baseConfig,
@@ -33,6 +34,17 @@ const viewerConfig = {
             chunkFilename: '[id].css',
         }),
     ],
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    output: {
+                        comments: false,
+                    },
+                },
+            }),
+        ],
+    },
 };
 
 module.exports = viewerConfig;
