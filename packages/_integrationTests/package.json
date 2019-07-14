@@ -17,11 +17,11 @@
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.0.4",
+    "@types/node": "^12.6.2",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "mocha": "^6.1.4",
-    "typescript": "^3.5.1",
-    "vscode": "^1.1.34"
+    "typescript": "^3.5.3",
+    "vscode": "^1.1.35"
   }
 }
