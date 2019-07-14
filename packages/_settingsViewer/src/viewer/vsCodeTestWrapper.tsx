@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {observable, toJS, computed} from 'mobx';
 import {observer} from 'mobx-react';
-import DevTools from 'mobx-react-devtools';
 import Button from '@material/react-button';
 import {Cell, Grid, Row} from '@material/react-layout-grid';
 import {
     ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
 } from '../api/message';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '../api/settings';
 import { MessageBus } from '../api';
@@ -76,7 +76,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
             return (config.locals || ['-']).join(', ');
         };
         return (
-            <div>
+            <ErrorBoundary>
                 <h2>Locals</h2>
                 <Grid>
                     <Row key="title">
@@ -121,8 +121,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                 <div>
                     <pre>{JSON.stringify(toJS(appState.settings), null, 2)}</pre>
                 </div>
-                <DevTools />
-            </div>
+            </ErrorBoundary>
         );
      }
 
