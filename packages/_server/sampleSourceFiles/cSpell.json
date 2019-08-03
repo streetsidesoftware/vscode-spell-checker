@@ -24,5 +24,8 @@
     "languageSettings": [
         { "languageId": "c",   "dictionaries": ["cpp2"] },
         { "languageId": "cpp", "dictionaries": ["cpp2"] }
+    ],
+    "overrides": [
+        { "filename": "**/documentSettings.test.ts", "language": "en-gb" }
     ]
 }

@@ -103,7 +103,7 @@ export class DocumentSettings {
 
     private _importSettings() {
         log(`importSettings`);
-        const importPaths = [...configsToImport.keys()].sort();
+        const importPaths = [...this.configsToImport.keys()].sort();
         return CSpell.readSettingsFiles(importPaths);
     }
 
@@ -113,7 +113,7 @@ export class DocumentSettings {
 
     registerConfigurationFile(path: string) {
         log('registerConfigurationFile:', path);
-        configsToImport.add(path);
+        this.configsToImport.add(path);
         this.importedSettings.clear();
         this.resetSettings();
     }
@@ -123,8 +123,10 @@ export class DocumentSettings {
         const folder = await this.findMatchingFolder(uri);
         const folderSettings = await this.fetchSettingsForUri(folder.uri);
         const spellSettings = CSpell.mergeSettings(this.defaultSettings, this.importedSettings(), folderSettings.settings);
+        const fileUri = Uri.parse(uri);
+        const fileSettings = CSpell.calcOverrideSettings(spellSettings, fileUri.fsPath);
         log('Finish fetchUriSettings:', uri);
-        return spellSettings;
+        return fileSettings;
     }
 
     private async findMatchingFolder(docUri: string): Promise<vscode.WorkspaceFolder> {
@@ -208,8 +210,6 @@ export class DocumentSettings {
     }
 
 }
-
-const configsToImport = new Set<string>();
 
 function configPathsForRoot(workspaceRootUri?: string) {
     const workspaceRoot = workspaceRootUri ? Uri.parse(workspaceRootUri).fsPath : '';
