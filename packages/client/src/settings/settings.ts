@@ -23,6 +23,7 @@ export const baseConfigName        = CSpellSettings.defaultFileName;
 export const configFileLocations = [
     baseConfigName,
     baseConfigName.toLowerCase(),
+    `.${baseConfigName.toLowerCase()}`,
     `.vscode/${baseConfigName}`,
     `.vscode/${baseConfigName.toLowerCase()}`,
 ];
