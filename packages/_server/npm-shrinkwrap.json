@@ -692,9 +692,9 @@
       }
     },
     "@types/jest": {
-      "version": "24.0.15",
-      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-24.0.15.tgz",
-      "integrity": "sha512-MU1HIvWUme74stAoc3mgAi+aMlgKOudgEvQDIm1v4RkrDudBh1T+NFp5sftpBAdXdx1J0PbdpJ+M2EsSOi1djA==",
+      "version": "24.0.17",
+      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-24.0.17.tgz",
+      "integrity": "sha512-1cy3xkOAfSYn78dsBWy4M3h/QF/HeWPchNFDjysVtp3GHeTdSmtluNnELfCmfNRRHo0OWEcpf+NsEJQvwQfdqQ==",
       "dev": true,
       "requires": {
         "@types/jest-diff": "*"
@@ -722,21 +722,15 @@
       }
     },
     "@types/node": {
-      "version": "11.13.18",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-11.13.18.tgz",
-      "integrity": "sha512-sMHdXLccscaxI+Hlzz58yLQue3lQyXP+6aQniDRi5oju3n0123kcjhicVGF20WF7cHiwJ2vxMbXc4skOclosoA==",
+      "version": "11.13.19",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-11.13.19.tgz",
+      "integrity": "sha512-tLRDU1hmcWamtgRT2iVRdraAQVGFQGgtcqracSo9XyMN1VeZLSVGb8RJJxVqab7UGbijoUijGPVFMjmqzyZIUw==",
       "dev": true
     },
     "@types/stack-utils": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-1.0.1.tgz",
       "integrity": "sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==",
-      "dev": true
-    },
-    "@types/vscode": {
-      "version": "1.36.0",
-      "resolved": "https://registry.npmjs.org/@types/vscode/-/vscode-1.36.0.tgz",
-      "integrity": "sha512-SbHR3Q5g/C3N+Ila3KrRf1rSZiyHxWdOZ7X3yFHXzw6HrvRLuVZrxnwEX0lTBMRpH9LkwZdqRTgXW+D075jxkg==",
       "dev": true
     },
     "@types/yargs": {
@@ -1800,9 +1794,9 @@
       }
     },
     "cspell-dict-en_us": {
-      "version": "1.2.16",
-      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.16.tgz",
-      "integrity": "sha512-qrc5Mh2hWT53jlcDo3hFFvAgC+hpekQnNN5seHohz6yWr2XeAsATZP/2ftnrKadZ1iAkeJU2LABymhzK+ZAIHg==",
+      "version": "1.2.17",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.17.tgz",
+      "integrity": "sha512-gTnbCUxomHt7ckdzGJRwKkgLn8PwZ0IAQv8f0ZhZA32bUYodngkIq5udNqVnRdWugnSTxZWD6iGJ5DkMj5sK8A==",
       "requires": {
         "configstore": "^4.0.0"
       },
@@ -1947,6 +1941,78 @@
       "version": "1.1.11",
       "resolved": "https://registry.npmjs.org/cspell-dict-golang/-/cspell-dict-golang-1.1.11.tgz",
       "integrity": "sha512-dInmq72nAtTBV4B1kX+6STIpKzMNfFTrzC1YBE3x3AKMdyCvKpuoIQHHpm/PFsfIeW2hiu+ZZrTYv1xc+diGlw==",
+      "requires": {
+        "configstore": "^4.0.0"
+      },
+      "dependencies": {
+        "configstore": {
+          "version": "4.0.0",
+          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
+          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
+          "requires": {
+            "dot-prop": "^4.1.0",
+            "graceful-fs": "^4.1.2",
+            "make-dir": "^1.0.0",
+            "unique-string": "^1.0.0",
+            "write-file-atomic": "^2.0.0",
+            "xdg-basedir": "^3.0.0"
+          }
+        },
+        "crypto-random-string": {
+          "version": "1.0.0",
+          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
+          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
+        },
+        "dot-prop": {
+          "version": "4.2.0",
+          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
+          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
+          "requires": {
+            "is-obj": "^1.0.0"
+          }
+        },
+        "is-obj": {
+          "version": "1.0.1",
+          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
+          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
+        },
+        "make-dir": {
+          "version": "1.3.0",
+          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
+          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
+          "requires": {
+            "pify": "^3.0.0"
+          }
+        },
+        "unique-string": {
+          "version": "1.0.0",
+          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
+          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
+          "requires": {
+            "crypto-random-string": "^1.0.0"
+          }
+        },
+        "write-file-atomic": {
+          "version": "2.4.3",
+          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
+          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
+          "requires": {
+            "graceful-fs": "^4.1.11",
+            "imurmurhash": "^0.1.4",
+            "signal-exit": "^3.0.2"
+          }
+        },
+        "xdg-basedir": {
+          "version": "3.0.0",
+          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
+          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
+        }
+      }
+    },
+    "cspell-dict-haskell": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/cspell-dict-haskell/-/cspell-dict-haskell-1.0.1.tgz",
+      "integrity": "sha512-ZqE26OLDBDys6zmDrxFUGAb9466xsqc4JlteH4OQH1PaJqM4nz+h4NJeREB4yI24O34MIPJPX8U+wkf4qhZMmw==",
       "requires": {
         "configstore": "^4.0.0"
       },
@@ -2681,9 +2747,9 @@
       }
     },
     "cspell-lib": {
-      "version": "4.0.23",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.23.tgz",
-      "integrity": "sha512-1CnuUs90SmH+Ji1zhAiyhuCzmGorgngtGQs2qbavJf/K0GtCNyotCabNz70neZhG+KcZv7KQRoQOouREvJUzFQ==",
+      "version": "4.0.24",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.24.tgz",
+      "integrity": "sha512-5kdKePcM25zOxu0a1CDgF4Ne3ujuRcVy8pf7+BxUa1++24c30KbQRfjVNzHJUcxu3e7JzGgRmhWrKIkMdt9xhg==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^5.0.0",
@@ -2692,9 +2758,10 @@
         "cspell-dict-django": "^1.0.11",
         "cspell-dict-elixir": "^1.0.9",
         "cspell-dict-en-gb": "^1.1.10",
-        "cspell-dict-en_us": "^1.2.16",
+        "cspell-dict-en_us": "^1.2.17",
         "cspell-dict-fullstack": "^1.0.14",
         "cspell-dict-golang": "^1.1.11",
+        "cspell-dict-haskell": "^1.0.1",
         "cspell-dict-html-symbol-entities": "^1.0.10",
         "cspell-dict-java": "^1.0.9",
         "cspell-dict-latex": "^1.0.10",
@@ -2710,18 +2777,6 @@
         "fs-extra": "^8.1.0",
         "gensequence": "^2.1.2",
         "vscode-uri": "^2.0.3"
-      },
-      "dependencies": {
-        "fs-extra": {
-          "version": "8.1.0",
-          "resolved": "https://registry.npmjs.org/fs-extra/-/fs-extra-8.1.0.tgz",
-          "integrity": "sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==",
-          "requires": {
-            "graceful-fs": "^4.2.0",
-            "jsonfile": "^4.0.0",
-            "universalify": "^0.1.0"
-          }
-        }
       }
     },
     "cspell-trie-lib": {
@@ -3816,9 +3871,9 @@
       "dev": true
     },
     "gensequence": {
-      "version": "2.1.2",
-      "resolved": "https://registry.npmjs.org/gensequence/-/gensequence-2.1.2.tgz",
-      "integrity": "sha512-TH0HcxnR7gpvpdMbiQ7+mL10Vf+9zekenuaSmUl7dHWzzeiiaCelk3Xv3V2ebrsVMLfi1KJ8Q0CpGthaxiM9zQ=="
+      "version": "2.1.3",
+      "resolved": "https://registry.npmjs.org/gensequence/-/gensequence-2.1.3.tgz",
+      "integrity": "sha512-qa/2k1YSyh6TGVtIMtmwv1tXfq7lkhR8pMtOExfZGuwyaqplMhUxyO/Wrw9fV+37B38WE6egpjSMcwyzlNOoHA=="
     },
     "get-caller-file": {
       "version": "1.0.3",
@@ -5133,9 +5188,9 @@
       "dev": true
     },
     "js-xxhash": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/js-xxhash/-/js-xxhash-1.0.1.tgz",
-      "integrity": "sha512-ociwKjHkCPjqNMmZtD7uUoL+AVhcSZX3WPmirRwXg+PzKD0v5x9K2yLpvkSglbThvbGN/TVA+3XFjPVolQwDpQ=="
+      "version": "1.0.4",
+      "resolved": "https://registry.npmjs.org/js-xxhash/-/js-xxhash-1.0.4.tgz",
+      "integrity": "sha512-S/6Oo7ruxx5k8m4qlMnbpwQdJjRsvvfcIhIk1dA9c5y5GNhYHKYKu9krEK3QgBax6CxJuf4gRL2opgLkdzWIKg=="
     },
     "jsbn": {
       "version": "0.1.1",
