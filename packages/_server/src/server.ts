@@ -159,7 +159,7 @@ function run() {
     async function handleGetConfigurationForDocument(params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
-        const docSettings = doc && await getSettingsToUseForDocument(doc) || undefined;
+        const docSettings = doc && (await getSettingsToUseForDocument(doc)) || undefined;
         const settings = await getActiveUriSettings(uri);
         return {
             languageEnabled: languageId && doc ? await isLanguageEnabled(doc, settings) : undefined,
