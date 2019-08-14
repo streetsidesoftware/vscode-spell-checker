@@ -1,6 +1,11 @@
 # Release Notes
 
-## []1.7.16]
+## [1.7.18]
+- Extension now reads `.cspell.json` files for configuration if they exist.
+- Added basic support for Haskell.
+- `overrides` now work as expected.  See: [cspell Overrides](https://github.com/streetsidesoftware/cspell/tree/master/packages/cspell#overrides)
+
+## [1.7.16]
 - Fix [Error - validateTextDocument · Issue #351](https://github.com/streetsidesoftware/vscode-spell-checker/issues/351)
 
 ## [1.7.15]
