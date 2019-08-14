@@ -1434,1299 +1434,147 @@
       "integrity": "sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA=="
     },
     "cspell-dict-companies": {
-      "version": "1.0.11",
-      "resolved": "https://registry.npmjs.org/cspell-dict-companies/-/cspell-dict-companies-1.0.11.tgz",
-      "integrity": "sha512-NHitlJBlw5rbZev/sbiDmi6pPWRmecQdifZObESYwtTfuy1oEwxg3AxXNJblVniSBHgv0buMn7IyNToctMdqYg==",
+      "version": "1.0.12",
+      "resolved": "https://registry.npmjs.org/cspell-dict-companies/-/cspell-dict-companies-1.0.12.tgz",
+      "integrity": "sha512-4D10xLKTlGSzB/dWbFO/5x/Z54fLMUlkipuBBtd3ykQEan45v37xSLDvWPiy/KRZnvBeaJWBK60exhfJiEQPtQ==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-cpp": {
-      "version": "1.1.20",
-      "resolved": "https://registry.npmjs.org/cspell-dict-cpp/-/cspell-dict-cpp-1.1.20.tgz",
-      "integrity": "sha512-043OjyjSPerqAjTmiP+M0pQArTDPmoG6aXeu0O0cjPMrmkj7do3EqLkbp8RDGhs1/ZchF+G+5mTumBx6MRD0VA==",
+      "version": "1.1.21",
+      "resolved": "https://registry.npmjs.org/cspell-dict-cpp/-/cspell-dict-cpp-1.1.21.tgz",
+      "integrity": "sha512-MDmPEyOZX780HyAMPyp+4qM5XRYyMHItJQ9b9dBTrA2FYW8DzESZZ0ZvZsUCcvdHJr5k2tLdZX8rO8KDi9Mj7w==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-django": {
-      "version": "1.0.11",
-      "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.11.tgz",
-      "integrity": "sha512-cCVDgYTxHjNGsXOkOXFlIFFYyD/+QKa4P5gjAO+ftVe5YkYLgR/ToIqBjLkeMpd5XLcUp9I2+4qAW4bXUGXvhA==",
+      "version": "1.0.12",
+      "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.12.tgz",
+      "integrity": "sha512-ChBzWNltlqIs7FSYjQV6qTdkxt4VFQJm2XGlfIoNUZ1kwrOpzVdEUuVpRhWtj9NVB6AJqJxWjm/HzVvMYEY2cg==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-elixir": {
-      "version": "1.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-dict-elixir/-/cspell-dict-elixir-1.0.9.tgz",
-      "integrity": "sha512-gez2DdKiiR0z51kGR8YI61qW5ARKDgoOxlwz9w84biCWDeN0m3th/xqFDf7D6IaA9PosNhSk1uD/OgoIWLH3mA==",
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-elixir/-/cspell-dict-elixir-1.0.10.tgz",
+      "integrity": "sha512-Z+9K1ZHGo5XnbS2AZ5DG2bpEA9wJ4BdsTa69VIqPgZ6vEfVLqeMidk70FF0Y/DY49+Qyg3ngY0WyE5Je/Romzw==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-en-gb": {
-      "version": "1.1.10",
-      "resolved": "https://registry.npmjs.org/cspell-dict-en-gb/-/cspell-dict-en-gb-1.1.10.tgz",
-      "integrity": "sha512-Gx6vcaHBnNzYs9W9LlSjomYq1XCw9+aGVsU+Ayl3oMG5zuJGi3I7G5xPyWcTTkWqb6/z6F5LXnW/vFtkTGE5fg==",
+      "version": "1.1.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en-gb/-/cspell-dict-en-gb-1.1.11.tgz",
+      "integrity": "sha512-UnmAeMDzf/YeXuI85BIaQzpArXlt+m+I9S9uy88nvUfq6goOfUFN8Axh0idDtqsFNoaMS5TgSzvjP7DgMXArYg==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-en_us": {
-      "version": "1.2.17",
-      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.17.tgz",
-      "integrity": "sha512-gTnbCUxomHt7ckdzGJRwKkgLn8PwZ0IAQv8f0ZhZA32bUYodngkIq5udNqVnRdWugnSTxZWD6iGJ5DkMj5sK8A==",
+      "version": "1.2.18",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.18.tgz",
+      "integrity": "sha512-P2TRblBVd9KOfwjvI5mxzEXMGBvvTIfqcKSQ+0RbpwC2S4ImW9k++LYxy9LtfSRmdSGjHbejYYtsrgvId1KcoA==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-fullstack": {
-      "version": "1.0.14",
-      "resolved": "https://registry.npmjs.org/cspell-dict-fullstack/-/cspell-dict-fullstack-1.0.14.tgz",
-      "integrity": "sha512-/pkRb8vaG2iBOKRvXb5gS8Vt0wp26KYOQlKx5hKVPUDVeKLYbHUYwhp41SVXpY7sqq/d/4n426UbI+/RnA1VtA==",
+      "version": "1.0.15",
+      "resolved": "https://registry.npmjs.org/cspell-dict-fullstack/-/cspell-dict-fullstack-1.0.15.tgz",
+      "integrity": "sha512-n8+fAJMmM+ZCqoFFRnmh6sgAeEzJa86S3b1vdu0IhxI0tricKPjgoXkHogf/eGPBG19lwVfMFzkI63Kmgctv2w==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-golang": {
-      "version": "1.1.11",
-      "resolved": "https://registry.npmjs.org/cspell-dict-golang/-/cspell-dict-golang-1.1.11.tgz",
-      "integrity": "sha512-dInmq72nAtTBV4B1kX+6STIpKzMNfFTrzC1YBE3x3AKMdyCvKpuoIQHHpm/PFsfIeW2hiu+ZZrTYv1xc+diGlw==",
+      "version": "1.1.12",
+      "resolved": "https://registry.npmjs.org/cspell-dict-golang/-/cspell-dict-golang-1.1.12.tgz",
+      "integrity": "sha512-G3D5CIJfwPdzpgM/N5d/9hImG637GHn3FUkPzC3Kz1QN2G6JTwTAYPnsKybvLE80U9PUwrylZTZBM+cRZSWPzQ==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-haskell": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/cspell-dict-haskell/-/cspell-dict-haskell-1.0.1.tgz",
-      "integrity": "sha512-ZqE26OLDBDys6zmDrxFUGAb9466xsqc4JlteH4OQH1PaJqM4nz+h4NJeREB4yI24O34MIPJPX8U+wkf4qhZMmw==",
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/cspell-dict-haskell/-/cspell-dict-haskell-1.0.2.tgz",
+      "integrity": "sha512-d+pFdRUGZjusiXRqWW05pZqeFKsR5Nvrp/8qlowp/mwNFRBoMzrrAHnP7DZrfo/zHHpzCR3SnmT0ImnCv2MDcQ==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-html-symbol-entities": {
-      "version": "1.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-dict-html-symbol-entities/-/cspell-dict-html-symbol-entities-1.0.10.tgz",
-      "integrity": "sha512-8467CM6fUGnw9biN1OSJ2vXNe/I3UQrOv+rWhOJ79YiYz2rlNMZzIKmizIIvH03OqVHnzKtnHdP+udmyqHOMvQ==",
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-html-symbol-entities/-/cspell-dict-html-symbol-entities-1.0.11.tgz",
+      "integrity": "sha512-8uqZOa+8jDg/FH1LPfwfgOWT/0+3CXPWoWf4t+SjEhNVRoih2HVweQZCwVr+CsmEHgVON8Tem3OWwz+e1zJwNA==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-java": {
-      "version": "1.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-dict-java/-/cspell-dict-java-1.0.9.tgz",
-      "integrity": "sha512-z3u1SZ9IpwhmQ9wps1qj0BTtkNNz6piMcDxzMOQDkTM+hkK/BSLEJ/+DMsnKr1Kiob1mde8LxHr/MvB9qcWXtQ==",
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-java/-/cspell-dict-java-1.0.10.tgz",
+      "integrity": "sha512-GKgJ+HSii7Xp+LT0Gajy4ipcQgapwsM3fmmZS6pZBZMoodJ0BRzga6QZrBuJSHVhSBV4rFIPJwI4oBGYZCGSpQ==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-latex": {
-      "version": "1.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-dict-latex/-/cspell-dict-latex-1.0.10.tgz",
-      "integrity": "sha512-H2Kdu/7N5rcPpjr/5qBPdWluu2+0SdQaFrqZPWyn8XYXpYAs9YLqvsl+0MgyV3VTUJPAbz1B34UvByLfZy7FWg==",
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-latex/-/cspell-dict-latex-1.0.11.tgz",
+      "integrity": "sha512-z/mejOvZAHIL76wnk7i/RT1v1IkSCYlk1l8pLW8l/KA76MCdNAB5xA6zfyBCftbhEOBJA9Fx60JU2T2aba4isg==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-lorem-ipsum": {
-      "version": "1.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-dict-lorem-ipsum/-/cspell-dict-lorem-ipsum-1.0.9.tgz",
-      "integrity": "sha512-cGZ8vkt6dfZGZm/pMtnvYZ4coPHA/FyYL0cuA8fy30wNTdW00CnWWilQvdh0JH53eSTDDWNO9x8Uz+OFIgOeLA==",
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-lorem-ipsum/-/cspell-dict-lorem-ipsum-1.0.10.tgz",
+      "integrity": "sha512-UlboQ3xH+D3l+hemLO4J5yz8EM60SH91f1dJIy2s94AeePZXtwYh1hTFM5dEsXI2CAQkfTu3ZdPWflLsInPfrA==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-php": {
-      "version": "1.0.10",
-      "resolved": "https://registry.npmjs.org/cspell-dict-php/-/cspell-dict-php-1.0.10.tgz",
-      "integrity": "sha512-9efe0p3eL8gPtjanYdMqXSj6G7SdIZaz2kiDH3vWP4qc9j4oa67rq/F+WxsLcZuye7Scm9Tw1nZWetvs/u0M8w==",
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/cspell-dict-php/-/cspell-dict-php-1.0.11.tgz",
+      "integrity": "sha512-0aC8PWVqEVg5II9+U9DBcUv6k9x1DpclH7l5cbvoiR8u69O/LnVlnSol1nSdzAwBhC6fWQ9mfOiMyDIHNZ2GfA==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-powershell": {
-      "version": "1.0.1",
-      "resolved": "https://registry.npmjs.org/cspell-dict-powershell/-/cspell-dict-powershell-1.0.1.tgz",
-      "integrity": "sha512-uNmnu2wn+Yw6JDnt4jdu08HvEmZjbxbndtkStfDqIdhg/iBFRdm4VUZIY7vL5Z5xPwAgC9QwT6h86mqT8ZnCag==",
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/cspell-dict-powershell/-/cspell-dict-powershell-1.0.2.tgz",
+      "integrity": "sha512-BW2Bdpet0yRQKB+7HjA75O0aJnh1VjdnMLNYb1SLvow73uCsC8GpvYLtvFyDm0Q717FYKoPzuZiSrXhyHerNAw==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-python": {
-      "version": "1.0.13",
-      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.13.tgz",
-      "integrity": "sha512-TNMzz6zxAniQzAVwCs3Skk62aqhDvIpd3N7pFBgKDLlUiZT4I5yWwW2SepoWP5DV8ihAmgfyISz5u0SDwavSnA==",
+      "version": "1.0.14",
+      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.14.tgz",
+      "integrity": "sha512-w8kevjvayndKkZqY4yt877UzGXUNTG6gB0zoeOCVxnAFFqTexVvmJ9Johc+eOdqd+dnUu6gF8XfX4ZdX5J+Rxw==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-rust": {
-      "version": "1.0.9",
-      "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.9.tgz",
-      "integrity": "sha512-8KiEawwcixyVw8EuTTQIcxHc3GTxQ3PFW+T9D8r+Y4crw5JcJeyOQlRHZcyG2+2qAhamS+tlAh/puaKwANuWWg==",
+      "version": "1.0.10",
+      "resolved": "https://registry.npmjs.org/cspell-dict-rust/-/cspell-dict-rust-1.0.10.tgz",
+      "integrity": "sha512-iwWMVqOMnkTtb2Z50pGs+x9HM6ghqVotVguqgeJUVD62gqjHMHOTXAw/p7e8VFMXEPfVJeCZg3KGT3Ut6b+8Zg==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-dict-scala": {
-      "version": "1.0.8",
-      "resolved": "https://registry.npmjs.org/cspell-dict-scala/-/cspell-dict-scala-1.0.8.tgz",
-      "integrity": "sha512-/t2SyLnl/zaOBilTWlBNsD2X/Sd6+WyUi5REKQhopQ1MoJc9AFUavI17ZIFHq/vCyu1ziO7xslFWYRTwfQ8yBA==",
+      "version": "1.0.9",
+      "resolved": "https://registry.npmjs.org/cspell-dict-scala/-/cspell-dict-scala-1.0.9.tgz",
+      "integrity": "sha512-wWMjYe4OLFqeQpHYqBoAlXCwEgANu4DuJIg8Vg9Ig8arzobWX9uzmSwsicyGKtCjyno99/MIHAhksTTr7ccMzQ==",
       "requires": {
-        "configstore": "^4.0.0"
-      },
-      "dependencies": {
-        "configstore": {
-          "version": "4.0.0",
-          "resolved": "https://registry.npmjs.org/configstore/-/configstore-4.0.0.tgz",
-          "integrity": "sha512-CmquAXFBocrzaSM8mtGPMM/HiWmyIpr4CcJl/rgY2uCObZ/S7cKU0silxslqJejl+t/T9HS8E0PUNQD81JGUEQ==",
-          "requires": {
-            "dot-prop": "^4.1.0",
-            "graceful-fs": "^4.1.2",
-            "make-dir": "^1.0.0",
-            "unique-string": "^1.0.0",
-            "write-file-atomic": "^2.0.0",
-            "xdg-basedir": "^3.0.0"
-          }
-        },
-        "crypto-random-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz",
-          "integrity": "sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4="
-        },
-        "dot-prop": {
-          "version": "4.2.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-4.2.0.tgz",
-          "integrity": "sha512-tUMXrxlExSW6U2EXiiKGSBVdYgtV8qlHL+C10TsW4PURY/ic+eaysnSkwB4kA/mBlCyy/IKDJ+Lc3wbWeaXtuQ==",
-          "requires": {
-            "is-obj": "^1.0.0"
-          }
-        },
-        "is-obj": {
-          "version": "1.0.1",
-          "resolved": "https://registry.npmjs.org/is-obj/-/is-obj-1.0.1.tgz",
-          "integrity": "sha1-PkcprB9f3gJc19g6iW2rn09n2w8="
-        },
-        "make-dir": {
-          "version": "1.3.0",
-          "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-1.3.0.tgz",
-          "integrity": "sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==",
-          "requires": {
-            "pify": "^3.0.0"
-          }
-        },
-        "unique-string": {
-          "version": "1.0.0",
-          "resolved": "https://registry.npmjs.org/unique-string/-/unique-string-1.0.0.tgz",
-          "integrity": "sha1-nhBXzKhRq7kzmPizOuGHuZyuwRo=",
-          "requires": {
-            "crypto-random-string": "^1.0.0"
-          }
-        },
-        "write-file-atomic": {
-          "version": "2.4.3",
-          "resolved": "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-2.4.3.tgz",
-          "integrity": "sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==",
-          "requires": {
-            "graceful-fs": "^4.1.11",
-            "imurmurhash": "^0.1.4",
-            "signal-exit": "^3.0.2"
-          }
-        },
-        "xdg-basedir": {
-          "version": "3.0.0",
-          "resolved": "https://registry.npmjs.org/xdg-basedir/-/xdg-basedir-3.0.0.tgz",
-          "integrity": "sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ="
-        }
+        "configstore": "^5.0.0"
       }
     },
     "cspell-glob": {
@@ -2747,30 +1595,30 @@
       }
     },
     "cspell-lib": {
-      "version": "4.0.24",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.24.tgz",
-      "integrity": "sha512-5kdKePcM25zOxu0a1CDgF4Ne3ujuRcVy8pf7+BxUa1++24c30KbQRfjVNzHJUcxu3e7JzGgRmhWrKIkMdt9xhg==",
+      "version": "4.0.25",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.0.25.tgz",
+      "integrity": "sha512-EltUo+BBx15gCCYuDQ2V/pSPu1xIje9mdzCaEDoTJXIl1J5QVONmc91sukXLNEoymG4cdoZlnd2xg4fV/orynQ==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^5.0.0",
-        "cspell-dict-companies": "^1.0.11",
-        "cspell-dict-cpp": "^1.1.20",
-        "cspell-dict-django": "^1.0.11",
-        "cspell-dict-elixir": "^1.0.9",
-        "cspell-dict-en-gb": "^1.1.10",
-        "cspell-dict-en_us": "^1.2.17",
-        "cspell-dict-fullstack": "^1.0.14",
-        "cspell-dict-golang": "^1.1.11",
-        "cspell-dict-haskell": "^1.0.1",
-        "cspell-dict-html-symbol-entities": "^1.0.10",
-        "cspell-dict-java": "^1.0.9",
-        "cspell-dict-latex": "^1.0.10",
-        "cspell-dict-lorem-ipsum": "^1.0.9",
-        "cspell-dict-php": "^1.0.10",
-        "cspell-dict-powershell": "^1.0.1",
-        "cspell-dict-python": "^1.0.13",
-        "cspell-dict-rust": "^1.0.9",
-        "cspell-dict-scala": "^1.0.8",
+        "cspell-dict-companies": "^1.0.12",
+        "cspell-dict-cpp": "^1.1.21",
+        "cspell-dict-django": "^1.0.12",
+        "cspell-dict-elixir": "^1.0.10",
+        "cspell-dict-en-gb": "^1.1.11",
+        "cspell-dict-en_us": "^1.2.18",
+        "cspell-dict-fullstack": "^1.0.15",
+        "cspell-dict-golang": "^1.1.12",
+        "cspell-dict-haskell": "^1.0.2",
+        "cspell-dict-html-symbol-entities": "^1.0.11",
+        "cspell-dict-java": "^1.0.10",
+        "cspell-dict-latex": "^1.0.11",
+        "cspell-dict-lorem-ipsum": "^1.0.10",
+        "cspell-dict-php": "^1.0.11",
+        "cspell-dict-powershell": "^1.0.2",
+        "cspell-dict-python": "^1.0.14",
+        "cspell-dict-rust": "^1.0.10",
+        "cspell-dict-scala": "^1.0.9",
         "cspell-io": "^4.0.17",
         "cspell-trie-lib": "^4.0.15",
         "cspell-util-bundle": "^4.0.5",
@@ -5933,7 +4781,8 @@
     "pify": {
       "version": "3.0.0",
       "resolved": "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz",
-      "integrity": "sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY="
+      "integrity": "sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=",
+      "dev": true
     },
     "pirates": {
       "version": "4.0.1",
