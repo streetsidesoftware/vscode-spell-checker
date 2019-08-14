@@ -216,6 +216,7 @@ function configPathsForRoot(workspaceRootUri?: string) {
     const paths = workspaceRoot ? [
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
+        path.join(workspaceRoot, '.' + CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
         path.join(workspaceRoot, CSpell.defaultSettingsFilename),
     ] : [];
