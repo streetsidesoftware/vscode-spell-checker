@@ -172,9 +172,10 @@ export class DocumentSettings {
     private async _fetchSettingsForFolderUri(uri: string): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${uri}`);
         const cSpellConfigSettings = await this.fetchSettingsFromVSCode(uri);
+        const cSpellFolderSettings = this.resolveConfigImports(cSpellConfigSettings, uri);
         const settings = this._cspellFileSettingsByFolderCache.get(uri);
         // cspell.json file settings take precedence over the vscode settings.
-        const mergedSettings = CSpell.mergeSettings(cSpellConfigSettings, settings);
+        const mergedSettings = CSpell.mergeSettings(cSpellFolderSettings, settings);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(uri).path;
@@ -209,6 +210,15 @@ export class DocumentSettings {
         return lazy;
     }
 
+    private resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
+        const uriFsPath = Uri.parse(folderUri).fsPath;
+        const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
+        if (!imports.length) {
+            return config;
+        }
+        const importAbsPath = imports.map(file => path.resolve(file, uriFsPath));
+        return CSpell.mergeSettings(CSpell.readSettingsFiles(importAbsPath), config);
+    }
 }
 
 function configPathsForRoot(workspaceRootUri?: string) {
