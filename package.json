@@ -12,7 +12,7 @@
     "build": "lerna run build  --no-sort --concurrency 1",
     "clean": "lerna run clean && lerna clean",
     "test-client-integration": "lerna run test-integration",
-    "test": "lerna run test"
+    "test": "lerna run --ignore \"*integration*\" test"
   },
   "repository": {
     "type": "git",
