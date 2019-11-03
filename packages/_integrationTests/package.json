@@ -15,13 +15,13 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.2",
+    "@types/node": "^12.12.5",
     "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
-    "mocha": "^6.1.4",
-    "typescript": "^3.5.3",
-    "vscode": "^1.1.35"
+    "cross-env": "^5.2.1",
+    "mocha": "^6.2.2",
+    "typescript": "^3.6.4",
+    "vscode": "^1.1.36"
   }
 }

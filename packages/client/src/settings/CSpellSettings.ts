@@ -21,19 +21,6 @@ const defaultSettings: CSpellUserSettingsWithComments = {
 // cSpell:ignore hte
 const defaultSettingsWithComments: CSpellSettings = {
     ...defaultSettings,
-    '//^': [
-        '// cSpell Settings'
-    ],
-    '// version': [`
-    // Version of the setting file.  Always ${currentSettingsFileVersion}`
-    ],
-
-    '// language': [`
-    // language - current active spelling language`],
-
-    '// words': [`
-    // words - list of words to be always considered correct`
-    ],
 };
 
 export function getDefaultSettings(): CSpellSettings {
