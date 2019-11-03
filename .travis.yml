@@ -2,7 +2,7 @@ sudo: false
 
 language: node_js
 os:
-#  - linux # turned off until we can figure out why it is only failing on linux
+  - linux # turned off until we can figure out why it is only failing on linux
   - osx
 node_js:
   - "node"
