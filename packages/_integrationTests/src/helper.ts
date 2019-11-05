@@ -1,12 +1,7 @@
-/* --------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- * ------------------------------------------------------------------------------------------ */
-
-import * as vscode from 'vscode';
 import * as path from 'path';
+import * as vscode from 'vscode';
 
-console.log(__dirname);
+console.log(`Current directory: ${__dirname}`);
 const extensionPackage = require('../../client/package.json');
 
 export interface DocumentContext {
@@ -21,6 +16,7 @@ export interface DocumentContext {
  */
 export async function activate(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
     const extensionId = getExtensionId();
+    console.log(`Activate: ${extensionId}`);
     const ext = vscode.extensions.getExtension(extensionId)!;
     try {
         const expActivate = await ext.activate();
