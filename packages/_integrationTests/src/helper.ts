@@ -12,7 +12,7 @@ export interface DocumentContext {
 }
 
 /**
- * Activates the vscode.lsp-sample extension
+ * Activates the spell checker extension
  */
 export async function activate(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
     const extensionId = getExtensionId();

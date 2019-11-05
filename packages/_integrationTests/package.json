@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "tsc -p .",
+    "clean": "rimraf out temp",
     "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../client CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner"
   },
   "author": "",
@@ -23,6 +24,7 @@
     "cross-env": "^5.2.1",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
+    "rimraf": "^3.0.0",
     "typescript": "^3.6.4",
     "vscode-test": "^1.2.2"
   }
