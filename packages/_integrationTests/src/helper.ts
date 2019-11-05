@@ -7,27 +7,27 @@ const extensionPackage = require('../../client/package.json');
 export interface DocumentContext {
     doc: vscode.TextDocument;
     editor: vscode.TextEditor;
-    expActivate: any;
+}
+
+export interface ExtensionActivation {
+    ext: vscode.Extension<any>;
+    extActivate: any;
     extApi: any;
 }
 
 /**
  * Activates the spell checker extension
  */
-export async function activate(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
+export async function activateExtension(): Promise<ExtensionActivation | undefined> {
     const extensionId = getExtensionId();
     console.log(`Activate: ${extensionId}`);
     const ext = vscode.extensions.getExtension(extensionId)!;
     try {
-        const expActivate = await ext.activate();
+        const extActivate = await ext.activate();
         const extApi = vscode.extensions.getExtension(extensionId)!.exports;
-        const doc = await vscode.workspace.openTextDocument(docUri);
-        const editor = await vscode.window.showTextDocument(doc);
-        await sleep(2000); // Wait for server activation
         return {
-            doc,
-            editor,
-            expActivate,
+            ext,
+            extActivate,
             extApi,
         };
     } catch (e) {
@@ -35,7 +35,26 @@ export async function activate(docUri: vscode.Uri): Promise<DocumentContext | un
     }
 }
 
-async function sleep(ms: number) {
+/**
+ * Activates the spell checker extension
+ */
+export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
+    const extensionId = getExtensionId();
+    console.log(`Activate: ${extensionId}`);
+    const ext = vscode.extensions.getExtension(extensionId)!;
+    try {
+        const doc = await vscode.workspace.openTextDocument(docUri);
+        const editor = await vscode.window.showTextDocument(doc);
+        return {
+            doc,
+            editor,
+        };
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+export async function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
