@@ -147,7 +147,10 @@ export function disableLanguageId(languageId: string, uri?: string): Promise<voi
     return Settings.enableLanguageIdForClosestTarget(languageId, false, uri ? Uri.parse(uri) : undefined);
 }
 
-export function userCommandOnCurrentSelectionOrPrompt(prompt: string, fnAction: (text: string, uri: Uri | undefined) => Thenable<void>): () => Thenable<void> {
+export function userCommandOnCurrentSelectionOrPrompt(
+    prompt: string,
+    fnAction: (text: string, uri: Uri | undefined) => Thenable<void>
+): () => Thenable<void> {
     return function () {
         const { activeTextEditor = {} } = window;
         const { selection, document } = activeTextEditor as TextEditor;
