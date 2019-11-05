@@ -34,6 +34,7 @@ function runTests(executablePath) {
         '--extensionDevelopmentPath=' + extensionsFolder,
         '--extensionTestsPath=' + testsFolder,
         '--locale=' + locale,
+        '--log=debug',
     ];
 
     if (userDataDir) {
@@ -53,17 +54,18 @@ function runTests(executablePath) {
     });
 
     cmd.stderr.on('data', function (data) {
-        console.error(data.toString());
+        console.log(data.toString());
     });
 
     cmd.on('error', function (data) {
         console.log('Failed to execute tests: ' + data.toString());
     });
 
-    cmd.on('close', function (code) {
+    cmd.on('close', function (code, signal) {
         console.log('Tests exited with code: ' + code);
 
         if (code !== 0) {
+            console.log('Signal: ' + signal);
             process.exit(code); // propagate exit code to outer runner
         }
     });

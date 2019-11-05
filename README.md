@@ -13,19 +13,23 @@ For the readme on the plugin: [README](./packages/client/README.md).
 
 ## Building the extension
 
-1. Build the server: `cd server && npm install && npm run build && cd ..`
-1. Build the client: `cd client && npm install && npm run build && cd ..`
-1. Launch vscode: `code client`
-1. Run the extension from vscode: `F5`
+1. `npm install`
+1. Launch vscode: `code Spell Checker.code-workspace`
+1. Run the extension from vscode:
+   1. `Debug Tab`
+   1. Choose `Launch Extension` configuration.
+   1. `F5`
+
+<sup>*</sup> Requires Node >= 10
 
 ### Debugging the Client
 
-1. Launch vscode: `code client`
+1. Launch vscode: `code packages/client`
 1. Run the extension from vscode: `F5`
 
 ### Debugging the Server
 
-1. Launch vscode for the server: `code server`
+1. Launch vscode for the server: `code packages/_server`
 1. Launch the client as specified above.
 1. Attach to the server: `F5` or `Debug -> Attach Server`
 
@@ -42,6 +46,13 @@ lsof -i tcp:60048
 ```
 
 If anything shows up, then the port is still locked.
+
+## Packages
+
+* `client` - the actual extension running in VS Code.
+* `_server` - the extension server that processes spell checker requests
+* `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
+* `_integrationTests` - a test suite that launches the extension in VS Code.
 
 ## Dictionaries / Word List
 
@@ -122,6 +133,6 @@ cSpell currently has English locals: `en-US` and `en-GB`.
 Example words differences: behaviour (en-GB) vs behavior (en-US)
 
 <!---
-    cSpell:ignore newyork
+    cSpell:ignore newyork lsof netstat
     cSpell:words behaviour behavior
 -->

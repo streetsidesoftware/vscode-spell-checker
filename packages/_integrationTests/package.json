@@ -9,19 +9,23 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../client CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
-    "postinstall": "vscode-install"
+    "clean": "rimraf out temp",
+    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../client CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.2.4",
+    "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.2",
+    "@types/node": "^12.12.5",
+    "@types/vscode": "^1.39.0",
     "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
-    "mocha": "^6.1.4",
-    "typescript": "^3.5.3",
-    "vscode": "^1.1.35"
+    "cross-env": "^5.2.1",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.4",
+    "vscode-test": "^1.2.2"
   }
 }

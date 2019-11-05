@@ -11,8 +11,8 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build  --no-sort --concurrency 1",
     "clean": "lerna run clean && lerna clean",
-    "test-client-integration": "lerna run test-integration",
-    "test": "lerna run test"
+    "test-client-integration": "cd packages/_integrationTests && npm test",
+    "test": "lerna run --ignore \"*integration*\" test"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker#readme",
   "devDependencies": {
-    "lerna": "^3.15.0",
-    "typescript": "^3.5.3"
+    "lerna": "^3.18.3",
+    "typescript": "^3.6.4"
   }
 }

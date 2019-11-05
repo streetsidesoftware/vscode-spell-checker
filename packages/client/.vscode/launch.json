@@ -25,19 +25,6 @@
 			"preLaunchTask": "build"
 		},
 		{
-			"type": "node",
-			"request": "launch",
-			"name": "Run Mocha Test (current file)",
-			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-			"args": [
-				"--timeout","999999",
-				"--colors",
-				"--require", "ts-node/register",
-				"${file}"
-			],
-			"internalConsoleOptions": "openOnSessionStart"
-		},
-		{
 			"name": "Launch Extension Tests",
 			"type": "extensionHost",
 			"request": "launch",
