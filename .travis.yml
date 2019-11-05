@@ -17,6 +17,4 @@ before_install:
 
 script:
   - npm test
-  - if [ $TRAVIS_OS_NAME != "linux" ]; then
-      npm run test-client-integration
-    fi
+  # - npm run test-client-integration
