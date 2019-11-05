@@ -16,7 +16,7 @@ before_install:
       sleep 3;
     fi
 
-script:
-  - npm install
-  - npm test
-  - npm run test-client-integration
+# script:
+#   - npm install
+#   - npm test
+#   - npm run test-client-integration
