@@ -83,11 +83,4 @@ describe('Launch code spell extension', function () {
             dispose: cleanUp,
         };
     }
-
-    // it('Slows down the integration test for manual manipulation.', async () => {
-    //     return new Promise((resolve) => {
-    //         console.log('Waiting 30s');
-    //         setTimeout(resolve, 30000);
-    //     });
-    // });
 });
