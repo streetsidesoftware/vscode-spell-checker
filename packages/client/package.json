@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
-        "vscode": "^1.36.0"
+        "vscode": "^1.39.0"
     },
     "enableProposedApi": false,
     "categories": [
@@ -479,7 +479,7 @@
     "devDependencies": {
         "@types/comment-json": "^1.1.1",
         "@types/fs-extra": "^8.0.1",
-        "@types/jest": "^24.0.21",
+        "@types/jest": "^24.0.22",
         "@types/kefir": "^3.8.2",
         "@types/node": "^11.15.2",
         "@types/source-map-support": "^0.4.2",
@@ -491,7 +491,7 @@
         "source-map-support": "^0.5.16",
         "ts-jest": "^24.1.0",
         "ts-loader": "^6.2.1",
-        "typescript": "^3.6.4",
+        "typescript": "^3.7.2",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10"
     },
