@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.7.19",
+    "version": "1.7.20",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -138,6 +138,16 @@
                     "cspell.json",
                     "cSpell.json"
                 ]
+            }
+        ],
+        "jsonValidation": [
+            {
+                "fileMatch": "cSpell.json",
+                "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json"
+            },
+            {
+                "fileMatch": "cspell*.json",
+                "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json"
             }
         ],
         "configuration": {
