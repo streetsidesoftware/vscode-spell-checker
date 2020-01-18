@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker#readme",
   "devDependencies": {
-    "lerna": "^3.18.3",
-    "typescript": "^3.6.4"
+    "lerna": "^3.20.2",
+    "typescript": "^3.7.5"
   }
 }
