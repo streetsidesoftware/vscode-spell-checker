@@ -16,8 +16,9 @@
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
-        "vscode": "^1.39.0"
+        "vscode": "^1.41.0"
     },
+    "extensionKind": ["workspace"],
     "enableProposedApi": false,
     "categories": [
         "Linters",
