@@ -1,9 +1,9 @@
 {
   "packages": [
-    "packages/_settingsViewer",
-    "packages/_server",
     "packages/_integrationTests",
+    "packages/_server",
+    "packages/_settingsViewer",
     "packages/client"
   ],
-  "version": "1.6.10"
+  "version": "1.7.21"
 }
