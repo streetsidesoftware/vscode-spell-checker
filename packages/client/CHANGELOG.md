@@ -1,5 +1,8 @@
 # Release Notes
 
+## [1.7.21]
+- Add support for [Remote Development](https://docs.microsoft.com/en-us/visualstudio/online/how-to/vscode#self-hosted)
+
 ## [1.7.18]
 - Extension now reads `.cspell.json` files for configuration if they exist.
 - Added basic support for Haskell.
