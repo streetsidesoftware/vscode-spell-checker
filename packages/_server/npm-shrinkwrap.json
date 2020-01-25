@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker-server",
-  "version": "1.6.10",
+  "version": "1.7.21",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -694,9 +694,9 @@
       }
     },
     "@types/jest": {
-      "version": "24.9.0",
-      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-24.9.0.tgz",
-      "integrity": "sha512-dXvuABY9nM1xgsXlOtLQXJKdacxZJd7AtvLsKZ/0b57ruMXDKCOXAC/M75GbllQX6o1pcZ5hAG4JzYy7Z/wM2w==",
+      "version": "24.9.1",
+      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-24.9.1.tgz",
+      "integrity": "sha512-Fb38HkXSVA4L8fGKEZ6le5bB8r6MRWlOCZbVuWZcmOMSCd2wCYOwN1ibj8daIoV9naq7aaOZjrLCoCMptKU/4Q==",
       "dev": true,
       "requires": {
         "jest-diff": "^24.3.0"
@@ -1617,9 +1617,9 @@
       }
     },
     "cspell-glob": {
-      "version": "0.1.14",
-      "resolved": "https://registry.npmjs.org/cspell-glob/-/cspell-glob-0.1.14.tgz",
-      "integrity": "sha512-mbGKM/O95U/1V14aDiHS32T36JC1dk7ndvOdJOc2dv7er+Z2PX0Qg6uoklsESTpWAO8zZjJiLiWDx8fgKz9+KA==",
+      "version": "0.1.17",
+      "resolved": "https://registry.npmjs.org/cspell-glob/-/cspell-glob-0.1.17.tgz",
+      "integrity": "sha512-gAiKakWJbHay6cobcJnX1+XhNCFYqR7CJM5GPiEpRZ5RFXYR46fYbkVwTdg3sqbFLErJtghQj/0s5Xa0q9NJpQ==",
       "requires": {
         "micromatch": "^4.0.2"
       }
