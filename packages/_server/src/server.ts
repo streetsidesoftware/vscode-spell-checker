@@ -10,7 +10,6 @@ import {
 } from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './vscode.workspaceFolders';
-import { CancellationToken } from 'vscode-jsonrpc';
 import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
@@ -85,7 +84,7 @@ function run() {
     // supports full document sync only
     const documents: TextDocuments = new TextDocuments();
 
-    connection.onInitialize((params: InitializeParams, token: CancellationToken): InitializeResult => {
+    connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
         log('onInitialize');
         setWorkspaceBase(params.rootUri ? params.rootUri : '');
@@ -109,8 +108,11 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration(onConfigChange);
 
-    interface OnChangeParam { settings: SettingsCspell; }
-    function onConfigChange(change: OnChangeParam) {
+    interface OnChangeParam extends vscode.DidChangeConfigurationParams {
+        settings: SettingsCspell;
+    }
+
+    function onConfigChange(_change: OnChangeParam) {
         logInfo('Configuration Change');
         triggerUpdateConfig.next(undefined);
         updateLogLevel();
@@ -185,7 +187,7 @@ function run() {
         };
     }
 
-    async function handleSpellingSuggestions(params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
+    async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
     }
 

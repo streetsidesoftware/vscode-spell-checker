@@ -1,4 +1,4 @@
-import { pipe, extract, defaultTo, map, NestedKey, Nested } from './pipe';
+import { pipe, extract, defaultTo, map } from './pipe';
 
 interface Address {
     street: string;
@@ -34,9 +34,6 @@ describe('Validate Pipe', () => {
         },
         friends: [student1]
     };
-    const business1: Business = {
-        owner: student1
-    }
     const business2: Business = {
         owner: student2
     }

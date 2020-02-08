@@ -32,7 +32,7 @@ export interface LazyValue<T> {
 const notSet = Symbol('Value Not Set');
 
 export function createLazyValue<T>(loader: () => T): LazyValue<T> {
-    let v: T | Symbol = notSet;
+    let v: T | symbol = notSet;
     const getter = (() => {
         if (v === notSet) {
             v = loader();

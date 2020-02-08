@@ -388,7 +388,7 @@ function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
             panel.webview.postMessage(msg);
             return webviewApi;
         },
-        // disposable,
+        disposable,
     };
 
     return webviewApi;

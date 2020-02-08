@@ -45,7 +45,7 @@
   },
   "scripts": {
     "clean": "rimraf ../client/server && rimraf ./tools/out",
-    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
     "build": "npm run compile && npm run installServerIntoExtension",
     "installServerIntoExtension": "installServerIntoExtension ../client ./package.json ./tsconfig.json",
     "clean-build": "npm run clean && npm run build",
