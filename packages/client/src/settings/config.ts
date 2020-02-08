@@ -4,7 +4,7 @@ import { CSpellUserSettings } from '../server';
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
 
-const sectionCSpell = 'cSpell';
+export const sectionCSpell = 'cSpell';
 
 export interface InspectValues<T> {
     defaultValue?: T | undefined;
@@ -55,8 +55,6 @@ export interface FullInspectScope {
 }
 
 export type InspectScope = FullInspectScope | ScopeResourceFree;
-
-const cachedSettings = new Map<string, CSpellUserSettings>();
 
 /**
  * ScopeOrder from general to specific.
@@ -160,7 +158,6 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     const uri = extractTargetUri(configTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
-    updateCachedSettings(configTarget, subSection, value);
     return config.update(section, value, target);
 }
 
@@ -168,16 +165,8 @@ export function inspectConfig(
     resource: Uri | null
 ): Inspect<CSpellUserSettings> {
     const config = getConfiguration(resource);
-    const settings = config.inspect<CSpellUserSettings>(sectionCSpell) || { key: '' };
-    const { defaultValue = {}, globalValue = {}, workspaceValue = {}, workspaceFolderValue = {}, key } = settings;
-
-    return {
-        key,
-        defaultValue,
-        globalValue: {...globalValue, ...getFolderSettingsForScope(Scopes.Global)},
-        workspaceValue: {...workspaceValue, ...getFolderSettingsForScope(Scopes.Workspace)},
-        workspaceFolderValue: { ...workspaceFolderValue, ...getFolderSettingsForScope({ scope: Scopes.Folder, resource })},
-    };
+    const settings = config.inspect<CSpellUserSettings>(sectionCSpell) || { key: sectionCSpell };
+    return settings;
 }
 
 function toAny(value: any): any {
@@ -200,20 +189,17 @@ export function isConfigTargetWithOptionalResource(target: ConfigTarget): target
     return typeof target === 'object' && target.target !== undefined;
 }
 
-const targetToScopeValues: [Target, Scope][] = [
-    [Target.Global, 'globalValue'],
-    [Target.Workspace, 'workspaceValue'],
-    [Target.WorkspaceFolder, 'workspaceFolderValue'],
-];
+type TargetToScope = {
+    [Target.Global]: "globalValue";
+    [Target.Workspace]: "workspaceValue";
+    [Target.WorkspaceFolder]: "workspaceFolderValue";
+}
 
-const targetToScope = new Map(targetToScopeValues);
-
-const targetResourceFreeToScopeValues: [ConfigTargetResourceFree, ScopeResourceFree][] = [
-    [Target.Global, 'globalValue'],
-    [Target.Workspace, 'workspaceValue'],
-];
-
-const targetResourceFreeToScope = new Map(targetResourceFreeToScopeValues);
+const targetToScope: TargetToScope = {
+    1: 'globalValue',
+    2: 'workspaceValue',
+    3: 'workspaceFolderValue',
+};
 
 export function configTargetToScope(target: ConfigTarget): InspectScope {
     if (isConfigTargetWithOptionalResource(target)) {
@@ -222,11 +208,11 @@ export function configTargetToScope(target: ConfigTarget): InspectScope {
             resource: target.uri || null,
         };
     }
-    return targetResourceFreeToScope.get(target)!;
+    return targetToScope[target];
 }
 
 export function toScope(target: Target): Scope {
-    return targetToScope.get(target)!;
+    return targetToScope[target];
 }
 
 export function extractScope(inspectScope: InspectScope): Scope {
@@ -310,45 +296,3 @@ export function getConfiguration(uri?: Uri | null) {
 function fetchConfiguration(uri?: Uri | null) {
     return workspace.getConfiguration(undefined, toAny(uri));
 }
-
-function updateCachedSettings<T extends keyof CSpellUserSettings>(
-    target: ConfigTarget,
-    section: T,
-    value: CSpellUserSettings[T]
-) {
-    const key = targetToFolderSettingsKey(target);
-    const s: CSpellUserSettings = cachedSettings.get(key) || {};
-    s[section] = value;
-    cachedSettings.set(key, s);
-}
-
-function getFolderSettingsForScope(scope: InspectScope) {
-    const key = scopeToFolderSettingsKey(scope);
-    return cachedSettings.get(key) || {};
-}
-
-function targetToFolderSettingsKey(target: ConfigTarget) {
-    const scope = configTargetToScope(target);
-    return scopeToFolderSettingsKey(scope);
-}
-
-function scopeToFolderSettingsKey(scope: InspectScope) {
-    scope = normalizeScope(scope);
-    const uri = normalizeResourceUri(scope.resource);
-    return scope.scope + '::' + (uri && uri.path || '');
-}
-
-workspace.onDidChangeConfiguration(event => {
-    if (event.affectsConfiguration(sectionCSpell)) {
-        cachedSettings.delete(scopeToFolderSettingsKey(Scopes.Global));
-        cachedSettings.delete(scopeToFolderSettingsKey(Scopes.Workspace));
-    }
-    if (workspace.workspaceFolders) {
-        workspace.workspaceFolders.forEach(folder => {
-            if (event.affectsConfiguration(sectionCSpell, folder.uri)) {
-                const key = scopeToFolderSettingsKey({ scope: Scopes.Folder, resource: folder.uri });
-                cachedSettings.delete(key);
-            }
-        });
-    }
-});
