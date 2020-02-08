@@ -18,10 +18,13 @@ export function logInfo(msg: string, uri?: string | string[]) {
     logger.info(formatMessage(msg, uri));
 }
 
+export function logDebug(msg: string, uri?: string | string[]) {
+    logger.debug(formatMessage(msg, uri));
+}
+
 export function setWorkspaceBase(uri: string) {
     log(`setWorkspaceBase URI: ${uri}`);
     workspaceBase = uri;
-    log(`setWorkspaceBase: ${workspaceBase}`);
 }
 
 export function setWorkspaceFolders(folders: string[]) {
@@ -74,4 +77,3 @@ export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
         return ret;
     };
 }
-
