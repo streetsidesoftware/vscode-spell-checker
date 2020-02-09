@@ -485,6 +485,7 @@
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
         "lint": "eslint 'src/**'",
         "vscode:prepublish": "npm run clean && npm run build-production",
+        "version": "npx vsce package",
         "watch": "npm run build -- watch",
         "test": "jest",
         "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_DATA_DIR=./temp/vscode node ../_integrationTests/integrationTestRunner",
