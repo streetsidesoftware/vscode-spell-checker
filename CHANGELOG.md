@@ -1,7 +1,3 @@
-## [1.7.21](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.0...v1.7.21) (2020-02-09)
-
-
-
 ## [1.7.23-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.22...v1.7.23-alpha.0) (2020-02-09)
 
 
