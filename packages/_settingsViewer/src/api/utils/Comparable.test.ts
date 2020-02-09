@@ -53,7 +53,7 @@ describe('Validate Comparable', () => {
 });
 
 interface Sample {
-    id: number,
+    id: number;
     name: string;
     value: number;
     maybe: number | undefined;

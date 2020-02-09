@@ -1,4 +1,14 @@
-import { isConfigurationChangeMessage, ConfigurationChangeMessage, isMessage, SelectFileMessage, isSelectFileMessage, SelectFolderMessage, isSelectFolderMessage, isEnableLanguageIdMessage, EnableLanguageIdMessage, EnableLocalMessage, isEnableLocalMessage } from './message';
+import {
+    isConfigurationChangeMessage,
+    ConfigurationChangeMessage,
+    isMessage,
+    SelectFileMessage,
+    isSelectFileMessage,
+    SelectFolderMessage,
+    isSelectFolderMessage,
+    EnableLocalMessage,
+    isEnableLocalMessage,
+} from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
 
 

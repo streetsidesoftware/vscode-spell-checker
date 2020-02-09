@@ -92,7 +92,7 @@ export function onCodeActionHandler(
             return action;
         }
 
-        async function genCodeActionsForSuggestions(dictionary: SpellingDictionary) {
+        async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
             const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {

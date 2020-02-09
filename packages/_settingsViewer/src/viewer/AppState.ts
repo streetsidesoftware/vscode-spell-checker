@@ -46,12 +46,12 @@ export interface State {
 }
 
 export interface FoundInConfig<T> {
-    value: Exclude<T, undefined>,
-    source: ConfigSource
+    value: Exclude<T, undefined>;
+    source: ConfigSource;
 }
 
 type InheritedFromSource<T> = {
-    value: Exclude<T, undefined>,
+    value: Exclude<T, undefined>;
     source: ConfigSource;
 }
 
@@ -166,7 +166,7 @@ export class AppState implements State {
         return workspace && workspace.textDocuments || [];
     }
 
-    @computed get documentSelection(): { label: string, value: string }[] {
+    @computed get documentSelection(): { label: string; value: string }[] {
         return this.documents.map(doc => ({ label: doc.fileName, value: doc.uri }));
     }
 
@@ -190,7 +190,7 @@ export class AppState implements State {
         this.debugMode = isEnabled;
     }
 
-    private isLocalEnabledEx(field: ConfigTarget, code: LocalId):InheritedFromSource<boolean> {
+    private isLocalEnabledEx(field: ConfigTarget, code: LocalId): InheritedFromSource<boolean> {
         const config = this.settings.configs[field];
         const source = config.inherited.locals || field;
         const locals = config.locals;
@@ -236,8 +236,6 @@ export class AppState implements State {
     }
 }
 
-function notUndefined<T>(a : T): a is Exclude<T, undefined> {
+function notUndefined<T>(a: T): a is Exclude<T, undefined> {
     return a !== undefined;
 }
-
-
