@@ -2,8 +2,8 @@ import { AppState } from '../../viewer/AppState';
 import { MessageBus, Message, isMessage } from '../../api';
 import { WebviewApi } from '../../api/WebviewApi';
 import { sampleSettings } from '../samples/sampleSettings';
-// import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
-const dcopy: <T>(v: T)=>T = require('deep-copy');
+import dcopy = require('clone-deep');
+
 
 export class AppStateFixture extends AppState {
     _webviewApi: WebviewApi;

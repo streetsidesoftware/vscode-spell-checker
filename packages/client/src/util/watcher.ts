@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const watch = require('node-watch');
 
 export type Events = 'update' | 'remove' | 'error';

@@ -6,7 +6,7 @@ import { sampleSettings } from '../test/samples/sampleSettings';
 describe('Validate MessageBus', () => {
     test('constructor', () => {
         const webviewApi: WebviewApi = {
-            postMessage: (msg: any) => webviewApi,
+            postMessage: (_msg: any) => webviewApi,
             onmessage: undefined,
         }
 
@@ -30,8 +30,8 @@ describe('Validate MessageBus', () => {
             postMessage: (msg: any) => loopBack(webviewApi, msg),
             onmessage: undefined,
         }
-        const onRequestConfigurationMessage = jest.fn((msg: RequestConfigurationMessage) => {});
-        const onConfigurationChangeMessage = jest.fn((msg: ConfigurationChangeMessage) => {});
+        const onRequestConfigurationMessage = jest.fn((_msg: RequestConfigurationMessage) => {});
+        const onConfigurationChangeMessage = jest.fn((_msg: ConfigurationChangeMessage) => {});
         const bus = new MessageBus(webviewApi);
         const listenerA = bus.listenFor("RequestConfigurationMessage", onRequestConfigurationMessage);
         const listenerB = bus.listenFor('ConfigurationChangeMessage', onConfigurationChangeMessage);
@@ -67,7 +67,7 @@ describe('Validate MessageBus', () => {
             postMessage: (msg: any) => loopBack(webviewApi, msg),
             onmessage: undefined,
         }
-        const bus = new MessageBus(webviewApi);
+        new MessageBus(webviewApi);
         expect(() => webviewApi.onmessage!({ data: {} })).not.toThrow();
     });
 });

@@ -43,7 +43,7 @@ describe('Validate AppState', () => {
 
     test('actionSelectFolder', () => {
         const appState = getSampleAppState(sampleSettings);
-        const uri = 'file:///Users/cspell/projects/clones/ripgrep';
+        // const uri = 'file:///Users/cspell/projects/clones/ripgrep';
         const folderName = 'ripgrep';
         appState.actionSelectFolder(folderName);
         expect(appState.activeWorkspaceFolder).toBe(folderName);
@@ -63,7 +63,7 @@ describe('Validate AppState', () => {
 
     function getSampleAppState(settings: Settings): AppState {
         const webviewApi: WebviewApi = {
-            postMessage: (msg: any) => webviewApi,
+            postMessage: (_msg: any) => webviewApi,
             onmessage: undefined,
         };
         const msgBus = new MessageBus(webviewApi);

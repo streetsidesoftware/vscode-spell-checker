@@ -9,6 +9,7 @@
     "build": "tsc -p . && webpack --env.production --config webpack.prod.js",
     "clean": "rimraf ../client/settingsViewer ./out",
     "coverage": "jest --coverage src",
+    "lint": "eslint 'src/**/*.ts'",
     "start:dev": "webpack-dev-server --config webpack.dev.js",
     "test": "jest src"
   },
@@ -36,6 +37,7 @@
     "@material/select": "^1.1.1",
     "@material/tab": "^1.1.1",
     "@material/tab-bar": "^1.1.1",
+    "@types/clone-deep": "^4.0.1",
     "@types/jest": "^24.9.0",
     "@types/node": "^11.15.4",
     "@types/react": "16.7.22",
@@ -46,8 +48,8 @@
     "@typescript-eslint/parser": "^2.19.0",
     "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^3.0.0",
+    "clone-deep": "^4.0.1",
     "css-loader": "^3.4.2",
-    "deep-copy": "^1.4.2",
     "eslint": "^6.8.0",
     "extract-loader": "^3.1.0",
     "file-loader": "^4.3.0",
@@ -85,5 +87,6 @@
     "!**/*.map",
     "!**/*.test.*",
     "!**/*.spec.*"
-  ]
+  ],
+  "dependencies": {}
 }

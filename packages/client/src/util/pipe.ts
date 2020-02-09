@@ -12,6 +12,7 @@ export function extract<T, K extends keyof T, K2 extends NestedKey<T, K>, K3 ext
 export function extract<T, K extends keyof T, K2 extends NestedKey<T, K>, K3 extends NestedKey<Nested<T, K>, K2>, K4 extends NestedKey<Nested<Nested<T, K>, K2>, K3>>(key: K, k2: K2, k3: K3, k4: K4): (t: T | undefined) => Nested<Nested<Nested<T, K>, K2>, K3>[K4] | undefined;
 export function extract<T, K extends keyof T>(key: K): (t: T | undefined) => T[K] | undefined {
     if (arguments.length > 1) {
+        // eslint-disable-next-line prefer-rest-params
         const args = [...arguments];
         return (t: T | undefined) => {
             let v = t as any;
@@ -36,6 +37,7 @@ export function pipe<T, R, S, A, B>(t: T, fn: (t: T) => R, fn2: (t: R) => S, fn3
 export function pipe<T, R, S, A, B, C>(t: T, fn: (t: T) => R, fn2: (t: R) => S, fn3: (t: S) => A, fn4: (t: A) => B, fn5: (t: B) => C): C;
 export function pipe<T>(t: T): T {
     if (arguments.length > 1) {
+        // eslint-disable-next-line prefer-rest-params
         const fns = [...arguments].slice(1) as ((v: any) => any)[];
         let v = t as any;
         for (const fn of fns) {
