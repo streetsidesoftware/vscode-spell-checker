@@ -35,7 +35,7 @@ export function readSettings(filename: string): Promise<CSpellSettings> {
         )
         .then(cfgJson => (json.parse(cfgJson) as CSpellSettings))
         // covert parse errors into the defaultSettings
-        .then(a => a, error => defaultSettingsWithComments)
+        .then(a => a, _error => defaultSettingsWithComments)
         .then(settings => ({...defaultSettings, ...settings}));
 }
 

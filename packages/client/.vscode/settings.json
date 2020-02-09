@@ -1,43 +1,42 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-	"files.exclude": {
-		"out": false // set this to true to hide the "out" folder with the compiled JS files
-	},
-	"search.exclude": {
-		"**/node_modules": true,
-		"**/bower_components": true,
-		".vscode-test": true,
-		"server": true,
-		"out": true // set this to false to include "out" folder in search results
-	},
-	"typescript.tsdk": "./node_modules/typescript/lib",
-	"cSpell.enabledLanguageIds": [
-		"c",
-		"cpp",
-		"csharp",
-		"go",
-		"html",
-		"javascript",
-		"javascriptreact",
-		"json",
-		"jsonc",
-		"latex",
-		"markdown",
-		"php",
-		"plaintext",
-		"python",
-		"text",
-		"typescript",
-		"typescriptreact",
-		"yml"
-	],
-	"cSpell.ignoreWords": [
-		"arraylength",
-		"languageclient",
-		"restructuredtext"
-	],
-	"cSpell.language": "en",
-	"cSpell.dictionaries": [
-		"lorem-ipsum"
-	]
+    "cSpell.dictionaries": [
+        "lorem-ipsum"
+    ],
+    "cSpell.enabledLanguageIds": [
+        "c",
+        "cpp",
+        "csharp",
+        "go",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "jsonc",
+        "latex",
+        "markdown",
+        "php",
+        "plaintext",
+        "python",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yml"
+    ],
+    "cSpell.ignoreWords": [
+        "arraylength",
+        "languageclient",
+        "restructuredtext"
+    ],
+    "cSpell.language": "en",
+    "files.exclude": {
+        "out": false
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        ".vscode-test": true,
+        "server": true,
+        "out": true
+    },
+    "typescript.tsdk": "./node_modules/typescript/lib"
 }

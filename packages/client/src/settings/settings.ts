@@ -8,7 +8,7 @@ import * as path from 'path';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 performance.mark('settings.ts imports 2');
-import { unique, uniqueFilter } from '../util';
+import { unique } from '../util';
 import * as watcher from '../util/watcher';
 import * as config from './config';
 performance.mark('settings.ts imports 3');
@@ -323,7 +323,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     updateCSpell: boolean = true
 ): Promise<boolean> {
     interface Result {
-        value: CSpellUserSettings[K] | undefined,
+        value: CSpellUserSettings[K] | undefined;
     }
 
     const scope = config.configTargetToScope(target);

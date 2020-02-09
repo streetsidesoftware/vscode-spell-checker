@@ -14,6 +14,7 @@ import { URI as Uri } from 'vscode-uri';
 import { log } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
 import { GlobMatcher } from 'cspell-glob';
+import * as os from 'os';
 
 const cSpellSection: keyof SettingsCspell = 'cSpell';
 
@@ -57,8 +58,8 @@ export class DocumentSettings {
     // Cache per folder settings
     private cachedValues: Clearable[] = [];
     readonly getUriSettings = this.createCache((key: string = '') => this._getUriSettings(key));
-    private readonly fetchSettingsForUri = this.createCache((key: string) => this._fetchSettingsForFolderUri(key));
-    private readonly _cspellFileSettingsByFolderCache = this.createCache(readSettingsForFolderUri);
+    private readonly fetchSettingsForUri = this.createCache((key: string) => this._fetchSettingsForUri(key));
+    private readonly _cspellFileSettingsByFolderCache = this.createCache(_readSettingsForFolderUri);
     private readonly fetchVSCodeConfiguration = this.createCache((key: string) => this._fetchVSCodeConfiguration(key));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
     readonly configsToImport = new Set<string>();
@@ -74,20 +75,14 @@ export class DocumentSettings {
     async _getUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('getUriSettings:', uri);
         const r = uri
-            ? await this.fetchUriSettings(uri!)
+            ? await this.fetchUriSettings(uri)
             : CSpell.mergeSettings(this.defaultSettings, this.importedSettings());
         return r;
     }
 
     async isExcluded(uri: string): Promise<boolean> {
-        const settingsByWorkspaceFolder = await this.findMatchingFolderSettings(uri);
-        const fnExclTests = settingsByWorkspaceFolder.map(s => ((filename: string) => s.globMatcher.match(filename)));
-        for (const fn of fnExclTests) {
-            if (fn(Uri.parse(uri).path)) {
-                return true;
-            }
-        }
-        return false;
+        const settings = await this.fetchSettingsForUri(uri);
+        return settings.globMatcher.match(Uri.parse(uri).path);
     }
 
     resetSettings() {
@@ -104,7 +99,7 @@ export class DocumentSettings {
     private _importSettings() {
         log(`importSettings`);
         const importPaths = [...this.configsToImport.keys()].sort();
-        return CSpell.readSettingsFiles(importPaths);
+        return readSettingsFiles(importPaths);
     }
 
     get version() {
@@ -120,8 +115,7 @@ export class DocumentSettings {
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('Start fetchUriSettings:', uri);
-        const folder = await this.findMatchingFolder(uri);
-        const folderSettings = await this.fetchSettingsForUri(folder.uri);
+        const folderSettings = await this.fetchSettingsForUri(uri);
         const spellSettings = CSpell.mergeSettings(this.defaultSettings, this.importedSettings(), folderSettings.settings);
         const fileUri = Uri.parse(uri);
         const fileSettings = CSpell.calcOverrideSettings(spellSettings, fileUri.fsPath);
@@ -136,17 +130,6 @@ export class DocumentSettings {
 
     private async fetchFolders() {
         return (await vscode.getWorkspaceFolders(this.connection)) || [];
-    }
-
-    private async findMatchingFolderSettings(docUri: string): Promise<ExtSettings[]> {
-        const matches = (await this.matchingFoldersForUri(docUri))
-            .map(folder => folder.uri)
-            .map(uri => this.fetchSettingsForUri(uri));
-        if (matches.length) {
-            return Promise.all(matches);
-        }
-        const { uri } = (await this.folders)[0] || { uri: docUri };
-        return [await this.fetchSettingsForUri(uri)];
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
@@ -169,16 +152,17 @@ export class DocumentSettings {
         return cSpellConfigSettings;
     }
 
-    private async _fetchSettingsForFolderUri(uri: string): Promise<ExtSettings> {
+    private async _fetchSettingsForUri(uri: string): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${uri}`);
         const cSpellConfigSettings = await this.fetchSettingsFromVSCode(uri);
-        const cSpellFolderSettings = this.resolveConfigImports(cSpellConfigSettings, uri);
-        const settings = this._cspellFileSettingsByFolderCache.get(uri);
+        const folder = await this.findMatchingFolder(uri);
+        const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
+        const settings = this.readSettingsForFolderUri(folder.uri);
         // cspell.json file settings take precedence over the vscode settings.
         const mergedSettings = CSpell.mergeSettings(cSpellFolderSettings, settings);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths);
-        const root = Uri.parse(uri).path;
+        const root = Uri.parse(folder.uri).path;
         const globMatcher = new GlobMatcher(globs, root);
 
         const ext: ExtSettings = {
@@ -210,14 +194,8 @@ export class DocumentSettings {
         return lazy;
     }
 
-    private resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
-        const uriFsPath = Uri.parse(folderUri).fsPath;
-        const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
-        if (!imports.length) {
-            return config;
-        }
-        const importAbsPath = imports.map(file => path.resolve(file, uriFsPath));
-        return CSpell.mergeSettings(CSpell.readSettingsFiles(importAbsPath), config);
+    private readSettingsForFolderUri(folderUri: string): CSpellUserSettings {
+        return this._cspellFileSettingsByFolderCache.get(folderUri);
     }
 }
 
@@ -233,14 +211,41 @@ function configPathsForRoot(workspaceRootUri?: string) {
     return paths;
 }
 
-function readSettingsForFolderUri(uri: string): CSpellUserSettings {
-    return uri ? readSettingsFiles(configPathsForRoot(uri)) : {};
+function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
+    log(`resolveConfigImports:`, folderUri);
+    const uriFsPath = Uri.parse(folderUri).fsPath;
+    const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
+    const importAbsPath = imports.map(file => resolvePath(uriFsPath, file));
+    log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
+    log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
+    const { import: _import, ...result } = importAbsPath.length
+        ? CSpell.mergeSettings(readSettingsFiles([...importAbsPath]), config)
+        : config;
+    return result;
+}
+
+function _readSettingsForFolderUri(folderUri: string): CSpellUserSettings {
+    return folderUri ? readSettingsFiles(configPathsForRoot(folderUri)) : {};
 }
 
 function readSettingsFiles(paths: string[]) {
     log(`readSettingsFiles:`, paths);
-    const existingPaths = paths.filter(filename => fs.existsSync(filename));
-    return CSpell.readSettingsFiles(existingPaths);
+    const existingPaths = paths.filter(filename => exists(filename));
+    log(`readSettingsFiles actual:`, existingPaths);
+    return existingPaths.length ? CSpell.readSettingsFiles(existingPaths) : {};
+}
+
+function exists(file: string): boolean {
+    try {
+        const s = fs.statSync(file);
+        return s.isFile();
+    } catch (e) {}
+    return false;
+}
+
+function resolvePath(...parts: string[]): string {
+    const normalizedParts = parts.map(part => part[0] === '~' ? os.homedir() + part.slice(1) : part);
+    return path.resolve(...normalizedParts);
 }
 
 export function isUriAllowed(uri: string, schemes?: string[]) {

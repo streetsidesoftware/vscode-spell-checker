@@ -28,18 +28,15 @@ export interface ServerResponseIsSpellCheckEnabled {
     fileEnabled?: boolean;
 }
 
+export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponseIsSpellCheckEnabled {
+    uri: vscode.Uri;
+}
+
 const methodNames: ServerRequestMethodConstants = {
     isSpellCheckEnabled: 'isSpellCheckEnabled',
     getConfigurationForDocument: 'getConfigurationForDocument',
     splitTextIntoWords: 'splitTextIntoWords',
     spellingSuggestions: 'spellingSuggestions',
-};
-
-const defaultGetConfigurationForDocumentResult: GetConfigurationForDocumentResult = {
-    languageEnabled: undefined,
-    fileEnabled: undefined,
-    settings: undefined,
-    docSettings: undefined,
 };
 
 export class CSpellClient {
@@ -108,17 +105,17 @@ export class CSpellClient {
         return this.client.start();
     }
 
-    public async isSpellCheckEnabled(document: vscode.TextDocument): Promise<ServerResponseIsSpellCheckEnabled> {
+    public async isSpellCheckEnabled(document: vscode.TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return {};
+            return { uri };
         }
         const response = (await this.sendRequest(
             methodNames.isSpellCheckEnabled,
             { uri: uri.toString(), languageId }
-        )) as ServerResponseIsSpellCheckEnabled;
-        return response;
+        ));
+        return { ...response, uri };
     }
 
     public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
@@ -145,11 +142,6 @@ export class CSpellClient {
             methodNames.splitTextIntoWords,
             text
         );
-    }
-
-    public async fetchSpellingSuggestions(text: string, languageId: string | undefined, document: vscode.TextDocument | undefined) {
-        await this.client.onReady();
-        return; //  this.sendRequest();
     }
 
     public notifySettingsChanged() {
