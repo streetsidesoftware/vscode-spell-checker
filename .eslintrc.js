@@ -14,6 +14,7 @@ module.exports = {
   },
   ignorePatterns: [
     '**/*.d.ts',
+    '**/node_modules/**'
   ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
