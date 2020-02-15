@@ -1,6 +1,6 @@
 // cSpell:ignore pycache
-import { Connection, TextDocumentUri } from './vscode.config';
-import * as vscode from './vscode.config';
+import { Connection, TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
+import * as vscode from 'vscode-languageserver';
 import {
     ExcludeFilesGlobMap,
     Glob
@@ -129,11 +129,11 @@ export class DocumentSettings {
     }
 
     private async fetchFolders() {
-        return (await vscode.getWorkspaceFolders(this.connection)) || [];
+        return (await getWorkspaceFolders(this.connection)) || [];
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
-        return (await vscode.getConfiguration(this.connection, [
+        return (await getConfiguration(this.connection, [
             { scopeUri: uri || undefined, section: cSpellSection },
             { section: 'search' }
         ])).map(v => v || {}) as [CSpellUserSettings, VsCodeSettings];
