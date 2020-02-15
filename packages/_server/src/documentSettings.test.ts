@@ -4,9 +4,8 @@ import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
 
-// import * as vscode from './vscode.workspaceFolders';
 jest.mock('vscode-languageserver');
-jest.mock('./vscode.workspaceFolders');
+jest.mock('./vscode.config');
 jest.mock('./util');
 
 const mockGetWorkspaceFolders = getWorkspaceFolders as jest.Mock;
