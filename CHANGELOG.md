@@ -1,4 +1,8 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.1...v) (2020-02-15)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.2...v) (2020-02-15)
+
+
+
+## [1.7.23-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.1...v1.7.23-alpha.2) (2020-02-15)
 
 
 ### Bug Fixes
