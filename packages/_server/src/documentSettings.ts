@@ -1,6 +1,6 @@
 // cSpell:ignore pycache
-import { Connection, TextDocumentUri } from './vscode.workspaceFolders';
-import * as vscode from './vscode.workspaceFolders';
+import { Connection, TextDocumentUri } from './vscode.config';
+import * as vscode from './vscode.config';
 import {
     ExcludeFilesGlobMap,
     Glob

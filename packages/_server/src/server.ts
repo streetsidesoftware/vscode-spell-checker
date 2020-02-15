@@ -9,7 +9,7 @@ import {
     CodeActionKind,
 } from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
-import { TextDocumentUri, TextDocumentUriLangId } from './vscode.workspaceFolders';
+import { TextDocumentUri, TextDocumentUriLangId } from './vscode.config';
 import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
