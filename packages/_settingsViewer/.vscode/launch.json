@@ -7,14 +7,14 @@
         {
             "type": "chrome",
             "request": "attach",
-            "name": "Attach to Chrome",
+            "name": "Viewer: Attach to Chrome",
             "port": 9222,
             "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
         },
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Viewer Chrome",
+            "name": "Viewer: Launch Viewer Chrome",
             "url": "http://localhost:3000",
             "preLaunchTask": "Client Build",
             "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
@@ -22,7 +22,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Tester Chrome",
+            "name": "Viewer: Launch Tester Chrome",
             "url": "http://localhost:3000/test.html",
             "preLaunchTask": "Client Build",
             "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
@@ -30,7 +30,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jest All",
+            "name": "Viewer: Jest All",
             "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": ["--runInBand"],
             "console": "integratedTerminal",
@@ -43,7 +43,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jest current-file",
+            "name": "Viewer: Jest current-file",
             "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": ["--runInBand", "${file}"],
             "console": "integratedTerminal",

@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"configurations": [
 		{
-			"name": "Launch Extension",
+			"name": "Client: Launch Extension",
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
@@ -14,7 +14,7 @@
 			"preLaunchTask": "build"
 		},
 		{
-			"name": "Launch Extension Single File",
+			"name": "Client: Launch Extension Single File",
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
@@ -25,7 +25,7 @@
 			"preLaunchTask": "build"
 		},
 		{
-			"name": "Launch Extension Tests",
+			"name": "Client: Launch Extension Tests",
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
@@ -41,7 +41,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jest All",
+            "name": "Client: Jest All",
             "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": ["--runInBand"],
             "console": "integratedTerminal",
@@ -54,7 +54,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Jest current-file",
+            "name": "Client: Jest current-file",
             "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": ["--runInBand", "${file}"],
             "console": "integratedTerminal",
