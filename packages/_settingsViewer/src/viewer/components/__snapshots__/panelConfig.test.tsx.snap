@@ -742,44 +742,6 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           </div>
         </div>
         <div
-          className="mdc-chip"
-          disabled={false}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseUp={[Function]}
-          onTouchEnd={[Function]}
-          onTouchStart={[Function]}
-          onTransitionEnd={[Function]}
-          style={Object {}}
-          tabIndex={0}
-        >
-          <div
-            className="mdc-chip__checkmark"
-          >
-            <svg
-              className="mdc-chip__checkmark-svg"
-              focusable="false"
-              viewBox="-2 -3 30 30"
-            >
-              <path
-                className="mdc-chip__checkmark-path"
-                d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                fill="none"
-                stroke="black"
-              />
-            </svg>
-          </div>
-          <div
-            className="mdc-chip__text"
-          >
-            jasonc
-          </div>
-        </div>
-        <div
           className="mdc-chip mdc-chip--selected"
           disabled={false}
           onBlur={[Function]}
@@ -929,6 +891,44 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
             className="mdc-chip__text"
           >
             json
+          </div>
+        </div>
+        <div
+          className="mdc-chip"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchStart={[Function]}
+          onTransitionEnd={[Function]}
+          style={Object {}}
+          tabIndex={0}
+        >
+          <div
+            className="mdc-chip__checkmark"
+          >
+            <svg
+              className="mdc-chip__checkmark-svg"
+              focusable="false"
+              viewBox="-2 -3 30 30"
+            >
+              <path
+                className="mdc-chip__checkmark-path"
+                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                fill="none"
+                stroke="black"
+              />
+            </svg>
+          </div>
+          <div
+            className="mdc-chip__text"
+          >
+            jsonc
           </div>
         </div>
         <div
@@ -2363,44 +2363,6 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           </div>
         </div>
         <div
-          className="mdc-chip"
-          disabled={false}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseUp={[Function]}
-          onTouchEnd={[Function]}
-          onTouchStart={[Function]}
-          onTransitionEnd={[Function]}
-          style={Object {}}
-          tabIndex={0}
-        >
-          <div
-            className="mdc-chip__checkmark"
-          >
-            <svg
-              className="mdc-chip__checkmark-svg"
-              focusable="false"
-              viewBox="-2 -3 30 30"
-            >
-              <path
-                className="mdc-chip__checkmark-path"
-                d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                fill="none"
-                stroke="black"
-              />
-            </svg>
-          </div>
-          <div
-            className="mdc-chip__text"
-          >
-            jasonc
-          </div>
-        </div>
-        <div
           className="mdc-chip mdc-chip--selected"
           disabled={false}
           onBlur={[Function]}
@@ -2550,6 +2512,44 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
             className="mdc-chip__text"
           >
             json
+          </div>
+        </div>
+        <div
+          className="mdc-chip"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchStart={[Function]}
+          onTransitionEnd={[Function]}
+          style={Object {}}
+          tabIndex={0}
+        >
+          <div
+            className="mdc-chip__checkmark"
+          >
+            <svg
+              className="mdc-chip__checkmark-svg"
+              focusable="false"
+              viewBox="-2 -3 30 30"
+            >
+              <path
+                className="mdc-chip__checkmark-path"
+                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                fill="none"
+                stroke="black"
+              />
+            </svg>
+          </div>
+          <div
+            className="mdc-chip__text"
+          >
+            jsonc
           </div>
         </div>
         <div
@@ -3984,44 +3984,6 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           </div>
         </div>
         <div
-          className="mdc-chip"
-          disabled={false}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseUp={[Function]}
-          onTouchEnd={[Function]}
-          onTouchStart={[Function]}
-          onTransitionEnd={[Function]}
-          style={Object {}}
-          tabIndex={0}
-        >
-          <div
-            className="mdc-chip__checkmark"
-          >
-            <svg
-              className="mdc-chip__checkmark-svg"
-              focusable="false"
-              viewBox="-2 -3 30 30"
-            >
-              <path
-                className="mdc-chip__checkmark-path"
-                d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                fill="none"
-                stroke="black"
-              />
-            </svg>
-          </div>
-          <div
-            className="mdc-chip__text"
-          >
-            jasonc
-          </div>
-        </div>
-        <div
           className="mdc-chip mdc-chip--selected"
           disabled={false}
           onBlur={[Function]}
@@ -4171,6 +4133,44 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
             className="mdc-chip__text"
           >
             json
+          </div>
+        </div>
+        <div
+          className="mdc-chip"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchStart={[Function]}
+          onTransitionEnd={[Function]}
+          style={Object {}}
+          tabIndex={0}
+        >
+          <div
+            className="mdc-chip__checkmark"
+          >
+            <svg
+              className="mdc-chip__checkmark-svg"
+              focusable="false"
+              viewBox="-2 -3 30 30"
+            >
+              <path
+                className="mdc-chip__checkmark-path"
+                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                fill="none"
+                stroke="black"
+              />
+            </svg>
+          </div>
+          <div
+            className="mdc-chip__text"
+          >
+            jsonc
           </div>
         </div>
         <div
