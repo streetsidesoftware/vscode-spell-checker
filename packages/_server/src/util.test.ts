@@ -11,7 +11,7 @@ describe('Validate Util Functions', () => {
         expect(logger.getPendingEntries().map(e => e.msg)).toEqual([
             expect.stringContaining('setWorkspaceFolders'),
             expect.stringContaining('setWorkspaceBase'),
-            'log\t.../util.test.ts',
+            expect.stringMatching(/log\s+.*util.test.ts/),
             expect.stringContaining('error'),
             expect.stringContaining('debug'),
             expect.stringContaining('info'),
