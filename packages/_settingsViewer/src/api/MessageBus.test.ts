@@ -1,6 +1,6 @@
-import { MessageBus } from "./MessageBus";
-import { WebviewApi } from "./WebviewApi";
-import { RequestConfigurationMessage, ConfigurationChangeMessage } from "./message";
+import { MessageBus } from './MessageBus';
+import { WebviewApi } from './WebviewApi';
+import { RequestConfigurationMessage, ConfigurationChangeMessage } from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
 
 describe('Validate MessageBus', () => {
@@ -33,7 +33,7 @@ describe('Validate MessageBus', () => {
         const onRequestConfigurationMessage = jest.fn((_msg: RequestConfigurationMessage) => {});
         const onConfigurationChangeMessage = jest.fn((_msg: ConfigurationChangeMessage) => {});
         const bus = new MessageBus(webviewApi);
-        const listenerA = bus.listenFor("RequestConfigurationMessage", onRequestConfigurationMessage);
+        const listenerA = bus.listenFor('RequestConfigurationMessage', onRequestConfigurationMessage);
         const listenerB = bus.listenFor('ConfigurationChangeMessage', onConfigurationChangeMessage);
 
         bus.postMessage({ command: 'RequestConfigurationMessage' });

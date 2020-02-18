@@ -14,7 +14,7 @@ export function handlerApplyTextEdits(client: LanguageClient) {
         const textEditor = window.activeTextEditor;
         if (textEditor && textEditor.document.uri.toString() === uri) {
             if (textEditor.document.version !== documentVersion) {
-                window.showInformationMessage(`Spelling changes are outdated and cannot be applied to the document.`);
+                window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.');
             }
             const cfg = workspace.getConfiguration(CSpellSettings.sectionCSpell);
             if (cfg.get('fixSpellingWithRenameProvider') && edits.length === 1) {

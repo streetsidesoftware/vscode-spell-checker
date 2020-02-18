@@ -190,9 +190,9 @@ export function isConfigTargetWithOptionalResource(target: ConfigTarget): target
 }
 
 type TargetToScope = {
-    [Target.Global]: "globalValue";
-    [Target.Workspace]: "workspaceValue";
-    [Target.WorkspaceFolder]: "workspaceFolderValue";
+    [Target.Global]: 'globalValue';
+    [Target.Workspace]: 'workspaceValue';
+    [Target.WorkspaceFolder]: 'workspaceFolderValue';
 }
 
 const targetToScope: TargetToScope = {
