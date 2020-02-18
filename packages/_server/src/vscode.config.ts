@@ -34,11 +34,11 @@ export function getConfiguration(connection: Connection, params?: GetConfigurati
             })
             .filter(p => !!p)
             ;
-        log(`getConfiguration`, uris);
+        log('getConfiguration', uris);
         return connection.workspace.getConfiguration(params);
     }
     if (params) {
-        log(`getConfiguration`, params.scopeUri);
+        log('getConfiguration', params.scopeUri);
         return connection.workspace.getConfiguration(params);
     }
     return connection.workspace.getConfiguration();

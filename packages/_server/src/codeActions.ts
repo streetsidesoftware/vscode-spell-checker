@@ -95,7 +95,7 @@ export function onCodeActionHandler(
         }
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
-            log(`CodeAction generate suggestions`);
+            log('CodeAction generate suggestions');
             const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
