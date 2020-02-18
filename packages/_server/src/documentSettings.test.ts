@@ -1,8 +1,11 @@
-import { DocumentSettings, isUriAllowed, isUriBlackListed } from './documentSettings';
+import { DocumentSettings, isUriAllowed, isUriBlackListed, debugExports, correctBadSettings } from './documentSettings';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver';
 import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
+import * as cspell from 'cspell-lib';
+import { Pattern, CSpellUserSettings } from 'cspell-lib';
+import * as os from 'os';
 
 jest.mock('vscode-languageserver');
 jest.mock('./vscode.config');
@@ -89,7 +92,68 @@ describe('Validate DocumentSettings', () => {
         expect(result).toBe(false);
     });
 
+    test('resolvePath', () => {
+        expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
+        expect(debugExports.resolvePath('~')).toBe(os.homedir());
+    });
+
     function newDocumentSettings() {
         return new DocumentSettings({} as Connection, {});
     }
+});
+
+describe('Validate RegExp corrections', () => {
+    test('fixRegEx', () => {
+        const defaultSettings = cspell.getDefaultSettings();
+        // Make sure it doesn't change the defaults.
+        expect(defaultSettings.patterns?.map(p => p.pattern).map(debugExports.fixRegEx))
+            .toEqual(defaultSettings.patterns?.map(p => p.pattern));
+        const sampleRegEx: Pattern[] = [
+            '/#.*/',
+            '/"""(.*?\\n?)+?"""/g',
+            '/\'\'\'(.*?\\n?)+?\'\'\'/g',
+            'strings',
+        ];
+        const expectedRegEx: Pattern[] = [
+            '/#.*/',
+            '/(""")[^\\1]*?\\1/g',
+            "/(''')[^\\1]*?\\1/g",
+            'strings',
+        ];
+        expect(sampleRegEx.map(debugExports.fixRegEx)).toEqual(expectedRegEx);
+    });
+
+    test('fixPattern', () => {
+        const defaultSettings = cspell.getDefaultSettings();
+        // Make sure it doesn't change the defaults.
+        expect(defaultSettings.patterns?.map(debugExports.fixPattern))
+            .toEqual(defaultSettings.patterns);
+
+    });
+
+    test('fixPattern', () => {
+        const defaultSettings = cspell.getDefaultSettings();
+        // Make sure it doesn't change the defaults.
+        expect(correctBadSettings(defaultSettings))
+            .toEqual(defaultSettings);
+
+        const settings: CSpellUserSettings = {
+            patterns: [
+                {
+                    name: 'strings',
+                    pattern: '/"""(.*?\\n?)+?"""/g',
+                }
+            ]
+        };
+        const expectedSettings: CSpellUserSettings = {
+            patterns: [
+                {
+                    name: 'strings',
+                    pattern: '/(""")[^\\1]*?\\1/g',
+                }
+            ]
+        };
+        expect(correctBadSettings(settings)).toEqual(expectedSettings);
+        expect(correctBadSettings(settings)).not.toEqual(settings);
+    });
 });
