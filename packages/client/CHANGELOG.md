@@ -7,40 +7,25 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package code-spell-checker
 
-
-
-
-
 ## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23...v1.7.24) (2020-02-18)
-
 
 ### Bug Fixes
 
 * Try to detect some common bad regex patterns and fix them. ([822da97](https://github.com/streetsidesoftware/vscode-spell-checker/commit/822da97449e90b4dc4da3a3cf14611215ee05e09))
 
-
-
 ## [1.7.23](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.2...v1.7.23) (2020-02-15)
 
-
-
 ## [1.7.23-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.1...v1.7.23-alpha.2) (2020-02-15)
-
 
 ### Bug Fixes
 
 * clean up CodeAction logging to reduce noise ([136a0e2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/136a0e24f7c0517b5c3abf8ecb29f63d05fa1f29))
 
-
-
 ## [1.7.23-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.0...v1.7.23-alpha.1) (2020-02-09)
-
 
 ### Bug Fixes
 
 * fix lint issues in _server, client, and _settingsViewer ([bc4fb44](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bc4fb44e948e1e6453fc222140642f573b8d7731))
-
-
 
 ## [1.7.23-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.22...v1.7.23-alpha.0) (2020-02-09)
 
@@ -68,43 +53,28 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.7.14](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.13...v1.7.14) (2019-06-03)
 
-
 ## [1.7.13](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.12...v1.7.13) (2019-05-28)
 - Disable snippets until they can be configured.
 - Update `cspell` library to get the latest English dictionary and some performance improvements.
 
-
-
 ## [1.7.12](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.11...v1.7.12) (2019-05-27)
 - Add snippets to make it easier to add cspell settings to a doc.
 - Turn on `git-commit` by default so git commit messages can be spell checked without changing the settings.
-
-
-
 
 ## [1.7.11](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.10...v1.7.11) (2019-05-26)
 - Fix [Chinese word in two English words should not be hinted. · Issue #291](https://github.com/streetsidesoftware/vscode-spell-checker/issues/291)
 - Fix [Does not check Japanese prolonged sound mark · Issue #253](https://github.com/streetsidesoftware/vscode-spell-checker/issues/253)
 - Fix [Support spell checking for English words amongst an unsupported language · Issue #286](https://github.com/streetsidesoftware/vscode-spell-checker/issues/286)
 
-
-
-
 ## [1.7.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.9...v1.7.10) (2019-05-12)
 - Bundle the VS Code side of the extension in to a single `.js` file. This should address:
   - [Extension causes high cpu load · Issue #309](https://github.com/streetsidesoftware/vscode-spell-checker/issues/309)
   - [Extension causes high cpu load · Issue #339](https://github.com/streetsidesoftware/vscode-spell-checker/issues/339)
 
-
-
-
 ## [1.7.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.8...v1.7.9) (2019-05-06)
 - Updated `cspell` and dictionaries.
   - Fixes [Connectedness not recognized · Issue #325](https://github.com/streetsidesoftware/vscode-spell-checker/issues/325)
 - Make sure `cspell.json` is updated through the configuration UI settings.
-
-
-
 
 ## [1.7.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.7...v1.7.8) (2019-05-05)
 - Fix ["No Code Action Available" when using SFTP · Issue #332](https://github.com/streetsidesoftware/vscode-spell-checker/issues/332)
@@ -112,9 +82,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   ```
       "cSpell.fixSpellingWithRenameProvider": true
   ```
-
-
-
 
 ## [1.7.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.6...v1.7.7) (2019-05-05)
 - Fix [Ignore paths not working? · Issue #311](https://github.com/streetsidesoftware/vscode-spell-checker/issues/311)
@@ -124,47 +91,46 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - Fix an issue where the available dictionaries were not showing up in the configuration screen if a file wasn't selected.
 - Add UI to ignore words -- [Option to ignore words · Issue #146](https://github.com/streetsidesoftware/vscode-spell-checker/issues/146)
 
-
-
-
 ## [1.7.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.5...v1.7.6) (2019-05-05)
 - Make the Quick Fix menu and Context menu workspace aware.
 - [Add configuration to hide the right-click menu. · Issue #336](https://github.com/streetsidesoftware/vscode-spell-checker/issues/336)
 
-## [1.7.5]
+## [1.7.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.4...v1.7.5) (2019-04-25)
 - Make all spelling suggestions available via the quick-fix menu. Related to
   [Quick actions stop functioning after clicking result form Problem window · Issue #283](https://github.com/streetsidesoftware/vscode-spell-checker/issues/283)
   and [Feedback on VS Code proposed Code Action Auto Fix APIs · Issue #297](https://github.com/streetsidesoftware/vscode-spell-checker/issues/297)
 
-## [1.7.4]
+## [1.7.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.3...v1.7.4) (2019-04-24)
 - Fix [cspell throws error when languageId is missing from languageSettings. · Issue #333](https://github.com/streetsidesoftware/vscode-spell-checker/issues/333)
 
-## [1.7.2]
+## [1.7.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.2...v1.7.3) (2019-04-24)
+
+## [1.7.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.0...v1.7.2) (2019-04-24)
 - Fix [1.7.0 no longer reads cSpell.json from root of workspace · Issue #330](https://github.com/streetsidesoftware/vscode-spell-checker/issues/330)
 
-## [1.7.1]
+## 1.7.1
 - Fix [Change cSpell.enabledLanguageIds `yml` to `yaml` · Issue #322](https://github.com/streetsidesoftware/vscode-spell-checker/issues/322)
 - Update to the latest version of `cspell` to update the dictionaries.
 - Support `java` by default.
 - Reduce the overall size of the extension.
 
-## [1.7.0]
+## [1.7.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.10...v1.7.0) (2019-04-19)
 - [Upgrade to VS Code's webview API · Issue #281](https://github.com/streetsidesoftware/vscode-spell-checker/issues/281)
 - Update the cspell library
 - Update the dictionaries
 
-## [1.6.10]
+## [1.6.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.9...1.6.10) (2018-05-02)
 - [Fixes and issue where the status bar foreground color did not match theme #269](https://github.com/streetsidesoftware/vscode-spell-checker/issues/269)
 - [compact problem items listings #267](https://github.com/streetsidesoftware/vscode-spell-checker/issues/267)
 
-## [1.6.9]
+## [1.6.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.7...1.6.9) (2018-04-22)
 - [spell checker checks spelling on git version of files #214](https://github.com/streetsidesoftware/vscode-spell-checker/issues/214)
 
-## [1.6.8]
+## 1.6.8
 - [[Live Share] Restricting language services to local files #209](https://github.com/streetsidesoftware/vscode-spell-checker/pull/209)
 - Update the cSpell library.
 
-## [1.6.7]
+## [1.6.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.6...1.6.7) (2018-04-15)
 * Fix [cSpell.json overwritten with commented json on word add. #206](https://github.com/streetsidesoftware/vscode-spell-checker/issues/206)
 - Fix an issue with matching too much text for a url:
   [Misspelled first word after HTML element with absolute URL is not detected #201](https://github.com/streetsidesoftware/vscode-spell-checker/issues/201)
@@ -172,7 +138,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - Ignore SHA-1, SHA-256, SHA-512 hashes by default
 - Ignore HTML href urls by default.
 
-## [1.6.6]
+## [1.6.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.5...1.6.6) (2018-04-07)
 * Expose the setting to limit the number of repeated problems.
 
   To set it:
@@ -196,76 +162,76 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
    ![image](https://user-images.githubusercontent.com/3740137/38453511-3397299a-3a57-11e8-94af-4f46ecb544dc.png)
    See: [How to remove word from dictionary? #117](https://github.com/streetsidesoftware/vscode-spell-checker/issues/117)
 
-## [1.6.5]
+## [1.6.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.0...1.6.5) (2018-02-26)
 * Add support for [Visual Studio Live Share](https://aka.ms/vsls), pull request: [Adding support for Visual Studio Live Share #191](https://github.com/streetsidesoftware/vscode-spell-checker/pull/191)
 
-## [1.6.4]
+## 1.6.4
 * Add support for Rust
 * Improve LaTeX support.
 
-## [1.6.3]
+## 1.6.3
 * Improve LaTex support, special thanks to [James Yu](https://github.com/James-yu)
 * Add ability to disable checking a line: `cspell:disable-line`
 * Add ability to disable the next line: `cspell:disable-next`
 
-## [1.6.2]
+## 1.6.2
 * Reduce the size of the extension by excluding automatic test files.
 
-## [1.6.1]
+## 1.6.1
 * Fix: [bug: no spell checking when there's no folder opened #162](https://github.com/streetsidesoftware/vscode-spell-checker/issues/162)
 * Fix: [Incorrectly flagged words #160](https://github.com/streetsidesoftware/vscode-spell-checker/issues/160)
 
-## [1.6.0]
+# [1.6.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.5.0...1.6.0) (2017-12-10)
 * Release of Multi-Root Support
 * Fixes to support windows.
 
-## [1.5.1]
+## 1.5.1
 * Rollback of Multi-Root support due to issue with Windows.
 
-## [1.5.0]
+# [1.5.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.2...1.5.0) (2017-11-24)
 
 * Added Multi-Root Support [Support VSCode Multi Root Workspace #145](https://github.com/streetsidesoftware/vscode-spell-checker/issues/145)
 * Address issue with delay: [cSpell.spellCheckDelayMs seems to be ignored #155](https://github.com/streetsidesoftware/vscode-spell-checker/issues/155)
 
-## [1.4.12]
+## 1.4.12
 
 * Speed up suggestions.
 
-## [1.4.11]
+## [1.4.11](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.10...v1.4.11) (2017-10-28)
 
 * Improve suggests for words with accents.
 * Improve spell checking on compound words.
 
-## [1.4.10]
+## [1.4.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.9...1.4.10) (2017-10-12)
 
 * Allow the diagnostic level to be configured. In reference to [Highlight color #128](https://github.com/streetsidesoftware/vscode-spell-checker/issues/128) and [disable scrollbar annotations #144](https://github.com/streetsidesoftware/vscode-spell-checker/issues/144)
 
-## [1.4.9]
+## [1.4.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.8...1.4.9) (2017-10-12)
 
 * Make it easier to add ignore words to the settings. [Option to ignore words #146](https://github.com/streetsidesoftware/vscode-spell-checker/issues/146)
 
-## [1.4.8]
+## [1.4.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.7...1.4.8) (2017-10-11)
 
 * The spell checker will now give reasonable suggestions for compound words. Related to [allowCompoundWords only validates two words #142](https://github.com/streetsidesoftware/vscode-spell-checker/issues/142)
 * Fixed [Words in the forbidden list are being shown as suggested spelling corrections #89](https://github.com/streetsidesoftware/vscode-spell-checker/issues/89)
 
-## [1.4.7]
+## [1.4.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.6...1.4.7) (2017-10-07)
 
 * Improved the support for compound words with languages like Dutch and German. This is still a work in progress.
 * Enable spell checking longer word compounds like: networkerrorexecption. Related to [allowCompoundWords only validates two words #142](https://github.com/streetsidesoftware/vscode-spell-checker/issues/142)
 
-## [1.4.6]
+## [1.4.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.5...1.4.6) (2017-10-03)
 
 * Fix issue [Add all words in the current document to dictionary #59](https://github.com/streetsidesoftware/vscode-spell-checker/issues/59)
   This is now possible by selecting the words you want to add and right click to choose which dictionary to add them to.
 
-## [1.4.2 - 1.4.5]
+## [1.4.2 - 1.4.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.0...1.4.5) (2017-10-03)
 
 * Patch to fix issue with detecting changes to settings files.
 * Fix issue [Spawns too many "find" processes #143](https://github.com/streetsidesoftware/vscode-spell-checker/issues/143)
 * Possible fix for [CPU usage extremely high, on close memory usage skyrockets #77](https://github.com/streetsidesoftware/vscode-spell-checker/issues/77)
 
-## [1.4.1]
+## 1.4.1
 
 * Fix part of issue [#74](https://github.com/streetsidesoftware/vscode-spell-checker/issues/74) so flagged words are not shown as suggestions.
 * Enhanced the information screen.
@@ -275,24 +241,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   This addresses:
   * [#77](https://github.com/streetsidesoftware/vscode-spell-checker/issues/77)
 
-## [1.4.0]
+# [1.4.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.9...1.4.0) (2017-09-17)
 
 * Improved the information screen to make it easier to turn on/off languages.
 * Use MDL for the theme of the information screen.
 
-## [1.3.9]
+## [1.3.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.8...1.3.9) (2017-09-02)
 
 * Fixed and issue with incorrect suggestions when the misspelled word started with a capitol letter.
 * Improvements to the Info screen.
 
-## [1.3.8]
+## [1.3.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.7...1.3.8) (2017-08-28)
 
 * Update `README.md` to make finding suggestions a bit easier.
 * Add link to German extension.
 * Update cspell to support Python Django Framework.
 * Update cspell to support Go 1.9, thanks to @AlekSi
 
-## [1.3.7]
+## [1.3.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.6...1.3.7) (2017-08-24)
 
 * Add new setting to limit the amount of text checked in a single file. `cSpell.checkLimit` can be used to set the limit in K-Bytes. By default it is 500KB.
 * On startup, the spell checker is disabled and will be enabled only after the settings are read.
@@ -301,11 +267,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * Checking of `handlebars` files have been turned on by default.
 * Checking of `reStructuredText` files have been turned on by default.
 
-## [1.3.6]
+## [1.3.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.5...1.3.6) (2017-08-09)
 
 * Update cspell to enabled spelling checking 'untitled' files. See issue: [#99](https://github.com/streetsidesoftware/vscode-spell-checker/issues/99)
 
-## [1.3.5]
+## [1.3.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.4...1.3.5) (2017-08-07)
 
 * Add Extension API functions:
   * registerConfig - Register a cspell.json file to be loaded
@@ -320,31 +286,32 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   * disableLocal - Disables a Language Local. Example: `disableLocal(true, 'es')`
   * updateSettings - Update spelling settings by field. Example: `updateSettings(true, { language: "en", enable: true })`
 
-## [1.3.4]
+## [1.3.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.3...1.3.4) (2017-08-06)
 
 * Minor fix to the spell checking server related to importing settings from other extensions.
 
-## [1.3.3]
+## [1.3.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.1...1.3.3) (2017-08-06)
 
 * Fix an issue with words still showing up as incorrect after they have been added to user or project dictionary.
 * Progress towards enabling Dictionary extensions.
 
-## [1.3.2]
+## 1.3.2
 
 * Fix issue [#80](https://github.com/streetsidesoftware/vscode-spell-checker/issues/80)
 
-## 1.3.1
+## [1.3.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.0...1.3.1) (2017-07-22)
 
 * Fix issue [#112](https://github.com/streetsidesoftware/vscode-spell-checker/issues/112)
 * Fix issue [#113](https://github.com/streetsidesoftware/vscode-spell-checker/issues/113)
 * Fix issue [#110](https://github.com/streetsidesoftware/vscode-spell-checker/issues/110)
 
-## 1.3.0
+# [1.3.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.2.1...1.3.0) (2017-07-15)
 
 * Upgraded to cspell 1.7.1 to get import support and global dictionaries.
 * Adding cspell-dicts is now relatively simple.
 * Change the delay to be delay after typing finishes. [#90](https://github.com/streetsidesoftware/vscode-spell-checker/issues/90)
 
+## [1.2.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.2...1.2.1) (2017-07-01)
 ## 1.2.1
 
 * Fix issue [#96](https://github.com/streetsidesoftware/vscode-spell-checker/issues/96)
@@ -363,11 +330,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * Fix Issue with cspell Info pane that prevented it from showing up. [#88](https://github.com/streetsidesoftware/vscode-spell-checker/issues/88)
 
-## 1.0.2
+## [1.0.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.1...1.0.2) (2017-03-20)
 
 * Updated `cspell` to fix an issue where some misspelled words were considered correct even if they were not. See: [#7](https://github.com/Jason3S/cspell/issues/7)
 
-## 1.0.1
+## [1.0.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.0...1.0.1) (2017-03-11)
 
 * Update Readme and changelog.
 
@@ -399,23 +366,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * Added a dictionary of file types to avoid common file types from being marked as spelling errors.
 * Extend the *node* dictionary.
 
-## 0.15.0
+## [0.15.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.15.0...0.15.1) (2017-01-21)
+# [0.15.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.9...0.15.0) (2017-01-21)
 
 * Fix some issues with the spell checker info viewer
 * Fix [#51](https://github.com/streetsidesoftware/vscode-spell-checker/issues/51)
 * Fix an issue finding the cSpell.json file.
 * Add some terms to the dictionaries.
 
-## 0.14.9
+## [0.14.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.8...0.14.9) (2017-01-21)
 
 * Add a dictionary for C# and for .Net [#62](https://github.com/streetsidesoftware/vscode-spell-checker/issues/62)
 * Turn on .json by default [#63](https://github.com/streetsidesoftware/vscode-spell-checker/issues/63)
 
-## 0.14.8
+## [0.14.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.7...0.14.8) (2017-01-20)
 
 * Fix an issue with the displaying the spell checker info.
 
-## 0.14.7
+## [0.14.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.10.6...0.14.7) (2017-01-19)
 
 * Enabled language pug [#60](https://github.com/streetsidesoftware/vscode-spell-checker/issues/60)
 * As a stop-gap for csharp, use the typescript dictionary. Issue [#62](https://github.com/streetsidesoftware/vscode-spell-checker/issues/62)
@@ -548,7 +516,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * *GO* - 1.7 words added -- Special thanks to: @AlekSi
 * Ignore Chinese/Japanese characters -- Issue: #17
 
-## 0.10.6
+## [0.10.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.10.2...0.10.6) (2016-06-23)
 
 * Added support for contractions like wasn't, hasn't, could've.
 
@@ -558,11 +526,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * *PHP* - many keywords and library functions added to word list.
 * Word Lists now support CamelCase words.
 
+## [0.10.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.9.5...0.10.2) (2016-06-21)
 ## 0.10.1 and 0.10.2
 
 * Minor bug fixes
 
-## 0.10.0
+# 0.10.0 (2016-06-18)
 
 * Feature: Suggestions
 * Feature: Add to Dictionary
@@ -575,171 +544,3 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
     cSpell:ignore hte
     cSpell:words Verdana
 -->
-
-
-
-## [1.7.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.4...v1.7.5) (2019-04-25)
-
-
-
-## [1.7.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.3...v1.7.4) (2019-04-24)
-
-
-
-## [1.7.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.2...v1.7.3) (2019-04-24)
-
-
-
-## [1.7.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.0...v1.7.2) (2019-04-24)
-
-
-
-# [1.7.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.10...v1.7.0) (2019-04-19)
-
-
-
-## [1.6.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.9...1.6.10) (2018-05-02)
-
-
-
-## [1.6.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.7...1.6.9) (2018-04-22)
-
-
-
-## [1.6.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.6...1.6.7) (2018-04-15)
-
-
-
-## [1.6.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.5...1.6.6) (2018-04-07)
-
-
-
-## [1.6.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.6.0...1.6.5) (2018-02-26)
-
-
-
-# [1.6.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.5.0...1.6.0) (2017-12-10)
-
-
-
-# [1.5.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.2...1.5.0) (2017-11-24)
-
-
-
-## [1.4.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.4.11...1.4.2) (2017-10-28)
-
-
-
-## [1.4.11](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.10...v1.4.11) (2017-10-28)
-
-
-
-## [1.4.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.9...1.4.10) (2017-10-12)
-
-
-
-## [1.4.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.8...1.4.9) (2017-10-12)
-
-
-
-## [1.4.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.7...1.4.8) (2017-10-11)
-
-
-
-## [1.4.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.6...1.4.7) (2017-10-07)
-
-
-
-## [1.4.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.5...1.4.6) (2017-10-03)
-
-
-
-## [1.4.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.4.0...1.4.5) (2017-10-03)
-
-
-
-# [1.4.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.9...1.4.0) (2017-09-17)
-
-
-
-## [1.3.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.8...1.3.9) (2017-09-02)
-
-
-
-## [1.3.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.7...1.3.8) (2017-08-28)
-
-
-
-## [1.3.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.6...1.3.7) (2017-08-24)
-
-
-
-## [1.3.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.5...1.3.6) (2017-08-09)
-
-
-
-## [1.3.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.4...1.3.5) (2017-08-07)
-
-
-
-## [1.3.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.3...1.3.4) (2017-08-06)
-
-
-
-## [1.3.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.1...1.3.3) (2017-08-06)
-
-
-
-## [1.3.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.3.0...1.3.1) (2017-07-22)
-
-
-
-# [1.3.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.2.1...1.3.0) (2017-07-15)
-
-
-
-## [1.2.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.2...1.2.1) (2017-07-01)
-
-
-
-## [1.0.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.1...1.0.2) (2017-03-20)
-
-
-
-## [1.0.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/1.0.0...1.0.1) (2017-03-11)
-
-
-
-## [0.15.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.15.0...0.15.1) (2017-01-21)
-
-
-
-# [0.15.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.9...0.15.0) (2017-01-21)
-
-
-
-## [0.14.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.8...0.14.9) (2017-01-21)
-
-
-
-## [0.14.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.14.7...0.14.8) (2017-01-20)
-
-
-
-## [0.14.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.10.6...0.14.7) (2017-01-19)
-
-
-
-## [0.10.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.10.2...0.10.6) (2016-06-23)
-
-
-
-## [0.10.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.9.5...0.10.2) (2016-06-21)
-
-
-
-## [0.9.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/0.10.0...0.9.5) (2016-06-20)
-
-
-
-# 0.10.0 (2016-06-18)

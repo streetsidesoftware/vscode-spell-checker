@@ -461,7 +461,7 @@
         "build-production": "webpack --mode production",
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
         "lint": "eslint 'src/**'",
-        "vscode:prepublish": "npm run clean && npm run build-production && cp ../../CHANGELOG.md .",
+        "vscode:prepublish": "npm run clean && npm run build-production",
         "version": "npx vsce package",
         "watch": "npm run build -- watch",
         "test": "jest",
