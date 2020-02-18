@@ -1,4 +1,9 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23...v) (2020-02-18)
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23...v1.7.24) (2020-02-18)
 
 
 ### Bug Fixes
