@@ -20,7 +20,7 @@ import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings } from 'cspell-lib';
 import * as Api from './api';
-import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed } from './documentSettings';
+import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed, correctBadSettings } from './documentSettings';
 import {
     log,
     logError,
@@ -290,7 +290,8 @@ function run() {
                 if (settingsToUse.enabled) {
                     logInfo('Validate File', uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);
-                    const diagnostics = await Validator.validateTextDocument(doc, settingsToUse);
+                    const settings = correctBadSettings(settingsToUse);
+                    const diagnostics = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };
                 }

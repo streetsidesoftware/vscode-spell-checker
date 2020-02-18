@@ -1,4 +1,3 @@
-export * from 'vscode-languageserver';
 import * as vscode from 'vscode-languageserver';
 import { log } from './util';
 

@@ -1,9 +1,11 @@
 // cSpell:ignore pycache
-import { Connection, TextDocumentUri } from './vscode.config';
-import * as vscode from './vscode.config';
+import { Connection, TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
+import * as vscode from 'vscode-languageserver';
 import {
     ExcludeFilesGlobMap,
-    Glob
+    Glob,
+    RegExpPatternDefinition,
+    Pattern
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -86,7 +88,7 @@ export class DocumentSettings {
     }
 
     resetSettings() {
-        log(`resetSettings`);
+        log('resetSettings');
         CSpell.clearCachedSettings();
         this.cachedValues.forEach(cache => cache.clear());
         this._version += 1;
@@ -97,7 +99,7 @@ export class DocumentSettings {
     }
 
     private _importSettings() {
-        log(`importSettings`);
+        log('importSettings');
         const importPaths = [...this.configsToImport.keys()].sort();
         return readSettingsFiles(importPaths);
     }
@@ -129,11 +131,11 @@ export class DocumentSettings {
     }
 
     private async fetchFolders() {
-        return (await vscode.getWorkspaceFolders(this.connection)) || [];
+        return (await getWorkspaceFolders(this.connection)) || [];
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
-        return (await vscode.getConfiguration(this.connection, [
+        return (await getConfiguration(this.connection, [
             { scopeUri: uri || undefined, section: cSpellSection },
             { section: 'search' }
         ])).map(v => v || {}) as [CSpellUserSettings, VsCodeSettings];
@@ -212,7 +214,7 @@ function configPathsForRoot(workspaceRootUri?: string) {
 }
 
 function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
-    log(`resolveConfigImports:`, folderUri);
+    log('resolveConfigImports:', folderUri);
     const uriFsPath = Uri.parse(folderUri).fsPath;
     const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
     const importAbsPath = imports.map(file => resolvePath(uriFsPath, file));
@@ -229,9 +231,9 @@ function _readSettingsForFolderUri(folderUri: string): CSpellUserSettings {
 }
 
 function readSettingsFiles(paths: string[]) {
-    log(`readSettingsFiles:`, paths);
+    log('readSettingsFiles:', paths);
     const existingPaths = paths.filter(filename => exists(filename));
-    log(`readSettingsFiles actual:`, existingPaths);
+    log('readSettingsFiles actual:', existingPaths);
     return existingPaths.length ? CSpell.readSettingsFiles(existingPaths) : {};
 }
 
@@ -261,3 +263,39 @@ export function doesUriMatchAnyScheme(uri: string, schemes: string[]): boolean {
     const schema = Uri.parse(uri).scheme;
     return schemes.findIndex(v => v === schema) >= 0;
 }
+
+const correctRegExMap = new Map([
+    ['/"""(.*?\\n?)+?"""/g', '/(""")[^\\1]*?\\1/g'],
+    ["/'''(.*?\\n?)+?'''/g", "/(''')[^\\1]*?\\1/g"],
+]);
+
+function fixRegEx(pat: Pattern): Pattern {
+    if (typeof pat != 'string') {
+        return pat;
+    }
+    return correctRegExMap.get(pat) || pat;
+}
+
+function fixPattern(pat: RegExpPatternDefinition): RegExpPatternDefinition {
+    const pattern = fixRegEx(pat.pattern);
+    if (pattern === pat.pattern) {
+        return pat;
+    }
+    return {...pat, pattern};
+}
+
+export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSettings {
+    const newSettings = {...settings};
+
+    // Fix patterns
+    newSettings.patterns = newSettings?.patterns?.map(fixPattern);
+    newSettings.ignoreRegExpList = newSettings?.ignoreRegExpList?.map(fixRegEx);
+    newSettings.includeRegExpList = newSettings?.includeRegExpList?.map(fixRegEx);
+    return newSettings;
+}
+
+export const debugExports = {
+    fixRegEx,
+    fixPattern,
+    resolvePath,
+};

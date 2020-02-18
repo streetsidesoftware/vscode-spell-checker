@@ -284,6 +284,15 @@ def sum_it(self, seq):
 
 ## Customization
 
+The spell checker configuration can be controlled via VS Code preferences or `cspell.json` configuration file.
+
+Order of precedence:
+1. Workspace Folder `cspell.json`
+1. Workspace Folder `.vscode/cspell.json`
+1. Workspace `cspell.json`
+1. Workspace `.vscode/cspell.json`
+1. VS Code Preferences `cSpell` section.
+
 ### Adding words to the Workspace Dictionary
 
 You have the option to add you own words to the workspace dictionary.  The easiest, is to put your cursor
@@ -292,12 +301,12 @@ of suggestions and the option to add the word.
 
 You can also type in a word you want to add to the dictionary: `F1` `add word` -- select `Add Word to Dictionary` and type in the word you wish to add.
 
-### cSpell.json
+### cspell.json
 
-Words added to the dictionary are placed in the `cSpell.json` file in the `.vscode` folder found in the _workspace_.
-Note, the settings in cSpell.json will override the equivalent cSpell settings in settings.json.
+Words added to the dictionary are placed in the `cspell.json` file in the _workspace_ folder.
+Note, the settings in cspell.json will override the equivalent cSpell settings in settings.json.
 
-#### Example _cSpell.json_ file
+#### Example _cspell.json_ file
 ```javascript
 // cSpell Settings
 {

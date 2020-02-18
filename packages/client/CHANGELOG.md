@@ -30,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# Release Notes
+# Older Release Notes
 
 ## [1.7.21]
 - Add support for [Remote Development](https://docs.microsoft.com/en-us/visualstudio/online/how-to/vscode#self-hosted)
