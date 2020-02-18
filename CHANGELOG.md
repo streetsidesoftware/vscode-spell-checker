@@ -1,4 +1,13 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.2...v) (2020-02-15)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23...v) (2020-02-18)
+
+
+### Bug Fixes
+
+* Try to detect some common bad regex patterns and fix them. ([822da97](https://github.com/streetsidesoftware/vscode-spell-checker/commit/822da97449e90b4dc4da3a3cf14611215ee05e09))
+
+
+
+## [1.7.23](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23-alpha.2...v1.7.23) (2020-02-15)
 
 
 
