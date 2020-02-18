@@ -1,7 +1,3 @@
-import {
-    IConnection,
-} from 'vscode-languageserver';
-
 
 export enum LogLevel {
     NONE = 0,
@@ -12,6 +8,16 @@ export enum LogLevel {
 }
 
 type LoggerFunction = (msg: string) => void;
+
+export interface LoggerConnection {
+    console: {
+        error: LoggerFunction;
+        warn: LoggerFunction;
+        info: LoggerFunction;
+        log: LoggerFunction;
+    };
+    onExit: (handler: () => void) => void;
+}
 
 interface LoggerFunctionMap {
     [index: number]: LoggerFunction;
@@ -38,6 +44,7 @@ const levelMap = new Map<string, LogLevel>(logLevels);
 const stub = () => { };
 
 export class Logger {
+    private connection: LoggerConnection | undefined;
     private seq = 0;
     private logs: LogEntry[] = [];
     private loggers: LoggerFunctionMap = {
@@ -50,8 +57,11 @@ export class Logger {
 
     constructor(
         private logLevel = LogLevel.DEBUG,
-        private connection?: IConnection,
+        connection?: LoggerConnection,
     ) {
+        if (connection) {
+            this.setConnection(connection);
+        }
     }
 
     private writeLog(entry: LogEntry) {
@@ -91,7 +101,7 @@ export class Logger {
         return this.logLevel;
     }
 
-    setConnection(connection: IConnection) {
+    setConnection(connection: LoggerConnection) {
         this.connection = connection;
         this.connection.onExit(() => {
             this.connection = undefined;
