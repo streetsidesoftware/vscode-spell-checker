@@ -1,4 +1,14 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.0...v) (2020-02-18)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v) (2020-02-19)
+
+
+### Bug Fixes
+
+* Only evaluate CodeActions that are for `cspell` ([88a6095](https://github.com/streetsidesoftware/vscode-spell-checker/commit/88a6095ad980da52a65675341ac60c4ac33732ad))
+* Update cspell and other packages ([2a12c03](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2a12c03f88babf9ba38a76b2ab5e54215f9436af))
+
+
+
+## [1.7.24-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.0...v1.7.24-alpha.1) (2020-02-18)
 
 
 

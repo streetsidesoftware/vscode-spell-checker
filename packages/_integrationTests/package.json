@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker-integration-tests",
-  "version": "1.7.23",
+  "version": "1.7.24",
   "description": "Integration tests for the spell checker extension",
   "private": true,
   "main": "out/index.js",
