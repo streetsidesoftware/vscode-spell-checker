@@ -10,8 +10,8 @@ import { toJS } from 'mobx';
 
 describe('Validate AppState', () => {
     test('tabs', () => {
-        expect(getSampleAppState(sampleSettings).tabs.map(t => t.target)).toEqual(["user", "workspace", "folder", "file", "dictionaries", "about"])
-        expect(getSampleAppState(sampleSettingsSingleFolder).tabs.map(t => t.target)).toEqual(["user", "workspace", "file", "dictionaries", "about"])
+        expect(getSampleAppState(sampleSettings).tabs.map(t => t.target)).toEqual(['user', 'workspace', 'folder', 'file', 'dictionaries', 'about'])
+        expect(getSampleAppState(sampleSettingsSingleFolder).tabs.map(t => t.target)).toEqual(['user', 'workspace', 'file', 'dictionaries', 'about'])
     });
 
     test('actionActivateTab', () => {

@@ -2,8 +2,10 @@ import * as Validator from './validator';
 import loremIpsum = require('lorem-ipsum');
 import { CSpellSettings } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
+import { URI } from 'vscode-uri';
 
 import { getDefaultSettings } from 'cspell-lib';
+import { TextDocument } from 'vscode-languageserver';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
 
@@ -53,20 +55,18 @@ describe('Validator', () => {
         return results.then(results => expect(results).toHaveLength(0));
     });
 
-    test('validates regex inclusions/exclusions', () => {
+    test('validates regex inclusions/exclusions', async () => {
         const text = sampleCode;
         const languageId = 'plaintext';
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
-        const results = Validator.validateText(text, settings);
-        return results.then(results => {
-            const words = results.map(wo => wo.text);
-            expect(words).toEqual(expect.arrayContaining(['wrongg']));
-            expect(words).toEqual(expect.arrayContaining(['mispelled']));
-            expect(words).toEqual(expect.not.arrayContaining(['xaccd']));
-            expect(words).toEqual(expect.not.arrayContaining(['ctrip']));
-            expect(words).toEqual(expect.not.arrayContaining(['FFEE']));
-            expect(words).toEqual(expect.not.arrayContaining(['nmove']));
-        });
+        const results = await Validator.validateText(text, settings);
+        const words = results.map(wo => wo.text);
+        expect(words).toEqual(expect.arrayContaining(['wrongg']));
+        expect(words).toEqual(expect.arrayContaining(['mispelled']));
+        expect(words).toEqual(expect.not.arrayContaining(['xaccd']));
+        expect(words).toEqual(expect.not.arrayContaining(['ctrip']));
+        expect(words).toEqual(expect.not.arrayContaining(['FFEE']));
+        expect(words).toEqual(expect.not.arrayContaining(['nmove']));
     });
 
     test('validates ignoreRegExpList', () => {
@@ -103,6 +103,22 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         });
+    });
+
+    test('validateTextDocument', async () => {
+        const text = sampleCode;
+        const languageId = 'plaintext';
+        const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
+        const uri = URI.file(__filename).toString();
+        const textDoc = TextDocument.create(uri, languageId, 1, text);
+        const results = await Validator.validateTextDocument(textDoc, settings);
+        const words = results.map(diag => diag.message);
+        expect(words).toEqual(expect.arrayContaining([expect.stringContaining('wrongg')]));
+        expect(words).toEqual(expect.arrayContaining([expect.stringContaining('mispelled')]));
+        expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('xaccd')]));
+        expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('ctrip')]));
+        expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('FFEE')]));
+        expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('nmove')]));
     });
 });
 
