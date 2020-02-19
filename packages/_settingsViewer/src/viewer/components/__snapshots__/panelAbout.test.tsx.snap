@@ -6,7 +6,25 @@ exports[`About Panel Verification tests the snapshot 1`] = `
 >
   <h1>
     <img
-      src="test-file-stub"
+      src={
+        Object {
+          "0": "t",
+          "1": "e",
+          "10": "s",
+          "11": "t",
+          "12": "u",
+          "13": "b",
+          "2": "s",
+          "3": "t",
+          "4": "-",
+          "5": "f",
+          "6": "i",
+          "7": "l",
+          "8": "e",
+          "9": "-",
+          "default": "test-file-stub",
+        }
+      }
       style={
         Object {
           "paddingBottom": "8px",
