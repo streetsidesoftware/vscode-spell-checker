@@ -60,7 +60,8 @@ export function onCodeActionHandler(
         const actions: CodeAction[] = [];
         const { context, textDocument: { uri } } = params;
         const { diagnostics } = context;
-        if (!diagnostics.length) return [];
+        const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
+        if (!spellCheckerDiags.length) return [];
         const optionalTextDocument = documents.get(uri);
         if (!optionalTextDocument) return [];
         log(`CodeAction Only: ${context.only} Num: ${diagnostics.length}`, uri);
@@ -96,7 +97,6 @@ export function onCodeActionHandler(
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
             log('CodeAction generate suggestions');
-            const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
                 const word = extractText(textDocument, diag.range);
