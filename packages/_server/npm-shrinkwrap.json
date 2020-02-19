@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker-server",
-  "version": "1.7.22",
+  "version": "1.7.24-alpha.0",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -666,9 +666,9 @@
       "dev": true
     },
     "@types/fs-extra": {
-      "version": "8.0.1",
-      "resolved": "https://registry.npmjs.org/@types/fs-extra/-/fs-extra-8.0.1.tgz",
-      "integrity": "sha512-J00cVDALmi/hJOYsunyT52Hva5TnJeKP5yd1r+mH/ZU0mbYZflR0Z5kw5kITtKTRYMhm1JMClOFYdHnQszEvqw==",
+      "version": "8.1.0",
+      "resolved": "https://registry.npmjs.org/@types/fs-extra/-/fs-extra-8.1.0.tgz",
+      "integrity": "sha512-UoOfVEzAUpeSPmjm7h1uk5MH6KZma2z2O7a75onTGjnNvAvMVrPzPL/vBbT65iIGHWj6rokwfmYcmxmlSf2uwg==",
       "dev": true,
       "requires": {
         "@types/node": "*"
@@ -736,9 +736,9 @@
       }
     },
     "@types/node": {
-      "version": "11.15.4",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-11.15.4.tgz",
-      "integrity": "sha512-z7deEbNOPcS7pb7uyaZhbITh18ruGghYh86VmUL2zJPKeu9tEAqF0goQH0dhWamHoBJpkyWroNxPZjzNvbYVCw==",
+      "version": "12.12.27",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-12.12.27.tgz",
+      "integrity": "sha512-odQFl/+B9idbdS0e8IxDl2ia/LP8KZLXhV3BUeI98TrZp0uoIzQPhGd+5EtzHmT0SMOIaPd7jfz6pOHLWTtl7A==",
       "dev": true
     },
     "@types/stack-utils": {
@@ -763,55 +763,45 @@
       "dev": true
     },
     "@typescript-eslint/eslint-plugin": {
-      "version": "2.19.0",
-      "resolved": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.19.0.tgz",
-      "integrity": "sha512-u7IcQ9qwsB6U806LupZmINRnQjC+RJyv36sV/ugaFWMHTbFm/hlLTRx3gGYJgHisxcGSTnf+I/fPDieRMhPSQQ==",
+      "version": "2.20.0",
+      "resolved": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.20.0.tgz",
+      "integrity": "sha512-cimIdVDV3MakiGJqMXw51Xci6oEDEoPkvh8ggJe2IIzcc0fYqAxOXN6Vbeanahz6dLZq64W+40iUEc9g32FLDQ==",
       "dev": true,
       "requires": {
-        "@typescript-eslint/experimental-utils": "2.19.0",
+        "@typescript-eslint/experimental-utils": "2.20.0",
         "eslint-utils": "^1.4.3",
         "functional-red-black-tree": "^1.0.1",
         "regexpp": "^3.0.0",
         "tsutils": "^3.17.1"
       }
     },
-    "@typescript-eslint/eslint-plugin-tslint": {
-      "version": "2.19.0",
-      "resolved": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin-tslint/-/eslint-plugin-tslint-2.19.0.tgz",
-      "integrity": "sha512-a/0i6Q+GHojT2I+UccTrlBMnH7Y+evy7+Wg95Jiue4t+G+nITXV5hY5nI9tmY/L7P+SCdri9KDXj2lyn5O2F1g==",
-      "dev": true,
-      "requires": {
-        "@typescript-eslint/experimental-utils": "2.19.0",
-        "lodash": "^4.17.15"
-      }
-    },
     "@typescript-eslint/experimental-utils": {
-      "version": "2.19.0",
-      "resolved": "https://registry.npmjs.org/@typescript-eslint/experimental-utils/-/experimental-utils-2.19.0.tgz",
-      "integrity": "sha512-zwpg6zEOPbhB3+GaQfufzlMUOO6GXCNZq6skk+b2ZkZAIoBhVoanWK255BS1g5x9bMwHpLhX0Rpn5Fc3NdCZdg==",
+      "version": "2.20.0",
+      "resolved": "https://registry.npmjs.org/@typescript-eslint/experimental-utils/-/experimental-utils-2.20.0.tgz",
+      "integrity": "sha512-fEBy9xYrwG9hfBLFEwGW2lKwDRTmYzH3DwTmYbT+SMycmxAoPl0eGretnBFj/s+NfYBG63w/5c3lsvqqz5mYag==",
       "dev": true,
       "requires": {
         "@types/json-schema": "^7.0.3",
-        "@typescript-eslint/typescript-estree": "2.19.0",
+        "@typescript-eslint/typescript-estree": "2.20.0",
         "eslint-scope": "^5.0.0"
       }
     },
     "@typescript-eslint/parser": {
-      "version": "2.19.0",
-      "resolved": "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-2.19.0.tgz",
-      "integrity": "sha512-s0jZoxAWjHnuidbbN7aA+BFVXn4TCcxEVGPV8lWMxZglSs3NRnFFAlL+aIENNmzB2/1jUJuySi6GiM6uACPmpg==",
+      "version": "2.20.0",
+      "resolved": "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-2.20.0.tgz",
+      "integrity": "sha512-o8qsKaosLh2qhMZiHNtaHKTHyCHc3Triq6aMnwnWj7budm3xAY9owSZzV1uon5T9cWmJRJGzTFa90aex4m77Lw==",
       "dev": true,
       "requires": {
         "@types/eslint-visitor-keys": "^1.0.0",
-        "@typescript-eslint/experimental-utils": "2.19.0",
-        "@typescript-eslint/typescript-estree": "2.19.0",
+        "@typescript-eslint/experimental-utils": "2.20.0",
+        "@typescript-eslint/typescript-estree": "2.20.0",
         "eslint-visitor-keys": "^1.1.0"
       }
     },
     "@typescript-eslint/typescript-estree": {
-      "version": "2.19.0",
-      "resolved": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-2.19.0.tgz",
-      "integrity": "sha512-n6/Xa37k0jQdwpUszffi19AlNbVCR0sdvCs3DmSKMD7wBttKY31lhD2fug5kMD91B2qW4mQldaTEc1PEzvGu8w==",
+      "version": "2.20.0",
+      "resolved": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-2.20.0.tgz",
+      "integrity": "sha512-WlFk8QtI8pPaE7JGQGxU7nGcnk1ccKAJkhbVookv94ZcAef3m6oCE/jEDL6dGte3JcD7reKrA0o55XhBRiVT3A==",
       "dev": true,
       "requires": {
         "debug": "^4.1.1",
@@ -1491,11 +1481,11 @@
       "integrity": "sha1-2Klr13/Wjfd5OnMDajug1UBdR3s="
     },
     "configstore": {
-      "version": "5.0.0",
-      "resolved": "https://registry.npmjs.org/configstore/-/configstore-5.0.0.tgz",
-      "integrity": "sha512-eE/hvMs7qw7DlcB5JPRnthmrITuHMmACUJAp89v6PT6iOqzoLS7HRWhBtuHMlhNHo2AhUSA/3Dh1bKNJHcublQ==",
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/configstore/-/configstore-5.0.1.tgz",
+      "integrity": "sha512-aMKprgk5YhBNyH25hj8wGt2+D52Sw1DRRIzqBwLp2Ya9mFmY8KPvvtvmna8SxVR9JMZ4kzMD68N22vlaRpkeFA==",
       "requires": {
-        "dot-prop": "^5.1.0",
+        "dot-prop": "^5.2.0",
         "graceful-fs": "^4.1.2",
         "make-dir": "^3.0.0",
         "unique-string": "^2.0.0",
@@ -1575,9 +1565,9 @@
       }
     },
     "cspell-dict-django": {
-      "version": "1.0.14",
-      "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.14.tgz",
-      "integrity": "sha512-HG/hzldjx2SCOCNP8R4Va3rsiDtOItPhIc6FAKaqp8+6upaCkZmu0QU4RUobbWOyUkZX/WUX5jJRrlj5ZMBjyg==",
+      "version": "1.0.15",
+      "resolved": "https://registry.npmjs.org/cspell-dict-django/-/cspell-dict-django-1.0.15.tgz",
+      "integrity": "sha512-heppo6ZEGgv+cVPDLr24miG8xIn3E5SEGFBGHyNLyGqt8sHzeG3eNKhjKOJCC0hG/fq0ZECbE5q4691LvH24/Q==",
       "requires": {
         "configstore": "^5.0.0"
       }
@@ -1607,9 +1597,9 @@
       }
     },
     "cspell-dict-en_us": {
-      "version": "1.2.24",
-      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.24.tgz",
-      "integrity": "sha512-EINpnko8JlKGod64Sx5JYZHmUH1rNYaE90ALgqlnWins/t2MEi3ma5u0I7Ghh+/RiNRlcNErrVJxYb2xpeqiJg==",
+      "version": "1.2.25",
+      "resolved": "https://registry.npmjs.org/cspell-dict-en_us/-/cspell-dict-en_us-1.2.25.tgz",
+      "integrity": "sha512-owr04YQAO86wMR0nSup8d7Ogkm23vIOoQsPtIMFou1OA2XLUu13Xhla/Cs+qFzopakpcblvRuMSel0RomkAo7g==",
       "requires": {
         "configstore": "^5.0.0"
       }
@@ -1695,9 +1685,9 @@
       }
     },
     "cspell-dict-python": {
-      "version": "1.0.19",
-      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.19.tgz",
-      "integrity": "sha512-u1jU+4kNn/ds/Wm+oSNy8ZfR6ebK7otNJnxRKXehJfbWWxTbK+vyJF5MThS4osub7fI1FZKW4nPrPjYWIqDevA==",
+      "version": "1.0.20",
+      "resolved": "https://registry.npmjs.org/cspell-dict-python/-/cspell-dict-python-1.0.20.tgz",
+      "integrity": "sha512-BiV8LnH9YNxvkUbVwTyDpZhOuRjPr8cE+nxpuPDbCHmVJmlLsDlg8MXTcJH8I+OFjoz6YdBX6yqK1bi55Aioow==",
       "requires": {
         "configstore": "^5.0.0"
       }
@@ -1727,9 +1717,9 @@
       }
     },
     "cspell-dict-software-terms": {
-      "version": "1.0.5",
-      "resolved": "https://registry.npmjs.org/cspell-dict-software-terms/-/cspell-dict-software-terms-1.0.5.tgz",
-      "integrity": "sha512-sFkij2gLxml+yDJZYoUCgj/iaWG8rXOfKzQYE2ON3kA9N+x2xfO1nGOEMukkoRggRhXee1TWV0bJ6Wqekl/Clg==",
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/cspell-dict-software-terms/-/cspell-dict-software-terms-1.0.6.tgz",
+      "integrity": "sha512-W9ugGS5dNMWDV27gY5qC+RlckP340q5vzrf6xTzlJ9ikh4c3PymAHne23FH7WwjMbFW7eSbQFddIcRgjXcxbdA==",
       "requires": {
         "configstore": "^5.0.0"
       }
@@ -1760,22 +1750,22 @@
       }
     },
     "cspell-lib": {
-      "version": "4.1.14",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.14.tgz",
-      "integrity": "sha512-K2V7V096c19qOJNPrbAJCVcRHZsyQUISA0eLakIg34nXQlPQZaRdfnXTG5FOFNxyWuub8Ekn8MnDwA54D5AIJw==",
+      "version": "4.1.16",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.16.tgz",
+      "integrity": "sha512-hDn5aYfmU7hAAInLXHZTws61DAEpn7ykwswn+d4RP0pAYEjCK0s2uBpNUf2xVE0HUFnn3mUeN4VGToX3p5d/kQ==",
       "requires": {
         "comment-json": "^1.1.3",
-        "configstore": "^5.0.0",
+        "configstore": "^5.0.1",
         "cspell-dict-bash": "^1.0.3",
         "cspell-dict-companies": "^1.0.20",
         "cspell-dict-cpp": "^1.1.26",
-        "cspell-dict-django": "^1.0.14",
+        "cspell-dict-django": "^1.0.15",
         "cspell-dict-dotnet": "^1.0.14",
         "cspell-dict-elixir": "^1.0.13",
-        "cspell-dict-en-gb": "^1.1.14",
-        "cspell-dict-en_us": "^1.2.23",
+        "cspell-dict-en-gb": "^1.1.16",
+        "cspell-dict-en_us": "^1.2.25",
         "cspell-dict-fonts": "^1.0.5",
-        "cspell-dict-fullstack": "^1.0.21",
+        "cspell-dict-fullstack": "^1.0.22",
         "cspell-dict-golang": "^1.1.14",
         "cspell-dict-haskell": "^1.0.4",
         "cspell-dict-html-symbol-entities": "^1.0.13",
@@ -1784,11 +1774,11 @@
         "cspell-dict-lorem-ipsum": "^1.0.10",
         "cspell-dict-php": "^1.0.13",
         "cspell-dict-powershell": "^1.0.5",
-        "cspell-dict-python": "^1.0.19",
+        "cspell-dict-python": "^1.0.20",
         "cspell-dict-ruby": "^1.0.3",
         "cspell-dict-rust": "^1.0.12",
         "cspell-dict-scala": "^1.0.11",
-        "cspell-dict-software-terms": "^1.0.5",
+        "cspell-dict-software-terms": "^1.0.6",
         "cspell-dict-typescript": "^1.0.3",
         "cspell-io": "^4.0.20",
         "cspell-trie-lib": "^4.1.8",
@@ -4796,9 +4786,9 @@
       }
     },
     "make-dir": {
-      "version": "3.0.0",
-      "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-3.0.0.tgz",
-      "integrity": "sha512-grNJDhb8b1Jm1qeqW5R/O63wUo4UXo2v2HMic6YT9i/HBlF93S8jkMgH7yugvY9ABDShH4VZMn8I+U8+fCNegw==",
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/make-dir/-/make-dir-3.0.2.tgz",
+      "integrity": "sha512-rYKABKutXa6vXTXhoV18cBE7PaewPXHe/Bdq4v+ZLMhxbWApkFFplT0LcbMW+6BbjnQXzZ/sAvSE/JdguApG5w==",
       "requires": {
         "semver": "^6.0.0"
       }
