@@ -2,12 +2,14 @@
 
 import {
     createConnection,
-    TextDocuments, TextDocument, Disposable,
+    TextDocuments, Disposable,
     InitializeResult,
     InitializeParams,
     ServerCapabilities,
     CodeActionKind,
+    TextDocumentSyncKind,
 } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './vscode.config';
 import * as Validator from './validator';
@@ -82,7 +84,7 @@ function run() {
 
     // Create a simple text document manager. The text document manager
     // supports full document sync only
-    const documents: TextDocuments = new TextDocuments();
+    const documents = new TextDocuments(TextDocument);
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
@@ -92,7 +94,7 @@ function run() {
             // Tell the client that the server works in FULL text document sync mode
             textDocumentSync:  {
                 openClose: true,
-                change: documents.syncKind,
+                change: TextDocumentSyncKind.Incremental,
                 willSave: true,
                 save: { includeText: true },
             },
