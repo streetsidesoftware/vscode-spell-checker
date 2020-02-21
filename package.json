@@ -35,11 +35,11 @@
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker#readme",
   "devDependencies": {
-    "@typescript-eslint/parser": "^2.19.0",
+    "@typescript-eslint/parser": "^2.20.0",
     "conventional-changelog-cli": "^2.0.31",
     "eslint": "^6.8.0",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   }
 }
