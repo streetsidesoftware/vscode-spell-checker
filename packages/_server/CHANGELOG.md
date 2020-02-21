@@ -11,13 +11,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * Upgrade to vscode-languageserver 6 ([2ec3ffa](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2ec3ffaa96779abb3ea380f4a6d074228e560429))
 * Use fsPath when working with files ([808538f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/808538feacce6f2d5b218c1752f9bbfbf3d20b2c))
 
-
 ### Features
 
-* Support `${workspaceFolder}` substituion ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
-
-
-
+* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
 
 
 ## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v1.7.24) (2020-02-19)
@@ -27,9 +23,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * Only evaluate CodeActions that are for `cspell` ([88a6095](https://github.com/streetsidesoftware/vscode-spell-checker/commit/88a6095ad980da52a65675341ac60c4ac33732ad))
 * Update cspell and other packages ([2a12c03](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2a12c03f88babf9ba38a76b2ab5e54215f9436af))
-
-
-
 
 
 ## [1.7.24-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.23...v1.7.24-alpha.0) (2020-02-18)
