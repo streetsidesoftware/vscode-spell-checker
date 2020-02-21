@@ -13,17 +13,47 @@ jest.mock('./util');
 
 const mockGetWorkspaceFolders = getWorkspaceFolders as jest.Mock;
 const mockGetConfiguration = getConfiguration as jest.Mock;
-const workspaceRoot = Path.resolve(Path.join(__dirname, '..'));
-const workspaceFolder: WorkspaceFolder = {
-    uri: Uri.file(workspaceRoot).toString(),
+const workspaceRoot = Path.resolve(Path.join(__dirname, '..', '..', '..'));
+const workspaceServer = Path.resolve(Path.join(__dirname, '..'));
+const workspaceClient = Path.resolve(Path.join(__dirname, '..', '..', 'client'));
+const workspaceFolderServer: WorkspaceFolder = {
+    uri: Uri.file(workspaceServer).toString(),
     name: '_server',
+};
+const workspaceFolderRoot: WorkspaceFolder = {
+    uri: Uri.file(workspaceRoot).toString(),
+    name: 'vscode-spell-checker',
+};
+const workspaceFolderClient: WorkspaceFolder = {
+    uri: Uri.file(workspaceClient).toString(),
+    name: 'client',
+};
+
+const cspellConfigInVsCode: CSpellUserSettings = {
+    ignorePaths: [
+        '${workspaceFolder:_server}/**/*.json'
+    ],
+    import: [
+        '${workspaceFolder:_server}/sampleSourceFiles/overrides/cspell.json',
+        '${workspaceFolder:_server}/sampleSourceFiles/cSpell.json',
+    ]
 };
 
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {
         // Clear all mock instances and calls to constructor and all methods:
         mockGetWorkspaceFolders.mockClear();
-      });
+    });
+
+    test('shallowCleanObject', () => {
+        const clean = debugExports.shallowCleanObject;
+        expect(clean('hello')).toBe('hello');
+        expect(clean(42)).toBe(42);
+        expect([1,2,3,4]).toEqual([1,2,3,4]);
+        expect({}).toEqual({});
+        expect({ name: 'name' }).toEqual({ name: 'name' });
+        expect({ name: 'name', age: undefined }).toEqual({ name: 'name' });
+    });
 
     test('version', () => {
         const docSettings = newDocumentSettings();
@@ -32,11 +62,11 @@ describe('Validate DocumentSettings', () => {
         expect(docSettings.version).toEqual(1);
     });
 
-    it('checks isUriAllowed', () => {
+    test('checks isUriAllowed', () => {
         expect(isUriAllowed(Uri.file(__filename).toString())).toBe(true);
     });
 
-    it('checks isUriBlackListed', () => {
+    test('checks isUriBlackListed', () => {
         const uriFile = Uri.file(__filename);
         expect(isUriBlackListed(uriFile.toString())).toBe(false);
 
@@ -45,8 +75,12 @@ describe('Validate DocumentSettings', () => {
         expect(isUriBlackListed(uriGit.toString())).toBe(true);
     });
 
-    it('folders', async () => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolder];
+    test('folders', async () => {
+        const mockFolders: WorkspaceFolder[] = [
+            workspaceFolderRoot,
+            workspaceFolderClient,
+            workspaceFolderServer,
+        ];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
         const docSettings = newDocumentSettings();
 
@@ -54,8 +88,8 @@ describe('Validate DocumentSettings', () => {
         expect(folders).toBe(mockFolders);
     });
 
-    it('tests register config path', () => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolder];
+    test('tests register config path', () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
 
         const docSettings = newDocumentSettings();
@@ -66,12 +100,16 @@ describe('Validate DocumentSettings', () => {
         expect(docSettings.configsToImport).toContain(configFile);
     });
 
-    it('test getSettings', async () => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolder];
+    test('test getSettings', async () => {
+        const mockFolders: WorkspaceFolder[] = [
+            workspaceFolderRoot,
+            workspaceFolderClient,
+            workspaceFolderServer,
+        ];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
         const docSettings = newDocumentSettings();
-        const configFile = Path.resolve(Path.join(__dirname, '..', 'sampleSourceFiles', 'cSpell.json'));
+        const configFile = Path.resolve(Path.join(__dirname, '..', 'sampleSourceFiles', 'cspell-ext.json'));
         docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
@@ -80,8 +118,8 @@ describe('Validate DocumentSettings', () => {
         expect(settings.language).toBe('en-gb');
     });
 
-    it('test isExcluded', async () => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolder];
+    test('test isExcluded', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
         mockGetConfiguration.mockReturnValue([{}, {}]);
         const docSettings = newDocumentSettings();
@@ -155,5 +193,163 @@ describe('Validate RegExp corrections', () => {
         };
         expect(correctBadSettings(settings)).toEqual(expectedSettings);
         expect(correctBadSettings(settings)).not.toEqual(settings);
+    });
+});
+
+describe('Validate workspace substitution resolver', () => {
+    const rootPath = '/path to root/root';
+    const clientPath = Path.normalize(Path.join(rootPath, 'client'));
+    const serverPath = Path.normalize(Path.join(rootPath, '_server'));
+    const clientTestPath = Path.normalize(Path.join(clientPath, 'test'));
+    const rootUri = Uri.file(rootPath);
+    const clientUri = Uri.file(clientPath);
+    const serverUri = Uri.file(serverPath);
+    const testUri = Uri.file(clientTestPath);
+    const workspaceFolders = {
+        root:
+        {
+            name: 'Root',
+            uri: rootUri.toString()
+        },
+        client:
+        {
+            name: 'Client',
+            uri: clientUri.toString()
+        },
+        server:
+        {
+            name: 'Server',
+            uri: serverUri.toString()
+        },
+        test: {
+            name: 'client-test',
+            uri: testUri.toString()
+        }
+    };
+    const workspaces: WorkspaceFolder[] = [
+        workspaceFolders.root,
+        workspaceFolders.client,
+        workspaceFolders.server,
+        workspaceFolders.test,
+    ];
+
+    const settingsImports: CSpellUserSettings = Object.freeze({
+        'import': [
+            'cspell.json',
+            '${workspaceFolder}/cspell.json',
+            '${workspaceFolder:Client}/cspell.json',
+            '${workspaceFolder:Server}/cspell.json',
+            '${workspaceFolder:Root}/cspell.json',
+            '${workspaceFolder:Failed}/cspell.json',
+        ]
+    });
+
+    const settingsIgnorePaths: CSpellUserSettings = Object.freeze({
+        ignorePaths: [
+            '**/node_modules/**',
+            '${workspaceFolder}/node_modules/**',
+            '${workspaceFolder:Server}/samples/**',
+            '${workspaceFolder:client-test}/**/*.json',
+        ]
+    });
+
+    const settingsDictionaryDefinitions: CSpellUserSettings = Object.freeze({
+        dictionaryDefinitions: [
+            {
+                name: 'My Dictionary',
+                path: '${workspaceFolder:Root}/words.txt'
+            },
+            {
+                name: 'Company Dictionary',
+                path: '${workspaceFolder}/node_modules/@company/terms/terms.txt'
+            },
+        ].map(f => Object.freeze(f))
+    });
+
+    const settingsLanguageSettings: CSpellUserSettings = Object.freeze({
+        languageSettings: [
+            {
+                languageId: 'typescript',
+                dictionaryDefinitions: settingsDictionaryDefinitions.dictionaryDefinitions
+            }
+        ].map(f => Object.freeze(f))
+    });
+
+    const settingsOverride: CSpellUserSettings = {
+        overrides: [
+            {
+                filename: '*.ts',
+                ignorePaths: settingsIgnorePaths.ignorePaths,
+                languageSettings: settingsLanguageSettings.languageSettings,
+                dictionaryDefinitions: settingsDictionaryDefinitions.dictionaryDefinitions
+            }
+        ].map(f => Object.freeze(f))
+    };
+
+    test('resolveSettings Imports', () => {
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const result = debugExports.resolveSettings(settingsImports, resolver);
+        expect(result.import).toEqual([
+            'cspell.json',
+            `${clientUri.fsPath}/cspell.json`,
+            `${clientUri.fsPath}/cspell.json`,
+            `${serverUri.fsPath}/cspell.json`,
+            `${rootUri.fsPath}/cspell.json`,
+            '${workspaceFolder:Failed}/cspell.json',
+        ]);
+    });
+
+    test('resolveSettings ignorePaths', () => {
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaceFolders.client, workspaces);
+        const result = debugExports.resolveSettings(settingsIgnorePaths, resolver);
+        expect(result.ignorePaths).toEqual([
+            '**/node_modules/**',
+            '/node_modules/**',
+            `${serverUri.path}/samples/**`,
+            '/test/**/*.json',
+        ]);
+    });
+
+    test('resolveSettings dictionaryDefinitions', () => {
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const result = debugExports.resolveSettings(settingsDictionaryDefinitions, resolver);
+        expect(result.dictionaryDefinitions).toEqual([
+            { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
+            { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+        ]);
+    });
+
+    test('resolveSettings languageSettings', () => {
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const result = debugExports.resolveSettings(settingsLanguageSettings, resolver);
+        expect(result?.languageSettings?.[0]).toEqual({
+            languageId: 'typescript',
+            dictionaryDefinitions: [
+                { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
+                { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            ]
+        });
+    });
+
+    test('resolveSettings overrides', () => {
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const result = debugExports.resolveSettings(settingsOverride, resolver);
+        expect(result?.overrides?.[0]?.languageSettings?.[0]).toEqual({
+            languageId: 'typescript',
+            dictionaryDefinitions: [
+                { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
+                { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            ]
+        });
+        expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
+            { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
+            { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+        ]);
+        expect(result?.overrides?.[0]?.ignorePaths).toEqual([
+            '**/node_modules/**',
+            '/node_modules/**',
+            `${serverUri.path}/samples/**`,
+            '/test/**/*.json',
+        ]);
     });
 });

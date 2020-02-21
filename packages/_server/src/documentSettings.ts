@@ -5,7 +5,10 @@ import {
     ExcludeFilesGlobMap,
     Glob,
     RegExpPatternDefinition,
-    Pattern
+    Pattern,
+    Settings,
+    CSpellSettings,
+    BaseSetting
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -13,10 +16,11 @@ import * as fs from 'fs-extra';
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import { URI as Uri } from 'vscode-uri';
-import { log } from './util';
+import { log, logError } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
 import { GlobMatcher } from 'cspell-glob';
 import * as os from 'os';
+import { WorkspaceFolder } from 'vscode-languageserver';
 
 const cSpellSection: keyof SettingsCspell = 'cSpell';
 
@@ -154,10 +158,11 @@ export class DocumentSettings {
         return cSpellConfigSettings;
     }
 
-    private async _fetchSettingsForUri(uri: string): Promise<ExtSettings> {
-        log(`fetchFolderSettings: URI ${uri}`);
-        const cSpellConfigSettings = await this.fetchSettingsFromVSCode(uri);
-        const folder = await this.findMatchingFolder(uri);
+    private async _fetchSettingsForUri(docUri: string): Promise<ExtSettings> {
+        log(`fetchFolderSettings: URI ${docUri}`);
+        const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
+        const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
+        const folder = await this.findMatchingFolder(docUri);
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
         const settings = this.readSettingsForFolderUri(folder.uri);
         // cspell.json file settings take precedence over the vscode settings.
@@ -168,12 +173,19 @@ export class DocumentSettings {
         const globMatcher = new GlobMatcher(globs, root);
 
         const ext: ExtSettings = {
-            uri,
+            uri: docUri,
             vscodeSettings: { cSpell: cSpellConfigSettings },
             settings: mergedSettings,
             globMatcher,
         };
         return ext;
+    }
+
+    private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string): Promise<CSpellUserSettings> {
+        const folders = await this.folders;
+        const folder = await this.findMatchingFolder(docUri);
+        const resolver = createWorkspaceNamesResolver(folder, folders);
+        return resolveSettings(settings, resolver);
     }
 
     private async matchingFoldersForUri(docUri: string): Promise<vscode.WorkspaceFolder[]> {
@@ -294,8 +306,210 @@ export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSett
     return newSettings;
 }
 
+type WorkspacePathResolverFn = (path: string) => string;
+
+interface WorkspacePathResolver {
+    resolveFile: WorkspacePathResolverFn;
+    resolveGlob: WorkspacePathResolverFn;
+}
+
+interface FolderPath {
+    name: string;
+    path: string;
+}
+
+function createWorkspaceNamesResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolver {
+    return {
+        resolveFile: createWorkspaceNamesFilePathResolver(folder, folders),
+        resolveGlob: createWorkspaceNamesGlobPathResolver(folder, folders),
+    }
+}
+
+function createWorkspaceNamesFilePathResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolverFn {
+    function toFolderPath(w: WorkspaceFolder): FolderPath {
+        return {
+            name: w.name,
+            path: Uri.parse(w.uri).fsPath
+        };
+    }
+    return createWorkspaceNameToPathResolver(
+        toFolderPath(folder),
+        folders.map(toFolderPath)
+    );
+}
+
+function createWorkspaceNamesGlobPathResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolverFn {
+    function toFolderPath(w: WorkspaceFolder): FolderPath {
+        return {
+            name: w.name,
+            path: Uri.parse(w.uri).path
+        };
+    }
+    const rootFolder = toFolderPath(folder);
+    const rootPath = rootFolder.path;
+
+    function normalizeToRoot(p: FolderPath) {
+        if (p.path.slice(0, rootPath.length) === rootPath) {
+            p.path = p.path.slice(rootPath.length);
+        }
+        return p;
+    }
+
+    return createWorkspaceNameToPathResolver(
+        normalizeToRoot(rootFolder),
+        folders.map(toFolderPath).map(normalizeToRoot)
+    );
+}
+
+function createWorkspaceNameToPathResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
+    const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]]
+    .concat(folders.map(folder =>
+        [ `\${workspaceFolder:${folder.name}}`, folder.path]
+    ));
+    const map = new Map(folderPairs);
+    const regEx = /\$\{workspaceFolder(?:[^}]*)\}/gi;
+
+    return (path: string) => {
+        const matches = path.match(regEx);
+        if (!matches) {
+            return path;
+        }
+        const parts = path.split(regEx);
+        const resultParts = [];
+        let i = 0;
+        for (i = 0; i < matches.length; ++i) {
+            const m = matches[i];
+            const v = map.get(m);
+            if (v === undefined) {
+                logError(`Failed to resolve ${m}`);
+            }
+            resultParts.push(parts[i]);
+            resultParts.push(v ?? m);
+        }
+        resultParts.push(parts[i]);
+        return resultParts.join('');
+    };
+}
+
+function resolveSettings<T extends CSpellSettings>(
+    settings: T,
+    resolver: WorkspacePathResolver
+): T {
+    // Sections
+    // - imports
+    // - dictionary definitions (also nested in language settings)
+    // - globs (ignorePaths and Override filenames)
+    // - override dictionaries
+    // There is a more elegant way of doing this, but for now just change each section.
+    const newSettings = {...resolveCoreSettings(settings, resolver)};
+    newSettings.import = resolveImportsToWorkspace(newSettings.import, resolver);
+    newSettings.overrides = resolveOverrides(newSettings.overrides, resolver);
+    return shallowCleanObject(newSettings);
+}
+
+function resolveCoreSettings<T extends Settings>(
+    settings: T,
+    resolver: WorkspacePathResolver
+): T {
+    // Sections
+    // - imports
+    // - dictionary definitions (also nested in language settings)
+    // - globs (ignorePaths and Override filenames)
+    // - override dictionaries
+    const newSettings = {...resolveBaseSettings(settings, resolver)};
+    // There is a more elegant way of doing this, but for now just change each section.
+    newSettings.dictionaryDefinitions = resolveDictionaryDefinitions(newSettings.dictionaryDefinitions, resolver);
+    newSettings.languageSettings = resolveLanguageSettings(newSettings.languageSettings, resolver);
+    newSettings.ignorePaths = resolveGlobArray(newSettings.ignorePaths, resolver.resolveGlob);
+    return shallowCleanObject(newSettings);
+}
+
+function resolveBaseSettings<T extends BaseSetting>(
+    settings: T,
+    resolver: WorkspacePathResolver
+): T {
+    const newSettings = {...settings};
+    newSettings.dictionaryDefinitions = resolveDictionaryDefinitions(newSettings.dictionaryDefinitions, resolver);
+    return shallowCleanObject(newSettings);
+}
+
+function resolveImportsToWorkspace(
+    imports: CSpellUserSettings['import'],
+    resolver: WorkspacePathResolver
+): CSpellUserSettings['import'] {
+    if (!imports) return imports;
+    const toImport = typeof imports === 'string' ? [imports] : imports;
+    return toImport.map(resolver.resolveFile);
+}
+
+function resolveGlobArray(globs: string[] | undefined, resolver: WorkspacePathResolverFn): undefined | string[] {
+    if (!globs) return globs;
+    return globs.map(resolver);
+}
+
+function resolveDictionaryDefinitions(
+    dictDefs: CSpellUserSettings['dictionaryDefinitions'],
+    resolver: WorkspacePathResolver
+): CSpellUserSettings['dictionaryDefinitions'] {
+    if (!dictDefs) return dictDefs;
+
+    function resolve(path: string) {
+        if (!path) return path;
+        return resolver.resolveFile(path);
+    }
+
+    return dictDefs.map(def => {
+        const path = resolve(def.path!);
+        return {...def, path};
+    });
+}
+
+function resolveLanguageSettings(
+    langSettings: CSpellUserSettings['languageSettings'],
+    resolver: WorkspacePathResolver
+): CSpellUserSettings['languageSettings'] {
+    if (!langSettings) return langSettings;
+
+    return langSettings.map(langSetting => {
+        return shallowCleanObject({...resolveBaseSettings(langSetting, resolver)});
+    });
+}
+
+function resolveOverrides(
+    overrides: CSpellUserSettings['overrides'],
+    resolver: WorkspacePathResolver
+): CSpellUserSettings['overrides'] {
+    if (!overrides) return overrides;
+
+    function resolve(path: string | string[]) {
+        if (!path) return path;
+        return typeof path === 'string' ? resolver.resolveFile(path) : path.map(resolver.resolveFile);
+    }
+
+    return overrides.map(src => {
+        const dest = {...resolveCoreSettings(src, resolver)};
+        dest.filename = resolve(dest.filename);
+
+        return shallowCleanObject(dest);
+    });
+}
+
+function shallowCleanObject<T>(obj: T): T {
+    if (typeof obj !== 'object') return obj;
+    const objMap = obj as { [key: string]: any };
+    for (const key of Object.keys(objMap)) {
+        if (objMap[key] === undefined) {
+            delete objMap[key];
+        }
+    }
+    return obj;
+}
+
 export const debugExports = {
     fixRegEx,
     fixPattern,
     resolvePath,
+    createWorkspaceNamesResolver,
+    resolveSettings,
+    shallowCleanObject,
 };

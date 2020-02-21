@@ -1,5 +1,5 @@
 import * as Validator from './validator';
-import loremIpsum = require('lorem-ipsum');
+import { loremIpsum } from 'lorem-ipsum';
 import { CSpellSettings } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { URI } from 'vscode-uri';
