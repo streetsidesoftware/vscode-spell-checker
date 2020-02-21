@@ -329,7 +329,7 @@ function createWorkspaceNamesFilePathResolver(folder: WorkspaceFolder, folders: 
     function toFolderPath(w: WorkspaceFolder): FolderPath {
         return {
             name: w.name,
-            path: Uri.parse(w.uri).path
+            path: Uri.parse(w.uri).fsPath
         };
     }
     return createWorkspaceNameToPathResolver(
