@@ -1,8 +1,8 @@
 import {
-    TextDocument,
     TextDocuments,
     CodeActionParams,
 } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
     CodeAction,
 } from 'vscode-languageserver-types';
@@ -17,15 +17,12 @@ import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter, log } from './util';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
-    const { start, end } = range;
-    const offStart = textDocument.offsetAt(start);
-    const offEnd = textDocument.offsetAt(end);
-    return textDocument.getText().slice(offStart, offEnd);
+    return textDocument.getText(range);
 }
 
 
 export function onCodeActionHandler(
-    documents: TextDocuments,
+    documents: TextDocuments<TextDocument>,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
     documentSettings: DocumentSettings,
