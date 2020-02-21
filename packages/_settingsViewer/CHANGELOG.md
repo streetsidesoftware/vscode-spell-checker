@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v1.8.0-alpha.0) (2020-02-21)
+
+**Note:** Version bump only for package code-spell-checker-settings-webview
+
+
+
+
+
 ## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v1.7.24) (2020-02-19)
 
 

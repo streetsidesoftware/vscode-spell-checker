@@ -1,4 +1,19 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v) (2020-02-19)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v) (2020-02-21)
+
+
+### Bug Fixes
+
+* Upgrade to vscode-languageserver 6 ([2ec3ffa](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2ec3ffaa96779abb3ea380f4a6d074228e560429))
+* Use fsPath when working with files ([808538f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/808538feacce6f2d5b218c1752f9bbfbf3d20b2c))
+
+
+### Features
+
+* Support `${workspaceFolder}` substituion ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
+
+
+
+## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v1.7.24) (2020-02-19)
 
 
 ### Bug Fixes
