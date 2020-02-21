@@ -289,8 +289,6 @@ The spell checker configuration can be controlled via VS Code preferences or `cs
 Order of precedence:
 1. Workspace Folder `cspell.json`
 1. Workspace Folder `.vscode/cspell.json`
-1. Workspace `cspell.json`
-1. Workspace `.vscode/cspell.json`
 1. VS Code Preferences `cSpell` section.
 
 ### Adding words to the Workspace Dictionary
@@ -304,7 +302,7 @@ You can also type in a word you want to add to the dictionary: `F1` `add word` -
 ### cspell.json
 
 Words added to the dictionary are placed in the `cspell.json` file in the _workspace_ folder.
-Note, the settings in cspell.json will override the equivalent cSpell settings in settings.json.
+Note, the settings in `cspell.json` will override the equivalent cSpell settings in VS Code's `settings.json`.
 
 #### Example _cspell.json_ file
 ```javascript
@@ -332,11 +330,11 @@ Note, the settings in cspell.json will override the equivalent cSpell settings i
 }
 ```
 
-### Configuration Settings
+### VS Code Configuration Settings
 
 ```javascript
     //-------- Code Spell Checker Configuration --------
-    // The Language local to use when spell checking. "en" and "en-GB" are currently supported.
+    // The Language local to use when spell checking. "en", "en-US" and "en-GB" are currently supported by default.
     "cSpell.language": "en",
 
     // Controls the maximum number of spelling errors per document.
@@ -469,11 +467,14 @@ Example adding medical terms, so words like *acanthopterygious* can be found.
 ```javascript
 // A List of Dictionary Definitions.
 "cSpell.dictionaryDefinitions": [
-    { "name": "medicalTerms", "path": "/Users/guest/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"}
+    { "name": "medicalTerms", "path": "/Users/guest/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"},
+    // To specify a path relative to the workspace folder use ${workspaceFolder} or ${workspaceFolder:Name}
+    { "name": "companyTerms", "path": "${workspaceFolder}/../company/terms.txt"}
 ],
 // List of dictionaries to use when checking files.
 "cSpell.dictionaries": [
-    "medicalTerms"
+    "medicalTerms",
+    "companyTerms"
 ]
 ```
 

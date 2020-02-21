@@ -1,0 +1,6 @@
+{
+    "patterns": [
+        { "name": "test", "pattern": "TEST", "description": "Test Pattern from extension" }
+    ],
+    "words": ["TestWord"]
+}

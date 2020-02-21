@@ -19,7 +19,7 @@
         "hte"
     ],
     "dictionaryDefinitions": [
-        { "name": "cpp2", "path": "../dictionaries", "file": "cpp.txt" }
+        { "name": "cpp2", "path": "../dictionaries/cpp.txt" }
     ],
     "languageSettings": [
         { "languageId": "c",   "dictionaries": ["cpp2"] },
