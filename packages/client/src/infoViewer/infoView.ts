@@ -270,11 +270,16 @@ const keyMap: { [k in InspectKeys]: ConfigSource } = {
     'workspaceFolderValue': 'folder',
 };
 interface ConfigOrder {
-    0: 'globalValue';
-    1: 'workspaceValue';
-    2: 'workspaceFolderValue';
+    0: 'defaultValue';
+    1: 'globalValue';
+    2: 'workspaceValue';
+    3: 'workspaceFolderValue';
 }
-const configOrder: ConfigOrder = ['globalValue', 'workspaceValue', 'workspaceFolderValue'];
+interface ConfigOrderArray extends ConfigOrder {
+    map<U>(callbackfn: (v: InspectKeys, i: number) => U): U[];
+}
+const configOrder: ConfigOrderArray = ['defaultValue', 'globalValue', 'workspaceValue', 'workspaceFolderValue'];
+const configOrderRev = new Map(configOrder.map((v, i) => [v, i]));
 
 function extractViewerConfigFromConfig(
     config: Inspect<CSpellUserSettings>,
@@ -282,7 +287,7 @@ function extractViewerConfigFromConfig(
     doc: vscode.TextDocument | undefined,
 ): Configs {
     function findNearestConfigField<K extends keyof CSpellUserSettings>(orderPos: keyof ConfigOrder, key: K): InspectKeys {
-        for (let i = orderPos; i >= 0; --i) {
+        for (let i = orderPos; i > 0; --i) {
             const inspectKey = configOrder[i];
             const setting = config[inspectKey];
             if (setting && setting[key]) {
@@ -292,13 +297,46 @@ function extractViewerConfigFromConfig(
         return 'defaultValue';
     }
 
+    function applyEnableFiletypesToEnabledLanguageIds(
+        languageIds: string[] | undefined = [],
+        enabledFiletypes: string[] | undefined = []
+    ): string[] {
+        const ids = new Set(languageIds);
+        enabledFiletypes
+        .filter(a => !!a)
+        .map(lang => ({ enable: lang[0] !== '!', lang: lang.replace('!', '') }))
+        .forEach(( {enable, lang} ) => {
+            if (enable) {
+                ids.add(lang)
+            } else {
+                ids.delete(lang)
+            }
+        });
+        return [...ids];
+    }
+
+    function inspectKeyToOrder(a: InspectKeys): number {
+        return configOrderRev.get(a) || 0;
+    }
+
+    function mergeSource(a: InspectKeys, b: InspectKeys): InspectKeys {
+        return inspectKeyToOrder(a) > inspectKeyToOrder(b) ? a : b;
+    }
+
     function extractNearestConfig(orderPos: keyof ConfigOrder): Config {
         const localeSource = findNearestConfigField(orderPos, 'language');
         const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds');
+        const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes');
+        const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
+            config[languageIdsEnabledSource]!.enabledLanguageIds,
+            config[enableFiletypesSource]!.enableFiletypes
+        );
+        const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
+
         const cfg: Config = {
-            inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[languageIdsEnabledSource] },
+            inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[langSource] },
             locales: normalizeLocales(config[localeSource]!.language),
-            languageIdsEnabled: config[languageIdsEnabledSource]!.enabledLanguageIds!,
+            languageIdsEnabled,
         }
         return cfg;
     }
@@ -323,9 +361,9 @@ function extractViewerConfigFromConfig(
     }
 
     return {
-        user: extractNearestConfig(0),
-        workspace: extractNearestConfig(1),
-        folder: extractNearestConfig(2),
+        user: extractNearestConfig(1),
+        workspace: extractNearestConfig(2),
+        folder: extractNearestConfig(3),
         file: extractFileConfig(),
     }
 }
