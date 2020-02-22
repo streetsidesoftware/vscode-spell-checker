@@ -24,6 +24,7 @@
     "jest-diff": "^25.1.0",
     "lorem-ipsum": "^2.0.3",
     "ts-jest": "^25.2.1",
+    "ts-json-schema-generator": "^0.61.0",
     "typescript": "^3.8.2"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "clean": "rimraf ../client/server && rimraf ./tools/out",
     "lint": "eslint \"src/**/*.ts\"",
     "build": "npm run compile && npm run installServerIntoExtension",
+    "build-schema": "ts-json-schema-generator --no-top-ref --path src/cspellConfig.ts --type SpellCheckerSettings --validationKeywords markdownDescription  --validationKeywords scope --validationKeywords deprecationMessage -o spell-checker-config.schema.json",
     "installServerIntoExtension": "installServerIntoExtension ../client ./package.json ./tsconfig.json",
     "clean-build": "npm run clean && npm run build",
     "clean-build-production": "npm run clean && npm run compile",

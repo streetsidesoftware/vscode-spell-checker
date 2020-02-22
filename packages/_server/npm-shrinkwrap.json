@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker-server",
-  "version": "1.7.24",
+  "version": "1.8.0-alpha.0",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -3546,6 +3546,15 @@
       "integrity": "sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==",
       "dev": true
     },
+    "json-stable-stringify": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz",
+      "integrity": "sha1-mnWdOcXy/1A/1TAGRu1EX4jE+a8=",
+      "dev": true,
+      "requires": {
+        "jsonify": "~0.0.0"
+      }
+    },
     "json-stable-stringify-without-jsonify": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz",
@@ -3582,6 +3591,12 @@
       "requires": {
         "graceful-fs": "^4.1.6"
       }
+    },
+    "jsonify": {
+      "version": "0.0.0",
+      "resolved": "https://registry.npmjs.org/jsonify/-/jsonify-0.0.0.tgz",
+      "integrity": "sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=",
+      "dev": true
     },
     "jsprim": {
       "version": "1.4.1",
@@ -5223,6 +5238,27 @@
           "version": "5.7.1",
           "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz",
           "integrity": "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==",
+          "dev": true
+        }
+      }
+    },
+    "ts-json-schema-generator": {
+      "version": "0.61.0",
+      "resolved": "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-0.61.0.tgz",
+      "integrity": "sha512-YiWP8quUiU6X15V0YxkD4Ya7XvKEAdXDxb0keziRmO456lryJHrrOrSWaNB3vkkQTYuRVRMHXxDpGBoCsrNNpw==",
+      "dev": true,
+      "requires": {
+        "@types/json-schema": "^7.0.4",
+        "commander": "~4.1.1",
+        "glob": "~7.1.6",
+        "json-stable-stringify": "^1.0.1",
+        "typescript": "~3.8.2"
+      },
+      "dependencies": {
+        "commander": {
+          "version": "4.1.1",
+          "resolved": "https://registry.npmjs.org/commander/-/commander-4.1.1.tgz",
+          "integrity": "sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==",
           "dev": true
         }
       }
