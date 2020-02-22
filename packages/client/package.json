@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.8.0-alpha.0",
+    "version": "1.8.0-alpha.1",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -195,7 +195,7 @@
                 },
                 "cSpell.enableFiletypes": {
                     "items": {
-                      "type": "string"
+                        "type": "string"
                     },
                     "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
                     "pattern": "^!?[\\w_\\-]+$",

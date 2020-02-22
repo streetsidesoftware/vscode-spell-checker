@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.0...v1.8.0-alpha.1) (2020-02-22)
+
+
+### Features
+
+* Support enableFileTypes ([#439](https://github.com/streetsidesoftware/vscode-spell-checker/issues/439)) ([2fde3bc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2fde3bc5c658ee51da5a56580aa1370bf8174070))
+
+
+
+
+
 # [1.8.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v1.8.0-alpha.0) (2020-02-21)
 
 

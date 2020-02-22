@@ -1,4 +1,18 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v) (2020-02-21)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.0...v) (2020-02-22)
+
+
+### Bug Fixes
+
+* **copy:** change the language of the tool tip ([09949e4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/09949e4bdc08cca5ff30d750a58c19bf1c6c3f31))
+
+
+### Features
+
+* Support enableFileTypes ([#439](https://github.com/streetsidesoftware/vscode-spell-checker/issues/439)) ([2fde3bc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2fde3bc5c658ee51da5a56580aa1370bf8174070))
+
+
+
+# [1.8.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v1.8.0-alpha.0) (2020-02-21)
 
 
 ### Bug Fixes
@@ -9,7 +23,7 @@
 
 ### Features
 
-* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
+* Support `${workspaceFolder}` substituion ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
 
 
 
@@ -291,3 +305,6 @@
 
 
 # 0.10.0 (2016-06-18)
+
+
+
