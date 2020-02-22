@@ -82,7 +82,10 @@ export class DocumentSettings {
         log('getUriSettings:', uri);
         const r = uri
             ? await this.fetchUriSettings(uri)
-            : CSpell.mergeSettings(this.defaultSettings, this.importedSettings());
+            : applyEnableFiletypes(
+                extractEnableFiletypes(this.defaultSettings, this.importedSettings()),
+                CSpell.mergeSettings(this.defaultSettings, this.importedSettings())
+            );
         return r;
     }
 
@@ -122,7 +125,10 @@ export class DocumentSettings {
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('Start fetchUriSettings:', uri);
         const folderSettings = await this.fetchSettingsForUri(uri);
-        const spellSettings = CSpell.mergeSettings(this.defaultSettings, this.importedSettings(), folderSettings.settings);
+        const importedSettings = this.importedSettings();
+        const mergedSettings = CSpell.mergeSettings(this.defaultSettings, importedSettings, folderSettings.settings);
+        const enabledFiletypes = extractEnableFiletypes(this.defaultSettings, importedSettings, folderSettings.settings);
+        const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
         const fileUri = Uri.parse(uri);
         const fileSettings = CSpell.calcOverrideSettings(spellSettings, fileUri.fsPath);
         log('Finish fetchUriSettings:', uri);
@@ -274,6 +280,28 @@ export function isUriBlackListed(uri: string, schemes: string[] = schemeBlackLis
 export function doesUriMatchAnyScheme(uri: string, schemes: string[]): boolean {
     const schema = Uri.parse(uri).scheme;
     return schemes.findIndex(v => v === schema) >= 0;
+}
+
+function extractEnableFiletypes(...settings: CSpellUserSettings[]): string[] {
+    return settings
+    .map(({ enableFiletypes = [] }) => enableFiletypes)
+    .reduce((acc, next) => acc.concat(next), []);
+}
+
+function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSettings): CSpellUserSettings {
+    const { enableFiletypes: _, enabledLanguageIds = [], ...rest } = settings;
+    const enabled = new Set(enabledLanguageIds);
+    enableFiletypes
+    .filter(a => !!a)
+    .map(a => a.toLowerCase())
+    .forEach(lang => {
+        if (lang[0] === '!') {
+            enabled.delete(lang.slice(1))
+        } else {
+            enabled.add(lang)
+        }
+    });
+    return enabled.size ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
 }
 
 const correctRegExMap = new Map([
