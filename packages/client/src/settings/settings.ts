@@ -83,11 +83,10 @@ export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
     const possibleLocations = folders
         .map(folder => folder.uri.fsPath)
         .map(root => configFileLocations.map(rel => path.join(root, rel)))
-        .reduce((a, b) => a.concat(b));
+        .reduce((a, b) => a.concat(b), []);
 
     const found = possibleLocations
-        .map(filename => fs.pathExists(filename)
-        .then(exists => ({ filename, exists })));
+        .map(async filename => ({ filename, exists: await fs.pathExists(filename) }));
 
     return Promise.all(found).then(found => found
         .filter(found => found.exists)
@@ -184,25 +183,41 @@ export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<
 /**
  * Enables the current programming language of the active file in the editor.
  */
-export function enableCurrentLanguage(): Thenable<void> {
-    const editor = vscode.window && vscode.window.activeTextEditor;
-    if (editor && editor.document && editor.document.languageId) {
-        const target = config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
+export async function enableCurrentLanguage(): Promise<void> {
+    const editor = vscode.window.activeTextEditor;
+    if (editor?.document?.languageId) {
+        const target = selectBestTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
         return enableLanguage(target, editor.document.languageId);
     }
-    return Promise.resolve();
+    return;
 }
 
 /**
  * Disables the current programming language of the active file in the editor.
  */
 export function disableCurrentLanguage(): Thenable<void> {
-    const editor = vscode.window && vscode.window.activeTextEditor;
-    if (editor && editor.document && editor.document.languageId) {
-        const target = config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
+    const editor = vscode.window.activeTextEditor;
+    if (editor?.document?.languageId) {
+        const target = selectBestTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
         return disableLanguage(target, editor.document.languageId);
     }
     return Promise.resolve();
+}
+
+
+function selectBestTargetForDocument(
+    desiredTarget: vscode.ConfigurationTarget,
+    doc: vscode.TextDocument | undefined,
+): config.ConfigTarget {
+    if (desiredTarget === ConfigurationTarget.Global || !vscode.workspace.workspaceFolders) {
+        return ConfigurationTarget.Global;
+    }
+    if (desiredTarget === ConfigurationTarget.Workspace || !doc?.uri) {
+        return ConfigurationTarget.Workspace;
+    }
+
+    const folder = workspace.getWorkspaceFolder(doc.uri);
+    return folder ? config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, doc) : ConfigurationTarget.Workspace;
 }
 
 
@@ -235,20 +250,42 @@ export function enableLocalForTarget(
     );
 }
 
+/**
+ * It is a two step logic to minimize a build up of values in the configuration.
+ * The idea is to use defaults whenever possible.
+ * @param languageId The language id / filetype to enable / disable
+ * @param enable true == enable / false == disable
+ * @param currentValues the value to update.
+ */
+function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: string[] | undefined) {
+    const values = new Set((currentValues || []).map(v => v.toLowerCase()));
+    languageId = languageId.toLowerCase();
+    const disabledLangId = '!' + languageId;
+    if (enable) {
+        if (values.has(disabledLangId)) {
+            values.delete(disabledLangId);
+        } else {
+            values.add(languageId);
+        }
+    } else {
+        if (values.has(languageId)) {
+            values.delete(languageId);
+        } else {
+            values.add(disabledLangId);
+        }
+    }
+    return values.size ? [...values].sort() : undefined;
+}
+
 export function enableLanguageIdForTarget(
     languageId: string,
     enable: boolean,
     target: config.ConfigTarget,
     isCreateAllowed: boolean
 ): Promise<boolean> {
-    const fn: (src: string[] | undefined) => string[] | undefined = enable
-        ? (src) => unique([languageId].concat(src || [])).sort()
-        : (src) => {
-            const v = src && unique(src.filter(v => v !== languageId)).sort();
-            return v && v.length > 0 && v || undefined;
-        };
+    const fn = (src: string[] | undefined) => updateEnableFiletypes(languageId, enable, src);
     return updateSettingInConfig(
-        'enabledLanguageIds',
+        'enableFiletypes',
         target,
         fn,
         isCreateAllowed,
@@ -329,7 +366,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     const scope = config.configTargetToScope(target);
     const orig = config.findScopedSettingFromVSConfig(section, scope);
     const uri = config.isConfigTargetWithOptionalResource(target) && target.uri || undefined;
-    const settingsFilename = updateCSpell && !config.isGlobalLevelTarget(target) && await findExistingSettingsFileLocation(uri) || undefined;
+    const settingsFilename = updateCSpell && !config.isGlobalLevelTarget(target) && (await findExistingSettingsFileLocation(uri)) || undefined;
 
     async function updateConfig(): Promise<false | Result> {
         if (create || orig.value !== undefined && orig.scope === config.extractScope(scope)) {
