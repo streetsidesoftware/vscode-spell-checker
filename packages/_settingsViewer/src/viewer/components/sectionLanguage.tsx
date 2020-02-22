@@ -22,8 +22,8 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
                 <div>
                     <List twoLine handleSelect={handleSelect}>
                         {langConfig.languages.map(entry => {
-                            const hasLocals = entry.dictionaries && entry.dictionaries.length > 0;
-                            const icon = hasLocals ? 'import_contacts' : 'block';
+                            const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
+                            const icon = hasLocales ? 'import_contacts' : 'block';
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
                             return (
                             <ListItem key={entry.name} role='checkbox'>
@@ -48,6 +48,6 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         if (!langs) return;
         const lang = langs[index];
         if (!lang) return;
-        this.props.appState.actionSetLocal(target, lang.code, !lang.enabled);
+        this.props.appState.actionSetLocale(target, lang.code, !lang.enabled);
     }
 }

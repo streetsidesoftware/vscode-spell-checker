@@ -1,6 +1,6 @@
 import { performance } from '../util/perf';
 performance.mark('settings.ts');
-import { CSpellUserSettings, normalizeLocal } from '../server';
+import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import * as CSpellSettings from './CSpellSettings';
 import { workspace, ConfigurationTarget } from 'vscode';
 performance.mark('settings.ts imports 1');
@@ -221,24 +221,24 @@ function selectBestTargetForDocument(
 }
 
 
-export async function enableLocal(target: config.ConfigTarget, local: string) {
-    await enableLocalForTarget(local, true, target, true);
+export async function enableLocale(target: config.ConfigTarget, locale: string) {
+    await enableLocaleForTarget(locale, true, target, true);
 }
 
-export async function disableLocal(target: config.ConfigTarget, local: string) {
-    await enableLocalForTarget(local, false, target, true);
+export async function disableLocale(target: config.ConfigTarget, locale: string) {
+    await enableLocaleForTarget(locale, false, target, true);
 }
 
-export function enableLocalForTarget(
-    local: string,
+export function enableLocaleForTarget(
+    locale: string,
     enable: boolean,
     target: config.ConfigTarget,
     isCreateAllowed: boolean
 ): Promise<boolean> {
     const applyFn: (src: string | undefined) => string | undefined = enable
-        ? (currentLanguage) => unique(normalizeLocal(currentLanguage).split(',').concat(local.split(','))).join(',')
+        ? (currentLanguage) => unique(normalizeLocale(currentLanguage).split(',').concat(locale.split(','))).join(',')
         : (currentLanguage) => {
-            const value = unique(normalizeLocal(currentLanguage).split(',')).filter(lang => lang !== local).join(',');
+            const value = unique(normalizeLocale(currentLanguage).split(',')).filter(lang => lang !== locale).join(',');
             return value || undefined;
         };
     return updateSettingInConfig(

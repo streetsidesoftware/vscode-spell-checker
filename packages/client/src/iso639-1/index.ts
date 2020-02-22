@@ -19,8 +19,8 @@ const regExReplace = /^([a-z]{2})[-_]?([a-z]{0,2})$/i;
 export function normalizeCode(code: string) {
     return code.replace(regExReplace, (match: string, p1: string, p2: string) => {
         const lang = p1.toLowerCase();
-        const local = p2.toUpperCase();
-        return local ? `${lang}-${local}` : lang;
+        const locale = p2.toUpperCase();
+        return locale ? `${lang}-${locale}` : lang;
     });
 }
 

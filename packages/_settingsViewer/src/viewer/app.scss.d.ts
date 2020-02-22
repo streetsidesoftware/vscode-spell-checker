@@ -16,4 +16,4 @@ export interface IAppScss {
   'mdc-ripple-fg-opacity-out': string;
 }
 
-export const locals: IAppScss;
+export const locales: IAppScss;

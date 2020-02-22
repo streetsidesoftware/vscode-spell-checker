@@ -7,53 +7,53 @@ export function extractLanguage(config?: server.CSpellUserSettings): string[] | 
     return (
         config &&
         config.language &&
-        normalizeToLocals(config.language)
+        normalizeToLocales(config.language)
     ) || undefined;
 }
 
-export function extractLocals(config: server.CSpellUserSettings = {}): string[] {
-    return extractLocalsFromLanguageSettings(config.languageSettings);
+export function extractLocales(config: server.CSpellUserSettings = {}): string[] {
+    return extractLocalesFromLanguageSettings(config.languageSettings);
 }
 
-export function extractLocalsFromLanguageSettings(langSettings: server.LanguageSetting[] = []): string[] {
-    const locals = langSettings
+export function extractLocalesFromLanguageSettings(langSettings: server.LanguageSetting[] = []): string[] {
+    const locales = langSettings
         .map(s => s.local || '')
-        .map(normalizeLocal)
+        .map(normalizeLocale)
         .join(',');
-    return normalizeToLocals(locals);
+    return normalizeToLocales(locales);
 }
 
-export function extractDictionariesByLocal(config: server.CSpellUserSettings = {}): Map<string, string[]> {
-    return extractDictionariesByLocalLanguageSettings(config.languageSettings);
+export function extractDictionariesByLocale(config: server.CSpellUserSettings = {}): Map<string, string[]> {
+    return extractDictionariesByLocaleLanguageSettings(config.languageSettings);
 }
 
-export function extractDictionariesByLocalLanguageSettings(langSettings: server.LanguageSetting[] = []): Map<string, string[]> {
+export function extractDictionariesByLocaleLanguageSettings(langSettings: server.LanguageSetting[] = []): Map<string, string[]> {
     const mapOfDict = new Map<string, string[]>();
     langSettings
-        .map(({local, dictionaries = []}) => ({ local: normalizeLocal(local), dictionaries }))
-        .filter(s => !!s.local)
+        .map(({local: locale, dictionaries = []}) => ({ locale: normalizeLocale(locale), dictionaries }))
+        .filter(s => !!s.locale)
         .filter(s => s.dictionaries.length > 0)
         .forEach(s => {
-            s.local.split(',')
-                .forEach(local => {
+            s.locale.split(',')
+                .forEach(locale => {
                     mapOfDict.set(
-                        local,
-                        (mapOfDict.get(local) || []).concat(s.dictionaries).filter(util.uniqueFilter())
+                        locale,
+                        (mapOfDict.get(locale) || []).concat(s.dictionaries).filter(util.uniqueFilter())
                     );
                 });
         });
     return mapOfDict;
 }
 
-export function normalizeLocal(local: string | string[] = ''): string {
-    if(Array.isArray(local)) {
-        local = local.join(',');
+export function normalizeLocale(locale: string | string[] = ''): string {
+    if(Array.isArray(locale)) {
+        locale = locale.join(',');
     }
-    return normalizeToLocals(local).join(',');
+    return normalizeToLocales(locale).join(',');
 }
 
-export function normalizeToLocals(local: string = '') {
-    return local
+export function normalizeToLocales(locale: string = '') {
+    return locale
         .replace(/[|]/g, ',')
         .replace(/[*]/g, '')
         .split(',')

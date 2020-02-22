@@ -59,7 +59,7 @@ class AppState {
     }
 }
 
-const localDisplay: [ConfigTarget, string][] = [
+const localeDisplay: [ConfigTarget, string][] = [
     ['user', 'Global'],
     ['workspace', 'Workspace'],
     ['folder', 'Folder'],
@@ -70,14 +70,14 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
-        const getLocals = (target: ConfigTarget) => {
+        const getLocales = (target: ConfigTarget) => {
             const config = settings.configs[target];
             if (!config) return '-';
-            return (config.locals || ['-']).join(', ');
+            return (config.locales || ['-']).join(', ');
         };
         return (
             <ErrorBoundary>
-                <h2>Locals</h2>
+                <h2>Locales</h2>
                 <Grid>
                     <Row key="title">
                         <Cell columns={2}>
@@ -87,9 +87,9 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                             Value
                         </Cell>
                     </Row>
-                    {localDisplay.map(([field, name]) => <Row key={field}>
+                    {localeDisplay.map(([field, name]) => <Row key={field}>
                         <Cell columns={2}>{name}</Cell>
-                        <Cell columns={10}>{getLocals(field)}</Cell>
+                        <Cell columns={10}>{getLocales(field)}</Cell>
                     </Row>)}
 
                 </Grid>

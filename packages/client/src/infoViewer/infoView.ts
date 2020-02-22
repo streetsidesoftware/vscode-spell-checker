@@ -4,12 +4,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget, ConfigSource } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocalMessage } from '../../settingsViewer';
+import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocaleMessage } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocal, disableLocal, InspectValues, getSettingFromVSConfig } from '../settings';
+import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocale, disableLocale, InspectValues, getSettingFromVSConfig } from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
@@ -167,19 +167,19 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         }
     }));
 
-    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLocalMessage, Error>) => {
-        messageBus.listenFor('EnableLocalMessage', (msg: EnableLocalMessage) => emitter.value(msg));
+    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLocaleMessage, Error>) => {
+        messageBus.listenFor('EnableLocaleMessage', (msg: EnableLocaleMessage) => emitter.value(msg));
     })
     .debounce(20)
-    .observe((msg: EnableLocalMessage) => {
-        const {target, local, enable, uri} = msg.value;
-        log(`EnableLocalMessage: ${target}, ${local}, ${enable ? 'enable' : 'disable'}`);
+    .observe((msg: EnableLocaleMessage) => {
+        const {target, locale, enable, uri} = msg.value;
+        log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
         const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
         const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
         if (enable) {
-            enableLocal(configTarget, local);
+            enableLocale(configTarget, locale);
         } else {
-            disableLocal(configTarget, local);
+            disableLocale(configTarget, locale);
         }
     }));
 
@@ -293,11 +293,11 @@ function extractViewerConfigFromConfig(
     }
 
     function extractNearestConfig(orderPos: keyof ConfigOrder): Config {
-        const localSource = findNearestConfigField(orderPos, 'language');
+        const localeSource = findNearestConfigField(orderPos, 'language');
         const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds');
         const cfg: Config = {
-            inherited: { locals: keyMap[localSource], languageIdsEnabled: keyMap[languageIdsEnabledSource] },
-            locals: normalizeLocals(config[localSource]!.language),
+            inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[languageIdsEnabledSource] },
+            locales: normalizeLocales(config[localeSource]!.language),
             languageIdsEnabled: config[languageIdsEnabledSource]!.enabledLanguageIds!,
         }
         return cfg;
@@ -337,17 +337,17 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
 
     const dictionaries = config.dictionaryDefinitions || [];
     const dictionariesByName = new Map(dictionaries
-        .map(e => ({ name: e.name, locals: [], languageIds: [], description: e.description }))
+        .map(e => ({ name: e.name, locales: [], languageIds: [], description: e.description }))
         .map(e => [e.name, e] as [string, DictionaryEntry]));
     const languageSettings = config.languageSettings || [];
     languageSettings.forEach(setting => {
-        const locals = normalizeLocals(setting.local);
+        const locales = normalizeLocales(setting.local);
         const languageIds = normalizeId(setting.languageId);
         const dicts = setting.dictionaries || [];
         dicts.forEach(dict => {
             const dictEntry = dictionariesByName.get(dict);
             if (dictEntry) {
-                dictEntry.locals = merge(dictEntry.locals, locals);
+                dictEntry.locales = merge(dictEntry.locales, locales);
                 dictEntry.languageIds = merge(dictEntry.languageIds, languageIds);
             }
         });
@@ -355,14 +355,14 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
     return [...dictionariesByName.values()];
 }
 
-function normalizeLocals(local: string | string[] | undefined) {
-    return normalizeId(local);
+function normalizeLocales(locale: string | string[] | undefined) {
+    return normalizeId(locale);
 }
 
-function normalizeId(local: string | string[] | undefined): string[] {
-    return pipe(local,
-        map(local => typeof local === 'string' ? local : local.join(',')),
-        map(local => local.replace(/\*/g, '').split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
+function normalizeId(locale: string | string[] | undefined): string[] {
+    return pipe(locale,
+        map(locale => typeof locale === 'string' ? locale : locale.join(',')),
+        map(locale => locale.replace(/\*/g, '').split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
         defaultTo([])
     );
 }

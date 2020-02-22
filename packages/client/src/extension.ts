@@ -157,10 +157,14 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableCurrentLanguage: commands.disableCurrentLanguage,
         addWordToUserDictionary: commands.addWordToUserDictionary,
         addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
-        enableLocal: settings.enableLocal,
-        disableLocal: settings.disableLocal,
+        enableLocale: settings.enableLocale,
+        disableLocale: settings.disableLocale,
         updateSettings: () => false,
         cSpellClient: () => client,
+
+        // Legacy
+        enableLocal: settings.enableLocale,
+        disableLocal: settings.disableLocale,
     };
 
     performance.mark('cspell_activate_end');

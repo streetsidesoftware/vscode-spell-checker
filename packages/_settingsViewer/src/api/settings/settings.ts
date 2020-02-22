@@ -9,8 +9,8 @@ export interface Settings {
     activeFolderUri?: string;
 }
 
-export type LocalId = string;
-export type LocalList = LocalId[];
+export type LocaleId = string;
+export type LocaleList = LocaleId[];
 
 export type FileType = string;
 export type FileTypeList = FileType[];
@@ -32,14 +32,14 @@ export interface Configs extends SettingByConfigTarget<Config> {
 
 export interface DictionaryEntry {
     name: string;
-    locals: LocalList;
+    locales: LocaleList;
     languageIds: FileTypeList;
     description?: string;
 }
 
 export interface Config {
     inherited: { [key in keyof Config]?: ConfigSource };
-    locals: Inherited<LocalList>;
+    locales: Inherited<LocaleList>;
     languageIdsEnabled: Inherited<FileTypeList>;
 }
 
@@ -48,4 +48,3 @@ export interface FileConfig extends TextDocument {
     fileEnabled: boolean | undefined;
     dictionaries: DictionaryEntry[];
 }
-

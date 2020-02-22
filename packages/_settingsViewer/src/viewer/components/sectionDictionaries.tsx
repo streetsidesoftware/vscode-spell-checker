@@ -15,17 +15,17 @@ export class SectionDictionaries extends React.Component<{dictionaries: Dictiona
                 <h2>{title}</h2>
                 <List twoLine className='dictionary_list'>
                     {dictionaries.map(dict => {
-                        const hasLocals = dict.locals && dict.locals.length > 0;
+                        const hasLocales = dict.locales && dict.locales.length > 0;
                         const hasFileTypes = dict.languageIds && dict.languageIds.length > 0;
                         const icon = hasFileTypes
                             ? 'code'
-                            : hasLocals ? 'import_contacts'
+                            : hasLocales ? 'import_contacts'
                             : 'select_all';
                         return (
                         <ListItem key={dict.name}>
                             <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
                             <ListItemText primaryText={dict.name} secondaryText={dict.description} />
-                            <ListItemMeta meta={dict.locals.join(', ')} />
+                            <ListItemMeta meta={dict.locales.join(', ')} />
                         </ListItem>);
                     })}
                 </List>
@@ -33,4 +33,3 @@ export class SectionDictionaries extends React.Component<{dictionaries: Dictiona
         );
      }
 }
-
