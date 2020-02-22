@@ -5,6 +5,7 @@ import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocume
 import {
     TextEdit, LanguageClient,
 } from 'vscode-languageclient';
+import { SpellCheckerSettingsProperties } from './server';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -16,9 +17,10 @@ export function handlerApplyTextEdits(client: LanguageClient) {
             if (textEditor.document.version !== documentVersion) {
                 window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.');
             }
+            const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
             const cfg = workspace.getConfiguration(CSpellSettings.sectionCSpell);
-            if (cfg.get('fixSpellingWithRenameProvider') && edits.length === 1) {
-                console.log('fixSpellingWithRenameProvider Enabled');
+            if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
+                console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
                 const edit = edits[0];
                 const range = client.protocol2CodeConverter.asRange(edit.range);
                 if (await attemptRename(textEditor.document, range, edit.newText)) {
