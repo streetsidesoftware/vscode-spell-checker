@@ -6,8 +6,8 @@ import {
     isSelectFileMessage,
     SelectFolderMessage,
     isSelectFolderMessage,
-    EnableLocalMessage,
-    isEnableLocalMessage,
+    EnableLocaleMessage,
+    isEnableLocaleMessage,
 } from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
 
@@ -97,12 +97,12 @@ describe('Validate Messages', () => {
         expect(isSelectFolderMessage(msgConfigurationChangeMessage)).toBe(false);
     });
 
-    test('isEnableLocalMessage', () => {
-        const msg: EnableLocalMessage = {
-            command: 'EnableLocalMessage', value: { target: 'folder', uri: 'uri', local: 'en', enable: true }
+    test('isEnableLocaleMessage', () => {
+        const msg: EnableLocaleMessage = {
+            command: 'EnableLocaleMessage', value: { target: 'folder', uri: 'uri', locale: 'en', enable: true }
         };
-        expect(isEnableLocalMessage({ command: 'SelectFolderMessage' })).toBe(false);
-        expect(isEnableLocalMessage({ command: 'EnableLocalMessage' })).toBe(false);
-        expect(isEnableLocalMessage(msg)).toBe(true);
+        expect(isEnableLocaleMessage({ command: 'SelectFolderMessage' })).toBe(false);
+        expect(isEnableLocaleMessage({ command: 'EnableLocaleMessage' })).toBe(false);
+        expect(isEnableLocaleMessage(msg)).toBe(true);
     });
 });

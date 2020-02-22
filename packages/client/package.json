@@ -161,7 +161,7 @@
                     "type": "string",
                     "scope": "resource",
                     "default": "en",
-                    "description": "The Language local to use when spell checking. \"en\" and \"en-GB\" are currently supported."
+                    "description": "The Language locale to use when spell checking. \"en\" and \"en-GB\" are currently supported."
                 },
                 "cSpell.maxNumberOfProblems": {
                     "type": "number",
@@ -193,7 +193,19 @@
                     "default": 5,
                     "description": "The maximum number of times the same word can be flagged as an error in a file."
                 },
+                "cSpell.enableFiletypes": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+                    "pattern": "^!?[\\w_\\-]+$",
+                    "scope": "resource",
+                    "title": "File Types to Check",
+                    "type": "array",
+                    "uniqueItems": true
+                },
                 "cSpell.enabledLanguageIds": {
+                    "title": "Enabled Language Ids",
                     "type": "array",
                     "scope": "resource",
                     "items": {
@@ -233,7 +245,9 @@
                         "yaml",
                         "yml"
                     ],
-                    "description": "Specify file types to spell check."
+                    "deprecationMessage": "Deprecated, use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
+                    "description": "Specify file types to spell check.",
+                    "uniqueItems": true
                 },
                 "cSpell.import": {
                     "type": "array",
@@ -402,8 +416,8 @@
                 "cSpell.fixSpellingWithRenameProvider": {
                     "type": "boolean",
                     "scope": "application",
-                    "description": "Experimental: Use Rename when fixing spelling issues.",
-                    "default": false
+                    "description": "Use Rename when fixing spelling issues.",
+                    "default": true
                 },
                 "cSpell.logLevel": {
                     "type": "string",

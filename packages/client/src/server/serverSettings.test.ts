@@ -2,7 +2,7 @@ import * as server from './server';
 import * as serverSettings from './serverSettings';
 
 describe('Validate Server Settings', () => {
-    test('Tests extracting dictionaries by local', () => {
+    test('Tests extracting dictionaries by locale', () => {
         const langSetting: server.LanguageSetting[]  = [
             { local: 'en,en-US', languageId: '*', dictionaries: ['English'] },
             { local: 'en', languageId: '*', dictionaries: ['Misc'] },
@@ -10,15 +10,15 @@ describe('Validate Server Settings', () => {
             { local: '*', languageId: 'java', dictionaries: ['Java'] },
         ];
 
-        const locals = serverSettings.extractDictionariesByLocalLanguageSettings(langSetting);
+        const locales = serverSettings.extractDictionariesByLocaleLanguageSettings(langSetting);
 
-        expect(locals.get('en')).not.toBeNull();
-        expect(locals.get('en-GB')).toBeUndefined();
-        expect(locals.get('en-US')).not.toBeNull();
-        expect(locals.get('fr')).not.toBeNull();
-        expect(locals.get('*')).not.toBeNull();
-        expect(locals.get('en')).toEqual(expect.arrayContaining(['English']));
-        expect(locals.get('en')).toEqual(expect.arrayContaining(['Misc']));
-        expect(locals.get('en-US')).toEqual(expect.not.arrayContaining(['Misc']));
+        expect(locales.get('en')).not.toBeNull();
+        expect(locales.get('en-GB')).toBeUndefined();
+        expect(locales.get('en-US')).not.toBeNull();
+        expect(locales.get('fr')).not.toBeNull();
+        expect(locales.get('*')).not.toBeNull();
+        expect(locales.get('en')).toEqual(expect.arrayContaining(['English']));
+        expect(locales.get('en')).toEqual(expect.arrayContaining(['Misc']));
+        expect(locales.get('en-US')).toEqual(expect.not.arrayContaining(['Misc']));
     });
 });

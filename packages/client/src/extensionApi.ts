@@ -11,8 +11,8 @@ export interface ExtensionApi {
     disableCurrentLanguage(): Thenable<void>;
     addWordToUserDictionary(word: string): Thenable<void>;
     addWordToWorkspaceDictionary(word: string, uri?: string | null | vscode.Uri): Thenable<void>;
-    enableLocal(target: ConfigTarget, local: string): Thenable<void>;
-    disableLocal(target: ConfigTarget, local: string): Thenable<void>;
+    enableLocale(target: ConfigTarget, locale: string): Thenable<void>;
+    disableLocale(target: ConfigTarget, locale: string): Thenable<void>;
     updateSettings(): boolean;
     cSpellClient(): CSpellClient;
 }

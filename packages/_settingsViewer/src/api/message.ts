@@ -1,7 +1,7 @@
 import { Settings, ConfigTarget } from './settings';
 export type Commands = 'ConfigurationChangeMessage'
 | 'EnableLanguageIdMessage'
-| 'EnableLocalMessage'
+| 'EnableLocaleMessage'
 | 'RequestConfigurationMessage'
 | 'SelectFileMessage'
 | 'SelectFolderMessage'
@@ -15,7 +15,7 @@ export interface Message {
 export type Messages =
     ConfigurationChangeMessage
     | EnableLanguageIdMessage
-    | EnableLocalMessage
+    | EnableLocaleMessage
     | RequestConfigurationMessage
     | SelectFileMessage
     | SelectFolderMessage
@@ -77,19 +77,19 @@ export interface EnableLanguageIdMessage extends Message {
     };
 }
 
-export interface EnableLocalMessage extends Message {
-    command: 'EnableLocalMessage';
+export interface EnableLocaleMessage extends Message {
+    command: 'EnableLocaleMessage';
     value: {
         target: ConfigTarget;
         uri: string | undefined;
-        local: string;
+        locale: string;
         enable: boolean;
     };
 }
 
 export const isConfigurationChangeMessage = isA<ConfigurationChangeMessage>('ConfigurationChangeMessage', [['value', isObject]]);
 export const isEnableLanguageIdMessage = isA<EnableLanguageIdMessage>('EnableLanguageIdMessage', [['value', isObject]]);
-export const isEnableLocalMessage = isA<EnableLocalMessage>('EnableLocalMessage', [['value', isObject]]);
+export const isEnableLocaleMessage = isA<EnableLocaleMessage>('EnableLocaleMessage', [['value', isObject]]);
 export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('RequestConfigurationMessage', []);
 export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);

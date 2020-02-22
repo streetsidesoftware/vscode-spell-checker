@@ -1,5 +1,5 @@
 export const codes: string[][] = [
-    // ['code', 'language'[', ''local']],
+    // ['code', 'language'[', ''locale']],
     ['af', 'Afrikaans'],
     ['af-NA', 'Afrikaans', 'Namibia'],
     ['af-ZA', 'Afrikaans', 'South Africa'],
@@ -531,4 +531,3 @@ export const codes: string[][] = [
     ['zu', 'Zulu'],
     ['zu-ZA', 'Zulu', 'South Africa'],
 ];
-

@@ -1,5 +1,5 @@
 import {observable, computed} from 'mobx';
-import { Settings, ConfigTarget, LocalId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
+import { Settings, ConfigTarget, LocaleId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
@@ -61,9 +61,9 @@ export class AppState implements State {
         dictionaries: [],
         knownLanguageIds: [],
         configs: {
-            user: { inherited: {}, locals: [], languageIdsEnabled: [] },
-            workspace: { inherited: { locals: 'user', languageIdsEnabled: 'user' }, locals: [], languageIdsEnabled: [] },
-            folder: { inherited: { locals: 'user', languageIdsEnabled: 'user' }, locals: [], languageIdsEnabled: [] },
+            user: { inherited: {}, locales: [], languageIdsEnabled: [] },
+            workspace: { inherited: { locales: 'user', languageIdsEnabled: 'user' }, locales: [], languageIdsEnabled: [] },
+            folder: { inherited: { locales: 'user', languageIdsEnabled: 'user' }, locales: [], languageIdsEnabled: [] },
             file: undefined,
         }
     };
@@ -92,13 +92,13 @@ export class AppState implements State {
     @computed get languageConfig(): LanguageConfigs {
         const calcConfig = (target: ConfigTarget): LanguageConfig => {
             const config = this.settings.configs[target];
-            const locals = config.locals; // todo: calc inheritance
-            const inherited = config.inherited.locals;
+            const locales = config.locales; // todo: calc inheritance
+            const inherited = config.inherited.locales;
 
             const infos = new Map<string, LanguageInfo>();
 
-            const addLocalsToInfos = (locals: string[], dictionaryName: string | undefined) => {
-                locals.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
+            const addLocalesToInfos = (locales: string[], dictionaryName: string | undefined) => {
+                locales.map(normalizeCode).map(lookupCode).filter(notUndefined).forEach(lang => {
                     const { code, lang: language, country } = lang;
                     const name = country ? `${language} - ${country}` : language;
                     const found = this.isLocalEnabledEx(target, code);
@@ -115,10 +115,10 @@ export class AppState implements State {
                     infos.set(name, info);
                 });
             }
-            if (locals) {
-                addLocalsToInfos(locals, undefined);
+            if (locales) {
+                addLocalesToInfos(locales, undefined);
             }
-            this.settings.dictionaries.forEach(dict => addLocalsToInfos(dict.locals, dict.name));
+            this.settings.dictionaries.forEach(dict => addLocalesToInfos(dict.locales, dict.name));
 
             return {
                 languages: [...infos.values()].sort(compareEach(
@@ -178,24 +178,24 @@ export class AppState implements State {
         return this.workspaceFolders.filter(f => f.name === name)[0];
     }
 
-    actionSetLocal(target: ConfigTarget, local: LocalId, enable: boolean) {
-        const localsCurrent = this.settings.configs[target].locals;
-        const locals = (enable ? [...localsCurrent, local] : localsCurrent.filter(v => v !== local)).filter(uniqueFilter());
-        this.settings.configs[target].locals = locals;
+    actionSetLocale(target: ConfigTarget, locale: LocaleId, enable: boolean) {
+        const localesCurrent = this.settings.configs[target].locales;
+        const locales = (enable ? [...localesCurrent, locale] : localesCurrent.filter(v => v !== locale)).filter(uniqueFilter());
+        this.settings.configs[target].locales = locales;
         const uri = this.settings.activeFolderUri;
-        this.messageBus.postMessage({ command: 'EnableLocalMessage', value: { target, local, enable, uri } });
+        this.messageBus.postMessage({ command: 'EnableLocaleMessage', value: { target, locale, enable, uri } });
     }
 
     actionSetDebugMode(isEnabled: boolean) {
         this.debugMode = isEnabled;
     }
 
-    private isLocalEnabledEx(field: ConfigTarget, code: LocalId): InheritedFromSource<boolean> {
+    private isLocalEnabledEx(field: ConfigTarget, code: LocaleId): InheritedFromSource<boolean> {
         const config = this.settings.configs[field];
-        const source = config.inherited.locals || field;
-        const locals = config.locals;
+        const source = config.inherited.locales || field;
+        const locales = config.locales;
         return  {
-            value: locals.map(normalizeCode).includes(code),
+            value: locales.map(normalizeCode).includes(code),
             source
         };
     }

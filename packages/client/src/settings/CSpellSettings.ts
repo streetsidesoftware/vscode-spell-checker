@@ -46,7 +46,7 @@ export function updateSettings(filename: string, settings: CSpellSettings) {
 }
 
 export function addWordToSettingsAndUpdate(filename: string, word: string) {
-    return readApplyUpdateSettingsFile(
+    return readSettingsFileAndApplyUpdate(
         filename,
         settings => addWordsToSettings(settings, word.split(' '))
     );
@@ -58,7 +58,7 @@ export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[
 }
 
 export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string) {
-    return readApplyUpdateSettingsFile(
+    return readSettingsFileAndApplyUpdate(
         filename,
         settings => addIgnoreWordsToSettings(settings, word.split(' '))
     );
@@ -89,7 +89,7 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
 }
 
 export function removeWordFromSettingsAndUpdate(filename: string, word: string) {
-    return readApplyUpdateSettingsFile(
+    return readSettingsFileAndApplyUpdate(
         filename,
         settings => removeWordsFromSettings(settings, word.split(' '))
     );
@@ -117,20 +117,20 @@ export function removeLanguageIdsFromSettings(settings: CSpellSettings, language
 }
 
 export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean) {
-    return readApplyUpdateSettingsFile(
+    return readSettingsFileAndApplyUpdate(
         filename,
         settings => addLanguageIdsToSettings(settings, languageIds, onlyIfExits)
     );
 }
 
 export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]) {
-    return readApplyUpdateSettingsFile(
+    return readSettingsFileAndApplyUpdate(
         filename,
         settings => removeLanguageIdsFromSettings(settings, languageIds)
     );
 }
 
-export async function readApplyUpdateSettingsFile(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
+export async function readSettingsFileAndApplyUpdate(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
     const settings = await readSettings(filename);
     const newSettings = action(settings);
     return updateSettings(filename, newSettings);
