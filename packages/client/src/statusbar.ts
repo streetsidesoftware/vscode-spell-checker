@@ -32,7 +32,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
                 const { languageEnabled = true, fileEnabled = true } = response;
                 const isChecked = languageEnabled && fileEnabled;
                 const isCheckedText = isChecked ? 'is' : 'is NOT';
-                const langReason = languageEnabled ? '' : `The "${languageId}" language is not enabled.`;
+                const langReason = languageEnabled ? '' : `The "${languageId}" language / filetype is not enabled.`;
                 const fileReason = fileEnabled ? '' : 'The file path is excluded in settings.';
                 const fileName = path.basename(uri.fsPath);
                 const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
