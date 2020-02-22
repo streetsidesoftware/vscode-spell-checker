@@ -70,6 +70,10 @@ export function hasWorkspaceLocation() {
     return !!(workspaceFolders && workspaceFolders[0]);
 }
 
+/**
+ * Returns a list of files in the order of Best to Worst Match.
+ * @param uri
+ */
 export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
     const { workspaceFolders } = workspace;
     if (!workspaceFolders || !hasWorkspaceLocation()) {
@@ -77,7 +81,7 @@ export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
     }
 
     const folders = uri
-        ? [workspace.getWorkspaceFolder(uri)!].filter(a => !!a)
+        ? [workspace.getWorkspaceFolder(uri)!].filter(a => !!a).concat(workspaceFolders)
         : workspaceFolders;
 
     const possibleLocations = folders
@@ -131,11 +135,11 @@ export function getEnabledLanguagesFromConfig(scope: InspectScope) {
  * @param languageId - the language id, e.g. 'typescript'
  */
 export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, true, target, true);
+    await enableLanguageIdForTarget(languageId, true, target, true, true);
 }
 
 export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, false, target, true);
+    await enableLanguageIdForTarget(languageId, false, target, true, true);
 }
 
 export function addWordToSettings(target: config.ConfigTarget, word: string) {
@@ -281,7 +285,8 @@ export function enableLanguageIdForTarget(
     languageId: string,
     enable: boolean,
     target: config.ConfigTarget,
-    isCreateAllowed: boolean
+    isCreateAllowed: boolean,
+    forceUpdateVSCode: boolean
 ): Promise<boolean> {
     const fn = (src: string[] | undefined) => updateEnableFiletypes(languageId, enable, src);
     return updateSettingInConfig(
@@ -289,7 +294,8 @@ export function enableLanguageIdForTarget(
         target,
         fn,
         isCreateAllowed,
-        shouldUpdateCSpell(target)
+        shouldUpdateCSpell(target),
+        forceUpdateVSCode
     );
 }
 
@@ -302,7 +308,8 @@ export function enableLanguageIdForTarget(
 export async function enableLanguageIdForClosestTarget(
     languageId: string,
     enable: boolean,
-    uri: Uri | undefined
+    uri: Uri | undefined,
+    forceUpdateVSCode: boolean = false
 ): Promise<void> {
     if (languageId) {
         if (uri) {
@@ -311,18 +318,18 @@ export async function enableLanguageIdForClosestTarget(
                 target: ConfigurationTarget.WorkspaceFolder,
                 uri,
             };
-            if (await enableLanguageIdForTarget(languageId, enable, target, false)) return;
+            if (await enableLanguageIdForTarget(languageId, enable, target, false, forceUpdateVSCode)) return;
         }
 
         if (vscode.workspace.workspaceFolders
             && vscode.workspace.workspaceFolders.length
-            && await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false)
+            && await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false, forceUpdateVSCode)
         ) {
             return;
         }
 
         // Apply it to User settings.
-        await enableLanguageIdForTarget(languageId, enable, config.Target.Global, true);
+        await enableLanguageIdForTarget(languageId, enable, config.Target.Global, true, forceUpdateVSCode);
     }
     return;
 }
@@ -357,7 +364,8 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     target: config.ConfigTarget,
     applyFn: (origValue: CSpellUserSettings[K]) => CSpellUserSettings[K],
     create: boolean,
-    updateCSpell: boolean = true
+    updateCSpell: boolean = true,
+    forceUpdateVSCode: boolean = false,
 ): Promise<boolean> {
     interface Result {
         value: CSpellUserSettings[K] | undefined;
@@ -378,30 +386,25 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     }
 
     async function updateCSpellFile(settingsFilename: string | undefined, defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
-        if (settingsFilename) {
-            await CSpellSettings.readApplyUpdateSettingsFile(settingsFilename, settings => {
-                const v = settings[section];
-                const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
-                const newSettings = {...settings };
-                if (newValue === undefined) {
-                    delete newSettings[section];
-                } else {
-                    newSettings[section] = newValue;
-                }
-                return newSettings;
-            });
-            return true;
-        }
-        return false;
+        if (!settingsFilename) return false;
+        await CSpellSettings.readSettingsFileAndApplyUpdate(settingsFilename, settings => {
+            const v = settings[section];
+            const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
+            const newSettings = {...settings };
+            if (newValue === undefined) {
+                delete newSettings[section];
+            } else {
+                newSettings[section] = newValue;
+            }
+            return newSettings;
+        });
+        return true;
     }
 
-    const configResult = await updateConfig();
     const cspellResult = await updateCSpellFile(settingsFilename, orig.value);
-
-    return [
-        !!configResult,
-        cspellResult
-    ].reduce((a, b) => a || b, false);
+    // Only update VS Code config if we do not have `cspell.json` file or is it a forceUpdate.
+    const configResult = (!cspellResult || forceUpdateVSCode) && await updateConfig();
+    return !!configResult;
 }
 
 performance.mark('settings.ts done');

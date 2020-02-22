@@ -161,9 +161,9 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
         if (target) {
             const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-            enableLanguageIdForTarget(languageId, enable, configTarget, true);
+            enableLanguageIdForTarget(languageId, enable, configTarget, true, true);
         } else {
-            enableLanguageIdForClosestTarget(languageId, enable, uriFolder);
+            enableLanguageIdForClosestTarget(languageId, enable, uriFolder, true);
         }
     }));
 
