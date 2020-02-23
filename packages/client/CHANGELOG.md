@@ -5,40 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.8.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.1...v1.8.0-alpha.2) (2020-02-23)
 
-
-### Bug Fixes
-
-* get the latest cspell library and schema ([#440](https://github.com/streetsidesoftware/vscode-spell-checker/issues/440)) ([4bcff60](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4bcff6013edd742af7a920ddd0703a66b703cf30))
-
-
-
-
-
-# [1.8.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.0...v1.8.0-alpha.1) (2020-02-22)
-
-
-### Bug Fixes
-
-* **copy:** change the language of the tool tip ([09949e4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/09949e4bdc08cca5ff30d750a58c19bf1c6c3f31))
-
-
 ### Features
 
 * Support enableFileTypes ([#439](https://github.com/streetsidesoftware/vscode-spell-checker/issues/439)) ([2fde3bc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2fde3bc5c658ee51da5a56580aa1370bf8174070))
 
+* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
 
-
-
-
-# [1.8.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v1.8.0-alpha.0) (2020-02-21)
-
-### Bug Fixes
+* Upgrade to latest cspell library and schema ([#440](https://github.com/streetsidesoftware/vscode-spell-checker/issues/440)) ([4bcff60](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4bcff6013edd742af7a920ddd0703a66b703cf30))
 
 * Upgrade to vscode-languageserver 6 ([2ec3ffa](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2ec3ffaa96779abb3ea380f4a6d074228e560429))
 
-### Features
-
-* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
+* **copy:** change the language of the tool tip ([09949e4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/09949e4bdc08cca5ff30d750a58c19bf1c6c3f31))
 
 
 ## [1.7.24](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24-alpha.1...v1.7.24) (2020-02-19)
