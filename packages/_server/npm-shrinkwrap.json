@@ -1530,9 +1530,9 @@
       }
     },
     "cspell-lib": {
-      "version": "4.1.20",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.20.tgz",
-      "integrity": "sha512-72Gl/9vgzjLTZ8S5EKx+T1PXIvkbVlEZzFiVFENpUIhHhxdWbdFDpdmDy7iT6duE/LiR5g/g/WL/PNlTU7PDkQ==",
+      "version": "4.1.21",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.21.tgz",
+      "integrity": "sha512-mcbYQRO9GeLjUU3fTrJEwD17pF/t4YlgYoEqVQkLgR0kCQ5exMFlj8II4UQHgNevx8GMJGpqQ9+fM6ZhCYKIzQ==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^5.0.1",

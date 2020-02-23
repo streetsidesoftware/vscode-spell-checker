@@ -9,7 +9,6 @@ import {
     Settings,
     CSpellSettings,
     BaseSetting,
-    DictionaryDefinitionPreferred,
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -482,15 +481,8 @@ function resolveDictionaryDefinitions(
 ): CSpellUserSettings['dictionaryDefinitions'] {
     if (!dictDefs) return dictDefs;
 
-    function resolve(path: string) {
-        if (!path) return path;
-        return resolver.resolveFile(path);
-    }
-
-    return dictDefs.map((def) => {
-        const path = resolve((def as DictionaryDefinitionPreferred).path);
-        return {...def, path};
-    });
+    return dictDefs
+    .map(def => def.path ? {...def, path: resolver.resolveFile(def.path)} : def);
 }
 
 function resolveLanguageSettings(
