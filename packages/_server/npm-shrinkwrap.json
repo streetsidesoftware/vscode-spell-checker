@@ -1,6 +1,6 @@
 {
   "name": "vscode-spell-checker-server",
-  "version": "1.8.0-alpha.0",
+  "version": "1.8.0-alpha.1",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -1457,9 +1457,9 @@
       }
     },
     "cspell-dict-powershell": {
-      "version": "1.0.5",
-      "resolved": "https://registry.npmjs.org/cspell-dict-powershell/-/cspell-dict-powershell-1.0.5.tgz",
-      "integrity": "sha512-vO4rdojQsmNHvzPdJT/rU2xw03uzs1x7+JJijufDSR+vf277KeQHCUV4+YTm4U7/33XDcPEgYJPT7uhzyjOqmA==",
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/cspell-dict-powershell/-/cspell-dict-powershell-1.0.6.tgz",
+      "integrity": "sha512-rwxt/fG3Nr7tQaV7e38ilz8qWfXrf5Ie+MQC6Mw/ddjT4wLOkGvruUqtJA/USoDE9PFG12KoarFsWlVXv/nwPA==",
       "requires": {
         "configstore": "^5.0.0"
       }
@@ -1530,9 +1530,9 @@
       }
     },
     "cspell-lib": {
-      "version": "4.1.18",
-      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.18.tgz",
-      "integrity": "sha512-pGo9bxCfOyGnlT/3LNQCEmoo+zSYIV8dVSdKbswEaqyx01OhNB5UVFqjrphJb7Jkz3EX1SOEXhrSTUxuQ+VEuA==",
+      "version": "4.1.20",
+      "resolved": "https://registry.npmjs.org/cspell-lib/-/cspell-lib-4.1.20.tgz",
+      "integrity": "sha512-72Gl/9vgzjLTZ8S5EKx+T1PXIvkbVlEZzFiVFENpUIhHhxdWbdFDpdmDy7iT6duE/LiR5g/g/WL/PNlTU7PDkQ==",
       "requires": {
         "comment-json": "^1.1.3",
         "configstore": "^5.0.1",
@@ -1553,7 +1553,7 @@
         "cspell-dict-latex": "^1.0.13",
         "cspell-dict-lorem-ipsum": "^1.0.10",
         "cspell-dict-php": "^1.0.13",
-        "cspell-dict-powershell": "^1.0.5",
+        "cspell-dict-powershell": "^1.0.6",
         "cspell-dict-python": "^1.0.20",
         "cspell-dict-ruby": "^1.0.3",
         "cspell-dict-rust": "^1.0.12",
