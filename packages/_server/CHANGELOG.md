@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.1...v1.8.0-alpha.2) (2020-02-23)
+
+
+### Bug Fixes
+
+* get the latest cspell library and schema ([#440](https://github.com/streetsidesoftware/vscode-spell-checker/issues/440)) ([4bcff60](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4bcff6013edd742af7a920ddd0703a66b703cf30))
+
+
+
+
+
 # [1.8.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.0...v1.8.0-alpha.1) (2020-02-22)
 
 
