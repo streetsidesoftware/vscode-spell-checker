@@ -8,7 +8,8 @@ import {
     Pattern,
     Settings,
     CSpellSettings,
-    BaseSetting
+    BaseSetting,
+    DictionaryDefinitionPreferred,
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -486,8 +487,8 @@ function resolveDictionaryDefinitions(
         return resolver.resolveFile(path);
     }
 
-    return dictDefs.map(def => {
-        const path = resolve(def.path!);
+    return dictDefs.map((def) => {
+        const path = resolve((def as DictionaryDefinitionPreferred).path);
         return {...def, path};
     });
 }
