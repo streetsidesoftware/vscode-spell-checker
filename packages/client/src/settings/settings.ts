@@ -404,7 +404,21 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     const cspellResult = await updateCSpellFile(settingsFilename, orig.value);
     // Only update VS Code config if we do not have `cspell.json` file or is it a forceUpdate.
     const configResult = (!cspellResult || forceUpdateVSCode) && await updateConfig();
-    return !!configResult;
+    const success = cspellResult || !!configResult;
+
+    const extractedTarget = config.extractTarget(target);
+    const targetName = ConfigurationTarget[extractedTarget];
+
+    if (!cspellResult) {
+        if (configResult) {
+            vscode.window.showWarningMessage(`cSpell: Failed to update cSpell configuration for target ${targetName}; updated VSCode configuration instead.`);
+        }
+        else {
+            vscode.window.showErrorMessage(`cSpell: Failed to update cSpell or VSCode configuration for target ${targetName}.`);
+        }
+    }
+
+    return success;
 }
 
 performance.mark('settings.ts done');
