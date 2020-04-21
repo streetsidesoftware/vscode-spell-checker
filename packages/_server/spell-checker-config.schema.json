@@ -6,7 +6,9 @@
   "properties": {
     "allowedSchemas": {
       "default": [
+        "gist",
         "file",
+        "sftp",
         "untitled"
       ],
       "description": "Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).",

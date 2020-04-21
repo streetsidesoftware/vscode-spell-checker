@@ -1,7 +1,7 @@
 
 import * as vscode from 'vscode';
 
-export const supportedSchemes = ['file', 'untitled'];
+export const supportedSchemes = ['gist', 'file', 'sftp', 'untitled'];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
 
 export function isSupportedUri(uri?: vscode.Uri): boolean {
