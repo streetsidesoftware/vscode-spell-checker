@@ -52,7 +52,7 @@ const defaultExclude: Glob[] = [
     '__pycache__/**',   // ignore cache files.
 ];
 
-const defaultAllowedSchemes = ['file', 'untitled'];
+const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled'];
 const schemeBlackList = ['git', 'output', 'debug', 'vscode'];
 
 const defaultRootUri = Uri.file('').toString();

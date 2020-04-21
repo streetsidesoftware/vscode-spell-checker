@@ -440,7 +440,9 @@
                         "type": "string"
                     },
                     "default": [
+                        "gist",
                         "file",
+                        "sftp",
                         "untitled"
                     ]
                 },
