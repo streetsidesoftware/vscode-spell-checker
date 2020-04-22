@@ -6,7 +6,7 @@ strategy:
     linux:
       imageName: 'ubuntu-16.04'
     mac:
-      imageName: 'macos-10.13'
+      imageName: 'macos-latest'
     windows:
       imageName: 'vs2017-win2016'
 
@@ -36,3 +36,5 @@ steps:
   displayName: Run Tests
   env:
     DISPLAY: ':99.0'
+
+  # cspell:ignore macos xvfb
