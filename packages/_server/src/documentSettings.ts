@@ -6,7 +6,6 @@ import {
     Glob,
     RegExpPatternDefinition,
     Pattern,
-    Settings,
     CSpellSettings,
     BaseSetting,
 } from 'cspell-lib';
@@ -168,11 +167,12 @@ export class DocumentSettings {
         log(`fetchFolderSettings: URI ${docUri}`);
         const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
+        const workspaceSettings = await this.loadWorkspaceSettings(cSpellConfigSettings.workspaceRootPath);
         const folder = await this.findMatchingFolder(docUri);
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
         const settings = this.readSettingsForFolderUri(folder.uri);
         // cspell.json file settings take precedence over the vscode settings.
-        const mergedSettings = CSpell.mergeSettings(cSpellFolderSettings, settings);
+        const mergedSettings = CSpell.mergeSettings(workspaceSettings, cSpellFolderSettings, settings);
         const { ignorePaths = []} = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(folder.uri).path;
@@ -185,6 +185,17 @@ export class DocumentSettings {
             globMatcher,
         };
         return ext;
+    }
+
+    private async loadWorkspaceSettings(workspaceRoot: string | undefined): Promise<CSpellUserSettings> {
+        if (!workspaceRoot) {
+            const rootFolder = (await this.folders)[0];
+            if (!rootFolder) return {};
+
+            return this.readSettingsForFolderUri(rootFolder.uri);
+        };
+
+        return this.readSettingsForFolderUri(Uri.file(workspaceRoot).toString());
     }
 
     private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string): Promise<CSpellUserSettings> {
@@ -249,9 +260,9 @@ function _readSettingsForFolderUri(folderUri: string): CSpellUserSettings {
 }
 
 function readSettingsFiles(paths: string[]) {
-    log('readSettingsFiles:', paths);
+    // log('readSettingsFiles:', paths);
     const existingPaths = paths.filter(filename => exists(filename));
-    log('readSettingsFiles actual:', existingPaths);
+    log('readSettingsFiles:', existingPaths);
     return existingPaths.length ? CSpell.readSettingsFiles(existingPaths) : {};
 }
 
@@ -435,7 +446,7 @@ function resolveSettings<T extends CSpellSettings>(
     return shallowCleanObject(newSettings);
 }
 
-function resolveCoreSettings<T extends Settings>(
+function resolveCoreSettings<T extends CSpellSettings>(
     settings: T,
     resolver: WorkspacePathResolver
 ): T {
@@ -444,12 +455,13 @@ function resolveCoreSettings<T extends Settings>(
     // - dictionary definitions (also nested in language settings)
     // - globs (ignorePaths and Override filenames)
     // - override dictionaries
-    const newSettings = {...resolveBaseSettings(settings, resolver)};
+    const newSettings: CSpellUserSettings = {...resolveBaseSettings(settings, resolver)};
     // There is a more elegant way of doing this, but for now just change each section.
     newSettings.dictionaryDefinitions = resolveDictionaryDefinitions(newSettings.dictionaryDefinitions, resolver);
     newSettings.languageSettings = resolveLanguageSettings(newSettings.languageSettings, resolver);
     newSettings.ignorePaths = resolveGlobArray(newSettings.ignorePaths, resolver.resolveGlob);
-    return shallowCleanObject(newSettings);
+    newSettings.workspaceRootPath = newSettings.workspaceRootPath ? resolver.resolveFile(newSettings.workspaceRootPath) : undefined;
+    return shallowCleanObject(newSettings) as T;
 }
 
 function resolveBaseSettings<T extends BaseSetting>(

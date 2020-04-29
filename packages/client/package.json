@@ -440,8 +440,8 @@
                         "type": "string"
                     },
                     "default": [
-                        "gist",
                         "file",
+                        "gist",
                         "sftp",
                         "untitled"
                     ]
@@ -452,6 +452,12 @@
                     "items": {
                         "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell%404.0.53/cspell.schema.json#/definitions/OverrideSettings"
                     }
+                },
+                "cSpell.workspaceRootPath": {
+                  "markdownDescription": "Define the path to the workspace root folder in a multi-root workspace.\nBy default it is the first folder.\n\nThis is used to find the `cspell.json` file for the workspace.\n\nExample: use the `client` folder\n```\n     \"cSpell.workspaceRootPath\": \"${workspaceFolder:client}\"\n```",
+                  "scope": "resource",
+                  "title": "Workspace Root Folder Path",
+                  "type": "string"
                 }
             }
         }
