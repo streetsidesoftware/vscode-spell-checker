@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 console.log(`Current directory: ${__dirname}`);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const extensionPackage = require('../../client/package.json');
 
 export interface DocumentContext {
@@ -41,7 +42,7 @@ export async function activateExtension(): Promise<ExtensionActivation | undefin
 export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
     const extensionId = getExtensionId();
     console.log(`Activate: ${extensionId}`);
-    const ext = vscode.extensions.getExtension(extensionId)!;
+    vscode.extensions.getExtension(extensionId)!;
     try {
         const doc = await vscode.workspace.openTextDocument(docUri);
         const editor = await vscode.window.showTextDocument(doc);
