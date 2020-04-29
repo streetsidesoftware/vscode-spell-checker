@@ -2,32 +2,11 @@
     "cSpell.dictionaries": [
         "lorem-ipsum"
     ],
-    "cSpell.enabledLanguageIds": [
-        "c",
-        "cpp",
-        "csharp",
-        "go",
-        "html",
-        "javascript",
-        "javascriptreact",
-        "json",
-        "jsonc",
-        "latex",
-        "markdown",
-        "php",
-        "plaintext",
-        "python",
-        "text",
-        "typescript",
-        "typescriptreact",
-        "yml"
-    ],
     "cSpell.ignoreWords": [
         "arraylength",
         "languageclient",
         "restructuredtext"
     ],
-    "cSpell.language": "en",
     "files.exclude": {
         "out": false
     },

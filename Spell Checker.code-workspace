@@ -17,17 +17,6 @@
 		}
 	],
 	"settings": {
-		"cSpell.words": [
-			"acanthopterygious",
-			"arraylength",
-			"devtool",
-			"devtools",
-			"dict",
-			"lerna",
-			"mobx",
-			"restructuredtext",
-			"vsce"
-		],
 		"typescript.tsdk": "client/node_modules/typescript/lib"
 	}
 }
