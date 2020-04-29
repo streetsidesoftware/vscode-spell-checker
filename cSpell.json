@@ -6,17 +6,30 @@
     "language": "en-US",
     // words - list of words to be always considered correct
     "words": [
+        "acanthopterygious",
+        "arraylength",
+        "cfml",
+        "dcopy",
+        "devtool",
+        "devtools",
+        "dict",
         "downlevel",
         "ESNEXT",
+        "Interop",
         "languageclient",
         "lerna",
+        "mobx",
         "nospace",
         "quotemark",
+        "restructuredtext",
         "sourcemap",
         "streetsidesoftware",
-        "typechecking",
-        "Interop",
+        "textdocument",
         "tslib",
+        "typechecking",
+        "unelevated",
+        "uri's",
+        "vsce",
         "webview"
     ],
     // flagWords - list of words to be always considered incorrect
@@ -28,7 +41,9 @@
     "ignorePaths": [
         "node_modules",
         "coverage",
-        "temp"
+        "temp",
+        "languageCodes.ts",
+        "testFixtures"
     ],
     "ignoreWords": [],
     "dictionaryDefinitions": [

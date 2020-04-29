@@ -1,15 +1,3 @@
 {
-    "cSpell.ignorePaths": [
-        "**/node_modules/**",
-        "**/vscode-extension/**",
-        "**/.git/**",
-        ".vscode",
-        "dictionaries",
-        "typings"
-    ],
-    "cSpell.words": [
-        "diags",
-        "textdocument"
-    ],
     "typescript.tsdk": "./node_modules/typescript/lib"
 }

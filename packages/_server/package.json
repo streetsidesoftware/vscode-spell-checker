@@ -10,18 +10,18 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.1.0",
     "@types/jest": "^25.2.1",
     "@types/micromatch": "^3.1.1",
     "@types/node": "^12.12.37",
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "eslint": "^6.8.0",
-    "jest": "^25.4.0",
-    "jest-diff": "^25.4.0",
+    "jest": "^25.5.0",
+    "jest-diff": "^25.5.0",
     "lorem-ipsum": "^2.0.3",
     "ts-jest": "^25.4.0",
     "ts-json-schema-generator": "^0.61.1",

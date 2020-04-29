@@ -1,12 +1,4 @@
 {
-    "cSpell.words": [
-        "cfml",
-        "dcopy",
-        "devtools",
-        "fullstack",
-        "mobx",
-        "restructuredtext"
-    ],
     "editor.insertSpaces": true,
     "typescript.tsdk": "node_modules/typescript/lib"
 }
