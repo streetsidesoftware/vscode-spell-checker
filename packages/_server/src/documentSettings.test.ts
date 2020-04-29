@@ -138,7 +138,7 @@ describe('Validate DocumentSettings', () => {
         docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
-        expect(settings.workspaceRootPath).toBe(workspaceClient);
+        expect(settings.workspaceRootPath?.toLowerCase()).toBe(workspaceClient.toLowerCase());
     });
 
     test('test isExcluded', async () => {
