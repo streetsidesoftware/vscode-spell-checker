@@ -91,7 +91,7 @@ export interface SpellCheckerSettings {
      *
      * Example: use the `client` folder
      * ```
-     *      "cSpell.workspaceRootPath": "${workspaceFolder:client}"
+     * ${workspaceFolder:client}
      * ```
      */
     workspaceRootPath?: string;
