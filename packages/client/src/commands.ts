@@ -81,19 +81,15 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
 async function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     const actualTarget = resolveTarget(target, uri);
     await Settings.addWordToSettings(actualTarget, word);
-    const path = await determineSettingsPath(actualTarget, uri);
-    if (path) {
-        await CSpellSettings.addWordToSettingsAndUpdate(path, word);
-    }
+    const paths = await determineSettingsPath(actualTarget, uri);
+    await Promise.all(paths.map(path => CSpellSettings.addWordToSettingsAndUpdate(path, word)));
 }
 
 export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
-    const path = await determineSettingsPath(actualTarget, uri);
-    if (path) {
-        await CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word);
-    }
+    const paths = await determineSettingsPath(actualTarget, uri);
+    await Promise.all(paths.map(path => CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word)));
 }
 
 export function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
@@ -111,21 +107,23 @@ export function removeWordFromUserDictionary(word: string): Thenable<void> {
 async function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
-    const path = await determineSettingsPath(actualTarget, uri);
-    if (path) {
-        await CSpellSettings.removeWordFromSettingsAndUpdate(path, word);
-    }
+    const paths = await determineSettingsPath(actualTarget, uri);
+    await Promise.all(paths.map(path => CSpellSettings.removeWordFromSettingsAndUpdate(path, word)));
 }
 
 async function determineSettingsPath(
     target: Settings.ConfigTarget,
     uri: string | null | Uri | undefined
-): Promise<string | undefined> {
-    if (target !== Settings.Target.Global) {
-        const useUri = uri ? pathToUri(uri) : undefined;
-        return Settings.findExistingSettingsFileLocation(useUri);
+): Promise<string[]> {
+    if (Settings.isGlobalLevelTarget(target)) {
+        return [];
     }
-    return undefined;
+    if (Settings.isWorkspaceLevelTarget(target)) {
+        return Settings.findSettingsFiles().then(uris => uris?.map(uri => uri.fsPath));
+    }
+    const useUri = uri ? pathToUri(uri) : undefined;
+    const path = await Settings.findExistingSettingsFileLocation(useUri);
+    return path ? [path] : [];
 }
 
 function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Settings.ConfigTarget {
