@@ -67,7 +67,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         splitTextFn(commands.addWordToFolderDictionary)
     );
     const actionAddWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
-        'Add Word to Workspace Dictionary',
+        'Add Word to Workspace Dictionaries',
         splitTextFn(commands.addWordToWorkspaceDictionary)
     );
     const actionAddWordToDictionary = userCommandOnCurrentSelectionOrPrompt(
@@ -93,15 +93,15 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     );
 
     const actionRemoveWordFromFolderDictionary = userCommandOnCurrentSelectionOrPrompt(
-        'Remove Word from Dictionary',
+        'Remove Word from Folder Dictionary',
         splitTextFn(commands.removeWordFromFolderDictionary)
     );
     const actionRemoveWordFromWorkspaceDictionary = userCommandOnCurrentSelectionOrPrompt(
-        'Remove Word from Dictionary',
+        'Remove Word from Workspace Dictionaries',
         splitTextFn(commands.removeWordFromWorkspaceDictionary)
     );
     const actionRemoveWordFromDictionary = userCommandOnCurrentSelectionOrPrompt(
-        'Remove Word from Dictionary',
+        'Remove Word from Global Dictionary',
         splitTextFn(commands.removeWordFromUserDictionary)
     );
 
@@ -117,7 +117,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionarySilent', commands.addWordToWorkspaceDictionary),
         vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
 
-        vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder),
+        vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder), // Note: this command is for backwards compatibility.
+        vscode.commands.registerCommand('cSpell.addWordToFolderDictionary', actionAddWordToFolder),
         vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionary', actionAddWordToWorkspace),
         vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
 
@@ -132,7 +133,9 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
         vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
         vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
-        vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
+        vscode.commands.registerCommand('cSpell.enableForGlobal', () => setEnableSpellChecking(settings.Target.Global, true)),
+        vscode.commands.registerCommand('cSpell.disableForGlobal', () => setEnableSpellChecking(settings.Target.Global, false)),
+        vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, true)),
         vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
         vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', commands.toggleEnableSpellChecker),
         vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),

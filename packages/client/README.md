@@ -488,7 +488,7 @@ Adding it to `cSpell.dictionaries` advises the spell checker to always include t
 
 #### Project / Workspace Dictionary
 
-To add a dictionary at the project level, it needs to be in the **cSpell.json** file.
+To add a dictionary at the project level, it needs to be in the `cspell.json` file.
 This file can be either at the project root or in the .vscode directory.
 
 Example adding medical terms, where the terms are checked into the project and we only want to use it for .md files.

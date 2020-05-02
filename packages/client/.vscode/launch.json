@@ -11,6 +11,10 @@
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
+			"smartStep": true,
+			"skipFiles": [
+				"<node_internals>/**"
+			],
 			"preLaunchTask": "build"
 		},
 		{
@@ -22,6 +26,9 @@
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
 			"preLaunchTask": "build"
 		},
 		{

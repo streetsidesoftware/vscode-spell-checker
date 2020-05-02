@@ -6,8 +6,8 @@
   "properties": {
     "allowedSchemas": {
       "default": [
-        "gist",
         "file",
+        "gist",
         "sftp",
         "untitled"
       ],
@@ -83,6 +83,12 @@
       "description": "Delay in ms after a document has changed before checking it for spelling errors.",
       "scope": "application",
       "type": "number"
+    },
+    "workspaceRootPath": {
+      "markdownDescription": "Define the path to the workspace root folder in a multi-root workspace.\nBy default it is the first folder.\n\nThis is used to find the `cspell.json` file for the workspace.\n\nExample: use the `client` folder\n```\n     \"cSpell.workspaceRootPath\": \"${workspaceFolder:client}\"\n```",
+      "scope": "resource",
+      "title": "Workspace Root Folder Path",
+      "type": "string"
     }
   },
   "type": "object"

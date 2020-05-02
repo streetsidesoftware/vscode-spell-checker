@@ -5,10 +5,55 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [1.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.2...v1.8.0) (2020-02-23)
 
-**Note:** Version bump only for package code-spell-checker
+Performance enhancements and a few features.
 
+## `enableFiletypes`
+Fixes #408 :
+A new setting `enableFiletypes` will add the listed filetypes to `enableLanguageIds`.
 
+Example:
 
+```
+"cSpell.enableFiletypes": [
+  "jupyter", "kotlin", "kotlinscript", "!json"
+]
+```
+
+will **enable** Jupyter, Kotlin, KotlinScript and **disable** JSON files.
+
+## `${workspaceFolder}` substitution in paths and globs
+
+Relative paths were difficult to get working when specified in VS Code settings. It wasn't clear what they should be relative to. Relative paths to a `cspell.json` files are clear.
+
+It is now possible to have the following setting in VS Code preferences.
+
+```
+"cSpell.import": [
+  "${workspaceFolder}/node_modules/company_standards/cspell.json"
+]
+```
+
+for a multiroot with folders `client`, `server`, `common`, it is possible to specify the name of the folder:
+
+```
+"ignorePaths": [
+  "${workspaceFolder:client}/**/*.json"
+],
+"cSpell.import": [
+  "${workspaceFolder:server}/node_modules/company_standards/cspell.json"
+],
+"cSpell.dictionaryDefinitions": [
+  {
+    "name": "Company Terms",
+    "path": "${workspaceFolder:common}/dictionaries/terms.txt"
+  }
+],
+"cSpell.dictionaries": ["Company Terms"]
+```
+
+### Bugs
+
+Fixes [can't enable and disable without reloading window · Issue #384](https://github.com/streetsidesoftware/vscode-spell-checker/issues/384)
 
 
 # [1.8.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.1...v1.8.0-alpha.2) (2020-02-23)

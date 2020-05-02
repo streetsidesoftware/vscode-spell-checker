@@ -36,6 +36,13 @@ const cspellConfigInVsCode: CSpellUserSettings = {
     import: [
         '${workspaceFolder:_server}/sampleSourceFiles/overrides/cspell.json',
         '${workspaceFolder:_server}/sampleSourceFiles/cSpell.json',
+    ],
+    enabledLanguageIds: [
+        'typescript',
+        'javascript',
+        'php',
+        'json',
+        'jsonc'
     ]
 };
 
@@ -118,6 +125,22 @@ describe('Validate DocumentSettings', () => {
         expect(settings.language).toBe('en-gb');
     });
 
+    test('test getSettings workspaceRootPath', async () => {
+        const mockFolders: WorkspaceFolder[] = [
+            workspaceFolderRoot,
+            workspaceFolderClient,
+            workspaceFolderServer,
+        ];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{...cspellConfigInVsCode, workspaceRootPath: '${workspaceFolder:client}'}, {}]);
+        const docSettings = newDocumentSettings();
+        const configFile = Path.resolve(Path.join(__dirname, '..', 'sampleSourceFiles', 'cspell-ext.json'));
+        docSettings.registerConfigurationFile(configFile);
+
+        const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
+        expect(settings.workspaceRootPath?.toLowerCase()).toBe(workspaceClient.toLowerCase());
+    });
+
     test('test isExcluded', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
@@ -128,6 +151,19 @@ describe('Validate DocumentSettings', () => {
 
         const result = await docSettings.isExcluded(Uri.file(__filename).toString());
         expect(result).toBe(false);
+    });
+
+    test('test enableFiletypes', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{...cspellConfigInVsCode, enableFiletypes: ['!typescript', '!javascript', 'pug']}, {}]);
+        const docSettings = newDocumentSettings();
+        const configFile = Path.resolve(Path.join(__dirname, '..', 'sampleSourceFiles', 'cSpell.json'));
+        docSettings.registerConfigurationFile(configFile);
+
+        const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
+        expect(settings.enabledLanguageIds).not.toContain('typescript');
+        expect(settings.enabledLanguageIds).toEqual(expect.arrayContaining(['php', 'json', 'pug']));
     });
 
     test('resolvePath', () => {

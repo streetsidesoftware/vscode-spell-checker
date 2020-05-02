@@ -21,7 +21,7 @@ export interface SpellCheckerSettings {
     /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      * @scope resource
-     * @default ["file", "untitled"]
+     * @default ["file", "gist", "sftp", "untitled"]
      */
     allowedSchemas?: string[];
 
@@ -80,6 +80,21 @@ export interface SpellCheckerSettings {
      */
     enableFiletypes?: string[];
 
+    /**
+     * @title Workspace Root Folder Path
+     * @scope resource
+     * @markdownDescription
+     * Define the path to the workspace root folder in a multi-root workspace.
+     * By default it is the first folder.
+     *
+     * This is used to find the `cspell.json` file for the workspace.
+     *
+     * Example: use the `client` folder
+     * ```
+     * ${workspaceFolder:client}
+     * ```
+     */
+    workspaceRootPath?: string;
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}

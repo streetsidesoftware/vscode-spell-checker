@@ -48,7 +48,7 @@ export function updateSettings(filename: string, settings: CSpellSettings) {
 export function addWordToSettingsAndUpdate(filename: string, word: string) {
     return readSettingsFileAndApplyUpdate(
         filename,
-        settings => addWordsToSettings(settings, word.split(' '))
+        settings => addWordsToSettings(settings, splitOutWords(word))
     );
 }
 
@@ -60,7 +60,7 @@ export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[
 export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string) {
     return readSettingsFileAndApplyUpdate(
         filename,
-        settings => addIgnoreWordsToSettings(settings, word.split(' '))
+        settings => addIgnoreWordsToSettings(settings, splitOutWords(word))
     );
 }
 
@@ -91,7 +91,7 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
 export function removeWordFromSettingsAndUpdate(filename: string, word: string) {
     return readSettingsFileAndApplyUpdate(
         filename,
-        settings => removeWordsFromSettings(settings, word.split(' '))
+        settings => removeWordsFromSettings(settings, splitOutWords(word))
     );
 }
 
@@ -134,4 +134,8 @@ export async function readSettingsFileAndApplyUpdate(filename: string, action: (
     const settings = await readSettings(filename);
     const newSettings = action(settings);
     return updateSettings(filename, newSettings);
+}
+
+export function splitOutWords(words: string): string[] {
+    return words.split(/(?:[^\w\-_']|\s)\s*/g).concat([words]).map(a => a.trim()).filter(a => !!a);
 }

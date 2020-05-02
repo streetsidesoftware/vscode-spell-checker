@@ -17,6 +17,9 @@
 		}
 	],
 	"settings": {
+		"cSpell.import": [
+			"${workspaceFolder:vscode-spell-checker}/cSpell.json"
+		],
 		"typescript.tsdk": "client/node_modules/typescript/lib"
 	}
 }
