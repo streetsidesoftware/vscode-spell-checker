@@ -154,8 +154,9 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     value: CSpellUserSettings[K],
     configTarget: ConfigTarget,
 ): Thenable<void> {
-    const target = extractTarget(configTarget);
-    const uri = extractTargetUri(configTarget);
+    const nTarget = normalizeTarget(configTarget);
+    const target = extractTarget(nTarget);
+    const uri = extractTargetUri(nTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
     return config.update(section, value, target);
@@ -175,6 +176,10 @@ function toAny(value: any): any {
 
 export function isGlobalLevelTarget(target: ConfigTarget) {
     return isConfigTargetWithOptionalResource(target) && target.target === Target.Global || target === Target.Global;
+}
+
+export function isWorkspaceLevelTarget(target: ConfigTarget) {
+    return isConfigTargetWithOptionalResource(target) && target.target === Target.Workspace || target === Target.Workspace;
 }
 
 export function isFolderLevelTarget(target: ConfigTarget) {
@@ -285,14 +290,24 @@ export function extractTarget(target: ConfigTarget): Target {
 
 export function extractTargetUri(target: ConfigTarget): Uri | null {
     return isConfigTargetWithResource(target)
-        ? target.uri
+        ? (target.uri || null)
         : null;
 }
 
 export function getConfiguration(uri?: Uri | null) {
-   return fetchConfiguration(uri);
+    return workspace.getConfiguration(undefined, toAny(uri));
 }
 
-function fetchConfiguration(uri?: Uri | null) {
-    return workspace.getConfiguration(undefined, toAny(uri));
+export function normalizeTarget(target: ConfigTarget): ConfigTarget {
+    if (!isConfigTargetWithOptionalResource(target)) {
+        return target;
+    }
+    if (target.target !== Target.WorkspaceFolder) {
+        return target.target;
+    }
+    const uri = normalizeResourceUri(target.uri);
+    if (!uri) {
+        return Target.Workspace;
+    }
+    return { target: target.target, uri };
 }

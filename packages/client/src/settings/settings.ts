@@ -2,6 +2,7 @@ import { performance } from '../util/perf';
 performance.mark('settings.ts');
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import * as CSpellSettings from './CSpellSettings';
+import { splitOutWords } from './CSpellSettings';
 import { workspace, ConfigurationTarget } from 'vscode';
 performance.mark('settings.ts imports 1');
 import * as path from 'path';
@@ -144,7 +145,7 @@ export async function disableLanguage(target: config.ConfigTarget, languageId: s
 
 export function addWordToSettings(target: config.ConfigTarget, word: string) {
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    const addWords = word.split(' ');
+    const addWords = splitOutWords(word);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     return updateSettingInConfig(
         section,
@@ -155,7 +156,7 @@ export function addWordToSettings(target: config.ConfigTarget, word: string) {
 }
 
 export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string) {
-    const addWords = word.split(' ');
+    const addWords = splitOutWords(word);
     return updateSettingInConfig(
         'ignoreWords',
         target,
@@ -167,7 +168,7 @@ export function addIgnoreWordToSettings(target: config.ConfigTarget, word: strin
 export async function removeWordFromSettings(target: config.ConfigTarget, word: string) {
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const toRemove = word.split(' ');
+    const toRemove = splitOutWords(word);
     return updateSettingInConfig(
         section,
         target,
@@ -175,8 +176,6 @@ export async function removeWordFromSettings(target: config.ConfigTarget, word: 
         true
     );
 }
-
-
 
 export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
     const resource = config.isConfigTargetWithResource(target) ? target.uri : null;
@@ -361,7 +360,7 @@ function shouldUpdateCSpell(target: config.ConfigTarget) {
  */
 export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     section: K,
-    target: config.ConfigTarget,
+    configTarget: config.ConfigTarget,
     applyFn: (origValue: CSpellUserSettings[K]) => CSpellUserSettings[K],
     create: boolean,
     updateCSpell: boolean = true,
@@ -370,7 +369,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     interface Result {
         value: CSpellUserSettings[K] | undefined;
     }
-
+    const target = config.normalizeTarget(configTarget);
     const scope = config.configTargetToScope(target);
     const orig = config.findScopedSettingFromVSConfig(section, scope);
     const uri = config.isConfigTargetWithOptionalResource(target) && target.uri || undefined;
