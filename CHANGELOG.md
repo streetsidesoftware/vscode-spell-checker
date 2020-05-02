@@ -40,7 +40,7 @@
 
 ### Features
 
-* Support `${workspaceFolder}` substituion ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
+* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
 
 
 
@@ -322,6 +322,3 @@
 
 
 # 0.10.0 (2016-06-18)
-
-
-
