@@ -1,4 +1,9 @@
-# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.2...v) (2020-02-23)
+# [](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v) (2020-05-02)
+
+
+
+# [1.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.2...v1.8.0) (2020-02-23)
+
 
 
 # [1.8.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.1...v1.8.0-alpha.2) (2020-02-23)
@@ -35,7 +40,7 @@
 
 ### Features
 
-* Support `${workspaceFolder}` substitution ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
+* Support `${workspaceFolder}` substituion ([6d1dfbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6d1dfbcb007875100adb897447bf1690e90ef1f1))
 
 
 
@@ -317,3 +322,6 @@
 
 
 # 0.10.0 (2016-06-18)
+
+
+
