@@ -47,12 +47,12 @@
                 },
                 {
                     "command": "cSpell.addWordToWorkspaceDictionary",
-                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
                     "group": "A_cspell"
                 },
                 {
-                    "command": "cSpell.addWordToDictionary",
-                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
+                    "command": "cSpell.addWordToFolderDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
                     "group": "A_cspell"
                 },
                 {
@@ -65,10 +65,10 @@
         "commands": [
             {
                 "command": "cSpell.addWordToWorkspaceDictionary",
-                "title": "Add Word to Workspace Dictionary"
+                "title": "Add Word to Workspace Dictionaries"
             },
             {
-                "command": "cSpell.addWordToDictionary",
+                "command": "cSpell.addWordToFolderDictionary",
                 "title": "Add Word to Folder Dictionary"
             },
             {
@@ -82,6 +82,14 @@
             {
                 "command": "cSpell.disableForWorkspace",
                 "title": "Disable Spell Checking For Workspace"
+            },
+            {
+                "command": "cSpell.enableForGlobal",
+                "title": "Enable Spell Checking by Default"
+            },
+            {
+                "command": "cSpell.disableForGlobal",
+                "title": "Disable Spell Checking by Default"
             },
             {
                 "command": "cSpell.enableCurrentLanguage",
@@ -105,7 +113,7 @@
             },
             {
                 "command": "cSpell.removeWordFromWorkspaceDictionary",
-                "title": "Remove Words from the Workspace Dictionary"
+                "title": "Remove Words from the Workspace Dictionaries"
             },
             {
                 "command": "cSpell.removeWordFromUserDictionary",
