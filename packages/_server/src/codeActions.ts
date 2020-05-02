@@ -69,8 +69,8 @@ export function onCodeActionHandler(
             return [];
         }
         const folders = await documentSettings.folders;
-        const showAddToWorkspace = folders && folders.length > 1;
-        const showAddToFolder = folders && folders.length > 0;
+        const showAddToWorkspace = folders && folders.length > 0;
+        const showAddToFolder = folders && folders.length > 1;
 
         function replaceText(range: LangServer.Range, text?: string) {
             return LangServer.TextEdit.replace(range, text || '');
