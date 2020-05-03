@@ -14,7 +14,6 @@
     "lerna-prerelease": "lerna version --conventional-commits --conventional-prerelease",
     "lerna-release": "lerna version --conventional-commits --conventional-graduate",
     "lint": "lerna run lint",
-    "version": "npm run changelog",
     "test-client-integration": "cd packages/_integrationTests && npm test",
     "test": "lerna run --ignore \"*integration*\" test"
   },
