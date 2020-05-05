@@ -8,7 +8,24 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 **Note:** Version bump only for package code-spell-checker
 
 
+## Adding to Dictionary
 
+### Editor Context Menu (right-click)
+
+The menu options in the Context Menu change based upon the workspace configuration.
+They are made visible by the setting: `cSpell.showCommandsInEditorContextMenu`
+
+1. `Add Word to Folder Dictionary` -- shows only if a workspace with more than one folder is open
+1. `Add Word to Workspace Dictionary` -- shows if a folder or workspace is open
+1. `Add Word to User Dictionary` -- always shows, add the word to the User's dictionary
+
+## Commands
+These can be bound to keyboard shortcuts.
+
+1. `Enable Spell Checking by Default` - enables the spell checker if it has been disabled.
+    * Command: `cSpell.enableForGlobal`
+1. `Disable Spell Checker by Default` - disables the spell checker.
+    * Command: `cSpell.disableForGlobal`
 
 
 # [1.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.2...v1.8.0) (2020-02-23)
