@@ -41,24 +41,24 @@
         "menus": {
             "editor/context": [
                 {
-                    "command": "cSpell.addWordToUserDictionary",
-                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
-                    "group": "A_cspell"
+                    "command": "cSpell.addWordToFolderDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
+                    "group": "A_cspell@1"
                 },
                 {
                     "command": "cSpell.addWordToWorkspaceDictionary",
                     "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
-                    "group": "A_cspell"
+                    "group": "A_cspell@2"
                 },
                 {
-                    "command": "cSpell.addWordToFolderDictionary",
-                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
-                    "group": "A_cspell"
+                    "command": "cSpell.addWordToUserDictionary",
+                    "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
+                    "group": "A_cspell@3"
                 },
                 {
                     "command": "cSpell.addIgnoreWord",
                     "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
-                    "group": "A_cspell"
+                    "group": "A_cspell@9"
                 }
             ]
         },
