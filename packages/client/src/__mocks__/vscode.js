@@ -1,5 +1,9 @@
 // __mocks__/vscode.js
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const vscodeUri =  require('vscode-uri');
+jest.mock('vscode-uri');
+
 const languages = {
     createDiagnosticCollection: jest.fn()
   };
@@ -26,10 +30,7 @@ const languages = {
     Left: null
   };
 
-  const Uri = {
-    file: f => f,
-    parse: jest.fn()
-  };
+  const Uri = vscodeUri.URI;
   const Range = jest.fn();
   const Diagnostic = jest.fn();
   const DiagnosticSeverity = { Error: 0, Warning: 1, Information: 2, Hint: 3 };

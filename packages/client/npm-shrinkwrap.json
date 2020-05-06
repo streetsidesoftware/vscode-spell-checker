@@ -1,6 +1,6 @@
 {
     "name": "code-spell-checker",
-    "version": "1.8.0",
+    "version": "1.8.1-alpha.0",
     "lockfileVersion": 1,
     "requires": true,
     "dependencies": {
@@ -8639,6 +8639,12 @@
             "version": "3.15.1",
             "resolved": "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.15.1.tgz",
             "integrity": "sha512-+a9MPUQrNGRrGU630OGbYVQ+11iOIovjCkqxajPa9w57Sd5ruK8WQNsslzpa0x/QJqC8kRc2DUxWjIFwoNm4ZQ=="
+        },
+        "vscode-uri": {
+            "version": "2.1.1",
+            "resolved": "https://registry.npmjs.org/vscode-uri/-/vscode-uri-2.1.1.tgz",
+            "integrity": "sha512-eY9jmGoEnVf8VE8xr5znSah7Qt1P/xsCdErz+g8HYZtJ7bZqKH5E3d+6oVNm1AC/c6IHUDokbmVXKOi4qPAC9A==",
+            "dev": true
         },
         "w3c-hr-time": {
             "version": "1.0.2",
