@@ -1,11 +1,13 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
+import { resolveTarget, determineSettingsPath } from './settings';
 
 import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range } from 'vscode';
 import {
     TextEdit, LanguageClient,
 } from 'vscode-languageclient';
 import { SpellCheckerSettingsProperties } from './server';
+import * as di from './di';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -78,11 +80,8 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
     return addWordToTarget(word, Settings.Target.Global, undefined);
 }
 
-async function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
-    const actualTarget = resolveTarget(target, uri);
-    await Settings.addWordToSettings(actualTarget, word);
-    const paths = await determineSettingsPath(actualTarget, uri);
-    await Promise.all(paths.map(path => CSpellSettings.addWordToSettingsAndUpdate(path, word)));
+function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    return di.dependencies.dictionaryHelper.addWordToTarget(word, target, uri);
 }
 
 export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
@@ -111,34 +110,6 @@ async function removeWordFromTarget(word: string, target: Settings.Target, uri: 
     await Promise.all(paths.map(path => CSpellSettings.removeWordFromSettingsAndUpdate(path, word)));
 }
 
-async function determineSettingsPath(
-    target: Settings.ConfigTarget,
-    uri: string | null | Uri | undefined
-): Promise<string[]> {
-    if (Settings.isGlobalLevelTarget(target)) {
-        return [];
-    }
-    if (Settings.isWorkspaceLevelTarget(target)) {
-        return Settings.findSettingsFiles().then(uris => uris?.map(uri => uri.fsPath));
-    }
-    const useUri = uri ? pathToUri(uri) : undefined;
-    const path = await Settings.findExistingSettingsFileLocation(useUri);
-    return path ? [path] : [];
-}
-
-function resolveTarget(target: Settings.Target, uri?: string | null | Uri): Settings.ConfigTarget {
-    if (target === Settings.Target.Global || !Settings.hasWorkspaceLocation()) {
-        return Settings.Target.Global;
-    }
-
-    if (!uri) {
-        return Settings.Target.Workspace;
-    }
-
-    const resolvedUri = pathToUri(uri);
-    return Settings.createTargetForUri(target, resolvedUri);
-}
-
 export function enableLanguageId(languageId: string, uri?: string): Promise<void> {
     return Settings.enableLanguageIdForClosestTarget(languageId, true, uri ? Uri.parse(uri) : undefined);
 }
@@ -160,11 +131,4 @@ export function userCommandOnCurrentSelectionOrPrompt(
             ? fnAction(value, document && document.uri)
             : window.showInputBox({prompt, value}).then(word => { word && fnAction(word, document && document.uri); });
     };
-}
-
-function pathToUri(uri: string | Uri): Uri {
-    if (uri instanceof Uri) {
-        return uri;
-    }
-    return Uri.parse(uri);
 }

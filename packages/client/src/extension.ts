@@ -11,6 +11,9 @@ import {CSpellClient} from './client';
 performance.mark('import 5');
 
 import { ExtensionContext } from 'vscode';
+
+import * as di from './di';
+
 performance.mark('import 6');
 import * as vscode from 'vscode';
 performance.mark('import 7');
@@ -26,16 +29,23 @@ performance.mark('import 10');
 import * as settingsViewer from './infoViewer/infoView';
 import { ExtensionApi } from './extensionApi';
 
+import * as modules from './modules';
+
 performance.mark('cspell_done_import');
+
+modules.init();
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
 
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(path.join('server', 'server.js'));
-
     // Get the cSpell Client
     const client = await CSpellClient.create(serverModule);
+
+    di.set('client', client);
+    di.set('extensionContext', context);
+
     // Start the client.
     const clientDispose = client.start();
 
@@ -174,4 +184,5 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     performance.measure('cspell_activation', 'cspell_activate_start', 'cspell_activate_end');
     return server;
 }
+
 performance.mark('cspell_done_load');
