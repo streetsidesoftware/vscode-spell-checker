@@ -1,6 +1,7 @@
 // Export the cspell settings to the client.
 
 import * as cspell from 'cspell-lib';
+import { DictionaryId, FsPath } from 'cspell-lib';
 export { LanguageSetting, DictionaryDefinition } from 'cspell-lib';
 
 export interface SpellCheckerSettings {
@@ -95,6 +96,93 @@ export interface SpellCheckerSettings {
      * ```
      */
     workspaceRootPath?: string;
+
+    /**
+     * @title Custom User Dictionaries
+     * @scope application
+     * @markdownDescription
+     * Define custom dictionaries to be included by default for the user.
+     * If `addWords` is `true` words will be added to this dictionary.
+     */
+    customUserDictionaries?: CustomDictionary[];
+
+    /**
+     * @title Custom Workspace Dictionaries
+     * @scope resource
+     * @markdownDescription
+     * Define custom dictionaries to be included by default for the workspace.
+     * If `addWords` is `true` words will be added to this dictionary.
+     */
+    customWorkspaceDictionaries?: CustomDictionary[];
+
+    /**
+     * @title Custom Folder Dictionaries
+     * @scope resource
+     * @markdownDescription
+     * Define custom dictionaries to be included by default for the folder.
+     * If `addWords` is `true` words will be added to this dictionary.
+     */
+    customFolderDictionaries?: CustomDictionary[];
+}
+
+export interface CustomDictionary {
+    /**
+     * @title Name of Dictionary
+     * @markdownDescription
+     * The reference name of the dictionary.
+     * example: `My Words` or `custom`
+     * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+     * If you use: `typescript` it will replace the built-in TypeScript dictionary.
+     */
+    name: DictionaryId;
+
+    /**
+     * @title Description of the Dictionary
+     * @markdownDescription
+     * Optional: A human readable description.
+     */
+    description?: string;
+
+    /**
+     * @title Path to Dictionary Text File
+     * @markdownDescription
+     * Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.
+     * Case is preserved while leading and trailing space is removed.
+     *
+     * The path should be absolute, or relative to the workspace.
+     *
+     * Example: relative to User's folder
+     * ```
+     * ~/dictionaries/custom_dictionary.txt
+     * ```
+     *
+     * Example: relative to the `client` folder in a multi-root workspace
+     * ```
+     * ${workspaceFolder:client}/build/custom_dictionary.txt
+     * ```
+     *
+     * Example: relative to the current workspace folder in a single-root workspace
+     * Note - this might no as expected in a multi-root workspace since it is based upon the relative
+     * workspace for the currently open file.
+     * ```
+     * ${workspaceFolder}/build/custom_dictionary.txt
+     * ```
+     *
+     * Example: relative to the workspace folder in a single-root workspace or the first folder in
+     * a multi-root workspace
+     * ```
+     * ./build/custom_dictionary.txt
+     * ```
+     */
+    path: FsPath;
+
+    /**
+     * @title Add Words to Dictionary
+     * @markdownDescription
+     * Indicate if this custom dictionary should be used to store added words.
+     * @default false
+     */
+    addWords?: boolean;
 }
 
 export interface CSpellUserSettingsWithComments extends cspell.CSpellUserSettingsWithComments, SpellCheckerSettings {}
