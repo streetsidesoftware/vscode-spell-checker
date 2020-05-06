@@ -4,7 +4,8 @@ import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
 import * as cspell from 'cspell-lib';
-import { Pattern, CSpellUserSettings } from 'cspell-lib';
+import { Pattern } from 'cspell-lib';
+import { CSpellUserSettings } from './cspellConfig';
 import * as os from 'os';
 
 jest.mock('vscode-languageserver');
@@ -43,6 +44,40 @@ const cspellConfigInVsCode: CSpellUserSettings = {
         'php',
         'json',
         'jsonc'
+    ]
+};
+
+const cspellConfigCustomUserDictionary: CSpellUserSettings = {
+    customUserDictionaries: [
+        {
+            name: 'Global Dictionary',
+            path: '~/words.txt',
+            addWords: true,
+        }
+    ]
+};
+
+const cspellConfigCustomWorkspaceDictionary: CSpellUserSettings = {
+    customWorkspaceDictionaries: [
+        {
+            name: 'Workspace Dictionary',
+            path: '${workspaceFolder:Server}/sampleSourceFiles/words.txt',
+            addWords: true,
+        }
+    ]
+};
+
+const cspellConfigCustomFolderDictionary: CSpellUserSettings = {
+    customFolderDictionaries: [
+        {
+            name: 'Folder Dictionary',
+            path: './packages/_server/words.txt',
+            addWords: true,
+        },
+        {
+            name: 'Folder Dictionary 2',
+            path: '${workspaceFolder}/words2.txt',
+        },
     ]
 };
 
@@ -277,6 +312,7 @@ describe('Validate workspace substitution resolver', () => {
             '${workspaceFolder:Server}/cspell.json',
             '${workspaceFolder:Root}/cspell.json',
             '${workspaceFolder:Failed}/cspell.json',
+            'path/${workspaceFolder:Client}/cspell.json',
         ]
     });
 
@@ -332,6 +368,7 @@ describe('Validate workspace substitution resolver', () => {
             `${serverUri.fsPath}/cspell.json`,
             `${rootUri.fsPath}/cspell.json`,
             '${workspaceFolder:Failed}/cspell.json',
+            'path/${workspaceFolder:Client}/cspell.json',
         ]);
     });
 
@@ -386,6 +423,34 @@ describe('Validate workspace substitution resolver', () => {
             '/node_modules/**',
             `${serverUri.path}/samples/**`,
             '/test/**/*.json',
+        ]);
+    });
+
+    test('resolve custom dictionaries', () => {
+        const settings: CSpellUserSettings = {
+            ...cspellConfigInVsCode,
+            ...settingsDictionaryDefinitions,
+            ...cspellConfigCustomFolderDictionary,
+            ...cspellConfigCustomUserDictionary,
+            ...cspellConfigCustomWorkspaceDictionary,
+            dictionaries: [ 'typescript' ],
+        }
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const result = debugExports.resolveSettings(settings, resolver);
+        expect(result.dictionaries).toEqual([
+            'Global Dictionary',
+            'Workspace Dictionary',
+            'Folder Dictionary',
+            'Folder Dictionary 2',
+            'typescript',
+        ]);
+        expect(result.dictionaryDefinitions?.map(d => d.name)).toEqual([
+            'Global Dictionary',
+            'My Dictionary',
+            'Company Dictionary',
+            'Workspace Dictionary',
+            'Folder Dictionary',
+            'Folder Dictionary 2',
         ]);
     });
 });

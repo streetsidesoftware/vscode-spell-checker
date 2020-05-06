@@ -6,14 +6,15 @@ import {
     Glob,
     RegExpPatternDefinition,
     Pattern,
-    CSpellSettings,
     BaseSetting,
+    DictionaryDefinition,
+    DictionaryFileTypes,
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 
 import * as CSpell from 'cspell-lib';
-import { CSpellUserSettings } from './cspellConfig';
+import { CSpellUserSettings, CustomDictionary } from './cspellConfig';
 import { URI as Uri } from 'vscode-uri';
 import { log, logError } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
@@ -22,6 +23,8 @@ import * as os from 'os';
 import { WorkspaceFolder } from 'vscode-languageserver';
 
 const cSpellSection: keyof SettingsCspell = 'cSpell';
+
+const defaultDictionaryType: DictionaryFileTypes = 'S';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell {
@@ -394,13 +397,13 @@ function createWorkspaceNamesGlobPathResolver(folder: WorkspaceFolder, folders: 
         return p;
     }
 
-    return createWorkspaceNameToPathResolver(
+    return createWorkspaceNameToGlobResolver(
         normalizeToRoot(rootFolder),
         folders.map(toFolderPath).map(normalizeToRoot)
     );
 }
 
-function createWorkspaceNameToPathResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
+function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
     const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]]
     .concat(folders.map(folder =>
         [ `\${workspaceFolder:${folder.name}}`, folder.path]
@@ -408,29 +411,43 @@ function createWorkspaceNameToPathResolver(folder: FolderPath, folders: FolderPa
     const map = new Map(folderPairs);
     const regEx = /\$\{workspaceFolder(?:[^}]*)\}/gi;
 
+    function replacer(match: string): string {
+        const r = map.get(match);
+        if (r !== undefined) return r;
+        logError(`Failed to resolve ${match}`);
+        return match;
+    }
+
     return (path: string) => {
-        const matches = path.match(regEx);
-        if (!matches) {
-            return path;
-        }
-        const parts = path.split(regEx);
-        const resultParts = [];
-        let i = 0;
-        for (i = 0; i < matches.length; ++i) {
-            const m = matches[i];
-            const v = map.get(m);
-            if (v === undefined) {
-                logError(`Failed to resolve ${m}`);
-            }
-            resultParts.push(parts[i]);
-            resultParts.push(v ?? m);
-        }
-        resultParts.push(parts[i]);
-        return resultParts.join('');
+        return path.replace(regEx, replacer);
     };
 }
 
-function resolveSettings<T extends CSpellSettings>(
+function createWorkspaceNameToPathResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
+    const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]]
+    .concat([
+        ['.', folders[0]?.path || folder.path],
+        ['~', os.homedir()],
+    ])
+    .concat(folders.map(folder =>
+        [ `\${workspaceFolder:${folder.name}}`, folder.path]
+    ));
+    const map = new Map(folderPairs);
+    const regEx = /^(?:\.|~|\$\{workspaceFolder(?:[^}]*)\})/i;
+
+    function replacer(match: string): string {
+        const r = map.get(match);
+        if (r) return r;
+        logError(`Failed to resolve ${match}`);
+        return match;
+    }
+
+    return (path: string) => {
+        return path.replace(regEx, replacer);
+    };
+}
+
+function resolveSettings<T extends CSpellUserSettings>(
     settings: T,
     resolver: WorkspacePathResolver
 ): T {
@@ -439,14 +456,40 @@ function resolveSettings<T extends CSpellSettings>(
     // - dictionary definitions (also nested in language settings)
     // - globs (ignorePaths and Override filenames)
     // - override dictionaries
+    // - custom dictionaries
     // There is a more elegant way of doing this, but for now just change each section.
-    const newSettings = {...resolveCoreSettings(settings, resolver)};
+    const newSettings = resolveCoreSettings(settings, resolver);
     newSettings.import = resolveImportsToWorkspace(newSettings.import, resolver);
     newSettings.overrides = resolveOverrides(newSettings.overrides, resolver);
+
+    function setOptions(defs: DictionaryDefinition[] | undefined): DictionaryDefinition[] {
+        if (!defs) return [];
+        return defs.map(def => ({type: defaultDictionaryType, ...def}))
+    }
+
+    // Merge custom dictionaries
+    const dictionaryDefinitions: DictionaryDefinition[] = setOptions(([] as DictionaryDefinition[]).concat(
+        newSettings.customUserDictionaries || [],
+        newSettings.dictionaryDefinitions || [],
+        newSettings.customWorkspaceDictionaries || [],
+        newSettings.customFolderDictionaries || [],
+    ));
+    newSettings.dictionaryDefinitions = dictionaryDefinitions.length ? dictionaryDefinitions : undefined;
+
+    // By default all custom dictionaries are enabled
+    const names = (a: CustomDictionary[] | undefined) => a ? a.map(d => d.name) : [];
+    const dictionaries: string[] = ([] as string[]).concat(
+        names(newSettings.customUserDictionaries),
+        names(newSettings.customWorkspaceDictionaries),
+        names(newSettings.customFolderDictionaries),
+        newSettings.dictionaries || [],
+    );
+    newSettings.dictionaries = dictionaries.length ? dictionaries : undefined;
+
     return shallowCleanObject(newSettings);
 }
 
-function resolveCoreSettings<T extends CSpellSettings>(
+function resolveCoreSettings<T extends CSpellUserSettings>(
     settings: T,
     resolver: WorkspacePathResolver
 ): T {
@@ -455,9 +498,9 @@ function resolveCoreSettings<T extends CSpellSettings>(
     // - dictionary definitions (also nested in language settings)
     // - globs (ignorePaths and Override filenames)
     // - override dictionaries
-    const newSettings: CSpellUserSettings = {...resolveBaseSettings(settings, resolver)};
+    const newSettings: CSpellUserSettings = resolveCustomAndBaseSettings(settings, resolver);
     // There is a more elegant way of doing this, but for now just change each section.
-    newSettings.dictionaryDefinitions = resolveDictionaryDefinitions(newSettings.dictionaryDefinitions, resolver);
+    newSettings.dictionaryDefinitions = resolveDictionaryPathReferences(newSettings.dictionaryDefinitions, resolver);
     newSettings.languageSettings = resolveLanguageSettings(newSettings.languageSettings, resolver);
     newSettings.ignorePaths = resolveGlobArray(newSettings.ignorePaths, resolver.resolveGlob);
     newSettings.workspaceRootPath = newSettings.workspaceRootPath ? resolver.resolveFile(newSettings.workspaceRootPath) : undefined;
@@ -469,8 +512,19 @@ function resolveBaseSettings<T extends BaseSetting>(
     resolver: WorkspacePathResolver
 ): T {
     const newSettings = {...settings};
-    newSettings.dictionaryDefinitions = resolveDictionaryDefinitions(newSettings.dictionaryDefinitions, resolver);
+    newSettings.dictionaryDefinitions = resolveDictionaryPathReferences(newSettings.dictionaryDefinitions, resolver);
     return shallowCleanObject(newSettings);
+}
+
+function resolveCustomAndBaseSettings<T extends CSpellUserSettings>(
+    settings: T,
+    resolver: WorkspacePathResolver
+): T {
+    const newSettings = resolveBaseSettings(settings, resolver);
+    newSettings.customUserDictionaries = resolveDictionaryPathReferences(newSettings.customUserDictionaries, resolver);
+    newSettings.customWorkspaceDictionaries = resolveDictionaryPathReferences(newSettings.customWorkspaceDictionaries, resolver);
+    newSettings.customFolderDictionaries = resolveDictionaryPathReferences(newSettings.customFolderDictionaries, resolver);
+    return newSettings;
 }
 
 function resolveImportsToWorkspace(
@@ -487,10 +541,14 @@ function resolveGlobArray(globs: string[] | undefined, resolver: WorkspacePathRe
     return globs.map(resolver);
 }
 
-function resolveDictionaryDefinitions(
-    dictDefs: CSpellUserSettings['dictionaryDefinitions'],
+interface PathRef {
+    path?: string | undefined;
+}
+
+function resolveDictionaryPathReferences<T extends PathRef>(
+    dictDefs: T[] | undefined,
     resolver: WorkspacePathResolver
-): CSpellUserSettings['dictionaryDefinitions'] {
+): T[] | undefined {
     if (!dictDefs) return dictDefs;
 
     return dictDefs
