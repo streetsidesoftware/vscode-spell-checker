@@ -67,11 +67,11 @@ export class DictionaryHelper {
 
     async addWordsToCustomDictionary(words: string[], dict: CustomDictionary): Promise<void> {
         try {
-            const data = await fs.readFile(dict.path, defaultEncoding);
+            const data = await fs.readFile(dict.path, defaultEncoding).catch(() => '');
             const lines = unique(data.split(/\r?\n/g).concat(words)).filter(a => !!a).sort();
             return fs.writeFile(dict.path, lines.join('\n')+'\n');
         } catch (e) {
-            Promise.reject(new Error(`Failed to add words to ${dict.name}[${dict.path}]`));
+            return Promise.reject(new Error(`Failed to add words to "${dict.name}" [${dict.path}]`));
         }
     }
 }
