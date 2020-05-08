@@ -387,8 +387,8 @@ describe('Validate workspace substitution resolver', () => {
         const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
         const result = debugExports.resolveSettings(settingsDictionaryDefinitions, resolver);
         expect(result.dictionaryDefinitions).toEqual([
-            { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-            { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            expect.objectContaining({ name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`}),
+            expect.objectContaining({ name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`}),
         ]);
     });
 
