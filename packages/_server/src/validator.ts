@@ -4,7 +4,7 @@ import {
 import { validateText } from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import { Sequence, genSequence } from 'gensequence';
-export {validateText} from 'cspell-lib';
+export { validateText } from 'cspell-lib';
 
 export const diagnosticCollectionName = 'cSpell';
 export const diagSource = diagnosticCollectionName;
@@ -46,4 +46,3 @@ export async function validateTextDocumentAsync(textDocument: TextDocument, opti
         }));
     return diags;
 }
-

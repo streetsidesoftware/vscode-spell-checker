@@ -20,7 +20,7 @@ import { Text } from 'cspell-lib';
 
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
-import { getDefaultSettings } from 'cspell-lib';
+import { getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import * as Api from './api';
 import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed, correctBadSettings } from './documentSettings';
 import {
@@ -58,6 +58,7 @@ const defaultSettings: CSpellUserSettings = {
     enabled: false,
 };
 const defaultDebounce = 50;
+const dictionaryRefreshRate = 1000;
 
 function run() {
     // debounce buffer
@@ -131,6 +132,7 @@ function run() {
     }
 
     function getActiveUriSettings(uri?: string) {
+        refreshDictionaryCache(dictionaryRefreshRate);
         return documentSettings.getUriSettings(uri);
     }
 

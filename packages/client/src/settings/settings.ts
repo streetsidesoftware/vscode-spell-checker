@@ -406,4 +406,40 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     return !!configResult;
 }
 
+export function resolveTarget(target: config.Target, uri?: string | null | Uri): config.ConfigTarget {
+    if (target === config.Target.Global || !hasWorkspaceLocation()) {
+        return config.Target.Global;
+    }
+
+    if (!uri) {
+        return config.Target.Workspace;
+    }
+
+    const resolvedUri = pathToUri(uri);
+    return config.createTargetForUri(target, resolvedUri);
+}
+
+export function pathToUri(uri: string | Uri): Uri {
+    if (uri instanceof Uri) {
+        return uri;
+    }
+    return Uri.parse(uri);
+}
+
+export async function determineSettingsPath(
+    target: config.ConfigTarget,
+    uri: string | null | Uri | undefined
+): Promise<string[]> {
+    if (config.isGlobalLevelTarget(target)) {
+        return [];
+    }
+    if (config.isWorkspaceLevelTarget(target)) {
+        return findSettingsFiles().then(uris => uris?.map(uri => uri.fsPath));
+    }
+    const useUri = uri ? pathToUri(uri) : undefined;
+    const path = await findExistingSettingsFileLocation(useUri);
+    return path ? [path] : [];
+}
+
+
 performance.mark('settings.ts done');

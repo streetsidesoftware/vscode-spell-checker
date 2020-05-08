@@ -120,21 +120,16 @@ export class CSpellClient {
 
     public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
         if (!document) {
-            return (await this.sendRequest(methodNames.getConfigurationForDocument, {}));
+            return this.sendRequest(methodNames.getConfigurationForDocument, {});
         }
 
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return (await this.sendRequest(methodNames.getConfigurationForDocument, {}));
+            return this.sendRequest(methodNames.getConfigurationForDocument, {});
         }
 
-        const result = await this.sendRequest(
-            methodNames.getConfigurationForDocument,
-            { uri: uri.toString(), languageId }
-        );
-
-        return result;
+        return this.sendRequest(methodNames.getConfigurationForDocument, { uri: uri.toString(), languageId });
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
