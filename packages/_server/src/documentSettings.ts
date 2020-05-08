@@ -80,15 +80,9 @@ export class DocumentSettings {
         return this.getUriSettings(document.uri);
     }
 
-    async _getUriSettings(uri: string): Promise<CSpellUserSettings> {
+    _getUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('getUriSettings:', uri);
-        const r = uri
-            ? await this.fetchUriSettings(uri)
-            : applyEnableFiletypes(
-                extractEnableFiletypes(this.defaultSettings, this.importedSettings()),
-                CSpell.mergeSettings(this.defaultSettings, this.importedSettings())
-            );
-        return r;
+        return this.fetchUriSettings(uri || '');
     }
 
     async isExcluded(uri: string): Promise<boolean> {
