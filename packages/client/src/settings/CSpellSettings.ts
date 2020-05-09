@@ -6,8 +6,6 @@ import { unique, uniqueFilter } from '../util';
 
 const currentSettingsFileVersion = '0.1';
 
-export const sectionCSpell = 'cSpell';
-
 export const defaultFileName = 'cSpell.json';
 
 export interface CSpellSettings extends CSpellUserSettingsWithComments {
