@@ -459,7 +459,7 @@ describe('Validate workspace substitution resolver', () => {
             }),
             expect.objectContaining({
                 name: 'Folder Dictionary 2',
-                path: '/path to root/root/client/words2.txt',
+                path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]words2\.txt$/),
             }),
         ]));
     });
