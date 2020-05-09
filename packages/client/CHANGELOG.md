@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.9.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.1-alpha.0...v1.9.0-alpha.0) (2020-05-09)
+# [1.9.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v1.9.0-alpha.0) (2020-05-09)
 
 
 ### Bug Fixes
@@ -15,16 +15,88 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * Custom Dictionaries ([#482](https://github.com/streetsidesoftware/vscode-spell-checker/issues/482)) ([075ec87](https://github.com/streetsidesoftware/vscode-spell-checker/commit/075ec875fab13a6912529c067c0f85e2ba3f5e67))
 
+## Defining the workspace root path
+
+* `workspaceRootPath` - By default, the workspace root path matches the first folder listed in the
+  workspace. If a `cspell.json` exists at the workspace root, it will be used and merged with any folder level
+  `cspell.json` files found.
+
+Note: the reason behind this change was to make the behaviour in multi-root workspace more predictable.
+
+### Example
+``` jsonc
+"cSpell.workspaceRootPath": "${workspaceFolder:client}/.."
+```
+
+## Custom Dictionaries
+
+It is now possible to tell the extension to use custom dictionaries. Three new configuration settings have been added.
+* `customUserDictionaries` - for defining custom user level dictionaries
+* `customWorkspaceDictionaries` - for defining custom workspace level dictionaries
+* `customFolderDictionaries` - for defining custom folder level dictionaries
+
+### User Example
+``` jsonc
+"cSpell.customUserDictionaries": [
+  {
+    "name": "my words",     // name of dictionary (should be unique)
+    "description": "These are the words I use in all projects.",
+    "path": "~/custom-words.txt",
+    "addWords": true        // Add Word to User Dictionary will add words to this file.
+  },
+  {
+    "name": "company terms",
+    "description": "These are terms used by my company.",
+    "path": "~/gist/company-terms/company-terms.txt",
+    "addWords": false        // Do not add to the company terms.
+  }
+]
+```
+
+### Workspace Example:
+``` jsonc
+"cSpell.customWorkspaceDictionaries": [
+  {
+    "name": "project words",  // name of dictionary (should be unique)
+    "description": "These are words for this project.",
+    // Relative to the "client" folder in the workspace.
+    "path": "${workspaceFolder:client}/project-words.txt",
+    "addWords": true          // Add Word to Workspace Dictionary will add words to this file.
+  }
+]
+```
+
+### Folder Example:
+``` jsonc
+"cSpell.customFolderDictionaries": [
+  {
+    "name": "folder words",   // name of dictionary (should be unique)
+    "description": "These are words for this project.",
+    // Relative to the current folder in the workspace.
+    "path": "${workspaceFolder}/folder-words.txt",
+    "addWords": false         // Do NOT add to folder words.
+  },
+  {
+    "name": "project words",  // name of dictionary (should be unique)
+    "description": "These are words for this project.",
+    // Relative to the "client" folder in the workspace.
+    "path": "${workspaceFolder:client}/project-words.txt",
+    "addWords": true          // Add Word to Workspace Dictionary when adding folder words.
+  }
+]
+```
+
+### Custom Dictionary Paths
+
+Dictionary paths can be absolute or relative based upon the following patterns:
+
+* `~` - relative to the user home directory
+* `.` - relative to the `workspaceRootPath`
+* `${workspaceFolder}` - relative to current workspace folder
+* `${workspaceFolder:[folder name]}` - `[folder name]` is one of the folders in the workspace.
 
 
-
-
-## [1.8.1-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v1.8.1-alpha.0) (2020-05-02)
-
-**Note:** Version bump only for package code-spell-checker
-
-
-## Adding to Dictionary
+## Adding words to Dictionaries
 
 ### Editor Context Menu (right-click)
 
@@ -44,7 +116,7 @@ These can be bound to keyboard shortcuts.
     * Command: `cSpell.disableForGlobal`
 
 
-# [1.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.2...v1.8.0) (2020-02-23)
+# [1.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.7.24...v1.8.0) (2020-02-23)
 
 Performance enhancements and a few features.
 
@@ -95,9 +167,6 @@ for a multiroot with folders `client`, `server`, `common`, it is possible to spe
 ### Bugs
 
 Fixes [can't enable and disable without reloading window · Issue #384](https://github.com/streetsidesoftware/vscode-spell-checker/issues/384)
-
-
-# [1.8.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0-alpha.1...v1.8.0-alpha.2) (2020-02-23)
 
 ### Features
 

@@ -359,7 +359,7 @@ describe('Validate workspace substitution resolver', () => {
     };
 
     test('resolveSettings Imports', () => {
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = debugExports.resolveSettings(settingsImports, resolver);
         expect(result.import).toEqual([
             'cspell.json',
@@ -373,7 +373,7 @@ describe('Validate workspace substitution resolver', () => {
     });
 
     test('resolveSettings ignorePaths', () => {
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaceFolders.client, workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaceFolders.client, workspaces, undefined);
         const result = debugExports.resolveSettings(settingsIgnorePaths, resolver);
         expect(result.ignorePaths).toEqual([
             '**/node_modules/**',
@@ -384,7 +384,7 @@ describe('Validate workspace substitution resolver', () => {
     });
 
     test('resolveSettings dictionaryDefinitions', () => {
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = debugExports.resolveSettings(settingsDictionaryDefinitions, resolver);
         expect(result.dictionaryDefinitions).toEqual([
             expect.objectContaining({ name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`}),
@@ -393,7 +393,7 @@ describe('Validate workspace substitution resolver', () => {
     });
 
     test('resolveSettings languageSettings', () => {
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = debugExports.resolveSettings(settingsLanguageSettings, resolver);
         expect(result?.languageSettings?.[0]).toEqual({
             languageId: 'typescript',
@@ -405,7 +405,7 @@ describe('Validate workspace substitution resolver', () => {
     });
 
     test('resolveSettings overrides', () => {
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = debugExports.resolveSettings(settingsOverride, resolver);
         expect(result?.overrides?.[0]?.languageSettings?.[0]).toEqual({
             languageId: 'typescript',
@@ -435,7 +435,7 @@ describe('Validate workspace substitution resolver', () => {
             ...cspellConfigCustomWorkspaceDictionary,
             dictionaries: [ 'typescript' ],
         }
-        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces);
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
         const result = debugExports.resolveSettings(settings, resolver);
         expect(result.dictionaries).toEqual([
             'Global Dictionary',
@@ -452,5 +452,15 @@ describe('Validate workspace substitution resolver', () => {
             'Folder Dictionary',
             'Folder Dictionary 2',
         ]);
+        expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Folder Dictionary',
+                path: 'custom root/packages/_server/words.txt',
+            }),
+            expect.objectContaining({
+                name: 'Folder Dictionary 2',
+                path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]words2\.txt$/),
+            }),
+        ]));
     });
 });
