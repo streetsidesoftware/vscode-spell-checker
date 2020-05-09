@@ -156,8 +156,9 @@ function run() {
         const { uri, languageId } = params;
         const fileEnabled = uri ? !await isUriExcluded(uri) : undefined;
         const settings = await getActiveUriSettings(uri);
+        const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
         return {
-            languageEnabled: languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined,
+            languageEnabled,
             fileEnabled,
         };
     }
