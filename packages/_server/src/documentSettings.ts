@@ -198,7 +198,7 @@ export class DocumentSettings {
     private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string): Promise<CSpellUserSettings> {
         const folders = await this.folders;
         const folder = await this.findMatchingFolder(docUri);
-        const resolver = createWorkspaceNamesResolver(folder, folders);
+        const resolver = createWorkspaceNamesResolver(folder, folders, settings.workspaceRootPath);
         return resolveSettings(settings, resolver);
     }
 
@@ -354,14 +354,22 @@ interface FolderPath {
     path: string;
 }
 
-function createWorkspaceNamesResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolver {
+function createWorkspaceNamesResolver(
+    folder: WorkspaceFolder,
+    folders: WorkspaceFolder[],
+    root: string | undefined
+): WorkspacePathResolver {
     return {
-        resolveFile: createWorkspaceNamesFilePathResolver(folder, folders),
+        resolveFile: createWorkspaceNamesFilePathResolver(folder, folders, root),
         resolveGlob: createWorkspaceNamesGlobPathResolver(folder, folders),
     }
 }
 
-function createWorkspaceNamesFilePathResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolverFn {
+function createWorkspaceNamesFilePathResolver(
+    folder: WorkspaceFolder,
+    folders: WorkspaceFolder[],
+    root: string | undefined
+): WorkspacePathResolverFn {
     function toFolderPath(w: WorkspaceFolder): FolderPath {
         return {
             name: w.name,
@@ -370,7 +378,8 @@ function createWorkspaceNamesFilePathResolver(folder: WorkspaceFolder, folders: 
     }
     return createWorkspaceNameToPathResolver(
         toFolderPath(folder),
-        folders.map(toFolderPath)
+        folders.map(toFolderPath),
+        root
     );
 }
 
@@ -417,10 +426,14 @@ function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPa
     };
 }
 
-function createWorkspaceNameToPathResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
+function createWorkspaceNameToPathResolver(
+    folder: FolderPath,
+    folders: FolderPath[],
+    root: string | undefined
+): WorkspacePathResolverFn {
     const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]]
     .concat([
-        ['.', folders[0]?.path || folder.path],
+        ['.', root || folders[0]?.path || folder.path],
         ['~', os.homedir()],
     ])
     .concat(folders.map(folder =>
