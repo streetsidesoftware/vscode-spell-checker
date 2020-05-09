@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import { CSpellClient } from './client';
 import * as infoViewer from './infoViewer';
 import { isSupportedUri, isSupportedDoc } from './util';
-import { sectionCSpell } from './settings/CSpellSettings';
+import { sectionCSpell } from './settings';
 
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient) {

@@ -20,7 +20,7 @@ export function handlerApplyTextEdits(client: LanguageClient) {
                 window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.');
             }
             const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
-            const cfg = workspace.getConfiguration(CSpellSettings.sectionCSpell);
+            const cfg = workspace.getConfiguration(Settings.sectionCSpell);
             if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
                 console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
                 const edit = edits[0];
