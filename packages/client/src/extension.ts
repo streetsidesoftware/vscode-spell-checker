@@ -2,7 +2,7 @@ import { performance, toMilliseconds } from './util/perf';
 performance.mark('cspell_start_extension');
 import * as path from 'path';
 performance.mark('import 1');
-import {setEnableSpellChecking} from './settings';
+import {setEnableSpellChecking, sectionCSpell} from './settings';
 performance.mark('import 2');
 import * as settings from './settings';
 performance.mark('import 3');
@@ -152,7 +152,22 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
         vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
         settings.watchSettingsFiles(triggerGetSettings),
+
+        /*
+         * We need to listen for all change events and see of `cSpell` section changed.
+         * When it does, we have to trigger the server to fetch the settings again.
+         * This is to handle a bug in the language-server synchronize configuration. It will not synchronize
+         * if the section didn't already exist. This leads to a poor user experience in situations like
+         * adding a word to be ignored for the first time.
+         */
+        vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
     );
+
+    function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
+        if (event.affectsConfiguration(sectionCSpell)) {
+            triggerGetSettings();
+        }
+    }
 
     // infoViewer.activate(context, client);
     settingsViewer.activate(context, client);
