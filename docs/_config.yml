@@ -29,7 +29,7 @@ github_username:  jason3s
 
 # Build settings
 # theme: minima
-theme: jekyll-theme-cayman
+theme: jekyll-theme-hacker
 # theme: jekyll-theme-minimal
 
 # plugins:
