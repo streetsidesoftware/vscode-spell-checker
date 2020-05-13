@@ -1,43 +1,6 @@
-// cSpell Settings
 {
-    // Version of the setting file.  Always 0.1
     "version": "0.1",
-    // language - current active spelling language
     "language": "en-US",
-    // words - list of words to be always considered correct
-    "words": [
-        "acanthopterygious",
-        "arraylength",
-        "cfml",
-        "dcopy",
-        "devtool",
-        "devtools",
-        "dict",
-        "downlevel",
-        "ESNEXT",
-        "Interop",
-        "Jupyter",
-        "kotlinscript",
-        "languageclient",
-        "lerna",
-        "mobx",
-        "multiroot",
-        "nospace",
-        "quotemark",
-        "restructuredtext",
-        "sourcemap",
-        "streetsidesoftware",
-        "textdocument",
-        "tslib",
-        "typechecking",
-        "unelevated",
-        "uri's",
-        "vsce",
-        "webview"
-    ],
-    // flagWords - list of words to be always considered incorrect
-    // This is useful for offensive words and common spelling errors.
-    // For example "hte" should be "the"
     "flagWords": [
         "hte"
     ],
@@ -53,10 +16,14 @@
         {
             "name": "cities",
             "path": "./sampleDictionaries/cities.txt"
+        },
+        {
+            "name": "cspell-words",
+            "path": "./cspell-words.txt"
         }
     ],
     "dictionaries": [
-        "cities"
+        "cities", "cspell-words"
     ],
     "languageSettings": [
         {
