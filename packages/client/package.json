@@ -253,8 +253,8 @@
                         "yaml",
                         "yml"
                     ],
-                    "deprecationMessage": "Deprecated, use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
-                    "description": "Specify file types to spell check.",
+                    "description": "Specify file types to spell check. Use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
+                    "markdownDescription": "Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
                     "uniqueItems": true
                 },
                 "cSpell.import": {
