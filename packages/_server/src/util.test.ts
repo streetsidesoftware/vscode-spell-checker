@@ -15,7 +15,7 @@ describe('Validate Util Functions', () => {
     test('isDefined', () => {
         const values = ['hello', 'how', undefined, 'are', 'you', null, '?'];
         const strings: string[] = values.filter(isDefined);
-        expect(values).toContainEqual(undefined)
-        expect(strings).not.toContainEqual(undefined)
+        expect(values).toEqual(expect.arrayContaining([undefined, null, 'you']))
+        expect(strings).toEqual(expect.not.arrayContaining([undefined, null]));
     });
 });

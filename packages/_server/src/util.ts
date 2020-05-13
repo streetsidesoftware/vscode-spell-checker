@@ -12,5 +12,5 @@ export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
 }
 
 export function isDefined<T>(v: T | undefined | null): v is T {
-    return v !== undefined || v !== null;
+    return v !== undefined && v !== null;
 }
