@@ -1,23 +1,6 @@
-import { logError, log, logDebug, logInfo, setWorkspaceFolders, logger, uniqueFilter } from './util';
+import { uniqueFilter, isDefined } from './util';
 
 describe('Validate Util Functions', () => {
-    test('Logging', () => {
-        setWorkspaceFolders([__dirname, __dirname]);
-        log('log', __filename);
-        logError('error');
-        logDebug('debug');
-        logInfo('info');
-
-        expect(logger.getPendingEntries().map(e => e.msg)).toEqual([
-            expect.stringContaining('setWorkspaceFolders'),
-            expect.stringContaining('setWorkspaceBase'),
-            expect.stringMatching(/log\s+.*util.test.ts/),
-            expect.stringContaining('error'),
-            expect.stringContaining('debug'),
-            expect.stringContaining('info'),
-        ]);
-    });
-
     test('Unique filter', () => {
         expect([].filter(uniqueFilter())).toEqual([]);
         expect([1, 2, 3].filter(uniqueFilter())).toEqual([1, 2, 3]);
@@ -27,5 +10,12 @@ describe('Validate Util Functions', () => {
         const aa = { id: 'a', v: 2 };
         expect([a, a, b, aa, b].filter(uniqueFilter())).toEqual([a, b, aa]);
         expect([a, a, b, aa, b, aa].filter(uniqueFilter(a => a.id))).toEqual([a, b]);
+    });
+
+    test('isDefined', () => {
+        const values = ['hello', 'how', undefined, 'are', 'you', null, '?'];
+        const strings: string[] = values.filter(isDefined);
+        expect(values).toContainEqual(undefined)
+        expect(strings).not.toContainEqual(undefined)
     });
 });
