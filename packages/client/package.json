@@ -490,14 +490,13 @@
                             },
                             "path": {
                                 "description": "A File System Path",
-                                "markdownDescription": "Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                                "markdownDescription": "Define the path to the dictionary text file.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
                                 "title": "Path to Dictionary Text File",
                                 "type": "string"
                             }
                         },
                         "required": [
-                            "name",
-                            "path"
+                            "name"
                         ],
                         "type": "object"
                     },
@@ -529,14 +528,13 @@
                             },
                             "path": {
                                 "description": "A File System Path",
-                                "markdownDescription": "Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                                "markdownDescription": "Define the path to the dictionary text file.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
                                 "title": "Path to Dictionary Text File",
                                 "type": "string"
                             }
                         },
                         "required": [
-                            "name",
-                            "path"
+                            "name"
                         ],
                         "type": "object"
                     },
@@ -568,14 +566,13 @@
                             },
                             "path": {
                                 "description": "A File System Path",
-                                "markdownDescription": "Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                                "markdownDescription": "Define the path to the dictionary text file.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
                                 "title": "Path to Dictionary Text File",
                                 "type": "string"
                             }
                         },
                         "required": [
-                            "name",
-                            "path"
+                            "name"
                         ],
                         "type": "object"
                     },
@@ -595,7 +592,8 @@
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
         "lint": "eslint 'src/**'",
         "vscode:prepublish": "npm run clean && npm run build-production",
-        "version": "npx vsce package",
+        "package-extension": "npx vsce package",
+        "version": "npm run package-extension",
         "watch": "npm run build -- watch",
         "test": "jest",
         "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_DATA_DIR=./temp/vscode node ../_integrationTests/integrationTestRunner",
