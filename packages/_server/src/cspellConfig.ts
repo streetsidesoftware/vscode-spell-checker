@@ -104,7 +104,7 @@ export interface SpellCheckerSettings {
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
      */
-    customUserDictionaries?: CustomDictionary[];
+    customUserDictionaries?: CustomDictionaryEntry[];
 
     /**
      * @title Custom Workspace Dictionaries
@@ -113,7 +113,7 @@ export interface SpellCheckerSettings {
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
      */
-    customWorkspaceDictionaries?: CustomDictionary[];
+    customWorkspaceDictionaries?: CustomDictionaryEntry[];
 
     /**
      * @title Custom Folder Dictionaries
@@ -122,8 +122,10 @@ export interface SpellCheckerSettings {
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
      */
-    customFolderDictionaries?: CustomDictionary[];
+    customFolderDictionaries?: CustomDictionaryEntry[];
 }
+
+export type CustomDictionaryEntry = CustomDictionary | DictionaryId;
 
 export interface CustomDictionary {
     /**
@@ -146,7 +148,10 @@ export interface CustomDictionary {
     /**
      * @title Path to Dictionary Text File
      * @markdownDescription
-     * Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.
+     * Define the path to the dictionary text file.
+     *
+     * File Format: Each line in the file is considered a dictionary entry.
+     *
      * Case is preserved while leading and trailing space is removed.
      *
      * The path should be absolute, or relative to the workspace.
@@ -174,7 +179,7 @@ export interface CustomDictionary {
      * ./build/custom_dictionary.txt
      * ```
      */
-    path: FsPath;
+    path?: FsPath;
 
     /**
      * @title Add Words to Dictionary

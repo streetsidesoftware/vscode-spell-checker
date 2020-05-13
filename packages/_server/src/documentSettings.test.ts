@@ -7,11 +7,13 @@ import * as cspell from 'cspell-lib';
 import { Pattern } from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import * as os from 'os';
+import { logError } from './log';
 
 jest.mock('vscode-languageserver');
 jest.mock('./vscode.config');
-jest.mock('./util');
+jest.mock('./log');
 
+const mockLogError = logError as jest.Mock;
 const mockGetWorkspaceFolders = getWorkspaceFolders as jest.Mock;
 const mockGetConfiguration = getConfiguration as jest.Mock;
 const workspaceRoot = Path.resolve(Path.join(__dirname, '..', '..', '..'));
@@ -63,7 +65,11 @@ const cspellConfigCustomWorkspaceDictionary: CSpellUserSettings = {
             name: 'Workspace Dictionary',
             path: '${workspaceFolder:Server}/sampleSourceFiles/words.txt',
             addWords: true,
-        }
+        },
+        {
+            name: 'Project Dictionary',
+            addWords: true,
+        },
     ]
 };
 
@@ -335,6 +341,10 @@ describe('Validate workspace substitution resolver', () => {
                 name: 'Company Dictionary',
                 path: '${workspaceFolder}/node_modules/@company/terms/terms.txt'
             },
+            {
+                name: 'Project Dictionary',
+                path: `${rootPath}/terms/terms.txt`
+            },
         ].map(f => Object.freeze(f))
     });
 
@@ -389,6 +399,7 @@ describe('Validate workspace substitution resolver', () => {
         expect(result.dictionaryDefinitions).toEqual([
             expect.objectContaining({ name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`}),
             expect.objectContaining({ name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`}),
+            expect.objectContaining({ name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt`}),
         ]);
     });
 
@@ -400,6 +411,7 @@ describe('Validate workspace substitution resolver', () => {
             dictionaryDefinitions: [
                 { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
                 { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+                { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
             ]
         });
     });
@@ -412,11 +424,13 @@ describe('Validate workspace substitution resolver', () => {
             dictionaryDefinitions: [
                 { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
                 { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+                { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
             ]
         });
         expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
             { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
             { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
         ]);
         expect(result?.overrides?.[0]?.ignorePaths).toEqual([
             '**/node_modules/**',
@@ -440,6 +454,7 @@ describe('Validate workspace substitution resolver', () => {
         expect(result.dictionaries).toEqual([
             'Global Dictionary',
             'Workspace Dictionary',
+            'Project Dictionary',
             'Folder Dictionary',
             'Folder Dictionary 2',
             'typescript',
@@ -448,6 +463,7 @@ describe('Validate workspace substitution resolver', () => {
             'Global Dictionary',
             'My Dictionary',
             'Company Dictionary',
+            'Project Dictionary',
             'Workspace Dictionary',
             'Folder Dictionary',
             'Folder Dictionary 2',
@@ -462,5 +478,59 @@ describe('Validate workspace substitution resolver', () => {
                 path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]words2\.txt$/),
             }),
         ]));
+    });
+
+    test('resolve custom dictionaries by name', () => {
+        const settings: CSpellUserSettings = {
+            ...cspellConfigInVsCode,
+            ...settingsDictionaryDefinitions,
+            customWorkspaceDictionaries: [ 'Project Dictionary' ],
+            customFolderDictionaries: [ 'Folder Dictionary' ],          // This dictionary doesn't exist.
+            dictionaries: [ 'typescript' ],
+        }
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
+        const result = debugExports.resolveSettings(settings, resolver);
+        expect(result.dictionaries).toEqual([
+            'Project Dictionary',
+            'Folder Dictionary',
+            'typescript',
+        ]);
+        expect(result.dictionaryDefinitions?.map(d => d.name)).toEqual([
+            'My Dictionary',
+            'Company Dictionary',
+            'Project Dictionary',
+        ]);
+        expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Project Dictionary',
+                path: '/path to root/root/terms/terms.txt',
+            }),
+        ]));
+        expect(result.dictionaryDefinitions).not.toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Folder Dictionary',
+            }),
+        ]));
+    });
+
+    test('Unresolved workspaceFolder', () => {
+        mockLogError.mockReset()
+        const settings: CSpellUserSettings = {
+            ...cspellConfigInVsCode,
+            ...settingsDictionaryDefinitions,
+            customWorkspaceDictionaries: [
+                { name: 'Unknown Dictionary' }
+            ],
+            dictionaries: [ 'typescript' ],
+        }
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
+        const result = debugExports.resolveSettings(settings, resolver);
+
+        expect(result.dictionaryDefinitions).not.toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Unknown Dictionary',
+            }),
+        ]));
+        expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
     });
 });

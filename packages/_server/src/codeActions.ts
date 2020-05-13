@@ -14,7 +14,8 @@ import { SpellingDictionary } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
-import { uniqueFilter, log } from './util';
+import { uniqueFilter } from './util';
+import { log } from './log';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     return textDocument.getText(range);
