@@ -146,7 +146,10 @@ export interface CustomDictionary {
     /**
      * @title Path to Dictionary Text File
      * @markdownDescription
-     * Define the path to the dictionary text file. Each line in the file is considered a dictionary entry.
+     * Define the path to the dictionary text file.
+     *
+     * File Format: Each line in the file is considered a dictionary entry.
+     *
      * Case is preserved while leading and trailing space is removed.
      *
      * The path should be absolute, or relative to the workspace.
@@ -174,7 +177,7 @@ export interface CustomDictionary {
      * ./build/custom_dictionary.txt
      * ```
      */
-    path: FsPath;
+    path?: FsPath;
 
     /**
      * @title Add Words to Dictionary

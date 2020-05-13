@@ -1,5 +1,5 @@
 import * as vscode from 'vscode-languageserver';
-import { log } from './util';
+import { log } from './log';
 
 export interface TextDocumentUri {
     uri: string;
