@@ -9,14 +9,15 @@ import {
     BaseSetting,
     DictionaryDefinition,
     DictionaryFileTypes,
+    DictionaryDefinitionPreferred,
 } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
-
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings, CustomDictionary } from './cspellConfig';
 import { URI as Uri } from 'vscode-uri';
-import { log, logError } from './util';
+import { log, logError } from './log';
+import { isDefined } from './util';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
 import { GlobMatcher } from 'cspell-glob';
 import * as os from 'os';
@@ -469,17 +470,29 @@ function resolveSettings<T extends CSpellUserSettings>(
     newSettings.import = resolveImportsToWorkspace(newSettings.import, resolver);
     newSettings.overrides = resolveOverrides(newSettings.overrides, resolver);
 
-    function setOptions(defs: DictionaryDefinition[] | undefined): DictionaryDefinition[] {
-        if (!defs) return [];
-        return defs.map(def => ({type: defaultDictionaryType, ...def}))
+    function setOptions(defs: (DictionaryDefinition | undefined)[]): DictionaryDefinition[] {
+        const values = defs.filter(d => !!d).map(d => d!).map(def => ({type: defaultDictionaryType, ...def}))
+        const byName = new Map(values.map(d => [d.name, d]));
+        return [...byName.values()];
+    }
+
+    const dictionariesByName = new Map(newSettings.dictionaryDefinitions?.map(d => [d.name, d]) || []);
+    function mapCustomDictionary(d: CustomDictionary): DictionaryDefinitionPreferred | undefined {
+        const path = d.path || dictionariesByName.get(d.name)?.path;
+        if (!path) return undefined;
+        return { ...d, path };
+    }
+
+    function mapCustomDictionaries(dicts: CustomDictionary[] = []): DictionaryDefinition[] {
+        return dicts.map(mapCustomDictionary).filter(isDefined);
     }
 
     // Merge custom dictionaries
-    const dictionaryDefinitions: DictionaryDefinition[] = setOptions(([] as DictionaryDefinition[]).concat(
-        newSettings.customUserDictionaries || [],
+    const dictionaryDefinitions: DictionaryDefinition[] = setOptions(([] as (DictionaryDefinition | undefined)[]).concat(
+        mapCustomDictionaries(newSettings.customUserDictionaries),
         newSettings.dictionaryDefinitions || [],
-        newSettings.customWorkspaceDictionaries || [],
-        newSettings.customFolderDictionaries || [],
+        mapCustomDictionaries(newSettings.customWorkspaceDictionaries),
+        mapCustomDictionaries(newSettings.customFolderDictionaries),
     ));
     newSettings.dictionaryDefinitions = dictionaryDefinitions.length ? dictionaryDefinitions : undefined;
 
