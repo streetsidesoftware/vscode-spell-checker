@@ -1,5 +1,9 @@
 {
+    "version": "0.1",
     "import": [
         "../../cSpell.json"
+    ],
+    "words": [
+        "endhighlight"
     ]
 }

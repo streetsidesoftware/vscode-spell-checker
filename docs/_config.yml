@@ -18,22 +18,40 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Spell Checker for VS Code
-email: jason@streetsidesoftware.nl
-description: >- # this means to ignore newlines until "baseurl:"
+title                     : Spell Checker for VS Code
+email                     : &email "jason@streetsidesoftware.nl"
+name                      : &name "Jason Dent" # &name is a YAML anchor which can be *referenced later
+description: >-
   User guide for Street Side Software's spell checker for Visual Studio Code.
-# baseurl: "." # the subpath of your site, e.g. /blog
-# url: "https://streetsidesoftware.github.io/vscode-spell-checker" # the base hostname & protocol for your site, e.g. http://example.com
-# twitter_username: jdent
-github_username:  jason3s
+url                       : https://streetsidesoftware.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                   : "/vscode-spell-checker" # the subpath of your site, e.g. "/blog"
+repository                : "streetsidesoftware/vscode-spell-checker"
+github_username           : jason3s
 
 # Build settings
 # theme: minima
-theme: jekyll-theme-hacker
+# theme: jekyll-theme-hacker
 # theme: jekyll-theme-minimal
+remote_theme: "mmistakes/minimal-mistakes@4.19.2"
 
-# plugins:
-#   - jekyll-feed
+# Site Author
+author:
+  name             : *name # *name is a YAML reference pointing to the &anchor earlier
+  avatar           : "https://avatars3.githubusercontent.com/u/3740137"
+  bio              : "Solving cool problems."
+  location         : "Haarlem, Netherlands"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/jason3s"
+
+
+# Site Footer
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/streetsidesoftware"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -54,3 +72,71 @@ theme: jekyll-theme-hacker
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:path/
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+  # _docs
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      sidebar:
+        nav: "docs"
+
+# Sass/SCSS
+sass:
+  sass_dir: _sass
+  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+
+# Outputting
+permalink: /:categories/:title/
+
+
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
+
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
