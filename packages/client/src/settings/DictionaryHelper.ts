@@ -65,7 +65,11 @@ export class DictionaryHelper {
         }
 
         const dictionaries = new Map((docConfig?.dictionaryDefinitions || []).map(d => [d.name, d]));
-        const custom = extractDicts().filter(d => d.addWords).map(d => dictionaries.get(d.name)).filter(isDictionaryWithPath);
+        const custom = extractDicts()
+            .map(d => typeof d === 'string' ? d : d.addWords ? d.name : undefined)
+            .filter(isDefined)
+            .map(name => dictionaries.get(name))
+            .filter(isDictionaryWithPath);
         return custom;
     }
 
@@ -89,4 +93,8 @@ export class DictionaryHelper {
 
 function isDictionaryWithPath(dict: DictionaryDefinition | CustomDictionaryWithPath | undefined): dict is CustomDictionaryWithPath {
     return !!(dict?.name && dict?.path);
+}
+
+function isDefined<T>(v: T | undefined): v is T {
+    return v !== undefined;
 }

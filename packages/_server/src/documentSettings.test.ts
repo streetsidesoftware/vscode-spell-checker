@@ -480,6 +480,39 @@ describe('Validate workspace substitution resolver', () => {
         ]));
     });
 
+    test('resolve custom dictionaries by name', () => {
+        const settings: CSpellUserSettings = {
+            ...cspellConfigInVsCode,
+            ...settingsDictionaryDefinitions,
+            customWorkspaceDictionaries: [ 'Project Dictionary' ],
+            customFolderDictionaries: [ 'Folder Dictionary' ],          // This dictionary doesn't exist.
+            dictionaries: [ 'typescript' ],
+        }
+        const resolver = debugExports.createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
+        const result = debugExports.resolveSettings(settings, resolver);
+        expect(result.dictionaries).toEqual([
+            'Project Dictionary',
+            'Folder Dictionary',
+            'typescript',
+        ]);
+        expect(result.dictionaryDefinitions?.map(d => d.name)).toEqual([
+            'My Dictionary',
+            'Company Dictionary',
+            'Project Dictionary',
+        ]);
+        expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Project Dictionary',
+                path: '/path to root/root/terms/terms.txt',
+            }),
+        ]));
+        expect(result.dictionaryDefinitions).not.toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: 'Folder Dictionary',
+            }),
+        ]));
+    });
+
     test('Unresolved workspaceFolder', () => {
         mockLogError.mockReset()
         const settings: CSpellUserSettings = {
@@ -499,6 +532,5 @@ describe('Validate workspace substitution resolver', () => {
             }),
         ]));
         expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
-        expect(mockLogError).toHaveBeenCalledWith("Unknown Dictionary: 'Unknown Dictionary', no path found.");
     });
 });
