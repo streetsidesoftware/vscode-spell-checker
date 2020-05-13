@@ -28,8 +28,8 @@ twitter_username: jdent
 github_username:  jason3s
 
 # Build settings
-theme: minima
-# theme: jekyll-theme-cayman
+# theme: minima
+theme: jekyll-theme-cayman
 # theme: jekyll-theme-minimal
 plugins:
   - jekyll-feed
