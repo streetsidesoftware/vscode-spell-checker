@@ -309,7 +309,7 @@ function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSet
             enabled.add(lang)
         }
     });
-    return enabled.size ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
+    return  enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
 }
 
 const correctRegExMap = new Map([
