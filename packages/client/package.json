@@ -616,7 +616,7 @@
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
         "lint": "eslint 'src/**'",
         "vscode:prepublish": "npm run clean && npm run build-production",
-        "package-extension": "npx vsce package",
+        "package-extension": "npx vsce package -o ../../build",
         "version": "npm run package-extension",
         "watch": "npm run build -- watch",
         "test": "jest",

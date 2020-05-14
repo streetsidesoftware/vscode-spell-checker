@@ -13,6 +13,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "lerna-prerelease": "lerna version --conventional-commits --conventional-prerelease",
     "lerna-release": "lerna version --conventional-commits --conventional-graduate",
+    "package-extension": "lerna run package-extension",
     "lint": "lerna run lint",
     "test-client-integration": "cd packages/_integrationTests && npm test",
     "test": "lerna run --ignore \"*integration*\" test"
