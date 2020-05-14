@@ -9,27 +9,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 * Resolve Custom Dictionary path ([#487](https://github.com/streetsidesoftware/vscode-spell-checker/issues/487)) ([e99481d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e99481d99fed0a147768c592c22ec767c57115c6))
-
-
-
-
-
-# [1.9.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.0...v1.9.0-alpha.1) (2020-05-11)
-
-
-### Bug Fixes
-
 * Make sure Custom Dictionaries use workspaceRoot ([#485](https://github.com/streetsidesoftware/vscode-spell-checker/issues/485)) ([70a375a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/70a375a8305d2a30ab67439930e04ba0f1a7b41f))
-
-
-
-
-
-# [1.9.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v1.9.0-alpha.0) (2020-05-09)
-
-
-### Bug Fixes
-
 * Make sure to listen for all settings changes. ([#484](https://github.com/streetsidesoftware/vscode-spell-checker/issues/484)) ([ffd9a97](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ffd9a97a6119186d1fdedbfe89d08bd78ab09788))
 
 
