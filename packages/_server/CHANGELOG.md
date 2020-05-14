@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.1...v1.9.0-alpha.2) (2020-05-14)
+
+
+### Bug Fixes
+
+* Resolve Custom Dictionary path ([#487](https://github.com/streetsidesoftware/vscode-spell-checker/issues/487)) ([e99481d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e99481d99fed0a147768c592c22ec767c57115c6))
+
+
+
+
+
 # [1.9.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.0...v1.9.0-alpha.1) (2020-05-11)
 
 
