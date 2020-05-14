@@ -11,6 +11,7 @@
     "build": "lerna run build  --no-sort --concurrency 1",
     "clean": "lerna run clean && lerna clean",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "build-release": "npm run build && npm run package-extension",
     "lerna-prerelease": "lerna version --conventional-commits --conventional-prerelease",
     "lerna-release": "lerna version --conventional-commits --conventional-graduate",
     "package-extension": "lerna run package-extension",
