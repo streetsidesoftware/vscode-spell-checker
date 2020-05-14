@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0-alpha.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.2...v1.9.0-alpha.3) (2020-05-14)
+
+
+### Bug Fixes
+
+* fix indent in workflow ([11aff4f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/11aff4f13ce95c98f84aa4372d069f8717937835))
+
+
+
+
+
 # [1.9.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.1...v1.9.0-alpha.2) (2020-05-14)
 
 
