@@ -625,7 +625,7 @@
     },
     "devDependencies": {
         "@types/comment-json": "^1.1.1",
-        "@types/fs-extra": "^8.1.0",
+        "@types/fs-extra": "^9.0.0",
         "@types/jest": "^25.2.1",
         "@types/kefir": "^3.8.2",
         "@types/node": "^12.12.39",
