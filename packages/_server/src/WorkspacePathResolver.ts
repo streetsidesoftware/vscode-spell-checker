@@ -136,20 +136,29 @@ function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPa
     };
 }
 
+/**
+ *
+ * @param currentFolder
+ * @param folders
+ * @param root
+ */
 function createWorkspaceNameToPathResolver(
-    folder: FolderPath,
+    currentFolder: FolderPath,
     folders: FolderPath[],
     root: string | undefined
 ): WorkspacePathResolverFn {
-    const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]]
+    const folderPairs = ([] as [string, string][])
         .concat([
-            ['.', root || folders[0]?.path || folder.path],
+            ['.', currentFolder.path ],
             ['~', os.homedir()],
+            ['${workspaceFolder}', root || folders[0]?.path || currentFolder.path],
+            ['${root}', root || folders[0]?.path || currentFolder.path],
+            ['${workspaceRoot}', root || folders[0]?.path || currentFolder.path],
         ])
         .concat(folders.map(folder => [`\${workspaceFolder:${ folder.name }}`, folder.path]
         ));
     const map = new Map(folderPairs);
-    const regEx = /^(?:\.|~|\$\{workspaceFolder(?:[^}]*)\})/i;
+    const regEx = /^(?:\.|~|\$\{(?:workspaceFolder|workspaceRoot|root)(?:[^}]*)\})/i;
 
     function replacer(match: string): string {
         const r = map.get(match);

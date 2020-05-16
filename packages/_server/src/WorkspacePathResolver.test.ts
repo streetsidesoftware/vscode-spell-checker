@@ -123,7 +123,7 @@ describe('Validate workspace substitution resolver', () => {
             '${workspaceFolder}/cspell.json',
             '${workspaceFolder:Client}/cspell.json',
             '${workspaceFolder:Server}/cspell.json',
-            '${workspaceFolder:Root}/cspell.json',
+            '${workspaceRoot}/cspell.json',
             '${workspaceFolder:Failed}/cspell.json',
             'path/${workspaceFolder:Client}/cspell.json',
         ]
@@ -146,7 +146,7 @@ describe('Validate workspace substitution resolver', () => {
             },
             {
                 name: 'Company Dictionary',
-                path: '${workspaceFolder}/node_modules/@company/terms/terms.txt'
+                path: '${root}/node_modules/@company/terms/terms.txt'
             },
             {
                 name: 'Project Dictionary',
@@ -180,7 +180,7 @@ describe('Validate workspace substitution resolver', () => {
         const result = resolveSettings(settingsImports, resolver);
         expect(result.import).toEqual([
             'cspell.json',
-            `${clientUri.fsPath}/cspell.json`,
+            `${rootUri.fsPath}/cspell.json`,
             `${clientUri.fsPath}/cspell.json`,
             `${serverUri.fsPath}/cspell.json`,
             `${rootUri.fsPath}/cspell.json`,
@@ -205,7 +205,7 @@ describe('Validate workspace substitution resolver', () => {
         const result = resolveSettings(settingsDictionaryDefinitions, resolver);
         expect(result.dictionaryDefinitions).toEqual([
             expect.objectContaining({ name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`}),
-            expect.objectContaining({ name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`}),
+            expect.objectContaining({ name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`}),
             expect.objectContaining({ name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt`}),
         ]);
     });
@@ -217,7 +217,7 @@ describe('Validate workspace substitution resolver', () => {
             languageId: 'typescript',
             dictionaryDefinitions: [
                 { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-                { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+                { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
                 { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
             ]
         });
@@ -230,13 +230,13 @@ describe('Validate workspace substitution resolver', () => {
             languageId: 'typescript',
             dictionaryDefinitions: [
                 { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-                { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+                { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
                 { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
             ]
         });
         expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
             { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-            { name: 'Company Dictionary', path: `${clientUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
             { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
         ]);
         expect(result?.overrides?.[0]?.ignorePaths).toEqual([
@@ -278,11 +278,11 @@ describe('Validate workspace substitution resolver', () => {
         expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
             expect.objectContaining({
                 name: 'Folder Dictionary',
-                path: 'custom root/packages/_server/words.txt',
+                path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]packages[/\\]_server[/\\]words\.txt$/),
             }),
             expect.objectContaining({
                 name: 'Folder Dictionary 2',
-                path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]words2\.txt$/),
+                path: 'custom root/words2.txt',
             }),
         ]));
     });
