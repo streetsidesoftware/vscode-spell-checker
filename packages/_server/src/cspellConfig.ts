@@ -2,7 +2,9 @@
 
 import * as cspell from 'cspell-lib';
 import { DictionaryId, FsPath } from 'cspell-lib';
-export { LanguageSetting, DictionaryDefinition } from 'cspell-lib';
+export { LanguageSetting, DictionaryDefinition, DictionaryFileTypes } from 'cspell-lib';
+
+export const defaultDictionaryType: cspell.DictionaryFileTypes = 'S';
 
 export interface SpellCheckerSettings {
     /**
