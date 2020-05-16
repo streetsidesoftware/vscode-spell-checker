@@ -28,8 +28,8 @@
     "typescript": "^3.9.2"
   },
   "dependencies": {
-    "cspell-glob": "^0.1.18",
-    "cspell-lib": "^4.1.28",
+    "cspell-glob": "^0.1.19",
+    "cspell-lib": "^4.1.29",
     "fs-extra": "^9.0.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.5.1",
