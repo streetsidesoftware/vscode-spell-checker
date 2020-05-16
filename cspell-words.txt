@@ -27,6 +27,7 @@ downlevel
 endhighlight
 envs
 gemfiles
+githubusercontent
 gitlab
 gtag
 htaccess
@@ -63,7 +64,9 @@ tslib
 typechecking
 unelevated
 uri's
+visualstudio
 vsce
+vsmarketplacebadge
 webhook
 webview
 yandex
