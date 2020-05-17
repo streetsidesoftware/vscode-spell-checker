@@ -175,17 +175,24 @@ describe('Validate workspace substitution resolver', () => {
         ].map(f => Object.freeze(f))
     };
 
+    test('testUri assumptions', () => {
+        const u = Uri.file('relative/to/current/dir/file.txt');
+        // vscode-uri does not support relative paths.
+        expect(u.path).toBe('/relative/to/current/dir/file.txt');
+    });
+
     test('resolveSettings Imports', () => {
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = resolveSettings(settingsImports, resolver);
-        expect(result.import).toEqual([
-            'cspell.json',
-            `${rootUri.fsPath}/cspell.json`,
-            `${clientUri.fsPath}/cspell.json`,
-            `${serverUri.fsPath}/cspell.json`,
-            `${rootUri.fsPath}/cspell.json`,
-            '${workspaceFolder:Failed}/cspell.json',
-            'path/${workspaceFolder:Client}/cspell.json',
+        const imports = Array.isArray(result.import) ? pp(result.import) : result.import;
+        expect(imports).toEqual([
+            p('cspell.json'),
+            p(`${rootUri.fsPath}/cspell.json`),
+            p(`${clientUri.fsPath}/cspell.json`),
+            p(`${serverUri.fsPath}/cspell.json`),
+            p(`${rootUri.fsPath}/cspell.json`),
+            p('${workspaceFolder:Failed}/cspell.json'),
+            p('path/${workspaceFolder:Client}/cspell.json'),
         ]);
     });
 
@@ -203,10 +210,10 @@ describe('Validate workspace substitution resolver', () => {
     test('resolveSettings dictionaryDefinitions', () => {
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = resolveSettings(settingsDictionaryDefinitions, resolver);
-        expect(result.dictionaryDefinitions).toEqual([
-            expect.objectContaining({ name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`}),
-            expect.objectContaining({ name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`}),
-            expect.objectContaining({ name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt`}),
+        expect(normalizePath(result.dictionaryDefinitions)).toEqual([
+            expect.objectContaining({ name: 'My Dictionary',      path: p(`${rootUri.fsPath}/words.txt`)}),
+            expect.objectContaining({ name: 'Company Dictionary', path: p(`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)}),
+            expect.objectContaining({ name: 'Project Dictionary', path: p(`${rootUri.fsPath}/terms/terms.txt`)}),
         ]);
     });
 
@@ -216,9 +223,9 @@ describe('Validate workspace substitution resolver', () => {
         expect(result?.languageSettings?.[0]).toEqual({
             languageId: 'typescript',
             dictionaryDefinitions: [
-                { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-                { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
-                { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
+                { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
+                { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+                { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt` )},
             ]
         });
     });
@@ -229,15 +236,15 @@ describe('Validate workspace substitution resolver', () => {
         expect(result?.overrides?.[0]?.languageSettings?.[0]).toEqual({
             languageId: 'typescript',
             dictionaryDefinitions: [
-                { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-                { name: 'Company Dictionary', path: `${rootUri.fsPath}/node_modules/@company/terms/terms.txt`},
-                { name: 'Project Dictionary', path: `${rootUri.fsPath}/terms/terms.txt` },
+                { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
+                { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+                { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt`)},
             ]
         });
         expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
-            { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-            { name: 'Company Dictionary', path: `${rootUri.fsPath}/node_modules/@company/terms/terms.txt`},
-            { name: 'Project Dictionary', path: `${rootUri.fsPath}/terms/terms.txt` },
+            { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
+            { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+            { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt`)},
         ]);
         expect(result?.overrides?.[0]?.ignorePaths).toEqual([
             '**/node_modules/**',
@@ -275,14 +282,14 @@ describe('Validate workspace substitution resolver', () => {
             'Folder Dictionary',
             'Folder Dictionary 2',
         ]);
-        expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
+        expect(normalizePath(result.dictionaryDefinitions)).toEqual(expect.arrayContaining([
             expect.objectContaining({
                 name: 'Folder Dictionary',
-                path: `${clientUri.fsPath}/packages/_server/words.txt`,
+                path: p(`${clientUri.fsPath}/packages/_server/words.txt`),
             }),
             expect.objectContaining({
                 name: 'Folder Dictionary 2',
-                path: 'custom root/words2.txt',
+                path: p('custom root/words2.txt'),
             }),
         ]));
     });
@@ -307,10 +314,10 @@ describe('Validate workspace substitution resolver', () => {
             'Company Dictionary',
             'Project Dictionary',
         ]);
-        expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
+        expect(normalizePath(result.dictionaryDefinitions)).toEqual(expect.arrayContaining([
             expect.objectContaining({
                 name: 'Project Dictionary',
-                path: '/path to root/root/terms/terms.txt',
+                path: p('/path to root/root/terms/terms.txt'),
             }),
         ]));
         expect(result.dictionaryDefinitions).not.toEqual(expect.arrayContaining([
@@ -340,4 +347,21 @@ describe('Validate workspace substitution resolver', () => {
         ]));
         expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
     });
+
+    function normalizePath<T extends { path?: string }>(values?: T[]): T[] | undefined {
+        function m(v: T): T {
+            const r: T = {...v};
+            r.path = p(v.path || '');
+            return r;
+        }
+        return values?.map(m);
+    }
+
+    function pp(paths: string[] | undefined): string[] | undefined {
+        return paths?.map(p);
+    }
+
+    function p(path: string): string {
+        return Uri.file(path).fsPath;
+    }
 });

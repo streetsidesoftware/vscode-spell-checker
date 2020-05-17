@@ -168,7 +168,7 @@ function createWorkspaceNameToPathResolver(
         return match;
     }
 
-    return (path: string) => {
+    return (path: string): string => {
         return path.replace(regEx, replacer);
     };
 }
