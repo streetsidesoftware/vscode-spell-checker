@@ -82,9 +82,9 @@ describe('Validate WorkspacePathResolver', () => {
 
 describe('Validate workspace substitution resolver', () => {
     const rootPath = '/path to root/root';
-    const clientPath = Path.normalize(Path.join(rootPath, 'client'));
-    const serverPath = Path.normalize(Path.join(rootPath, '_server'));
-    const clientTestPath = Path.normalize(Path.join(clientPath, 'test'));
+    const clientPath = Path.join(rootPath, 'client');
+    const serverPath = Path.join(rootPath, '_server');
+    const clientTestPath = Path.join(clientPath, 'test');
     const rootUri = Uri.file(rootPath);
     const clientUri = Uri.file(clientPath);
     const serverUri = Uri.file(serverPath);
@@ -230,14 +230,14 @@ describe('Validate workspace substitution resolver', () => {
             languageId: 'typescript',
             dictionaryDefinitions: [
                 { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-                { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
-                { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
+                { name: 'Company Dictionary', path: `${rootUri.fsPath}/node_modules/@company/terms/terms.txt`},
+                { name: 'Project Dictionary', path: `${rootUri.fsPath}/terms/terms.txt` },
             ]
         });
         expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
             { name: 'My Dictionary', path: `${rootUri.fsPath}/words.txt`},
-            { name: 'Company Dictionary', path: `${rootPath}/node_modules/@company/terms/terms.txt`},
-            { name: 'Project Dictionary', path: `${rootPath}/terms/terms.txt` },
+            { name: 'Company Dictionary', path: `${rootUri.fsPath}/node_modules/@company/terms/terms.txt`},
+            { name: 'Project Dictionary', path: `${rootUri.fsPath}/terms/terms.txt` },
         ]);
         expect(result?.overrides?.[0]?.ignorePaths).toEqual([
             '**/node_modules/**',
@@ -278,7 +278,7 @@ describe('Validate workspace substitution resolver', () => {
         expect(result.dictionaryDefinitions).toEqual(expect.arrayContaining([
             expect.objectContaining({
                 name: 'Folder Dictionary',
-                path: expect.stringMatching(/^[/\\]path to root[/\\]root[/\\]client[/\\]packages[/\\]_server[/\\]words\.txt$/),
+                path: `${clientUri.fsPath}/packages/_server/words.txt`,
             }),
             expect.objectContaining({
                 name: 'Folder Dictionary 2',
