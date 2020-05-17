@@ -220,31 +220,27 @@ describe('Validate workspace substitution resolver', () => {
     test('resolveSettings languageSettings', () => {
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = resolveSettings(settingsLanguageSettings, resolver);
-        expect(result?.languageSettings?.[0]).toEqual({
-            languageId: 'typescript',
-            dictionaryDefinitions: [
-                { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
-                { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
-                { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt` )},
-            ]
-        });
+        expect(result?.languageSettings?.[0].languageId).toEqual('typescript');
+        expect(normalizePath(result?.languageSettings?.[0].dictionaryDefinitions)).toEqual([
+            { name: 'My Dictionary',      path: p(`${rootUri.fsPath}/words.txt`)},
+            { name: 'Company Dictionary', path: p(`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+            { name: 'Project Dictionary', path: p(`${rootUri.fsPath}/terms/terms.txt` )},
+        ]);
     });
 
     test('resolveSettings overrides', () => {
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, undefined);
         const result = resolveSettings(settingsOverride, resolver);
-        expect(result?.overrides?.[0]?.languageSettings?.[0]).toEqual({
-            languageId: 'typescript',
-            dictionaryDefinitions: [
-                { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
-                { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
-                { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt`)},
-            ]
-        });
-        expect(result?.overrides?.[0]?.dictionaryDefinitions).toEqual([
-            { name: 'My Dictionary',      path: (`${rootUri.fsPath}/words.txt`)},
-            { name: 'Company Dictionary', path: (`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
-            { name: 'Project Dictionary', path: (`${rootUri.fsPath}/terms/terms.txt`)},
+        expect(result?.overrides?.[0]?.languageSettings?.[0].languageId).toEqual('typescript');
+        expect(normalizePath(result?.overrides?.[0].dictionaryDefinitions)).toEqual([
+            { name: 'My Dictionary',      path: p(`${rootUri.fsPath}/words.txt`)},
+            { name: 'Company Dictionary', path: p(`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+            { name: 'Project Dictionary', path: p(`${rootUri.fsPath}/terms/terms.txt` )},
+        ]);
+        expect(normalizePath(result?.overrides?.[0]?.dictionaryDefinitions)).toEqual([
+            { name: 'My Dictionary',      path: p(`${rootUri.fsPath}/words.txt`)},
+            { name: 'Company Dictionary', path: p(`${rootUri.fsPath}/node_modules/@company/terms/terms.txt`)},
+            { name: 'Project Dictionary', path: p(`${rootUri.fsPath}/terms/terms.txt`)},
         ]);
         expect(result?.overrides?.[0]?.ignorePaths).toEqual([
             '**/node_modules/**',
