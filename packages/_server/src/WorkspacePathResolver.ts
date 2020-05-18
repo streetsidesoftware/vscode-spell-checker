@@ -151,7 +151,7 @@ function createWorkspaceNameToPathResolver(
         .concat([
             ['.', currentFolder.path ],
             ['~', os.homedir()],
-            ['${workspaceFolder}', root || folders[0]?.path || currentFolder.path],
+            ['${workspaceFolder}', folders[0]?.path || root || currentFolder.path],
             ['${root}', root || folders[0]?.path || currentFolder.path],
             ['${workspaceRoot}', root || folders[0]?.path || currentFolder.path],
         ])
