@@ -3,32 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.9.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.4...v1.9.0-alpha.5) (2020-05-17)
-
-
-### Bug Fixes
-
-* Update cspell-lib and other packages ([#492](https://github.com/streetsidesoftware/vscode-spell-checker/issues/492)) ([426b0da](https://github.com/streetsidesoftware/vscode-spell-checker/commit/426b0da60c4a8f2fcc0fca82f986f858e9524885))
-
-
-
-
-
-# [1.9.0-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.3...v1.9.0-alpha.4) (2020-05-14)
-
-**Note:** Version bump only for package code-spell-checker
-
-
-
-
-
-# [1.9.0-alpha.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.2...v1.9.0-alpha.3) (2020-05-14)
+# [1.9.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v1.9.0-alpha.5) (2020-05-17)
 
 ### Bug Fixes
-
-* Resolve Custom Dictionary path ([#487](https://github.com/streetsidesoftware/vscode-spell-checker/issues/487)) ([e99481d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e99481d99fed0a147768c592c22ec767c57115c6))
-* Make sure Custom Dictionaries use workspaceRoot ([#485](https://github.com/streetsidesoftware/vscode-spell-checker/issues/485)) ([70a375a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/70a375a8305d2a30ab67439930e04ba0f1a7b41f))
-* Make sure to listen for all settings changes. ([#484](https://github.com/streetsidesoftware/vscode-spell-checker/issues/484)) ([ffd9a97](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ffd9a97a6119186d1fdedbfe89d08bd78ab09788))
 
 
 ### Features
@@ -54,6 +31,8 @@ It is now possible to tell the extension to use custom dictionaries. Three new c
 * `customUserDictionaries` - for defining custom user level dictionaries
 * `customWorkspaceDictionaries` - for defining custom workspace level dictionaries
 * `customFolderDictionaries` - for defining custom folder level dictionaries
+
+Custom dictionaries can be either a dictionary reference (name of a defined dictionary) or a dictionary definition.
 
 ### User Example
 ``` jsonc
@@ -106,15 +85,36 @@ It is now possible to tell the extension to use custom dictionaries. Three new c
 ]
 ```
 
+### Example with a dictionary reference
+
+`cspell.json`
+``` jsonc
+"dictionaryDefinitions": [
+    {
+        "name": "cities",
+        "path": "./sampleDictionaries/cities.txt"
+    },
+    {
+        "name": "project-terms",
+        "path": "./words.txt"
+    }
+]
+```
+
+VS Code `settings.json`
+``` jsonc
+"cSpell.customWorkspaceDictionaries": ["project-terms"]
+```
+
 ### Custom Dictionary Paths
 
 Dictionary paths can be absolute or relative based upon the following patterns:
 
 * `~` - relative to the user home directory
-* `.` - relative to the `workspaceRootPath`
-* `${workspaceFolder}` - relative to current workspace folder
-* `${workspaceFolder:[folder name]}` - `[folder name]` is one of the folders in the workspace.
-
+* `.` - relative to current workspace folder
+* `${workspaceRoot}` or `${root}` - relative to the `workspaceRootPath`
+* `${workspaceFolder}` - relative to the first folder in the workspace
+* `${workspaceFolder:[folder name]}` - `[folder name]` is one of the folders in the workspace. i.e `${workspaceFolder:client}`
 
 ## Adding words to Dictionaries
 
