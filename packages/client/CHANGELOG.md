@@ -21,7 +21,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 Note: the reason behind this change was to make the behaviour in multi-root workspace more predictable.
 
 ### Example
-``` jsonc
+```jsonc
 "cSpell.workspaceRootPath": "${workspaceFolder:client}/.."
 ```
 
@@ -146,7 +146,7 @@ A new setting `enableFiletypes` will add the listed filetypes to `enableLanguage
 
 Example:
 
-```
+```json
 "cSpell.enableFiletypes": [
   "jupyter", "kotlin", "kotlinscript", "!json"
 ]
@@ -160,7 +160,7 @@ Relative paths were difficult to get working when specified in VS Code settings.
 
 It is now possible to have the following setting in VS Code preferences.
 
-```
+```json
 "cSpell.import": [
   "${workspaceFolder}/node_modules/company_standards/cspell.json"
 ]
@@ -168,7 +168,7 @@ It is now possible to have the following setting in VS Code preferences.
 
 for a multiroot with folders `client`, `server`, `common`, it is possible to specify the name of the folder:
 
-```
+```json
 "ignorePaths": [
   "${workspaceFolder:client}/**/*.json"
 ],
