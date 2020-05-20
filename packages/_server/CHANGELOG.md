@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.5...v1.9.0) (2020-05-20)
+
+
+### Bug Fixes
+
+* ${workspaceFolder} uses first folder in workspace ([#496](https://github.com/streetsidesoftware/vscode-spell-checker/issues/496)) ([b2358a4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b2358a486516e4733e5e94a38a3cae2cd669e5ae))
+
+
+
+
+
 # [1.9.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.4...v1.9.0-alpha.5) (2020-05-17)
 
 
