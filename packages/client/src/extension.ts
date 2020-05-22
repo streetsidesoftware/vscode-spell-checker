@@ -31,6 +31,8 @@ import { ExtensionApi } from './extensionApi';
 
 import * as modules from './modules';
 
+import * as ExtensionRegEx from './extensionRegEx';
+
 performance.mark('cspell_done_import');
 
 modules.init();
@@ -45,6 +47,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     di.set('client', client);
     di.set('extensionContext', context);
+
+    ExtensionRegEx.activate(context);
 
     // Start the client.
     const clientDispose = client.start();
