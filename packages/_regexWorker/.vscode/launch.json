@@ -1,0 +1,36 @@
+{
+	"version": "0.2.0",
+	// List of configurations. Add new configurations or edit existing ones.
+	"configurations": [
+		{
+            "type": "node",
+            "request": "launch",
+            "name": "RegEx: Jest current-file",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": ["--runInBand", "${file}"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+			"sourceMaps": true,
+            "preLaunchTask": "compile",
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "RegEx: Jest All",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": ["--runInBand", "--verbose"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+			"sourceMaps": true,
+            "preLaunchTask": "compile",
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            }
+        }
+	]
+}

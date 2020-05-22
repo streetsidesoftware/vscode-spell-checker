@@ -27,6 +27,7 @@ downlevel
 endhighlight
 envs
 gemfiles
+gimsuy
 githubusercontent
 gitlab
 gtag
@@ -47,11 +48,13 @@ multiroot
 myvariable
 naver
 nospace
+onfinally
 paginator
 permalinks
 quotemark
 restructuredtext
 shortname
+shrinkwrap
 sourcemap
 staticman
 staticmanapp

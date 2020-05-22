@@ -1,0 +1,31 @@
+{
+  "name": "regex-engine",
+  "version": "1.0.0",
+  "description": "Run Regular Expressions against text on a background thread",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf ../client/server && rimraf ./tools/out",
+    "lint": "eslint \"src/**/*.ts\"",
+    "build": "npm run compile && npm run installIntoExtension",
+    "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/cspellConfig.ts --type SpellCheckerSettings --validationKeywords markdownDescription  --validationKeywords scope --validationKeywords deprecationMessage -o spell-checker-config.schema.json",
+    "installIntoExtension": "node install.js ../client/regexWorker ./package.json ./tsconfig.json ./package-lock.json",
+    "clean-build": "npm run clean && npm run build",
+    "clean-build-production": "npm run clean && npm run compile",
+    "compile": "tsc -p .",
+    "watch": "npm run installIntoExtension && tsc --watch -p .",
+    "tsc": "tsc -p .",
+    "test-watch": "jest --watch",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "@types/node": "^12.12.41",
+    "eslint": "^7.0.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.3"
+  }
+}
