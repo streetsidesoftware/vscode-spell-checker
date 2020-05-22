@@ -84,11 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
 				return { range: new vscode.Range(startPos, endPos), hoverMessage };
 			});
 			activeEditor.setDecorations(smallNumberDecorationType, decorations || []);
-
-			statusBar.text = `${result?.processingTimeMs.toFixed(2)}ms | ${useRegEx.toString()}`;
-			statusBar.tooltip = 'Regular Expression Test';
-			statusBar.command = undefined;
-			statusBar.show();
+			updateStatusBar(useRegEx, result ? { elapsedTime: result.processingTimeMs, count: result.matches.length } : undefined);
 		});
 	}
 
@@ -113,7 +109,26 @@ export function activate(context: vscode.ExtensionContext) {
 			clearTimeout(timeout);
 			timeout = undefined;
 		}
+		updateStatusBar(regEx);
 		timeout = setTimeout(updateDecorations, 500);
+	}
+
+	interface StatusBarInfo {
+		elapsedTime: number;
+		count: number;
+	}
+
+	function updateStatusBar(regExp: RegExp | undefined, info?: StatusBarInfo) {
+		if (regExp) {
+			const { elapsedTime, count = 0 } = info || {};
+			const time = elapsedTime ? `${elapsedTime.toFixed(2)}ms` : '$(clock)';
+			statusBar.text = `${time} | ${regExp.toString()}`;
+			statusBar.tooltip = elapsedTime ? 'Regular Expression Test Results, found ' + count : 'Running Regular Expression Test';
+			statusBar.command = 'cSpellRegExpTester.testRegExp';
+			statusBar.show();
+		} else {
+			statusBar.hide();
+		}
 	}
 
 	if (activeEditor) {
@@ -146,7 +161,7 @@ export function activate(context: vscode.ExtensionContext) {
 				return;
 			}
 			try {
-				regEx = toRegExp(value);
+				regEx = toRegExp(value, 'g');
 			} catch (e) {
 				vscode.window.showWarningMessage(e.toString());
 				regEx = undefined;
