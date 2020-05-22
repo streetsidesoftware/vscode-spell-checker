@@ -336,6 +336,15 @@ export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSett
     return newSettings;
 }
 
+export function stringifyPatterns(settings: CSpellUserSettings): CSpellUserSettings;
+export function stringifyPatterns(settings: undefined): undefined;
+export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined;
+export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined {
+    if (!settings) return settings;
+    const patterns = settings.patterns?.map(pat => ({...pat, pattern: pat.pattern.toString()}));
+    return {...settings, patterns};
+}
+
 export const debugExports = {
     fixRegEx,
     fixPattern,

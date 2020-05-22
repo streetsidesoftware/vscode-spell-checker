@@ -22,7 +22,14 @@ import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import * as Api from './api';
-import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed, correctBadSettings } from './documentSettings';
+import {
+    correctBadSettings,
+    DocumentSettings,
+    isUriAllowed,
+    isUriBlackListed,
+    SettingsCspell,
+    stringifyPatterns,
+} from './documentSettings';
 import {
     log,
     logError,
@@ -83,8 +90,7 @@ function run() {
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
-    // Create a simple text document manager. The text document manager
-    // supports full document sync only
+    // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
@@ -166,8 +172,8 @@ function run() {
     async function handleGetConfigurationForDocument(params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
-        const docSettings = doc && (await getSettingsToUseForDocument(doc)) || undefined;
-        const settings = await getActiveUriSettings(uri);
+        const docSettings = stringifyPatterns(doc && (await getSettingsToUseForDocument(doc)) || undefined);
+        const settings = stringifyPatterns(await getActiveUriSettings(uri));
         return {
             languageEnabled: languageId && doc ? await isLanguageEnabled(doc, settings) : undefined,
             fileEnabled: uri ? !await isUriExcluded(uri) : undefined,
@@ -227,7 +233,6 @@ function run() {
                         debounce(dsp => timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
                             .pipe(filter(() => !isValidationBusy))
                         ),
-                        tap(dsp => log(`blocked? ${blockValidation.has(dsp.doc.uri)}`, dsp.doc.uri)),
                         filter(dsp => !blockValidation.has(dsp.doc.uri)),
                         flatMap(validateTextDocument),
                         ).subscribe(diag => connection.sendDiagnostics(diag))
@@ -296,7 +301,7 @@ function run() {
                     logInfo('Validate File', uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);
                     const settings = correctBadSettings(settingsToUse);
-                    const diagnostics = await Validator.validateTextDocument(doc, settings);
+                    const diagnostics: vscode.Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };
                 }
