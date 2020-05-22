@@ -101,7 +101,7 @@ export function isRegExp(r: RegExp | any): r is RegExp {
     return r instanceof RegExp;
 }
 
-function measureExecution<T>(fn: () => T): { elapsedTimeMs: number, r: T } {
+function measureExecution<T>(fn: () => T): { elapsedTimeMs: number; r: T } {
     const start = process.hrtime();
     const r = fn();
     const diff = process.hrtime(start);
