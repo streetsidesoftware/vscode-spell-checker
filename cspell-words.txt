@@ -1,5 +1,6 @@
 Bing
 Bundler's
+Codeblock
 ESNEXT
 FIXURL
 GOOG
@@ -18,6 +19,7 @@ appid
 arraylength
 cfml
 colorscheme
+darkblue
 dcopy
 devtool
 devtools
@@ -37,6 +39,7 @@ jemoji
 kotlinscript
 languageclient
 lerna
+lightblue
 lightbulb
 mademistakes
 michaelrose

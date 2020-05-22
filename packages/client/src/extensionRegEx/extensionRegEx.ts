@@ -1,45 +1,111 @@
 import * as vscode from 'vscode';
+import { evaluateRegExpAsync, EvaluateRegExpAsyncResult, toRegExp } from './evaluateRegExp';
+
+
+interface DisposableLike {
+	dispose(): any;
+}
+
+interface InProgress {
+	activeEditor: vscode.TextEditor;
+	document: vscode.TextDocument;
+	version: number;
+	execResult: ExecEvaluateRegExpResult | undefined;
+}
 
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
 
+    const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+
+	const disposables = new Set<DisposableLike>();
+
 	console.log('decorator sample is activated');
 
 	let timeout: NodeJS.Timer | undefined = undefined;
+	let current: InProgress | undefined;
 
 	// create a decorator type that we use to decorate small numbers
 	const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
-		borderWidth: '1px',
-		borderStyle: 'solid',
+		// borderWidth: '1px',
+		// borderStyle: 'solid',
 		overviewRulerColor: 'blue',
 		overviewRulerLane: vscode.OverviewRulerLane.Right,
 		light: {
 			// this color will be used in light color themes
-			borderColor: 'darkblue'
+			// borderColor: 'darkblue',
+			backgroundColor: '#C0C0FF',
 		},
 		dark: {
 			// this color will be used in dark color themes
-			borderColor: 'lightblue'
+			// borderColor: 'lightblue',
+			backgroundColor: '#347890',
 		}
 	});
 
 	let activeEditor = vscode.window.activeTextEditor;
+	let regEx: RegExp | undefined = /(```+)[^\1]+?\1/g;
 
 	function updateDecorations() {
+		disposeCurrent();
 		if (!activeEditor) {
 			return;
 		}
-		const regEx = /\d+/g;
-		const text = activeEditor.document.getText();
-		const smallNumbers: vscode.DecorationOptions[] = [];
-		let match;
-		while (match = regEx.exec(text)) {
-			const startPos = activeEditor.document.positionAt(match.index);
-			const endPos = activeEditor.document.positionAt(match.index + match[0].length);
-			const decoration = { range: new vscode.Range(startPos, endPos), hoverMessage: 'Number **' + match[0] + '**' };
-            smallNumbers.push(decoration);
+		if (!regEx) {
+			activeEditor.setDecorations(smallNumberDecorationType, []);
+			statusBar.hide();
+			return;
 		}
-		activeEditor.setDecorations(smallNumberDecorationType, smallNumbers);
+		const useRegEx = regEx;
+		const text = activeEditor.document.getText();
+		const document = activeEditor.document;
+		const execResult = execEvaluateRegExp(useRegEx, text);
+		current = {
+			activeEditor,
+			document,
+			version: document.version,
+			execResult,
+		};
+		const localCurrent = current;
+
+		execResult.result.then(result => {
+			if (localCurrent != current
+				|| vscode.window.activeTextEditor != localCurrent.activeEditor
+				|| vscode.window.activeTextEditor?.document != document
+				|| vscode.window.activeTextEditor?.document.version != localCurrent.version
+			) {
+				return;
+			}
+			const activeEditor = localCurrent.activeEditor;
+			const decorations: vscode.DecorationOptions[] | undefined = result?.matches.map(match => {
+				const startPos = activeEditor.document.positionAt(match.index);
+				const endPos = activeEditor.document.positionAt(match.index + match[0].length);
+				const hoverMessage = createHoverMessage(match);
+				return { range: new vscode.Range(startPos, endPos), hoverMessage };
+			});
+			activeEditor.setDecorations(smallNumberDecorationType, decorations || []);
+
+			statusBar.text = `${result?.processingTimeMs.toFixed(2)}ms | ${useRegEx.toString()}`;
+			statusBar.tooltip = 'Regular Expression Test';
+			statusBar.command = undefined;
+			statusBar.show();
+		});
+	}
+
+	function createHoverMessage(match: RegExpExecArray) {
+		const r = new vscode.MarkdownString();
+		r.appendMarkdown('Match: \n\n')
+		match.forEach((m, i) => {
+			r.appendText(i + ': ');
+			r.appendText('"' + ellipsis(m, 200) + '"');
+			r.appendMarkdown('\n\n');
+		})
+		return r;
+	}
+
+	function ellipsis(text: string, max = 50) {
+		if (text.length < max) return text;
+		return text.slice(0, max - 1) + '…';
 	}
 
 	function triggerUpdateDecorations() {
@@ -67,7 +133,62 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}, null, context.subscriptions);
 
+	function disposeCurrent() {
+		current?.execResult?.dispose();
+		current = undefined;
+	}
+
+	function userTestRegExp() {
+		vscode.window.showInputBox({prompt: 'Enter a Regular Expression', value: regEx?.toString()}).then(value => {
+			if (!value) {
+				regEx = undefined;
+				triggerUpdateDecorations();
+				return;
+			}
+			try {
+				regEx = toRegExp(value);
+			} catch (e) {
+				vscode.window.showWarningMessage(e.toString());
+				regEx = undefined;
+			}
+			triggerUpdateDecorations();
+		});
+	}
+
+	function dispose() {
+		disposeCurrent();
+		for (const d of disposables) {
+			d.dispose();
+		}
+		disposables.clear();
+	}
+    context.subscriptions.push(
+		{dispose},
+		statusBar,
+        vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
+	);
 }
 
 
-function evaluateRegex(regex: RegExp,)
+interface ExecEvaluateRegExpResult {
+	dispose: () => any;
+	result: Promise<EvaluateRegExpAsyncResult | undefined>;
+}
+
+function execEvaluateRegExp(regExp: RegExp, text: string, limit?: number, timeLimit?: number ): ExecEvaluateRegExpResult {
+	let isDisposed = false;
+
+	async function run() {
+		let result: EvaluateRegExpAsyncResult | undefined;
+		if (isDisposed) return result;
+		for await(result of evaluateRegExpAsync({ regExp, text, limit, processingTimeLimitMs: timeLimit })) {
+			if (isDisposed) return result;
+		}
+		return result;
+	}
+
+	return {
+		dispose: () => { isDisposed = true; },
+		result: run(),
+	}
+}

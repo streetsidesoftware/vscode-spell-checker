@@ -138,6 +138,10 @@
             {
                 "command": "cSpell.addIgnoreWordToUser",
                 "title": "Ignore Word in User Settings"
+            },
+            {
+                "command": "cSpellRegExpTester.testRegExp",
+                "title": "Test a Regular Expression on the current document."
             }
         ],
         "languages": [
