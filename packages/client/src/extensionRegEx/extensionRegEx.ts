@@ -68,3 +68,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}, null, context.subscriptions);
 
 }
+
+
+function evaluateRegex(regex: RegExp,)
