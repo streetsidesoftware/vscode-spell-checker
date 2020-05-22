@@ -152,14 +152,14 @@ export function convertNamedRegExpOrString(nr: NamedRegExpOrString | NamedRegExp
 
 export type RegExpOrString = RegExp | string;
 
-export function toRegExp(r: RegExp | string): RegExp {
+export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
     if (isRegExp(r)) return r;
 
     const match = r.match(/^\/(.*)\/([gimsuy]*)$/);
     if (match) {
         return new RegExp(match[1], match[2] || undefined);
     }
-    return new RegExp(r);
+    return new RegExp(r, defaultFlags);
 }
 
 export function isRegExp(r: RegExp | any): r is RegExp {
