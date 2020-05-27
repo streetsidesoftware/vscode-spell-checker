@@ -43,7 +43,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 - [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish)
 - [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
 - [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
-- [French Réforme 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme)
+- [French <!-- cSpell:disable -->Réforme<!-- cSpell:enable --> 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme)
 - [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
 - [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek)
 - [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew)
