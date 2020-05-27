@@ -36,16 +36,32 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 * English (US)
 * English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
-## Add-On Dictionaries
-* [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
-* [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
-* [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
-* [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
-* [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
-* [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
-* [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
-* [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
-* [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
+## Add-On Language Dictionaries
+
+- [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
+- [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
+- [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish)
+- [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
+- [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
+- [French Réforme 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme)
+- [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
+- [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek)
+- [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew)
+- [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian)
+- [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian)
+- [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish)
+- [Portuguese - Brazilian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian)
+- [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese)
+- [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+- [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
+- [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
+- [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish)
+- [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian)
+
+## Add-On Specialized Dictionaries
+
+- [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
+- [Fullstack](https://marketplace.visualstudio.com/items?itemName=rbalet.code-spell-checker-fullstack)
 
 ## Enabled File Types
 
