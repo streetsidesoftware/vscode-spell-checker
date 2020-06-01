@@ -154,7 +154,19 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	function userTestRegExp() {
-		vscode.window.showInputBox({prompt: 'Enter a Regular Expression', value: regEx?.toString()}).then(value => {
+		function validateInput(input: string) {
+			try {
+				toRegExp(input, 'g');
+			} catch (e) {
+				return e.toString();
+			}
+		}
+		vscode.window.showInputBox({
+			prompt: 'Enter a Regular Expression',
+			placeHolder: 'Example: /\b\w+/g',
+			value: regEx?.toString(),
+			validateInput
+		}).then(value => {
 			if (!value) {
 				regEx = undefined;
 				triggerUpdateDecorations();
