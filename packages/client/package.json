@@ -332,6 +332,7 @@
                         "**/package-lock.json",
                         "**/node_modules/**",
                         "**/vscode-extension/**",
+                        "**/.vscode*/extensions/**",
                         "**/.git/objects/**",
                         ".vscode"
                     ],
