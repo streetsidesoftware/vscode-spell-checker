@@ -42,6 +42,7 @@ export type ServerMethodRequestResult = {
     isSpellCheckEnabled: ServerRequestResult<TextDocumentInfo, IsSpellCheckEnabledResult>;
     splitTextIntoWords: ServerRequestResult<string, SplitTextIntoWordsResult>;
     spellingSuggestions: ServerRequestResult<TextDocumentInfo, SpellingSuggestionsResult>;
+    matchPatternsInDocument: ServerRequestResult<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
 };
 
 export type ServerRequestMethodResults = {
@@ -56,3 +57,31 @@ export type NotifyServerMethods = 'onConfigChange' | 'registerConfigurationFile'
 export type NotifyServerMethodConstants = {
     [key in NotifyServerMethods]: NotifyServerMethods;
 };
+
+export interface TextDocumentRef {
+    uri: string;
+}
+
+export interface MatchPatternsToDocumentRequest extends TextDocumentRef {
+    patterns: string[];
+}
+
+export type StartIndex = number;
+export type EndIndex = number;
+
+export type RangeTuple = [StartIndex, EndIndex];
+
+export interface PatternMatch {
+    name: string;
+    regexp: string;
+    elapsedTime: number;
+    matches: RangeTuple[];
+    message?: string;
+}
+
+export interface MatchPatternsToDocumentResult {
+    uri: string;
+    version: number;
+    patternMatches: PatternMatch[];
+    message?: string;
+}

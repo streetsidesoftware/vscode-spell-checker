@@ -39,6 +39,7 @@ import {
     setWorkspaceBase,
     setWorkspaceFolders,
 } from './log';
+import { PatternMatcher, MatchResult } from './PatternMatcher';
 
 log('Starting Spell Checker Server');
 
@@ -82,6 +83,7 @@ function run() {
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
         spellingSuggestions: handleSpellingSuggestions,
+        matchPatternsInDocument: handleMatchPatternsInDocument,
     };
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -92,6 +94,8 @@ function run() {
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
+
+    const patternMatcher = new PatternMatcher();
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
@@ -200,6 +204,41 @@ function run() {
 
     async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
+    }
+
+    async function handleMatchPatternsInDocument(params: Api.MatchPatternsToDocumentRequest): Promise<Api.MatchPatternsToDocumentResult> {
+        const { uri, patterns } = params;
+        const doc = uri && documents.get(uri);
+        if (!doc) {
+            return {
+                uri,
+                version: -1,
+                patternMatches: [],
+                message: 'Document not found.'
+            }
+        }
+        const text = doc.getText();
+        const version = doc.version;
+        const docSettings = await getSettingsToUseForDocument(doc);
+        const settings = { patterns: [], ...docSettings };
+        const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
+        const emptyResult = { ranges: [], message: undefined }
+        function mapResult(r: MatchResult): Api.PatternMatch {
+            const { name, elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
+            return {
+                name,
+                regexp: regexp.toString(),
+                elapsedTime: elapsedTimeMs,
+                matches: ranges,
+                message,
+            }
+        }
+        const patternMatches = result.map(mapResult)
+        return {
+            uri,
+            version,
+            patternMatches,
+        }
     }
 
     // Register API Handlers
@@ -354,6 +393,7 @@ function run() {
             // A text document was closed we clear the diagnostics
             connection.sendDiagnostics({ uri, diagnostics: [] });
         }),
+        patternMatcher,
     );
 
     connection.onCodeAction(

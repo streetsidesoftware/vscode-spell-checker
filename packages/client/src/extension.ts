@@ -48,7 +48,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     di.set('client', client);
     di.set('extensionContext', context);
 
-    ExtensionRegEx.activate(context);
+    ExtensionRegEx.activate(context, client);
 
     // Start the client.
     const clientDispose = client.start();
