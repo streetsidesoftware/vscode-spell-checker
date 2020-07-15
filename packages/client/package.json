@@ -227,6 +227,7 @@
                         "css",
                         "git-commit",
                         "go",
+                        "graphql",
                         "handlebars",
                         "haskell",
                         "html",
