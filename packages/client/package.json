@@ -333,7 +333,8 @@
                         "**/node_modules/**",
                         "**/vscode-extension/**",
                         "**/.git/objects/**",
-                        ".vscode"
+                        ".vscode",
+                        ".vscode-insiders"
                     ],
                     "description": "Specify paths/files to ignore. (Supports Globs)"
                 },
