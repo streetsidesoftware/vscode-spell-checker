@@ -1,6 +1,6 @@
 // import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CSpellUserSettings } from './cspellConfig';
-import { ExecRegExpResult, RegExpWorker, TimeoutError } from 'regexp-worker';
+import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { measurePromiseExecution } from './timer';
 
 export interface Pattern {
@@ -65,19 +65,15 @@ export function isPatternMatchTimeout(m: MatchResult): m is PatternMatchTimeout 
 
 function matchMatrix(worker: RegExpWorker, text: string, patterns: Pattern[]): Promise<PatternMatch[]> {
     const regexArray = patterns.map(pat => pat.regexp);
-    const result = worker.execRegExpMatrix(regexArray, [text])
+    const result = worker.matchRegExpArray(text, regexArray)
     .then(r => {
-        return r.matrix
-        // Flatten the result since we only sent 1 block of text.
-        .map(perRegExp => perRegExp.results[0])
-        .map((result, index) => toPatternMatch(patterns[index], result))
+        return r.results.map((result, index) => toPatternMatch(patterns[index], result))
     })
     return result;
 }
 
 function exec(worker: RegExpWorker, text: string, pattern: Pattern): Promise<MatchResult> {
-    return worker
-    .execRegExp(pattern.regexp, text)
+    return worker.matchRegExp(text, pattern.regexp)
     .then(r => toPatternMatch(pattern, r))
     .catch(e => toPatternMatchTimeout(pattern, e))
 }
@@ -96,17 +92,17 @@ function isTimeoutError(e: any | TimeoutError): e is TimeoutError {
     && typeof e.elapsedTimeMs === 'number'
 }
 
-function toPatternMatch(pattern: Pattern, result: ExecRegExpResult): PatternMatch {
+interface MatchRegExpResult {
+    readonly elapsedTimeMs: number;
+    readonly ranges: IterableIterator<Range>
+}
+
+function toPatternMatch(pattern: Pattern, result: MatchRegExpResult): PatternMatch {
     return {
         ...pattern,
         elapsedTimeMs: result.elapsedTimeMs,
-        ranges: result.matches.map(toRange)
+        ranges: [...result.ranges],
     }
-}
-
-function toRange(match: RegExpExecArray): Range {
-    const s = match.index;
-    return [s, s + match[0].length];
 }
 
 function resolvePatterns(patterns: string[], settings: PatternSettings): Pattern[] {
