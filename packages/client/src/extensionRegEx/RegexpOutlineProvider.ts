@@ -24,8 +24,15 @@ export class RegexpOutlineProvider implements vscode.TreeDataProvider<PatternMat
 	}
 
 	getTreeItem(offset: PatternMatch): vscode.TreeItem {
-        const treeItem = new vscode.TreeItem(offset.name);
-        treeItem.description = offset.elapsedTime.toFixed(2) + 'ms' + (offset.message ? ' ' + offset.message : '');
+		const treeItem = new vscode.TreeItem(offset.name);
+		const timeMs = offset.elapsedTime.toFixed(2);
+		const msg = offset.message ? ' ' + offset.message : ''
+		const parts = [
+			`${timeMs}ms`,
+			`(${offset.matches.length})`,
+			msg,
+		].filter(a => !!a);
+        treeItem.description = parts.join(' ');
 		return treeItem;
 	}
 }
