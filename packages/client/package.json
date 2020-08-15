@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
-        "vscode": "^1.45.0"
+        "vscode": "^1.48.0"
     },
     "extensionKind": [
         "workspace"
@@ -59,6 +59,14 @@
                     "command": "cSpell.addIgnoreWord",
                     "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
                     "group": "A_cspell@9"
+                }
+            ]
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "cSpellRegExpView",
+                    "name": "cSpell RegExp"
                 }
             ]
         },
@@ -157,11 +165,16 @@
         ],
         "jsonValidation": [
             {
-                "fileMatch": "cSpell.json",
-                "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell%404.0.53/cspell.schema.json"
-            },
-            {
-                "fileMatch": "cspell*.json",
+                "fileMatch": [
+                    "cspell.json",
+                    "cspell-ext.json",
+                    "cspell-default.json",
+                    "cspell-import.json",
+                    "cspell-imports.json",
+                    "cspell-include.json",
+                    "cspell-includes.json",
+                    "cSpell.json"
+                ],
                 "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell%404.0.53/cspell.schema.json"
             }
         ],
@@ -628,31 +641,31 @@
         "test-watch": "jest --watch"
     },
     "devDependencies": {
-        "@types/fs-extra": "^9.0.0",
-        "@types/jest": "^25.2.1",
-        "@types/kefir": "^3.8.2",
-        "@types/node": "^12.12.39",
-        "@types/source-map-support": "^0.4.2",
-        "@types/vscode": "^1.45.0",
-        "@typescript-eslint/eslint-plugin": "^2.33.0",
-        "@typescript-eslint/parser": "^2.33.0",
-        "cross-env": "^5.2.1",
-        "eslint": "^6.8.0",
-        "jest": "^25.5.4",
+        "@types/fs-extra": "^9.0.1",
+        "@types/jest": "^26.0.10",
+        "@types/kefir": "^3.8.5",
+        "@types/node": "^12.12.54",
+        "@types/source-map-support": "^0.5.2",
+        "@types/vscode": "^1.48.0",
+        "@typescript-eslint/eslint-plugin": "^3.9.0",
+        "@typescript-eslint/parser": "^3.9.0",
+        "cross-env": "^7.0.2",
+        "eslint": "^7.7.0",
+        "jest": "^26.4.0",
         "lorem-ipsum": "^2.0.3",
         "rimraf": "^3.0.2",
         "source-map-support": "^0.5.19",
-        "ts-jest": "^25.5.1",
-        "ts-loader": "^6.2.2",
-        "typescript": "^3.9.2",
-        "vscode-uri": "^2.1.1",
-        "webpack": "^4.43.0",
-        "webpack-cli": "^3.3.11"
+        "ts-jest": "^26.2.0",
+        "ts-loader": "^8.0.2",
+        "typescript": "^3.9.7",
+        "vscode-uri": "^2.1.2",
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12"
     },
     "dependencies": {
-        "comment-json": "^3.0.2",
-        "fs-extra": "^9.0.0",
-        "kefir": "^3.8.6",
+        "comment-json": "^3.0.3",
+        "fs-extra": "^9.0.1",
+        "kefir": "^3.8.7",
         "node-watch": "^0.6.4",
         "vscode-languageclient": "^6.1.3"
     }

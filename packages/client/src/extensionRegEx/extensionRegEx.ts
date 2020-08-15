@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
 import { PatternMatch } from '../server';
 import { toRegExp } from './evaluateRegExp';
+import { RegexpOutlineProvider } from './RegexpOutlineProvider';
 
 interface DisposableLike {
 	dispose(): any;
@@ -19,13 +20,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
 	const disposables = new Set<DisposableLike>();
+	const outline = new RegexpOutlineProvider();
+	vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
 
 	console.log('decorator sample is activated');
 
 	let timeout: NodeJS.Timer | undefined = undefined;
 
 	// create a decorator type that we use to decorate small numbers
-	const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
+	const decorationTypeExclude = vscode.window.createTextEditorDecorationType({
 		// borderWidth: '1px',
 		// borderStyle: 'solid',
 		overviewRulerColor: 'blue',
@@ -33,12 +36,12 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		light: {
 			// this color will be used in light color themes
 			// borderColor: 'darkblue',
-			backgroundColor: '#C0C0FF',
+			backgroundColor: '#C0C0FF44',
 		},
 		dark: {
 			// this color will be used in dark color themes
 			// borderColor: 'lightblue',
-			backgroundColor: '#347890',
+			backgroundColor: '#34789044',
 		}
 	});
 
@@ -51,7 +54,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			return;
 		}
 		if (!pattern) {
-			activeEditor.setDecorations(smallNumberDecorationType, []);
+			activeEditor.setDecorations(decorationTypeExclude, []);
 			statusBar.hide();
 			return;
 		}
@@ -71,26 +74,29 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 				// @todo: show the message.
 				return;
 			}
+			outline.refresh(result);
 			const activeEditor = vscode.window.activeTextEditor;
-			const processingTimeMs = result.patternMatches.map(m => m.elapsedTime).reduce((a, b) => a + b);
+			const processingTimeMs = result.patternMatches.map(m => m.elapsedTime).reduce((a, b) => a + b, 0);
+			const patternCount = result.patternMatches.map(m => m.matches.length > 0 ? 1 : 0).reduce((a, b) => a + b, 0);
+			const failedCount = result.patternMatches.map(m => m.message ? 1 : 0).reduce((a, b) => a + b, 0);
 			const flattenResults = result.patternMatches
 				.map(patternMatch => patternMatch.matches.map(range => ({ range, message: createHoverMessage(patternMatch) })))
 				.reduce((a, v) => a.concat(v), []);
-			const decorations: vscode.DecorationOptions[] | undefined = flattenResults.map(match => {
+			const decorations: vscode.DecorationOptions[] = flattenResults.map(match => {
 				const { range, message } = match;
 				const startPos = activeEditor.document.positionAt(range[0]);
 				const endPos = activeEditor.document.positionAt(range[1]);
-				return { range: new vscode.Range(startPos, endPos), message };
+				const decoration: vscode.DecorationOptions = { range: new vscode.Range(startPos, endPos), hoverMessage: message };
+				return decoration;
 			});
-			activeEditor.setDecorations(smallNumberDecorationType, decorations || []);
-			updateStatusBar(patterns.join(', '), result ? { elapsedTime: processingTimeMs, count: flattenResults.length } : undefined);
+			activeEditor.setDecorations(decorationTypeExclude, decorations);
+			updateStatusBar(`Patterns: ${patternCount} | ${failedCount}`, result ? { elapsedTime: processingTimeMs, count: flattenResults.length } : undefined);
 		});
 	}
 
 	function createHoverMessage(match: PatternMatch) {
-		const r = new vscode.MarkdownString();
-		r.appendMarkdown('Match: \n\n')
-		r.appendText(match.name + ' ' + match.elapsedTime + 'ms')
+		const r = (new vscode.MarkdownString())
+			.appendText(match.name + ' ' + match.elapsedTime.toFixed(2) + 'ms');
 		return r;
 	}
 
