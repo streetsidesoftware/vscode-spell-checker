@@ -1,6 +1,7 @@
 // import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CSpellUserSettings } from './cspellConfig';
 import { ExecRegExpResult, RegExpWorker, TimeoutError } from 'regexp-worker';
+import { measurePromiseExecution } from './timer';
 
 export interface Pattern {
     name: string;
@@ -31,7 +32,7 @@ export type PatternSettings = {
 }
 
 export class PatternMatcher {
-    private worker: RegExpWorker = new RegExpWorker();
+    private worker: RegExpWorker = new RegExpWorker(2000);
     public dispose = () => this.worker.dispose();
 
     async matchPatternsInText(patterns: string[], text: string, settings: PatternSettings): Promise<MatchResults> {
@@ -39,8 +40,8 @@ export class PatternMatcher {
 
         // Optimistically expect them all to work.
         try {
-            const fullResult = await matchMatrix(this.worker, text, resolvedPatterns);
-            return fullResult;
+            const result = await measurePromiseExecution(() => matchMatrix(this.worker, text, resolvedPatterns));
+            return result.r;
         } catch (e) {
             if (!isTimeoutError(e)) {
                 return Promise.reject(e);

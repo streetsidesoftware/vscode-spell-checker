@@ -58,10 +58,22 @@ const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
 
+const overRideDefaults: CSpellUserSettings = {
+    patterns: [
+        {
+            name: 'SpellCheckerDisable',
+            pattern: /(\bc?spell(?:-?checker)?::?)\s*disable(?!-line|-next)\b[\s\S]*?((?:\1\s*enable\b)|$)/gi
+        },{
+            name: 'Base64',
+            pattern: /(?:[a-z0-9\/+]{40,})(?:\s^\s*[a-z0-9\/+]{40,})*(?:\s^\s*[a-z0-9\/+]+=*)?/gim
+        }
+    ],
+};
+
 // Turn off the spell checker by default. The setting files should have it set.
 // This prevents the spell checker from running too soon.
 const defaultSettings: CSpellUserSettings = {
-    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings()),
+    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
     checkLimit: defaultCheckLimit,
     enabled: false,
 };
@@ -440,5 +452,14 @@ function run() {
         }
     }
 }
+
+process.on('unhandledRejection', error => {
+    // Will print "unhandledRejection err is not defined"
+    console.log('unhandledRejection', error);
+});
+
+process.on('uncaughtException', error => {
+    console.log('uncaughtException', error)
+});
 
 run();
