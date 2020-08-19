@@ -3,6 +3,7 @@ import { CSpellClient } from '../client';
 import { PatternMatch } from '../server';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineProvider } from './RegexpOutlineProvider';
+import { uniqueFilter } from '../util';
 
 interface DisposableLike {
 	dispose(): any;
@@ -31,7 +32,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	const decorationTypeExclude = vscode.window.createTextEditorDecorationType({
 		// borderWidth: '1px',
 		// borderStyle: 'solid',
-		overviewRulerColor: 'blue',
+		overviewRulerColor: 'green',
 		overviewRulerLane: vscode.OverviewRulerLane.Right,
 		light: {
 			// this color will be used in light color themes
@@ -46,7 +47,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	});
 
 	let activeEditor = vscode.window.activeTextEditor;
-	let pattern: string | undefined = (/(```+)[^\1]+?\1/g).toString();
+	let pattern: string | undefined = '/\\w+/';
 
 	async function updateDecorations() {
 		disposeCurrent();
@@ -62,7 +63,10 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		const version = document.version;
 		const config = await client.getConfigurationForDocument(document);
 		const patterns = (config.docSettings?.ignoreRegExpList || [])
-		.map(a => a.toString());
+		.map(a => a.toString())
+		.concat([pattern])
+		.filter(uniqueFilter())
+
 		client.matchPatternsInDocument(document, patterns).then(result => {
 			if (!vscode.window.activeTextEditor
 				|| document.version !== version
@@ -80,6 +84,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			const patternCount = result.patternMatches.map(m => m.matches.length > 0 ? 1 : 0).reduce((a, b) => a + b, 0);
 			const failedCount = result.patternMatches.map(m => m.message ? 1 : 0).reduce((a, b) => a + b, 0);
 			const flattenResults = result.patternMatches
+				.filter(patternMatch => patternMatch.regexp === pattern)
 				.map(patternMatch => patternMatch.matches.map(range => ({ range, message: createHoverMessage(patternMatch) })))
 				.reduce((a, v) => a.concat(v), []);
 			const decorations: vscode.DecorationOptions[] = flattenResults.map(match => {
@@ -106,7 +111,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			timeout = undefined;
 		}
 		updateStatusBar(pattern);
-		timeout = setTimeout(updateDecorations, 500);
+		timeout = setTimeout(updateDecorations, 100);
 	}
 
 	interface StatusBarInfo {
@@ -148,7 +153,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		// current?.execResult?.dispose();
 	}
 
-	function userTestRegExp() {
+	function userTestRegExp(defaultRegexp?: string) {
 		function validateInput(input: string) {
 			try {
 				toRegExp(input, 'g');
@@ -156,6 +161,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 				return e.toString();
 			}
 		}
+		pattern = defaultRegexp || pattern;
 		vscode.window.showInputBox({
 			prompt: 'Enter a Regular Expression',
 			placeHolder: 'Example: /\b\w+/g',
@@ -177,6 +183,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		});
 	}
 
+	function userSelectRegExp(selectedRegExp?: string) {
+		if (pattern === selectedRegExp) {
+			pattern = undefined;
+		} else {
+			pattern = selectedRegExp;
+		}
+		triggerUpdateDecorations();
+	}
+
 	function dispose() {
 		disposeCurrent();
 		for (const d of disposables) {
@@ -188,5 +203,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		{dispose},
 		statusBar,
         vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
+        vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
 	);
 }

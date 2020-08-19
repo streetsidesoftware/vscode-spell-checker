@@ -32,7 +32,12 @@ export class RegexpOutlineProvider implements vscode.TreeDataProvider<PatternMat
 			`(${offset.matches.length})`,
 			msg,
 		].filter(a => !!a);
-        treeItem.description = parts.join(' ');
+		treeItem.description = parts.join(' ');
+		treeItem.command = {
+			command: 'cSpellRegExpTester.selectRegExp',
+			arguments: [offset.regexp],
+			title: 'Select RegExp'
+		}
 		return treeItem;
 	}
 }
