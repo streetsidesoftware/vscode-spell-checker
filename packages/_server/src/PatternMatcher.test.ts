@@ -7,7 +7,7 @@ const settings = {
 };
 
 describe('Validate PatternMatcher', () => {
-    testMatcher('', async (matcher) => {
+    testMatcher('email', async (matcher) => {
         const result = await matcher.matchPatternsInText(['email'], sampleText, settings);
         const r = mapResults(result);
         expect(r.get('Email')).toBeDefined();
@@ -17,6 +17,19 @@ describe('Validate PatternMatcher', () => {
         if (isPatternMatch(matchedEmails)) {
             const emails = matchedEmails.ranges.map(r => extract(sampleText, r));
             expect(emails).toEqual(['<info@example.com>']);
+        }
+    });
+
+    testMatcher('patterns', async (matcher) => {
+        const result = await matcher.matchPatternsInText([{ name: 'email', regexp: (/(?<![\w.+\-_])[\w.+\-_]+@[\w.+\-_]+/g).toString()}], sampleText, settings);
+        const r = mapResults(result);
+        expect(r.get('email')).toBeDefined();
+        const matchedEmails = r.get('email')!;
+        expect(isPatternMatchTimeout(matchedEmails)).toBe(false);
+        expect(isPatternMatch(matchedEmails)).toBe(true);
+        if (isPatternMatch(matchedEmails)) {
+            const emails = matchedEmails.ranges.map(r => extract(sampleText, r));
+            expect(emails).toEqual(['info@example.com']);
         }
     });
 });

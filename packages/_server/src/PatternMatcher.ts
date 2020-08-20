@@ -31,11 +31,18 @@ export type PatternSettings = {
     patterns: CSpellUserSettings['patterns'];
 }
 
+export interface NamedPattern {
+    name: string;
+    regexp: string;
+}
+
+type Patterns = (string | NamedPattern)[];
+
 export class PatternMatcher {
     private worker: RegExpWorker = new RegExpWorker(2000);
     public dispose = () => this.worker.dispose();
 
-    async matchPatternsInText(patterns: string[], text: string, settings: PatternSettings): Promise<MatchResults> {
+    async matchPatternsInText(patterns: Patterns, text: string, settings: PatternSettings): Promise<MatchResults> {
         const resolvedPatterns = resolvePatterns(patterns, settings);
 
         // Optimistically expect them all to work.
@@ -105,18 +112,30 @@ function toPatternMatch(pattern: Pattern, result: MatchRegExpResult): PatternMat
     }
 }
 
-function resolvePatterns(patterns: string[], settings: PatternSettings): Pattern[] {
+function resolvePatterns(patterns: Patterns, settings: PatternSettings): Pattern[] {
     const knownPatterns = extractPatternsFromSettings(settings)
     const matchingPatterns = patterns
-        .map(pat => knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')}))
+        .map(pat => resolvePattern(pat, knownPatterns))
     return matchingPatterns;
 }
 
+function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, Pattern>): Pattern {
+    if (isNamedPattern(pat)) {
+        return {...pat, regexp: toRegExp(pat.regexp)};
+    }
+    return knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')});
+}
+
+function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {
+    return typeof pattern !== 'string';
+}
+
 function extractPatternsFromSettings(settings: PatternSettings): Map<string, Pattern> {
-    const knownPatterns = settings.patterns
-        ?.map(({name, pattern}) => ({ name, regexp: toRegExp(pattern) }))
-        .map(pat => [pat.name.toLowerCase(), pat] as [string, Pattern])
-    return new Map(knownPatterns || []);
+    const patterns = settings.patterns
+    ?.map(({name, pattern}) => ({ name, regexp: toRegExp(pattern) })) || [];
+    const knownPatterns = patterns.map(pat => [pat.name.toLowerCase(), pat] as [string, Pattern]);
+    const knownRegexp = patterns.map(pat => [pat.regexp.toString(), pat] as [string, Pattern]);
+    return new Map(knownPatterns.concat(knownRegexp));
 }
 
 export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
@@ -124,7 +143,7 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
 
     const match = r.match(/^\/(.*)\/([gimsuy]*)$/);
     if (match) {
-        return new RegExp(match[1], match[2] || defaultFlags);
+        return new RegExp(match[1], match[2] || undefined);
     }
     return new RegExp(r, defaultFlags);
 }

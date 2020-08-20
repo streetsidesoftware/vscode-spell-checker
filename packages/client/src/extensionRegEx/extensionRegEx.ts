@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
-import { PatternMatch } from '../server';
+import { PatternMatch, CSpellUserSettings, NamedPattern } from '../server';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineProvider } from './RegexpOutlineProvider';
 import { uniqueFilter } from '../util';
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		// borderWidth: '1px',
 		// borderStyle: 'solid',
 		overviewRulerColor: 'green',
-		overviewRulerLane: vscode.OverviewRulerLane.Right,
+		overviewRulerLane: vscode.OverviewRulerLane.Center,
 		light: {
 			// this color will be used in light color themes
 			// borderColor: 'darkblue',
@@ -62,10 +62,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		const document = activeEditor.document;
 		const version = document.version;
 		const config = await client.getConfigurationForDocument(document);
-		const patterns = (config.docSettings?.ignoreRegExpList || [])
-		.map(a => a.toString())
-		.concat([pattern])
-		.filter(uniqueFilter())
+		const extractedPatterns = extractPatternsFromConfig(config.docSettings, [pattern]);
+		const patterns = extractedPatterns.map(p => p.pattern);
 
 		client.matchPatternsInDocument(document, patterns).then(result => {
 			if (!vscode.window.activeTextEditor
@@ -78,7 +76,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 				// @todo: show the message.
 				return;
 			}
-			outline.refresh(result);
+			const byCategory: Map<string, PatternMatch[]> | undefined = result && new Map();
+			result?.patternMatches.forEach((m, i) => {
+				const category = extractedPatterns[i].category;
+				const matches = byCategory.get(category) || [];
+				matches.push(m);
+				byCategory.set(category, matches);
+			})
+
+			outline.refresh(byCategory);
 			const activeEditor = vscode.window.activeTextEditor;
 			const processingTimeMs = result.patternMatches.map(m => m.elapsedTime).reduce((a, b) => a + b, 0);
 			const patternCount = result.patternMatches.map(m => m.matches.length > 0 ? 1 : 0).reduce((a, b) => a + b, 0);
@@ -205,4 +211,22 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
         vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
         vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
 	);
+}
+
+interface ExtractedPattern {
+	category: string;
+	pattern: string | NamedPattern;
+}
+
+function extractPatternsFromConfig(config: CSpellUserSettings | undefined, userPatterns: string[]): ExtractedPattern[] {
+	const extractedPatterns: ExtractedPattern[] = [];
+
+	userPatterns.forEach(p => extractedPatterns.push({ category: 'User Patterns', pattern: p }));
+	config?.includeRegExpList?.forEach(p => extractedPatterns.push({ category: 'Include Regexp List', pattern: p.toString()}));
+	config?.ignoreRegExpList?.forEach(p => extractedPatterns.push({ category: 'Exclude Regexp List', pattern: p.toString()}));
+	config?.patterns?.forEach(p => extractedPatterns.push({ category: 'Patterns', pattern: {
+		name: p.name,
+		regexp: p.pattern.toString(),
+	}}));
+	return extractedPatterns;
 }

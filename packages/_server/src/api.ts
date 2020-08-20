@@ -62,8 +62,13 @@ export interface TextDocumentRef {
     uri: string;
 }
 
+export interface NamedPattern {
+    name: string;
+    regexp: string;
+}
+
 export interface MatchPatternsToDocumentRequest extends TextDocumentRef {
-    patterns: string[];
+    patterns: (string | NamedPattern)[];
 }
 
 export type StartIndex = number;
