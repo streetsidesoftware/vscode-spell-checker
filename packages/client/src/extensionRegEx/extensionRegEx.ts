@@ -3,7 +3,6 @@ import { CSpellClient } from '../client';
 import { PatternMatch, CSpellUserSettings, NamedPattern } from '../server';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineProvider } from './RegexpOutlineProvider';
-import { uniqueFilter } from '../util';
 
 interface DisposableLike {
 	dispose(): any;
