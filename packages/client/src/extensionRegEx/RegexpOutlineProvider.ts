@@ -61,6 +61,7 @@ function createLeaf(offset: PatternMatch): OutlineItem {
 		msg,
 	].filter(a => !!a);
 	treeItem.description = parts.join(' ');
+	treeItem.tooltip = offset.regexp
 	treeItem.command = {
 		command: 'cSpellRegExpTester.selectRegExp',
 		arguments: [offset.regexp],
