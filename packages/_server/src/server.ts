@@ -60,13 +60,6 @@ const defaultCheckLimit = Validator.defaultCheckLimit;
 
 const overRideDefaults: CSpellUserSettings = {
     patterns: [
-        {
-            name: 'SpellCheckerDisable',
-            pattern: /(\bc?spell(?:-?checker)?::?)\s*disable(?!-line|-next)\b[\s\S]*?((?:\1\s*enable\b)|$)/gi
-        },{
-            name: 'Base64',
-            pattern: /(?:[a-z0-9\/+]{40,})(?:\s^\s*[a-z0-9\/+]{40,})*(?:\s^\s*[a-z0-9\/+]+=*)?/gim
-        }
     ],
 };
 
