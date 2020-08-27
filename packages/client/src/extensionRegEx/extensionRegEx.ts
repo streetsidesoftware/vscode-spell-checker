@@ -23,8 +23,6 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	const outline = new RegexpOutlineProvider();
 	vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
 
-	console.log('decorator sample is activated');
-
 	let timeout: NodeJS.Timer | undefined = undefined;
 
 	// create a decorator type that we use to decorate small numbers
@@ -48,8 +46,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	let activeEditor = vscode.window.activeTextEditor;
 	let pattern: string | undefined = '/\\w+/';
 
+	let isActive = fetchIsEnabledFromConfig();
+
 	async function updateDecorations() {
 		disposeCurrent();
+		if (!isActive) {
+			activeEditor?.setDecorations(decorationTypeExclude, []);
+			statusBar.hide();
+			return;
+		}
+
 		if (!activeEditor) {
 			return;
 		}
@@ -197,6 +203,10 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		triggerUpdateDecorations();
 	}
 
+	function updateIsActive() {
+		isActive = fetchIsEnabledFromConfig();
+	}
+
 	function dispose() {
 		disposeCurrent();
 		for (const d of disposables) {
@@ -204,11 +214,13 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		}
 		disposables.clear();
 	}
+
     context.subscriptions.push(
 		{dispose},
 		statusBar,
         vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
-        vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
+		vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
+		vscode.workspace.onDidChangeConfiguration(updateIsActive),
 	);
 }
 
@@ -228,4 +240,9 @@ function extractPatternsFromConfig(config: CSpellUserSettings | undefined, userP
 		regexp: p.pattern.toString(),
 	}}));
 	return extractedPatterns;
+}
+
+function fetchIsEnabledFromConfig(): boolean {
+	const cfg = vscode.workspace.getConfiguration('cSpell');
+	return !!cfg && !!cfg.get('experimental.enableRegexpView');
 }
