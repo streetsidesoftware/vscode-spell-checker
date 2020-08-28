@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 // import DevTools from 'mobx-react-devtools';
-import Tab from '@material/react-tab';
-import TabBar from '@material/react-tab-bar';
-import {AppState, Tab as AppTab} from '../AppState';
+import { Tab, TabBar } from '@rmwc/tabs';
+import { AppState, Tab as AppTab} from '../AppState';
 import { PanelConfig } from './panelConfig';
 import { isConfigTarget } from '../../api/settings/settingsHelper';
 import { PanelDictionaries } from './panelDictionaries';
@@ -28,8 +27,8 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
         return (
             <div>
                 <TabBar
-                    activeIndex={activeTabIndex}
-                    handleActiveIndexUpdate={this.activateTab}
+                    activeTabIndex={activeTabIndex}
+                    onActivate={evt => this.activateTab(evt.detail.index)}
                 >
                     {appState.tabs.map((tab, index) =>
                         <Tab key={index}>

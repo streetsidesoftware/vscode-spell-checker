@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -36,7 +37,11 @@ const baseConfig = {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true,
-                            includePaths: ['node_modules'],
+                            implementation: require('sass'),
+                            webpackImporter: false,
+                            sassOptions: {
+                                includePaths: ['node_modules'],
+                            },
                         },
                     },
                 ],

@@ -8,7 +8,7 @@ Getting started
 
 from the `_settingsViewer` directory do the following:
 * `npm install`
-* `npm build`
+* `npm run build`
 * `npm test` -- just to make sure everything is working as expected
 * `npm start:dev` -- Re-build and launch dev server.
 

@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {observable, toJS, computed} from 'mobx';
 import {observer} from 'mobx-react';
-import Button from '@material/react-button';
-import {Cell, Grid, Row} from '@material/react-layout-grid';
+import { Button } from '@rmwc/button';
+import {GridCell, Grid, GridRow} from '@rmwc/grid';
 import {
     ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
 } from '../api/message';
@@ -13,8 +13,6 @@ import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '.
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { extractConfig } from '../api/settings/settingsHelper';
-// import dcopy from 'deep-copy'; // Does not work because there isn't really a default.
-const dcopy: <T>(v: T) => T = require('deep-copy');
 
 require('./app.scss');
 
@@ -79,18 +77,18 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
             <ErrorBoundary>
                 <h2>Locales</h2>
                 <Grid>
-                    <Row key="title">
-                        <Cell columns={2}>
+                    <GridRow key="title">
+                        <GridCell span={2}>
                             Scope
-                        </Cell>
-                        <Cell columns={10}>
+                        </GridCell>
+                        <GridCell span={10}>
                             Value
-                        </Cell>
-                    </Row>
-                    {localeDisplay.map(([field, name]) => <Row key={field}>
-                        <Cell columns={2}>{name}</Cell>
-                        <Cell columns={10}>{getLocales(field)}</Cell>
-                    </Row>)}
+                        </GridCell>
+                    </GridRow>
+                    {localeDisplay.map(([field, name]) => <GridRow key={field}>
+                        <GridCell span={2}>{name}</GridCell>
+                        <GridCell span={10}>{getLocales(field)}</GridCell>
+                    </GridRow>)}
 
                 </Grid>
                 <div>
@@ -177,7 +175,7 @@ function calcFileConfig() {
 messageBus.listenFor(
     'ConfigurationChangeMessage',
     (msg: ConfigurationChangeMessage) => {
-        console.log(`ConfigurationChangeMessage`);
+        console.log('ConfigurationChangeMessage');
         appState.settings = msg.value.settings;
     }
 );
@@ -185,7 +183,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectTabMessage',
     (msg: SelectTabMessage) => {
-        console.log(`SelectTabMessage`);
+        console.log('SelectTabMessage');
         appState.activeTab = msg.value;
     }
 );
@@ -193,7 +191,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectFolderMessage',
     (msg: SelectFolderMessage) => {
-        console.log(`SelectFolderMessage`);
+        console.log('SelectFolderMessage');
         appState.settings.activeFolderUri = msg.value;
     }
 );
@@ -201,7 +199,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'SelectFileMessage',
     (msg: SelectFileMessage) => {
-        console.log(`SelectFileMessage`);
+        console.log('SelectFileMessage');
         appState.settings.activeFileUri = msg.value;
         calcFileConfig();
         postSettings();
@@ -211,7 +209,7 @@ messageBus.listenFor(
 messageBus.listenFor(
     'EnableLanguageIdMessage',
     (msg: EnableLanguageIdMessage) => {
-        console.log(`EnableLanguageIdMessage`);
+        console.log('EnableLanguageIdMessage');
         console.log(JSON.stringify(msg, null, 2));
         const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
         const { target = foundConfig.target, languageId, enable: enabled } = msg.value;

@@ -2,16 +2,13 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import MaterialIcon from '@material/react-material-icon';
-import { Checkbox } from '@material/react-checkbox';
-
-function initRipple(){}
+import {List, SimpleListItem } from '@rmwc/list';
+import { Checkbox } from '@rmwc/checkbox';
 
 @observer
-export class SectionLanguage extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
+export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
-        const handleSelect = (index) => this.handleSelect(index);
+        // const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
         const inherited = langConfig.inherited;
@@ -20,17 +17,19 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
             <div>
                 <h2>Language {note}</h2>
                 <div>
-                    <List twoLine handleSelect={handleSelect}>
+                    <List twoLine>
                         {langConfig.languages.map(entry => {
                             const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
                             const icon = hasLocales ? 'import_contacts' : 'block';
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
-                            return (
-                            <ListItem key={entry.name} role='checkbox'>
-                                <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
-                                <ListItemText primaryText={entry.name} secondaryText={subText} />
-                                <ListItemMeta meta={<Checkbox checked={entry.enabled} initRipple={initRipple} />}/>
-                            </ListItem>);
+                            const r = (
+                            <SimpleListItem key={entry.name}
+                                graphic={icon}
+                                text={entry.name}
+                                secondaryText={subText}
+                                meta={<Checkbox checked={entry.enabled}/>}
+                            />);
+                            return r;
 
                         })}
                     </List>

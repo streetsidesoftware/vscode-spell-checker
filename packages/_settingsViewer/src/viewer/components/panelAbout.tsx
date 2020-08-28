@@ -2,16 +2,14 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
-import { Button } from '@material/react-button';
+import { Button } from '@rmwc/button';
 import * as spellCheckIcon from '../images/SpellCheck.xs.png';
-import { Checkbox } from '@material/react-checkbox';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import MaterialIcon from '@material/react-material-icon';
-import { Grid, Row, Cell } from '@material/react-layout-grid';
+import { Checkbox } from '@rmwc/checkbox';
+import { List, ListItem, ListItemGraphic, ListItemText, ListItemMeta, ListItemPrimaryText, } from '@rmwc/list';
+import { Grid, GridRow, GridCell } from '@rmwc/grid';
 
 const vsCodeApi = new VsCodeWebviewApi();
 
-function initRipple() {}
 @observer
 export class PanelAbout extends React.Component<{appState: AppState}, {}> {
     render() {
@@ -31,22 +29,24 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                     Refresh
                 </Button>
                 <h2>Options</h2>
-                <Row>
-                    <Cell columns={6}>
+                <GridRow>
+                    <GridCell span={6}>
                     <List>
                         <ListItem role="checkbox">
-                            <ListItemGraphic graphic={<MaterialIcon icon="settings"/>} />
-                            <ListItemText primaryText="Debug Mode" />
-                            <ListItemMeta meta={
+                            <ListItemGraphic icon="settings" />
+                            <ListItemText>
+                                <ListItemPrimaryText>Debug Mode</ListItemPrimaryText>
+                            </ListItemText>
+                            <ListItemMeta>
                                 <Checkbox
                                     checked={appState.debugMode}
-                                    onChange={(evt) => this.props.appState.actionSetDebugMode(evt.target.checked)}
-                                    initRipple={initRipple} />
-                            }/>
+                                    onChange={(evt) => this.props.appState.actionSetDebugMode(evt.currentTarget.checked)}
+                                />
+                            </ListItemMeta>
                         </ListItem>
                     </List>
-                    </Cell>
-                </Row>
+                    </GridCell>
+                </GridRow>
                 {/* <DevTools /> */}
                 {appState.debugMode ?
                 <div>

@@ -5,10 +5,10 @@ import { ConfigTarget } from '../../api/settings';
 import { ConfigTargets } from '../../api/settings/settingsHelper';
 import { SectionLanguage } from './sectionLanguage';
 import { SectionFiletypes } from './sectionFiletypes';
-import Select from '@material/react-select';
+import { Select } from '@rmwc/select';
 
 @observer
-export class PanelConfig extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
+export class PanelConfig extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
         const appState = this.props.appState;
         const target = this.props.target;

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import List, {ListItem, ListItemText, ListItemGraphic, ListItemMeta} from '@material/react-list';
-import MaterialIcon from '@material/react-material-icon';
+import {List, SimpleListItem} from '@rmwc/list';
 import { DictionaryEntry } from '../../api/settings';
 
 
 @observer
-export class SectionDictionaries extends React.Component<{dictionaries: DictionaryEntry[], sectionTitle?: string}, {}> {
+export class SectionDictionaries extends React.Component<{dictionaries: DictionaryEntry[]; sectionTitle?: string}, {}> {
     render() {
         const dictionaries = this.props.dictionaries;
         const title = this.props.sectionTitle || 'Dictionaries';
@@ -21,12 +20,13 @@ export class SectionDictionaries extends React.Component<{dictionaries: Dictiona
                             ? 'code'
                             : hasLocales ? 'import_contacts'
                             : 'select_all';
-                        return (
-                        <ListItem key={dict.name}>
-                            <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
-                            <ListItemText primaryText={dict.name} secondaryText={dict.description} />
-                            <ListItemMeta meta={dict.locales.join(', ')} />
-                        </ListItem>);
+                        return
+                        (<SimpleListItem key={dict.name}
+                            graphic={icon}
+                            text={dict.name}
+                            secondaryText={dict.description}
+                            meta={dict.locales.join(', ')}
+                        />)
                     })}
                 </List>
             </div>

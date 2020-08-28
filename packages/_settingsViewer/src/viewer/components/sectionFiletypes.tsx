@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import { ChipSet, Chip } from '@material/react-chips';
+import { ChipSet, Chip } from '@rmwc/chip';
 
-export class SectionFiletypes extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
+export class SectionFiletypes extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
         const appState = this.props.appState;
         const target = this.props.target;
@@ -18,7 +18,7 @@ export class SectionFiletypes extends React.Component<{appState: AppState, targe
             <div>
                 <h2>File Types and Programming Languages {note}</h2>
                 <div>
-                    <ChipSet filter selectedChipIds={config.languageIdsEnabled} >
+                    <ChipSet filter >
                         {appState.settings.knownLanguageIds.map(langId => (
                             <Chip
                                 selected={setOfEnabledIds.has(langId)}

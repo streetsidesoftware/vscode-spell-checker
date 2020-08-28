@@ -1,14 +1,11 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
-import Select from '@material/react-select';
+import { Select } from '@rmwc/select';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import { Checkbox } from '@material/react-checkbox';
-import MaterialIcon from '@material/react-material-icon';
-
-function initRipple() {}
+import { List, ListItem, ListItemGraphic, ListItemText, ListItemMeta, ListItemPrimaryText, SimpleListItem } from '@rmwc/list';
+import { Checkbox } from '@rmwc/checkbox';
 
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
@@ -42,29 +39,29 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                 </Grid>
                 */}
                         <List>
-                            <ListItem role="checkbox">
-                                <ListItemGraphic graphic={<MaterialIcon icon="description"/>} />
-                                <ListItemText primaryText={`File enabled`} />
-                                <ListItemMeta meta={
-                                    <Checkbox
-                                        disabled={true}
-                                        checked={fileEnabled}
-                                        initRipple={initRipple} />
-                                }/>
-                            </ListItem>
-                            <ListItem role="checkbox" shouldToggleCheckbox={true} onClick={evt => {
+                            <SimpleListItem role="checkbox"
+                                graphic="description"
+                                text="File enabled"
+                                meta={
+                                <Checkbox
+                                    disabled={true}
+                                    checked={fileEnabled}
+                                />
+                                }
+                            />
+                            <ListItem role="checkbox" onClick={() => {
                                     this.enableLanguageId(!languageEnabled);
                                 }}>
-                                <ListItemGraphic graphic={<MaterialIcon icon="code"/>} />
-                                <ListItemText
-                                    primaryText={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
-                                />
-                                <ListItemMeta meta={
+                                <ListItemGraphic icon="code" />
+                                <ListItemText>
+                                    <ListItemPrimaryText><label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label></ListItemPrimaryText>
+                                </ListItemText>
+                                <ListItemMeta>
                                     <Checkbox
-                                        nativeControlId="checkbox-language-enabled"
+                                        id="checkbox-language-enabled"
                                         checked={languageEnabled}
-                                        initRipple={initRipple} />
-                                }/>
+                                    />
+                                </ListItemMeta>
                             </ListItem>
                         </List>
 
