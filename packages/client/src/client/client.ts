@@ -12,6 +12,7 @@ import {
     ServerRequestMethodConstants,
     SplitTextIntoWordsResult,
     ServerRequestMethodRequests,
+    NamedPattern,
 } from '../server';
 import * as Settings from '../settings';
 
@@ -37,6 +38,7 @@ const methodNames: ServerRequestMethodConstants = {
     getConfigurationForDocument: 'getConfigurationForDocument',
     splitTextIntoWords: 'splitTextIntoWords',
     spellingSuggestions: 'spellingSuggestions',
+    matchPatternsInDocument: 'matchPatternsInDocument',
 };
 
 export class CSpellClient {
@@ -130,6 +132,10 @@ export class CSpellClient {
         }
 
         return this.sendRequest(methodNames.getConfigurationForDocument, { uri: uri.toString(), languageId });
+    }
+
+    public async matchPatternsInDocument(document: vscode.TextDocument, patterns: (string | NamedPattern)[]) {
+        return this.sendRequest(methodNames.matchPatternsInDocument, { uri: document.uri.toString(), patterns })
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {

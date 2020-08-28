@@ -2,5 +2,9 @@
     "version": "0.1",
     "import": [
         "../../cSpell.json"
+    ],
+    "enableFiletypes": [
+        "literate haskell",
+        "shellscript"
     ]
 }

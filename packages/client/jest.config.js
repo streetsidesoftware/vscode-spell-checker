@@ -1,6 +1,5 @@
 module.exports = {
     verbose: true,
-    browser: false,
     roots: [
         './src'
     ],

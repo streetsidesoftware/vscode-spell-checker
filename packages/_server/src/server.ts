@@ -22,7 +22,14 @@ import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './cspellConfig';
 import { getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import * as Api from './api';
-import { DocumentSettings, SettingsCspell, isUriAllowed, isUriBlackListed, correctBadSettings } from './documentSettings';
+import {
+    correctBadSettings,
+    DocumentSettings,
+    isUriAllowed,
+    isUriBlackListed,
+    SettingsCspell,
+    stringifyPatterns,
+} from './documentSettings';
 import {
     log,
     logError,
@@ -32,6 +39,7 @@ import {
     setWorkspaceBase,
     setWorkspaceFolders,
 } from './log';
+import { PatternMatcher, MatchResult } from './PatternMatcher';
 
 log('Starting Spell Checker Server');
 
@@ -50,10 +58,15 @@ const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
 
+const overRideDefaults: CSpellUserSettings = {
+    patterns: [
+    ],
+};
+
 // Turn off the spell checker by default. The setting files should have it set.
 // This prevents the spell checker from running too soon.
 const defaultSettings: CSpellUserSettings = {
-    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings()),
+    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
     checkLimit: defaultCheckLimit,
     enabled: false,
 };
@@ -75,6 +88,7 @@ function run() {
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
         spellingSuggestions: handleSpellingSuggestions,
+        matchPatternsInDocument: handleMatchPatternsInDocument,
     };
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -83,9 +97,10 @@ function run() {
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
-    // Create a simple text document manager. The text document manager
-    // supports full document sync only
+    // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
+
+    const patternMatcher = new PatternMatcher();
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
@@ -166,8 +181,8 @@ function run() {
     async function handleGetConfigurationForDocument(params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> {
         const { uri, languageId } = params;
         const doc = uri && documents.get(uri);
-        const docSettings = doc && (await getSettingsToUseForDocument(doc)) || undefined;
-        const settings = await getActiveUriSettings(uri);
+        const docSettings = stringifyPatterns(doc && (await getSettingsToUseForDocument(doc)) || undefined);
+        const settings = stringifyPatterns(await getActiveUriSettings(uri));
         return {
             languageEnabled: languageId && doc ? await isLanguageEnabled(doc, settings) : undefined,
             fileEnabled: uri ? !await isUriExcluded(uri) : undefined,
@@ -194,6 +209,41 @@ function run() {
 
     async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
+    }
+
+    async function handleMatchPatternsInDocument(params: Api.MatchPatternsToDocumentRequest): Promise<Api.MatchPatternsToDocumentResult> {
+        const { uri, patterns } = params;
+        const doc = uri && documents.get(uri);
+        if (!doc) {
+            return {
+                uri,
+                version: -1,
+                patternMatches: [],
+                message: 'Document not found.'
+            }
+        }
+        const text = doc.getText();
+        const version = doc.version;
+        const docSettings = await getSettingsToUseForDocument(doc);
+        const settings = { patterns: [], ...docSettings };
+        const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
+        const emptyResult = { ranges: [], message: undefined }
+        function mapResult(r: MatchResult): Api.PatternMatch {
+            const { name, elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
+            return {
+                name,
+                regexp: regexp.toString(),
+                elapsedTime: elapsedTimeMs,
+                matches: ranges,
+                message,
+            }
+        }
+        const patternMatches = result.map(mapResult)
+        return {
+            uri,
+            version,
+            patternMatches,
+        }
     }
 
     // Register API Handlers
@@ -227,7 +277,6 @@ function run() {
                         debounce(dsp => timer(dsp.settings.spellCheckDelayMs || defaultDebounce)
                             .pipe(filter(() => !isValidationBusy))
                         ),
-                        tap(dsp => log(`blocked? ${blockValidation.has(dsp.doc.uri)}`, dsp.doc.uri)),
                         filter(dsp => !blockValidation.has(dsp.doc.uri)),
                         flatMap(validateTextDocument),
                         ).subscribe(diag => connection.sendDiagnostics(diag))
@@ -296,7 +345,7 @@ function run() {
                     logInfo('Validate File', uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);
                     const settings = correctBadSettings(settingsToUse);
-                    const diagnostics = await Validator.validateTextDocument(doc, settings);
+                    const diagnostics: vscode.Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };
                 }
@@ -349,6 +398,7 @@ function run() {
             // A text document was closed we clear the diagnostics
             connection.sendDiagnostics({ uri, diagnostics: [] });
         }),
+        patternMatcher,
     );
 
     connection.onCodeAction(
@@ -395,5 +445,14 @@ function run() {
         }
     }
 }
+
+process.on('unhandledRejection', error => {
+    // Will print "unhandledRejection err is not defined"
+    console.log('unhandledRejection', error);
+});
+
+process.on('uncaughtException', error => {
+    console.log('uncaughtException', error)
+});
 
 run();

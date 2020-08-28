@@ -2,6 +2,7 @@ out/*
 dist/*
 coverage/*
 server/*
+regexWorker/*
 settingsViewer/*
 node_modules
 temp
