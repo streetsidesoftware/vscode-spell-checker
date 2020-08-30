@@ -7,6 +7,8 @@ import { SectionLanguage } from './sectionLanguage';
 import { SectionFiletypes } from './sectionFiletypes';
 import { Select } from '@rmwc/select';
 
+import '@rmwc/select/styles';
+
 @observer
 export class PanelConfig extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {

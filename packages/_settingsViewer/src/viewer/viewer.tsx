@@ -1,3 +1,6 @@
+import './app.scss';
+import '@rmwc/theme/styles';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {reaction, toJS} from 'mobx';
@@ -6,8 +9,6 @@ import {AppState} from './AppState';
 import { SettingsViewer } from './components/SettingsViewer';
 import { MessageBus } from '../api';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-
-require('./app.scss');
 
 const messageBus = new MessageBus(new VsCodeWebviewApi());
 const appState = new AppState(messageBus);

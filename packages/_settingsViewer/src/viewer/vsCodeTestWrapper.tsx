@@ -1,3 +1,6 @@
+import './app.scss';
+import '@rmwc/theme/styles';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {observable, toJS, computed} from 'mobx';
@@ -14,7 +17,8 @@ import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { extractConfig } from '../api/settings/settingsHelper';
 
-require('./app.scss');
+import '@rmwc/button/styles';
+import '@rmwc/grid/styles';
 
 class AppState {
     @observable currentSample: number = 0;

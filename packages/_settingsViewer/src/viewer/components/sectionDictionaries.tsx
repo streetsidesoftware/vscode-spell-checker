@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import {List, SimpleListItem} from '@rmwc/list';
 import { DictionaryEntry } from '../../api/settings';
 
+import '@rmwc/list/styles'
 
 @observer
 export class SectionDictionaries extends React.Component<{dictionaries: DictionaryEntry[]; sectionTitle?: string}, {}> {
@@ -20,13 +21,14 @@ export class SectionDictionaries extends React.Component<{dictionaries: Dictiona
                             ? 'code'
                             : hasLocales ? 'import_contacts'
                             : 'select_all';
-                        return
-                        (<SimpleListItem key={dict.name}
+                        return (
+                        <SimpleListItem key={dict.name}
                             graphic={icon}
                             text={dict.name}
                             secondaryText={dict.description}
                             meta={dict.locales.join(', ')}
-                        />)
+                        />
+                        )
                     })}
                 </List>
             </div>

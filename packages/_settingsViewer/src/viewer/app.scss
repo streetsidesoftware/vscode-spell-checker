@@ -1,33 +1,39 @@
 // These must come before the imports to set the right theme colors.
+$background: var(--vscode-editor-background, #777777);
+$foreground: var(--vscode-editor-foreground, #EEFFEE);
+$background-button: var(--vscode-button-background, #337733);
+$foreground-button: var(--vscode-button-foreground, #EEFFEE);
+$primary: $background-button;
+$on-primary: $foreground-button;
+$secondary: var(--vscode-editor-selectionBackground, #774400);
+$on-secondary: var(--vscode-editor-selectionForeground, #EEFFEE);
 
-$mdc-theme-primary: rgb(16, 78, 16);
-$mdc-theme-secondary: #af6c13;
-$mdc-theme-on-primary: #f3f0ec;
-$mdc-theme-on-secondary: #e2e7e2;
-
-$defaultForeground: $mdc-theme-on-primary;
-
-$foreground: var(--vscode-editor-foreground, $mdc-theme-on-primary);
-$background: var(--vscode-editor-background, $mdc-theme-primary);
-$foreground-button: var(--vscode-button-foreground, $mdc-theme-on-secondary);
-$background-button: var(--vscode-button-background, $mdc-theme-secondary);
-
-@use '@material/button/mdc-button';
 @use '@material/button';
-@use '@material/chips/mdc-chips';
-@use '@material/drawer/mdc-drawer';
-@use '@material/layout-grid/mdc-layout-grid';
-@use '@material/list/mdc-list';
-@use '@material/select/mdc-select';
-@use '@material/tab-bar/mdc-tab-bar';
-@use '@material/tab-indicator/mdc-tab-indicator';
-@use '@material/tab-scroller/mdc-tab-scroller';
-@use '@material/tab/mdc-tab';
-@import './mld/material-icons.css';
+@use '@material/checkbox';
+@use '@material/chips';
+@use '@material/drawer';
+@use '@material/list';
+@use '@material/select';
+@use '@material/tab-bar';
+@use '@material/tab-indicator';
+@use '@material/tab-scroller';
+@use '@material/tab';
+
+@include checkbox.core-styles;
+
+:root {
+  // RIGHT, will work in all Sass versions.
+  --cspell-foreground: #{$foreground};
+  --cspell-background: #{$background};
+  --cspell-primary: #{$primary};
+  --cspell-on-primary: #{$on-primary};
+  --cspell-secondary: #{$secondary};
+  --cspell-on-secondary: #{$on-secondary};
+}
 
 body {
-  color: $foreground;
-  background-color: $background;
+  color: var(--cspell-foreground);
+  background-color: var(--cspell-background);
   font-family: var(--vscode-editor-font-family, -apple-system, system-ui, sans-serif);
 }
 
@@ -150,21 +156,29 @@ body {
 //   @include mdc-select-outline-color(var(--vscode-input-border, var(--vscode-dropdown-border, $mdc-theme-on-secondary)));
 // }
 
-// .mdc-chip {
-//   opacity: 0.75;
-//   &.mdc-chip--selected {
-//     opacity: 1;
-//   }
-// }
+.cspell {
+  .mdc-chip {
+    opacity: 0.75;
+    &.mdc-chip--selected {
+      opacity: 1;
+    }
+  }
 
-// .panel {
-//   display: none;
-// }
+  .mdc-checkbox__background {
+    border-color: $background-button;
+  }
+}
 
-// .panel.active {
-//   display: block;
-// }
+.panel {
+  display: none;
+}
 
-// .select_folder {
-//   min-width: 200px;
-// }
+.panel.active {
+  display: block;
+}
+
+.select_folder {
+  min-width: 200px;
+}
+
+@import './mld/material-icons.css';

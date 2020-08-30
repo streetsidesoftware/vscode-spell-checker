@@ -8,6 +8,10 @@ import { isConfigTarget } from '../../api/settings/settingsHelper';
 import { PanelDictionaries } from './panelDictionaries';
 import { PanelAbout } from './panelAbout';
 import { PanelFile } from './panelFile';
+import { ThemeProvider } from '@rmwc/theme';
+
+// import '@rmwc/theme/styles';
+import '@rmwc/tabs/styles';
 
 @observer
 export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
@@ -25,21 +29,32 @@ export class SettingsViewer extends React.Component<{appState: AppState}, {}> {
                 }
             </div>;
         return (
-            <div>
-                <TabBar
-                    activeTabIndex={activeTabIndex}
-                    onActivate={evt => this.activateTab(evt.detail.index)}
-                >
-                    {appState.tabs.map((tab, index) =>
-                        <Tab key={index}>
-                            <span className="mdc-tab__text-label">{tab.label}</span>
-                        </Tab>
-                    )}
-                </TabBar>
-                <div>
-                    {appState.tabs.map(renderTab)}
+            <ThemeProvider
+            className={'cspell'}
+            options={{
+                primary: 'var(--cspell-primary)',
+                onPrimary: 'var(--cspell-on-primary)',
+                secondary: 'var(--cspell-secondary)',
+                onSecondary: 'var(--cspell-on-secondary)',
+                background: 'var(--cspell-background)',
+                textPrimaryOnBackground: 'var(--cspell-foreground)',
+                surface: 'var(--cspell-secondary)',
+            }}
+            >
+                <div style={{ backgroundColor: 'var(--mdc-theme-background)' }}>
+                    <TabBar
+                        activeTabIndex={activeTabIndex}
+                        onActivate={evt => this.activateTab(evt.detail.index)}
+                    >
+                        {appState.tabs.map((tab, index) =>
+                            <Tab key={index}>{tab.label}</Tab>
+                        )}
+                    </TabBar>
+                    <div>
+                        {appState.tabs.map(renderTab)}
+                    </div>
                 </div>
-            </div>
+            </ThemeProvider>
         );
      }
 

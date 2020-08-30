@@ -7,6 +7,10 @@ import { SectionDictionaries } from './sectionDictionaries';
 import { List, ListItem, ListItemGraphic, ListItemText, ListItemMeta, ListItemPrimaryText, SimpleListItem } from '@rmwc/list';
 import { Checkbox } from '@rmwc/checkbox';
 
+import '@rmwc/list/styles'
+import '@rmwc/checkbox/styles'
+import '@rmwc/select/styles'
+
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
     render() {

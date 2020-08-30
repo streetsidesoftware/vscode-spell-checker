@@ -5,6 +5,9 @@ import { ConfigTarget } from '../../api/settings';
 import {List, SimpleListItem } from '@rmwc/list';
 import { Checkbox } from '@rmwc/checkbox';
 
+import '@rmwc/checkbox/styles';
+import '@rmwc/list/styles';
+
 @observer
 export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {

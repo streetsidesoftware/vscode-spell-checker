@@ -28,7 +28,7 @@ const baseConfig = {
                 use: 'handlebars-loader',
             },
             {
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     { loader: 'css-loader' },

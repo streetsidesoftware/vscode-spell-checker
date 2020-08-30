@@ -3,6 +3,8 @@ import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import { ChipSet, Chip } from '@rmwc/chip';
 
+import '@rmwc/chip/styles'
+
 export class SectionFiletypes extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
         const appState = this.props.appState;
