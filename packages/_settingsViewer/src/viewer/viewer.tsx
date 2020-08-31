@@ -1,5 +1,4 @@
 import './app.scss';
-import '@rmwc/theme/styles';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

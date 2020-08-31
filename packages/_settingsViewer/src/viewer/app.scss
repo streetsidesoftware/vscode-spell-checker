@@ -8,19 +8,6 @@ $on-primary: $foreground-button;
 $secondary: var(--vscode-editor-selectionBackground, #774400);
 $on-secondary: var(--vscode-editor-selectionForeground, #EEFFEE);
 
-@use '@material/button';
-@use '@material/checkbox';
-@use '@material/chips';
-@use '@material/drawer';
-@use '@material/list';
-@use '@material/select';
-@use '@material/tab-bar';
-@use '@material/tab-indicator';
-@use '@material/tab-scroller';
-@use '@material/tab';
-
-@include checkbox.core-styles;
-
 :root {
   // RIGHT, will work in all Sass versions.
   --cspell-foreground: #{$foreground};
@@ -180,5 +167,3 @@ body {
 .select_folder {
   min-width: 200px;
 }
-
-@import './mld/material-icons.css';

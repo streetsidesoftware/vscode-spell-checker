@@ -1,15 +1,21 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
-import { Select } from '@rmwc/select';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
-import { List, ListItem, ListItemGraphic, ListItemText, ListItemMeta, ListItemPrimaryText, SimpleListItem } from '@rmwc/list';
-import { Checkbox } from '@rmwc/checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
+import IconDescription from '@material-ui/icons/Description';
+import IconCode from '@material-ui/icons/Code';
+import InputLabel from '@material-ui/core/InputLabel';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
-import '@rmwc/list/styles'
-import '@rmwc/checkbox/styles'
-import '@rmwc/select/styles'
 
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
@@ -27,47 +33,50 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                 <h2>
                     File
                 </h2>
-                <Select className="select_folder"
-                        label="File"
-                        options={appState.documentSelection}
-                        onChange={(evt) => select(evt.target as HTMLSelectElement)}
+                <FormControl>
+                    <InputLabel id="select-file-label">File</InputLabel>
+                    <Select
+                        labelId="select-file-label"
+                        id="select-file"
                         value={appState.activeFileUri}
-                    />
+                        onChange={(evt) => select(evt.target as HTMLSelectElement)}
+                    >
+                        {appState.documentSelection.map(item => (<MenuItem value={item.value} key={item.value}>{item.label}</MenuItem>))}
+                    </Select>
+                </FormControl>
                 <h2>Settings</h2>
-                {/*
-                <Grid>
-                    <Row>
-                        <Cell columns={8}>
-                        </Cell>
-                    </Row>
-                </Grid>
-                */}
-                        <List>
-                            <SimpleListItem role="checkbox"
-                                graphic="description"
-                                text="File enabled"
-                                meta={
-                                <Checkbox
-                                    disabled={true}
-                                    checked={fileEnabled}
-                                />
-                                }
+                <List>
+                    <ListItem>
+                        <ListItemIcon>
+                            <IconDescription />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="File enabled"
+                        />
+                        <ListItemSecondaryAction>
+                            <Checkbox
+                                disabled={true}
+                                checked={fileEnabled}
                             />
-                            <ListItem role="checkbox" onClick={() => {
-                                    this.enableLanguageId(!languageEnabled);
-                                }}>
-                                <ListItemGraphic icon="code" />
-                                <ListItemText>
-                                    <ListItemPrimaryText><label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label></ListItemPrimaryText>
-                                </ListItemText>
-                                <ListItemMeta>
-                                    <Checkbox
-                                        id="checkbox-language-enabled"
-                                        checked={languageEnabled}
-                                    />
-                                </ListItemMeta>
-                            </ListItem>
-                        </List>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem role="checkbox" onClick={() => {
+                            this.enableLanguageId(!languageEnabled);
+                        }}>
+                        <ListItemIcon>
+                            <IconCode />
+                        </ListItemIcon>
+                        <ListItemText>
+                            primary={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                            <Checkbox
+                                id="checkbox-language-enabled"
+                                checked={languageEnabled}
+                            />
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                </List>
 
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle="Active Dictionaries"></SectionDictionaries>
                 {appState.debugMode ?

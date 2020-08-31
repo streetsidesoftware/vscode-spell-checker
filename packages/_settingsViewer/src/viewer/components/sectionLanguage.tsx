@@ -2,11 +2,14 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import {List, SimpleListItem } from '@rmwc/list';
-import { Checkbox } from '@rmwc/checkbox';
-
-import '@rmwc/checkbox/styles';
-import '@rmwc/list/styles';
+import Checkbox from '@material-ui/core/Checkbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconBlock from '@material-ui/icons/Block';
+import IconImportContacts  from '@material-ui/icons/ImportContacts';
 
 @observer
 export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
@@ -20,20 +23,20 @@ export class SectionLanguage extends React.Component<{appState: AppState; target
             <div>
                 <h2>Language {note}</h2>
                 <div>
-                    <List twoLine>
-                        {langConfig.languages.map(entry => {
+                    <List>
+                        {langConfig.languages.map((entry, index) => {
                             const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
-                            const icon = hasLocales ? 'import_contacts' : 'block';
+                            const icon = hasLocales ? <IconImportContacts/> : <IconBlock/>;
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
-                            const r = (
-                            <SimpleListItem key={entry.name}
-                                graphic={icon}
-                                text={entry.name}
-                                secondaryText={subText}
-                                meta={<Checkbox checked={entry.enabled}/>}
-                            />);
-                            return r;
-
+                            return (
+                            <ListItem key={'dict-' + index}>
+                                <ListItemIcon>{icon}</ListItemIcon>
+                                <ListItemText primary={entry.name} secondary={subText} />
+                                <ListItemSecondaryAction>
+                                <Checkbox checked={entry.enabled} />
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            )
                         })}
                     </List>
                 </div>

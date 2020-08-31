@@ -2,14 +2,17 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
-import { Button } from '@rmwc/button';
-import { Checkbox } from '@rmwc/checkbox';
-import { List, ListItem, ListItemGraphic, ListItemText, ListItemMeta, ListItemPrimaryText, } from '@rmwc/list';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconSettings from '@material-ui/icons/Settings';
 
-// css
-import '@rmwc/button/styles';
-import '@rmwc/checkbox/styles';
-import '@rmwc/list/styles';
+
+// resources
 import spellCheckIcon from '../images/SpellCheck.xs.png';
 
 const vsCodeApi = new VsCodeWebviewApi();
@@ -19,6 +22,7 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const workspace = (appState.settings.workspace || {});
+        const toggle = () => this.props.appState.actionSetDebugMode(!appState.debugMode);
         return (
             <div>
                 <h1>
@@ -26,26 +30,23 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                     <span>Code Spell Checker</span>
                 </h1>
 
-                <Button onClick={this.onReset} raised>
+                <Button variant="contained" color="primary" onClick={this.onReset}>
                     Refresh
                 </Button>
                 <h2>Options</h2>
                 <div>
-                    {/* <GridCell span={6}> */}
                     <div>
                     <List>
-                        <ListItem onClick={() => this.props.appState.actionSetDebugMode(!appState.debugMode)}>
-                            <ListItemGraphic icon="settings" />
-                            Debug Mode
-                            <ListItemMeta>
-                                <Checkbox
-                                    checked={appState.debugMode}
-                                    // onChange={(evt) => this.props.appState.actionSetDebugMode(evt.currentTarget.checked)}
-                                />
-                            </ListItemMeta>
+                        <ListItem onClick={toggle}>
+                            <ListItemIcon>
+                                <IconSettings/>
+                            </ListItemIcon>
+                            <ListItemText primary={'Debug Mode'} />
+                            <ListItemSecondaryAction>
+                                <Checkbox checked={appState.debugMode} onChange={toggle}/>
+                            </ListItemSecondaryAction>
                         </ListItem>
                     </List>
-                    {/* </GridCell> */}
                     </div>
                 </div>
                 {/* <DevTools /> */}

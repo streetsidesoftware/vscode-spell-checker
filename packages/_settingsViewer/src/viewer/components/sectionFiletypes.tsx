@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import { ChipSet, Chip } from '@rmwc/chip';
-
-import '@rmwc/chip/styles'
+import Chip from '@material-ui/core/Chip';
+import IconBlock from '@material-ui/icons/Block';
+import IconCheck from '@material-ui/icons/Check';
+import IconCheckbox from '@material-ui/icons/CheckBox';
+import IconCheckboxEmpty from '@material-ui/icons/CheckBoxOutlineBlank';
 
 export class SectionFiletypes extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
@@ -20,15 +22,15 @@ export class SectionFiletypes extends React.Component<{appState: AppState; targe
             <div>
                 <h2>File Types and Programming Languages {note}</h2>
                 <div>
-                    <ChipSet filter >
-                        {appState.settings.knownLanguageIds.map(langId => (
-                            <Chip
-                                selected={setOfEnabledIds.has(langId)}
-                                key={langId} id={langId} label={langId}
-                                onClick={() => this.handleSelect(langId, !setOfEnabledIds.has(langId))}
-                            />
-                        ))}
-                    </ChipSet>
+                    {appState.settings.knownLanguageIds.map(langId => (
+                        <Chip
+                            variant={setOfEnabledIds.has(langId) ? 'default' : 'outlined'}
+                            icon={setOfEnabledIds.has(langId) ? (<IconCheck/>) : undefined}
+                            key={langId} id={langId} label={langId}
+                            onClick={() => this.handleSelect(langId, !setOfEnabledIds.has(langId))}
+                            clickable
+                        />
+                    ))}
                 </div>
             </div>
         );

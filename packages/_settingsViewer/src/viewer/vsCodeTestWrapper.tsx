@@ -1,12 +1,14 @@
 import './app.scss';
-import '@rmwc/theme/styles';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {observable, toJS, computed} from 'mobx';
 import {observer} from 'mobx-react';
-import { Button } from '@rmwc/button';
-import {GridCell, Grid, GridRow} from '@rmwc/grid';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import {
     ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
 } from '../api/message';
@@ -16,9 +18,6 @@ import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '.
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { extractConfig } from '../api/settings/settingsHelper';
-
-import '@rmwc/button/styles';
-import '@rmwc/grid/styles';
 
 class AppState {
     @observable currentSample: number = 0;
@@ -80,21 +79,21 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
         return (
             <ErrorBoundary>
                 <h2>Locales</h2>
-                <Grid>
-                    <GridRow key="title">
-                        <GridCell span={2}>
+                <Table>
+                    <TableHead key="title">
+                        <TableCell>
                             Scope
-                        </GridCell>
-                        <GridCell span={10}>
+                        </TableCell>
+                        <TableCell>
                             Value
-                        </GridCell>
-                    </GridRow>
-                    {localeDisplay.map(([field, name]) => <GridRow key={field}>
-                        <GridCell span={2}>{name}</GridCell>
-                        <GridCell span={10}>{getLocales(field)}</GridCell>
-                    </GridRow>)}
+                        </TableCell>
+                    </TableHead>
+                    {localeDisplay.map(([field, name]) => <TableRow key={field}>
+                        <TableCell>{name}</TableCell>
+                        <TableCell>{getLocales(field)}</TableCell>
+                    </TableRow>)}
 
-                </Grid>
+                </Table>
                 <div>
                     <h2>Info</h2>
                     <div>Panel: {appState.activeTab}</div>
@@ -112,9 +111,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
                     </div>
                 </div>
                 <div>
-                    <Button
-                        raised
-                        className="button-alternate"
+                    <Button variant="contained" color="primary"
                         onClick={this.onUpdateConfig}
                     >
                         Toggle Single / Multi Folder Workspace
