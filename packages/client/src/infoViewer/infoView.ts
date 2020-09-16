@@ -28,7 +28,7 @@ const targetToConfigurationTarget: { [key in ConfigTarget]: vscode.Configuration
     folder: vscode.ConfigurationTarget.WorkspaceFolder
 };
 
-export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
+export function activate(context: vscode.ExtensionContext, client: CSpellClient): void {
     const root = context.asAbsolutePath(viewerPath);
 
     context.subscriptions.push(
