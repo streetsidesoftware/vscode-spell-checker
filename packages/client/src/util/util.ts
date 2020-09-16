@@ -3,7 +3,7 @@ export function unique<T>(values: T[]): T[] {
     return [...(new Set<T>(values))];
 }
 
-export function uniqueFilter<T>() {
+export function uniqueFilter<T>(): ((v: T) => boolean) {
     const seen = new Set<T>();
     return (v: T) => !!(!seen.has(v) && seen.add(v));
 }

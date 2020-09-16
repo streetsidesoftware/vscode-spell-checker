@@ -22,7 +22,7 @@ export type Messages =
     | SelectTabMessage
     ;
 
-export function isMessage(data: any): data is Message {
+export function isMessage(data: unknown): data is Message {
     return !!(data
         && typeof data === 'object'
         && data.hasOwnProperty('command')
@@ -95,5 +95,7 @@ export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
 export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
 
-function isObject(v: any): v is object { return typeof v === 'object' && v !== null; }
+interface Record {}
+
+function isObject(v: any): v is Record { return typeof v === 'object' && v !== null; }
 function isString(v: any): v is string { return typeof v === 'string'; }

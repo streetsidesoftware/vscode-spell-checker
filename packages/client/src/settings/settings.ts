@@ -56,7 +56,7 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     } });
 }
 
-export function getDefaultWorkspaceConfigLocation() {
+export function getDefaultWorkspaceConfigLocation(): string | undefined {
     const { workspaceFolders } = workspace;
     const root = workspaceFolders
         && workspaceFolders[0]
@@ -66,7 +66,7 @@ export function getDefaultWorkspaceConfigLocation() {
         : undefined;
 }
 
-export function hasWorkspaceLocation() {
+export function hasWorkspaceLocation(): boolean {
     const { workspaceFolders } = workspace;
     return !!(workspaceFolders && workspaceFolders[0]);
 }
@@ -126,7 +126,7 @@ export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boo
     return config.setSettingInVSConfig('enabled', enabled, target);
 }
 
-export function getEnabledLanguagesFromConfig(scope: InspectScope) {
+export function getEnabledLanguagesFromConfig(scope: InspectScope): string[] {
     return config.getScopedSettingFromVSConfig('enabledLanguageIds', scope) || [];
 }
 
@@ -143,7 +143,7 @@ export async function disableLanguage(target: config.ConfigTarget, languageId: s
     await enableLanguageIdForTarget(languageId, false, target, true, true);
 }
 
-export function addWordToSettings(target: config.ConfigTarget, word: string) {
+export function addWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
     const addWords = splitOutWords(word);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
@@ -155,7 +155,7 @@ export function addWordToSettings(target: config.ConfigTarget, word: string) {
     );
 }
 
-export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string) {
+export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const addWords = splitOutWords(word);
     return updateSettingInConfig(
         'ignoreWords',
@@ -165,7 +165,7 @@ export function addIgnoreWordToSettings(target: config.ConfigTarget, word: strin
     );
 }
 
-export async function removeWordFromSettings(target: config.ConfigTarget, word: string) {
+export async function removeWordFromSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const toRemove = splitOutWords(word);
@@ -224,11 +224,11 @@ function selectBestTargetForDocument(
 }
 
 
-export async function enableLocale(target: config.ConfigTarget, locale: string) {
+export async function enableLocale(target: config.ConfigTarget, locale: string): Promise<void> {
     await enableLocaleForTarget(locale, true, target, true);
 }
 
-export async function disableLocale(target: config.ConfigTarget, locale: string) {
+export async function disableLocale(target: config.ConfigTarget, locale: string): Promise<void> {
     await enableLocaleForTarget(locale, false, target, true);
 }
 

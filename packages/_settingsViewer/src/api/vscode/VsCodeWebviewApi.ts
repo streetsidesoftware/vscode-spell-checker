@@ -2,7 +2,7 @@ import { WebviewApi, MessageListener } from '../WebviewApi';
 // interface VsCodeWebviewAPI extends BroadcastChannel { }
 
 interface VsCodeAPI {
-    postMessage(msg: any): void;
+    postMessage(msg: unknown): void;
     // setState(state: any): void;
     // getState(): any;
 }
@@ -17,7 +17,7 @@ const listeners: MessageListener[] = [];
 export class VsCodeWebviewApi implements WebviewApi {
     private _onmessage?: MessageListener;
 
-    postMessage(msg: any): VsCodeWebviewApi {
+    postMessage(msg: unknown): VsCodeWebviewApi {
         vsCodeApi.postMessage(msg);
         return this;
     }

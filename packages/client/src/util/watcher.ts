@@ -23,11 +23,11 @@ function listener(event: Events, name: string) {
     }
 }
 
-export function isWatching(fileName: string) {
+export function isWatching(fileName: string): boolean {
     return !!watchedFiles.get(fileName);
 }
 
-export function stopWatching(fileName: string) {
+export function stopWatching(fileName: string): void {
     const watcher = watchedFiles.get(fileName);
     if (watcher) {
         watchedFiles.delete(fileName);
@@ -35,7 +35,7 @@ export function stopWatching(fileName: string) {
     }
 }
 
-export function add(fileName: string, callback: Callback) {
+export function add(fileName: string, callback: Callback): void {
     if (!watchedFiles.has(fileName)) {
         watchedFiles.set(fileName, {
             watcher: watch(fileName, listener) as Watcher,
@@ -46,7 +46,7 @@ export function add(fileName: string, callback: Callback) {
     watcher!.callbacks.add(callback);
 }
 
-export function dispose() {
+export function dispose(): void {
     for (const w of watchedFiles.values()) {
         w.watcher.close();
     }

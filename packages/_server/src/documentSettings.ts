@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // cSpell:ignore pycache
 import { Connection, TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as vscode from 'vscode-languageserver';
@@ -184,7 +185,7 @@ export class DocumentSettings {
             if (!rootFolder) return {};
 
             return this.readSettingsForFolderUri(rootFolder.uri);
-        };
+        }
 
         return this.readSettingsForFolderUri(Uri.file(workspaceRoot).toString());
     }

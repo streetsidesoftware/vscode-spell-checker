@@ -40,6 +40,7 @@ type Patterns = (string | NamedPattern)[];
 
 export class PatternMatcher {
     private worker: RegExpWorker = new RegExpWorker(2000);
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public dispose = () => this.worker.dispose();
 
     async matchPatternsInText(patterns: Patterns, text: string, settings: PatternSettings): Promise<MatchResults> {

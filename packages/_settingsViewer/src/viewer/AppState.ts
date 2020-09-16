@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {observable, computed} from 'mobx';
 import { Settings, ConfigTarget, LocaleId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
 import { normalizeCode, lookupCode } from '../iso639-1';

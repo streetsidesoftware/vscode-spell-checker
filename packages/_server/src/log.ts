@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Logger } from './logger';
 
 export { LogLevel } from './logger';

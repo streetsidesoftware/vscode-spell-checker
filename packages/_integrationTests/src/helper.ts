@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as path from 'path';
 import * as vscode from 'vscode';
 

@@ -18,7 +18,7 @@ export const checkboxForeground = colorOnSecondary;
 export const checkboxBackgroundDisabled = colorSecondary;
 export const checkboxForegroundDisabled = colorOnSecondary;
 
-export function getColor(name: string) {
+export function getColor(name: string): string {
     colorsUsed.add(name);
     const c = themeColors.get(name);
     return c || 'red';
