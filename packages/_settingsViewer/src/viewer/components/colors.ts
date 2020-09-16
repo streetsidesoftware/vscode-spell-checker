@@ -15,6 +15,8 @@ export const textPrimary        = getColor('editor.foreground'); // 'var(--vscod
 export const textSecondary      = getColor('descriptionForeground');
 export const checkboxBackground = colorSecondary;
 export const checkboxForeground = colorOnSecondary;
+export const checkboxBackgroundDisabled = colorSecondary;
+export const checkboxForegroundDisabled = colorOnSecondary;
 
 export function getColor(name: string) {
     colorsUsed.add(name);

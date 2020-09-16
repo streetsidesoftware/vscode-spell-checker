@@ -36,7 +36,7 @@ export class SettingsViewer extends React.Component<{ appState: AppState }, {}> 
         return (
             <ThemeProvider theme={themeDefault}>
                 <CssBaseline />
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Tabs
                         value={activeTabIndex}
                         onChange={handleChange}

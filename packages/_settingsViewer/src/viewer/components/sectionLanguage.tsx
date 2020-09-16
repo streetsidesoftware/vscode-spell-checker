@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import { AppState } from '../AppState';
+import { AppState, LanguageInfo } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -13,7 +13,7 @@ import { CsCheckBox, CsList as List } from './primitives';
 @observer
 export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
     render() {
-        // const handleSelect = (index) => this.handleSelect(index);
+        const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
         const inherited = langConfig.inherited;
@@ -28,11 +28,11 @@ export class SectionLanguage extends React.Component<{appState: AppState; target
                             const icon = hasLocales ? <IconImportContacts/> : <IconBlock/>;
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
                             return (
-                            <ListItem key={'dict-' + index}>
+                            <ListItem key={'dict-' + index} onClick={() => handleSelect(entry)}>
                                 <ListItemIcon>{icon}</ListItemIcon>
                                 <ListItemText primary={entry.name} secondary={subText} />
                                 <ListItemSecondaryAction>
-                                <CsCheckBox checked={entry.enabled} />
+                                <CsCheckBox checked={entry.enabled} onClick={() => handleSelect(entry)}/>
                                 </ListItemSecondaryAction>
                             </ListItem>
                             )
@@ -43,15 +43,8 @@ export class SectionLanguage extends React.Component<{appState: AppState; target
         );
      }
 
-     handleSelect(index: number) {
-        const appState = this.props.appState;
+     handleSelect(lang: LanguageInfo) {
         const target = this.props.target;
-        const langConfig = appState.languageConfig[target];
-        if (!langConfig) return;
-        const langs = langConfig.languages;
-        if (!langs) return;
-        const lang = langs[index];
-        if (!lang) return;
         this.props.appState.actionSetLocale(target, lang.code, !lang.enabled);
     }
 }

@@ -26,6 +26,9 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
         const fileEnabled = config && config.fileEnabled;
         const dictionaries = config && config.dictionaries || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
+        const onClick = () => {
+            this.enableLanguageId(!languageEnabled);
+        };
         return (
             <div>
                 <h2>
@@ -58,9 +61,7 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                             />
                         </ListItemSecondaryAction>
                     </ListItem>
-                    <ListItem role="checkbox" onClick={() => {
-                            this.enableLanguageId(!languageEnabled);
-                        }}>
+                    <ListItem role="checkbox" onClick={onClick}>
                         <ListItemIcon>
                             <IconCode />
                         </ListItemIcon>
@@ -71,6 +72,7 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                             <Checkbox
                                 id="checkbox-language-enabled"
                                 checked={languageEnabled}
+                                onClick={onClick}
                             />
                         </ListItemSecondaryAction>
                     </ListItem>

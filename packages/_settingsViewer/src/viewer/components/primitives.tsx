@@ -13,16 +13,29 @@ import * as colors from './colors'
 const maxWidth = '50em';
 
 export const CsCheckBox = withStyles(createStyles({
-    colorPrimary: {
+    root: {
         color: colors.checkboxForeground,
+        backgroundColor: colors.checkboxBackground,
+    },
+    colorPrimary: {
     },
     colorSecondary: {
         color: colors.checkboxForeground,
+        backgroundColor: colors.checkboxBackground,
         '&$checked': {
             color: colors.checkboxForeground,
-        }
+            backgroundColor: colors.checkboxBackground,
+        },
+        '&$disabled': {
+            color: colors.checkboxForegroundDisabled,
+            backgroundColor: colors.checkboxBackgroundDisabled,
+            opacity: '0.6',
+        },
     },
-    checked: {},
+    disabled: {
+    },
+    checked: {
+    },
 }))(Checkbox);
 
 export const CsButton = withStyles(createStyles({
@@ -82,6 +95,9 @@ export const CsChip = withStyles((_theme) => createStyles({
         color: colors.colorSecondary,
         'border-color': colors.colorSecondary,
         background: colors.colorOnSecondary,
+    },
+    label: {
+        minWidth: '10em',
     },
     icon: {
         color: colors.colorOnSecondary,
@@ -171,7 +187,7 @@ export const themeDefault = createMuiTheme({
                 },
                 '.panel': {
                     display: 'none',
-                    margin: '10px',
+                    margin: '5em 10px 10px 10px',
                 },
                 '.panel.active': {
                     display: 'block',
