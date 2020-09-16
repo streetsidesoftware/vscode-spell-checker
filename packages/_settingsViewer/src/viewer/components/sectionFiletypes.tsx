@@ -9,7 +9,7 @@ interface Props {appState: AppState; target: ConfigTarget}
 
 const compare = new Intl.Collator().compare
 
-export function SectionFiletypes(props: Props) {
+export function SectionFiletypes(props: Props): JSX.Element {
     function handleSelect(langId: string, selected: boolean) {
         const target = props.target;
         const config = props.appState.settings.configs[target];
@@ -28,7 +28,7 @@ export function SectionFiletypes(props: Props) {
     const setOfEnabledIds = new Set(config.languageIdsEnabled);
     const inherited = config.inherited.languageIdsEnabled;
     const note = inherited && inherited !== target ? <span style={{ fontSize: '0.65em', opacity: 0.75}}>inherited from {inherited}</span> : '';
-    const knownLanguageIds = appState.settings.knownLanguageIds.sort(compare);
+    const knownLanguageIds = appState.settings.knownLanguageIds.concat().sort(compare);
     return (
         <div>
             <h2>File Types and Programming Languages {note}</h2>
