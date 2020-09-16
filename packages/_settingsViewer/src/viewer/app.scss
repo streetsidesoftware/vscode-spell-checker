@@ -1,5 +1,5 @@
 // These must come before the imports to set the right theme colors.
-$background: var(--vscode-editor-background, #777777);
+$background: var(--vscode-editor-background, #aaaaaa);
 $foreground: var(--vscode-editor-foreground, #EEFFEE);
 $background-button: var(--vscode-button-background, #337733);
 $foreground-button: var(--vscode-button-foreground, #EEFFEE);
@@ -7,6 +7,7 @@ $primary: $background-button;
 $on-primary: $foreground-button;
 $secondary: var(--vscode-editor-selectionBackground, #774400);
 $on-secondary: var(--vscode-editor-selectionForeground, #EEFFEE);
+$color: $foreground;
 
 :root {
   // RIGHT, will work in all Sass versions.
@@ -142,28 +143,3 @@ body {
 //   @include mdc-select-label-color(var(--vscode-input-foreground, $mdc-theme-on-secondary));
 //   @include mdc-select-outline-color(var(--vscode-input-border, var(--vscode-dropdown-border, $mdc-theme-on-secondary)));
 // }
-
-.cspell {
-  .mdc-chip {
-    opacity: 0.75;
-    &.mdc-chip--selected {
-      opacity: 1;
-    }
-  }
-
-  .mdc-checkbox__background {
-    border-color: $background-button;
-  }
-}
-
-.panel {
-  display: none;
-}
-
-.panel.active {
-  display: block;
-}
-
-.select_folder {
-  min-width: 200px;
-}

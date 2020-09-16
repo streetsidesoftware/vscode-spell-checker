@@ -2,14 +2,13 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import Checkbox from '@material-ui/core/Checkbox';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconBlock from '@material-ui/icons/Block';
 import IconImportContacts  from '@material-ui/icons/ImportContacts';
+import { CsCheckBox, CsList as List } from './primitives';
 
 @observer
 export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
@@ -33,7 +32,7 @@ export class SectionLanguage extends React.Component<{appState: AppState; target
                                 <ListItemIcon>{icon}</ListItemIcon>
                                 <ListItemText primary={entry.name} secondary={subText} />
                                 <ListItemSecondaryAction>
-                                <Checkbox checked={entry.enabled} />
+                                <CsCheckBox checked={entry.enabled} />
                                 </ListItemSecondaryAction>
                             </ListItem>
                             )

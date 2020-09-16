@@ -3,12 +3,10 @@ import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
+import { CsCheckBox as Checkbox, CsList as List, CsFormControl as FormControl } from './primitives';
 import IconDescription from '@material-ui/icons/Description';
 import IconCode from '@material-ui/icons/Code';
 import InputLabel from '@material-ui/core/InputLabel';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -66,9 +64,9 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
                         <ListItemIcon>
                             <IconCode />
                         </ListItemIcon>
-                        <ListItemText>
+                        <ListItemText
                             primary={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
-                        </ListItemText>
+                        />
                         <ListItemSecondaryAction>
                             <Checkbox
                                 id="checkbox-language-enabled"

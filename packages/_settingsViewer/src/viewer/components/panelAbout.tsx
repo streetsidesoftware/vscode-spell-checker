@@ -2,14 +2,12 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconSettings from '@material-ui/icons/Settings';
+import { CsCheckBox, CsButton, CsList as List } from './primitives';
 
 
 // resources
@@ -27,12 +25,12 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
             <div>
                 <h1>
                     <img style={{ verticalAlign: 'middle', paddingBottom: '8px'}} src={spellCheckIcon} />
-                    <span>Code Spell Checker</span>
+                    <span>&nbsp;Code Spell Checker</span>
                 </h1>
 
-                <Button variant="contained" color="primary" onClick={this.onReset}>
+                <CsButton variant="contained" color="primary" onClick={this.onReset}>
                     Refresh
-                </Button>
+                </CsButton>
                 <h2>Options</h2>
                 <div>
                     <div>
@@ -43,7 +41,7 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                             </ListItemIcon>
                             <ListItemText primary={'Debug Mode'} />
                             <ListItemSecondaryAction>
-                                <Checkbox checked={appState.debugMode} onChange={toggle}/>
+                                <CsCheckBox checked={appState.debugMode} onChange={toggle}/>
                             </ListItemSecondaryAction>
                         </ListItem>
                     </List>

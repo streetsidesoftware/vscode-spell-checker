@@ -6,177 +6,214 @@ exports[`File Panel Verification tests the snapshot 1`] = `
     File
   </h2>
   <div
-    className="mdc-select select_folder"
+    className="MuiFormControl-root WithStyles(ForwardRef(FormControl))-root-1"
   >
-    <select
-      className="mdc-select__native-control"
-      disabled={false}
-      label="File"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
-      options={
-        Array [
-          Object {
-            "label": "ripgrep/.vscode/settings.json",
-            "value": "file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json",
-          },
-          Object {
-            "label": "vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-            "value": "file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts",
-          },
-          Object {
-            "label": "ripgrep/src/decoder.rs",
-            "value": "file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs",
-          },
-        ]
-      }
-      value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
-    >
-      <option
-        value="file:///Users/cspell/projects/clones/ripgrep/.vscode/settings.json"
-      >
-        ripgrep/.vscode/settings.json
-      </option>
-      <option
-        value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
-      >
-        vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
-      </option>
-      <option
-        value="file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs"
-      >
-        ripgrep/src/decoder.rs
-      </option>
-    </select>
     <label
-      className="mdc-floating-label mdc-floating-label--float-above"
-      onAnimationEnd={[Function]}
+      className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+      data-shrink={true}
+      id="select-file-label"
     >
       File
     </label>
     <div
-      className="mdc-line-ripple"
-      onTransitionEnd={[Function]}
-      style={Object {}}
-    />
+      className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+      onClick={[Function]}
+    >
+      <div
+        aria-haspopup="listbox"
+        aria-labelledby="select-file-label select-file"
+        className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+        id="select-file"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onMouseDown={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts
+      </div>
+      <input
+        aria-hidden={true}
+        className="MuiSelect-nativeInput"
+        onAnimationStart={[Function]}
+        onChange={[Function]}
+        required={false}
+        tabIndex={-1}
+        value="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts"
+      />
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiSelect-icon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M7 10l5 5 5-5z"
+        />
+      </svg>
+    </div>
   </div>
   <h2>
     Settings
   </h2>
   <ul
-    aria-orientation="vertical"
-    className="mdc-list"
+    className="MuiList-root WithStyles(ForwardRef(List))-root-2 MuiList-padding"
   >
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      role="checkbox"
-      tabIndex={0}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
-      >
-        description
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        File enabled
-      </span>
       <div
-        className="mdc-checkbox mdc-checkbox--upgraded mdc-checkbox--disabled mdc-list-item__meta"
-        onAnimationEnd={[Function]}
-        tabIndex={-1}
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        <input
-          aria-checked={false}
-          checked={true}
-          className="mdc-checkbox__native-control"
-          disabled={true}
-          onChange={[Function]}
-          type="checkbox"
-        />
         <div
-          className="mdc-checkbox__background"
+          className="MuiListItemIcon-root"
         >
           <svg
-            className="mdc-checkbox__checkmark"
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
             focusable="false"
             viewBox="0 0 24 24"
           >
             <path
-              className="mdc-checkbox__checkmark-path"
-              d="M1.73,12.91 8.1,19.28 22.79,4.59"
-              fill="none"
+              d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
             />
           </svg>
-          <div
-            className="mdc-checkbox__mixedmark"
-          />
         </div>
+        <div
+          className="MuiListItemText-root"
+        >
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            File enabled
+          </span>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
+      >
+        <span
+          aria-disabled={true}
+          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-6 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-7 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-5 PrivateSwitchBase-disabled-8 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+          onBlur={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={-1}
+        >
+          <span
+            className="MuiIconButton-label"
+          >
+            <input
+              checked={true}
+              className="PrivateSwitchBase-input-9"
+              data-indeterminate={false}
+              disabled={true}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
+            </svg>
+          </span>
+        </span>
       </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      role="checkbox"
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
-      >
-        code
-      </i>
-      <label
-        className="mdc-list-item__text"
-        htmlFor="checkbox-language-enabled"
-      >
-        Programming Language: typescript
-      </label>
       <div
-        className="mdc-checkbox mdc-checkbox--upgraded mdc-list-item__meta"
-        onAnimationEnd={[Function]}
-        tabIndex={-1}
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
+        onClick={[Function]}
+        role="checkbox"
       >
-        <input
-          aria-checked={false}
-          checked={true}
-          className="mdc-checkbox__native-control"
-          disabled={false}
-          id="checkbox-language-enabled"
-          onChange={[Function]}
-          type="checkbox"
-        />
         <div
-          className="mdc-checkbox__background"
+          className="MuiListItemIcon-root"
         >
           <svg
-            className="mdc-checkbox__checkmark"
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
             focusable="false"
             viewBox="0 0 24 24"
           >
             <path
-              className="mdc-checkbox__checkmark-path"
-              d="M1.73,12.91 8.1,19.28 22.79,4.59"
-              fill="none"
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
             />
           </svg>
-          <div
-            className="mdc-checkbox__mixedmark"
-          />
         </div>
+        <div
+          className="MuiListItemText-root"
+        >
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            <label
+              htmlFor="checkbox-language-enabled"
+            >
+              Programming Language: typescript
+            </label>
+          </span>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
+      >
+        <span
+          aria-disabled={false}
+          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-6 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-7 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-5 MuiIconButton-colorSecondary"
+          onBlur={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={null}
+        >
+          <span
+            className="MuiIconButton-label"
+          >
+            <input
+              checked={true}
+              className="PrivateSwitchBase-input-9"
+              data-indeterminate={false}
+              id="checkbox-language-enabled"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
+            </svg>
+          </span>
+        </span>
       </div>
     </li>
   </ul>
@@ -185,122 +222,133 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       Active Dictionaries
     </h2>
     <ul
-      aria-orientation="vertical"
-      className="mdc-list dictionary_list mdc-list--two-line"
+      className="MuiList-root makeStyles-root-10 MuiList-padding"
     >
       <li
-        className="mdc-list-item"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        tabIndex={0}
+        className="MuiListItem-container"
       >
-        <i
-          className="material-icons mdc-list-item__graphic"
-          tabIndex={-1}
+        <div
+          className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+          disabled={false}
         >
-          code
-        </i>
-        <span
-          className="mdc-list-item__text"
-          tabIndex={-1}
-        >
-          <span
-            className="mdc-list-item__primary-text"
-            tabIndex={-1}
+          <div
+            className="MuiListItemIcon-root"
           >
-            node
-          </span>
-          <span
-            className="mdc-list-item__secondary-text"
-            tabIndex={-1}
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+              />
+            </svg>
+          </div>
+          <div
+            className="MuiListItemText-root MuiListItemText-multiline"
           >
-            List of NodeJS terms.
-          </span>
-        </span>
-        <span
-          className="mdc-list-item__meta"
-          tabIndex={-1}
+            <span
+              className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+            >
+              node
+            </span>
+            <p
+              className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+            >
+              List of NodeJS terms.
+            </p>
+          </div>
+        </div>
+        <div
+          className="MuiListItemSecondaryAction-root"
         >
           
-        </span>
+        </div>
       </li>
       <li
-        className="mdc-list-item"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        tabIndex={-1}
+        className="MuiListItem-container"
       >
-        <i
-          className="material-icons mdc-list-item__graphic"
-          tabIndex={-1}
+        <div
+          className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+          disabled={false}
         >
-          code
-        </i>
-        <span
-          className="mdc-list-item__text"
-          tabIndex={-1}
-        >
-          <span
-            className="mdc-list-item__primary-text"
-            tabIndex={-1}
+          <div
+            className="MuiListItemIcon-root"
           >
-            npm
-          </span>
-          <span
-            className="mdc-list-item__secondary-text"
-            tabIndex={-1}
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+              />
+            </svg>
+          </div>
+          <div
+            className="MuiListItemText-root MuiListItemText-multiline"
           >
-            List of Top 500 NPM packages.
-          </span>
-        </span>
-        <span
-          className="mdc-list-item__meta"
-          tabIndex={-1}
+            <span
+              className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+            >
+              npm
+            </span>
+            <p
+              className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+            >
+              List of Top 500 NPM packages.
+            </p>
+          </div>
+        </div>
+        <div
+          className="MuiListItemSecondaryAction-root"
         >
           
-        </span>
+        </div>
       </li>
       <li
-        className="mdc-list-item"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        tabIndex={-1}
+        className="MuiListItem-container"
       >
-        <i
-          className="material-icons mdc-list-item__graphic"
-          tabIndex={-1}
+        <div
+          className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+          disabled={false}
         >
-          code
-        </i>
-        <span
-          className="mdc-list-item__text"
-          tabIndex={-1}
-        >
-          <span
-            className="mdc-list-item__primary-text"
-            tabIndex={-1}
+          <div
+            className="MuiListItemIcon-root"
           >
-            typescript
-          </span>
-          <span
-            className="mdc-list-item__secondary-text"
-            tabIndex={-1}
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+              />
+            </svg>
+          </div>
+          <div
+            className="MuiListItemText-root MuiListItemText-multiline"
           >
-            JavaScript and Typescript terms.
-          </span>
-        </span>
-        <span
-          className="mdc-list-item__meta"
-          tabIndex={-1}
+            <span
+              className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+            >
+              typescript
+            </span>
+            <p
+              className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+            >
+              JavaScript and Typescript terms.
+            </p>
+          </div>
+        </div>
+        <div
+          className="MuiListItemSecondaryAction-root"
         >
           
-        </span>
+        </div>
       </li>
     </ul>
   </div>

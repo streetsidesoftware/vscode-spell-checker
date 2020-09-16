@@ -5,9 +5,9 @@ import { ConfigTarget } from '../../api/settings';
 import { ConfigTargets } from '../../api/settings/settingsHelper';
 import { SectionLanguage } from './sectionLanguage';
 import { SectionFiletypes } from './sectionFiletypes';
+import { CsFormControl as FormControl } from './primitives';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 @observer
