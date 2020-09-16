@@ -16,6 +16,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -51,8 +52,9 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -70,7 +72,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -98,6 +100,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -133,8 +136,9 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -152,7 +156,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -180,6 +184,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -215,8 +220,9 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -234,7 +240,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -262,6 +268,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -297,8 +304,9 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -316,7 +324,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -369,6 +377,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -404,8 +413,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -423,7 +433,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -448,6 +458,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -483,8 +494,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -502,7 +514,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -527,6 +539,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -562,8 +575,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -581,7 +595,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -606,6 +620,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -641,8 +656,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -660,7 +676,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -685,6 +701,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -720,8 +737,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -739,7 +757,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -779,6 +797,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -814,8 +833,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -833,7 +853,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -858,6 +878,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -893,8 +914,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -912,7 +934,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -937,6 +959,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -972,8 +995,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -991,7 +1015,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1016,6 +1040,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1051,8 +1076,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1070,7 +1096,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1110,6 +1136,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1145,8 +1172,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1164,7 +1192,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1192,6 +1220,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1227,8 +1256,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1246,7 +1276,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1274,6 +1304,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1309,8 +1340,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1328,7 +1360,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1356,6 +1388,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1391,8 +1424,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1410,7 +1444,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={false}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"
@@ -1438,6 +1472,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         <div
           className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
           disabled={false}
+          onClick={[Function]}
         >
           <div
             className="MuiListItemIcon-root"
@@ -1473,8 +1508,9 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
         >
           <span
             aria-disabled={false}
-            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+            className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
             onBlur={[Function]}
+            onClick={[Function]}
             onDragLeave={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -1492,7 +1528,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             >
               <input
                 checked={true}
-                className="PrivateSwitchBase-input-8"
+                className="PrivateSwitchBase-input-10"
                 data-indeterminate={false}
                 onChange={[Function]}
                 type="checkbox"

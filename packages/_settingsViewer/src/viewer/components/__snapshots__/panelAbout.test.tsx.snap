@@ -86,7 +86,7 @@ exports[`About Panel Verification tests the snapshot 1`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-8 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-6 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-10 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-5 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-7 MuiIconButton-colorSecondary"
               onBlur={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
@@ -105,7 +105,7 @@ exports[`About Panel Verification tests the snapshot 1`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-11"
+                  className="PrivateSwitchBase-input-13"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"

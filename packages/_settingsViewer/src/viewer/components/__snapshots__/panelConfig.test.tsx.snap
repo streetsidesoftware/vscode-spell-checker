@@ -18,6 +18,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -53,8 +54,9 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -72,7 +74,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -97,6 +99,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -132,8 +135,9 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -151,7 +155,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               >
                 <input
                   checked={true}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -176,6 +180,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -211,8 +216,9 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -230,7 +236,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -255,6 +261,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -290,8 +297,9 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -309,7 +317,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -337,10 +345,10 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       
     </h2>
     <div
-      className="makeStyles-root-9"
+      className="makeStyles-root-11"
     >
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="asciidoc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -359,7 +367,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -368,13 +376,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           asciidoc
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="avro"
         onBlur={[Function]}
         onClick={[Function]}
@@ -393,7 +401,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -402,13 +410,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           avro
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="bash"
         onBlur={[Function]}
         onClick={[Function]}
@@ -427,7 +435,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -436,13 +444,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           bash
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="c"
         onBlur={[Function]}
         onClick={[Function]}
@@ -461,7 +469,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -470,13 +478,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           c
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cfml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -495,7 +503,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -504,13 +512,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cfml
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cpp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -529,7 +537,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -538,13 +546,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cpp
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="csharp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -563,7 +571,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -572,13 +580,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           csharp
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="css"
         onBlur={[Function]}
         onClick={[Function]}
@@ -597,7 +605,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -606,13 +614,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           css
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="go"
         onBlur={[Function]}
         onClick={[Function]}
@@ -631,7 +639,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -640,13 +648,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           go
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="handlebars"
         onBlur={[Function]}
         onClick={[Function]}
@@ -665,7 +673,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -674,13 +682,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           handlebars
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="html"
         onBlur={[Function]}
         onClick={[Function]}
@@ -699,7 +707,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -708,13 +716,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           html
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jade"
         onBlur={[Function]}
         onClick={[Function]}
@@ -733,7 +741,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -742,13 +750,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jade
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="java"
         onBlur={[Function]}
         onClick={[Function]}
@@ -767,7 +775,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -776,13 +784,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           java
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -801,7 +809,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -810,13 +818,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascript
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -835,7 +843,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -844,13 +852,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascriptreact
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="json"
         onBlur={[Function]}
         onClick={[Function]}
@@ -869,7 +877,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -878,13 +886,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           json
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jsonc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -903,7 +911,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -912,13 +920,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jsonc
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="latex"
         onBlur={[Function]}
         onClick={[Function]}
@@ -937,7 +945,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -946,13 +954,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           latex
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="less"
         onBlur={[Function]}
         onClick={[Function]}
@@ -971,7 +979,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -980,13 +988,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           less
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="markdown"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1005,7 +1013,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1014,13 +1022,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           markdown
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="perl"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1039,7 +1047,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1048,13 +1056,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           perl
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="php"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1073,7 +1081,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1082,13 +1090,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           php
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="plaintext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1107,7 +1115,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1116,13 +1124,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           plaintext
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="pub"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1141,7 +1149,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1150,13 +1158,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           pub
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="python"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1175,7 +1183,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1184,13 +1192,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           python
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="restructuredtext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1209,7 +1217,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1218,13 +1226,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           restructuredtext
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="rust"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1243,7 +1251,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1252,13 +1260,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           rust
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scala"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1277,7 +1285,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1286,13 +1294,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scala
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scss"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1311,7 +1319,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1320,13 +1328,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scss
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="sh"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1345,7 +1353,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1354,13 +1362,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           sh
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="text"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1379,7 +1387,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1388,13 +1396,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           text
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1413,7 +1421,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1422,13 +1430,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescript
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1447,7 +1455,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1456,13 +1464,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescriptreact
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yaml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1481,7 +1489,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1490,13 +1498,13 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yaml
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1515,7 +1523,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1524,7 +1532,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yml
         </span>
@@ -1552,6 +1560,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -1587,8 +1596,9 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -1606,7 +1616,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -1634,6 +1644,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -1669,8 +1680,9 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -1688,7 +1700,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
               >
                 <input
                   checked={true}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -1716,6 +1728,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -1751,8 +1764,9 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -1770,7 +1784,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -1798,6 +1812,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -1833,8 +1848,9 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -1852,7 +1868,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -1883,10 +1899,10 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       
     </h2>
     <div
-      className="makeStyles-root-9"
+      className="makeStyles-root-11"
     >
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="asciidoc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1905,7 +1921,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1914,7 +1930,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           asciidoc
         </span>
@@ -1923,7 +1939,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="avro"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1942,7 +1958,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1951,7 +1967,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           avro
         </span>
@@ -1960,7 +1976,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="bash"
         onBlur={[Function]}
         onClick={[Function]}
@@ -1979,7 +1995,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -1988,7 +2004,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           bash
         </span>
@@ -1997,7 +2013,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="c"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2016,7 +2032,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2025,7 +2041,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           c
         </span>
@@ -2034,7 +2050,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cfml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2053,7 +2069,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2062,7 +2078,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cfml
         </span>
@@ -2071,7 +2087,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cpp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2090,7 +2106,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2099,7 +2115,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cpp
         </span>
@@ -2108,7 +2124,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="csharp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2127,7 +2143,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2136,7 +2152,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           csharp
         </span>
@@ -2145,7 +2161,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="css"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2164,7 +2180,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2173,7 +2189,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           css
         </span>
@@ -2182,7 +2198,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="go"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2201,7 +2217,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2210,7 +2226,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           go
         </span>
@@ -2219,7 +2235,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="handlebars"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2238,7 +2254,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2247,7 +2263,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           handlebars
         </span>
@@ -2256,7 +2272,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="html"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2275,7 +2291,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2284,7 +2300,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           html
         </span>
@@ -2293,7 +2309,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jade"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2312,7 +2328,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2321,7 +2337,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jade
         </span>
@@ -2330,7 +2346,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="java"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2349,7 +2365,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2358,7 +2374,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           java
         </span>
@@ -2367,7 +2383,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2386,7 +2402,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2395,7 +2411,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascript
         </span>
@@ -2404,7 +2420,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2423,7 +2439,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2432,7 +2448,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascriptreact
         </span>
@@ -2441,7 +2457,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="json"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2460,7 +2476,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2469,7 +2485,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           json
         </span>
@@ -2478,7 +2494,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jsonc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2497,7 +2513,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2506,7 +2522,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jsonc
         </span>
@@ -2515,7 +2531,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="latex"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2534,7 +2550,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2543,7 +2559,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           latex
         </span>
@@ -2552,7 +2568,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="less"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2571,7 +2587,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2580,7 +2596,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           less
         </span>
@@ -2589,7 +2605,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="markdown"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2608,7 +2624,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2617,7 +2633,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           markdown
         </span>
@@ -2626,7 +2642,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="perl"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2645,7 +2661,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2654,7 +2670,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           perl
         </span>
@@ -2663,7 +2679,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="php"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2682,7 +2698,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2691,7 +2707,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           php
         </span>
@@ -2700,7 +2716,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="plaintext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2719,7 +2735,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2728,7 +2744,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           plaintext
         </span>
@@ -2737,7 +2753,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="pub"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2756,7 +2772,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2765,7 +2781,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           pub
         </span>
@@ -2774,7 +2790,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="python"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2793,7 +2809,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2802,7 +2818,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           python
         </span>
@@ -2811,7 +2827,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="restructuredtext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2830,7 +2846,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2839,7 +2855,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           restructuredtext
         </span>
@@ -2848,7 +2864,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="rust"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2867,7 +2883,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2876,7 +2892,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           rust
         </span>
@@ -2885,7 +2901,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scala"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2904,7 +2920,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2913,7 +2929,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scala
         </span>
@@ -2922,7 +2938,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scss"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2941,7 +2957,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2950,7 +2966,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scss
         </span>
@@ -2959,7 +2975,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="sh"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2978,7 +2994,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -2987,7 +3003,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           sh
         </span>
@@ -2996,7 +3012,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="text"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3015,7 +3031,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3024,7 +3040,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           text
         </span>
@@ -3033,7 +3049,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3052,7 +3068,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3061,7 +3077,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescript
         </span>
@@ -3070,7 +3086,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3089,7 +3105,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3098,7 +3114,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescriptreact
         </span>
@@ -3107,7 +3123,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yaml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3126,7 +3142,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3135,7 +3151,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yaml
         </span>
@@ -3144,7 +3160,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
         />
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3163,7 +3179,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3172,7 +3188,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yml
         </span>
@@ -3203,6 +3219,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -3238,8 +3255,9 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -3257,7 +3275,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -3282,6 +3300,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -3317,8 +3336,9 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 PrivateSwitchBase-checked-6 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-4 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-8 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-6 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -3336,7 +3356,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
               >
                 <input
                   checked={true}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -3361,6 +3381,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -3396,8 +3417,9 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -3415,7 +3437,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -3440,6 +3462,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           <div
             className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
             disabled={false}
+            onClick={[Function]}
           >
             <div
               className="MuiListItemIcon-root"
@@ -3475,8 +3498,9 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           >
             <span
               aria-disabled={false}
-              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-5 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-3 MuiIconButton-colorSecondary"
+              className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-7 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-2 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 MuiIconButton-colorSecondary"
               onBlur={[Function]}
+              onClick={[Function]}
               onDragLeave={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
@@ -3494,7 +3518,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
               >
                 <input
                   checked={false}
-                  className="PrivateSwitchBase-input-8"
+                  className="PrivateSwitchBase-input-10"
                   data-indeterminate={false}
                   onChange={[Function]}
                   type="checkbox"
@@ -3522,10 +3546,10 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       
     </h2>
     <div
-      className="makeStyles-root-9"
+      className="makeStyles-root-11"
     >
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="asciidoc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3544,7 +3568,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3553,13 +3577,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           asciidoc
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="avro"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3578,7 +3602,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3587,13 +3611,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           avro
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="bash"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3612,7 +3636,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3621,13 +3645,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           bash
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="c"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3646,7 +3670,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3655,13 +3679,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           c
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cfml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3680,7 +3704,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3689,13 +3713,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cfml
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="cpp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3714,7 +3738,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3723,13 +3747,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           cpp
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="csharp"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3748,7 +3772,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3757,13 +3781,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           csharp
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="css"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3782,7 +3806,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3791,13 +3815,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           css
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="go"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3816,7 +3840,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3825,13 +3849,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           go
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="handlebars"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3850,7 +3874,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3859,13 +3883,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           handlebars
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="html"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3884,7 +3908,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3893,13 +3917,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           html
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jade"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3918,7 +3942,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3927,13 +3951,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jade
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="java"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3952,7 +3976,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3961,13 +3985,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           java
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -3986,7 +4010,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -3995,13 +4019,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascript
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="javascriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4020,7 +4044,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4029,13 +4053,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           javascriptreact
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="json"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4054,7 +4078,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4063,13 +4087,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           json
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="jsonc"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4088,7 +4112,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4097,13 +4121,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           jsonc
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="latex"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4122,7 +4146,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4131,13 +4155,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           latex
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="less"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4156,7 +4180,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4165,13 +4189,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           less
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="markdown"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4190,7 +4214,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4199,13 +4223,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           markdown
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="perl"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4224,7 +4248,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4233,13 +4257,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           perl
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="php"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4258,7 +4282,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4267,13 +4291,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           php
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="plaintext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4292,7 +4316,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4301,13 +4325,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           plaintext
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="pub"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4326,7 +4350,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4335,13 +4359,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           pub
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="python"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4360,7 +4384,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4369,13 +4393,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           python
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="restructuredtext"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4394,7 +4418,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4403,13 +4427,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           restructuredtext
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="rust"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4428,7 +4452,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4437,13 +4461,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           rust
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scala"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4462,7 +4486,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4471,13 +4495,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scala
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="scss"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4496,7 +4520,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4505,13 +4529,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           scss
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="sh"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4530,7 +4554,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4539,13 +4563,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           sh
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="text"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4564,7 +4588,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4573,13 +4597,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           text
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescript"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4598,7 +4622,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4607,13 +4631,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescript
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="typescriptreact"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4632,7 +4656,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4641,13 +4665,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           typescriptreact
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yaml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4666,7 +4690,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4675,13 +4699,13 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yaml
         </span>
       </div>
       <div
-        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-10 MuiChip-clickable"
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="yml"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4700,7 +4724,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
       >
         <svg
           aria-hidden={true}
-          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-12"
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
           focusable="false"
           viewBox="0 0 24 24"
         >
@@ -4709,7 +4733,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           />
         </svg>
         <span
-          className="MuiChip-label"
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           yml
         </span>

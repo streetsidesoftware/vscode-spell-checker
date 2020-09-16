@@ -96,7 +96,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       >
         <span
           aria-disabled={true}
-          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-6 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-7 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-5 PrivateSwitchBase-disabled-8 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-8 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-3 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-5 PrivateSwitchBase-checked-9 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-7 PrivateSwitchBase-disabled-10 Mui-disabled WithStyles(ForwardRef(Checkbox))-disabled-6 MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
           onBlur={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
@@ -115,7 +115,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
           >
             <input
               checked={true}
-              className="PrivateSwitchBase-input-9"
+              className="PrivateSwitchBase-input-11"
               data-indeterminate={false}
               disabled={true}
               onChange={[Function]}
@@ -177,8 +177,9 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       >
         <span
           aria-disabled={false}
-          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-6 MuiCheckbox-root MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-4 PrivateSwitchBase-checked-7 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-5 MuiIconButton-colorSecondary"
+          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-8 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-3 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-5 PrivateSwitchBase-checked-9 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-7 MuiIconButton-colorSecondary"
           onBlur={[Function]}
+          onClick={[Function]}
           onDragLeave={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
@@ -196,7 +197,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
           >
             <input
               checked={true}
-              className="PrivateSwitchBase-input-9"
+              className="PrivateSwitchBase-input-11"
               data-indeterminate={false}
               id="checkbox-language-enabled"
               onChange={[Function]}
@@ -222,7 +223,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
       Active Dictionaries
     </h2>
     <ul
-      className="MuiList-root makeStyles-root-10 MuiList-padding"
+      className="MuiList-root makeStyles-root-12 MuiList-padding"
     >
       <li
         className="MuiListItem-container"

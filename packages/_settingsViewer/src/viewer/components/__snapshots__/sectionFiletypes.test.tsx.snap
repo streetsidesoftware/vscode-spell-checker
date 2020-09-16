@@ -39,7 +39,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -48,7 +48,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         asciidoc
       </span>
@@ -73,7 +73,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -82,7 +82,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         avro
       </span>
@@ -107,7 +107,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -116,7 +116,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         bash
       </span>
@@ -141,7 +141,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -150,7 +150,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         c
       </span>
@@ -175,7 +175,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -184,7 +184,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cfml
       </span>
@@ -209,7 +209,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -218,7 +218,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cpp
       </span>
@@ -243,7 +243,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -252,7 +252,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         csharp
       </span>
@@ -277,7 +277,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -286,7 +286,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         css
       </span>
@@ -311,7 +311,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -320,7 +320,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         go
       </span>
@@ -345,7 +345,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -354,7 +354,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         handlebars
       </span>
@@ -379,7 +379,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -388,7 +388,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         html
       </span>
@@ -413,7 +413,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -422,7 +422,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jade
       </span>
@@ -447,7 +447,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -456,7 +456,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         java
       </span>
@@ -481,7 +481,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -490,7 +490,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascript
       </span>
@@ -515,7 +515,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -524,7 +524,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascriptreact
       </span>
@@ -549,7 +549,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -558,7 +558,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         json
       </span>
@@ -583,7 +583,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -592,7 +592,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jsonc
       </span>
@@ -617,7 +617,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -626,7 +626,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         latex
       </span>
@@ -651,7 +651,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -660,7 +660,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         less
       </span>
@@ -685,7 +685,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -694,7 +694,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         markdown
       </span>
@@ -719,7 +719,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -728,7 +728,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         perl
       </span>
@@ -753,7 +753,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -762,7 +762,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         php
       </span>
@@ -787,7 +787,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -796,7 +796,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         plaintext
       </span>
@@ -821,7 +821,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -830,7 +830,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         pub
       </span>
@@ -855,7 +855,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -864,7 +864,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         python
       </span>
@@ -889,7 +889,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -898,7 +898,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         restructuredtext
       </span>
@@ -923,7 +923,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -932,7 +932,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         rust
       </span>
@@ -957,7 +957,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -966,7 +966,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scala
       </span>
@@ -991,7 +991,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1000,7 +1000,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scss
       </span>
@@ -1025,7 +1025,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1034,7 +1034,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         sh
       </span>
@@ -1059,7 +1059,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1068,7 +1068,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         text
       </span>
@@ -1093,7 +1093,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1102,7 +1102,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescript
       </span>
@@ -1127,7 +1127,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1136,7 +1136,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescriptreact
       </span>
@@ -1161,7 +1161,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1170,7 +1170,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yaml
       </span>
@@ -1195,7 +1195,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1204,7 +1204,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yml
       </span>
@@ -1242,7 +1242,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1251,7 +1251,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         asciidoc
       </span>
@@ -1276,7 +1276,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1285,7 +1285,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         avro
       </span>
@@ -1310,7 +1310,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1319,7 +1319,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         bash
       </span>
@@ -1344,7 +1344,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1353,7 +1353,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         c
       </span>
@@ -1378,7 +1378,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1387,7 +1387,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cfml
       </span>
@@ -1412,7 +1412,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1421,7 +1421,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cpp
       </span>
@@ -1446,7 +1446,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1455,7 +1455,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         csharp
       </span>
@@ -1480,7 +1480,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1489,7 +1489,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         css
       </span>
@@ -1514,7 +1514,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1523,7 +1523,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         go
       </span>
@@ -1548,7 +1548,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1557,7 +1557,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         handlebars
       </span>
@@ -1582,7 +1582,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1591,7 +1591,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         html
       </span>
@@ -1616,7 +1616,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1625,7 +1625,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jade
       </span>
@@ -1650,7 +1650,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1659,7 +1659,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         java
       </span>
@@ -1684,7 +1684,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1693,7 +1693,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascript
       </span>
@@ -1718,7 +1718,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1727,7 +1727,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascriptreact
       </span>
@@ -1752,7 +1752,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1761,7 +1761,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         json
       </span>
@@ -1786,7 +1786,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1795,7 +1795,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jsonc
       </span>
@@ -1820,7 +1820,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1829,7 +1829,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         latex
       </span>
@@ -1854,7 +1854,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1863,7 +1863,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         less
       </span>
@@ -1888,7 +1888,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1897,7 +1897,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         markdown
       </span>
@@ -1922,7 +1922,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1931,7 +1931,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         perl
       </span>
@@ -1956,7 +1956,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1965,7 +1965,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         php
       </span>
@@ -1990,7 +1990,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -1999,7 +1999,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         plaintext
       </span>
@@ -2024,7 +2024,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2033,7 +2033,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         pub
       </span>
@@ -2058,7 +2058,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2067,7 +2067,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         python
       </span>
@@ -2092,7 +2092,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2101,7 +2101,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         restructuredtext
       </span>
@@ -2126,7 +2126,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2135,7 +2135,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         rust
       </span>
@@ -2160,7 +2160,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2169,7 +2169,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scala
       </span>
@@ -2194,7 +2194,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2203,7 +2203,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scss
       </span>
@@ -2228,7 +2228,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2237,7 +2237,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         sh
       </span>
@@ -2262,7 +2262,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2271,7 +2271,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         text
       </span>
@@ -2296,7 +2296,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2305,7 +2305,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescript
       </span>
@@ -2330,7 +2330,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2339,7 +2339,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescriptreact
       </span>
@@ -2364,7 +2364,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2373,7 +2373,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yaml
       </span>
@@ -2398,7 +2398,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2407,7 +2407,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yml
       </span>
@@ -2445,7 +2445,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2454,7 +2454,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         asciidoc
       </span>
@@ -2482,7 +2482,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2491,7 +2491,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         avro
       </span>
@@ -2519,7 +2519,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2528,7 +2528,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         bash
       </span>
@@ -2556,7 +2556,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2565,7 +2565,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         c
       </span>
@@ -2593,7 +2593,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2602,7 +2602,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cfml
       </span>
@@ -2630,7 +2630,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2639,7 +2639,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         cpp
       </span>
@@ -2667,7 +2667,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2676,7 +2676,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         csharp
       </span>
@@ -2704,7 +2704,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2713,7 +2713,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         css
       </span>
@@ -2741,7 +2741,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2750,7 +2750,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         go
       </span>
@@ -2778,7 +2778,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2787,7 +2787,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         handlebars
       </span>
@@ -2815,7 +2815,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2824,7 +2824,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         html
       </span>
@@ -2852,7 +2852,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2861,7 +2861,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jade
       </span>
@@ -2889,7 +2889,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2898,7 +2898,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         java
       </span>
@@ -2926,7 +2926,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2935,7 +2935,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascript
       </span>
@@ -2963,7 +2963,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -2972,7 +2972,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         javascriptreact
       </span>
@@ -3000,7 +3000,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3009,7 +3009,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         json
       </span>
@@ -3037,7 +3037,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3046,7 +3046,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         jsonc
       </span>
@@ -3074,7 +3074,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3083,7 +3083,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         latex
       </span>
@@ -3111,7 +3111,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3120,7 +3120,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         less
       </span>
@@ -3148,7 +3148,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3157,7 +3157,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         markdown
       </span>
@@ -3185,7 +3185,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3194,7 +3194,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         perl
       </span>
@@ -3222,7 +3222,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3231,7 +3231,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         php
       </span>
@@ -3259,7 +3259,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3268,7 +3268,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         plaintext
       </span>
@@ -3296,7 +3296,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3305,7 +3305,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         pub
       </span>
@@ -3333,7 +3333,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3342,7 +3342,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         python
       </span>
@@ -3370,7 +3370,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3379,7 +3379,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         restructuredtext
       </span>
@@ -3407,7 +3407,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3416,7 +3416,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         rust
       </span>
@@ -3444,7 +3444,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3453,7 +3453,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scala
       </span>
@@ -3481,7 +3481,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3490,7 +3490,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         scss
       </span>
@@ -3518,7 +3518,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3527,7 +3527,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         sh
       </span>
@@ -3555,7 +3555,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3564,7 +3564,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         text
       </span>
@@ -3592,7 +3592,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3601,7 +3601,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescript
       </span>
@@ -3629,7 +3629,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3638,7 +3638,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         typescriptreact
       </span>
@@ -3666,7 +3666,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3675,7 +3675,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yaml
       </span>
@@ -3703,7 +3703,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     >
       <svg
         aria-hidden={true}
-        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-4"
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
         focusable="false"
         viewBox="0 0 24 24"
       >
@@ -3712,7 +3712,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         />
       </svg>
       <span
-        className="MuiChip-label"
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         yml
       </span>
