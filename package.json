@@ -41,7 +41,7 @@
     "conventional-changelog-cli": "^2.1.0",
     "eslint": "^7.9.0",
     "lerna": "^3.22.1",
-    "prettier": "^2.1.1",
-    "typescript": "^3.9.7"
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.2"
   }
 }

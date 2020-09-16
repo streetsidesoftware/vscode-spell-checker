@@ -15,6 +15,8 @@ function getSettings(text: string, languageId: string) {
     return cspell.constructSettingsForText(defaultSettings, text, languageId);
 }
 
+const timeout = 30000;  // 30 seconds
+
 describe('Validator', () => {
 
     test('validates the validator', () => {
@@ -26,7 +28,7 @@ describe('Validator', () => {
             const words = results.map(({text}) => text);
             expect(words).toEqual(['brouwn', 'jumpped', 'lazzy']);
         });
-    });
+    }, timeout);
 
     test('validates ignore Case', () => {
         const text = 'The Quick brown fox Jumped over the lazy dog.';
@@ -37,7 +39,7 @@ describe('Validator', () => {
             const words = results.map(({text}) => text);
             expect(words).toEqual([]);
         });
-    });
+    }, timeout);
 
     test('validate limit', () => {
         const text = loremIpsum({ count: 5, units: 'paragraphs' });
@@ -45,7 +47,7 @@ describe('Validator', () => {
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
         const results = Validator.validateText(text, settings);
         return results.then(results => expect(results).toHaveLength(10));
-    });
+    }, timeout);
 
     test('validates reserved words', () => {
         const text = 'constructor const prototype type typeof null undefined';
@@ -53,7 +55,7 @@ describe('Validator', () => {
         const settings = {...getSettings(text, languageId), maxNumberOfProblems: 10 };
         const results = Validator.validateText(text, settings);
         return results.then(results => expect(results).toHaveLength(0));
-    });
+    }, timeout);
 
     test('validates regex inclusions/exclusions', async () => {
         const text = sampleCode;
@@ -67,7 +69,7 @@ describe('Validator', () => {
         expect(words).toEqual(expect.not.arrayContaining(['ctrip']));
         expect(words).toEqual(expect.not.arrayContaining(['FFEE']));
         expect(words).toEqual(expect.not.arrayContaining(['nmove']));
-    });
+    }, timeout);
 
     test('validates ignoreRegExpList', () => {
         const text = sampleCode;
@@ -80,7 +82,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         });
-    });
+    }, timeout);
 
     test('validates ignoreRegExpList 2', () => {
         const results = Validator.validateText(
@@ -93,7 +95,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         });
-    });
+    }, timeout);
 
     test('validates malformed ignoreRegExpList', () => {
         const results = Validator.validateText(sampleCode, { ignoreRegExpList: ['/wrong[/gim', 'mis.*led'] });
@@ -103,7 +105,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         });
-    });
+    }, timeout);
 
     test('validateTextDocument', async () => {
         const text = sampleCode;
@@ -119,7 +121,7 @@ describe('Validator', () => {
         expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('ctrip')]));
         expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('FFEE')]));
         expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('nmove')]));
-    });
+    }, timeout);
 });
 
 const sampleCode = `

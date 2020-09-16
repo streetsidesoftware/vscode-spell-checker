@@ -43,7 +43,7 @@ describe('Validate CSpellSettings functions', () => {
         const newSettings = CSS.addWordsToSettings(defaultSettings, words);
         expect(newSettings).not.toBe(defaultSettings);
         expect(newSettings.words).not.toHaveLength(0);
-        expect(newSettings.words.sort()).toEqual(unique(words).sort());
+        expect(newSettings.words?.sort()).toEqual(unique(words).sort());
     });
 
 
