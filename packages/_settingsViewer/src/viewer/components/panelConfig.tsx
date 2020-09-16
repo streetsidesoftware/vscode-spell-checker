@@ -11,8 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 @observer
-export class PanelConfig extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
-    render() {
+export class PanelConfig extends React.Component<{appState: AppState; target: ConfigTarget}> {
+    render(): JSX.Element {
         const appState = this.props.appState;
         const target = this.props.target;
         const settings = appState.settings;

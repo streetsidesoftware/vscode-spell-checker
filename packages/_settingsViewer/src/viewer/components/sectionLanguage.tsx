@@ -11,8 +11,8 @@ import IconImportContacts  from '@material-ui/icons/ImportContacts';
 import { CsCheckBox, CsList as List } from './primitives';
 
 @observer
-export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}, {}> {
-    render() {
+export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}> {
+    render(): JSX.Element {
         const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
@@ -43,7 +43,7 @@ export class SectionLanguage extends React.Component<{appState: AppState; target
         );
      }
 
-     handleSelect(lang: LanguageInfo) {
+     handleSelect(lang: LanguageInfo): void {
         const target = this.props.target;
         this.props.appState.actionSetLocale(target, lang.code, !lang.enabled);
     }
