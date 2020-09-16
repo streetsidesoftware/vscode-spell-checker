@@ -37,32 +37,32 @@ export function readSettings(filename: string): Promise<CSpellSettings> {
         .then(settings => ({...defaultSettings, ...settings}));
 }
 
-export function updateSettings(filename: string, settings: CSpellSettings) {
+export function updateSettings(filename: string, settings: CSpellSettings): Promise<CSpellSettings> {
     return fs.mkdirp(path.dirname(filename))
         .then(() => fs.writeFile(filename, json.stringify(settings, null, 4)))
         .then(() => settings);
 }
 
-export function addWordToSettingsAndUpdate(filename: string, word: string) {
+export function addWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(
         filename,
         settings => addWordsToSettings(settings, splitOutWords(word))
     );
 }
 
-export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]) {
+export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
     const words = mergeWords(settings.words, wordsToAdd);
     return {...settings, words};
 }
 
-export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string) {
+export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(
         filename,
         settings => addIgnoreWordsToSettings(settings, splitOutWords(word))
     );
 }
 
-export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]) {
+export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
     const ignoreWords = mergeWords(settings.ignoreWords, wordsToAdd);
     return {...settings, ignoreWords};
 }
@@ -76,7 +76,7 @@ function mergeWords(wordsLeft: string[] | undefined, wordsRight: string[]): stri
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
-export function removeWordsFromSettings(settings: CSpellSettings, wordsToRemove: string[]) {
+export function removeWordsFromSettings(settings: CSpellSettings, wordsToRemove: string[]): CSpellSettings {
     const words = filterOutWords(settings.words || [], wordsToRemove);
     return {...settings, words};
 }
@@ -86,14 +86,14 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
     return words.filter(w => !toRemove.has(w.toLowerCase()));
 }
 
-export function removeWordFromSettingsAndUpdate(filename: string, word: string) {
+export function removeWordFromSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(
         filename,
         settings => removeWordsFromSettings(settings, splitOutWords(word))
     );
 }
 
-export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean) {
+export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean): CSpellSettings {
     if (settings.enabledLanguageIds || !onlyIfExits) {
         const enabledLanguageIds = unique((settings.enabledLanguageIds || []).concat(languageIds));
         return { ...settings, enabledLanguageIds };
@@ -101,12 +101,12 @@ export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: 
     return settings;
 }
 
-export function removeLanguageIdsFromSettings(settings: CSpellSettings, languageIds: string[]) {
+export function removeLanguageIdsFromSettings(settings: CSpellSettings, languageIds: string[]): CSpellSettings {
     if (settings.enabledLanguageIds) {
         const excludeLangIds = new Set(languageIds);
         const enabledLanguageIds = settings.enabledLanguageIds.filter(a => !excludeLangIds.has(a));
-        const newSettings = {...settings, enabledLanguageIds};
-        if (!newSettings.enabledLanguageIds.length) {
+        const newSettings: CSpellSettings = {...settings, enabledLanguageIds};
+        if (!newSettings.enabledLanguageIds?.length) {
             delete newSettings.enabledLanguageIds;
         }
         return newSettings;
@@ -114,21 +114,21 @@ export function removeLanguageIdsFromSettings(settings: CSpellSettings, language
     return settings;
 }
 
-export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean) {
+export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(
         filename,
         settings => addLanguageIdsToSettings(settings, languageIds, onlyIfExits)
     );
 }
 
-export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]) {
+export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(
         filename,
         settings => removeLanguageIdsFromSettings(settings, languageIds)
     );
 }
 
-export async function readSettingsFileAndApplyUpdate(filename: string, action: (settings: CSpellSettings) => CSpellSettings) {
+export async function readSettingsFileAndApplyUpdate(filename: string, action: (settings: CSpellSettings) => CSpellSettings): Promise<CSpellSettings> {
     const settings = await readSettings(filename);
     const newSettings = action(settings);
     return updateSettings(filename, newSettings);
