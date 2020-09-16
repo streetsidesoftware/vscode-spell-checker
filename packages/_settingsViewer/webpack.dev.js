@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const baseConfig = require('./webpack.base');
 
 const baseDevConfig = {
@@ -33,12 +33,6 @@ const viewerConfig = {
             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
         }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
     ],
 };
 
@@ -54,12 +48,6 @@ const testConfig = {
             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
             filename: 'test.html',
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css',
         }),
     ],
 };

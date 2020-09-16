@@ -30,36 +30,29 @@
     "browser-resolve": "^2.0.0",
     "clean-webpack-plugin": "^3.0.0",
     "clone-deep": "^4.0.1",
-    "css-loader": "^3.6.0",
     "eslint-plugin-react": "^7.20.6",
-    "extract-loader": "^3.2.0",
-    "file-loader": "^4.3.0",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.1.0",
     "handlebars": "^4.7.6",
     "handlebars-loader": "^1.7.1",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^4.4.1",
     "jest": "^26.4.2",
-    "mini-css-extract-plugin": "^0.11.2",
     "mobx": "^5.15.6",
     "mobx-react": "^6.3.0",
     "mobx-react-devtools": "^6.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-json-view": "^1.19.1",
     "react-test-renderer": "^16.13.1",
     "resolve-url-loader": "^3.1.1",
-    "sass": "^1.26.10",
-    "sass-loader": "^10.0.2",
-    "style-loader": "^1.2.1",
     "terser": "^5.3.1",
     "ts-jest": "^26.3.0",
     "typescript": "^4.0.2",
-    "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "^4.1.0",
     "vscode-uri": "^2.1.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^5.1.4"
   },
   "files": [
     "out/api/**",
@@ -68,5 +61,6 @@
     "!**/*.map",
     "!**/*.test.*",
     "!**/*.spec.*"
-  ]
+  ],
+  "dependencies": {}
 }
