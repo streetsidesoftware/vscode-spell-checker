@@ -1,6 +1,10 @@
 {
 	"extends": "./tsconfig",
 	"compilerOptions": {
+		"target": "es2017",
+		"strictNullChecks": true,
+		"strict": true,
+		"strictFunctionTypes": false,
 		"sourceMap": true
 	},
 	"exclude": [
