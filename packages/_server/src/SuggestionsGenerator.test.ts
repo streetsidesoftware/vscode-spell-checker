@@ -1,6 +1,8 @@
 import * as cspell from 'cspell-lib';
 import { SuggestionGenerator, maxNumberOfSuggestionsForLongWords } from './SuggestionsGenerator';
 
+jest.setTimeout(30000);
+
 describe('Validate Suggestions', () => {
     interface DocInfo {
         languageId: string;
