@@ -6,1072 +6,1183 @@ exports[`Dictionary Panel Verification tests the snapshot 1`] = `
     Dictionaries
   </h2>
   <ul
-    aria-orientation="vertical"
-    className="mdc-list dictionary_list mdc-list--two-line"
+    className="MuiList-root makeStyles-root-1 MuiList-padding"
   >
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={0}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        select_all
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          companies
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Company names dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            companies
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Company names dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          css
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          CSS Keywords.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            css
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            CSS Keywords.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          csharp
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          C# Keywords and common library functions.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            csharp
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            C# Keywords and common library functions.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          dotnet
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          .Net keywords.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            dotnet
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            .Net keywords.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        select_all
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          filetypes
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of file types.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            filetypes
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of file types.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          fonts
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of fonts.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            fonts
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of fonts.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          html
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          HTML keywords.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            html
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            HTML keywords.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        select_all
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          misc
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of miscellaneous terms.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            misc
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of miscellaneous terms.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          node
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of NodeJS terms.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            node
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of NodeJS terms.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          npm
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of Top 500 NPM packages.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            npm
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of Top 500 NPM packages.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        select_all
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          powershell
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Powershell Keywords.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            powershell
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Powershell Keywords.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        select_all
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          softwareTerms
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 5h2V3c-1.1 0-2 .9-2 2zm0 8h2v-2H3v2zm4 8h2v-2H7v2zM3 9h2V7H3v2zm10-6h-2v2h2V3zm6 0v2h2c0-1.1-.9-2-2-2zM5 21v-2H3c0 1.1.9 2 2 2zm-2-4h2v-2H3v2zM9 3H7v2h2V3zm2 18h2v-2h-2v2zm8-8h2v-2h-2v2zm0 8c1.1 0 2-.9 2-2h-2v2zm0-12h2V7h-2v2zm0 8h2v-2h-2v2zm-4 4h2v-2h-2v2zm0-16h2V3h-2v2zM7 17h10V7H7v10zm2-8h6v6H9V9z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Common Software Terms.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            softwareTerms
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Common Software Terms.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          typescript
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          JavaScript and Typescript terms.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            typescript
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            JavaScript and Typescript terms.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          cpp
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          C/C++ Keywords and common library functions.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            cpp
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            C/C++ Keywords and common library functions.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          django
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          List of Python Django Framework keywords.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            django
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            List of Python Django Framework keywords.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          elixir
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Elixir dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            elixir
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Elixir dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        import_contacts
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          en_us
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .65.73.45.75.45C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.41.21.75-.19.75-.45V6c-1.49-1.12-3.63-1.5-5.5-1.5zm3.5 14c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          American English Dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            en_us
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            American English Dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         en, en-US
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        import_contacts
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          en-gb
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .65.73.45.75.45C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.41.21.75-.19.75-.45V6c-1.49-1.12-3.63-1.5-5.5-1.5zm3.5 14c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          British English Dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            en-gb
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            British English Dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         en-GB
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          fullstack
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Common words encountered during fullstack development
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            fullstack
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Common words encountered during fullstack development
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          golang
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Go Language Dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            golang
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Go Language Dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          java
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Java dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            java
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Java dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          latex
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          LaTeX dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            latex
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            LaTeX dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        import_contacts
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          lorem-ipsum
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .65.73.45.75.45C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.41.21.75-.19.75-.45V6c-1.49-1.12-3.63-1.5-5.5-1.5zm3.5 14c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Lorem-ipsum dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            lorem-ipsum
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Lorem-ipsum dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         lorem, lorem-ipsum
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          php
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Php dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            php
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Php dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          python
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Python Keyword Dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            python
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Python Keyword Dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          rust
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Rust Keyword Dictionary
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            rust
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Rust Keyword Dictionary
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        code
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          scala
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Scala dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            scala
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Scala dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         
-      </span>
+      </div>
     </li>
     <li
-      className="mdc-list-item"
-      onBlur={[Function]}
-      onClick={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      tabIndex={-1}
+      className="MuiListItem-container"
     >
-      <i
-        className="material-icons mdc-list-item__graphic"
-        tabIndex={-1}
+      <div
+        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
+        disabled={false}
       >
-        import_contacts
-      </i>
-      <span
-        className="mdc-list-item__text"
-        tabIndex={-1}
-      >
-        <span
-          className="mdc-list-item__primary-text"
-          tabIndex={-1}
+        <div
+          className="MuiListItemIcon-root"
         >
-          cs-cz
-        </span>
-        <span
-          className="mdc-list-item__secondary-text"
-          tabIndex={-1}
+          <svg
+            aria-hidden={true}
+            className="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .65.73.45.75.45C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.41.21.75-.19.75-.45V6c-1.49-1.12-3.63-1.5-5.5-1.5zm3.5 14c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"
+            />
+          </svg>
+        </div>
+        <div
+          className="MuiListItemText-root MuiListItemText-multiline"
         >
-          Czech dictionary for cspell.
-        </span>
-      </span>
-      <span
-        className="mdc-list-item__meta"
-        tabIndex={-1}
+          <span
+            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
+          >
+            cs-cz
+          </span>
+          <p
+            className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+          >
+            Czech dictionary for cspell.
+          </p>
+        </div>
+      </div>
+      <div
+        className="MuiListItemSecondaryAction-root"
       >
         cs
-      </span>
+      </div>
     </li>
   </ul>
 </div>

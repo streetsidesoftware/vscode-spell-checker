@@ -49,6 +49,7 @@ export function getConfiguration(connection: Connection, params?: GetConfigurati
  * Useful for mocking.
  * @param connection
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getWorkspaceFolders(connection: Connection) {
     return connection.workspace.getWorkspaceFolders();
 }

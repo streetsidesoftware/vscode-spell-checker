@@ -1,14 +1,19 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
-import Select from '@material/react-select';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import { Checkbox } from '@material/react-checkbox';
-import MaterialIcon from '@material/react-material-icon';
+import { CsCheckBox as Checkbox, CsList as List, CsFormControl as FormControl } from './primitives';
+import IconDescription from '@material-ui/icons/Description';
+import IconCode from '@material-ui/icons/Code';
+import InputLabel from '@material-ui/core/InputLabel';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
-function initRipple() {}
 
 @observer
 export class PanelFile extends React.Component<{appState: AppState}, {}> {
@@ -21,52 +26,57 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
         const fileEnabled = config && config.fileEnabled;
         const dictionaries = config && config.dictionaries || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
+        const onClick = () => {
+            this.enableLanguageId(!languageEnabled);
+        };
         return (
             <div>
                 <h2>
                     File
                 </h2>
-                <Select className="select_folder"
-                        label="File"
-                        options={appState.documentSelection}
-                        onChange={(evt) => select(evt.target as HTMLSelectElement)}
+                <FormControl>
+                    <InputLabel id="select-file-label">File</InputLabel>
+                    <Select
+                        labelId="select-file-label"
+                        id="select-file"
                         value={appState.activeFileUri}
-                    />
+                        onChange={(evt) => select(evt.target as HTMLSelectElement)}
+                    >
+                        {appState.documentSelection.map(item => (<MenuItem value={item.value} key={item.value}>{item.label}</MenuItem>))}
+                    </Select>
+                </FormControl>
                 <h2>Settings</h2>
-                {/*
-                <Grid>
-                    <Row>
-                        <Cell columns={8}>
-                        </Cell>
-                    </Row>
-                </Grid>
-                */}
-                        <List>
-                            <ListItem role="checkbox">
-                                <ListItemGraphic graphic={<MaterialIcon icon="description"/>} />
-                                <ListItemText primaryText={`File enabled`} />
-                                <ListItemMeta meta={
-                                    <Checkbox
-                                        disabled={true}
-                                        checked={fileEnabled}
-                                        initRipple={initRipple} />
-                                }/>
-                            </ListItem>
-                            <ListItem role="checkbox" shouldToggleCheckbox={true} onClick={evt => {
-                                    this.enableLanguageId(!languageEnabled);
-                                }}>
-                                <ListItemGraphic graphic={<MaterialIcon icon="code"/>} />
-                                <ListItemText
-                                    primaryText={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
-                                />
-                                <ListItemMeta meta={
-                                    <Checkbox
-                                        nativeControlId="checkbox-language-enabled"
-                                        checked={languageEnabled}
-                                        initRipple={initRipple} />
-                                }/>
-                            </ListItem>
-                        </List>
+                <List>
+                    <ListItem>
+                        <ListItemIcon>
+                            <IconDescription />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="File enabled"
+                        />
+                        <ListItemSecondaryAction>
+                            <Checkbox
+                                disabled={true}
+                                checked={fileEnabled}
+                            />
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem role="checkbox" onClick={onClick}>
+                        <ListItemIcon>
+                            <IconCode />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
+                        />
+                        <ListItemSecondaryAction>
+                            <Checkbox
+                                id="checkbox-language-enabled"
+                                checked={languageEnabled}
+                                onClick={onClick}
+                            />
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                </List>
 
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle="Active Dictionaries"></SectionDictionaries>
                 {appState.debugMode ?

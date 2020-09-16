@@ -21,7 +21,7 @@ describe('SectionLanguage Verification', () => {
         const panelRenderer = create(<SectionLanguage appState={appState} target={target}></SectionLanguage>);
         expect(panelRenderer.toJSON()).toMatchSnapshot(`<SectionLanguage> for target: ${target}`);
         expect(appState.settings.configs.user!.locales).not.toContain('cs');
-        panelRenderer.toTree()!.instance.handleSelect(0);
+        panelRenderer.toTree()!.instance.handleSelect({ code: 'cs', enabled: false});
         expect(appState.settings.configs.user!.locales).toContain('cs');
     });
 

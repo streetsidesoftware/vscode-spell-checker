@@ -2,51 +2,51 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import { AppState } from '../AppState';
 import {VsCodeWebviewApi} from '../../api/vscode/VsCodeWebviewApi';
-import { Button } from '@material/react-button';
-import * as spellCheckIcon from '../images/SpellCheck.xs.png';
-import { Checkbox } from '@material/react-checkbox';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import MaterialIcon from '@material/react-material-icon';
-import { Grid, Row, Cell } from '@material/react-layout-grid';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconSettings from '@material-ui/icons/Settings';
+import { CsCheckBox, CsButton, CsList as List } from './primitives';
+
+
+// resources
+import spellCheckIcon from '../images/SpellCheck.xs.png';
 
 const vsCodeApi = new VsCodeWebviewApi();
 
-function initRipple() {}
 @observer
 export class PanelAbout extends React.Component<{appState: AppState}, {}> {
     render() {
         const appState = this.props.appState;
         const workspace = (appState.settings.workspace || {});
+        const toggle = () => this.props.appState.actionSetDebugMode(!appState.debugMode);
         return (
-            <Grid>
+            <div>
                 <h1>
                     <img style={{ verticalAlign: 'middle', paddingBottom: '8px'}} src={spellCheckIcon} />
-                    <span>Code Spell Checker</span>
+                    <span>&nbsp;Code Spell Checker</span>
                 </h1>
 
-                <Button
-                    className="button-alternate"
-                    onClick={this.onReset}
-                >
+                <CsButton variant="contained" color="primary" onClick={this.onReset}>
                     Refresh
-                </Button>
+                </CsButton>
                 <h2>Options</h2>
-                <Row>
-                    <Cell columns={6}>
+                <div>
+                    <div>
                     <List>
-                        <ListItem role="checkbox">
-                            <ListItemGraphic graphic={<MaterialIcon icon="settings"/>} />
-                            <ListItemText primaryText="Debug Mode" />
-                            <ListItemMeta meta={
-                                <Checkbox
-                                    checked={appState.debugMode}
-                                    onChange={(evt) => this.props.appState.actionSetDebugMode(evt.target.checked)}
-                                    initRipple={initRipple} />
-                            }/>
+                        <ListItem onClick={toggle}>
+                            <ListItemIcon>
+                                <IconSettings/>
+                            </ListItemIcon>
+                            <ListItemText primary={'Debug Mode'} />
+                            <ListItemSecondaryAction>
+                                <CsCheckBox checked={appState.debugMode} onChange={toggle}/>
+                            </ListItemSecondaryAction>
                         </ListItem>
                     </List>
-                    </Cell>
-                </Row>
+                    </div>
+                </div>
                 {/* <DevTools /> */}
                 {appState.debugMode ?
                 <div>
@@ -57,7 +57,7 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
                     <pre>{JSON.stringify(appState.settings.configs, null, 2)}</pre>
                 </div>
                 : ''}
-            </Grid>
+            </div>
         );
      }
 

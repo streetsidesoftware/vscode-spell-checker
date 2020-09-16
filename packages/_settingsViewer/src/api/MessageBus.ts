@@ -33,6 +33,7 @@ export class MessageBus implements Messenger {
         return listener;
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     postMessage<M extends Messages>(msg: M) {
         this.vsCodeApi.postMessage(msg);
     }

@@ -7,8 +7,6 @@ import { SettingsViewer } from './components/SettingsViewer';
 import { MessageBus } from '../api';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 
-require('./app.scss');
-
 const messageBus = new MessageBus(new VsCodeWebviewApi());
 const appState = new AppState(messageBus);
 reaction(

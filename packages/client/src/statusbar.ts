@@ -8,7 +8,7 @@ import { isSupportedUri, isSupportedDoc } from './util';
 import { sectionCSpell } from './settings';
 
 
-export function initStatusBar(context: ExtensionContext, client: CSpellClient) {
+export function initStatusBar(context: ExtensionContext, client: CSpellClient): void {
 
     const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 

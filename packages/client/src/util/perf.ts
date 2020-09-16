@@ -24,7 +24,7 @@ export class PerformanceTimeline {
         this.addEvent(event);
     }
 
-    public measure(name: string, nameStart: string, nameEnd: string) {
+    public measure(name: string, nameStart: string, nameEnd: string): void {
         const eventStart = this.timeLineEvents.get(nameStart) || this.timeLineEvents.get(EVENT_TIMELINE_START)!;
         const eventEnd = this.timeLineEvents.get(nameEnd) || this.timeLineEvents.get(EVENT_TIMELINE_START)!;
         const duration = calcDuration(eventStart.startTime, eventEnd.startTime);
@@ -37,7 +37,7 @@ export class PerformanceTimeline {
         this.timeLineEvents.set(event.name, event);
     }
 
-    public getEntries() {
+    public getEntries(): TimeLineEvent[] {
         return this.timeLine;
     }
 
@@ -54,7 +54,7 @@ export function calcDuration(a: HTime, b: HTime): number {
     return toMilliseconds(b) - toMilliseconds(a);
 }
 
-export function toMilliseconds(t: HTime) {
+export function toMilliseconds(t: HTime): number {
     return (t[0] + t[1] * 1.e-9) * 1000;
 }
 

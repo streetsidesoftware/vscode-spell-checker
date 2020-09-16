@@ -1,16 +1,18 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
-import { AppState } from '../AppState';
+import { AppState, LanguageInfo } from '../AppState';
 import { ConfigTarget } from '../../api/settings';
-import List, { ListItem, ListItemGraphic, ListItemText, ListItemMeta } from '@material/react-list';
-import MaterialIcon from '@material/react-material-icon';
-import { Checkbox } from '@material/react-checkbox';
-
-function initRipple(){}
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconBlock from '@material-ui/icons/Block';
+import IconImportContacts  from '@material-ui/icons/ImportContacts';
+import { CsCheckBox, CsList as List } from './primitives';
 
 @observer
-export class SectionLanguage extends React.Component<{appState: AppState, target: ConfigTarget}, {}> {
-    render() {
+export class SectionLanguage extends React.Component<{appState: AppState; target: ConfigTarget}> {
+    render(): JSX.Element {
         const handleSelect = (index) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
@@ -20,18 +22,20 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
             <div>
                 <h2>Language {note}</h2>
                 <div>
-                    <List twoLine handleSelect={handleSelect}>
-                        {langConfig.languages.map(entry => {
+                    <List>
+                        {langConfig.languages.map((entry, index) => {
                             const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
-                            const icon = hasLocales ? 'import_contacts' : 'block';
+                            const icon = hasLocales ? <IconImportContacts/> : <IconBlock/>;
                             const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
                             return (
-                            <ListItem key={entry.name} role='checkbox'>
-                                <ListItemGraphic graphic={<MaterialIcon icon={icon}/>} />
-                                <ListItemText primaryText={entry.name} secondaryText={subText} />
-                                <ListItemMeta meta={<Checkbox checked={entry.enabled} initRipple={initRipple} />}/>
-                            </ListItem>);
-
+                            <ListItem key={'dict-' + index} onClick={() => handleSelect(entry)}>
+                                <ListItemIcon>{icon}</ListItemIcon>
+                                <ListItemText primary={entry.name} secondary={subText} />
+                                <ListItemSecondaryAction>
+                                <CsCheckBox checked={entry.enabled} onClick={() => handleSelect(entry)}/>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            )
                         })}
                     </List>
                 </div>
@@ -39,15 +43,8 @@ export class SectionLanguage extends React.Component<{appState: AppState, target
         );
      }
 
-     handleSelect(index: number) {
-        const appState = this.props.appState;
+     handleSelect(lang: LanguageInfo): void {
         const target = this.props.target;
-        const langConfig = appState.languageConfig[target];
-        if (!langConfig) return;
-        const langs = langConfig.languages;
-        if (!langs) return;
-        const lang = langs[index];
-        if (!lang) return;
         this.props.appState.actionSetLocale(target, lang.code, !lang.enabled);
     }
 }

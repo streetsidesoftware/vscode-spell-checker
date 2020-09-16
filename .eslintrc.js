@@ -18,23 +18,23 @@ module.exports = {
   ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    "quotes": [ "warn", "single", { "avoidEscape": true } ],
+    'quotes': [ 'warn', 'single', { 'avoidEscape': true } ],
 
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": [ "warn", { ignoreRestSiblings: true, argsIgnorePattern: "^_" } ],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': [ 'warn', { ignoreRestSiblings: true, argsIgnorePattern: '^_' } ],
   },
   overrides: [
     {
       files: ['*.json'],
       rules: {
-        "quotes": [ "error", "double" ],
+        'quotes': [ 'error', 'double' ],
       }
     }
   ],

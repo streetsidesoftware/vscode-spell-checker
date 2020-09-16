@@ -28,7 +28,7 @@ export interface SettingByConfigTarget<T> {
 
 export interface Configs extends SettingByConfigTarget<Config> {
     file: FileConfig | undefined;
-};
+}
 
 export interface DictionaryEntry {
     name: string;
