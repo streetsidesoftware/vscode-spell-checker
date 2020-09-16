@@ -14,15 +14,15 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.1",
-    "@types/jest": "^26.0.10",
+    "@types/jest": "^26.0.14",
     "@types/micromatch": "^4.0.1",
-    "@types/node": "^12.12.54",
+    "@types/node": "^12.12.59",
     "jest": "^26.4.2",
     "jest-diff": "^26.4.2",
     "lorem-ipsum": "^2.0.3",
     "ts-jest": "^26.3.0",
     "ts-json-schema-generator": "^0.67.1",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   },
   "dependencies": {
     "cspell-glob": "^0.1.20",
