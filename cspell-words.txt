@@ -5,12 +5,15 @@ ESNEXT
 FIXURL
 GOOG
 Gemfile
+HSLA
+HSVA
 IANA
 Interop
 Jekylling
 Jupyter
 Kramdown
 Lunr
+Preformat
 Staticman's
 acanthopterygious
 algolia
@@ -41,6 +44,7 @@ languageclient
 lerna
 lightblue
 lightbulb
+lightgrey
 mademistakes
 michaelrose
 minification
@@ -57,9 +61,11 @@ permalinks
 quotemark
 restructuredtext
 rmwc
+scrollbar
 shortname
 shrinkwrap
 sourcemap
+squigglies
 staticman
 staticmanapp
 streetsidesoftware

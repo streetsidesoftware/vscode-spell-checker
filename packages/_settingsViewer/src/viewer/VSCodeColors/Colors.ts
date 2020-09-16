@@ -3,6 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+// cspell:ignore RRGGBB RRGGBBAA
+
 function roundFloat(number: number, decimalPoints: number): number {
 	const decimal = Math.pow(10, decimalPoints);
 	return Math.round(number * decimal) / decimal;
@@ -191,6 +193,7 @@ export class HSVA {
 		return a.h === b.h && a.s === b.s && a.v === b.v && a.a === b.a;
 	}
 
+	// cspell:ignore cmin cmax
 	// from http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
 	static fromRGBA(rgba: RGBA): HSVA {
 		const r = rgba.r / 255;
@@ -538,7 +541,7 @@ export namespace Color {
 
 			/**
 			 * Formats the color as #RRGGBBAA
-			 * If 'compact' is set, colors without transparancy will be printed as #RRGGBB
+			 * If 'compact' is set, colors without transparency will be printed as #RRGGBB
 			 */
 			export function formatHexA(color: Color, compact = false): string {
 				if (compact && color.rgba.a === 1) {
