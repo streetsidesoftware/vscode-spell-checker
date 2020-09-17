@@ -1,6 +1,7 @@
 import { performance } from '../util/perf';
 performance.mark('infoView.ts');
 import * as vscode from 'vscode';
+import { Uri } from 'vscode';
 import * as path from 'path';
 import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget, ConfigSource } from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
@@ -46,8 +47,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 interface State {
     activeTabName: string;
     settings: Settings;
-    activeDocumentUri: Maybe<vscode.Uri>;
-    activeFolderUri: Maybe<vscode.Uri>;
+    activeDocumentUri: Maybe<Uri>;
+    activeFolderUri: Maybe<Uri>;
 }
 
 interface Subscription {
@@ -64,16 +65,16 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     const options = {
         enableScripts: true,
         localResourceRoots: [
-            vscode.Uri.file(root),
-            vscode.Uri.file(extPath)
+            Uri.file(root),
+            Uri.file(extPath)
         ],
     };
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
     const messageBus = new MessageBus(webviewApiFromPanel(panel));
 
     async function calcStateSettings(
-        activeDocumentUri: Maybe<vscode.Uri>,
-        activeFolderUri: Maybe<vscode.Uri>,
+        activeDocumentUri: Maybe<Uri>,
+        activeFolderUri: Maybe<Uri>,
     ) {
         const doc = activeDocumentUri && findMatchingDocument(activeDocumentUri);
         return calcSettings(
@@ -111,7 +112,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         await notifyView();
     }
 
-    function setActiveDocumentUri(docUri: Maybe<vscode.Uri>) {
+    function setActiveDocumentUri(docUri: Maybe<Uri>) {
         state.activeDocumentUri = calcActiveDocumentUri(docUri) || state.activeDocumentUri;
     }
 
@@ -141,13 +142,13 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         log(`SelectFolderMessage: folder '${msg.value}'`);
         const uri = msg.value;
         const defaultFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
-        state.activeFolderUri = uri && vscode.Uri.parse(uri) || defaultFolder && defaultFolder.uri;
+        state.activeFolderUri = uri && Uri.parse(uri) || defaultFolder && defaultFolder.uri;
         refreshStateAndNotify();
     });
     messageBus.listenFor('SelectFileMessage', (msg: SelectFileMessage) => {
         log(`SelectFolderMessage: folder '${msg.value}'`);
         const uri = msg.value;
-        state.activeDocumentUri = uri && vscode.Uri.parse(uri) || state.activeDocumentUri;
+        state.activeDocumentUri = uri && Uri.parse(uri) || state.activeDocumentUri;
         refreshStateAndNotify();
     });
 
@@ -158,7 +159,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     .observe((msg: EnableLanguageIdMessage) => {
         const {target, languageId, enable, uri} = msg.value;
         log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
-        const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
+        const uriFolder = uri ? Uri.parse(uri) : undefined;
         if (target) {
             const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
             enableLanguageIdForTarget(languageId, enable, configTarget, true, true);
@@ -174,7 +175,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     .observe((msg: EnableLocaleMessage) => {
         const {target, locale, enable, uri} = msg.value;
         log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
-        const uriFolder = uri ? vscode.Uri.parse(uri) : undefined;
+        const uriFolder = uri ? Uri.parse(uri) : undefined;
         const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
         if (enable) {
             enableLocale(configTarget, locale);
@@ -191,7 +192,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
     return panel;
 
-    function calcActiveDocumentUri(docUri: Maybe<vscode.Uri>): Maybe<vscode.Uri> {
+    function calcActiveDocumentUri(docUri: Maybe<Uri>): Maybe<Uri> {
         return docUri && client.allowedSchemas.has(docUri.scheme) ? docUri : undefined;
     }
 
@@ -227,7 +228,7 @@ function getDefaultWorkspaceFolderUri() {
 }
 
 function normalizeFileName(filename: string): string {
-    const uri = vscode.Uri.file(filename);
+    const uri = Uri.file(filename);
     const folder = vscode.workspace.getWorkspaceFolder(uri);
     if (folder) {
         const folderPath = folder.uri.fsPath;
@@ -243,7 +244,7 @@ function normalizeFileName(filename: string): string {
 
 async function calcSettings(
     document: Maybe<vscode.TextDocument>,
-    folderUri: Maybe<vscode.Uri>,
+    folderUri: Maybe<Uri>,
     client: CSpellClient,
 ): Promise<Settings> {
     const activeFolderUri = folderUri
@@ -466,24 +467,23 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
 
 async function updateView(panel: vscode.WebviewPanel, root: string) {
     log('updateView');
-    const html = getHtml(root);
+    const html = getHtml(panel.webview, root);
     panel.title = title;
     panel.webview.html = html;
 }
 
-function getHtml(root: string) {
-    const resource = vscode.Uri.file(root).with({ scheme: 'vscode-resource' });
+function getHtml(webview: vscode.Webview, root: string) {
+    const resource = Uri.file(root);
+    const bundleJs = webview.asWebviewUri(Uri.joinPath(resource, 'index.bundle.js'));
 return `
 <!DOCTYPE html>
 <html>
     <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSpell Settings Viewer</title>
-    <link href="${resource}/index.css" rel="stylesheet"></head>
-    <body>
-    <div id="root">Root</div>
-    <script type="text/javascript" src="${resource}/index.bundle.js"></script></body>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSpell Settings Viewer</title>
+    </head>
+    <body><div id="root">Root</div><script type="text/javascript" src="${bundleJs}"></script></body>
 </html>
 `;
 }
