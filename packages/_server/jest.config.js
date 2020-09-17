@@ -14,4 +14,6 @@ module.exports = {
         'json',
         'node'
     ],
+    // Use 30sec as a default timeout
+    testTimeout: 30000,
 }

@@ -2,7 +2,6 @@
 const path = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const dist = path.join(__dirname, 'out', 'webapp');
 
@@ -26,25 +25,6 @@ const baseConfig = {
             {
                 test: /\.hbs$/,
                 use: 'handlebars-loader',
-            },
-            {
-                test: /\.s?css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    { loader: 'css-loader' },
-                    // { loader: 'resolve-url-loader', options: {} },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true,
-                            implementation: require('sass'),
-                            webpackImporter: false,
-                            sassOptions: {
-                                includePaths: ['node_modules'],
-                            },
-                        },
-                    },
-                ],
             },
             {
                 test: /\.(ttf|otf|eot|svg)$/,
@@ -80,12 +60,6 @@ const baseConfig = {
             hash: true,
             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: '[name].css',
-            chunkFilename: '[id].css',
         }),
     ],
 };
