@@ -1,9 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.22.5)
-      i18n (~> 0.6, >= 0.6.4)
-      multi_json (~> 1.0)
+    activesupport (6.0.3.3)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     algolia_html_extractor (2.6.2)
@@ -223,7 +226,7 @@ GEM
       jekyll (>= 3.5, < 5.0)
       jekyll-feed (~> 0.9)
       jekyll-seo-tag (~> 2.1)
-    multi_json (1.15.0)
+    minitest (5.14.2)
     multipart-post (2.1.1)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
@@ -255,10 +258,11 @@ GEM
       unf (~> 0.1.4)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
+    thread_safe (0.3.6)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
-    tzinfo (2.0.2)
-      concurrent-ruby (~> 1.0)
+    tzinfo (1.2.7)
+      thread_safe (~> 0.1)
     tzinfo-data (1.2020.1)
       tzinfo (>= 1.0.0)
     unf (0.1.4)
@@ -266,11 +270,13 @@ GEM
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
     verbal_expressions (0.1.5)
+    zeitwerk (2.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (>= 4.1.11)
   github-pages
   jekyll-algolia
   jekyll-feed
