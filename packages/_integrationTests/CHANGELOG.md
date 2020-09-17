@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.1-alpha.0...v1.9.1-alpha.1) (2020-09-17)
+
+
+### Bug Fixes
+
+* Settings Viewer Packages by Migrating to Material-UI ([#542](https://github.com/streetsidesoftware/vscode-spell-checker/issues/542)) ([8793be3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8793be3da43dd1d738719e792486c365d44572ff))
+
+
+
+
+
 # [1.9.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.5...v1.9.0) (2020-05-20)
 
 **Note:** Version bump only for package vscode-spell-checker-integration-tests
