@@ -6,5 +6,8 @@
     "enableFiletypes": [
         "literate haskell",
         "shellscript"
+    ],
+    "words": [
+        "endhighlight"
     ]
 }
