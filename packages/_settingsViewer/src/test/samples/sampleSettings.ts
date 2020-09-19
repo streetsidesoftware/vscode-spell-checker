@@ -7,14 +7,14 @@ const languageIdsA = [
     'c', 'cpp', 'csharp', 'css',
     'go', 'handlebars', 'html',
     'jade', 'javascript', 'javascriptreact', 'json',
-    'latex', 'less',
+    'latex', 'less', 'literate haskell',
     'markdown',
     'php', 'plaintext', 'pub', 'python',
     'restructuredtext', 'rust',
     'scss',
     'text', 'typescript', 'typescriptreact',
-    'yml'].sort();
-const languageIdsB = languageIdsA.concat(['cfml', 'java', 'scala', 'yaml']).sort();
+    'yml'];
+const languageIdsB = languageIdsA.concat(['cfml', 'java', 'scala', 'yaml']);
 const languageIdsUser = languageIdsB;
 const languageIdsWorkspace = languageIdsA;
 const knownLanguageIds = languageIdsA.concat(languageIdsB).concat(['jsonc', 'perl', 'sh', 'bash', 'avro']).filter(uniqueFilter()).sort();

@@ -1,26 +1,22 @@
 import { Settings, ConfigTarget } from './settings';
-export type Commands = 'ConfigurationChangeMessage'
-| 'EnableLanguageIdMessage'
-| 'EnableLocaleMessage'
-| 'RequestConfigurationMessage'
-| 'SelectFileMessage'
-| 'SelectFolderMessage'
-| 'SelectTabMessage'
-;
+
+interface DefinedCommands {
+    ConfigurationChangeMessage: ConfigurationChangeMessage;
+    EnableLanguageIdMessage: EnableLanguageIdMessage;
+    EnableLocaleMessage: EnableLocaleMessage;
+    RequestConfigurationMessage: RequestConfigurationMessage;
+    SelectFileMessage: SelectFileMessage;
+    SelectFolderMessage: SelectFolderMessage;
+    SelectTabMessage: SelectTabMessage;
+}
+
+export type Commands = keyof DefinedCommands;
 
 export interface Message {
     command: Commands;
 }
 
-export type Messages =
-    ConfigurationChangeMessage
-    | EnableLanguageIdMessage
-    | EnableLocaleMessage
-    | RequestConfigurationMessage
-    | SelectFileMessage
-    | SelectFolderMessage
-    | SelectTabMessage
-    ;
+export type Messages = DefinedCommands[Commands];
 
 export function isMessage(data: unknown): data is Message {
     return !!(data
@@ -95,7 +91,5 @@ export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
 export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
 
-interface Record {}
-
-function isObject(v: any): v is Record { return typeof v === 'object' && v !== null; }
-function isString(v: any): v is string { return typeof v === 'string'; }
+function isObject(v: unknown): v is Record<string, unknown> { return typeof v === 'object' && v !== null; }
+function isString(v: unknown): v is string { return typeof v === 'string'; }

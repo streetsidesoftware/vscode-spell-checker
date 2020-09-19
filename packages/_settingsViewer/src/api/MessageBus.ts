@@ -3,13 +3,13 @@ import { Message, Commands, isMessage, Messages } from './message';
 
 export interface Listener {
     cmd: Commands;
-    fn: (message: Message) => any;
+    fn: (message: Message) => void;
     dispose(): void;
 }
 
 export interface Messenger {
-    listenFor<M extends Messages>(cmd: M['command'], fn: (message: M) => any): Listener;
-    postMessage<M extends Messages>(msg: M): any;
+    listenFor<M extends Messages>(cmd: M['command'], fn: (message: M) => void): Listener;
+    postMessage<M extends Messages>(msg: M): void;
 }
 
 export class MessageBus implements Messenger {

@@ -65,7 +65,7 @@ const localeDisplay: [ConfigTarget, string][] = [
 ];
 
 @observer
-class VsCodeTestWrapperView extends React.Component<{appState: AppState}, {}> {
+class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
