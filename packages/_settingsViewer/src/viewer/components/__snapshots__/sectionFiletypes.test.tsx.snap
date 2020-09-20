@@ -667,6 +667,40 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     </div>
     <div
       className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-2 MuiChip-clickable"
+      id="literate haskell"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+        />
+      </svg>
+      <span
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
+      >
+        literate haskell
+      </span>
+    </div>
+    <div
+      className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-2 MuiChip-clickable"
       id="markdown"
       onBlur={[Function]}
       onClick={[Function]}
@@ -1866,6 +1900,40 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         less
+      </span>
+    </div>
+    <div
+      className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-2 MuiChip-clickable"
+      id="literate haskell"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+        />
+      </svg>
+      <span
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
+      >
+        literate haskell
       </span>
     </div>
     <div
@@ -3123,6 +3191,43 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
         className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
       >
         less
+      </span>
+      <span
+        className="MuiTouchRipple-root"
+      />
+    </div>
+    <div
+      className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-2 MuiChip-clickable"
+      id="literate haskell"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <svg
+        aria-hidden={true}
+        className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-5"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+        />
+      </svg>
+      <span
+        className="MuiChip-label WithStyles(ForwardRef(Chip))-label-4"
+      >
+        literate haskell
       </span>
       <span
         className="MuiTouchRipple-root"

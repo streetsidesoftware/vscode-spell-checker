@@ -995,6 +995,40 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
       </div>
       <div
         className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
+        id="literate haskell"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+        <span
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
+        >
+          literate haskell
+        </span>
+      </div>
+      <div
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="markdown"
         onBlur={[Function]}
         onClick={[Function]}
@@ -2606,6 +2640,43 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
       </div>
       <div
         className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
+        id="literate haskell"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+        <span
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
+        >
+          literate haskell
+        </span>
+        <span
+          className="MuiTouchRipple-root"
+        />
+      </div>
+      <div
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
         id="markdown"
         onBlur={[Function]}
         onClick={[Function]}
@@ -4192,6 +4263,40 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
           className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
         >
           less
+        </span>
+      </div>
+      <div
+        className="MuiButtonBase-root MuiChip-root WithStyles(ForwardRef(Chip))-root-12 MuiChip-clickable"
+        id="literate haskell"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiChip-icon WithStyles(ForwardRef(Chip))-icon-15"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+        <span
+          className="MuiChip-label WithStyles(ForwardRef(Chip))-label-14"
+        >
+          literate haskell
         </span>
       </div>
       <div
