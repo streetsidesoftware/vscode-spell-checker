@@ -11,13 +11,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * [#474](https://github.com/streetsidesoftware/vscode-spell-checker/issues/474) ([#550](https://github.com/streetsidesoftware/vscode-spell-checker/issues/550)) ([f9ac476](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f9ac476d7e45c9f51cca87df9eb168373669ff03))
 
 
-
-
-
-# 1.9.1
-
-### Bug Fixes
-
 * [#490](https://github.com/streetsidesoftware/vscode-spell-checker/issues/490) ([#548](https://github.com/streetsidesoftware/vscode-spell-checker/issues/548)) ([ebcb513](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ebcb5131e3c165fe8f13438cffc14d810c4115cc))
 
 
