@@ -12,7 +12,7 @@ import * as di from './di';
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
 export function handlerApplyTextEdits(client: LanguageClient) {
-    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]) {
+    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
 
         const textEditor = window.activeTextEditor;
         if (textEditor && textEditor.document.uri.toString() === uri) {
@@ -84,7 +84,11 @@ function addWordToTarget(word: string, target: Settings.Target, uri: string | nu
     return di.dependencies.dictionaryHelper.addWordToTarget(word, target, uri);
 }
 
-export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+export async function addIgnoreWordToTarget(
+    word: string,
+    target: Settings.Target,
+    uri: string | null | Uri | undefined
+): Promise<void> {
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
     const paths = await determineSettingsPath(actualTarget, uri);
