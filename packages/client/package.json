@@ -101,6 +101,10 @@
                 "title": "Disable Spell Checking by Default"
             },
             {
+                "command": "cSpell.toggleEnableForGlobal",
+                "title": "Toggle Spell Checking"
+            },
+            {
                 "command": "cSpell.enableCurrentLanguage",
                 "title": "Enable Spell Checking Document Language"
             },

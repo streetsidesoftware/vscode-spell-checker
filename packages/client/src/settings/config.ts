@@ -1,4 +1,4 @@
-import { workspace, Uri, ConfigurationTarget as Target, TextDocument } from 'vscode';
+import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
 import { CSpellUserSettings } from '../server';
 
 export { CSpellUserSettings } from '../server';
@@ -174,15 +174,15 @@ function toAny(value: any): any {
     return value;
 }
 
-export function isGlobalLevelTarget(target: ConfigTarget) {
+export function isGlobalLevelTarget(target: ConfigTarget): boolean {
     return isConfigTargetWithOptionalResource(target) && target.target === Target.Global || target === Target.Global;
 }
 
-export function isWorkspaceLevelTarget(target: ConfigTarget) {
+export function isWorkspaceLevelTarget(target: ConfigTarget): boolean {
     return isConfigTargetWithOptionalResource(target) && target.target === Target.Workspace || target === Target.Workspace;
 }
 
-export function isFolderLevelTarget(target: ConfigTarget) {
+export function isFolderLevelTarget(target: ConfigTarget): boolean {
     return isConfigTargetWithResource(target) && target.target === Target.WorkspaceFolder;
 }
 
@@ -294,7 +294,7 @@ export function extractTargetUri(target: ConfigTarget): Uri | null {
         : null;
 }
 
-export function getConfiguration(uri?: Uri | null) {
+export function getConfiguration(uri?: Uri | null): WorkspaceConfiguration {
     return workspace.getConfiguration(undefined, toAny(uri));
 }
 
