@@ -3,45 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.9.1-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.1-alpha.1...v1.9.1-alpha.2) (2020-09-20)
-
+# 1.9.1
 
 ### Bug Fixes
 
 * [#490](https://github.com/streetsidesoftware/vscode-spell-checker/issues/490) ([#548](https://github.com/streetsidesoftware/vscode-spell-checker/issues/548)) ([ebcb513](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ebcb5131e3c165fe8f13438cffc14d810c4115cc))
 
 
-
-
-
-## [1.9.1-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.1-alpha.0...v1.9.1-alpha.1) (2020-09-17)
-
-
-### Bug Fixes
-
 * Settings Viewer Packages by Migrating to Material-UI ([#542](https://github.com/streetsidesoftware/vscode-spell-checker/issues/542)) ([8793be3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8793be3da43dd1d738719e792486c365d44572ff))
 
 
+### Features
+
+#### Performance
+A lot of work was done to improve spell checking performance. It was determined that some of the Regular Expressions used were not ideal.
+To assist with detecting and correcting them, a background regular expression tester was created. It is currently in the experimental stages
+and is not yet publicly available. In a future release, the spell checker will also help detect slow user defined Regular Expressions.
+
+* Performance: More efficient Regular Egressions used during the spell checking process.
+
+#### Commands
+* `cSpell.toggleEnableForGlobal` -- `Toggle Spell Checking` at user level to quickly turn on / off the spell checker.
+  Note: this setting can be overridden at the Workspace / Folder level.
 
 
-
-## [1.9.1-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0...v1.9.1-alpha.0) (2020-08-29)
-
-**Note:** Version bump only for package code-spell-checker
-
-
-
-
-
-# [1.9.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.0-alpha.5...v1.9.0) (2020-05-20)
-
-**Note:** Version bump only for package code-spell-checker
-
-
-
-
-
-# [1.9.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.8.0...v1.9.0-alpha.5) (2020-05-17)
+# 1.9.0
 
 ### Bug Fixes
 
