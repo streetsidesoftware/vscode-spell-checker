@@ -8,14 +8,8 @@ interface DisposableLike {
 	dispose(): any;
 }
 
-interface InProgress {
-	activeEditor: vscode.TextEditor;
-	document: vscode.TextDocument;
-	version: number;
-}
-
 // this method is called when vs code is activated
-export function activate(context: vscode.ExtensionContext, client: CSpellClient) {
+export function activate(context: vscode.ExtensionContext, client: CSpellClient): void {
 
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
@@ -43,31 +37,23 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		}
 	});
 
-	let activeEditor = vscode.window.activeTextEditor;
-	let pattern: string | undefined = '/\\w+/';
-
 	let isActive = fetchIsEnabledFromConfig();
+
+	let activeEditor = isActive ? vscode.window.activeTextEditor : undefined;
+	let pattern: string | undefined = undefined;
 
 	async function updateDecorations() {
 		disposeCurrent();
-		if (!isActive) {
-			activeEditor?.setDecorations(decorationTypeExclude, []);
-			statusBar.hide();
+		if (!isActive || !activeEditor) {
+			clearDecorations();
 			return;
 		}
 
-		if (!activeEditor) {
-			return;
-		}
-		if (!pattern) {
-			activeEditor.setDecorations(decorationTypeExclude, []);
-			statusBar.hide();
-			return;
-		}
+		const userPatterns = pattern ? [pattern] : [];
 		const document = activeEditor.document;
 		const version = document.version;
 		const config = await client.getConfigurationForDocument(document);
-		const extractedPatterns = extractPatternsFromConfig(config.docSettings, [pattern]);
+		const extractedPatterns = extractPatternsFromConfig(config.docSettings, userPatterns);
 		const patterns = extractedPatterns.map(p => p.pattern);
 
 		client.matchPatternsInDocument(document, patterns).then(result => {
@@ -110,6 +96,11 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		});
 	}
 
+	function clearDecorations() {
+		activeEditor?.setDecorations(decorationTypeExclude, []);
+		statusBar.hide();
+	}
+
 	function createHoverMessage(match: PatternMatch) {
 		const r = (new vscode.MarkdownString())
 			.appendText(match.name + ' ' + match.elapsedTime.toFixed(2) + 'ms');
@@ -131,7 +122,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	}
 
 	function updateStatusBar(pattern: string | undefined, info?: StatusBarInfo) {
-		if (pattern) {
+		if (isActive && pattern) {
 			const { elapsedTime, count = 0 } = info || {};
 			const time = elapsedTime ? `${elapsedTime.toFixed(2)}ms` : '$(clock)';
 			statusBar.text = `${time} | ${pattern}`;
@@ -148,14 +139,16 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	}
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
-		activeEditor = editor;
-		if (editor) {
-			triggerUpdateDecorations();
+		if (isActive) {
+			activeEditor = editor;
+			if (editor) {
+				triggerUpdateDecorations();
+			}
 		}
 	}, null, context.subscriptions);
 
 	vscode.workspace.onDidChangeTextDocument(event => {
-		if (activeEditor && event.document === activeEditor.document) {
+		if (isActive && activeEditor && event.document === activeEditor.document) {
 			triggerUpdateDecorations();
 		}
 	}, null, context.subscriptions);
@@ -179,17 +172,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			value: pattern?.toString(),
 			validateInput
 		}).then(value => {
-			if (!value) {
-				pattern = undefined;
-				triggerUpdateDecorations();
-				return;
-			}
-			try {
-				pattern = value;
-			} catch (e) {
-				vscode.window.showWarningMessage(e.toString());
-				pattern = undefined;
-			}
+			pattern = value ? value : undefined;
 			triggerUpdateDecorations();
 		});
 	}
@@ -204,7 +187,17 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	}
 
 	function updateIsActive() {
+		const currentIsActive = isActive;
 		isActive = fetchIsEnabledFromConfig();
+		if (currentIsActive == isActive) {
+			return;
+		}
+		if (isActive) {
+			activeEditor = vscode.window.activeTextEditor;
+			triggerUpdateDecorations();
+		} else {
+			clearDecorations();
+		}
 	}
 
 	function dispose() {
@@ -244,5 +237,5 @@ function extractPatternsFromConfig(config: CSpellUserSettings | undefined, userP
 
 function fetchIsEnabledFromConfig(): boolean {
 	const cfg = vscode.workspace.getConfiguration('cSpell');
-	return !!cfg && !!cfg.get('experimental.enableRegexpView');
+	return !!cfg?.get('experimental.enableRegexpView');
 }
