@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.1...v1.9.2-alpha.0) (2020-09-27)
+
+
+### Bug Fixes
+
+* Issues relating to the RegExp Tester ([#558](https://github.com/streetsidesoftware/vscode-spell-checker/issues/558)) ([176c016](https://github.com/streetsidesoftware/vscode-spell-checker/commit/176c016700426c3ba17403232925f84a70a7e3b5))
+
+
+
+
+
 ## [1.9.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.1-alpha.2...v1.9.1) (2020-09-23)
 
 
