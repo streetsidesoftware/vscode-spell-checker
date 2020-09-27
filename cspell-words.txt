@@ -29,6 +29,7 @@ devtools
 dict
 disqus
 downlevel
+enablement
 endhighlight
 envs
 gemfiles

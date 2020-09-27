@@ -60,7 +60,14 @@
                     "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
                     "group": "A_cspell@9"
                 }
-            ]
+            ],
+            "commandPalette": [
+                {
+                  "command": "cSpellRegExpTester.testRegExp",
+                  "title": "Test a Regular Expression on the current document X.",
+                  "when": "config.cSpell.experimental.enableRegexpView"
+                }
+              ]
         },
         "views": {
             "explorer": [

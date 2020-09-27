@@ -124,7 +124,7 @@ function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, P
     if (isNamedPattern(pat)) {
         return {...pat, regexp: toRegExp(pat.regexp)};
     }
-    return knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')});
+    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')});
 }
 
 function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {

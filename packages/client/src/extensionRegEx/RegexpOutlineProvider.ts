@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { MatchPatternsToDocumentResult, PatternMatch } from '../server';
+import { PatternMatch } from '../server';
 
 export class RegexpOutlineProvider implements vscode.TreeDataProvider<OutlineItem> {
 
@@ -52,7 +52,7 @@ function createCategoryItem(category: string, matches: PatternMatch[]): OutlineI
 }
 
 function createLeaf(offset: PatternMatch): OutlineItem {
-	const treeItem = new vscode.TreeItem(offset.name);
+	const treeItem = new vscode.TreeItem(trimName(offset.name));
 	const timeMs = offset.elapsedTime.toFixed(2);
 	const msg = offset.message ? ' ' + offset.message : ''
 	const parts = [
@@ -73,4 +73,12 @@ function createLeaf(offset: PatternMatch): OutlineItem {
 	};
 
 	return item;
+}
+
+function trimName(name: string) {
+	const maxLen = 50;
+	if (name.length <= maxLen) {
+		return name;
+	}
+	return name.substr(0, maxLen - 1) + '…';
 }
