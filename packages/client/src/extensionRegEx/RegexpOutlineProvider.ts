@@ -26,9 +26,14 @@ export class RegexpOutlineProvider implements vscode.TreeDataProvider<OutlineIte
 	getTreeItem(offset: OutlineItem): vscode.TreeItem {
 		return offset.treeItem;
 	}
+
+	getParent(offset: OutlineItem): OutlineItem | undefined {
+		return offset.parent;
+	}
 }
 
 interface OutlineItem {
+	parent?: OutlineItem;
 	treeItem: vscode.TreeItem;
 	children?: OutlineItem[];
 }
@@ -38,13 +43,14 @@ export type PatternMatchByCategory = Map<string, PatternMatch[]>;
 function createOutlineItems(data: PatternMatchByCategory): OutlineItem {
 	const root: OutlineItem = {
 		treeItem: new vscode.TreeItem('root', vscode.TreeItemCollapsibleState.Expanded),
-		children: [...data.entries()].map(e => createCategoryItem(...e)),
 	};
+	root.children = [...data.entries()].map(e => createCategoryItem(root, ...e))
 	return root;
 }
 
-function createCategoryItem(category: string, matches: PatternMatch[]): OutlineItem {
+function createCategoryItem(parent: OutlineItem, category: string, matches: PatternMatch[]): OutlineItem {
 	const item: OutlineItem = {
+		parent,
 		treeItem: new vscode.TreeItem(category, vscode.TreeItemCollapsibleState.Expanded),
 		children: matches.map(createLeaf),
 	};
@@ -52,22 +58,7 @@ function createCategoryItem(category: string, matches: PatternMatch[]): OutlineI
 }
 
 function createLeaf(offset: PatternMatch): OutlineItem {
-	const treeItem = new vscode.TreeItem(trimName(offset.name));
-	const timeMs = offset.elapsedTime.toFixed(2);
-	const msg = offset.message ? ' ' + offset.message : ''
-	const parts = [
-		`${timeMs}ms`,
-		`(${offset.matches.length})`,
-		msg,
-	].filter(a => !!a);
-	treeItem.description = parts.join(' ');
-	treeItem.tooltip = offset.regexp
-	treeItem.command = {
-		command: 'cSpellRegExpTester.selectRegExp',
-		arguments: [offset.regexp],
-		title: 'Select RegExp'
-	}
-
+	const treeItem = new RegexpOutlineItem(offset);
 	const item: OutlineItem = {
 		treeItem,
 	};
@@ -81,4 +72,33 @@ function trimName(name: string) {
 		return name;
 	}
 	return name.substr(0, maxLen - 1) + '…';
+}
+
+
+export class RegexpOutlineItem extends vscode.TreeItem {
+
+	// public pattern: PatternMatch;
+
+	constructor(
+		public pattern: PatternMatch
+	) {
+		super(trimName(pattern.name));
+		this.pattern = pattern;
+
+		const timeMs = pattern.elapsedTime.toFixed(2);
+		const msg = pattern.message ? ' ' + pattern.message : ''
+		const parts = [
+			`${timeMs}ms`,
+			`(${pattern.matches.length})`,
+			msg,
+		].filter(a => !!a);
+		this.description = parts.join(' ');
+		this.tooltip = pattern.regexp.toString();
+		this.command = {
+			command: 'cSpellRegExpTester.selectRegExp',
+			arguments: [pattern.regexp],
+			title: 'Select RegExp'
+		}
+		this.contextValue = 'regexp';
+	}
 }

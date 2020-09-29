@@ -64,16 +64,37 @@
             "commandPalette": [
                 {
                     "command": "cSpellRegExpTester.testRegExp",
-                    "title": "Test a Regular Expression on the current document X.",
+                    "when": "config.cSpell.experimental.enableRegexpView"
+                },
+                {
+                    "command": "cSpellRegExpTester.editRegExp",
+                    "when": "view == cSpellRegExpView"
+                }
+            ],
+            "view/item/context": [
+                {
+                  "command": "cSpellRegExpTester.editRegExp",
+                  "when": "view == cSpellRegExpView && viewItem == regexp",
+                  "group": "inline"
+                }
+              ]
+
+        },
+        "viewsContainers": {
+        "activitybar": [
+                {
+                    "id": "cspell-explorer",
+                    "title": "Spell Checker Info",
+                    "icon": "resources/dark/check_circle.svg",
                     "when": "config.cSpell.experimental.enableRegexpView"
                 }
             ]
         },
         "views": {
-            "explorer": [
+            "cspell-explorer": [
                 {
                     "id": "cSpellRegExpView",
-                    "name": "cSpell RegExp",
+                    "name": "Regular Expressions",
                     "when": "config.cSpell.experimental.enableRegexpView"
                 }
             ]
@@ -162,6 +183,14 @@
             {
                 "command": "cSpellRegExpTester.testRegExp",
                 "title": "Test a Regular Expression on the current document."
+            },
+            {
+                "command": "cSpellRegExpTester.editRegExp",
+                "title": "Edit",
+                "icon": {
+                    "dark": "resources/dark/edit.svg",
+                    "light": "resources/light/edit.svg"
+                }
             }
         ],
         "languages": [

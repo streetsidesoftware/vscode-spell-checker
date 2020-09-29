@@ -2,16 +2,16 @@ import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
 import { PatternMatch, CSpellUserSettings, NamedPattern } from '../server';
 import { toRegExp } from './evaluateRegExp';
-import { RegexpOutlineProvider } from './RegexpOutlineProvider';
+import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 
 interface DisposableLike {
 	dispose(): any;
 }
 
+const MAX_HISTORY_LENGTH = 5;
+
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext, client: CSpellClient): void {
-
-    const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
 	const disposables = new Set<DisposableLike>();
 	const outline = new RegexpOutlineProvider();
@@ -41,6 +41,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
 	let activeEditor = isActive ? vscode.window.activeTextEditor : undefined;
 	let pattern: string | undefined = undefined;
+	let history: string[] = [];
 
 	async function updateDecorations() {
 		disposeCurrent();
@@ -49,12 +50,13 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			return;
 		}
 
-		const userPatterns = pattern ? [pattern] : [];
 		const document = activeEditor.document;
 		const version = document.version;
 		const config = await client.getConfigurationForDocument(document);
-		const extractedPatterns = extractPatternsFromConfig(config.docSettings, userPatterns);
+		const extractedPatterns = extractPatternsFromConfig(config.docSettings, history);
 		const patterns = extractedPatterns.map(p => p.pattern);
+
+		const highlightIndex = pattern ? 0 : -1;
 
 		client.matchPatternsInDocument(document, patterns).then(result => {
 			if (!vscode.window.activeTextEditor
@@ -77,11 +79,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
 			outline.refresh(byCategory);
 			const activeEditor = vscode.window.activeTextEditor;
-			const processingTimeMs = result.patternMatches.map(m => m.elapsedTime).reduce((a, b) => a + b, 0);
-			const patternCount = result.patternMatches.map(m => m.matches.length > 0 ? 1 : 0).reduce((a, b) => a + b, 0);
-			const failedCount = result.patternMatches.map(m => m.message ? 1 : 0).reduce((a, b) => a + b, 0);
 			const flattenResults = result.patternMatches
-				.filter(patternMatch => patternMatch.regexp === pattern)
+				.filter((_, i) => i === highlightIndex)
+				.filter(patternMatch => patternMatch.regexp === pattern || patternMatch.name === pattern)
 				.map(patternMatch => patternMatch.matches.map(range => ({ range, message: createHoverMessage(patternMatch) })))
 				.reduce((a, v) => a.concat(v), []);
 			const decorations: vscode.DecorationOptions[] = flattenResults.map(match => {
@@ -92,13 +92,11 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 				return decoration;
 			});
 			activeEditor.setDecorations(decorationTypeExclude, decorations);
-			updateStatusBar(`Patterns: ${patternCount} | ${failedCount}`, result ? { elapsedTime: processingTimeMs, count: flattenResults.length } : undefined);
 		});
 	}
 
 	function clearDecorations() {
 		activeEditor?.setDecorations(decorationTypeExclude, []);
-		statusBar.hide();
 	}
 
 	function createHoverMessage(match: PatternMatch) {
@@ -112,26 +110,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			clearTimeout(timeout);
 			timeout = undefined;
 		}
-		updateStatusBar(pattern);
 		timeout = setTimeout(updateDecorations, 100);
-	}
-
-	interface StatusBarInfo {
-		elapsedTime: number;
-		count: number;
-	}
-
-	function updateStatusBar(pattern: string | undefined, info?: StatusBarInfo) {
-		if (isActive && pattern) {
-			const { elapsedTime, count = 0 } = info || {};
-			const time = elapsedTime ? `${elapsedTime.toFixed(2)}ms` : '$(clock)';
-			statusBar.text = `${time} | ${pattern}`;
-			statusBar.tooltip = elapsedTime ? 'Regular Expression Test Results, found ' + count : 'Running Regular Expression Test';
-			statusBar.command = 'cSpellRegExpTester.testRegExp';
-			statusBar.show();
-		} else {
-			statusBar.hide();
-		}
 	}
 
 	if (activeEditor) {
@@ -173,8 +152,19 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			validateInput
 		}).then(value => {
 			pattern = value ? value : undefined;
+			updateHistory(pattern);
 			triggerUpdateDecorations();
 		});
+	}
+
+	function isNonEmptyString(s: string | undefined): s is string {
+		return typeof s === 'string' && !!s;
+	}
+
+	function updateHistory(pattern?: string) {
+		const unique = new Set([pattern].concat(history));
+		history = [...unique].filter(isNonEmptyString);
+		history.length = Math.min(history.length, MAX_HISTORY_LENGTH);
 	}
 
 	function userSelectRegExp(selectedRegExp?: string) {
@@ -183,7 +173,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		} else {
 			pattern = selectedRegExp;
 		}
+		updateHistory(pattern);
 		triggerUpdateDecorations();
+	}
+
+	function editRegExp(item: { treeItem: RegexpOutlineItem } | undefined) {
+		if (item?.treeItem?.pattern) {
+			triggerUpdateDecorations();
+			userTestRegExp(item.treeItem.pattern.regexp);
+		}
 	}
 
 	function updateIsActive() {
@@ -210,9 +208,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     context.subscriptions.push(
 		{dispose},
-		statusBar,
         vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
 		vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
+		vscode.commands.registerCommand('cSpellRegExpTester.editRegExp', editRegExp),
 		vscode.workspace.onDidChangeConfiguration(updateIsActive),
 	);
 }
