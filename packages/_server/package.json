@@ -2,7 +2,7 @@
   "name": "vscode-spell-checker-server",
   "private": true,
   "description": "Spell Checker Server",
-  "version": "1.9.2",
+  "version": "1.9.3-alpha.0",
   "author": "Jason Dent",
   "license": "MIT",
   "repository": {

@@ -5,7 +5,7 @@
     "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
-    "version": "1.9.2",
+    "version": "1.9.3-alpha.0",
     "publisher": "streetsidesoftware",
     "repository": {
         "type": "git",
@@ -73,15 +73,14 @@
             ],
             "view/item/context": [
                 {
-                  "command": "cSpellRegExpTester.editRegExp",
-                  "when": "view == cSpellRegExpView && viewItem == regexp",
-                  "group": "inline"
+                    "command": "cSpellRegExpTester.editRegExp",
+                    "when": "view == cSpellRegExpView && viewItem == regexp",
+                    "group": "inline"
                 }
-              ]
-
+            ]
         },
         "viewsContainers": {
-        "activitybar": [
+            "activitybar": [
                 {
                     "id": "cspell-explorer",
                     "title": "Spell Checker Info",
