@@ -16,6 +16,7 @@ Lunr
 Preformat
 Staticman's
 acanthopterygious
+activitybar
 algolia
 anonymize
 appid

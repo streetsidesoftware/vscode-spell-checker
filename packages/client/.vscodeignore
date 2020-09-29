@@ -9,6 +9,8 @@
 **/*.test.*
 **/*.ts
 **/test.*
+builds/**
+docs/**
 coverage/**
 integrationTests/**
 node_modules/**

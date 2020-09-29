@@ -46,10 +46,13 @@ export class PatternMatcher {
     async matchPatternsInText(patterns: Patterns, text: string, settings: PatternSettings): Promise<MatchResults> {
         const resolvedPatterns = resolvePatterns(patterns, settings);
 
+        const uniquePatterns = [...new Map(resolvedPatterns
+            .map(p => [p.regexp.toString(), p])).values()];
+
         // Optimistically expect them all to work.
         try {
-            const result = await measurePromiseExecution(() => matchMatrix(this.worker, text, resolvedPatterns));
-            return result.r;
+            const result = await measurePromiseExecution(() => matchMatrix(this.worker, text, uniquePatterns));
+            return pairPatterns(result.r, resolvedPatterns);
         } catch (e) {
             if (!isTimeoutError(e)) {
                 return Promise.reject(e);
@@ -58,9 +61,26 @@ export class PatternMatcher {
 
         // At least one of the expressions failed to complete in time.
         // Process them one-by-one
-        const results = resolvedPatterns.map(pat => exec(this.worker, text, pat))
-        return Promise.all(results);
+        const results = uniquePatterns.map(pat => exec(this.worker, text, pat))
+        return Promise.all(results)
+            .then(r => pairPatterns(r, resolvedPatterns));
     }
+}
+
+function pairPatterns(results: MatchResults, patterns: Pattern[]): MatchResults {
+    const defaultResult: PatternMatchTimeout = {
+        name: 'unknown',
+        regexp: /$^/,
+        elapsedTimeMs: 0,
+        message: 'Unmatched pattern',
+    }
+    const mapResults = new Map(results.map(r => [r.regexp.toString(), r]));
+    function matchPatternToResult(p: Pattern): MatchResult {
+        const { regexp, name } = p;
+        const r = mapResults.get(regexp.toString()) || defaultResult;
+        return {...r, name, regexp};
+    }
+    return patterns.map(matchPatternToResult);
 }
 
 export function isPatternMatch(m: MatchResult): m is PatternMatch {
