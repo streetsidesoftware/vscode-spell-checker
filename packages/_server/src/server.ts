@@ -58,34 +58,11 @@ const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
 
-export const regExSpellingGuardBlock = /(\bc?spell(?:-?checker)?::?)\s*disable(?!-line|-next)\b[\s\S]*?((?:\1\s*enable\b)|$)/gi;
-export const regExSpellingGuardNext = /\bc?spell(?:-?checker)?::?\s*disable-next\b.*\s.*/gi;
-export const regExSpellingGuardLine = /^.*\bc?spell(?:-?checker)?::?\s*disable-line\b.*/gim;
-
-
 const overRideDefaults: CSpellUserSettings = {
     id: 'Extension overrides',
     patterns: [
-        {
-            // Turn off the build-in expression by matching the beginning of the doc.
-            name: 'SpellCheckerDisable',
-            pattern: /^(?=.?)/,
-        },
-        {
-            name: 'SpellCheckerDisableBlock',
-            pattern: regExSpellingGuardBlock,
-        },
-        {
-            name: 'SpellCheckerDisableNext',
-            pattern: regExSpellingGuardNext,
-        },
-        {
-            name: 'SpellCheckerDisableLine',
-            pattern: regExSpellingGuardLine,
-        },
     ],
     ignoreRegExpList: [
-        'SpellCheckerDisableBlock', 'SpellCheckerDisableNext', 'SpellCheckerDisableLine',
     ]
 };
 

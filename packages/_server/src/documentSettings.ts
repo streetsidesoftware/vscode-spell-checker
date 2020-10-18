@@ -319,8 +319,16 @@ function fixRegEx(pat: Pattern): Pattern {
     return correctRegExMap.get(pat) || pat;
 }
 
+
+function fixRegPattern(pat: Pattern | Pattern[]): Pattern | Pattern[] {
+    if (Array.isArray(pat)) {
+        return pat.map(fixRegEx);
+    }
+    return fixRegEx(pat);
+}
+
 function fixPattern(pat: RegExpPatternDefinition): RegExpPatternDefinition {
-    const pattern = fixRegEx(pat.pattern);
+    const pattern = fixRegPattern(pat.pattern);
     if (pattern === pat.pattern) {
         return pat;
     }
@@ -347,7 +355,7 @@ export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSp
 }
 
 export const debugExports = {
-    fixRegEx,
+    fixRegEx: fixRegPattern,
     fixPattern,
     resolvePath,
 };

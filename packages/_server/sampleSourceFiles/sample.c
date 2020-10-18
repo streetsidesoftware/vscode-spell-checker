@@ -10,6 +10,9 @@ int main()
     return 0;
 }
 
+// cspell: disable-next-line
+// junkks
+
 int hcf(int n1, int n2)
 {
     if (n2 != 0)

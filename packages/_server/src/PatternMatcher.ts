@@ -2,10 +2,16 @@
 import { CSpellUserSettings } from './cspellConfig';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { measurePromiseExecution } from './timer';
+import { RegExpPatternDefinition } from 'cspell-lib';
 
 export interface Pattern {
     name: string;
     regexp: RegExp;
+}
+
+interface MultiPattern {
+    name: string;
+    patterns: RegExp[];
 }
 
 export type Range = [number, number];
@@ -44,7 +50,7 @@ export class PatternMatcher {
     public dispose = () => this.worker.dispose();
 
     async matchPatternsInText(patterns: Patterns, text: string, settings: PatternSettings): Promise<MatchResults> {
-        const resolvedPatterns = resolvePatterns(patterns, settings);
+        const resolvedPatterns = flattenMultiPattern(resolvePatterns(patterns, settings));
 
         const uniquePatterns = [...new Map(resolvedPatterns
             .map(p => [p.regexp.toString(), p])).values()];
@@ -133,30 +139,60 @@ function toPatternMatch(pattern: Pattern, result: MatchRegExpResult): PatternMat
     }
 }
 
-function resolvePatterns(patterns: Patterns, settings: PatternSettings): Pattern[] {
+function resolvePatterns(patterns: Patterns, settings: PatternSettings): MultiPattern[] {
     const knownPatterns = extractPatternsFromSettings(settings)
     const matchingPatterns = patterns
         .map(pat => resolvePattern(pat, knownPatterns))
     return matchingPatterns;
 }
 
-function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, Pattern>): Pattern {
+function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, MultiPattern>): MultiPattern {
     if (isNamedPattern(pat)) {
-        return {...pat, regexp: toRegExp(pat.regexp)};
+        return {...pat, patterns: [toRegExp(pat.regexp)]};
     }
-    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')});
+    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || ({ name: pat, patterns: [toRegExp(pat, 'g')]});
 }
 
 function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {
     return typeof pattern !== 'string';
 }
 
-function extractPatternsFromSettings(settings: PatternSettings): Map<string, Pattern> {
-    const patterns = settings.patterns
-    ?.map(({name, pattern}) => ({ name, regexp: toRegExp(pattern) })) || [];
-    const knownPatterns = patterns.map(pat => [pat.name.toLowerCase(), pat] as [string, Pattern]);
-    const knownRegexp = patterns.map(pat => [pat.regexp.toString(), pat] as [string, Pattern]);
+function extractPatternsFromSettings(settings: PatternSettings): Map<string, MultiPattern> {
+    const patterns = settings.patterns?.map(mapDef) || [];
+    const knownPatterns = patterns
+        .map(pat => [pat.name.toLowerCase(), pat] as [string, MultiPattern]);
+    const knownRegexp = flattenMultiPattern(patterns).map(mapPatToMulti)
+        .map(pat => [pat.name.toLowerCase(), pat] as [string, MultiPattern]);
     return new Map(knownPatterns.concat(knownRegexp));
+}
+
+function mapPatToMulti(pat: Pattern): MultiPattern {
+    return {
+        name: pat.name,
+        patterns: [pat.regexp],
+    }
+}
+
+function mapDef(pat: RegExpPatternDefinition): MultiPattern {
+    const {name, pattern} = pat;
+    const patterns = Array.isArray(pattern) ? pattern.map(r => toRegExp(r)) : [toRegExp(pattern)]
+    // ) => ({ name, patterns: toRegExp(pattern) })
+    return { name, patterns };
+}
+
+function flattenMultiPattern(multi: Iterable<MultiPattern>): Pattern[] {
+
+    function *flatten(): IterableIterator<Pattern> {
+        for (const {name, patterns} of multi) {
+            let index = patterns.length == 1 ? 0 : 1;
+            for (const regexp of patterns) {
+                const n = index ? name + '.' + index : name;
+                index = index ? index + 1 : 0;
+                yield { name: n, regexp };
+            }
+        }
+    }
+    return [...flatten()];
 }
 
 export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
