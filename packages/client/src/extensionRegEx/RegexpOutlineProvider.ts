@@ -84,21 +84,34 @@ export class RegexpOutlineItem extends vscode.TreeItem {
 	) {
 		super(trimName(pattern.name));
 		this.pattern = pattern;
-
-		const timeMs = pattern.elapsedTime.toFixed(2);
-		const msg = pattern.message ? ' ' + pattern.message : ''
+		const { timeMs, errorMsg, toolTip, count } = extractInfo(pattern);
+		const msg = errorMsg ? ' ' + errorMsg : '';
 		const parts = [
 			`${timeMs}ms`,
-			`(${pattern.matches.length})`,
+			`(${count})`,
 			msg,
 		].filter(a => !!a);
 		this.description = parts.join(' ');
-		this.tooltip = pattern.regexp.toString();
+		this.tooltip = toolTip;
 		this.command = {
 			command: 'cSpellRegExpTester.selectRegExp',
-			arguments: [pattern.regexp],
+			arguments: [pattern.defs[0]?.regexp],
 			title: 'Select RegExp'
 		}
 		this.contextValue = 'regexp';
+	}
+}
+
+function extractInfo(p: PatternMatch) {
+	const timeMs = p.defs.map(m => m.elapsedTime).reduce((a, b) => a + b, 0).toFixed(2)
+	const errorMsg = p.defs.map(m => m.errorMessage).filter(m => !!m).join(', ');
+	const toolTip = p.defs.map(m => m.regexp.toString()).join('\n')
+	const count = p.defs.map(m => m.matches.length).reduce((a, b) => a + b, 0)
+
+	return {
+		timeMs,
+		errorMsg,
+		toolTip,
+		count,
 	}
 }

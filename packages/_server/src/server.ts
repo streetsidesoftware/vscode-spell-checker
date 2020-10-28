@@ -39,7 +39,7 @@ import {
     setWorkspaceBase,
     setWorkspaceFolders,
 } from './log';
-import { PatternMatcher, MatchResult } from './PatternMatcher';
+import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 
 log('Starting Spell Checker Server');
 
@@ -231,14 +231,19 @@ function run() {
         const settings = { patterns: [], ...docSettings };
         const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
         const emptyResult = { ranges: [], message: undefined }
-        function mapResult(r: MatchResult): Api.PatternMatch {
-            const { name, elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
+        function mapMatch(r: RegExpMatches): Api.RegExpMatchResults {
+            const { elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
             return {
-                name,
                 regexp: regexp.toString(),
                 elapsedTime: elapsedTimeMs,
                 matches: ranges,
-                message,
+                errorMessage: message,
+            }
+        }
+        function mapResult(r: MatchResult): Api.PatternMatch {
+            return {
+                name: r.name,
+                defs: r.matches.map(mapMatch),
             }
         }
         const patternMatches = result.map(mapResult)
