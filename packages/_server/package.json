@@ -14,15 +14,15 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.2",
-    "@types/jest": "^26.0.14",
+    "@types/jest": "^26.0.15",
     "@types/micromatch": "^4.0.1",
-    "@types/node": "^12.12.68",
-    "jest": "^26.5.3",
-    "jest-diff": "^26.5.2",
+    "@types/node": "^12.19.2",
+    "jest": "^26.6.1",
+    "jest-diff": "^26.6.1",
     "lorem-ipsum": "^2.0.3",
-    "ts-jest": "^26.4.1",
+    "ts-jest": "^26.4.3",
     "ts-json-schema-generator": "^0.67.1",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "cspell-glob": "^0.1.21",
