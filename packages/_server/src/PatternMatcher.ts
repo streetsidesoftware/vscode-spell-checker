@@ -1,30 +1,30 @@
 // import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CSpellUserSettings } from './cspellConfig';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
-import { measurePromiseExecution } from './timer';
-
-export interface Pattern {
-    name: string;
-    regexp: RegExp;
-}
+import { RegExpPatternDefinition } from 'cspell-lib';
 
 export type Range = [number, number];
 
-export interface PatternMatch {
-    name: string;
+export interface RegExpMatch {
     regexp: RegExp;
     elapsedTimeMs: number;
     ranges: Range[];
 }
 
-export interface PatternMatchTimeout {
-    name: string;
+export interface RegExpMatchTimeout {
     regexp: RegExp;
     elapsedTimeMs: number;
     message: string;
 }
 
-export type MatchResult = PatternMatch | PatternMatchTimeout;
+export type RegExpMatches = RegExpMatch | RegExpMatchTimeout
+
+export interface PatternMatch {
+    name: string;
+    matches: RegExpMatches[];
+}
+
+export type MatchResult = PatternMatch;
 export type MatchResults = MatchResult[];
 
 export type PatternSettings = {
@@ -33,84 +33,103 @@ export type PatternSettings = {
 
 export interface NamedPattern {
     name: string;
-    regexp: string;
+    pattern: string | string[];
 }
 
 type Patterns = (string | NamedPattern)[];
 
 export class PatternMatcher {
-    private worker: RegExpWorker = new RegExpWorker(2000);
+    private worker: RegExpWorker;
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public dispose = () => this.worker.dispose();
 
+    constructor(timeoutMs: number = 2000) {
+        this.worker = new RegExpWorker(timeoutMs)
+    }
+
     async matchPatternsInText(patterns: Patterns, text: string, settings: PatternSettings): Promise<MatchResults> {
         const resolvedPatterns = resolvePatterns(patterns, settings);
+        const uniqueRegExpArray = extractUniqueRegExps(resolvedPatterns);
 
-        const uniquePatterns = [...new Map(resolvedPatterns
-            .map(p => [p.regexp.toString(), p])).values()];
+        return execMatchArray(this.worker, text, uniqueRegExpArray)
+        .then(r => pairWithPatterns(r, resolvedPatterns));
+    }
+}
 
-        // Optimistically expect them all to work.
-        try {
-            const result = await measurePromiseExecution(() => matchMatrix(this.worker, text, uniquePatterns));
-            return pairPatterns(result.r, resolvedPatterns);
-        } catch (e) {
+function pairWithPatterns(execResults: ExecMatchRegExpResults[], patterns: MultiPattern[]): MatchResults {
+    const byRegExp: Map<string, RegExpMatches> = new Map(execResults.map(r => [r.regexp.toString(), r]));
+
+    function mapRegExp(r: RegExp): RegExpMatches {
+        return byRegExp.get(r.toString()) || { regexp: r, message: 'not found', elapsedTimeMs: 0 };
+    }
+
+    const results: MatchResult[] = patterns.map(p => ({ name: p.name, matches: p.regexp.map(mapRegExp)}));
+    return results;
+}
+
+export function isRegExpMatch(m: RegExpMatch | RegExpMatchTimeout): m is RegExpMatch {
+    return Array.isArray((m as RegExpMatch).ranges);
+}
+
+export function isRegExpMatchTimeout(m: RegExpMatch | RegExpMatchTimeout): m is RegExpMatchTimeout {
+    return !isRegExpMatch(m);
+}
+
+interface ExecMatchRegExpResult {
+    regexp: RegExp;
+    elapsedTimeMs: number;
+    ranges: Range[];
+}
+
+interface ExecMatchRegExpResultTimeout {
+    regexp: RegExp;
+    elapsedTimeMs: number;
+    message: string;
+}
+
+type ExecMatchRegExpResults = ExecMatchRegExpResult | ExecMatchRegExpResultTimeout;
+
+function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
+    return execMatchRegExpArray(worker, text, regexpArray)
+        .catch(e => {
             if (!isTimeoutError(e)) {
                 return Promise.reject(e);
             }
-        }
+            return execMatchRegExpArrayOneByOne(worker, text, regexpArray);
+        });
+}
 
-        // At least one of the expressions failed to complete in time.
-        // Process them one-by-one
-        const results = uniquePatterns.map(pat => exec(this.worker, text, pat))
-        return Promise.all(results)
-            .then(r => pairPatterns(r, resolvedPatterns));
+function execMatchRegExpArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResult[]> {
+    return worker.matchRegExpArray(text, regexpArray)
+        .then(r => r.results.map((result, index) => toExecMatchRegExpArrayResult(result, regexpArray[index])))
+}
+
+function execMatchRegExpArrayOneByOne(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
+    const results = regexpArray.map(regexp => execMatch(worker, text, regexp));
+    return Promise.all(results);
+}
+
+function toExecMatchRegExpArrayResult(result: MatchRegExpResult, regexp: RegExp): ExecMatchRegExpResult {
+    return {
+        regexp,
+        ranges: [...result.ranges],
+        elapsedTimeMs: result.elapsedTimeMs,
     }
 }
 
-function pairPatterns(results: MatchResults, patterns: Pattern[]): MatchResults {
-    const defaultResult: PatternMatchTimeout = {
-        name: 'unknown',
-        regexp: /$^/,
-        elapsedTimeMs: 0,
-        message: 'Unmatched pattern',
-    }
-    const mapResults = new Map(results.map(r => [r.regexp.toString(), r]));
-    function matchPatternToResult(p: Pattern): MatchResult {
-        const { regexp, name } = p;
-        const r = mapResults.get(regexp.toString()) || defaultResult;
-        return {...r, name, regexp};
-    }
-    return patterns.map(matchPatternToResult);
+function execMatch(worker: RegExpWorker, text: string, regexp: RegExp): Promise<ExecMatchRegExpResults> {
+    return worker.matchRegExp(text, regexp)
+    .then(r => toExecMatchRegExpArrayResult(r, regexp))
+    .catch(e => toExecMatchRegExpResultTimeout(regexp, e))
 }
 
-export function isPatternMatch(m: MatchResult): m is PatternMatch {
-    return Array.isArray((m as PatternMatch).ranges);
-}
 
-export function isPatternMatchTimeout(m: MatchResult): m is PatternMatchTimeout {
-    return !isPatternMatch(m);
-}
 
-function matchMatrix(worker: RegExpWorker, text: string, patterns: Pattern[]): Promise<PatternMatch[]> {
-    const regexArray = patterns.map(pat => pat.regexp);
-    const result = worker.matchRegExpArray(text, regexArray)
-    .then(r => {
-        return r.results.map((result, index) => toPatternMatch(patterns[index], result))
-    })
-    return result;
-}
-
-function exec(worker: RegExpWorker, text: string, pattern: Pattern): Promise<MatchResult> {
-    return worker.matchRegExp(text, pattern.regexp)
-    .then(r => toPatternMatch(pattern, r))
-    .catch(e => toPatternMatchTimeout(pattern, e))
-}
-
-function toPatternMatchTimeout(pattern: Pattern, error: any | TimeoutError): PatternMatchTimeout | Promise<PatternMatchTimeout> {
+function toExecMatchRegExpResultTimeout(regexp: RegExp, error: any | TimeoutError): ExecMatchRegExpResultTimeout | Promise<ExecMatchRegExpResultTimeout> {
     if (!isTimeoutError(error)) return Promise.reject(error);
     return {
         ...error,
-        ...pattern,
+        regexp,
     };
 }
 
@@ -122,41 +141,47 @@ function isTimeoutError(e: any | TimeoutError): e is TimeoutError {
 
 interface MatchRegExpResult {
     readonly elapsedTimeMs: number;
-    readonly ranges: IterableIterator<Range>
+    readonly ranges: Iterable<Range>
 }
 
-function toPatternMatch(pattern: Pattern, result: MatchRegExpResult): PatternMatch {
-    return {
-        ...pattern,
-        elapsedTimeMs: result.elapsedTimeMs,
-        ranges: [...result.ranges],
-    }
-}
-
-function resolvePatterns(patterns: Patterns, settings: PatternSettings): Pattern[] {
+function resolvePatterns(patterns: Patterns, settings: PatternSettings): MultiPattern[] {
     const knownPatterns = extractPatternsFromSettings(settings)
     const matchingPatterns = patterns
         .map(pat => resolvePattern(pat, knownPatterns))
     return matchingPatterns;
 }
 
-function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, Pattern>): Pattern {
+function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, MultiPattern>): MultiPattern {
     if (isNamedPattern(pat)) {
-        return {...pat, regexp: toRegExp(pat.regexp)};
+        return namedPatternToMultiPattern(pat);
     }
-    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: toRegExp(pat, 'g')});
+    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || ({ name: pat, regexp: [toRegExp(pat, 'g')]});
 }
 
 function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {
     return typeof pattern !== 'string';
 }
 
-function extractPatternsFromSettings(settings: PatternSettings): Map<string, Pattern> {
-    const patterns = settings.patterns
-    ?.map(({name, pattern}) => ({ name, regexp: toRegExp(pattern) })) || [];
-    const knownPatterns = patterns.map(pat => [pat.name.toLowerCase(), pat] as [string, Pattern]);
-    const knownRegexp = patterns.map(pat => [pat.regexp.toString(), pat] as [string, Pattern]);
+function namedPatternToMultiPattern(pat: NamedPattern): MultiPattern {
+    const { name, pattern } = pat;
+    const regexp = typeof pattern === 'string' ? [toRegExp(pattern)] : pattern.map(p => toRegExp(p));
+    return { name, regexp }
+}
+
+function extractPatternsFromSettings(settings: PatternSettings): Map<string, MultiPattern> {
+    const patterns = settings.patterns?.map(mapDef) || [];
+    const knownPatterns: [string, MultiPattern][] = patterns
+        .map(pat => [pat.name.toLowerCase(), pat]);
+    const knownRegexp: [string, MultiPattern][] = patterns
+        .map(pat => [pat.regexp.map(r => r.toString()).join(','), pat]);
     return new Map(knownPatterns.concat(knownRegexp));
+}
+
+function mapDef(pat: RegExpPatternDefinition): MultiPattern {
+    const {name, pattern} = pat;
+    const patterns = Array.isArray(pattern) ? pattern.map(r => toRegExp(r)) : [toRegExp(pattern)]
+    // ) => ({ name, patterns: toRegExp(pattern) })
+    return { name, regexp: patterns };
 }
 
 export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
@@ -171,4 +196,22 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
 
 export function isRegExp(r: RegExp | any): r is RegExp {
     return r instanceof RegExp;
+}
+
+function *flatten<T>(a: T[][]): Iterable<T> {
+    for (const r of a) {
+        yield *r;
+    }
+}
+
+function extractUniqueRegExps(patterns: MultiPattern[]): RegExp[] {
+    const nested: [string, RegExp][][] = patterns
+        .map(p => p.regexp.map(r => [r.toString(), r]));
+    const collection: Map<string, RegExp> = new Map(flatten(nested));
+    return [...collection.values()];
+}
+
+interface MultiPattern {
+    name: string;
+    regexp: RegExp[];
 }

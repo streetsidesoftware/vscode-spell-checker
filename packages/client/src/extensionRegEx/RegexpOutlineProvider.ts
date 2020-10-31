@@ -57,11 +57,16 @@ function createCategoryItem(parent: OutlineItem, category: string, matches: Patt
 	return item;
 }
 
-function createLeaf(offset: PatternMatch): OutlineItem {
-	const treeItem = new RegexpOutlineItem(offset);
-	const item: OutlineItem = {
+interface PatternOutlineItem extends OutlineItem {
+	treeItem: RegexpOutlineItem;
+}
+
+function createLeaf(pattern: PatternMatch): OutlineItem {
+	const treeItem = new RegexpOutlineItem(pattern);
+	const item: PatternOutlineItem = {
 		treeItem,
 	};
+	item.children = createChildren(item);
 
 	return item;
 }
@@ -75,6 +80,15 @@ function trimName(name: string) {
 }
 
 
+function createChildren(parent: PatternOutlineItem): OutlineItem[] | undefined {
+	const pattern = parent.treeItem.pattern;
+	if (pattern.defs.length < 2) {
+		return undefined;
+	}
+	const name = pattern.name;
+	return pattern.defs.map((d, i) => ({ name: `${name}.${i}`, defs: [d] })).map(createLeaf);
+}
+
 export class RegexpOutlineItem extends vscode.TreeItem {
 
 	// public pattern: PatternMatch;
@@ -82,23 +96,40 @@ export class RegexpOutlineItem extends vscode.TreeItem {
 	constructor(
 		public pattern: PatternMatch
 	) {
-		super(trimName(pattern.name));
+		super(
+			trimName(pattern.name),
+			pattern.defs.length > 1 ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None
+		);
 		this.pattern = pattern;
-
-		const timeMs = pattern.elapsedTime.toFixed(2);
-		const msg = pattern.message ? ' ' + pattern.message : ''
+		const { timeMs, errorMsg, toolTip, count } = extractInfo(pattern);
+		const msg = errorMsg ? ' ' + errorMsg : '';
 		const parts = [
 			`${timeMs}ms`,
-			`(${pattern.matches.length})`,
+			`(${count})`,
 			msg,
 		].filter(a => !!a);
 		this.description = parts.join(' ');
-		this.tooltip = pattern.regexp.toString();
+		this.tooltip = toolTip;
 		this.command = {
 			command: 'cSpellRegExpTester.selectRegExp',
-			arguments: [pattern.regexp],
+			arguments: [pattern.defs[0]?.regexp],
 			title: 'Select RegExp'
 		}
 		this.contextValue = 'regexp';
+	}
+}
+
+function extractInfo(p: PatternMatch) {
+	const timeMs = p.defs.map(m => m.elapsedTime).reduce((a, b) => a + b, 0).toFixed(2)
+	const errorMsg = p.defs.map(m => m.errorMessage).filter(m => !!m).join(', ');
+	const regexps = p.defs.map(m => m.regexp.toString());
+	const toolTip = regexps.length > 1 ? 'Multi Pattern' : regexps.join('')
+	const count = p.defs.map(m => m.matches.length).reduce((a, b) => a + b, 0)
+
+	return {
+		timeMs,
+		errorMsg,
+		toolTip,
+		count,
 	}
 }

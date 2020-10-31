@@ -39,7 +39,7 @@ import {
     setWorkspaceBase,
     setWorkspaceFolders,
 } from './log';
-import { PatternMatcher, MatchResult } from './PatternMatcher';
+import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 
 log('Starting Spell Checker Server');
 
@@ -58,34 +58,11 @@ const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
 
-export const regExSpellingGuardBlock = /(\bc?spell(?:-?checker)?::?)\s*disable(?!-line|-next)\b[\s\S]*?((?:\1\s*enable\b)|$)/gi;
-export const regExSpellingGuardNext = /\bc?spell(?:-?checker)?::?\s*disable-next\b.*\s.*/gi;
-export const regExSpellingGuardLine = /^.*\bc?spell(?:-?checker)?::?\s*disable-line\b.*/gim;
-
-
 const overRideDefaults: CSpellUserSettings = {
     id: 'Extension overrides',
     patterns: [
-        {
-            // Turn off the build-in expression by matching the beginning of the doc.
-            name: 'SpellCheckerDisable',
-            pattern: /^(?=.?)/,
-        },
-        {
-            name: 'SpellCheckerDisableBlock',
-            pattern: regExSpellingGuardBlock,
-        },
-        {
-            name: 'SpellCheckerDisableNext',
-            pattern: regExSpellingGuardNext,
-        },
-        {
-            name: 'SpellCheckerDisableLine',
-            pattern: regExSpellingGuardLine,
-        },
     ],
     ignoreRegExpList: [
-        'SpellCheckerDisableBlock', 'SpellCheckerDisableNext', 'SpellCheckerDisableLine',
     ]
 };
 
@@ -254,14 +231,19 @@ function run() {
         const settings = { patterns: [], ...docSettings };
         const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
         const emptyResult = { ranges: [], message: undefined }
-        function mapResult(r: MatchResult): Api.PatternMatch {
-            const { name, elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
+        function mapMatch(r: RegExpMatches): Api.RegExpMatchResults {
+            const { elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
             return {
-                name,
                 regexp: regexp.toString(),
                 elapsedTime: elapsedTimeMs,
                 matches: ranges,
-                message,
+                errorMessage: message,
+            }
+        }
+        function mapResult(r: MatchResult): Api.PatternMatch {
+            return {
+                name: r.name,
+                defs: r.matches.map(mapMatch),
             }
         }
         const patternMatches = result.map(mapResult)

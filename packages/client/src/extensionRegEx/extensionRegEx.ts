@@ -81,8 +81,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 			const activeEditor = vscode.window.activeTextEditor;
 			const flattenResults = result.patternMatches
 				.filter((_, i) => i === highlightIndex)
-				.filter(patternMatch => patternMatch.regexp === pattern || patternMatch.name === pattern)
-				.map(patternMatch => patternMatch.matches.map(range => ({ range, message: createHoverMessage(patternMatch) })))
+				.map(mapPatternMatchToRangeMessage)
 				.reduce((a, v) => a.concat(v), []);
 			const decorations: vscode.DecorationOptions[] = flattenResults.map(match => {
 				const { range, message } = match;
@@ -95,13 +94,21 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 		});
 	}
 
+	function mapPatternMatchToRangeMessage(match: PatternMatch) {
+		const { name, defs } = match;
+		return defs
+			.map(d => d.matches.map(range => ( {range, elapsedTime: d.elapsedTime}))
+			.map(({ range, elapsedTime }) => ({range, message: createHoverMessage(name, elapsedTime)})))
+			.reduce((a, m) => a.concat(m), [])
+	}
+
 	function clearDecorations() {
 		activeEditor?.setDecorations(decorationTypeExclude, []);
 	}
 
-	function createHoverMessage(match: PatternMatch) {
+	function createHoverMessage(name: string, elapsedTime: number) {
 		const r = (new vscode.MarkdownString())
-			.appendText(match.name + ' ' + match.elapsedTime.toFixed(2) + 'ms');
+			.appendText(name + ' ' + elapsedTime.toFixed(2) + 'ms');
 		return r;
 	}
 
@@ -180,7 +187,8 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 	function editRegExp(item: { treeItem: RegexpOutlineItem } | undefined) {
 		if (item?.treeItem?.pattern) {
 			triggerUpdateDecorations();
-			userTestRegExp(item.treeItem.pattern.regexp);
+			const { defs, name } = item.treeItem.pattern;
+			userTestRegExp(defs[0]?.regexp || name);
 		}
 	}
 
@@ -226,11 +234,33 @@ function extractPatternsFromConfig(config: CSpellUserSettings | undefined, userP
 	userPatterns.forEach(p => extractedPatterns.push({ category: 'User Patterns', pattern: p }));
 	config?.includeRegExpList?.forEach(p => extractedPatterns.push({ category: 'Include Regexp List', pattern: p.toString()}));
 	config?.ignoreRegExpList?.forEach(p => extractedPatterns.push({ category: 'Exclude Regexp List', pattern: p.toString()}));
-	config?.patterns?.forEach(p => extractedPatterns.push({ category: 'Patterns', pattern: {
-		name: p.name,
-		regexp: p.pattern.toString(),
-	}}));
+	config?.patterns?.forEach(p => extractedPatterns.push({ category: 'Patterns', pattern: mapPatternDef(p)}));
 	return extractedPatterns;
+}
+
+interface PatternDef {
+	name: string;
+	pattern: string | RegExp | (string | RegExp)[]
+}
+
+function mapPatternDef(r: PatternDef): NamedPattern {
+	const { name, pattern } = r;
+
+	function cvtR(r: string | RegExp): string {
+		return r.toString();
+	}
+
+	function cvt(p: PatternDef['pattern']): string | string[] {
+		if (Array.isArray(p)) {
+			return p.map(cvtR);
+		}
+		return cvtR(p);
+	}
+
+	return {
+		name,
+		pattern: cvt(pattern),
+	}
 }
 
 function fetchIsEnabledFromConfig(): boolean {

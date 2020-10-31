@@ -64,7 +64,7 @@ export interface TextDocumentRef {
 
 export interface NamedPattern {
     name: string;
-    regexp: string;
+    pattern: string | string[];
 }
 
 export interface MatchPatternsToDocumentRequest extends TextDocumentRef {
@@ -76,12 +76,18 @@ export type EndIndex = number;
 
 export type RangeTuple = [StartIndex, EndIndex];
 
+export interface RegExpMatch {
+    regexp: string;
+    matches: RangeTuple[]
+    elapsedTime: number;
+    errorMessage?: string;
+}
+
+export type RegExpMatchResults = RegExpMatch;
+
 export interface PatternMatch {
     name: string;
-    regexp: string;
-    elapsedTime: number;
-    matches: RangeTuple[];
-    message?: string;
+    defs: RegExpMatch[]
 }
 
 export interface MatchPatternsToDocumentResult {
