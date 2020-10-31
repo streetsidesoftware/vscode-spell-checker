@@ -20,14 +20,14 @@
     "@types/chai": "^4.2.14",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^12.12.68",
+    "@types/node": "^12.19.3",
     "@types/vscode": "^1.50.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
     "glob": "^7.1.6",
     "mocha": "^7.2.0",
     "rimraf": "^3.0.2",
-    "typescript": "^4.0.3",
-    "vscode-test": "^1.4.0"
+    "typescript": "^4.0.5",
+    "vscode-test": "^1.4.1"
   }
 }
