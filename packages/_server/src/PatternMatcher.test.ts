@@ -56,7 +56,7 @@ describe('Validate PatternMatcher', () => {
     });
 
     testMatcher('timeout', async (matcher) => {
-        const slowRegexp = '(x+x+)+y';
+        const slowRegexp = '(x+x+)+y'; // lgtm
         const result = await matcher.matchPatternsInText([slowRegexp], sampleText, settings);
         const r = mapResults(result);
         expect(r.get(slowRegexp)).toBeDefined();
