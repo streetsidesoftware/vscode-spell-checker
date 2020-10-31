@@ -6,7 +6,8 @@ const settings = {
     ...getDefaultSettings()
 };
 
-const defaultTimeout = 1000;
+const defaultTimeout = 5000;
+const jestTimeout = 20000;
 
 describe('Validate PatternMatcher', () => {
     testMatcher('email', async (matcher) => {
@@ -64,12 +65,12 @@ describe('Validate PatternMatcher', () => {
         const matches = matchedResults.matches[0];
         expect(isRegExpMatchTimeout(matches)).toBe(true);
         expect(isRegExpMatch(matches)).toBe(false);
-    });
+    }, 1000);
 
 });
 
 function testMatcher<T = void>(name: string, fn: (matcher: PatternMatcher) => Promise<T>, timeoutMs = defaultTimeout) {
-    test(name, run(fn, timeoutMs), timeoutMs * 10);
+    test(name, run(fn, timeoutMs), Math.max(timeoutMs * 4, jestTimeout));
 }
 
 function run<T = void>(fn: (matcher: PatternMatcher) => Promise<T>, timeoutMs: number): () => Promise<T> {
@@ -91,5 +92,5 @@ const sampleText = `
     Quote: "All good things must..."
 
     # Regexp: /(x+x+)+y/ exhibits catastrophic backtracking on the following string:
-    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 `;
