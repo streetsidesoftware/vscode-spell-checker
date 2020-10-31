@@ -1,9 +1,13 @@
 # vscode-spell-checker
 
-[![Build Status](https://travis-ci.org/streetsidesoftware/vscode-spell-checker.svg?branch=master)](https://travis-ci.org/streetsidesoftware/vscode-spell-checker)
-[![](https://vsmarketplacebadge.apphb.com/version-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/installs-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 [![](https://vsmarketplacebadge.apphb.com/rating-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+[![](https://vsmarketplacebadge.apphb.com/version-short/streetsidesoftware.code-spell-checker.svg)](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+
+[![Build & Test Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/build-test/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
+[![Integration Tests Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/Integration%20Tests/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
+[![Lint Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/lint/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
+
 
 A simple source code spell checker for multiple programming languages.
 
