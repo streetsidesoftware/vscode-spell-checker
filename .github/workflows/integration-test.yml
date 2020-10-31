@@ -1,3 +1,4 @@
+name: "Integration Tests"
 on:
     push:
         branches:
