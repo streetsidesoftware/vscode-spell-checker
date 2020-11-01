@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
-        "vscode": "^1.49.0"
+        "vscode": "^1.50.0"
     },
     "extensionKind": [
         "workspace"
@@ -679,6 +679,7 @@
         "build": "tsc && webpack --mode none",
         "build-production": "webpack --mode production",
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
+        "test-vsce-build": "npx vsce package -o ./temp",
         "lint": "eslint 'src/**'",
         "vscode:prepublish": "npm run clean && npm run build-production",
         "package-extension": "npx vsce package -o ../../build",

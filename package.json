@@ -12,9 +12,10 @@
     "clean": "lerna run clean && lerna clean",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "build-release": "npm run build && npm run package-extension",
-    "lerna-prerelease": "lerna version --conventional-commits --conventional-prerelease",
-    "lerna-release": "lerna version --conventional-commits --conventional-graduate",
+    "lerna-prerelease": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-prerelease",
+    "lerna-release": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-graduate",
     "package-extension": "lerna run package-extension",
+    "test-vsce-build": "lerna run test-vsce-build",
     "lint": "lerna run lint",
     "test-client-integration": "cd packages/_integrationTests && npm test",
     "test": "lerna run --ignore \"*integration*\" test"
