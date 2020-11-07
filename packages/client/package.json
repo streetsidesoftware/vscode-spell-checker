@@ -36,7 +36,7 @@
     "activationEvents": [
         "*"
     ],
-    "main": "./dist/extension",
+    "main": "./dist/extension.js",
     "contributes": {
         "menus": {
             "editor/context": [
