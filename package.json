@@ -18,7 +18,8 @@
     "test-vsce-build": "lerna run test-vsce-build",
     "lint": "lerna run lint",
     "test-client-integration": "cd packages/_integrationTests && npm test",
-    "test": "lerna run --ignore \"*integration*\" test"
+    "test": "lerna run --ignore \"*integration*\" test",
+    "update-packages": "lerna exec \"npm update -S && rm -rf node_modules package-lock.json && npm i\" && lerna bootstrap"
   },
   "repository": {
     "type": "git",
