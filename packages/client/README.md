@@ -61,7 +61,6 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 ## Add-On Specialized Dictionaries
 
 - [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
-- [Fullstack](https://marketplace.visualstudio.com/items?itemName=rbalet.code-spell-checker-fullstack)
 
 ## Enabled File Types
 
