@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.3...v1.9.4) (2020-11-14)
+
+
+### Bug Fixes
+
+* Fix crash with missing import ([#582](https://github.com/streetsidesoftware/vscode-spell-checker/issues/582)) ([60aa438](https://github.com/streetsidesoftware/vscode-spell-checker/commit/60aa4387f3f5bc4944a31504d07f3c3d43f17318)), closes [#579](https://github.com/streetsidesoftware/vscode-spell-checker/issues/579)
+
+
+
+
+
 ## [1.9.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.9.3-alpha.3...v1.9.3) (2020-11-09)
 
 **Note:** Version bump only for package vscode-spell-checker-server
