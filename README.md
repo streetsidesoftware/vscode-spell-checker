@@ -8,7 +8,6 @@
 [![Integration Tests Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/Integration%20Tests/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
 [![Lint Actions Status](https://github.com/streetsidesoftware/vscode-spell-checker/workflows/lint/badge.svg)](https://github.com/streetsidesoftware/vscode-spell-checker/actions)
 
-
 A simple source code spell checker for multiple programming languages.
 
 For the readme on the plugin: [README](./packages/client/README.md).
@@ -20,11 +19,11 @@ For the readme on the plugin: [README](./packages/client/README.md).
 1. `npm install`
 1. Launch vscode: `code Spell Checker.code-workspace`
 1. Run the extension from vscode:
-   1. `Debug Tab`
-   1. Choose `Launch Extension` configuration.
-   1. `F5`
+    1. `Debug Tab`
+    1. Choose `Launch Extension` configuration.
+    1. `F5`
 
-<sup>*</sup> Requires Node >= 10
+<sup>\*</sup> Requires Node >= 12
 
 ### Debugging the Client
 
@@ -53,10 +52,10 @@ If anything shows up, then the port is still locked.
 
 ## Packages
 
-* `client` - the actual extension running in VS Code.
-* `_server` - the extension server that processes spell checker requests
-* `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
-* `_integrationTests` - a test suite that launches the extension in VS Code.
+-   `client` - the actual extension running in VS Code.
+-   `_server` - the extension server that processes spell checker requests
+-   `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
+-   `_integrationTests` - a test suite that launches the extension in VS Code.
 
 ## Dictionaries / Word List
 
