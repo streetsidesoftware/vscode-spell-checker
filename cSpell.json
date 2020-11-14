@@ -9,6 +9,7 @@
         "coverage",
         "temp",
         "languageCodes.ts",
+        "samples",
         "packages/client/settingsViewer/**",
         "packages/client/resources/**",
         "packages/client/samples/**",
