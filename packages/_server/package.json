@@ -32,6 +32,7 @@
     "iconv-lite": "^0.6.2",
     "micromatch": "^4.0.2",
     "minimatch": "^3.0.4",
+    "node-watch": "^0.7.0",
     "regexp-worker": "^1.1.0",
     "rxjs": "^6.6.2",
     "vscode-languageserver": "^6.1.1",
