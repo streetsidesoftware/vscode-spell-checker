@@ -9,6 +9,10 @@
         "coverage",
         "temp",
         "languageCodes.ts",
+        "packages/client/settingsViewer/**",
+        "packages/client/resources/**",
+        "packages/client/samples/**",
+        "packages/client/server/**",
         "testFixtures"
     ],
     "ignoreWords": [],
@@ -23,7 +27,8 @@
         }
     ],
     "dictionaries": [
-        "cities", "cspell-words"
+        "cities",
+        "cspell-words"
     ],
     "languageSettings": [
         {
