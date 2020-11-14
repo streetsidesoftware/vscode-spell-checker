@@ -1,0 +1,7 @@
+{
+    "name": "Bad Import",
+    "description": "Explicitly try to include a file that does not exist.",
+    "import": [
+        "./not-found.json"
+    ]
+}
