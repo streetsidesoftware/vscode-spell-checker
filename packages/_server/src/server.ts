@@ -33,6 +33,7 @@ import {
 } from './documentSettings';
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from './log';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
+import { DictionaryWatcher } from './dictionaryWatcher';
 
 log('Starting Spell Checker Server');
 
@@ -78,6 +79,8 @@ function run() {
     const blockValidation = new Map<string, number>();
     let isValidationBusy = false;
     const disposables: Disposable[] = [];
+    const dictionaryWatcher = new DictionaryWatcher();
+    disposables.push(dictionaryWatcher);
 
     const requestMethodApi: RequestMethodApi = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
@@ -126,6 +129,11 @@ function run() {
         settings: SettingsCspell;
     }
 
+    function onDictionaryChange(eventType?: string, filename?: string) {
+        logInfo(`Dictionary Change ${eventType}`, filename);
+        triggerUpdateConfig.next(undefined);
+    }
+
     function onConfigChange(_change: OnChangeParam) {
         logInfo('Configuration Change');
         triggerUpdateConfig.next(undefined);
@@ -135,6 +143,7 @@ function run() {
     function updateActiveSettings() {
         log('updateActiveSettings');
         documentSettings.resetSettings();
+        dictionaryWatcher.clear();
         triggerValidateAll.next(undefined);
     }
 
@@ -162,6 +171,7 @@ function run() {
     // Listen for event messages from the client.
     connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
     connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
+    disposables.push(dictionaryWatcher.listen(onDictionaryChange));
 
     async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         const { uri, languageId } = params;
@@ -351,6 +361,7 @@ function run() {
                     log(`validateTextDocument start: v${doc.version}`, uri);
                     const settings = correctBadSettings(settingsToUse);
                     logProblemsWithSettings(settings);
+                    dictionaryWatcher.processSettings(settings);
                     const diagnostics: vscode.Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };

@@ -1,0 +1,15 @@
+{
+    "version": "0.1",
+    "name": "Bad Import",
+    "description": "Explicitly try to include a file that does not exist.",
+    "dictionaryDefinitions": [
+        {
+            "name": "words",
+            "path": "./words.txt"
+        }
+    ],
+    "dictionaries": [
+        "words"
+    ],
+    "words": []
+}
