@@ -1,0 +1,27 @@
+# This is a basic workflow that is manually triggered
+
+name: Manual Publish
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install 
+        run: npm install
+      - name: Test
+        run: npm test
+      - name: Build Extension .vsix
+        run: npm run package-extension
+      - name: Publish VSCE
+        run: find ./build | xargs echo npx vsce -p ${{ secrets.VSCE_TOKEN }} --packagePath
+      - name: Publish OVSX
+        run: find ./build | xargs echo npx ovsx -p ${{ secrets.OVSX_TOKEN }} 
+        
