@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from './cspellConfig';
+import { CSpellUserSettings } from './config/cspellConfig';
 import { SuggestionResult, CompoundWordsMethod } from 'cspell-lib';
 import { SuggestOptions, SpellingDictionaryCollection } from 'cspell-lib/dist/SpellingDictionary';
 
@@ -34,11 +34,10 @@ export class SuggestionGenerator<DocInfo> {
             compoundMethod: CompoundWordsMethod.NONE,
             ignoreCase: !settings.caseSensitive,
         };
-        return dictionary.suggest(word, options).map(s => ({...s, word: s.word.replace(regexJoinedWords, '')}));
+        return dictionary.suggest(word, options).map((s) => ({ ...s, word: s.word.replace(regexJoinedWords, '') }));
     }
 
     async genWordSuggestions(doc: DocInfo, word: string): Promise<string[]> {
-        return (await this.genSuggestions(doc, word)).map(sr => sr.word);
+        return (await this.genSuggestions(doc, word)).map((sr) => sr.word);
     }
 }
-

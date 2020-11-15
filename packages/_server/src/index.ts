@@ -1,3 +1,2 @@
-
 export * from './api';
-export * from './cspellConfig';
+export * from './config/cspellConfig';

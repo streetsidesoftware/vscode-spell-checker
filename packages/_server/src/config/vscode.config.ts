@@ -1,5 +1,5 @@
 import * as vscode from 'vscode-languageserver';
-import { log } from './log';
+import { log } from '../utils/log';
 
 export interface TextDocumentUri {
     uri: string;
@@ -16,14 +16,14 @@ export function getConfiguration(connection: Connection): Thenable<any>;
 export function getConfiguration(connection: Connection, section: string): Thenable<any>;
 export function getConfiguration(connection: Connection, item: vscode.ConfigurationItem): Thenable<any>;
 export function getConfiguration(connection: Connection, items: vscode.ConfigurationItem[]): Thenable<any[]>;
-export function getConfiguration(connection: Connection, params?: GetConfigurationParams ): Thenable<any> {
+export function getConfiguration(connection: Connection, params?: GetConfigurationParams): Thenable<any> {
     if (typeof params === 'string') {
         log(`getConfiguration\t${params}`);
         return connection.workspace.getConfiguration(params);
     }
     if (Array.isArray(params)) {
         const uris = params
-            .map(p => {
+            .map((p) => {
                 if (!p) {
                     return '';
                 }
@@ -32,8 +32,7 @@ export function getConfiguration(connection: Connection, params?: GetConfigurati
                 }
                 return p.scopeUri || '';
             })
-            .filter(p => !!p)
-            ;
+            .filter((p) => !!p);
         log('getConfiguration', uris);
         return connection.workspace.getConfiguration(params);
     }

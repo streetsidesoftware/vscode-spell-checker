@@ -1,32 +1,26 @@
-import {
-    TextDocuments,
-    CodeActionParams,
-} from 'vscode-languageserver';
+import { TextDocuments, CodeActionParams } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import {
-    CodeAction,
-} from 'vscode-languageserver-types';
+import { CodeAction } from 'vscode-languageserver-types';
 import * as LangServer from 'vscode-languageserver';
 import { Text } from 'cspell-lib';
 import * as Validator from './validator';
-import { CSpellUserSettings } from './cspellConfig';
+import { CSpellUserSettings } from './config/cspellConfig';
 import { SpellingDictionary } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
-import { isUriAllowed, DocumentSettings } from './documentSettings';
+import { isUriAllowed, DocumentSettings } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
-import { uniqueFilter } from './util';
-import { log } from './log';
+import { uniqueFilter } from './utils';
+import { log } from './utils/log';
 
 function extractText(textDocument: TextDocument, range: LangServer.Range) {
     return textDocument.getText(range);
 }
 
-
 export function onCodeActionHandler(
     documents: TextDocuments<TextDocument>,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
-    documentSettings: DocumentSettings,
+    documentSettings: DocumentSettings
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
     type SettingsDictPair = GetSettingsResult;
     interface CacheEntry {
@@ -51,14 +45,17 @@ export function onCodeActionHandler(
     async function constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
         const settings = cspell.constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
         const dictionary = await cspell.getDictionary(settings);
-        return  { settings, dictionary };
+        return { settings, dictionary };
     }
 
     const handler = async (params: CodeActionParams) => {
         const actions: CodeAction[] = [];
-        const { context, textDocument: { uri } } = params;
+        const {
+            context,
+            textDocument: { uri },
+        } = params;
         const { diagnostics } = context;
-        const spellCheckerDiags = diagnostics.filter(diag => diag.source === Validator.diagSource);
+        const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
         if (!spellCheckerDiags.length) return [];
         const optionalTextDocument = documents.get(uri);
         if (!optionalTextDocument) return [];
@@ -82,11 +79,7 @@ export function onCodeActionHandler(
         }
 
         function createAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
-            const cmd = LangServer.Command.create(
-                title,
-                command,
-                ...args
-            );
+            const cmd = LangServer.Command.create(title, command, ...args);
             const action = LangServer.CodeAction.create(title, cmd);
             action.diagnostics = diags;
             action.kind = LangServer.CodeActionKind.QuickFix;
@@ -100,57 +93,57 @@ export function onCodeActionHandler(
                 const word = extractText(textDocument, diag.range);
                 diagWord = diagWord || word;
                 const sugs: string[] = await getSuggestions(word);
-                sugs
-                    .map(sug => Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug)
+                sugs.map((sug) => (Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug))
                     .filter(uniqueFilter())
-                    .forEach(sugWord => {
-                        const action = createAction(
-                            sugWord,
-                            'cSpell.editText',
-                            [diag],
-                            uri,
-                            textDocument.version,
-                            [ replaceText(diag.range, sugWord) ]
-                        );
+                    .forEach((sugWord) => {
+                        const action = createAction(sugWord, 'cSpell.editText', [diag], uri, textDocument.version, [
+                            replaceText(diag.range, sugWord),
+                        ]);
                         /**
-                          * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
-                          * Note we might want this to be a config setting incase someone has `"editor.codeActionsOnSave": { "source.fixAll": true }`
-                          * if (!actions.length) {
-                          *     action.isPreferred = true;
-                          * }
-                          */
+                         * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
+                         * Note we might want this to be a config setting incase someone has `"editor.codeActionsOnSave": { "source.fixAll": true }`
+                         * if (!actions.length) {
+                         *     action.isPreferred = true;
+                         * }
+                         */
                         actions.push(action);
                     });
             }
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
-                actions.push(createAction(
-                    'Add: "' + word + '" to user dictionary',
-                    'cSpell.addWordToUserDictionarySilent',
-                    spellCheckerDiags,
-                    word,
-                    textDocument.uri
-                ));
-                if (showAddToFolder) {
-                    // Allow the them to add it to the project dictionary.
-                    actions.push(createAction(
-                        'Add: "' + word + '" to folder dictionary',
-                        'cSpell.addWordToDictionarySilent',
+                actions.push(
+                    createAction(
+                        'Add: "' + word + '" to user dictionary',
+                        'cSpell.addWordToUserDictionarySilent',
                         spellCheckerDiags,
                         word,
                         textDocument.uri
-                    ));
+                    )
+                );
+                if (showAddToFolder) {
+                    // Allow the them to add it to the project dictionary.
+                    actions.push(
+                        createAction(
+                            'Add: "' + word + '" to folder dictionary',
+                            'cSpell.addWordToDictionarySilent',
+                            spellCheckerDiags,
+                            word,
+                            textDocument.uri
+                        )
+                    );
                 }
                 if (showAddToWorkspace) {
                     // Allow the them to add it to the workspace dictionary.
-                    actions.push(createAction(
-                        'Add: "' + word + '" to workspace dictionary',
-                        'cSpell.addWordToWorkspaceDictionarySilent',
-                        spellCheckerDiags,
-                        word,
-                        textDocument.uri
-                    ));
+                    actions.push(
+                        createAction(
+                            'Add: "' + word + '" to workspace dictionary',
+                            'cSpell.addWordToWorkspaceDictionarySilent',
+                            spellCheckerDiags,
+                            word,
+                            textDocument.uri
+                        )
+                    );
                 }
             }
             return actions;
