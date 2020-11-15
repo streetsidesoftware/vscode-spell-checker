@@ -178,9 +178,12 @@ function run() {
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
         const settings = await getActiveUriSettings(uri);
         const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
+        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
+
         return {
             languageEnabled,
             fileEnabled,
+            excludedBy,
         };
     }
 
@@ -192,8 +195,7 @@ function run() {
         const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
 
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
-        const excludedBy: Api.GetConfigurationForDocumentResult['excludedBy'] =
-            !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
+        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
         return {
             languageEnabled,
             fileEnabled,

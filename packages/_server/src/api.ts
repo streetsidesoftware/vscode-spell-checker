@@ -18,6 +18,7 @@ export interface ExcludeRef {
 export interface IsSpellCheckEnabledResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
+    excludedBy: ExcludeRef[] | undefined;
 }
 
 export interface SplitTextIntoWordsResult {

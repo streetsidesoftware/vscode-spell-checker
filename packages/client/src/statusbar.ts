@@ -1,15 +1,13 @@
 import * as path from 'path';
-import {CSpellUserSettings} from './server';
+import { CSpellUserSettings } from './server';
 import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
-import { CSpellClient } from './client';
+import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client';
 import * as infoViewer from './infoViewer';
 import { isSupportedUri, isSupportedDoc } from './util';
 import { sectionCSpell } from './settings';
 
-
 export function initStatusBar(context: ExtensionContext, client: CSpellClient): void {
-
     const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
     let lastUri = '';
@@ -24,26 +22,35 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
         const { uri, languageId = '' } = document;
         lastUri = uri.toString();
-        const genOnOffIcon = (on: boolean) => on ? '$(check)' : '$(exclude)';
+        const genOnOffIcon = (on: boolean) => (on ? '$(check)' : '$(exclude)');
         const response = await client.isSpellCheckEnabled(document);
-        {
-            const docUri =  window.activeTextEditor?.document?.uri;
-            if (docUri === response.uri || !docUri || docUri.scheme !== 'file') {
-                const { languageEnabled = true, fileEnabled = true } = response;
-                const isChecked = languageEnabled && fileEnabled;
-                const isCheckedText = isChecked ? 'is' : 'is NOT';
-                const langReason = languageEnabled ? '' : `The "${languageId}" language / filetype is not enabled.`;
-                const fileReason = fileEnabled ? '' : 'The file path is excluded in settings.';
-                const fileName = path.basename(uri.fsPath);
-                const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
-                const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
-                const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter(a => !!a).join(' ');
-                sbCheck.text = `${langText} | ${fileText}`;
-                sbCheck.tooltip = reason;
-                sbCheck.command = infoViewer.commandDisplayCSpellInfo;
-                sbCheck.show();
-            }
+        const docUri = window.activeTextEditor?.document?.uri;
+        if (docUri === response.uri || !docUri || docUri.scheme !== 'file') {
+            const { languageEnabled = true, fileEnabled = true } = response;
+            const isChecked = languageEnabled && fileEnabled;
+            const isCheckedText = isChecked ? 'is' : 'is NOT';
+            const langReason = languageEnabled ? '' : `The "${languageId}" language / filetype is not enabled.`;
+            const fileReason = formatFileReason(response);
+            const fileName = path.basename(uri.fsPath);
+            const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
+            const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
+            const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter((a) => !!a).join(' ');
+            sbCheck.text = `${langText} | ${fileText}`;
+            sbCheck.tooltip = reason;
+            sbCheck.command = infoViewer.commandDisplayCSpellInfo;
+            sbCheck.show();
         }
+    }
+
+    function formatFileReason(response: ServerResponseIsSpellCheckEnabledForFile): string {
+        if (response.fileEnabled) return '';
+        if (!response.excludedBy?.length) {
+            return 'The file path is excluded in settings.';
+        }
+        const ex = response.excludedBy[0];
+        const { glob, name, id } = ex;
+        const filename = ex.filename && vscode.workspace.asRelativePath(ex.filename);
+        return `File excluded by ${JSON.stringify(glob)} in ${filename || id || name || 'settings'}`;
     }
 
     function updateStatusBar(doc?: vscode.TextDocument, showClock?: boolean) {
@@ -82,8 +89,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         if (!e) return false;
         const document = e.document;
 
-        return document?.uri &&
-            isSupportedUri(document.uri);
+        return document?.uri && isSupportedUri(document.uri);
     }
 
     function selectDocument() {
@@ -91,12 +97,10 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
             return window.activeTextEditor.document;
         }
 
-        const docs = workspace.textDocuments
-            .filter(isSupportedDoc);
+        const docs = workspace.textDocuments.filter(isSupportedDoc);
 
         if (lastUri) {
-            const candidate = docs
-                .find(document => document.uri.toString() === lastUri);
+            const candidate = docs.find((document) => document.uri.toString() === lastUri);
             if (candidate) return candidate;
         }
 
@@ -116,5 +120,4 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     if (window.activeTextEditor) {
         onDidChangeActiveTextEditor(window.activeTextEditor);
     }
-
 }
