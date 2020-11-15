@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.input.ref }}
+          ref: ${{ github.event.inputs.ref }}
       - name: Install 
         run: npm install
       - name: Test
