@@ -12,7 +12,7 @@ import {
 } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver';
-import { TextDocumentUri, TextDocumentUriLangId } from './vscode.config';
+import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { onCodeActionHandler } from './codeActions';
 import { Text } from 'cspell-lib';
 
 import * as CSpell from 'cspell-lib';
-import { CSpellUserSettings } from './cspellConfig';
+import { CSpellUserSettings } from './config/cspellConfig';
 import { getDefaultSettings, refreshDictionaryCache, extractImportErrors } from 'cspell-lib';
 import * as Api from './api';
 import {
@@ -30,10 +30,10 @@ import {
     isUriBlackListed,
     SettingsCspell,
     stringifyPatterns,
-} from './documentSettings';
-import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from './log';
+} from './config/documentSettings';
+import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from './utils/log';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
-import { DictionaryWatcher } from './dictionaryWatcher';
+import { DictionaryWatcher } from './config/dictionaryWatcher';
 
 log('Starting Spell Checker Server');
 

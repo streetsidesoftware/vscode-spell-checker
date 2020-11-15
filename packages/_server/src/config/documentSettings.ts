@@ -2,19 +2,14 @@
 // cSpell:ignore pycache
 import { Connection, TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as vscode from 'vscode-languageserver';
-import {
-    ExcludeFilesGlobMap,
-    Glob,
-    RegExpPatternDefinition,
-    Pattern,
-} from 'cspell-lib';
+import { ExcludeFilesGlobMap, Glob, RegExpPatternDefinition, Pattern } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as CSpell from 'cspell-lib';
-import { CSpellUserSettings } from './cspellConfig';
+import { CSpellUserSettings } from '../config/cspellConfig';
 import { URI as Uri } from 'vscode-uri';
-import { log } from './log';
-import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from './autoLoad';
+import { log } from '../utils/log';
+import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from '../utils/autoLoad';
 import { GlobMatcher } from 'cspell-glob';
 import * as os from 'os';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
@@ -46,7 +41,7 @@ interface ExtSettings {
 const defaultExclude: Glob[] = [
     '**/*.rendered',
     '**/*.*.rendered',
-    '__pycache__/**',   // ignore cache files.
+    '__pycache__/**', // ignore cache files.
 ];
 
 const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled'];
@@ -88,7 +83,7 @@ export class DocumentSettings {
     resetSettings() {
         log('resetSettings');
         CSpell.clearCachedSettings();
-        this.cachedValues.forEach(cache => cache.clear());
+        this.cachedValues.forEach((cache) => cache.clear());
         this._version += 1;
     }
 
@@ -127,7 +122,7 @@ export class DocumentSettings {
     }
 
     private async findMatchingFolder(docUri: string): Promise<vscode.WorkspaceFolder> {
-        const root = Uri.parse(docUri || defaultRootUri).with({ path: ''});
+        const root = Uri.parse(docUri || defaultRootUri).with({ path: '' });
         return (await this.matchingFoldersForUri(docUri))[0] || { uri: root.toString(), name: 'root' };
     }
 
@@ -136,15 +131,14 @@ export class DocumentSettings {
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
-        return (await getConfiguration(this.connection, [
-            { scopeUri: uri || undefined, section: cSpellSection },
-            { section: 'search' }
-        ])).map(v => v || {}) as [CSpellUserSettings, VsCodeSettings];
+        return (
+            await getConfiguration(this.connection, [{ scopeUri: uri || undefined, section: cSpellSection }, { section: 'search' }])
+        ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
     }
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
         const configs = await this.fetchVSCodeConfiguration(uri || '');
-        const [ cSpell, search ] = configs;
+        const [cSpell, search] = configs;
         const { exclude = {} } = search;
         const { ignorePaths = [] } = cSpell;
         const cSpellConfigSettings: CSpellUserSettings = {
@@ -165,7 +159,7 @@ export class DocumentSettings {
         const settings = this.readSettingsForFolderUri(folder.uri);
         // cspell.json file settings take precedence over the vscode settings.
         const mergedSettings = CSpell.mergeSettings(workspaceSettings, cSpellFolderSettings, settings);
-        const { ignorePaths = []} = mergedSettings;
+        const { ignorePaths = [] } = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(folder.uri).path;
         const globMatcher = new GlobMatcher(globs, root);
@@ -200,7 +194,7 @@ export class DocumentSettings {
     private async matchingFoldersForUri(docUri: string): Promise<vscode.WorkspaceFolder[]> {
         const folders = await this.folders;
         return folders
-            .filter(({uri}) => uri === docUri.slice(0, uri.length))
+            .filter(({ uri }) => uri === docUri.slice(0, uri.length))
             .sort((a, b) => a.uri.length - b.uri.length)
             .reverse();
     }
@@ -224,13 +218,15 @@ export class DocumentSettings {
 
 function configPathsForRoot(workspaceRootUri?: string) {
     const workspaceRoot = workspaceRootUri ? Uri.parse(workspaceRootUri).fsPath : '';
-    const paths = workspaceRoot ? [
-        path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
-        path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
-        path.join(workspaceRoot, '.' + CSpell.defaultSettingsFilename.toLowerCase()),
-        path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
-        path.join(workspaceRoot, CSpell.defaultSettingsFilename),
-    ] : [];
+    const paths = workspaceRoot
+        ? [
+              path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
+              path.join(workspaceRoot, '.' + CSpell.defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, CSpell.defaultSettingsFilename),
+          ]
+        : [];
     return paths;
 }
 
@@ -238,7 +234,7 @@ function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CS
     log('resolveConfigImports:', folderUri);
     const uriFsPath = Uri.parse(folderUri).fsPath;
     const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
-    const importAbsPath = imports.map(file => resolvePath(uriFsPath, file));
+    const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
     log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
     log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
     const { import: _import, ...result } = importAbsPath.length
@@ -253,7 +249,7 @@ function _readSettingsForFolderUri(folderUri: string): CSpellUserSettings {
 
 function readSettingsFiles(paths: string[]) {
     // log('readSettingsFiles:', paths);
-    const existingPaths = paths.filter(filename => exists(filename));
+    const existingPaths = paths.filter((filename) => exists(filename));
     log('readSettingsFiles:', existingPaths);
     return existingPaths.length ? CSpell.readSettingsFiles(existingPaths) : {};
 }
@@ -267,7 +263,7 @@ function exists(file: string): boolean {
 }
 
 function resolvePath(...parts: string[]): string {
-    const normalizedParts = parts.map(part => part[0] === '~' ? os.homedir() + part.slice(1) : part);
+    const normalizedParts = parts.map((part) => (part[0] === '~' ? os.homedir() + part.slice(1) : part));
     return path.resolve(...normalizedParts);
 }
 
@@ -282,29 +278,27 @@ export function isUriBlackListed(uri: string, schemes: string[] = schemeBlackLis
 
 export function doesUriMatchAnyScheme(uri: string, schemes: string[]): boolean {
     const schema = Uri.parse(uri).scheme;
-    return schemes.findIndex(v => v === schema) >= 0;
+    return schemes.findIndex((v) => v === schema) >= 0;
 }
 
 function extractEnableFiletypes(...settings: CSpellUserSettings[]): string[] {
-    return settings
-    .map(({ enableFiletypes = [] }) => enableFiletypes)
-    .reduce((acc, next) => acc.concat(next), []);
+    return settings.map(({ enableFiletypes = [] }) => enableFiletypes).reduce((acc, next) => acc.concat(next), []);
 }
 
 function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSettings): CSpellUserSettings {
     const { enableFiletypes: _, enabledLanguageIds = [], ...rest } = settings;
     const enabled = new Set(enabledLanguageIds);
     enableFiletypes
-    .filter(a => !!a)
-    .map(a => a.toLowerCase())
-    .forEach(lang => {
-        if (lang[0] === '!') {
-            enabled.delete(lang.slice(1))
-        } else {
-            enabled.add(lang)
-        }
-    });
-    return  enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
+        .filter((a) => !!a)
+        .map((a) => a.toLowerCase())
+        .forEach((lang) => {
+            if (lang[0] === '!') {
+                enabled.delete(lang.slice(1));
+            } else {
+                enabled.add(lang);
+            }
+        });
+    return enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
 }
 
 const correctRegExMap = new Map([
@@ -319,7 +313,6 @@ function fixRegEx(pat: Pattern): Pattern {
     return correctRegExMap.get(pat) || pat;
 }
 
-
 function fixRegPattern(pat: Pattern | Pattern[]): Pattern | Pattern[] {
     if (Array.isArray(pat)) {
         return pat.map(fixRegEx);
@@ -332,11 +325,11 @@ function fixPattern(pat: RegExpPatternDefinition): RegExpPatternDefinition {
     if (pattern === pat.pattern) {
         return pat;
     }
-    return {...pat, pattern};
+    return { ...pat, pattern };
 }
 
 export function correctBadSettings(settings: CSpellUserSettings): CSpellUserSettings {
-    const newSettings = {...settings};
+    const newSettings = { ...settings };
 
     // Fix patterns
     newSettings.patterns = newSettings?.patterns?.map(fixPattern);
@@ -350,8 +343,8 @@ export function stringifyPatterns(settings: undefined): undefined;
 export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined;
 export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSpellUserSettings | undefined {
     if (!settings) return settings;
-    const patterns = settings.patterns?.map(pat => ({...pat, pattern: pat.pattern.toString()}));
-    return {...settings, patterns};
+    const patterns = settings.patterns?.map((pat) => ({ ...pat, pattern: pat.pattern.toString() }));
+    return { ...settings, patterns };
 }
 
 export const debugExports = {

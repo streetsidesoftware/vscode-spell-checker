@@ -1,4 +1,4 @@
-import * as config from './cspellConfig';
+import * as config from './config/cspellConfig';
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
@@ -16,9 +16,7 @@ export interface SplitTextIntoWordsResult {
     words: string[];
 }
 
-export interface SpellingSuggestionsResult {
-
-}
+export interface SpellingSuggestionsResult {}
 
 export interface TextDocumentInfo {
     uri?: string;
@@ -35,7 +33,7 @@ export type ServerRequestMethodConstants = {
 type ServerRequestResult<Req, Res> = {
     request: Req;
     result: Res;
-}
+};
 
 export type ServerMethodRequestResult = {
     getConfigurationForDocument: ServerRequestResult<TextDocumentInfo, GetConfigurationForDocumentResult>;
@@ -78,7 +76,7 @@ export type RangeTuple = [StartIndex, EndIndex];
 
 export interface RegExpMatch {
     regexp: string;
-    matches: RangeTuple[]
+    matches: RangeTuple[];
     elapsedTime: number;
     errorMessage?: string;
 }
@@ -87,7 +85,7 @@ export type RegExpMatchResults = RegExpMatch;
 
 export interface PatternMatch {
     name: string;
-    defs: RegExpMatch[]
+    defs: RegExpMatch[];
 }
 
 export interface MatchPatternsToDocumentResult {
