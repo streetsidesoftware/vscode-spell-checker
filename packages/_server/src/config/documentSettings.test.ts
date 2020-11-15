@@ -164,12 +164,12 @@ describe('Validate DocumentSettings', () => {
     }
 
     test.each`
-        filename                           | exGlobs                   | filenames
-        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}       | ${['vscode-spell-checker/cSpell.json']}
-        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']} | ${['sampleSourceFiles/cSpell.json', 'vscode-spell-checker/cSpell.json']}
-        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}       | ${['sampleSourceFiles/cSpell.json']}
-        ${sampleFiles.sampleClientReadme}  | ${[]}                     | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${['package-lock.json']}  | ${['sampleSourceFiles/cSpell.json']}
+        filename                           | exGlobs                                       | filenames
+        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['vscode-spell-checker/cSpell.json']}
+        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${['sampleSourceFiles/cSpell.json', 'vscode-spell-checker/cSpell.json']}
+        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${['sampleSourceFiles/cSpell.json']}
+        ${sampleFiles.sampleClientReadme}  | ${[]}                                         | ${[]}
+        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${['sampleSourceFiles/cSpell.json', 'vscode-spell-checker/cSpell.json']}
     `('isExcludedBy $filename', async ({ filename, exGlobs, filenames }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
