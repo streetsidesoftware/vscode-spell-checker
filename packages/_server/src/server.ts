@@ -189,12 +189,28 @@ function run() {
         const doc = uri && documents.get(uri);
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
         const settings = stringifyPatterns(await getActiveUriSettings(uri));
+        const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
+
+        const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
+        const excludedBy: Api.GetConfigurationForDocumentResult['excludedBy'] =
+            !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
         return {
-            languageEnabled: languageId && doc ? await isLanguageEnabled(doc, settings) : undefined,
-            fileEnabled: uri ? !(await isUriExcluded(uri)) : undefined,
+            languageEnabled,
+            fileEnabled,
             settings,
             docSettings,
+            excludedBy,
         };
+    }
+
+    async function getExcludedBy(uri: string, withSettings: CSpellUserSettings): Promise<Api.ExcludeRef[]> {
+        const ex = await documentSettings.calcExcludedBy(uri, withSettings);
+        return ex.map((ex) => ({
+            glob: ex.glob,
+            filename: ex.settings.__importRef?.filename || ex.settings.source?.filename,
+            id: ex.settings.id,
+            name: ex.settings.name,
+        }));
     }
 
     function textToWords(text: string): string[] {

@@ -82,9 +82,11 @@ export class DocumentSettings {
         return settings.globMatcher.match(Uri.parse(uri).path);
     }
 
-    async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
-        const settings = await this.fetchUriSettingsEx(uri);
-        return calcExcludedBy(uri, settings);
+    async calcExcludedBy(uri: string, withSettings?: CSpellUserSettings): Promise<ExcludedByMatch[]> {
+        const extSettings = { ...(await this.fetchUriSettingsEx(uri)) };
+        extSettings.settings = withSettings || extSettings.settings;
+
+        return calcExcludedBy(uri, extSettings);
     }
 
     resetSettings() {

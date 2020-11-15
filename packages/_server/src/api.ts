@@ -5,6 +5,14 @@ export interface GetConfigurationForDocumentResult {
     fileEnabled: boolean | undefined;
     settings: config.CSpellUserSettings | undefined;
     docSettings: config.CSpellUserSettings | undefined;
+    excludedBy: ExcludeRef[] | undefined;
+}
+
+export interface ExcludeRef {
+    glob: string;
+    id: string | undefined;
+    name: string | undefined;
+    filename: string | undefined;
 }
 
 export interface IsSpellCheckEnabledResult {
