@@ -12,6 +12,11 @@
         "gimuy",
         "gensequence"
     ],
+    "ignorePaths": [
+        "samples",
+        "package-lock.json",
+        ".eslintrc.js"
+    ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"
@@ -19,13 +24,29 @@
         "hte"
     ],
     "dictionaryDefinitions": [
-        { "name": "cpp2", "path": "../dictionaries/cpp.txt" }
+        {
+            "name": "cpp2",
+            "path": "../dictionaries/cpp.txt"
+        }
     ],
     "languageSettings": [
-        { "languageId": "c",   "dictionaries": ["cpp2"] },
-        { "languageId": "cpp", "dictionaries": ["cpp2"] }
+        {
+            "languageId": "c",
+            "dictionaries": [
+                "cpp2"
+            ]
+        },
+        {
+            "languageId": "cpp",
+            "dictionaries": [
+                "cpp2"
+            ]
+        }
     ],
     "overrides": [
-        { "filename": "**/documentSettings.test.ts", "language": "en-gb" }
+        {
+            "filename": "**/documentSettings.test.ts",
+            "language": "en-gb"
+        }
     ]
 }

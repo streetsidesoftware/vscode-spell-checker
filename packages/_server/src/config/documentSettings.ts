@@ -9,10 +9,12 @@ import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import { URI as Uri } from 'vscode-uri';
 import { log } from '../utils/log';
+import { uniqueFilter } from '../utils';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from '../utils/autoLoad';
 import { GlobMatcher } from 'cspell-glob';
 import * as os from 'os';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
+import { genSequence } from 'gensequence';
 
 const cSpellSection: keyof SettingsCspell = 'cSpell';
 
@@ -80,6 +82,11 @@ export class DocumentSettings {
         return settings.globMatcher.match(Uri.parse(uri).path);
     }
 
+    async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
+        const settings = await this.fetchUriSettingsEx(uri);
+        return calcExcludedBy(uri, settings);
+    }
+
     resetSettings() {
         log('resetSettings');
         CSpell.clearCachedSettings();
@@ -110,6 +117,13 @@ export class DocumentSettings {
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('Start fetchUriSettings:', uri);
+        const exSettings = await this.fetchUriSettingsEx(uri);
+        log('Finish fetchUriSettings:', uri);
+        return exSettings.settings;
+    }
+
+    private async fetchUriSettingsEx(uri: string): Promise<ExtSettings> {
+        log('Start fetchUriSettingsEx:', uri);
         const folderSettings = await this.fetchSettingsForUri(uri);
         const importedSettings = this.importedSettings();
         const mergedSettings = CSpell.mergeSettings(this.defaultSettings, importedSettings, folderSettings.settings);
@@ -117,8 +131,8 @@ export class DocumentSettings {
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
         const fileUri = Uri.parse(uri);
         const fileSettings = CSpell.calcOverrideSettings(spellSettings, fileUri.fsPath);
-        log('Finish fetchUriSettings:', uri);
-        return fileSettings;
+        log('Finish fetchUriSettingsEx:', uri);
+        return { ...folderSettings, settings: fileSettings };
     }
 
     private async findMatchingFolder(docUri: string): Promise<vscode.WorkspaceFolder> {
@@ -352,3 +366,39 @@ export const debugExports = {
     fixPattern,
     resolvePath,
 };
+
+export interface ExcludedByMatch {
+    settings: CSpell.CSpellSettingsWithSourceTrace;
+    glob: string;
+}
+
+function calcExcludedBy(uri: string, extSettings: ExtSettings) {
+    const triedGlobs = new Map<string, boolean>();
+
+    function isExcluded(ex: ExcludedByMatch): boolean {
+        const v = triedGlobs.get(ex.glob);
+        if (v !== undefined) return v;
+        const matcher = new GlobMatcher(ex.glob, extSettings.globMatcher.root);
+        const isMatch = matcher.match(uri);
+        triedGlobs.set(ex.glob, isMatch);
+        return isMatch;
+    }
+
+    function keep(cfg: CSpell.CSpellSettingsWithSourceTrace): boolean {
+        return !cfg.source?.sources?.length;
+    }
+
+    function id(ex: ExcludedByMatch): string {
+        const settings: CSpell.CSpellSettingsWithSourceTrace = ex.settings;
+        return [ex.glob, settings.source?.name, settings.source?.filename, settings.id, settings.name].join('|');
+    }
+
+    const matches: ExcludedByMatch[] = genSequence(CSpell.getSources(extSettings.settings))
+        // keep only leaf sources
+        .filter(keep)
+        .concatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || [])
+        .filter(isExcluded)
+        .filter(uniqueFilter(id))
+        .toArray();
+    return matches;
+}
