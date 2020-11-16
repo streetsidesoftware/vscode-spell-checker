@@ -1,7 +1,4 @@
-import {
-    LanguageClient, LanguageClientOptions, ServerOptions, TransportKind,
-    ForkOptions
-} from 'vscode-languageclient';
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, ForkOptions } from 'vscode-languageclient';
 
 import * as vscode from 'vscode';
 
@@ -12,6 +9,7 @@ import {
     ServerRequestMethodConstants,
     SplitTextIntoWordsResult,
     ServerRequestMethodRequests,
+    IsSpellCheckEnabledResult,
     NamedPattern,
 } from '../server';
 import * as Settings from '../settings';
@@ -24,10 +22,7 @@ const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
 const diagnosticCollectionName = 'cSpell';
 
-export interface ServerResponseIsSpellCheckEnabled {
-    languageEnabled?: boolean;
-    fileEnabled?: boolean;
-}
+export interface ServerResponseIsSpellCheckEnabled extends Partial<IsSpellCheckEnabledResult> {}
 
 export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponseIsSpellCheckEnabled {
     uri: vscode.Uri;
@@ -42,7 +37,6 @@ const methodNames: ServerRequestMethodConstants = {
 };
 
 export class CSpellClient {
-
     readonly client: LanguageClient;
     readonly import: Set<string> = new Set();
     readonly languageIds: Set<string>;
@@ -57,25 +51,21 @@ export class CSpellClient {
             Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes
         );
         setOfSupportedSchemes.clear();
-        this.allowedSchemas.forEach(schema => setOfSupportedSchemes.add(schema));
+        this.allowedSchemas.forEach((schema) => setOfSupportedSchemes.add(schema));
 
-        this.languageIds = new Set(
-            languageIds
-            .concat(enabledLanguageIds || [])
-            .concat(LanguageIds.languageIds)
-        );
+        this.languageIds = new Set(languageIds.concat(enabledLanguageIds || []).concat(LanguageIds.languageIds));
         const uniqueLangIds = [...this.languageIds];
         const documentSelector = [...this.allowedSchemas]
-            .map(scheme => uniqueLangIds.map(language => ({ language, scheme })))
-            .reduce( (a, b) => a.concat(b));
+            .map((scheme) => uniqueLangIds.map((language) => ({ language, scheme })))
+            .reduce((a, b) => a.concat(b));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
             diagnosticCollectionName,
             synchronize: {
                 // Synchronize the setting section 'spellChecker' to the server
-                configurationSection: ['cSpell', 'search']
-            }
+                configurationSection: ['cSpell', 'search'],
+            },
         };
 
         const execArgv = this.calcServerArgs();
@@ -86,8 +76,8 @@ export class CSpellClient {
         // If the extension is launched in debug mode the debug server options are use
         // Otherwise the run options are used
         const serverOptions: ServerOptions = {
-            run : { module, transport: TransportKind.ipc, options },
-            debug: { module, transport: TransportKind.ipc, options: debugOptions }
+            run: { module, transport: TransportKind.ipc, options },
+            debug: { module, transport: TransportKind.ipc, options: debugOptions },
         };
 
         // Create the language client and start the client.
@@ -113,10 +103,7 @@ export class CSpellClient {
         if (!uri || !languageId) {
             return { uri };
         }
-        const response = (await this.sendRequest(
-            methodNames.isSpellCheckEnabled,
-            { uri: uri.toString(), languageId }
-        ));
+        const response = await this.sendRequest(methodNames.isSpellCheckEnabled, { uri: uri.toString(), languageId });
         return { ...response, uri };
     }
 
@@ -135,14 +122,11 @@ export class CSpellClient {
     }
 
     public async matchPatternsInDocument(document: vscode.TextDocument, patterns: (string | NamedPattern)[]) {
-        return this.sendRequest(methodNames.matchPatternsInDocument, { uri: document.uri.toString(), patterns })
+        return this.sendRequest(methodNames.matchPatternsInDocument, { uri: document.uri.toString(), patterns });
     }
 
     public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
-        return this.sendRequest(
-            methodNames.splitTextIntoWords,
-            text
-        );
+        return this.sendRequest(methodNames.splitTextIntoWords, text);
     }
 
     public notifySettingsChanged() {
@@ -174,14 +158,13 @@ export class CSpellClient {
     }
 
     public static create(module: string) {
-        return vscode.languages.getLanguages().then(langIds => new CSpellClient(module, langIds));
+        return vscode.languages.getLanguages().then((langIds) => new CSpellClient(module, langIds));
     }
 
     public isLookBackSupported(): boolean {
         try {
             return /(?<=\s)x/.test(' x');
-        } catch (_) {
-        }
+        } catch (_) {}
         return false;
     }
 

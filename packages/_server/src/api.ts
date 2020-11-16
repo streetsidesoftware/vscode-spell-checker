@@ -5,11 +5,20 @@ export interface GetConfigurationForDocumentResult {
     fileEnabled: boolean | undefined;
     settings: config.CSpellUserSettings | undefined;
     docSettings: config.CSpellUserSettings | undefined;
+    excludedBy: ExcludeRef[] | undefined;
+}
+
+export interface ExcludeRef {
+    glob: string;
+    id: string | undefined;
+    name: string | undefined;
+    filename: string | undefined;
 }
 
 export interface IsSpellCheckEnabledResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
+    excludedBy: ExcludeRef[] | undefined;
 }
 
 export interface SplitTextIntoWordsResult {

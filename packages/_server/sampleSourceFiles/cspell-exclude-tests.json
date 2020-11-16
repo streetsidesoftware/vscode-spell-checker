@@ -1,10 +1,7 @@
-// cSpell Settings
 {
-    // Version of the setting file.  Always 0.1
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell-lib%404.3.4/cspell.schema.json",
     "version": "0.1",
-    // language - current active spelling language
     "language": "en",
-    // words - list of words to be always considered correct
     "words": [
         "languageserver",
         "xregexp",
@@ -17,9 +14,6 @@
         "package-lock.json",
         ".eslintrc.js"
     ],
-    // flagWords - list of words to be always considered incorrect
-    // This is useful for offensive words and common spelling errors.
-    // For example "hte" should be "the"
     "flagWords": [
         "hte"
     ],

@@ -39,6 +39,14 @@ const cspellConfigInVsCode: CSpellUserSettings = {
     enabledLanguageIds: ['typescript', 'javascript', 'php', 'json', 'jsonc'],
 };
 
+const sampleFiles = {
+    sampleNodePackage: require.resolve('cspell-lib'),
+    sampleSamplesReadme: Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
+    sampleEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
+    sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
+    samplePackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
+};
+
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {
         // Clear all mock instances and calls to constructor and all methods:
@@ -135,6 +143,48 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         expect(settings.enabledLanguageIds).not.toContain('typescript');
         expect(settings.enabledLanguageIds).toEqual(expect.arrayContaining(['php', 'json', 'pug']));
+    });
+
+    test('isExcludedBy', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings();
+        const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
+        docSettings.registerConfigurationFile(configFile);
+
+        const result = await docSettings.calcExcludedBy(Uri.file(__filename).toString());
+        expect(result).toHaveLength(0);
+    });
+
+    interface IsExcludeByTest {
+        filename: string;
+        exGlobs: string[];
+        filenames: string[];
+    }
+
+    const pathCspellExcludeTests = Path.join('sampleSourceFiles', 'cspell-exclude-tests.json');
+
+    test.each`
+        filename                           | exGlobs                                       | filenames
+        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['cSpell.json']}
+        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${[pathCspellExcludeTests, 'cSpell.json']}
+        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${[pathCspellExcludeTests]}
+        ${sampleFiles.sampleClientReadme}  | ${[]}                                         | ${[]}
+        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${[pathCspellExcludeTests, 'cSpell.json']}
+    `('isExcludedBy $filename', async ({ filename, exGlobs, filenames }: IsExcludeByTest) => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings();
+        const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
+        docSettings.registerConfigurationFile(configFile);
+
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
+        const result = await docSettings.calcExcludedBy(uri);
+        const expectedFiles = filenames.map((fName) => expect.stringContaining(fName));
+        expect(result.map((ex) => ex.glob)).toEqual(exGlobs);
+        expect(result.map((ex) => ex.settings.source?.filename)).toEqual(expect.arrayContaining(expectedFiles));
     });
 
     test('resolvePath', () => {

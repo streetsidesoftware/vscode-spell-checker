@@ -7,7 +7,5 @@
         "literate haskell",
         "shellscript"
     ],
-    "words": [
-        "endhighlight"
-    ]
+    "words": []
 }

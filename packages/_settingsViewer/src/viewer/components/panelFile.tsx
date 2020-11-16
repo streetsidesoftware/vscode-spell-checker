@@ -16,8 +16,8 @@ import Select from '@material-ui/core/Select';
 
 
 @observer
-export class PanelFile extends React.Component<{appState: AppState}, {}> {
-    render() {
+export class PanelFile extends React.Component<{appState: AppState}> {
+    render(): JSX.Element {
         const appState = this.props.appState;
         const settings = appState.settings;
         const config = settings.configs.file;
@@ -88,7 +88,7 @@ export class PanelFile extends React.Component<{appState: AppState}, {}> {
         );
     }
 
-    enableLanguageId(enable: boolean) {
+    enableLanguageId(enable: boolean): void {
         const config = this.props.appState.settings.configs.file;
         const languageId = config && config.languageId;
         if (languageId) {
