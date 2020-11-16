@@ -1,7 +1,7 @@
 {
   "name": "code-spell-checker-settings-webview",
   "private": true,
-  "version": "1.9.3",
+  "version": "1.10.0",
   "description": "Webview for VS Code to edit cspell settings",
   "typings": "out",
   "main": "out",
