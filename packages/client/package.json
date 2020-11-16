@@ -710,7 +710,7 @@
         "webpack-cli": "^3.3.12"
     },
     "dependencies": {
-        "comment-json": "^3.0.3",
+        "comment-json": "^4.1.0",
         "fs-extra": "^9.0.1",
         "kefir": "^3.8.7",
         "node-watch": "^0.6.4",
