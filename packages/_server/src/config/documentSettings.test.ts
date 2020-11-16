@@ -163,13 +163,15 @@ describe('Validate DocumentSettings', () => {
         filenames: string[];
     }
 
+    const pathCspellExcludeTests = Path.join('sampleSourceFiles', 'cspell-exclude-tests.json');
+
     test.each`
         filename                           | exGlobs                                       | filenames
         ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['cSpell.json']}
-        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${['sampleSourceFiles/cspell-exclude-tests.json', 'cSpell.json']}
-        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${['sampleSourceFiles/cspell-exclude-tests.json']}
+        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${[pathCspellExcludeTests, 'cSpell.json']}
+        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${[pathCspellExcludeTests]}
         ${sampleFiles.sampleClientReadme}  | ${[]}                                         | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${['sampleSourceFiles/cspell-exclude-tests.json', 'cSpell.json']}
+        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${[pathCspellExcludeTests, 'cSpell.json']}
     `('isExcludedBy $filename', async ({ filename, exGlobs, filenames }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
