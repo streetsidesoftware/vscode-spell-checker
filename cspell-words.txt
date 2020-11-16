@@ -80,6 +80,7 @@ textdocument
 tslib
 typechecking
 unelevated
+untracked
 uri's
 visualstudio
 vsce
