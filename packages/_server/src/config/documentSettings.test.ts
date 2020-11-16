@@ -165,17 +165,17 @@ describe('Validate DocumentSettings', () => {
 
     test.each`
         filename                           | exGlobs                                       | filenames
-        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['vscode-spell-checker/cSpell.json']}
-        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${['sampleSourceFiles/cSpell.json', 'vscode-spell-checker/cSpell.json']}
-        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${['sampleSourceFiles/cSpell.json']}
+        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['cSpell.json']}
+        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${['sampleSourceFiles/cspell-exclude-tests.json', 'cSpell.json']}
+        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${['sampleSourceFiles/cspell-exclude-tests.json']}
         ${sampleFiles.sampleClientReadme}  | ${[]}                                         | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${['sampleSourceFiles/cSpell.json', 'vscode-spell-checker/cSpell.json']}
+        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${['sampleSourceFiles/cspell-exclude-tests.json', 'cSpell.json']}
     `('isExcludedBy $filename', async ({ filename, exGlobs, filenames }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
         mockGetConfiguration.mockReturnValue([{}, {}]);
         const docSettings = newDocumentSettings();
-        const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
+        const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
         docSettings.registerConfigurationFile(configFile);
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
