@@ -398,15 +398,32 @@ function run() {
 
     const knownErrors = new Set<string>();
 
+    function isString(s: string | undefined): s is string {
+        return !!s;
+    }
+
     function logProblemsWithSettings(settings: CSpellUserSettings) {
+        function join(...s: (string | undefined)[]): string {
+            return s.filter((s) => !!s).join(' ');
+        }
+
         const importErrors = extractImportErrors(settings);
 
         importErrors.forEach((err) => {
             const msg = err.error.toString();
-            connection.console.warn(msg);
-            if (knownErrors.has(msg)) return;
-            knownErrors.add(msg);
-            connection.window.showWarningMessage(msg);
+            const importedBy =
+                err.sources
+                    ?.map((s) => s.filename)
+                    .filter(isString)
+                    .map((s) => '"' + s + '"') || [];
+            const fullImportBy = importedBy.length ? join('imported by', ...importedBy) : '';
+            const firstImportedBy = importedBy.length ? join('imported by', importedBy[0]) : '';
+            const warnMsg = join(msg, fullImportBy);
+
+            if (knownErrors.has(warnMsg)) return;
+            knownErrors.add(warnMsg);
+            connection.console.warn(warnMsg);
+            connection.window.showWarningMessage(join(msg, firstImportedBy));
         });
     }
 
