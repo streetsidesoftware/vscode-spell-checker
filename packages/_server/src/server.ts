@@ -9,7 +9,7 @@ import {
     ServerCapabilities,
     CodeActionKind,
     TextDocumentSyncKind,
-} from 'vscode-languageserver';
+} from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';

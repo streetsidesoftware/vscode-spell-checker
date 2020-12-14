@@ -4,7 +4,7 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { getDocUri, activateExtension, loadDocument, sleep } from './helper';
-import {expect} from 'chai';
+import { expect } from 'chai';
 import { ExtensionApi } from './ExtensionApi';
 import * as vscode from 'vscode';
 
@@ -49,8 +49,8 @@ describe('Launch code spell extension', function () {
         const docContextMaybe = await loadDocument(uri);
         expect(docContextMaybe).to.not.be.undefined;
 
-        const check = diagsListener.diags.then(diags => {
-            const msgs = diags.map(a => `C: ${a.source} M: ${a.message}`).join(', ');
+        const check = diagsListener.diags.then((diags) => {
+            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
             // cspell:ignore spellling
             expect(msgs).contains('spellling');
             console.log(`Diag Messages: ${msgs}`);
@@ -63,12 +63,12 @@ describe('Launch code spell extension', function () {
         type R = vscode.Diagnostic[];
         const source = 'cSpell';
         const uriStr = uri.toString();
-        let resolver: (value?: R | PromiseLike<R>) => any | undefined;
+        let resolver: (value: R | PromiseLike<R>) => void;
         let dispose: vscode.Disposable | undefined;
         dispose = vscode.languages.onDidChangeDiagnostics((event) => {
-            const matches = event.uris.map(u => u.toString()).filter(u => u === uriStr);
+            const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
             if (matches.length) {
-                const diags = vscode.languages.getDiagnostics(uri).filter(diag => diag.source === source);
+                const diags = vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
                 cleanUp();
                 resolver && resolver(diags);
             }
@@ -79,7 +79,7 @@ describe('Launch code spell extension', function () {
             dispose = undefined;
         }
         return {
-            diags: new Promise<R>(resolve => resolver = resolve),
+            diags: new Promise<R>((resolve) => (resolver = resolve)),
             dispose: cleanUp,
         };
     }
