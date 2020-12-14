@@ -22,6 +22,7 @@ export const languageIds: string[] = [
     'javascript',
     'javascriptreact',
     'json',
+    'julia',
     'less',
     'lua',
     'makefile',
