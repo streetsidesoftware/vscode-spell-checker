@@ -2,7 +2,7 @@ import * as di from './di';
 import { dependencies } from './di';
 
 describe('Validate di', () => {
-    beforeEach(di.init);
+    beforeEach(di.__testing__.init);
 
     test('Access before initialization', () => {
         expect(() => dependencies.client).toThrowError('client');

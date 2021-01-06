@@ -2,7 +2,6 @@ import { ExtensionContext } from 'vscode';
 import { CSpellClient } from './client';
 import { DictionaryHelper } from './settings/DictionaryHelper';
 
-
 export interface GlobalDependencies {
     name: string;
     extensionContext: ExtensionContext;
@@ -11,28 +10,31 @@ export interface GlobalDependencies {
 }
 
 type KeysForGlobalDependencies = {
-    [K in keyof GlobalDependencies]: undefined;
-}
+    [K in GlobalDependenciesKeys]: undefined;
+};
 
-const keys: KeysForGlobalDependencies = {
+const definedDependencyKeys: KeysForGlobalDependencies = {
     name: undefined,
     extensionContext: undefined,
     client: undefined,
     dictionaryHelper: undefined,
 };
 
+type GlobalDependenciesKeys = keyof GlobalDependencies;
+const keys: GlobalDependenciesKeys[] = Object.keys(definedDependencyKeys) as GlobalDependenciesKeys[];
+
 const globals: GlobalDependencies = {} as GlobalDependencies;
 export const dependencies: Readonly<GlobalDependencies> = globals;
 
-export function register<K extends keyof GlobalDependencies>(key: K, fn: () => GlobalDependencies[K]) {
+export function register<K extends keyof GlobalDependencies>(key: K, fn: () => GlobalDependencies[K]): void {
     Object.defineProperty(globals, key, {
-        get: function() {
+        get: function () {
             const value = fn();
             Object.defineProperty(this, key, {
                 value,
-            })
+            });
             return value;
-        }
+        },
     });
 }
 
@@ -43,7 +45,7 @@ export function get<K extends keyof GlobalDependencies>(key: K): GlobalDependenc
     return globals[key];
 }
 
-export function set<K extends keyof GlobalDependencies>(key: K, value: GlobalDependencies[K]) {
+export function set<K extends keyof GlobalDependencies>(key: K, value: GlobalDependencies[K]): void {
     Object.defineProperty(globals, key, {
         value,
         configurable: true,
@@ -53,7 +55,7 @@ export function set<K extends keyof GlobalDependencies>(key: K, value: GlobalDep
 
 function setDefaultGetter<K extends keyof GlobalDependencies>(key: K) {
     Object.defineProperty(globals, key, {
-        get: function() {
+        get: function () {
             throw new Error(`Missing Dependency: ${key}`);
         },
         configurable: true,
@@ -61,8 +63,12 @@ function setDefaultGetter<K extends keyof GlobalDependencies>(key: K) {
     });
 }
 
-export function init() {
-    Object.keys(keys).forEach(setDefaultGetter);
+function init(): void {
+    keys.forEach(setDefaultGetter);
 }
 
 init();
+
+export const __testing__ = {
+    init,
+};

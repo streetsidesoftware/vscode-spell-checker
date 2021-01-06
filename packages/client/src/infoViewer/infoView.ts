@@ -3,14 +3,41 @@ performance.mark('infoView.ts');
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import * as path from 'path';
-import { Settings, DictionaryEntry, Configs, Config, Workspace, WorkspaceFolder, TextDocument, FileConfig, ConfigTarget, ConfigSource } from '../../settingsViewer/api/settings';
+import {
+    Settings,
+    DictionaryEntry,
+    Configs,
+    Config,
+    Workspace,
+    WorkspaceFolder,
+    TextDocument,
+    FileConfig,
+    ConfigTarget,
+    ConfigSource,
+} from '../../settingsViewer/api/settings';
 import { Maybe, uniqueFilter } from '../util';
-import { MessageBus, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage, EnableLocaleMessage } from '../../settingsViewer';
+import {
+    MessageBus,
+    SelectTabMessage,
+    SelectFolderMessage,
+    SelectFileMessage,
+    EnableLanguageIdMessage,
+    EnableLocaleMessage,
+} from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
 import { CSpellClient } from '../client';
 import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
-import { inspectConfig, Inspect, enableLanguageIdForClosestTarget, enableLanguageIdForTarget, enableLocale, disableLocale, InspectValues, getSettingFromVSConfig } from '../settings';
+import {
+    inspectConfig,
+    Inspect,
+    enableLanguageIdForClosestTarget,
+    enableLanguageIdForTarget,
+    enableLocale,
+    disableLocale,
+    InspectValues,
+    getSettingFromVSConfig,
+} from '../settings';
 import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
@@ -26,7 +53,7 @@ let isDebugLogEnabled = false;
 const targetToConfigurationTarget: { [key in ConfigTarget]: vscode.ConfigurationTarget } = {
     user: vscode.ConfigurationTarget.Global,
     workspace: vscode.ConfigurationTarget.Workspace,
-    folder: vscode.ConfigurationTarget.WorkspaceFolder
+    folder: vscode.ConfigurationTarget.WorkspaceFolder,
 };
 
 export function activate(context: vscode.ExtensionContext, client: CSpellClient): void {
@@ -34,14 +61,15 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     context.subscriptions.push(
         vscode.commands.registerCommand(commandDisplayCSpellInfo, async () => {
-        const column = vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn || vscode.ViewColumn.Active;
-        if (currentPanel) {
-            currentPanel.reveal(column);
-        } else {
-            currentPanel = await createView(context, column, client);
-        }
-        updateView(currentPanel, root);
-    }));
+            const column = (vscode.window.activeTextEditor && vscode.window.activeTextEditor.viewColumn) || vscode.ViewColumn.Active;
+            if (currentPanel) {
+                currentPanel.reveal(column);
+            } else {
+                currentPanel = await createView(context, column, client);
+            }
+            updateView(currentPanel, root);
+        })
+    );
 }
 
 interface State {
@@ -64,23 +92,14 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
     const options = {
         enableScripts: true,
-        localResourceRoots: [
-            Uri.file(root),
-            Uri.file(extPath)
-        ],
+        localResourceRoots: [Uri.file(root), Uri.file(extPath)],
     };
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
     const messageBus = new MessageBus(webviewApiFromPanel(panel));
 
-    async function calcStateSettings(
-        activeDocumentUri: Maybe<Uri>,
-        activeFolderUri: Maybe<Uri>,
-    ) {
+    async function calcStateSettings(activeDocumentUri: Maybe<Uri>, activeFolderUri: Maybe<Uri>) {
         const doc = activeDocumentUri && findMatchingDocument(activeDocumentUri);
-        return calcSettings(
-            doc,
-            activeFolderUri,
-            client);
+        return calcSettings(doc, activeFolderUri, client);
     }
 
     async function refreshState() {
@@ -92,17 +111,20 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         notifyViewEmitter && notifyViewEmitter.emit();
     }
 
-    subscriptions.push(Kefir.stream((emitter: RefreshEmitter) => {
-        notifyViewEmitter = emitter;
-        return () => { notifyViewEmitter = undefined; };
-    })
-    .debounce(250)
-    .observe(() => {
-        const { activeTabName: activeTab, settings } = state;
-        log(`notifyView: tab ${activeTab}`);
-        messageBus.postMessage({ command: 'ConfigurationChangeMessage', value:  { activeTab, settings } });
-    }));
-
+    subscriptions.push(
+        Kefir.stream((emitter: RefreshEmitter) => {
+            notifyViewEmitter = emitter;
+            return () => {
+                notifyViewEmitter = undefined;
+            };
+        })
+            .debounce(250)
+            .observe(() => {
+                const { activeTabName: activeTab, settings } = state;
+                log(`notifyView: tab ${activeTab}`);
+                messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { activeTab, settings } });
+            })
+    );
 
     async function refreshStateAndNotify() {
         const level = getSettingFromVSConfig('logLevel', null);
@@ -120,18 +142,24 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         setActiveDocumentUri(calcActiveDocumentFromEditor(e));
     }
 
-    subscriptions.push(Kefir.stream(emitter => {
-        vscode.workspace.onDidChangeConfiguration(() => emitter.value({}), null, context.subscriptions);
-    })
-    .debounce(500)
-    .observe(() => refreshStateAndNotify()));
+    subscriptions.push(
+        Kefir.stream((emitter) => {
+            vscode.workspace.onDidChangeConfiguration(() => emitter.value({}), null, context.subscriptions);
+        })
+            .debounce(500)
+            .observe(() => refreshStateAndNotify())
+    );
 
-    vscode.window.onDidChangeActiveTextEditor(async (e: Maybe<vscode.TextEditor>) => {
-        if (e) {
-            setActiveDocumentFromEditor(e);
-            await refreshStateAndNotify();
-        }
-    }, null, context.subscriptions);
+    vscode.window.onDidChangeActiveTextEditor(
+        async (e: Maybe<vscode.TextEditor>) => {
+            if (e) {
+                setActiveDocumentFromEditor(e);
+                await refreshStateAndNotify();
+            }
+        },
+        null,
+        context.subscriptions
+    );
 
     messageBus.listenFor('RequestConfigurationMessage', refreshStateAndNotify);
     messageBus.listenFor('SelectTabMessage', (msg: SelectTabMessage) => {
@@ -141,54 +169,62 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     messageBus.listenFor('SelectFolderMessage', (msg: SelectFolderMessage) => {
         log(`SelectFolderMessage: folder '${msg.value}'`);
         const uri = msg.value;
-        const defaultFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]
-        state.activeFolderUri = uri && Uri.parse(uri) || defaultFolder && defaultFolder.uri;
+        const defaultFolder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
+        state.activeFolderUri = (uri && Uri.parse(uri)) || (defaultFolder && defaultFolder.uri);
         refreshStateAndNotify();
     });
     messageBus.listenFor('SelectFileMessage', (msg: SelectFileMessage) => {
         log(`SelectFolderMessage: folder '${msg.value}'`);
         const uri = msg.value;
-        state.activeDocumentUri = uri && Uri.parse(uri) || state.activeDocumentUri;
+        state.activeDocumentUri = (uri && Uri.parse(uri)) || state.activeDocumentUri;
         refreshStateAndNotify();
     });
 
-    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLanguageIdMessage, Error>) => {
-        messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => emitter.value(msg));
-    })
-    .debounce(20)
-    .observe((msg: EnableLanguageIdMessage) => {
-        const {target, languageId, enable, uri} = msg.value;
-        log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
-        const uriFolder = uri ? Uri.parse(uri) : undefined;
-        if (target) {
-            const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-            enableLanguageIdForTarget(languageId, enable, configTarget, true, true);
-        } else {
-            enableLanguageIdForClosestTarget(languageId, enable, uriFolder, true);
-        }
-    }));
+    subscriptions.push(
+        Kefir.stream((emitter: Kefir.Emitter<EnableLanguageIdMessage, Error>) => {
+            messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => emitter.value(msg));
+        })
+            .debounce(20)
+            .observe((msg: EnableLanguageIdMessage) => {
+                const { target, languageId, enable, uri } = msg.value;
+                log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
+                const uriFolder = uri ? Uri.parse(uri) : undefined;
+                if (target) {
+                    const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
+                    enableLanguageIdForTarget(languageId, enable, configTarget, true, true);
+                } else {
+                    enableLanguageIdForClosestTarget(languageId, enable, uriFolder, true);
+                }
+            })
+    );
 
-    subscriptions.push(Kefir.stream((emitter: Kefir.Emitter<EnableLocaleMessage, Error>) => {
-        messageBus.listenFor('EnableLocaleMessage', (msg: EnableLocaleMessage) => emitter.value(msg));
-    })
-    .debounce(20)
-    .observe((msg: EnableLocaleMessage) => {
-        const {target, locale, enable, uri} = msg.value;
-        log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
-        const uriFolder = uri ? Uri.parse(uri) : undefined;
-        const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-        if (enable) {
-            enableLocale(configTarget, locale);
-        } else {
-            disableLocale(configTarget, locale);
-        }
-    }));
+    subscriptions.push(
+        Kefir.stream((emitter: Kefir.Emitter<EnableLocaleMessage, Error>) => {
+            messageBus.listenFor('EnableLocaleMessage', (msg: EnableLocaleMessage) => emitter.value(msg));
+        })
+            .debounce(20)
+            .observe((msg: EnableLocaleMessage) => {
+                const { target, locale, enable, uri } = msg.value;
+                log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
+                const uriFolder = uri ? Uri.parse(uri) : undefined;
+                const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
+                if (enable) {
+                    enableLocale(configTarget, locale);
+                } else {
+                    disableLocale(configTarget, locale);
+                }
+            })
+    );
 
-    panel.onDidDispose(() => {
-        currentPanel = undefined;
-        notifyViewEmitter = undefined;
-        subscriptions.forEach(s => s.unsubscribe());
-    }, null, context.subscriptions);
+    panel.onDidDispose(
+        () => {
+            currentPanel = undefined;
+            notifyViewEmitter = undefined;
+            subscriptions.forEach((s) => s.unsubscribe());
+        },
+        null,
+        context.subscriptions
+    );
 
     return panel;
 
@@ -202,20 +238,17 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
     async function calcInitialState(): Promise<State> {
         const activeDocumentUri = calcActiveDocumentFromEditor(vscode.window.activeTextEditor);
-        const folder = (activeDocumentUri && vscode.workspace.getWorkspaceFolder(activeDocumentUri))
-            || (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
+        const folder =
+            (activeDocumentUri && vscode.workspace.getWorkspaceFolder(activeDocumentUri)) ||
+            (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]);
         const activeFolderUri = folder && folder.uri;
         return {
             activeTabName: activeDocumentUri ? 'File' : 'User',
             activeDocumentUri,
             activeFolderUri,
-            settings: await calcStateSettings(
-                activeDocumentUri,
-                activeFolderUri
-            ),
-        }
+            settings: await calcStateSettings(activeDocumentUri, activeFolderUri),
+        };
     }
-
 }
 
 function getDefaultWorkspaceFolder() {
@@ -238,18 +271,12 @@ function normalizeFileName(filename: string): string {
         return path.basename(filename);
     }
     const folders = vscode.workspace.workspaceFolders;
-    const prefix = commonPrefix(folders.map(f => f.uri.fsPath).concat([filename]));
+    const prefix = commonPrefix(folders.map((f) => f.uri.fsPath).concat([filename]));
     return filename.slice(prefix.length);
 }
 
-async function calcSettings(
-    document: Maybe<vscode.TextDocument>,
-    folderUri: Maybe<Uri>,
-    client: CSpellClient,
-): Promise<Settings> {
-    const activeFolderUri = folderUri
-        || getDefaultWorkspaceFolderUri()
-        || null;
+async function calcSettings(document: Maybe<vscode.TextDocument>, folderUri: Maybe<Uri>, client: CSpellClient): Promise<Settings> {
+    const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri() || null;
     const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
@@ -258,17 +285,17 @@ async function calcSettings(
         configs: extractViewerConfigFromConfig(config, docConfig, document),
         workspace: mapWorkspace(client.allowedSchemas),
         activeFileUri: document && document.uri.toString(),
-        activeFolderUri: activeFolderUri && activeFolderUri.toString() || undefined,
-    }
+        activeFolderUri: (activeFolderUri && activeFolderUri.toString()) || undefined,
+    };
     return settings;
 }
 
 type InspectKeys = keyof InspectValues<CSpellUserSettings>;
 const keyMap: { [k in InspectKeys]: ConfigSource } = {
-    'defaultValue': 'default',
-    'globalValue' : 'user',
-    'workspaceValue': 'workspace',
-    'workspaceFolderValue': 'folder',
+    defaultValue: 'default',
+    globalValue: 'user',
+    workspaceValue: 'workspace',
+    workspaceFolderValue: 'folder',
 };
 interface ConfigOrder {
     0: 'defaultValue';
@@ -285,7 +312,7 @@ const configOrderRev = new Map(configOrder.map((v, i) => [v, i]));
 function extractViewerConfigFromConfig(
     config: Inspect<CSpellUserSettings>,
     docConfig: GetConfigurationForDocumentResult,
-    doc: vscode.TextDocument | undefined,
+    doc: vscode.TextDocument | undefined
 ): Configs {
     function findNearestConfigField<K extends keyof CSpellUserSettings>(orderPos: keyof ConfigOrder, key: K): InspectKeys {
         for (let i = orderPos; i > 0; --i) {
@@ -304,15 +331,15 @@ function extractViewerConfigFromConfig(
     ): string[] {
         const ids = new Set(languageIds);
         enabledFiletypes
-        .filter(a => !!a)
-        .map(lang => ({ enable: lang[0] !== '!', lang: lang.replace('!', '') }))
-        .forEach(( {enable, lang} ) => {
-            if (enable) {
-                ids.add(lang)
-            } else {
-                ids.delete(lang)
-            }
-        });
+            .filter((a) => !!a)
+            .map((lang) => ({ enable: lang[0] !== '!', lang: lang.replace('!', '') }))
+            .forEach(({ enable, lang }) => {
+                if (enable) {
+                    ids.add(lang);
+                } else {
+                    ids.delete(lang);
+                }
+            });
         return [...ids];
     }
 
@@ -338,16 +365,16 @@ function extractViewerConfigFromConfig(
             inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[langSource] },
             locales: normalizeLocales(config[localeSource]!.language),
             languageIdsEnabled,
-        }
+        };
         return cfg;
     }
 
     function extractFileConfig(): FileConfig | undefined {
         const { languageEnabled, docSettings, fileEnabled } = docConfig;
         if (!doc) return undefined;
-        const {uri, fileName, languageId, isUntitled} = doc;
-        const enabledDicts = new Set<string>(docSettings && docSettings.dictionaries || []);
-        const dictionaries = extractDictionariesFromConfig(docSettings).filter(dic => enabledDicts.has(dic.name));
+        const { uri, fileName, languageId, isUntitled } = doc;
+        const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
+        const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
         log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
         const cfg: FileConfig = {
             uri: uri.toString(),
@@ -357,7 +384,7 @@ function extractViewerConfigFromConfig(
             dictionaries,
             languageEnabled,
             fileEnabled,
-        }
+        };
         return cfg;
     }
 
@@ -366,7 +393,7 @@ function extractViewerConfigFromConfig(
         workspace: extractNearestConfig(2),
         folder: extractNearestConfig(3),
         file: extractFileConfig(),
-    }
+    };
 }
 
 function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
@@ -375,15 +402,17 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
     }
 
     const dictionaries = config.dictionaryDefinitions || [];
-    const dictionariesByName = new Map(dictionaries
-        .map(e => ({ name: e.name, locales: [], languageIds: [], description: e.description }))
-        .map(e => [e.name, e] as [string, DictionaryEntry]));
+    const dictionariesByName = new Map(
+        dictionaries
+            .map((e) => ({ name: e.name, locales: [], languageIds: [], description: e.description }))
+            .map((e) => [e.name, e] as [string, DictionaryEntry])
+    );
     const languageSettings = config.languageSettings || [];
-    languageSettings.forEach(setting => {
+    languageSettings.forEach((setting) => {
         const locales = normalizeLocales(setting.local);
         const languageIds = normalizeId(setting.languageId);
         const dicts = setting.dictionaries || [];
-        dicts.forEach(dict => {
+        dicts.forEach((dict) => {
             const dictEntry = dictionariesByName.get(dict);
             if (dictEntry) {
                 dictEntry.locales = merge(dictEntry.locales, locales);
@@ -399,10 +428,17 @@ function normalizeLocales(locale: string | string[] | undefined) {
 }
 
 function normalizeId(locale: string | string[] | undefined): string[] {
-    return pipe(locale,
-        map(locale => typeof locale === 'string' ? locale : locale.join(',')),
-        map(locale => locale.replace(/\*/g, '').split(/[,;]/).map(a => a.trim()).filter(a => !!a)),
-        defaultTo([])
+    return pipe(
+        locale,
+        map((locale) => (typeof locale === 'string' ? locale : locale.join(','))),
+        map((locale) =>
+            locale
+                .replace(/\*/g, '')
+                .split(/[,;]/)
+                .map((a) => a.trim())
+                .filter((a) => !!a)
+        ),
+        defaultTo([] as string[])
     );
 }
 
@@ -440,7 +476,7 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
             uri: wsf.uri.toString(),
             name,
             index,
-        }
+        };
     }
 
     function mapTextDocuments(td: vscode.TextDocument): TextDocument {
@@ -449,18 +485,16 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
             uri: td.uri.toString(),
             fileName: normalizeFileName(fileName),
             languageId,
-            isUntitled
-        }
+            isUntitled,
+        };
     }
 
     const { name, workspaceFolders, textDocuments } = vscode.workspace;
     const workspace: Workspace = {
         name,
-        workspaceFolders: workspaceFolders
-            ? workspaceFolders.map(mapWorkspaceFolder)
-            : undefined,
-        textDocuments: textDocuments.filter(td => allowedSchemas.has(td.uri.scheme)).map(mapTextDocuments),
-    }
+        workspaceFolders: workspaceFolders ? workspaceFolders.map(mapWorkspaceFolder) : undefined,
+        textDocuments: textDocuments.filter((td) => allowedSchemas.has(td.uri.scheme)).map(mapTextDocuments),
+    };
 
     return workspace;
 }
@@ -475,7 +509,7 @@ async function updateView(panel: vscode.WebviewPanel, root: string) {
 function getHtml(webview: vscode.Webview, root: string) {
     const resource = Uri.file(root);
     const bundleJs = webview.asWebviewUri(Uri.joinPath(resource, 'index.bundle.js'));
-return `
+    return `
 <!DOCTYPE html>
 <html>
     <head>

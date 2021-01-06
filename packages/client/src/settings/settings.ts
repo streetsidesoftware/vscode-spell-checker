@@ -20,7 +20,7 @@ performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './config';
 
-export const baseConfigName        = CSpellSettings.defaultFileName;
+export const baseConfigName = CSpellSettings.defaultFileName;
 export const configFileLocations = [
     baseConfigName,
     baseConfigName.toLowerCase(),
@@ -44,26 +44,24 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
         busy = true;
         const settingsFiles = await findSettingsFiles();
         settingsFiles
-            .map(uri => uri.fsPath)
-            .filter(file => !watcher.isWatching(file))
-            .forEach(file => watcher.add(file, callback));
+            .map((uri) => uri.fsPath)
+            .filter((file) => !watcher.isWatching(file))
+            .forEach((file) => watcher.add(file, callback));
         busy = false;
     }, 10000);
 
-    return vscode.Disposable.from({ dispose: () => {
-        watcher.dispose();
-        clearInterval(intervalObj);
-    } });
+    return vscode.Disposable.from({
+        dispose: () => {
+            watcher.dispose();
+            clearInterval(intervalObj);
+        },
+    });
 }
 
 export function getDefaultWorkspaceConfigLocation(): string | undefined {
     const { workspaceFolders } = workspace;
-    const root = workspaceFolders
-        && workspaceFolders[0]
-        && workspaceFolders[0].uri.fsPath;
-    return root
-        ? path.join(root, baseConfigName)
-        : undefined;
+    const root = workspaceFolders && workspaceFolders[0] && workspaceFolders[0].uri.fsPath;
+    return root ? path.join(root, baseConfigName) : undefined;
 }
 
 export function hasWorkspaceLocation(): boolean {
@@ -81,44 +79,40 @@ export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
         return Promise.resolve([]);
     }
 
-    const folders = uri
-        ? [workspace.getWorkspaceFolder(uri)!].filter(a => !!a).concat(workspaceFolders)
-        : workspaceFolders;
+    const folders = uri ? [workspace.getWorkspaceFolder(uri)!].filter((a) => !!a).concat(workspaceFolders) : workspaceFolders;
 
     const possibleLocations = folders
-        .map(folder => folder.uri.fsPath)
-        .map(root => configFileLocations.map(rel => path.join(root, rel)))
+        .map((folder) => folder.uri.fsPath)
+        .map((root) => configFileLocations.map((rel) => path.join(root, rel)))
         .reduce((a, b) => a.concat(b), []);
 
-    const found = possibleLocations
-        .map(async filename => ({ filename, exists: await fs.pathExists(filename) }));
+    const found = possibleLocations.map(async (filename) => ({ filename, exists: await fs.pathExists(filename) }));
 
-    return Promise.all(found).then(found => found
-        .filter(found => found.exists)
-        .map(found => found.filename)
-        .map(filename => Uri.file(filename))
+    return Promise.all(found).then((found) =>
+        found
+            .filter((found) => found.exists)
+            .map((found) => found.filename)
+            .map((filename) => Uri.file(filename))
     );
 }
 
 export function findExistingSettingsFileLocation(uri?: Uri): Thenable<string | undefined> {
     return findSettingsFiles(uri)
-    .then(uris => uris.map(uri => uri.fsPath))
-    .then(paths => paths[0]);
+        .then((uris) => uris.map((uri) => uri.fsPath))
+        .then((paths) => paths[0]);
 }
 
 export function findSettingsFileLocation(): Thenable<string | undefined> {
-    return findExistingSettingsFileLocation()
-        .then(path => path || getDefaultWorkspaceConfigLocation());
+    return findExistingSettingsFileLocation().then((path) => path || getDefaultWorkspaceConfigLocation());
 }
 
 export function loadTheSettingsFile(): Thenable<SettingsInfo | undefined> {
-    return findSettingsFileLocation()
-        .then(loadSettingsFile);
+    return findSettingsFileLocation().then(loadSettingsFile);
 }
 
-export function loadSettingsFile(path: string): Thenable<SettingsInfo | undefined> {
+export function loadSettingsFile(path: string | undefined): Thenable<SettingsInfo | undefined> {
     return path
-        ? CSpellSettings.readSettings(path).then(settings => (path ? { path, settings } : undefined))
+        ? CSpellSettings.readSettings(path).then((settings) => (path ? { path, settings } : undefined))
         : Promise.resolve(undefined);
 }
 
@@ -147,34 +141,19 @@ export function addWordToSettings(target: config.ConfigTarget, word: string): Pr
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
     const addWords = splitOutWords(word);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    return updateSettingInConfig(
-        section,
-        target,
-        words => unique(addWords.concat(words || []).sort()),
-        true
-    );
+    return updateSettingInConfig(section, target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const addWords = splitOutWords(word);
-    return updateSettingInConfig(
-        'ignoreWords',
-        target,
-        words => unique(addWords.concat(words || []).sort()),
-        true
-    );
+    return updateSettingInConfig('ignoreWords', target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export async function removeWordFromSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const toRemove = splitOutWords(word);
-    return updateSettingInConfig(
-        section,
-        target,
-        words => CSpellSettings.filterOutWords(words || [], toRemove),
-        true
-    );
+    return updateSettingInConfig(section, target, (words) => CSpellSettings.filterOutWords(words || [], toRemove), true);
 }
 
 export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
@@ -207,11 +186,7 @@ export function disableCurrentLanguage(): Thenable<void> {
     return Promise.resolve();
 }
 
-
-function selectBestTargetForDocument(
-    desiredTarget: vscode.ConfigurationTarget,
-    doc: vscode.TextDocument | undefined,
-): config.ConfigTarget {
+function selectBestTargetForDocument(desiredTarget: vscode.ConfigurationTarget, doc: vscode.TextDocument | undefined): config.ConfigTarget {
     if (desiredTarget === ConfigurationTarget.Global || !vscode.workspace.workspaceFolders) {
         return ConfigurationTarget.Global;
     }
@@ -222,7 +197,6 @@ function selectBestTargetForDocument(
     const folder = workspace.getWorkspaceFolder(doc.uri);
     return folder ? config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, doc) : ConfigurationTarget.Workspace;
 }
-
 
 export async function enableLocale(target: config.ConfigTarget, locale: string): Promise<void> {
     await enableLocaleForTarget(locale, true, target, true);
@@ -241,16 +215,12 @@ export function enableLocaleForTarget(
     const applyFn: (src: string | undefined) => string | undefined = enable
         ? (currentLanguage) => unique(normalizeLocale(currentLanguage).split(',').concat(locale.split(','))).join(',')
         : (currentLanguage) => {
-            const value = unique(normalizeLocale(currentLanguage).split(',')).filter(lang => lang !== locale).join(',');
-            return value || undefined;
-        };
-    return updateSettingInConfig(
-        'language',
-        target,
-        applyFn,
-        isCreateAllowed,
-        shouldUpdateCSpell(target)
-    );
+              const value = unique(normalizeLocale(currentLanguage).split(','))
+                  .filter((lang) => lang !== locale)
+                  .join(',');
+              return value || undefined;
+          };
+    return updateSettingInConfig('language', target, applyFn, isCreateAllowed, shouldUpdateCSpell(target));
 }
 
 /**
@@ -261,7 +231,7 @@ export function enableLocaleForTarget(
  * @param currentValues the value to update.
  */
 function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: string[] | undefined) {
-    const values = new Set((currentValues || []).map(v => v.toLowerCase()));
+    const values = new Set((currentValues || []).map((v) => v.toLowerCase()));
     languageId = languageId.toLowerCase();
     const disabledLangId = '!' + languageId;
     if (enable) {
@@ -288,14 +258,7 @@ export function enableLanguageIdForTarget(
     forceUpdateVSCode: boolean
 ): Promise<boolean> {
     const fn = (src: string[] | undefined) => updateEnableFiletypes(languageId, enable, src);
-    return updateSettingInConfig(
-        'enableFiletypes',
-        target,
-        fn,
-        isCreateAllowed,
-        shouldUpdateCSpell(target),
-        forceUpdateVSCode
-    );
+    return updateSettingInConfig('enableFiletypes', target, fn, isCreateAllowed, shouldUpdateCSpell(target), forceUpdateVSCode);
 }
 
 /**
@@ -320,9 +283,10 @@ export async function enableLanguageIdForClosestTarget(
             if (await enableLanguageIdForTarget(languageId, enable, target, false, forceUpdateVSCode)) return;
         }
 
-        if (vscode.workspace.workspaceFolders
-            && vscode.workspace.workspaceFolders.length
-            && await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false, forceUpdateVSCode)
+        if (
+            vscode.workspace.workspaceFolders &&
+            vscode.workspace.workspaceFolders.length &&
+            (await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false, forceUpdateVSCode))
         ) {
             return;
         }
@@ -342,10 +306,11 @@ export async function enableLanguageIdForClosestTarget(
  */
 function shouldUpdateCSpell(target: config.ConfigTarget) {
     const cfgTarget = config.extractTarget(target);
-    return cfgTarget !== config.Target.Global
-        && workspace.workspaceFolders
-        && (cfgTarget === config.Target.WorkspaceFolder || workspace.workspaceFolders.length === 1);
-
+    return (
+        cfgTarget !== config.Target.Global &&
+        workspace.workspaceFolders &&
+        (cfgTarget === config.Target.WorkspaceFolder || workspace.workspaceFolders.length === 1)
+    );
 }
 
 /**
@@ -364,7 +329,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     applyFn: (origValue: CSpellUserSettings[K]) => CSpellUserSettings[K],
     create: boolean,
     updateCSpell: boolean = true,
-    forceUpdateVSCode: boolean = false,
+    forceUpdateVSCode: boolean = false
 ): Promise<boolean> {
     interface Result {
         value: CSpellUserSettings[K] | undefined;
@@ -372,11 +337,12 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     const target = config.normalizeTarget(configTarget);
     const scope = config.configTargetToScope(target);
     const orig = config.findScopedSettingFromVSConfig(section, scope);
-    const uri = config.isConfigTargetWithOptionalResource(target) && target.uri || undefined;
-    const settingsFilename = updateCSpell && !config.isGlobalLevelTarget(target) && (await findExistingSettingsFileLocation(uri)) || undefined;
+    const uri = (config.isConfigTargetWithOptionalResource(target) && target.uri) || undefined;
+    const settingsFilename =
+        (updateCSpell && !config.isGlobalLevelTarget(target) && (await findExistingSettingsFileLocation(uri))) || undefined;
 
     async function updateConfig(): Promise<false | Result> {
-        if (create || orig.value !== undefined && orig.scope === config.extractScope(scope)) {
+        if (create || (orig.value !== undefined && orig.scope === config.extractScope(scope))) {
             const newValue = applyFn(orig.value);
             await config.setSettingInVSConfig(section, newValue, target);
             return { value: newValue };
@@ -384,12 +350,15 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
         return false;
     }
 
-    async function updateCSpellFile(settingsFilename: string | undefined, defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
+    async function updateCSpellFile(
+        settingsFilename: string | undefined,
+        defaultValue: CSpellUserSettings[K] | undefined
+    ): Promise<boolean> {
         if (!settingsFilename) return false;
-        await CSpellSettings.readSettingsFileAndApplyUpdate(settingsFilename, settings => {
+        await CSpellSettings.readSettingsFileAndApplyUpdate(settingsFilename, (settings) => {
             const v = settings[section];
             const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
-            const newSettings = {...settings };
+            const newSettings = { ...settings };
             if (newValue === undefined) {
                 delete newSettings[section];
             } else {
@@ -402,7 +371,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
 
     const cspellResult = await updateCSpellFile(settingsFilename, orig.value);
     // Only update VS Code config if we do not have `cspell.json` file or is it a forceUpdate.
-    const configResult = (!cspellResult || forceUpdateVSCode) && await updateConfig();
+    const configResult = (!cspellResult || forceUpdateVSCode) && (await updateConfig());
     return !!configResult;
 }
 
@@ -426,20 +395,16 @@ export function pathToUri(uri: string | Uri): Uri {
     return Uri.parse(uri);
 }
 
-export async function determineSettingsPath(
-    target: config.ConfigTarget,
-    uri: string | null | Uri | undefined
-): Promise<string[]> {
+export async function determineSettingsPath(target: config.ConfigTarget, uri: string | null | Uri | undefined): Promise<string[]> {
     if (config.isGlobalLevelTarget(target)) {
         return [];
     }
     if (config.isWorkspaceLevelTarget(target)) {
-        return findSettingsFiles().then(uris => uris?.map(uri => uri.fsPath));
+        return findSettingsFiles().then((uris) => uris?.map((uri) => uri.fsPath));
     }
     const useUri = uri ? pathToUri(uri) : undefined;
     const path = await findExistingSettingsFileLocation(useUri);
     return path ? [path] : [];
 }
-
 
 performance.mark('settings.ts done');

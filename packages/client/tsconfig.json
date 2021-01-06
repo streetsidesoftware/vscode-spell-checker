@@ -3,7 +3,7 @@
 		"target": "es2019",
 		"strictNullChecks": true,
 		"strict": true,
-		"strictFunctionTypes": false,
+		"strictFunctionTypes": true,
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"outDir": "out",
@@ -13,6 +13,5 @@
 	"include": [
 		"src"
 	],
-	"exclude": [
-	]
+	"exclude": []
 }
