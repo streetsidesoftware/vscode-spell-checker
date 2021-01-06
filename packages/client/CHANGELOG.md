@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.10.2...v1.11.0-alpha.0) (2021-01-06)
+
+
+### Features
+
+* move to cspell 5 ([#665](https://github.com/streetsidesoftware/vscode-spell-checker/issues/665)) ([5a6380b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5a6380bfbf3c1fa7eb8ae69a90151f6a2fdcb71f))
+
+
+
+
+
 ## [1.10.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.10.1...v1.10.2) (2020-11-27)
 
 **Note:** Version bump only for package code-spell-checker
