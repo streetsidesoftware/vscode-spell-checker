@@ -412,7 +412,7 @@ function run() {
         importErrors.forEach((err) => {
             const msg = err.error.toString();
             const importedBy =
-                err.sources
+                err.referencedBy
                     ?.map((s) => s.filename)
                     .filter(isString)
                     .map((s) => '"' + s + '"') || [];
