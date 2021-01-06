@@ -4,11 +4,11 @@
 		"target": "es2017",
 		"strictNullChecks": true,
 		"strict": true,
-		"strictFunctionTypes": false,
+		"strictFunctionTypes": true,
 		"sourceMap": true
 	},
 	"exclude": [
-        "src/test/**",
-        "**/*.test.ts"
+		"src/test/**",
+		"**/*.test.ts"
 	]
 }

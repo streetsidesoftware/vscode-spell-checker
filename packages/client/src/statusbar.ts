@@ -73,7 +73,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         }
     }
 
-    function onDidChangeActiveTextEditor(e: TextEditor) {
+    function onDidChangeActiveTextEditor(e: TextEditor | undefined) {
         updateStatusBar(e && e.document);
     }
 

@@ -91,7 +91,7 @@ export class DocumentSettings {
 
     resetSettings() {
         log('resetSettings');
-        CSpell.clearCachedSettings();
+        CSpell.clearCachedFiles();
         this.cachedValues.forEach((cache) => cache.clear());
         this._version += 1;
     }
