@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.11.0-alpha.0...v1.11.0-alpha.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* Use webpack on the server to reduce file size. ([#679](https://github.com/streetsidesoftware/vscode-spell-checker/issues/679)) ([e1d0bc7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e1d0bc7d9ab2f0452b5fea72db7757beea7c7b90))
+
+
+
+
+
 # [1.11.0-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.10.2...v1.11.0-alpha.0) (2021-01-06)
 
 
