@@ -1,64 +1,55 @@
-
-import * as server from './server';
+import { CSpellUserSettings, LanguageSetting } from './server';
 import { normalizeCode } from '../iso639-1';
 import * as util from '../util';
 
-export function extractLanguage(config?: server.CSpellUserSettings): string[] | undefined {
-    return (
-        config &&
-        config.language &&
-        normalizeToLocales(config.language)
-    ) || undefined;
+export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
+    return (config && config.language && normalizeToLocales(config.language)) || undefined;
 }
 
-export function extractLocales(config: server.CSpellUserSettings = {}): string[] {
+export function extractLocales(config: CSpellUserSettings = {}): string[] {
     return extractLocalesFromLanguageSettings(config.languageSettings);
 }
 
-export function extractLocalesFromLanguageSettings(langSettings: server.LanguageSetting[] = []): string[] {
+export function extractLocalesFromLanguageSettings(langSettings: LanguageSetting[] = []): string[] {
     const locales = langSettings
-        .map(s => s.local || '')
+        .map((s) => s.local || '')
         .map(normalizeLocale)
         .join(',');
     return normalizeToLocales(locales);
 }
 
-export function extractDictionariesByLocale(config: server.CSpellUserSettings = {}): Map<string, string[]> {
+export function extractDictionariesByLocale(config: CSpellUserSettings = {}): Map<string, string[]> {
     return extractDictionariesByLocaleLanguageSettings(config.languageSettings);
 }
 
-export function extractDictionariesByLocaleLanguageSettings(langSettings: server.LanguageSetting[] = []): Map<string, string[]> {
+export function extractDictionariesByLocaleLanguageSettings(langSettings: LanguageSetting[] = []): Map<string, string[]> {
     const mapOfDict = new Map<string, string[]>();
     langSettings
-        .map(({local: locale, dictionaries = []}) => ({ locale: normalizeLocale(locale), dictionaries }))
-        .filter(s => !!s.locale)
-        .filter(s => s.dictionaries.length > 0)
-        .forEach(s => {
-            s.locale.split(',')
-                .forEach(locale => {
-                    mapOfDict.set(
-                        locale,
-                        (mapOfDict.get(locale) || []).concat(s.dictionaries).filter(util.uniqueFilter())
-                    );
-                });
+        .map(({ local: locale, dictionaries = [] }) => ({ locale: normalizeLocale(locale), dictionaries }))
+        .filter((s) => !!s.locale)
+        .filter((s) => s.dictionaries.length > 0)
+        .forEach((s) => {
+            s.locale.split(',').forEach((locale) => {
+                mapOfDict.set(locale, (mapOfDict.get(locale) || []).concat(s.dictionaries).filter(util.uniqueFilter()));
+            });
         });
     return mapOfDict;
 }
 
 export function normalizeLocale(locale: string | string[] = ''): string {
-    if(Array.isArray(locale)) {
+    if (Array.isArray(locale)) {
         locale = locale.join(',');
     }
     return normalizeToLocales(locale).join(',');
 }
 
-export function normalizeToLocales(locale: string = '') {
+export function normalizeToLocales(locale: string = ''): string[] {
     return locale
         .replace(/[|]/g, ',')
         .replace(/[*]/g, '')
         .split(',')
         .map(normalizeCode)
-        .map(s => s.trim())
-        .filter(a => !!a)
+        .map((s) => s.trim())
+        .filter((a) => !!a)
         .filter(util.uniqueFilter());
 }

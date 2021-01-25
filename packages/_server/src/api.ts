@@ -1,5 +1,7 @@
 import * as config from './config/cspellConfig';
 
+export * from './config/cspellConfig';
+
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
