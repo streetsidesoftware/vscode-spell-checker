@@ -1,6 +1,6 @@
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, ForkOptions } from 'vscode-languageclient/node';
 
-import * as vscode from 'vscode';
+import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri } from 'vscode';
 
 import {
     GetConfigurationForDocumentResult,
@@ -11,6 +11,7 @@ import {
     ServerRequestMethodRequests,
     IsSpellCheckEnabledResult,
     NamedPattern,
+    MatchPatternsToDocumentResult,
 } from '../server';
 import * as Settings from '../settings';
 
@@ -25,7 +26,7 @@ const diagnosticCollectionName = 'cSpell';
 export interface ServerResponseIsSpellCheckEnabled extends Partial<IsSpellCheckEnabledResult> {}
 
 export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponseIsSpellCheckEnabled {
-    uri: vscode.Uri;
+    uri: Uri;
 }
 
 const methodNames: ServerRequestMethodConstants = {
@@ -85,19 +86,19 @@ export class CSpellClient {
         this.client.registerProposedFeatures();
     }
 
-    public needsStart() {
+    public needsStart(): boolean {
         return this.client.needsStart();
     }
 
-    public needsStop() {
+    public needsStop(): boolean {
         return this.client.needsStop();
     }
 
-    public start() {
+    public start(): Disposable {
         return this.client.start();
     }
 
-    public async isSpellCheckEnabled(document: vscode.TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {
+    public async isSpellCheckEnabled(document: TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
@@ -107,7 +108,7 @@ export class CSpellClient {
         return { ...response, uri };
     }
 
-    public async getConfigurationForDocument(document: vscode.TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
+    public async getConfigurationForDocument(document: TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
         if (!document) {
             return this.sendRequest(methodNames.getConfigurationForDocument, {});
         }
@@ -121,7 +122,10 @@ export class CSpellClient {
         return this.sendRequest(methodNames.getConfigurationForDocument, { uri: uri.toString(), languageId });
     }
 
-    public async matchPatternsInDocument(document: vscode.TextDocument, patterns: (string | NamedPattern)[]) {
+    public async matchPatternsInDocument(
+        document: TextDocument,
+        patterns: (string | NamedPattern)[]
+    ): Promise<MatchPatternsToDocumentResult> {
         return this.sendRequest(methodNames.matchPatternsInDocument, { uri: document.uri.toString(), patterns });
     }
 
@@ -129,19 +133,19 @@ export class CSpellClient {
         return this.sendRequest(methodNames.splitTextIntoWords, text);
     }
 
-    public notifySettingsChanged() {
+    public notifySettingsChanged(): Promise<void> {
         return this.client.onReady().then(() => this.sendNotification('onConfigChange'));
     }
 
-    public registerConfiguration(path: string) {
+    public registerConfiguration(path: string): Promise<void> {
         return this.client.onReady().then(() => this.sendNotification('registerConfigurationFile', path));
     }
 
-    get diagnostics(): Maybe<vscode.DiagnosticCollection> {
+    get diagnostics(): Maybe<DiagnosticCollection> {
         return (this.client && this.client.diagnostics) || undefined;
     }
 
-    public triggerSettingsRefresh() {
+    public triggerSettingsRefresh(): Promise<void> {
         return this.notifySettingsChanged();
     }
 
@@ -157,8 +161,8 @@ export class CSpellClient {
         this.client.sendNotification(method, params);
     }
 
-    public static create(module: string) {
-        return vscode.languages.getLanguages().then((langIds) => new CSpellClient(module, langIds));
+    public static create(module: string): Promise<CSpellClient> {
+        return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(module, langIds)));
     }
 
     public isLookBackSupported(): boolean {
