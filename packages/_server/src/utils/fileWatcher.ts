@@ -1,6 +1,6 @@
 import watch from 'node-watch';
 import { FSWatcher } from 'fs';
-import { Disposable } from 'vscode-languageserver';
+import { Disposable } from 'vscode-languageserver/node';
 
 export type Listener = (eventType?: string, filename?: string) => void;
 

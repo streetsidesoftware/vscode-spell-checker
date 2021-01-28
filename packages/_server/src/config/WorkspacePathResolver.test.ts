@@ -1,11 +1,11 @@
 import { debugExports, createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
 import * as Path from 'path';
-import { WorkspaceFolder } from 'vscode-languageserver';
+import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import { logError } from '../utils/log';
 
-jest.mock('vscode-languageserver');
+jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
 jest.mock('../utils/log');
 

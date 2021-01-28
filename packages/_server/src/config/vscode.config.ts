@@ -1,4 +1,4 @@
-import * as vscode from 'vscode-languageserver';
+import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
 import { log } from '../utils/log';
 
 export interface TextDocumentUri {
@@ -9,13 +9,11 @@ export interface TextDocumentUriLangId extends TextDocumentUri {
     languageId: string;
 }
 
-export type Connection = vscode.Connection;
-
-export type GetConfigurationParams = string | vscode.ConfigurationItem | vscode.ConfigurationItem[];
+export type GetConfigurationParams = string | ConfigurationItem | ConfigurationItem[];
 export function getConfiguration(connection: Connection): Thenable<any>;
 export function getConfiguration(connection: Connection, section: string): Thenable<any>;
-export function getConfiguration(connection: Connection, item: vscode.ConfigurationItem): Thenable<any>;
-export function getConfiguration(connection: Connection, items: vscode.ConfigurationItem[]): Thenable<any[]>;
+export function getConfiguration(connection: Connection, item: ConfigurationItem): Thenable<any>;
+export function getConfiguration(connection: Connection, items: ConfigurationItem[]): Thenable<any[]>;
 export function getConfiguration(connection: Connection, params?: GetConfigurationParams): Thenable<any> {
     if (typeof params === 'string') {
         log(`getConfiguration\t${params}`);

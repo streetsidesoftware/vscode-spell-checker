@@ -1,7 +1,6 @@
-import { TextDocuments, CodeActionParams } from 'vscode-languageserver';
+import { TextDocuments, CodeActionParams, Range as LangServerRange, Command as LangServerCommand } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { CodeAction } from 'vscode-languageserver-types';
-import * as LangServer from 'vscode-languageserver';
+import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
 import { Text } from 'cspell-lib';
 import * as Validator from './validator';
 import { CSpellUserSettings } from './config/cspellConfig';
@@ -12,7 +11,7 @@ import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
 import { log } from './utils/log';
 
-function extractText(textDocument: TextDocument, range: LangServer.Range) {
+function extractText(textDocument: TextDocument, range: LangServerRange) {
     return textDocument.getText(range);
 }
 
@@ -70,19 +69,19 @@ export function onCodeActionHandler(
         const showAddToWorkspace = folders && folders.length > 0;
         const showAddToFolder = folders && folders.length > 1;
 
-        function replaceText(range: LangServer.Range, text?: string) {
-            return LangServer.TextEdit.replace(range, text || '');
+        function replaceText(range: LangServerRange, text?: string) {
+            return TextEdit.replace(range, text || '');
         }
 
         function getSuggestions(word: string) {
             return sugGen.genWordSuggestions(textDocument, word);
         }
 
-        function createAction(title: string, command: string, diags: LangServer.Diagnostic[] | undefined, ...args: any[]): CodeAction {
-            const cmd = LangServer.Command.create(title, command, ...args);
-            const action = LangServer.CodeAction.create(title, cmd);
+        function createAction(title: string, command: string, diags: Diagnostic[] | undefined, ...args: any[]): CodeAction {
+            const cmd = LangServerCommand.create(title, command, ...args);
+            const action = CodeAction.create(title, cmd);
             action.diagnostics = diags;
-            action.kind = LangServer.CodeActionKind.QuickFix;
+            action.kind = CodeActionKind.QuickFix;
             return action;
         }
 

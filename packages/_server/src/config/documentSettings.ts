@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // cSpell:ignore pycache
-import { Connection, TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
-import * as vscode from 'vscode-languageserver';
+import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
+import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
 import { ExcludeFilesGlobMap, Glob, RegExpPatternDefinition, Pattern } from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -96,7 +96,7 @@ export class DocumentSettings {
         this._version += 1;
     }
 
-    get folders(): Promise<vscode.WorkspaceFolder[]> {
+    get folders(): Promise<WorkspaceFolder[]> {
         return this._folders();
     }
 
@@ -137,7 +137,7 @@ export class DocumentSettings {
         return { ...folderSettings, settings: fileSettings };
     }
 
-    private async findMatchingFolder(docUri: string): Promise<vscode.WorkspaceFolder> {
+    private async findMatchingFolder(docUri: string): Promise<WorkspaceFolder> {
         const root = Uri.parse(docUri || defaultRootUri).with({ path: '' });
         return (await this.matchingFoldersForUri(docUri))[0] || { uri: root.toString(), name: 'root' };
     }
@@ -207,7 +207,7 @@ export class DocumentSettings {
         return resolveSettings(settings, resolver);
     }
 
-    private async matchingFoldersForUri(docUri: string): Promise<vscode.WorkspaceFolder[]> {
+    private async matchingFoldersForUri(docUri: string): Promise<WorkspaceFolder[]> {
         const folders = await this.folders;
         return folders
             .filter(({ uri }) => uri === docUri.slice(0, uri.length))
