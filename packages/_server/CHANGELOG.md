@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.11.0-alpha.1...v1.11.0-alpha.2) (2021-01-28)
+
+
+### Bug Fixes
+
+* Make sure the server bundle does not include regexp-worker ([#685](https://github.com/streetsidesoftware/vscode-spell-checker/issues/685)) ([a09d7df](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a09d7dfbf4c225d8f3de6b94169a455a8a9338fe))
+
+
+
+
+
 # [1.11.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.11.0-alpha.0...v1.11.0-alpha.1) (2021-01-25)
 
 
