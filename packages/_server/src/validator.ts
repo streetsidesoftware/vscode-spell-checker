@@ -1,7 +1,9 @@
-import { TextDocument, Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import { validateText } from 'cspell-lib';
 import { CSpellUserSettings } from './config/cspellConfig';
 import { Sequence, genSequence } from 'gensequence';
+import { DiagnosticSeverity, Diagnostic } from 'vscode-languageserver-types';
+
 export { validateText } from 'cspell-lib';
 
 export const diagnosticCollectionName = 'cSpell';

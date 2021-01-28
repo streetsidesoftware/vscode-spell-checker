@@ -9,9 +9,12 @@ import {
     ServerCapabilities,
     CodeActionKind,
     TextDocumentSyncKind,
+    ProposedFeatures,
+    DidChangeConfigurationParams,
+    PublishDiagnosticsParams,
+    Diagnostic,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as vscode from 'vscode-languageserver';
 import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
@@ -70,7 +73,7 @@ const defaultSettings: CSpellUserSettings = {
 const defaultDebounce = 50;
 const dictionaryRefreshRate = 1000;
 
-function run() {
+export function run(): void {
     // debounce buffer
     const validationRequestStream = new ReplaySubject<TextDocument>(1);
     const triggerUpdateConfig = new ReplaySubject<void>(1);
@@ -92,7 +95,7 @@ function run() {
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
-    const connection = createConnection(vscode.ProposedFeatures.all);
+    const connection = createConnection(ProposedFeatures.all);
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
@@ -125,7 +128,7 @@ function run() {
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration(onConfigChange);
 
-    interface OnChangeParam extends vscode.DidChangeConfigurationParams {
+    interface OnChangeParam extends DidChangeConfigurationParams {
         settings: SettingsCspell;
     }
 
@@ -356,7 +359,7 @@ function run() {
         return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
     }
 
-    interface ValidationResult extends vscode.PublishDiagnosticsParams {}
+    interface ValidationResult extends PublishDiagnosticsParams {}
 
     async function validateTextDocument(dsp: DocSettingPair): Promise<ValidationResult> {
         async function validate() {
@@ -380,7 +383,7 @@ function run() {
                     const settings = correctBadSettings(settingsToUse);
                     logProblemsWithSettings(settings);
                     dictionaryWatcher.processSettings(settings);
-                    const diagnostics: vscode.Diagnostic[] = await Validator.validateTextDocument(doc, settings);
+                    const diagnostics: Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
                     return { uri, diagnostics };
                 }
@@ -416,14 +419,14 @@ function run() {
                     ?.map((s) => s.filename)
                     .filter(isString)
                     .map((s) => '"' + s + '"') || [];
-            const fullImportBy = importedBy.length ? join('imported by', ...importedBy) : '';
-            const firstImportedBy = importedBy.length ? join('imported by', importedBy[0]) : '';
+            const fullImportBy = importedBy.length ? join(' imported by \n', ...importedBy) : '';
+            // const firstImportedBy = importedBy.length ? join('imported by', importedBy[0]) : '';
             const warnMsg = join(msg, fullImportBy);
 
             if (knownErrors.has(warnMsg)) return;
             knownErrors.add(warnMsg);
             connection.console.warn(warnMsg);
-            connection.window.showWarningMessage(join(msg, firstImportedBy));
+            connection.window.showWarningMessage(join(msg, fullImportBy));
         });
     }
 
@@ -509,14 +512,3 @@ function run() {
     // Listen on the connection
     connection.listen();
 }
-
-process.on('unhandledRejection', (error) => {
-    // Will print "unhandledRejection err is not defined"
-    console.log('unhandledRejection', error);
-});
-
-process.on('uncaughtException', (error) => {
-    console.log('uncaughtException', error);
-});
-
-run();

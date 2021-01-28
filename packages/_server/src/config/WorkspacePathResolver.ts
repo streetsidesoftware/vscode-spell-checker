@@ -4,7 +4,7 @@ import { URI as Uri } from 'vscode-uri';
 import { logError } from '../utils/log';
 import { isDefined } from '../utils';
 import * as os from 'os';
-import { WorkspaceFolder } from 'vscode-languageserver';
+import { WorkspaceFolder } from 'vscode-languageserver/node';
 
 export type WorkspacePathResolverFn = (path: string) => string;
 

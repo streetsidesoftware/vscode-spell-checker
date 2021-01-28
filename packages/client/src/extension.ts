@@ -2,12 +2,12 @@ import { performance, toMilliseconds } from './util/perf';
 performance.mark('cspell_start_extension');
 import * as path from 'path';
 performance.mark('import 1');
-import {setEnableSpellChecking, sectionCSpell} from './settings';
+import { setEnableSpellChecking, sectionCSpell } from './settings';
 performance.mark('import 2');
 import * as settings from './settings';
 performance.mark('import 3');
 performance.mark('import 4');
-import {CSpellClient} from './client';
+import { CSpellClient } from './client';
 performance.mark('import 5');
 
 import { ExtensionContext } from 'vscode';
@@ -21,7 +21,7 @@ performance.mark('import 7');
 import { initStatusBar } from './statusbar';
 performance.mark('import 8');
 
-import {userCommandOnCurrentSelectionOrPrompt, handlerApplyTextEdits} from './commands';
+import { userCommandOnCurrentSelectionOrPrompt, handlerApplyTextEdits } from './commands';
 performance.mark('import 9');
 import * as commands from './commands';
 performance.mark('import 10');
@@ -41,7 +41,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     performance.mark('cspell_activate_start');
 
     // The server is implemented in node
-    const serverModule = context.asAbsolutePath(path.join('server', 'server.js'));
+    const serverModule = context.asAbsolutePath(path.join('server', 'main.js'));
     // Get the cSpell Client
     const client = await CSpellClient.create(serverModule);
 
@@ -63,15 +63,16 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         return (word: string, uri: string | vscode.Uri | null | undefined) => {
             const editor = vscode.window.activeTextEditor;
             const document = editor && editor.document;
-            const uriToUse = uri || document && document.uri || null;
-            return client.splitTextIntoDictionaryWords(word)
-                .then(result => result.words)
-                .then(words => apply(words.join(' '), uriToUse));
+            const uriToUse = uri || (document && document.uri) || null;
+            return client
+                .splitTextIntoDictionaryWords(word)
+                .then((result) => result.words)
+                .then((words) => apply(words.join(' '), uriToUse));
         };
     }
 
     function dumpPerfTimeline() {
-        performance.getEntries().forEach(entry => {
+        performance.getEntries().forEach((entry) => {
             console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
         });
     }
@@ -149,10 +150,14 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
         vscode.commands.registerCommand('cSpell.enableForGlobal', () => setEnableSpellChecking(settings.Target.Global, true)),
         vscode.commands.registerCommand('cSpell.disableForGlobal', () => setEnableSpellChecking(settings.Target.Global, false)),
-        vscode.commands.registerCommand('cSpell.toggleEnableForGlobal', () => commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Global)),
+        vscode.commands.registerCommand('cSpell.toggleEnableForGlobal', () =>
+            commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Global)
+        ),
         vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, true)),
         vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
-        vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', () => commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Workspace)),
+        vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', () =>
+            commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Workspace)
+        ),
         vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),
         vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
         vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
@@ -165,7 +170,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          * if the section didn't already exist. This leads to a poor user experience in situations like
          * adding a word to be ignored for the first time.
          */
-        vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
+        vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration)
     );
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {

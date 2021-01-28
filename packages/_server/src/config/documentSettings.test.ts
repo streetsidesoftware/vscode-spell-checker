@@ -1,5 +1,5 @@
 import { DocumentSettings, isUriAllowed, isUriBlackListed, debugExports, correctBadSettings } from './documentSettings';
-import { Connection, WorkspaceFolder } from 'vscode-languageserver';
+import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
@@ -8,7 +8,7 @@ import { Pattern } from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import * as os from 'os';
 
-jest.mock('vscode-languageserver');
+jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
 
 const mockGetWorkspaceFolders = getWorkspaceFolders as jest.Mock;
