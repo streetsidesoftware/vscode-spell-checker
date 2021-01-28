@@ -16,6 +16,12 @@
         "packages/client/resources/**",
         "packages/client/samples/**",
         "packages/client/server/**",
+        "**/packages/client/settingsViewer/**",
+        "**/packages/client/resources/**",
+        "**/packages/client/samples/**",
+        "**/packages/client/server/**",
+        "**/server.js",
+        "**/server/**/*.js",
         "testFixtures"
     ],
     "ignoreWords": [],
