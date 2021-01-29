@@ -6,8 +6,8 @@ import {
     DictionaryFileTypes,
     CSpellSettings,
     CSpellUserSettingsWithComments as CSpellLibUserSettingsWithComments,
-} from 'cspell-lib';
-export { LanguageSetting, DictionaryDefinition, DictionaryFileTypes } from 'cspell-lib';
+} from '@cspell/cspell-types';
+export { LanguageSetting, DictionaryDefinition, DictionaryFileTypes } from '@cspell/cspell-types';
 
 export const defaultDictionaryType: DictionaryFileTypes = 'S';
 

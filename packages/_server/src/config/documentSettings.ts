@@ -2,10 +2,19 @@
 // cSpell:ignore pycache
 import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
-import { ExcludeFilesGlobMap, Glob, RegExpPatternDefinition, Pattern } from 'cspell-lib';
+import { Glob, RegExpPatternDefinition, Pattern, CSpellSettingsWithSourceTrace } from '@cspell/cspell-types';
+import {
+    calcOverrideSettings,
+    clearCachedFiles,
+    defaultSettingsFilename,
+    ExcludeFilesGlobMap,
+    ExclusionHelper,
+    getSources,
+    mergeSettings,
+    readSettingsFiles as cspellReadSettingsFiles,
+} from 'cspell-lib';
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import { URI as Uri } from 'vscode-uri';
 import { log } from '../utils/log';
@@ -91,7 +100,7 @@ export class DocumentSettings {
 
     resetSettings() {
         log('resetSettings');
-        CSpell.clearCachedFiles();
+        clearCachedFiles();
         this.cachedValues.forEach((cache) => cache.clear());
         this._version += 1;
     }
@@ -128,11 +137,11 @@ export class DocumentSettings {
         log('Start fetchUriSettingsEx:', uri);
         const folderSettings = await this.fetchSettingsForUri(uri);
         const importedSettings = this.importedSettings();
-        const mergedSettings = CSpell.mergeSettings(this.defaultSettings, importedSettings, folderSettings.settings);
+        const mergedSettings = mergeSettings(this.defaultSettings, importedSettings, folderSettings.settings);
         const enabledFiletypes = extractEnableFiletypes(this.defaultSettings, importedSettings, folderSettings.settings);
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
         const fileUri = Uri.parse(uri);
-        const fileSettings = CSpell.calcOverrideSettings(spellSettings, fileUri.fsPath);
+        const fileSettings = calcOverrideSettings(spellSettings, fileUri.fsPath);
         log('Finish fetchUriSettingsEx:', uri);
         return { ...folderSettings, settings: fileSettings };
     }
@@ -160,7 +169,7 @@ export class DocumentSettings {
         const cSpellConfigSettings: CSpellUserSettings = {
             ...cSpell,
             id: 'VSCode-Config',
-            ignorePaths: ignorePaths.concat(CSpell.ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
+            ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
         };
         return cSpellConfigSettings;
     }
@@ -174,7 +183,7 @@ export class DocumentSettings {
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
         const settings = this.readSettingsForFolderUri(folder.uri);
         // cspell.json file settings take precedence over the vscode settings.
-        const mergedSettings = CSpell.mergeSettings(workspaceSettings, cSpellFolderSettings, settings);
+        const mergedSettings = mergeSettings(workspaceSettings, cSpellFolderSettings, settings);
         const { ignorePaths = [] } = mergedSettings;
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(folder.uri).path;
@@ -236,11 +245,11 @@ function configPathsForRoot(workspaceRootUri?: string) {
     const workspaceRoot = workspaceRootUri ? Uri.parse(workspaceRootUri).fsPath : '';
     const paths = workspaceRoot
         ? [
-              path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename.toLowerCase()),
-              path.join(workspaceRoot, '.vscode', CSpell.defaultSettingsFilename),
-              path.join(workspaceRoot, '.' + CSpell.defaultSettingsFilename.toLowerCase()),
-              path.join(workspaceRoot, CSpell.defaultSettingsFilename.toLowerCase()),
-              path.join(workspaceRoot, CSpell.defaultSettingsFilename),
+              path.join(workspaceRoot, '.vscode', defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, '.vscode', defaultSettingsFilename),
+              path.join(workspaceRoot, '.' + defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, defaultSettingsFilename.toLowerCase()),
+              path.join(workspaceRoot, defaultSettingsFilename),
           ]
         : [];
     return paths;
@@ -253,9 +262,7 @@ function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CS
     const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
     log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
     log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
-    const { import: _import, ...result } = importAbsPath.length
-        ? CSpell.mergeSettings(readSettingsFiles([...importAbsPath]), config)
-        : config;
+    const { import: _import, ...result } = importAbsPath.length ? mergeSettings(readSettingsFiles([...importAbsPath]), config) : config;
     return result;
 }
 
@@ -267,7 +274,7 @@ function readSettingsFiles(paths: string[]) {
     // log('readSettingsFiles:', paths);
     const existingPaths = paths.filter((filename) => exists(filename));
     log('readSettingsFiles:', existingPaths);
-    return existingPaths.length ? CSpell.readSettingsFiles(existingPaths) : {};
+    return existingPaths.length ? cspellReadSettingsFiles(existingPaths) : {};
 }
 
 function exists(file: string): boolean {
@@ -370,7 +377,7 @@ export const debugExports = {
 };
 
 export interface ExcludedByMatch {
-    settings: CSpell.CSpellSettingsWithSourceTrace;
+    settings: CSpellSettingsWithSourceTrace;
     glob: string;
 }
 
@@ -386,16 +393,16 @@ function calcExcludedBy(uri: string, extSettings: ExtSettings) {
         return isMatch;
     }
 
-    function keep(cfg: CSpell.CSpellSettingsWithSourceTrace): boolean {
+    function keep(cfg: CSpellSettingsWithSourceTrace): boolean {
         return !cfg.source?.sources?.length;
     }
 
     function id(ex: ExcludedByMatch): string {
-        const settings: CSpell.CSpellSettingsWithSourceTrace = ex.settings;
+        const settings: CSpellSettingsWithSourceTrace = ex.settings;
         return [ex.glob, settings.source?.name, settings.source?.filename, settings.id, settings.name].join('|');
     }
 
-    const matches: ExcludedByMatch[] = genSequence(CSpell.getSources(extSettings.settings))
+    const matches: ExcludedByMatch[] = genSequence(getSources(extSettings.settings))
         // keep only leaf sources
         .filter(keep)
         .concatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || [])

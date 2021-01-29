@@ -13,6 +13,7 @@
     "node": ">=12"
   },
   "devDependencies": {
+    "@cspell/cspell-types": "^5.2.4",
     "@types/fs-extra": "^9.0.6",
     "@types/jest": "^26.0.19",
     "@types/micromatch": "^4.0.1",
