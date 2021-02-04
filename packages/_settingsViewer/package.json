@@ -23,7 +23,7 @@
     "@types/clone-deep": "^4.0.1",
     "@types/jest": "^26.0.19",
     "@types/node": "^12.19.12",
-    "@types/react": "^16.14.2",
+    "@types/react": "^17.0.1",
     "@types/react-dom": "^16.9.10",
     "@types/react-test-renderer": "16.0.3",
     "awesome-typescript-loader": "^5.2.1",
