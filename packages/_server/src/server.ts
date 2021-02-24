@@ -20,7 +20,7 @@ import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
-import { Text } from 'cspell-lib';
+import { Glob, Text } from 'cspell-lib';
 
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './config/cspellConfig';
@@ -209,9 +209,13 @@ export function run(): void {
     }
 
     async function getExcludedBy(uri: string, withSettings: CSpellUserSettings): Promise<Api.ExcludeRef[]> {
+        function globToString(g: Glob): string {
+            if (typeof g === 'string') return g;
+            return g.glob;
+        }
         const ex = await documentSettings.calcExcludedBy(uri, withSettings);
         return ex.map((ex) => ({
-            glob: ex.glob,
+            glob: globToString(ex.glob),
             filename: ex.settings.__importRef?.filename || ex.settings.source?.filename,
             id: ex.settings.id,
             name: ex.settings.name,

@@ -23,7 +23,7 @@ import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from '
 import { GlobMatcher } from 'cspell-glob';
 import * as os from 'os';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
-import { genSequence } from 'gensequence';
+import { genSequence, Sequence } from 'gensequence';
 
 const cSpellSection: keyof SettingsCspell = 'cSpell';
 
@@ -378,11 +378,11 @@ export const debugExports = {
 
 export interface ExcludedByMatch {
     settings: CSpellSettingsWithSourceTrace;
-    glob: string;
+    glob: Glob;
 }
 
 function calcExcludedBy(uri: string, extSettings: ExtSettings) {
-    const triedGlobs = new Map<string, boolean>();
+    const triedGlobs = new Map<Glob, boolean>();
 
     function isExcluded(ex: ExcludedByMatch): boolean {
         const v = triedGlobs.get(ex.glob);
@@ -402,12 +402,11 @@ function calcExcludedBy(uri: string, extSettings: ExtSettings) {
         return [ex.glob, settings.source?.name, settings.source?.filename, settings.id, settings.name].join('|');
     }
 
-    const matches: ExcludedByMatch[] = genSequence(getSources(extSettings.settings))
+    const ex: Sequence<ExcludedByMatch> = genSequence(getSources(extSettings.settings))
         // keep only leaf sources
         .filter(keep)
-        .concatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || [])
-        .filter(isExcluded)
-        .filter(uniqueFilter(id))
-        .toArray();
+        .concatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || []);
+
+    const matches: ExcludedByMatch[] = ex.filter(isExcluded).filter(uniqueFilter(id)).toArray();
     return matches;
 }

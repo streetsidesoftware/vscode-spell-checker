@@ -180,10 +180,11 @@ describe('Validate DocumentSettings', () => {
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
         docSettings.registerConfigurationFile(configFile);
 
+        const cwd = process.cwd();
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
         const expectedFiles = filenames.map((fName) => expect.stringContaining(fName));
-        expect(result.map((ex) => ex.glob)).toEqual(exGlobs);
+        expect(result.map((ex) => ex.glob)).toEqual(exGlobs.map((glob) => ({ glob, root: cwd })));
         expect(result.map((ex) => ex.settings.source?.filename)).toEqual(expect.arrayContaining(expectedFiles));
     });
 

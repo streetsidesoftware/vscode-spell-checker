@@ -121,6 +121,10 @@ describe('Validate workspace substitution resolver', () => {
             '${workspaceFolder}/node_modules/**',
             '${workspaceFolder:Server}/samples/**',
             '${workspaceFolder:client-test}/**/*.json',
+            {
+                glob: 'dist/**',
+                root: '${workspaceFolder:Server}',
+            },
         ],
     });
 
@@ -150,15 +154,24 @@ describe('Validate workspace substitution resolver', () => {
         ].map((f) => Object.freeze(f)),
     });
 
+    const overrides: CSpellUserSettings['overrides'] = [
+        {
+            filename: ['*.md', '**/*.ts', '**/*.js'],
+            languageSettings: settingsLanguageSettings.languageSettings,
+            dictionaryDefinitions: settingsDictionaryDefinitions.dictionaryDefinitions,
+        },
+        {
+            filename: '${workspaceFolder:Client}/docs/nl_NL/**',
+            language: 'nl',
+        },
+        {
+            filename: ['${workspaceFolder:Client}/**/*.config.json', { glob: '**/*.config.json', root: '${workspaceFolder:Server}' }],
+            languageId: 'jsonc',
+        },
+    ];
+
     const settingsOverride: CSpellUserSettings = {
-        overrides: [
-            {
-                filename: '*.ts',
-                ignorePaths: settingsIgnorePaths.ignorePaths,
-                languageSettings: settingsLanguageSettings.languageSettings,
-                dictionaryDefinitions: settingsDictionaryDefinitions.dictionaryDefinitions,
-            },
-        ].map((f) => Object.freeze(f)),
+        overrides: overrides.map((f) => Object.freeze(f)),
     };
 
     test('testUri assumptions', () => {
@@ -183,9 +196,20 @@ describe('Validate workspace substitution resolver', () => {
     });
 
     test('resolveSettings ignorePaths', () => {
-        const resolver = createWorkspaceNamesResolver(workspaceFolders.client, workspaces, undefined);
+        const root = '/config root';
+        const resolver = createWorkspaceNamesResolver(workspaceFolders.client, workspaces, root);
         const result = resolveSettings(settingsIgnorePaths, resolver);
-        expect(result.ignorePaths).toEqual(['**/node_modules/**', '/node_modules/**', `${serverUri.path}/samples/**`, '/test/**/*.json']);
+        // '**/node_modules/**',
+        // '${workspaceFolder}/node_modules/**',
+        // '${workspaceFolder:Server}/samples/**',
+        // '${workspaceFolder:client-test}/**/*.json',
+        expect(result.ignorePaths).toEqual([
+            { glob: '**/node_modules/**', root: root },
+            { glob: '/node_modules/**', root: uriToFsPath(workspaceFolders.client.uri) },
+            { glob: '/samples/**', root: uriToFsPath(workspaceFolders.server.uri) },
+            { glob: '/**/*.json', root: uriToFsPath(workspaceFolders.test.uri) },
+            { glob: 'dist/**', root: uriToFsPath(workspaceFolders.server.uri) },
+        ]);
     });
 
     test('resolveSettings dictionaryDefinitions', () => {
@@ -226,11 +250,36 @@ describe('Validate workspace substitution resolver', () => {
             { name: 'Company Dictionary', path: p(`${rootFolderUri.fsPath}/node_modules/@company/terms/terms.txt`) },
             { name: 'Project Dictionary', path: p(`${rootFolderUri.fsPath}/terms/terms.txt`) },
         ]);
-        expect(result?.overrides?.[0]?.ignorePaths).toEqual([
-            '**/node_modules/**',
-            '/node_modules/**',
-            `${serverUri.path}/samples/**`,
-            '/test/**/*.json',
+        // @todo need to test changes to filename glob patterns.
+        expect(result?.overrides?.map((o) => o.filename)).toEqual([
+            [
+                {
+                    glob: '*.md',
+                    root: undefined,
+                },
+                {
+                    glob: '**/*.ts',
+                    root: undefined,
+                },
+                {
+                    glob: '**/*.js',
+                    root: undefined,
+                },
+            ],
+            {
+                glob: '/docs/nl_NL/**',
+                root: uriToFsPath(workspaceFolders.client.uri),
+            },
+            [
+                {
+                    glob: '/**/*.config.json',
+                    root: uriToFsPath(workspaceFolders.client.uri),
+                },
+                {
+                    glob: '**/*.config.json',
+                    root: uriToFsPath(workspaceFolders.server.uri),
+                },
+            ],
         ]);
     });
 
@@ -331,6 +380,13 @@ describe('Validate workspace substitution resolver', () => {
         );
         expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
     });
+
+    function uriToFsPath(u: string | Uri): string {
+        if (typeof u === 'string') {
+            u = Uri.parse(u);
+        }
+        return u.fsPath;
+    }
 
     function normalizePath<T extends { path?: string }>(values?: T[]): T[] | undefined {
         function m(v: T): T {

@@ -1,16 +1,18 @@
-import { BaseSetting, DictionaryDefinition } from 'cspell-lib';
+import { BaseSetting, DictionaryDefinition, Glob, GlobDef } from 'cspell-lib';
 import { CSpellUserSettings, CustomDictionary, CustomDictionaryEntry, defaultDictionaryType } from '../config/cspellConfig';
 import { URI as Uri } from 'vscode-uri';
 import { logError } from '../utils/log';
 import { isDefined } from '../utils';
 import * as os from 'os';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
+import * as Path from 'path';
 
+export type WorkspaceGlobResolverFn = (glob: Glob) => GlobDef;
 export type WorkspacePathResolverFn = (path: string) => string;
 
 interface WorkspacePathResolver {
     resolveFile: WorkspacePathResolverFn;
-    resolveGlob: WorkspacePathResolverFn;
+    resolveGlob: WorkspaceGlobResolverFn;
 }
 
 interface FolderPath {
@@ -76,7 +78,7 @@ export function createWorkspaceNamesResolver(
 ): WorkspacePathResolver {
     return {
         resolveFile: createWorkspaceNamesFilePathResolver(folder, folders, root),
-        resolveGlob: createWorkspaceNamesGlobPathResolver(folder, folders),
+        resolveGlob: createWorkspaceNamesGlobPathResolver(folder, folders, root),
     };
 }
 
@@ -94,42 +96,65 @@ function createWorkspaceNamesFilePathResolver(
     return createWorkspaceNameToPathResolver(toFolderPath(folder), folders.map(toFolderPath), root);
 }
 
-function createWorkspaceNamesGlobPathResolver(folder: WorkspaceFolder, folders: WorkspaceFolder[]): WorkspacePathResolverFn {
+function createWorkspaceNamesGlobPathResolver(
+    folder: WorkspaceFolder,
+    folders: WorkspaceFolder[],
+    root: string | undefined
+): WorkspaceGlobResolverFn {
     function toFolderPath(w: WorkspaceFolder): FolderPath {
         return {
             name: w.name,
-            path: Uri.parse(w.uri).path,
+            path: Uri.parse(w.uri).fsPath,
         };
     }
     const rootFolder = toFolderPath(folder);
-    const rootPath = rootFolder.path;
 
-    function normalizeToRoot(p: FolderPath) {
-        if (p.path.slice(0, rootPath.length) === rootPath) {
-            p.path = p.path.slice(rootPath.length);
-        }
-        return p;
-    }
-
-    return createWorkspaceNameToGlobResolver(normalizeToRoot(rootFolder), folders.map(toFolderPath).map(normalizeToRoot));
+    return createWorkspaceNameToGlobResolver(rootFolder, folders.map(toFolderPath), root);
 }
 
-function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPath[]): WorkspacePathResolverFn {
+function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPath[], root: string | undefined): WorkspaceGlobResolverFn {
     const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]].concat(
         folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
     );
     const map = new Map(folderPairs);
-    const regEx = /\$\{workspaceFolder(?:[^}]*)\}/gi;
+    const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
 
-    function replacer(match: string): string {
+    function lookUpWorkspaceFolder(match: string): string {
         const r = map.get(match);
         if (r !== undefined) return r;
         logError(`Failed to resolve ${match}`);
         return match;
     }
 
-    return (path: string) => {
-        return path.replace(regEx, replacer);
+    return (glob: Glob) => {
+        if (typeof glob == 'string') {
+            glob = {
+                glob,
+                root,
+            };
+        }
+
+        const matchGlob = glob.glob.match(regEx);
+        if (matchGlob) {
+            const root = lookUpWorkspaceFolder(matchGlob[0]);
+            return {
+                ...glob,
+                glob: glob.glob.slice(matchGlob[0].length),
+                root,
+            };
+        }
+
+        const matchRoot = glob.root?.match(regEx);
+        if (matchRoot && glob.root) {
+            const root = lookUpWorkspaceFolder(matchRoot[0]);
+            return {
+                ...glob,
+                glob: glob.glob,
+                root: Path.join(root, glob.root.slice(matchRoot[0].length)),
+            };
+        }
+
+        return glob;
     };
 }
 
@@ -201,7 +226,7 @@ function resolveImportsToWorkspace(imports: CSpellUserSettings['import'], resolv
     const toImport = typeof imports === 'string' ? [imports] : imports;
     return toImport.map(resolver.resolveFile);
 }
-function resolveGlobArray(globs: string[] | undefined, resolver: WorkspacePathResolverFn): undefined | string[] {
+function resolveGlobArray(globs: Glob[] | undefined, resolver: WorkspaceGlobResolverFn): undefined | Glob[] {
     if (!globs) return globs;
     return globs.map(resolver);
 }
@@ -226,9 +251,9 @@ function resolveLanguageSettings(
 function resolveOverrides(overrides: CSpellUserSettings['overrides'], resolver: WorkspacePathResolver): CSpellUserSettings['overrides'] {
     if (!overrides) return overrides;
 
-    function resolve(path: string | string[]) {
-        if (!path) return path;
-        return typeof path === 'string' ? resolver.resolveFile(path) : path.map(resolver.resolveFile);
+    function resolve(glob: Glob | Glob[]) {
+        if (!glob) return glob;
+        return Array.isArray(glob) ? glob.map(resolver.resolveGlob) : resolver.resolveGlob(glob);
     }
 
     return overrides.map((src) => {
