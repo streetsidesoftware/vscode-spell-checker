@@ -1,6 +1,9 @@
 import { Settings, ConfigTarget } from './settings';
 
-interface DefinedCommands {
+/**
+ * @private
+ */
+export interface DefinedCommands {
     ConfigurationChangeMessage: ConfigurationChangeMessage;
     EnableLanguageIdMessage: EnableLanguageIdMessage;
     EnableLocaleMessage: EnableLocaleMessage;
@@ -19,18 +22,13 @@ export interface Message {
 export type Messages = DefinedCommands[Commands];
 
 export function isMessage(data: unknown): data is Message {
-    return !!(data
-        && typeof data === 'object'
-        && data.hasOwnProperty('command')
-        && typeof data['command'] === 'string'
-    );
+    return !!(data && typeof data === 'object' && data.hasOwnProperty('command') && typeof data['command'] === 'string');
 }
 
-function isA<T extends Message> (cmd: T['command'], fields: ([keyof T, (v: any) => boolean])[]): (msg: Message) => msg is T {
+function isA<T extends Message>(cmd: T['command'], fields: [keyof T, (v: any) => boolean][]): (msg: Message) => msg is T {
     return function (msg: Message): msg is T {
         const t = msg as T;
-        return msg.command === cmd
-        && fields.reduce((success, [key, fn]) => success && fn(t[key]), true);
+        return msg.command === cmd && fields.reduce((success, [key, fn]) => success && fn(t[key]), true);
     };
 }
 
@@ -91,5 +89,9 @@ export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
 export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
 
-function isObject(v: unknown): v is Record<string, unknown> { return typeof v === 'object' && v !== null; }
-function isString(v: unknown): v is string { return typeof v === 'string'; }
+function isObject(v: unknown): v is Record<string, unknown> {
+    return typeof v === 'object' && v !== null;
+}
+function isString(v: unknown): v is string {
+    return typeof v === 'string';
+}
