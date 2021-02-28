@@ -52,8 +52,17 @@ or one of the alternatives.
 
 How to determine the configuration used for a file.
 
-| Configuration | Description                      |
-| ------------- | -------------------------------- |
-| default       | Extension defaults               |
-| user          | VS Code User level configuration |
-| workspace     | VS Code Workspace configuration  |
+| Configuration | Description                                       |
+| ------------- | ------------------------------------------------- |
+| user          | VS Code User level configuration                  |
+| workspace     | VS Code Workspace configuration                   |
+| folder        | VS Code Folder configuration                      |
+| folder cspell | Nearest cspell configuration found in folder      |
+| file cspell   | Nearest cspell configuration relative to the file |
+
+The configuration from VS Code is the merge of the `user`, `workspace`, and `folder`
+configurations where `folder` values take precedence over `workspace` and `workspace` takes precedence of `user`.
+
+```
+config[key] = folder[key] ?? workspace[key] ?? user[key]
+```
