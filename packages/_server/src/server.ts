@@ -70,8 +70,9 @@ const defaultSettings: CSpellUserSettings = {
     checkLimit: defaultCheckLimit,
     enabled: false,
 };
-const defaultDebounce = 50;
-const dictionaryRefreshRate = 1000;
+const defaultDebounceMs = 50;
+// Refresh the dictionary cache every 1000ms.
+const dictionaryRefreshRateMs = 1000;
 
 export function run(): void {
     // debounce buffer
@@ -155,7 +156,8 @@ export function run(): void {
     }
 
     function getActiveUriSettings(uri?: string) {
-        refreshDictionaryCache(dictionaryRefreshRate);
+        // Give the dictionaries a chance to refresh if they need to.
+        refreshDictionaryCache(dictionaryRefreshRateMs);
         return documentSettings.getUriSettings(uri);
     }
 
@@ -181,7 +183,7 @@ export function run(): void {
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
         const settings = await getActiveUriSettings(uri);
         const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
-        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
+        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
 
         return {
             languageEnabled,
@@ -198,7 +200,7 @@ export function run(): void {
         const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
 
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
-        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri, settings) : undefined;
+        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
         return {
             languageEnabled,
             fileEnabled,
@@ -208,12 +210,12 @@ export function run(): void {
         };
     }
 
-    async function getExcludedBy(uri: string, withSettings: CSpellUserSettings): Promise<Api.ExcludeRef[]> {
+    async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
         function globToString(g: Glob): string {
             if (typeof g === 'string') return g;
             return g.glob;
         }
-        const ex = await documentSettings.calcExcludedBy(uri, withSettings);
+        const ex = await documentSettings.calcExcludedBy(uri);
         return ex.map((ex) => ({
             glob: globToString(ex.glob),
             filename: ex.settings.__importRef?.filename || ex.settings.source?.filename,
@@ -315,7 +317,7 @@ export function run(): void {
                             tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
                             flatMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
                             debounce((dsp) =>
-                                timer(dsp.settings.spellCheckDelayMs || defaultDebounce).pipe(filter(() => !isValidationBusy))
+                                timer(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
                             ),
                             filter((dsp) => !blockValidation.has(dsp.doc.uri)),
                             flatMap(validateTextDocument)

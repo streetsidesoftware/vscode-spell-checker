@@ -93,8 +93,7 @@ export class DocumentSettings {
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
-        const extSettings = { ...(await this.fetchUriSettingsEx(uri)) };
-
+        const extSettings = await this.fetchUriSettingsEx(uri);
         return calcExcludedBy(uri, extSettings);
     }
 
@@ -111,7 +110,7 @@ export class DocumentSettings {
 
     private _importSettings() {
         log('importSettings');
-        const importPaths = [...this.configsToImport.keys()].sort();
+        const importPaths = [...this.configsToImport].sort();
         return readSettingsFiles(importPaths);
     }
 
@@ -135,18 +134,9 @@ export class DocumentSettings {
 
     private async fetchUriSettingsEx(uri: string): Promise<ExtSettings> {
         log('Start fetchUriSettingsEx:', uri);
-        const fileUri = Uri.parse(uri);
         const folderSettings = await this.fetchSettingsForUri(uri);
-        const importedSettings = this.importedSettings();
-        const mergedSettings =
-            this.defaultSettings !== _defaultSettings
-                ? mergeSettings(this.defaultSettings, importedSettings, folderSettings.settings)
-                : mergeSettings(importedSettings, folderSettings.settings);
-        const enabledFiletypes = extractEnableFiletypes(this.defaultSettings, importedSettings, folderSettings.settings);
-        const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
-        const fileSettings = calcOverrideSettings(spellSettings, fileUri.fsPath);
         log('Finish fetchUriSettingsEx:', uri);
-        return { ...folderSettings, settings: fileSettings };
+        return folderSettings;
     }
 
     private async findMatchingFolder(docUri: string): Promise<WorkspaceFolder> {
@@ -185,9 +175,24 @@ export class DocumentSettings {
         const settings = await searchForConfig(uri.fsPath);
         const folder = await this.findMatchingFolder(docUri);
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
-        // cspell.json file settings take precedence over the vscode settings.
-        const mergedSettings = settings ? mergeSettings(cSpellFolderSettings, settings) : cSpellFolderSettings;
+
+        const settingsToMerge: CSpellUserSettings[] = [];
+        if (this.defaultSettings !== _defaultSettings) {
+            settingsToMerge.push(this.defaultSettings);
+        }
+        settingsToMerge.push(this.importedSettings());
+        settingsToMerge.push(cSpellFolderSettings);
+        if (settings) {
+            settingsToMerge.push(settings);
+        }
+
+        const mergedSettings = mergeSettings(settingsToMerge[0], ...settingsToMerge.slice(1));
         const { ignorePaths = [] } = mergedSettings;
+
+        const enabledFiletypes = extractEnableFiletypes(mergedSettings);
+        const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
+        const fileSettings = calcOverrideSettings(spellSettings, uri.fsPath);
+
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(folder.uri).path;
         const globMatcher = new GlobMatcher(globs, root);
@@ -195,7 +200,7 @@ export class DocumentSettings {
         const ext: ExtSettings = {
             uri: docUri,
             vscodeSettings: { cSpell: cSpellConfigSettings },
-            settings: mergedSettings,
+            settings: fileSettings,
             excludeGlobMatcher: globMatcher,
         };
         return ext;

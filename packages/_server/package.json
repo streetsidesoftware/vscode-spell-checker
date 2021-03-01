@@ -13,13 +13,13 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.3.1",
-    "@types/fs-extra": "^9.0.7",
+    "@cspell/cspell-types": "^5.3.4",
+    "@types/fs-extra": "^9.0.8",
     "@types/jest": "^26.0.20",
     "@types/micromatch": "^4.0.1",
     "@types/node": "^12.19.12",
-    "cspell-glob": "^5.3.1",
-    "cspell-lib": "^5.3.1",
+    "cspell-glob": "^5.3.4",
+    "cspell-lib": "^5.3.4",
     "fs-extra": "^9.1.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.2",
@@ -41,7 +41,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.3.0",
+    "@cspell/cspell-bundled-dicts": "^5.3.4",
     "regexp-worker": "^1.1.0"
   },
   "scripts": {
