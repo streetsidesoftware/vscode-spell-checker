@@ -216,7 +216,7 @@
                     "cspell-includes.json",
                     "cSpell.json"
                 ],
-                "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell-lib%405.3.4/cspell.schema.json"
+                "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.4/cspell.schema.json"
             }
         ],
         "configuration": {
@@ -461,7 +461,7 @@
                     "scope": "resource",
                     "description": "Define settings on a per programming language basis.",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell-lib%405.3.4/cspell.schema.json#/definitions/LanguageSetting"
+                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.4/cspell.schema.json#/definitions/LanguageSetting"
                     }
                 },
                 "cSpell.dictionaries": {
@@ -478,7 +478,7 @@
                     "scope": "resource",
                     "description": "A List of Dictionary Definitions.",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell-lib%405.3.4/cspell.schema.json#/definitions/DictionaryDefinition"
+                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.4/cspell.schema.json#/definitions/DictionaryDefinition"
                     }
                 },
                 "cSpell.showCommandsInEditorContextMenu": {
@@ -524,7 +524,7 @@
                     "type": "array",
                     "description": "Overrides to apply based upon the file path.",
                     "items": {
-                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/cspell-lib%405.3.4/cspell.schema.json#/definitions/OverrideSettings"
+                        "$ref": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.4/cspell.schema.json#/definitions/OverrideSettings"
                     }
                 },
                 "cSpell.workspaceRootPath": {
