@@ -49,14 +49,16 @@ describe('Launch code spell extension', function () {
         const docContextMaybe = await loadDocument(uri);
         expect(docContextMaybe).to.not.be.undefined;
 
-        const check = diagsListener.diags.then((diags) => {
+        const check = diagsListener.diags.then(async (diags) => {
             const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
+            // Sleep a bit so the UI can be viewed if wanted.
+            await sleep(3000);
             // cspell:ignore spellling
             expect(msgs).contains('spellling');
             console.log(`Diag Messages: ${msgs}`);
         });
 
-        return Promise.race([check, sleep(4000).then(() => Promise.reject('timeout'))]).finally(() => diagsListener.dispose());
+        return Promise.race([check, sleep(10000).then(() => Promise.reject('timeout'))]).finally(() => diagsListener.dispose());
     });
 
     function waitForDiag(uri: vscode.Uri) {

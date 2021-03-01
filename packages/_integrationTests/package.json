@@ -5,7 +5,7 @@
   "private": true,
   "main": "out/index.js",
   "engines": {
-    "vscode": "^1.44.0",
+    "vscode": "^1.53.0",
     "node": ">=12"
   },
   "scripts": {
