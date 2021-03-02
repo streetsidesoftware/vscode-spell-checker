@@ -170,9 +170,10 @@ export class DocumentSettings {
     private async _fetchSettingsForUri(docUri: string): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${docUri}`);
         const uri = Uri.parse(docUri);
+        const fsPath = path.normalize(uri.fsPath);
         const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
-        const settings = await searchForConfig(uri.fsPath);
+        const settings = await searchForConfig(fsPath);
         const folder = await this.findMatchingFolder(docUri);
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
 
@@ -191,7 +192,7 @@ export class DocumentSettings {
 
         const enabledFiletypes = extractEnableFiletypes(mergedSettings);
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
-        const fileSettings = calcOverrideSettings(spellSettings, uri.fsPath);
+        const fileSettings = calcOverrideSettings(spellSettings, fsPath);
 
         const globs = defaultExclude.concat(ignorePaths);
         const root = Uri.parse(folder.uri).path;
@@ -236,7 +237,7 @@ export class DocumentSettings {
 
 function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
     log('resolveConfigImports:', folderUri);
-    const uriFsPath = Uri.parse(folderUri).fsPath;
+    const uriFsPath = path.normalize(Uri.parse(folderUri).fsPath);
     const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
     const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
     log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
@@ -357,7 +358,7 @@ export interface ExcludedByMatch {
 }
 
 function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[] {
-    const filename = Uri.parse(uri).fsPath;
+    const filename = path.normalize(Uri.parse(uri).fsPath);
     const matchResult = extSettings.excludeGlobMatcher.matchEx(filename);
 
     if (matchResult.matched === false) {
