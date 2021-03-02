@@ -1,8 +1,8 @@
-import { CSpellSettings } from 'cspell-lib';
+import { CSpellSettingsWithSourceTrace } from 'cspell-lib';
 import { configToJson } from './configToJson';
 
 describe('Validate configToJson', () => {
-    const sampleConfig: CSpellSettings = {
+    const sampleConfig: CSpellSettingsWithSourceTrace = {
         version: '0.2',
         patterns: [
             {
@@ -11,13 +11,16 @@ describe('Validate configToJson', () => {
             },
         ],
         ignoreRegExpList: [/'.*'/g],
+        source: {
+            name: 'source',
+        },
     };
 
     test.each`
-        cfg                 | message
-        ${{}}               | ${'empty config'}
-        ${{ sampleConfig }} | ${'sampleConfig'}
+        cfg             | message
+        ${{}}           | ${'empty config'}
+        ${sampleConfig} | ${'sampleConfig'}
     `('configToJson $message', ({ cfg }) => {
-        expect(configToJson(cfg)).toMatchSnapshot();
+        expect(configToJson(cfg, ['source'])).toMatchSnapshot();
     });
 });

@@ -203,7 +203,9 @@ describe('Validate DocumentSettings', () => {
         // debug windows
         if (expected.length !== result.length) {
             const settings = await docSettings.getUriSettings(uri);
-            console.error(configToJson(settings));
+
+            console.error(`file: "${Uri.parse(uri).fsPath}"`);
+            console.error(configToJson(settings, ['source']));
         }
         expect(result).toEqual(expected);
     });

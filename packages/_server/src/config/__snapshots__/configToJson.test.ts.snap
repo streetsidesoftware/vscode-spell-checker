@@ -4,17 +4,15 @@ exports[`Validate configToJson configToJson empty config 1`] = `"{}"`;
 
 exports[`Validate configToJson configToJson sampleConfig 1`] = `
 "{
-  \\"sampleConfig\\": {
-    \\"version\\": \\"0.2\\",
-    \\"patterns\\": [
-      {
-        \\"name\\": \\"word\\",
-        \\"pattern\\": \\"/^\\\\\\\\s*word/gim\\"
-      }
-    ],
-    \\"ignoreRegExpList\\": [
-      \\"/'.*'/g\\"
-    ]
-  }
+  \\"version\\": \\"0.2\\",
+  \\"patterns\\": [
+    {
+      \\"name\\": \\"word\\",
+      \\"pattern\\": \\"/^\\\\\\\\s*word/gim\\"
+    }
+  ],
+  \\"ignoreRegExpList\\": [
+    \\"/'.*'/g\\"
+  ]
 }"
 `;
