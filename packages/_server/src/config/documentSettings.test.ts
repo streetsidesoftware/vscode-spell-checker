@@ -6,6 +6,7 @@ import { URI as Uri } from 'vscode-uri';
 import * as cspell from 'cspell-lib';
 import { Pattern } from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
+import { configToJson } from './configToJson';
 import * as os from 'os';
 
 jest.mock('vscode-languageserver/node');
@@ -199,6 +200,11 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
+        // debug windows
+        if (expected.length !== result.length) {
+            const settings = await docSettings.getUriSettings(uri);
+            console.error(configToJson(settings));
+        }
         expect(result).toEqual(expected);
     });
 
