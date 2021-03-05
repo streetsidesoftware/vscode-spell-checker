@@ -21,7 +21,7 @@
 			"${workspaceFolder:vscode-spell-checker}/cSpell.json"
 		],
 		"cSpell.customWorkspaceDictionaries": ["cspell-words"],
-		"typescript.tsdk": "client/node_modules/typescript/lib",
+		"typescript.tsdk": "vscode-spell-checker/node_modules/typescript/lib",
 		"svg.preview.background": "black"
 	}
 }

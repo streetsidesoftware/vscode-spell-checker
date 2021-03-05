@@ -1,4 +1,4 @@
-import { DocumentSettings, isUriAllowed, isUriBlackListed, debugExports, correctBadSettings } from './documentSettings';
+import { DocumentSettings, isUriAllowed, isUriBlackListed, debugExports, correctBadSettings, ExcludedByMatch } from './documentSettings';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
@@ -159,21 +159,38 @@ describe('Validate DocumentSettings', () => {
 
     interface IsExcludeByTest {
         filename: string;
-        exGlobs: string[];
-        filenames: string[];
+        expected: ExcludedByMatch[];
     }
 
-    const pathCspellExcludeTests = Path.join('sampleSourceFiles', 'cspell-exclude-tests.json');
+    const pathCspellExcludeTests = Path.resolve('sampleSourceFiles/cspell-exclude-tests.json');
+
+    function oc<T>(t: T): T {
+        return expect.objectContaining(t);
+    }
+
+    function ocGlob(glob: string, root: string = pathWorkspaceServer, source?: string) {
+        return source ? oc({ glob, root, source }) : oc({ glob, root });
+    }
+
+    function ex(cfgFile: string, glob: string, root?: string) {
+        cfgFile = Path.resolve(pathWorkspaceRoot, cfgFile);
+        root = root || Path.dirname(cfgFile);
+        return {
+            glob: ocGlob(glob, root, cfgFile),
+            settings: oc({ source: oc({ filename: cfgFile }) }),
+        };
+    }
 
     test.each`
-        filename                           | exGlobs                                       | filenames
-        ${sampleFiles.sampleNodePackage}   | ${['node_modules']}                           | ${['cSpell.json']}
-        ${sampleFiles.sampleSamplesReadme} | ${['samples', 'samples']}                     | ${[pathCspellExcludeTests, 'cSpell.json']}
-        ${sampleFiles.sampleEsLint}        | ${['.eslintrc.js']}                           | ${[pathCspellExcludeTests]}
-        ${sampleFiles.sampleClientReadme}  | ${[]}                                         | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${['package-lock.json', 'package-lock.json']} | ${[pathCspellExcludeTests, 'cSpell.json']}
-    `('isExcludedBy $filename', async ({ filename, exGlobs, filenames }: IsExcludeByTest) => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
+        filename                           | expected
+        ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceServer)]}
+        ${sampleFiles.sampleSamplesReadme} | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleClientReadme}  | ${[]}
+        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot)]}
+    `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
         mockGetConfiguration.mockReturnValue([{}, {}]);
         const docSettings = newDocumentSettings();
@@ -182,9 +199,7 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
-        const expectedFiles = filenames.map((fName) => expect.stringContaining(fName));
-        expect(result.map((ex) => ex.glob)).toEqual(exGlobs);
-        expect(result.map((ex) => ex.settings.source?.filename)).toEqual(expect.arrayContaining(expectedFiles));
+        expect(result).toEqual(expected);
     });
 
     test('resolvePath', () => {

@@ -4,12 +4,19 @@ on: # rebuild any PRs and main branch changes
   push:
 
 jobs:
-  test: # make sure build/ci work properly
-    runs-on: ubuntu-latest
+  build-test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        node-version: [12.x]
+
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-        node -v
-        npm install
-    - run:
-        npm test
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test

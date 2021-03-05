@@ -1,7 +1,7 @@
 {
     "version": "0.1",
-    "name": "Bad Import",
-    "description": "Explicitly try to include a file that does not exist.",
+    "name": "custom-dictionary",
+    "description": "Config with a custom dictionary.",
     "dictionaryDefinitions": [
         {
             "name": "words",

@@ -1,11 +1,9 @@
 import { TextDocuments, CodeActionParams, Range as LangServerRange, Command as LangServerCommand } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
-import { Text } from 'cspell-lib';
 import * as Validator from './validator';
 import { CSpellUserSettings } from './config/cspellConfig';
-import { SpellingDictionary } from 'cspell-lib';
-import * as cspell from 'cspell-lib';
+import { SpellingDictionary, constructSettingsForText, getDictionary, Text } from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
@@ -42,8 +40,8 @@ export function onCodeActionHandler(
     }
 
     async function constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
-        const settings = cspell.constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
-        const dictionary = await cspell.getDictionary(settings);
+        const settings = constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
+        const dictionary = await getDictionary(settings);
         return { settings, dictionary };
     }
 
