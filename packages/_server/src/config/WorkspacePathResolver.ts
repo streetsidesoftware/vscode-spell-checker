@@ -18,6 +18,7 @@ interface WorkspacePathResolver {
 interface FolderPath {
     name: string;
     path: string;
+    uri: Uri;
 }
 
 export function resolveSettings<T extends CSpellUserSettings>(settings: T, resolver: WorkspacePathResolver): T {
@@ -71,6 +72,12 @@ export function resolveSettings<T extends CSpellUserSettings>(settings: T, resol
     return shallowCleanObject(newSettings);
 }
 
+/**
+ *
+ * @param folder - Workspace folder to be considered the active folder
+ * @param folders - all folders including the active folder
+ * @param root - optional file path
+ */
 export function createWorkspaceNamesResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
@@ -82,17 +89,20 @@ export function createWorkspaceNamesResolver(
     };
 }
 
+function toFolderPath(w: WorkspaceFolder): FolderPath {
+    const uri = Uri.parse(w.uri);
+    return {
+        name: w.name,
+        path: uri.fsPath,
+        uri: uri,
+    };
+}
+
 function createWorkspaceNamesFilePathResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
     root: string | undefined
 ): WorkspacePathResolverFn {
-    function toFolderPath(w: WorkspaceFolder): FolderPath {
-        return {
-            name: w.name,
-            path: Uri.parse(w.uri).fsPath,
-        };
-    }
     return createWorkspaceNameToPathResolver(toFolderPath(folder), folders.map(toFolderPath), root);
 }
 
@@ -101,12 +111,6 @@ function createWorkspaceNamesGlobPathResolver(
     folders: WorkspaceFolder[],
     root: string | undefined
 ): WorkspaceGlobResolverFn {
-    function toFolderPath(w: WorkspaceFolder): FolderPath {
-        return {
-            name: w.name,
-            path: Uri.parse(w.uri).fsPath,
-        };
-    }
     const rootFolder = toFolderPath(folder);
 
     return createWorkspaceNameToGlobResolver(rootFolder, folders.map(toFolderPath), root);
@@ -162,7 +166,7 @@ function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPa
  *
  * @param currentFolder
  * @param folders
- * @param root
+ * @param root - optional file path to consider the root
  */
 function createWorkspaceNameToPathResolver(
     currentFolder: FolderPath,
@@ -173,7 +177,7 @@ function createWorkspaceNameToPathResolver(
         .concat([
             ['.', currentFolder.path],
             ['~', os.homedir()],
-            ['${workspaceFolder}', folders[0]?.path || root || currentFolder.path],
+            ['${workspaceFolder}', currentFolder.path],
             ['${root}', root || folders[0]?.path || currentFolder.path],
             ['${workspaceRoot}', root || folders[0]?.path || currentFolder.path],
         ])

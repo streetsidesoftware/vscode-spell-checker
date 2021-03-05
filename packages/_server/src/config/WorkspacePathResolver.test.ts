@@ -186,7 +186,7 @@ describe('Validate workspace substitution resolver', () => {
         const imports = Array.isArray(result.import) ? pp(result.import) : result.import;
         expect(imports).toEqual([
             p('cspell.json'),
-            p(`${rootFolderUri.fsPath}/cspell.json`),
+            p(`${clientUri.fsPath}/cspell.json`),
             p(`${clientUri.fsPath}/cspell.json`),
             p(`${serverUri.fsPath}/cspell.json`),
             p(`${rootFolderUri.fsPath}/cspell.json`),
@@ -325,7 +325,7 @@ describe('Validate workspace substitution resolver', () => {
                 }),
                 expect.objectContaining({
                     name: 'Workspace Dictionary 2',
-                    path: p(`${rootFolderUri.fsPath}/words3.txt`),
+                    path: p(`${clientUri.fsPath}/words3.txt`),
                 }),
             ])
         );

@@ -6,7 +6,6 @@ import { URI as Uri } from 'vscode-uri';
 import * as cspell from 'cspell-lib';
 import { Pattern } from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
-import { configToJson } from './configToJson';
 import * as os from 'os';
 
 jest.mock('vscode-languageserver/node');
@@ -185,12 +184,12 @@ describe('Validate DocumentSettings', () => {
     test.each`
         filename                           | expected
         ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceServer)]}
         ${sampleFiles.sampleSamplesReadme} | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}  | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
-    `('isExcludedBy $filename $expected', async ({ filename, expected }: IsExcludeByTest) => {
+        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot)]}
+    `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
         mockGetConfiguration.mockReturnValue([{}, {}]);
@@ -200,13 +199,6 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
-        // debug windows
-        if (expected.length !== result.length) {
-            const settings = await docSettings.getUriSettings(uri);
-
-            console.error(`file: "${Uri.parse(uri).fsPath}"`);
-            console.error(configToJson(settings, ['source']));
-        }
         expect(result).toEqual(expected);
     });
 

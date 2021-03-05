@@ -89,7 +89,7 @@ export class DocumentSettings {
 
     async isExcluded(uri: string): Promise<boolean> {
         const settings = await this.fetchSettingsForUri(uri);
-        return settings.excludeGlobMatcher.match(Uri.parse(uri).path);
+        return settings.excludeGlobMatcher.match(Uri.parse(uri).fsPath);
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
@@ -188,14 +188,14 @@ export class DocumentSettings {
         }
 
         const mergedSettings = mergeSettings(settingsToMerge[0], ...settingsToMerge.slice(1));
-        const { ignorePaths = [] } = mergedSettings;
 
         const enabledFiletypes = extractEnableFiletypes(mergedSettings);
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
         const fileSettings = calcOverrideSettings(spellSettings, fsPath);
+        const { ignorePaths = [] } = fileSettings;
 
         const globs = defaultExclude.concat(ignorePaths);
-        const root = Uri.parse(folder.uri).path;
+        const root = Uri.parse(folder.uri).fsPath;
         const globMatcher = new GlobMatcher(globs, root);
 
         const ext: ExtSettings = {
