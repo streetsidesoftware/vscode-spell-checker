@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {observer, useAsObservableSource} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import { DictionaryEntry } from '../../api/settings';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,10 +12,8 @@ import IconImportContacts  from '@material-ui/icons/ImportContacts';
 import { listStyles } from './primitives';
 
 export const SectionDictionaries = observer(_SectionDictionaries);
-function _SectionDictionaries(props: {dictionaries: DictionaryEntry[]; sectionTitle?: string}) {
-    const p = useAsObservableSource(props);
-    const dictionaries = p.dictionaries;
-    const title = p.sectionTitle || 'Dictionaries';
+function _SectionDictionaries({dictionaries, sectionTitle}: {dictionaries: DictionaryEntry[]; sectionTitle?: string}) {
+    const title = sectionTitle || 'Dictionaries';
     const useStyles = listStyles();
     return (
         <div>

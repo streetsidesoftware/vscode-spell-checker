@@ -14,8 +14,8 @@ import { Panel } from './Panel';
 
 
 @observer
-export class SettingsViewer extends React.Component<{ appState: AppState }, {}> {
-    render() {
+export class SettingsViewer extends React.Component<{ appState: AppState }> {
+    render(): JSX.Element {
         const appState = this.props.appState;
         const activeTabIndex = appState.activeTabIndex || 0;
         const renderTab = (tab: AppTab, index: number) =>
@@ -29,7 +29,7 @@ export class SettingsViewer extends React.Component<{ appState: AppState }, {}> 
                 }
             </Panel>;
 
-        const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+        const handleChange = (_event: React.ChangeEvent<JSX.Element>, newValue: number) => {
             this.activateTab(newValue);
         };
 
@@ -56,7 +56,7 @@ export class SettingsViewer extends React.Component<{ appState: AppState }, {}> 
         );
     }
 
-    activateTab = (activeIndex: number) => {
+    activateTab: (activeIndex: number) => void = (activeIndex: number) => {
         this.props.appState.actionActivateTabIndex(activeIndex);
     }
 }

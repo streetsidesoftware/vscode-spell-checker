@@ -16,8 +16,8 @@ import spellCheckIcon from '../images/SpellCheck.xs.png';
 const vsCodeApi = new VsCodeWebviewApi();
 
 @observer
-export class PanelAbout extends React.Component<{appState: AppState}, {}> {
-    render() {
+export class PanelAbout extends React.Component<{appState: AppState}> {
+    render(): JSX.Element {
         const appState = this.props.appState;
         const workspace = (appState.settings.workspace || {});
         const toggle = () => this.props.appState.actionSetDebugMode(!appState.debugMode);
@@ -61,7 +61,7 @@ export class PanelAbout extends React.Component<{appState: AppState}, {}> {
         );
      }
 
-     onReset = () => {
+     onReset: () => void = () => {
         vsCodeApi.postMessage({ command: 'RequestConfigurationMessage'});
     }
 }
