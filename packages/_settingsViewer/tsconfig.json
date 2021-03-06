@@ -1,23 +1,24 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es2019",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "declaration": true,
-        "jsx": "react",
-        "outDir": "../client/settingsViewer",
-        "experimentalDecorators": true,
-        "strictNullChecks": true
-    },
-    "include": [
-      "src/**/*"
-    ],
-    "exclude": [
-      "coverage",
-      "node_modules",
-      "dist",
-      "out"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es2019",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "declaration": true,
+    "jsx": "react",
+    "outDir": "../client/settingsViewer",
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "useDefineForClassFields": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "coverage",
+    "node_modules",
+    "dist",
+    "out"
+  ]
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {observable, toJS, computed} from 'mobx';
+import { observable, toJS, computed, makeObservable } from 'mobx';
 import {observer} from 'mobx-react';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
@@ -22,6 +22,11 @@ class AppState {
     sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder];
     @observable settings: Settings = this.sampleSettings[this.currentSample];
     @observable activeTab: string = 'About';
+
+    constructor() {
+        makeObservable(this);
+    }
+
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
         const uri = this.activeFolderUri;
