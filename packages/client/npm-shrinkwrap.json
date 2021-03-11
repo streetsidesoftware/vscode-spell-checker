@@ -1,6 +1,6 @@
 {
     "name": "code-spell-checker",
-    "version": "1.11.0-alpha.3",
+    "version": "2.0.0-alpha.0",
     "lockfileVersion": 1,
     "requires": true,
     "dependencies": {
@@ -5272,9 +5272,9 @@
             }
         },
         "ts-loader": {
-            "version": "8.0.17",
-            "resolved": "https://registry.npmjs.org/ts-loader/-/ts-loader-8.0.17.tgz",
-            "integrity": "sha512-OeVfSshx6ot/TCxRwpBHQ/4lRzfgyTkvi7ghDVrLXOHzTbSK413ROgu/xNqM72i3AFeAIJgQy78FwSMKmOW68w==",
+            "version": "8.0.18",
+            "resolved": "https://registry.npmjs.org/ts-loader/-/ts-loader-8.0.18.tgz",
+            "integrity": "sha512-hRZzkydPX30XkLaQwJTDcWDoxZHK6IrEMDQpNd7tgcakFruFkeUp/aY+9hBb7BUGb+ZWKI0jiOGMo0MckwzdDQ==",
             "dev": true,
             "requires": {
                 "chalk": "^4.1.0",
