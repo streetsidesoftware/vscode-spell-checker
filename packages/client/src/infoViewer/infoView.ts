@@ -409,7 +409,7 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
     );
     const languageSettings = config.languageSettings || [];
     languageSettings.forEach((setting) => {
-        const locales = normalizeLocales(setting.local);
+        const locales = normalizeLocales(setting.locale || setting.local);
         const languageIds = normalizeId(setting.languageId);
         const dicts = setting.dictionaries || [];
         dicts.forEach((dict) => {
