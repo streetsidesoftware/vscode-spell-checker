@@ -12,7 +12,7 @@ export function extractLocales(config: CSpellUserSettings = {}): string[] {
 
 export function extractLocalesFromLanguageSettings(langSettings: LanguageSetting[] = []): string[] {
     const locales = langSettings
-        .map((s) => s.local || '')
+        .map((s) => s.locale || s.local || '')
         .map(normalizeLocale)
         .join(',');
     return normalizeToLocales(locales);
@@ -25,7 +25,7 @@ export function extractDictionariesByLocale(config: CSpellUserSettings = {}): Ma
 export function extractDictionariesByLocaleLanguageSettings(langSettings: LanguageSetting[] = []): Map<string, string[]> {
     const mapOfDict = new Map<string, string[]>();
     langSettings
-        .map(({ local: locale, dictionaries = [] }) => ({ locale: normalizeLocale(locale), dictionaries }))
+        .map(({ local, locale, dictionaries = [] }) => ({ locale: normalizeLocale(locale || local), dictionaries }))
         .filter((s) => !!s.locale)
         .filter((s) => s.dictionaries.length > 0)
         .forEach((s) => {
