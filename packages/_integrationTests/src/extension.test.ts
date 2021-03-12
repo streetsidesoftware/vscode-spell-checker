@@ -25,6 +25,7 @@ const apiSignature: Api = {
     registerConfig: 'registerConfig',
     triggerGetSettings: 'triggerGetSettings',
     updateSettings: 'updateSettings',
+    cSpellClient: 'cSpellClient',
 };
 
 describe('Launch code spell extension', function () {
@@ -38,29 +39,37 @@ describe('Launch code spell extension', function () {
         expect(docContext).to.not.be.undefined;
         const extApi = extContext!.extApi;
         expect(extApi).to.not.be.undefined;
+        expect(extApi).to.equal(extContext?.extActivate);
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
         expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
     });
 
     it('Verifies that some spelling errors were found', async () => {
-        await activateExtension();
+        const ext = isDefined(await activateExtension());
         const uri = getDocUri('example.md');
         const diagsListener = waitForDiag(uri);
-        const docContextMaybe = await loadDocument(uri);
-        expect(docContextMaybe).to.not.be.undefined;
+        try {
+            const docContextMaybe = await loadDocument(uri);
+            expect(docContextMaybe).to.not.be.undefined;
+            const docContext = isDefined(docContextMaybe);
 
-        const check = diagsListener.diags.then(async (diags) => {
-            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
-            console.log(`Diag Messages: ${msgs}`);
-            // Sleep a bit so the UI can be viewed if wanted.
+            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
+
+            const { excludedBy, fileEnabled } = config;
+
+            console.log(`config: ${JSON.stringify({ excludedBy, fileEnabled })}`);
+
+            const diags = await Promise.race([diagsListener.diags, sleep(10000)]);
+
             await sleep(3000);
-            // cspell:ignore spellling
-            const msgs2 = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
-            console.log(`Diag Messages: ${msgs2}`);
-            expect(msgs2).contains('spellling');
-        });
+            const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
+            console.log(`Diag Messages: ${msgs}`);
 
-        return Promise.race([check, sleep(10000).then(() => Promise.reject('timeout'))]).finally(() => diagsListener.dispose());
+            // cspell:ignore spellling
+            expect(msgs).contains('spellling');
+        } finally {
+            diagsListener.dispose();
+        }
     });
 
     function waitForDiag(uri: vscode.Uri) {
@@ -91,3 +100,10 @@ describe('Launch code spell extension', function () {
         };
     }
 });
+
+function isDefined<T>(t: T | undefined): T {
+    if (t === undefined) {
+        throw new Error('undefined');
+    }
+    return t;
+}
