@@ -56,14 +56,20 @@ describe('Launch code spell extension', function () {
             const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
 
             const { excludedBy, fileEnabled } = config;
-
             console.log(`config: ${JSON.stringify({ excludedBy, fileEnabled })}`);
+
+            const cfg = config.docSettings || config.settings;
+            const { enabled, dictionaries, languageId } = cfg || {};
+
+            console.log(JSON.stringify({ enabled, dictionaries, languageId }));
 
             const diags = await Promise.race([diagsListener.diags, sleep(10000)]);
 
             await sleep(3000);
             const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
             console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
+
+            expect(fileEnabled).to.be.true;
 
             // cspell:ignore spellling
             expect(msgs).contains('spellling');
