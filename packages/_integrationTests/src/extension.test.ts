@@ -55,7 +55,9 @@ describe('Launch code spell extension', function () {
             // Sleep a bit so the UI can be viewed if wanted.
             await sleep(3000);
             // cspell:ignore spellling
-            expect(msgs).contains('spellling');
+            const msgs2 = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
+            console.log(`Diag Messages: ${msgs2}`);
+            expect(msgs2).contains('spellling');
         });
 
         return Promise.race([check, sleep(10000).then(() => Promise.reject('timeout'))]).finally(() => diagsListener.dispose());
@@ -63,6 +65,7 @@ describe('Launch code spell extension', function () {
 
     function waitForDiag(uri: vscode.Uri) {
         type R = vscode.Diagnostic[];
+        const diags: R = [];
         const source = 'cSpell';
         const uriStr = uri.toString();
         let resolver: (value: R | PromiseLike<R>) => void;
@@ -70,9 +73,11 @@ describe('Launch code spell extension', function () {
         dispose = vscode.languages.onDidChangeDiagnostics((event) => {
             const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
             if (matches.length) {
-                const diags = vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
-                cleanUp();
-                resolver && resolver(diags);
+                vscode.languages
+                    .getDiagnostics(uri)
+                    .filter((diag) => diag.source === source)
+                    .forEach((diag) => diags.push(diag));
+                resolver?.(diags);
             }
         });
 

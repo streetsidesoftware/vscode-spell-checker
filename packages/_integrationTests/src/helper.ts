@@ -6,6 +6,8 @@ console.log(`Current directory: ${__dirname}`);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extensionPackage = require('../../client/package.json');
 
+const fixturesPath = path.resolve(__dirname, '../testFixtures');
+
 export interface DocumentContext {
     doc: vscode.TextDocument;
     editor: vscode.TextEditor;
@@ -57,11 +59,11 @@ export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext 
 }
 
 export async function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const getDocPath = (p: string) => {
-    return path.resolve(__dirname, '../testFixtures', p);
+    return path.resolve(fixturesPath, p);
 };
 export const getDocUri = (p: string) => {
     return vscode.Uri.file(getDocPath(p));
@@ -69,11 +71,8 @@ export const getDocUri = (p: string) => {
 
 export async function setTestContent(context: DocumentContext, content: string): Promise<boolean> {
     const { doc, editor } = context;
-    const all = new vscode.Range(
-        doc.positionAt(0),
-        doc.positionAt(doc.getText().length)
-    );
-    return editor.edit(eb => eb.replace(all, content));
+    const all = new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
+    return editor.edit((eb) => eb.replace(all, content));
 }
 
 function getExtensionId() {
