@@ -1,7 +1,7 @@
 // cSpell Settings
 {
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
-    // Version of the setting file.  Always 0.1
+    // Version of the setting file.  Always 0.1 or 0.2
     "version": "0.2",
     // language - current active spelling language
     "language": "en",
@@ -50,5 +50,8 @@
             "filename": "**/documentSettings.test.ts",
             "language": "en-gb"
         }
+    ],
+    "import": [
+        "./cspell-ext.json"
     ]
 }

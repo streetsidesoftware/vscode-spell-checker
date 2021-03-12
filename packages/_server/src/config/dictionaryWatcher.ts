@@ -4,13 +4,10 @@ import { Disposable } from 'vscode-languageserver/node';
 
 export type Listener = (eventType?: string, filename?: string) => void;
 
-export class DictionaryWatcher implements Disposable {
-    private fileWatcher = new FileWatcher();
-
-    readonly dispose = (): void => {
-        this.clear();
-        this.fileWatcher.dispose();
-    };
+export class DictionaryWatcher extends FileWatcher implements Disposable {
+    constructor() {
+        super();
+    }
 
     processSettings(finalizedSettings: CSpellUserSettings): void {
         // Only watch used dictionaries.
@@ -18,14 +15,6 @@ export class DictionaryWatcher implements Disposable {
         finalizedSettings.dictionaries
             ?.map((name) => defs.get(name))
             .filter((s): s is string => !!s)
-            .forEach((file) => this.fileWatcher.addFile(file));
-    }
-
-    clear(): void {
-        this.fileWatcher.clear();
-    }
-
-    listen(fn: Listener): Disposable {
-        return this.fileWatcher.listen(fn);
+            .forEach((file) => this.addFile(file));
     }
 }

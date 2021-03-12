@@ -7,10 +7,14 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
-			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}"
+			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
+			"outFiles": [
+				"${workspaceRoot}/dist/**/*.js"
+			],
 			"smartStep": true,
 			"skipFiles": [
 				"<node_internals>/**"
@@ -22,10 +26,15 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
-			"args": ["--extensionDevelopmentPath=${workspaceRoot}", "${workspaceRoot}/README.md" ],
+			"args": [
+				"--extensionDevelopmentPath=${workspaceRoot}",
+				"${workspaceRoot}/README.md"
+			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outFiles": [ "${workspaceRoot}/dist/**/*.js" ],
+			"outFiles": [
+				"${workspaceRoot}/dist/**/*.js"
+			],
 			"skipFiles": [
 				"<node_internals>/**"
 			],
@@ -42,35 +51,42 @@
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
-			"outFiles": [ "${workspaceRoot}/../_integrationTests/out/**/*.js" ],
+			"outFiles": [
+				"${workspaceRoot}/../_integrationTests/out/**/*.js"
+			],
 			"preLaunchTask": "build-integration-test"
 		},
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Client: Jest All",
-            "program": "${workspaceFolder}/node_modules/.bin/jest",
-            "args": ["--runInBand"],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
-            "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            }
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Client: Jest current-file",
-            "program": "${workspaceFolder}/node_modules/.bin/jest",
-            "args": ["--runInBand", "${file}"],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
-            "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            }
-        }
-
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Client: Jest All",
+			"program": "${workspaceFolder}/node_modules/.bin/jest",
+			"args": [
+				"--runInBand"
+			],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"disableOptimisticBPs": true,
+			"windows": {
+				"program": "${workspaceFolder}/node_modules/jest/bin/jest",
+			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Client: Jest current-file",
+			"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
+			"cwd": "${fileDirname}",
+			"args": [
+				"--runInBand",
+				"${fileBasename}"
+			],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"disableOptimisticBPs": true,
+			"windows": {
+				"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
+			}
+		}
 	]
 }
