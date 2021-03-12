@@ -89,6 +89,7 @@ describe('Launch code spell extension', function () {
             console.log(JSON.stringify(event));
             const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
             if (matches.length) {
+                console.log(JSON.stringify(vscode.languages.getDiagnostics()));
                 vscode.languages
                     .getDiagnostics(uri)
                     .map((d) => (console.log(JSON.stringify(d)), d))
