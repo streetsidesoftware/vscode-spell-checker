@@ -63,7 +63,7 @@ describe('Launch code spell extension', function () {
 
             await sleep(3000);
             const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
-            console.log(`Diag Messages: ${msgs}`);
+            console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
 
             // cspell:ignore spellling
             expect(msgs).contains('spellling');
@@ -84,6 +84,7 @@ describe('Launch code spell extension', function () {
             if (matches.length) {
                 vscode.languages
                     .getDiagnostics(uri)
+                    .map((d) => (console.log(JSON.stringify(d)), d))
                     .filter((diag) => diag.source === source)
                     .forEach((diag) => diags.push(diag));
                 resolver?.(diags);
