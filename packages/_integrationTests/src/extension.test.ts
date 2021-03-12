@@ -86,6 +86,7 @@ describe('Launch code spell extension', function () {
         let resolver: (value: R | PromiseLike<R>) => void;
         let dispose: vscode.Disposable | undefined;
         dispose = vscode.languages.onDidChangeDiagnostics((event) => {
+            console.log(JSON.stringify(event));
             const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
             if (matches.length) {
                 vscode.languages
