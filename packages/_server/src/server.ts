@@ -398,7 +398,7 @@ export function run(): void {
                     return { uri, diagnostics: [] };
                 }
                 const settingsToUse = await getSettingsToUseForDocument(doc);
-                configWatcher.processSettings(settingsToUse);
+                // configWatcher.processSettings(settingsToUse);
                 if (settingsToUse.enabled) {
                     logInfo('Validate File', uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);
