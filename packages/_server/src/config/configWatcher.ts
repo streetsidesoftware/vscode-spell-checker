@@ -9,11 +9,14 @@ export class ConfigWatcher extends FileWatcher implements Disposable {
     }
 
     processSettings(finalizedSettings: CSpellUserSettings): void {
-        const sourceConfigs = getSources(finalizedSettings);
+        try {
+            const sourceConfigs = getSources(finalizedSettings);
 
-        const sources = sourceConfigs.map((fileSettings) => fileSettings.source).filter(isDefined);
-        const filenames = sources.map((s) => s.filename).filter(isDefined);
-        filenames.forEach((file) => this.addFile(file));
+            const sources = sourceConfigs.map((fileSettings) => fileSettings.source).filter(isDefined);
+            const filenames = sources.map((s) => s.filename).filter(isDefined);
+            filenames.forEach((file) => this.addFile(file));
+        } finally {
+        }
     }
 }
 
