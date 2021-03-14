@@ -144,8 +144,7 @@ export function run(): void {
 
     function onConfigFileChange(eventType?: string, filename?: string) {
         logInfo(`Config File Change ${eventType}`, filename);
-        triggerUpdateConfig.next(undefined);
-        updateLogLevel();
+        handleConfigChange();
     }
 
     function onConfigChange(_change?: OnChangeParam) {
@@ -191,7 +190,7 @@ export function run(): void {
     connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
     connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
-    disposables.push(configWatcher.listen(onConfigFileChange));
+    // disposables.push(configWatcher.listen(onConfigFileChange));
 
     async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         const { uri, languageId } = params;
