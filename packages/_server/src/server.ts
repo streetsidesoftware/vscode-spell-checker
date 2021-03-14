@@ -142,10 +142,10 @@ export function run(): void {
         triggerUpdateConfig.next(undefined);
     }
 
-    function onConfigFileChange(eventType?: string, filename?: string) {
-        logInfo(`Config File Change ${eventType}`, filename);
-        handleConfigChange();
-    }
+    // function _onConfigFileChange(eventType?: string, filename?: string) {
+    //     logInfo(`Config File Change ${eventType}`, filename);
+    //     handleConfigChange();
+    // }
 
     function onConfigChange(_change?: OnChangeParam) {
         logInfo('Configuration Change');
