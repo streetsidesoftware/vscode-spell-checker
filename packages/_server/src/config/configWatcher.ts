@@ -12,9 +12,13 @@ export class ConfigWatcher extends FileWatcher implements Disposable {
         try {
             const sourceConfigs = getSources(finalizedSettings);
 
-            const sources = sourceConfigs.map((fileSettings) => fileSettings.source).filter(isDefined);
+            const sources = sourceConfigs
+                .filter(isDefined)
+                .map((fileSettings) => fileSettings.source)
+                .filter(isDefined);
             const filenames = sources.map((s) => s.filename).filter(isDefined);
-            filenames.forEach((file) => this.addFile(file));
+            filenames.forEach((file) => console.log(file));
+            // filenames.forEach((file) => this.addFile(file));
         } finally {
         }
     }
