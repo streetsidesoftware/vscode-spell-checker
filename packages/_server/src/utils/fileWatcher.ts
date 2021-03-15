@@ -1,6 +1,7 @@
 import watch from 'node-watch';
-import { FSWatcher, accessSync, constants } from 'fs';
+import { FSWatcher } from 'fs';
 import { Disposable } from 'vscode-languageserver/node';
+import { logError } from './log';
 
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;
@@ -30,7 +31,7 @@ export class FileWatcher implements Disposable {
     /**
      * Add a listener
      * @param fn - function to be called when a file has changed.
-     * @returns
+     * @returns disposable
      */
     listen(fn: Listener): Disposable {
         this.listeners.add(fn);
@@ -44,11 +45,18 @@ export class FileWatcher implements Disposable {
     /**
      * Add a file to watch
      * @param filename - absolute path to file to be watched
+     * @returns true if it is able to watch the file.
      */
-    addFile(filename: string): void {
-        if (!this.watchedFile.has(filename) && canAccess(filename)) {
-            this.watchedFile.set(filename, watch(filename, { persistent: false }, this.trigger));
+    addFile(filename: string): boolean {
+        if (!this.watchedFile.has(filename)) {
+            try {
+                this.watchedFile.set(filename, watch(filename, { persistent: false }, this.trigger));
+            } catch (e) {
+                logError(e?.toString());
+                return false;
+            }
         }
+        return true;
     }
 
     /**
@@ -82,13 +90,4 @@ export class FileWatcher implements Disposable {
             listener(eventType, filename);
         }
     }
-}
-
-function canAccess(path: string): boolean {
-    try {
-        accessSync(path, constants.R_OK);
-    } catch (e) {
-        return false;
-    }
-    return true;
 }
