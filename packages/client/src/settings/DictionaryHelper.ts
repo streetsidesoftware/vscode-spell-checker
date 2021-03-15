@@ -19,7 +19,7 @@ interface CustomDictionaryWithPath {
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
 
-    public async addWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined) {
+    public async addWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
         const actualTarget = resolveTarget(target, uri);
         const customDicts = await this.getCustomDictionariesForTargetFromConfig(actualTarget);
 
@@ -43,7 +43,7 @@ export class DictionaryHelper {
         const uri = config.extractTargetUri(actualTarget);
         await addWordToSettings(actualTarget, word);
         const paths = await determineSettingsPath(actualTarget, uri);
-        await Promise.all(paths.map(path => addWordToSettingsAndUpdate(path, word)));
+        await Promise.all(paths.map((path) => addWordToSettingsAndUpdate(path, word)));
     }
 
     private async getCustomDictionariesForTargetFromConfig(target: config.ConfigTarget) {
@@ -64,27 +64,29 @@ export class DictionaryHelper {
             return docConfig?.customUserDictionaries || [];
         }
 
-        const dictionaries = new Map((docConfig?.dictionaryDefinitions || []).map(d => [d.name, d]));
+        const dictionaries = new Map((docConfig?.dictionaryDefinitions || []).map((d) => [d.name, d]));
         const custom = extractDicts()
-            .map(d => typeof d === 'string' ? d : d.addWords ? d.name : undefined)
+            .map((d) => (typeof d === 'string' ? d : d.addWords ? d.name : undefined))
             .filter(isDefined)
-            .map(name => dictionaries.get(name))
+            .map((name) => dictionaries.get(name))
             .filter(isDictionaryWithPath);
         return custom;
     }
 
     async addWordsToCustomDictionaries(words: string[], dicts: CustomDictionaryWithPath[]): Promise<void> {
         const process = dicts
-            .map(dict => this.addWordsToCustomDictionary(words, dict))
-            .map(p => p.catch((e: Error) => vscode.window.showWarningMessage(e.message)));
+            .map((dict) => this.addWordsToCustomDictionary(words, dict))
+            .map((p) => p.catch((e: Error) => vscode.window.showWarningMessage(e.message)));
         await Promise.all(process);
     }
 
     async addWordsToCustomDictionary(words: string[], dict: CustomDictionaryWithPath): Promise<void> {
         try {
             const data = await fs.readFile(dict.path, defaultEncoding).catch(() => '');
-            const lines = unique(data.split(/\r?\n/g).concat(words)).filter(a => !!a).sort();
-            return fs.writeFile(dict.path, lines.join('\n')+'\n');
+            const lines = unique(data.split(/\r?\n/g).concat(words))
+                .filter((a) => !!a)
+                .sort();
+            return fs.writeFile(dict.path, lines.join('\n') + '\n');
         } catch (e) {
             return Promise.reject(new Error(`Failed to add words to "${dict.name}" [${dict.path}]`));
         }

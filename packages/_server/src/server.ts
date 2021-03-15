@@ -37,6 +37,7 @@ import {
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from './utils/log';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
+import { ConfigWatcher } from './config/configWatcher';
 
 log('Starting Spell Checker Server');
 
@@ -85,6 +86,9 @@ export function run(): void {
     const disposables: Disposable[] = [];
     const dictionaryWatcher = new DictionaryWatcher();
     disposables.push(dictionaryWatcher);
+
+    const configWatcher = new ConfigWatcher();
+    disposables.push(configWatcher);
 
     const requestMethodApi: RequestMethodApi = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
@@ -138,8 +142,17 @@ export function run(): void {
         triggerUpdateConfig.next(undefined);
     }
 
-    function onConfigChange(_change: OnChangeParam) {
+    function onConfigFileChange(eventType?: string, filename?: string) {
+        logInfo(`Config File Change ${eventType}`, filename);
+        handleConfigChange();
+    }
+
+    function onConfigChange(_change?: OnChangeParam) {
         logInfo('Configuration Change');
+        handleConfigChange();
+    }
+
+    function handleConfigChange() {
         triggerUpdateConfig.next(undefined);
         updateLogLevel();
     }
@@ -177,6 +190,7 @@ export function run(): void {
     connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
     connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
+    disposables.push(configWatcher.listen(onConfigFileChange));
 
     async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         const { uri, languageId } = params;
@@ -383,6 +397,7 @@ export function run(): void {
                     return { uri, diagnostics: [] };
                 }
                 const settingsToUse = await getSettingsToUseForDocument(doc);
+                configWatcher.processSettings(settingsToUse);
                 if (settingsToUse.enabled) {
                     logInfo('Validate File', uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);

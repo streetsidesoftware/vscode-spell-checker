@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { ExtensionApi } from './ExtensionApi';
 
 console.log(`Current directory: ${__dirname}`);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extensionPackage = require('../../client/package.json');
+
+const fixturesPath = path.resolve(__dirname, '../testFixtures');
 
 export interface DocumentContext {
     doc: vscode.TextDocument;
@@ -12,9 +15,9 @@ export interface DocumentContext {
 }
 
 export interface ExtensionActivation {
-    ext: vscode.Extension<any>;
-    extActivate: any;
-    extApi: any;
+    ext: vscode.Extension<ExtensionApi>;
+    extActivate: ExtensionApi;
+    extApi: ExtensionApi;
 }
 
 /**
@@ -23,7 +26,7 @@ export interface ExtensionActivation {
 export async function activateExtension(): Promise<ExtensionActivation | undefined> {
     const extensionId = getExtensionId();
     console.log(`Activate: ${extensionId}`);
-    const ext = vscode.extensions.getExtension(extensionId)!;
+    const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId)!;
     try {
         const extActivate = await ext.activate();
         const extApi = vscode.extensions.getExtension(extensionId)!.exports;
@@ -56,12 +59,12 @@ export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext 
     }
 }
 
-export async function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+export async function sleep(ms: number): Promise<undefined> {
+    return new Promise((resolve) => setTimeout(() => resolve(undefined), ms));
 }
 
 export const getDocPath = (p: string) => {
-    return path.resolve(__dirname, '../testFixtures', p);
+    return path.resolve(fixturesPath, p);
 };
 export const getDocUri = (p: string) => {
     return vscode.Uri.file(getDocPath(p));
@@ -69,11 +72,8 @@ export const getDocUri = (p: string) => {
 
 export async function setTestContent(context: DocumentContext, content: string): Promise<boolean> {
     const { doc, editor } = context;
-    const all = new vscode.Range(
-        doc.positionAt(0),
-        doc.positionAt(doc.getText().length)
-    );
-    return editor.edit(eb => eb.replace(all, content));
+    const all = new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
+    return editor.edit((eb) => eb.replace(all, content));
 }
 
 function getExtensionId() {

@@ -32,12 +32,19 @@ describe('Validate Dictionary Watcher', () => {
         const d = dw.listen(listener);
         dw.processSettings(sampleConfig);
 
+        expect(dw.watchedFiles).toEqual([dictA, dictB]);
+
         mockWatch.__trigger('update', dictB);
         d.dispose();
         mockWatch.__trigger('update', dictB);
 
+        // Just because a listener stopped, doesn't mean the files are not watched.
+        expect(dw.watchedFiles).toEqual([dictA, dictB]);
+
         const dispose = dw.dispose;
         dispose();
+
+        expect(dw.watchedFiles).toEqual([]);
 
         expect(mockWatch).toHaveBeenNthCalledWith(1, dictA, expect.any(Object), expect.any(Function));
         expect(mockWatch).toHaveBeenNthCalledWith(2, dictB, expect.any(Object), expect.any(Function));

@@ -199,6 +199,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableLocale: settings.disableLocale,
         updateSettings: () => false,
         cSpellClient: () => client,
+        getConfigurationForDocument: (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc),
 
         // Legacy
         enableLocal: settings.enableLocale,

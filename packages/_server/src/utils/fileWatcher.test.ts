@@ -21,6 +21,8 @@ describe('Validate FileWatcher', () => {
         // Add the same file twice
         watcher.addFile('file2');
 
+        expect(watcher.watchedFiles).toEqual(['file1', 'file2', 'file3']);
+
         mockWatch.__trigger('update', 'file1');
         mockWatch.__trigger('update', 'file2');
         watcher.listen(listener2);
@@ -30,6 +32,8 @@ describe('Validate FileWatcher', () => {
         watcher.clearFile('file1');
         mockWatch.__trigger('update', 'file1');
 
+        expect(watcher.watchedFiles).toEqual(['file2', 'file3']);
+
         // just for fun
         watcher.clearFile('file1');
 
@@ -37,6 +41,8 @@ describe('Validate FileWatcher', () => {
         // trigger again to see if the listener was called.
         mockWatch.__trigger('update', 'file3');
         watcher.dispose();
+
+        expect(watcher.watchedFiles).toEqual([]);
 
         expect(mockWatch).toHaveBeenNthCalledWith(1, 'file1', expect.objectContaining({ persistent: false }), expect.any(Function));
         expect(mockWatch).toHaveBeenNthCalledWith(2, 'file2', expect.objectContaining({ persistent: false }), expect.any(Function));

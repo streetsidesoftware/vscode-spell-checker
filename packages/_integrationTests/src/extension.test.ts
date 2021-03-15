@@ -25,6 +25,7 @@ const apiSignature: Api = {
     registerConfig: 'registerConfig',
     triggerGetSettings: 'triggerGetSettings',
     updateSettings: 'updateSettings',
+    cSpellClient: 'cSpellClient',
 };
 
 describe('Launch code spell extension', function () {
@@ -38,46 +39,71 @@ describe('Launch code spell extension', function () {
         expect(docContext).to.not.be.undefined;
         const extApi = extContext!.extApi;
         expect(extApi).to.not.be.undefined;
+        expect(extApi).to.equal(extContext?.extActivate);
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
         expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
     });
 
     it('Verifies that some spelling errors were found', async () => {
-        await activateExtension();
+        const ext = isDefined(await activateExtension());
         const uri = getDocUri('example.md');
         const diagsListener = waitForDiag(uri);
-        const docContextMaybe = await loadDocument(uri);
-        expect(docContextMaybe).to.not.be.undefined;
+        try {
+            const docContextMaybe = await loadDocument(uri);
+            expect(docContextMaybe).to.not.be.undefined;
+            const docContext = isDefined(docContextMaybe);
 
-        const check = diagsListener.diags.then(async (diags) => {
-            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ');
-            // Sleep a bit so the UI can be viewed if wanted.
+            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
+
+            const { excludedBy, fileEnabled } = config;
+            console.log(`config: ${JSON.stringify({ excludedBy, fileEnabled })}`);
+
+            const cfg = config.docSettings || config.settings;
+            const { enabled, dictionaries, languageId } = cfg || {};
+
+            console.log(JSON.stringify({ enabled, dictionaries, languageId }));
+
+            const diags = await Promise.race([diagsListener.diags, sleep(10000)]);
+
             await sleep(3000);
+            const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
+            console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
+
+            console.log('getDiagnostics:');
+            console.log(JSON.stringify(vscode.languages.getDiagnostics()));
+
+            expect(fileEnabled).to.be.true;
+
             // cspell:ignore spellling
             expect(msgs).contains('spellling');
-            console.log(`Diag Messages: ${msgs}`);
-        });
-
-        return Promise.race([check, sleep(10000).then(() => Promise.reject('timeout'))]).finally(() => diagsListener.dispose());
+        } finally {
+            diagsListener.dispose();
+        }
     });
 
     function waitForDiag(uri: vscode.Uri) {
         type R = vscode.Diagnostic[];
+        const diags: R = [];
         const source = 'cSpell';
         const uriStr = uri.toString();
         let resolver: (value: R | PromiseLike<R>) => void;
         let dispose: vscode.Disposable | undefined;
         dispose = vscode.languages.onDidChangeDiagnostics((event) => {
+            console.log(JSON.stringify(event));
             const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
             if (matches.length) {
-                const diags = vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
-                cleanUp();
-                resolver && resolver(diags);
+                console.log(JSON.stringify(vscode.languages.getDiagnostics()));
+                vscode.languages
+                    .getDiagnostics(uri)
+                    .map((d) => (console.log(JSON.stringify(d)), d))
+                    .filter((diag) => diag.source === source)
+                    .forEach((diag) => diags.push(diag));
+                resolver?.(diags);
             }
         });
 
         function cleanUp() {
-            dispose && dispose.dispose();
+            dispose?.dispose();
             dispose = undefined;
         }
         return {
@@ -86,3 +112,10 @@ describe('Launch code spell extension', function () {
         };
     }
 });
+
+function isDefined<T>(t: T | undefined): T {
+    if (t === undefined) {
+        throw new Error('undefined');
+    }
+    return t;
+}
