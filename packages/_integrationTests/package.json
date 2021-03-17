@@ -12,7 +12,7 @@
     "build": "tsc -p .",
     "clean": "rimraf out temp",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../client CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner"
+    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner"
   },
   "author": "",
   "license": "MIT",
@@ -24,6 +24,7 @@
     "@types/node": "^12.20.6",
     "@types/vscode": "^1.54.0",
     "chai": "^4.3.4",
+    "code-spell-checker": "2.0.0-alpha.1",
     "cross-env": "^7.0.3",
     "glob": "^7.1.6",
     "mocha": "^8.3.2",

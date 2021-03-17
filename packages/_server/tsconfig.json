@@ -18,11 +18,10 @@
 		"strictNullChecks": true,
 		"strictFunctionTypes": true,
 		"noUnusedLocals": true,
-		"outDir": "../client/server",
+		"outDir": "./dist",
 		"forceConsistentCasingInFileNames": true
 	},
 	"include": [
-		"src",
-		"test"
+		"src"
 	]
 }

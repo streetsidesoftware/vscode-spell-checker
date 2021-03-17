@@ -16,6 +16,7 @@ module.exports = {
     '**/*.d.ts',
     '**/node_modules/**',
     'packages/client/server/**',
+    'packages/*/dist/**',
   ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs

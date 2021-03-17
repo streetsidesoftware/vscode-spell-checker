@@ -42,7 +42,7 @@ import { pipe, map, defaultTo } from '../util/pipe';
 import { commonPrefix } from '../util/commonPrefix';
 import * as Kefir from 'kefir';
 
-const viewerPath = path.join('settingsViewer', 'webapp');
+const viewerPath = 'packages/client/settingsViewer/webapp';
 const title = 'Spell Checker Preferences';
 
 type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;

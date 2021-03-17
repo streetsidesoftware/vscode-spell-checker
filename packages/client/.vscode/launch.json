@@ -55,38 +55,6 @@
 				"${workspaceRoot}/../_integrationTests/out/**/*.js"
 			],
 			"preLaunchTask": "build-integration-test"
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Client: Jest All",
-			"program": "${workspaceFolder}/node_modules/.bin/jest",
-			"args": [
-				"--runInBand"
-			],
-			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"disableOptimisticBPs": true,
-			"windows": {
-				"program": "${workspaceFolder}/node_modules/jest/bin/jest",
-			}
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Client: Jest current-file",
-			"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
-			"cwd": "${fileDirname}",
-			"args": [
-				"--runInBand",
-				"${fileBasename}"
-			],
-			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"disableOptimisticBPs": true,
-			"windows": {
-				"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
-			}
 		}
 	]
 }
