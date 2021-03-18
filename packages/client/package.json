@@ -2,7 +2,6 @@
     "name": "code-spell-checker",
     "description": "Spelling checker for source code",
     "displayName": "Code Spell Checker",
-    "icon": "images/SpellCheck.png",
     "author": "Jason Dent",
     "license": "MIT",
     "version": "2.0.0-alpha.1",
@@ -19,35 +18,15 @@
     "engines": {
         "vscode": "^1.54.0"
     },
-    "extensionKind": [
-        "workspace"
-    ],
-    "enableProposedApi": false,
-    "categories": [
-        "Linters",
-        "Other"
-    ],
-    "keywords": [
-        "spell",
-        "checker",
-        "spellchecker",
-        "multi-root ready"
-    ],
-    "qna": "marketplace",
-    "activationEvents": [
-        "*"
-    ],
     "main": "./dist/extension.js",
     "scripts": {
         "clean": "rimraf out",
         "clean-build": "npm run clean && npm run build",
         "build": "tsc && webpack --mode none",
-        "build-production": "webpack --mode production",
+        "build-production": "npm run clean && webpack --mode production",
         "build-integration-test": "npm run build && cd ../_integrationTests && npm install && npm run build",
-        "test-vsce-build": "npx vsce package -o ./temp",
         "lint": "eslint 'src/**'",
-        "vscode:prepublish": "npm run clean && npm run build-production",
-        "package-extension": "npx vsce package -o ../../build",
+        "vscode:prepublish": "npm run build-production",
         "version": "npm run package-extension",
         "watch": "npm run build -- --watch",
         "test": "jest",

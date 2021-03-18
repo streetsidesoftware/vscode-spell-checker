@@ -209,16 +209,20 @@
       {
         "fileMatch": [
           ".cspell.json",
-          "cspell.json",
-          "cspell-ext.json",
+          ".cspell.jsonc",
           "cspell-default.json",
+          "cspell-ext.json",
           "cspell-import.json",
           "cspell-imports.json",
           "cspell-include.json",
           "cspell-includes.json",
+          "cspell.config.json",
+          "cspell.config.jsonc",
+          "cspell.json",
+          "cspell.jsonc",
           "cSpell.json"
         ],
-        "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.4/cspell.schema.json"
+        "url": "https://raw.githubusercontent.com/streetsidesoftware/cspell/v5.3.7/cspell.schema.json"
       }
     ],
     "configuration": {
@@ -681,11 +685,14 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "lerna run clean && lerna clean",
+    "build-production": "lerna run build-production",
     "build-release": "npm run build && npm run package-extension",
     "lerna-prerelease": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-prerelease",
     "lerna-release": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-graduate",
-    "package-extension": "lerna run package-extension",
-    "test-vsce-build": "lerna run test-vsce-build",
+    "package-extension": "npx vsce package -o ./build",
+    "test-vsce-build": "npx vsce package -o ./temp",
+    "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
+    "vscode:prepublish": "npm run build-production && npm run remove-test-files",
     "lint": "lerna run lint",
     "test-client-integration": "cd packages/_integrationTests && npm test",
     "test": "lerna run --ignore \"*integration*\" test",
