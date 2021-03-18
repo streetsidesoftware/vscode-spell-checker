@@ -7,7 +7,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 ## Support Further Development
 
 [![PayPal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AE7RWCXNQ2ZYC&item_name=Support+VS+Code+Spell+Checker&currency_code=EUR&source=url)
-[![Patreon](https://github.com/streetsidesoftware/cspell/raw/master/resources/100px-Green_Patreon_Donate_Shield_Badge.png)](https://www.patreon.com/streetsidesoftware)
+[![Patreon](https://github.com/streetsidesoftware/vscode-spell-checker/raw/master/resources/100px-Green_Patreon_Donate_Shield_Badge.png)](https://www.patreon.com/streetsidesoftware)
 
 ## Functionality
 
