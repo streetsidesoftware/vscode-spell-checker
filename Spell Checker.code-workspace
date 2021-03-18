@@ -20,8 +20,49 @@
 		"cSpell.import": [
 			"${workspaceFolder:vscode-spell-checker}/cSpell.json"
 		],
-		"cSpell.customWorkspaceDictionaries": ["cspell-words"],
+		"cSpell.customWorkspaceDictionaries": [
+			"cspell-words"
+		],
 		"typescript.tsdk": "vscode-spell-checker/node_modules/typescript/lib",
-		"svg.preview.background": "black"
+		"svg.preview.background": "black",
+		"gitlens.outputLevel": "debug"
+	},
+	"launch": {
+		"configurations": [
+			{
+				"type": "node",
+				"request": "launch",
+				"name": "Test: Jest current-file",
+				"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
+				"cwd": "${fileDirname}",
+				"args": [
+					"--runInBand",
+					"${fileBasename}"
+				],
+				"console": "integratedTerminal",
+				"internalConsoleOptions": "neverOpen",
+				"disableOptimisticBPs": true,
+				"windows": {
+					"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
+				}
+			},
+			{
+				"type": "node",
+				"request": "launch",
+				"name": "Test: Jest Entire Folder",
+				"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
+				"cwd": "${fileWorkspaceFolder}",
+				"args": [
+					"--runInBand"
+				],
+				"console": "integratedTerminal",
+				"internalConsoleOptions": "neverOpen",
+				"disableOptimisticBPs": true,
+				"windows": {
+					"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
+				}
+			}
+		],
+		"compounds": []
 	}
 }

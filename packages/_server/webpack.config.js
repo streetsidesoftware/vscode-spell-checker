@@ -32,7 +32,7 @@ module.exports = {
     /^@cspell\/cspell-bundled-dicts/,
   ],
   output: {
-    path: path.resolve(__dirname, '../client/server'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'commonjs2',
   },

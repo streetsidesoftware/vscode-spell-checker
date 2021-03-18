@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -p . && npm run webpack",
     "clean": "rimraf ../client/settingsViewer ./out",
+    "build-production": "npm run clean && npm run build",
     "coverage": "jest --coverage src",
     "lint": "eslint 'src/**/*.ts'",
     "start:dev": "webpack-dev-server --config webpack.dev.js",

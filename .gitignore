@@ -36,5 +36,8 @@ node_modules
 
 **/.vscode-test
 
+/temp
+packages/*/{dist,out,temp}/**
+
 !**/server/.vscode
 !**/client/.vscode
