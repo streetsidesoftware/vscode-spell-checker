@@ -1,14 +1,14 @@
 trigger:
-- master
+  - master
 
 strategy:
   matrix:
     linux:
-      imageName: 'ubuntu-16.04'
+      imageName: "ubuntu-16.04"
     mac:
-      imageName: 'macos-latest'
+      imageName: "macos-latest"
     windows:
-      imageName: 'vs2017-win2016'
+      imageName: "vs2017-win2016"
 
 pool:
   vmImage: $(imageName)
@@ -16,8 +16,8 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.x'
-    displayName: 'Install Node.js'
+      versionSpec: "12.x"
+    displayName: "Install Node.js"
 
   - bash: |
       /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
@@ -25,14 +25,12 @@ steps:
     displayName: Start xvfb
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
-  - bash: npm install
+  - bash: yarn install
     displayName: Install
-  - bash: npm test
+  - bash: yarn test
     displayName: Run Tests
-  - bash: npm run test-client-integration
+  - bash: yarn run test-client-integration
     displayName: Integration Tests
     env:
-      DISPLAY: ':99.0'
-
-
+      DISPLAY: ":99.0"
 # cspell:ignore macos xvfb

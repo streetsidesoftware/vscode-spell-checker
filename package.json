@@ -680,31 +680,40 @@
       }
     }
   },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "integration-tests",
+      "integration-tests/**",
+      "**/@types/jest"
+    ]
+  },
   "scripts": {
-    "postinstall": "npm run bootstrap && npm run build",
-    "bootstrap": "lerna bootstrap",
-    "build": "lerna run build",
-    "clean": "lerna run clean && lerna clean",
-    "build-production": "lerna run build-production",
-    "build-release": "npm run build && npm run package-extension",
-    "lerna-prerelease": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-prerelease",
-    "lerna-release": "lerna run test-vsce-build && lerna version --conventional-commits --conventional-graduate",
+    "postinstall": "yarn run build",
+    "build": "yarn workspaces run build",
+    "clean": "yarn workspaces run clean && rimraf \"packages/*/node_modules\"",
+    "build-production": "yarn workspaces run build-production",
+    "build-release": "yarn run build && yarn run package-extension",
+    "lerna-prerelease": "yarn workspaces run test-vsce-build && lerna version --conventional-commits --conventional-prerelease",
+    "lerna-release": "yarn workspaces run test-vsce-build && lerna version --conventional-commits --conventional-graduate",
     "package-extension": "npx vsce package -o ./build",
     "test-vsce-build": "npx vsce package -o ./temp",
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
-    "vscode:prepublish": "npm run build-production && npm run remove-test-files",
-    "lint": "lerna run lint",
-    "test-client-integration": "cd packages/_integrationTests && npm test",
-    "test": "lerna run --ignore \"*integration*\" test",
-    "update-packages": "lerna exec \"npm update -S && rm -rf node_modules package-lock.json && npm i\" && lerna bootstrap --no-ci"
+    "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
+    "lint": "yarn workspaces run lint",
+    "test-client-integration": "yarn workspace integration-tests test",
+    "test": "yarn workspace server test && yarn workspace settings-webview test && yarn workspace client test",
+    "update-packages": "yarn upgrade"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.22.0",
-    "lerna": "^4.0.0",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.2.3"
   }
 }
