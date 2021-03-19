@@ -25,3 +25,4 @@ jobs:
         if: runner.os == 'Linux'
       - run: yarn run test-client-integration
         if: runner.os != 'Linux'
+# cspell:ignore xvfb
