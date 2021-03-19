@@ -1,8 +1,0 @@
-{
-    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
-    "version": "0.2",
-    "ignorePaths": [
-        "package-lock.json",
-        "node_modules"
-    ]
-}
