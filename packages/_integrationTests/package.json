@@ -1,5 +1,5 @@
 {
-  "name": "vscode-spell-checker-integration-tests",
+  "name": "integration-tests",
   "version": "2.0.0-alpha.1",
   "description": "Integration tests for the spell checker extension",
   "private": true,
@@ -11,8 +11,16 @@
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf out temp",
+    "build-production": "yarn run build",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner"
+    "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
+    "test": "yarn run build && yarn test-integration"
+  },
+  "workspaces": {
+    "nohoist": [
+      "*",
+      "**"
+    ]
   },
   "author": "",
   "license": "MIT",
@@ -21,10 +29,9 @@
     "@types/chai": "^4.2.15",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.2.1",
-    "@types/node": "^12.20.6",
+    "@types/node": "^14.14.35",
     "@types/vscode": "^1.54.0",
     "chai": "^4.3.4",
-    "code-spell-checker": "2.0.0-alpha.1",
     "cross-env": "^7.0.3",
     "glob": "^7.1.6",
     "mocha": "^8.3.2",

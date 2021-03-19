@@ -5,7 +5,7 @@ import { ExtensionApi } from './ExtensionApi';
 
 console.log(`Current directory: ${__dirname}`);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const extensionPackage = require('../../client/package.json');
+const extensionPackage = require('../../../package.json');
 
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
 

@@ -7,6 +7,7 @@ import * as cspell from 'cspell-lib';
 import { Pattern } from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import * as os from 'os';
+import { escapeRegExp } from './../utils/util';
 
 jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
@@ -172,23 +173,28 @@ describe('Validate DocumentSettings', () => {
         return source ? oc({ glob, root, source }) : oc({ glob, root });
     }
 
+    function matchString(s: string) {
+        return expect.stringMatching(new RegExp(`^${escapeRegExp(s)}$`, 'i'));
+    }
+
     function ex(cfgFile: string, glob: string, root?: string) {
         cfgFile = Path.resolve(pathWorkspaceRoot, cfgFile);
         root = root || Path.dirname(cfgFile);
+        const filename = matchString(cfgFile);
         return {
-            glob: ocGlob(glob, root, cfgFile),
-            settings: oc({ source: oc({ filename: cfgFile }) }),
+            glob: ocGlob(glob, matchString(root), filename),
+            settings: oc({ source: oc({ filename }) }),
         };
     }
 
     test.each`
         filename                           | expected
         ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceServer)]}
+        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceRoot)]}
         ${sampleFiles.sampleSamplesReadme} | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}  | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot)]}
+        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);

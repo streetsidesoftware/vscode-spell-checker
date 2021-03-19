@@ -1,1 +1,1 @@
-export * from 'vscode-spell-checker-server/api';
+export * from 'server/api';
