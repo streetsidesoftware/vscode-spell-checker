@@ -182,7 +182,7 @@ describe('Validate DocumentSettings', () => {
         root = root || Path.dirname(cfgFile);
         const filename = matchString(cfgFile);
         return {
-            glob: ocGlob(glob, root, filename),
+            glob: ocGlob(glob, matchString(root), filename),
             settings: oc({ source: oc({ filename }) }),
         };
     }
