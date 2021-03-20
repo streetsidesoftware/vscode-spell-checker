@@ -710,10 +710,14 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
-    "conventional-changelog-cli": "^2.1.1",
     "eslint": "^7.22.0",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
+    "standard-version": "^9.1.1",
     "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@cspell/cspell-bundled-dicts": "^5.3.8",
+    "regexp-worker": "^1.1.0"
   }
 }
