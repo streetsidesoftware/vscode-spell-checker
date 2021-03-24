@@ -16,7 +16,7 @@
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
     "engines": {
-        "vscode": "^1.51.0"
+        "vscode": "^1.53.0"
     },
     "extensionKind": [
         "workspace"
@@ -696,7 +696,7 @@
         "@types/kefir": "^3.8.5",
         "@types/node": "^12.19.3",
         "@types/source-map-support": "^0.5.3",
-        "@types/vscode": "^1.51.0",
+        "@types/vscode": "^1.53.0",
         "cross-env": "^7.0.2",
         "jest": "^26.6.3",
         "lorem-ipsum": "^2.0.3",
