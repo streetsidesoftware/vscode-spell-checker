@@ -20,7 +20,9 @@
 		"cSpell.import": [
 			"${workspaceFolder:vscode-spell-checker}/cSpell.json"
 		],
-		"cSpell.customWorkspaceDictionaries": ["cspell-words"],
+		"cSpell.customWorkspaceDictionaries": [
+			"cspell-words"
+		],
 		"typescript.tsdk": "client/node_modules/typescript/lib",
 		"svg.preview.background": "black"
 	}
