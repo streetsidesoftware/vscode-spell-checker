@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.10.3...v1.10.4) (2021-03-24)
+
+
+### Bug Fixes
+
+* prepare Open VSX ([#780](https://github.com/streetsidesoftware/vscode-spell-checker/issues/780)) ([1570e0b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1570e0b2229f474eb8a987ec95af001a366cff98))
+* Update README.md to include Patreon ([880877c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/880877cdd69b07b22d461c6927150ef24c2577e5))
+
+
+
+
+
 ## [1.10.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v1.10.2...v1.10.3) (2021-03-24)
 
 **Note:** Version bump only for package code-spell-checker
