@@ -3188,9 +3188,9 @@ crypto-random-string@^2.0.0:
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
 cspell-glob@^5.3.11:
-  version "5.3.11"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-5.3.11.tgz#30823000be279dd0cd68791c16cf08d789431a9d"
-  integrity sha512-xQWzscCZReAoHDtaOnfm2PpboaTDlFVou6rha5pLuj/rhZNLFZRs8YbiZAOYd6KrwWU18utEC+7wn9z1k/00KA==
+  version "5.3.12"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-5.3.12.tgz#c40af7fb0f06954ec93a2783720eaf19c7ab40c5"
+  integrity sha512-A/a5WaZhxzzwfVzkCPVHbVY+SejkDLOI6FAd8zcHDIsIkoBxfJ8FZhoEEspY6VjpHuPGgMxUu/MVbzcaQJwkGQ==
   dependencies:
     micromatch "^4.0.2"
 
