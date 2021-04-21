@@ -25,7 +25,7 @@
 		],
 		"typescript.tsdk": "vscode-spell-checker/node_modules/typescript/lib",
 		"svg.preview.background": "black",
-		"gitlens.outputLevel": "debug"
+		"gitlens.outputLevel": "errors"
 	},
 	"launch": {
 		"configurations": [
