@@ -27,13 +27,13 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.3.8",
+    "@cspell/cspell-types": "^5.3.12",
     "@types/fs-extra": "^9.0.8",
     "@types/jest": "^26.0.21",
     "@types/micromatch": "^4.0.1",
     "@types/node": "^14.14.35",
     "cspell-glob": "^5.3.11",
-    "cspell-lib": "^5.3.11",
+    "cspell-lib": "^5.3.12",
     "fs-extra": "^9.1.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.2",
@@ -45,7 +45,7 @@
     "node-watch": "^0.7.1",
     "rxjs": "^6.6.3",
     "ts-jest": "^26.5.4",
-    "ts-json-schema-generator": "^0.89.0",
+    "ts-json-schema-generator": "^0.90.0",
     "ts-loader": "^8.0.18",
     "typescript": "^4.2.3",
     "vscode-languageserver": "^7.0.0",
@@ -55,7 +55,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.3.8",
+    "@cspell/cspell-bundled-dicts": "^5.3.12",
     "regexp-worker": "^1.1.0"
   },
   "scripts": {
