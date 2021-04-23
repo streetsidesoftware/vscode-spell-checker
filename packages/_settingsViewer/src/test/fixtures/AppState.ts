@@ -2,8 +2,7 @@ import { AppState } from '../../viewer/AppState';
 import { MessageBus, Message, isMessage } from '../../api';
 import { WebviewApi } from '../../api/WebviewApi';
 import { sampleSettings } from '../samples/sampleSettings';
-import dcopy = require('clone-deep');
-
+import dcopy from 'clone-deep';
 
 export class AppStateFixture extends AppState {
     _webviewApi: WebviewApi;
@@ -13,7 +12,7 @@ export class AppStateFixture extends AppState {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => {
                 isMessage(msg) && this._postedMessages.push(msg);
-                return webviewApi
+                return webviewApi;
             },
             onmessage: undefined,
         };
