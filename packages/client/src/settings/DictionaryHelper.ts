@@ -5,7 +5,7 @@ import { resolveTarget, addWordToSettings, determineSettingsPath } from './setti
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { addWordToSettingsAndUpdate } from './CSpellSettings';
-import { CSpellUserSettings, DictionaryDefinition } from '../server';
+import type { CSpellUserSettings, CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '../server';
 import * as fs from 'fs-extra';
 import { unique } from '../util';
 
@@ -54,23 +54,11 @@ export class DictionaryHelper {
     }
 
     private static extractCustomDictionaries(docConfig: CSpellUserSettings | undefined, target: Target): CustomDictionaryWithPath[] {
-        function extractDicts() {
-            switch (target) {
-                case Target.Workspace:
-                    return docConfig?.customWorkspaceDictionaries || [];
-                case Target.WorkspaceFolder:
-                    return docConfig?.customFolderDictionaries || [];
-            }
-            return docConfig?.customUserDictionaries || [];
-        }
-
-        const dictionaries = new Map((docConfig?.dictionaryDefinitions || []).map((d) => [d.name, d]));
-        const custom = extractDicts()
-            .map((d) => (typeof d === 'string' ? d : d.addWords ? d.name : undefined))
-            .filter(isDefined)
-            .map((name) => dictionaries.get(name))
-            .filter(isDictionaryWithPath);
-        return custom;
+        const scope = targetToCustomDictionaryScope(target);
+        const dictionaries = docConfig?.dictionaryDefinitions
+            ?.filter(isDictionaryDefinitionCustom)
+            .filter((dict) => shouldAddWordToDictionary(dict, scope));
+        return dictionaries || [];
     }
 
     async addWordsToCustomDictionaries(words: string[], dicts: CustomDictionaryWithPath[]): Promise<void> {
@@ -93,10 +81,28 @@ export class DictionaryHelper {
     }
 }
 
-function isDictionaryWithPath(dict: DictionaryDefinition | CustomDictionaryWithPath | undefined): dict is CustomDictionaryWithPath {
-    return !!(dict?.name && dict?.path);
+function targetToCustomDictionaryScope(target: Target): CustomDictionaryScope {
+    switch (target) {
+        case Target.Workspace:
+            return 'workspace';
+        case Target.WorkspaceFolder:
+            return 'folder';
+    }
+    return 'user';
 }
 
-function isDefined<T>(v: T | undefined): v is T {
-    return v !== undefined;
+function shouldAddWordToDictionary(dict: DictionaryDefinition, scope: CustomDictionaryScope): boolean {
+    if (!isDictionaryDefinitionCustom(dict)) return false;
+    if (!dict.addWords) return false;
+    if (!dict.scope) return true; // always add when no scope is defined.
+    return matchesScope(dict.scope, scope);
+}
+
+function matchesScope(dictScope: CustomDictionaryScope | CustomDictionaryScope[], scope: CustomDictionaryScope): boolean {
+    if (typeof dictScope === 'string') return dictScope === scope;
+    return dictScope.includes(scope);
+}
+
+function isDictionaryDefinitionCustom(dict: DictionaryDefinition | DictionaryDefinitionCustom): dict is DictionaryDefinitionCustom {
+    return (<DictionaryDefinitionCustom>dict).addWords !== undefined;
 }
