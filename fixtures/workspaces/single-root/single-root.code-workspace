@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "./proj-a"
+        },
+        {
+            "path": "./proj-b"
+        }
+    ],
+    "settings": {
+        "cSpell.words": [
+            "PROJECTA",
+            "PROJECTB"
+        ],
+        "cSpell.customWorkspaceDictionaries": [
+            {
+                "addWords": true,
+                "description": "Alternate dictionary",
+                "name": "alt-terms",
+                "path": "${workspaceFolder}/alt-words.txt"
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "version": "0.2",
+    "dictionaryDefinitions": [
+        {
+            "name": "custom-terms",
+            "path": "./custom-terms.txt",
+            "scope": "workspace",
+            "addWords": false
+        }
+    ],
+    "dictionaries": [
+        "custom-terms"
+    ]
+}

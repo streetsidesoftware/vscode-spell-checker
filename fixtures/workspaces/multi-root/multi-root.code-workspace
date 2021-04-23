@@ -1,0 +1,29 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "primary"
+        },
+        {
+            "path": "./proj-a"
+        },
+        {
+            "path": "./proj-b"
+        },
+        {
+            "path": "../no-workspace"
+        },
+        {
+            "path": "../single"
+        },
+        {
+            "path": "../single-root"
+        }
+    ],
+    "settings": {
+        "cSpell.words": [
+            "PROJECTA",
+            "PROJECTB"
+        ]
+    }
+}
