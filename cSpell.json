@@ -14,7 +14,7 @@
         "temp",
         "languageCodes.ts",
         "samples",
-        "fixtures/workspaces",
+        "fixtures/workspaces/**",
         "packages/client/settingsViewer/**",
         "packages/client/resources/**",
         "packages/client/samples/**",
