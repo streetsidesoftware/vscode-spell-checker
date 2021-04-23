@@ -8860,10 +8860,10 @@ ts-jest@^26.5.4:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-json-schema-generator@^0.90.0:
-  version "0.90.0"
-  resolved "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-0.90.0.tgz#10ab74cc474d50b982ee5560062c17a3b4d98451"
-  integrity sha512-BAbZVcNowsHTUgoZfwhM5Uv7EUiweXkb/9EOIO0Rj07qHNMOg/fQt1NrcjpvNpvs96qSaWK2jXsnTKwkbftH4g==
+ts-json-schema-generator@^0.91.0:
+  version "0.91.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.91.0.tgz#93ecf4f7122ad7dbe67f6c6175f7c5ba0a547a48"
+  integrity sha512-+B0By9MyPFA7zQjPt/UgJkY+HuoiIawy5WTdH/Vss21qvvBlOhx3tlGWfu/cQhN2qfVohsfyMa3YFCaUArxyzg==
   dependencies:
     "@types/json-schema" "^7.0.7"
     commander "^7.2.0"
