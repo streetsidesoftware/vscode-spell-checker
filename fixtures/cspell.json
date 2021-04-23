@@ -1,0 +1,4 @@
+{
+    "version": "0.2",
+    "description": "cspell.json file to prevent fixtures from loading the repository cspell configuration."
+}

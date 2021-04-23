@@ -1,15 +1,19 @@
 // Export the cspell settings to the client.
 
-import {
+import type {
     DictionaryId,
     FsPath,
-    DictionaryFileTypes,
     CSpellSettings,
     CSpellUserSettingsWithComments as CSpellLibUserSettingsWithComments,
+    CustomDictionaryScope,
 } from '@cspell/cspell-types';
-export { LanguageSetting, DictionaryDefinition, DictionaryFileTypes } from '@cspell/cspell-types';
-
-export const defaultDictionaryType: DictionaryFileTypes = 'S';
+export type {
+    LanguageSetting,
+    DictionaryDefinition,
+    DictionaryFileTypes,
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+} from '@cspell/cspell-types';
 
 export interface SpellCheckerSettings {
     /**
@@ -194,6 +198,10 @@ export interface CustomDictionary {
      * @default false
      */
     addWords?: boolean;
+}
+
+export interface CustomDictionaryWithScope extends CustomDictionary {
+    scope: CustomDictionaryScope;
 }
 
 export interface CSpellUserSettingsWithComments extends CSpellLibUserSettingsWithComments, SpellCheckerSettings {}

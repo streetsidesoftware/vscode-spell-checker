@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '@cspell/cspell-types';
+import type { CSpellUserSettings } from '@cspell/cspell-types';
 import { TextDocument } from 'vscode';
 
 export interface ExtensionApi {

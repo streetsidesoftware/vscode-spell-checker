@@ -1,5 +1,12 @@
 import { BaseSetting, DictionaryDefinition, Glob, GlobDef } from 'cspell-lib';
-import { CSpellUserSettings, CustomDictionary, CustomDictionaryEntry, defaultDictionaryType } from '../config/cspellConfig';
+import {
+    CSpellUserSettings,
+    CustomDictionary,
+    CustomDictionaryEntry,
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+    CustomDictionaryWithScope,
+} from '../config/cspellConfig';
 import { URI as Uri } from 'vscode-uri';
 import { logError } from '../utils/log';
 import { isDefined } from '../utils';
@@ -34,27 +41,24 @@ export function resolveSettings<T extends CSpellUserSettings>(settings: T, resol
     newSettings.overrides = resolveOverrides(newSettings.overrides, resolver);
 
     function setOptions(defs: (DictionaryDefinition | undefined)[]): DictionaryDefinition[] {
-        const values = defs
-            .filter((d) => !!d)
-            .map((d) => d!)
-            .map((def) => ({ type: defaultDictionaryType, ...def }));
+        const values = defs.filter(isDefined);
         const byName = new Map(values.map((d) => [d.name, d]));
         return [...byName.values()];
     }
 
-    function mapCustomDictionaries(dicts: (CustomDictionary | string)[] = []): DictionaryDefinition[] {
-        return mapCustomDictionaryEntries(dicts)
-            .map(({ name, path }) => (path ? { name, path } : undefined))
+    function mapCustomDictionaries(dicts: (CustomDictionary | string)[] = [], scope: CustomDictionaryScope): DictionaryDefinitionCustom[] {
+        return mapCustomDictionaryEntries(dicts, scope)
+            .map(({ name, path, scope, addWords }) => (path ? { name, path, scope, addWords: addWords || false } : undefined))
             .filter(isDefined);
     }
 
     // Merge custom dictionaries
     const dictionaryDefinitions: DictionaryDefinition[] = setOptions(
         ([] as (DictionaryDefinition | undefined)[]).concat(
-            mapCustomDictionaries(newSettings.customUserDictionaries),
+            mapCustomDictionaries(newSettings.customUserDictionaries, 'user'),
             newSettings.dictionaryDefinitions || [],
-            mapCustomDictionaries(newSettings.customWorkspaceDictionaries),
-            mapCustomDictionaries(newSettings.customFolderDictionaries)
+            mapCustomDictionaries(newSettings.customWorkspaceDictionaries, 'workspace'),
+            mapCustomDictionaries(newSettings.customFolderDictionaries, 'folder')
         )
     );
     newSettings.dictionaryDefinitions = dictionaryDefinitions.length ? dictionaryDefinitions : undefined;
@@ -218,11 +222,11 @@ function resolveBaseSettings<T extends BaseSetting>(settings: T, resolver: Works
 }
 function resolveCustomAndBaseSettings<T extends CSpellUserSettings>(settings: T, resolver: WorkspacePathResolver): T {
     const newSettings = resolveBaseSettings(settings, resolver);
-    const resolveCustomDicts = (d: CustomDictionaryEntry[] | undefined) =>
-        d ? resolveDictionaryPathReferences(mapCustomDictionaryEntries(d), resolver) : undefined;
-    newSettings.customUserDictionaries = resolveCustomDicts(newSettings.customUserDictionaries);
-    newSettings.customWorkspaceDictionaries = resolveCustomDicts(newSettings.customWorkspaceDictionaries);
-    newSettings.customFolderDictionaries = resolveCustomDicts(newSettings.customFolderDictionaries);
+    const resolveCustomDicts = (d: CustomDictionaryEntry[] | undefined, scope: CustomDictionaryScope) =>
+        d ? resolveDictionaryPathReferences(mapCustomDictionaryEntries(d, scope), resolver) : undefined;
+    newSettings.customUserDictionaries = resolveCustomDicts(newSettings.customUserDictionaries, 'user');
+    newSettings.customWorkspaceDictionaries = resolveCustomDicts(newSettings.customWorkspaceDictionaries, 'workspace');
+    newSettings.customFolderDictionaries = resolveCustomDicts(newSettings.customFolderDictionaries, 'folder');
     return newSettings;
 }
 function resolveImportsToWorkspace(imports: CSpellUserSettings['import'], resolver: WorkspacePathResolver): CSpellUserSettings['import'] {
@@ -279,16 +283,16 @@ function shallowCleanObject<T>(obj: T): T {
     return obj;
 }
 
-function mapCustomDictionaryEntry(d: CustomDictionaryEntry): CustomDictionary {
+function mapCustomDictionaryEntry(d: CustomDictionaryEntry, scope: CustomDictionaryScope): CustomDictionaryWithScope {
     if (typeof d == 'string') {
-        return { name: d, addWords: true };
+        return { name: d, addWords: true, scope };
     }
 
-    return d;
+    return { ...d, scope };
 }
 
-function mapCustomDictionaryEntries(entries: CustomDictionaryEntry[]): CustomDictionary[] {
-    return entries.map(mapCustomDictionaryEntry);
+function mapCustomDictionaryEntries(entries: CustomDictionaryEntry[], scope: CustomDictionaryScope): CustomDictionaryWithScope[] {
+    return entries.map((d) => mapCustomDictionaryEntry(d, scope));
 }
 
 export const debugExports = {

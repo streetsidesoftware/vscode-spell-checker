@@ -2,7 +2,7 @@
 // cSpell:ignore pycache
 import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
-import { Glob, RegExpPatternDefinition, Pattern, CSpellSettingsWithSourceTrace, GlobDef } from '@cspell/cspell-types';
+import type { Glob, RegExpPatternDefinition, Pattern, CSpellSettingsWithSourceTrace, GlobDef } from '@cspell/cspell-types';
 import {
     calcOverrideSettings,
     clearCachedFiles,

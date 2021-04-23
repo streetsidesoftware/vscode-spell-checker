@@ -1,39 +1,36 @@
 import * as path from 'path';
 import { readSettings, updateSettings } from './CSpellSettings';
 import * as CSS from './CSpellSettings';
-import {unique} from '../util';
+import { unique } from '../util';
 import { CSpellUserSettings } from '.';
 
-
 describe('Validate CSpellSettings functions', () => {
-
     const filenameSampleCSpellFile = getPathToSample('cSpell.json');
 
     test('tests reading a settings file', () => {
-        return readSettings(filenameSampleCSpellFile).then((settings => {
+        return readSettings(filenameSampleCSpellFile).then((settings) => {
             expect(Object.keys(settings)).not.toHaveLength(0);
             expect(settings.enabled).toBeUndefined();
             expect(settings.enabledLanguageIds).toBeUndefined();
-        }));
+        });
     });
 
     test('tests writing a file', () => {
         const filename = getPathToTemp('tempCSpell.json');
-        return readSettings(filenameSampleCSpellFile)
-        .then(settings => {
+        return readSettings(filenameSampleCSpellFile).then((settings) => {
             settings.enabled = false;
             return updateSettings(filename, settings)
-            .then(() => readSettings(filename))
-            .then(writtenSettings => {
-                expect(writtenSettings).toEqual(settings);
-            });
+                .then(() => readSettings(filename))
+                .then((writtenSettings) => {
+                    expect(writtenSettings).toEqual(settings);
+                });
         });
     });
 
     test('Validate default settings', () => {
         const defaultSetting = CSS.getDefaultSettings();
         expect(defaultSetting.words).toBeUndefined();
-        expect(defaultSetting.version).toBe('0.1');
+        expect(defaultSetting.version).toBe('0.2');
     });
 
     test('tests adding words', () => {
@@ -45,7 +42,6 @@ describe('Validate CSpellSettings functions', () => {
         expect(newSettings.words).not.toHaveLength(0);
         expect(newSettings.words?.sort()).toEqual(unique(words).sort());
     });
-
 
     test('tests adding languageIds', () => {
         const ids = ['cpp', 'cs', 'php', 'json', 'cs'];
@@ -80,13 +76,12 @@ describe('Validate CSpellSettings functions', () => {
 
     test('tests removing words from the settings', () => {
         const defaultSettings = CSS.getDefaultSettings();
-        const settings: CSpellUserSettings = {...defaultSettings, words: ['apple', 'banana', 'orange', 'blue', 'green', 'red', 'Yellow']};
+        const settings: CSpellUserSettings = { ...defaultSettings, words: ['apple', 'banana', 'orange', 'blue', 'green', 'red', 'Yellow'] };
         Object.freeze(settings);
         const result = CSS.removeWordsFromSettings(settings, ['BLUE', 'pink', 'yellow']);
-        expect(result.words).toEqual([ 'apple', 'banana', 'orange', 'green', 'red']);
+        expect(result.words).toEqual(['apple', 'banana', 'orange', 'green', 'red']);
     });
 });
-
 
 function getPathToSample(baseFilename: string) {
     return path.join(__dirname, '..', '..', 'samples', baseFilename);

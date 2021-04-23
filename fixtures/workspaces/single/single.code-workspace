@@ -1,0 +1,17 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "cSpell.customWorkspaceDictionaries": [
+            {
+                "addWords": true,
+                "description": "Alternate dictionary",
+                "name": "alt-terms",
+                "path": "${workspaceFolder}/alt-words.txt"
+            }
+        ]
+    }
+}

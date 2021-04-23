@@ -18,6 +18,82 @@
             "skipFiles": [
                 "<node_internals>/**"
             ]
+        },
+        {
+            "name": "Client: Launch Extension - multi-root",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "${workspaceRoot}/fixtures/workspaces/multi-root/multi-root.code-workspace"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Client: Launch Extension - single-root",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "${workspaceRoot}/fixtures/workspaces/single-root/single-root.code-workspace"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Client: Launch Extension - single",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "${workspaceRoot}/fixtures/workspaces/single/single.code-workspace"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Client: Launch Extension - no-workspace",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "${workspaceRoot}/fixtures/workspaces/no-workspace"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         }
     ],
     "compounds": []

@@ -21,12 +21,30 @@ performance.mark('settings.ts imports done');
 export { ConfigTarget, InspectScope, Scope } from './config';
 
 export const baseConfigName = CSpellSettings.defaultFileName;
+
 export const configFileLocations = [
-    baseConfigName,
-    baseConfigName.toLowerCase(),
-    `.${baseConfigName.toLowerCase()}`,
-    `.vscode/${baseConfigName}`,
-    `.vscode/${baseConfigName.toLowerCase()}`,
+    // Original locations
+    '.cspell.json',
+    'cspell.json',
+    '.cSpell.json',
+    'cSpell.json',
+    // Original locations jsonc
+    '.cspell.jsonc',
+    'cspell.jsonc',
+    // Alternate locations
+    '.vscode/cspell.json',
+    '.vscode/cSpell.json',
+    '.vscode/.cspell.json',
+    // Standard Locations
+    'cspell.config.json',
+    'cspell.config.jsonc',
+    // 'cspell.config.yaml',
+    // 'cspell.config.yml',
+    // 'cspell.yaml',
+    // 'cspell.yml',
+    // Dynamic config is looked for last
+    // 'cspell.config.js',
+    // 'cspell.config.cjs',
 ];
 
 export interface SettingsInfo {

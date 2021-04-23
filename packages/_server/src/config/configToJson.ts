@@ -1,4 +1,4 @@
-import { CSpellSettings } from '@cspell/cspell-types';
+import type { CSpellSettings } from '@cspell/cspell-types';
 
 export function configToJson(config: CSpellSettings, exclude: string[] = []): string {
     function replacer(_key: string, value: unknown) {
