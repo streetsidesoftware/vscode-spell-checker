@@ -4,9 +4,9 @@ import path = require('path');
 import { CSpellUserSettingsWithComments } from '../server';
 import { unique, uniqueFilter } from '../util';
 
-const currentSettingsFileVersion = '0.1';
+const currentSettingsFileVersion = '0.2';
 
-export const defaultFileName = 'cSpell.json';
+export const defaultFileName = 'cspell.json';
 
 export interface CSpellSettings extends CSpellUserSettingsWithComments {}
 
