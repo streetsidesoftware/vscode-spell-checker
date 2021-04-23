@@ -4,7 +4,6 @@
 		"strictNullChecks": true,
 		"strict": true,
 		"strictFunctionTypes": true,
-		"module": "commonjs",
 		"moduleResolution": "node",
 		"outDir": "out",
 		"sourceMap": true,

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "esModuleInterop": true,
     "target": "es2019",
+    "moduleResolution": "node",
     "noImplicitAny": false,
     "sourceMap": true,
     "declaration": true,

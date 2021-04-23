@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import * as json from 'comment-json';
-import path = require('path');
+import * as path from 'path';
 import { CSpellUserSettingsWithComments } from '../server';
 import { unique, uniqueFilter } from '../util';
 

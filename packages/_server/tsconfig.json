@@ -7,7 +7,6 @@
 			"es2020.bigint",
 			"es2020.string"
 		],
-		"module": "commonjs",
 		"moduleResolution": "node",
 		"strict": true,
 		"sourceMap": true,
