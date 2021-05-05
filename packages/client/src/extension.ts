@@ -162,6 +162,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
         vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
         settings.watchSettingsFiles(triggerGetSettings),
+        vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
@@ -175,6 +176,16 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {
+            triggerGetSettings();
+        }
+    }
+
+    const possibleConfigFiles = new Set(settings.configFileLocations);
+
+    /** Watch for changes to possible configuration files. */
+    function handleOnDidSaveTextDocument(event: vscode.TextDocument) {
+        const { fsPath } = event.uri;
+        if (possibleConfigFiles.has(path.basename(fsPath))) {
             triggerGetSettings();
         }
     }
