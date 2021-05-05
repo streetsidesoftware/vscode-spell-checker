@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run: xvfb-run -a yarn run test-client-integration
         if: runner.os == 'Linux'
       - run: yarn run test-client-integration

@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install # This would actually build your project, using zip for an example artifact
-        run: yarn install
+        run: yarn --frozen-lockfile
       - name: Build Extension .vsix
         run: yarn run package-extension
       - run: zip code-spell-checker build/*

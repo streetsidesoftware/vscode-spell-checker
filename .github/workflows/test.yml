@@ -2,6 +2,8 @@ name: "build-test"
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
+    branches:
+      - master
 
 jobs:
   build-test:
@@ -18,5 +20,5 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install
+      - run: yarn --frozen-lockfile
       - run: yarn test
