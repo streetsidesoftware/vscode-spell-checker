@@ -32,8 +32,8 @@
     "@types/jest": "^26.0.21",
     "@types/micromatch": "^4.0.1",
     "@types/node": "^14.14.35",
-    "cspell-glob": "^5.3.11",
-    "cspell-lib": "^5.3.12",
+    "cspell-glob": "^5.4.0",
+    "cspell-lib": "^5.4.0",
     "fs-extra": "^9.1.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.2",
@@ -55,7 +55,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.3.12",
+    "@cspell/cspell-bundled-dicts": "^5.4.0",
     "regexp-worker": "^1.1.0"
   },
   "scripts": {
