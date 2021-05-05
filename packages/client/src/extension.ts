@@ -162,6 +162,10 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
         vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
         settings.watchSettingsFiles(triggerGetSettings),
+        vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
+        vscode.workspace.onDidRenameFiles(handleRenameFile),
+        vscode.workspace.onDidDeleteFiles(handleDeleteFile),
+        vscode.workspace.onDidCreateFiles(handleCreateFile),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
@@ -176,6 +180,35 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {
             triggerGetSettings();
+        }
+    }
+
+    const possibleConfigFiles = new Set(settings.configFileLocations);
+
+    /** Watch for changes to possible configuration files. */
+    function handleOnDidSaveTextDocument(event: vscode.TextDocument) {
+        detectPossibleCSpellConfigChange([event.uri]);
+    }
+
+    function handleRenameFile(event: vscode.FileRenameEvent) {
+        const uris = event.files.map((f) => f.newUri).concat(event.files.map((f) => f.oldUri));
+        detectPossibleCSpellConfigChange(uris);
+    }
+
+    function handleDeleteFile(event: vscode.FileDeleteEvent) {
+        detectPossibleCSpellConfigChange(event.files);
+    }
+
+    function handleCreateFile(event: vscode.FileCreateEvent) {
+        detectPossibleCSpellConfigChange(event.files);
+    }
+
+    function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {
+        for (const uri of files) {
+            if (possibleConfigFiles.has(path.basename(uri.fsPath))) {
+                triggerGetSettings();
+                break;
+            }
         }
     }
 

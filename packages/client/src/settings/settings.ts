@@ -38,14 +38,17 @@ export const configFileLocations = [
     // Standard Locations
     'cspell.config.json',
     'cspell.config.jsonc',
-    // 'cspell.config.yaml',
-    // 'cspell.config.yml',
-    // 'cspell.yaml',
-    // 'cspell.yml',
+    'cspell.config.yaml',
+    'cspell.config.yml',
+    'cspell.yaml',
+    'cspell.yml',
     // Dynamic config is looked for last
-    // 'cspell.config.js',
-    // 'cspell.config.cjs',
+    'cspell.config.js',
+    'cspell.config.cjs',
 ];
+
+const regIsJson = /\.jsonc?$/;
+export const configFileLocationsJson = configFileLocations.filter((a) => regIsJson.test(a));
 
 export interface SettingsInfo {
     path: string;
