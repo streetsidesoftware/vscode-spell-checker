@@ -43,15 +43,18 @@ const cspellConfigInVsCode: CSpellUserSettings = {
 const sampleFiles = {
     sampleNodePackage: require.resolve('cspell-lib'),
     sampleSamplesReadme: Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
-    sampleEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
+    sampleClientEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
     sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
-    samplePackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
+    sampleServerPackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
 };
 
 const configFiles = {
     rootConfig: Path.resolve(pathWorkspaceRoot, 'cSpell.json'),
     clientConfig: Path.resolve(pathWorkspaceClient, 'cspell.json'),
     serverConfig: Path.resolve(pathWorkspaceServer, 'cspell.json'),
+    rootConfigVSCode: Path.resolve(pathWorkspaceRoot, '.vscode/cSpell.json'),
+    clientConfigVSCode: Path.resolve(pathWorkspaceClient, '.vscode/cspell.json'),
+    serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
 };
 
 describe('Validate DocumentSettings', () => {
@@ -194,13 +197,13 @@ describe('Validate DocumentSettings', () => {
     }
 
     test.each`
-        filename                           | expected
-        ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleNodePackage}   | ${[ex('cSpell.json', 'node_modules', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleSamplesReadme} | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleEsLint}        | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleClientReadme}  | ${[]}
-        ${sampleFiles.samplePackageLock}   | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
+        filename                               | expected
+        ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleNodePackage}       | ${[ex('cSpell.json', 'node_modules', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleClientReadme}      | ${[]}
+        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
@@ -220,12 +223,12 @@ describe('Validate DocumentSettings', () => {
     }
 
     test.each`
-        filename                           | expected
-        ${sampleFiles.sampleEsLint}        | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleNodePackage}   | ${[configFiles.rootConfig]}
-        ${sampleFiles.sampleSamplesReadme} | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
-        ${sampleFiles.sampleClientReadme}  | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.samplePackageLock}   | ${[configFiles.serverConfig, configFiles.rootConfig]}
+        filename                               | expected
+        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
     `('findCSpellConfigurationFilesForUri $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
@@ -237,12 +240,12 @@ describe('Validate DocumentSettings', () => {
     });
 
     test.each`
-        filename                           | expected
-        ${sampleFiles.sampleEsLint}        | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleNodePackage}   | ${[configFiles.rootConfig]}
-        ${sampleFiles.sampleSamplesReadme} | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
-        ${sampleFiles.sampleClientReadme}  | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.samplePackageLock}   | ${[configFiles.serverConfig, configFiles.rootConfig]}
+        filename                               | expected
+        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
     `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
         const mockFolders: WorkspaceFolder[] = [];
         mockGetWorkspaceFolders.mockReturnValue(mockFolders);
@@ -252,6 +255,55 @@ describe('Validate DocumentSettings', () => {
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
+
+    function uf(f: string | Uri): Uri;
+    function uf(f: (string | Uri)[]): Uri[];
+    function uf(f: (string | Uri)[] | (string | Uri)): Uri | Uri[] {
+        if (Array.isArray(f)) {
+            return f.map((u) => uf(u));
+        }
+        return typeof f === 'string' ? Uri.file(f) : f;
+    }
+
+    function uft(f: string | Uri): string;
+    function uft(f: (string | Uri)[]): string[];
+    function uft(f: (string | Uri)[] | (string | Uri)): string | string[] {
+        if (Array.isArray(f)) {
+            return uf(f).map((u) => u.toString());
+        }
+        return uf(f).toString();
+    }
+
+    type UriString = string;
+
+    interface FilterConfigFilesToMatchInheritedPathOfFileTest {
+        filename: UriString;
+        configs: UriString[];
+        expected: UriString[];
+    }
+
+    const samplesCustomDictionaryCspell = Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json');
+
+    test.each`
+        filename                                    | configs                                                          | expected
+        ${uft(sampleFiles.sampleClientEsLint)}      | ${uft([configFiles.clientConfig, configFiles.rootConfig])}       | ${uft([configFiles.clientConfig, configFiles.rootConfig])}
+        ${uft(sampleFiles.sampleNodePackage)}       | ${uft([configFiles.clientConfig, configFiles.rootConfig])}       | ${uft([configFiles.rootConfig])}
+        ${uft(sampleFiles.sampleSamplesReadme)}     | ${uft([samplesCustomDictionaryCspell])}                          | ${uft([samplesCustomDictionaryCspell])}
+        ${uft(sampleFiles.sampleClientReadme)}      | ${uft([configFiles.clientConfigVSCode, configFiles.rootConfig])} | ${uft([configFiles.clientConfigVSCode, configFiles.rootConfig])}
+        ${uft(configFiles.clientConfigVSCode)}      | ${uft([configFiles.clientConfigVSCode, configFiles.rootConfig])} | ${uft([configFiles.clientConfigVSCode, configFiles.rootConfig])}
+        ${uft(sampleFiles.sampleServerPackageLock)} | ${uft([configFiles.serverConfigVSCode, configFiles.rootConfig])} | ${uft([configFiles.serverConfigVSCode, configFiles.rootConfig])}
+        ${uft(sampleFiles.sampleServerPackageLock)} | ${uft([configFiles.rootConfigVSCode, configFiles.clientConfig])} | ${uft([configFiles.rootConfigVSCode])}
+    `(
+        'filterConfigFilesToMatchInheritedPathOfFile against $filename $configs',
+        async ({ filename, configs, expected }: FilterConfigFilesToMatchInheritedPathOfFileTest) => {
+            const mockFolders: WorkspaceFolder[] = [];
+            mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+            mockGetConfiguration.mockReturnValue([{}, {}]);
+            const configUris = configs.map((u) => Uri.parse(u));
+            const result = debugExports.filterConfigFilesToMatchInheritedPathOfFile(configUris, Uri.parse(filename));
+            expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => u.toLowerCase()));
+        }
+    );
 
     test('resolvePath', () => {
         expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
