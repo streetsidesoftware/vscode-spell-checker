@@ -323,19 +323,13 @@ function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSet
 }
 
 function filterConfigFilesToMatchInheritedPathOfFile(configFiles: Uri[], file: Uri): Uri[] {
-    const inheritPath = UriUtils.dirname(file).path;
+    const inheritPath = UriUtils.dirname(file).toString();
     return configFiles.filter((cfgUri) => {
         const uri = UriUtils.dirname(cfgUri);
-        console.error(`
-        file: ${file.toString()}
-        cfg:  ${cfgUri.toString()}
-        filePath: ${inheritPath}
-        confPath: ${uri.path}
-        `);
-        if (inheritPath.startsWith(uri.path)) {
+        if (inheritPath.startsWith(uri.toString())) {
             return true;
         }
-        return UriUtils.basename(uri) === '.vscode' && inheritPath.startsWith(UriUtils.dirname(uri).path);
+        return UriUtils.basename(uri) === '.vscode' && inheritPath.startsWith(UriUtils.dirname(uri).toString());
     });
 }
 
