@@ -35,6 +35,11 @@
         },
         {
             "name": "cspell-words",
+            "addWords": true,
+            "scope": [
+                "folder",
+                "workspace"
+            ],
             "path": "./cspell-words.txt"
         }
     ],

@@ -16,6 +16,7 @@ import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '.
 import { MessageBus } from '../api';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { extractConfig } from '../api/settings/settingsHelper';
+import { posix as Path } from 'path';
 
 class AppState {
     @observable currentSample: number = 0;
@@ -168,11 +169,18 @@ function calcFileConfig() {
     const languageId = doc.languageId;
     const dictionaries = appState.settings.dictionaries;
     const languageEnabled = appState.enabledLanguageIds.includes(languageId);
+    const folderPath = Path.dirname(Path.dirname(doc.uri));
+    const workspacePath = Path.dirname(folderPath);
+
     appState.settings.configs.file = {
         ...doc,
         fileEnabled: true,
         languageEnabled,
         dictionaries: dictionaries.filter(dic => dic.languageIds.includes(languageId)),
+        configFiles: [
+            Path.join(folderPath, 'cspell.json'),
+            Path.join(workspacePath, 'cspell.config.json'),
+        ]
     };
 }
 

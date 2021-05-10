@@ -16,7 +16,7 @@ import {
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import { CSpellUserSettings } from '../config/cspellConfig';
-import { URI as Uri } from 'vscode-uri';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import { log } from '../utils/log';
 import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from '../utils/autoLoad';
 import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
@@ -154,6 +154,27 @@ export class DocumentSettings {
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
     }
 
+    public async findCSpellConfigurationFilesForUri(docUri: string | Uri, ignoreDefaultConfig = true): Promise<Uri[]> {
+        const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
+        const settings = await this.fetchSettingsForUri(uri.toString());
+        const sources = getSources(settings.settings);
+
+        const folders = await this.folders;
+
+        const allFiles = sources
+            .map((src) => src.source?.filename)
+            .filter(isDefined)
+            .map((filename) => Uri.file(filename))
+            .reverse();
+
+        const files = ignoreDefaultConfig ? allFiles.filter((f) => f.path.indexOf('/@cspell/') < 0) : allFiles;
+
+        if (!folders.length) {
+            return filterConfigFilesToMatchInheritedPathOfFile(files, uri);
+        }
+        return files.filter((uri) => this._matchingFoldersForUri(folders, uri.toString()).length > 0);
+    }
+
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
         const configs = await this.fetchVSCodeConfiguration(uri || '');
         const [cSpell, search] = configs;
@@ -216,10 +237,11 @@ export class DocumentSettings {
 
     private async matchingFoldersForUri(docUri: string): Promise<WorkspaceFolder[]> {
         const folders = await this.folders;
-        return folders
-            .filter(({ uri }) => uri === docUri.slice(0, uri.length))
-            .sort((a, b) => a.uri.length - b.uri.length)
-            .reverse();
+        return this._matchingFoldersForUri(folders, docUri);
+    }
+
+    private _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
+        return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
     }
 
     private createCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
@@ -300,6 +322,17 @@ function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSet
     return enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
 }
 
+function filterConfigFilesToMatchInheritedPathOfFile(configFiles: Uri[], file: Uri): Uri[] {
+    const inheritPath = UriUtils.dirname(file).path;
+    return configFiles.filter((cfgUri) => {
+        const uri = UriUtils.dirname(cfgUri);
+        if (inheritPath.startsWith(uri.path)) {
+            return true;
+        }
+        return UriUtils.basename(uri) === '.vscode' && inheritPath.startsWith(UriUtils.dirname(uri).path);
+    });
+}
+
 const correctRegExMap = new Map([
     ['/"""(.*?\\n?)+?"""/g', '/(""")[^\\1]*?\\1/g'],
     ["/'''(.*?\\n?)+?'''/g", "/(''')[^\\1]*?\\1/g"],
@@ -350,6 +383,7 @@ export const debugExports = {
     fixRegEx: fixRegPattern,
     fixPattern,
     resolvePath,
+    filterConfigFilesToMatchInheritedPathOfFile,
 };
 
 export interface ExcludedByMatch {
@@ -400,4 +434,8 @@ function areGlobsEqual(globA: Glob, globB: Glob): boolean {
 
 function toGlobDef(g: Glob): GlobDef {
     return typeof g === 'string' ? { glob: g } : g;
+}
+
+function isDefined<T>(t: T | undefined): t is T {
+    return t === undefined ? false : true;
 }

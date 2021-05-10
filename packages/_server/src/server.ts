@@ -212,6 +212,7 @@ export function run(): void {
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
         const settings = stringifyPatterns(await getActiveUriSettings(uri));
         const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
+        const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
 
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
         const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
@@ -221,6 +222,7 @@ export function run(): void {
             settings,
             docSettings,
             excludedBy,
+            configFiles,
         };
     }
 

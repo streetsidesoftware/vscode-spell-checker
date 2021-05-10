@@ -15,6 +15,8 @@ export type LocaleList = LocaleId[];
 export type FileType = string;
 export type FileTypeList = FileType[];
 
+export type FileUri = string;
+
 export type ConfigTarget = keyof SettingByConfigTarget<void>;
 export type ConfigSource = ConfigTarget | 'default';
 
@@ -47,4 +49,5 @@ export interface FileConfig extends TextDocument {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
     dictionaries: DictionaryEntry[];
+    configFiles: FileUri[];
 }

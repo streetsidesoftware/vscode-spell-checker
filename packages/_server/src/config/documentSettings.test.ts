@@ -4,7 +4,7 @@ import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
 import * as cspell from 'cspell-lib';
-import { Pattern } from 'cspell-lib';
+import { Pattern, getDefaultSettings } from 'cspell-lib';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import * as os from 'os';
 import { escapeRegExp } from './../utils/util';
@@ -46,6 +46,12 @@ const sampleFiles = {
     sampleEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
     sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
     samplePackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
+};
+
+const configFiles = {
+    rootConfig: Path.resolve(pathWorkspaceRoot, 'cSpell.json'),
+    clientConfig: Path.resolve(pathWorkspaceClient, 'cspell.json'),
+    serverConfig: Path.resolve(pathWorkspaceServer, 'cspell.json'),
 };
 
 describe('Validate DocumentSettings', () => {
@@ -208,13 +214,52 @@ describe('Validate DocumentSettings', () => {
         expect(result).toEqual(expected);
     });
 
+    interface FindCSpellConfigurationFilesForUriTest {
+        filename: string;
+        expected: (string | Uri)[];
+    }
+
+    test.each`
+        filename                           | expected
+        ${sampleFiles.sampleEsLint}        | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}   | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme} | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}  | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.samplePackageLock}   | ${[configFiles.serverConfig, configFiles.rootConfig]}
+    `('findCSpellConfigurationFilesForUri $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings(getDefaultSettings());
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
+        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
+    });
+
+    test.each`
+        filename                           | expected
+        ${sampleFiles.sampleEsLint}        | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}   | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme} | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}  | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.samplePackageLock}   | ${[configFiles.serverConfig, configFiles.rootConfig]}
+    `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
+        const mockFolders: WorkspaceFolder[] = [];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings(getDefaultSettings());
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
+        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
+    });
+
     test('resolvePath', () => {
         expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
         expect(debugExports.resolvePath('~')).toBe(os.homedir());
     });
 
-    function newDocumentSettings() {
-        return new DocumentSettings({} as Connection, {});
+    function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
+        return new DocumentSettings({} as Connection, defaultSettings);
     }
 });
 
@@ -261,3 +306,7 @@ describe('Validate RegExp corrections', () => {
         expect(correctBadSettings(settings)).not.toEqual(settings);
     });
 });
+
+function filePathToUri(file: string | Uri): Uri {
+    return typeof file == 'string' ? Uri.file(file) : file;
+}

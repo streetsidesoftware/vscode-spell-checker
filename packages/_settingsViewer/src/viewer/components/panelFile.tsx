@@ -13,6 +13,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import { SectionConfigFileList } from './sectionConfigFileList';
 
 
 @observer
@@ -21,10 +22,11 @@ export class PanelFile extends React.Component<{appState: AppState}> {
         const appState = this.props.appState;
         const settings = appState.settings;
         const config = settings.configs.file;
-        const languageId = config && config.languageId || 'unknown';
-        const languageEnabled = config && config.languageEnabled;
-        const fileEnabled = config && config.fileEnabled;
-        const dictionaries = config && config.dictionaries || [];
+        const languageId = config?.languageId || 'unknown';
+        const languageEnabled = config?.languageEnabled;
+        const fileEnabled = config?.fileEnabled;
+        const dictionaries = config?.dictionaries || [];
+        const configFiles = config?.configFiles || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
         const onClick = () => {
             this.enableLanguageId(!languageEnabled);
@@ -77,7 +79,7 @@ export class PanelFile extends React.Component<{appState: AppState}> {
                         </ListItemSecondaryAction>
                     </ListItem>
                 </List>
-
+                <SectionConfigFileList configFiles={configFiles}></SectionConfigFileList>
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle="Active Dictionaries"></SectionDictionaries>
                 {appState.debugMode ?
                     <div>

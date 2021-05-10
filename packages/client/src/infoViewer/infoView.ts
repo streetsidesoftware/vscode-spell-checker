@@ -384,6 +384,7 @@ function extractViewerConfigFromConfig(
             dictionaries,
             languageEnabled,
             fileEnabled,
+            configFiles: docConfig.configFiles,
         };
         return cfg;
     }
