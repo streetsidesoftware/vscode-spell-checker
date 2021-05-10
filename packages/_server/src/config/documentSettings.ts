@@ -170,8 +170,9 @@ export class DocumentSettings {
         const files = ignoreDefaultConfig ? allFiles.filter((f) => f.path.indexOf('/@cspell/') < 0) : allFiles;
 
         if (!folders.length) {
-            return files;
-            // return filterConfigFilesToMatchInheritedPathOfFile(files, uri);
+            console.error(uri.toString());
+            // return files;
+            return filterConfigFilesToMatchInheritedPathOfFile(files, uri);
         }
         return files.filter((uri) => this._matchingFoldersForUri(folders, uri.toString()).length > 0);
     }
