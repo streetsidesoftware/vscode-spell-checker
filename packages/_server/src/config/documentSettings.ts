@@ -327,8 +327,10 @@ function filterConfigFilesToMatchInheritedPathOfFile(configFiles: Uri[], file: U
     return configFiles.filter((cfgUri) => {
         const uri = UriUtils.dirname(cfgUri);
         console.error(`
-        file: ${inheritPath}
-        conf: ${uri.path}
+        file: ${file.toString()}
+        cfg:  ${cfgUri.toString()}
+        filePath: ${inheritPath}
+        confPath: ${uri.path}
         `);
         if (inheritPath.startsWith(uri.path)) {
             return true;
