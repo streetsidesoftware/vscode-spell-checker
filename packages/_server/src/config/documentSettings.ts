@@ -172,6 +172,7 @@ export class DocumentSettings {
         if (!folders.length) {
             console.error(uri.toString());
             // return files;
+            console.error(files.map((u) => u.toString()));
             return filterConfigFilesToMatchInheritedPathOfFile(files, uri);
         }
         return files.filter((uri) => this._matchingFoldersForUri(folders, uri.toString()).length > 0);
