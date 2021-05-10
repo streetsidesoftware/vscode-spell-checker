@@ -217,45 +217,6 @@ describe('Validate DocumentSettings', () => {
         expect(result).toEqual(expected);
     });
 
-    interface FindCSpellConfigurationFilesForUriTest {
-        filename: string;
-        expected: (string | Uri)[];
-    }
-
-    test.each`
-        filename                               | expected
-        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
-        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
-        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
-    `('findCSpellConfigurationFilesForUri $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
-        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
-        const docSettings = newDocumentSettings(getDefaultSettings());
-        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
-        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
-        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
-    });
-
-    test.each`
-        filename                               | expected
-        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
-        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
-        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
-        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
-    `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
-        const mockFolders: WorkspaceFolder[] = [];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
-        const docSettings = newDocumentSettings(getDefaultSettings());
-        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
-        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
-        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
-    });
-
     function uf(f: string | Uri): Uri;
     function uf(f: (string | Uri)[]): Uri[];
     function uf(f: (string | Uri)[] | (string | Uri)): Uri | Uri[] {
@@ -304,6 +265,45 @@ describe('Validate DocumentSettings', () => {
             expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => u.toLowerCase()));
         }
     );
+
+    interface FindCSpellConfigurationFilesForUriTest {
+        filename: string;
+        expected: (string | Uri)[];
+    }
+
+    test.each`
+        filename                               | expected
+        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
+    `('findCSpellConfigurationFilesForUri $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings(getDefaultSettings());
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
+        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
+    });
+
+    test.each`
+        filename                               | expected
+        ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfig]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfig]}
+        ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
+    `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
+        const mockFolders: WorkspaceFolder[] = [];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([{}, {}]);
+        const docSettings = newDocumentSettings(getDefaultSettings());
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
+        const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
+    });
 
     test('resolvePath', () => {
         expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
