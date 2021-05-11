@@ -15,6 +15,7 @@
         "languageCodes.ts",
         "samples",
         "fixtures/workspaces/**",
+        "**/__snapshots__/**",
         "packages/client/settingsViewer/**",
         "packages/client/resources/**",
         "packages/client/samples/**",
@@ -35,6 +36,11 @@
         },
         {
             "name": "cspell-words",
+            "addWords": true,
+            "scope": [
+                "folder",
+                "workspace"
+            ],
             "path": "./cspell-words.txt"
         }
     ],

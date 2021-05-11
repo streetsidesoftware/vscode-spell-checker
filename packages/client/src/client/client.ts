@@ -2,7 +2,7 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, Fo
 
 import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri } from 'vscode';
 
-import {
+import type {
     GetConfigurationForDocumentResult,
     NotifyServerMethods,
     ServerRequestMethodResults,

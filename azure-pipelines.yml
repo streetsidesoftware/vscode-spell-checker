@@ -16,7 +16,7 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: "12.x"
+      versionSpec: "14.x"
     displayName: "Install Node.js"
 
   - bash: |
@@ -25,7 +25,7 @@ steps:
     displayName: Start xvfb
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
-  - bash: yarn install
+  - bash: yarn install --frozen-lockfile
     displayName: Install
   - bash: yarn test
     displayName: Run Tests

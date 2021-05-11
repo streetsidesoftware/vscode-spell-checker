@@ -4,16 +4,33 @@ import { uniqueFilter } from '../../api/utils';
 
 const languageIdsA = [
     'asciidoc',
-    'c', 'cpp', 'csharp', 'css',
-    'go', 'handlebars', 'html',
-    'jade', 'javascript', 'javascriptreact', 'json',
-    'latex', 'less', 'literate haskell',
+    'c',
+    'cpp',
+    'csharp',
+    'css',
+    'go',
+    'handlebars',
+    'html',
+    'jade',
+    'javascript',
+    'javascriptreact',
+    'json',
+    'latex',
+    'less',
+    'literate haskell',
     'markdown',
-    'php', 'plaintext', 'pub', 'python',
-    'restructuredtext', 'rust',
+    'php',
+    'plaintext',
+    'pub',
+    'python',
+    'restructuredtext',
+    'rust',
     'scss',
-    'text', 'typescript', 'typescriptreact',
-    'yml'];
+    'text',
+    'typescript',
+    'typescriptreact',
+    'yml',
+];
 const languageIdsB = languageIdsA.concat(['cfml', 'java', 'scala', 'yaml']);
 const languageIdsUser = languageIdsB;
 const languageIdsWorkspace = languageIdsA;
@@ -47,9 +64,8 @@ const dictionaries: DictionaryEntry[] = [
     { name: 'python', locales: [], languageIds: ['python'], description: 'Python Keyword Dictionary' },
     { name: 'rust', locales: [], languageIds: ['rust'], description: 'Rust Keyword Dictionary' },
     { name: 'scala', locales: [], languageIds: ['scala'], description: 'Scala dictionary for cspell.' },
-    { name: 'cs-cz', locales: ['cs'], languageIds: [], description: 'Czech dictionary for cspell.' }
+    { name: 'cs-cz', locales: ['cs'], languageIds: [], description: 'Czech dictionary for cspell.' },
 ];
-
 
 const _sampleSettings: Settings = {
     dictionaries,
@@ -65,7 +81,8 @@ const _sampleSettings: Settings = {
             languageId: 'typescript',
             languageEnabled: true,
             fileEnabled: true,
-            dictionaries: dictionaries.filter(e => e.languageIds.includes('typescript')),
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
+            configFiles: ['file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json', 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json'],
         },
     },
     workspace: sampleWorkspace,
@@ -87,14 +104,14 @@ const _sampleSettingsSingleFolder: Settings = {
             languageId: 'typescript',
             languageEnabled: true,
             fileEnabled: true,
-            dictionaries: dictionaries.filter(e => e.languageIds.includes('typescript')),
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
+            configFiles: ['file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json', 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json'],
         },
     },
     workspace: sampleWorkspaceSingleFolder,
     activeFolderUri: 'file:///Users/cspell/projects/clones/ripgrep',
     activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
 };
-
 
 export const sampleSettings = Object.freeze(_sampleSettings);
 export const sampleSettingsSingleFolder = Object.freeze(_sampleSettingsSingleFolder);

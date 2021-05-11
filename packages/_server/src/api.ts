@@ -1,4 +1,4 @@
-import * as config from './config/cspellConfig';
+import type * as config from './config/cspellConfig';
 
 export * from './config/cspellConfig';
 
@@ -8,6 +8,7 @@ export interface GetConfigurationForDocumentResult {
     settings: config.CSpellUserSettings | undefined;
     docSettings: config.CSpellUserSettings | undefined;
     excludedBy: ExcludeRef[] | undefined;
+    configFiles: UriString[];
 }
 
 export interface ExcludeRef {
@@ -30,7 +31,7 @@ export interface SplitTextIntoWordsResult {
 export interface SpellingSuggestionsResult {}
 
 export interface TextDocumentInfo {
-    uri?: string;
+    uri?: UriString;
     languageId?: string;
     text?: string;
 }
@@ -68,7 +69,7 @@ export type NotifyServerMethodConstants = {
 };
 
 export interface TextDocumentRef {
-    uri: string;
+    uri: UriString;
 }
 
 export interface NamedPattern {
@@ -100,8 +101,10 @@ export interface PatternMatch {
 }
 
 export interface MatchPatternsToDocumentResult {
-    uri: string;
+    uri: UriString;
     version: number;
     patternMatches: PatternMatch[];
     message?: string;
 }
+
+export type UriString = string;

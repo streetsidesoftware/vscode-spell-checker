@@ -18,12 +18,12 @@ describe('File Panel Verification', () => {
         panelRenderer.toTree()!.instance.enableLanguageId(false);
         expect(appState.settings.configs.file!.languageEnabled).toBe(false);
         expect(appState._postedMessages).toEqual([{
-            "command": "EnableLanguageIdMessage",
-            "value": {
-                "enable": false,
-                "languageId": "typescript",
-                "target": undefined,
-                "uri": 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
+            command: 'EnableLanguageIdMessage',
+            value: {
+                enable: false,
+                languageId: 'typescript',
+                target: undefined,
+                uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
             },
         }]);
     });
