@@ -14,6 +14,8 @@
         "temp",
         "languageCodes.ts",
         "samples",
+        ".vscodeignore",
+        "cSpell.json",
         "fixtures/workspaces/**",
         "**/__snapshots__/**",
         "packages/client/settingsViewer/**",
