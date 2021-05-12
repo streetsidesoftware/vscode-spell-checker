@@ -28,7 +28,7 @@
         "lint": "eslint 'src/**'",
         "vscode:prepublish": "yarn run build-production",
         "version": "yarn run package-extension",
-        "watch": "yarn run build -- --watch",
+        "watch": "yarn run build --watch",
         "test": "jest",
         "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_DATA_DIR=./temp/vscode node ../_integrationTests/integrationTestRunner",
         "test-watch": "jest --watch"

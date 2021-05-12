@@ -30,6 +30,7 @@ module.exports = {
   externals: [
     /^regexp-worker/, // pulled out so the worker can be loaded correctly.
     /^@cspell\/cspell-bundled-dicts/,
+    /^import-fresh/, // Do not bundle `import-fresh` which is used by `cosmiconfig` to load cspell.config.js files.
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

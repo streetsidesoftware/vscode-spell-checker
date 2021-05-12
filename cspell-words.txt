@@ -25,6 +25,7 @@ appid
 arraylength
 cfml
 colorscheme
+cosmiconfig
 darkblue
 dcopy
 devtool

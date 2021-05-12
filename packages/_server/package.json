@@ -67,7 +67,7 @@
     "clean-build-production": "yarn run clean && yarn run compile",
     "build-production": "yarn run clean-build-production",
     "compile": "yarn run webpack",
-    "watch": "yarn run installServerIntoExtension && tsc --watch -p .",
+    "watch": "yarn run build --watch",
     "webpack": "webpack -c webpack.prod.js",
     "webpack-dev": "webpack -c webpack.dev.js",
     "test-watch": "jest --watch",

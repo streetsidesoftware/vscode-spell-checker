@@ -15,6 +15,7 @@
         "languageCodes.ts",
         "samples",
         "fixtures/workspaces/**",
+        "!fixtures/workspaces/js-config/**",
         "**/__snapshots__/**",
         "packages/client/settingsViewer/**",
         "packages/client/resources/**",
