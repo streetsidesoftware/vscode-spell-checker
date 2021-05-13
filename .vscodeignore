@@ -3,11 +3,24 @@
 **/.DS_Store
 !CHANGELOG.md
 !images/SpellCheck.png
+
+# Dictionaries cannot be WebPacked
 !node_modules/@cspell/cspell-bundled-dicts/**
 !node_modules/@cspell/dict*/**/{README.md,LICENSE}
 !node_modules/@cspell/dict*/**/*.{json,gz}
+
+# Regexp worker must NOT be WebPacked
 !node_modules/regexp-worker/**/{LICENSE,package.json,README.md}
 !node_modules/regexp-worker/**/*.js
+
+# Do not WebPack import-fresh and dependencies
+# This is needed to support cosmiconfig
+!node_modules/import-fresh/**
+!node_modules/resolve-from/**
+!node_modules/parent-module/**
+!node_modules/callsites/**
+
+# All Other Client and Server files.
 !packages/_server/dist/api.js
 !packages/_server/dist/main.js
 !packages/_server/dist/main.js.LICENSE.txt
