@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2021-05-13)
+
+
+### Bug Fixes
+
+* Support reading cspell.config.js files ([#861](https://github.com/streetsidesoftware/vscode-spell-checker/issues/861)) ([56412f8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/56412f82d9d90c0fe57b782d344b8686a96db872))
+
 ## [2.0.0-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2021-04-06)
 
 
