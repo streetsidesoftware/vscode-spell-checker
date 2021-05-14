@@ -1,11 +1,17 @@
 import { CSpellClient } from '../client';
 import { Target } from './config';
 import * as config from './config';
-import { resolveTarget, addWordToSettings, determineSettingsPath } from './settings';
+import { resolveTarget, addWordToSettings, determineSettingsPath, determineSettingsPathWithConfig } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { addWordToSettingsAndUpdate } from './CSpellSettings';
-import type { CSpellUserSettings, CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '../server';
+import type {
+    CSpellUserSettings,
+    CustomDictionaryScope,
+    DictionaryDefinition,
+    DictionaryDefinitionCustom,
+    GetConfigurationForDocumentResult,
+} from '../server';
 import * as fs from 'fs-extra';
 import { unique } from '../util';
 
@@ -19,12 +25,13 @@ interface CustomDictionaryWithPath {
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
 
-    public async addWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
-        const actualTarget = resolveTarget(target, uri);
-        const customDicts = await this.getCustomDictionariesForTargetFromConfig(actualTarget);
+    public async addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined): Promise<void> {
+        const actualTarget = resolveTarget(target, docUri);
+        const docConfig = await this.getDocConfig(docUri);
+        const customDicts = this.getCustomDictionariesForTargetFromConfig(docConfig, actualTarget);
 
         if (!customDicts.length) {
-            return this.addWordsToConfig(word, actualTarget);
+            return this.addWordsToConfig(word, actualTarget, docConfig);
         }
 
         await this.addWordsToCustomDictionaries([word], customDicts);
@@ -33,22 +40,21 @@ export class DictionaryHelper {
 
     private async getDocConfig(uri: string | null | Uri | undefined) {
         if (uri) {
-            const doc = await vscode.workspace.openTextDocument(uri as Uri);
+            const doc = await vscode.workspace.openTextDocument(parseUri(uri));
             return this.client.getConfigurationForDocument(doc);
         }
         return this.client.getConfigurationForDocument(undefined);
     }
 
-    private async addWordsToConfig(word: string, actualTarget: config.ConfigTarget) {
+    private async addWordsToConfig(word: string, actualTarget: config.ConfigTarget, docConfig: GetConfigurationForDocumentResult) {
         const uri = config.extractTargetUri(actualTarget);
         await addWordToSettings(actualTarget, word);
-        const paths = await determineSettingsPath(actualTarget, uri);
+        const docConfigFiles = docConfig.configFiles.map((uri) => Uri.parse(uri));
+        const paths = await determineSettingsPathWithConfig(actualTarget, uri, docConfigFiles);
         await Promise.all(paths.map((path) => addWordToSettingsAndUpdate(path, word)));
     }
 
-    private async getCustomDictionariesForTargetFromConfig(target: config.ConfigTarget) {
-        const uri = config.extractTargetUri(target);
-        const docConfig = await this.getDocConfig(uri);
+    private getCustomDictionariesForTargetFromConfig(docConfig: GetConfigurationForDocumentResult, target: config.ConfigTarget) {
         const dicts = DictionaryHelper.extractCustomDictionaries(docConfig.docSettings || docConfig.settings, config.extractTarget(target));
         return dicts;
     }
@@ -105,4 +111,11 @@ function matchesScope(dictScope: CustomDictionaryScope | CustomDictionaryScope[]
 
 function isDictionaryDefinitionCustom(dict: DictionaryDefinition | DictionaryDefinitionCustom): dict is DictionaryDefinitionCustom {
     return (<DictionaryDefinitionCustom>dict).addWords !== undefined;
+}
+
+function parseUri(uri: string | Uri): Uri {
+    if (typeof uri === 'string') {
+        return Uri.parse(uri);
+    }
+    return uri;
 }

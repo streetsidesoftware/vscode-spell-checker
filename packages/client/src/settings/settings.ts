@@ -2,7 +2,7 @@ import { performance } from '../util/perf';
 performance.mark('settings.ts');
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import * as CSpellSettings from './CSpellSettings';
-import { splitOutWords } from './CSpellSettings';
+import { normalizeWord } from './CSpellSettings';
 import { workspace, ConfigurationTarget } from 'vscode';
 performance.mark('settings.ts imports 1');
 import * as path from 'path';
@@ -94,7 +94,7 @@ export function hasWorkspaceLocation(): boolean {
  * Returns a list of files in the order of Best to Worst Match.
  * @param uri
  */
-export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
+export function findSettingsFiles(uri?: Uri): Promise<Uri[]> {
     const { workspaceFolders } = workspace;
     if (!workspaceFolders || !hasWorkspaceLocation()) {
         return Promise.resolve([]);
@@ -117,21 +117,23 @@ export function findSettingsFiles(uri?: Uri): Thenable<Uri[]> {
     );
 }
 
-export function findExistingSettingsFileLocation(uri?: Uri): Thenable<string | undefined> {
-    return findSettingsFiles(uri)
-        .then((uris) => uris.map((uri) => uri.fsPath))
-        .then((paths) => paths[0]);
+export function findExistingSettingsFileLocationUri(uri?: Uri): Promise<Uri | undefined> {
+    return findSettingsFiles(uri).then((paths) => paths[0]);
 }
 
-export function findSettingsFileLocation(): Thenable<string | undefined> {
+export async function findExistingSettingsFileLocation(uri?: Uri): Promise<string | undefined> {
+    return (await findExistingSettingsFileLocationUri(uri))?.fsPath;
+}
+
+export function findSettingsFileLocation(): Promise<string | undefined> {
     return findExistingSettingsFileLocation().then((path) => path || getDefaultWorkspaceConfigLocation());
 }
 
-export function loadTheSettingsFile(): Thenable<SettingsInfo | undefined> {
+export function loadTheSettingsFile(): Promise<SettingsInfo | undefined> {
     return findSettingsFileLocation().then(loadSettingsFile);
 }
 
-export function loadSettingsFile(path: string | undefined): Thenable<SettingsInfo | undefined> {
+export function loadSettingsFile(path: string | undefined): Promise<SettingsInfo | undefined> {
     return path
         ? CSpellSettings.readSettings(path).then((settings) => (path ? { path, settings } : undefined))
         : Promise.resolve(undefined);
@@ -160,20 +162,20 @@ export async function disableLanguage(target: config.ConfigTarget, languageId: s
 
 export function addWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    const addWords = splitOutWords(word);
+    const addWords = normalizeWord(word);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     return updateSettingInConfig(section, target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
-    const addWords = splitOutWords(word);
+    const addWords = normalizeWord(word);
     return updateSettingInConfig('ignoreWords', target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export async function removeWordFromSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const toRemove = splitOutWords(word);
+    const toRemove = normalizeWord(word);
     return updateSettingInConfig(section, target, (words) => CSpellSettings.filterOutWords(words || [], toRemove), true);
 }
 
@@ -405,27 +407,45 @@ export function resolveTarget(target: config.Target, uri?: string | null | Uri):
         return config.Target.Workspace;
     }
 
-    const resolvedUri = pathToUri(uri);
+    const resolvedUri = parseToUri(uri);
     return config.createTargetForUri(target, resolvedUri);
 }
 
-export function pathToUri(uri: string | Uri): Uri {
+export function parseToUri(uri: string | Uri): Uri {
     if (uri instanceof Uri) {
         return uri;
     }
     return Uri.parse(uri);
 }
 
-export async function determineSettingsPath(target: config.ConfigTarget, uri: string | null | Uri | undefined): Promise<string[]> {
+export async function determineSettingsPathWithConfig(
+    target: config.ConfigTarget,
+    uri: string | null | Uri | undefined,
+    docConfigFiles: Uri[] | undefined
+): Promise<string[]> {
     if (config.isGlobalLevelTarget(target)) {
         return [];
     }
+
     if (config.isWorkspaceLevelTarget(target)) {
-        return findSettingsFiles().then((uris) => uris?.map((uri) => uri.fsPath));
+        const files = await findSettingsFiles();
+        const cfgFileSet = new Set(docConfigFiles?.map((u) => u.toString()) || []);
+        const filtered = cfgFileSet.size ? files.filter((u) => cfgFileSet.has(u.toString())) : files;
+        const found = filtered.length ? filtered : docConfigFiles?.slice(0, 1) || [];
+        return found.map((uri) => uri.fsPath);
     }
-    const useUri = uri ? pathToUri(uri) : undefined;
+
+    if (docConfigFiles?.length) {
+        return [docConfigFiles[0].fsPath];
+    }
+
+    const useUri = uri ? parseToUri(uri) : undefined;
     const path = await findExistingSettingsFileLocation(useUri);
     return path ? [path] : [];
+}
+
+export async function determineSettingsPath(target: config.ConfigTarget, uri: string | null | Uri | undefined): Promise<string[]> {
+    return determineSettingsPathWithConfig(target, uri, undefined);
 }
 
 performance.mark('settings.ts done');

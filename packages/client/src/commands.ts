@@ -62,20 +62,20 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     return workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
 }
 
-export function addWordToFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
-    return addWordToTarget(word, Settings.Target.WorkspaceFolder, uri);
+export function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Thenable<void> {
+    return addWordToTarget(word, Settings.Target.WorkspaceFolder, docUri);
 }
 
-export function addWordToWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
-    return addWordToTarget(word, Settings.Target.Workspace, uri);
+export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Thenable<void> {
+    return addWordToTarget(word, Settings.Target.Workspace, docUri);
 }
 
 export function addWordToUserDictionary(word: string): Thenable<void> {
     return addWordToTarget(word, Settings.Target.Global, undefined);
 }
 
-function addWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
-    return di.dependencies.dictionaryHelper.addWordToTarget(word, target, uri);
+function addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
+    return di.dependencies.dictionaryHelper.addWordToTarget(word, target, docUri);
 }
 
 export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
