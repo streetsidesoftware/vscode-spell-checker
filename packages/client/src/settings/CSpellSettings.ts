@@ -50,7 +50,7 @@ export function updateSettings(filename: string, settings: CSpellSettings): Prom
 }
 
 export function addWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, splitOutWords(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWord(word)));
 }
 
 export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -59,7 +59,7 @@ export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[
 }
 
 export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, splitOutWords(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWord(word)));
 }
 
 export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -89,7 +89,7 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
 }
 
 export function removeWordFromSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => removeWordsFromSettings(settings, splitOutWords(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => removeWordsFromSettings(settings, normalizeWord(word)));
 }
 
 export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean): CSpellSettings {
@@ -130,10 +130,6 @@ export async function readSettingsFileAndApplyUpdate(
     return updateSettings(filename, newSettings);
 }
 
-export function splitOutWords(words: string): string[] {
-    return words
-        .split(/(?:[^\w\-_']|\s)\s*/g)
-        .concat(words.split(' '))
-        .map((a) => a.trim())
-        .filter((a) => !!a);
+export function normalizeWord(word: string): string[] {
+    return [word].map((a) => a.trim()).filter((a) => !!a);
 }
