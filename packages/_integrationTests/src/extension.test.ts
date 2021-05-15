@@ -29,7 +29,7 @@ const apiSignature: Api = {
 };
 
 describe('Launch code spell extension', function () {
-    this.timeout(60000);
+    this.timeout(120000);
     const docUri = getDocUri('diagnostics.txt');
 
     it('Verify the extension starts', async () => {
@@ -63,8 +63,7 @@ describe('Launch code spell extension', function () {
 
             console.log(JSON.stringify({ enabled, dictionaries, languageId }));
 
-            const diags = await Promise.race([diagsListener.diags, sleep(10000)]);
-
+            const diags = await Promise.race([diagsListener.diags, sleep(20000)]);
             await sleep(3000);
             const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
             console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
@@ -86,28 +85,32 @@ describe('Launch code spell extension', function () {
         const diags: R = [];
         const source = 'cSpell';
         const uriStr = uri.toString();
-        let resolver: (value: R | PromiseLike<R>) => void;
         let dispose: vscode.Disposable | undefined;
-        dispose = vscode.languages.onDidChangeDiagnostics((event) => {
-            console.log(JSON.stringify(event));
-            const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
-            if (matches.length) {
-                console.log(JSON.stringify(vscode.languages.getDiagnostics()));
-                vscode.languages
-                    .getDiagnostics(uri)
-                    .map((d) => (console.log(JSON.stringify(d)), d))
-                    .filter((diag) => diag.source === source)
-                    .forEach((diag) => diags.push(diag));
-                resolver?.(diags);
-            }
-        });
+        let resolved = false;
 
         function cleanUp() {
             dispose?.dispose();
             dispose = undefined;
         }
         return {
-            diags: new Promise<R>((resolve) => (resolver = resolve)),
+            diags: new Promise<R>((resolve) => {
+                dispose = vscode.languages.onDidChangeDiagnostics((event) => {
+                    console.log(JSON.stringify(event));
+                    const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
+                    if (matches.length) {
+                        console.log(JSON.stringify(vscode.languages.getDiagnostics()));
+                        vscode.languages
+                            .getDiagnostics(uri)
+                            .map((d) => (console.log(JSON.stringify(d)), d))
+                            .filter((diag) => diag.source === source)
+                            .forEach((diag) => diags.push(diag));
+                        if (!resolved) {
+                            resolved = true;
+                            resolve(diags);
+                        }
+                    }
+                });
+            }),
             dispose: cleanUp,
         };
     }
