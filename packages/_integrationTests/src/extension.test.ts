@@ -63,7 +63,7 @@ describe('Launch code spell extension', function () {
 
             console.log(JSON.stringify({ enabled, dictionaries, languageId }));
 
-            const diags = await Promise.race([diagsListener.diags, sleep(20000)]);
+            const diags = await Promise.race([diagsListener.diags, sleep(120000)]);
             await sleep(3000);
             const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
             console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
