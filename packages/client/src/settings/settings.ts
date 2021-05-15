@@ -26,7 +26,7 @@ performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './config';
 export interface SettingsInfo {
-    path: string;
+    path: Uri;
     settings: CSpellUserSettings;
 }
 
@@ -54,10 +54,10 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     });
 }
 
-export function getDefaultWorkspaceConfigLocation(): string | undefined {
+export function getDefaultWorkspaceConfigLocation(): Uri | undefined {
     const { workspaceFolders } = workspace;
-    const root = workspaceFolders && workspaceFolders[0] && workspaceFolders[0].uri.fsPath;
-    return root ? path.join(root, baseConfigName) : undefined;
+    const root = workspaceFolders?.[0]?.uri;
+    return root ? Uri.joinPath(root, baseConfigName) : undefined;
 }
 
 export function hasWorkspaceLocation(): boolean {
@@ -92,15 +92,11 @@ export function findSettingsFiles(uri?: Uri): Promise<Uri[]> {
     );
 }
 
-export function findExistingSettingsFileLocationUri(uri?: Uri): Promise<Uri | undefined> {
+export function findExistingSettingsFileLocation(uri?: Uri): Promise<Uri | undefined> {
     return findSettingsFiles(uri).then((paths) => paths[0]);
 }
 
-export async function findExistingSettingsFileLocation(uri?: Uri): Promise<string | undefined> {
-    return (await findExistingSettingsFileLocationUri(uri))?.fsPath;
-}
-
-export function findSettingsFileLocation(): Promise<string | undefined> {
+export function findSettingsFileLocation(): Promise<Uri | undefined> {
     return findExistingSettingsFileLocation().then((path) => path || getDefaultWorkspaceConfigLocation());
 }
 
@@ -108,7 +104,7 @@ export function loadTheSettingsFile(): Promise<SettingsInfo | undefined> {
     return findSettingsFileLocation().then(loadSettingsFile);
 }
 
-export function loadSettingsFile(path: string | undefined): Promise<SettingsInfo | undefined> {
+export function loadSettingsFile(path: Uri | undefined): Promise<SettingsInfo | undefined> {
     return path ? readSettings(path).then((settings) => (path ? { path, settings } : undefined)) : Promise.resolve(undefined);
 }
 
@@ -346,10 +342,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
         return false;
     }
 
-    async function updateCSpellFile(
-        settingsFilename: string | undefined,
-        defaultValue: CSpellUserSettings[K] | undefined
-    ): Promise<boolean> {
+    async function updateCSpellFile(settingsFilename: Uri | undefined, defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
         if (!settingsFilename) return false;
         await readSettingsFileAndApplyUpdate(settingsFilename, (settings) => {
             const v = settings[section];
@@ -371,31 +364,19 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     return !!configResult;
 }
 
-export function resolveTarget(target: config.Target, uri?: string | null | Uri): config.ConfigTarget {
+export function resolveTarget(target: config.Target, docUri?: null | Uri): config.ConfigTarget {
     if (target === config.Target.Global || !hasWorkspaceLocation()) {
         return config.Target.Global;
     }
 
-    if (!uri) {
+    if (!docUri) {
         return config.Target.Workspace;
     }
 
-    const resolvedUri = parseToUri(uri);
-    return config.createTargetForUri(target, resolvedUri);
+    return config.createTargetForUri(target, docUri);
 }
 
-export function parseToUri(uri: string | Uri): Uri {
-    if (uri instanceof Uri) {
-        return uri;
-    }
-    return Uri.parse(uri);
-}
-
-export async function determineSettingsPathWithConfig(
-    target: config.ConfigTarget,
-    uri: string | null | Uri | undefined,
-    docConfigFiles: Uri[] | undefined
-): Promise<string[]> {
+export async function determineSettingsPaths(target: config.ConfigTarget, docUri: Uri | undefined, docConfigFiles?: Uri[]): Promise<Uri[]> {
     if (config.isGlobalLevelTarget(target)) {
         return [];
     }
@@ -405,20 +386,16 @@ export async function determineSettingsPathWithConfig(
         const cfgFileSet = new Set(docConfigFiles?.map((u) => u.toString()) || []);
         const filtered = cfgFileSet.size ? files.filter((u) => cfgFileSet.has(u.toString())) : files;
         const found = filtered.length ? filtered : docConfigFiles?.slice(0, 1) || [];
-        return found.map((uri) => uri.fsPath);
+        return found;
     }
 
     if (docConfigFiles?.length) {
-        return [docConfigFiles[0].fsPath];
+        return [docConfigFiles[0]];
     }
 
-    const useUri = uri ? parseToUri(uri) : undefined;
+    const useUri = docUri || undefined;
     const path = await findExistingSettingsFileLocation(useUri);
     return path ? [path] : [];
-}
-
-export async function determineSettingsPath(target: config.ConfigTarget, uri: string | null | Uri | undefined): Promise<string[]> {
-    return determineSettingsPathWithConfig(target, uri, undefined);
 }
 
 performance.mark('settings.ts done');

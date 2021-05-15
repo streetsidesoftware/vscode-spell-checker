@@ -3,6 +3,7 @@ import * as json from 'comment-json';
 import * as path from 'path';
 import { CSpellUserSettingsWithComments } from '../server';
 import { unique, uniqueFilter } from '../util';
+import { Uri } from 'vscode';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -62,10 +63,10 @@ export function getDefaultSettings(): CSpellSettings {
     return Object.freeze(defaultSettings);
 }
 
-export function readSettings(filename: string): Promise<CSpellSettings> {
+export function readSettings(filename: Uri): Promise<CSpellSettings> {
     return (
         fs
-            .readFile(filename, 'utf8')
+            .readFile(filename.fsPath, 'utf8')
             .then(
                 (cfgJson) => cfgJson,
                 () => json.stringify(defaultSettingsWithComments, null, 4)
@@ -80,14 +81,15 @@ export function readSettings(filename: string): Promise<CSpellSettings> {
     );
 }
 
-export function updateSettings(filename: string, settings: CSpellSettings): Promise<CSpellSettings> {
+export function updateSettings(filename: Uri, settings: CSpellSettings): Promise<CSpellSettings> {
+    const fsPath = filename.fsPath;
     return fs
-        .mkdirp(path.dirname(filename))
-        .then(() => fs.writeFile(filename, json.stringify(settings, null, 4)))
+        .mkdirp(path.dirname(fsPath))
+        .then(() => fs.writeFile(fsPath, json.stringify(settings, null, 4)))
         .then(() => settings);
 }
 
-export function addWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
+export function addWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWord(word)));
 }
 
@@ -96,7 +98,7 @@ export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[
     return { ...settings, words };
 }
 
-export function addIgnoreWordToSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
+export function addIgnoreWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWord(word)));
 }
 
@@ -126,7 +128,7 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
     return words.filter((w) => !toRemove.has(w.toLowerCase()));
 }
 
-export function removeWordFromSettingsAndUpdate(filename: string, word: string): Promise<CSpellSettings> {
+export function removeWordFromSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => removeWordsFromSettings(settings, normalizeWord(word)));
 }
 
@@ -151,16 +153,16 @@ export function removeLanguageIdsFromSettings(settings: CSpellSettings, language
     return settings;
 }
 
-export function writeAddLanguageIdsToSettings(filename: string, languageIds: string[], onlyIfExits: boolean): Promise<CSpellSettings> {
+export function writeAddLanguageIdsToSettings(filename: Uri, languageIds: string[], onlyIfExits: boolean): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => addLanguageIdsToSettings(settings, languageIds, onlyIfExits));
 }
 
-export function removeLanguageIdsFromSettingsAndUpdate(filename: string, languageIds: string[]): Promise<CSpellSettings> {
+export function removeLanguageIdsFromSettingsAndUpdate(filename: Uri, languageIds: string[]): Promise<CSpellSettings> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => removeLanguageIdsFromSettings(settings, languageIds));
 }
 
 export async function readSettingsFileAndApplyUpdate(
-    filename: string,
+    filename: Uri,
     action: (settings: CSpellSettings) => CSpellSettings
 ): Promise<CSpellSettings> {
     const settings = await readSettings(filename);
@@ -170,4 +172,10 @@ export async function readSettingsFileAndApplyUpdate(
 
 export function normalizeWord(word: string): string[] {
     return [word].map((a) => a.trim()).filter((a) => !!a);
+}
+
+export class UnsupportedConfigFileFormat extends Error {
+    constructor(message: string) {
+        super(message);
+    }
 }

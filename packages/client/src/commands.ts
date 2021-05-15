@@ -1,6 +1,6 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
-import { resolveTarget, determineSettingsPath } from './settings';
+import { resolveTarget, determineSettingsPaths } from './settings';
 
 import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range } from 'vscode';
 import { TextEdit, LanguageClient } from 'vscode-languageclient/node';
@@ -75,13 +75,15 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
 }
 
 function addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
+    docUri = parseOptionalUri(docUri);
     return di.dependencies.dictionaryHelper.addWordToTarget(word, target, docUri);
 }
 
 export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
+    uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
-    const paths = await determineSettingsPath(actualTarget, uri);
+    const paths = await determineSettingsPaths(actualTarget, uri);
     await Promise.all(paths.map((path) => CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word)));
 }
 
@@ -98,18 +100,21 @@ export function removeWordFromUserDictionary(word: string): Thenable<void> {
 }
 
 async function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
-    const paths = await determineSettingsPath(actualTarget, uri);
+    const paths = await determineSettingsPaths(actualTarget, uri);
     await Promise.all(paths.map((path) => CSpellSettings.removeWordFromSettingsAndUpdate(path, word)));
 }
 
-export function enableLanguageId(languageId: string, uri?: string): Promise<void> {
-    return Settings.enableLanguageIdForClosestTarget(languageId, true, uri ? Uri.parse(uri) : undefined);
+export function enableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
+    uri = parseOptionalUri(uri);
+    return Settings.enableLanguageIdForClosestTarget(languageId, true, uri);
 }
 
-export function disableLanguageId(languageId: string, uri?: string): Promise<void> {
-    return Settings.enableLanguageIdForClosestTarget(languageId, false, uri ? Uri.parse(uri) : undefined);
+export function disableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
+    uri = parseOptionalUri(uri);
+    return Settings.enableLanguageIdForClosestTarget(languageId, false, uri);
 }
 
 export function userCommandOnCurrentSelectionOrPrompt(
@@ -127,4 +132,14 @@ export function userCommandOnCurrentSelectionOrPrompt(
                   word && fnAction(word, document && document.uri);
               });
     };
+}
+
+function parseOptionalUri(uri: string | Uri): Uri;
+function parseOptionalUri(uri: null | undefined): Uri | undefined;
+function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined;
+function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined {
+    if (typeof uri === 'string') {
+        return Uri.parse(uri);
+    }
+    return uri || undefined;
 }

@@ -1,7 +1,7 @@
 import { CSpellClient } from '../client';
 import { Target } from './config';
 import * as config from './config';
-import { resolveTarget, addWordToSettings, determineSettingsPath, determineSettingsPathWithConfig } from './settings';
+import { resolveTarget, addWordToSettings, determineSettingsPaths } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { addWordToSettingsAndUpdate } from './CSpellSettings';
@@ -19,13 +19,13 @@ const defaultEncoding = 'utf8';
 
 interface CustomDictionaryWithPath {
     name: string;
-    path: string;
+    path: Uri;
 }
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
 
-    public async addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined): Promise<void> {
+    public async addWordToTarget(word: string, target: Target, docUri: Uri | undefined): Promise<void> {
         const actualTarget = resolveTarget(target, docUri);
         const docConfig = await this.getDocConfig(docUri);
         const customDicts = this.getCustomDictionariesForTargetFromConfig(docConfig, actualTarget);
@@ -38,19 +38,19 @@ export class DictionaryHelper {
         return this.client.notifySettingsChanged();
     }
 
-    private async getDocConfig(uri: string | null | Uri | undefined) {
+    private async getDocConfig(uri: Uri | undefined) {
         if (uri) {
-            const doc = await vscode.workspace.openTextDocument(parseUri(uri));
+            const doc = await vscode.workspace.openTextDocument(uri);
             return this.client.getConfigurationForDocument(doc);
         }
         return this.client.getConfigurationForDocument(undefined);
     }
 
     private async addWordsToConfig(word: string, actualTarget: config.ConfigTarget, docConfig: GetConfigurationForDocumentResult) {
-        const uri = config.extractTargetUri(actualTarget);
+        const uri = config.extractTargetUri(actualTarget) || undefined;
         await addWordToSettings(actualTarget, word);
         const docConfigFiles = docConfig.configFiles.map((uri) => Uri.parse(uri));
-        const paths = await determineSettingsPathWithConfig(actualTarget, uri, docConfigFiles);
+        const paths = await determineSettingsPaths(actualTarget, uri, docConfigFiles);
         await Promise.all(paths.map((path) => addWordToSettingsAndUpdate(path, word)));
     }
 
@@ -63,7 +63,8 @@ export class DictionaryHelper {
         const scope = targetToCustomDictionaryScope(target);
         const dictionaries = docConfig?.dictionaryDefinitions
             ?.filter(isDictionaryDefinitionCustom)
-            .filter((dict) => shouldAddWordToDictionary(dict, scope));
+            .filter((dict) => shouldAddWordToDictionary(dict, scope))
+            .map((dict) => ({ ...dict, path: Uri.file(dict.path) }));
         return dictionaries || [];
     }
 
@@ -76,13 +77,14 @@ export class DictionaryHelper {
 
     async addWordsToCustomDictionary(words: string[], dict: CustomDictionaryWithPath): Promise<void> {
         try {
-            const data = await fs.readFile(dict.path, defaultEncoding).catch(() => '');
+            const fsPath = dict.path.fsPath;
+            const data = await fs.readFile(fsPath, defaultEncoding).catch(() => '');
             const lines = unique(data.split(/\r?\n/g).concat(words))
                 .filter((a) => !!a)
                 .sort();
-            return fs.writeFile(dict.path, lines.join('\n') + '\n');
+            return fs.writeFile(fsPath, lines.join('\n') + '\n');
         } catch (e) {
-            return Promise.reject(new Error(`Failed to add words to "${dict.name}" [${dict.path}]`));
+            return Promise.reject(new Error(`Failed to add words to "${dict.name}" [${dict.path.fsPath}]`));
         }
     }
 }
@@ -111,11 +113,4 @@ function matchesScope(dictScope: CustomDictionaryScope | CustomDictionaryScope[]
 
 function isDictionaryDefinitionCustom(dict: DictionaryDefinition | DictionaryDefinitionCustom): dict is DictionaryDefinitionCustom {
     return (<DictionaryDefinitionCustom>dict).addWords !== undefined;
-}
-
-function parseUri(uri: string | Uri): Uri {
-    if (typeof uri === 'string') {
-        return Uri.parse(uri);
-    }
-    return uri;
 }
