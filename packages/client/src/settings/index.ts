@@ -1,3 +1,3 @@
 export * from './settings';
 export * from './config';
-export {CSpellSettings} from './CSpellSettings';
+export { CSpellSettings, possibleConfigFiles } from './CSpellSettings';

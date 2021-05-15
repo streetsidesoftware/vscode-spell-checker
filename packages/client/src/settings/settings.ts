@@ -1,8 +1,14 @@
 import { performance } from '../util/perf';
 performance.mark('settings.ts');
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
-import * as CSpellSettings from './CSpellSettings';
-import { normalizeWord } from './CSpellSettings';
+import {
+    normalizeWord,
+    configFileLocations,
+    defaultFileName as baseConfigName,
+    readSettings,
+    filterOutWords,
+    readSettingsFileAndApplyUpdate,
+} from './CSpellSettings';
 import { workspace, ConfigurationTarget } from 'vscode';
 performance.mark('settings.ts imports 1');
 import * as path from 'path';
@@ -19,37 +25,6 @@ performance.mark('settings.ts imports 4');
 performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './config';
-
-export const baseConfigName = CSpellSettings.defaultFileName;
-
-export const configFileLocations = [
-    // Original locations
-    '.cspell.json',
-    'cspell.json',
-    '.cSpell.json',
-    'cSpell.json',
-    // Original locations jsonc
-    '.cspell.jsonc',
-    'cspell.jsonc',
-    // Alternate locations
-    '.vscode/cspell.json',
-    '.vscode/cSpell.json',
-    '.vscode/.cspell.json',
-    // Standard Locations
-    'cspell.config.json',
-    'cspell.config.jsonc',
-    'cspell.config.yaml',
-    'cspell.config.yml',
-    'cspell.yaml',
-    'cspell.yml',
-    // Dynamic config is looked for last
-    'cspell.config.js',
-    'cspell.config.cjs',
-];
-
-const regIsJson = /\.jsonc?$/;
-export const configFileLocationsJson = configFileLocations.filter((a) => regIsJson.test(a));
-
 export interface SettingsInfo {
     path: string;
     settings: CSpellUserSettings;
@@ -134,9 +109,7 @@ export function loadTheSettingsFile(): Promise<SettingsInfo | undefined> {
 }
 
 export function loadSettingsFile(path: string | undefined): Promise<SettingsInfo | undefined> {
-    return path
-        ? CSpellSettings.readSettings(path).then((settings) => (path ? { path, settings } : undefined))
-        : Promise.resolve(undefined);
+    return path ? readSettings(path).then((settings) => (path ? { path, settings } : undefined)) : Promise.resolve(undefined);
 }
 
 export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Thenable<void> {
@@ -176,7 +149,7 @@ export async function removeWordFromSettings(target: config.ConfigTarget, word: 
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     const toRemove = normalizeWord(word);
-    return updateSettingInConfig(section, target, (words) => CSpellSettings.filterOutWords(words || [], toRemove), true);
+    return updateSettingInConfig(section, target, (words) => filterOutWords(words || [], toRemove), true);
 }
 
 export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
@@ -378,7 +351,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
         defaultValue: CSpellUserSettings[K] | undefined
     ): Promise<boolean> {
         if (!settingsFilename) return false;
-        await CSpellSettings.readSettingsFileAndApplyUpdate(settingsFilename, (settings) => {
+        await readSettingsFileAndApplyUpdate(settingsFilename, (settings) => {
             const v = settings[section];
             const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
             const newSettings = { ...settings };
