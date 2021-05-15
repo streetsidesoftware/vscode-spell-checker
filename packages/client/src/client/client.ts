@@ -165,18 +165,8 @@ export class CSpellClient {
         return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(module, langIds)));
     }
 
-    public isLookBackSupported(): boolean {
-        try {
-            return /(?<=\s)x/.test(' x');
-        } catch (_) {}
-        return false;
-    }
-
     private calcServerArgs(): string[] {
         const args: string[] = [];
-        if (!this.isLookBackSupported()) {
-            args.push('--harmony_regexp_lookbehind');
-        }
         return args;
     }
 }
