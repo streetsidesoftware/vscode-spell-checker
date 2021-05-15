@@ -8,6 +8,36 @@ const currentSettingsFileVersion = '0.2';
 
 export const defaultFileName = 'cspell.json';
 
+export const configFileLocations = [
+    // Original locations
+    '.cspell.json',
+    'cspell.json',
+    '.cSpell.json',
+    'cSpell.json',
+    // Original locations jsonc
+    '.cspell.jsonc',
+    'cspell.jsonc',
+    // Alternate locations
+    '.vscode/cspell.json',
+    '.vscode/cSpell.json',
+    '.vscode/.cspell.json',
+    // Standard Locations
+    'cspell.config.json',
+    'cspell.config.jsonc',
+    'cspell.config.yaml',
+    'cspell.config.yml',
+    'cspell.yaml',
+    'cspell.yml',
+    // Dynamic config is looked for last
+    'cspell.config.js',
+    'cspell.config.cjs',
+];
+
+const regIsJson = /\.jsonc?$/;
+export const configFileLocationsJson = configFileLocations.filter((a) => regIsJson.test(a));
+
+export const possibleConfigFiles = new Set(configFileLocations);
+
 export interface CSpellSettings extends CSpellUserSettingsWithComments {}
 
 // cSpell:ignore hte
@@ -27,9 +57,9 @@ export function getDefaultSettings(): CSpellSettings {
 export function readSettings(filename: string): Promise<CSpellSettings> {
     return (
         fs
-            .readFile(filename)
+            .readFile(filename, 'utf8')
             .then(
-                (buffer) => buffer.toString(),
+                (cfgJson) => cfgJson,
                 () => json.stringify(defaultSettingsWithComments, null, 4)
             )
             .then((cfgJson) => json.parse(cfgJson) as CSpellSettings)

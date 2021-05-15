@@ -183,8 +183,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         }
     }
 
-    const possibleConfigFiles = new Set(settings.configFileLocations);
-
     /** Watch for changes to possible configuration files. */
     function handleOnDidSaveTextDocument(event: vscode.TextDocument) {
         detectPossibleCSpellConfigChange([event.uri]);
@@ -205,7 +203,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {
         for (const uri of files) {
-            if (possibleConfigFiles.has(path.basename(uri.fsPath))) {
+            if (settings.possibleConfigFiles.has(path.basename(uri.fsPath))) {
                 triggerGetSettings();
                 break;
             }
