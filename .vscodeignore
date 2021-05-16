@@ -4,6 +4,9 @@
 !CHANGELOG.md
 !images/SpellCheck.png
 
+# Include the schema
+!node_modules/@cspell/cspell-types/cspell.schema.json
+
 # Dictionaries cannot be WebPacked
 !node_modules/@cspell/cspell-bundled-dicts/**
 !node_modules/@cspell/dict*/**/{README.md,LICENSE}
