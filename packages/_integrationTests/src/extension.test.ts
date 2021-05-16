@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import { getDocUri, activateExtension, loadDocument, sleep, log, chalk } from './helper';
+import { getDocUri, activateExtension, loadDocument, sleep, log, chalk, sampleWorkspaceUri } from './helper';
 import { expect } from 'chai';
 import { ExtensionApi } from './ExtensionApi';
 import * as vscode from 'vscode';
@@ -45,20 +45,21 @@ describe('Launch code spell extension', function () {
         log(chalk.yellow('Done: Verify the extension starts'));
     });
 
-    it('Verifies that the right config was found', async () => {
-        log(chalk.yellow('Verifies that the right config was found'));
-        const ext = isDefined(await activateExtension());
-        const uri = getDocUri('example.md');
-        const expectedConfigUri = getDocUri('cspell.json');
-        const diagsListener = waitForDiag(uri);
-        const folders = vscode.workspace.workspaceFolders;
-        log(
-            `Workspace Folders:
-        %O
-        `,
-            folders
-        );
-        try {
+    [
+        [getDocUri('example.md'), getDocUri('cspell.json')],
+        [sampleWorkspaceUri('workspace1/README.md'), sampleWorkspaceUri('cspell.json')],
+    ].forEach(([docUri, expectedConfigUri]) => {
+        it(`Verifies that the right config was found for ${docUri.toString()}`, async () => {
+            log(chalk.yellow('Verifies that the right config was found'));
+            const ext = isDefined(await activateExtension());
+            const uri = docUri;
+            const folders = vscode.workspace.workspaceFolders;
+            log(
+                `Workspace Folders:
+            %O
+            `,
+                folders
+            );
             const docContextMaybe = await loadDocument(uri);
             expect(docContextMaybe).to.not.be.undefined;
             const docContext = isDefined(docContextMaybe);
@@ -70,17 +71,15 @@ describe('Launch code spell extension', function () {
 
             const configUri = vscode.Uri.parse(config.configFiles[0] || '');
             expect(configUri.toString()).to.equal(expectedConfigUri.toString());
-        } finally {
-            diagsListener.dispose();
-        }
-        log(chalk.yellow('Done: Verifies that the right config was found'));
+            log(chalk.yellow('Done: Verifies that the right config was found'));
+        });
     });
 
     it('Verifies that some spelling errors were found', async () => {
         log(chalk.yellow('Verifies that some spelling errors were found'));
         const ext = isDefined(await activateExtension());
         const uri = getDocUri('example.md');
-        const diagsListener = waitForDiag(uri);
+        const diagsListener = waitForDiag(uri, 60000);
         try {
             const docContextMaybe = await loadDocument(uri);
             expect(docContextMaybe).to.not.be.undefined;
@@ -96,11 +95,10 @@ describe('Launch code spell extension', function () {
 
             log('cfg: %O', { enabled, dictionaries, languageId });
 
-            const diags = await Promise.race([diagsListener.diags, sleep(120000)]);
-            await sleep(3000);
-            const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n') : 'Timeout';
-            log(`Diag Messages: size(${diags?.length}) msg: \n${msgs}`);
-            log('diags: \n%o', diags || 'No diags registered');
+            const diags = await diagsListener.diags;
+            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
+            log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
+            log('diags: \n%o', diags);
 
             expect(fileEnabled).to.be.true;
 
@@ -112,36 +110,58 @@ describe('Launch code spell extension', function () {
         log(chalk.yellow('Done: Verifies that some spelling errors were found'));
     });
 
-    function waitForDiag(uri: vscode.Uri) {
+    function waitForDiag(uri: vscode.Uri, timeout: number) {
         type R = vscode.Diagnostic[];
-        const diags: R = [];
         const source = 'cSpell';
+        const diags: R = [];
         const uriStr = uri.toString();
         let dispose: vscode.Disposable | undefined;
-        let resolved = false;
+
+        function fetchDiags() {
+            return vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
+        }
+
+        function updateDiags() {
+            diags.splice(0, diags.length, ...fetchDiags());
+        }
 
         function cleanUp() {
             dispose?.dispose();
             dispose = undefined;
         }
-        return {
-            diags: new Promise<R>((resolve) => {
-                dispose = vscode.languages.onDidChangeDiagnostics((event) => {
-                    log('onDidChangeDiagnostics %o', event);
-                    const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
-                    if (matches.length) {
-                        const matchingDiags = vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
-                        log('Diags: %o', matchingDiags);
-                        matchingDiags.forEach((diag) => diags.push(diag));
-                        if (!resolved) {
-                            resolved = true;
-                            resolve(diags);
-                        }
-                    }
-                });
-            }),
+
+        updateDiags();
+
+        const diagsP = new Promise<R>((resolve) => {
+            let resolved = false;
+            function resolveP() {
+                if (!resolved) {
+                    resolved = true;
+                    resolve(diags);
+                }
+            }
+
+            dispose = vscode.languages.onDidChangeDiagnostics((event) => {
+                log('onDidChangeDiagnostics %o', event);
+                const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
+                if (matches.length) {
+                    updateDiags();
+                    log('Diags: %o', diags);
+                    resolveP();
+                }
+            });
+
+            if (diags.length) {
+                resolveP();
+            }
+        });
+
+        const waitResult = {
+            diags: Promise.race([diagsP, sleep(timeout)]).then((r) => r || diags),
             dispose: cleanUp,
         };
+
+        return waitResult;
     }
 });
 

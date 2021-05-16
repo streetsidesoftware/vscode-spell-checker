@@ -46,9 +46,6 @@ export async function activateExtension(): Promise<ExtensionActivation | undefin
  * Activates the spell checker extension
  */
 export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
-    const extensionId = getExtensionId();
-    log(`Activate: ${extensionId}`);
-    vscode.extensions.getExtension(extensionId)!;
     try {
         const doc = await vscode.workspace.openTextDocument(docUri);
         const editor = await vscode.window.showTextDocument(doc);
@@ -87,4 +84,10 @@ function getExtensionId() {
 export function log(...params: Parameters<typeof console.log>): void {
     const dt = new Date();
     console.log(`${chalk.cyan(dt.toISOString())} ${format(...params)}`);
+}
+
+export const sampleWorkspaceRoot = vscode.Uri.file(path.resolve(__dirname, '../sampleWorkspaces'));
+
+export function sampleWorkspaceUri(...pathSegments: string[]): vscode.Uri {
+    return vscode.Uri.joinPath(sampleWorkspaceRoot, ...pathSegments);
 }
