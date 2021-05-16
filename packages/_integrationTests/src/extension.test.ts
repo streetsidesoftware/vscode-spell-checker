@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import { getDocUri, activateExtension, loadDocument, sleep } from './helper';
+import { getDocUri, activateExtension, loadDocument, sleep, log, chalk } from './helper';
 import { expect } from 'chai';
 import { ExtensionApi } from './ExtensionApi';
 import * as vscode from 'vscode';
@@ -15,13 +15,12 @@ type Api = {
 const apiSignature: Api = {
     addWordToUserDictionary: 'addWordToUserDictionary',
     addWordToWorkspaceDictionary: 'addWordToWorkspaceDictionary',
-    // cSpellClient: 'cSpellClient',
     disableCurrentLanguage: 'disableCurrentLanguage',
     disableLanguageId: 'disableLanguageId',
-    // disableLocale: 'disableLocale',
+    disableLocale: 'disableLocale',
     enableCurrentLanguage: 'enableCurrentLanguage',
     enableLanguageId: 'enableLanguageId',
-    // enableLocale: 'enableLocale',
+    enableLocale: 'enableLocale',
     registerConfig: 'registerConfig',
     triggerGetSettings: 'triggerGetSettings',
     updateSettings: 'updateSettings',
@@ -33,6 +32,7 @@ describe('Launch code spell extension', function () {
     const docUri = getDocUri('diagnostics.txt');
 
     it('Verify the extension starts', async () => {
+        log(chalk.yellow('Verify the extension starts'));
         const extContext = await activateExtension();
         const docContext = await loadDocument(docUri);
         expect(extContext).to.not.be.undefined;
@@ -42,9 +42,42 @@ describe('Launch code spell extension', function () {
         expect(extApi).to.equal(extContext?.extActivate);
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
         expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
+        log(chalk.yellow('Done: Verify the extension starts'));
+    });
+
+    it('Verifies that the right config was found', async () => {
+        log(chalk.yellow('Verifies that the right config was found'));
+        const ext = isDefined(await activateExtension());
+        const uri = getDocUri('example.md');
+        const expectedConfigUri = getDocUri('cspell.json');
+        const diagsListener = waitForDiag(uri);
+        const folders = vscode.workspace.workspaceFolders;
+        log(
+            `Workspace Folders:
+        %O
+        `,
+            folders
+        );
+        try {
+            const docContextMaybe = await loadDocument(uri);
+            expect(docContextMaybe).to.not.be.undefined;
+            const docContext = isDefined(docContextMaybe);
+
+            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
+
+            const { excludedBy, fileEnabled, configFiles } = config;
+            log('config: %o', { excludedBy, fileEnabled, configFiles });
+
+            const configUri = vscode.Uri.parse(config.configFiles[0] || '');
+            expect(configUri.toString()).to.equal(expectedConfigUri.toString());
+        } finally {
+            diagsListener.dispose();
+        }
+        log(chalk.yellow('Done: Verifies that the right config was found'));
     });
 
     it('Verifies that some spelling errors were found', async () => {
+        log(chalk.yellow('Verifies that some spelling errors were found'));
         const ext = isDefined(await activateExtension());
         const uri = getDocUri('example.md');
         const diagsListener = waitForDiag(uri);
@@ -56,20 +89,18 @@ describe('Launch code spell extension', function () {
             const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
 
             const { excludedBy, fileEnabled } = config;
-            console.log(`config: ${JSON.stringify({ excludedBy, fileEnabled })}`);
+            log('config: %O', { excludedBy, fileEnabled });
 
             const cfg = config.docSettings || config.settings;
             const { enabled, dictionaries, languageId } = cfg || {};
 
-            console.log(JSON.stringify({ enabled, dictionaries, languageId }));
+            log('cfg: %O', { enabled, dictionaries, languageId });
 
             const diags = await Promise.race([diagsListener.diags, sleep(120000)]);
             await sleep(3000);
-            const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join(', ') : 'Timeout';
-            console.log(`Diag Messages: size(${diags?.length}) msg: ${msgs}`);
-
-            console.log('getDiagnostics:');
-            console.log(JSON.stringify(vscode.languages.getDiagnostics()));
+            const msgs = diags ? diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n') : 'Timeout';
+            log(`Diag Messages: size(${diags?.length}) msg: \n${msgs}`);
+            log('diags: \n%o', diags || 'No diags registered');
 
             expect(fileEnabled).to.be.true;
 
@@ -78,6 +109,7 @@ describe('Launch code spell extension', function () {
         } finally {
             diagsListener.dispose();
         }
+        log(chalk.yellow('Done: Verifies that some spelling errors were found'));
     });
 
     function waitForDiag(uri: vscode.Uri) {
@@ -95,15 +127,12 @@ describe('Launch code spell extension', function () {
         return {
             diags: new Promise<R>((resolve) => {
                 dispose = vscode.languages.onDidChangeDiagnostics((event) => {
-                    console.log(JSON.stringify(event));
+                    log('onDidChangeDiagnostics %o', event);
                     const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
                     if (matches.length) {
-                        console.log(JSON.stringify(vscode.languages.getDiagnostics()));
-                        vscode.languages
-                            .getDiagnostics(uri)
-                            .map((d) => (console.log(JSON.stringify(d)), d))
-                            .filter((diag) => diag.source === source)
-                            .forEach((diag) => diags.push(diag));
+                        const matchingDiags = vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
+                        log('Diags: %o', matchingDiags);
+                        matchingDiags.forEach((diag) => diags.push(diag));
                         if (!resolved) {
                             resolved = true;
                             resolve(diags);

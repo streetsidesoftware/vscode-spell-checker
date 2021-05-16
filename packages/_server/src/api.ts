@@ -1,6 +1,18 @@
 import type * as config from './config/cspellConfig';
 
-export * from './config/cspellConfig';
+export type {
+    LanguageSetting,
+    DictionaryDefinition,
+    DictionaryFileTypes,
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+    SpellCheckerSettings,
+    CustomDictionaryEntry,
+    CustomDictionaryWithScope,
+    CSpellUserSettingsWithComments,
+    CSpellUserSettings,
+    SpellCheckerSettingsProperties,
+} from './config/cspellConfig';
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
