@@ -122,6 +122,7 @@ describe('Launch code spell extension', function () {
         }
 
         function updateDiags() {
+            log('updateDiags');
             diags.splice(0, diags.length, ...fetchDiags());
         }
 
@@ -143,9 +144,11 @@ describe('Launch code spell extension', function () {
 
             async function updateAndResolve() {
                 updateDiags();
-                for (let i = 0; i < 10 && !diags.length; ++i) {
+                let i;
+                for (i = 0; i < 10 && !diags.length; ++i) {
                     log('sleeping %d', i);
                     await sleep(1000);
+                    updateDiags();
                 }
                 log('Matching Diags: %o', diags);
                 resolveP();
