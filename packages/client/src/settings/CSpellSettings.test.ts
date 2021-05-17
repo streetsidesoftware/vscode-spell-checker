@@ -3,28 +3,25 @@ import { readSettings, updateSettings } from './CSpellSettings';
 import * as CSS from './CSpellSettings';
 import { unique } from '../util';
 import { CSpellUserSettings } from '.';
+import { Uri } from 'vscode';
 
 describe('Validate CSpellSettings functions', () => {
     const filenameSampleCSpellFile = getPathToSample('cSpell.json');
 
-    test('tests reading a settings file', () => {
-        return readSettings(filenameSampleCSpellFile).then((settings) => {
-            expect(Object.keys(settings)).not.toHaveLength(0);
-            expect(settings.enabled).toBeUndefined();
-            expect(settings.enabledLanguageIds).toBeUndefined();
-        });
+    test('tests reading a settings file', async () => {
+        const settings = await readSettings(filenameSampleCSpellFile);
+        expect(Object.keys(settings)).not.toHaveLength(0);
+        expect(settings.enabled).toBeUndefined();
+        expect(settings.enabledLanguageIds).toBeUndefined();
     });
 
-    test('tests writing a file', () => {
+    test('tests writing a file', async () => {
         const filename = getPathToTemp('tempCSpell.json');
-        return readSettings(filenameSampleCSpellFile).then((settings) => {
-            settings.enabled = false;
-            return updateSettings(filename, settings)
-                .then(() => readSettings(filename))
-                .then((writtenSettings) => {
-                    expect(writtenSettings).toEqual(settings);
-                });
-        });
+        const settings = await readSettings(filenameSampleCSpellFile);
+        settings.enabled = false;
+        await updateSettings(filename, settings);
+        const writtenSettings = await readSettings(filename);
+        expect(writtenSettings).toEqual(settings);
     });
 
     test('Validate default settings', () => {
@@ -84,9 +81,9 @@ describe('Validate CSpellSettings functions', () => {
 });
 
 function getPathToSample(baseFilename: string) {
-    return path.join(__dirname, '..', '..', 'samples', baseFilename);
+    return Uri.file(path.join(__dirname, '..', '..', 'samples', baseFilename));
 }
 
 function getPathToTemp(baseFilename: string) {
-    return path.join(__dirname, '..', '..', 'temp', baseFilename);
+    return Uri.file(path.join(__dirname, '..', '..', 'temp', baseFilename));
 }

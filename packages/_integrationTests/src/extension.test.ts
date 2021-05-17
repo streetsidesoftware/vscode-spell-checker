@@ -122,6 +122,7 @@ describe('Launch code spell extension', function () {
         }
 
         function updateDiags() {
+            log('updateDiags');
             diags.splice(0, diags.length, ...fetchDiags());
         }
 
@@ -141,20 +142,30 @@ describe('Launch code spell extension', function () {
                 }
             }
 
+            async function updateAndResolve() {
+                updateDiags();
+                let i;
+                for (i = 0; i < 10 && !diags.length; ++i) {
+                    log('sleeping %d', i);
+                    await sleep(1000);
+                    updateDiags();
+                }
+                log('Matching Diags: %o', diags);
+                resolveP();
+            }
+
+            if (diags.length) {
+                resolveP();
+            }
+
             dispose = vscode.languages.onDidChangeDiagnostics((event) => {
                 log('onDidChangeDiagnostics %o', event);
                 log('All diags: %o', vscode.languages.getDiagnostics(uri));
                 const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
                 if (matches.length) {
-                    updateDiags();
-                    log('Matching Diags: %o', diags);
-                    resolveP();
+                    updateAndResolve();
                 }
             });
-
-            if (diags.length) {
-                resolveP();
-            }
         });
 
         const waitResult = {
