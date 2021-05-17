@@ -143,10 +143,11 @@ describe('Launch code spell extension', function () {
 
             dispose = vscode.languages.onDidChangeDiagnostics((event) => {
                 log('onDidChangeDiagnostics %o', event);
+                log('All diags: %o', vscode.languages.getDiagnostics(uri));
                 const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
                 if (matches.length) {
                     updateDiags();
-                    log('Diags: %o', diags);
+                    log('Matching Diags: %o', diags);
                     resolveP();
                 }
             });
