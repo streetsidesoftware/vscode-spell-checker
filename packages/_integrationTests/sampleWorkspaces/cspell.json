@@ -1,4 +1,15 @@
 {
     "version": "0.2",
+    "dictionaryDefinitions": [
+        {
+            "path": "./user-words.txt",
+            "name": "user-words",
+            "addWords": true,
+            "scope": "user"
+        }
+    ],
+    "dictionaries": [
+        "user-words"
+    ],
     "words": []
 }
