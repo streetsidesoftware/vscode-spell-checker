@@ -1,0 +1,17 @@
+{
+  "name": "workspace2",
+  "version": "1.0.0",
+  "description": "Sample Workspace 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test"
+  },
+  "cspell": {
+    "version": "0.2",
+    "words": [
+      "workspacetwo"
+    ]
+  },
+  "author": "",
+  "license": "MIT"
+}

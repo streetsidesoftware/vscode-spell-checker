@@ -33,10 +33,18 @@ export const configFileLocations = [
     'cspell.config.cjs',
 ];
 
+export const nestedConfigLocations = ['package.json'];
+
 const regIsJson = /\.jsonc?$/;
 export const configFileLocationsJson = configFileLocations.filter((a) => regIsJson.test(a));
 
-export const possibleConfigFiles = new Set(configFileLocations);
+export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConfigLocations));
+/**
+ * A set of files that if changed, could indicate that the cspell configuration changed.
+ *
+ * An alias of possibleConfigFiles
+ */
+export const configFilesToWatch = possibleConfigFiles;
 
 export interface CSpellSettings extends CSpellUserSettingsWithComments {}
 
