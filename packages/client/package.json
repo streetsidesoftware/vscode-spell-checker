@@ -20,9 +20,9 @@
     },
     "main": "./dist/extension.js",
     "scripts": {
-        "clean": "rimraf out",
+        "clean": "rimraf out dist coverage",
         "clean-build": "yarn run clean && yarn run build",
-        "build": "tsc && webpack --mode none",
+        "build": "webpack --mode none",
         "build-production": "yarn run clean && webpack --mode production",
         "build-integration-test": "yarn run build && cd ../_integrationTests && yarn install && yarn run build",
         "lint": "eslint 'src/**'",

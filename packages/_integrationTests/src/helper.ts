@@ -2,12 +2,14 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { ExtensionApi } from './ExtensionApi';
+import { format } from 'util';
+import * as Chalk from 'chalk';
 
-console.log(`Current directory: ${__dirname}`);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extensionPackage = require('../../../package.json');
-
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
+
+export const chalk = new Chalk.Instance({ level: 1 });
 
 export interface DocumentContext {
     doc: vscode.TextDocument;
@@ -25,7 +27,7 @@ export interface ExtensionActivation {
  */
 export async function activateExtension(): Promise<ExtensionActivation | undefined> {
     const extensionId = getExtensionId();
-    console.log(`Activate: ${extensionId}`);
+    log(`Activate: ${extensionId}`);
     const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId)!;
     try {
         const extActivate = await ext.activate();
@@ -44,9 +46,6 @@ export async function activateExtension(): Promise<ExtensionActivation | undefin
  * Activates the spell checker extension
  */
 export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
-    const extensionId = getExtensionId();
-    console.log(`Activate: ${extensionId}`);
-    vscode.extensions.getExtension(extensionId)!;
     try {
         const doc = await vscode.workspace.openTextDocument(docUri);
         const editor = await vscode.window.showTextDocument(doc);
@@ -80,4 +79,15 @@ function getExtensionId() {
     // The extensionId is `publisher.name` from package.json
     const { name = '', publisher = '' } = extensionPackage;
     return `${publisher}.${name}`;
+}
+
+export function log(...params: Parameters<typeof console.log>): void {
+    const dt = new Date();
+    console.log(`${chalk.cyan(dt.toISOString())} ${format(...params)}`);
+}
+
+export const sampleWorkspaceRoot = vscode.Uri.file(path.resolve(__dirname, '../sampleWorkspaces'));
+
+export function sampleWorkspaceUri(...pathSegments: string[]): vscode.Uri {
+    return vscode.Uri.joinPath(sampleWorkspaceRoot, ...pathSegments);
 }

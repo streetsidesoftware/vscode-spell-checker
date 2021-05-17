@@ -156,7 +156,8 @@ export class DocumentSettings {
 
     public async findCSpellConfigurationFilesForUri(docUri: string | Uri, ignoreDefaultConfig = true): Promise<Uri[]> {
         const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
-        const settings = await this.fetchSettingsForUri(uri.toString());
+        const docUriAsString = uri.toString();
+        const settings = await this.fetchSettingsForUri(docUriAsString);
         const sources = getSources(settings.settings);
 
         const folders = await this.folders;
@@ -167,12 +168,13 @@ export class DocumentSettings {
             .map((filename) => Uri.file(filename))
             .reverse();
 
-        const files = ignoreDefaultConfig ? allFiles.filter((f) => f.path.indexOf('/@cspell/') < 0) : allFiles;
+        const configFiles = ignoreDefaultConfig ? allFiles.filter((f) => f.path.indexOf('/@cspell/') < 0) : allFiles;
 
-        if (!folders.length) {
-            return filterConfigFilesToMatchInheritedPathOfFile(files, uri);
+        if (!folders.length || !this._matchingFoldersForUri(folders, docUriAsString).length) {
+            return filterConfigFilesToMatchInheritedPathOfFile(configFiles, uri);
         }
-        return files.filter((uri) => this._matchingFoldersForUri(folders, uri.toString()).length > 0);
+
+        return configFiles.filter((configUri) => this._matchingFoldersForUri(folders, configUri.toString()).length > 0);
     }
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {

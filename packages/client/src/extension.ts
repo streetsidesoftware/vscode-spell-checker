@@ -203,7 +203,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {
         for (const uri of files) {
-            if (settings.possibleConfigFiles.has(path.basename(uri.fsPath))) {
+            if (settings.configFilesToWatch.has(path.basename(uri.fsPath))) {
                 triggerGetSettings();
                 break;
             }

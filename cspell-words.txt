@@ -88,5 +88,6 @@ visualstudio
 vsce
 vsmarketplacebadge
 webhook
+webpack'ed
 webview
 yandex
