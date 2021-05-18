@@ -79,7 +79,7 @@ describe('Launch code spell extension', function () {
         log(chalk.yellow('Verifies that some spelling errors were found'));
         const ext = isDefined(await activateExtension());
         const uri = getDocUri('example.md');
-        const diagsListener = waitForDiag(uri, 60000);
+        const diagsListener = waitForDiag(uri, 10000);
         try {
             const docContextMaybe = await loadDocument(uri);
             expect(docContextMaybe).to.not.be.undefined;
@@ -154,18 +154,19 @@ describe('Launch code spell extension', function () {
                 resolveP();
             }
 
-            if (diags.length) {
-                resolveP();
-            }
-
             dispose = vscode.languages.onDidChangeDiagnostics((event) => {
                 log('onDidChangeDiagnostics %o', event);
-                log('All diags: %o', vscode.languages.getDiagnostics(uri));
-                const matches = event.uris.map((u) => u.toString()).filter((u) => u === uriStr);
+                log(chalk`{green All for uri diags:} %o`, vscode.languages.getDiagnostics(uri));
+                log(chalk`{green ALL diags:}\n%o`, vscode.languages.getDiagnostics());
+                const matches = event.uris.filter((u) => u.toString() === uriStr);
                 if (matches.length) {
                     updateAndResolve();
                 }
             });
+
+            if (diags.length) {
+                resolveP();
+            }
         });
 
         const waitResult = {
