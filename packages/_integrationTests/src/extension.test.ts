@@ -154,19 +154,19 @@ describe('Launch code spell extension', function () {
                 resolveP();
             }
 
-            if (diags.length) {
-                resolveP();
-            }
-
             dispose = vscode.languages.onDidChangeDiagnostics((event) => {
                 log('onDidChangeDiagnostics %o', event);
-                log('All diags: %o', vscode.languages.getDiagnostics(uri));
+                log(chalk`{green All for uri diags:} %o`, vscode.languages.getDiagnostics(uri));
+                log(chalk`{green ALL diags:}\n%o`, vscode.languages.getDiagnostics());
                 const matches = event.uris.filter((u) => u.toString() === uriStr);
                 if (matches.length) {
-                    log('ALL diags:\n%o', vscode.languages.getDiagnostics());
                     updateAndResolve();
                 }
             });
+
+            if (diags.length) {
+                resolveP();
+            }
         });
 
         const waitResult = {
