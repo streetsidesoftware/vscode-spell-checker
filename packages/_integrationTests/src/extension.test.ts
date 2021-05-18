@@ -163,17 +163,7 @@ describe('Launch code spell extension', function () {
                 log('All diags: %o', vscode.languages.getDiagnostics(uri));
                 const matches = event.uris.filter((u) => u.toString() === uriStr);
                 if (matches.length) {
-                    for (const m of matches) {
-                        log(
-                            'Diags Found \n%o\n%o',
-                            m,
-                            vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source)
-                        );
-                    }
-                    log(
-                        'ALL diags:\n%o',
-                        vscode.languages.getDiagnostics().map(([uri, diags]) => [uri, diags.filter((diag) => diag.source === source)])
-                    );
+                    log('ALL diags:\n%o', vscode.languages.getDiagnostics());
                     updateAndResolve();
                 }
             });
