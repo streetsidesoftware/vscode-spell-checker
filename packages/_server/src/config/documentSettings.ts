@@ -56,7 +56,7 @@ const defaultExclude: Glob[] = [
 ];
 
 const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled'];
-const schemeBlackList = ['git', 'output', 'debug', 'vscode'];
+const schemeBlockList = ['git', 'output', 'debug', 'vscode'];
 
 const defaultRootUri = Uri.file('').toString();
 
@@ -295,7 +295,7 @@ export function isUriAllowed(uri: string, schemes?: string[]) {
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
-export function isUriBlackListed(uri: string, schemes: string[] = schemeBlackList) {
+export function isUriBlocked(uri: string, schemes: string[] = schemeBlockList) {
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
