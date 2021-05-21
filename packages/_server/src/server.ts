@@ -18,7 +18,7 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
-import { filter, tap, debounce, debounceTime, flatMap, take } from 'rxjs/operators';
+import { filter, tap, debounce, debounceTime, mergeMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
 import { Glob, Text } from 'cspell-lib';
 
@@ -30,7 +30,7 @@ import {
     correctBadSettings,
     DocumentSettings,
     isUriAllowed,
-    isUriBlackListed,
+    isUriBlocked,
     SettingsCspell,
     stringifyPatterns,
 } from './config/documentSettings';
@@ -109,26 +109,24 @@ export function run(): void {
 
     const patternMatcher = new PatternMatcher();
 
-    connection.onInitialize(
-        (params: InitializeParams): InitializeResult => {
-            // Hook up the logger to the connection.
-            log('onInitialize');
-            setWorkspaceBase(params.rootUri ? params.rootUri : '');
-            const capabilities: ServerCapabilities = {
-                // Tell the client that the server works in FULL text document sync mode
-                textDocumentSync: {
-                    openClose: true,
-                    change: TextDocumentSyncKind.Incremental,
-                    willSave: true,
-                    save: { includeText: true },
-                },
-                codeActionProvider: {
-                    codeActionKinds: [CodeActionKind.QuickFix],
-                },
-            };
-            return { capabilities };
-        }
-    );
+    connection.onInitialize((params: InitializeParams): InitializeResult => {
+        // Hook up the logger to the connection.
+        log('onInitialize');
+        setWorkspaceBase(params.rootUri ? params.rootUri : '');
+        const capabilities: ServerCapabilities = {
+            // Tell the client that the server works in FULL text document sync mode
+            textDocumentSync: {
+                openClose: true,
+                change: TextDocumentSyncKind.Incremental,
+                willSave: true,
+                save: { includeText: true },
+            },
+            codeActionProvider: {
+                codeActionKinds: [CodeActionKind.QuickFix],
+            },
+        };
+        return { capabilities };
+    });
 
     // The settings have changed. Is sent on server activation as well.
     connection.onDidChangeConfiguration(onConfigChange);
@@ -313,7 +311,7 @@ export function run(): void {
     const disposableValidate = validationRequestStream.pipe(filter((doc) => !validationByDoc.has(doc.uri))).subscribe((doc) => {
         if (!validationByDoc.has(doc.uri)) {
             const uri = doc.uri;
-            if (isUriBlackListed(uri)) {
+            if (isUriBlocked(uri)) {
                 validationByDoc.set(
                     doc.uri,
                     validationRequestStream
@@ -331,12 +329,12 @@ export function run(): void {
                         .pipe(
                             filter((doc) => uri === doc.uri),
                             tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
-                            flatMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
+                            mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
                             debounce((dsp) =>
                                 timer(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
                             ),
                             filter((dsp) => !blockValidation.has(dsp.doc.uri)),
-                            flatMap(validateTextDocument)
+                            mergeMap(validateTextDocument)
                         )
                         .subscribe((diag) => connection.sendDiagnostics(diag))
                 );

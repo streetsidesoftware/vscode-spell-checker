@@ -1,4 +1,4 @@
-import { DocumentSettings, isUriAllowed, isUriBlackListed, debugExports, correctBadSettings, ExcludedByMatch } from './documentSettings';
+import { DocumentSettings, isUriAllowed, isUriBlocked, debugExports, correctBadSettings, ExcludedByMatch } from './documentSettings';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { getWorkspaceFolders, getConfiguration } from './vscode.config';
 import * as Path from 'path';
@@ -76,11 +76,11 @@ describe('Validate DocumentSettings', () => {
 
     test('checks isUriBlackListed', () => {
         const uriFile = Uri.file(__filename);
-        expect(isUriBlackListed(uriFile.toString())).toBe(false);
+        expect(isUriBlocked(uriFile.toString())).toBe(false);
 
         const uriGit = uriFile.with({ scheme: 'debug' });
 
-        expect(isUriBlackListed(uriGit.toString())).toBe(true);
+        expect(isUriBlocked(uriGit.toString())).toBe(true);
     });
 
     test('folders', async () => {
