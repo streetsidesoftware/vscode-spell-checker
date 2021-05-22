@@ -276,8 +276,7 @@ export async function enableLanguageIdForClosestTarget(
         }
 
         if (
-            vscode.workspace.workspaceFolders &&
-            vscode.workspace.workspaceFolders.length &&
+            vscode.workspace.workspaceFolders?.length &&
             (await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false, forceUpdateVSCode))
         ) {
             return;

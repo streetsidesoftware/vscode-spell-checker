@@ -37,7 +37,6 @@ export const configFileLocations = [
 export const nestedConfigLocations = ['package.json'];
 
 const regIsJson = /\.jsonc?$/;
-export const configFileLocationsJson = configFileLocations.filter((a) => regIsJson.test(a));
 
 export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConfigLocations));
 /**
@@ -49,39 +48,26 @@ export const configFilesToWatch = possibleConfigFiles;
 
 export interface CSpellSettings extends CSpellUserSettingsWithComments {}
 
-// cSpell:ignore hte
-const defaultSettings: CSpellUserSettingsWithComments = {
+const defaultSettings: CSpellSettings = Object.freeze({
     version: currentSettingsFileVersion,
-};
-
-// cSpell:ignore hte
-const defaultSettingsWithComments: CSpellSettings = {
-    ...defaultSettings,
-};
+});
 
 export function getDefaultSettings(): CSpellSettings {
-    return Object.freeze(defaultSettings);
+    return defaultSettings;
 }
 
-export function readSettings(filename: Uri): Promise<CSpellSettings> {
-    return (
-        fs
-            .readFile(filename.fsPath, 'utf8')
-            .then(
-                (cfgJson) => cfgJson,
-                () => json.stringify(defaultSettingsWithComments, null, 4)
-            )
-            .then((cfgJson) => json.parse(cfgJson) as CSpellSettings)
-            // covert parse errors into the defaultSettings
-            .then(
-                (a) => a,
-                (_error) => defaultSettingsWithComments
-            )
-            .then((settings) => ({ ...defaultSettings, ...settings }))
-    );
+export function readRawSettingsFile(filename: Uri): Promise<string | undefined> {
+    return fs.readFile(filename.fsPath, 'utf8').catch((reason) => {
+        return isNodeError(reason) && reason.code === 'ENOENT' ? undefined : Promise.reject(reason);
+    });
 }
 
-export function updateSettings(filename: Uri, settings: CSpellSettings): Promise<CSpellSettings> {
+export function readSettings(filename: Uri, defaultSettingsIfNotFound?: CSpellSettings): Promise<CSpellSettings> {
+    const defaults = defaultSettingsIfNotFound ?? defaultSettings;
+    return readRawSettingsFile(filename).then((cfgJson) => (cfgJson === undefined ? defaults : (json.parse(cfgJson) as CSpellSettings)));
+}
+
+export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<CSpellSettings> {
     const fsPath = filename.fsPath;
     return fs
         .mkdirp(path.dirname(fsPath))
@@ -162,20 +148,42 @@ export function removeLanguageIdsFromSettingsAndUpdate(filename: Uri, languageId
 }
 
 export async function readSettingsFileAndApplyUpdate(
-    filename: Uri,
+    cspellConfigUri: Uri,
     action: (settings: CSpellSettings) => CSpellSettings
 ): Promise<CSpellSettings> {
-    const settings = await readSettings(filename);
+    if (!isUpdateSupportedForConfigFileFormat(cspellConfigUri)) {
+        return Promise.reject(
+            new FailedToUpdateConfigFile(`Update for config file format not supported\nFile: ${cspellConfigUri.toString()}`)
+        );
+    }
+    const settings = await readSettings(cspellConfigUri);
     const newSettings = action(settings);
-    return updateSettings(filename, newSettings);
+    return writeSettings(cspellConfigUri, newSettings);
 }
 
 export function normalizeWord(word: string): string[] {
     return [word].map((a) => a.trim()).filter((a) => !!a);
 }
 
-export class UnsupportedConfigFileFormat extends Error {
+export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {
+    const u = uri.with({ fragment: '', query: '' });
+    return regIsJson.test(u.toString());
+}
+
+export class FailedToUpdateConfigFile extends Error {
     constructor(message: string) {
         super(message);
     }
+}
+
+interface NodeError extends Error {
+    code: string;
+}
+
+function isError(e: any): e is Error {
+    return e instanceof Error || ((<Error>e).name !== undefined && (<Error>e).message !== undefined);
+}
+
+function isNodeError(e: any): e is NodeError {
+    return isError(e) && (<NodeError>e).code !== undefined;
 }
