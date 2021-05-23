@@ -1,12 +1,16 @@
-import * as path from 'path';
-import { readSettings, updateSettings } from './CSpellSettings';
+import { readSettings, writeSettings } from './CSpellSettings';
 import * as CSS from './CSpellSettings';
 import { unique } from '../util';
 import { CSpellUserSettings } from '.';
 import { Uri } from 'vscode';
+import { fsRemove, getPathToTemp, getUriToSample, writeFile } from '../test/helpers';
 
 describe('Validate CSpellSettings functions', () => {
-    const filenameSampleCSpellFile = getPathToSample('cSpell.json');
+    const filenameSampleCSpellFile = getUriToSample('cSpell.json');
+
+    beforeAll(() => {
+        return fsRemove(getPathToTemp('.'));
+    });
 
     test('tests reading a settings file', async () => {
         const settings = await readSettings(filenameSampleCSpellFile);
@@ -15,13 +19,48 @@ describe('Validate CSpellSettings functions', () => {
         expect(settings.enabledLanguageIds).toBeUndefined();
     });
 
+    test('reading a file that does not exist', async () => {
+        const pSettings = CSS.readRawSettingsFile(getUriToSample('not_found/cspell.json'));
+        await expect(pSettings).resolves.toBeUndefined();
+    });
+
+    test('reading a settings file that does not exist results in default', async () => {
+        const pSettings = CSS.readSettings(getUriToSample('not_found/cspell.json'));
+        await expect(pSettings).resolves.toBe(CSS.getDefaultSettings());
+    });
+
     test('tests writing a file', async () => {
-        const filename = getPathToTemp('tempCSpell.json');
+        const filename = getPathToTemp('dir1/tempCSpell.json');
         const settings = await readSettings(filenameSampleCSpellFile);
         settings.enabled = false;
-        await updateSettings(filename, settings);
+        await writeSettings(filename, settings);
         const writtenSettings = await readSettings(filename);
         expect(writtenSettings).toEqual(settings);
+    });
+
+    test('tests writing an unsupported file format', async () => {
+        const filename = getPathToTemp('tempCSpell.js');
+        await writeFile(filename, sampleJSConfig);
+        const r = CSS.readSettingsFileAndApplyUpdate(filename, (s) => s);
+        await expect(r).rejects.toBeInstanceOf(CSS.FailedToUpdateConfigFile);
+    });
+
+    test('addWordToSettingsAndUpdate', async () => {
+        const word = 'word';
+        const filename = getPathToTemp('addWordToSettingsAndUpdate/cspell.json');
+        await writeFile(filename, sampleJsonConfig);
+        const r = await CSS.addWordToSettingsAndUpdate(filename, word);
+        expect(r.words).toEqual(expect.arrayContaining([word]));
+        expect(await readSettings(filename)).toEqual(r);
+    });
+
+    test('addIgnoreWordToSettingsAndUpdate', async () => {
+        const word = 'word';
+        const filename = getPathToTemp('addIgnoreWordToSettingsAndUpdate/cspell.json');
+        await writeFile(filename, sampleJsonConfig);
+        const r = await CSS.addIgnoreWordToSettingsAndUpdate(filename, word);
+        expect(r.ignoreWords).toEqual(expect.arrayContaining([word]));
+        expect(await readSettings(filename)).toEqual(r);
     });
 
     test('Validate default settings', () => {
@@ -78,12 +117,34 @@ describe('Validate CSpellSettings functions', () => {
         const result = CSS.removeWordsFromSettings(settings, ['BLUE', 'pink', 'yellow']);
         expect(result.words).toEqual(['apple', 'banana', 'orange', 'green', 'red']);
     });
+
+    test.each`
+        uri                               | expected
+        ${''}                             | ${false}
+        ${'file:///x/cspell.yml'}         | ${false}
+        ${'file:///x/cspell.config.js'}   | ${false}
+        ${'file:///x/cspell.config.cjs'}  | ${false}
+        ${'file:///x/cspell.json'}        | ${true}
+        ${'file:///x/cspell.json?q=a'}    | ${true}
+        ${'file:///x/cspell.jsonc?q=a#f'} | ${true}
+        ${'file:///x/cspell.jsonc#f'}     | ${true}
+    `('isSupportedConfigFileFormat $uri', ({ uri, expected }: { uri: string; expected: boolean }) => {
+        const uriCfg = Uri.parse(uri);
+        expect(CSS.isUpdateSupportedForConfigFileFormat(uriCfg)).toBe(expected);
+    });
 });
 
-function getPathToSample(baseFilename: string) {
-    return Uri.file(path.join(__dirname, '..', '..', 'samples', baseFilename));
+const sampleJSConfig = `
+module.exports = {
+    version: "0.2",
+    words: [],
 }
+`;
 
-function getPathToTemp(baseFilename: string) {
-    return Uri.file(path.join(__dirname, '..', '..', 'temp', baseFilename));
-}
+const sampleConfig: CSpellUserSettings = {
+    version: '0.2',
+    description: 'Sample Test Config',
+    import: [],
+};
+
+const sampleJsonConfig = JSON.stringify(sampleConfig, undefined, 2);

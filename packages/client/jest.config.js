@@ -9,8 +9,6 @@ module.exports = {
     testRegex: '\\.(test|spec|perf)\\.tsx?$',
     testPathIgnorePatterns: [
         '/node_modules/',
-        '<rootDir>/src/test',
-        '<rootDir>/integrationTests'
     ],
     moduleFileExtensions: [
         'ts',
@@ -26,3 +24,5 @@ module.exports = {
         '^vscode$': '<rootDir>/src/__mocks__/vscode.js'
     }
 }
+
+// cspell:ignore webm
