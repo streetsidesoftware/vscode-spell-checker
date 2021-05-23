@@ -24,3 +24,5 @@ module.exports = {
         '^vscode$': '<rootDir>/src/__mocks__/vscode.js'
     }
 }
+
+// cspell:ignore webm
