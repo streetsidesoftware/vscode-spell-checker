@@ -22,24 +22,32 @@ export async function writeFile(file: Uri, content: string): Promise<void> {
     return fs.writeFile(fsPath, content, 'utf-8');
 }
 
-interface StackItem {
+export interface StackItem {
     file: string;
     line: number | undefined;
     column: number | undefined;
 }
 
 export function getCallStack(): StackItem[] {
-    const reg = /^at.*\((.*)\)$/;
     const err = new Error();
-    const lines = mustBeDefined(err.stack)
+    return parseStackTrace(mustBeDefined(err.stack));
+}
+
+export function parseStackTrace(stackTrace: string): StackItem[] {
+    const regStackLine = /^at\s+(.*)/;
+    const regStackFile = /\((.*)\)$/;
+    const regParts = /^(.*):(\d+):(\d+)$/;
+    const lines = stackTrace
         .split('\n')
         .map((a) => a.trim())
-        .filter((line) => reg.test(line))
-        .map((line) => line.match(reg)?.[1])
+        .map((line) => line.match(regStackLine)?.[1])
+        .filter(isString)
+        .map((line) => line.match(regStackFile)?.[1] || line)
         .filter(isString);
     const stack: StackItem[] = lines
-        .map((line) => line.split(':'))
-        .map(([file, ln, col]) => ({ file, line: toNum(ln), column: toNum(col) }));
+        .map((line) => line.match(regParts))
+        .filter(isDefined)
+        .map(([_, file, ln, col]) => ({ file, line: toNum(ln), column: toNum(col) }));
     return stack.slice(1);
 }
 
@@ -49,6 +57,10 @@ export function toNum(n: string | undefined): number | undefined {
 
 export function isString(s: unknown): s is string {
     return typeof s === 'string';
+}
+
+export function isDefined<T>(t: T | undefined | null): t is T {
+    return t !== undefined && t !== null;
 }
 
 export function mustBeDefined<T>(t: T | undefined): T {
