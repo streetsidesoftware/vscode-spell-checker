@@ -289,7 +289,6 @@ def sum_it(self, seq):
 ### Exclude patterns
 
 -   `Urls`<sup>1</sup> -- Matches urls
--   `HexDigits` -- Matches hex digits: `/^x?[0-1a-f]+$/i`
 -   `HexValues` -- Matches common hex format like #aaa, 0xfeef, \\u0134
 -   `EscapeCharacters`<sup>1</sup> -- matches special characters: '\\n', '\\t' etc.
 -   `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
