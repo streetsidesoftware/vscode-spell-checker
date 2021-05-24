@@ -75,11 +75,19 @@ export function addWordToUserDictionary(word: string): Thenable<void> {
 }
 
 function addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
+    return handleErrors(_addWordToTarget(word, target, docUri));
+}
+
+function _addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
     return di.dependencies.dictionaryHelper.addWordToTarget(word, target, docUri);
 }
 
-export async function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
+export function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
+    return handleErrors(_addIgnoreWordToTarget(word, target, uri));
+}
+
+async function _addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
@@ -99,7 +107,11 @@ export function removeWordFromUserDictionary(word: string): Thenable<void> {
     return removeWordFromTarget(word, Settings.Target.Global, undefined);
 }
 
-async function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+    return handleErrors(_removeWordFromTarget(word, target, uri));
+}
+
+async function _removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
@@ -109,12 +121,12 @@ async function removeWordFromTarget(word: string, target: Settings.Target, uri: 
 
 export function enableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
     uri = parseOptionalUri(uri);
-    return Settings.enableLanguageIdForClosestTarget(languageId, true, uri);
+    return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, true, uri));
 }
 
 export function disableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
     uri = parseOptionalUri(uri);
-    return Settings.enableLanguageIdForClosestTarget(languageId, false, uri);
+    return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, false, uri));
 }
 
 export function userCommandOnCurrentSelectionOrPrompt(
@@ -132,6 +144,23 @@ export function userCommandOnCurrentSelectionOrPrompt(
                   word && fnAction(word, document && document.uri);
               });
     };
+}
+
+function isError(e: unknown): e is Error {
+    if (!e) return false;
+    const err = <Error>e;
+    return err.message !== undefined && err.name !== undefined;
+}
+
+function onError(reason: unknown): Promise<void> {
+    if (isError(reason)) {
+        window.showErrorMessage(reason.message);
+    }
+    return Promise.resolve();
+}
+
+function handleErrors(p: Promise<void>): Promise<void> {
+    return p.catch(onError);
 }
 
 function parseOptionalUri(uri: string | Uri): Uri;

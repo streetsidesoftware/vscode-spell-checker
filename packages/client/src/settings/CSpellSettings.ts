@@ -37,6 +37,7 @@ export const configFileLocations = [
 export const nestedConfigLocations = ['package.json'];
 
 const regIsJson = /\.jsonc?$/;
+const regIsPackageJson = /package\.json$/i;
 
 export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConfigLocations));
 /**
@@ -167,7 +168,8 @@ export function normalizeWord(word: string): string[] {
 
 export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {
     const u = uri.with({ fragment: '', query: '' });
-    return regIsJson.test(u.toString());
+    const s = u.toString();
+    return regIsJson.test(s) && !regIsPackageJson.test(s);
 }
 
 export class FailedToUpdateConfigFile extends Error {
