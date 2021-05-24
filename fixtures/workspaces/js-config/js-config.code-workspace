@@ -4,14 +4,5 @@
             "path": "."
         }
     ],
-    "settings": {
-        "cSpell.customWorkspaceDictionaries": [
-            {
-                "addWords": true,
-                "description": "Alternate dictionary 2",
-                "name": "alt-terms",
-                "path": "${workspaceFolder}/alt-words.txt"
-            }
-        ]
-    }
+    "settings": {}
 }
