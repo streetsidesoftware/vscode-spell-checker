@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2021-05-24)
+
+
+### Bug Fixes
+
+* do NOT split words when adding to dictionaries. ([2676af0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2676af09a1943ee1d892517a6b05d414e51a5826))
+* Do not try to update unsupported config file formats ([#893](https://github.com/streetsidesoftware/vscode-spell-checker/issues/893)) ([6ed7393](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6ed7393474b6e7aad3e37c23c95b35b7c6d7474e))
+* Ensure the right config for all docs ([#866](https://github.com/streetsidesoftware/vscode-spell-checker/issues/866)) ([032afe3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/032afe389847424eba0ce40af0d385c4bbae2719))
+* remove HexDigit from predefined patterns ([#889](https://github.com/streetsidesoftware/vscode-spell-checker/issues/889)) ([859b953](https://github.com/streetsidesoftware/vscode-spell-checker/commit/859b953364c545c8ebc581c71904a32cf771e18b))
+
 ## [2.0.0-alpha.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2021-05-13)
 
 
