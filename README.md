@@ -7,7 +7,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 ## Support Further Development
 
 [![PayPal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AE7RWCXNQ2ZYC&item_name=Support+VS+Code+Spell+Checker&currency_code=EUR&source=url)
-[![Patreon](https://github.com/streetsidesoftware/vscode-spell-checker/raw/master/resources/100px-Green_Patreon_Donate_Shield_Badge.png)](https://www.patreon.com/streetsidesoftware)
+[![Patreon](https://github.com/streetsidesoftware/vscode-spell-checker/raw/main/resources/100px-Green_Patreon_Donate_Shield_Badge.png)](https://www.patreon.com/streetsidesoftware)
 
 ## Functionality
 
@@ -16,11 +16,11 @@ a squiggly underline.
 
 ### Example
 
-![Example](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/master/images/example.gif)
+![Example](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/example.gif)
 
 ## Suggestions
 
-![Example](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/master/images/suggestions.gif)
+![Example](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/suggestions.gif)
 
 To see the list of suggestions:
 
@@ -97,11 +97,11 @@ To _Enable_ or _Disable_ spell checking for a file type:
 
 1. Click on the Spell Checker status in the status bar:
 
- <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/master/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
+ <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
 
 2. On the Info screen, click the **_Enable_** link.
 
- <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/master/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
+ <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
 
 ## How it works with camelCase
 
@@ -541,7 +541,7 @@ The _medicalTerms_ dictionary is only used when editing _markdown_ or _plaintext
 
 ## FAQ
 
-See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/FAQ.md)
+See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/packages/client/FAQ.md)
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top
