@@ -14,7 +14,7 @@
     "bugs": {
         "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
     },
-    "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/blob/master/packages/client/README.md",
+    "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
     "engines": {
         "vscode": "^1.54.0"
     },

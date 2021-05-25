@@ -18,6 +18,8 @@
         "cSpell.json",
         "fixtures/workspaces/**",
         "**/__snapshots__/**",
+        "*.vsix",
+        "packages/*/dist/**",
         "packages/client/settingsViewer/**",
         "packages/client/resources/**",
         "packages/client/samples/**",
@@ -52,7 +54,7 @@
     ],
     "languageSettings": [
         {
-            "languageId": "*",
+            "languageId": "markdown",
             "dictionaries": []
         }
     ]

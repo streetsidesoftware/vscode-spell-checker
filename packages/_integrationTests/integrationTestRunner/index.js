@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * this is a modified copy of [vscode-extension-vscode/bin/test](https://github.com/microsoft/vscode-extension-vscode/blob/master/bin/test)
+ * this is a modified copy of [vscode-extension-vscode/bin/test](https://github.com/microsoft/vscode-extension-vscode/blob/main/bin/test)
  */
 
 const path = require('path');

@@ -12,7 +12,7 @@ on:
           triggered a workflow, this defaults to the reference or SHA for that event.
           Otherwise, uses the default branch.
         required: true
-        default: master
+        default: main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
