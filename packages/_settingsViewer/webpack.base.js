@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const dist = path.join(__dirname, 'out', 'webapp');
@@ -19,7 +18,7 @@ const baseConfig = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'awesome-typescript-loader',
+                loader: 'ts-loader',
                 include: path.join(__dirname, 'src'),
             },
             {
@@ -54,7 +53,6 @@ const baseConfig = {
         ],
     },
     plugins: [
-        new CheckerPlugin(),
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,

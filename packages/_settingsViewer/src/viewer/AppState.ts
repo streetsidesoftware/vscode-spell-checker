@@ -56,8 +56,8 @@ type InheritedFromSource<T> = {
 };
 
 export class AppState implements State {
-    @observable activeTabName = '';
-    @observable settings: Settings = {
+    @observable _activeTabName = '';
+    @observable _settings: Settings = {
         dictionaries: [],
         knownLanguageIds: [],
         configs: {
@@ -71,6 +71,14 @@ export class AppState implements State {
 
     constructor(private messageBus: Messenger) {
         makeObservable(this);
+    }
+
+    @computed get activeTabName() {
+        return this._activeTabName;
+    }
+
+    @computed get settings() {
+        return this._settings;
     }
 
     @computed get tabs() {
@@ -216,7 +224,7 @@ export class AppState implements State {
     }
 
     @action actionActivateTab(tabName: string) {
-        this.activeTabName = tabName;
+        this._activeTabName = tabName;
         this.messageBus.postMessage({ command: 'SelectTabMessage', value: this.activeTabName });
     }
 
@@ -240,6 +248,11 @@ export class AppState implements State {
         }
         const uri = this.settings.activeFolderUri;
         this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enable, target, uri } });
+    }
+
+    @action updateSettings(settings): Settings {
+        this._settings = settings;
+        return this._settings;
     }
 }
 

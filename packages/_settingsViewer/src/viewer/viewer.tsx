@@ -17,8 +17,8 @@ reaction(
 );
 messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
     const { settings, activeTab } = msg.value;
-    if (activeTab) appState.activeTabName = activeTab;
-    appState.settings = settings;
+    if (activeTab) appState.actionActivateTab(activeTab);
+    appState.updateSettings(settings);
 });
 
 messageBus.postMessage({ command: 'RequestConfigurationMessage', value: {} });

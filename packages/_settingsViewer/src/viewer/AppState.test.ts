@@ -1,4 +1,3 @@
-
 import { AppState } from './AppState';
 import { WebviewApi } from '../api/WebviewApi';
 import { MessageBus } from '../api';
@@ -10,35 +9,48 @@ import { toJS } from 'mobx';
 
 describe('Validate AppState', () => {
     test('tabs', () => {
-        expect(getSampleAppState(sampleSettings).tabs.map(t => t.target)).toEqual(['user', 'workspace', 'folder', 'file', 'dictionaries', 'about'])
-        expect(getSampleAppState(sampleSettingsSingleFolder).tabs.map(t => t.target)).toEqual(['user', 'workspace', 'file', 'dictionaries', 'about'])
+        expect(getSampleAppState(sampleSettings).tabs.map((t) => t.target)).toEqual([
+            'user',
+            'workspace',
+            'folder',
+            'file',
+            'dictionaries',
+            'about',
+        ]);
+        expect(getSampleAppState(sampleSettingsSingleFolder).tabs.map((t) => t.target)).toEqual([
+            'user',
+            'workspace',
+            'file',
+            'dictionaries',
+            'about',
+        ]);
     });
 
     test('actionActivateTab', () => {
         const appState = getSampleAppState(sampleSettings);
         appState.actionActivateTab('File');
-        expect(appState.activeTab).toEqual({ label: 'File', target: 'file'});
+        expect(appState.activeTab).toEqual({ label: 'File', target: 'file' });
         appState.actionActivateTab('');
-        expect(appState.activeTab).toEqual({ label: 'User', target: 'user'});
+        expect(appState.activeTab).toEqual({ label: 'User', target: 'user' });
         appState.actionActivateTab('About');
-        expect(appState.activeTab).toEqual({ label: 'About', target: 'about'});
+        expect(appState.activeTab).toEqual({ label: 'About', target: 'about' });
     });
 
     test('actionActivateTabIndex', () => {
         const appState = getSampleAppState(sampleSettings);
         appState.actionActivateTabIndex(3);
         expect(appState.activeTabIndex).toBe(3);
-        expect(appState.activeTab).toEqual({ label: 'File', target: 'file'});
+        expect(appState.activeTab).toEqual({ label: 'File', target: 'file' });
         appState.actionActivateTabIndex(0);
         expect(appState.activeTabIndex).toBe(0);
-        expect(appState.activeTab).toEqual({ label: 'User', target: 'user'});
+        expect(appState.activeTab).toEqual({ label: 'User', target: 'user' });
         appState.actionActivateTabIndex(5);
-        expect(appState.activeTab).toEqual({ label: 'About', target: 'about'});
+        expect(appState.activeTab).toEqual({ label: 'About', target: 'about' });
         appState.actionActivateTabIndex(7);
         expect(appState.activeTabIndex).toBe(5);
-        expect(appState.activeTab).toEqual({ label: 'About', target: 'about'});
+        expect(appState.activeTab).toEqual({ label: 'About', target: 'about' });
         appState.actionActivateTabIndex(-1);
-        expect(appState.activeTab).toEqual({ label: 'About', target: 'about'});
+        expect(appState.activeTab).toEqual({ label: 'About', target: 'about' });
     });
 
     test('actionSelectFolder', () => {
@@ -68,7 +80,7 @@ describe('Validate AppState', () => {
         };
         const msgBus = new MessageBus(webviewApi);
         const appState: AppState = new AppState(msgBus);
-        appState.settings = settings;
+        appState.updateSettings(settings);
         return appState;
     }
 });
