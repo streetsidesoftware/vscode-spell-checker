@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { observable, toJS, computed, makeObservable } from 'mobx';
+import { observable, toJS, computed, makeObservable, action } from 'mobx';
 import {observer} from 'mobx-react';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
 import {
     ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
 } from '../api/message';
@@ -19,13 +20,34 @@ import { extractConfig } from '../api/settings/settingsHelper';
 import { posix as Path } from 'path';
 
 class AppState {
-    @observable currentSample: number = 0;
+    currentSample: number = 0;
     sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder];
-    @observable settings: Settings = this.sampleSettings[this.currentSample];
-    @observable activeTab: string = 'About';
+    _settings: Settings = this.sampleSettings[this.currentSample];
+    _activeTab: string = 'About';
 
     constructor() {
-        makeObservable(this);
+        makeObservable(this, {
+            currentSample: observable,
+            _settings: observable,
+            sampleSettings: observable,
+            _activeTab: observable,
+            nextSample: action,
+            updateSettings: action,
+            updateActiveTab: action,
+        });
+    }
+
+    @computed get settings(): Settings {
+        return this._settings;
+    }
+
+    @computed get activeTab() {
+        return this._activeTab;
+    }
+
+    updateActiveTab(tab: string) {
+        this._activeTab = tab;
+        return this._activeTab;
     }
 
     @computed get activeFolder(): WorkspaceFolder | undefined {
@@ -57,10 +79,14 @@ class AppState {
         return cfg.config || [];
     }
 
+    updateSettings(settings: Settings) {
+        this._settings = settings;
+    }
+
     nextSample() {
         this.sampleSettings[this.currentSample] = toJS(this.settings);
         this.currentSample = (this.currentSample + 1) % this.sampleSettings.length;
-        this.settings = this.sampleSettings[this.currentSample];
+        this._settings = this.sampleSettings[this.currentSample];
     }
 }
 
@@ -85,18 +111,21 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
                 <h2>Locales</h2>
                 <Table>
                     <TableHead key="title">
-                        <TableCell>
-                            Scope
-                        </TableCell>
-                        <TableCell>
-                            Value
-                        </TableCell>
+                        <TableRow>
+                            <TableCell>
+                                Scope
+                            </TableCell>
+                            <TableCell>
+                                Value
+                            </TableCell>
+                        </TableRow>
                     </TableHead>
-                    {localeDisplay.map(([field, name]) => <TableRow key={field}>
-                        <TableCell>{name}</TableCell>
-                        <TableCell>{getLocales(field)}</TableCell>
-                    </TableRow>)}
-
+                    <TableBody>
+                        {localeDisplay.map(([field, name]) => <TableRow key={field}>
+                            <TableCell>{name}</TableCell>
+                            <TableCell>{getLocales(field)}</TableCell>
+                        </TableRow>)}
+                    </TableBody>
                 </Table>
                 <div>
                     <h2>Info</h2>
@@ -188,7 +217,7 @@ messageBus.listenFor(
     'ConfigurationChangeMessage',
     (msg: ConfigurationChangeMessage) => {
         console.log('ConfigurationChangeMessage');
-        appState.settings = msg.value.settings;
+        appState.updateSettings(msg.value.settings);
     }
 );
 
@@ -196,7 +225,7 @@ messageBus.listenFor(
     'SelectTabMessage',
     (msg: SelectTabMessage) => {
         console.log('SelectTabMessage');
-        appState.activeTab = msg.value;
+        appState.updateActiveTab(msg.value);
     }
 );
 

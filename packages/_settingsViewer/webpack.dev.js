@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('./webpack.base');
 
@@ -16,40 +15,60 @@ const baseDevConfig = {
         },
         compress: true,
         port: 3000,
-    },
+    }
 };
 
 
 const viewerConfig = {
     ...baseDevConfig,
     entry: {
-        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
+        viewer: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
+        testWebView: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
     },
     plugins: [
-        new CheckerPlugin(),
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,
             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
+            chunks: ['viewer'],
         }),
-    ],
-};
-
-const testConfig = {
-    ...baseDevConfig,
-    entry: {
-        test: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
-    },
-    plugins: [
         new HtmlWebpackPlugin({
             title: 'Tester CSpell Settings Viewer',
             hash: true,
             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
             inject: 'body',
             filename: 'test.html',
+            chunks: ['testWebView'],
         }),
     ],
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        fallback: { 'path': require.resolve('path-browserify') }
+    },
 };
 
-module.exports = [viewerConfig, testConfig];
+// const devServerTest = {
+//     ...devServer,
+//     port: 3001,
+// };
+//
+// const testConfig = {
+//     ...baseDevConfig,
+//     name: 'testServer',
+//     devServer: devServerTest,
+//     entry: {
+//         test: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
+//     },
+//     plugins: [
+//         new HtmlWebpackPlugin({
+//             title: 'Tester CSpell Settings Viewer',
+//             hash: true,
+//             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
+//             inject: 'body',
+//             filename: 'test.html',
+//         }),
+//     ],
+// };
+
+module.exports = viewerConfig;

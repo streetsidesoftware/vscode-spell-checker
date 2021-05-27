@@ -24,6 +24,6 @@ export class AppStateFixture extends AppState {
 
 export function sampleAppState(): AppStateFixture {
     const appState = new AppStateFixture();
-    appState.settings = dcopy(sampleSettings);
+    appState.updateSettings(dcopy(sampleSettings));
     return appState;
 }
