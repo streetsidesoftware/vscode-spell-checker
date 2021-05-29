@@ -40,6 +40,10 @@
   ],
   "main": "./packages/client/dist/extension.js",
   "contributes": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": false
+    },
     "menus": {
       "editor/context": [
         {
