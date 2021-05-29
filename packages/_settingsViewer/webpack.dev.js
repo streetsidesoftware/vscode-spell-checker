@@ -48,27 +48,4 @@ const viewerConfig = {
     },
 };
 
-// const devServerTest = {
-//     ...devServer,
-//     port: 3001,
-// };
-//
-// const testConfig = {
-//     ...baseDevConfig,
-//     name: 'testServer',
-//     devServer: devServerTest,
-//     entry: {
-//         test: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
-//     },
-//     plugins: [
-//         new HtmlWebpackPlugin({
-//             title: 'Tester CSpell Settings Viewer',
-//             hash: true,
-//             template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
-//             inject: 'body',
-//             filename: 'test.html',
-//         }),
-//     ],
-// };
-
 module.exports = viewerConfig;
