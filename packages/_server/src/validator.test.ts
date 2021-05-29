@@ -80,6 +80,7 @@ describe('Validator', () => {
             const settings = { ...getSettings(text, languageId), maxNumberOfProblems: 10 };
             const results = await Validator.validateText(text, settings);
             const words = results.map((wo) => wo.text);
+            // cspell:ignore xaccd ffee
             expect(words).toEqual(expect.arrayContaining(['wrongg']));
             expect(words).toEqual(expect.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.not.arrayContaining(['xaccd']));
