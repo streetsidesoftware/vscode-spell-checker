@@ -83,6 +83,7 @@ tslib
 typechecking
 unelevated
 untracked
+untrusted
 uri's
 visualstudio
 vsce
