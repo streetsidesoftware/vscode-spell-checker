@@ -32,6 +32,7 @@ import { ExtensionApi } from './extensionApi';
 import * as modules from './modules';
 
 import * as ExtensionRegEx from './extensionRegEx';
+import { registerCspellInlineCompletionProviders } from './autocomplete';
 
 performance.mark('cspell_done_import');
 
@@ -166,6 +167,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),
         vscode.workspace.onDidCreateFiles(handleCreateFile),
+
+        ...registerCspellInlineCompletionProviders(),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
