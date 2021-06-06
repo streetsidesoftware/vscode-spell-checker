@@ -1,0 +1,4 @@
+# For now, do not include any yarn workspace fixtures
+# The issue is how to cleanly set them up because they might need to be nested
+# to avoid conflics between Yarn 1 and Yarn 2.
+/yarn*

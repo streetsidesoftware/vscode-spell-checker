@@ -6,6 +6,7 @@ import { setEnableSpellChecking, sectionCSpell } from './settings';
 performance.mark('import 2');
 import * as settings from './settings';
 performance.mark('import 3');
+import { Utils as UriUtils } from 'vscode-uri';
 performance.mark('import 4');
 import { CSpellClient } from './client';
 performance.mark('import 5');
@@ -206,7 +207,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {
         for (const uri of files) {
-            if (settings.configFilesToWatch.has(path.basename(uri.fsPath))) {
+            if (settings.configFilesToWatch.has(UriUtils.basename(uri))) {
                 triggerGetSettings();
                 break;
             }
