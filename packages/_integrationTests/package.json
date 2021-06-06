@@ -30,7 +30,7 @@
     "@types/chai": "^4.2.15",
     "@types/glob": "^7.1.3",
     "@types/mocha": "^8.2.1",
-    "@types/node": "^14.14.35",
+    "@types/node": "^15.12.1",
     "@types/vscode": "^1.54.0",
     "chai": "^4.3.4",
     "chalk": "^4.1.1",
