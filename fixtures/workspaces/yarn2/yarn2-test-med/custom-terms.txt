@@ -1,0 +1,2 @@
+# Contains custom terms for this project.
+medicalterms

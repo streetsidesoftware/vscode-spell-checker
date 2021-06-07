@@ -1,0 +1,11 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@cspell/cspell-types": "^5.5.2",
+    "@cspell/dict-scientific-terms-us": "^1.0.21"
+  }
+}
