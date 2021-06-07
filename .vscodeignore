@@ -23,6 +23,7 @@
 !/node_modules/@cspell
 /node_modules/@cspell/*
 !/node_modules/@cspell/cspell-bundled-dicts
+!/node_modules/@cspell/cspell-types
 !/node_modules/@cspell/dict*
 !/node_modules/@cspell/dict*
 
