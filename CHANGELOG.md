@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0...v2.0.1-alpha.0) (2021-06-07)
+
+
+### Bug Fixes
+
+* Support Yarn 2  ([#921](https://github.com/streetsidesoftware/vscode-spell-checker/issues/921)) ([58ba900](https://github.com/streetsidesoftware/vscode-spell-checker/commit/58ba900c1b4686d13379ceac59d602fabe569792))
+* Turn off `virtualWorkspaces` and `untrustedWorkspaces` ([#907](https://github.com/streetsidesoftware/vscode-spell-checker/issues/907)) ([30dfdc5](https://github.com/streetsidesoftware/vscode-spell-checker/commit/30dfdc5437992991e6964b73d5e561ffd17121f9))
+* Verify Yarn2 projects work ([#925](https://github.com/streetsidesoftware/vscode-spell-checker/issues/925)) ([275f07e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/275f07e4e11861b4141e100a1814bd3f9c351e64))
+
 ## [2.0.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.4...v2.0.0) (2021-05-29)
 
 ## [2.0.0-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.0-alpha.3...v2.0.0-alpha.4) (2021-05-24)
