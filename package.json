@@ -701,7 +701,7 @@
     "clean": "yarn workspaces run clean && rimraf \"packages/*/node_modules\"",
     "build-production": "yarn workspaces run build-production",
     "build-release": "yarn run build && yarn run package-extension",
-    "version-prerelease": "yarn run version-release -p",
+    "version-prerelease": "yarn run version-release -p alpha",
     "version-release": "yarn run test-vsce-build && standard-version",
     "package-extension": "npx vsce package -o ./build",
     "test-vsce-build": "npx vsce package -o ./temp",
