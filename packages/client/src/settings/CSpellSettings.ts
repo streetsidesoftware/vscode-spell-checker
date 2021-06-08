@@ -77,7 +77,7 @@ export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<
 }
 
 export function addWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWord(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWords(word)));
 }
 
 export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -86,7 +86,7 @@ export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[
 }
 
 export function addIgnoreWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWord(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWords(word)));
 }
 
 export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -116,7 +116,7 @@ export function filterOutWords(words: string[], wordsToRemove: string[]): string
 }
 
 export function removeWordFromSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => removeWordsFromSettings(settings, normalizeWord(word)));
+    return readSettingsFileAndApplyUpdate(filename, (settings) => removeWordsFromSettings(settings, normalizeWords(word)));
 }
 
 export function addLanguageIdsToSettings(settings: CSpellSettings, languageIds: string[], onlyIfExits: boolean): CSpellSettings {
@@ -162,8 +162,11 @@ export async function readSettingsFileAndApplyUpdate(
     return writeSettings(cspellConfigUri, newSettings);
 }
 
-export function normalizeWord(word: string): string[] {
-    return [word].map((a) => a.trim()).filter((a) => !!a);
+export function normalizeWords(words: string): string[] {
+    return words
+        .split(' ')
+        .map((a) => a.trim())
+        .filter((a) => !!a);
 }
 
 export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {

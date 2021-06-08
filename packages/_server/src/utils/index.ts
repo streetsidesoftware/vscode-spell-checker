@@ -1,1 +1,1 @@
-export { uniqueFilter, isDefined } from './util';
+export { uniqueFilter, isDefined, textToWords } from './util';

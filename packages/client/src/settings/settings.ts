@@ -2,7 +2,7 @@ import { performance } from '../util/perf';
 performance.mark('settings.ts');
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import {
-    normalizeWord,
+    normalizeWords,
     configFileLocations,
     defaultFileName as baseConfigName,
     readSettings,
@@ -133,20 +133,20 @@ export async function disableLanguage(target: config.ConfigTarget, languageId: s
 
 export function addWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    const addWords = normalizeWord(word);
+    const addWords = normalizeWords(word);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
     return updateSettingInConfig(section, target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
-    const addWords = normalizeWord(word);
+    const addWords = normalizeWords(word);
     return updateSettingInConfig('ignoreWords', target, (words) => unique(addWords.concat(words || []).sort()), true);
 }
 
 export async function removeWordFromSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const useGlobal = config.isGlobalTarget(target);
     const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const toRemove = normalizeWord(word);
+    const toRemove = normalizeWords(word);
     return updateSettingInConfig(section, target, (words) => filterOutWords(words || [], toRemove), true);
 }
 

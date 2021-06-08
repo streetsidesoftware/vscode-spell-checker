@@ -1,2 +1,4 @@
 # Contains custom terms for this project.
+geschäft
 medicalterms
+spéciale
