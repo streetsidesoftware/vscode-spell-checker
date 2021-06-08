@@ -4,7 +4,7 @@ import * as config from './config';
 import { resolveTarget, addWordToSettings, determineSettingsPaths } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { addWordToSettingsAndUpdate } from './CSpellSettings';
+import { addWordToSettingsAndUpdate, normalizeWords } from './CSpellSettings';
 import type {
     CSpellUserSettings,
     CustomDictionaryScope,
@@ -25,6 +25,13 @@ interface CustomDictionaryWithPath {
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
 
+    /**
+     * Add word or words to the configuration
+     * @param word - a single word or multiple words separated with a space.
+     * @param target - where the word should be written: Folder, Workspace, User
+     * @param docUri - the related document (helps to determine the configuration location)
+     * @returns the promise resolves upon completion.
+     */
     public async addWordToTarget(word: string, target: Target, docUri: Uri | undefined): Promise<void> {
         const actualTarget = resolveTarget(target, docUri);
         const docConfig = await this.getDocConfig(docUri);
@@ -34,7 +41,7 @@ export class DictionaryHelper {
             return this.addWordsToConfig(word, actualTarget, docConfig);
         }
 
-        await this.addWordsToCustomDictionaries([word], customDicts);
+        await this.addWordsToCustomDictionaries(normalizeWords(word), customDicts);
         return this.client.notifySettingsChanged();
     }
 

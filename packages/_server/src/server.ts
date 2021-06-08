@@ -20,7 +20,7 @@ import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, mergeMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
-import { Glob, Text } from 'cspell-lib';
+import { Glob } from 'cspell-lib';
 
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './config/cspellConfig';
@@ -38,6 +38,7 @@ import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspac
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';
+import { textToWords } from './utils';
 
 log('Starting Spell Checker Server');
 
@@ -236,15 +237,6 @@ export function run(): void {
             id: ex.settings.id,
             name: ex.settings.name,
         }));
-    }
-
-    function textToWords(text: string): string[] {
-        const setOfWords = new Set(
-            Text.extractWordsFromCode(text)
-                .map((t) => t.text)
-                .map((t) => t.toLowerCase())
-        );
-        return [...setOfWords];
     }
 
     function handleSplitTextIntoWords(text: string): Api.SplitTextIntoWordsResult {
