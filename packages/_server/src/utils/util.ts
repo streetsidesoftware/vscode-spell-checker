@@ -29,8 +29,8 @@ export function escapeRegExp(s: string): string {
  * @returns array of words
  */
 export function textToWords(text: string): string[] {
-    const isWord = /^[\p{L}\w']+$/u;
-    const regExpWordBreaks = /(?<![\p{L}\w'])(?=[\p{L}\w'])|(?<=[\p{L}\w'])(?![\p{L}\w'])/gu;
+    const isWord = /^[\p{L}\w'-]+$/u;
+    const regExpWordBreaks = /(?<![\p{L}\w'-])(?=[\p{L}\w'-])|(?<=[\p{L}\w'-])(?![\p{L}\w'-])/gu;
     const split = text.normalize('NFC').split(regExpWordBreaks);
     const words = split.filter((w) => isWord.test(w));
     return words;

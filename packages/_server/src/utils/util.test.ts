@@ -31,6 +31,7 @@ describe('Validate Util Functions', () => {
         ${'My $trip to the café was 4un!'} | ${['My', 'trip', 'to', 'the', 'café', 'was', '4un']}
         ${"winter's...weather"}            | ${["winter's", 'weather']}
         ${'one\ntwo\nthree\n'}             | ${['one', 'two', 'three']}
+        ${'one-two-three\n'}               | ${['one-two-three']}
         ${'spéciale geschäft'}             | ${['spéciale', 'geschäft']}
         ${'aåáâäñãæ'}                      | ${['aåáâäñãæ']}
     `('textToWords "$line"', ({ line, expected }: TestTextToWords) => {
