@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.1...v2.0.1-alpha.2) (2021-06-09)
+
+
+### Bug Fixes
+
+* [#541](https://github.com/streetsidesoftware/vscode-spell-checker/issues/541) - Only split the selection on word boundaries ([#933](https://github.com/streetsidesoftware/vscode-spell-checker/issues/933)) ([6c7e92d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6c7e92d81a06f2866ffb7909a2b16a3e06ad1741))
+* Update cspell to fix accent word break issues ([#936](https://github.com/streetsidesoftware/vscode-spell-checker/issues/936)) ([2d6ee37](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2d6ee3730016feac70b016e833ded62e67cf4d20))
+
 ### [2.0.1-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.0...v2.0.1-alpha.1) (2021-06-07)
 
 
