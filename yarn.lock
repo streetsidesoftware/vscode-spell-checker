@@ -364,9 +364,9 @@
   integrity sha512-K21CfB4ZpKYwwDQiPfic2zJA/uxkbsd4IQGejEvDAhE3z8wBs6g6BwwqdVO767M9NgZqc021yAVpr79N5pWe3w==
 
 "@cspell/dict-bash@^1.0.13":
-  version "1.0.14"
-  resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-1.0.14.tgz#b519aca2843ea206b034381aabcf37b18b4930b2"
-  integrity sha512-Q5RKcyJfPzLraFGliKaRVMBFACCtcQZ4wPLRkLLFHKEUN6/hKqKB0owrVq225AByv3aY2CMEPIaPEU7F0QDlTA==
+  version "1.0.15"
+  resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-1.0.15.tgz#ac70ab1572d9b8d0e3cf7777383b6caa2daad022"
+  integrity sha512-rY5Bq4RWTgJTioG8vqFbCmnalc/UEM+iBuAZBYvBfT3nU/6SN00Zjyvlh823ir2ODkUryT29CwRYwXcPnuM04w==
 
 "@cspell/dict-companies@^1.0.38":
   version "1.0.38"
@@ -479,9 +479,9 @@
   integrity sha512-RPNn/7CSkflAWk0sbSoOkg0ORrgBARUjOW3QjB11KwV1gSu8f5W/ij/S50uIXtlrfoBLqd4OyE04jyON+g/Xfg==
 
 "@cspell/dict-npm@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.npmjs.org/@cspell/dict-npm/-/dict-npm-1.0.14.tgz#047043a1d44a3dfa56f33cb8070c05867050f84a"
-  integrity sha512-RPaU6HJR03J9pg0yCgR59X55ozLhBkWvkHR3mD++ko5hKv0IXOfbS53nQwVN9yBAWjhCREJImemWPswoVu31zg==
+  version "1.0.15"
+  resolved "https://registry.npmjs.org/@cspell/dict-npm/-/dict-npm-1.0.15.tgz#4eac51a4e5258b48e2fd1af277c12cb1fd189f4d"
+  integrity sha512-6N1G1rGi5AsCaDu9mu+VmrrAj5S9gHv8TvJlarauDeEMS6uVl+ce2JpzDf7ld3Qu/4Dkr0sKS63OeA0DKeQTkw==
 
 "@cspell/dict-php@^1.0.24":
   version "1.0.24"
@@ -514,9 +514,9 @@
   integrity sha512-5V/R7PRbbminTpPS3ywgdAalI9BHzcEjEj9ug4kWYvBIGwSnS7T6QCFCiu+e9LvEGUqQC+NHgLY4zs1NaBj2vA==
 
 "@cspell/dict-software-terms@^1.0.34":
-  version "1.0.35"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-1.0.35.tgz#f3d75af834f4e051e41b85fcfc4fd092d993aef1"
-  integrity sha512-b2q1Ja12WivVYDMkXpix+CY+PTDOHJriEZJpDWt7AG+DhwjqjASufjfBIV7U0t0e/eV7PLzbYCj0oj9lTT5eow==
+  version "1.0.36"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-1.0.36.tgz#16c2ee2812964e3b1b8392de38e41ff7c27d1bd8"
+  integrity sha512-T8jyVQktz2LPlJdU1k+GtTyghSLuQy7w/BeInT+aa0H8zssvwoi/kliWNXjOz9ZdvBF+VYjw4gbHWRDXPzTOAg==
 
 "@cspell/dict-typescript@^1.0.19":
   version "1.0.19"
