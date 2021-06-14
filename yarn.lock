@@ -997,9 +997,9 @@
   integrity sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA==
 
 "@types/kefir@^3.8.5":
-  version "3.8.5"
-  resolved "https://registry.npmjs.org/@types/kefir/-/kefir-3.8.5.tgz#dea5421b93f1c7b0547605c753fc24441a38362b"
-  integrity sha512-sNWBzOdQGYhxKaTPcMRcnTR4CCJzhKfKVabbTju/mqKc5acFihqk0liEfV6w7o6AFcJx91rDbwSSJjuBy3Sa4Q==
+  version "3.8.6"
+  resolved "https://registry.yarnpkg.com/@types/kefir/-/kefir-3.8.6.tgz#57ba851cac739684a8d549bea36da4f73cf7ef3d"
+  integrity sha512-8iI0fe3KxnJ8c2eaqjVb+bNMQIfOiNRymp7leG4K8CZ1kMqRy6nsK3JUdToSgeEG/XeKCxvGZ67u5X1goGq2gA==
   dependencies:
     "@types/node" "*"
 
