@@ -9,9 +9,6 @@
     "type": "git",
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
-  "engines": {
-    "node": ">=12"
-  },
   "main": "dist/main.js",
   "typings": "dist/main.d.ts",
   "exports": {

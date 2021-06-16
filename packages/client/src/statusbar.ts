@@ -7,14 +7,22 @@ import * as infoViewer from './infoViewer';
 import { isSupportedUri, isSupportedDoc } from './util';
 import { sectionCSpell } from './settings';
 
+const statusBarId = 'spell checker status id';
+
+const cspellStatusBarIcon = 'Spell'; // '$(symbol-text)'
+
 export function initStatusBar(context: ExtensionContext, client: CSpellClient): void {
-    const sbCheck = window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
+    const { showStatusAlignment } = settings;
+    const alignment = toStatusBarAlignment(showStatusAlignment);
+    const sbCheck = window.createStatusBarItem(statusBarId, alignment);
+    sbCheck.name = 'Code Spell Checker';
 
     let lastUri = '';
 
     async function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument, showClock?: boolean) {
         if (showClock ?? true) {
-            sbCheck.text = '$(clock)';
+            sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'cSpell waiting...';
             sbCheck.show();
         }
@@ -22,20 +30,21 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
         const { uri, languageId = '' } = document;
         lastUri = uri.toString();
-        const genOnOffIcon = (on: boolean) => (on ? '$(check)' : '$(exclude)');
         const response = await client.isSpellCheckEnabled(document);
         const docUri = window.activeTextEditor?.document?.uri;
         if (docUri === response.uri || !docUri || docUri.scheme !== 'file') {
+            const diags = getCSpellDiags(docUri);
             const { languageEnabled = true, fileEnabled = true } = response;
             const isChecked = languageEnabled && fileEnabled;
             const isCheckedText = isChecked ? 'is' : 'is NOT';
-            const langReason = languageEnabled ? '' : `The "${languageId}" language / filetype is not enabled.`;
+            const langReason = languageEnabled ? '' : `The "${languageId}" filetype is not enabled.`;
             const fileReason = formatFileReason(response);
             const fileName = path.basename(uri.fsPath);
-            const langText = `${genOnOffIcon(languageEnabled)} ${languageId}`;
-            const fileText = `${genOnOffIcon(fileEnabled)} ${fileName}`;
-            const reason = [`"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason].filter((a) => !!a).join(' ');
-            sbCheck.text = `${langText} | ${fileText}`;
+            const issuesText = `${diags.length} issues found`;
+            sbCheck.text = statusBarText({ languageEnabled, fileEnabled, diags });
+            const reason = [issuesText, `"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason]
+                .filter((a) => !!a)
+                .join('\n');
             sbCheck.tooltip = reason;
             sbCheck.command = infoViewer.commandDisplayCSpellInfo;
             sbCheck.show();
@@ -53,6 +62,16 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         return `File excluded by ${JSON.stringify(glob)} in ${filename || id || name || 'settings'}`;
     }
 
+    function toStatusBarAlignment(showStatusAlignment: CSpellUserSettings['showStatusAlignment']): vscode.StatusBarAlignment {
+        switch (showStatusAlignment) {
+            case 'Left':
+                return vscode.StatusBarAlignment.Left;
+            case 'Right':
+                return vscode.StatusBarAlignment.Right;
+        }
+        return vscode.StatusBarAlignment.Left;
+    }
+
     function updateStatusBar(doc?: vscode.TextDocument, showClock?: boolean) {
         const document = isSupportedDoc(doc) ? doc : selectDocument();
         const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
@@ -66,7 +85,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         if (enabled) {
             updateStatusBarWithSpellCheckStatus(document, showClock);
         } else {
-            sbCheck.text = '$(stop) cSpell';
+            sbCheck.text = `$(stop) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'Enable spell checking';
             sbCheck.command = 'cSpell.enableForWorkspace';
             sbCheck.show();
@@ -74,7 +93,16 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     }
 
     function onDidChangeActiveTextEditor(e: TextEditor | undefined) {
-        updateStatusBar(e && e.document);
+        updateStatusBar(e?.document);
+    }
+
+    function onDidChangeDiag(e: vscode.DiagnosticChangeEvent) {
+        for (const uri of e.uris) {
+            if (uri.toString() === lastUri) {
+                setTimeout(() => updateStatusBar(undefined, false), 250);
+                break;
+            }
+        }
     }
 
     function onDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
@@ -114,10 +142,33 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor),
         workspace.onDidChangeConfiguration(onDidChangeConfiguration),
         workspace.onDidCloseTextDocument(updateStatusBar),
+        vscode.languages.onDidChangeDiagnostics(onDidChangeDiag),
         sbCheck
     );
 
     if (window.activeTextEditor) {
         onDidChangeActiveTextEditor(window.activeTextEditor);
     }
+}
+
+interface StatusBarTextParams {
+    languageEnabled: boolean;
+    fileEnabled: boolean;
+    diags: vscode.Diagnostic[];
+}
+
+function statusBarText({ languageEnabled, fileEnabled, diags }: StatusBarTextParams) {
+    if (!languageEnabled || !fileEnabled) {
+        return `$(exclude) ${cspellStatusBarIcon}`;
+    }
+    if (diags.length) {
+        return `$(issues) ${diags.length} ${cspellStatusBarIcon}`;
+    }
+    return `$(check) ${cspellStatusBarIcon}`;
+}
+
+function getCSpellDiags(docUri: vscode.Uri | undefined) {
+    const diags = (docUri && vscode.languages.getDiagnostics(docUri)) || [];
+    const cSpellDiags = diags.filter((d) => d.source === 'cSpell');
+    return cSpellDiags;
 }

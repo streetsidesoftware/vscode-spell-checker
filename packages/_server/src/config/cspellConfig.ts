@@ -53,6 +53,13 @@ export interface SpellCheckerSettings {
     showStatus?: boolean;
 
     /**
+     * The side of the status bar to display the spell checker status.
+     * @scope application
+     * @default "Left"
+     */
+    showStatusAlignment?: 'Left' | 'Right';
+
+    /**
      * Delay in ms after a document has changed before checking it for spelling errors.
      * @scope application
      * @default 50
@@ -205,6 +212,6 @@ export interface CustomDictionaryWithScope extends CustomDictionary {
 }
 
 export interface CSpellUserSettingsWithComments extends CSpellLibUserSettingsWithComments, SpellCheckerSettings {}
-export interface CSpellUserSettings extends CSpellSettings, SpellCheckerSettings {}
+export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
