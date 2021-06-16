@@ -4,10 +4,6 @@
   "description": "Integration tests for the spell checker extension",
   "private": true,
   "main": "out/index.js",
-  "engines": {
-    "vscode": "^1.54.0",
-    "node": ">=12"
-  },
   "scripts": {
     "build": "echo skipping build for integration-test",
     "build2": "tsc -p .",

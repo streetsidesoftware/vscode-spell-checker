@@ -15,9 +15,6 @@
         "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
     },
     "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
-    "engines": {
-        "vscode": "^1.54.0"
-    },
     "main": "./dist/extension.js",
     "scripts": {
         "clean": "rimraf out dist coverage",

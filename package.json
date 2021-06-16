@@ -18,7 +18,7 @@
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker#README.md",
   "engines": {
     "node": ">12.0.0",
-    "vscode": "^1.54.0"
+    "vscode": "^1.57.0"
   },
   "extensionKind": [
     "workspace"
@@ -392,6 +392,16 @@
           "scope": "resource",
           "default": true,
           "description": "Display the spell checker status on the status bar."
+        },
+        "cSpell.showStatusAlignment": {
+          "type": "string",
+          "scope": "resource",
+          "default": "Left",
+          "enum": [
+            "Left",
+            "Right"
+          ],
+          "description": "The side of the status bar to display the spell checker status."
         },
         "cSpell.spellCheckDelayMs": {
           "type": "number",
