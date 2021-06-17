@@ -16,13 +16,40 @@ At its core, the configuration determines:
 There are two main categories of configuration:
 
 1. Extension related
-1. cspell related
+1. `cspell` related
 
 Configuration scope (based upon VS Code):
 
 1. User - Follows the user.
 1. Workspace - or project configuration is applied to a collection of folders (that may or may not be related).
 1. Folder - the configuration to be applied to a directory hierarchy.
+
+### Configuration Locations
+
+1. `cspell` configuration files
+   These include `cspell.json`, `cspell.config.yaml`, and `cspell.config.js`. When spell checking files,
+   the spell checker searches the directory hierarchy looking for configuration files. If one is found,
+   it will take precedence over any configuration stored in VS Code Settings.
+1. VS Code Folder settings, generally found in a `.vscode/settings.json`.
+1. VS Code Workspace settings, these are found in the open `*.code-workspace` file.
+1. VS Code User settings, these are user based settings controlled by VS Code.
+1. Code Spell Checker default settings.
+
+VS Code and `cspell` have two different approaches to combining settings files.
+VS Code uses a top down approach. The follow expression represents the VS Code logic
+where `??` operator means take left value unless it is `null` or `undefined`, then take the right value.
+
+```ts
+cSpell.spellCheckDelayMs =
+    folder.cSpell.spellCheckDelayMs ??
+    workspace.cSpell.spellCheckDelayMs ??
+    user.cSpell.spellCheckDelayMs ??
+    defaults.cSpell.spellCheckDelayMs;
+```
+
+`cspell` uses and extends logic, which is similar to VS Code but some fields are merged instead of overwritten.
+
+A `cspell.json` file can import multiple other configuration files, merging them in order.
 
 ## Extension Related Configuration
 
@@ -66,3 +93,12 @@ configurations where `folder` values take precedence over `workspace` and `works
 ```
 config[key] = folder[key] ?? workspace[key] ?? user[key]
 ```
+
+## Adding terms to Dictionaries
+
+The spell checker tries to make adding terms to dictionaries easy to do. The challenge is to make this an intuitive process.
+
+With version V2 of the spell checker, the following logic is used for presenting target locations for adding words.
+
+For words to be added to a dictionary file, the dictionary needs to have the `addWords` setting be `true`.
+This can be accomplished in a few ways.
