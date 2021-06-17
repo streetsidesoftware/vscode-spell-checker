@@ -216,6 +216,16 @@
       "scope": "application",
       "type": "boolean"
     },
+    "showStatusAlignment": {
+      "default": "Left",
+      "description": "The side of the status bar to display the spell checker status.",
+      "enum": [
+        "Left",
+        "Right"
+      ],
+      "scope": "application",
+      "type": "string"
+    },
     "spellCheckDelayMs": {
       "default": 50,
       "description": "Delay in ms after a document has changed before checking it for spelling errors.",
