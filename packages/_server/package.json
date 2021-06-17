@@ -59,7 +59,7 @@
     "clean": "rimraf dist temp out coverage",
     "lint": "eslint \"src/**/*.ts\"",
     "build": "yarn run compile && yarn run build-schema",
-    "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/config/cspellConfig.ts --type SpellCheckerSettings --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords deprecationMessage -o spell-checker-config.schema.json",
+    "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/config/cspellConfig.ts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords deprecationMessage -o spell-checker-config.schema.json",
     "clean-build": "yarn run clean && yarn run build",
     "clean-build-production": "yarn run clean && yarn run compile",
     "build-production": "yarn run clean-build-production",
