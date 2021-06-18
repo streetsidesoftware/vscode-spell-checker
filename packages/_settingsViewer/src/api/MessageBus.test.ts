@@ -1,4 +1,4 @@
-import { MessageBus } from './MessageBus';
+import { Logger, MessageBus } from './MessageBus';
 import { WebviewApi } from './WebviewApi';
 import { RequestConfigurationMessage, ConfigurationChangeMessage } from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
@@ -8,7 +8,7 @@ describe('Validate MessageBus', () => {
         const webviewApi: WebviewApi = {
             postMessage: (_msg: any) => webviewApi,
             onmessage: undefined,
-        }
+        };
 
         expect(new MessageBus(webviewApi).vsCodeApi).toBe(webviewApi);
     });
@@ -18,21 +18,24 @@ describe('Validate MessageBus', () => {
         const webviewApi: WebviewApi = {
             postMessage: postMessageMock,
             onmessage: undefined,
-        }
+        };
 
-        const bus = new MessageBus(webviewApi);
+        const logger = mockLogger();
+        const bus = new MessageBus(webviewApi, logger);
         bus.postMessage({ command: 'SelectFileMessage', value: '/file.txt' });
         expect(postMessageMock.mock.calls.length).toBe(1);
+        expect(logger.error).toBeCalledTimes(1);
     });
 
     test('listener', () => {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => loopBack(webviewApi, msg),
             onmessage: undefined,
-        }
+        };
         const onRequestConfigurationMessage = jest.fn((_msg: RequestConfigurationMessage) => {});
         const onConfigurationChangeMessage = jest.fn((_msg: ConfigurationChangeMessage) => {});
-        const bus = new MessageBus(webviewApi);
+        const logger = mockLogger();
+        const bus = new MessageBus(webviewApi, logger);
         const listenerA = bus.listenFor('RequestConfigurationMessage', onRequestConfigurationMessage);
         const listenerB = bus.listenFor('ConfigurationChangeMessage', onConfigurationChangeMessage);
 
@@ -60,15 +63,18 @@ describe('Validate MessageBus', () => {
 
         expect(onRequestConfigurationMessage.mock.calls.length).toBe(1);
         expect(onConfigurationChangeMessage.mock.calls.length).toBe(2);
+        expect(logger.error).toBeCalledTimes(3);
     });
 
     test('receiving non-message path', () => {
         const webviewApi: WebviewApi = {
             postMessage: (msg: any) => loopBack(webviewApi, msg),
             onmessage: undefined,
-        }
-        new MessageBus(webviewApi);
+        };
+        const logger = mockLogger();
+        new MessageBus(webviewApi, logger);
         expect(() => webviewApi.onmessage!({ data: {} })).not.toThrow();
+        expect(logger.error).toBeCalledTimes(1);
     });
 });
 
@@ -77,4 +83,13 @@ function loopBack(webviewApi: WebviewApi, msg: any): WebviewApi {
         webviewApi.onmessage({ data: msg });
     }
     return webviewApi;
+}
+
+function mockLogger(): Logger {
+    return {
+        log: jest.fn(),
+        warn: jest.fn(),
+        error: jest.fn(),
+        debug: jest.fn(),
+    };
 }

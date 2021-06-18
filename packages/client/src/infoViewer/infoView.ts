@@ -96,7 +96,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         localResourceRoots: [Uri.file(root), Uri.file(extPath)],
     };
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
-    const messageBus = new MessageBus(webviewApiFromPanel(panel));
+    const messageBus = new MessageBus(webviewApiFromPanel(panel), console);
 
     async function calcStateSettings(activeDocumentUri: Maybe<Uri>, activeFolderUri: Maybe<Uri>) {
         const doc = activeDocumentUri && findMatchingDocument(activeDocumentUri);
