@@ -27,7 +27,7 @@ export class VsCodeWebviewApi implements WebviewApi {
     }
 
     set onmessage(listener: MessageListener | undefined) {
-        const found = listeners.findIndex(v => v === this._onmessage);
+        const found = listeners.findIndex((v) => v === this._onmessage);
         if (found >= 0) {
             listeners.splice(found, 1);
         }
@@ -50,7 +50,7 @@ function acquireVsCodeWebviewAPI(): VsCodeAPI | undefined {
 }
 
 function onMessage(message: MessageEvent) {
-    listeners.forEach(fn => fn(message));
+    listeners.forEach((fn) => fn(message));
 }
 
 function acquireAPI(): VsCodeAPI {
@@ -60,13 +60,13 @@ function acquireAPI(): VsCodeAPI {
         return {
             postMessage(msg: any) {
                 vsCodeApi.postMessage(msg);
-            }
+            },
         };
     }
 
     if (typeof BroadcastChannel !== 'function') {
         return {
-            postMessage() {}
+            postMessage() {},
         };
     }
 

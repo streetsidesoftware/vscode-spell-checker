@@ -23,6 +23,7 @@ import {
     SelectFileMessage,
     EnableLanguageIdMessage,
     EnableLocaleMessage,
+    OpenFileMessage,
 } from '../../settingsViewer';
 import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
 import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
@@ -178,6 +179,13 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
         const uri = msg.value;
         state.activeDocumentUri = (uri && Uri.parse(uri)) || state.activeDocumentUri;
         refreshStateAndNotify();
+    });
+    messageBus.listenFor('ConfigurationChangeMessage', () => {
+        /* Do nothing */
+    });
+    messageBus.listenFor('OpenFileMessage', (msg: OpenFileMessage) => {
+        const uri = Uri.parse(msg.value.uri);
+        vscode.window.showTextDocument(uri);
     });
 
     subscriptions.push(

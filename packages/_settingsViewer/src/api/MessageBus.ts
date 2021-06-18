@@ -42,12 +42,14 @@ export class MessageBus implements Messenger {
         const message = msg.data;
 
         if (!isMessage(message)) {
+            console.error('Unknown message: %o', msg);
             return;
         }
 
         const listeners = this.listeners.get(message.command);
 
         if (!listeners) {
+            console.error('Unhandled message: %o', msg);
             return;
         }
 
