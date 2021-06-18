@@ -75,9 +75,24 @@ export type ServerRequestMethodRequests = {
     [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['request'];
 };
 
-export type NotifyServerMethods = 'onConfigChange' | 'registerConfigurationFile';
+export type ServerRequestApi = {
+    [key in keyof ServerMethodRequestResult]: (
+        param: ServerMethodRequestResult[key]['request']
+    ) => Promise<ServerMethodRequestResult[key]['result']>;
+};
+
+export type NotifyServerMethodParams = {
+    onConfigChange: [];
+    registerConfigurationFile: [path: string];
+};
+
+export type NotifyServerMethods = keyof NotifyServerMethodParams;
 export type NotifyServerMethodConstants = {
     [key in NotifyServerMethods]: NotifyServerMethods;
+};
+
+export type ServerNotifyApi = {
+    [key in keyof NotifyServerMethodParams]: (...params: NotifyServerMethodParams[key]) => void;
 };
 
 export interface TextDocumentRef {
