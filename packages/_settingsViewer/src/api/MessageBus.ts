@@ -12,10 +12,17 @@ export interface Messenger {
     postMessage<M extends Messages>(msg: M): void;
 }
 
+export type Logger = {
+    log: typeof console.log;
+    warn: typeof console.warn;
+    error: typeof console.error;
+    debug: typeof console.debug;
+};
+
 export class MessageBus implements Messenger {
     protected listeners = new Map<Commands, Set<Listener>>();
 
-    constructor(readonly vsCodeApi: WebviewApi) {
+    constructor(readonly vsCodeApi: WebviewApi, public logger: Logger = console) {
         this.vsCodeApi.onmessage = (msg: MessageEvent) => this.respondToMessage(msg);
     }
 
@@ -42,12 +49,14 @@ export class MessageBus implements Messenger {
         const message = msg.data;
 
         if (!isMessage(message)) {
+            this.logger.error('Unknown message: %o', msg);
             return;
         }
 
         const listeners = this.listeners.get(message.command);
 
         if (!listeners) {
+            this.logger.error('Unhandled message: %o', msg);
             return;
         }
 

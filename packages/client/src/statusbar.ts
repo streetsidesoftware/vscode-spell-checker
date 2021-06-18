@@ -74,7 +74,8 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
     function updateStatusBar(doc?: vscode.TextDocument, showClock?: boolean) {
         const document = isSupportedDoc(doc) ? doc : selectDocument();
-        const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
+        const vsConfig = workspace.getConfiguration(undefined, doc);
+        const settings: CSpellUserSettings = vsConfig.get('cSpell') as CSpellUserSettings;
         const { enabled, showStatus = true } = settings;
 
         if (!showStatus) {

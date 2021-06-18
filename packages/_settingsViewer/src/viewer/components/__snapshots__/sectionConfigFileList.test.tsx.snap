@@ -32,7 +32,15 @@ exports[`SectionConfigFileList Verification tests the snapshots 1`] = `
         <span
           className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
         >
-          file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json
+          <a
+            className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+            href="file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+          >
+            file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json
+          </a>
         </span>
       </div>
     </li>
@@ -60,7 +68,15 @@ exports[`SectionConfigFileList Verification tests the snapshots 1`] = `
         <span
           className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
         >
-          file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json
+          <a
+            className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+            href="file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+          >
+            file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json
+          </a>
         </span>
       </div>
     </li>

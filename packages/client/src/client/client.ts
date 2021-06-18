@@ -2,16 +2,14 @@ import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, Fo
 
 import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri } from 'vscode';
 
-import type {
+import {
     GetConfigurationForDocumentResult,
-    NotifyServerMethods,
-    ServerRequestMethodResults,
-    ServerRequestMethodConstants,
     SplitTextIntoWordsResult,
-    ServerRequestMethodRequests,
     IsSpellCheckEnabledResult,
     NamedPattern,
     MatchPatternsToDocumentResult,
+    createServerApi,
+    ServerApi,
 } from '../server';
 import * as Settings from '../settings';
 
@@ -29,19 +27,13 @@ export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponse
     uri: Uri;
 }
 
-const methodNames: ServerRequestMethodConstants = {
-    isSpellCheckEnabled: 'isSpellCheckEnabled',
-    getConfigurationForDocument: 'getConfigurationForDocument',
-    splitTextIntoWords: 'splitTextIntoWords',
-    spellingSuggestions: 'spellingSuggestions',
-    matchPatternsInDocument: 'matchPatternsInDocument',
-};
-
 export class CSpellClient {
     readonly client: LanguageClient;
     readonly import: Set<string> = new Set();
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
+
+    private serverApi: ServerApi;
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -84,6 +76,7 @@ export class CSpellClient {
         // Create the language client and start the client.
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
+        this.serverApi = createServerApi(this.client);
     }
 
     public needsStart(): boolean {
@@ -104,41 +97,43 @@ export class CSpellClient {
         if (!uri || !languageId) {
             return { uri };
         }
-        const response = await this.sendRequest(methodNames.isSpellCheckEnabled, { uri: uri.toString(), languageId });
+        const response = await this.serverApi.isSpellCheckEnabled({ uri: uri.toString(), languageId });
         return { ...response, uri };
     }
 
     public async getConfigurationForDocument(document: TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
         if (!document) {
-            return this.sendRequest(methodNames.getConfigurationForDocument, {});
+            return this.serverApi.getConfigurationForDocument({});
         }
 
         const { uri, languageId = '' } = document;
 
         if (!uri || !languageId) {
-            return this.sendRequest(methodNames.getConfigurationForDocument, {});
+            return this.serverApi.getConfigurationForDocument({});
         }
 
-        return this.sendRequest(methodNames.getConfigurationForDocument, { uri: uri.toString(), languageId });
+        return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId });
     }
 
     public async matchPatternsInDocument(
         document: TextDocument,
         patterns: (string | NamedPattern)[]
     ): Promise<MatchPatternsToDocumentResult> {
-        return this.sendRequest(methodNames.matchPatternsInDocument, { uri: document.uri.toString(), patterns });
+        return this.serverApi.matchPatternsInDocument({ uri: document.uri.toString(), patterns });
     }
 
-    public splitTextIntoDictionaryWords(text: string): Thenable<SplitTextIntoWordsResult> {
-        return this.sendRequest(methodNames.splitTextIntoWords, text);
+    public splitTextIntoDictionaryWords(text: string): Promise<SplitTextIntoWordsResult> {
+        return this.serverApi.splitTextIntoWords(text);
     }
 
-    public notifySettingsChanged(): Promise<void> {
-        return this.client.onReady().then(() => this.sendNotification('onConfigChange'));
+    public async notifySettingsChanged(): Promise<void> {
+        await this.client.onReady();
+        return this.serverApi.onConfigChange();
     }
 
-    public registerConfiguration(path: string): Promise<void> {
-        return this.client.onReady().then(() => this.sendNotification('registerConfigurationFile', path));
+    public async registerConfiguration(path: string): Promise<void> {
+        await this.client.onReady();
+        return this.serverApi.registerConfigurationFile(path);
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {
@@ -147,18 +142,6 @@ export class CSpellClient {
 
     public triggerSettingsRefresh(): Promise<void> {
         return this.notifySettingsChanged();
-    }
-
-    private async sendRequest<K extends keyof ServerRequestMethodRequests>(
-        method: K,
-        param: ServerRequestMethodRequests[K]
-    ): Promise<ServerRequestMethodResults[K]> {
-        await this.client.onReady();
-        return this.client.sendRequest(method, param);
-    }
-
-    private sendNotification(method: NotifyServerMethods, params?: any): void {
-        this.client.sendNotification(method, params);
     }
 
     public static create(module: string): Promise<CSpellClient> {

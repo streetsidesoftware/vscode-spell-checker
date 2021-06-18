@@ -168,13 +168,14 @@ export class DocumentSettings {
             .map((filename) => Uri.file(filename))
             .reverse();
 
-        const configFiles = ignoreDefaultConfig ? allFiles.filter((f) => f.path.indexOf('/@cspell/') < 0) : allFiles;
+        const configFiles = ignoreDefaultConfig ? allFiles.filter((f) => !f.path.includes('/@cspell/')) : allFiles;
 
         if (!folders.length || !this._matchingFoldersForUri(folders, docUriAsString).length) {
             return filterConfigFilesToMatchInheritedPathOfFile(configFiles, uri);
         }
 
-        return configFiles.filter((configUri) => this._matchingFoldersForUri(folders, configUri.toString()).length > 0);
+        // return configFiles.filter((configUri) => this._matchingFoldersForUri(folders, configUri.toString()).length > 0);
+        return configFiles.filter((configUri) => !configUri.toString().includes('streetsidesoftware.code-spell-checker'));
     }
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {

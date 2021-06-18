@@ -215,3 +215,14 @@ export interface CSpellUserSettingsWithComments extends CSpellLibUserSettingsWit
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
+export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
+
+type AsString<S extends string> = S;
+
+type Prefix<T, P extends string> = {
+    [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
+};
+
+export type SpellCheckerSettingsVSCodeProperties = Prefix<CSpellUserSettings, 'cSpell.'>;
+
+export type SpellCheckerSettingsVSCode = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
