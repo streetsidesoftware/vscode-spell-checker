@@ -14,6 +14,41 @@ export type {
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
+/**
+ * Server RPC Api.
+ */
+export type ServerRequestApi = {
+    [key in keyof ServerMethodRequestResult]: (
+        param: ServerMethodRequestResult[key]['request']
+    ) => Promise<ServerMethodRequestResult[key]['result']>;
+};
+
+/**
+ * Server RPC Request and Result types
+ */
+export type ServerMethodRequestResult = {
+    getConfigurationForDocument: ServerRequestResult<TextDocumentInfo, GetConfigurationForDocumentResult>;
+    isSpellCheckEnabled: ServerRequestResult<TextDocumentInfo, IsSpellCheckEnabledResult>;
+    splitTextIntoWords: ServerRequestResult<string, SplitTextIntoWordsResult>;
+    spellingSuggestions: ServerRequestResult<TextDocumentInfo, SpellingSuggestionsResult>;
+    matchPatternsInDocument: ServerRequestResult<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
+};
+
+/**
+ * One way RPC calls to the server
+ */
+export type ServerNotifyApi = {
+    [key in keyof NotifyServerMethodParams]: (...params: NotifyServerMethodParams[key]) => void;
+};
+
+/**
+ * Notify the server params
+ */
+export type NotifyServerMethodParams = {
+    onConfigChange: [];
+    registerConfigurationFile: [path: string];
+};
+
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
@@ -59,14 +94,6 @@ type ServerRequestResult<Req, Res> = {
     result: Res;
 };
 
-export type ServerMethodRequestResult = {
-    getConfigurationForDocument: ServerRequestResult<TextDocumentInfo, GetConfigurationForDocumentResult>;
-    isSpellCheckEnabled: ServerRequestResult<TextDocumentInfo, IsSpellCheckEnabledResult>;
-    splitTextIntoWords: ServerRequestResult<string, SplitTextIntoWordsResult>;
-    spellingSuggestions: ServerRequestResult<TextDocumentInfo, SpellingSuggestionsResult>;
-    matchPatternsInDocument: ServerRequestResult<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
-};
-
 export type ServerRequestMethodResults = {
     [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['result'];
 };
@@ -75,24 +102,9 @@ export type ServerRequestMethodRequests = {
     [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['request'];
 };
 
-export type ServerRequestApi = {
-    [key in keyof ServerMethodRequestResult]: (
-        param: ServerMethodRequestResult[key]['request']
-    ) => Promise<ServerMethodRequestResult[key]['result']>;
-};
-
-export type NotifyServerMethodParams = {
-    onConfigChange: [];
-    registerConfigurationFile: [path: string];
-};
-
 export type NotifyServerMethods = keyof NotifyServerMethodParams;
 export type NotifyServerMethodConstants = {
     [key in NotifyServerMethods]: NotifyServerMethods;
-};
-
-export type ServerNotifyApi = {
-    [key in keyof NotifyServerMethodParams]: (...params: NotifyServerMethodParams[key]) => void;
 };
 
 export interface TextDocumentRef {
