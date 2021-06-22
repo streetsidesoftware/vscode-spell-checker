@@ -1,22 +1,20 @@
-import { LanguageClient } from 'vscode-languageclient/node';
-import {
-    ServerRequestApi,
-    ServerNotifyApi,
-    ServerRequestMethodRequests,
-    ServerRequestMethodResults,
-    NotifyServerMethodParams,
-} from 'server/api';
+import { LanguageClient, RequestType } from 'vscode-languageclient/node';
+import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi } from 'server/api';
 export * from 'server/api';
 
 export interface ServerApi extends ServerRequestApi, ServerNotifyApi {}
 
+type ServerMethodParams<method extends keyof ServerApi> = Parameters<ServerApi[method]>;
+
 export function createServerApi(client: LanguageClient): ServerApi {
     async function sendRequest<K extends keyof ServerRequestApi>(
         method: K,
-        param: ServerRequestMethodRequests[K]
-    ): Promise<ServerRequestMethodResults[K]> {
+        params: Parameters<ServerRequestApi[K]>
+    ): Promise<ReturnType<_ServerRequestApi[K]>> {
         await client.onReady();
-        return client.sendRequest(method, param);
+        type R = ReturnType<_ServerRequestApi[K]>;
+        const r = new RequestType<Parameters<ServerRequestApi[K]>, R, void>(method);
+        return client.sendRequest(r, params);
     }
 
     function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
@@ -24,15 +22,15 @@ export function createServerApi(client: LanguageClient): ServerApi {
     }
 
     const api: ServerApi = {
-        isSpellCheckEnabled: (param: ServerRequestMethodRequests['isSpellCheckEnabled']) => sendRequest('isSpellCheckEnabled', param),
-        getConfigurationForDocument: (param: ServerRequestMethodRequests['getConfigurationForDocument']) =>
-            sendRequest('getConfigurationForDocument', param),
-        splitTextIntoWords: (param: ServerRequestMethodRequests['splitTextIntoWords']) => sendRequest('splitTextIntoWords', param),
-        spellingSuggestions: (param: ServerRequestMethodRequests['spellingSuggestions']) => sendRequest('spellingSuggestions', param),
-        matchPatternsInDocument: (param: ServerRequestMethodRequests['matchPatternsInDocument']) =>
-            sendRequest('matchPatternsInDocument', param),
-        onConfigChange: (...params: NotifyServerMethodParams['onConfigChange']) => sendNotification('onConfigChange', ...params),
-        registerConfigurationFile: (...params: NotifyServerMethodParams['registerConfigurationFile']) =>
+        isSpellCheckEnabled: (...params: ServerMethodParams<'isSpellCheckEnabled'>) => sendRequest('isSpellCheckEnabled', params),
+        getConfigurationForDocument: (...params: ServerMethodParams<'getConfigurationForDocument'>) =>
+            sendRequest('getConfigurationForDocument', params),
+        splitTextIntoWords: (...params: ServerMethodParams<'splitTextIntoWords'>) => sendRequest('splitTextIntoWords', params),
+        spellingSuggestions: (...params: ServerMethodParams<'spellingSuggestions'>) => sendRequest('spellingSuggestions', params),
+        matchPatternsInDocument: (...params: ServerMethodParams<'matchPatternsInDocument'>) =>
+            sendRequest('matchPatternsInDocument', params),
+        onConfigChange: (...params: ServerMethodParams<'onConfigChange'>) => sendNotification('onConfigChange', ...params),
+        registerConfigurationFile: (...params: ServerMethodParams<'registerConfigurationFile'>) =>
             sendNotification('registerConfigurationFile', ...params),
     };
 

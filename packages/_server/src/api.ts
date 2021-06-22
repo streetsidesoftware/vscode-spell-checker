@@ -14,40 +14,34 @@ export type {
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
-/**
- * Server RPC Api.
- */
 export type ServerRequestApi = {
-    [key in keyof ServerMethodRequestResult]: (
-        param: ServerMethodRequestResult[key]['request']
-    ) => Promise<ServerMethodRequestResult[key]['result']>;
+    [key in keyof _ServerRequestApi]: (...params: Parameters<_ServerRequestApi[key]>) => Promise<ReturnType<_ServerRequestApi[key]>>;
 };
 
 /**
  * Server RPC Request and Result types
  */
-export type ServerMethodRequestResult = {
-    getConfigurationForDocument: ServerRequestResult<TextDocumentInfo, GetConfigurationForDocumentResult>;
-    isSpellCheckEnabled: ServerRequestResult<TextDocumentInfo, IsSpellCheckEnabledResult>;
-    splitTextIntoWords: ServerRequestResult<string, SplitTextIntoWordsResult>;
-    spellingSuggestions: ServerRequestResult<TextDocumentInfo, SpellingSuggestionsResult>;
-    matchPatternsInDocument: ServerRequestResult<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
+export type _ServerRequestApi = {
+    getConfigurationForDocument: ServerRPCDef<TextDocumentInfo, GetConfigurationForDocumentResult>;
+    isSpellCheckEnabled: ServerRPCDef<TextDocumentInfo, IsSpellCheckEnabledResult>;
+    splitTextIntoWords: ServerRPCDef<string, SplitTextIntoWordsResult>;
+    spellingSuggestions: ServerRPCDef<TextDocumentInfo, SpellingSuggestionsResult>;
+    matchPatternsInDocument: ServerRPCDef<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
 };
 
 /**
  * One way RPC calls to the server
  */
 export type ServerNotifyApi = {
-    [key in keyof NotifyServerMethodParams]: (...params: NotifyServerMethodParams[key]) => void;
+    onConfigChange: () => void;
+    registerConfigurationFile: (path: string) => void;
 };
 
-/**
- * Notify the server params
- */
-export type NotifyServerMethodParams = {
-    onConfigChange: [];
-    registerConfigurationFile: [path: string];
+export type ClientNotifications = {
+    onSpellCheckDocument: ClientNotification<OnSpellCheckDocument>;
 };
+
+type ClientNotification<P> = (param: P) => void;
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
@@ -83,26 +77,15 @@ export interface TextDocumentInfo {
     text?: string;
 }
 
-export type ServerRequestMethods = keyof ServerMethodRequestResult;
+export type ServerRequestMethods = keyof ServerRequestApi;
 
 export type ServerRequestMethodConstants = {
     [key in ServerRequestMethods]: key;
 };
 
-type ServerRequestResult<Req, Res> = {
-    request: Req;
-    result: Res;
-};
+type ServerRPCDef<Req, Res> = (req: Req) => Res;
 
-export type ServerRequestMethodResults = {
-    [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['result'];
-};
-
-export type ServerRequestMethodRequests = {
-    [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['request'];
-};
-
-export type NotifyServerMethods = keyof NotifyServerMethodParams;
+export type NotifyServerMethods = keyof ServerNotifyApi;
 export type NotifyServerMethodConstants = {
     [key in NotifyServerMethods]: NotifyServerMethods;
 };
@@ -146,4 +129,32 @@ export interface MatchPatternsToDocumentResult {
     message?: string;
 }
 
+export interface OnSpellCheckDocument {
+    /**
+     * uri of the text document
+     */
+    uri: DocumentUri;
+
+    /**
+     *
+     */
+    version: number;
+
+    /**
+     * name of step.
+     */
+    step: string;
+
+    /**
+     * true if it is finished
+     */
+    done?: boolean;
+
+    /**
+     * true if it was canceled before being completed
+     */
+    canceled?: boolean;
+}
+
 export type UriString = string;
+export type DocumentUri = UriString;

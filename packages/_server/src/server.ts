@@ -42,14 +42,6 @@ import { textToWords } from './utils';
 
 log('Starting Spell Checker Server');
 
-type RequestResult<T> = T | Promise<T>;
-
-type RequestMethodApi = {
-    [key in keyof Api.ServerMethodRequestResult]: (
-        param: Api.ServerRequestMethodRequests[key]
-    ) => RequestResult<Api.ServerRequestMethodResults[key]>;
-};
-
 const notifyMethodNames: Api.NotifyServerMethodConstants = {
     onConfigChange: 'onConfigChange',
     registerConfigurationFile: 'registerConfigurationFile',
@@ -91,7 +83,7 @@ export function run(): void {
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
 
-    const requestMethodApi: RequestMethodApi = {
+    const requestMethodApi: Api.ServerRequestApi = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
@@ -239,7 +231,7 @@ export function run(): void {
         }));
     }
 
-    function handleSplitTextIntoWords(text: string): Api.SplitTextIntoWordsResult {
+    async function handleSplitTextIntoWords(text: string): Promise<Api.SplitTextIntoWordsResult> {
         return {
             words: textToWords(text),
         };
