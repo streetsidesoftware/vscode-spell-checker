@@ -25,7 +25,7 @@ export interface ExtensionActivation {
 /**
  * Activates the spell checker extension
  */
-export async function activateExtension(): Promise<ExtensionActivation | undefined> {
+export async function activateExtension(): Promise<ExtensionActivation> {
     const extensionId = getExtensionId();
     log(`Activate: ${extensionId}`);
     const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId)!;
@@ -39,6 +39,7 @@ export async function activateExtension(): Promise<ExtensionActivation | undefin
         };
     } catch (e) {
         console.error(e);
+        throw e;
     }
 }
 

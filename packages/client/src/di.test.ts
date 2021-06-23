@@ -1,7 +1,8 @@
 import * as di from './di';
-import { dependencies } from './di';
 
 describe('Validate di', () => {
+    const dependencies = di.getDependencies();
+
     beforeEach(di.__testing__.init);
 
     test('Access before initialization', () => {

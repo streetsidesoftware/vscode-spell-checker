@@ -46,6 +46,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const serverModule = context.asAbsolutePath(path.join('packages/_server/dist/main.js'));
     // Get the cSpell Client
     const client = await CSpellClient.create(serverModule);
+    context.subscriptions.push(client);
 
     di.set('client', client);
     di.set('extensionContext', context);
@@ -53,7 +54,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     ExtensionRegEx.activate(context, client);
 
     // Start the client.
-    const clientDispose = client.start();
+    context.subscriptions.push(client.start());
 
     function triggerGetSettings() {
         client.triggerSettingsRefresh();
@@ -127,7 +128,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
-        clientDispose,
         vscode.commands.registerCommand('cSpell.editText', handlerApplyTextEdits(client.client)),
 
         vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToFolderDictionary),

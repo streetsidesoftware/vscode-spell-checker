@@ -80,7 +80,7 @@ function addWordToTarget(word: string, target: Settings.Target, docUri: string |
 
 function _addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
-    return di.dependencies.dictionaryHelper.addWordToTarget(word, target, docUri);
+    return di.get('dictionaryHelper').addWordToTarget(word, target, docUri);
 }
 
 export function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {

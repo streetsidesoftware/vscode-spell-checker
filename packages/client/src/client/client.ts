@@ -10,11 +10,13 @@ import {
     MatchPatternsToDocumentResult,
     createServerApi,
     ServerApi,
+    OnSpellCheckDocumentStep,
 } from '../server';
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
 import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
+import { createBroadcaster } from '../util/broadcaster';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -27,13 +29,15 @@ export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponse
     uri: Uri;
 }
 
-export class CSpellClient {
+export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
     readonly import: Set<string> = new Set();
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
 
     private serverApi: ServerApi;
+    private disposables: Set<Disposable> = new Set();
+    private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -77,6 +81,7 @@ export class CSpellClient {
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
+        this.handleNotificationsFromServer();
     }
 
     public needsStart(): boolean {
@@ -88,7 +93,7 @@ export class CSpellClient {
     }
 
     public start(): Disposable {
-        return this.client.start();
+        return this.exposeDisposable(this.client.start());
     }
 
     public async isSpellCheckEnabled(document: TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {
@@ -126,14 +131,12 @@ export class CSpellClient {
         return this.serverApi.splitTextIntoWords(text);
     }
 
-    public async notifySettingsChanged(): Promise<void> {
-        await this.client.onReady();
-        return this.serverApi.onConfigChange();
+    public notifySettingsChanged(): Promise<void> {
+        return this.whenReady(() => this.serverApi.notifyConfigChange());
     }
 
-    public async registerConfiguration(path: string): Promise<void> {
-        await this.client.onReady();
-        return this.serverApi.registerConfigurationFile(path);
+    public registerConfiguration(path: string): Promise<void> {
+        return this.whenReady(() => this.serverApi.registerConfigurationFile(path));
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {
@@ -144,12 +147,54 @@ export class CSpellClient {
         return this.notifySettingsChanged();
     }
 
+    public async whenReady<R>(fn: () => R): Promise<R> {
+        await this.client.onReady();
+        return fn();
+    }
+
     public static create(module: string): Promise<CSpellClient> {
         return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(module, langIds)));
+    }
+
+    /**
+     * @param d - internal disposable to register
+     * @returns the disposable to hand out.
+     */
+    private exposeDisposable(d: Disposable): Disposable {
+        this.registerDisposable(d);
+        return new Disposable(() => this.disposeOf(d));
+    }
+
+    private registerDisposable(...disposables: Disposable[]) {
+        for (const d of disposables) {
+            this.disposables.add(d);
+        }
+    }
+
+    private disposeOf(d: Disposable) {
+        if (!this.disposables.has(d)) return;
+        this.disposables.delete(d);
+        d.dispose();
+    }
+
+    public dispose(): void {
+        const toDispose = [...this.disposables];
+        this.disposables.clear();
+        Disposable.from(...toDispose).dispose();
     }
 
     private calcServerArgs(): string[] {
         const args: string[] = [];
         return args;
+    }
+
+    public onSpellCheckDocumentNotification(fn: (p: OnSpellCheckDocumentStep) => void): Disposable {
+        return this.broadcasterOnSpellCheckDocument.listen(fn);
+    }
+
+    private handleNotificationsFromServer() {
+        this.whenReady(() =>
+            this.registerDisposable(this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)))
+        );
     }
 }

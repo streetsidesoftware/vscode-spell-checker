@@ -39,19 +39,12 @@ import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';
 import { textToWords } from './utils';
+import { createProgressNotifier } from './progressNotifier';
 
 log('Starting Spell Checker Server');
 
-type RequestResult<T> = T | Promise<T>;
-
-type RequestMethodApi = {
-    [key in keyof Api.ServerMethodRequestResult]: (
-        param: Api.ServerRequestMethodRequests[key]
-    ) => RequestResult<Api.ServerRequestMethodResults[key]>;
-};
-
 const notifyMethodNames: Api.NotifyServerMethodConstants = {
-    onConfigChange: 'onConfigChange',
+    notifyConfigChange: 'notifyConfigChange',
     registerConfigurationFile: 'registerConfigurationFile',
 };
 
@@ -91,7 +84,7 @@ export function run(): void {
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
 
-    const requestMethodApi: RequestMethodApi = {
+    const requestMethodApi: Api.ServerRequestApi = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
@@ -104,6 +97,8 @@ export function run(): void {
     const connection = createConnection(ProposedFeatures.all);
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
+
+    const progressNotifier = createProgressNotifier(connection);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
@@ -186,7 +181,7 @@ export function run(): void {
     }
 
     // Listen for event messages from the client.
-    connection.onNotification(notifyMethodNames.onConfigChange, onConfigChange);
+    connection.onNotification(notifyMethodNames.notifyConfigChange, onConfigChange);
     connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
     disposables.push(configWatcher.listen(onConfigFileChange));
@@ -239,7 +234,7 @@ export function run(): void {
         }));
     }
 
-    function handleSplitTextIntoWords(text: string): Api.SplitTextIntoWordsResult {
+    async function handleSplitTextIntoWords(text: string): Promise<Api.SplitTextIntoWordsResult> {
         return {
             words: textToWords(text),
         };
@@ -310,6 +305,7 @@ export function run(): void {
                         .pipe(
                             filter((doc) => uri === doc.uri),
                             take(1),
+                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
                             tap((doc) => log('Ignoring:', doc.uri))
                         )
                         .subscribe()
@@ -320,8 +316,10 @@ export function run(): void {
                     validationRequestStream
                         .pipe(
                             filter((doc) => uri === doc.uri),
+                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
                             tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
                             mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
+                            tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
                             debounce((dsp) =>
                                 timer(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
                             ),
@@ -407,7 +405,9 @@ export function run(): void {
         }
 
         isValidationBusy = true;
+        progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'start validation');
         const r = await validate();
+        progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'end validation', r.diagnostics.length);
         isValidationBusy = false;
         return r;
     }

@@ -375,14 +375,6 @@
       },
       "type": "array"
     },
-    "files": {
-      "description": "Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.",
-      "items": {
-        "description": "These are glob expressions",
-        "type": "string"
-      },
-      "type": "array"
-    },
     "fixSpellingWithRenameProvider": {
       "default": true,
       "description": "Use Rename when fixing spelling issues.",
@@ -398,10 +390,6 @@
     },
     "globRoot": {
       "description": "The root to use for glop patterns found in this configuration. Default: location of the configuration file.   For compatibility reasons, config files with version 0.1, the glob root will   default to be `${cwd}`.\n\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n- `${cwd}` - will be replaced with the current working directory.\n- `.` - will be the location of the containing configuration file.",
-      "type": "string"
-    },
-    "id": {
-      "description": "Optional identifier",
       "type": "string"
     },
     "ignorePaths": {
@@ -807,10 +795,6 @@
       "default": 4,
       "description": "The minimum length of a word before checking it against a dictionary.",
       "type": "number"
-    },
-    "name": {
-      "description": "Optional name of configuration",
-      "type": "string"
     },
     "noConfigSearch": {
       "default": false,
@@ -1588,15 +1572,6 @@
         "type": "string"
       },
       "type": "array"
-    },
-    "version": {
-      "default": "0.2",
-      "description": "Configuration format version of the settings file.",
-      "enum": [
-        "0.2",
-        "0.1"
-      ],
-      "type": "string"
     },
     "words": {
       "description": "list of words to be always considered correct",

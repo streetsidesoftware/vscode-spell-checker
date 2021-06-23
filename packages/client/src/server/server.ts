@@ -1,22 +1,32 @@
-import { LanguageClient } from 'vscode-languageclient/node';
-import {
-    ServerRequestApi,
-    ServerNotifyApi,
-    ServerRequestMethodRequests,
-    ServerRequestMethodResults,
-    NotifyServerMethodParams,
-} from 'server/api';
+import { LanguageClient, NotificationType, RequestType } from 'vscode-languageclient/node';
+import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi, ClientNotifications, ClientNotificationsApi } from 'server/api';
 export * from 'server/api';
 
-export interface ServerApi extends ServerRequestApi, ServerNotifyApi {}
+export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi {}
+
+type Disposable = {
+    dispose: () => void;
+};
+
+type ServerEventApi = {
+    [K in keyof ClientNotifications]: (handler: ClientNotificationsApi[K]) => Disposable;
+};
 
 export function createServerApi(client: LanguageClient): ServerApi {
     async function sendRequest<K extends keyof ServerRequestApi>(
         method: K,
-        param: ServerRequestMethodRequests[K]
-    ): Promise<ServerRequestMethodResults[K]> {
+        param: Parameters<ServerRequestApi[K]>[0]
+    ): Promise<ReturnType<_ServerRequestApi[K]>> {
         await client.onReady();
-        return client.sendRequest(method, param);
+        type R = ReturnType<_ServerRequestApi[K]>;
+        const r = new RequestType<Parameters<ServerRequestApi[K]>[0], R, void>(method);
+        const result = await client.sendRequest(r, param);
+        return result;
+    }
+
+    function onNotify<M extends keyof ServerEventApi>(method: M, fn: ClientNotificationsApi[M]) {
+        const n = new NotificationType<ClientNotifications[M]>(method);
+        return client.onNotification(n, fn);
     }
 
     function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
@@ -24,16 +34,14 @@ export function createServerApi(client: LanguageClient): ServerApi {
     }
 
     const api: ServerApi = {
-        isSpellCheckEnabled: (param: ServerRequestMethodRequests['isSpellCheckEnabled']) => sendRequest('isSpellCheckEnabled', param),
-        getConfigurationForDocument: (param: ServerRequestMethodRequests['getConfigurationForDocument']) =>
-            sendRequest('getConfigurationForDocument', param),
-        splitTextIntoWords: (param: ServerRequestMethodRequests['splitTextIntoWords']) => sendRequest('splitTextIntoWords', param),
-        spellingSuggestions: (param: ServerRequestMethodRequests['spellingSuggestions']) => sendRequest('spellingSuggestions', param),
-        matchPatternsInDocument: (param: ServerRequestMethodRequests['matchPatternsInDocument']) =>
-            sendRequest('matchPatternsInDocument', param),
-        onConfigChange: (...params: NotifyServerMethodParams['onConfigChange']) => sendNotification('onConfigChange', ...params),
-        registerConfigurationFile: (...params: NotifyServerMethodParams['registerConfigurationFile']) =>
-            sendNotification('registerConfigurationFile', ...params),
+        isSpellCheckEnabled: (param) => sendRequest('isSpellCheckEnabled', param),
+        getConfigurationForDocument: (param) => sendRequest('getConfigurationForDocument', param),
+        splitTextIntoWords: (param) => sendRequest('splitTextIntoWords', param),
+        spellingSuggestions: (param) => sendRequest('spellingSuggestions', param),
+        matchPatternsInDocument: (param) => sendRequest('matchPatternsInDocument', param),
+        notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
+        registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
+        onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),
     };
 
     return api;

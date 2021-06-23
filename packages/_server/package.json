@@ -64,7 +64,7 @@
     "clean-build-production": "yarn run clean && yarn run compile",
     "build-production": "yarn run clean-build-production",
     "compile": "yarn run webpack",
-    "watch": "yarn run build --watch",
+    "watch": "yarn run compile --watch",
     "webpack": "webpack -c webpack.prod.js",
     "webpack-dev": "webpack -c webpack.dev.js",
     "test-watch": "jest --watch",

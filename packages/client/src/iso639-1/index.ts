@@ -6,17 +6,16 @@ export interface LangCountryPair {
 }
 
 const langCodes = new Map<string, LangCountryPair>(
-    codes
-        .map((parts) => {
-            const [code, lang, country = ''] = parts;
-            return [code, { lang, country }] as [string, LangCountryPair];
-        })
+    codes.map((parts) => {
+        const [code, lang, country = ''] = parts;
+        return [code, { lang, country }] as [string, LangCountryPair];
+    })
 );
 
 const regExReplace = /^([a-z]{2})[-_]?([a-z]{0,2})$/i;
 // const regExValidate = /^([a-z]{2})(-[A-Z]{2})?$/;
 
-export function normalizeCode(code: string) {
+export function normalizeCode(code: string): string {
     return code.replace(regExReplace, (match: string, p1: string, p2: string) => {
         const lang = p1.toLowerCase();
         const locale = p2.toUpperCase();
@@ -24,10 +23,10 @@ export function normalizeCode(code: string) {
     });
 }
 
-export function isValidCode(code: string) {
+export function isValidCode(code: string): boolean {
     return langCodes.has(code);
 }
 
-export function lookupCode(code: string) {
+export function lookupCode(code: string): LangCountryPair | undefined {
     return langCodes.get(code);
 }

@@ -14,6 +14,37 @@ export type {
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
+export type ServerRequestApi = {
+    [key in keyof _ServerRequestApi]: (...params: Parameters<_ServerRequestApi[key]>) => Promise<ReturnType<_ServerRequestApi[key]>>;
+};
+
+/**
+ * Server RPC Request and Result types
+ */
+export type _ServerRequestApi = {
+    getConfigurationForDocument: ServerRPCDef<TextDocumentInfo, GetConfigurationForDocumentResult>;
+    isSpellCheckEnabled: ServerRPCDef<TextDocumentInfo, IsSpellCheckEnabledResult>;
+    splitTextIntoWords: ServerRPCDef<string, SplitTextIntoWordsResult>;
+    spellingSuggestions: ServerRPCDef<TextDocumentInfo, SpellingSuggestionsResult>;
+    matchPatternsInDocument: ServerRPCDef<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
+};
+
+/**
+ * One way RPC calls to the server
+ */
+export type ServerNotifyApi = {
+    notifyConfigChange: () => void;
+    registerConfigurationFile: (path: string) => void;
+};
+
+export type ClientNotifications = {
+    onSpellCheckDocument: OnSpellCheckDocumentStep;
+};
+
+export type ClientNotificationsApi = {
+    [method in keyof ClientNotifications]: (p: ClientNotifications[method]) => void;
+};
+
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
@@ -48,51 +79,17 @@ export interface TextDocumentInfo {
     text?: string;
 }
 
-export type ServerRequestMethods = keyof ServerMethodRequestResult;
+export type ServerRequestMethods = keyof ServerRequestApi;
 
 export type ServerRequestMethodConstants = {
     [key in ServerRequestMethods]: key;
 };
 
-type ServerRequestResult<Req, Res> = {
-    request: Req;
-    result: Res;
-};
+type ServerRPCDef<Req, Res> = (req: Req) => Res;
 
-export type ServerMethodRequestResult = {
-    getConfigurationForDocument: ServerRequestResult<TextDocumentInfo, GetConfigurationForDocumentResult>;
-    isSpellCheckEnabled: ServerRequestResult<TextDocumentInfo, IsSpellCheckEnabledResult>;
-    splitTextIntoWords: ServerRequestResult<string, SplitTextIntoWordsResult>;
-    spellingSuggestions: ServerRequestResult<TextDocumentInfo, SpellingSuggestionsResult>;
-    matchPatternsInDocument: ServerRequestResult<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
-};
-
-export type ServerRequestMethodResults = {
-    [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['result'];
-};
-
-export type ServerRequestMethodRequests = {
-    [key in keyof ServerMethodRequestResult]: ServerMethodRequestResult[key]['request'];
-};
-
-export type ServerRequestApi = {
-    [key in keyof ServerMethodRequestResult]: (
-        param: ServerMethodRequestResult[key]['request']
-    ) => Promise<ServerMethodRequestResult[key]['result']>;
-};
-
-export type NotifyServerMethodParams = {
-    onConfigChange: [];
-    registerConfigurationFile: [path: string];
-};
-
-export type NotifyServerMethods = keyof NotifyServerMethodParams;
+export type NotifyServerMethods = keyof ServerNotifyApi;
 export type NotifyServerMethodConstants = {
     [key in NotifyServerMethods]: NotifyServerMethods;
-};
-
-export type ServerNotifyApi = {
-    [key in keyof NotifyServerMethodParams]: (...params: NotifyServerMethodParams[key]) => void;
 };
 
 export interface TextDocumentRef {
@@ -134,4 +131,47 @@ export interface MatchPatternsToDocumentResult {
     message?: string;
 }
 
+export interface OnSpellCheckDocumentStep extends NotificationInfo {
+    /**
+     * uri of the text document
+     */
+    uri: DocumentUri;
+
+    /**
+     *
+     */
+    version: number;
+
+    /**
+     * name of step.
+     */
+    step: string;
+
+    /**
+     * Number of issues found
+     */
+    numIssues?: number;
+
+    /**
+     * true if it is finished
+     */
+    done?: boolean;
+}
+
+export interface NotificationInfo {
+    /**
+     * Sequence number.
+     * Notifications can be sorted based upon the sequence number to give the order
+     * in which the Notification was generated.
+     * It should be unique between Notifications of the same type.
+     */
+    seq: number;
+
+    /**
+     * timestamp in ms.
+     */
+    ts: number;
+}
+
 export type UriString = string;
+export type DocumentUri = UriString;
