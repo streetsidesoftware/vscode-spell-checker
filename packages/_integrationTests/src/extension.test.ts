@@ -108,6 +108,10 @@ describe('Launch code spell extension', function () {
         log('found %o', found);
         expect(found).to.not.be.undefined;
 
+        if (!diags.length) {
+            log('All diags: %o', client.diagnostics);
+        }
+
         const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
         log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
         log('diags: %o', diags);
