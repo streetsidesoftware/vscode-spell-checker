@@ -103,14 +103,14 @@ describe('Launch code spell extension', function () {
         client.notifySettingsChanged();
 
         const found = await wait;
-        const diags = getDiags(client, uri);
+        const diags = await getDiagsFromVsCode(uri, 2000);
+
+        if (!diags.length) {
+            log('all diags: %o', vscode.languages.getDiagnostics());
+        }
 
         log('found %o', found);
         expect(found).to.not.be.undefined;
-
-        if (!diags.length) {
-            log('All diags: %o', client.diagnostics);
-        }
 
         const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
         log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
@@ -147,8 +147,15 @@ async function waitForSpellComplete(uri: vscode.Uri, timeout: number): Promise<O
     return Promise.race([s.toPromise(), sleep(timeout)]);
 }
 
-function getDiags(cSpellClient: CSpellClient, uri: vscode.Uri) {
-    return cSpellClient.diagnostics?.get(uri) || [];
+async function getDiagsFromVsCode(uri: vscode.Uri, waitInMs: number): Promise<vscode.Diagnostic[]> {
+    let stop = false;
+    setInterval(() => (stop = true), waitInMs);
+    let diag: vscode.Diagnostic[] = vscode.languages.getDiagnostics(uri);
+    while (!stop && !diag.length) {
+        await sleep(5);
+        diag = vscode.languages.getDiagnostics(uri);
+    }
+    return diag;
 }
 
 function isDefined<T>(t: T | undefined): T {
