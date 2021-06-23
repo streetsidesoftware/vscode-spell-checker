@@ -1,4 +1,4 @@
-import { LanguageClient, NotificationType, RequestType, RequestType1 } from 'vscode-languageclient/node';
+import { LanguageClient, NotificationType, RequestType } from 'vscode-languageclient/node';
 import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi, ClientNotifications, ClientNotificationsApi } from 'server/api';
 export * from 'server/api';
 

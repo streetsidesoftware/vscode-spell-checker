@@ -1,6 +1,6 @@
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, ForkOptions } from 'vscode-languageclient/node';
 
-import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri, workspace } from 'vscode';
+import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri } from 'vscode';
 
 import {
     GetConfigurationForDocumentResult,
