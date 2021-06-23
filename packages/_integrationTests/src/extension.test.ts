@@ -7,6 +7,9 @@ import { getDocUri, activateExtension, loadDocument, sleep, log, chalk, sampleWo
 import { expect } from 'chai';
 import { ExtensionApi } from './ExtensionApi';
 import * as vscode from 'vscode';
+import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
+import { stream, Stream } from 'kefir';
+import { CSpellClient } from '../../client/dist/client';
 
 type Api = {
     [K in keyof ExtensionApi]: K;
@@ -30,6 +33,19 @@ const apiSignature: Api = {
 describe('Launch code spell extension', function () {
     this.timeout(120000);
     const docUri = getDocUri('diagnostics.txt');
+    const spellCheckNotifications: OnSpellCheckDocumentStep[] = [];
+    const disposables: { dispose: () => void }[] = [];
+
+    this.beforeAll(() => {
+        activateExtension().then((ext) => {
+            disposables.push(ext.extApi.cSpellClient().onSpellCheckDocumentNotification((n) => spellCheckNotifications.push(n)));
+        });
+    });
+
+    this.afterAll(() => {
+        disposables.forEach((d) => d.dispose());
+        disposables.length = 0;
+    });
 
     it('Verify the extension starts', async () => {
         log(chalk.yellow('Verify the extension starts'));
@@ -55,8 +71,7 @@ describe('Launch code spell extension', function () {
             const uri = docUri;
             const folders = vscode.workspace.workspaceFolders;
             log(
-                `Workspace Folders:
-            %O
+                `Workspace Folders: %O
             `,
                 folders
             );
@@ -78,105 +93,59 @@ describe('Launch code spell extension', function () {
     it('Verifies that some spelling errors were found', async () => {
         log(chalk.yellow('Verifies that some spelling errors were found'));
         const ext = isDefined(await activateExtension());
+        const client = ext.extApi.cSpellClient();
         const uri = getDocUri('example.md');
-        const diagsListener = waitForDiag(uri, 10000);
-        try {
-            const docContextMaybe = await loadDocument(uri);
-            expect(docContextMaybe).to.not.be.undefined;
-            const docContext = isDefined(docContextMaybe);
+        const docContextMaybe = await loadDocument(uri);
+        expect(docContextMaybe).to.not.be.undefined;
+        const wait = waitForSpellComplete(uri, 5000);
 
-            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
+        // Force a spell check.
+        client.notifySettingsChanged();
 
-            const { excludedBy, fileEnabled } = config;
-            log('config: %O', { excludedBy, fileEnabled });
+        const found = await wait;
+        const diags = getDiags(client, uri);
 
-            const cfg = config.docSettings || config.settings;
-            const { enabled, dictionaries, languageId } = cfg || {};
+        log('found %o', found);
+        expect(found).to.not.be.undefined;
 
-            log('cfg: %O', { enabled, dictionaries, languageId });
+        const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
+        log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
+        log('diags: %o', diags);
 
-            const diags = await diagsListener.diags;
-            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
-            log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
-            log('diags: \n%o', diags);
-
-            expect(fileEnabled).to.be.true;
-
-            // cspell:ignore spellling
-            expect(msgs).contains('spellling');
-        } finally {
-            diagsListener.dispose();
-        }
+        // cspell:ignore spellling
+        expect(msgs).contains('spellling');
         log(chalk.yellow('Done: Verifies that some spelling errors were found'));
     });
 
-    function waitForDiag(uri: vscode.Uri, timeout: number) {
-        type R = vscode.Diagnostic[];
-        const source = 'cSpell';
-        const diags: R = [];
-        const uriStr = uri.toString();
-        let dispose: vscode.Disposable | undefined;
-
-        function fetchDiags() {
-            return vscode.languages.getDiagnostics(uri).filter((diag) => diag.source === source);
-        }
-
-        function updateDiags() {
-            log('updateDiags');
-            diags.splice(0, diags.length, ...fetchDiags());
-        }
-
-        function cleanUp() {
-            dispose?.dispose();
-            dispose = undefined;
-        }
-
-        updateDiags();
-
-        const diagsP = new Promise<R>((resolve) => {
-            let resolved = false;
-            function resolveP() {
-                if (!resolved) {
-                    resolved = true;
-                    resolve(diags);
-                }
-            }
-
-            async function updateAndResolve() {
-                updateDiags();
-                let i;
-                for (i = 0; i < 10 && !diags.length; ++i) {
-                    log('sleeping %d', i);
-                    await sleep(1000);
-                    updateDiags();
-                }
-                log('Matching Diags: %o', diags);
-                resolveP();
-            }
-
-            dispose = vscode.languages.onDidChangeDiagnostics((event) => {
-                log('onDidChangeDiagnostics %o', event);
-                log(chalk`{green All for uri diags:} %o`, vscode.languages.getDiagnostics(uri));
-                log(chalk`{green ALL diags:}\n%o`, vscode.languages.getDiagnostics());
-                const matches = event.uris.filter((u) => u.toString() === uriStr);
-                if (matches.length) {
-                    updateAndResolve();
-                }
-            });
-
-            if (diags.length) {
-                resolveP();
-            }
-        });
-
-        const waitResult = {
-            diags: Promise.race([diagsP, sleep(timeout)]).then((r) => r || diags),
-            dispose: cleanUp,
-        };
-
-        return waitResult;
-    }
+    it('Wait a bit', async () => {
+        // This is useful for debugging and you want to see the VS Code UI.
+        // Set `secondsToWait` to 30 or more.
+        const secondsToWait = 1;
+        await sleep(secondsToWait * 1000);
+        expect(true).to.be.true;
+    });
 });
+
+function streamOnSpellCheckDocumentNotification(cSpellClient: CSpellClient): Stream<OnSpellCheckDocumentStep, undefined> {
+    return stream<OnSpellCheckDocumentStep, undefined>((emitter) => {
+        const d = cSpellClient.onSpellCheckDocumentNotification(emitter.value);
+        return d.dispose;
+    });
+}
+
+async function waitForSpellComplete(uri: vscode.Uri, timeout: number): Promise<OnSpellCheckDocumentStep | undefined> {
+    const matchUri = uri.toString();
+    const ext = await activateExtension();
+    const s = streamOnSpellCheckDocumentNotification(ext.extApi.cSpellClient())
+        .filter((v) => v.uri === matchUri)
+        .filter((v) => !!v.done)
+        .take(1);
+    return Promise.race([s.toPromise(), sleep(timeout)]);
+}
+
+function getDiags(cSpellClient: CSpellClient, uri: vscode.Uri) {
+    return cSpellClient.diagnostics?.get(uri) || [];
+}
 
 function isDefined<T>(t: T | undefined): T {
     if (t === undefined) {

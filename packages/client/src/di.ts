@@ -24,7 +24,10 @@ type GlobalDependenciesKeys = keyof GlobalDependencies;
 const keys: GlobalDependenciesKeys[] = Object.keys(definedDependencyKeys) as GlobalDependenciesKeys[];
 
 const globals: GlobalDependencies = {} as GlobalDependencies;
-export const dependencies: Readonly<GlobalDependencies> = globals;
+
+export function getDependencies(): GlobalDependencies {
+    return globals;
+}
 
 export function register<K extends keyof GlobalDependencies>(key: K, fn: () => GlobalDependencies[K]): void {
     Object.defineProperty(globals, key, {

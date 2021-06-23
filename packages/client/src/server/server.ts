@@ -1,20 +1,32 @@
-import { LanguageClient, RequestType } from 'vscode-languageclient/node';
-import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi } from 'server/api';
+import { LanguageClient, NotificationType, RequestType, RequestType1 } from 'vscode-languageclient/node';
+import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi, ClientNotifications, ClientNotificationsApi } from 'server/api';
 export * from 'server/api';
 
-export interface ServerApi extends ServerRequestApi, ServerNotifyApi {}
+export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi {}
 
-type ServerMethodParams<method extends keyof ServerApi> = Parameters<ServerApi[method]>;
+type Disposable = {
+    dispose: () => void;
+};
+
+type ServerEventApi = {
+    [K in keyof ClientNotifications]: (handler: ClientNotificationsApi[K]) => Disposable;
+};
 
 export function createServerApi(client: LanguageClient): ServerApi {
     async function sendRequest<K extends keyof ServerRequestApi>(
         method: K,
-        params: Parameters<ServerRequestApi[K]>
+        param: Parameters<ServerRequestApi[K]>[0]
     ): Promise<ReturnType<_ServerRequestApi[K]>> {
         await client.onReady();
         type R = ReturnType<_ServerRequestApi[K]>;
-        const r = new RequestType<Parameters<ServerRequestApi[K]>, R, void>(method);
-        return client.sendRequest(r, params);
+        const r = new RequestType<Parameters<ServerRequestApi[K]>[0], R, void>(method);
+        const result = await client.sendRequest(r, param);
+        return result;
+    }
+
+    function onNotify<M extends keyof ServerEventApi>(method: M, fn: ClientNotificationsApi[M]) {
+        const n = new NotificationType<ClientNotifications[M]>(method);
+        return client.onNotification(n, fn);
     }
 
     function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
@@ -22,16 +34,14 @@ export function createServerApi(client: LanguageClient): ServerApi {
     }
 
     const api: ServerApi = {
-        isSpellCheckEnabled: (...params: ServerMethodParams<'isSpellCheckEnabled'>) => sendRequest('isSpellCheckEnabled', params),
-        getConfigurationForDocument: (...params: ServerMethodParams<'getConfigurationForDocument'>) =>
-            sendRequest('getConfigurationForDocument', params),
-        splitTextIntoWords: (...params: ServerMethodParams<'splitTextIntoWords'>) => sendRequest('splitTextIntoWords', params),
-        spellingSuggestions: (...params: ServerMethodParams<'spellingSuggestions'>) => sendRequest('spellingSuggestions', params),
-        matchPatternsInDocument: (...params: ServerMethodParams<'matchPatternsInDocument'>) =>
-            sendRequest('matchPatternsInDocument', params),
-        onConfigChange: (...params: ServerMethodParams<'onConfigChange'>) => sendNotification('onConfigChange', ...params),
-        registerConfigurationFile: (...params: ServerMethodParams<'registerConfigurationFile'>) =>
-            sendNotification('registerConfigurationFile', ...params),
+        isSpellCheckEnabled: (param) => sendRequest('isSpellCheckEnabled', param),
+        getConfigurationForDocument: (param) => sendRequest('getConfigurationForDocument', param),
+        splitTextIntoWords: (param) => sendRequest('splitTextIntoWords', param),
+        spellingSuggestions: (param) => sendRequest('spellingSuggestions', param),
+        matchPatternsInDocument: (param) => sendRequest('matchPatternsInDocument', param),
+        notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
+        registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
+        onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),
     };
 
     return api;

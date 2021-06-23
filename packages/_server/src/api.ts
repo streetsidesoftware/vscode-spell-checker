@@ -33,15 +33,17 @@ export type _ServerRequestApi = {
  * One way RPC calls to the server
  */
 export type ServerNotifyApi = {
-    onConfigChange: () => void;
+    notifyConfigChange: () => void;
     registerConfigurationFile: (path: string) => void;
 };
 
 export type ClientNotifications = {
-    onSpellCheckDocument: ClientNotification<OnSpellCheckDocument>;
+    onSpellCheckDocument: OnSpellCheckDocumentStep;
 };
 
-type ClientNotification<P> = (param: P) => void;
+export type ClientNotificationsApi = {
+    [method in keyof ClientNotifications]: (p: ClientNotifications[method]) => void;
+};
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
@@ -129,7 +131,7 @@ export interface MatchPatternsToDocumentResult {
     message?: string;
 }
 
-export interface OnSpellCheckDocument {
+export interface OnSpellCheckDocumentStep extends NotificationInfo {
     /**
      * uri of the text document
      */
@@ -146,14 +148,29 @@ export interface OnSpellCheckDocument {
     step: string;
 
     /**
+     * Number of issues found
+     */
+    numIssues?: number;
+
+    /**
      * true if it is finished
      */
     done?: boolean;
+}
+
+export interface NotificationInfo {
+    /**
+     * Sequence number.
+     * Notifications can be sorted based upon the sequence number to give the order
+     * in which the Notification was generated.
+     * It should be unique between Notifications of the same type.
+     */
+    seq: number;
 
     /**
-     * true if it was canceled before being completed
+     * timestamp in ms.
      */
-    canceled?: boolean;
+    ts: number;
 }
 
 export type UriString = string;
