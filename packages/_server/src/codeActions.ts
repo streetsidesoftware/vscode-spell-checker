@@ -7,7 +7,9 @@ import { SpellingDictionary, constructSettingsForText, getDictionary, Text } fro
 import { isUriAllowed, DocumentSettings } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
-import { log } from './utils/log';
+import { log, logDebug } from './utils/log';
+import { ClientApi } from './clientApi';
+import { format } from 'util';
 
 function extractText(textDocument: TextDocument, range: LangServerRange) {
     return textDocument.getText(range);
@@ -17,7 +19,8 @@ export function onCodeActionHandler(
     documents: TextDocuments<TextDocument>,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
-    documentSettings: DocumentSettings
+    documentSettings: DocumentSettings,
+    clientApi: ClientApi
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
     type SettingsDictPair = GetSettingsResult;
     interface CacheEntry {
@@ -64,8 +67,7 @@ export function onCodeActionHandler(
             return [];
         }
         const folders = await documentSettings.folders;
-        const showAddToWorkspace = folders && folders.length > 0;
-        const showAddToFolder = folders && folders.length > 1;
+        const pWorkspaceConfig = clientApi.onWorkspaceConfigForDocumentRequest({ uri });
 
         function replaceText(range: LangServerRange, text?: string) {
             return TextEdit.replace(range, text || '');
@@ -106,6 +108,11 @@ export function onCodeActionHandler(
                         actions.push(action);
                     });
             }
+            const wConfig = await pWorkspaceConfig;
+            const showAddToWorkspace = folders && folders.length > 0;
+            const showAddToFolder = wConfig.workspaceFile && folders && folders.length > 1;
+
+            logDebug(format('Config %o', wConfig));
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
