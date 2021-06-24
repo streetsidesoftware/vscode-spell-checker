@@ -133,7 +133,7 @@ describe('Launch code spell extension', function () {
 function streamOnSpellCheckDocumentNotification(cSpellClient: CSpellClient): Stream<OnSpellCheckDocumentStep, undefined> {
     return stream<OnSpellCheckDocumentStep, undefined>((emitter) => {
         const d = cSpellClient.onSpellCheckDocumentNotification(emitter.value);
-        return d.dispose;
+        return () => d.dispose();
     });
 }
 
