@@ -14,19 +14,27 @@ export type {
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
+/**
+ * Method signatures for requests to the Server.
+ */
 export type ServerRequestApi = {
-    [key in keyof _ServerRequestApi]: (...params: Parameters<_ServerRequestApi[key]>) => Promise<ReturnType<_ServerRequestApi[key]>>;
+    [key in keyof ServerMethods]: ApiReqResFn<ServerMethods[key]>;
 };
+
+/**
+ * Internal Server Handler signatures to the Server API
+ */
+export type ServerRequestApiHandlers = ApiHandlers<ServerMethods>;
 
 /**
  * Server RPC Request and Result types
  */
-export type _ServerRequestApi = {
-    getConfigurationForDocument: ServerRPCDef<TextDocumentInfo, GetConfigurationForDocumentResult>;
-    isSpellCheckEnabled: ServerRPCDef<TextDocumentInfo, IsSpellCheckEnabledResult>;
-    splitTextIntoWords: ServerRPCDef<string, SplitTextIntoWordsResult>;
-    spellingSuggestions: ServerRPCDef<TextDocumentInfo, SpellingSuggestionsResult>;
-    matchPatternsInDocument: ServerRPCDef<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
+export type ServerMethods = {
+    getConfigurationForDocument: ReqRes<TextDocumentInfo, GetConfigurationForDocumentResult>;
+    isSpellCheckEnabled: ReqRes<TextDocumentInfo, IsSpellCheckEnabledResult>;
+    splitTextIntoWords: ReqRes<string, SplitTextIntoWordsResult>;
+    spellingSuggestions: ReqRes<TextDocumentInfo, SpellingSuggestionsResult>;
+    matchPatternsInDocument: ReqRes<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
 };
 
 /**
@@ -37,6 +45,9 @@ export type ServerNotifyApi = {
     registerConfigurationFile: (path: string) => void;
 };
 
+/**
+ * Notification that can be sent to the client
+ */
 export type ClientNotifications = {
     onSpellCheckDocument: OnSpellCheckDocumentStep;
 };
@@ -44,6 +55,19 @@ export type ClientNotifications = {
 export type ClientNotificationsApi = {
     [method in keyof ClientNotifications]: (p: ClientNotifications[method]) => void;
 };
+
+/**
+ * Requests that can be made of the client
+ */
+export type RequestsToClient = {
+    onWorkspaceConfigForDocumentRequest: ReqRes<WorkspaceConfigForDocumentRequest, WorkspaceConfigForDocumentResponse>;
+};
+
+export type RequestsToClientApi = {
+    [method in keyof RequestsToClient]: ApiReqResFn<RequestsToClient[method]>;
+};
+
+export type RequestsToClientApiHandlers = ApiHandlers<RequestsToClient>;
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
@@ -79,13 +103,11 @@ export interface TextDocumentInfo {
     text?: string;
 }
 
-export type ServerRequestMethods = keyof ServerRequestApi;
+export type ServerRequestMethods = keyof ServerMethods;
 
 export type ServerRequestMethodConstants = {
     [key in ServerRequestMethods]: key;
 };
-
-type ServerRPCDef<Req, Res> = (req: Req) => Res;
 
 export type NotifyServerMethods = keyof ServerNotifyApi;
 export type NotifyServerMethodConstants = {
@@ -173,5 +195,55 @@ export interface NotificationInfo {
     ts: number;
 }
 
+export interface WorkspaceConfigForDocumentRequest {
+    uri: DocumentUri;
+}
+
+export interface WorkspaceConfigForDocumentResponse {
+    uri: DocumentUri;
+    workspaceFile: UriString | undefined;
+    workspaceFolder: UriString | undefined;
+    words: ConfigurationTargets;
+    ignoreWords: ConfigurationTargets;
+}
+
+export interface ConfigurationTargets {
+    user?: boolean;
+    workspace?: boolean;
+    folder?: boolean;
+}
+
 export type UriString = string;
 export type DocumentUri = UriString;
+
+export type Req<T> = T extends { request: infer R } ? R : never;
+export type Res<T> = T extends { response: infer R } ? R : never;
+export type Fn<T> = T extends { fn: infer R } ? R : never;
+export type OrPromise<T> = Promise<T> | T;
+
+export type ReqRes<Req, Res> = {
+    request: Req;
+    response: Res;
+};
+
+/**
+ * Utility type to combine the Request and Response to create the Handler function
+ */
+export type RequestResponseFn<ReqRes> = {
+    request: Req<ReqRes>;
+    response: Res<ReqRes>;
+    fn: ApiReqHandler<ReqRes>;
+};
+
+export type ApiReqResFn<ReqRes> = ApiFn<Req<ReqRes>, Res<ReqRes>>;
+export type ApiFn<Req, Res> = (req: Req) => Promise<Res>;
+
+export type ApiReqHandler<ReqRes> = (req: Req<ReqRes>) => OrPromise<Res<ReqRes>>;
+
+export type ApiHandlers<ApiReqRes> = {
+    [M in keyof ApiReqRes]: ApiReqHandler<ApiReqRes[M]>;
+};
+
+export type ApiReqResMethods<ApiReqRes> = {
+    [M in keyof ApiReqRes]: ApiReqResFn<ApiReqRes[M]>;
+};

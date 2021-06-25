@@ -7,10 +7,17 @@ export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
 export const sectionCSpell = 'cSpell';
 
 export interface InspectValues<T> {
-    defaultValue?: T | undefined;
-    globalValue?: T | undefined;
-    workspaceValue?: T | undefined;
-    workspaceFolderValue?: T | undefined;
+    defaultValue?: T;
+    globalValue?: T;
+    workspaceValue?: T;
+    workspaceFolderValue?: T;
+
+    // defaultLanguageValue?: T;
+    // globalLanguageValue?: T;
+    // workspaceLanguageValue?: T;
+    // workspaceFolderLanguageValue?: T;
+
+    // languageIds?: string[];
 }
 
 export const GlobalTarget = Target.Global;
@@ -59,28 +66,17 @@ export type InspectScope = FullInspectScope | ScopeResourceFree;
 /**
  * ScopeOrder from general to specific.
  */
-const scopeOrder: Scope[] = [
-    'defaultValue',
-    'globalValue',
-    'workspaceValue',
-    'workspaceFolderValue',
-];
+const scopeOrder: Scope[] = ['defaultValue', 'globalValue', 'workspaceValue', 'workspaceFolderValue'];
 
-const scopeToOrderIndex = new Map<string, number>(
-    scopeOrder.map((s, i) => [s, i] as [string, number])
-);
+const scopeToOrderIndex = new Map<string, number>(scopeOrder.map((s, i) => [s, i] as [string, number]));
 
 export type InspectResult<T> = Inspect<T> | undefined;
 
-export function getSectionName(
-    subSection?: keyof CSpellUserSettings
-): string {
-    return [sectionCSpell, subSection].filter(a => !!a).join('.');
+export function getSectionName(subSection?: keyof CSpellUserSettings): string {
+    return [sectionCSpell, subSection].filter((a) => !!a).join('.');
 }
 
-export function getSettingsFromVSConfig(
-    resource: Uri | null
-): CSpellUserSettings {
+export function getSettingsFromVSConfig(resource: Uri | null): CSpellUserSettings {
     const config = getConfiguration(resource);
     return config.get<CSpellUserSettings>(sectionCSpell, {});
 }
@@ -101,7 +97,7 @@ export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
  */
 export function inspectScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope,
+    scope: InspectScope
 ): CSpellUserSettings[K] | undefined {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
@@ -115,7 +111,7 @@ export function inspectScopedSettingFromVSConfig<K extends keyof CSpellUserSetti
  */
 export function getScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope,
+    scope: InspectScope
 ): CSpellUserSettings[K] | undefined {
     return findScopedSettingFromVSConfig(subSection, scope).value;
 }
@@ -127,7 +123,7 @@ export function getScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>
  */
 export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope,
+    scope: InspectScope
 ): FindBestConfigResult<K> {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
@@ -136,23 +132,15 @@ export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings
 
 export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    resource: Uri | null,
+    resource: Uri | null
 ): Inspect<CSpellUserSettings[K]> {
-    const config = inspectConfig(resource);
-    const { defaultValue = {}, globalValue = {}, workspaceValue = {}, workspaceFolderValue = {} } = config;
-    return {
-        key: config.key + '.' + subSection,
-        defaultValue: defaultValue[subSection],
-        globalValue: globalValue[subSection],
-        workspaceValue: workspaceValue[subSection],
-        workspaceFolderValue: workspaceFolderValue[subSection],
-    };
+    return inspectConfigKey(resource, subSection);
 }
 
 export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     value: CSpellUserSettings[K],
-    configTarget: ConfigTarget,
+    configTarget: ConfigTarget
 ): Thenable<void> {
     const nTarget = normalizeTarget(configTarget);
     const target = extractTarget(nTarget);
@@ -162,24 +150,43 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     return config.update(section, value, target);
 }
 
-export function inspectConfig(
-    resource: Uri | null
-): Inspect<CSpellUserSettings> {
+/**
+ * @deprecated Use inspectConfigKey -- this is not guaranteed to work in the future.
+ */
+export function inspectConfig(resource: Uri | null): Inspect<CSpellUserSettings> {
     const config = getConfiguration(resource);
     const settings = config.inspect<CSpellUserSettings>(sectionCSpell) || { key: sectionCSpell };
     return settings;
 }
 
-function toAny(value: any): any {
-    return value;
+export function inspectConfigKey<K extends keyof CSpellUserSettings>(resource: Uri | null, key: K): Inspect<CSpellUserSettings[K]> {
+    const config = getConfiguration(resource);
+    const sectionKey = [sectionCSpell, key].join('.');
+    const settings = config.inspect<CSpellUserSettings[K]>(sectionKey) || { key: sectionKey };
+    return settings;
+}
+
+type InspectByKeys<T> = {
+    [K in keyof T]?: Inspect<T[K]>;
+};
+
+type InspectCSpellSettings = InspectByKeys<CSpellUserSettings>;
+
+export function inspectConfigKeys(resource: Uri | null, keys: (keyof InspectCSpellSettings)[]): InspectCSpellSettings {
+    const r: InspectCSpellSettings = {};
+    for (const k of keys) {
+        const x: InspectCSpellSettings = { [k]: inspectConfigKey(resource, k) };
+        Object.assign(r, x);
+    }
+    return r;
 }
 
 export function isGlobalLevelTarget(target: ConfigTarget): boolean {
-    return isConfigTargetWithOptionalResource(target) && target.target === Target.Global || target === Target.Global;
+    return (isConfigTargetWithOptionalResource(target) && target.target === Target.Global) || target === Target.Global;
 }
 
 export function isWorkspaceLevelTarget(target: ConfigTarget): boolean {
-    return isConfigTargetWithOptionalResource(target) && target.target === Target.Workspace || target === Target.Workspace;
+    return (isConfigTargetWithOptionalResource(target) && target.target === Target.Workspace) || target === Target.Workspace;
 }
 
 export function isFolderLevelTarget(target: ConfigTarget): boolean {
@@ -198,7 +205,7 @@ type TargetToScope = {
     [Target.Global]: 'globalValue';
     [Target.Workspace]: 'workspaceValue';
     [Target.WorkspaceFolder]: 'workspaceFolderValue';
-}
+};
 
 const targetToScope: TargetToScope = {
     1: 'globalValue',
@@ -244,7 +251,7 @@ function normalizeScope(scope: InspectScope): FullInspectScope {
 function normalizeResourceUri(uri: Uri | null | undefined): Uri | null {
     if (uri) {
         const folder = workspace.getWorkspaceFolder(uri);
-        return folder && folder.uri || null;
+        return (folder && folder.uri) || null;
     }
     return null;
 }
@@ -254,10 +261,7 @@ export interface FindBestConfigResult<K extends keyof CSpellUserSettings> {
     value: CSpellUserSettings[K];
 }
 
-function findBestConfig<K extends keyof CSpellUserSettings>(
-    config: Inspect<CSpellUserSettings[K]>,
-    scope: Scope,
-): FindBestConfigResult<K>{
+function findBestConfig<K extends keyof CSpellUserSettings>(config: Inspect<CSpellUserSettings[K]>, scope: Scope): FindBestConfigResult<K> {
     for (let p = scopeToOrderIndex.get(scope)!; p >= 0; p -= 1) {
         const k = scopeOrder[p];
         const v = config[k];
@@ -274,7 +278,8 @@ export function isGlobalTarget(target: ConfigTarget): boolean {
 
 export function createTargetForUri(target: Target, uri: Uri): ConfigTargetWithResource {
     return {
-        target, uri
+        target,
+        uri,
     };
 }
 
@@ -283,19 +288,15 @@ export function createTargetForDocument(target: Target, doc: TextDocument): Conf
 }
 
 export function extractTarget(target: ConfigTarget): Target {
-    return isConfigTargetWithOptionalResource(target)
-        ? target.target
-        : target;
+    return isConfigTargetWithOptionalResource(target) ? target.target : target;
 }
 
 export function extractTargetUri(target: ConfigTarget): Uri | null {
-    return isConfigTargetWithResource(target)
-        ? (target.uri || null)
-        : null;
+    return isConfigTargetWithResource(target) ? target.uri || null : null;
 }
 
 export function getConfiguration(uri?: Uri | null): WorkspaceConfiguration {
-    return workspace.getConfiguration(undefined, toAny(uri));
+    return workspace.getConfiguration(undefined, uri);
 }
 
 export function normalizeTarget(target: ConfigTarget): ConfigTarget {

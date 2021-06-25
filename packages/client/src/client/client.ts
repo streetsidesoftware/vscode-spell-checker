@@ -1,6 +1,6 @@
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, ForkOptions } from 'vscode-languageclient/node';
 
-import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri } from 'vscode';
+import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri, workspace } from 'vscode';
 
 import {
     GetConfigurationForDocumentResult,
@@ -11,12 +11,16 @@ import {
     createServerApi,
     ServerApi,
     OnSpellCheckDocumentStep,
+    WorkspaceConfigForDocumentRequest,
+    WorkspaceConfigForDocumentResponse,
+    ConfigurationTargets,
 } from '../server';
 import * as Settings from '../settings';
 
 import * as LanguageIds from '../settings/languageIds';
 import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
+import { Inspect, inspectConfigKeys } from '../settings';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -38,6 +42,7 @@ export class CSpellClient implements Disposable {
     private serverApi: ServerApi;
     private disposables: Set<Disposable> = new Set();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
+    private initComplete: Promise<void>;
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -81,7 +86,7 @@ export class CSpellClient implements Disposable {
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
-        this.handleNotificationsFromServer();
+        this.initComplete = this.initWhenReady();
     }
 
     public needsStart(): boolean {
@@ -192,9 +197,56 @@ export class CSpellClient implements Disposable {
         return this.broadcasterOnSpellCheckDocument.listen(fn);
     }
 
-    private handleNotificationsFromServer() {
-        this.whenReady(() =>
-            this.registerDisposable(this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)))
-        );
+    private async initWhenReady() {
+        await this.client.onReady();
+        this.registerHandleNotificationsFromServer();
+        this.registerHandleOnWorkspaceConfigForDocumentRequest();
     }
+
+    private registerHandleOnWorkspaceConfigForDocumentRequest() {
+        this.registerDisposable(this.serverApi.onWorkspaceConfigForDocumentRequest(handleOnWorkspaceConfigForDocumentRequest));
+    }
+
+    private registerHandleNotificationsFromServer() {
+        this.registerDisposable(this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)));
+    }
+}
+
+function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocumentRequest): WorkspaceConfigForDocumentResponse {
+    const { uri } = req;
+    const docUri = Uri.parse(uri);
+
+    const cfg = inspectConfigKeys(docUri, ['words', 'userWords', 'ignoreWords']);
+    const workspaceFile = workspace.workspaceFile?.toString();
+    const workspaceFolder = workspace.getWorkspaceFolder(docUri)?.uri.toString();
+
+    const allowFolder = workspaceFile !== undefined;
+
+    const tUserWords = toConfigTarget(cfg.userWords, allowFolder);
+    const tWords = toConfigTarget(cfg.words, allowFolder);
+    const tIgnoreWords = toConfigTarget(cfg.ignoreWords, allowFolder);
+
+    tWords.user = tUserWords.user;
+
+    const resp: WorkspaceConfigForDocumentResponse = {
+        uri,
+        workspaceFile,
+        workspaceFolder,
+        words: tWords,
+        ignoreWords: tIgnoreWords,
+    };
+
+    // console.log('handleOnWorkspaceConfigForDocumentRequest Req: %o Res: %o cfg: %o', req, resp, cfg);
+
+    return resp;
+}
+
+function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): ConfigurationTargets {
+    if (!ins) return {};
+    const { globalValue, workspaceValue, workspaceFolderValue } = ins;
+    return {
+        user: globalValue !== undefined || undefined,
+        workspace: workspaceValue !== undefined || undefined,
+        folder: allowFolder && (workspaceFolderValue !== undefined || undefined),
+    };
 }

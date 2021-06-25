@@ -1,8 +1,19 @@
 import { LanguageClient, NotificationType, RequestType } from 'vscode-languageclient/node';
-import { ServerRequestApi, _ServerRequestApi, ServerNotifyApi, ClientNotifications, ClientNotificationsApi } from 'server/api';
+import {
+    ServerRequestApi,
+    ServerNotifyApi,
+    ClientNotifications,
+    ClientNotificationsApi,
+    RequestsToClient,
+    Req,
+    Res,
+    Fn,
+    ServerMethods,
+    RequestResponseFn,
+} from 'server/api';
 export * from 'server/api';
 
-export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi {}
+export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi {}
 
 type Disposable = {
     dispose: () => void;
@@ -12,14 +23,18 @@ type ServerEventApi = {
     [K in keyof ClientNotifications]: (handler: ClientNotificationsApi[K]) => Disposable;
 };
 
+type RequestsFromServer = {
+    [K in keyof RequestsToClient]: RequestResponseFn<RequestsToClient[K]>;
+};
+
+type RequestsFromServerHandlerApi = {
+    [M in keyof RequestsFromServer]: (handler: Fn<RequestsFromServer[M]>) => Disposable;
+};
+
 export function createServerApi(client: LanguageClient): ServerApi {
-    async function sendRequest<K extends keyof ServerRequestApi>(
-        method: K,
-        param: Parameters<ServerRequestApi[K]>[0]
-    ): Promise<ReturnType<_ServerRequestApi[K]>> {
+    async function sendRequest<M extends keyof ServerMethods>(method: M, param: Req<ServerMethods[M]>): Promise<Res<ServerMethods[M]>> {
         await client.onReady();
-        type R = ReturnType<_ServerRequestApi[K]>;
-        const r = new RequestType<Parameters<ServerRequestApi[K]>[0], R, void>(method);
+        const r = new RequestType<Req<ServerMethods[M]>, Res<ServerMethods[M]>, void>(method);
         const result = await client.sendRequest(r, param);
         return result;
     }
@@ -27,6 +42,11 @@ export function createServerApi(client: LanguageClient): ServerApi {
     function onNotify<M extends keyof ServerEventApi>(method: M, fn: ClientNotificationsApi[M]) {
         const n = new NotificationType<ClientNotifications[M]>(method);
         return client.onNotification(n, fn);
+    }
+
+    function onRequest<M extends keyof RequestsFromServer>(method: M, fn: Fn<RequestsFromServer[M]>) {
+        const n = new RequestType<Req<RequestsFromServer[M]>, Res<RequestsFromServer[M]>, void>(method);
+        return client.onRequest(n, fn);
     }
 
     function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
@@ -42,6 +62,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
         notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
         registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
         onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),
+        onWorkspaceConfigForDocumentRequest: (fn) => onRequest('onWorkspaceConfigForDocumentRequest', fn),
     };
 
     return api;

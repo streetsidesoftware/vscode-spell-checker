@@ -285,6 +285,7 @@ describe('Validate DocumentSettings', () => {
         const docSettings = newDocumentSettings(getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        // Note: toLowerCase is needed because on MacOS and Windows cSpell.json and cspell.json will be considered the same file.
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 
@@ -302,6 +303,7 @@ describe('Validate DocumentSettings', () => {
         const docSettings = newDocumentSettings(getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
+        // Note: toLowerCase is needed because on MacOS and Windows cSpell.json and cspell.json will be considered the same file.
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 

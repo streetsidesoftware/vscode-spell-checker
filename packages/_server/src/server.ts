@@ -40,6 +40,7 @@ import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';
 import { textToWords } from './utils';
 import { createProgressNotifier } from './progressNotifier';
+import { createClientApi } from './clientApi';
 
 log('Starting Spell Checker Server');
 
@@ -84,7 +85,7 @@ export function run(): void {
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
 
-    const requestMethodApi: Api.ServerRequestApi = {
+    const requestMethodApi: Api.ServerRequestApiHandlers = {
         isSpellCheckEnabled: handleIsSpellCheckEnabled,
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
@@ -98,7 +99,8 @@ export function run(): void {
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
-    const progressNotifier = createProgressNotifier(connection);
+    const clientApi = createClientApi(connection);
+    const progressNotifier = createProgressNotifier(clientApi);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
@@ -234,7 +236,7 @@ export function run(): void {
         }));
     }
 
-    async function handleSplitTextIntoWords(text: string): Promise<Api.SplitTextIntoWordsResult> {
+    function handleSplitTextIntoWords(text: string): Api.SplitTextIntoWordsResult {
         return {
             words: textToWords(text),
         };
@@ -508,7 +510,7 @@ export function run(): void {
         }
     }
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, documentSettings));
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, documentSettings, clientApi));
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
