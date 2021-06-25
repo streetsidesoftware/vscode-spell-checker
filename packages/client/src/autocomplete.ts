@@ -39,13 +39,13 @@ interface Completion {
 const completions: Completion[] = [
     {
         label: 'words',
-        insertText: 'words ${1:word} ${2:word}',
+        insertText: 'words ${1:word}',
         description: 'Words to be allowed in the document',
         sortText: '1',
     },
     {
         label: 'ignore words',
-        insertText: 'ignore ${1:word} ${2:word}',
+        insertText: 'ignore ${1:word}',
         description: 'Words to be ignored in the document',
         sortText: '2',
     },
@@ -79,6 +79,11 @@ const completions: Completion[] = [
         label: 'dictionaries',
         insertText: 'dictionaries ${1:dictionary_name}',
         description: 'Add dictionaries to be used in this document.',
+    },
+    {
+        label: 'locale',
+        insertText: 'locale ${1:en}',
+        description: 'Set the language locale to be used in this document. (i.e. fr,en)',
     },
 ];
 
