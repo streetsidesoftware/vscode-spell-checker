@@ -134,39 +134,42 @@ describe('Validate CSpellSettings functions', () => {
     });
 
     test('addWordsToCustomDictionary', async () => {
-        const dictUri = getPathToTemp('addWordsToCustomDictionary/dict.txt');
+        const dict = {
+            name: 'custom dictionary',
+            uri: getPathToTemp('addWordsToCustomDictionary/dict.txt'),
+        };
         const words1 = ['one', 'two', 'three'];
         const words2 = ['alpha', 'beta', 'delta', 'zeta', 'one'];
         const expected = [...['alpha', 'beta', 'delta', 'zeta', 'one', 'two', 'three'].sort(), ''].join('\n');
-        await expect(CSS.addWordsToCustomDictionary(words1, dictUri)).resolves.toBeUndefined();
-        expect(readFile(dictUri)).resolves.toBe([...words1].sort().join('\n') + '\n');
-        await expect(CSS.addWordsToCustomDictionary(words2, dictUri)).resolves.toBeUndefined();
-        expect(readFile(dictUri)).resolves.toBe(expected);
+        await expect(CSS.addWordsToCustomDictionary(words1, dict)).resolves.toBeUndefined();
+        expect(readFile(dict.uri)).resolves.toBe([...words1].sort().join('\n') + '\n');
+        await expect(CSS.addWordsToCustomDictionary(words2, dict)).resolves.toBeUndefined();
+        expect(readFile(dict.uri)).resolves.toBe(expected);
     });
 
     test.each`
-        file              | error
-        ${''}             | ${e(sm(/Failed to add words to dictionary .*, unsupported format./))}
-        ${'words.txt.gz'} | ${e(sm(/words.txt.gz.*unsupported format./))}
-        ${'cspell.json'}  | ${e(sm(/cspell.json.*unsupported format./))}
-    `('addWordsToCustomDictionary_failures $file', async ({ file, error }) => {
+        file              | name       | error
+        ${''}             | ${'dict'}  | ${e(sm(/Failed to add words to dictionary "dict".*, unsupported format./))}
+        ${'words.txt.gz'} | ${'words'} | ${e(sm(/"words".*unsupported format:.*words.txt.gz/))}
+        ${'cspell.json'}  | ${'json'}  | ${e(sm(/"json".*unsupported format:.*cspell.json/))}
+    `('addWordsToCustomDictionary_failures "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_failures');
         await mkdirp(pathUri);
-        const dictUri = Uri.joinPath(pathUri, file);
+        const dict = { name, uri: Uri.joinPath(pathUri, file) };
         const words = ['one', 'two', 'three'];
-        await expect(CSS.addWordsToCustomDictionary(words, dictUri)).rejects.toEqual(error);
+        await expect(CSS.addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
     });
 
     test.each`
-        file           | error
-        ${'words.txt'} | ${e(sm(/Failed to add words to dictionary.*EISDIR/))}
-    `('addWordsToCustomDictionary_cannot_write $file', async ({ file, error }) => {
+        file           | name              | error
+        ${'words.txt'} | ${'custom-words'} | ${e(sm(/Failed to add words to dictionary "custom-words".*EISDIR/))}
+    `('addWordsToCustomDictionary_cannot_write "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_cannot_write');
-        const dictUri = Uri.joinPath(pathUri, file);
+        const dict = { name, uri: Uri.joinPath(pathUri, file) };
         // Make the file into a directory to force the error.
-        await mkdirp(dictUri);
+        await mkdirp(dict.uri);
         const words = ['one', 'two', 'three'];
-        await expect(CSS.addWordsToCustomDictionary(words, dictUri)).rejects.toEqual(error);
+        await expect(CSS.addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
     });
 });
 
