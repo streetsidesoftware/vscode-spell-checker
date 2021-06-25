@@ -1,0 +1,27 @@
+{
+  "name": "jest-mock-vscode",
+  "version": "0.1.0",
+  "description": "VS Code Mock for jest",
+  "main": "index.js",
+  "author": "Jason Dent",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "prepare": "yarn run build",
+    "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/vscode": "^1.57.0",
+    "jest": "^27.0.5",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.4"
+  },
+  "peerDependencies": {
+    "jest": "^27.0.5"
+  },
+  "dependencies": {
+    "vscode-uri": "^3.0.2"
+  }
+}

@@ -39,6 +39,8 @@ export const nestedConfigLocations = ['package.json'];
 const regIsJson = /\.jsonc?$/;
 const regIsPackageJson = /package\.json$/i;
 
+const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
+
 export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConfigLocations));
 /**
  * A set of files that if changed, could indicate that the cspell configuration changed.
@@ -76,8 +78,8 @@ export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<
         .then(() => settings);
 }
 
-export function addWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWords(word)));
+export function addWordsToSettingsAndUpdate(filename: Uri, words: string | string[]): Promise<CSpellSettings> {
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addWordsToSettings(settings, normalizeWords(words)));
 }
 
 export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -162,7 +164,8 @@ export async function readSettingsFileAndApplyUpdate(
     return writeSettings(cspellConfigUri, newSettings);
 }
 
-export function normalizeWords(words: string): string[] {
+export function normalizeWords(words: string | string[]): string[] {
+    if (typeof words !== 'string') return words;
     return words
         .split(' ')
         .map((a) => a.trim())
@@ -191,4 +194,21 @@ function isError(e: any): e is Error {
 
 function isNodeError(e: any): e is NodeError {
     return isError(e) && (<NodeError>e).code !== undefined;
+}
+
+export async function addWordsToCustomDictionary(words: string[], dictUri: Uri): Promise<void> {
+    const fsPath = dictUri.fsPath;
+    if (!regIsSupportedCustomDictionaryFormat.test(fsPath)) {
+        return Promise.reject(new Error(`Failed to add words to dictionary [${fsPath}], unsupported format.`));
+    }
+    try {
+        const data = await fs.readFile(fsPath, 'utf8').catch(() => '');
+        const lines = unique(data.split(/\r?\n/g).concat(words))
+            .filter((a) => !!a)
+            .sort();
+        await fs.mkdirp(path.dirname(fsPath));
+        await fs.writeFile(fsPath, lines.join('\n') + '\n');
+    } catch (e) {
+        return Promise.reject(new Error(`Failed to add words to dictionary ${e.toString()}`));
+    }
 }

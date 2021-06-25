@@ -37,7 +37,11 @@ node_modules
 **/.vscode-test
 
 /temp
-packages/*/{dist,out,temp}/**
+packages/*/dist
+packages/*/out
+packages/*/temp
 
 !**/server/.vscode
 !**/client/.vscode
+
+# cspell:ignore pids jscoverage wscript

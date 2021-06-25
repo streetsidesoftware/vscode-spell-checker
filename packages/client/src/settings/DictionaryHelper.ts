@@ -1,10 +1,10 @@
 import { CSpellClient } from '../client';
 import { Target } from './config';
 import * as config from './config';
-import { resolveTarget, addWordToSettings, determineSettingsPaths } from './settings';
+import { resolveTarget, addWordsToSettings, determineSettingsPaths } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { addWordToSettingsAndUpdate, normalizeWords } from './CSpellSettings';
+import { addWordsToSettingsAndUpdate, normalizeWords } from './CSpellSettings';
 import type {
     CSpellUserSettings,
     CustomDictionaryScope,
@@ -55,10 +55,10 @@ export class DictionaryHelper {
 
     private async addWordsToConfig(word: string, actualTarget: config.ConfigTarget, docConfig: GetConfigurationForDocumentResult) {
         const uri = config.extractTargetUri(actualTarget) || undefined;
-        await addWordToSettings(actualTarget, word);
+        await addWordsToSettings(actualTarget, word);
         const docConfigFiles = docConfig.configFiles.map((uri) => Uri.parse(uri));
         const paths = await determineSettingsPaths(actualTarget, uri, docConfigFiles);
-        await Promise.all(paths.map((path) => addWordToSettingsAndUpdate(path, word)));
+        await Promise.all(paths.map((path) => addWordsToSettingsAndUpdate(path, word)));
     }
 
     private getCustomDictionariesForTargetFromConfig(docConfig: GetConfigurationForDocumentResult, target: config.ConfigTarget) {

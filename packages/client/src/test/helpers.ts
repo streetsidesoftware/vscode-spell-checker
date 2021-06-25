@@ -16,10 +16,19 @@ export function getPathToTemp(baseFilename: string, testFilename?: string): Uri 
     return Uri.file(path.join(__dirname, '../../temp', testFile, baseFilename));
 }
 
+export function mkdirp(uri: Uri): Promise<void> {
+    return fs.mkdirp(uri.fsPath);
+}
+
 export async function writeFile(file: Uri, content: string): Promise<void> {
     const fsPath = file.fsPath;
     await fs.mkdirp(path.dirname(fsPath));
     return fs.writeFile(fsPath, content, 'utf-8');
+}
+
+export async function readFile(file: Uri): Promise<string> {
+    const fsPath = file.fsPath;
+    return fs.readFile(fsPath, 'utf-8');
 }
 
 export interface StackItem {
