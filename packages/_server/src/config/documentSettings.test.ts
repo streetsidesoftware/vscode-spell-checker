@@ -206,8 +206,8 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const configs = docSettings.extractCSpellFileConfigurations(settings);
         expect(configs.map((c) => c.name)).toEqual([
-            '_server/cspell.json',
-            'vscode-spell-checker/cSpell.json',
+            shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
+            shortPathName(Path.join(pathWorkspaceRoot, 'cSpell.json')),
             'sampleSourceFiles/cSpell.json',
             'sampleSourceFiles/cspell-ext.json',
             'overrides/cspell.json',
@@ -410,4 +410,10 @@ describe('Validate RegExp corrections', () => {
 
 function filePathToUri(file: string | Uri): Uri {
     return typeof file == 'string' ? Uri.file(file) : file;
+}
+
+function shortPathName(file: string | Uri): string {
+    const uri = filePathToUri(file);
+    const parts = uri.toString().split('/');
+    return parts.slice(-2).join('/');
 }
