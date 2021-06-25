@@ -17,8 +17,8 @@ describe('Validate DictionaryTargets', () => {
     const tUser: DictionaryTargetUser = { type: 'user' };
     const tWorkspace: DictionaryTargetWorkspace = { type: 'workspace' };
     const tFolder: DictionaryTargetFolder = { type: 'folder', docUri: uri };
-    const tCSpellConfig: DictionaryTargetCSpellConfig = { type: 'cspell', uri };
-    const tDictionary: DictionaryTargetDictionary = { type: 'dictionary', uri };
+    const tCSpellConfig: DictionaryTargetCSpellConfig = { type: 'cspell', name: 'cspell.json', uri };
+    const tDictionary: DictionaryTargetDictionary = { type: 'dictionary', name: 'custom-words', uri };
 
     test.each`
         target           | method                            | expected
