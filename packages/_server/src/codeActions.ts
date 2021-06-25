@@ -67,7 +67,7 @@ export function onCodeActionHandler(
             return [];
         }
         const folders = await documentSettings.folders;
-        const pWorkspaceConfig = clientApi.onWorkspaceConfigForDocumentRequest({ uri });
+        const pWorkspaceConfig = clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
 
         function replaceText(range: LangServerRange, text?: string) {
             return TextEdit.replace(range, text || '');

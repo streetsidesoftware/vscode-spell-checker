@@ -52,8 +52,18 @@ export type ClientNotifications = {
     onSpellCheckDocument: OnSpellCheckDocumentStep;
 };
 
+/**
+ * Client side API for listening to notifications from the server
+ */
 export type ClientNotificationsApi = {
     [method in keyof ClientNotifications]: (p: ClientNotifications[method]) => void;
+};
+
+/**
+ * Internal - API for sending notifications to the client
+ */
+export type SendClientNotificationsApi = {
+    [method in keyof ClientNotifications as `send${Capitalize<method>}`]: (p: ClientNotifications[method]) => void;
 };
 
 /**
@@ -63,8 +73,11 @@ export type RequestsToClient = {
     onWorkspaceConfigForDocumentRequest: ReqRes<WorkspaceConfigForDocumentRequest, WorkspaceConfigForDocumentResponse>;
 };
 
-export type RequestsToClientApi = {
-    [method in keyof RequestsToClient]: ApiReqResFn<RequestsToClient[method]>;
+/**
+ * Internal - API for sending requests to the client
+ */
+export type SendRequestsToClientApi = {
+    [method in keyof RequestsToClient as `send${Capitalize<method>}`]: ApiReqResFn<RequestsToClient[method]>;
 };
 
 export type RequestsToClientApiHandlers = ApiHandlers<RequestsToClient>;

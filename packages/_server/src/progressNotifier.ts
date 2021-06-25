@@ -11,7 +11,7 @@ export interface ProgressNotifier {
 export function createProgressNotifier(clientApi: ClientApi): ProgressNotifier {
     return {
         emitSpellCheckDocumentStep: (doc, step, numIssues) =>
-            clientApi.onSpellCheckDocument(toOnSpellCheckDocumentStep(doc, step, numIssues)),
+            clientApi.sendOnSpellCheckDocument(toOnSpellCheckDocumentStep(doc, step, numIssues)),
     };
 }
 

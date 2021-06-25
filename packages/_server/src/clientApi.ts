@@ -1,16 +1,16 @@
 import { Connection, NotificationType, RequestType } from 'vscode-languageserver';
 import {
     ClientNotifications,
-    ClientNotificationsApi,
     OnSpellCheckDocumentStep,
     Req,
     RequestsToClient,
-    RequestsToClientApi,
+    SendRequestsToClientApi,
     Res,
     WorkspaceConfigForDocumentRequest,
+    SendClientNotificationsApi,
 } from './api';
 
-export interface ClientApi extends ClientNotificationsApi, RequestsToClientApi {}
+export interface ClientApi extends SendClientNotificationsApi, SendRequestsToClientApi {}
 
 export function createClientApi(connection: Connection): ClientApi {
     function sendNotification<M extends keyof ClientNotifications>(method: M, param: ClientNotifications[M]) {
@@ -24,8 +24,8 @@ export function createClientApi(connection: Connection): ClientApi {
     }
 
     return {
-        onSpellCheckDocument: (param: OnSpellCheckDocumentStep) => sendNotification('onSpellCheckDocument', param),
-        onWorkspaceConfigForDocumentRequest: (param: WorkspaceConfigForDocumentRequest) =>
+        sendOnSpellCheckDocument: (param: OnSpellCheckDocumentStep) => sendNotification('onSpellCheckDocument', param),
+        sendOnWorkspaceConfigForDocumentRequest: (param: WorkspaceConfigForDocumentRequest) =>
             sendRequest('onWorkspaceConfigForDocumentRequest', param),
     };
 }
