@@ -236,7 +236,7 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
         ignoreWords: tIgnoreWords,
     };
 
-    console.log('handleOnWorkspaceConfigForDocumentRequest Req: %o Res: %o cfg: %o', req, resp, cfg);
+    // console.log('handleOnWorkspaceConfigForDocumentRequest Req: %o Res: %o cfg: %o', req, resp, cfg);
 
     return resp;
 }
