@@ -2,6 +2,8 @@
 import { CSpellUserSettings } from './config/cspellConfig';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { RegExpPatternDefinition } from 'cspell-lib';
+import { isDefined } from './utils';
+import { logError } from './utils/log';
 
 export type Range = [number, number];
 
@@ -153,7 +155,7 @@ function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, M
     if (isNamedPattern(pat)) {
         return namedPatternToMultiPattern(pat);
     }
-    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || { name: pat, regexp: [toRegExp(pat, 'g')] };
+    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || { name: pat, regexp: [toRegExp(pat, 'g')].filter(isDefined) };
 }
 
 function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {
@@ -162,7 +164,7 @@ function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern
 
 function namedPatternToMultiPattern(pat: NamedPattern): MultiPattern {
     const { name, pattern } = pat;
-    const regexp = typeof pattern === 'string' ? [toRegExp(pattern)] : pattern.map((p) => toRegExp(p));
+    const regexp = (typeof pattern === 'string' ? [toRegExp(pattern)] : pattern.map((p) => toRegExp(p))).filter(isDefined);
     return { name, regexp };
 }
 
@@ -175,19 +177,24 @@ function extractPatternsFromSettings(settings: PatternSettings): Map<string, Mul
 
 function mapDef(pat: RegExpPatternDefinition): MultiPattern {
     const { name, pattern } = pat;
-    const patterns = Array.isArray(pattern) ? pattern.map((r) => toRegExp(r)) : [toRegExp(pattern)];
+    const patterns = (Array.isArray(pattern) ? pattern.map((r) => toRegExp(r)) : [toRegExp(pattern)]).filter(isDefined);
     // ) => ({ name, patterns: toRegExp(pattern) })
     return { name, regexp: patterns };
 }
 
-export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
-    if (isRegExp(r)) return r;
+export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp | undefined {
+    try {
+        if (isRegExp(r)) return r;
 
-    const match = r.match(/^\/(.*)\/([gimsuy]*)$/);
-    if (match) {
-        return new RegExp(match[1], match[2] || undefined);
+        const match = r.match(/^\/(.*)\/([gimsuy]*)$/);
+        if (match) {
+            return new RegExp(match[1], match[2] || undefined);
+        }
+        return new RegExp(r, defaultFlags);
+    } catch (e) {
+        logError(e.toString());
     }
-    return new RegExp(r, defaultFlags);
+    return undefined;
 }
 
 export function isRegExp(r: RegExp | any): r is RegExp {
