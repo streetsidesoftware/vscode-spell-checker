@@ -32,6 +32,7 @@ const workspaceFolderClient: WorkspaceFolder = {
 };
 
 const cspellConfigInVsCode: CSpellUserSettings = {
+    name: 'Mock VS Code Config',
     ignorePaths: ['${workspaceFolder:_server}/**/*.json'],
     import: [
         '${workspaceFolder:_server}/sampleSourceFiles/overrides/cspell.json',
@@ -74,7 +75,7 @@ describe('Validate DocumentSettings', () => {
         expect(isUriAllowed(Uri.file(__filename).toString())).toBe(true);
     });
 
-    test('checks isUriBlackListed', () => {
+    test('checks isUriBlocked', () => {
         const uriFile = Uri.file(__filename);
         expect(isUriBlocked(uriFile.toString())).toBe(false);
 
@@ -165,6 +166,52 @@ describe('Validate DocumentSettings', () => {
 
         const result = await docSettings.calcExcludedBy(Uri.file(__filename).toString());
         expect(result).toHaveLength(0);
+    });
+
+    test('test extractTargetDictionaries', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        const docSettings = newDocumentSettings();
+        const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
+        const d = docSettings.extractTargetDictionaries(settings);
+        expect(d).toEqual([
+            expect.objectContaining({
+                name: 'cities',
+            }),
+            expect.objectContaining({
+                addWords: true,
+                name: 'cspell-words',
+            }),
+        ]);
+    });
+
+    test('test extractCSpellConfigurationFiles', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        const docSettings = newDocumentSettings();
+        const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
+        const files = docSettings.extractCSpellConfigurationFiles(settings);
+        expect(files.map((f) => f.toString())).toEqual(
+            expect.arrayContaining([Uri.file(Path.join(pathWorkspaceServer, 'cspell.json')).toString()])
+        );
+    });
+
+    test('test extractCSpellFileConfigurations', async () => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        const docSettings = newDocumentSettings();
+        const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
+        const configs = docSettings.extractCSpellFileConfigurations(settings);
+        expect(configs.map((c) => c.name)).toEqual([
+            shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
+            shortPathName(Path.join(pathWorkspaceRoot, 'cSpell.json')),
+            'sampleSourceFiles/cSpell.json',
+            'sampleSourceFiles/cspell-ext.json',
+            'overrides/cspell.json',
+        ]);
     });
 
     interface IsExcludeByTest {
@@ -363,4 +410,10 @@ describe('Validate RegExp corrections', () => {
 
 function filePathToUri(file: string | Uri): Uri {
     return typeof file == 'string' ? Uri.file(file) : file;
+}
+
+function shortPathName(file: string | Uri): string {
+    const uri = filePathToUri(file);
+    const parts = uri.toString().split('/');
+    return parts.slice(-2).join('/');
 }

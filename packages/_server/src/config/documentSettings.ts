@@ -2,7 +2,15 @@
 // cSpell:ignore pycache
 import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
-import type { Glob, RegExpPatternDefinition, Pattern, CSpellSettingsWithSourceTrace, GlobDef } from '@cspell/cspell-types';
+import type {
+    Glob,
+    RegExpPatternDefinition,
+    Pattern,
+    CSpellSettingsWithSourceTrace,
+    GlobDef,
+    DictionaryDefinition,
+    DictionaryDefinitionCustom,
+} from '@cspell/cspell-types';
 import {
     calcOverrideSettings,
     clearCachedFiles,
@@ -161,26 +169,21 @@ export class DocumentSettings {
         return this.extractCSpellConfigurationFiles(settings.settings);
     }
 
-    public extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
-        const configs = this.extractCSpellFileConfigurations(settings);
+    /**
+     * Extract cspell configuration files used as sources to the finalized settings.
+     * @param settings - finalized settings
+     * @returns config file uri's.
+     */
+    readonly extractCSpellConfigurationFiles = extractCSpellConfigurationFiles;
 
-        return configs.map(({ source }) => Uri.file(source.filename));
-    }
+    /**
+     * Extract file based cspell configurations used to create the finalized settings.
+     * @param settings - finalized settings
+     * @returns array of Settings
+     */
+    readonly extractCSpellFileConfigurations = extractCSpellFileConfigurations;
 
-    public extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
-        const sources = getSources(settings);
-
-        const regExIsOwnedByCspell = /@cspell\b/;
-        const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
-
-        const configs = sources
-            .filter(isCSpellSettingsWithFileSource)
-            .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
-            .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
-            .reverse();
-
-        return configs;
-    }
+    readonly extractTargetDictionaries = extractTargetDictionaries;
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
         const configs = await this.fetchVSCodeConfiguration(uri || '');
@@ -461,3 +464,55 @@ interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTrace {
 function isCSpellSettingsWithFileSource(s: CSpellUserSettings | CSpellSettingsWithFileSource): s is CSpellSettingsWithFileSource {
     return !!(<CSpellSettingsWithSourceTrace>s).source?.filename;
 }
+
+/**
+ * Extract cspell configuration files used as sources to the finalized settings.
+ * @param settings - finalized settings
+ * @returns config file uri's.
+ */
+function extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
+    const configs = extractCSpellFileConfigurations(settings);
+    return configs.map(({ source }) => Uri.file(source.filename));
+}
+
+/**
+ * Extract file based cspell configurations used to create the finalized settings.
+ * @param settings - finalized settings
+ * @returns array of Settings
+ */
+function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
+    const sources = getSources(settings);
+
+    const regExIsOwnedByCspell = /@cspell\b/;
+    const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
+
+    const configs = sources
+        .filter(isCSpellSettingsWithFileSource)
+        .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
+        .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
+        .reverse();
+
+    return configs;
+}
+
+/**
+ *
+ * @param settings - finalized settings
+ * @returns
+ */
+function extractTargetDictionaries(settings: CSpellUserSettings): DictionaryDefinition[] {
+    const { dictionaries = [], dictionaryDefinitions = [] } = settings;
+    const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
+    const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);
+    const regIsTextFile = /\.txt$/;
+    const targetDicts = activeDicts.filter((d) => regIsTextFile.test(d.path || '') || (<DictionaryDefinitionCustom>d).addWords);
+    return targetDicts;
+}
+
+function isDefined<T>(t: T | undefined): t is T {
+    return t !== undefined && t !== null;
+}
+
+export const __testing__ = {
+    extractTargetDictionaries,
+};
