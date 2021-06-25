@@ -3,6 +3,7 @@ Bundler's
 Codeblock
 Dependabot
 ESNEXT
+Evaluatable
 Exps
 FIXURL
 GOOG
@@ -17,6 +18,7 @@ Kramdown
 Lunr
 Preformat
 Staticman's
+VSIX
 acanthopterygious
 activitybar
 algolia
@@ -35,6 +37,7 @@ disqus
 downlevel
 enablement
 endhighlight
+endregion
 envs
 gemfiles
 gimsuy
@@ -64,6 +67,7 @@ nospace
 onfinally
 paginator
 permalinks
+quickfix
 quotemark
 restructuredtext
 rmwc
