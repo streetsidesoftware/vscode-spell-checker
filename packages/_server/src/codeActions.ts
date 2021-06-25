@@ -111,8 +111,10 @@ export function onCodeActionHandler(
             const wConfig = await pWorkspaceConfig;
             const showAddToWorkspace = folders && folders.length > 0;
             const showAddToFolder = wConfig.workspaceFile && folders && folders.length > 1;
+            const sources = documentSettings.extractCSpellFileConfigurations(docSetting);
 
             logDebug(format('Config %o', wConfig));
+            logDebug(format('Sources %o', sources));
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {

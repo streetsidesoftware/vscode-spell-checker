@@ -154,28 +154,32 @@ export class DocumentSettings {
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
     }
 
-    public async findCSpellConfigurationFilesForUri(docUri: string | Uri, ignoreDefaultConfig = true): Promise<Uri[]> {
+    public async findCSpellConfigurationFilesForUri(docUri: string | Uri): Promise<Uri[]> {
         const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
         const docUriAsString = uri.toString();
         const settings = await this.fetchSettingsForUri(docUriAsString);
-        const sources = getSources(settings.settings);
+        return this.extractCSpellConfigurationFiles(settings.settings);
+    }
 
-        const folders = await this.folders;
+    public extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
+        const configs = this.extractCSpellFileConfigurations(settings);
 
-        const allFiles = sources
-            .map((src) => src.source?.filename)
-            .filter(isDefined)
-            .map((filename) => Uri.file(filename))
+        return configs.map(({ source }) => Uri.file(source.filename));
+    }
+
+    public extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
+        const sources = getSources(settings);
+
+        const regExIsOwnedByCspell = /@cspell\b/;
+        const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
+
+        const configs = sources
+            .filter(isCSpellSettingsWithFileSource)
+            .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
+            .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
             .reverse();
 
-        const configFiles = ignoreDefaultConfig ? allFiles.filter((f) => !f.path.includes('/@cspell/')) : allFiles;
-
-        if (!folders.length || !this._matchingFoldersForUri(folders, docUriAsString).length) {
-            return filterConfigFilesToMatchInheritedPathOfFile(configFiles, uri);
-        }
-
-        // return configFiles.filter((configUri) => this._matchingFoldersForUri(folders, configUri.toString()).length > 0);
-        return configFiles.filter((configUri) => !configUri.toString().includes('streetsidesoftware.code-spell-checker'));
+        return configs;
     }
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
@@ -238,13 +242,9 @@ export class DocumentSettings {
         return resolveSettings(settings, resolver);
     }
 
-    private async matchingFoldersForUri(docUri: string): Promise<WorkspaceFolder[]> {
+    public async matchingFoldersForUri(docUri: string): Promise<WorkspaceFolder[]> {
         const folders = await this.folders;
-        return this._matchingFoldersForUri(folders, docUri);
-    }
-
-    private _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
-        return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
+        return _matchingFoldersForUri(folders, docUri);
     }
 
     private createCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
@@ -325,15 +325,24 @@ function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSet
     return enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
 }
 
-function filterConfigFilesToMatchInheritedPathOfFile(configFiles: Uri[], file: Uri): Uri[] {
-    const inheritPath = UriUtils.dirname(file).toString();
-    return configFiles.filter((cfgUri) => {
-        const uri = UriUtils.dirname(cfgUri);
-        if (inheritPath.startsWith(uri.toString())) {
+function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
+    return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
+}
+
+function filterFnConfigFilesToMatchInheritedPath(dir: Uri): (uri: Uri) => boolean {
+    const inheritPath = dir.toString();
+    return (cfgUri) => {
+        const uriConfDir = UriUtils.dirname(cfgUri);
+        if (inheritPath.startsWith(uriConfDir.toString())) {
             return true;
         }
-        return UriUtils.basename(uri) === '.vscode' && inheritPath.startsWith(UriUtils.dirname(uri).toString());
-    });
+        return UriUtils.basename(uriConfDir) === '.vscode' && inheritPath.startsWith(UriUtils.dirname(uriConfDir).toString());
+    };
+}
+
+function filterConfigFilesToMatchInheritedPathOfFile(configFiles: Uri[], file: Uri): Uri[] {
+    const fnFilter = filterFnConfigFilesToMatchInheritedPath(UriUtils.dirname(file));
+    return configFiles.filter(fnFilter);
 }
 
 const correctRegExMap = new Map([
@@ -439,6 +448,16 @@ function toGlobDef(g: Glob): GlobDef {
     return typeof g === 'string' ? { glob: g } : g;
 }
 
-function isDefined<T>(t: T | undefined): t is T {
-    return t === undefined ? false : true;
+type Source = Exclude<CSpellSettingsWithSourceTrace['source'], undefined>;
+
+interface FileSource extends Source {
+    filename: Exclude<Source['filename'], undefined>;
+}
+
+interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTrace {
+    source: FileSource;
+}
+
+function isCSpellSettingsWithFileSource(s: CSpellUserSettings | CSpellSettingsWithFileSource): s is CSpellSettingsWithFileSource {
+    return !!(<CSpellSettingsWithSourceTrace>s).source?.filename;
 }
