@@ -22,7 +22,7 @@ export async function writeWordsToDictionary(target: DictionaryTargets, words: s
     }
 
     if (isDictionaryTargetDictionary(target)) {
-        return addWordsToCustomDictionary(words, target).then(() => true);
+        return addWordsToCustomDictionary(words, target.uri).then(() => true);
     }
 
     return false;

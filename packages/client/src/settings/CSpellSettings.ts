@@ -196,15 +196,10 @@ function isNodeError(e: any): e is NodeError {
     return isError(e) && (<NodeError>e).code !== undefined;
 }
 
-export interface DictDef {
-    name: string;
-    uri: Uri;
-}
-
-export async function addWordsToCustomDictionary(words: string[], dict: DictDef): Promise<void> {
-    const fsPath = dict.uri.fsPath;
+export async function addWordsToCustomDictionary(words: string[], dictUri: Uri): Promise<void> {
+    const fsPath = dictUri.fsPath;
     if (!regIsSupportedCustomDictionaryFormat.test(fsPath)) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${dict.uri.fsPath}".`));
+        return Promise.reject(new Error(`Failed to add words to dictionary [${fsPath}], unsupported format.`));
     }
     try {
         const data = await fs.readFile(fsPath, 'utf8').catch(() => '');
@@ -214,6 +209,6 @@ export async function addWordsToCustomDictionary(words: string[], dict: DictDef)
         await fs.mkdirp(path.dirname(fsPath));
         await fs.writeFile(fsPath, lines.join('\n') + '\n');
     } catch (e) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${e.toString()}`));
+        return Promise.reject(new Error(`Failed to add words to dictionary ${e.toString()}`));
     }
 }

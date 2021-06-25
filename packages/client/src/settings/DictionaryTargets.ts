@@ -24,13 +24,11 @@ export interface DictionaryTargetFolder {
 
 export interface DictionaryTargetCSpellConfig {
     type: 'cspell';
-    name: string;
     uri: Uri;
 }
 
 export interface DictionaryTargetDictionary {
     type: 'dictionary';
-    name: string;
     uri: Uri;
 }
 
