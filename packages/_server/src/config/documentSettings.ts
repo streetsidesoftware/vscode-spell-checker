@@ -475,6 +475,9 @@ function extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
     return configs.map(({ source }) => Uri.file(source.filename));
 }
 
+const regExIsOwnedByCspell = /@cspell\b/;
+const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
+
 /**
  * Extract file based cspell configurations used to create the finalized settings.
  * @param settings - finalized settings
@@ -482,10 +485,6 @@ function extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
  */
 function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
     const sources = getSources(settings);
-
-    const regExIsOwnedByCspell = /@cspell\b/;
-    const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
-
     const configs = sources
         .filter(isCSpellSettingsWithFileSource)
         .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
@@ -505,7 +504,11 @@ function extractTargetDictionaries(settings: CSpellUserSettings): DictionaryDefi
     const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
     const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);
     const regIsTextFile = /\.txt$/;
-    const targetDicts = activeDicts.filter(isDictionaryDefinitionCustom).filter((d) => regIsTextFile.test(d.path) && d.addWords);
+    const targetDicts = activeDicts
+        .filter(isDictionaryDefinitionCustom)
+        .filter((d) => regIsTextFile.test(d.path) && d.addWords)
+        .filter((d) => !regExIsOwnedByCspell.test(d.path))
+        .filter((d) => !regExIsOwnedByExtension.test(d.path));
     return targetDicts;
 }
 
