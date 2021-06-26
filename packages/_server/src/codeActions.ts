@@ -3,13 +3,24 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
 import * as Validator from './validator';
 import { CSpellUserSettings } from './config/cspellConfig';
-import { SpellingDictionary, constructSettingsForText, getDictionary, Text } from 'cspell-lib';
+import {
+    SpellingDictionary,
+    constructSettingsForText,
+    getDictionary,
+    Text,
+    DictionaryDefinitionCustom,
+    CustomDictionaryScope,
+} from 'cspell-lib';
 import { isUriAllowed, DocumentSettings } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
-import { uniqueFilter } from './utils';
+import { isDefined, uniqueFilter } from './utils';
 import { log, logDebug } from './utils/log';
 import { ClientApi } from './clientApi';
 import { format } from 'util';
+import { URI } from 'vscode-uri';
+import { clientCommands } from './commands';
+
+const createCommand = LangServerCommand.create;
 
 function extractText(textDocument: TextDocument, range: LangServerRange) {
     return textDocument.getText(range);
@@ -77,11 +88,9 @@ export function onCodeActionHandler(
             return sugGen.genWordSuggestions(textDocument, word);
         }
 
-        function createAction(title: string, command: string, diags: Diagnostic[] | undefined, ...args: any[]): CodeAction {
-            const cmd = LangServerCommand.create(title, command, ...args);
-            const action = CodeAction.create(title, cmd);
+        function createAction(cmd: LangServerCommand, diags: Diagnostic[] | undefined): CodeAction {
+            const action = CodeAction.create(cmd.title, cmd, CodeActionKind.QuickFix);
             action.diagnostics = diags;
-            action.kind = CodeActionKind.QuickFix;
             return action;
         }
 
@@ -95,9 +104,10 @@ export function onCodeActionHandler(
                 sugs.map((sug) => (Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug))
                     .filter(uniqueFilter())
                     .forEach((sugWord) => {
-                        const action = createAction(sugWord, 'cSpell.editText', [diag], uri, textDocument.version, [
+                        const cmd = createCommand(sugWord, 'cSpell.editText', uri, textDocument.version, [
                             replaceText(diag.range, sugWord),
                         ]);
+                        const action = createAction(cmd, [diag]);
                         /**
                          * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
                          * Note we might want this to be a config setting incase someone has `"editor.codeActionsOnSave": { "source.fixAll": true }`
@@ -109,45 +119,87 @@ export function onCodeActionHandler(
                     });
             }
             const wConfig = await pWorkspaceConfig;
-            const showAddToWorkspace = folders && folders.length > 0;
-            const showAddToFolder = wConfig.workspaceFile && folders && folders.length > 1;
             const sources = documentSettings.extractCSpellFileConfigurations(docSetting);
+            const dictionaries = sortDictionariesForDisplay(documentSettings.extractTargetDictionaries(docSetting));
+            const sourceFiles = sources
+                .map((s) => ({ ...s.source, hasWords: !!s.words?.length }))
+                .map(({ name, filename, hasWords }) => ({ name, filename, uri: URI.file(filename), hasWords }));
+            const scopes = aggregateDictionaryScopes(dictionaries);
+            const showAddToUser = !!(!scopes.user || wConfig.words.user);
+            const showAddToWorkspace = (!scopes.workspace || wConfig.words.workspace) && folders?.length > 0;
+            const showAddToFolder = (!scopes.folder || wConfig.words.folder) && !!wConfig.workspaceFile && folders?.length > 1;
+            const configsWithDicts = extractDictionarySources(dictionaries);
 
             logDebug(format('Config %o', wConfig));
             logDebug(format('Sources %o', sources));
+            logDebug(format('Dictionaries %o', dictionaries));
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && spellCheckerDiags.length) {
-                actions.push(
-                    createAction(
-                        'Add: "' + word + '" to user dictionary',
-                        'cSpell.addWordToUserDictionarySilent',
-                        spellCheckerDiags,
-                        word,
-                        textDocument.uri
-                    )
-                );
-                if (showAddToFolder) {
-                    // Allow the them to add it to the project dictionary.
+                dictionaries.forEach((dict) => {
+                    const name = dict.name;
+                    const uri = URI.file(dict.path).toString();
+                    const scopeText = calcScopeText(dict);
                     actions.push(
                         createAction(
-                            'Add: "' + word + '" to folder dictionary',
-                            'cSpell.addWordToDictionarySilent',
-                            spellCheckerDiags,
-                            word,
-                            textDocument.uri
+                            clientCommands.addWordsToDictionaryFile(
+                                `Add: "${word}" to dictionary: ${dict.name}${scopeText}`,
+                                [word],
+                                textDocument.uri,
+                                { name, uri }
+                            ),
+                            spellCheckerDiags
+                        )
+                    );
+                });
+                sourceFiles.forEach((src) => {
+                    const name = src.name;
+                    const uri = src.uri.toString();
+                    if (!configsWithDicts.has(uri)) {
+                        actions.push(
+                            createAction(
+                                clientCommands.addWordsToConfigFile(`Add: "${word}" to config: ${src.name}`, [word], textDocument.uri, {
+                                    name,
+                                    uri,
+                                }),
+                                spellCheckerDiags
+                            )
+                        );
+                    }
+                });
+                if (showAddToUser) {
+                    actions.push(
+                        createAction(
+                            clientCommands.addWordsToVSCodeSettings(`Add: "${word}" to user settings`, [word], textDocument.uri, 'user'),
+                            spellCheckerDiags
                         )
                     );
                 }
-                if (showAddToWorkspace) {
+                if (showAddToFolder && (wConfig.words.folder || !sourceFiles.length)) {
+                    // Allow the them to add it to the project dictionary.
+                    actions.push(
+                        createAction(
+                            clientCommands.addWordsToVSCodeSettings(
+                                `Add: "${word}" to folder settings`,
+                                [word],
+                                textDocument.uri,
+                                'folder'
+                            ),
+                            spellCheckerDiags
+                        )
+                    );
+                }
+                if (showAddToWorkspace && (wConfig.words.workspace || !sourceFiles.length)) {
                     // Allow the them to add it to the workspace dictionary.
                     actions.push(
                         createAction(
-                            'Add: "' + word + '" to workspace dictionary',
-                            'cSpell.addWordToWorkspaceDictionarySilent',
-                            spellCheckerDiags,
-                            word,
-                            textDocument.uri
+                            clientCommands.addWordsToVSCodeSettings(
+                                `Add: "${word}" to workspace settings`,
+                                [word],
+                                textDocument.uri,
+                                'workspace'
+                            ),
+                            spellCheckerDiags
                         )
                     );
                 }
@@ -159,4 +211,71 @@ export function onCodeActionHandler(
     };
 
     return handler;
+}
+
+function calcScopeText(dict: DictionaryDefinitionCustom) {
+    const scope = getScopes(dict);
+    if (!scope.length) return '';
+
+    const t = scope.join(', ');
+    return t ? ` [${t}]` : '';
+}
+
+function getScopes(dict: DictionaryDefinitionCustom): CustomDictionaryScope[] {
+    const { scope } = dict;
+
+    return !scope ? [] : typeof scope === 'string' ? [scope] : scope;
+}
+
+type DictionaryScopesFound = {
+    [scope in CustomDictionaryScope]: boolean;
+};
+
+function aggregateDictionaryScopes(dicts: DictionaryDefinitionCustom[]): DictionaryScopesFound {
+    const f: DictionaryScopesFound = {
+        user: false,
+        workspace: false,
+        folder: false,
+    };
+    for (const dict of dicts) {
+        const scopes = getScopes(dict);
+        scopes.forEach((s) => (f[s] = true));
+    }
+    return f;
+}
+
+const scopeScore: { [scope in CustomDictionaryScope]: number } = {
+    user: -1,
+    workspace: 4,
+    folder: 2,
+};
+
+// order is workspace folder `none` user
+function sortDictionariesForDisplay(dicts: DictionaryDefinitionCustom[]): DictionaryDefinitionCustom[] {
+    function score(dict: DictionaryDefinitionCustom): number {
+        let score = 1;
+        for (const s of getScopes(dict)) {
+            score += scopeScore[s] || 0;
+        }
+        return score;
+    }
+
+    const d = dicts.map((dict) => ({ dict, score: score(dict) })).sort((a, b) => b.score - a.score);
+    return d.map((dd) => dd.dict);
+}
+
+type UriString = string;
+
+interface DictWithSource extends DictionaryDefinitionCustom {
+    __source?: string;
+}
+
+function extractDictionarySources(dicts: DictWithSource[]): Set<UriString> {
+    const found = new Set(
+        dicts
+            .map((d) => d.__source)
+            .filter(isDefined)
+            .map((f) => URI.file(f).toString())
+    );
+    return found;
 }
