@@ -4,7 +4,12 @@ import * as config from './config';
 import { resolveTarget, addWordsToSettings, determineSettingsPaths } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { addWordsToSettingsAndUpdate, normalizeWords } from './CSpellSettings';
+import {
+    addWordsToCustomDictionary,
+    addWordsToSettingsAndUpdate,
+    normalizeWords,
+    DictDef as CustomDictionaryWithUri,
+} from './CSpellSettings';
 import type {
     CSpellUserSettings,
     CustomDictionaryScope,
@@ -12,15 +17,6 @@ import type {
     DictionaryDefinitionCustom,
     GetConfigurationForDocumentResult,
 } from '../server';
-import * as fs from 'fs-extra';
-import { unique } from '../util';
-
-const defaultEncoding = 'utf8';
-
-interface CustomDictionaryWithPath {
-    name: string;
-    path: Uri;
-}
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
@@ -66,33 +62,20 @@ export class DictionaryHelper {
         return dicts;
     }
 
-    private static extractCustomDictionaries(docConfig: CSpellUserSettings | undefined, target: Target): CustomDictionaryWithPath[] {
+    private static extractCustomDictionaries(docConfig: CSpellUserSettings | undefined, target: Target): CustomDictionaryWithUri[] {
         const scope = targetToCustomDictionaryScope(target);
         const dictionaries = docConfig?.dictionaryDefinitions
             ?.filter(isDictionaryDefinitionCustom)
             .filter((dict) => shouldAddWordToDictionary(dict, scope))
-            .map((dict) => ({ ...dict, path: Uri.file(dict.path) }));
+            .map(dictionaryDefinitionToCustomDictionaryWithPath);
         return dictionaries || [];
     }
 
-    async addWordsToCustomDictionaries(words: string[], dicts: CustomDictionaryWithPath[]): Promise<void> {
+    async addWordsToCustomDictionaries(words: string[], dicts: CustomDictionaryWithUri[]): Promise<void> {
         const process = dicts
-            .map((dict) => this.addWordsToCustomDictionary(words, dict))
+            .map((dict) => addWordsToCustomDictionary(words, dict))
             .map((p) => p.catch((e: Error) => vscode.window.showWarningMessage(e.message)));
         await Promise.all(process);
-    }
-
-    async addWordsToCustomDictionary(words: string[], dict: CustomDictionaryWithPath): Promise<void> {
-        try {
-            const fsPath = dict.path.fsPath;
-            const data = await fs.readFile(fsPath, defaultEncoding).catch(() => '');
-            const lines = unique(data.split(/\r?\n/g).concat(words))
-                .filter((a) => !!a)
-                .sort();
-            return fs.writeFile(fsPath, lines.join('\n') + '\n');
-        } catch (e) {
-            return Promise.reject(new Error(`Failed to add words to "${dict.name}" [${dict.path.fsPath}]`));
-        }
     }
 }
 
@@ -104,6 +87,13 @@ function targetToCustomDictionaryScope(target: Target): CustomDictionaryScope {
             return 'folder';
     }
     return 'user';
+}
+
+function dictionaryDefinitionToCustomDictionaryWithPath(def: DictionaryDefinitionCustom): CustomDictionaryWithUri {
+    return {
+        name: def.name,
+        uri: Uri.file(def.path),
+    };
 }
 
 function shouldAddWordToDictionary(dict: DictionaryDefinition, scope: CustomDictionaryScope): boolean {
