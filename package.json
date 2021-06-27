@@ -719,7 +719,7 @@
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint",
     "test-client-integration": "yarn workspace integration-tests test",
-    "test": "yarn workspace server test && yarn workspace settings-webview test && yarn workspace client test && yarn workspaces jest-mock-vscode test",
+    "test": "yarn workspace server test && yarn workspace settings-webview test && yarn workspace client test && yarn workspace jest-mock-vscode test",
     "update-packages": "yarn upgrade"
   },
   "devDependencies": {
