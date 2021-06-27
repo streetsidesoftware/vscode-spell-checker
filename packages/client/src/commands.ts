@@ -5,6 +5,17 @@ import { resolveTarget, determineSettingsPaths } from './settings';
 import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range } from 'vscode';
 import { TextEdit, LanguageClient } from 'vscode-languageclient/node';
 import { SpellCheckerSettingsProperties } from './server';
+import { ClientSideCommandHandlerApi } from './server';
+import {
+    DictionaryTargetCSpellConfig,
+    DictionaryTargetDictionary,
+    DictionaryTargetFolder,
+    DictionaryTargets,
+    DictionaryTargetTypes,
+    DictionaryTargetUser,
+    DictionaryTargetWorkspace,
+} from './settings/DictionaryTargets';
+import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import * as di from './di';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
@@ -42,6 +53,22 @@ export function handlerApplyTextEdits(client: LanguageClient) {
     };
 }
 
+export const commandsFromServer: ClientSideCommandHandlerApi = {
+    'cSpell.addWordsToConfigFile': (words, documentUri, config) => {
+        return pVoid(writeWordsToDictionary(toDictionaryTarget('cspell', documentUri, config.name, config.uri), words));
+    },
+    'cSpell.addWordsToDictionaryFile': (words, documentUri, dict) => {
+        return pVoid(writeWordsToDictionary(toDictionaryTarget('dictionary', documentUri, dict.name, dict.uri), words));
+    },
+    'cSpell.addWordsToVSCodeSettings': (words, documentUri, target) => {
+        return pVoid(writeWordsToDictionary(toDictionaryTarget(target, documentUri), words));
+    },
+};
+
+function pVoid<T>(p: Promise<T>): Promise<void> {
+    return p.then(() => {}).catch((e) => window.showErrorMessage(e.toString()).then());
+}
+
 async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean | undefined> {
     if (range.start.line !== range.end.line) {
         return false;
@@ -67,6 +94,8 @@ export function addWordToFolderDictionary(word: string, docUri: string | null | 
 }
 
 export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Thenable<void> {
+    // eslint-disable-next-line prefer-rest-params
+    console.log('addWordToWorkspaceDictionary %o', arguments);
     return addWordToTarget(word, Settings.Target.Workspace, docUri);
 }
 
@@ -161,6 +190,40 @@ function onError(reason: unknown): Promise<void> {
 
 function handleErrors(p: Promise<void>): Promise<void> {
     return p.catch(onError);
+}
+
+function toDictionaryTarget(targetType: 'user', docUri?: string): DictionaryTargetUser;
+function toDictionaryTarget(targetType: 'workspace', docUri?: string): DictionaryTargetWorkspace;
+function toDictionaryTarget(targetType: 'workspace', docUri: string): DictionaryTargetFolder;
+function toDictionaryTarget(
+    targetType: 'user' | 'workspace' | 'folder',
+    docUri: string
+): DictionaryTargetUser | DictionaryTargetWorkspace | DictionaryTargetFolder;
+function toDictionaryTarget(
+    targetType: 'cspell' | 'dictionary',
+    docUri: string,
+    name: string,
+    uri: string
+): DictionaryTargetCSpellConfig | DictionaryTargetDictionary;
+function toDictionaryTarget(targetType: DictionaryTargetTypes, docUri?: string, name?: string, uri?: string): DictionaryTargets {
+    switch (targetType) {
+        case 'user':
+            return { type: targetType };
+        case 'workspace':
+            return { type: targetType };
+        case 'folder':
+            return { type: targetType, docUri: Uri.parse(mustBeDefined(docUri)) };
+        case 'cspell':
+            return { type: targetType, name: mustBeDefined(name), uri: Uri.parse(mustBeDefined(uri)) };
+        case 'dictionary':
+            return { type: targetType, name: mustBeDefined(name), uri: Uri.parse(mustBeDefined(uri)) };
+    }
+    throw new Error(`Unknown target type ${targetType}`);
+}
+
+function mustBeDefined<T>(t: T | undefined): T {
+    if (t === undefined || t === null) throw new Error('Value must be defined.');
+    return t;
 }
 
 function parseOptionalUri(uri: string | Uri): Uri;

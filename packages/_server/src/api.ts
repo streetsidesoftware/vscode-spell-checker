@@ -80,6 +80,15 @@ export type SendRequestsToClientApi = {
     [method in keyof RequestsToClient as `send${Capitalize<method>}`]: ApiReqResFn<RequestsToClient[method]>;
 };
 
+export type ClientSideCommandHandlerApi = {
+    [command in keyof CommandsToClient as `cSpell.${command}`]: (...params: Parameters<CommandsToClient[command]>) => OrPromise<void>;
+};
+export interface CommandsToClient {
+    addWordsToVSCodeSettings: (words: string[], documentUri: string, target: 'user' | 'workspace' | 'folder') => void;
+    addWordsToDictionaryFile: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
+    addWordsToConfigFile: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
+}
+
 export type RequestsToClientApiHandlers = ApiHandlers<RequestsToClient>;
 
 export interface GetConfigurationForDocumentResult {
@@ -251,7 +260,8 @@ export type RequestResponseFn<ReqRes> = {
 export type ApiReqResFn<ReqRes> = ApiFn<Req<ReqRes>, Res<ReqRes>>;
 export type ApiFn<Req, Res> = (req: Req) => Promise<Res>;
 
-export type ApiReqHandler<ReqRes> = (req: Req<ReqRes>) => OrPromise<Res<ReqRes>>;
+export type ApiReqHandler<ReqRes> = ApiHandler<Req<ReqRes>, Res<ReqRes>>;
+export type ApiHandler<Req, Res> = (req: Req) => OrPromise<Res>;
 
 export type ApiHandlers<ApiReqRes> = {
     [M in keyof ApiReqRes]: ApiReqHandler<ApiReqRes[M]>;

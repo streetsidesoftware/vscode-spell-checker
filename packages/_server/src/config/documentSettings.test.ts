@@ -177,9 +177,6 @@ describe('Validate DocumentSettings', () => {
         const d = docSettings.extractTargetDictionaries(settings);
         expect(d).toEqual([
             expect.objectContaining({
-                name: 'cities',
-            }),
-            expect.objectContaining({
                 addWords: true,
                 name: 'cspell-words',
             }),
