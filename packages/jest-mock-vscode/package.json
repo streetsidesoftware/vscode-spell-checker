@@ -9,6 +9,7 @@
   "scripts": {
     "test": "jest",
     "prepare": "yarn run build",
+    "build-production": "yarn run build",
     "build": "tsc -p ."
   },
   "devDependencies": {
