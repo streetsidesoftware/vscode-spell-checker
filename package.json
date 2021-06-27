@@ -713,8 +713,8 @@
     "build-release": "yarn run build && yarn run package-extension",
     "version-prerelease": "yarn run version-release -p alpha",
     "version-release": "yarn run test-vsce-build && standard-version",
-    "package-extension": "npx vsce package -o ./build",
-    "test-vsce-build": "npx vsce package -o ./temp",
+    "package-extension": "vsce package -o ./build",
+    "test-vsce-build": "vsce package -o ./temp",
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint",
@@ -729,7 +729,8 @@
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "standard-version": "^9.1.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "vsce": "^1.95.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.4.0",
