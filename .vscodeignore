@@ -1,58 +1,46 @@
-/*
-.DS_Store
+# Ignore everything
+*
+*/**
+**/.DS_Store
+
+# Bring back the things we need.
 !CHANGELOG.md
-!/images
-/images/*
-!/images/SpellCheck.png
+!images/SpellCheck.png
 
 # Include root level items
 !cspell.code-snippets
 
-# Always Exclude
-*.d.ts
-*.map
-
-# Bring in selected Node modules
-!/node_modules
-/node_modules/*
+# Always Exclude - but doesn't work
+**/*.d.ts
+**/*.map
 
 # Include the schema
-!/node_modules/@cspell/cspell-types/cspell.schema.json
+!node_modules/@cspell/cspell-types/cspell.schema.json
 
 # Dictionaries cannot be WebPacked
-!/node_modules/@cspell
-/node_modules/@cspell/*
-!/node_modules/@cspell/cspell-bundled-dicts
-!/node_modules/@cspell/cspell-types
-!/node_modules/@cspell/dict*
-!/node_modules/@cspell/dict*
+!node_modules/@cspell/cspell-bundled-dicts/**
+!node_modules/@cspell/dict*/**
 
 # Regexp worker must NOT be WebPacked
-!/node_modules/regexp-worker
+!node_modules/regexp-worker/*
+!node_modules/regexp-worker/lib/**/*.js
 
 # Do not WebPack import-fresh and dependencies
 # This is needed to support cosmiconfig
-!/node_modules/import-fresh
-!/node_modules/resolve-from
-!/node_modules/parent-module
-!/node_modules/callsites
+!node_modules/import-fresh/**
+!node_modules/resolve-from/**
+!node_modules/parent-module/**
+!node_modules/callsites/**
 
 # All Other Client and Server files.
-!/packages
-/packages/*
-!/packages/_server
-/packages/_server/*
-!/packages/_server/dist
-!/packages/_server/package.json
+!packages/_server/dist/api.js
+!packages/_server/dist/main.js
+!packages/_server/dist/main.js.LICENSE.txt
+!packages/_server/package.json
+!packages/client/dist/**/*.{js,LICENSE.txt}
+!packages/client/License.txt
+!packages/client/package.json
+!packages/client/settingsViewer/webapp/*.{js,html,LICENSE.txt}
+!resources/**
 
-!/packages/client
-/packages/client/*
-!/packages/client/dist
-!/packages/client/package.json
-!/packages/client/settingsViewer
-/packages/client/settingsViewer/*
-!/packages/client/settingsViewer/*.js
-!/packages/client/settingsViewer/api
-!/packages/client/settingsViewer/webapp
-
-!/resources
+# cspell:ignore callsites
