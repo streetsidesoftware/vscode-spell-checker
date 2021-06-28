@@ -1,11 +1,12 @@
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { validateText } from 'cspell-lib';
-import { CSpellUserSettings } from './config/cspellConfig';
+import type { CSpellUserSettings } from './config/cspellConfig';
 import { DiagnosticSeverity, Diagnostic } from 'vscode-languageserver-types';
+import { diagnosticSource } from './constants';
 
 export { validateText } from 'cspell-lib';
 
-export const diagnosticCollectionName = 'cSpell';
+export const diagnosticCollectionName = diagnosticSource;
 export const diagSource = diagnosticCollectionName;
 export const defaultCheckLimit = 500;
 

@@ -14,6 +14,14 @@ export type {
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
+export type ExtensionId = 'cSpell';
+
+export type DiagnosticSource = ExtensionId;
+
+export type VSCodeSettingsCspell = {
+    [key in ExtensionId]?: config.CSpellUserSettings;
+};
+
 /**
  * Method signatures for requests to the Server.
  */

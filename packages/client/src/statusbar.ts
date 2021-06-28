@@ -6,13 +6,14 @@ import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client
 import * as infoViewer from './infoViewer';
 import { isSupportedUri, isSupportedDoc } from './util';
 import { sectionCSpell } from './settings';
+import { getCSpellDiags } from './diags';
 
 const statusBarId = 'spell checker status id';
 
 const cspellStatusBarIcon = 'Spell'; // '$(symbol-text)'
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient): void {
-    const settings: CSpellUserSettings = workspace.getConfiguration().get('cSpell') as CSpellUserSettings;
+    const settings: CSpellUserSettings = workspace.getConfiguration().get(sectionCSpell) as CSpellUserSettings;
     const { showStatusAlignment } = settings;
     const alignment = toStatusBarAlignment(showStatusAlignment);
     const sbCheck = window.createStatusBarItem(statusBarId, alignment);
@@ -75,7 +76,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     function updateStatusBar(doc?: vscode.TextDocument, showClock?: boolean) {
         const document = isSupportedDoc(doc) ? doc : selectDocument();
         const vsConfig = workspace.getConfiguration(undefined, doc);
-        const settings: CSpellUserSettings = vsConfig.get('cSpell') as CSpellUserSettings;
+        const settings: CSpellUserSettings = vsConfig.get(sectionCSpell) as CSpellUserSettings;
         const { enabled, showStatus = true } = settings;
 
         if (!showStatus) {
@@ -166,10 +167,4 @@ function statusBarText({ languageEnabled, fileEnabled, diags }: StatusBarTextPar
         return `$(issues) ${diags.length} ${cspellStatusBarIcon}`;
     }
     return `$(check) ${cspellStatusBarIcon}`;
-}
-
-function getCSpellDiags(docUri: vscode.Uri | undefined) {
-    const diags = (docUri && vscode.languages.getDiagnostics(docUri)) || [];
-    const cSpellDiags = diags.filter((d) => d.source === 'cSpell');
-    return cSpellDiags;
 }

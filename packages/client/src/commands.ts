@@ -2,7 +2,7 @@ import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
 import { resolveTarget, determineSettingsPaths } from './settings';
 
-import { window, TextEditor, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range } from 'vscode';
+import { window, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range, Diagnostic, Selection } from 'vscode';
 import { TextEdit, LanguageClient } from 'vscode-languageclient/node';
 import { SpellCheckerSettingsProperties } from './server';
 import { ClientSideCommandHandlerApi } from './server';
@@ -17,6 +17,8 @@ import {
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import * as di from './di';
+import { getCSpellDiags } from './diags';
+import { isDefined, toUri } from './util';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -63,6 +65,14 @@ export const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToVSCodeSettings': (words, documentUri, target) => {
         return pVoid(writeWordsToDictionary(toDictionaryTarget(target, documentUri), words));
     },
+};
+
+type CommandHandler = {
+    [key in string]: () => void | Promise<void>;
+};
+
+export const commandHandlers: CommandHandler = {
+    'cSpell.addAllWordsToWorkspace': () => {},
 };
 
 function pVoid<T>(p: Promise<T>): Promise<void> {
@@ -163,16 +173,28 @@ export function userCommandOnCurrentSelectionOrPrompt(
     fnAction: (text: string, uri: Uri | undefined) => Thenable<void>
 ): () => Thenable<void> {
     return function () {
-        const { activeTextEditor = {} } = window;
-        const { selection, document } = activeTextEditor as TextEditor;
-        const range = selection && document ? document.getWordRangeAtPosition(selection.active) : undefined;
-        const value = range ? document.getText(selection) || document.getText(range) : (selection && document.getText(selection)) || '';
-        return selection && !selection.isEmpty
-            ? fnAction(value, document && document.uri)
+        const document = window.activeTextEditor?.document;
+        const selection = window.activeTextEditor?.selection;
+        const range = selection && document?.getWordRangeAtPosition(selection.active);
+        const diags = document ? getCSpellDiags(document.uri) : undefined;
+        const value = extractMatchingDiagText(document, selection, diags) || (range && document?.getText(range));
+        return value
+            ? fnAction(value, document?.uri)
             : window.showInputBox({ prompt, value }).then((word) => {
                   word && fnAction(word, document && document.uri);
               });
     };
+}
+
+function extractMatchingDiagText(
+    doc: TextDocument | undefined,
+    selection: Selection | undefined,
+    diags: Diagnostic[] | undefined
+): string | undefined {
+    if (!doc || !selection || !diags) return undefined;
+    const matching = diags.map((d) => d.range.intersection(selection)).filter(isDefined);
+    const m = matching.map((range) => doc.getText(range));
+    return m.join(' ');
 }
 
 function isError(e: unknown): e is Error {
@@ -192,31 +214,36 @@ function handleErrors(p: Promise<void>): Promise<void> {
     return p.catch(onError);
 }
 
-function toDictionaryTarget(targetType: 'user', docUri?: string): DictionaryTargetUser;
-function toDictionaryTarget(targetType: 'workspace', docUri?: string): DictionaryTargetWorkspace;
-function toDictionaryTarget(targetType: 'workspace', docUri: string): DictionaryTargetFolder;
+function toDictionaryTarget(targetType: 'user', docUri?: string | Uri): DictionaryTargetUser;
+function toDictionaryTarget(targetType: 'workspace', docUri?: string | Uri): DictionaryTargetWorkspace;
+function toDictionaryTarget(targetType: 'workspace', docUri: string | Uri): DictionaryTargetFolder;
 function toDictionaryTarget(
     targetType: 'user' | 'workspace' | 'folder',
-    docUri: string
+    docUri: string | Uri
 ): DictionaryTargetUser | DictionaryTargetWorkspace | DictionaryTargetFolder;
 function toDictionaryTarget(
     targetType: 'cspell' | 'dictionary',
-    docUri: string,
+    docUri: string | Uri,
     name: string,
-    uri: string
+    uri: string | Uri
 ): DictionaryTargetCSpellConfig | DictionaryTargetDictionary;
-function toDictionaryTarget(targetType: DictionaryTargetTypes, docUri?: string, name?: string, uri?: string): DictionaryTargets {
+function toDictionaryTarget(
+    targetType: DictionaryTargetTypes,
+    docUri?: string | Uri,
+    name?: string,
+    uri?: string | Uri
+): DictionaryTargets {
     switch (targetType) {
         case 'user':
             return { type: targetType };
         case 'workspace':
             return { type: targetType };
         case 'folder':
-            return { type: targetType, docUri: Uri.parse(mustBeDefined(docUri)) };
+            return { type: targetType, docUri: toUri(mustBeDefined(docUri)) };
         case 'cspell':
-            return { type: targetType, name: mustBeDefined(name), uri: Uri.parse(mustBeDefined(uri)) };
+            return { type: targetType, name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
         case 'dictionary':
-            return { type: targetType, name: mustBeDefined(name), uri: Uri.parse(mustBeDefined(uri)) };
+            return { type: targetType, name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
     }
     throw new Error(`Unknown target type ${targetType}`);
 }

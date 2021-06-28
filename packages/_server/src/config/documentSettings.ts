@@ -32,13 +32,13 @@ import * as os from 'os';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
 import { genSequence, Sequence } from 'gensequence';
 import { uniqueFilter } from '../utils';
-
-const cSpellSection: keyof SettingsCspell = 'cSpell';
+import { VSCodeSettingsCspell } from '../api';
+import { extensionId } from '../constants';
 
 // The settings interface describe the server relevant settings part
-export interface SettingsCspell {
-    cSpell?: CSpellUserSettings;
-}
+export interface SettingsCspell extends VSCodeSettingsCspell {}
+
+const cSpellSection: keyof SettingsCspell = extensionId;
 
 export interface SettingsVSCode {
     search?: {

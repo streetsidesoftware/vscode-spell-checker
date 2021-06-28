@@ -1,10 +1,11 @@
 import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
+import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../server';
 
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
 
-export const sectionCSpell = 'cSpell';
+export const sectionCSpell = extensionId;
 
 export interface InspectValues<T> {
     defaultValue?: T;

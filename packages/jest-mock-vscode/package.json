@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
+    "lint": "echo Lint",
     "prepare": "yarn run build",
     "build-production": "yarn run build",
     "build": "tsc -p ."

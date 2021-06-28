@@ -1,12 +1,12 @@
 import { commands, TextDocument } from 'vscode';
 import { CSpellClient } from './client';
+import { extensionId } from './constants';
 
-const prefix = 'cSpell';
+const prefix = extensionId;
 
 interface DocumentContext {
     usesConfigFile: boolean;
     usesCustomDictionary: boolean;
-    configName: string;
 }
 
 export interface ContextTypes {
@@ -39,7 +39,6 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
         await setContext('documentConfigContext', {
             usesConfigFile: false,
             usesCustomDictionary: false,
-            configName: 'unknown',
         });
         return;
     }
@@ -48,7 +47,6 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     await setContext('documentConfigContext', {
         usesConfigFile: cfg.configFiles.length > 0,
         usesCustomDictionary: true,
-        configName: 'Fred'
     });
     return;
 }

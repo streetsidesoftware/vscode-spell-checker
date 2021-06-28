@@ -1,6 +1,8 @@
 import * as path from 'path';
 import { Uri } from 'vscode';
 import * as fs from 'fs-extra';
+import { isDefined } from '../util';
+export { isDefined } from '../util';
 
 export function getUriToSample(baseFilename: string): Uri {
     return Uri.file(path.join(__dirname, '../../samples', baseFilename));
@@ -66,10 +68,6 @@ export function toNum(n: string | undefined): number | undefined {
 
 export function isString(s: unknown): s is string {
     return typeof s === 'string';
-}
-
-export function isDefined<T>(t: T | undefined | null): t is T {
-    return t !== undefined && t !== null;
 }
 
 export function mustBeDefined<T>(t: T | undefined): T {
