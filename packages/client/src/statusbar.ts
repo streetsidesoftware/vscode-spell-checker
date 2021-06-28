@@ -40,7 +40,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
             const langReason = languageEnabled ? '' : `The "${languageId}" filetype is not enabled.`;
             const fileReason = formatFileReason(response);
             const fileName = path.basename(uri.fsPath);
-            const issuesText = `${diags.length} issues found`;
+            const issuesText = `Issues: ${diags.length}`;
             sbCheck.text = statusBarText({ languageEnabled, fileEnabled, diags });
             const reason = [issuesText, `"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason]
                 .filter((a) => !!a)
@@ -84,7 +84,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         }
 
         if (enabled) {
-            updateStatusBarWithSpellCheckStatus(document, showClock);
+            updateStatusBarWithSpellCheckStatus(document, showClock).catch();
         } else {
             sbCheck.text = `$(stop) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'Enable spell checking';

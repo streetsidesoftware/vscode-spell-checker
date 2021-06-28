@@ -34,6 +34,7 @@ import * as modules from './modules';
 
 import * as ExtensionRegEx from './extensionRegEx';
 import { registerCspellInlineCompletionProviders } from './autocomplete';
+import { updateDocumentRelatedContext } from './context';
 
 performance.mark('cspell_done_import');
 
@@ -172,6 +173,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),
         vscode.workspace.onDidCreateFiles(handleCreateFile),
+        vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
+        vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
 
         ...registerCspellInlineCompletionProviders(),
 
@@ -207,6 +210,14 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function handleCreateFile(event: vscode.FileCreateEvent) {
         detectPossibleCSpellConfigChange(event.files);
+    }
+
+    function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
+        updateDocumentRelatedContext(client, e?.document).catch();
+    }
+
+    function handleOnDidChangeVisibleTextEditors(_e: vscode.TextEditor[]) {
+        updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document).catch();
     }
 
     function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {
