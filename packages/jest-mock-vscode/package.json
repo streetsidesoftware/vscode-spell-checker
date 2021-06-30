@@ -3,17 +3,25 @@
   "version": "0.1.0",
   "description": "VS Code Mock for jest",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "author": "Jason Dent",
   "license": "MIT",
   "private": true,
   "scripts": {
     "test": "jest",
+    "lint": "echo Lint",
     "prepare": "yarn run build",
     "build-production": "yarn run build",
     "build": "tsc -p ."
   },
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "dist/**"
+  ],
   "devDependencies": {
     "@types/jest": "^26.0.23",
+    "@types/node": "14",
     "@types/vscode": "^1.57.0",
     "jest": "^27.0.5",
     "ts-jest": "^27.0.3",

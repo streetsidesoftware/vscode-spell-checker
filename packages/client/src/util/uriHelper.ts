@@ -1,4 +1,3 @@
-
 import * as vscode from 'vscode';
 
 export const supportedSchemes = ['gist', 'file', 'sftp', 'untitled'];
@@ -10,4 +9,24 @@ export function isSupportedUri(uri?: vscode.Uri): boolean {
 
 export function isSupportedDoc(doc?: vscode.TextDocument): boolean {
     return !!doc && !doc.isClosed && isSupportedUri(doc.uri);
+}
+
+const regExpIsUri = /^[\w.-]{2,}:/;
+
+export function toUri(uri: string | vscode.Uri): vscode.Uri;
+export function toUri(uri: string | vscode.Uri | undefined): vscode.Uri | undefined;
+export function toUri(uri: string | vscode.Uri | undefined): vscode.Uri | undefined {
+    if (typeof uri === 'string') {
+        return vscode.Uri.parse(uri);
+    }
+    return uri;
+}
+
+export function toFileUri(uri: string | vscode.Uri): vscode.Uri;
+export function toFileUri(uri: string | vscode.Uri | undefined): vscode.Uri | undefined;
+export function toFileUri(uri: string | vscode.Uri | undefined): vscode.Uri | undefined {
+    if (typeof uri === 'string') {
+        return regExpIsUri.test(uri) ? vscode.Uri.parse(uri) : vscode.Uri.file(uri);
+    }
+    return uri;
 }

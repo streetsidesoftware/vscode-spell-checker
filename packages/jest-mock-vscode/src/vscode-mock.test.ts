@@ -1,5 +1,5 @@
 // import * as vscode from 'vscode';
-import * as vscodeMock from './vscode-mock';
+import * as vscodeMock from './index';
 import * as path from 'path';
 
 describe('Validate Mock', () => {

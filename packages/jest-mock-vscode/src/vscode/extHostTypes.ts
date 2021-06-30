@@ -5,7 +5,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import type * as vscode from 'vscode';
-import { Uri as URI } from '../uri';
+import { Uri as URI } from './uri';
+import { FileEditType } from './baseTypes';
 
 export class Disposable {
     static from(...inDisposables: { dispose(): any }[]): Disposable {
@@ -36,8 +37,8 @@ export class Disposable {
     }
 }
 
-export class Position {
-    static Min(...positions: Position[]): Position {
+export class Position implements vscode.Position {
+    static Min(...positions: vscode.Position[]): vscode.Position {
         if (positions.length === 0) {
             throw new TypeError();
         }
@@ -51,7 +52,7 @@ export class Position {
         return result;
     }
 
-    static Max(...positions: Position[]): Position {
+    static Max(...positions: vscode.Position[]): vscode.Position {
         if (positions.length === 0) {
             throw new TypeError();
         }
@@ -101,48 +102,48 @@ export class Position {
         this._character = character;
     }
 
-    isBefore(other: Position): boolean {
-        if (this._line < other._line) {
+    isBefore(other: vscode.Position): boolean {
+        if (this._line < other.line) {
             return true;
         }
-        if (other._line < this._line) {
+        if (other.line < this._line) {
             return false;
         }
-        return this._character < other._character;
+        return this._character < other.character;
     }
 
-    isBeforeOrEqual(other: Position): boolean {
-        if (this._line < other._line) {
+    isBeforeOrEqual(other: vscode.Position): boolean {
+        if (this._line < other.line) {
             return true;
         }
-        if (other._line < this._line) {
+        if (other.line < this._line) {
             return false;
         }
-        return this._character <= other._character;
+        return this._character <= other.character;
     }
 
-    isAfter(other: Position): boolean {
+    isAfter(other: vscode.Position): boolean {
         return !this.isBeforeOrEqual(other);
     }
 
-    isAfterOrEqual(other: Position): boolean {
+    isAfterOrEqual(other: vscode.Position): boolean {
         return !this.isBefore(other);
     }
 
-    isEqual(other: Position): boolean {
-        return this._line === other._line && this._character === other._character;
+    isEqual(other: vscode.Position): boolean {
+        return this._line === other.line && this._character === other.character;
     }
 
-    compareTo(other: Position): number {
-        if (this._line < other._line) {
+    compareTo(other: vscode.Position): number {
+        if (this._line < other.line) {
             return -1;
         } else if (this._line > other.line) {
             return 1;
         } else {
             // equal line
-            if (this._character < other._character) {
+            if (this._character < other.character) {
                 return -1;
-            } else if (this._character > other._character) {
+            } else if (this._character > other.character) {
                 return 1;
             } else {
                 // equal line and character
@@ -200,12 +201,12 @@ export class Position {
         return new Position(line, character);
     }
 
-    toJSON(): any {
+    toJSON(): unknown {
         return { line: this.line, character: this.character };
     }
 }
 
-export class Range {
+export class Range implements vscode.Range {
     static isRange(thing: any): thing is vscode.Range {
         if (thing instanceof Range) {
             return true;
@@ -227,9 +228,14 @@ export class Range {
         return this._end;
     }
 
-    constructor(start: Position, end: Position);
+    constructor(start: vscode.Position, end: vscode.Position);
     constructor(startLine: number, startColumn: number, endLine: number, endColumn: number);
-    constructor(startLineOrStart: number | Position, startColumnOrEnd: number | Position, endLine?: number, endColumn?: number) {
+    constructor(
+        startLineOrStart: number | vscode.Position,
+        startColumnOrEnd: number | vscode.Position,
+        endLine?: number,
+        endColumn?: number
+    ) {
         let start: Position | undefined;
         let end: Position | undefined;
 
@@ -259,7 +265,7 @@ export class Range {
         }
     }
 
-    contains(positionOrRange: Position | Range): boolean {
+    contains(positionOrRange: vscode.Position | vscode.Range): boolean {
         if (positionOrRange instanceof Range) {
             return this.contains(positionOrRange._start) && this.contains(positionOrRange._end);
         } else if (positionOrRange instanceof Position) {
@@ -274,11 +280,11 @@ export class Range {
         return false;
     }
 
-    isEqual(other: Range): boolean {
-        return this._start.isEqual(other._start) && this._end.isEqual(other._end);
+    isEqual(other: vscode.Range): boolean {
+        return this._start.isEqual(other.start) && this._end.isEqual(other.end);
     }
 
-    intersection(other: Range): Range | undefined {
+    intersection(other: vscode.Range): vscode.Range | undefined {
         const start = Position.Max(other.start, this._start);
         const end = Position.Min(other.end, this._end);
         if (start.isAfter(end)) {
@@ -337,7 +343,7 @@ export class Range {
     }
 }
 
-export class Selection extends Range {
+export class Selection extends Range implements vscode.Selection {
     static isSelection(thing: any): thing is Selection {
         if (thing instanceof Selection) {
             return true;
@@ -413,17 +419,6 @@ export class Selection extends Range {
     }
 }
 
-export enum EndOfLine {
-    LF = 1,
-    CRLF = 2,
-}
-
-export enum EnvironmentVariableMutatorType {
-    Replace = 1,
-    Append = 2,
-    Prepend = 3,
-}
-
 export class TextEdit {
     static isTextEdit(thing: any): thing is TextEdit {
         if (thing instanceof TextEdit) {
@@ -447,21 +442,21 @@ export class TextEdit {
         return TextEdit.replace(range, '');
     }
 
-    static setEndOfLine(eol: EndOfLine): TextEdit {
+    static setEndOfLine(eol: vscode.EndOfLine): TextEdit {
         const ret = new TextEdit(new Range(new Position(0, 0), new Position(0, 0)), '');
         ret.newEol = eol;
         return ret;
     }
 
-    protected _range: Range;
+    protected _range: vscode.Range;
     protected _newText: string | null;
-    protected _newEol?: EndOfLine;
+    protected _newEol?: vscode.EndOfLine;
 
-    get range(): Range {
+    get range(): vscode.Range {
         return this._range;
     }
 
-    set range(value: Range) {
+    set range(value: vscode.Range) {
         if (value && !Range.isRange(value)) {
             throw illegalArgument('range');
         }
@@ -479,18 +474,18 @@ export class TextEdit {
         this._newText = value;
     }
 
-    get newEol(): EndOfLine | undefined {
+    get newEol(): vscode.EndOfLine | undefined {
         return this._newEol;
     }
 
-    set newEol(value: EndOfLine | undefined) {
+    set newEol(value: vscode.EndOfLine | undefined) {
         if (value && typeof value !== 'number') {
             throw illegalArgument('newEol');
         }
         this._newEol = value;
     }
 
-    constructor(range: Range, newText: string | null) {
+    constructor(range: vscode.Range, newText: string | null) {
         this._range = range;
         this._newText = newText;
     }
@@ -511,12 +506,6 @@ export interface IFileOperationOptions {
     recursive?: boolean;
 }
 
-export const enum FileEditType {
-    File = 1,
-    Text = 2,
-    Cell = 3,
-}
-
 export interface IFileOperation {
     _type: FileEditType.File;
     from?: URI;
@@ -528,7 +517,7 @@ export interface IFileOperation {
 export interface IFileTextEdit {
     _type: FileEditType.Text;
     uri: URI;
-    edit: TextEdit;
+    edit: vscode.TextEdit;
     metadata?: vscode.WorkspaceEditEntryMetadata;
 }
 
@@ -1069,6 +1058,43 @@ export interface CompletionItemLabel {
     parameters?: string;
     qualifier?: string;
     type?: string;
+}
+
+export class CompletionItem /* implements vscode.CompletionItem */ {
+    label: string | CompletionItemLabel;
+    kind?: CompletionItemKind;
+    tags?: CompletionItemTag[];
+    detail?: string;
+    documentation?: string | vscode.MarkdownString;
+    sortText?: string;
+    filterText?: string;
+    preselect?: boolean;
+    insertText?: string | SnippetString;
+    keepWhitespace?: boolean;
+    range?: Range | { inserting: Range; replacing: Range };
+    commitCharacters?: string[];
+    textEdit?: TextEdit;
+    additionalTextEdits?: TextEdit[];
+    command?: vscode.Command;
+
+    constructor(label: string | CompletionItemLabel, kind?: CompletionItemKind) {
+        this.label = label;
+        this.kind = kind;
+    }
+
+    toJSON(): any {
+        return {
+            label: this.label,
+            kind: this.kind && CompletionItemKind[this.kind],
+            detail: this.detail,
+            documentation: this.documentation,
+            sortText: this.sortText,
+            filterText: this.filterText,
+            preselect: this.preselect,
+            insertText: this.insertText,
+            textEdit: this.textEdit,
+        };
+    }
 }
 
 export class CompletionList {

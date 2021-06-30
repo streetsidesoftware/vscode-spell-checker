@@ -20,12 +20,13 @@ import * as Settings from '../settings';
 import * as LanguageIds from '../settings/languageIds';
 import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
-import { Inspect, inspectConfigKeys } from '../settings';
+import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
+import { diagnosticSource } from '../constants';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
-const diagnosticCollectionName = 'cSpell';
+const diagnosticCollectionName = diagnosticSource;
 
 export interface ServerResponseIsSpellCheckEnabled extends Partial<IsSpellCheckEnabledResult> {}
 
@@ -66,7 +67,7 @@ export class CSpellClient implements Disposable {
             diagnosticCollectionName,
             synchronize: {
                 // Synchronize the setting section 'spellChecker' to the server
-                configurationSection: ['cSpell', 'search'],
+                configurationSection: [sectionCSpell, 'search'],
             },
         };
 

@@ -27,7 +27,8 @@
 			"cspell-words"
 		],
 		"typescript.tsdk": "vscode-spell-checker/node_modules/typescript/lib",
-		"svg.preview.background": "black"
+		"svg.preview.background": "black",
+		"editor.formatOnSave": true
 	},
 	"launch": {
 		"configurations": [

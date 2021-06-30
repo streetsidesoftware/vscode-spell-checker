@@ -1,10 +1,11 @@
 import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
+import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../server';
 
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
 
-export const sectionCSpell = 'cSpell';
+export const sectionCSpell = extensionId;
 
 export interface InspectValues<T> {
     defaultValue?: T;
@@ -141,13 +142,13 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     value: CSpellUserSettings[K],
     configTarget: ConfigTarget
-): Thenable<void> {
+): Promise<void> {
     const nTarget = normalizeTarget(configTarget);
     const target = extractTarget(nTarget);
     const uri = extractTargetUri(nTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
-    return config.update(section, value, target);
+    return Promise.resolve(config.update(section, value, target));
 }
 
 /**

@@ -1,5 +1,5 @@
 import { LanguageClient, NotificationType, RequestType } from 'vscode-languageclient/node';
-import {
+import type {
     ServerRequestApi,
     ServerNotifyApi,
     ClientNotifications,
@@ -11,7 +11,36 @@ import {
     ServerMethods,
     RequestResponseFn,
 } from 'server/api';
-export * from 'server/api';
+export type {
+    ClientNotifications,
+    ClientNotificationsApi,
+    ClientSideCommandHandlerApi,
+    ConfigurationTargets,
+    CSpellUserSettings,
+    CSpellUserSettingsWithComments,
+    CustomDictionaryScope,
+    DictionaryDefinition,
+    DictionaryDefinitionCustom,
+    Fn,
+    GetConfigurationForDocumentResult,
+    IsSpellCheckEnabledResult,
+    LanguageSetting,
+    MatchPatternsToDocumentResult,
+    NamedPattern,
+    OnSpellCheckDocumentStep,
+    PatternMatch,
+    Req,
+    RequestResponseFn,
+    RequestsToClient,
+    Res,
+    ServerMethods,
+    ServerNotifyApi,
+    ServerRequestApi,
+    SpellCheckerSettingsProperties,
+    SplitTextIntoWordsResult,
+    WorkspaceConfigForDocumentRequest,
+    WorkspaceConfigForDocumentResponse,
+} from 'server/api';
 
 export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi {}
 

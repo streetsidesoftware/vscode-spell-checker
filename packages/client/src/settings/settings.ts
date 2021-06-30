@@ -110,7 +110,7 @@ export function loadSettingsFile(path: Uri | undefined): Promise<SettingsInfo | 
     return path ? readSettings(path).then((settings) => (path ? { path, settings } : undefined)) : Promise.resolve(undefined);
 }
 
-export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Thenable<void> {
+export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Promise<void> {
     return config.setSettingInVSConfig('enabled', enabled, target);
 }
 
@@ -150,7 +150,7 @@ export async function removeWordFromSettings(target: config.ConfigTarget, word: 
     return updateSettingInConfig(section, target, (words) => filterOutWords(words || [], toRemove), true);
 }
 
-export function toggleEnableSpellChecker(target: config.ConfigTarget): Thenable<void> {
+export function toggleEnableSpellChecker(target: config.ConfigTarget): Promise<void> {
     const resource = config.isConfigTargetWithResource(target) ? target.uri : null;
     const curr = config.getSettingFromVSConfig('enabled', resource);
     return config.setSettingInVSConfig('enabled', !curr, target);
@@ -171,7 +171,7 @@ export async function enableCurrentLanguage(): Promise<void> {
 /**
  * Disables the current programming language of the active file in the editor.
  */
-export function disableCurrentLanguage(): Thenable<void> {
+export function disableCurrentLanguage(): Promise<void> {
     const editor = vscode.window.activeTextEditor;
     if (editor?.document?.languageId) {
         const target = selectBestTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);

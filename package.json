@@ -65,6 +65,16 @@
           "command": "cSpell.addIgnoreWord",
           "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
           "group": "A_cspell@9"
+        },
+        {
+          "command": "cSpell.addWordToDictionary",
+          "when": "editorTextFocus && cSpell.documentConfigContext.usesCustomDictionary",
+          "group": "A_cspell@4"
+        },
+        {
+          "command": "cSpell.addWordToCSpellConfig",
+          "when": "editorTextFocus && cSpell.documentConfigContext.usesConfigFile",
+          "group": "A_cspell@5"
         }
       ],
       "commandPalette": [
@@ -107,83 +117,113 @@
     "commands": [
       {
         "command": "cSpell.addWordToWorkspaceDictionary",
+        "category": "Spell",
         "title": "Add Word to Workspace Dictionaries"
       },
       {
         "command": "cSpell.addWordToFolderDictionary",
+        "category": "Spell",
         "title": "Add Word to Folder Dictionary"
       },
       {
         "command": "cSpell.addWordToUserDictionary",
+        "category": "Spell",
         "title": "Add Word to User Dictionary"
       },
       {
         "command": "cSpell.enableForWorkspace",
+        "category": "Spell",
         "title": "Enable Spell Checking For Workspace"
       },
       {
         "command": "cSpell.disableForWorkspace",
+        "category": "Spell",
         "title": "Disable Spell Checking For Workspace"
       },
       {
         "command": "cSpell.enableForGlobal",
+        "category": "Spell",
         "title": "Enable Spell Checking by Default"
       },
       {
         "command": "cSpell.disableForGlobal",
+        "category": "Spell",
         "title": "Disable Spell Checking by Default"
       },
       {
         "command": "cSpell.toggleEnableForGlobal",
+        "category": "Spell",
         "title": "Toggle Spell Checking"
       },
       {
         "command": "cSpell.enableCurrentLanguage",
+        "category": "Spell",
         "title": "Enable Spell Checking Document Language"
       },
       {
         "command": "cSpell.disableCurrentLanguage",
+        "category": "Spell",
         "title": "Disable Spell Checking Document Language"
       },
       {
         "command": "cSpell.displayCSpellInfo",
+        "category": "Spell",
         "title": "Show Spell Checker Configuration Info"
       },
       {
         "command": "cSpell.toggleEnableSpellChecker",
+        "category": "Spell",
         "title": "Toggle Spell Checking For the Current Workspace"
       },
       {
         "command": "cSpell.removeWordFromFolderDictionary",
+        "category": "Spell",
         "title": "Remove Words from the Folder Dictionary"
       },
       {
         "command": "cSpell.removeWordFromWorkspaceDictionary",
+        "category": "Spell",
         "title": "Remove Words from the Workspace Dictionaries"
       },
       {
         "command": "cSpell.removeWordFromUserDictionary",
+        "category": "Spell",
         "title": "Remove Words from the Global Dictionary"
       },
       {
         "command": "cSpell.logPerfTimeline",
+        "category": "Spell",
         "title": "Log cSpell performance times to console"
       },
       {
         "command": "cSpell.addIgnoreWord",
+        "category": "Spell",
         "title": "Ignore Word"
       },
       {
         "command": "cSpell.addIgnoreWordToFolder",
+        "category": "Spell",
         "title": "Ignore Word in Folder Settings"
       },
       {
         "command": "cSpell.addIgnoreWordToWorkspace",
+        "category": "Spell",
         "title": "Ignore Word in Workspace Settings"
       },
       {
         "command": "cSpell.addIgnoreWordToUser",
+        "category": "Spell",
         "title": "Ignore Word in User Settings"
+      },
+      {
+        "command": "cSpell.addWordToDictionary",
+        "category": "Spell",
+        "title": "Add Word to dictionary"
+      },
+      {
+        "command": "cSpell.addWordToCSpellConfig",
+        "category": "Spell",
+        "title": "Add Word to cspell config"
       },
       {
         "command": "cSpellRegExpTester.testRegExp",
