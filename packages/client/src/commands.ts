@@ -168,7 +168,7 @@ export function disableLanguageId(languageId: string, uri?: string | Uri): Promi
     return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, false, uri));
 }
 
-export function userCommandOnCurrentSelectionOrPrompt(
+export function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
     fnAction: (text: string, uri: Uri | undefined) => Thenable<void>
 ): () => Thenable<void> {
@@ -192,9 +192,45 @@ function extractMatchingDiagText(
     diags: Diagnostic[] | undefined
 ): string | undefined {
     if (!doc || !selection || !diags) return undefined;
-    const matching = diags.map((d) => d.range.intersection(selection)).filter(isDefined);
-    const m = matching.map((range) => doc.getText(range));
-    return m.join(' ');
+    return extractMatchingDiagTexts(doc, selection, diags)?.join(' ');
+}
+
+function extractMatchingDiagTexts(
+    doc: TextDocument | undefined,
+    selection: Selection | undefined,
+    diags: Diagnostic[] | undefined
+): string[] | undefined {
+    if (!doc || !diags) return undefined;
+    const selText = selection && doc.getText(selection);
+    const matching = diags
+        .map((d) => d.range)
+        .map((r) => determineWordToAddToDictionaryFromSelection(doc, selText, selection, r))
+        .filter(isDefined);
+    return matching;
+}
+
+/**
+ * An expression that matches most word like constructions. It just needs to be close.
+ * If it doesn't match, the idea is to fall back to the diagnostic selection.
+ */
+const regExpIsWordLike = /^[\p{L}\w.-]+$/u;
+
+function determineWordToAddToDictionaryFromSelection(
+    doc: TextDocument,
+    selectedText: string | undefined,
+    selection: Selection | undefined,
+    diagRange: Range
+): string | undefined {
+    if (!selection || !selectedText || diagRange.contains(selection)) return doc.getText(diagRange);
+
+    const intersect = selection.intersection(diagRange);
+    if (!intersect || intersect.isEmpty) return undefined;
+
+    // The selection is bigger than the diagRange. Did the person intend for the entire selection to
+    // be included or just the diag. If the selected text is a word, then assume the entire selection
+    // was wanted, otherwise use the diag range.
+
+    return regExpIsWordLike.test(selectedText) ? selectedText : doc.getText(diagRange);
 }
 
 function isError(e: unknown): e is Error {
@@ -262,3 +298,9 @@ function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined
     }
     return uri || undefined;
 }
+
+export const __testing__ = {
+    determineWordToAddToDictionaryFromSelection,
+    extractMatchingDiagText,
+    extractMatchingDiagTexts,
+};

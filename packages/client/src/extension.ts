@@ -22,7 +22,7 @@ performance.mark('import 7');
 import { initStatusBar } from './statusbar';
 performance.mark('import 8');
 
-import { userCommandOnCurrentSelectionOrPrompt, handlerApplyTextEdits } from './commands';
+import { onCommandUseDiagsSelectionOrPrompt, handlerApplyTextEdits } from './commands';
 performance.mark('import 9');
 import * as commands from './commands';
 performance.mark('import 10');
@@ -81,45 +81,45 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         });
     }
 
-    const actionAddWordToFolder = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddWordToFolder = onCommandUseDiagsSelectionOrPrompt(
         'Add Word to Folder Dictionary',
         splitTextFn(commands.addWordToFolderDictionary)
     );
-    const actionAddWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddWordToWorkspace = onCommandUseDiagsSelectionOrPrompt(
         'Add Word to Workspace Dictionaries',
         splitTextFn(commands.addWordToWorkspaceDictionary)
     );
-    const actionAddWordToDictionary = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddWordToDictionary = onCommandUseDiagsSelectionOrPrompt(
         'Add Word to User Dictionary',
         splitTextFn(commands.addWordToUserDictionary)
     );
 
-    const actionAddIgnoreWord = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddIgnoreWord = onCommandUseDiagsSelectionOrPrompt(
         'Ignore Word',
         splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
     );
-    const actionAddIgnoreWordToFolder = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddIgnoreWordToFolder = onCommandUseDiagsSelectionOrPrompt(
         'Ignore Word in Folder Settings',
         splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
     );
-    const actionAddIgnoreWordToWorkspace = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddIgnoreWordToWorkspace = onCommandUseDiagsSelectionOrPrompt(
         'Ignore Word in Workspace Settings',
         splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Workspace, uri))
     );
-    const actionAddIgnoreWordToUser = userCommandOnCurrentSelectionOrPrompt(
+    const actionAddIgnoreWordToUser = onCommandUseDiagsSelectionOrPrompt(
         'Ignore Word in User Settings',
         splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Global, uri))
     );
 
-    const actionRemoveWordFromFolderDictionary = userCommandOnCurrentSelectionOrPrompt(
+    const actionRemoveWordFromFolderDictionary = onCommandUseDiagsSelectionOrPrompt(
         'Remove Word from Folder Dictionary',
         splitTextFn(commands.removeWordFromFolderDictionary)
     );
-    const actionRemoveWordFromWorkspaceDictionary = userCommandOnCurrentSelectionOrPrompt(
+    const actionRemoveWordFromWorkspaceDictionary = onCommandUseDiagsSelectionOrPrompt(
         'Remove Word from Workspace Dictionaries',
         splitTextFn(commands.removeWordFromWorkspaceDictionary)
     );
-    const actionRemoveWordFromDictionary = userCommandOnCurrentSelectionOrPrompt(
+    const actionRemoveWordFromDictionary = onCommandUseDiagsSelectionOrPrompt(
         'Remove Word from Global Dictionary',
         splitTextFn(commands.removeWordFromUserDictionary)
     );

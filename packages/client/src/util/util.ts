@@ -18,3 +18,8 @@ export type Maybe<T> = T | undefined;
 export function isDefined<T>(t: T | undefined | null): t is T {
     return t !== undefined && t !== null;
 }
+
+export function mustBeDefined<T>(t: T | undefined | null): T {
+    if (isDefined(t)) return t;
+    throw new Error('Value must be defined.');
+}
