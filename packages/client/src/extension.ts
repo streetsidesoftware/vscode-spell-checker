@@ -62,8 +62,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function splitTextFn(
-        apply: (word: string, uri: string | vscode.Uri | null | undefined) => Thenable<void>
-    ): (word: string, uri: string | vscode.Uri | null | undefined) => Thenable<void> {
+        apply: (word: string, uri: string | vscode.Uri | null | undefined) => Promise<void>
+    ): (word: string, uri: string | vscode.Uri | null | undefined) => Promise<void> {
         return (word: string, uri: string | vscode.Uri | null | undefined) => {
             const editor = vscode.window.activeTextEditor;
             const document = editor && editor.document;

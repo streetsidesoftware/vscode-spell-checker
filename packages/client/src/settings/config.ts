@@ -142,13 +142,13 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     value: CSpellUserSettings[K],
     configTarget: ConfigTarget
-): Thenable<void> {
+): Promise<void> {
     const nTarget = normalizeTarget(configTarget);
     const target = extractTarget(nTarget);
     const uri = extractTargetUri(nTarget);
     const section = getSectionName(subSection);
     const config = getConfiguration(uri);
-    return config.update(section, value, target);
+    return Promise.resolve(config.update(section, value, target));
 }
 
 /**

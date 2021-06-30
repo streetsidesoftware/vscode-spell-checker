@@ -99,17 +99,17 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     return workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
 }
 
-export function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Thenable<void> {
+export function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     return addWordToTarget(word, Settings.Target.WorkspaceFolder, docUri);
 }
 
-export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Thenable<void> {
+export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     // eslint-disable-next-line prefer-rest-params
     console.log('addWordToWorkspaceDictionary %o', arguments);
     return addWordToTarget(word, Settings.Target.Workspace, docUri);
 }
 
-export function addWordToUserDictionary(word: string): Thenable<void> {
+export function addWordToUserDictionary(word: string): Promise<void> {
     return addWordToTarget(word, Settings.Target.Global, undefined);
 }
 
@@ -134,15 +134,15 @@ async function _addIgnoreWordToTarget(word: string, target: Settings.Target, uri
     await Promise.all(paths.map((path) => CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word)));
 }
 
-export function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+export function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
     return removeWordFromTarget(word, Settings.Target.WorkspaceFolder, uri);
 }
 
-export function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Thenable<void> {
+export function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
     return removeWordFromTarget(word, Settings.Target.Workspace, uri);
 }
 
-export function removeWordFromUserDictionary(word: string): Thenable<void> {
+export function removeWordFromUserDictionary(word: string): Promise<void> {
     return removeWordFromTarget(word, Settings.Target.Global, undefined);
 }
 
@@ -170,19 +170,20 @@ export function disableLanguageId(languageId: string, uri?: string | Uri): Promi
 
 export function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
-    fnAction: (text: string, uri: Uri | undefined) => Thenable<void>
-): () => Thenable<void> {
+    fnAction: (text: string, uri: Uri | undefined) => Promise<void>
+): () => Promise<void> {
     return function () {
         const document = window.activeTextEditor?.document;
         const selection = window.activeTextEditor?.selection;
         const range = selection && document?.getWordRangeAtPosition(selection.active);
         const diags = document ? getCSpellDiags(document.uri) : undefined;
         const value = extractMatchingDiagText(document, selection, diags) || (range && document?.getText(range));
-        return value
+        const r = value
             ? fnAction(value, document?.uri)
             : window.showInputBox({ prompt, value }).then((word) => {
                   word && fnAction(word, document && document.uri);
               });
+        return Promise.resolve(r);
     };
 }
 
