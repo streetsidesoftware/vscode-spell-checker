@@ -1,5 +1,5 @@
 /**
- * Remove all falsey values from `array`. The original array IS modified.
+ * Remove all falsy values from `array`. The original array IS modified.
  */
 export function coalesceInPlace<T>(array: Array<T | undefined | null>): void {
     let to = 0;
