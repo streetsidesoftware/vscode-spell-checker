@@ -8,8 +8,6 @@
  */
 
 import type * as vscode from 'vscode';
-export * from './vscode/extHostTypes';
-export * from './uri';
 
 enum StatusBarAlignment {
     Left = 1,

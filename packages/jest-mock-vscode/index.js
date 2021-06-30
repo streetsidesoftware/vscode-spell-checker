@@ -1,1 +1,2 @@
-module.exports = require('./dist/vscode-mock');
+/* eslint-disable @typescript-eslint/no-var-requires */
+module.exports = require('./dist/index');
