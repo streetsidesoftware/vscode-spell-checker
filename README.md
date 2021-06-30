@@ -112,9 +112,9 @@ The concept is simple, split camelCase words before checking them against a list
 -   snake_case_words -> snake case words
 -   camel2snake -> camel snake -- (the 2 is ignored)
 
-### Special case will ALL CAPS words
+### Special case with ALL CAPS words
 
-There are a few special cases to help will common spelling practices for ALL CAPS words.
+There are a few special cases to help with common spelling practices for ALL CAPS words.
 
 Trailing `s`, `ing`, `ies`, `es`, `ed` are kept with the previous word.
 
