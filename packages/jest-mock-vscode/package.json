@@ -21,7 +21,7 @@
   ],
   "devDependencies": {
     "@types/jest": "^26.0.23",
-    "@types/node": "14",
+    "@types/node": "15",
     "@types/vscode": "^1.57.0",
     "jest": "^27.0.5",
     "ts-jest": "^27.0.3",
