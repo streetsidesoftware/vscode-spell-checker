@@ -1,9 +1,18 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
-import { resolveTarget, determineSettingsPaths } from './settings';
+import {
+    resolveTarget,
+    determineSettingsPaths,
+    Target,
+    setEnableSpellChecking,
+    toggleEnableSpellChecker,
+    enableCurrentLanguage,
+    disableCurrentLanguage,
+} from './settings';
+import { performance, toMilliseconds } from './util/perf';
 
 import { window, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range, Diagnostic, Selection } from 'vscode';
-import { TextEdit, LanguageClient } from 'vscode-languageclient/node';
+import { TextEdit } from 'vscode-languageclient/node';
 import { SpellCheckerSettingsProperties } from './server';
 import { ClientSideCommandHandlerApi } from './server';
 import {
@@ -22,8 +31,9 @@ import { isDefined, toUri } from './util';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
-export function handlerApplyTextEdits(client: LanguageClient) {
+export function handlerApplyTextEdits() {
     return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
+        const client = di.get('client').client;
         const textEditor = window.activeTextEditor;
         if (textEditor && textEditor.document.uri.toString() === uri) {
             if (textEditor.document.version !== documentVersion) {
@@ -68,15 +78,72 @@ export const commandsFromServer: ClientSideCommandHandlerApi = {
 };
 
 type CommandHandler = {
-    [key in string]: () => void | Promise<void>;
+    [key in string]: (...params: any[]) => void | Promise<void>;
 };
+
+const prompt = onCommandUseDiagsSelectionOrPrompt;
+function fnWithTarget(
+    fn: (word: string, t: Target, uri: Uri | undefined) => Promise<void>,
+    t: Target
+): (word: string, uri: Uri | undefined) => Promise<void> {
+    return (word, uri) => fn(word, t, uri);
+}
+const actionAddWordToFolder = prompt('Add Word to Folder Dictionary', addWordToFolderDictionary);
+const actionAddWordToWorkspace = prompt('Add Word to Workspace Dictionaries', addWordToWorkspaceDictionary);
+const actionAddWordToDictionary = prompt('Add Word to User Dictionary', addWordToUserDictionary);
+const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
+const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
+const actionRemoveWordFromDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
+const actionAddIgnoreWord = prompt('Ignore Word', fnWithTarget(addIgnoreWordToTarget, Target.WorkspaceFolder));
+const actionAddIgnoreWordToFolder = prompt('Ignore Word in Folder Settings', fnWithTarget(addIgnoreWordToTarget, Target.WorkspaceFolder));
+const actionAddIgnoreWordToWorkspace = prompt('Ignore Word in Workspace Settings', fnWithTarget(addIgnoreWordToTarget, Target.Workspace));
+const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithTarget(addIgnoreWordToTarget, Target.Global));
 
 export const commandHandlers: CommandHandler = {
-    'cSpell.addAllWordsToWorkspace': () => {},
+    'cSpell.addWordToDictionarySilent': addWordToFolderDictionary,
+    'cSpell.addWordToWorkspaceDictionarySilent': addWordToWorkspaceDictionary,
+    'cSpell.addWordToUserDictionarySilent': addWordToUserDictionary,
+
+    'cSpell.addWordToDictionary': actionAddWordToFolder, // Note: this command is for backwards compatibility.
+    'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
+    'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
+    'cSpell.addWordToUserDictionary': actionAddWordToDictionary,
+
+    'cSpell.removeWordFromFolderDictionary': actionRemoveWordFromFolderDictionary,
+    'cSpell.removeWordFromWorkspaceDictionary': actionRemoveWordFromWorkspaceDictionary,
+    'cSpell.removeWordFromUserDictionary': actionRemoveWordFromDictionary,
+
+    'cSpell.addIgnoreWord': actionAddIgnoreWord,
+    'cSpell.addIgnoreWordToFolder': actionAddIgnoreWordToFolder,
+    'cSpell.addIgnoreWordToWorkspace': actionAddIgnoreWordToWorkspace,
+    'cSpell.addIgnoreWordToUser': actionAddIgnoreWordToUser,
+
+    'cSpell.enableLanguage': enableLanguageId,
+    'cSpell.disableLanguage': disableLanguageId,
+    'cSpell.enableForGlobal': () => setEnableSpellChecking(Target.Global, true),
+    'cSpell.disableForGlobal': () => setEnableSpellChecking(Target.Global, false),
+    'cSpell.toggleEnableForGlobal': () => toggleEnableSpellChecker(Settings.ConfigurationTarget.Global),
+    'cSpell.enableForWorkspace': () => setEnableSpellChecking(Target.Workspace, true),
+    'cSpell.disableForWorkspace': () => setEnableSpellChecking(Target.Workspace, false),
+    'cSpell.toggleEnableSpellChecker': () => toggleEnableSpellChecker(Settings.ConfigurationTarget.Workspace),
+    'cSpell.enableCurrentLanguage': enableCurrentLanguage,
+    'cSpell.disableCurrentLanguage': disableCurrentLanguage,
+
+    'cSpell.editText': handlerApplyTextEdits(),
+    'cSpell.logPerfTimeline': dumpPerfTimeline,
+
+    'cSpell.addAllWordsToWorkspace': notImplemented('cSpell.addAllWordsToWorkspace'),
+    'cSpell.addWordToCSpellConfig': notImplemented('cSpell.addWordToCSpellConfig'),
 };
 
-function pVoid<T>(p: Promise<T>): Promise<void> {
-    return p.then(() => {}).catch((e) => window.showErrorMessage(e.toString()).then());
+function pVoid<T>(p: Promise<T> | Thenable<T>): Promise<void> {
+    return Promise.resolve(p)
+        .then(() => {})
+        .catch((e) => window.showErrorMessage(e.toString()).then());
+}
+
+function notImplemented(cmd: string) {
+    return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
 }
 
 async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean | undefined> {
@@ -99,34 +166,34 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     return workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
 }
 
-export function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    return addWordToTarget(word, Settings.Target.WorkspaceFolder, docUri);
+function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
+    return addWordToTarget(word, Target.WorkspaceFolder, docUri);
 }
 
 export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     // eslint-disable-next-line prefer-rest-params
     console.log('addWordToWorkspaceDictionary %o', arguments);
-    return addWordToTarget(word, Settings.Target.Workspace, docUri);
+    return addWordToTarget(word, Target.Workspace, docUri);
 }
 
 export function addWordToUserDictionary(word: string): Promise<void> {
-    return addWordToTarget(word, Settings.Target.Global, undefined);
+    return addWordToTarget(word, Target.Global, undefined);
 }
 
-function addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
+function addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined) {
     return handleErrors(_addWordToTarget(word, target, docUri));
 }
 
-function _addWordToTarget(word: string, target: Settings.Target, docUri: string | null | Uri | undefined) {
+function _addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
     return di.get('dictionaryHelper').addWordToTarget(word, target, docUri);
 }
 
-export function addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
+function addIgnoreWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
     return handleErrors(_addIgnoreWordToTarget(word, target, uri));
 }
 
-async function _addIgnoreWordToTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined): Promise<void> {
+async function _addIgnoreWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
@@ -134,23 +201,23 @@ async function _addIgnoreWordToTarget(word: string, target: Settings.Target, uri
     await Promise.all(paths.map((path) => CSpellSettings.addIgnoreWordToSettingsAndUpdate(path, word)));
 }
 
-export function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
-    return removeWordFromTarget(word, Settings.Target.WorkspaceFolder, uri);
+function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
+    return removeWordFromTarget(word, Target.WorkspaceFolder, uri);
 }
 
-export function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
-    return removeWordFromTarget(word, Settings.Target.Workspace, uri);
+function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
+    return removeWordFromTarget(word, Target.Workspace, uri);
 }
 
-export function removeWordFromUserDictionary(word: string): Promise<void> {
-    return removeWordFromTarget(word, Settings.Target.Global, undefined);
+function removeWordFromUserDictionary(word: string): Promise<void> {
+    return removeWordFromTarget(word, Target.Global, undefined);
 }
 
-function removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+function removeWordFromTarget(word: string, target: Target, uri: string | null | Uri | undefined) {
     return handleErrors(_removeWordFromTarget(word, target, uri));
 }
 
-async function _removeWordFromTarget(word: string, target: Settings.Target, uri: string | null | Uri | undefined) {
+async function _removeWordFromTarget(word: string, target: Target, uri: string | null | Uri | undefined) {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
@@ -168,7 +235,7 @@ export function disableLanguageId(languageId: string, uri?: string | Uri): Promi
     return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, false, uri));
 }
 
-export function onCommandUseDiagsSelectionOrPrompt(
+function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
     fnAction: (text: string, uri: Uri | undefined) => Promise<void>
 ): () => Promise<void> {
@@ -185,6 +252,12 @@ export function onCommandUseDiagsSelectionOrPrompt(
               });
         return Promise.resolve(r);
     };
+}
+
+function dumpPerfTimeline(): void {
+    performance.getEntries().forEach((entry) => {
+        console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
+    });
 }
 
 function extractMatchingDiagText(

@@ -3,9 +3,11 @@ import { createTextDocument, readTextDocument } from 'jest-mock-vscode';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings/settings';
 
-import { __testing__ } from './commands';
+import { __testing__, commandHandlers } from './commands';
 import { isDefined } from './util';
-import { mustBeDefined } from './test/helpers';
+import { mustBeDefined, readExtensionPackage } from './test/helpers';
+import { extensionId } from './constants';
+import { commandDisplayCSpellInfo } from './infoViewer';
 const { determineWordToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts } = __testing__;
 
 describe('Validate Commands', () => {
@@ -67,6 +69,18 @@ describe('Validate Commands', () => {
     test('thisDoc', async () => {
         const doc = await thisDoc();
         expect(doc.getText()).toEqual(expect.stringContaining('thisDoc'));
+    });
+
+    test('ensure commandHandlers cover commands', async () => {
+        const pkg = await readExtensionPackage();
+        const cmdPrefix = extensionId + '.';
+        const commands = mustBeDefined(pkg.contributes?.commands)
+            .map((cmd) => cmd.command)
+            .filter((cmd) => cmd.startsWith(cmdPrefix));
+        const implemented = new Set(Object.keys(commandHandlers));
+        implemented.add(commandDisplayCSpellInfo); // Handled by infoView
+        const found = commands.filter((cmd) => implemented.has(cmd));
+        expect(found).toEqual(commands);
     });
 });
 
