@@ -1,5 +1,5 @@
 import type * as vscode from 'vscode';
-import { EndOfLine, EnvironmentVariableMutatorType, FileEditType } from './baseTypes';
+import { EndOfLine, EnvironmentVariableMutatorType } from './baseTypes';
 
 describe('Validate base types', () => {
     test('EndOfLine', () => {
@@ -17,14 +17,6 @@ describe('Validate base types', () => {
         expect(b).toBe(a);
         expect(c).toBe(b);
     });
-
-    // test('FileEditType', () => {
-    //     const a: FileEditType = ret(FileEditType.Cell);
-    //     const b: vscode.FileEditType = ret(a);
-    //     const c: FileEditType = ret(b);
-    //     expect(b).toBe(a);
-    //     expect(c).toBe(b);
-    // });
 });
 
 function ret<R, T extends R>(t: T): R {

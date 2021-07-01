@@ -2,10 +2,19 @@ import * as path from 'path';
 import { Uri } from 'vscode';
 import * as fs from 'fs-extra';
 import { isDefined } from '../util';
+import { PackageJson } from '../vscode/packageJson';
 export { isDefined } from '../util';
 
+const rootClient = path.join(__dirname, '../..');
+const root = path.join(rootClient, '../..');
+
 export function getUriToSample(baseFilename: string): Uri {
-    return Uri.file(path.join(__dirname, '../../samples', baseFilename));
+    return Uri.file(path.join(rootClient, 'samples', baseFilename));
+}
+
+export async function readExtensionPackage(): Promise<PackageJson> {
+    const pkgContents = await fs.readFile(path.join(root, 'package.json'), 'utf8');
+    return JSON.parse(pkgContents);
 }
 
 export function fsRemove(uri: Uri): Promise<void> {

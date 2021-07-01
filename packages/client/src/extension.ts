@@ -1,8 +1,8 @@
-import { performance, toMilliseconds } from './util/perf';
+import { performance } from './util/perf';
 performance.mark('cspell_start_extension');
 import * as path from 'path';
 performance.mark('import 1');
-import { setEnableSpellChecking, sectionCSpell } from './settings';
+import { sectionCSpell } from './settings';
 performance.mark('import 2');
 import * as settings from './settings';
 performance.mark('import 3');
@@ -22,8 +22,8 @@ performance.mark('import 7');
 import { initStatusBar } from './statusbar';
 performance.mark('import 8');
 
-import { onCommandUseDiagsSelectionOrPrompt, handlerApplyTextEdits } from './commands';
 performance.mark('import 9');
+import { commandHandlers } from './commands';
 import * as commands from './commands';
 performance.mark('import 10');
 
@@ -61,69 +61,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         client.triggerSettingsRefresh();
     }
 
-    function splitTextFn(
-        apply: (word: string, uri: string | vscode.Uri | null | undefined) => Promise<void>
-    ): (word: string, uri: string | vscode.Uri | null | undefined) => Promise<void> {
-        return (word: string, uri: string | vscode.Uri | null | undefined) => {
-            const editor = vscode.window.activeTextEditor;
-            const document = editor && editor.document;
-            const uriToUse = uri || (document && document.uri) || null;
-            return client
-                .splitTextIntoDictionaryWords(word)
-                .then((result) => result.words)
-                .then((words) => apply(words.join(' '), uriToUse));
-        };
-    }
-
-    function dumpPerfTimeline() {
-        performance.getEntries().forEach((entry) => {
-            console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
-        });
-    }
-
-    const actionAddWordToFolder = onCommandUseDiagsSelectionOrPrompt(
-        'Add Word to Folder Dictionary',
-        splitTextFn(commands.addWordToFolderDictionary)
-    );
-    const actionAddWordToWorkspace = onCommandUseDiagsSelectionOrPrompt(
-        'Add Word to Workspace Dictionaries',
-        splitTextFn(commands.addWordToWorkspaceDictionary)
-    );
-    const actionAddWordToDictionary = onCommandUseDiagsSelectionOrPrompt(
-        'Add Word to User Dictionary',
-        splitTextFn(commands.addWordToUserDictionary)
-    );
-
-    const actionAddIgnoreWord = onCommandUseDiagsSelectionOrPrompt(
-        'Ignore Word',
-        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
-    );
-    const actionAddIgnoreWordToFolder = onCommandUseDiagsSelectionOrPrompt(
-        'Ignore Word in Folder Settings',
-        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.WorkspaceFolder, uri))
-    );
-    const actionAddIgnoreWordToWorkspace = onCommandUseDiagsSelectionOrPrompt(
-        'Ignore Word in Workspace Settings',
-        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Workspace, uri))
-    );
-    const actionAddIgnoreWordToUser = onCommandUseDiagsSelectionOrPrompt(
-        'Ignore Word in User Settings',
-        splitTextFn((word, uri) => commands.addIgnoreWordToTarget(word, settings.Target.Global, uri))
-    );
-
-    const actionRemoveWordFromFolderDictionary = onCommandUseDiagsSelectionOrPrompt(
-        'Remove Word from Folder Dictionary',
-        splitTextFn(commands.removeWordFromFolderDictionary)
-    );
-    const actionRemoveWordFromWorkspaceDictionary = onCommandUseDiagsSelectionOrPrompt(
-        'Remove Word from Workspace Dictionaries',
-        splitTextFn(commands.removeWordFromWorkspaceDictionary)
-    );
-    const actionRemoveWordFromDictionary = onCommandUseDiagsSelectionOrPrompt(
-        'Remove Word from Global Dictionary',
-        splitTextFn(commands.removeWordFromUserDictionary)
-    );
-
     initStatusBar(context, client);
 
     for (const [cmd, handler] of Object.entries(commands.commandsFromServer)) {
@@ -133,41 +70,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
-        vscode.commands.registerCommand('cSpell.editText', handlerApplyTextEdits(client.client)),
-
-        vscode.commands.registerCommand('cSpell.addWordToDictionarySilent', commands.addWordToFolderDictionary),
-        vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionarySilent', commands.addWordToWorkspaceDictionary),
-        vscode.commands.registerCommand('cSpell.addWordToUserDictionarySilent', commands.addWordToUserDictionary),
-
-        vscode.commands.registerCommand('cSpell.addWordToDictionary', actionAddWordToFolder), // Note: this command is for backwards compatibility.
-        vscode.commands.registerCommand('cSpell.addWordToFolderDictionary', actionAddWordToFolder),
-        vscode.commands.registerCommand('cSpell.addWordToWorkspaceDictionary', actionAddWordToWorkspace),
-        vscode.commands.registerCommand('cSpell.addWordToUserDictionary', actionAddWordToDictionary),
-
-        vscode.commands.registerCommand('cSpell.addIgnoreWord', actionAddIgnoreWord),
-        vscode.commands.registerCommand('cSpell.addIgnoreWordToFolder', actionAddIgnoreWordToFolder),
-        vscode.commands.registerCommand('cSpell.addIgnoreWordToWorkspace', actionAddIgnoreWordToWorkspace),
-        vscode.commands.registerCommand('cSpell.addIgnoreWordToUser', actionAddIgnoreWordToUser),
-
-        vscode.commands.registerCommand('cSpell.removeWordFromFolderDictionary', actionRemoveWordFromFolderDictionary),
-        vscode.commands.registerCommand('cSpell.removeWordFromWorkspaceDictionary', actionRemoveWordFromWorkspaceDictionary),
-        vscode.commands.registerCommand('cSpell.removeWordFromUserDictionary', actionRemoveWordFromDictionary),
-
-        vscode.commands.registerCommand('cSpell.enableLanguage', commands.enableLanguageId),
-        vscode.commands.registerCommand('cSpell.disableLanguage', commands.disableLanguageId),
-        vscode.commands.registerCommand('cSpell.enableForGlobal', () => setEnableSpellChecking(settings.Target.Global, true)),
-        vscode.commands.registerCommand('cSpell.disableForGlobal', () => setEnableSpellChecking(settings.Target.Global, false)),
-        vscode.commands.registerCommand('cSpell.toggleEnableForGlobal', () =>
-            commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Global)
-        ),
-        vscode.commands.registerCommand('cSpell.enableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, true)),
-        vscode.commands.registerCommand('cSpell.disableForWorkspace', () => setEnableSpellChecking(settings.Target.Workspace, false)),
-        vscode.commands.registerCommand('cSpell.toggleEnableSpellChecker', () =>
-            commands.toggleEnableSpellChecker(settings.ConfigurationTarget.Workspace)
-        ),
-        vscode.commands.registerCommand('cSpell.enableCurrentLanguage', commands.enableCurrentLanguage),
-        vscode.commands.registerCommand('cSpell.disableCurrentLanguage', commands.disableCurrentLanguage),
-        vscode.commands.registerCommand('cSpell.logPerfTimeline', dumpPerfTimeline),
         settings.watchSettingsFiles(triggerGetSettings),
         vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
         vscode.workspace.onDidRenameFiles(handleRenameFile),
@@ -177,6 +79,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
 
         ...registerCspellInlineCompletionProviders(),
+        ...Object.entries(commandHandlers).map(([cmd, fn]) => vscode.commands.registerCommand(cmd, fn)),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
