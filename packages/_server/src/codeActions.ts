@@ -18,7 +18,7 @@ import { log, logDebug } from './utils/log';
 import { ClientApi } from './clientApi';
 import { format } from 'util';
 import { URI } from 'vscode-uri';
-import { clientCommands } from './commands';
+import { clientCommands as cc } from './commands';
 
 const createCommand = LangServerCommand.create;
 
@@ -142,7 +142,7 @@ export function onCodeActionHandler(
                     const scopeText = calcScopeText(dict);
                     actions.push(
                         createAction(
-                            clientCommands.addWordsToDictionaryFile(
+                            cc.addWordsToDictionaryFileFromServer(
                                 `Add: "${word}" to dictionary: ${dict.name}${scopeText}`,
                                 [word],
                                 textDocument.uri,
@@ -158,7 +158,7 @@ export function onCodeActionHandler(
                     if (!configsWithDicts.has(uri)) {
                         actions.push(
                             createAction(
-                                clientCommands.addWordsToConfigFile(`Add: "${word}" to config: ${src.name}`, [word], textDocument.uri, {
+                                cc.addWordsToConfigFileFromServer(`Add: "${word}" to config: ${src.name}`, [word], textDocument.uri, {
                                     name,
                                     uri,
                                 }),
@@ -170,7 +170,7 @@ export function onCodeActionHandler(
                 if (showAddToUser) {
                     actions.push(
                         createAction(
-                            clientCommands.addWordsToVSCodeSettings(`Add: "${word}" to user settings`, [word], textDocument.uri, 'user'),
+                            cc.addWordsToVSCodeSettingsFromServer(`Add: "${word}" to user settings`, [word], textDocument.uri, 'user'),
                             spellCheckerDiags
                         )
                     );
@@ -179,12 +179,7 @@ export function onCodeActionHandler(
                     // Allow the them to add it to the project dictionary.
                     actions.push(
                         createAction(
-                            clientCommands.addWordsToVSCodeSettings(
-                                `Add: "${word}" to folder settings`,
-                                [word],
-                                textDocument.uri,
-                                'folder'
-                            ),
+                            cc.addWordsToVSCodeSettingsFromServer(`Add: "${word}" to folder settings`, [word], textDocument.uri, 'folder'),
                             spellCheckerDiags
                         )
                     );
@@ -193,7 +188,7 @@ export function onCodeActionHandler(
                     // Allow the them to add it to the workspace dictionary.
                     actions.push(
                         createAction(
-                            clientCommands.addWordsToVSCodeSettings(
+                            cc.addWordsToVSCodeSettingsFromServer(
                                 `Add: "${word}" to workspace settings`,
                                 [word],
                                 textDocument.uri,

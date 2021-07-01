@@ -1,6 +1,8 @@
 import { CSpellUserSettings, LanguageSetting } from './server';
 import { normalizeCode } from '../iso639-1';
 import * as util from '../util';
+import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
+import { isDefined } from '../util';
 
 export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
     return (config && config.language && normalizeToLocales(config.language)) || undefined;
@@ -34,6 +36,29 @@ export function extractDictionariesByLocaleLanguageSettings(langSettings: Langua
             });
         });
     return mapOfDict;
+}
+
+export function extractDictionariesGroupByName(config: CSpellUserSettings): Map<string, DictionaryDefinition> {
+    return new Map(config.dictionaryDefinitions?.map((def) => [def.name, def]) || []);
+}
+
+export function extractActiveDictionaries(config: CSpellUserSettings): DictionaryDefinition[] {
+    const dictMap = extractDictionariesGroupByName(config);
+    return (config.dictionaries || []).map((name) => dictMap.get(name)).filter(isDefined);
+}
+
+export function extractCustomDictionaries(config: CSpellUserSettings): DictionaryDefinitionCustom[] {
+    return extractActiveDictionaries(config)
+        .filter(isDictionaryDefinitionCustom)
+        .filter((d) => d.addWords);
+}
+
+function isDictionaryDefinitionCustom(d: DictionaryDefinition): d is DictionaryDefinitionCustom {
+    return (<DictionaryDefinitionCustom>d).addWords ?? false;
+}
+
+export function extractScope(d: DictionaryDefinitionCustom): Set<CustomDictionaryScope> {
+    return new Set<CustomDictionaryScope>(typeof d.scope === 'string' ? [d.scope] : d.scope || []);
 }
 
 export function normalizeLocale(locale: string | string[] = ''): string {

@@ -66,13 +66,13 @@ export function handlerApplyTextEdits() {
 }
 
 export const commandsFromServer: ClientSideCommandHandlerApi = {
-    'cSpell.addWordsToConfigFile': (words, documentUri, config) => {
+    'cSpell.addWordsToConfigFileFromServer': (words, documentUri, config) => {
         return pVoid(writeWordsToDictionary(toDictionaryTarget('cspell', documentUri, config.name, config.uri), words));
     },
-    'cSpell.addWordsToDictionaryFile': (words, documentUri, dict) => {
+    'cSpell.addWordsToDictionaryFileFromServer': (words, documentUri, dict) => {
         return pVoid(writeWordsToDictionary(toDictionaryTarget('dictionary', documentUri, dict.name, dict.uri), words));
     },
-    'cSpell.addWordsToVSCodeSettings': (words, documentUri, target) => {
+    'cSpell.addWordsToVSCodeSettingsFromServer': (words, documentUri, target) => {
         return pVoid(writeWordsToDictionary(toDictionaryTarget(target, documentUri), words));
     },
 };
@@ -134,6 +134,9 @@ export const commandHandlers: CommandHandler = {
 
     'cSpell.addAllWordsToWorkspace': notImplemented('cSpell.addAllWordsToWorkspace'),
     'cSpell.addWordToCSpellConfig': notImplemented('cSpell.addWordToCSpellConfig'),
+    'cSpell.addIssuesToDictionary': notImplemented('cSpell.addIssuesToDictionary'),
+    'cSpell.createCustomDictionary': notImplemented('cSpell.createCustomDictionary'),
+    'cSpell.createCSpellConfig': notImplemented('cSpell.createCSpellConfig'),
 };
 
 function pVoid<T>(p: Promise<T> | Thenable<T>): Promise<void> {

@@ -8,7 +8,7 @@ type CreateClientSideCommand = {
 };
 
 export const clientCommands: CreateClientSideCommand = {
-    addWordsToConfigFile: (title: string, ...params) => Command.create(title, prefix + 'addWordsToConfigFile', ...params),
-    addWordsToDictionaryFile: (title: string, ...params) => Command.create(title, prefix + 'addWordsToDictionaryFile', ...params),
-    addWordsToVSCodeSettings: (title: string, ...params) => Command.create(title, prefix + 'addWordsToVSCodeSettings', ...params),
+    addWordsToConfigFileFromServer: (title: string, ...params) => Command.create(title, prefix + 'addWordsToConfigFile', ...params),
+    addWordsToDictionaryFileFromServer: (title: string, ...params) => Command.create(title, prefix + 'addWordsToDictionaryFile', ...params),
+    addWordsToVSCodeSettingsFromServer: (title: string, ...params) => Command.create(title, prefix + 'addWordsToVSCodeSettings', ...params),
 };
