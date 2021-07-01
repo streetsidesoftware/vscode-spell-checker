@@ -40,7 +40,7 @@ export function handlerApplyTextEdits() {
                 window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.');
             }
             const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
-            const cfg = workspace.getConfiguration(Settings.sectionCSpell);
+            const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
             if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
                 console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
                 const edit = edits[0];
@@ -149,7 +149,7 @@ function notImplemented(cmd: string) {
     return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
 }
 
-async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean | undefined> {
+async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean> {
     if (range.start.line !== range.end.line) {
         return false;
     }
@@ -162,11 +162,17 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     const b = range.end.character - orig;
     const docText = document.getText(wordRange);
     const newText = [docText.slice(0, a), text, docText.slice(b)].join('');
-    const workspaceEdit = await commands.executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText).then(
-        (a) => a as WorkspaceEdit | undefined,
-        (reason) => (console.log(reason), undefined)
-    );
-    return workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
+    try {
+        const workspaceEdit = await commands
+            .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
+            .then(
+                (a) => a as WorkspaceEdit | undefined,
+                (reason) => (console.log(reason), false)
+            );
+        return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
+    } catch (e) {
+        return false;
+    }
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {

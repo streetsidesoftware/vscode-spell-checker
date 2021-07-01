@@ -300,6 +300,11 @@
         "url": "./node_modules/@cspell/cspell-types/cspell.schema.json"
       }
     ],
+    "configurationDefaults": {
+      "[php]": {
+        "cSpell.fixSpellingWithRenameProvider": false
+      }
+    },
     "configuration": {
       "type": "object",
       "title": "Code Spell Checker",
@@ -580,7 +585,7 @@
         },
         "cSpell.fixSpellingWithRenameProvider": {
           "type": "boolean",
-          "scope": "application",
+          "scope": "language-overridable",
           "description": "Use Rename when fixing spelling issues.",
           "default": true
         },
