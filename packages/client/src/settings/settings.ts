@@ -22,6 +22,7 @@ import * as config from './config';
 performance.mark('settings.ts imports 3');
 import * as fs from 'fs-extra';
 import { InspectScope } from './config';
+import { DictionaryTargetTypes } from './DictionaryTargets';
 performance.mark('settings.ts imports 4');
 performance.mark('settings.ts imports done');
 
@@ -62,8 +63,7 @@ export function getDefaultWorkspaceConfigLocation(): Uri | undefined {
 }
 
 export function hasWorkspaceLocation(): boolean {
-    const { workspaceFolders } = workspace;
-    return !!(workspaceFolders && workspaceFolders[0]);
+    return !!workspace.workspaceFile || !!workspace.workspaceFolders?.[0];
 }
 
 /**
@@ -279,13 +279,13 @@ export async function enableLanguageIdForClosestTarget(
 
         if (
             vscode.workspace.workspaceFolders?.length &&
-            (await enableLanguageIdForTarget(languageId, enable, config.Target.Workspace, false, forceUpdateVSCode))
+            (await enableLanguageIdForTarget(languageId, enable, config.ConfigurationTarget.Workspace, false, forceUpdateVSCode))
         ) {
             return;
         }
 
         // Apply it to User settings.
-        await enableLanguageIdForTarget(languageId, enable, config.Target.Global, true, forceUpdateVSCode);
+        await enableLanguageIdForTarget(languageId, enable, config.ConfigurationTarget.Global, true, forceUpdateVSCode);
     }
     return;
 }
@@ -300,9 +300,9 @@ export async function enableLanguageIdForClosestTarget(
 function shouldUpdateCSpell(target: config.ConfigTarget) {
     const cfgTarget = config.extractTarget(target);
     return (
-        cfgTarget !== config.Target.Global &&
+        cfgTarget !== config.ConfigurationTarget.Global &&
         workspace.workspaceFolders &&
-        (cfgTarget === config.Target.WorkspaceFolder || workspace.workspaceFolders.length === 1)
+        (cfgTarget === config.ConfigurationTarget.WorkspaceFolder || workspace.workspaceFolders.length === 1)
     );
 }
 
@@ -365,23 +365,22 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     return !!configResult;
 }
 
-export function resolveTarget(target: config.Target, docUri?: null | Uri): config.ConfigTarget {
-    if (target === config.Target.Global || !hasWorkspaceLocation()) {
-        return config.Target.Global;
+export function resolveTarget(target: config.ConfigurationTarget, docUri?: null | Uri): config.ConfigTarget {
+    if (target === config.ConfigurationTarget.Global || !hasWorkspaceLocation()) {
+        return config.ConfigurationTarget.Global;
     }
 
     if (!docUri) {
-        return config.Target.Workspace;
+        return config.ConfigurationTarget.Workspace;
     }
-
     return config.createTargetForUri(target, docUri);
 }
 
-export async function determineSettingsPaths(target: config.ConfigTarget, docUri: Uri | undefined, docConfigFiles?: Uri[]): Promise<Uri[]> {
-    if (config.isGlobalLevelTarget(target)) {
-        return [];
-    }
-
+export async function determineSettingsPaths(
+    target: config.ConfigTarget | DictionaryTargetTypes,
+    docUri: Uri | undefined,
+    docConfigFiles?: Uri[]
+): Promise<Uri[]> {
     if (config.isWorkspaceLevelTarget(target)) {
         const files = await findSettingsFiles(undefined, true);
         const cfgFileSet = new Set(docConfigFiles?.map((u) => u.toString()) || []);

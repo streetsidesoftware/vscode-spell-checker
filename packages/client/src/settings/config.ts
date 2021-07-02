@@ -1,11 +1,14 @@
-import { workspace, Uri, ConfigurationTarget as Target, TextDocument, WorkspaceConfiguration } from 'vscode';
+import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration } from 'vscode';
 import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../server';
+import { DictionaryTargetTypes, isDictionaryTargetTypes, TargetType } from './DictionaryTargets';
 
 export { CSpellUserSettings } from '../server';
-export { ConfigurationTarget, ConfigurationTarget as Target } from 'vscode';
+export { ConfigurationTarget } from 'vscode';
 
 export const sectionCSpell = extensionId;
+
+export type AllTargetTypes = ConfigurationTarget | DictionaryTargetTypes;
 
 export interface InspectValues<T> {
     defaultValue?: T;
@@ -21,11 +24,11 @@ export interface InspectValues<T> {
     // languageIds?: string[];
 }
 
-export const GlobalTarget = Target.Global;
-export const WorkspaceTarget = Target.Workspace;
+export const GlobalTarget = ConfigurationTarget.Global;
+export const WorkspaceTarget = ConfigurationTarget.Workspace;
 
 export interface ConfigTargetWithOptionalResource {
-    target: Target;
+    target: ConfigurationTarget;
     uri?: Uri;
 }
 
@@ -33,7 +36,7 @@ export interface ConfigTargetWithResource extends ConfigTargetWithOptionalResour
     uri: Uri;
 }
 
-export type ConfigTargetResourceFree = Target.Global | Target.Workspace;
+export type ConfigTargetResourceFree = ConfigurationTarget.Global | ConfigurationTarget.Workspace;
 export type ConfigTarget = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
 
 export interface Inspect<T> extends InspectValues<T> {
@@ -183,15 +186,24 @@ export function inspectConfigKeys(resource: Uri | null, keys: (keyof InspectCSpe
 }
 
 export function isGlobalLevelTarget(target: ConfigTarget): boolean {
-    return (isConfigTargetWithOptionalResource(target) && target.target === Target.Global) || target === Target.Global;
+    return (
+        (isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Global) ||
+        target === ConfigurationTarget.Global
+    );
 }
 
-export function isWorkspaceLevelTarget(target: ConfigTarget): boolean {
-    return (isConfigTargetWithOptionalResource(target) && target.target === Target.Workspace) || target === Target.Workspace;
+export function isWorkspaceLevelTarget(target: ConfigTarget | DictionaryTargetTypes): boolean {
+    if (isDictionaryTargetTypes(target)) {
+        return target === TargetType.Workspace;
+    }
+    return (
+        (isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Workspace) ||
+        target === ConfigurationTarget.Workspace
+    );
 }
 
 export function isFolderLevelTarget(target: ConfigTarget): boolean {
-    return isConfigTargetWithResource(target) && target.target === Target.WorkspaceFolder;
+    return isConfigTargetWithResource(target) && target.target === ConfigurationTarget.WorkspaceFolder;
 }
 
 export function isConfigTargetWithResource(target: ConfigTarget): target is ConfigTargetWithResource {
@@ -202,17 +214,49 @@ export function isConfigTargetWithOptionalResource(target: ConfigTarget): target
     return typeof target === 'object' && target.target !== undefined;
 }
 
-type TargetToScope = {
-    [Target.Global]: 'globalValue';
-    [Target.Workspace]: 'workspaceValue';
-    [Target.WorkspaceFolder]: 'workspaceFolderValue';
+type TargetToConfigurationTargetMap = {
+    [ConfigurationTarget.Global]: ConfigurationTarget.Global;
+    [ConfigurationTarget.Workspace]: ConfigurationTarget.Workspace;
+    [ConfigurationTarget.WorkspaceFolder]: ConfigurationTarget.WorkspaceFolder;
+    [TargetType.User]: ConfigurationTarget.Global;
+    [TargetType.Workspace]: ConfigurationTarget.Workspace;
+    [TargetType.Folder]: ConfigurationTarget.WorkspaceFolder;
+    [TargetType.CSpell]: undefined;
+    [TargetType.Dictionary]: undefined;
 };
 
-const targetToScope: TargetToScope = {
-    1: 'globalValue',
-    2: 'workspaceValue',
-    3: 'workspaceFolderValue',
+const targetToConfigurationTargetMap: TargetToConfigurationTargetMap = {
+    [ConfigurationTarget.Global]: ConfigurationTarget.Global,
+    [ConfigurationTarget.Workspace]: ConfigurationTarget.Workspace,
+    [ConfigurationTarget.WorkspaceFolder]: ConfigurationTarget.WorkspaceFolder,
+    [TargetType.User]: ConfigurationTarget.Global,
+    [TargetType.Workspace]: ConfigurationTarget.Workspace,
+    [TargetType.Folder]: ConfigurationTarget.WorkspaceFolder,
+    [TargetType.CSpell]: undefined,
+    [TargetType.Dictionary]: undefined,
 };
+
+type TargetToScopeMap = {
+    [ConfigurationTarget.Global]: 'globalValue';
+    [ConfigurationTarget.Workspace]: 'workspaceValue';
+    [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue';
+    [TargetType.User]: 'globalValue';
+    [TargetType.Workspace]: 'workspaceValue';
+    [TargetType.Folder]: 'workspaceFolderValue';
+};
+
+const targetToScopeMap: TargetToScopeMap = {
+    [ConfigurationTarget.Global]: 'globalValue',
+    [ConfigurationTarget.Workspace]: 'workspaceValue',
+    [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue',
+    [TargetType.User]: 'globalValue',
+    [TargetType.Workspace]: 'workspaceValue',
+    [TargetType.Folder]: 'workspaceFolderValue',
+};
+
+export function targetToConfigurationTarget(target: AllTargetTypes): ConfigurationTarget | undefined {
+    return targetToConfigurationTargetMap[target];
+}
 
 export function configTargetToScope(target: ConfigTarget): InspectScope {
     if (isConfigTargetWithOptionalResource(target)) {
@@ -221,11 +265,11 @@ export function configTargetToScope(target: ConfigTarget): InspectScope {
             resource: target.uri || null,
         };
     }
-    return targetToScope[target];
+    return targetToScopeMap[target];
 }
 
-export function toScope(target: Target): Scope {
-    return targetToScope[target];
+export function toScope(target: ConfigurationTarget): Scope {
+    return targetToScopeMap[target];
 }
 
 export function extractScope(inspectScope: InspectScope): Scope {
@@ -274,21 +318,21 @@ function findBestConfig<K extends keyof CSpellUserSettings>(config: Inspect<CSpe
 }
 
 export function isGlobalTarget(target: ConfigTarget): boolean {
-    return extractTarget(target) === Target.Global;
+    return extractTarget(target) === ConfigurationTarget.Global;
 }
 
-export function createTargetForUri(target: Target, uri: Uri): ConfigTargetWithResource {
+export function createTargetForUri(target: ConfigurationTarget, uri: Uri): ConfigTargetWithResource {
     return {
         target,
         uri,
     };
 }
 
-export function createTargetForDocument(target: Target, doc: TextDocument): ConfigTargetWithResource {
+export function createTargetForDocument(target: ConfigurationTarget, doc: TextDocument): ConfigTargetWithResource {
     return createTargetForUri(target, doc.uri);
 }
 
-export function extractTarget(target: ConfigTarget): Target {
+export function extractTarget(target: ConfigTarget): ConfigurationTarget {
     return isConfigTargetWithOptionalResource(target) ? target.target : target;
 }
 
@@ -304,12 +348,12 @@ export function normalizeTarget(target: ConfigTarget): ConfigTarget {
     if (!isConfigTargetWithOptionalResource(target)) {
         return target;
     }
-    if (target.target !== Target.WorkspaceFolder) {
+    if (target.target !== ConfigurationTarget.WorkspaceFolder) {
         return target.target;
     }
     const uri = normalizeResourceUri(target.uri);
     if (!uri) {
-        return Target.Workspace;
+        return ConfigurationTarget.Workspace;
     }
     return { target: target.target, uri };
 }

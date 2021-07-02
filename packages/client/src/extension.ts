@@ -77,6 +77,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidCreateFiles(handleCreateFile),
         vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
+        vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
 
         ...registerCspellInlineCompletionProviders(),
         ...Object.entries(commandHandlers).map(([cmd, fn]) => vscode.commands.registerCommand(cmd, fn)),
@@ -121,6 +122,16 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function handleOnDidChangeVisibleTextEditors(_e: vscode.TextEditor[]) {
         updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document).catch();
+    }
+
+    function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
+        const activeTextEditor = vscode.window.activeTextEditor;
+        if (!activeTextEditor) return;
+
+        const uris = new Set(e.uris.map((u) => u.toString()));
+        if (uris.has(activeTextEditor.document.uri.toString())) {
+            updateDocumentRelatedContext(client, activeTextEditor.document).catch();
+        }
     }
 
     function detectPossibleCSpellConfigChange(files: ReadonlyArray<vscode.Uri>) {

@@ -48,33 +48,48 @@
       "editor/context": [
         {
           "command": "cSpell.addWordToFolderDictionary",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0 && workspaceFolderCount != 1",
-          "group": "A_cspell@1"
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary",
+          "group": "A_cspell@01"
         },
         {
           "command": "cSpell.addWordToWorkspaceDictionary",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && workspaceFolderCount != 0",
-          "group": "A_cspell@2"
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceDictionary",
+          "group": "A_cspell@02"
         },
         {
           "command": "cSpell.addWordToUserDictionary",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
-          "group": "A_cspell@3"
-        },
-        {
-          "command": "cSpell.addIgnoreWord",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu",
-          "group": "A_cspell@9"
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary",
+          "group": "A_cspell@03"
         },
         {
           "command": "cSpell.addWordToDictionary",
-          "when": "editorTextFocus && cSpell.documentConfigContext.usesCustomDictionary",
-          "group": "A_cspell@4"
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary",
+          "group": "A_cspell@04"
         },
         {
           "command": "cSpell.addWordToCSpellConfig",
-          "when": "editorTextFocus && cSpell.documentConfigContext.usesConfigFile",
-          "group": "A_cspell@5"
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToCSpellConfig",
+          "group": "A_cspell@05"
+        },
+        {
+          "command": "cSpell.addIssuesToDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addIssuesToDictionary",
+          "group": "A_cspell@06"
+        },
+        {
+          "command": "cSpell.createCustomDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
+          "group": "A_cspell@07"
+        },
+        {
+          "command": "cSpell.createCSpellConfig",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
+          "group": "A_cspell@08"
+        },
+        {
+          "command": "cSpell.addIgnoreWord",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord",
+          "group": "A_cspell@09"
         }
       ],
       "commandPalette": [
@@ -218,12 +233,27 @@
       {
         "command": "cSpell.addWordToDictionary",
         "category": "Spell",
-        "title": "Add Word to dictionary"
+        "title": "Add Word to Dictionary"
       },
       {
         "command": "cSpell.addWordToCSpellConfig",
         "category": "Spell",
-        "title": "Add Word to cspell config"
+        "title": "Add Word to CSpell Configuration"
+      },
+      {
+        "command": "cSpell.addIssuesToDictionary",
+        "category": "Spell",
+        "title": "Add All Spelling Issues to Dictionary"
+      },
+      {
+        "command": "cSpell.createCustomDictionary",
+        "category": "Spell",
+        "title": "Create a Custom Dictionary File."
+      },
+      {
+        "command": "cSpell.createCSpellConfig",
+        "category": "Spell",
+        "title": "Create a cSpell Configuration File."
       },
       {
         "command": "cSpellRegExpTester.testRegExp",
@@ -270,6 +300,11 @@
         "url": "./node_modules/@cspell/cspell-types/cspell.schema.json"
       }
     ],
+    "configurationDefaults": {
+      "[php]": {
+        "cSpell.fixSpellingWithRenameProvider": false
+      }
+    },
     "configuration": {
       "type": "object",
       "title": "Code Spell Checker",
@@ -550,7 +585,7 @@
         },
         "cSpell.fixSpellingWithRenameProvider": {
           "type": "boolean",
-          "scope": "application",
+          "scope": "language-overridable",
           "description": "Use Rename when fixing spelling issues.",
           "default": true
         },

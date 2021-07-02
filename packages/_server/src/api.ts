@@ -92,9 +92,9 @@ export type ClientSideCommandHandlerApi = {
     [command in keyof CommandsToClient as `cSpell.${command}`]: (...params: Parameters<CommandsToClient[command]>) => OrPromise<void>;
 };
 export interface CommandsToClient {
-    addWordsToVSCodeSettings: (words: string[], documentUri: string, target: 'user' | 'workspace' | 'folder') => void;
-    addWordsToDictionaryFile: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
-    addWordsToConfigFile: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
+    addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: 'user' | 'workspace' | 'folder') => void;
+    addWordsToDictionaryFileFromServer: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
+    addWordsToConfigFileFromServer: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
 }
 
 export type RequestsToClientApiHandlers = ApiHandlers<RequestsToClient>;

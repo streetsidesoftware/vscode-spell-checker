@@ -14,11 +14,11 @@ import {
 
 describe('Validate DictionaryTargets', () => {
     const uri = Uri.file(__filename);
-    const tUser: DictionaryTargetUser = { type: 'user' };
-    const tWorkspace: DictionaryTargetWorkspace = { type: 'workspace' };
+    const tUser: DictionaryTargetUser = { type: 'user', docUri: undefined };
+    const tWorkspace: DictionaryTargetWorkspace = { type: 'workspace', docUri: undefined };
     const tFolder: DictionaryTargetFolder = { type: 'folder', docUri: uri };
-    const tCSpellConfig: DictionaryTargetCSpellConfig = { type: 'cspell', name: 'cspell.json', uri };
-    const tDictionary: DictionaryTargetDictionary = { type: 'dictionary', name: 'custom-words', uri };
+    const tCSpellConfig: DictionaryTargetCSpellConfig = { type: 'cspell', docUri: undefined, name: 'cspell.json', uri };
+    const tDictionary: DictionaryTargetDictionary = { type: 'dictionary', docUri: undefined, name: 'custom-words', uri };
 
     test.each`
         target           | method                            | expected

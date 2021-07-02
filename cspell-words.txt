@@ -65,6 +65,7 @@ naver
 nohoist
 nospace
 onfinally
+overridable
 paginator
 permalinks
 quickfix
