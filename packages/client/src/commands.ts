@@ -1,9 +1,10 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
+import { AllTargetTypes } from './settings';
 import {
     resolveTarget,
     determineSettingsPaths,
-    Target,
+    ConfigurationTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
     enableCurrentLanguage,
@@ -23,6 +24,7 @@ import {
     DictionaryTargetTypes,
     DictionaryTargetUser,
     DictionaryTargetWorkspace,
+    TargetType,
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import * as di from './di';
@@ -82,32 +84,34 @@ type CommandHandler = {
 };
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
-function fnWithTarget(
-    fn: (word: string, t: Target, uri: Uri | undefined) => Promise<void>,
-    t: Target
-): (word: string, uri: Uri | undefined) => Promise<void> {
-    return (word, uri) => fn(word, t, uri);
-}
 const actionAddWordToFolder = prompt('Add Word to Folder Dictionary', addWordToFolderDictionary);
 const actionAddWordToWorkspace = prompt('Add Word to Workspace Dictionaries', addWordToWorkspaceDictionary);
-const actionAddWordToDictionary = prompt('Add Word to User Dictionary', addWordToUserDictionary);
+const actionAddWordToUser = prompt('Add Word to User Dictionary', addWordToUserDictionary);
 const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
 const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
 const actionRemoveWordFromDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
-const actionAddIgnoreWord = prompt('Ignore Word', fnWithTarget(addIgnoreWordToTarget, Target.WorkspaceFolder));
-const actionAddIgnoreWordToFolder = prompt('Ignore Word in Folder Settings', fnWithTarget(addIgnoreWordToTarget, Target.WorkspaceFolder));
-const actionAddIgnoreWordToWorkspace = prompt('Ignore Word in Workspace Settings', fnWithTarget(addIgnoreWordToTarget, Target.Workspace));
-const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithTarget(addIgnoreWordToTarget, Target.Global));
+const actionAddIgnoreWord = prompt('Ignore Word', fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder));
+const actionAddIgnoreWordToFolder = prompt(
+    'Ignore Word in Folder Settings',
+    fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder)
+);
+const actionAddIgnoreWordToWorkspace = prompt(
+    'Ignore Word in Workspace Settings',
+    fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
+);
+const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
+const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWithTarget(addWordToTarget, TargetType.CSpell));
+const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWithTarget(addWordToTarget, TargetType.Dictionary));
 
 export const commandHandlers: CommandHandler = {
     'cSpell.addWordToDictionarySilent': addWordToFolderDictionary,
     'cSpell.addWordToWorkspaceDictionarySilent': addWordToWorkspaceDictionary,
     'cSpell.addWordToUserDictionarySilent': addWordToUserDictionary,
 
-    'cSpell.addWordToDictionary': actionAddWordToFolder, // Note: this command is for backwards compatibility.
+    'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
-    'cSpell.addWordToUserDictionary': actionAddWordToDictionary,
+    'cSpell.addWordToUserDictionary': actionAddWordToUser,
 
     'cSpell.removeWordFromFolderDictionary': actionRemoveWordFromFolderDictionary,
     'cSpell.removeWordFromWorkspaceDictionary': actionRemoveWordFromWorkspaceDictionary,
@@ -120,11 +124,11 @@ export const commandHandlers: CommandHandler = {
 
     'cSpell.enableLanguage': enableLanguageId,
     'cSpell.disableLanguage': disableLanguageId,
-    'cSpell.enableForGlobal': () => setEnableSpellChecking(Target.Global, true),
-    'cSpell.disableForGlobal': () => setEnableSpellChecking(Target.Global, false),
+    'cSpell.enableForGlobal': () => setEnableSpellChecking(ConfigurationTarget.Global, true),
+    'cSpell.disableForGlobal': () => setEnableSpellChecking(ConfigurationTarget.Global, false),
     'cSpell.toggleEnableForGlobal': () => toggleEnableSpellChecker(Settings.ConfigurationTarget.Global),
-    'cSpell.enableForWorkspace': () => setEnableSpellChecking(Target.Workspace, true),
-    'cSpell.disableForWorkspace': () => setEnableSpellChecking(Target.Workspace, false),
+    'cSpell.enableForWorkspace': () => setEnableSpellChecking(ConfigurationTarget.Workspace, true),
+    'cSpell.disableForWorkspace': () => setEnableSpellChecking(ConfigurationTarget.Workspace, false),
     'cSpell.toggleEnableSpellChecker': () => toggleEnableSpellChecker(Settings.ConfigurationTarget.Workspace),
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
@@ -133,7 +137,7 @@ export const commandHandlers: CommandHandler = {
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
     'cSpell.addAllWordsToWorkspace': notImplemented('cSpell.addAllWordsToWorkspace'),
-    'cSpell.addWordToCSpellConfig': notImplemented('cSpell.addWordToCSpellConfig'),
+    'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': notImplemented('cSpell.addIssuesToDictionary'),
     'cSpell.createCustomDictionary': notImplemented('cSpell.createCustomDictionary'),
     'cSpell.createCSpellConfig': notImplemented('cSpell.createCSpellConfig'),
@@ -176,33 +180,33 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    return addWordToTarget(word, Target.WorkspaceFolder, docUri);
+    return addWordToTarget(word, ConfigurationTarget.WorkspaceFolder, docUri);
 }
 
 export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     // eslint-disable-next-line prefer-rest-params
     console.log('addWordToWorkspaceDictionary %o', arguments);
-    return addWordToTarget(word, Target.Workspace, docUri);
+    return addWordToTarget(word, ConfigurationTarget.Workspace, docUri);
 }
 
 export function addWordToUserDictionary(word: string): Promise<void> {
-    return addWordToTarget(word, Target.Global, undefined);
+    return addWordToTarget(word, ConfigurationTarget.Global, undefined);
 }
 
-function addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined) {
+function addWordToTarget(word: string, target: AllTargetTypes, docUri: string | null | Uri | undefined) {
     return handleErrors(_addWordToTarget(word, target, docUri));
 }
 
-function _addWordToTarget(word: string, target: Target, docUri: string | null | Uri | undefined) {
+function _addWordToTarget(word: string, target: AllTargetTypes, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
     return di.get('dictionaryHelper').addWordToTarget(word, target, docUri);
 }
 
-function addIgnoreWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
+function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
     return handleErrors(_addIgnoreWordToTarget(word, target, uri));
 }
 
-async function _addIgnoreWordToTarget(word: string, target: Target, uri: string | null | Uri | undefined): Promise<void> {
+async function _addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
@@ -211,22 +215,22 @@ async function _addIgnoreWordToTarget(word: string, target: Target, uri: string 
 }
 
 function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
-    return removeWordFromTarget(word, Target.WorkspaceFolder, uri);
+    return removeWordFromTarget(word, ConfigurationTarget.WorkspaceFolder, uri);
 }
 
 function removeWordFromWorkspaceDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
-    return removeWordFromTarget(word, Target.Workspace, uri);
+    return removeWordFromTarget(word, ConfigurationTarget.Workspace, uri);
 }
 
 function removeWordFromUserDictionary(word: string): Promise<void> {
-    return removeWordFromTarget(word, Target.Global, undefined);
+    return removeWordFromTarget(word, ConfigurationTarget.Global, undefined);
 }
 
-function removeWordFromTarget(word: string, target: Target, uri: string | null | Uri | undefined) {
+function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined) {
     return handleErrors(_removeWordFromTarget(word, target, uri));
 }
 
-async function _removeWordFromTarget(word: string, target: Target, uri: string | null | Uri | undefined) {
+async function _removeWordFromTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined) {
     uri = parseOptionalUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.removeWordFromSettings(actualTarget, word);
@@ -333,15 +337,19 @@ function handleErrors(p: Promise<void>): Promise<void> {
     return p.catch(onError);
 }
 
-function toDictionaryTarget(targetType: 'user', docUri?: string | Uri): DictionaryTargetUser;
-function toDictionaryTarget(targetType: 'workspace', docUri?: string | Uri): DictionaryTargetWorkspace;
-function toDictionaryTarget(targetType: 'workspace', docUri: string | Uri): DictionaryTargetFolder;
+function toDictionaryTarget(targetType: TargetType.User, docUri?: string | Uri): DictionaryTargetUser;
+function toDictionaryTarget(targetType: TargetType.Workspace, docUri?: string | Uri): DictionaryTargetWorkspace;
+function toDictionaryTarget(targetType: TargetType.Folder, docUri: string | Uri): DictionaryTargetFolder;
 function toDictionaryTarget(
-    targetType: 'user' | 'workspace' | 'folder',
+    targetType: TargetType.User | TargetType.Workspace,
+    docUri?: string | Uri
+): DictionaryTargetUser | DictionaryTargetWorkspace;
+function toDictionaryTarget(
+    targetType: TargetType.User | TargetType.Workspace | TargetType.Folder,
     docUri: string | Uri
 ): DictionaryTargetUser | DictionaryTargetWorkspace | DictionaryTargetFolder;
 function toDictionaryTarget(
-    targetType: 'cspell' | 'dictionary',
+    targetType: TargetType.CSpell | TargetType.Dictionary,
     docUri: string | Uri,
     name: string,
     uri: string | Uri
@@ -353,18 +361,23 @@ function toDictionaryTarget(
     uri?: string | Uri
 ): DictionaryTargets {
     switch (targetType) {
-        case 'user':
-            return { type: targetType };
-        case 'workspace':
-            return { type: targetType };
-        case 'folder':
+        case TargetType.User:
+            return { type: targetType, docUri: toMaybeUri(docUri) };
+        case TargetType.Workspace:
+            return { type: targetType, docUri: toMaybeUri(docUri) };
+        case TargetType.Folder:
             return { type: targetType, docUri: toUri(mustBeDefined(docUri)) };
-        case 'cspell':
-            return { type: targetType, name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
-        case 'dictionary':
-            return { type: targetType, name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
+        case TargetType.CSpell:
+            return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
+        case TargetType.Dictionary:
+            return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
     }
     throw new Error(`Unknown target type ${targetType}`);
+}
+
+function toMaybeUri(uri: string | Uri | undefined): Uri | undefined {
+    if (!uri) return undefined;
+    return toUri(uri);
 }
 
 function mustBeDefined<T>(t: T | undefined): T {
@@ -380,6 +393,13 @@ function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined
         return Uri.parse(uri);
     }
     return uri || undefined;
+}
+
+function fnWithTarget<TT>(
+    fn: (word: string, t: TT, uri: Uri | undefined) => Promise<void>,
+    t: TT
+): (word: string, uri: Uri | undefined) => Promise<void> {
+    return (word, uri) => fn(word, t, uri);
 }
 
 export const __testing__ = {

@@ -1,6 +1,10 @@
 {
-    "words": [
-        "jasondent",
-        "Revinate"
+    "ignorePaths": [
+        "*.dist",
+        "/Tutorial/Data/**",
+        "/vendor"
+    ],
+    "import": [
+        "./cspell-extra.json"
     ]
 }

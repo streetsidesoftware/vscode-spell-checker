@@ -138,7 +138,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     context.editorMenuContext.addWordToFolderDictionary = show && hasIssues && showFolder;
     context.editorMenuContext.addWordToWorkspaceDictionary = show && hasIssues && showWorkspace;
-    context.editorMenuContext.addWordToUserDictionary = show && hasIssues && !usesConfigFile;
+    context.editorMenuContext.addWordToUserDictionary = show && hasIssues;
     context.editorMenuContext.addWordToDictionary = show && hasIssues && usesCustomDictionary;
     context.editorMenuContext.addWordToCSpellConfig = show && hasIssues && usesConfigFile && !usesCustomDictionary;
     context.editorMenuContext.addIssuesToDictionary = show && hasIssues && hasMultipleIssues;

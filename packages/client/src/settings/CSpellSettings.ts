@@ -74,7 +74,7 @@ export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<
     const fsPath = filename.fsPath;
     return fs
         .mkdirp(path.dirname(fsPath))
-        .then(() => fs.writeFile(fsPath, json.stringify(settings, null, 4)))
+        .then(() => fs.writeFile(fsPath, json.stringify(settings, null, 4) + '\n'))
         .then(() => settings);
 }
 

@@ -1,0 +1,18 @@
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+    "dictionaryDefinitions": [
+        {
+            "name": "Repository Words",
+            "description": "Terms related to Revinate/Sequence",
+            "addWords": true,
+            "scope": [
+                "folder",
+                "workspace"
+            ],
+            "path": "./custom-words.txt"
+        }
+    ],
+    "dictionaries": [
+        "Repository Words"
+    ]
+}
