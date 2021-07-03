@@ -394,4 +394,5 @@ export const __testing__ = {
     determineWordToAddToDictionaryFromSelection,
     extractMatchingDiagText,
     extractMatchingDiagTexts,
+    commandHandlers,
 };

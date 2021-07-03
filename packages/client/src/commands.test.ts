@@ -3,12 +3,12 @@ import { createTextDocument, readTextDocument } from 'jest-mock-vscode';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings/settings';
 
-import { __testing__, commandHandlers } from './commands';
+import { __testing__ } from './commands';
 import { isDefined } from './util';
 import { mustBeDefined, readExtensionPackage } from './test/helpers';
 import { extensionId } from './constants';
 import { commandDisplayCSpellInfo } from './infoViewer';
-const { determineWordToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts } = __testing__;
+const { determineWordToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts, commandHandlers } = __testing__;
 
 describe('Validate Commands', () => {
     test.each`
