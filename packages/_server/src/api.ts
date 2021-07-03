@@ -139,11 +139,6 @@ export type ServerRequestMethodConstants = {
     [key in ServerRequestMethods]: key;
 };
 
-export type NotifyServerMethods = keyof ServerNotifyApi;
-export type NotifyServerMethodConstants = {
-    [key in NotifyServerMethods]: NotifyServerMethods;
-};
-
 export interface TextDocumentRef {
     uri: UriString;
 }
