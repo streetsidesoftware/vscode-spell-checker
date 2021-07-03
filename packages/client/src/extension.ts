@@ -23,7 +23,6 @@ import { initStatusBar } from './statusbar';
 performance.mark('import 8');
 
 performance.mark('import 9');
-import { commandHandlers } from './commands';
 import * as commands from './commands';
 performance.mark('import 10');
 
@@ -35,6 +34,7 @@ import * as modules from './modules';
 import * as ExtensionRegEx from './extensionRegEx';
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { updateDocumentRelatedContext } from './context';
+import { logErrors, silenceErrors } from './util/errors';
 
 performance.mark('cspell_done_import');
 
@@ -58,7 +58,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(client.start());
 
     function triggerGetSettings() {
-        client.triggerSettingsRefresh();
+        silenceErrors(client.triggerSettingsRefresh());
     }
 
     initStatusBar(context, client);
@@ -80,7 +80,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
 
         ...registerCspellInlineCompletionProviders(),
-        ...Object.entries(commandHandlers).map(([cmd, fn]) => vscode.commands.registerCommand(cmd, fn)),
+        ...commands.registerCommands(),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
@@ -117,11 +117,11 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
-        updateDocumentRelatedContext(client, e?.document).catch();
+        logErrors(updateDocumentRelatedContext(client, e?.document));
     }
 
     function handleOnDidChangeVisibleTextEditors(_e: vscode.TextEditor[]) {
-        updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document).catch();
+        logErrors(updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document));
     }
 
     function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
@@ -130,7 +130,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
         const uris = new Set(e.uris.map((u) => u.toString()));
         if (uris.has(activeTextEditor.document.uri.toString())) {
-            updateDocumentRelatedContext(client, activeTextEditor.document).catch();
+            logErrors(updateDocumentRelatedContext(client, activeTextEditor.document));
         }
     }
 

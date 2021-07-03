@@ -12,7 +12,7 @@ import {
 } from './settings';
 import { performance, toMilliseconds } from './util/perf';
 
-import { window, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range, Diagnostic, Selection } from 'vscode';
+import { window, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range, Diagnostic, Selection, Disposable } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
 import { SpellCheckerSettingsProperties } from './server';
 import { ClientSideCommandHandlerApi } from './server';
@@ -30,6 +30,7 @@ import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import * as di from './di';
 import { getCSpellDiags } from './diags';
 import { isDefined, toUri } from './util';
+import { handleErrors, catchErrors } from './util/errors';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
@@ -103,7 +104,7 @@ const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithT
 const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWithTarget(addWordToTarget, TargetType.CSpell));
 const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWithTarget(addWordToTarget, TargetType.Dictionary));
 
-export const commandHandlers: CommandHandler = {
+const commandHandlers: CommandHandler = {
     'cSpell.addWordToDictionarySilent': addWordToFolderDictionary,
     'cSpell.addWordToWorkspaceDictionarySilent': addWordToWorkspaceDictionary,
     'cSpell.addWordToUserDictionarySilent': addWordToUserDictionary,
@@ -177,6 +178,10 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     } catch (e) {
         return false;
     }
+}
+
+export function registerCommands(): Disposable[] {
+    return Object.entries(commandHandlers).map(([cmd, fn]) => commands.registerCommand(cmd, catchErrors(fn)));
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
@@ -318,23 +323,6 @@ function determineWordToAddToDictionaryFromSelection(
     // was wanted, otherwise use the diag range.
 
     return regExpIsWordLike.test(selectedText) ? selectedText : doc.getText(diagRange);
-}
-
-function isError(e: unknown): e is Error {
-    if (!e) return false;
-    const err = <Error>e;
-    return err.message !== undefined && err.name !== undefined;
-}
-
-function onError(reason: unknown): Promise<void> {
-    if (isError(reason)) {
-        window.showErrorMessage(reason.message);
-    }
-    return Promise.resolve();
-}
-
-function handleErrors(p: Promise<void>): Promise<void> {
-    return p.catch(onError);
 }
 
 function toDictionaryTarget(targetType: TargetType.User, docUri?: string | Uri): DictionaryTargetUser;
