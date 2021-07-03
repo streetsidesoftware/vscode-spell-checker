@@ -44,9 +44,8 @@ import { createClientApi } from './clientApi';
 
 log('Starting Spell Checker Server');
 
-const notifyMethodNames: Api.NotifyServerMethodConstants = {
-    notifyConfigChange: 'notifyConfigChange',
-    registerConfigurationFile: 'registerConfigurationFile',
+type ServerNotificationApiHandlers = {
+    [key in keyof Api.ServerNotifyApi]: (p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
 };
 
 const tds = CSpell;
@@ -170,11 +169,20 @@ export function run(): void {
         return documentSettings.getUriSettings(uri);
     }
 
-    function registerConfigurationFile(path: string) {
+    function registerConfigurationFile([path]: [string]) {
         documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
         triggerUpdateConfig.next(undefined);
     }
+
+    const serverNotificationApiHandlers: ServerNotificationApiHandlers = {
+        notifyConfigChange: () => onConfigChange(),
+        registerConfigurationFile: registerConfigurationFile,
+    };
+
+    Object.entries(serverNotificationApiHandlers).forEach(([method, fn]) => {
+        connection.onNotification(method, fn);
+    });
 
     interface TextDocumentInfo {
         uri?: string;
@@ -183,8 +191,6 @@ export function run(): void {
     }
 
     // Listen for event messages from the client.
-    connection.onNotification(notifyMethodNames.notifyConfigChange, onConfigChange);
-    connection.onNotification(notifyMethodNames.registerConfigurationFile, registerConfigurationFile);
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
     disposables.push(configWatcher.listen(onConfigFileChange));
 

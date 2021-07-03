@@ -79,7 +79,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
     }
 
     function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
-        client.sendNotification(method, params[0]);
+        client.sendNotification(method, params);
     }
 
     const api: ServerApi = {
