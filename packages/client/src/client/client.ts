@@ -22,6 +22,7 @@ import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
 import { diagnosticSource } from '../constants';
+import { logErrors, silenceErrors } from '../util/errors';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -138,11 +139,11 @@ export class CSpellClient implements Disposable {
     }
 
     public notifySettingsChanged(): Promise<void> {
-        return this.whenReady(() => this.serverApi.notifyConfigChange());
+        return silenceErrors(this.whenReady(() => this.serverApi.notifyConfigChange()));
     }
 
     public registerConfiguration(path: string): Promise<void> {
-        return this.whenReady(() => this.serverApi.registerConfigurationFile(path));
+        return logErrors(this.whenReady(() => this.serverApi.registerConfigurationFile(path)));
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {
