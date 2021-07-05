@@ -23,6 +23,7 @@ import { DictionaryTargetTypes } from './DictionaryTargets';
 import * as config from './vsConfig';
 import { InspectScope } from './vsConfig';
 import { CSpellSettings } from '@cspell/cspell-types';
+import { fileExits } from '../util/file';
 
 performance.mark('settings.ts imports done');
 
@@ -404,20 +405,38 @@ export async function determineSettingsPaths(
 
 const settingsFileTemplate: CSpellSettings = {
     version: '0.2',
+    ignorePaths: [],
+    dictionaryDefinitions: [],
+    dictionaries: [],
+    words: [],
+    ignoreWords: [],
+    import: [],
 };
 
-export async function createConfigFile(referenceDocUri?: Uri): Promise<Uri> {
+export async function createConfigFileInFolder(folder: Uri, overwrite?: boolean): Promise<Uri | undefined> {
+    const fileUri = Uri.joinPath(folder, defaultFileName);
+
+    if (!overwrite && (await fileExits(fileUri))) {
+        const overwrite = 'Overwrite';
+        const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite);
+        if (choice !== overwrite) {
+            return undefined;
+        }
+    }
+
+    await fs.writeJson(fileUri.fsPath, settingsFileTemplate, { encoding: 'utf8', spaces: 4 });
+
+    return fileUri;
+}
+
+export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Uri, overwrite?: boolean): Promise<Uri | undefined> {
     const folder = getDefaultWorkspaceConfigLocation(referenceDocUri);
     const refDocFolder = referenceDocUri && Uri.joinPath(referenceDocUri, '..');
 
     const location = folder || refDocFolder;
     if (!location || location.scheme !== 'file') throw new Error('Unable to determine location for configuration file.');
 
-    const fileUri = Uri.joinPath(location, defaultFileName);
-
-    await fs.writeJson(fileUri.fsPath, settingsFileTemplate, { encoding: 'utf8' });
-
-    return fileUri;
+    return createConfigFileInFolder(location, overwrite);
 }
 
 performance.mark('settings.ts done');

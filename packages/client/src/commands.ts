@@ -1,6 +1,6 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
-import { AllTargetTypes, createConfigFile } from './settings';
+import { AllTargetTypes, createConfigFileRelativeToDocumentUri } from './settings';
 import {
     resolveTarget,
     determineSettingsPaths,
@@ -388,7 +388,7 @@ function fnWithTarget<TT>(
 }
 
 function createCSpellConfig(): Promise<void> {
-    return pVoid(createConfigFile(window.activeTextEditor?.document.uri));
+    return pVoid(createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri));
 }
 
 export const __testing__ = {
