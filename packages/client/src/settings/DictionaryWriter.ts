@@ -1,4 +1,4 @@
-import { ConfigTarget, createTargetForUri } from './config';
+import { ConfigTarget, createTargetForUri } from './vsConfig';
 import { ConfigurationTarget } from 'vscode';
 import {
     DictionaryTargets,

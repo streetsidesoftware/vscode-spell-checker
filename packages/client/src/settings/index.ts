@@ -1,3 +1,3 @@
 export * from './settings';
-export * from './config';
+export * from './vsConfig';
 export { CSpellSettings, configFilesToWatch } from './CSpellSettings';

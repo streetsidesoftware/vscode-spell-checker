@@ -1,32 +1,32 @@
 import { performance } from '../util/perf';
+
 performance.mark('settings.ts');
+
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import * as vscode from 'vscode';
+import { ConfigurationTarget, Uri, workspace } from 'vscode';
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
+import { isDefined, unique } from '../util';
+import * as watcher from '../util/watcher';
 import {
-    normalizeWords,
     configFileLocations,
     defaultFileName as baseConfigName,
-    readSettings,
+    defaultFileName,
     filterOutWords,
-    readSettingsFileAndApplyUpdate,
     isUpdateSupportedForConfigFileFormat,
+    normalizeWords,
+    readSettings,
+    readSettingsFileAndApplyUpdate,
 } from './CSpellSettings';
-import { workspace, ConfigurationTarget } from 'vscode';
-performance.mark('settings.ts imports 1');
-import * as path from 'path';
-import { Uri } from 'vscode';
-import * as vscode from 'vscode';
-performance.mark('settings.ts imports 2');
-import { unique } from '../util';
-import * as watcher from '../util/watcher';
-import * as config from './config';
-performance.mark('settings.ts imports 3');
-import * as fs from 'fs-extra';
-import { InspectScope } from './config';
 import { DictionaryTargetTypes } from './DictionaryTargets';
-performance.mark('settings.ts imports 4');
+import * as config from './vsConfig';
+import { InspectScope } from './vsConfig';
+import { CSpellSettings } from '@cspell/cspell-types';
+
 performance.mark('settings.ts imports done');
 
-export { ConfigTarget, InspectScope, Scope } from './config';
+export { ConfigTarget, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
     path: Uri;
     settings: CSpellUserSettings;
@@ -56,10 +56,14 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     });
 }
 
-export function getDefaultWorkspaceConfigLocation(): Uri | undefined {
-    const { workspaceFolders } = workspace;
-    const root = workspaceFolders?.[0]?.uri;
-    return root ? Uri.joinPath(root, baseConfigName) : undefined;
+export function getDefaultWorkspaceConfigFile(docUri?: Uri): Uri | undefined {
+    const folder = getDefaultWorkspaceConfigLocation(docUri);
+    return folder && Uri.joinPath(folder, baseConfigName);
+}
+
+function getDefaultWorkspaceConfigLocation(docUri?: Uri): Uri | undefined {
+    const defaultFolderUri = docUri && vscode.workspace.getWorkspaceFolder(docUri)?.uri;
+    return defaultFolderUri || workspace.workspaceFolders?.[0]?.uri;
 }
 
 export function hasWorkspaceLocation(): boolean {
@@ -68,15 +72,15 @@ export function hasWorkspaceLocation(): boolean {
 
 /**
  * Returns a list of files in the order of Best to Worst Match.
- * @param uri
+ * @param docUri
  */
-export function findSettingsFiles(uri?: Uri, isUpdatable?: boolean): Promise<Uri[]> {
+export function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> {
     const { workspaceFolders } = workspace;
     if (!workspaceFolders || !hasWorkspaceLocation()) {
         return Promise.resolve([]);
     }
 
-    const folders = uri ? [workspace.getWorkspaceFolder(uri)!].filter((a) => !!a).concat(workspaceFolders) : workspaceFolders;
+    const folders = docUri ? [workspace.getWorkspaceFolder(docUri)].filter(isDefined).concat(workspaceFolders) : workspaceFolders;
 
     const possibleLocations = folders
         .map((folder) => folder.uri.fsPath)
@@ -94,12 +98,12 @@ export function findSettingsFiles(uri?: Uri, isUpdatable?: boolean): Promise<Uri
     );
 }
 
-export function findExistingSettingsFileLocation(uri?: Uri, isUpdatable?: boolean): Promise<Uri | undefined> {
-    return findSettingsFiles(uri, isUpdatable).then((paths) => paths[0]);
+export function findExistingSettingsFileLocation(docUri?: Uri, isUpdatable?: boolean): Promise<Uri | undefined> {
+    return findSettingsFiles(docUri, isUpdatable).then((paths) => paths[0]);
 }
 
 export function findSettingsFileLocation(isUpdatable?: boolean): Promise<Uri | undefined> {
-    return findExistingSettingsFileLocation(undefined, isUpdatable).then((path) => path || getDefaultWorkspaceConfigLocation());
+    return findExistingSettingsFileLocation(undefined, isUpdatable).then((path) => path || getDefaultWorkspaceConfigFile());
 }
 
 export function loadTheSettingsFile(): Promise<SettingsInfo | undefined> {
@@ -396,6 +400,24 @@ export async function determineSettingsPaths(
     const useUri = docUri || undefined;
     const path = await findExistingSettingsFileLocation(useUri, true);
     return path ? [path] : [];
+}
+
+const settingsFileTemplate: CSpellSettings = {
+    version: '0.2',
+};
+
+export async function createConfigFile(referenceDocUri?: Uri): Promise<Uri> {
+    const folder = getDefaultWorkspaceConfigLocation(referenceDocUri);
+    const refDocFolder = referenceDocUri && Uri.joinPath(referenceDocUri, '..');
+
+    const location = folder || refDocFolder;
+    if (!location || location.scheme !== 'file') throw new Error('Unable to determine location for configuration file.');
+
+    const fileUri = Uri.joinPath(location, defaultFileName);
+
+    await fs.writeJson(fileUri.fsPath, settingsFileTemplate, { encoding: 'utf8' });
+
+    return fileUri;
 }
 
 performance.mark('settings.ts done');

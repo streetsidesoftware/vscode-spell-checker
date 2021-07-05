@@ -1,6 +1,6 @@
 import { CSpellClient } from '../client';
-import { ConfigurationTarget } from './config';
-import * as config from './config';
+import { ConfigurationTarget } from './vsConfig';
+import * as config from './vsConfig';
 import { addWordsToSettings, determineSettingsPaths, resolveTarget as resolveConfigTarget } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';

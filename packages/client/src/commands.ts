@@ -1,6 +1,6 @@
 import * as CSpellSettings from './settings/CSpellSettings';
 import * as Settings from './settings';
-import { AllTargetTypes } from './settings';
+import { AllTargetTypes, createConfigFile } from './settings';
 import {
     resolveTarget,
     determineSettingsPaths,
@@ -33,40 +33,6 @@ import { isDefined, toUri } from './util';
 import { handleErrors, catchErrors } from './util/errors';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
-
-export function handlerApplyTextEdits() {
-    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
-        const client = di.get('client').client;
-        const textEditor = window.activeTextEditor;
-        if (textEditor && textEditor.document.uri.toString() === uri) {
-            if (textEditor.document.version !== documentVersion) {
-                window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.');
-            }
-            const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
-            const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
-            if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
-                console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-                const edit = edits[0];
-                const range = client.protocol2CodeConverter.asRange(edit.range);
-                if (await attemptRename(textEditor.document, range, edit.newText)) {
-                    return;
-                }
-            }
-
-            textEditor
-                .edit((mutator) => {
-                    for (const edit of edits) {
-                        mutator.replace(client.protocol2CodeConverter.asRange(edit.range), edit.newText);
-                    }
-                })
-                .then((success) => {
-                    if (!success) {
-                        window.showErrorMessage('Failed to apply spelling changes to the document.');
-                    }
-                });
-        }
-    };
-}
 
 export const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, documentUri, config) => {
@@ -137,11 +103,10 @@ const commandHandlers: CommandHandler = {
     'cSpell.editText': handlerApplyTextEdits(),
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
-    'cSpell.addAllWordsToWorkspace': notImplemented('cSpell.addAllWordsToWorkspace'),
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': notImplemented('cSpell.addIssuesToDictionary'),
     'cSpell.createCustomDictionary': notImplemented('cSpell.createCustomDictionary'),
-    'cSpell.createCSpellConfig': notImplemented('cSpell.createCSpellConfig'),
+    'cSpell.createCSpellConfig': createCSpellConfig,
 };
 
 function pVoid<T>(p: Promise<T> | Thenable<T>): Promise<void> {
@@ -152,6 +117,38 @@ function pVoid<T>(p: Promise<T> | Thenable<T>): Promise<void> {
 
 function notImplemented(cmd: string) {
     return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
+}
+
+const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
+
+function handlerApplyTextEdits() {
+    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
+        const client = di.get('client').client;
+        const textEditor = window.activeTextEditor;
+        if (!textEditor || textEditor.document.uri.toString() !== uri) return;
+
+        if (textEditor.document.version !== documentVersion) {
+            return pVoid(window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'));
+        }
+
+        const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
+        if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
+            console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
+            const edit = edits[0];
+            const range = client.protocol2CodeConverter.asRange(edit.range);
+            if (await attemptRename(textEditor.document, range, edit.newText)) {
+                return;
+            }
+        }
+
+        return textEditor
+            .edit((mutator) => {
+                for (const edit of edits) {
+                    mutator.replace(client.protocol2CodeConverter.asRange(edit.range), edit.newText);
+                }
+            })
+            .then((success) => (success ? undefined : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'))));
+    };
 }
 
 async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean> {
@@ -388,6 +385,10 @@ function fnWithTarget<TT>(
     t: TT
 ): (word: string, uri: Uri | undefined) => Promise<void> {
     return (word, uri) => fn(word, t, uri);
+}
+
+function createCSpellConfig(): Promise<void> {
+    return pVoid(createConfigFile(window.activeTextEditor?.document.uri));
 }
 
 export const __testing__ = {
