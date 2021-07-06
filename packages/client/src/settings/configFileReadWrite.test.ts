@@ -1,5 +1,5 @@
 import { fsRemove, getPathToTemp, writeFile, readFile } from '../test/helpers';
-import { readConfigFile, updateConfigFile, __testing__ } from './configFileReadWrite';
+import { readConfigFile, updateConfigFile, writeConfigFile, __testing__ } from './configFileReadWrite';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { parse as parseJsonc, stringify as stringifyJsonc, assign } from 'comment-json';
 
@@ -35,6 +35,25 @@ describe('Validate configFileReadWrite', () => {
         expect(r).not.toEqual(sampleCSpell);
         expect(r?.words).toEqual(sampleCSpell.words);
         expect(r?.version).toEqual(__testing__.settingsFileTemplate.version);
+    });
+
+    test.each`
+        filename                | testType   | initialContent
+        ${'cspell.json'}        | ${'basic'} | ${undefined}
+        ${'cspell.jsonc'}       | ${'basic'} | ${undefined}
+        ${'cspell.config.yaml'} | ${'basic'} | ${undefined}
+        ${'package.json'}       | ${'basic'} | ${toJson(samplePackageJson)}
+    `('write $filename $testType', async ({ filename, initialContent }) => {
+        await fsRemove(getPathToTemp());
+        const uri = getPathToTemp(filename);
+        if (initialContent) {
+            await writeFile(uri, initialContent);
+        }
+
+        const sample = sampleJsoncObj();
+        await writeConfigFile(uri, sample);
+        const r = await readConfigFile(uri);
+        expect(r).toEqual(sample);
     });
 
     test('jsonc with comments', async () => {

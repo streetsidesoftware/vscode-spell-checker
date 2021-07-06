@@ -14,13 +14,14 @@ export type ConfigUpdateFn = (cfg: CSpellSettings) => Partial<CSpellSettings>;
 type HandlerDef = [
     match: RegExp,
     update: (uri: Uri, updateFn: ConfigUpdateFn) => Promise<void>,
-    read: (uri: Uri) => Promise<CSpellSettings>
+    read: (uri: Uri) => Promise<CSpellSettings>,
+    write: (uri: Uri, cfg: CSpellSettings) => Promise<void>
 ];
 
 const handlers: HandlerDef[] = [
-    [/package\.json$/i, updatePackageJson, readPackageJson],
-    [/\.jsonc?$/i, updateCSpellJson, readCSpellJson],
-    [/\.ya?ml$/i, updateCSpellYaml, readCSpellYaml],
+    [/package\.json$/i, updatePackageJson, readPackageJson, writePackageJson],
+    [/\.jsonc?$/i, updateCSpellJson, readCSpellJson, writeCSpellJson],
+    [/\.ya?ml$/i, updateCSpellYaml, readCSpellYaml, writeCSpellYaml],
 ];
 
 const spacesJson = 4;
@@ -49,6 +50,13 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
     } catch (e) {
         return e.code === 'ENOENT' ? Promise.resolve(defaultValueIfNotFound) : Promise.reject(e);
     }
+}
+
+export async function writeConfigFile(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    const handler = mustMatchHandler(uri);
+    const [, , , fn] = handler;
+    await fs.mkdirp(Uri.joinPath(uri, '..').fsPath);
+    return fn(uri, cfg);
 }
 
 export function isHandled(uri: Uri): boolean {
@@ -104,6 +112,21 @@ async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<voi
     const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
     const updated = Object.assign({}, cspell, updateFn(cspell));
     return fs.writeFile(uri.fsPath, stringifyYaml(updated));
+}
+
+async function writePackageJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    const fsPath = uri.fsPath;
+    const pkg = (await fs.readJson(fsPath)) as PackageWithCSpell;
+    pkg.cspell = cfg;
+    return fs.writeJson(fsPath, pkg, { spaces: spacesJson });
+}
+
+async function writeCSpellJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    return fs.writeFile(uri.fsPath, stringifyJson(cfg, null, spacesJson) + '\n');
+}
+
+async function writeCSpellYaml(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    return fs.writeFile(uri.fsPath, stringifyYaml(cfg));
 }
 
 async function readPackageJson(uri: Uri): Promise<CSpellSettings> {

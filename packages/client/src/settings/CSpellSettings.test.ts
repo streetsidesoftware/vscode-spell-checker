@@ -134,6 +134,7 @@ describe('Validate CSpellSettings functions', () => {
             name: 'custom dictionary',
             uri: getPathToTemp('addWordsToCustomDictionary/dict.txt'),
         };
+        await fsRemove(dict.uri);
         const words1 = ['one', 'two', 'three'];
         const words2 = ['alpha', 'beta', 'delta', 'zeta', 'one'];
         const expected = [...['alpha', 'beta', 'delta', 'zeta', 'one', 'two', 'three'].sort(), ''].join('\n');
