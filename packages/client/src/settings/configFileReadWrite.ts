@@ -1,11 +1,15 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
-import { parse as parseJson, stringify as stringifyJson } from 'comment-json';
+import { parse as parseJson, stringify as stringifyJson, assign as assignJson } from 'comment-json';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import * as fs from 'fs-extra';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
-export type ConfigUpdateFn = (cfg: CSpellSettings) => CSpellSettings;
+/**
+ * An update function returns the fields to be updated. To remove a field, make it undefined: `{ description: undefined }`
+ * Note it is only a top level merge. The update function uses `Object.assign`.
+ */
+export type ConfigUpdateFn = (cfg: CSpellSettings) => Partial<CSpellSettings>;
 
 type HandlerDef = [
     match: RegExp,
@@ -25,9 +29,8 @@ const spacesJson = 4;
  *
  * @param uri - uri of the configuration file.
  * @param updateFn - function to be called with the config data to be updated.
- *   Note: it is ok to update the cspell config object in place. It will help with
- *   preserving comments. But it is necessary to return the resulting object.
- * @returns resolves to true if it was handled.
+ *
+ * @returns resolves if it was handled.
  */
 export async function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const handler = mustMatchHandler(uri);
@@ -86,19 +89,20 @@ interface PackageWithCSpell {
 async function updatePackageJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const fsPath = uri.fsPath;
     const pkg = (await fs.readJson(fsPath)) as PackageWithCSpell;
-    pkg.cspell = updateFn(pkg.cspell || { ...settingsFileTemplate });
+    const cspell = pkg.cspell || { ...settingsFileTemplate };
+    pkg.cspell = Object.assign(cspell, updateFn(cspell));
     return fs.writeJson(fsPath, pkg, { spaces: spacesJson });
 }
 
 async function updateCSpellJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const cspell = await orDefault(readCSpellJson(uri), settingsFileTemplate);
-    const updated = updateFn(cspell);
+    const updated = assignJson(cspell, updateFn(cspell));
     return fs.writeFile(uri.fsPath, stringifyJson(updated, null, spacesJson) + '\n');
 }
 
 async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
-    const updated = updateFn(cspell);
+    const updated = Object.assign({}, cspell, updateFn(cspell));
     return fs.writeFile(uri.fsPath, stringifyYaml(updated));
 }
 
