@@ -19,11 +19,6 @@ describe('Validate CSpellSettings functions', () => {
         expect(settings.enabledLanguageIds).toBeUndefined();
     });
 
-    test('reading a file that does not exist', async () => {
-        const pSettings = CSS.readRawSettingsFile(getUriToSample('not_found/cspell.json'));
-        await expect(pSettings).resolves.toBeUndefined();
-    });
-
     test('reading a settings file that does not exist results in default', async () => {
         const pSettings = CSS.readSettings(getUriToSample('not_found/cspell.json'));
         await expect(pSettings).resolves.toBe(CSS.getDefaultSettings());
@@ -121,10 +116,11 @@ describe('Validate CSpellSettings functions', () => {
     test.each`
         uri                               | expected
         ${''}                             | ${false}
-        ${'file:///x/cspell.yml'}         | ${false}
+        ${'file:///x/cspell.yml'}         | ${true}
         ${'file:///x/cspell.config.js'}   | ${false}
         ${'file:///x/cspell.config.cjs'}  | ${false}
         ${'file:///x/cspell.json'}        | ${true}
+        ${'file:///x/package.json'}       | ${true}
         ${'file:///x/cspell.json?q=a'}    | ${true}
         ${'file:///x/cspell.jsonc?q=a#f'} | ${true}
         ${'file:///x/cspell.jsonc#f'}     | ${true}

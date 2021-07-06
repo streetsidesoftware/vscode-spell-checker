@@ -37,6 +37,11 @@ export async function writeFile(file: Uri, content: string): Promise<void> {
     return fs.writeFile(fsPath, content, 'utf-8');
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export async function writeJson(file: Uri, content: any): Promise<void> {
+    return writeFile(file, JSON.stringify(content, null, 4) + '\n');
+}
+
 export async function readFile(file: Uri): Promise<string> {
     const fsPath = file.fsPath;
     return fs.readFile(fsPath, 'utf-8');

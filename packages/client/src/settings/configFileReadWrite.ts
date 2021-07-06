@@ -19,6 +19,8 @@ const handlers: HandlerDef[] = [
     [/\.ya?ml$/i, updateCSpellYaml, readCSpellYaml],
 ];
 
+const spacesJson = 4;
+
 /**
  *
  * @param uri - uri of the configuration file.
@@ -28,29 +30,43 @@ const handlers: HandlerDef[] = [
  * @returns resolves to true if it was handled.
  */
 export async function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const fsPath = uri.fsPath;
-    for (const [rTest, fn] of handlers) {
-        if (!rTest.test(fsPath)) continue;
-        await fs.mkdirp(Uri.joinPath(uri, '..').fsPath);
-        return fn(uri, updateFn);
-    }
-    throw new UnhandledFileType(uri);
+    const handler = mustMatchHandler(uri);
+    const [, fn] = handler;
+    await fs.mkdirp(Uri.joinPath(uri, '..').fsPath);
+    return fn(uri, updateFn);
 }
 
 export function readConfigFile(uri: Uri, defaultValueIfNotFound: CSpellSettings): Promise<CSpellSettings>;
 export function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSettings): Promise<CSpellSettings | undefined>;
 export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSettings): Promise<CSpellSettings | undefined> {
-    const fsPath = uri.fsPath;
-    for (const [rTest, , fn] of handlers) {
-        if (!rTest.test(fsPath)) continue;
-        try {
-            return await fn(uri);
-        } catch (e) {
-            if (e.code === 'ENOENT') return defaultValueIfNotFound;
-            throw e;
-        }
+    const handler = mustMatchHandler(uri);
+    const [, , fn] = handler;
+    try {
+        return await fn(uri);
+    } catch (e) {
+        return e.code === 'ENOENT' ? Promise.resolve(defaultValueIfNotFound) : Promise.reject(e);
     }
+}
+
+export function isHandled(uri: Uri): boolean {
+    return !!matchHandler(uri);
+}
+
+function mustMatchHandler(uri: Uri): HandlerDef {
+    const handler = matchHandler(uri);
+    if (handler) return handler;
     throw new UnhandledFileType(uri);
+}
+
+function matchHandler(uri: Uri): HandlerDef | undefined {
+    const u = uri.with({ fragment: '', query: '' });
+    const s = u.toString();
+    for (const h of handlers) {
+        const [rTest] = h;
+        if (!rTest.test(s)) continue;
+        return h;
+    }
+    return undefined;
 }
 
 const settingsFileTemplate: CSpellSettings = {
@@ -63,29 +79,25 @@ const settingsFileTemplate: CSpellSettings = {
     import: [],
 };
 
+interface PackageWithCSpell {
+    cspell?: CSpellPackageSettings;
+}
+
 async function updatePackageJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const fsPath = uri.fsPath;
-    const pkg = (await fs.readJson(fsPath)) as { cspell?: CSpellPackageSettings };
-
+    const pkg = (await fs.readJson(fsPath)) as PackageWithCSpell;
     pkg.cspell = updateFn(pkg.cspell || { ...settingsFileTemplate });
-
-    return fs.writeJson(fsPath, pkg, { spaces: 4 });
+    return fs.writeJson(fsPath, pkg, { spaces: spacesJson });
 }
 
 async function updateCSpellJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const cspell = await readCSpellJson(uri).catch((e) => {
-        if (e.code !== 'ENOENT') throw e;
-        return settingsFileTemplate;
-    });
+    const cspell = await orDefault(readCSpellJson(uri), settingsFileTemplate);
     const updated = updateFn(cspell);
-    return fs.writeFile(uri.fsPath, stringifyJson(updated) + '\n');
+    return fs.writeFile(uri.fsPath, stringifyJson(updated, null, spacesJson) + '\n');
 }
 
 async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const cspell = await readCSpellYaml(uri).catch((e) => {
-        if (e.code !== 'ENOENT') throw e;
-        return settingsFileTemplate;
-    });
+    const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
     const updated = updateFn(cspell);
     return fs.writeFile(uri.fsPath, stringifyYaml(updated));
 }
@@ -107,6 +119,13 @@ async function readCSpellJson(uri: Uri): Promise<CSpellSettings> {
 async function readCSpellYaml(uri: Uri): Promise<CSpellSettings> {
     const content = await fs.readFile(uri.fsPath, 'utf8');
     return parseYaml(content) as CSpellSettings;
+}
+
+function orDefault<T>(p: Promise<T>, defaultValue: T): Promise<T> {
+    return p.catch((e) => {
+        if (e.code !== 'ENOENT') throw e;
+        return defaultValue;
+    });
 }
 
 export class UnhandledFileType extends Error {
