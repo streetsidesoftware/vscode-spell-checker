@@ -3,7 +3,7 @@ import * as path from 'path';
 import { CSpellUserSettingsWithComments } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
-import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile } from './configFileReadWrite';
+import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -62,7 +62,7 @@ export function readSettings(filename: Uri, defaultSettingsIfNotFound?: CSpellSe
 }
 
 export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<CSpellSettings> {
-    return updateConfigFile(filename, () => settings).then(() => readConfigFile(filename, {}));
+    return writeConfigFile(filename, settings).then(() => settings);
 }
 
 export function addWordsToSettingsAndUpdate(filename: Uri, words: string | string[]): Promise<CSpellSettings> {

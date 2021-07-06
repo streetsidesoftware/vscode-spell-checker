@@ -7,6 +7,7 @@ export { isDefined } from '../util';
 
 const rootClient = path.join(__dirname, '../..');
 const root = path.join(rootClient, '../..');
+const tempClient = path.join(rootClient, 'temp');
 
 export function getUriToSample(baseFilename: string): Uri {
     return Uri.file(path.join(rootClient, 'samples', baseFilename));
@@ -21,10 +22,25 @@ export function fsRemove(uri: Uri): Promise<void> {
     return fs.remove(uri.fsPath);
 }
 
-export function getPathToTemp(baseFilename: string, testFilename?: string): Uri {
-    const callerFile = testFilename ?? getCallStack()[1].file;
-    const testFile = path.relative(path.join(__dirname, '../..'), callerFile);
-    return Uri.file(path.join(__dirname, '../../temp', testFile, baseFilename));
+export function testNameToDir(testName: string): string {
+    return `test_${testName.replace(/\s/g, '-').replace(/[^\w.-]/gi, '_')}_test`;
+}
+
+/**
+ * Calculate a Uri for a path to a temporary directory that will be unique to the current test.
+ * Note: if a text is not currently running, then it is the path for the test file.
+ * @param baseFilename - name of file / directory wanted
+ * @param testFilename - optional full path to a test file.
+ * @returns Uri to the requested temp file.
+ */
+export function getPathToTemp(baseFilename: string = '.', testFilename?: string): Uri {
+    const testState = expect.getState();
+    const callerFile = testFilename ?? testState.testPath ?? getCallStack()[1].file;
+    const testFile = path.relative(rootClient, callerFile);
+    expect.getState();
+    const testName = testState.currentTestName || '.';
+    const testDirName = testNameToDir(testName);
+    return Uri.file(path.join(tempClient, testFile, testDirName, baseFilename));
 }
 
 export function mkdirp(uri: Uri): Promise<void> {
