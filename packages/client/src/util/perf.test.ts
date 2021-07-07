@@ -1,4 +1,4 @@
-import { PerformanceTimeline, EVENT_TIMELINE_START, toMilliseconds } from './perf';
+import { PerformanceTimeline, EVENT_TIMELINE_START } from './perf';
 
 describe('Validate perf', () => {
     test('PerformanceTimeline', () => {
