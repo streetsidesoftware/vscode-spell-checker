@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
 import { extensionId } from '../constants';
 import { PatternMatch, CSpellUserSettings, NamedPattern } from '../server';
+import { catchErrors, handleErrors, logErrors } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 
@@ -43,7 +44,9 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     let pattern: string | undefined = undefined;
     let history: string[] = [];
 
-    async function updateDecorations() {
+    const updateDecorations = catchErrors(_updateDecorations, handleErrors);
+
+    async function _updateDecorations() {
         disposeCurrent();
         if (!isActive || !activeEditor) {
             clearDecorations();
@@ -58,7 +61,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
         const highlightIndex = pattern ? 0 : -1;
 
-        client.matchPatternsInDocument(document, patterns).then((result) => {
+        await client.matchPatternsInDocument(document, patterns).then((result) => {
             if (!vscode.window.activeTextEditor || document.version !== version || vscode.window.activeTextEditor?.document != document) {
                 return;
             }
@@ -159,7 +162,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
             }
         }
         pattern = defaultRegexp || pattern;
-        vscode.window
+        const p = vscode.window
             .showInputBox({
                 prompt: 'Enter a Regular Expression',
                 placeHolder: 'Example: /\bw+/g',
@@ -171,6 +174,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 updateHistory(pattern);
                 triggerUpdateDecorations();
             });
+        return logErrors(p);
     }
 
     function isNonEmptyString(s: string | undefined): s is string {
@@ -225,7 +229,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     context.subscriptions.push(
         { dispose },
-        vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', userTestRegExp),
+        vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', catchErrors(userTestRegExp, logErrors)),
         vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
         vscode.commands.registerCommand('cSpellRegExpTester.editRegExp', editRegExp),
         vscode.workspace.onDidChangeConfiguration(updateIsActive)
