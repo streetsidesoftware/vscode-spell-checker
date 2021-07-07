@@ -1,0 +1,16 @@
+{
+  "name": "config-in-package",
+  "version": "1.0.0",
+  "description": "Example of having cspell config stored in package.json",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test"
+  },
+  "cspell": {
+    "version": "0.2",
+    "words": []
+  },
+  "author": "",
+  "license": "MIT"
+}
