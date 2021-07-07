@@ -1,5 +1,5 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
-import { parse as parseJson, stringify as stringifyJson, assign as assignJson } from 'comment-json';
+import { parse as parseJsonc, stringify as stringifyJsonc, assign as assignJson } from 'comment-json';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import * as fs from 'fs-extra';
@@ -10,6 +10,8 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
  * Note it is only a top level merge. The update function uses `Object.assign`.
  */
 export type ConfigUpdateFn = (cfg: CSpellSettings) => Partial<CSpellSettings>;
+
+const SymbolFormat = Symbol('format');
 
 type HandlerDef = [
     match: RegExp,
@@ -25,6 +27,7 @@ const handlers: HandlerDef[] = [
 ];
 
 const spacesJson = 4;
+const spacesPackage = 2;
 
 /**
  *
@@ -94,39 +97,37 @@ interface PackageWithCSpell {
     cspell?: CSpellPackageSettings;
 }
 
-async function updatePackageJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const fsPath = uri.fsPath;
-    const pkg = (await fs.readJson(fsPath)) as PackageWithCSpell;
-    const cspell = pkg.cspell || { ...settingsFileTemplate };
-    pkg.cspell = Object.assign(cspell, updateFn(cspell));
-    return fs.writeJson(fsPath, pkg, { spaces: spacesJson });
-}
-
 async function updateCSpellJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const cspell = await orDefault(readCSpellJson(uri), settingsFileTemplate);
     const updated = assignJson(cspell, updateFn(cspell));
-    return fs.writeFile(uri.fsPath, stringifyJson(updated, null, spacesJson) + '\n');
+    return fs.writeFile(uri.fsPath, stringifyJson(updated));
 }
 
-async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
-    const updated = Object.assign({}, cspell, updateFn(cspell));
-    return fs.writeFile(uri.fsPath, stringifyYaml(updated));
+async function writeCSpellJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    return fs.writeFile(uri.fsPath, stringifyJson(cfg));
+}
+
+async function readCSpellJson(uri: Uri): Promise<CSpellSettings> {
+    const content = await fs.readFile(uri.fsPath, 'utf8');
+    const s = parseJson(content) as CSpellSettings;
+    return s;
+}
+
+async function updatePackageJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
+    const fsPath = uri.fsPath;
+    const content = await fs.readFile(uri.fsPath, 'utf8');
+    const pkg = parseJson(content) as PackageWithCSpell;
+    const cspell = pkg.cspell || { ...settingsFileTemplate };
+    pkg.cspell = Object.assign(cspell, updateFn(cspell));
+    return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
 }
 
 async function writePackageJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
     const fsPath = uri.fsPath;
-    const pkg = (await fs.readJson(fsPath)) as PackageWithCSpell;
+    const content = await fs.readFile(uri.fsPath, 'utf8');
+    const pkg = parseJson(content) as PackageWithCSpell;
     pkg.cspell = cfg;
-    return fs.writeJson(fsPath, pkg, { spaces: spacesJson });
-}
-
-async function writeCSpellJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    return fs.writeFile(uri.fsPath, stringifyJson(cfg, null, spacesJson) + '\n');
-}
-
-async function writeCSpellYaml(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    return fs.writeFile(uri.fsPath, stringifyYaml(cfg));
+    return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
 }
 
 async function readPackageJson(uri: Uri): Promise<CSpellSettings> {
@@ -138,9 +139,14 @@ async function readPackageJson(uri: Uri): Promise<CSpellSettings> {
     return pkg.cspell;
 }
 
-async function readCSpellJson(uri: Uri): Promise<CSpellSettings> {
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    return parseJson(content) as CSpellSettings;
+async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
+    const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
+    const updated = Object.assign({}, cspell, updateFn(cspell));
+    return fs.writeFile(uri.fsPath, stringifyYaml(updated));
+}
+
+async function writeCSpellYaml(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    return fs.writeFile(uri.fsPath, stringifyYaml(cfg));
 }
 
 async function readCSpellYaml(uri: Uri): Promise<CSpellSettings> {
@@ -167,6 +173,56 @@ export class SysLikeError extends Error {
     }
 }
 
+export function parseJson(content: string): CSpellSettings {
+    const formatting = detectFormatting(content);
+    return injectFormatting(parseJsonc(content), formatting);
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function stringifyJson(obj: Object, spaces?: string | number | undefined, keepComments = true): string {
+    const formatting = retrieveFormatting(obj);
+    spaces = formatting?.spaces || spaces || spacesJson;
+    const { newlineAtEndOfFile = true } = formatting || {};
+    const json = keepComments ? stringifyJsonc(obj, null, spaces) : JSON.stringify(obj, null, spaces);
+    return newlineAtEndOfFile ? json + '\n' : json;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function injectFormatting<T extends Object>(s: T, format: ContentFormat): T {
+    (<any>s)[SymbolFormat] = format;
+    return s;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function retrieveFormatting<T extends Object>(s: T): ContentFormat | undefined {
+    return (<any>s)[SymbolFormat];
+}
+
+interface ContentFormat {
+    spaces: string | number | undefined;
+    newlineAtEndOfFile: boolean;
+}
+
+function hasTrailingNewline(content: string): boolean {
+    return /\n$/.test(content);
+}
+
+function detectIndent(json: string): string | undefined {
+    const s = json.match(/^\s+(?=")/m);
+    if (!s) return undefined;
+    return s[0];
+}
+
+function detectFormatting(content: string): ContentFormat {
+    return {
+        spaces: detectIndent(content),
+        newlineAtEndOfFile: hasTrailingNewline(content),
+    };
+}
+
 export const __testing__ = {
     settingsFileTemplate,
+    detectIndent,
+    injectFormatting,
+    SymbolFormat,
 };
