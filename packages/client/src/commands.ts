@@ -34,7 +34,7 @@ import { handleErrors, catchErrors } from './util/errors';
 
 export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
 
-export const commandsFromServer: ClientSideCommandHandlerApi = {
+const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, documentUri, config) => {
         return pVoid(writeWordsToDictionary(toDictionaryTarget('cspell', documentUri, config.name, config.uri), words));
     },
@@ -177,8 +177,14 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     }
 }
 
+function registerCmd(cmd: string, fn: (...args: any[]) => any): Disposable {
+    return commands.registerCommand(cmd, catchErrors(fn));
+}
+
 export function registerCommands(): Disposable[] {
-    return Object.entries(commandHandlers).map(([cmd, fn]) => commands.registerCommand(cmd, catchErrors(fn)));
+    const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
+    const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
+    return [...registeredHandlers, ...registeredFromServer];
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {

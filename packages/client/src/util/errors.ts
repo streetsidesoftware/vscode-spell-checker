@@ -24,8 +24,11 @@ export function handleErrors<T>(p: Promise<T>): Promise<T | void> {
     return p.catch(onError);
 }
 
-export function catchErrors<P extends Array<any>, R>(fn: (...p: P) => Promise<R> | R): (...p: P) => Promise<R | void> {
-    return (...p) => handleErrors(Promise.resolve(fn(...p)));
+export function catchErrors<P extends Array<any>, R>(
+    fn: (...p: P) => Promise<R> | R,
+    handler = handleErrors
+): (...p: P) => Promise<R | void> {
+    return (...p) => handler(Promise.resolve(fn(...p)));
 }
 
 export function logErrors<T>(p: Promise<T> | Thenable<T>): Promise<T | void> {

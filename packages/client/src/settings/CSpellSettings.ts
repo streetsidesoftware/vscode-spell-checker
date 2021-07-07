@@ -29,6 +29,7 @@ export const configFileLocations = [
     'cspell.config.yml',
     'cspell.yaml',
     'cspell.yml',
+    'package.json',
     // Dynamic config is looked for last
     'cspell.config.js',
     'cspell.config.cjs',
