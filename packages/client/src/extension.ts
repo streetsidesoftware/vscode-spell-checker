@@ -57,15 +57,11 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     // Start the client.
     context.subscriptions.push(client.start());
 
-    function triggerGetSettings() {
-        silenceErrors(client.triggerSettingsRefresh());
+    function triggerGetSettings(delayInMs = 0) {
+        setTimeout(() => silenceErrors(client.triggerSettingsRefresh()), delayInMs);
     }
 
     initStatusBar(context, client);
-
-    for (const [cmd, handler] of Object.entries(commands.commandsFromServer)) {
-        vscode.commands.registerCommand(cmd, handler);
-    }
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
