@@ -7,7 +7,12 @@ export function isSupportedUri(uri?: vscode.Uri): boolean {
     return !!uri && setOfSupportedSchemes.has(uri.scheme);
 }
 
-export function isSupportedDoc(doc?: vscode.TextDocument): boolean {
+interface TextDocumentLike {
+    isClosed: boolean;
+    uri: vscode.Uri;
+}
+
+export function isSupportedDoc(doc?: vscode.TextDocument | TextDocumentLike): boolean {
     return !!doc && !doc.isClosed && isSupportedUri(doc.uri);
 }
 
