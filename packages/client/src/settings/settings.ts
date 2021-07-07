@@ -23,7 +23,7 @@ import { DictionaryTargetTypes } from './DictionaryTargets';
 import * as config from './vsConfig';
 import { InspectScope } from './vsConfig';
 import { CSpellSettings } from '@cspell/cspell-types';
-import { fileExits } from '../util/file';
+import { fileExists } from '../util/file';
 
 performance.mark('settings.ts imports done');
 
@@ -416,7 +416,7 @@ const settingsFileTemplate: CSpellSettings = {
 export async function createConfigFileInFolder(folder: Uri, overwrite?: boolean): Promise<Uri | undefined> {
     const fileUri = Uri.joinPath(folder, defaultFileName);
 
-    if (!overwrite && (await fileExits(fileUri))) {
+    if (!overwrite && (await fileExists(fileUri))) {
         const overwrite = 'Overwrite';
         const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite);
         if (choice !== overwrite) {

@@ -1,7 +1,7 @@
 import { Uri } from 'vscode';
 import { access } from 'fs/promises';
 
-export async function fileExits(uri: Uri): Promise<boolean> {
+export async function fileExists(uri: Uri): Promise<boolean> {
     try {
         await access(uri.fsPath);
         return true;
