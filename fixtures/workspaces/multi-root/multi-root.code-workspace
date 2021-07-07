@@ -18,6 +18,9 @@
         },
         {
             "path": "../single-root"
+        },
+        {
+            "path": "../config-in-package"
         }
     ],
     "settings": {

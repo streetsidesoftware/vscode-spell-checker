@@ -15,12 +15,12 @@ const sampleCSpell = {
 
 describe('Validate configFileReadWrite', () => {
     test.each`
-        filename                | testType   | initialContent
-        ${'cspell.json'}        | ${'basic'} | ${undefined}
-        ${'cspell.jsonc'}       | ${'basic'} | ${undefined}
-        ${'cspell.config.yaml'} | ${'basic'} | ${undefined}
-        ${'package.json'}       | ${'basic'} | ${toJson(samplePackageJson)}
-    `('update $filename $testType', async ({ filename, initialContent }) => {
+        filename                | initialContent
+        ${'cspell.json'}        | ${undefined}
+        ${'cspell.jsonc'}       | ${undefined}
+        ${'cspell.config.yaml'} | ${undefined}
+        ${'package.json'}       | ${toJson(samplePackageJson)}
+    `('update $filename', async ({ filename, initialContent }) => {
         await fsRemove(getPathToTemp());
         const uri = getPathToTemp(filename);
         if (initialContent) {
@@ -35,15 +35,16 @@ describe('Validate configFileReadWrite', () => {
         expect(r).not.toEqual(sampleCSpell);
         expect(r?.words).toEqual(sampleCSpell.words);
         expect(r?.version).toEqual(__testing__.settingsFileTemplate.version);
+        expect(await readFile(uri)).toMatchSnapshot();
     });
 
     test.each`
-        filename                | testType   | initialContent
-        ${'cspell.json'}        | ${'basic'} | ${undefined}
-        ${'cspell.jsonc'}       | ${'basic'} | ${undefined}
-        ${'cspell.config.yaml'} | ${'basic'} | ${undefined}
-        ${'package.json'}       | ${'basic'} | ${toJson(samplePackageJson)}
-    `('write $filename $testType', async ({ filename, initialContent }) => {
+        filename                | initialContent
+        ${'cspell.json'}        | ${undefined}
+        ${'cspell.jsonc'}       | ${undefined}
+        ${'cspell.config.yaml'} | ${undefined}
+        ${'package.json'}       | ${toJson(samplePackageJson)}
+    `('write $filename', async ({ filename, initialContent }) => {
         await fsRemove(getPathToTemp());
         const uri = getPathToTemp(filename);
         if (initialContent) {
@@ -53,7 +54,9 @@ describe('Validate configFileReadWrite', () => {
         const sample = sampleJsoncObj();
         await writeConfigFile(uri, sample);
         const r = await readConfigFile(uri);
+        delete (<any>r)[__testing__.SymbolFormat];
         expect(r).toEqual(sample);
+        expect(await readFile(uri)).toMatchSnapshot();
     });
 
     test('jsonc with comments', async () => {
@@ -61,7 +64,8 @@ describe('Validate configFileReadWrite', () => {
         const uri = getPathToTemp('cspell.jsonc');
         await writeFile(uri, sampleJsonc());
         const sample = parseJsonc(sampleJsonc());
-        await expect(readConfigFile(uri)).resolves.toEqual(sample);
+        const sampleWithSpacesSymbol = __testing__.injectFormatting({ ...sample }, { spaces: '    ', newlineAtEndOfFile: true });
+        await expect(readConfigFile(uri)).resolves.toEqual(sampleWithSpacesSymbol);
 
         await updateConfigFile(uri, () => sampleCSpell);
         const r = await readConfigFile(uri);
@@ -89,6 +93,22 @@ describe('Validate configFileReadWrite', () => {
         const configFileContext = await readFile(uri);
         // Note: comments are lost.
         expect(configFileContext).toBe(stringifyYaml(parseYaml(sampleYaml())));
+    });
+
+    test.each`
+        spaces
+        ${2}
+        ${1}
+        ${4}
+        ${'\t'}
+        ${'   '}
+        ${undefined}
+    `('Detect space "$spaces"', ({ spaces }) => {
+        const obj = sampleJsoncObj();
+        const json = stringifyJsonc(obj, null, spaces);
+        const detected = __testing__.detectIndent(json);
+        const expected = typeof spaces === 'number' ? ' '.repeat(spaces) : spaces;
+        expect(detected).toBe(expected);
     });
 });
 
