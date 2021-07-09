@@ -102,3 +102,35 @@ With version V2 of the spell checker, the following logic is used for presenting
 
 For words to be added to a dictionary file, the dictionary needs to have the `addWords` setting be `true`.
 This can be accomplished in a few ways.
+
+### Determine the "search" order on where to add words.
+
+Always making the user choose where to add words can be annoying. Generally there is a logical choice. Where possible, we
+should give that choice be default.
+
+Possible destinations are:
+
+1. Custom Dictionaries (might be scoped to _user_, _workspace_, _folder_, _not specified_)
+1. CSpell config files.
+1. VS Code Configuration (user, workspace, folder)
+
+Not all destinations are equal. We want to prefer Custom Dictionaries over CSpell config files and CSpell config files over VS Code Configuration.
+At the same time, the scope makes a difference. We want to prefer _folder_ over _workspace_ and that over _user_.
+
+Here is a table of priority scores. Highest score should be chosen.
+
+| scope     | Dictionary | CSpell | VS Code |
+| --------- | ---------- | ------ | ------- |
+| unknown   | 330        | 220    | -       |
+| folder    | 330        | -      | 210     |
+| workspace | 230        | -      | 200     |
+| user      | 130        | -      | 110     |
+
+The absolute values of the scores have no meaning. They are just used for relative comparison.
+
+Priority should be strongly towards local (_folder_) over global (_user_).
+
+Notes:
+
+-   if a CSpell configuration file contains a custom dictionary definition it should not be part of the selection.
+-   Adding words should not create a CSpell configuration file or a VS Code `settings.json` file is avoidable.

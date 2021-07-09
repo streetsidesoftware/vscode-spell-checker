@@ -207,7 +207,7 @@ function addWordToTarget(word: string, target: AllTargetTypes, docUri: string | 
 
 function _addWordToTarget(word: string, target: AllTargetTypes, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
-    return di.get('dictionaryHelper').addWordToTarget(word, target, docUri);
+    return di.get('dictionaryHelper').addWordsToTarget(word, target, docUri);
 }
 
 function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {

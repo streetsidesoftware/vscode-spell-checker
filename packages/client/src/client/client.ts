@@ -134,10 +134,6 @@ export class CSpellClient implements Disposable {
         return this.serverApi.matchPatternsInDocument({ uri: document.uri.toString(), patterns });
     }
 
-    public splitTextIntoDictionaryWords(text: string): Promise<SplitTextIntoWordsResult> {
-        return this.serverApi.splitTextIntoWords(text);
-    }
-
     public notifySettingsChanged(): Promise<void> {
         return silenceErrors(this.whenReady(() => this.serverApi.notifyConfigChange()));
     }

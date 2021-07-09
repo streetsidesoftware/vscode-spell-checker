@@ -1,3 +1,4 @@
+import { mocked } from 'ts-jest/utils';
 import { DocumentSettings, isUriAllowed, isUriBlocked, debugExports, correctBadSettings, ExcludedByMatch } from './documentSettings';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { getWorkspaceFolders, getConfiguration } from './vscode.config';
@@ -12,8 +13,8 @@ import { escapeRegExp } from './../utils/util';
 jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
 
-const mockGetWorkspaceFolders = getWorkspaceFolders as jest.Mock;
-const mockGetConfiguration = getConfiguration as jest.Mock;
+const mockGetWorkspaceFolders = mocked(getWorkspaceFolders);
+const mockGetConfiguration = mocked(getConfiguration);
 const pathWorkspaceServer = Path.resolve(Path.join(__dirname, '..', '..'));
 const pathWorkspaceRoot = Path.resolve(Path.join(pathWorkspaceServer, '..', '..'));
 const pathWorkspaceClient = Path.resolve(Path.join(pathWorkspaceServer, '..', 'client'));
@@ -86,7 +87,7 @@ describe('Validate DocumentSettings', () => {
 
     test('folders', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         const docSettings = newDocumentSettings();
 
         const folders = await docSettings.folders;
@@ -95,7 +96,7 @@ describe('Validate DocumentSettings', () => {
 
     test('tests register config path', () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
 
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
@@ -107,8 +108,8 @@ describe('Validate DocumentSettings', () => {
 
     test('test getSettings', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
         docSettings.registerConfigurationFile(configFile);
@@ -121,8 +122,10 @@ describe('Validate DocumentSettings', () => {
 
     test('test getSettings workspaceRootPath', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{ ...cspellConfigInVsCode, workspaceRootPath: '${workspaceFolder:client}' }, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(
+            Promise.resolve([{ ...cspellConfigInVsCode, workspaceRootPath: '${workspaceFolder:client}' }, {}])
+        );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
         docSettings.registerConfigurationFile(configFile);
@@ -133,8 +136,8 @@ describe('Validate DocumentSettings', () => {
 
     test('test isExcluded', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
         docSettings.registerConfigurationFile(configFile);
@@ -145,8 +148,10 @@ describe('Validate DocumentSettings', () => {
 
     test('test enableFiletypes', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{ ...cspellConfigInVsCode, enableFiletypes: ['!typescript', '!javascript', 'pug'] }, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(
+            Promise.resolve([{ ...cspellConfigInVsCode, enableFiletypes: ['!typescript', '!javascript', 'pug'] }, {}])
+        );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
         docSettings.registerConfigurationFile(configFile);
@@ -158,8 +163,8 @@ describe('Validate DocumentSettings', () => {
 
     test('isExcludedBy', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
         docSettings.registerConfigurationFile(configFile);
@@ -170,8 +175,8 @@ describe('Validate DocumentSettings', () => {
 
     test('test extractTargetDictionaries', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
         const docSettings = newDocumentSettings();
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const d = docSettings.extractTargetDictionaries(settings);
@@ -185,8 +190,8 @@ describe('Validate DocumentSettings', () => {
 
     test('test extractCSpellConfigurationFiles', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
         const docSettings = newDocumentSettings();
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const files = docSettings.extractCSpellConfigurationFiles(settings);
@@ -197,8 +202,8 @@ describe('Validate DocumentSettings', () => {
 
     test('test extractCSpellFileConfigurations', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([cspellConfigInVsCode, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
         const docSettings = newDocumentSettings();
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const configs = docSettings.extractCSpellFileConfigurations(settings);
@@ -250,8 +255,8 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
         docSettings.registerConfigurationFile(configFile);
@@ -302,8 +307,8 @@ describe('Validate DocumentSettings', () => {
         'filterConfigFilesToMatchInheritedPathOfFile against $filename $configs',
         async ({ filename, configs, expected }: FilterConfigFilesToMatchInheritedPathOfFileTest) => {
             const mockFolders: WorkspaceFolder[] = [];
-            mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-            mockGetConfiguration.mockReturnValue([{}, {}]);
+            mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+            mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
             const configUris = configs.map((u) => Uri.parse(u));
             const result = debugExports.filterConfigFilesToMatchInheritedPathOfFile(configUris, Uri.parse(filename));
             expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => u.toLowerCase()));
@@ -324,8 +329,8 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
     `('findCSpellConfigurationFilesForUri $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings(getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
@@ -342,8 +347,8 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfig]}
     `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
         const mockFolders: WorkspaceFolder[] = [];
-        mockGetWorkspaceFolders.mockReturnValue(mockFolders);
-        mockGetConfiguration.mockReturnValue([{}, {}]);
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings(getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);

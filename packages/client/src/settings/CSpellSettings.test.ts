@@ -133,6 +133,7 @@ describe('Validate CSpellSettings functions', () => {
         const dict = {
             name: 'custom dictionary',
             uri: getPathToTemp('addWordsToCustomDictionary/dict.txt'),
+            scope: -1,
         };
         await fsRemove(dict.uri);
         const words1 = ['one', 'two', 'three'];
@@ -152,7 +153,7 @@ describe('Validate CSpellSettings functions', () => {
     `('addWordsToCustomDictionary_failures "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_failures');
         await mkdirp(pathUri);
-        const dict = { name, uri: Uri.joinPath(pathUri, file) };
+        const dict = { name, uri: Uri.joinPath(pathUri, file), scope: -1 };
         const words = ['one', 'two', 'three'];
         await expect(CSS.addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
     });
@@ -162,7 +163,7 @@ describe('Validate CSpellSettings functions', () => {
         ${'words.txt'} | ${'custom-words'} | ${e(sm(/Failed to add words to dictionary "custom-words".*EISDIR/))}
     `('addWordsToCustomDictionary_cannot_write "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_cannot_write');
-        const dict = { name, uri: Uri.joinPath(pathUri, file) };
+        const dict = { name, uri: Uri.joinPath(pathUri, file), scope: -1 };
         // Make the file into a directory to force the error.
         await mkdirp(dict.uri);
         const words = ['one', 'two', 'three'];

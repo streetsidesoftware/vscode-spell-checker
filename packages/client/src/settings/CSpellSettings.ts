@@ -1,9 +1,10 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { CSpellUserSettingsWithComments } from '../server';
+import { CSpellUserSettingsWithComments, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
 import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
+import { DictionaryTargetTypes } from './DictionaryTargets';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -176,12 +177,47 @@ export class FailedToUpdateConfigFile extends Error {
     }
 }
 
-export interface DictDef {
-    name: string;
-    uri: Uri;
+type DictScopeMapKnown = {
+    [key in CustomDictionaryScope]: number;
+};
+interface DictScopeMap extends DictScopeMapKnown {
+    unknown: number;
 }
 
-export async function addWordsToCustomDictionary(words: string[], dict: DictDef): Promise<void> {
+const scopeMaskMap: DictScopeMap = {
+    user: 1 << 0,
+    workspace: 1 << 1,
+    folder: 1 << 2,
+    unknown: 1 << 3,
+};
+
+type ScopeMask = number;
+
+export interface CustomDictDef {
+    name: string;
+    uri: Uri;
+    scope: ScopeMask;
+}
+
+function extractDictScopeFromCustomDictionary(dict: DictionaryDefinitionCustom): ScopeMask {
+    const { scope } = dict;
+    const scopes = typeof scope === 'string' ? [scope] : scope || [];
+    let ds: ScopeMask = 0;
+    for (const s of scopes) {
+        ds |= scopeMaskMap[s] || 0;
+    }
+    return ds || scopeMaskMap.unknown;
+}
+
+export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCustom): CustomDictDef {
+    return {
+        name: def.name,
+        uri: Uri.file(def.path),
+        scope: extractDictScopeFromCustomDictionary(def),
+    };
+}
+
+export async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef): Promise<void> {
     const fsPath = dict.uri.fsPath;
     if (!regIsSupportedCustomDictionaryFormat.test(fsPath)) {
         return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${dict.uri.fsPath}".`));
