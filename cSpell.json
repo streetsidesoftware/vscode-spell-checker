@@ -54,8 +54,8 @@
     ],
     "languageSettings": [
         {
-            "languageId": "markdown",
-            "dictionaries": []
+            "languageId": "*",
+            "allowCompoundWords": false
         }
     ]
 }
