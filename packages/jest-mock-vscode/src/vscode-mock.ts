@@ -95,6 +95,7 @@ export const window: Window = {
     registerCustomEditorProvider: jest.fn(),
     registerFileDecorationProvider: jest.fn(),
     registerTerminalLinkProvider: jest.fn(),
+    registerTerminalProfileProvider: jest.fn(),
     registerTreeDataProvider: jest.fn(),
     registerUriHandler: jest.fn(),
     registerWebviewPanelSerializer: jest.fn(),
