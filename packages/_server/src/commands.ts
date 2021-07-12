@@ -17,6 +17,9 @@ const clientCommandsKeys: CreateClientSideCommandKeys = {
     addWordsToVSCodeSettingsFromServer: 'addWordsToVSCodeSettingsFromServer',
 };
 
+/**
+ * API to create commands to be sent to the Client
+ */
 export const clientCommands: CreateClientSideCommand = {
     addWordsToConfigFileFromServer: (title: string, ...params) =>
         Command.create(title, prefix + clientCommandsKeys.addWordsToConfigFileFromServer, ...params),

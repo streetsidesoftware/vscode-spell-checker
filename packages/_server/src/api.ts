@@ -1,4 +1,5 @@
 import type * as config from './config/cspellConfig';
+import type { ConfigTarget } from './config/configTargets';
 
 export type {
     LanguageSetting,
@@ -106,6 +107,7 @@ export interface GetConfigurationForDocumentResult {
     docSettings: config.CSpellUserSettings | undefined;
     excludedBy: ExcludeRef[] | undefined;
     configFiles: UriString[];
+    configTargets: ConfigTarget[];
 }
 
 export interface ExcludeRef {

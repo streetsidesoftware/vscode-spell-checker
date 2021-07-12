@@ -225,6 +225,7 @@ export function run(): void {
             docSettings,
             excludedBy,
             configFiles,
+            configTargets: [],
         };
     }
 
