@@ -10,6 +10,9 @@
 			"path": "packages/_server"
 		},
 		{
+			"path": "packages/_serverPatternMatcher"
+		},
+		{
 			"path": "packages/_settingsViewer"
 		},
 		{

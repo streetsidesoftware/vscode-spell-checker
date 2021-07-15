@@ -793,8 +793,8 @@
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint",
-    "test-client-integration": "yarn workspace integration-tests test",
-    "test": "yarn workspace server test && yarn workspace settings-webview test && yarn workspace client test && yarn workspace jest-mock-vscode test",
+    "test-client-integration": "yarn workspace integration-tests test-integration",
+    "test": "yarn workspaces run test",
     "update-packages": "yarn upgrade"
   },
   "devDependencies": {
