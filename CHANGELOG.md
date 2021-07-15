@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.5...v2.0.1-alpha.6) (2021-07-15)
+
+
+### Features
+
+* add option to create cspell config ([#1003](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1003)) ([f0378d2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f0378d213afa55c255cc27ca0df81188f45a06d8))
+* add update support for `package.json` and `cspell.config.yaml` ([#1012](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1012)) ([f638f7a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f638f7a6bdd5c4d2d43cbeab23f7c4a50f64d3ae))
+
+
+### Bug Fixes
+
+* improved updating of configuration ([#1014](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1014)) ([f7750e3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f7750e3435187a36c3778ae2013a45ed33fcf635))
+* Issue with language Extensions and Improve Error Handling of Promises ([#998](https://github.com/streetsidesoftware/vscode-spell-checker/issues/998)) ([2080b9d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2080b9db3710eba73d8b640e879e4dce2465d65b))
+* make sure changes to `package.json` trigger a config reload ([#1023](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1023)) ([e7de974](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e7de974fa0ecd5bc83651afb839c43e4dc8f15ed))
+* preserve existing format of config files ([#1020](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1020)) ([b5db1e1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b5db1e178ccacf7aa140241c62a5b27b4d406952))
+* Support case sensitive file types ([#1047](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1047)) ([933fb99](https://github.com/streetsidesoftware/vscode-spell-checker/commit/933fb992700850f9f91fce0050adb7d49ec1e0b0)), closes [#1043](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1043)
+
 ### [2.0.1-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.4...v2.0.1-alpha.5) (2021-06-27)
 
 ### [2.0.1-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.3...v2.0.1-alpha.4) (2021-06-16)
