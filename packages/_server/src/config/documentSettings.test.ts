@@ -1,14 +1,22 @@
-import { mocked } from 'ts-jest/utils';
-import { DocumentSettings, isUriAllowed, isUriBlocked, debugExports, correctBadSettings, ExcludedByMatch } from './documentSettings';
-import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
-import { getWorkspaceFolders, getConfiguration } from './vscode.config';
-import * as Path from 'path';
-import { URI as Uri } from 'vscode-uri';
 import * as cspell from 'cspell-lib';
-import { Pattern, getDefaultSettings } from 'cspell-lib';
-import { CSpellUserSettings } from '../config/cspellConfig';
+import { getDefaultSettings, Pattern } from 'cspell-lib';
 import * as os from 'os';
+import * as Path from 'path';
+import { mocked } from 'ts-jest/utils';
+import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
+import { URI as Uri } from 'vscode-uri';
+import { CSpellUserSettings } from '../config/cspellConfig';
 import { escapeRegExp } from './../utils/util';
+import {
+    correctBadSettings,
+    debugExports,
+    DocumentSettings,
+    ExcludedByMatch,
+    isUriAllowed,
+    isUriBlocked,
+    __testing__,
+} from './documentSettings';
+import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
 jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
@@ -159,6 +167,19 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         expect(settings.enabledLanguageIds).not.toContain('typescript');
         expect(settings.enabledLanguageIds).toEqual(expect.arrayContaining(['php', 'json', 'pug']));
+    });
+
+    test('applyEnableFiletypes', () => {
+        const settings: CSpellUserSettings = {
+            enabledLanguageIds: ['typescript', 'markdown', 'plaintext', 'json'],
+            enableFiletypes: ['!json', '!!!javascript'],
+        };
+        const enabled = __testing__.extractEnableFiletypes(settings, {
+            enableFiletypes: ['typescript', '!plaintext', 'FreeFormFortran', '!!json', '!!javascript'],
+        });
+        const r = __testing__.applyEnableFiletypes(enabled, settings);
+        // cspell:ignore freeformfortran
+        expect(r.enabledLanguageIds).toEqual(['typescript', 'markdown', 'FreeFormFortran', 'json']);
     });
 
     test('isExcludedBy', async () => {

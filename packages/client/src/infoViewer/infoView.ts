@@ -335,11 +335,10 @@ function extractViewerConfigFromConfig(
 
     function applyEnableFiletypesToEnabledLanguageIds(
         languageIds: string[] | undefined = [],
-        enabledFiletypes: string[] | undefined = []
+        enableFiletypes: string[] | undefined = []
     ): string[] {
         const ids = new Set(languageIds);
-        enabledFiletypes
-            .filter((a) => !!a)
+        normalizeEnableFiletypes(enableFiletypes)
             .map((lang) => ({ enable: lang[0] !== '!', lang: lang.replace('!', '') }))
             .forEach(({ enable, lang }) => {
                 if (enable) {
@@ -349,6 +348,16 @@ function extractViewerConfigFromConfig(
                 }
             });
         return [...ids];
+    }
+
+    function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
+        const ids = enableFiletypes
+            .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
+            .sort()
+            .map((id) => id.replace(/~/g, '!')) // Restore the !
+            .map((id) => id.replace(/^(!!)+/, '')); // Remove extra !! pairs
+
+        return ids;
     }
 
     function inspectKeyToOrder(a: InspectKeys): number {
