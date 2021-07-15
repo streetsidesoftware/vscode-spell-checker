@@ -315,17 +315,24 @@ function extractEnableFiletypes(...settings: CSpellUserSettings[]): string[] {
 function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSettings): CSpellUserSettings {
     const { enableFiletypes: _, enabledLanguageIds = [], ...rest } = settings;
     const enabled = new Set(enabledLanguageIds);
-    enableFiletypes
-        .filter((a) => !!a)
-        .map((a) => a.toLowerCase())
-        .forEach((lang) => {
-            if (lang[0] === '!') {
-                enabled.delete(lang.slice(1));
-            } else {
-                enabled.add(lang);
-            }
-        });
+    normalizeEnableFiletypes(enableFiletypes).forEach((lang) => {
+        if (lang[0] === '!') {
+            enabled.delete(lang.slice(1));
+        } else {
+            enabled.add(lang);
+        }
+    });
     return enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
+}
+
+function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
+    const ids = enableFiletypes
+        .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
+        .sort()
+        .map((id) => id.replace(/~/g, '!')) // Restore the !
+        .map((id) => id.replace(/^(!!)+/, '')); // Remove extra !! pairs
+
+    return ids;
 }
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
@@ -483,7 +490,7 @@ const regExIsOwnedByExtension = /\bstreetsidesoftware\.code-spell-checker\b/;
  * @param settings - finalized settings
  * @returns array of Settings
  */
-function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
+export function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSettingsWithFileSource[] {
     const sources = getSources(settings);
     const configs = sources
         .filter(isCSpellSettingsWithFileSource)
@@ -499,7 +506,7 @@ function extractCSpellFileConfigurations(settings: CSpellUserSettings): CSpellSe
  * @param settings - finalized settings
  * @returns
  */
-function extractTargetDictionaries(settings: CSpellUserSettings): DictionaryDefinitionCustom[] {
+export function extractTargetDictionaries(settings: CSpellUserSettings): DictionaryDefinitionCustom[] {
     const { dictionaries = [], dictionaryDefinitions = [] } = settings;
     const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
     const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);
@@ -522,4 +529,7 @@ function isDefined<T>(t: T | undefined): t is T {
 
 export const __testing__ = {
     extractTargetDictionaries,
+    extractEnableFiletypes,
+    normalizeEnableFiletypes,
+    applyEnableFiletypes,
 };

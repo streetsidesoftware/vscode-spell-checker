@@ -230,8 +230,7 @@ export function enableLocaleForTarget(
  * @param currentValues the value to update.
  */
 function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: string[] | undefined) {
-    const values = new Set((currentValues || []).map((v) => v.toLowerCase()));
-    languageId = languageId.toLowerCase();
+    const values = new Set(currentValues || []);
     const disabledLangId = '!' + languageId;
     if (enable) {
         if (values.has(disabledLangId)) {

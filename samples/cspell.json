@@ -1,0 +1,9 @@
+{
+    "version": "0.2",
+    "enableFiletypes": [
+        "FortranFreeForm",
+        "php",
+        "ruby"
+    ],
+    "language": "en"
+}
