@@ -1,5 +1,6 @@
 export type ConfigKind = 'cspell' | 'dictionary' | 'vscode';
-export type ConfigScope = 'user' | 'workspace' | 'folder' | 'unknown';
+export type ConfigScopeVScode = 'user' | 'workspace' | 'folder';
+export type ConfigScope = ConfigScopeVScode | 'unknown';
 
 type CombineWithScope<T extends string> = {
     [key in ConfigScope as `${T}_${key}`]: number;
@@ -8,7 +9,7 @@ type CombineWithScope<T extends string> = {
 type ConfigWeights = CombineWithScope<ConfigKind>;
 
 const configWeights: ConfigWeights = {
-    dictionary_unknown: 330,
+    dictionary_unknown: 340,
     dictionary_folder: 330,
     dictionary_workspace: 320,
     dictionary_user: 130,
@@ -25,25 +26,44 @@ const configWeights: ConfigWeights = {
 type UriString = string;
 
 interface ConfigTargetBase {
+    /** type of target */
     kind: ConfigKind;
+    /** scope of target */
     scope: ConfigScope;
+    /** friendly name of config target */
+    name: string;
+    /** Document Uri */
     docUri?: UriString;
+    /** Use to order targets of the same weight */
+    sortKey?: number;
+}
+
+interface TargetBaseWithHas extends ConfigTargetBase {
+    has: HasConfigField;
 }
 
 export interface ConfigTargetDictionary extends ConfigTargetBase {
     kind: 'dictionary';
-    name: string;
+    /** uri path to custom dictionary */
     dictionaryUri: UriString;
 }
 
-export interface ConfigTargetCSpell extends ConfigTargetBase {
+export interface ConfigTargetCSpell extends TargetBaseWithHas {
     kind: 'cspell';
-    name: string;
+    /** uri path to config file */
     configUri: UriString;
+    /** multiple config files will have the same scope, so the sort key is necessary */
+    sortKey: number;
 }
 
-export interface ConfigTargetVSCode extends ConfigTargetBase {
+type HasConfigFields = 'words' | 'ignoreWords';
+
+type HasConfigField = {
+    [key in HasConfigFields]: boolean | undefined;
+};
+export interface ConfigTargetVSCode extends TargetBaseWithHas {
     kind: 'vscode';
+    scope: ConfigScopeVScode;
     docUri: UriString;
 }
 

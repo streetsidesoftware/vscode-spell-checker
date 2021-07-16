@@ -15,6 +15,13 @@ export function isDefined<T>(v: T | undefined | null): v is T {
     return v !== undefined && v !== null;
 }
 
+export function mustBeDefined<T>(t: T | undefined): T {
+    if (t === undefined) {
+        throw new Error('Must Be Defined');
+    }
+    return t;
+}
+
 /**
  * Escape a string so it can be used in a RegExp.
  * @param s - string to escape
@@ -34,4 +41,8 @@ export function textToWords(text: string): string[] {
     const split = text.normalize('NFC').split(regExpWordBreaks);
     const words = split.filter((w) => isWord.test(w));
     return words;
+}
+
+export function capitalize(text: string): string {
+    return text.slice(0, 1).toUpperCase() + text.slice(1);
 }

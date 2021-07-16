@@ -464,7 +464,7 @@ interface FileSource extends Source {
     filename: Exclude<Source['filename'], undefined>;
 }
 
-interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTrace {
+export interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTrace {
     source: FileSource;
 }
 
