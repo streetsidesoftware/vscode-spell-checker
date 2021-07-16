@@ -1,4 +1,4 @@
-import { withStyles, createStyles, createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, createTheme, makeStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -118,7 +118,7 @@ export const chipContainerStyles = makeStyles((theme) =>
     }),
 );
 
-export function Chips(props: React.PropsWithChildren<{}>) {
+export function Chips(props: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
     const useStyles = chipContainerStyles();
 
     return <div className={useStyles.root}>
@@ -133,7 +133,7 @@ export const CsFormControl = withStyles(createStyles({
     },
 }))(FormControl);
 
-export const themeDefault = createMuiTheme({
+export const themeDefault = createTheme({
     palette: {
         // text: colors.textColors,
         background: {
