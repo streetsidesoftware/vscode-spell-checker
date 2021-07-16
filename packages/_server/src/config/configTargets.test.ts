@@ -1,3 +1,4 @@
+import { capitalize } from '../utils/util';
 import {
     ConfigKind,
     ConfigKinds,
@@ -12,6 +13,7 @@ import {
     isConfigTargetDictionary,
     isConfigTargetVSCode,
     weight,
+    ConfigScopeVScode,
 } from './configTargets';
 
 describe('Validate ConfigTarget', () => {
@@ -93,6 +95,8 @@ describe('Validate ConfigTarget', () => {
     });
 });
 
+function t(kind: 'vscode', scope: ConfigScopeVScode): ConfigTarget;
+function t(kind: ConfigKind, scope: ConfigScope): ConfigTarget;
 function t(kind: ConfigKind, scope: ConfigScope): ConfigTarget {
     switch (kind) {
         case ConfigKinds.Dictionary:
@@ -100,7 +104,7 @@ function t(kind: ConfigKind, scope: ConfigScope): ConfigTarget {
         case ConfigKinds.Cspell:
             return tCspell(scope);
         case ConfigKinds.Vscode:
-            return tVSCode(scope);
+            return tVSCode(scope as ConfigScopeVScode);
     }
 }
 
@@ -124,19 +128,23 @@ function tDict(scope: ConfigScope): ConfigTargetDictionary {
     };
 }
 
-function tCspell(scope: ConfigScope): ConfigTargetCSpell {
+function tCspell(scope: ConfigScope, words = true, ignoreWords = false, index: number = 0): ConfigTargetCSpell {
     return {
         kind: 'cspell',
         scope,
         name: 'Custom Words',
         configUri: '',
+        has: { words, ignoreWords },
+        sortKey: index,
     };
 }
 
-function tVSCode(scope: ConfigScope): ConfigTargetVSCode {
+function tVSCode(scope: ConfigScopeVScode, words = true, ignoreWords = false): ConfigTargetVSCode {
     return {
         kind: 'vscode',
         scope,
+        name: capitalize(scope),
         docUri: '',
+        has: { words, ignoreWords },
     };
 }
