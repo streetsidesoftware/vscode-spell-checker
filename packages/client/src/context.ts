@@ -1,8 +1,8 @@
-import { commands, TextDocument, workspace } from 'vscode';
+import { commands, TextDocument } from 'vscode';
 import { CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
-import { CustomDictionaryScope, DictionaryDefinitionCustom, extractCustomDictionaries, extractScope } from './server';
+import { ConfigKind, ConfigScope, ConfigTarget } from './server';
 
 const prefix = extensionId;
 
@@ -25,6 +25,9 @@ interface EditorMenuContext extends Record<string, ContextValue> {
     addWordToFolderDictionary: boolean;
     addWordToWorkspaceDictionary: boolean;
     addWordToUserDictionary: boolean;
+    addWordToFolderSettings: boolean;
+    addWordToWorkspaceSettings: boolean;
+    addWordToUserSettings: boolean;
     addWordToDictionary: boolean;
     addWordToCSpellConfig: boolean;
     addIssuesToDictionary: boolean;
@@ -60,6 +63,9 @@ const defaultEditorMenuContext: EditorMenuContext = Object.freeze({
     addWordToFolderDictionary: false,
     addWordToWorkspaceDictionary: false,
     addWordToUserDictionary: false,
+    addWordToFolderSettings: false,
+    addWordToWorkspaceSettings: false,
+    addWordToUserSettings: false,
     addWordToDictionary: false,
     addWordToCSpellConfig: false,
     addIssuesToDictionary: false,
@@ -110,21 +116,18 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     const diag = getCSpellDiags(doc.uri);
     const cfg = await pCfg;
 
-    const workspaceFile = workspace.workspaceFile?.toString();
-    const workspaceFolders = workspace.workspaceFolders;
+    const { agg, matrix } = calcTargetAggregates(cfg.configTargets);
+    const workspaceDicts = (agg.dictionary || 0) - (matrix.dictionary.user || 0);
 
-    const dictionaries = extractCustomDictionaries(cfg.docSettings || {});
-    const workspaceDicts = dictionaries.filter((d) => !isOnlyUserScope(d));
-
-    const usesConfigFile = cfg.configFiles.length > 0;
-    const usesCustomDictionary = workspaceDicts.length > 0;
+    const usesConfigFile = !!agg.cspell;
+    const usesCustomDictionary = workspaceDicts > 0;
     const hasIssues = diag.length > 0;
     const hasMultipleIssues = diag.length > 1;
-    const showCreateConfig = !cfg.configFiles.length;
+    const showCreateConfig = !agg.cspell;
     const showCreateDictionary = !usesCustomDictionary;
 
-    const showWorkspace = !usesConfigFile && (!!workspaceFile || workspaceFolders?.length === 1 || false);
-    const showFolder = !usesConfigFile && (!!workspaceFile || (workspaceFolders?.length || 0) > 1 || false);
+    const showWorkspace = !!matrix.vscode.workspace;
+    const showFolder = !!matrix.vscode.folder;
 
     context.documentConfigContext = {
         usesConfigFile,
@@ -136,10 +139,15 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     const show = !!cfg.settings?.showCommandsInEditorContextMenu;
 
-    context.editorMenuContext.addWordToFolderDictionary = show && hasIssues && showFolder;
-    context.editorMenuContext.addWordToWorkspaceDictionary = show && hasIssues && showWorkspace;
-    context.editorMenuContext.addWordToUserDictionary = show && hasIssues;
-    context.editorMenuContext.addWordToDictionary = show && hasIssues && usesCustomDictionary;
+    context.editorMenuContext.addWordToFolderDictionary = show && hasIssues && !!matrix.dictionary.folder;
+    context.editorMenuContext.addWordToWorkspaceDictionary = show && hasIssues && !!matrix.dictionary.workspace;
+    context.editorMenuContext.addWordToUserDictionary = show && hasIssues && !!matrix.dictionary.user;
+
+    context.editorMenuContext.addWordToFolderSettings = show && hasIssues && showFolder;
+    context.editorMenuContext.addWordToWorkspaceSettings = show && hasIssues && showWorkspace;
+    context.editorMenuContext.addWordToUserSettings = show && hasIssues && !matrix.dictionary.user;
+
+    context.editorMenuContext.addWordToDictionary = show && hasIssues && !!matrix.dictionary.unknown;
     context.editorMenuContext.addWordToCSpellConfig = show && hasIssues && usesConfigFile && !usesCustomDictionary;
     context.editorMenuContext.addIssuesToDictionary = show && hasIssues && hasMultipleIssues;
     context.editorMenuContext.createCustomDictionary = show && showCreateDictionary;
@@ -150,11 +158,33 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     return;
 }
 
-function isOnlyUserScope(d: DictionaryDefinitionCustom): boolean {
-    return hasOnlyScope(d, 'user');
-}
+type ConfigTargetKindAndScope = ConfigKind | ConfigScope;
 
-function hasOnlyScope(d: DictionaryDefinitionCustom, scope: CustomDictionaryScope): boolean {
-    const s = extractScope(d);
-    return s.has(scope) && s.size === 1;
+type ConfigAggregates = {
+    [key in ConfigTargetKindAndScope]?: number;
+};
+
+type ConfigScopeCnt = {
+    [key in ConfigScope]?: number;
+};
+
+type ConfigMatrix = {
+    [key in ConfigKind]: ConfigScopeCnt;
+};
+
+function calcTargetAggregates(configTargets: ConfigTarget[]): { agg: ConfigAggregates; matrix: ConfigMatrix } {
+    const agg: ConfigAggregates = {};
+    const matrix: ConfigMatrix = {
+        vscode: {},
+        cspell: {},
+        dictionary: {},
+    };
+
+    for (const t of configTargets) {
+        agg[t.kind] = (agg[t.kind] || 0) + 1;
+        agg[t.scope] = (agg[t.scope] || 0) + 1;
+        matrix[t.kind][t.scope] = (matrix[t.kind][t.scope] || 0) + 1;
+    }
+
+    return { agg, matrix };
 }

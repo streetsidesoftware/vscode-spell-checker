@@ -49,47 +49,62 @@
         {
           "command": "cSpell.addWordToFolderDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary",
-          "group": "A_cspell@01"
+          "group": "A_cspell@010"
         },
         {
           "command": "cSpell.addWordToWorkspaceDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceDictionary",
-          "group": "A_cspell@02"
-        },
-        {
-          "command": "cSpell.addWordToUserDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary",
-          "group": "A_cspell@03"
+          "group": "A_cspell@020"
         },
         {
           "command": "cSpell.addWordToDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary",
-          "group": "A_cspell@04"
+          "group": "A_cspell@040"
         },
         {
           "command": "cSpell.addWordToCSpellConfig",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToCSpellConfig",
-          "group": "A_cspell@05"
+          "group": "A_cspell@050"
+        },
+        {
+          "command": "cSpell.addWordToFolderSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderSettings",
+          "group": "A_cspell@051"
+        },
+        {
+          "command": "cSpell.addWordToWorkspaceSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceSettings",
+          "group": "A_cspell@052"
+        },
+        {
+          "command": "cSpell.addWordToUserDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserDictionary",
+          "group": "A_cspell@055"
+        },
+        {
+          "command": "cSpell.addWordToUserSettings",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToUserSettings",
+          "group": "A_cspell@056"
         },
         {
           "command": "cSpell.addIssuesToDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addIssuesToDictionary",
-          "group": "A_cspell@06"
+          "group": "A_cspell@060"
         },
         {
           "command": "cSpell.createCustomDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
-          "group": "A_cspell@07"
+          "group": "A_cspell@070"
         },
         {
           "command": "cSpell.createCSpellConfig",
           "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
-          "group": "A_cspell@08"
+          "group": "A_cspell@080"
         },
         {
           "command": "cSpell.addIgnoreWord",
           "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord",
-          "group": "A_cspell@09"
+          "group": "A_cspell@090"
         }
       ],
       "commandPalette": [
@@ -133,7 +148,7 @@
       {
         "command": "cSpell.addWordToWorkspaceDictionary",
         "category": "Spell",
-        "title": "Add Word to Workspace Dictionaries"
+        "title": "Add Word to Workspace Dictionary"
       },
       {
         "command": "cSpell.addWordToFolderDictionary",
@@ -144,6 +159,21 @@
         "command": "cSpell.addWordToUserDictionary",
         "category": "Spell",
         "title": "Add Word to User Dictionary"
+      },
+      {
+        "command": "cSpell.addWordToWorkspaceSettings",
+        "category": "Spell",
+        "title": "Add Word to Workspace Settings"
+      },
+      {
+        "command": "cSpell.addWordToFolderSettings",
+        "category": "Spell",
+        "title": "Add Word to Folder Settings"
+      },
+      {
+        "command": "cSpell.addWordToUserSettings",
+        "category": "Spell",
+        "title": "Add Word to User Settings"
       },
       {
         "command": "cSpell.enableForWorkspace",

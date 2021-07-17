@@ -1,5 +1,5 @@
 import { calculateConfigTargets, __testing__ } from './configTargetsHelper';
-import { WorkspaceConfigForDocumentResponse } from '../api';
+import { WorkspaceConfigForDocument } from '../api';
 import { URI } from 'vscode-uri';
 import { searchForConfig } from 'cspell-lib';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
@@ -11,7 +11,7 @@ const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTa
 
 describe('Validate configTargetsHelper', () => {
     test('workspaceConfigToTargets in single root workspace', () => {
-        const wConfig: WorkspaceConfigForDocumentResponse = {
+        const wConfig: WorkspaceConfigForDocument = {
             uri: URI.file(__filename).toString(),
             workspaceFile: undefined,
             workspaceFolder: URI.file(__dirname).toString(),
@@ -40,7 +40,7 @@ describe('Validate configTargetsHelper', () => {
     });
 
     test('workspaceConfigToTargets in multi root workspace', () => {
-        const wConfig: WorkspaceConfigForDocumentResponse = {
+        const wConfig: WorkspaceConfigForDocument = {
             uri: URI.file(__filename).toString(),
             workspaceFile: 'file://workspace-file.code-workspace',
             workspaceFolder: URI.file(__dirname).toString(),
@@ -79,7 +79,7 @@ describe('Validate configTargetsHelper', () => {
     });
 
     test('workspaceConfigToTargets with no workspace', () => {
-        const wConfig: WorkspaceConfigForDocumentResponse = {
+        const wConfig: WorkspaceConfigForDocument = {
             uri: URI.file(__filename).toString(),
             workspaceFile: undefined,
             workspaceFolder: undefined,
@@ -167,7 +167,7 @@ describe('Validate configTargetsHelper', () => {
     });
 
     test('calculateConfigTargets', async () => {
-        const wConfig: WorkspaceConfigForDocumentResponse = {
+        const wConfig: WorkspaceConfigForDocument = {
             uri: URI.file(__filename).toString(),
             workspaceFile: undefined,
             workspaceFolder: URI.file(__dirname).toString(),
