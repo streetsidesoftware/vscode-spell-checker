@@ -25,6 +25,9 @@ interface EditorMenuContext extends Record<string, ContextValue> {
     addWordToFolderDictionary: boolean;
     addWordToWorkspaceDictionary: boolean;
     addWordToUserDictionary: boolean;
+    addWordToFolderSettings: boolean;
+    addWordToWorkspaceSettings: boolean;
+    addWordToUserSettings: boolean;
     addWordToDictionary: boolean;
     addWordToCSpellConfig: boolean;
     addIssuesToDictionary: boolean;
@@ -60,6 +63,9 @@ const defaultEditorMenuContext: EditorMenuContext = Object.freeze({
     addWordToFolderDictionary: false,
     addWordToWorkspaceDictionary: false,
     addWordToUserDictionary: false,
+    addWordToFolderSettings: false,
+    addWordToWorkspaceSettings: false,
+    addWordToUserSettings: false,
     addWordToDictionary: false,
     addWordToCSpellConfig: false,
     addIssuesToDictionary: false,
@@ -133,10 +139,15 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     const show = !!cfg.settings?.showCommandsInEditorContextMenu;
 
-    context.editorMenuContext.addWordToFolderDictionary = show && hasIssues && showFolder;
-    context.editorMenuContext.addWordToWorkspaceDictionary = show && hasIssues && showWorkspace;
-    context.editorMenuContext.addWordToUserDictionary = show && hasIssues;
-    context.editorMenuContext.addWordToDictionary = show && hasIssues && usesCustomDictionary;
+    context.editorMenuContext.addWordToFolderDictionary = show && hasIssues && !!matrix.dictionary.folder;
+    context.editorMenuContext.addWordToWorkspaceDictionary = show && hasIssues && !!matrix.dictionary.workspace;
+    context.editorMenuContext.addWordToUserDictionary = show && hasIssues && !!matrix.dictionary.user;
+
+    context.editorMenuContext.addWordToFolderSettings = show && hasIssues && showFolder;
+    context.editorMenuContext.addWordToWorkspaceSettings = show && hasIssues && showWorkspace;
+    context.editorMenuContext.addWordToUserSettings = show && hasIssues && !matrix.dictionary.user;
+
+    context.editorMenuContext.addWordToDictionary = show && hasIssues && !!matrix.dictionary.unknown;
     context.editorMenuContext.addWordToCSpellConfig = show && hasIssues && usesConfigFile && !usesCustomDictionary;
     context.editorMenuContext.addIssuesToDictionary = show && hasIssues && hasMultipleIssues;
     context.editorMenuContext.createCustomDictionary = show && showCreateDictionary;

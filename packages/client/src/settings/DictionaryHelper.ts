@@ -15,42 +15,32 @@ type ConfigScopeMask = {
     [key in ConfigScope]: boolean;
 };
 
+interface DictionaryHelperTargetKind extends ConfigKindMask {}
+interface DictionaryHelperTargetScope extends ConfigScopeMask {}
+
 export interface DictionaryHelperTarget {
     kind: ConfigKindMask;
     scope: ConfigScopeMask;
 }
 
-const matchAllKinds: ConfigKindMask = Object.freeze({ dictionary: true, cspell: true, vscode: true });
-const matchCSpellKind: ConfigKindMask = Object.freeze({ dictionary: false, cspell: true, vscode: false });
-const matchAllScopesButUser: ConfigScopeMask = Object.freeze({ unknown: true, folder: true, workspace: true, user: false });
-const matchScopeUser: ConfigScopeMask = Object.freeze({ unknown: false, folder: false, workspace: false, user: true });
-const matchScopeWorkspace: ConfigScopeMask = Object.freeze({ unknown: false, folder: false, workspace: true, user: false });
-const matchScopeFolder: ConfigScopeMask = Object.freeze({ unknown: false, folder: true, workspace: false, user: false });
+const matchKindNone: ConfigKindMask = { dictionary: false, cspell: false, vscode: false };
+const matchKindAll: ConfigKindMask = { dictionary: true, cspell: true, vscode: true };
+const matchKindCSpell: ConfigKindMask = { dictionary: false, cspell: true, vscode: false };
 
-export const dictionaryTargetBestMatch: DictionaryHelperTarget = Object.freeze({
-    kind: matchAllKinds,
-    scope: matchAllScopesButUser,
-});
+const matchScopeNone: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: false };
+const matchScopeAllButUser: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: false };
+const matchScopeUser: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: true };
+const matchScopeWorkspace: ConfigScopeMask = { unknown: false, folder: false, workspace: true, user: false };
+const matchScopeFolder: ConfigScopeMask = { unknown: false, folder: true, workspace: false, user: false };
 
-export const dictionaryTargetBestMatchUser: DictionaryHelperTarget = Object.freeze({
-    kind: matchAllKinds,
-    scope: matchScopeUser,
-});
-
-export const dictionaryTargetBestMatchWorkspace: DictionaryHelperTarget = Object.freeze({
-    kind: matchAllKinds,
-    scope: matchScopeWorkspace,
-});
-
-export const dictionaryTargetBestMatchFolder: DictionaryHelperTarget = Object.freeze({
-    kind: matchAllKinds,
-    scope: matchScopeFolder,
-});
-
-export const dictionaryTargetCSpell: DictionaryHelperTarget = Object.freeze({
-    kind: matchCSpellKind,
-    scope: matchAllScopesButUser,
-});
+export const dictionaryTargetBestMatch = buildTarget(matchKindAll, matchScopeAllButUser);
+export const dictionaryTargetBestMatchUser = buildTarget(matchKindAll, matchScopeUser);
+export const dictionaryTargetBestMatchWorkspace = buildTarget(matchKindAll, matchScopeWorkspace);
+export const dictionaryTargetBestMatchFolder = buildTarget(matchKindAll, matchScopeFolder);
+export const dictionaryTargetCSpell = buildTarget(matchKindCSpell, matchScopeAllButUser);
+export const dictionaryTargetVSCodeUser = buildTarget(matchKindCSpell, matchScopeUser);
+export const dictionaryTargetVSCodeWorkspace = buildTarget(matchKindCSpell, matchScopeWorkspace);
+export const dictionaryTargetVSCodeFolder = buildTarget(matchKindCSpell, matchScopeFolder);
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
@@ -152,6 +142,24 @@ function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets:
     }
 
     return undefined;
+}
+
+export function buildTarget(
+    kind: Partial<DictionaryHelperTargetKind>,
+    scope: Partial<DictionaryHelperTargetScope>
+): DictionaryHelperTarget {
+    return Object.freeze({
+        kind: fillKind(kind),
+        scope: fillScope(scope),
+    });
+}
+
+function fillKind(kind: Partial<DictionaryHelperTargetKind>): DictionaryHelperTargetKind {
+    return Object.freeze({ ...matchKindNone, ...kind });
+}
+
+function fillScope(scope: Partial<DictionaryHelperTargetScope>): DictionaryHelperTargetScope {
+    return Object.freeze({ ...matchScopeNone, ...scope });
 }
 
 export class UnableToAddWordError extends Error {

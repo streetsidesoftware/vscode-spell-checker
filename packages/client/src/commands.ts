@@ -22,6 +22,9 @@ import {
     dictionaryTargetBestMatchUser,
     dictionaryTargetBestMatchWorkspace,
     dictionaryTargetCSpell,
+    dictionaryTargetVSCodeFolder as dtVSCodeFolder,
+    dictionaryTargetVSCodeUser as dtVSCodeUser,
+    dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
 } from './settings/DictionaryHelper';
 import {
     DictionaryTargetCSpellConfig,
@@ -60,27 +63,34 @@ const prompt = onCommandUseDiagsSelectionOrPrompt;
 const actionAddWordToFolder = prompt('Add Word to Folder Dictionary', addWordToFolderDictionary);
 const actionAddWordToWorkspace = prompt('Add Word to Workspace Dictionaries', addWordToWorkspaceDictionary);
 const actionAddWordToUser = prompt('Add Word to User Dictionary', addWordToUserDictionary);
+const actionAddWordToFolderSettings = prompt('Add Word to Folder Settings', fnWTarget(addWordToTarget, dtVSCodeFolder));
+const actionAddWordToWorkspaceSettings = prompt('Add Word to Workspace Settings', fnWTarget(addWordToTarget, dtVSCodeWorkspace));
+const actionAddWordToUserSettings = prompt('Add Word to User Settings', fnWTarget(addWordToTarget, dtVSCodeUser));
 const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
 const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
 const actionRemoveWordFromDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
-const actionAddIgnoreWord = prompt('Ignore Word', fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder));
+const actionAddIgnoreWord = prompt('Ignore Word', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder));
 const actionAddIgnoreWordToFolder = prompt(
     'Ignore Word in Folder Settings',
-    fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder)
+    fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder)
 );
 const actionAddIgnoreWordToWorkspace = prompt(
     'Ignore Word in Workspace Settings',
-    fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
+    fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
 );
-const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
-const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWithTarget(addWordToTarget, dictionaryTargetCSpell));
-const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWithTarget(addWordToTarget, dictionaryTargetBestMatch));
+const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
+const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetCSpell));
+const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatch));
 
 const commandHandlers: CommandHandler = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
     'cSpell.addWordToUserDictionary': actionAddWordToUser,
+
+    'cSpell.addWordToFolderSettings': actionAddWordToFolderSettings,
+    'cSpell.addWordToWorkspaceSettings': actionAddWordToWorkspaceSettings,
+    'cSpell.addWordToUserSettings': actionAddWordToUserSettings,
 
     'cSpell.removeWordFromFolderDictionary': actionRemoveWordFromFolderDictionary,
     'cSpell.removeWordFromWorkspaceDictionary': actionRemoveWordFromWorkspaceDictionary,
@@ -318,7 +328,7 @@ function determineWordToAddToDictionaryFromSelection(
     selection: Selection | undefined,
     diagRange: Range
 ): string | undefined {
-    if (!selection || !selectedText || diagRange.contains(selection)) return doc.getText(diagRange);
+    if (!selection || selectedText === undefined || diagRange.contains(selection)) return doc.getText(diagRange);
 
     const intersect = selection.intersection(diagRange);
     if (!intersect || intersect.isEmpty) return undefined;
@@ -388,7 +398,7 @@ function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined
     return uri || undefined;
 }
 
-function fnWithTarget<TT>(
+function fnWTarget<TT>(
     fn: (word: string, t: TT, uri: Uri | undefined) => Promise<void>,
     t: TT
 ): (word: string, uri: Uri | undefined) => Promise<void> {
