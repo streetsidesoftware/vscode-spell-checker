@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.6...v2.0.1-alpha.7) (2021-07-17)
+
+
+### Bug Fixes
+
+* fix issues with adding words from the context menu ([#1060](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1060)) ([1731ca9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1731ca9846d07f1296bfa3d6dc763cc5eab51268))
+
 ### [2.0.1-alpha.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.5...v2.0.1-alpha.6) (2021-07-15)
 
 
