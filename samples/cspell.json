@@ -1,9 +1,25 @@
 {
     "version": "0.2",
+    "language": "en",
     "enableFiletypes": [
         "FortranFreeForm",
         "php",
         "ruby"
     ],
-    "language": "en"
+    "dictionaryDefinitions": [
+        {
+            "name": "sample-words",
+            "addWords": true,
+            "path": "./sample-words.txt"
+        },
+        {
+            "name": "company-words",
+            "addWords": true,
+            "path": "./company-words.txt"
+        }
+    ],
+    "dictionaries": [
+        "sample-words",
+        "company-words"
+    ]
 }

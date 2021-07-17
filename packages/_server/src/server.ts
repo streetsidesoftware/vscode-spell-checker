@@ -517,7 +517,7 @@ export function run(): void {
         }
     }
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, documentSettings, clientApi));
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientApi));
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
