@@ -1,21 +1,28 @@
-import * as CSpellSettings from './settings/CSpellSettings';
+import { commands, Diagnostic, Disposable, Range, Selection, TextDocument, Uri, window, workspace, WorkspaceEdit } from 'vscode';
+import { TextEdit } from 'vscode-languageclient/node';
+import * as di from './di';
+import { getCSpellDiags } from './diags';
+import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './server';
 import * as Settings from './settings';
-import { AllTargetTypes, createConfigFileRelativeToDocumentUri } from './settings';
 import {
-    resolveTarget,
-    determineSettingsPaths,
     ConfigurationTarget,
+    createConfigFileRelativeToDocumentUri,
+    determineSettingsPaths,
+    disableCurrentLanguage,
+    enableCurrentLanguage,
+    resolveTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
-    enableCurrentLanguage,
-    disableCurrentLanguage,
 } from './settings';
-import { performance, toMilliseconds } from './util/perf';
-
-import { window, Uri, workspace, commands, WorkspaceEdit, TextDocument, Range, Diagnostic, Selection, Disposable } from 'vscode';
-import { TextEdit } from 'vscode-languageclient/node';
-import { SpellCheckerSettingsProperties } from './server';
-import { ClientSideCommandHandlerApi } from './server';
+import * as CSpellSettings from './settings/CSpellSettings';
+import {
+    DictionaryHelperTarget,
+    dictionaryTargetBestMatch,
+    dictionaryTargetBestMatchFolder,
+    dictionaryTargetBestMatchUser,
+    dictionaryTargetBestMatchWorkspace,
+    dictionaryTargetCSpell,
+} from './settings/DictionaryHelper';
 import {
     DictionaryTargetCSpellConfig,
     DictionaryTargetDictionary,
@@ -27,12 +34,11 @@ import {
     TargetType,
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
-import * as di from './di';
-import { getCSpellDiags } from './diags';
 import { isDefined, toUri } from './util';
-import { handleErrors, catchErrors } from './util/errors';
+import { catchErrors, handleErrors } from './util/errors';
+import { performance, toMilliseconds } from './util/perf';
 
-export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings';
+export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, documentUri, config) => {
@@ -67,14 +73,10 @@ const actionAddIgnoreWordToWorkspace = prompt(
     fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
 );
 const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWithTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
-const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWithTarget(addWordToTarget, TargetType.CSpell));
-const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWithTarget(addWordToTarget, TargetType.Dictionary));
+const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWithTarget(addWordToTarget, dictionaryTargetCSpell));
+const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWithTarget(addWordToTarget, dictionaryTargetBestMatch));
 
 const commandHandlers: CommandHandler = {
-    'cSpell.addWordToDictionarySilent': addWordToFolderDictionary,
-    'cSpell.addWordToWorkspaceDictionarySilent': addWordToWorkspaceDictionary,
-    'cSpell.addWordToUserDictionarySilent': addWordToUserDictionary,
-
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
@@ -188,24 +190,24 @@ export function registerCommands(): Disposable[] {
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    return addWordToTarget(word, ConfigurationTarget.WorkspaceFolder, docUri);
+    return addWordToTarget(word, dictionaryTargetBestMatchFolder, docUri);
 }
 
 export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     // eslint-disable-next-line prefer-rest-params
     console.log('addWordToWorkspaceDictionary %o', arguments);
-    return addWordToTarget(word, ConfigurationTarget.Workspace, docUri);
+    return addWordToTarget(word, dictionaryTargetBestMatchWorkspace, docUri);
 }
 
 export function addWordToUserDictionary(word: string): Promise<void> {
-    return addWordToTarget(word, ConfigurationTarget.Global, undefined);
+    return addWordToTarget(word, dictionaryTargetBestMatchUser, undefined);
 }
 
-function addWordToTarget(word: string, target: AllTargetTypes, docUri: string | null | Uri | undefined) {
+function addWordToTarget(word: string, target: DictionaryHelperTarget, docUri: string | null | Uri | undefined) {
     return handleErrors(_addWordToTarget(word, target, docUri));
 }
 
-function _addWordToTarget(word: string, target: AllTargetTypes, docUri: string | null | Uri | undefined) {
+function _addWordToTarget(word: string, target: DictionaryHelperTarget, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
     return di.get('dictionaryHelper').addWordsToTarget(word, target, docUri);
 }

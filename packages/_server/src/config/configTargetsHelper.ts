@@ -2,7 +2,7 @@ import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { genSequence } from 'gensequence';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
-import { WorkspaceConfigForDocumentResponse } from '../api';
+import { WorkspaceConfigForDocument } from '../api';
 import { capitalize } from '../utils/util';
 import {
     ConfigKinds,
@@ -18,7 +18,7 @@ import {
 import { CSpellUserSettings } from './cspellConfig';
 import { CSpellSettingsWithFileSource, extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
 
-export function calculateConfigTargets(settings: CSpellUserSettings, workspaceConfig: WorkspaceConfigForDocumentResponse): ConfigTarget[] {
+export function calculateConfigTargets(settings: CSpellUserSettings, workspaceConfig: WorkspaceConfigForDocument): ConfigTarget[] {
     const targets: ConfigTarget[] = [];
     const sources = extractCSpellFileConfigurations(settings);
     const dictionaries = extractTargetDictionaries(settings);
@@ -30,7 +30,7 @@ export function calculateConfigTargets(settings: CSpellUserSettings, workspaceCo
     return sortTargets(targets);
 }
 
-function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocumentResponse): Generator<ConfigTargetVSCode> {
+function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocument): Generator<ConfigTargetVSCode> {
     function toTarget(scope: ConfigScopeVScode): ConfigTargetVSCode {
         return {
             kind: ConfigKinds.Vscode,

@@ -1,27 +1,24 @@
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind, ForkOptions } from 'vscode-languageclient/node';
-
 import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri, workspace } from 'vscode';
-
+import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { WorkspaceConfigForDocument } from '../../../_server/dist/api';
+import { diagnosticSource } from '../constants';
 import {
-    GetConfigurationForDocumentResult,
-    SplitTextIntoWordsResult,
-    IsSpellCheckEnabledResult,
-    NamedPattern,
-    MatchPatternsToDocumentResult,
     createServerApi,
-    ServerApi,
+    FieldExistsInTarget,
+    GetConfigurationForDocumentResult,
+    IsSpellCheckEnabledResult,
+    MatchPatternsToDocumentResult,
+    NamedPattern,
     OnSpellCheckDocumentStep,
+    ServerApi,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
-    ConfigurationTargets,
 } from '../server';
 import * as Settings from '../settings';
-
-import * as LanguageIds from '../settings/languageIds';
-import { Maybe, supportedSchemes, setOfSupportedSchemes } from '../util';
-import { createBroadcaster } from '../util/broadcaster';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
-import { diagnosticSource } from '../constants';
+import * as LanguageIds from '../settings/languageIds';
+import { Maybe, setOfSupportedSchemes, supportedSchemes } from '../util';
+import { createBroadcaster } from '../util/broadcaster';
 import { logErrors, silenceErrors } from '../util/errors';
 
 // The debug options for the server
@@ -123,8 +120,8 @@ export class CSpellClient implements Disposable {
         if (!uri || !languageId) {
             return this.serverApi.getConfigurationForDocument({});
         }
-
-        return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId });
+        const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
+        return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
     }
 
     public async matchPatternsInDocument(
@@ -213,7 +210,10 @@ export class CSpellClient implements Disposable {
 function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocumentRequest): WorkspaceConfigForDocumentResponse {
     const { uri } = req;
     const docUri = Uri.parse(uri);
+    return calculateWorkspaceConfigForDocument(docUri);
+}
 
+function calculateWorkspaceConfigForDocument(docUri: Uri): WorkspaceConfigForDocument {
     const cfg = inspectConfigKeys(docUri, ['words', 'userWords', 'ignoreWords']);
     const workspaceFile = workspace.workspaceFile?.toString();
     const workspaceFolder = workspace.getWorkspaceFolder(docUri)?.uri.toString();
@@ -227,7 +227,7 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
     tWords.user = tUserWords.user;
 
     const resp: WorkspaceConfigForDocumentResponse = {
-        uri,
+        uri: docUri.toString(),
         workspaceFile,
         workspaceFolder,
         words: tWords,
@@ -239,7 +239,7 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
     return resp;
 }
 
-function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): ConfigurationTargets {
+function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): FieldExistsInTarget {
     if (!ins) return {};
     const { globalValue, workspaceValue, workspaceFolderValue } = ins;
     return {

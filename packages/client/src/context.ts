@@ -1,8 +1,8 @@
-import { commands, TextDocument, workspace } from 'vscode';
+import { commands, TextDocument } from 'vscode';
 import { CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
-import { CustomDictionaryScope, DictionaryDefinitionCustom, extractCustomDictionaries, extractScope } from './server';
+import { ConfigKind, ConfigScope, ConfigTarget } from './server';
 
 const prefix = extensionId;
 
@@ -110,21 +110,18 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     const diag = getCSpellDiags(doc.uri);
     const cfg = await pCfg;
 
-    const workspaceFile = workspace.workspaceFile?.toString();
-    const workspaceFolders = workspace.workspaceFolders;
+    const { agg, matrix } = calcTargetAggregates(cfg.configTargets);
+    const workspaceDicts = (agg.dictionary || 0) - (matrix.dictionary.user || 0);
 
-    const dictionaries = extractCustomDictionaries(cfg.docSettings || {});
-    const workspaceDicts = dictionaries.filter((d) => !isOnlyUserScope(d));
-
-    const usesConfigFile = cfg.configFiles.length > 0;
-    const usesCustomDictionary = workspaceDicts.length > 0;
+    const usesConfigFile = !!agg.cspell;
+    const usesCustomDictionary = workspaceDicts > 0;
     const hasIssues = diag.length > 0;
     const hasMultipleIssues = diag.length > 1;
-    const showCreateConfig = !cfg.configFiles.length;
+    const showCreateConfig = !agg.cspell;
     const showCreateDictionary = !usesCustomDictionary;
 
-    const showWorkspace = !usesConfigFile && (!!workspaceFile || workspaceFolders?.length === 1 || false);
-    const showFolder = !usesConfigFile && (!!workspaceFile || (workspaceFolders?.length || 0) > 1 || false);
+    const showWorkspace = !!matrix.vscode.workspace;
+    const showFolder = !!matrix.vscode.folder;
 
     context.documentConfigContext = {
         usesConfigFile,
@@ -150,11 +147,33 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     return;
 }
 
-function isOnlyUserScope(d: DictionaryDefinitionCustom): boolean {
-    return hasOnlyScope(d, 'user');
-}
+type ConfigTargetKindAndScope = ConfigKind | ConfigScope;
 
-function hasOnlyScope(d: DictionaryDefinitionCustom, scope: CustomDictionaryScope): boolean {
-    const s = extractScope(d);
-    return s.has(scope) && s.size === 1;
+type ConfigAggregates = {
+    [key in ConfigTargetKindAndScope]?: number;
+};
+
+type ConfigScopeCnt = {
+    [key in ConfigScope]?: number;
+};
+
+type ConfigMatrix = {
+    [key in ConfigKind]: ConfigScopeCnt;
+};
+
+function calcTargetAggregates(configTargets: ConfigTarget[]): { agg: ConfigAggregates; matrix: ConfigMatrix } {
+    const agg: ConfigAggregates = {};
+    const matrix: ConfigMatrix = {
+        vscode: {},
+        cspell: {},
+        dictionary: {},
+    };
+
+    for (const t of configTargets) {
+        agg[t.kind] = (agg[t.kind] || 0) + 1;
+        agg[t.scope] = (agg[t.scope] || 0) + 1;
+        matrix[t.kind][t.scope] = (matrix[t.kind][t.scope] || 0) + 1;
+    }
+
+    return { agg, matrix };
 }

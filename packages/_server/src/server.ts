@@ -41,6 +41,7 @@ import { ConfigWatcher } from './config/configWatcher';
 import { textToWords } from './utils';
 import { createProgressNotifier } from './progressNotifier';
 import { createClientApi } from './clientApi';
+import { calculateConfigTargets } from './config/configTargetsHelper';
 
 log('Starting Spell Checker Server');
 
@@ -208,13 +209,17 @@ export function run(): void {
         };
     }
 
-    async function handleGetConfigurationForDocument(params: TextDocumentInfo): Promise<Api.GetConfigurationForDocumentResult> {
-        const { uri, languageId } = params;
+    async function handleGetConfigurationForDocument(
+        params: Api.GetConfigurationForDocumentRequest
+    ): Promise<Api.GetConfigurationForDocumentResult> {
+        const { uri, languageId, workspaceConfig } = params;
         const doc = uri && documents.get(uri);
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
         const settings = stringifyPatterns(await getActiveUriSettings(uri));
         const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
         const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
+
+        const configTargets = workspaceConfig ? calculateConfigTargets(settings, workspaceConfig) : [];
 
         const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
         const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
@@ -225,7 +230,7 @@ export function run(): void {
             docSettings,
             excludedBy,
             configFiles,
-            configTargets: [],
+            configTargets,
         };
     }
 

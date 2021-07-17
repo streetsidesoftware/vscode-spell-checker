@@ -1,17 +1,25 @@
+import type { ConfigScopeVScode, ConfigTarget } from './config/configTargets';
 import type * as config from './config/cspellConfig';
-import type { ConfigTarget } from './config/configTargets';
 
 export type {
-    LanguageSetting,
-    DictionaryDefinition,
-    DictionaryFileTypes,
-    CustomDictionaryScope,
-    DictionaryDefinitionCustom,
-    SpellCheckerSettings,
-    CustomDictionaryEntry,
-    CustomDictionaryWithScope,
-    CSpellUserSettingsWithComments,
+    ConfigKind,
+    ConfigScope,
+    ConfigTarget,
+    ConfigTargetCSpell,
+    ConfigTargetDictionary,
+    ConfigTargetVSCode,
+} from './config/configTargets';
+export type {
     CSpellUserSettings,
+    CSpellUserSettingsWithComments,
+    CustomDictionaryEntry,
+    CustomDictionaryScope,
+    CustomDictionaryWithScope,
+    DictionaryDefinition,
+    DictionaryDefinitionCustom,
+    DictionaryFileTypes,
+    LanguageSetting,
+    SpellCheckerSettings,
     SpellCheckerSettingsProperties,
 } from './config/cspellConfig';
 
@@ -39,7 +47,7 @@ export type ServerRequestApiHandlers = ApiHandlers<ServerMethods>;
  * Server RPC Request and Result types
  */
 export type ServerMethods = {
-    getConfigurationForDocument: ReqRes<TextDocumentInfo, GetConfigurationForDocumentResult>;
+    getConfigurationForDocument: ReqRes<GetConfigurationForDocumentRequest, GetConfigurationForDocumentResult>;
     isSpellCheckEnabled: ReqRes<TextDocumentInfo, IsSpellCheckEnabledResult>;
     splitTextIntoWords: ReqRes<string, SplitTextIntoWordsResult>;
     spellingSuggestions: ReqRes<TextDocumentInfo, SpellingSuggestionsResult>;
@@ -93,12 +101,17 @@ export type ClientSideCommandHandlerApi = {
     [command in keyof CommandsToClient as `cSpell.${command}`]: (...params: Parameters<CommandsToClient[command]>) => OrPromise<void>;
 };
 export interface CommandsToClient {
-    addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: 'user' | 'workspace' | 'folder') => void;
+    addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: ConfigurationTarget) => void;
     addWordsToDictionaryFileFromServer: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
     addWordsToConfigFileFromServer: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
 }
 
 export type RequestsToClientApiHandlers = ApiHandlers<RequestsToClient>;
+
+export interface GetConfigurationForDocumentRequest extends TextDocumentInfo {
+    /** used to calculate configTargets, configTargets will be empty if undefined. */
+    workspaceConfig?: WorkspaceConfigForDocument;
+}
 
 export interface GetConfigurationForDocumentResult {
     languageEnabled: boolean | undefined;
@@ -226,19 +239,21 @@ export interface WorkspaceConfigForDocumentRequest {
     uri: DocumentUri;
 }
 
-export interface WorkspaceConfigForDocumentResponse {
+export interface WorkspaceConfigForDocument {
     uri: DocumentUri;
     workspaceFile: UriString | undefined;
     workspaceFolder: UriString | undefined;
-    words: ConfigurationTargets;
-    ignoreWords: ConfigurationTargets;
+    words: FieldExistsInTarget;
+    ignoreWords: FieldExistsInTarget;
 }
 
-export interface ConfigurationTargets {
-    user?: boolean;
-    workspace?: boolean;
-    folder?: boolean;
-}
+export interface WorkspaceConfigForDocumentResponse extends WorkspaceConfigForDocument {}
+
+export type FieldExistsInTarget = {
+    [key in ConfigurationTarget]?: boolean;
+};
+
+export type ConfigurationTarget = ConfigScopeVScode;
 
 export type UriString = string;
 export type DocumentUri = UriString;

@@ -1,10 +1,9 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { CSpellUserSettingsWithComments, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
+import { CSpellUserSettingsWithComments, DictionaryDefinitionCustom } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
 import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
-import { DictionaryTargetTypes } from './DictionaryTargets';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -177,43 +176,15 @@ export class FailedToUpdateConfigFile extends Error {
     }
 }
 
-type DictScopeMapKnown = {
-    [key in CustomDictionaryScope]: number;
-};
-interface DictScopeMap extends DictScopeMapKnown {
-    unknown: number;
-}
-
-const scopeMaskMap: DictScopeMap = {
-    user: 1 << 0,
-    workspace: 1 << 1,
-    folder: 1 << 2,
-    unknown: 1 << 3,
-};
-
-type ScopeMask = number;
-
 export interface CustomDictDef {
     name: string;
     uri: Uri;
-    scope: ScopeMask;
-}
-
-function extractDictScopeFromCustomDictionary(dict: DictionaryDefinitionCustom): ScopeMask {
-    const { scope } = dict;
-    const scopes = typeof scope === 'string' ? [scope] : scope || [];
-    let ds: ScopeMask = 0;
-    for (const s of scopes) {
-        ds |= scopeMaskMap[s] || 0;
-    }
-    return ds || scopeMaskMap.unknown;
 }
 
 export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCustom): CustomDictDef {
     return {
         name: def.name,
         uri: Uri.file(def.path),
-        scope: extractDictScopeFromCustomDictionary(def),
     };
 }
 

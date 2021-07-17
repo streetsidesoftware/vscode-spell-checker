@@ -1,25 +1,56 @@
 import { CSpellClient } from '../client';
-import { ConfigurationTarget } from './vsConfig';
 import * as config from './vsConfig';
-import { addWordsToSettings, determineSettingsPaths, resolveTarget as resolveConfigTarget } from './settings';
+import { addWordsToSettings, resolveTarget as resolveConfigTarget } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import {
-    addWordsToCustomDictionary,
-    addWordsToSettingsAndUpdate,
-    normalizeWords,
-    CustomDictDef,
-    dictionaryDefinitionToCustomDictDef,
-} from './CSpellSettings';
-import type {
-    CSpellUserSettings,
-    CustomDictionaryScope,
-    DictionaryDefinition,
-    DictionaryDefinitionCustom,
-    GetConfigurationForDocumentResult,
-} from '../server';
-import { DictionaryTargetTypes, TargetType } from './DictionaryTargets';
+import { addWordsToCustomDictionary, addWordsToSettingsAndUpdate, normalizeWords, CustomDictDef } from './CSpellSettings';
+import type { ConfigTarget, ConfigKind, ConfigScope, ConfigTargetDictionary, ConfigTargetCSpell, ConfigTargetVSCode } from '../server';
 import { getCSpellDiags } from '../diags';
+
+type ConfigKindMask = {
+    [key in ConfigKind]: boolean;
+};
+
+type ConfigScopeMask = {
+    [key in ConfigScope]: boolean;
+};
+
+export interface DictionaryHelperTarget {
+    kind: ConfigKindMask;
+    scope: ConfigScopeMask;
+}
+
+const matchAllKinds: ConfigKindMask = Object.freeze({ dictionary: true, cspell: true, vscode: true });
+const matchCSpellKind: ConfigKindMask = Object.freeze({ dictionary: false, cspell: true, vscode: false });
+const matchAllScopesButUser: ConfigScopeMask = Object.freeze({ unknown: true, folder: true, workspace: true, user: false });
+const matchScopeUser: ConfigScopeMask = Object.freeze({ unknown: false, folder: false, workspace: false, user: true });
+const matchScopeWorkspace: ConfigScopeMask = Object.freeze({ unknown: false, folder: false, workspace: true, user: false });
+const matchScopeFolder: ConfigScopeMask = Object.freeze({ unknown: false, folder: true, workspace: false, user: false });
+
+export const dictionaryTargetBestMatch: DictionaryHelperTarget = Object.freeze({
+    kind: matchAllKinds,
+    scope: matchAllScopesButUser,
+});
+
+export const dictionaryTargetBestMatchUser: DictionaryHelperTarget = Object.freeze({
+    kind: matchAllKinds,
+    scope: matchScopeUser,
+});
+
+export const dictionaryTargetBestMatchWorkspace: DictionaryHelperTarget = Object.freeze({
+    kind: matchAllKinds,
+    scope: matchScopeWorkspace,
+});
+
+export const dictionaryTargetBestMatchFolder: DictionaryHelperTarget = Object.freeze({
+    kind: matchAllKinds,
+    scope: matchScopeFolder,
+});
+
+export const dictionaryTargetCSpell: DictionaryHelperTarget = Object.freeze({
+    kind: matchCSpellKind,
+    scope: matchAllScopesButUser,
+});
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
@@ -31,19 +62,14 @@ export class DictionaryHelper {
      * @param docUri - the related document (helps to determine the configuration location)
      * @returns the promise resolves upon completion.
      */
-    public async addWordsToTarget(words: string | string[], target: config.AllTargetTypes, docUri: Uri | undefined): Promise<void> {
-        const actualTarget = resolveTarget(target, docUri);
-        const docConfig = await this.getDocConfig(docUri);
+    public async addWordsToTarget(words: string | string[], target: DictionaryHelperTarget, docUri: Uri | undefined): Promise<void> {
         words = normalizeWords(words);
+        const docConfig = await this.getDocConfig(docUri);
+        const cfgTarget = findMatchingConfigTarget(target, docConfig.configTargets);
 
-        let handled = false;
-        handled = handled || (await this.addToDictionaries(words, actualTarget, docConfig));
-        handled = handled || (await this.addToCSpellConfig(words, actualTarget, docConfig));
-        handled = handled || (await this.addToVSCodeConfig(words, actualTarget, docConfig));
-
-        handled && (await this.client.notifySettingsChanged());
-        if (!handled) {
-            vscode.window.showErrorMessage(`Unable to add "${words}" to ${actualTarget.target}`);
+        const result = cfgTarget && (await this.addToTarget(words, cfgTarget));
+        if (!result) {
+            throw new UnableToAddWordError(`Unable to add "${words}"`, words);
         }
     }
 
@@ -59,29 +85,39 @@ export class DictionaryHelper {
         const diags = getCSpellDiags(doc.uri);
         if (!diags.length) return;
         const words = new Set(diags.map((d) => doc.getText(d.range)));
-        return this.addWordsToTarget([...words], TargetType.Dictionary, doc.uri);
+        return this.addWordsToTarget([...words], dictionaryTargetBestMatch, doc.uri);
     }
 
-    private async addToDictionaries(words: string[], target: Target, docConfig: GetConfigurationForDocumentResult): Promise<boolean> {
-        if (target?.target === TargetType.CSpell) return false;
-        const customDicts = this.getCustomDictionariesForTargetFromConfig(docConfig, target);
-        if (!customDicts.length) return false;
-        await this.addWordsToCustomDictionaries(words, customDicts);
+    private addToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
+        switch (target.kind) {
+            case 'dictionary':
+                return this.addToDictionary(words, target);
+            case 'cspell':
+                return this.addToCSpellConfig(words, target);
+            case 'vscode':
+                return this.addToVSCodeConfig(words, target);
+        }
+        return Promise.resolve(false);
+    }
+
+    private async addToDictionary(words: string[], target: ConfigTargetDictionary): Promise<boolean> {
+        const def: CustomDictDef = {
+            name: target.name,
+            uri: Uri.parse(target.dictionaryUri),
+        };
+        await this.addWordsToCustomDictionaries(words, [def]);
         return true;
     }
 
-    private async addToCSpellConfig(words: string[], target: Target, docConfig: GetConfigurationForDocumentResult): Promise<boolean> {
-        const docConfigFiles = docConfig.configFiles.map((uri) => Uri.parse(uri));
-        const paths = await determineSettingsPaths(target.target, target.docUri, docConfigFiles);
-        if (!paths.length) return false;
-        await Promise.all(paths.map((path) => addWordsToSettingsAndUpdate(path, words)));
+    private async addToCSpellConfig(words: string[], target: ConfigTargetCSpell): Promise<boolean> {
+        await addWordsToSettingsAndUpdate(Uri.parse(target.configUri), words);
         return true;
     }
 
-    private async addToVSCodeConfig(words: string[], target: Target, _docConfig: GetConfigurationForDocumentResult): Promise<boolean> {
-        const cfgTarget = config.targetToConfigurationTarget(target.target);
-        if (!cfgTarget) return false;
-        const actualTarget = resolveConfigTarget(cfgTarget, target.docUri);
+    private async addToVSCodeConfig(words: string[], target: ConfigTargetVSCode): Promise<boolean> {
+        const t = config.targetToConfigurationTarget(target.scope);
+        if (!t) return false;
+        const actualTarget = resolveConfigTarget(t, Uri.parse(target.docUri));
         return addWordsToSettings(actualTarget, words, false);
     }
 
@@ -91,11 +127,6 @@ export class DictionaryHelper {
             return this.client.getConfigurationForDocument(doc);
         }
         return this.client.getConfigurationForDocument(undefined);
-    }
-
-    private getCustomDictionariesForTargetFromConfig(docConfig: GetConfigurationForDocumentResult, target: Target) {
-        const dicts = extractCustomDictionaries(docConfig.docSettings || docConfig.settings, target);
-        return dicts;
     }
 
     /**
@@ -111,84 +142,22 @@ export class DictionaryHelper {
     }
 }
 
-function extractCustomDictionaries(docConfig: CSpellUserSettings | undefined, target: Target): CustomDictDef[] {
-    if (target.target === TargetType.CSpell) return [];
-    const scope = targetToCustomDictionaryScope(target.target);
-    const dictionaries =
-        docConfig?.dictionaryDefinitions
-            ?.filter(isDictionaryDefinitionCustom)
-            .filter((dict) => shouldAddWordToDictionary(dict, scope))
-            .map(dictionaryDefinitionToCustomDictDef) || [];
-
-    if (target.target !== TargetType.Dictionary) return dictionaries;
-
-    const scopeMask = dictionaries.map((d) => d.scope).reduce((a, b) => a | b, 0);
-
-    // Highest bit represents the most local dictionary.
-    const mask = highestBitSet(scopeMask);
-
-    return dictionaries.filter((d) => d.scope & mask);
-}
-
-function highestBitSet(n: number): number {
-    let x = n;
-    x |= x >> 1;
-    x |= x >> 2;
-    x |= x >> 4;
-    return x & ~(x - 1);
-}
-
-function targetToCustomDictionaryScope(target: DictionaryTargetTypes): CustomDictionaryScope | undefined {
-    switch (target) {
-        case TargetType.User:
-        case TargetType.Workspace:
-        case TargetType.Folder:
-            return target;
-    }
-    return undefined;
-}
-
-function shouldAddWordToDictionary(dict: DictionaryDefinition, scope: CustomDictionaryScope | undefined): boolean {
-    if (!isDictionaryDefinitionCustom(dict)) return false;
-    if (!dict.addWords) return false;
-    if (!dict.scope) return true; // always add when no scope is defined.
-    return !scope || matchesScope(dict.scope, scope);
-}
-
-function matchesScope(dictScope: CustomDictionaryScope | CustomDictionaryScope[], scope: CustomDictionaryScope): boolean {
-    if (typeof dictScope === 'string') return dictScope === scope;
-    return dictScope.includes(scope) || !dictScope.length;
-}
-
-function isDictionaryDefinitionCustom(dict: DictionaryDefinition | DictionaryDefinitionCustom): dict is DictionaryDefinitionCustom {
-    return (<DictionaryDefinitionCustom>dict).addWords !== undefined;
-}
-
-type ToTargetType = { [key in config.AllTargetTypes]: DictionaryTargetTypes };
-
-const toTargetType: ToTargetType = {
-    [ConfigurationTarget.Global]: TargetType.User,
-    [ConfigurationTarget.Workspace]: TargetType.Workspace,
-    [ConfigurationTarget.WorkspaceFolder]: TargetType.Folder,
-    [TargetType.User]: TargetType.User,
-    [TargetType.Workspace]: TargetType.Workspace,
-    [TargetType.Folder]: TargetType.Folder,
-    [TargetType.CSpell]: TargetType.CSpell,
-    [TargetType.Dictionary]: TargetType.Dictionary,
-};
-
 function isTextDocument(d: vscode.TextDocument | vscode.Uri): d is vscode.TextDocument {
     return !!(<vscode.TextDocument>d).uri;
 }
 
-interface Target {
-    target: DictionaryTargetTypes;
-    docUri: Uri | undefined;
+function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets: ConfigTarget[]): ConfigTarget | undefined {
+    for (const t of configTargets) {
+        if (target.kind[t.kind] && target.scope[t.scope]) return t;
+    }
+
+    return undefined;
 }
 
-function resolveTarget(target: config.AllTargetTypes, docUri?: Uri): Target {
-    const tt = toTargetType[target];
-    return { target: tt, docUri };
+export class UnableToAddWordError extends Error {
+    constructor(msg: string, readonly words: string | string[]) {
+        super(msg);
+    }
 }
 
 export const __testing__ = {

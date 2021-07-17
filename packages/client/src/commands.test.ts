@@ -1,13 +1,11 @@
-import * as vscode from 'vscode';
 import { createTextDocument, readTextDocument } from 'jest-mock-vscode';
-
-export { toggleEnableSpellChecker, enableCurrentLanguage, disableCurrentLanguage } from './settings/settings';
-
+import * as vscode from 'vscode';
 import { __testing__ } from './commands';
-import { isDefined } from './util';
-import { mustBeDefined, readExtensionPackage } from './test/helpers';
 import { extensionId } from './constants';
 import { commandDisplayCSpellInfo } from './infoViewer';
+import { mustBeDefined, readExtensionPackage } from './test/helpers';
+import { isDefined } from './util';
+
 const { determineWordToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts, commandHandlers } = __testing__;
 
 describe('Validate Commands', () => {
