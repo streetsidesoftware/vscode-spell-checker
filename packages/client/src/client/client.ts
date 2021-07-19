@@ -1,5 +1,20 @@
-import { DiagnosticCollection, Disposable, languages as vsCodeSupportedLanguages, TextDocument, Uri, workspace } from 'vscode';
+import {
+    CodeAction,
+    CodeActionKind,
+    Command,
+    Diagnostic,
+    DiagnosticCollection,
+    DiagnosticSeverity,
+    Disposable,
+    languages as vsCodeSupportedLanguages,
+    Position,
+    Range,
+    TextDocument,
+    Uri,
+    workspace,
+} from 'vscode';
 import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import * as VSCodeLangClient from 'vscode-languageclient/node';
 import { WorkspaceConfigForDocument } from '../../../_server/dist/api';
 import { diagnosticSource } from '../constants';
 import {
@@ -13,6 +28,7 @@ import {
     ServerApi,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
+    requestCodeAction,
 } from '../server';
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
@@ -192,6 +208,19 @@ export class CSpellClient implements Disposable {
         return this.broadcasterOnSpellCheckDocument.listen(fn);
     }
 
+    public async requestSpellingSuggestions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
+        const params: VSCodeLangClient.CodeActionParams = {
+            textDocument: VSCodeLangClient.TextDocumentIdentifier.create(doc.uri.toString()),
+            range: mapRangeToLangClient(range),
+            context: VSCodeLangClient.CodeActionContext.create(diagnostics.map(mapDiagnosticToLangClient)),
+        };
+        const r = await requestCodeAction(this.client, params);
+        if (!r) return [];
+
+        const actions = r.filter(isCodeAction).map(mapCodeAction);
+        return actions;
+    }
+
     private async initWhenReady() {
         await this.client.onReady();
         this.registerHandleNotificationsFromServer();
@@ -247,4 +276,51 @@ function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): F
         workspace: workspaceValue !== undefined || undefined,
         folder: allowFolder && (workspaceFolderValue !== undefined || undefined),
     };
+}
+
+function isCodeAction(c: VSCodeLangClient.Command | VSCodeLangClient.CodeAction): c is VSCodeLangClient.CodeAction {
+    return VSCodeLangClient.CodeAction.is(c);
+}
+
+function mapCodeAction(c: VSCodeLangClient.CodeAction): CodeAction {
+    const kind = (c.kind !== undefined && CodeActionKind.Empty.append(c.kind)) || undefined;
+    const action = new CodeAction(c.title, kind);
+    action.command = c.command && mapCommand(c.command);
+    return action;
+}
+
+function mapCommand(c: VSCodeLangClient.Command): Command {
+    return c;
+}
+
+type MapDiagnosticSeverity = {
+    [key in DiagnosticSeverity]: VSCodeLangClient.DiagnosticSeverity;
+};
+
+const diagSeverityMap: MapDiagnosticSeverity = {
+    [DiagnosticSeverity.Error]: VSCodeLangClient.DiagnosticSeverity.Error,
+    [DiagnosticSeverity.Warning]: VSCodeLangClient.DiagnosticSeverity.Warning,
+    [DiagnosticSeverity.Information]: VSCodeLangClient.DiagnosticSeverity.Information,
+    [DiagnosticSeverity.Hint]: VSCodeLangClient.DiagnosticSeverity.Hint,
+};
+
+function mapDiagnosticToLangClient(d: Diagnostic): VSCodeLangClient.Diagnostic {
+    const diag = VSCodeLangClient.Diagnostic.create(
+        mapRangeToLangClient(d.range),
+        d.message,
+        diagSeverityMap[d.severity],
+        undefined,
+        d.source
+    );
+    return diag;
+}
+
+function mapRangeToLangClient(r: Range): VSCodeLangClient.Range {
+    const { start, end } = r;
+    return VSCodeLangClient.Range.create(mapPositionToLangClient(start), mapPositionToLangClient(end));
+}
+
+function mapPositionToLangClient(p: Position): VSCodeLangClient.Position {
+    const { line, character } = p;
+    return VSCodeLangClient.Position.create(line, character);
 }

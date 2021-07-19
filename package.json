@@ -47,6 +47,11 @@
     "menus": {
       "editor/context": [
         {
+          "command": "cSpell.suggestSpellingCorrections",
+          "when": "editorTextFocus && cSpell.editorMenuContext.showSuggestions",
+          "group": "A_cspell@001"
+        },
+        {
           "command": "cSpell.addWordToFolderDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary",
           "group": "A_cspell@010"
@@ -284,6 +289,12 @@
         "command": "cSpell.createCSpellConfig",
         "category": "Spell",
         "title": "Create a cSpell Configuration File."
+      },
+      {
+        "command": "cSpell.suggestSpellingCorrections",
+        "enablement": "editorTextFocus && cSpell.editorMenuContext.showSuggestions",
+        "category": "Spell",
+        "title": "Spelling Suggestions..."
       },
       {
         "command": "cSpellRegExpTester.testRegExp",

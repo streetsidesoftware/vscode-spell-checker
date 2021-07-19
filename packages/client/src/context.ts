@@ -31,6 +31,7 @@ interface EditorMenuContext extends Record<string, ContextValue> {
     addWordToDictionary: boolean;
     addWordToCSpellConfig: boolean;
     addIssuesToDictionary: boolean;
+    showSuggestions: boolean;
     createCustomDictionary: boolean;
     createCSpellConfig: boolean;
     addIgnoreWord: boolean;
@@ -69,6 +70,7 @@ const defaultEditorMenuContext: EditorMenuContext = Object.freeze({
     addWordToDictionary: false,
     addWordToCSpellConfig: false,
     addIssuesToDictionary: false,
+    showSuggestions: false,
     createCustomDictionary: false,
     createCSpellConfig: false,
     addIgnoreWord: false,
@@ -153,6 +155,8 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     context.editorMenuContext.createCustomDictionary = show && showCreateDictionary;
     context.editorMenuContext.createCSpellConfig = show && !usesConfigFile;
     context.editorMenuContext.addIgnoreWord = show && hasIssues;
+
+    context.editorMenuContext.showSuggestions = show && hasIssues;
 
     await setContext(context);
     return;

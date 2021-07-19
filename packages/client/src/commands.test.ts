@@ -6,7 +6,8 @@ import { commandDisplayCSpellInfo } from './infoViewer';
 import { mustBeDefined, readExtensionPackage } from './test/helpers';
 import { isDefined } from './util';
 
-const { determineWordToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts, commandHandlers } = __testing__;
+const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagText, extractMatchingDiagTexts, commandHandlers } =
+    __testing__;
 
 describe('Validate Commands', () => {
     test.each`
@@ -27,7 +28,8 @@ describe('Validate Commands', () => {
         const sel = selection && findSelection(doc, selection);
         const selText = sel && doc.getText(sel);
         const diagRange = mustBeDefined(findRange(doc, diag));
-        const word = determineWordToAddToDictionaryFromSelection(doc, selText, sel, diagRange);
+        const range = determineWordRangeToAddToDictionaryFromSelection(selText, sel, diagRange);
+        const word = range && doc.getText(range);
         expect(word).toBe(expected);
     });
 

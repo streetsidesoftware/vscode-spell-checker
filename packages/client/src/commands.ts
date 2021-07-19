@@ -1,4 +1,17 @@
-import { commands, Diagnostic, Disposable, Range, Selection, TextDocument, Uri, window, workspace, WorkspaceEdit } from 'vscode';
+import {
+    CodeAction,
+    commands,
+    Diagnostic,
+    Disposable,
+    QuickPickItem,
+    Range,
+    Selection,
+    TextDocument,
+    Uri,
+    window,
+    workspace,
+    WorkspaceEdit,
+} from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
 import { getCSpellDiags } from './diags';
@@ -38,7 +51,7 @@ import {
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import { isDefined, toUri } from './util';
-import { catchErrors, handleErrors } from './util/errors';
+import { catchErrors, handleErrors, silenceErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 
 export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
@@ -100,6 +113,8 @@ const commandHandlers: CommandHandler = {
     'cSpell.addIgnoreWordToFolder': actionAddIgnoreWordToFolder,
     'cSpell.addIgnoreWordToWorkspace': actionAddIgnoreWordToWorkspace,
     'cSpell.addIgnoreWordToUser': actionAddIgnoreWordToUser,
+
+    'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
 
     'cSpell.enableLanguage': enableLanguageId,
     'cSpell.disableLanguage': disableLanguageId,
@@ -287,6 +302,35 @@ function onCommandUseDiagsSelectionOrPrompt(
     };
 }
 
+interface SuggestionQuickPickItem extends QuickPickItem {
+    _action: CodeAction;
+}
+
+async function actionSuggestSpellingCorrections(): Promise<void> {
+    const document = window.activeTextEditor?.document;
+    const selection = window.activeTextEditor?.selection;
+    const range = selection && document?.getWordRangeAtPosition(selection.active);
+    const diags = document ? getCSpellDiags(document.uri) : undefined;
+    const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
+    const r = matchingRanges?.[0] || range;
+    if (!document || !r || !diags) {
+        return silenceErrors(window.showWarningMessage('Nothing to suggest.')).then();
+    }
+
+    const actions = await di.get('client').requestSpellingSuggestions(document, r, diags);
+    if (!actions || !actions.length) {
+        return silenceErrors(window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`)).then();
+    }
+    const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
+    const picked = await window.showQuickPick(items);
+
+    if (picked && picked._action.command) {
+        const { command: cmd, arguments: args = [] } = picked._action.command;
+
+        commands.executeCommand(cmd, ...args);
+    }
+}
+
 function dumpPerfTimeline(): void {
     performance.getEntries().forEach((entry) => {
         console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
@@ -308,10 +352,20 @@ function extractMatchingDiagTexts(
     diags: Diagnostic[] | undefined
 ): string[] | undefined {
     if (!doc || !diags) return undefined;
+    const ranges = extractMatchingDiagRanges(doc, selection, diags);
+    return ranges?.map((r) => doc.getText(r));
+}
+
+function extractMatchingDiagRanges(
+    doc: TextDocument | undefined,
+    selection: Selection | undefined,
+    diags: Diagnostic[] | undefined
+): Range[] | undefined {
+    if (!doc || !diags) return undefined;
     const selText = selection && doc.getText(selection);
     const matching = diags
         .map((d) => d.range)
-        .map((r) => determineWordToAddToDictionaryFromSelection(doc, selText, selection, r))
+        .map((r) => determineWordRangeToAddToDictionaryFromSelection(selText, selection, r))
         .filter(isDefined);
     return matching;
 }
@@ -322,13 +376,12 @@ function extractMatchingDiagTexts(
  */
 const regExpIsWordLike = /^[\p{L}\w.-]+$/u;
 
-function determineWordToAddToDictionaryFromSelection(
-    doc: TextDocument,
+function determineWordRangeToAddToDictionaryFromSelection(
     selectedText: string | undefined,
     selection: Selection | undefined,
     diagRange: Range
-): string | undefined {
-    if (!selection || selectedText === undefined || diagRange.contains(selection)) return doc.getText(diagRange);
+): Range | undefined {
+    if (!selection || selectedText === undefined || diagRange.contains(selection)) return diagRange;
 
     const intersect = selection.intersection(diagRange);
     if (!intersect || intersect.isEmpty) return undefined;
@@ -337,7 +390,7 @@ function determineWordToAddToDictionaryFromSelection(
     // be included or just the diag. If the selected text is a word, then assume the entire selection
     // was wanted, otherwise use the diag range.
 
-    return regExpIsWordLike.test(selectedText) ? selectedText : doc.getText(diagRange);
+    return regExpIsWordLike.test(selectedText) ? selection : diagRange;
 }
 
 function toDictionaryTarget(targetType: TargetType.User, docUri?: string | Uri): DictionaryTargetUser;
@@ -410,7 +463,7 @@ function createCSpellConfig(): Promise<void> {
 }
 
 export const __testing__ = {
-    determineWordToAddToDictionaryFromSelection,
+    determineWordRangeToAddToDictionaryFromSelection,
     extractMatchingDiagText,
     extractMatchingDiagTexts,
     commandHandlers,
