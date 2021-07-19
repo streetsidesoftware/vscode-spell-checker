@@ -10,7 +10,15 @@ import type {
     ServerNotifyApi,
     ServerRequestApi,
 } from 'server/api';
-import { LanguageClient, NotificationType, RequestType } from 'vscode-languageclient/node';
+import {
+    LanguageClient,
+    NotificationType,
+    RequestType,
+    CodeActionRequest,
+    CodeActionParams,
+    Command,
+    CodeAction,
+} from 'vscode-languageclient/node';
 export type {
     ClientNotifications,
     ClientNotificationsApi,
@@ -65,6 +73,14 @@ type RequestsFromServer = {
 type RequestsFromServerHandlerApi = {
     [M in keyof RequestsFromServer]: (handler: Fn<RequestsFromServer[M]>) => Disposable;
 };
+
+type RequestCodeActionResult = (Command | CodeAction)[] | null;
+
+export async function requestCodeAction(client: LanguageClient, params: CodeActionParams): Promise<RequestCodeActionResult> {
+    const request = CodeActionRequest.type;
+    const result = await client.sendRequest(request, params);
+    return result;
+}
 
 export function createServerApi(client: LanguageClient): ServerApi {
     async function sendRequest<M extends keyof ServerMethods>(method: M, param: Req<ServerMethods[M]>): Promise<Res<ServerMethods[M]>> {
