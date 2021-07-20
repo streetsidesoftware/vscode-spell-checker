@@ -182,7 +182,7 @@ export function parseJson(content: string): CSpellSettings {
 export function stringifyJson(obj: Object, spaces?: string | number | undefined, keepComments = true): string {
     const formatting = retrieveFormatting(obj);
     spaces = formatting?.spaces || spaces || spacesJson;
-    const { newlineAtEndOfFile = true } = formatting || {};
+    const newlineAtEndOfFile = formatting?.newlineAtEndOfFile ?? true;
     const json = keepComments ? stringifyJsonc(obj, null, spaces) : JSON.stringify(obj, null, spaces);
     return newlineAtEndOfFile ? json + '\n' : json;
 }
@@ -208,7 +208,7 @@ function hasTrailingNewline(content: string): boolean {
 }
 
 function detectIndent(json: string): string | undefined {
-    const s = json.match(/^\s+(?=")/m);
+    const s = json.match(/^[ \t]+(?=")/m);
     if (!s) return undefined;
     return s[0];
 }
