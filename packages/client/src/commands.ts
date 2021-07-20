@@ -29,7 +29,7 @@ import {
 } from './settings';
 import * as CSpellSettings from './settings/CSpellSettings';
 import {
-    DictionaryHelperTarget,
+    TargetMatchFn,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -51,7 +51,7 @@ import {
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import { isDefined, toUri } from './util';
-import { catchErrors, handleErrors, silenceErrors } from './util/errors';
+import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 
 export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
@@ -131,15 +131,13 @@ const commandHandlers: CommandHandler = {
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
-    'cSpell.addIssuesToDictionary': notImplemented('cSpell.addIssuesToDictionary'),
+    'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
     'cSpell.createCustomDictionary': notImplemented('cSpell.createCustomDictionary'),
     'cSpell.createCSpellConfig': createCSpellConfig,
 };
 
-function pVoid<T>(p: Promise<T> | Thenable<T>): Promise<void> {
-    return Promise.resolve(p)
-        .then(() => {})
-        .catch((e) => window.showErrorMessage(e.toString()).then());
+function pVoid<T>(p: Promise<T> | Thenable<T>, errorHandler = handleErrors): Promise<void> {
+    return errorHandler(Promise.resolve(p).then(() => {}));
 }
 
 function notImplemented(cmd: string) {
@@ -228,13 +226,17 @@ export function addWordToUserDictionary(word: string): Promise<void> {
     return addWordToTarget(word, dictionaryTargetBestMatchUser, undefined);
 }
 
-function addWordToTarget(word: string, target: DictionaryHelperTarget, docUri: string | null | Uri | undefined) {
+function addWordToTarget(word: string, target: TargetMatchFn, docUri: string | null | Uri | undefined) {
     return handleErrors(_addWordToTarget(word, target, docUri));
 }
 
-function _addWordToTarget(word: string, target: DictionaryHelperTarget, docUri: string | null | Uri | undefined) {
+function _addWordToTarget(word: string, target: TargetMatchFn, docUri: string | null | Uri | undefined) {
     docUri = parseOptionalUri(docUri);
     return di.get('dictionaryHelper').addWordsToTarget(word, target, docUri);
+}
+
+function addAllIssuesFromDocument(): Promise<void> {
+    return handleErrors(di.get('dictionaryHelper').addIssuesToDictionary());
 }
 
 function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
@@ -314,12 +316,12 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
     const r = matchingRanges?.[0] || range;
     if (!document || !r || !diags) {
-        return silenceErrors(window.showWarningMessage('Nothing to suggest.')).then();
+        return pVoid(window.showWarningMessage('Nothing to suggest.'), logErrors);
     }
 
     const actions = await di.get('client').requestSpellingSuggestions(document, r, diags);
     if (!actions || !actions.length) {
-        return silenceErrors(window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`)).then();
+        return pVoid(window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`), logErrors);
     }
     const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
     const picked = await window.showQuickPick(items);

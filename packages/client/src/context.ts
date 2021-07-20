@@ -151,6 +151,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     context.editorMenuContext.addWordToDictionary = show && hasIssues && !!matrix.dictionary.unknown;
     context.editorMenuContext.addWordToCSpellConfig = show && hasIssues && usesConfigFile && !usesCustomDictionary;
+
     context.editorMenuContext.addIssuesToDictionary = show && hasIssues && hasMultipleIssues;
     context.editorMenuContext.createCustomDictionary = show && showCreateDictionary;
     context.editorMenuContext.createCSpellConfig = show && !usesConfigFile;
