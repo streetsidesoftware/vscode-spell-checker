@@ -512,7 +512,7 @@
         "cSpell.showStatusAlignment": {
           "type": "string",
           "scope": "resource",
-          "default": "Left",
+          "default": "Right",
           "enum": [
             "Left",
             "Right"
