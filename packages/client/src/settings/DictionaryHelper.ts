@@ -26,21 +26,25 @@ export interface DictionaryHelperTarget {
 const matchKindNone: ConfigKindMask = { dictionary: false, cspell: false, vscode: false };
 const matchKindAll: ConfigKindMask = { dictionary: true, cspell: true, vscode: true };
 const matchKindCSpell: ConfigKindMask = { dictionary: false, cspell: true, vscode: false };
+const matchKindVSCode: ConfigKindMask = { dictionary: false, cspell: false, vscode: true };
 
 const matchScopeNone: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: false };
+const matchScopeAll: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: true };
 const matchScopeAllButUser: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: false };
 const matchScopeUser: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: true };
 const matchScopeWorkspace: ConfigScopeMask = { unknown: false, folder: false, workspace: true, user: false };
 const matchScopeFolder: ConfigScopeMask = { unknown: false, folder: true, workspace: false, user: false };
 
-export const dictionaryTargetBestMatch = buildTarget(matchKindAll, matchScopeAllButUser);
-export const dictionaryTargetBestMatchUser = buildTarget(matchKindAll, matchScopeUser);
-export const dictionaryTargetBestMatchWorkspace = buildTarget(matchKindAll, matchScopeWorkspace);
-export const dictionaryTargetBestMatchFolder = buildTarget(matchKindAll, matchScopeFolder);
-export const dictionaryTargetCSpell = buildTarget(matchKindCSpell, matchScopeAllButUser);
-export const dictionaryTargetVSCodeUser = buildTarget(matchKindCSpell, matchScopeUser);
-export const dictionaryTargetVSCodeWorkspace = buildTarget(matchKindCSpell, matchScopeWorkspace);
-export const dictionaryTargetVSCodeFolder = buildTarget(matchKindCSpell, matchScopeFolder);
+export type TargetMatchFn = (configTargets: ConfigTarget[]) => Promise<ConfigTarget | undefined> | ConfigTarget | undefined;
+
+export const dictionaryTargetBestMatch = buildMatchTargetFn(matchKindAll, matchScopeAllButUser);
+export const dictionaryTargetBestMatchUser = buildMatchTargetFn(matchKindAll, matchScopeUser);
+export const dictionaryTargetBestMatchWorkspace = buildMatchTargetFn(matchKindAll, matchScopeWorkspace);
+export const dictionaryTargetBestMatchFolder = buildMatchTargetFn(matchKindAll, matchScopeFolder);
+export const dictionaryTargetCSpell = buildMatchTargetFn(matchKindCSpell, matchScopeAll);
+export const dictionaryTargetVSCodeUser = buildMatchTargetFn(matchKindVSCode, matchScopeUser);
+export const dictionaryTargetVSCodeWorkspace = buildMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
+export const dictionaryTargetVSCodeFolder = buildMatchTargetFn(matchKindVSCode, matchScopeFolder);
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
@@ -52,12 +56,11 @@ export class DictionaryHelper {
      * @param docUri - the related document (helps to determine the configuration location)
      * @returns the promise resolves upon completion.
      */
-    public async addWordsToTarget(words: string | string[], target: DictionaryHelperTarget, docUri: Uri | undefined): Promise<void> {
+    public async addWordsToTarget(words: string | string[], target: ConfigTarget | TargetMatchFn, docUri: Uri | undefined): Promise<void> {
         words = normalizeWords(words);
-        const docConfig = await this.getDocConfig(docUri);
-        const cfgTarget = findMatchingConfigTarget(target, docConfig.configTargets);
-
-        const result = cfgTarget && (await this.addToTarget(words, cfgTarget));
+        const cfgTarget = await this.resolveTarget(target, docUri);
+        if (!cfgTarget) return;
+        const result = await this._addWordsToTarget(words, cfgTarget);
         if (!result) {
             throw new UnableToAddWordError(`Unable to add "${words}"`, words);
         }
@@ -78,7 +81,7 @@ export class DictionaryHelper {
         return this.addWordsToTarget([...words], dictionaryTargetBestMatch, doc.uri);
     }
 
-    private addToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
+    private _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
         switch (target.kind) {
             case 'dictionary':
                 return this.addToDictionary(words, target);
@@ -130,28 +133,48 @@ export class DictionaryHelper {
             .map((p) => p.catch((e: Error) => vscode.window.showWarningMessage(e.message)));
         await Promise.all(process);
     }
+
+    private async resolveTarget(target: ConfigTarget | TargetMatchFn, docUri: Uri | undefined): Promise<ConfigTarget | undefined> {
+        if (typeof target !== 'function') return target;
+
+        const docConfig = await this.getDocConfig(docUri);
+        return target(docConfig.configTargets);
+    }
 }
 
 function isTextDocument(d: vscode.TextDocument | vscode.Uri): d is vscode.TextDocument {
     return !!(<vscode.TextDocument>d).uri;
 }
 
-function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets: ConfigTarget[]): ConfigTarget | undefined {
+function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets: ConfigTarget[]): ConfigTarget[] {
+    const matches: ConfigTarget[] = [];
+
     for (const t of configTargets) {
-        if (target.kind[t.kind] && target.scope[t.scope]) return t;
+        if (!target.kind[t.kind] || !target.scope[t.scope]) continue;
+        if (matches.length && (matches[0].kind !== t.kind || matches[0].scope !== t.scope)) break;
+        matches.push(t);
     }
 
-    return undefined;
+    return matches;
 }
 
-export function buildTarget(
-    kind: Partial<DictionaryHelperTargetKind>,
-    scope: Partial<DictionaryHelperTargetScope>
-): DictionaryHelperTarget {
-    return Object.freeze({
+export function buildMatchTargetFn(kind: Partial<DictionaryHelperTargetKind>, scope: Partial<DictionaryHelperTargetScope>): TargetMatchFn {
+    const match = {
         kind: fillKind(kind),
         scope: fillScope(scope),
-    });
+    };
+
+    return async function (configTargets: ConfigTarget[]) {
+        const found = findMatchingConfigTarget(match, configTargets);
+        if (!found.length) throw new UnableToFindTarget('No matching configuration found.');
+        if (found.length === 1) return found[0];
+
+        const sel = await vscode.window.showQuickPick(
+            found.map((f) => ({ label: f.name, _found: f })),
+            { title: 'Choose Destination' }
+        );
+        return sel?._found;
+    };
 }
 
 function fillKind(kind: Partial<DictionaryHelperTargetKind>): DictionaryHelperTargetKind {
@@ -164,6 +187,12 @@ function fillScope(scope: Partial<DictionaryHelperTargetScope>): DictionaryHelpe
 
 export class UnableToAddWordError extends Error {
     constructor(msg: string, readonly words: string | string[]) {
+        super(msg);
+    }
+}
+
+export class UnableToFindTarget extends Error {
+    constructor(msg: string) {
         super(msg);
     }
 }
