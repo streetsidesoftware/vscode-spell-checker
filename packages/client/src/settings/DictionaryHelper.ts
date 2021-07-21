@@ -178,11 +178,22 @@ export function buildMatchTargetFn(kind: Partial<DictionaryHelperTargetKind>, sc
 }
 
 function fillKind(kind: Partial<DictionaryHelperTargetKind>): DictionaryHelperTargetKind {
-    return Object.freeze({ ...matchKindNone, ...kind });
+    return merge(matchKindNone, kind);
 }
 
 function fillScope(scope: Partial<DictionaryHelperTargetScope>): DictionaryHelperTargetScope {
-    return Object.freeze({ ...matchScopeNone, ...scope });
+    return merge(matchScopeNone, scope);
+}
+
+function merge<T>(a: T, b: Partial<T>): T {
+    const v: T = { ...a };
+    type KeyOfT = keyof T;
+    for (const [key, value] of Object.entries(b) as [KeyOfT, T[KeyOfT] | undefined][]) {
+        if (value !== undefined) {
+            v[key] = value;
+        }
+    }
+    return v;
 }
 
 export class UnableToAddWordError extends Error {
