@@ -3,9 +3,11 @@
     "import": [
         "../../cSpell.json"
     ],
+    "ignorePaths": [
+        "fileTypeMap.json"
+    ],
     "enableFiletypes": [
         "literate haskell",
         "shellscript"
-    ],
-    "words": []
+    ]
 }
