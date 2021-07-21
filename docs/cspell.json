@@ -1,0 +1,11 @@
+{
+    "import": [
+        "../cSpell.json"
+    ],
+    "ignorePaths": [
+        "sitemap.xml",
+        "_sass/minimal-mistakes/**",
+        "_sass/minimal-mistakes.*",
+        "_site/**"
+    ]
+}

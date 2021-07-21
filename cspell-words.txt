@@ -1,3 +1,4 @@
+# Project Words
 Bing
 Bundler's
 Codeblock
@@ -45,11 +46,13 @@ githubusercontent
 gitlab
 gtag
 htaccess
+issuehunt
 jekyllrb
 jemoji
 kotlinscript
 languageclient
 lerna
+liga
 lightblue
 lightbulb
 lightgrey
@@ -84,6 +87,7 @@ stylesheets
 subfolder
 subpath
 textdocument
+truetype
 tslib
 typechecking
 unelevated
@@ -94,6 +98,7 @@ visualstudio
 vsce
 vsmarketplacebadge
 webhook
+webm
 webpack'ed
 webview
 yandex
