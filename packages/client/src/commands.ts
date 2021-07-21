@@ -315,11 +315,12 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
     const diags = document ? getCSpellDiags(document.uri) : undefined;
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
     const r = matchingRanges?.[0] || range;
-    if (!document || !r || !diags) {
+    const matchingDiags = r && diags?.filter((d) => !!d.range.intersection(r));
+    if (!document || !selection || !r || !matchingDiags) {
         return pVoid(window.showWarningMessage('Nothing to suggest.'), logErrors);
     }
 
-    const actions = await di.get('client').requestSpellingSuggestions(document, r, diags);
+    const actions = await di.get('client').requestSpellingSuggestions(document, r, matchingDiags);
     if (!actions || !actions.length) {
         return pVoid(window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`), logErrors);
     }
