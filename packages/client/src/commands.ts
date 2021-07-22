@@ -50,7 +50,9 @@ import {
     TargetType,
 } from './settings/DictionaryTargets';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
-import { isDefined, toUri } from './util';
+import { isDefined } from 'common-utils/util.js';
+import { toUri } from 'common-utils/uriHelper.js';
+
 import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 

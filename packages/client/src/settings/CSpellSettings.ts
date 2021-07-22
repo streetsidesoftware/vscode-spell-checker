@@ -3,7 +3,7 @@ import * as path from 'path';
 import { CSpellUserSettingsWithComments, DictionaryDefinitionCustom } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
-import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
+import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -36,6 +36,8 @@ export const configFileLocations = [
 ];
 
 export const nestedConfigLocations = ['package.json'];
+
+export const cspellConfigDirectory = '.cspell';
 
 const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
 
@@ -138,18 +140,12 @@ export function removeLanguageIdsFromSettingsAndUpdate(filename: Uri, languageId
     return readSettingsFileAndApplyUpdateWithResult(filename, (settings) => removeLanguageIdsFromSettings(settings, languageIds));
 }
 
-async function readSettingsFileAndApplyUpdateWithResult(
-    cspellConfigUri: Uri,
-    action: (settings: CSpellSettings) => CSpellSettings
-): Promise<CSpellSettings> {
+async function readSettingsFileAndApplyUpdateWithResult(cspellConfigUri: Uri, action: ConfigUpdateFn): Promise<CSpellSettings> {
     await readSettingsFileAndApplyUpdate(cspellConfigUri, action);
     return readSettings(cspellConfigUri);
 }
 
-export async function readSettingsFileAndApplyUpdate(
-    cspellConfigUri: Uri,
-    action: (settings: CSpellSettings) => CSpellSettings
-): Promise<void> {
+export async function readSettingsFileAndApplyUpdate(cspellConfigUri: Uri, action: ConfigUpdateFn): Promise<void> {
     try {
         await updateConfigFile(cspellConfigUri, action);
     } catch (e) {

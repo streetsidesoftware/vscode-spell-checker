@@ -3,7 +3,7 @@ import { CSpellUserSettings } from './config/cspellConfig';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { RegExpPatternDefinition } from 'cspell-lib';
 import { isDefined } from './utils';
-import { logError } from './utils/log';
+import { logError } from 'common-utils/log.js';
 
 export type Range = [number, number];
 

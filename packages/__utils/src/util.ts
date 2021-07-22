@@ -1,25 +1,37 @@
+export function unique<T>(values: T[]): T[] {
+    return [...new Set<T>(values)];
+}
+
 export function uniqueFilter<T>(): (v: T) => boolean;
 export function uniqueFilter<T, U>(extractFn: (v: T) => U): (v: T) => boolean;
 export function uniqueFilter<T>(extractFn?: (v: T) => T): (v: T) => boolean {
-    const values = new Set<T>();
-    const extractor = extractFn || ((a) => a);
+    const seen = new Set<T>();
+
+    if (!extractFn) {
+        return (v: T) => !seen.has(v) && (seen.add(v), true);
+    }
+
     return (v: T) => {
-        const vv = extractor(v);
-        const ret = !values.has(vv);
-        values.add(vv);
-        return ret;
+        const vv = extractFn(v);
+        return !seen.has(vv) && (seen.add(vv), true);
     };
 }
 
-export function isDefined<T>(v: T | undefined | null): v is T {
-    return v !== undefined && v !== null;
+export function freqCount<T>(values: T[]): [T, number][] {
+    const map = new Map<T, number>();
+    values.forEach((v) => map.set(v, (map.get(v) || 0) + 1));
+    return [...map.entries()];
 }
 
-export function mustBeDefined<T>(t: T | undefined): T {
-    if (t === undefined) {
-        throw new Error('Must Be Defined');
-    }
-    return t;
+export type Maybe<T> = T | undefined;
+
+export function isDefined<T>(t: T | undefined | null): t is T {
+    return t !== undefined && t !== null;
+}
+
+export function mustBeDefined<T>(t: T | undefined | null): T {
+    if (isDefined(t)) return t;
+    throw new Error('Value must be defined.');
 }
 
 /**

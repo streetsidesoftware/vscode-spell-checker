@@ -3,7 +3,7 @@ import { genSequence } from 'gensequence';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
 import { WorkspaceConfigForDocument } from '../api';
-import { capitalize } from '../utils/util';
+import { capitalize } from 'common-utils/util.js';
 import {
     ConfigKinds,
     ConfigScope,

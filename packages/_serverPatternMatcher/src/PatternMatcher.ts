@@ -1,7 +1,7 @@
 import { RegExpPatternDefinition } from '@cspell/cspell-types';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
-import { isDefined } from './utils';
-import { logError } from './utils/log';
+import { isDefined } from 'common-utils/index.js';
+import { logError } from 'common-utils/log.js';
 import { PatternSettings } from './api';
 
 export type Range = [number, number];

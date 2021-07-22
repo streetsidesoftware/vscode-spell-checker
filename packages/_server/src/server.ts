@@ -34,7 +34,7 @@ import {
     SettingsCspell,
     stringifyPatterns,
 } from './config/documentSettings';
-import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from './utils/log';
+import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';

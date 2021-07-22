@@ -6,7 +6,7 @@ import { mocked } from 'ts-jest/utils';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 import { CSpellUserSettings } from '../config/cspellConfig';
-import { escapeRegExp } from './../utils/util';
+import { escapeRegExp } from 'common-utils/util.js';
 import {
     correctBadSettings,
     debugExports,

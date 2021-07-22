@@ -1,5 +1,5 @@
-import { isSupportedDoc, isSupportedUri, toFileUri, toUri } from './uriHelper';
-import { Uri } from 'vscode';
+import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, toFileUri, toUri } from './uriHelper';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 const uri = Uri.file(__filename);
 
@@ -39,5 +39,24 @@ describe('Validate uriHelper', () => {
         ${__filename}                                    | ${Uri.file(__filename)}
     `('toFileUri $uri', ({ uri, expected }) => {
         expect(toFileUri(uri).toString()).toBe(expected.toString());
+    });
+
+    test.each`
+        a                               | b                           | expected
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/c/file.txt'} | ${''}
+        ${'file:///a/b/'}               | ${'file:///a/b/c/file.txt'} | ${'c/file.txt'}
+        ${'file:///a/b'}                | ${'file:///a/b/c/file.txt'} | ${'c/file.txt'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/'}           | ${'../..'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b'}            | ${'../..'}
+        ${'file:///a/b/c/file.txt#156'} | ${'file:///a/b?x=1;b=2'}    | ${'../..'}
+        ${'file:///a/b/c/file.txt?x=1'} | ${'file:///a/b/c#55'}       | ${'..'}
+    `('relativeTo "$a" "$b"', ({ a, b, expected }) => {
+        const uriA = toUri(a);
+        const uriB = toUri(b);
+        const rel = relativeTo(uriA, uriB);
+        expect(rel).toBe(expected);
+        expect(UriUtils.joinPath(uriA, rel).toString()).toBe(
+            UriUtils.joinPath(cleanUri(uriB), '.').with({ fragment: uriA.fragment, query: uriA.query }).toString()
+        );
     });
 });

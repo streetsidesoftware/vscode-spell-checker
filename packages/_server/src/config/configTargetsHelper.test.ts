@@ -3,7 +3,7 @@ import { WorkspaceConfigForDocument } from '../api';
 import { URI } from 'vscode-uri';
 import { searchForConfig } from 'cspell-lib';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
-import { mustBeDefined } from '../utils/util';
+import { mustBeDefined } from 'common-utils/util.js';
 import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';
 import * as Path from 'path';
 

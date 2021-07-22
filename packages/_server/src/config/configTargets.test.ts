@@ -1,4 +1,4 @@
-import { capitalize } from '../utils/util';
+import { capitalize } from 'common-utils/util';
 import {
     ConfigKind,
     ConfigKinds,

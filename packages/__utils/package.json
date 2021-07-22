@@ -1,0 +1,40 @@
+{
+  "name": "common-utils",
+  "version": "1.0.0",
+  "description": "Shared Utils between server and client",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js",
+    "./autoLoad.js": "./dist/autoLoad.js",
+    "./file.js": "./dist/file.js",
+    "./index.js": "./dist/index.js",
+    "./log.js": "./dist/log.js",
+    "./logger.js": "./dist/logger.js",
+    "./timer.js": "./dist/timer.js",
+    "./uriHelper.js": "./dist/uriHelper.js",
+    "./util.js": "./dist/util.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*",
+        "dist/*.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "jest",
+    "watch": "tsc -p . --watch"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "ts-jest": "^27.0.4"
+  },
+  "dependencies": {
+    "vscode-uri": "^3.0.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "version": "0.1",
+    "import": [
+        "../../cSpell.json"
+    ],
+    "ignorePaths": [
+        "fileTypeMap.json"
+    ],
+    "enableFiletypes": [
+        "literate haskell",
+        "shellscript"
+    ]
+}

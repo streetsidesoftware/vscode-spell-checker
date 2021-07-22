@@ -29,6 +29,7 @@
     "@types/jest": "^26.0.21",
     "@types/micromatch": "^4.0.1",
     "@types/node": "^16.0.0",
+    "common-utils": "1.0.0",
     "cspell-glob": "^5.4.0",
     "cspell-lib": "^5.4.0",
     "fs-extra": "^10.0.0",
