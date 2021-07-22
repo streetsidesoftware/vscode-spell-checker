@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { create } from 'react-test-renderer';
 import { sampleAppState } from '../../test/fixtures/AppState';
@@ -17,15 +16,17 @@ describe('File Panel Verification', () => {
         expect(appState.settings.configs.file!.languageEnabled).toBe(true);
         panelRenderer.toTree()!.instance.enableLanguageId(false);
         expect(appState.settings.configs.file!.languageEnabled).toBe(false);
-        expect(appState._postedMessages).toEqual([{
-            command: 'EnableLanguageIdMessage',
-            value: {
-                enable: false,
-                languageId: 'typescript',
-                target: undefined,
-                uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
+        expect(appState._postedMessages).toEqual([
+            {
+                command: 'EnableLanguageIdMessage',
+                value: {
+                    enable: false,
+                    languageId: 'typescript',
+                    target: undefined,
+                    uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
+                },
             },
-        }]);
+        ]);
     });
 
     function getSampleAppState() {

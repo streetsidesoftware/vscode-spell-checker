@@ -3,7 +3,7 @@ const watch = require('node-watch');
 
 export type Events = 'update' | 'remove' | 'error';
 
-interface Watcher{
+interface Watcher {
     close: () => void;
 }
 
@@ -19,7 +19,7 @@ const watchedFiles = new Map<string, FileWatcher>();
 function listener(event: Events, name: string) {
     const watcher = watchedFiles.get(name);
     if (watcher) {
-        watcher.callbacks.forEach(fn => fn(name, event));
+        watcher.callbacks.forEach((fn) => fn(name, event));
     }
 }
 

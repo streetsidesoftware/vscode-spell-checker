@@ -1,4 +1,3 @@
-
 export interface AutoLoadCache<K, T> {
     (key: K): T;
     get: (key: K) => T;
@@ -40,7 +39,7 @@ export function createLazyValue<T>(loader: () => T): LazyValue<T> {
         return v as T;
     }) as LazyValue<T>;
 
-    getter.clear = () => v = notSet;
+    getter.clear = () => (v = notSet);
     getter.get = getter;
     return getter;
 }

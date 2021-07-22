@@ -14,21 +14,18 @@ describe('Validate Logger', () => {
 
         expect(connection.exit).not.toEqual(exit);
         // test logging
-        expect(connection.console.error.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('error')]);
-        expect(connection.console.warn.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('warn')]);
-        expect(connection.console.info.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('info')]);
-        expect(connection.console.log.mock.calls.map(a => a[0])).toEqual([
+        expect(connection.console.error.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('error')]);
+        expect(connection.console.warn.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('warn')]);
+        expect(connection.console.info.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('info')]);
+        expect(connection.console.log.mock.calls.map((a) => a[0])).toEqual([
             expect.stringContaining('log'),
             expect.stringContaining('debug'),
         ]);
         // test sequence
-        expect(connection.console.error.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^5\b/)]);
-        expect(connection.console.warn.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^4\b/)]);
-        expect(connection.console.info.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^3\b/)]);
-        expect(connection.console.log.mock.calls.map(a => a[0])).toEqual([
-            expect.stringMatching(/^1\b/),
-            expect.stringMatching(/^2\b/),
-        ]);
+        expect(connection.console.error.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^5\b/)]);
+        expect(connection.console.warn.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^4\b/)]);
+        expect(connection.console.info.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^3\b/)]);
+        expect(connection.console.log.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^1\b/), expect.stringMatching(/^2\b/)]);
     });
 
     test('Logger Early Binding', () => {
@@ -43,21 +40,18 @@ describe('Validate Logger', () => {
 
         expect(connection.exit).not.toEqual(exit);
         // test logging
-        expect(connection.console.error.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('error')]);
-        expect(connection.console.warn.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('warn')]);
-        expect(connection.console.info.mock.calls.map(a => a[0])).toEqual([expect.stringContaining('info')]);
-        expect(connection.console.log.mock.calls.map(a => a[0])).toEqual([
+        expect(connection.console.error.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('error')]);
+        expect(connection.console.warn.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('warn')]);
+        expect(connection.console.info.mock.calls.map((a) => a[0])).toEqual([expect.stringContaining('info')]);
+        expect(connection.console.log.mock.calls.map((a) => a[0])).toEqual([
             expect.stringContaining('log'),
             expect.stringContaining('debug'),
         ]);
         // test sequence
-        expect(connection.console.error.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^5\b/)]);
-        expect(connection.console.warn.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^4\b/)]);
-        expect(connection.console.info.mock.calls.map(a => a[0])).toEqual([expect.stringMatching(/^3\b/)]);
-        expect(connection.console.log.mock.calls.map(a => a[0])).toEqual([
-            expect.stringMatching(/^1\b/),
-            expect.stringMatching(/^2\b/),
-        ]);
+        expect(connection.console.error.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^5\b/)]);
+        expect(connection.console.warn.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^4\b/)]);
+        expect(connection.console.info.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^3\b/)]);
+        expect(connection.console.log.mock.calls.map((a) => a[0])).toEqual([expect.stringMatching(/^1\b/), expect.stringMatching(/^2\b/)]);
     });
 
     test('Logger onExit', () => {
@@ -127,11 +121,8 @@ describe('Validate Logger', () => {
         logger.error('error');
 
         const entries = logger.getPendingEntries();
-        expect(entries.map(e => e.msg)).toEqual([
-            'log', 'debug', 'info', 'warn', 'error'
-        ]);
+        expect(entries.map((e) => e.msg)).toEqual(['log', 'debug', 'info', 'warn', 'error']);
     });
-
 });
 
 function exit() {}
@@ -144,7 +135,7 @@ function makeConnection() {
             warn: jest.fn(),
             info: jest.fn(),
         },
-        onExit: (fn: () => void) => connection.exit = fn,
+        onExit: (fn: () => void) => (connection.exit = fn),
         exit,
     };
     return connection;

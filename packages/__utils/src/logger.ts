@@ -42,7 +42,7 @@ const logLevels: [string, LogLevel][] = [
 
 const levelMap = new Map<string, LogLevel>(logLevels);
 
-const stub = () => { };
+const stub = () => {};
 
 export class Logger {
     private connection: LoggerConnection | undefined;
@@ -56,10 +56,7 @@ export class Logger {
         [LogLevel.DEBUG]: stub,
     };
 
-    constructor(
-        private logLevel = LogLevel.DEBUG,
-        connection?: LoggerConnection,
-    ) {
+    constructor(private logLevel = LogLevel.DEBUG, connection?: LoggerConnection) {
         if (connection) {
             this.setConnection(connection);
         }
@@ -89,7 +86,7 @@ export class Logger {
             seq,
             level,
             ts: new Date(),
-            msg
+            msg,
         };
         this.writeLog(entry);
     }
@@ -111,12 +108,20 @@ export class Logger {
             this.loggers[LogLevel.INFO] = stub;
             this.loggers[LogLevel.DEBUG] = stub;
         });
-        this.loggers[LogLevel.ERROR] = (msg: string) => { connection.console.error(msg); };
-        this.loggers[LogLevel.WARNING] = (msg: string) => { connection.console.warn(msg); };
-        this.loggers[LogLevel.INFO] = (msg: string) => { connection.console.info(msg); };
-        this.loggers[LogLevel.DEBUG] = (msg: string) => { connection.console.log(msg); };
+        this.loggers[LogLevel.ERROR] = (msg: string) => {
+            connection.console.error(msg);
+        };
+        this.loggers[LogLevel.WARNING] = (msg: string) => {
+            connection.console.warn(msg);
+        };
+        this.loggers[LogLevel.INFO] = (msg: string) => {
+            connection.console.info(msg);
+        };
+        this.loggers[LogLevel.DEBUG] = (msg: string) => {
+            connection.console.log(msg);
+        };
 
-        this.logs.forEach(log => this.writeLog(log));
+        this.logs.forEach((log) => this.writeLog(log));
         this.logs.length = 0;
     }
 
@@ -146,10 +151,6 @@ export class Logger {
 }
 
 function toLogLevel(level: string | LogLevel) {
-    const lvl = typeof level === 'string'
-        ? levelMap.get(level.toUpperCase()) || LogLevel.NONE
-        : level;
-    return typeof lvl !== 'number' || lvl < LogLevel.NONE || lvl > LogLevel.DEBUG
-        ? LogLevel.DEBUG
-        : lvl;
+    const lvl = typeof level === 'string' ? levelMap.get(level.toUpperCase()) || LogLevel.NONE : level;
+    return typeof lvl !== 'number' || lvl < LogLevel.NONE || lvl > LogLevel.DEBUG ? LogLevel.DEBUG : lvl;
 }

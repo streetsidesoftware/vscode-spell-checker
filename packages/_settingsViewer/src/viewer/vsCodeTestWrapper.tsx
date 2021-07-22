@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { observable, toJS, computed, makeObservable, action } from 'mobx';
-import {observer} from 'mobx-react';
+import { observer } from 'mobx-react';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -9,7 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import {
-    ConfigurationChangeMessage, SelectTabMessage, SelectFolderMessage, SelectFileMessage, EnableLanguageIdMessage
+    ConfigurationChangeMessage,
+    SelectTabMessage,
+    SelectFolderMessage,
+    SelectFileMessage,
+    EnableLanguageIdMessage,
 } from '../api/message';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
@@ -53,11 +57,11 @@ class AppState {
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
         const uri = this.activeFolderUri;
-        return folders.filter(f => f.uri === uri)[0];
+        return folders.filter((f) => f.uri === uri)[0];
     }
     @computed get workspaceFolders(): WorkspaceFolder[] {
         const workspace = this.settings.workspace;
-        return workspace && workspace.workspaceFolders || [];
+        return (workspace && workspace.workspaceFolders) || [];
     }
     @computed get activeFolderUri(): string | undefined {
         return this.settings.activeFolderUri;
@@ -67,11 +71,11 @@ class AppState {
     }
     @computed get activeDocument(): TextDocument | undefined {
         const uri = this.activeFileUri;
-        return this.workspaceDocuments.filter(d => d.uri === uri)[0];
+        return this.workspaceDocuments.filter((d) => d.uri === uri)[0];
     }
     @computed get workspaceDocuments(): TextDocument[] {
         const workspace = this.settings.workspace;
-        return workspace && workspace.textDocuments || [];
+        return (workspace && workspace.textDocuments) || [];
     }
 
     @computed get enabledLanguageIds(): string[] {
@@ -97,7 +101,7 @@ const localeDisplay: [ConfigTarget, string][] = [
 ];
 
 @observer
-class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
+class VsCodeTestWrapperView extends React.Component<{ appState: AppState }> {
     render() {
         const appState = this.props.appState;
         const settings = appState.settings;
@@ -112,19 +116,17 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
                 <Table>
                     <TableHead key="title">
                         <TableRow>
-                            <TableCell>
-                                Scope
-                            </TableCell>
-                            <TableCell>
-                                Value
-                            </TableCell>
+                            <TableCell>Scope</TableCell>
+                            <TableCell>Value</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {localeDisplay.map(([field, name]) => <TableRow key={field}>
-                            <TableCell>{name}</TableCell>
-                            <TableCell>{getLocales(field)}</TableCell>
-                        </TableRow>)}
+                        {localeDisplay.map(([field, name]) => (
+                            <TableRow key={field}>
+                                <TableCell>{name}</TableCell>
+                                <TableCell>{getLocales(field)}</TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
                 <div>
@@ -144,9 +146,7 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
                     </div>
                 </div>
                 <div>
-                    <Button variant="contained" color="primary"
-                        onClick={this.onUpdateConfig}
-                    >
+                    <Button variant="contained" color="primary" onClick={this.onUpdateConfig}>
                         Toggle Single / Multi Folder Workspace
                     </Button>
                 </div>
@@ -155,13 +155,13 @@ class VsCodeTestWrapperView extends React.Component<{appState: AppState}> {
                 </div>
             </ErrorBoundary>
         );
-     }
+    }
 
-     onUpdateConfig = () => {
-         console.log('onUpdateConfig');
-         this.props.appState.nextSample();
-         postSettings();
-     }
+    onUpdateConfig = () => {
+        console.log('onUpdateConfig');
+        this.props.appState.nextSample();
+        postSettings();
+    };
 }
 
 const appState = new AppState();
@@ -179,7 +179,7 @@ ReactDOM.render(<VsCodeTestWrapperView appState={appState} />, document.getEleme
 
 const messageBus = new MessageBus(new VsCodeWebviewApi());
 
-messageBus.listenFor( 'RequestConfigurationMessage', postSettings );
+messageBus.listenFor('RequestConfigurationMessage', postSettings);
 
 function postSettings() {
     messageBus.postMessage({
@@ -187,14 +187,16 @@ function postSettings() {
         value: {
             activeTab: toJS(appState.activeTab),
             settings: toJS(appState.settings),
-        }
+        },
     });
 }
 
 function calcFileConfig() {
     const uri = appState.activeFileUri;
-    const doc = appState.workspaceDocuments.filter(doc => doc.uri === uri)[0];
-    if (!doc) { return; }
+    const doc = appState.workspaceDocuments.filter((doc) => doc.uri === uri)[0];
+    if (!doc) {
+        return;
+    }
     const languageId = doc.languageId;
     const dictionaries = appState.settings.dictionaries;
     const languageEnabled = appState.enabledLanguageIds.includes(languageId);
@@ -205,65 +207,47 @@ function calcFileConfig() {
         ...doc,
         fileEnabled: true,
         languageEnabled,
-        dictionaries: dictionaries.filter(dic => dic.languageIds.includes(languageId)),
-        configFiles: [
-            Path.join(folderPath, 'cspell.json'),
-            Path.join(workspacePath, 'cspell.config.json'),
-        ]
+        dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
+        configFiles: [Path.join(folderPath, 'cspell.json'), Path.join(workspacePath, 'cspell.config.json')],
     };
 }
 
-messageBus.listenFor(
-    'ConfigurationChangeMessage',
-    (msg: ConfigurationChangeMessage) => {
-        console.log('ConfigurationChangeMessage');
-        appState.updateSettings(msg.value.settings);
-    }
-);
+messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
+    console.log('ConfigurationChangeMessage');
+    appState.updateSettings(msg.value.settings);
+});
 
-messageBus.listenFor(
-    'SelectTabMessage',
-    (msg: SelectTabMessage) => {
-        console.log('SelectTabMessage');
-        appState.updateActiveTab(msg.value);
-    }
-);
+messageBus.listenFor('SelectTabMessage', (msg: SelectTabMessage) => {
+    console.log('SelectTabMessage');
+    appState.updateActiveTab(msg.value);
+});
 
-messageBus.listenFor(
-    'SelectFolderMessage',
-    (msg: SelectFolderMessage) => {
-        console.log('SelectFolderMessage');
-        appState.settings.activeFolderUri = msg.value;
-    }
-);
+messageBus.listenFor('SelectFolderMessage', (msg: SelectFolderMessage) => {
+    console.log('SelectFolderMessage');
+    appState.settings.activeFolderUri = msg.value;
+});
 
-messageBus.listenFor(
-    'SelectFileMessage',
-    (msg: SelectFileMessage) => {
-        console.log('SelectFileMessage');
-        appState.settings.activeFileUri = msg.value;
-        calcFileConfig();
-        postSettings();
-    }
-);
+messageBus.listenFor('SelectFileMessage', (msg: SelectFileMessage) => {
+    console.log('SelectFileMessage');
+    appState.settings.activeFileUri = msg.value;
+    calcFileConfig();
+    postSettings();
+});
 
-messageBus.listenFor(
-    'EnableLanguageIdMessage',
-    (msg: EnableLanguageIdMessage) => {
-        console.log('EnableLanguageIdMessage');
-        console.log(JSON.stringify(msg, null, 2));
-        const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
-        const { target = foundConfig.target, languageId, enable: enabled } = msg.value;
-        const config: Config = appState.settings.configs[target];
-        const ids = new Set(config.languageIdsEnabled || []);
-        if (enabled) {
-            ids.add(languageId);
-        } else {
-            ids.delete(languageId);
-        }
-        const languageIdsEnabled = [...ids].sort();
-        appState.settings.configs[target] = { ...config, languageIdsEnabled };
-        calcFileConfig();
-        postSettings();
+messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) => {
+    console.log('EnableLanguageIdMessage');
+    console.log(JSON.stringify(msg, null, 2));
+    const foundConfig = extractConfig(appState.settings.configs, 'languageIdsEnabled');
+    const { target = foundConfig.target, languageId, enable: enabled } = msg.value;
+    const config: Config = appState.settings.configs[target];
+    const ids = new Set(config.languageIdsEnabled || []);
+    if (enabled) {
+        ids.add(languageId);
+    } else {
+        ids.delete(languageId);
     }
-);
+    const languageIdsEnabled = [...ids].sort();
+    appState.settings.configs[target] = { ...config, languageIdsEnabled };
+    calcFileConfig();
+    postSettings();
+});

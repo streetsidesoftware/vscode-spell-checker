@@ -3,7 +3,7 @@ import { PatternMatcher, Range, isRegExpMatchTimeout, isRegExpMatch } from './Pa
 
 const settings = {
     patterns: [],
-    ...getDefaultSettings()
+    ...getDefaultSettings(),
 };
 
 const defaultTimeout = 5000;
@@ -16,17 +16,21 @@ describe('Validate PatternMatcher', () => {
         expect(r.get('Email')).toBeDefined();
         const matchedEmails = r.get('Email')!;
         expect(matchedEmails.matches).toHaveLength(1);
-        const m = matchedEmails.matches[0]
+        const m = matchedEmails.matches[0];
         expect(isRegExpMatchTimeout(m)).toBe(false);
         expect(isRegExpMatch(m)).toBe(true);
         if (isRegExpMatch(m)) {
-            const emails = m.ranges.map(r => extract(sampleText, r));
+            const emails = m.ranges.map((r) => extract(sampleText, r));
             expect(emails).toEqual(['<info@example.com>']);
         }
     });
 
     testMatcher('patterns', async (matcher) => {
-        const result = await matcher.matchPatternsInText([{ name: 'email', pattern: (/(?<![\w.+\-_])[\w.+\-_]+@[\w.+\-_]+/g).toString()}], sampleText, settings);
+        const result = await matcher.matchPatternsInText(
+            [{ name: 'email', pattern: /(?<![\w.+\-_])[\w.+\-_]+@[\w.+\-_]+/g.toString() }],
+            sampleText,
+            settings
+        );
         const r = mapResults(result);
         expect(r.get('email')).toBeDefined();
         const matchedEmailsResult = r.get('email')!;
@@ -35,13 +39,13 @@ describe('Validate PatternMatcher', () => {
         expect(isRegExpMatchTimeout(matchedEmails)).toBe(false);
         expect(isRegExpMatch(matchedEmails)).toBe(true);
         if (isRegExpMatch(matchedEmails)) {
-            const emails = matchedEmails.ranges.map(r => extract(sampleText, r));
+            const emails = matchedEmails.ranges.map((r) => extract(sampleText, r));
             expect(emails).toEqual(['info@example.com']);
         }
     });
 
     testMatcher('regexp match everything', async (matcher) => {
-        const result = await matcher.matchPatternsInText([(/.*/).toString()], sampleText, settings);
+        const result = await matcher.matchPatternsInText([/.*/.toString()], sampleText, settings);
         const r = mapResults(result);
         expect(r.get('Everything')).toBeDefined();
         const matchedResults = r.get('Everything')!;
@@ -50,23 +54,26 @@ describe('Validate PatternMatcher', () => {
         expect(isRegExpMatchTimeout(matches)).toBe(false);
         expect(isRegExpMatch(matches)).toBe(true);
         if (isRegExpMatch(matches)) {
-            const matchedText = matches.ranges.map(r => extract(sampleText, r));
+            const matchedText = matches.ranges.map((r) => extract(sampleText, r));
             expect(matchedText).toEqual(['']);
         }
     });
 
-    testMatcher('timeout', async (matcher) => {
-        const slowRegexp = '(x+x+)+y'; // lgtm[js/redos]
-        const result = await matcher.matchPatternsInText([slowRegexp], sampleText, settings);
-        const r = mapResults(result);
-        expect(r.get(slowRegexp)).toBeDefined();
-        const matchedResults = r.get(slowRegexp)!;
-        expect(matchedResults.matches).toHaveLength(1);
-        const matches = matchedResults.matches[0];
-        expect(isRegExpMatchTimeout(matches)).toBe(true);
-        expect(isRegExpMatch(matches)).toBe(false);
-    }, 1000);
-
+    testMatcher(
+        'timeout',
+        async (matcher) => {
+            const slowRegexp = '(x+x+)+y'; // lgtm[js/redos]
+            const result = await matcher.matchPatternsInText([slowRegexp], sampleText, settings);
+            const r = mapResults(result);
+            expect(r.get(slowRegexp)).toBeDefined();
+            const matchedResults = r.get(slowRegexp)!;
+            expect(matchedResults.matches).toHaveLength(1);
+            const matches = matchedResults.matches[0];
+            expect(isRegExpMatchTimeout(matches)).toBe(true);
+            expect(isRegExpMatch(matches)).toBe(false);
+        },
+        1000
+    );
 });
 
 function testMatcher<T = void>(name: string, fn: (matcher: PatternMatcher) => Promise<T>, timeoutMs = defaultTimeout) {
@@ -78,12 +85,12 @@ function run<T = void>(fn: (matcher: PatternMatcher) => Promise<T>, timeoutMs: n
     return () => fn(matcher).finally(() => matcher.dispose());
 }
 
-function mapResults<T extends {name: string}>(values: T[]): Map<string, T> {
-    return new Map(values.map(v => [v.name, v]));
+function mapResults<T extends { name: string }>(values: T[]): Map<string, T> {
+    return new Map(values.map((v) => [v.name, v]));
 }
 
 function extract(text: string, range: Range) {
-    return text.slice(range[0], range[1])
+    return text.slice(range[0], range[1]);
 }
 
 const sampleText = `

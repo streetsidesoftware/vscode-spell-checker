@@ -11,13 +11,11 @@ import {
 } from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
 
-
 describe('Validate Messages', () => {
-
     it('isMessage', () => {
         const msgSelectFolder: SelectFolderMessage = {
             command: 'SelectFolderMessage',
-            value: '/'
+            value: '/',
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
@@ -40,7 +38,7 @@ describe('Validate Messages', () => {
     it('isConfigurationChangeMessage', () => {
         const msgSelectFolder: SelectFolderMessage = {
             command: 'SelectFolderMessage',
-            value: '/'
+            value: '/',
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
@@ -55,7 +53,7 @@ describe('Validate Messages', () => {
     test('isConfigurationChangeMessage', () => {
         const msgSelectFolder: SelectFolderMessage = {
             command: 'SelectFolderMessage',
-            value: '/'
+            value: '/',
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
@@ -70,7 +68,7 @@ describe('Validate Messages', () => {
     test('isSelectFileMessage', () => {
         const msgUpdateCounter: SelectFileMessage = {
             command: 'SelectFileMessage',
-            value: '../file.ts'
+            value: '../file.ts',
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
@@ -85,7 +83,7 @@ describe('Validate Messages', () => {
     test('isSelectFolderMessage', () => {
         const msgUpdateCounter: SelectFolderMessage = {
             command: 'SelectFolderMessage',
-            value: '../file.ts'
+            value: '../file.ts',
         };
         const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
             command: 'ConfigurationChangeMessage',
@@ -99,7 +97,8 @@ describe('Validate Messages', () => {
 
     test('isEnableLocaleMessage', () => {
         const msg: EnableLocaleMessage = {
-            command: 'EnableLocaleMessage', value: { target: 'folder', uri: 'uri', locale: 'en', enable: true }
+            command: 'EnableLocaleMessage',
+            value: { target: 'folder', uri: 'uri', locale: 'en', enable: true },
         };
         expect(isEnableLocaleMessage({ command: 'SelectFolderMessage' })).toBe(false);
         expect(isEnableLocaleMessage({ command: 'EnableLocaleMessage' })).toBe(false);

@@ -1,4 +1,3 @@
-
 export interface WorkspaceFolder {
     readonly uri: string;
     readonly name: string;

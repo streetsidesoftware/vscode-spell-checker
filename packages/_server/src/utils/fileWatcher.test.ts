@@ -2,7 +2,7 @@ import watch from 'node-watch';
 import { FileWatcher } from './fileWatcher';
 import { NodeWatchMock } from '../__mocks__/node-watch';
 
-const mockWatch = (watch as unknown) as NodeWatchMock;
+const mockWatch = watch as unknown as NodeWatchMock;
 
 describe('Validate FileWatcher', () => {
     beforeEach(() => {

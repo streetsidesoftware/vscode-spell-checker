@@ -12,22 +12,26 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Panel } from './Panel';
 
-
 @observer
 export class SettingsViewer extends React.Component<{ appState: AppState }> {
     render(): JSX.Element {
         const appState = this.props.appState;
         const activeTabIndex = appState.activeTabIndex || 0;
-        const renderTab = (tab: AppTab, index: number) =>
+        const renderTab = (tab: AppTab, index: number) => (
             <Panel key={tab.label} className={appState.activeTabIndex === index ? 'panel active' : 'panel'}>
-                {isConfigTarget(tab.target)
-                    ? <PanelConfig appState={appState} target={tab.target}></PanelConfig>
-                    : tab.target === 'file' ? <PanelFile appState={appState}></PanelFile>
-                        : tab.target === 'dictionaries' ? <PanelDictionaries appState={appState}></PanelDictionaries>
-                            : tab.target === 'about' ? <PanelAbout appState={appState}></PanelAbout>
-                                : <div></div>
-                }
-            </Panel>;
+                {isConfigTarget(tab.target) ? (
+                    <PanelConfig appState={appState} target={tab.target}></PanelConfig>
+                ) : tab.target === 'file' ? (
+                    <PanelFile appState={appState}></PanelFile>
+                ) : tab.target === 'dictionaries' ? (
+                    <PanelDictionaries appState={appState}></PanelDictionaries>
+                ) : tab.target === 'about' ? (
+                    <PanelAbout appState={appState}></PanelAbout>
+                ) : (
+                    <div></div>
+                )}
+            </Panel>
+        );
 
         const handleChange = (_event: React.ChangeEvent<JSX.Element>, newValue: number) => {
             this.activateTab(newValue);
@@ -44,19 +48,17 @@ export class SettingsViewer extends React.Component<{ appState: AppState }> {
                         variant="scrollable"
                         scrollButtons="auto"
                     >
-                        {appState.tabs.map((tab, index) =>
+                        {appState.tabs.map((tab, index) => (
                             <Tab key={index} label={tab.label} />
-                        )}
+                        ))}
                     </Tabs>
                 </AppBar>
-                <div>
-                    {appState.tabs.map(renderTab)}
-                </div>
+                <div>{appState.tabs.map(renderTab)}</div>
             </ThemeProvider>
         );
     }
 
     activateTab: (activeIndex: number) => void = (activeIndex: number) => {
         this.props.appState.actionActivateTabIndex(activeIndex);
-    }
+    };
 }

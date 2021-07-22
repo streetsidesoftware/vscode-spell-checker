@@ -8,20 +8,19 @@ import { getCssVar, Theme } from '../VSCodeColors/vscodeColors';
 const generateColors = false;
 
 describe('Ensure colors match', () => {
-
     if (generateColors) {
         generateColorsStatic();
     }
 
-    colors.colorsUsed.forEach(name => {
+    colors.colorsUsed.forEach((name) => {
         test(`Color: ${name}`, () => {
             const dark = colorsStatic.staticColors.dark.get(name);
             expect(dark).toBe(getCssVar(name, 'dark'));
-            expect(dark).toBeDefined()
+            expect(dark).toBeDefined();
             const light = colorsStatic.staticColors.light.get(name);
             expect(light).toBe(getCssVar(name, 'light'));
             expect(light).toBeDefined();
-        })
+        });
     });
 });
 
@@ -47,12 +46,11 @@ export const staticColors = {
 };
 `;
     fs.writeFileSync(fileName, content, 'utf8');
-
 }
 
 function calcColors(theme: Theme): string[] {
     const result = [...colors.colorsUsed]
-        .map(name => [name, getCssVar(name, theme)] as [string, string | undefined])
+        .map((name) => [name, getCssVar(name, theme)] as [string, string | undefined])
         .filter(([, value]) => !!value)
         .map(([key, value]) => `['${key}', '${value}']`);
     return result;

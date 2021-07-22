@@ -22,7 +22,7 @@ interface Business {
 
 describe('Validate Pipe', () => {
     const student1: Person = {
-        name: 'A'
+        name: 'A',
     };
     const student2: Person = {
         name: 'George',
@@ -30,13 +30,13 @@ describe('Validate Pipe', () => {
         address: {
             street: 'main',
             city: 'Seattle',
-            postcode: '90211'
+            postcode: '90211',
         },
-        friends: [student1]
+        friends: [student1],
     };
     const business2: Business = {
-        owner: student2
-    }
+        owner: student2,
+    };
     test('pipe', () => {
         expect(pipe(student1)).toBe(student1);
         expect(pipe(student1, extract('address'), extract('postcode'), defaultTo('90210'))).toBe('90210');
@@ -49,7 +49,19 @@ describe('Validate Pipe', () => {
         expect(pipe(business2, extract('owner', 'friends', 1, 'name'))).toBeUndefined();
     });
     test('map', () => {
-        expect(pipe(student2, extract('name'), map(s => s.toUpperCase()))).toBe(student2.name.toUpperCase());
-        expect(pipe(student1, extract('dob'), map(s => s.toUpperCase()))).toBeUndefined();
+        expect(
+            pipe(
+                student2,
+                extract('name'),
+                map((s) => s.toUpperCase())
+            )
+        ).toBe(student2.name.toUpperCase());
+        expect(
+            pipe(
+                student1,
+                extract('dob'),
+                map((s) => s.toUpperCase())
+            )
+        ).toBeUndefined();
     });
 });

@@ -8,7 +8,7 @@ describe('Validate Util Functions', () => {
         logDebug('debug');
         logInfo('info');
 
-        expect(logger.getPendingEntries().map(e => e.msg)).toEqual([
+        expect(logger.getPendingEntries().map((e) => e.msg)).toEqual([
             expect.stringContaining('setWorkspaceFolders'),
             expect.stringContaining('setWorkspaceBase'),
             expect.stringMatching(/log\s+.*log.test.ts/),
