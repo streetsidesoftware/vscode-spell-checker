@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('./webpack.base');
 
 const tsConfig = require('./tsconfig.json');
-const target = path.resolve(tsConfig[ 'compilerOptions' ][ 'outDir' ]);
+const target = path.resolve(tsConfig['compilerOptions']['outDir']);
 const dist = path.join(target, 'webapp');
 const TerserPlugin = require('terser-webpack-plugin');
 
