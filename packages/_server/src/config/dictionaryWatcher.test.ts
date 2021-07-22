@@ -4,7 +4,7 @@ import { DictionaryWatcher } from './dictionaryWatcher';
 import watch from 'node-watch';
 import { NodeWatchMock } from '../__mocks__/node-watch';
 
-const mockWatch = (watch as unknown) as NodeWatchMock;
+const mockWatch = watch as unknown as NodeWatchMock;
 
 const dictA = join(__dirname, 'dictA.txt');
 const dictB = join(__dirname, 'dictB.txt');

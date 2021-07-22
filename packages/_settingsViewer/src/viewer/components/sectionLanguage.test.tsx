@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
@@ -9,7 +8,7 @@ import { sampleAppState } from '../../test/fixtures/AppState';
 describe('SectionLanguage Verification', () => {
     it('tests the snapshots', () => {
         const appState = getSampleAppState();
-        configTargets.forEach(target => {
+        configTargets.forEach((target) => {
             const panelRenderer = create(<SectionLanguage appState={appState} target={target}></SectionLanguage>).toJSON()!;
             expect(panelRenderer).toMatchSnapshot(`<SectionLanguage> for target: ${target}`);
         });
@@ -21,7 +20,7 @@ describe('SectionLanguage Verification', () => {
         const panelRenderer = create(<SectionLanguage appState={appState} target={target}></SectionLanguage>);
         expect(panelRenderer.toJSON()).toMatchSnapshot(`<SectionLanguage> for target: ${target}`);
         expect(appState.settings.configs.user!.locales).not.toContain('cs');
-        panelRenderer.toTree()!.instance.handleSelect({ code: 'cs', enabled: false});
+        panelRenderer.toTree()!.instance.handleSelect({ code: 'cs', enabled: false });
         expect(appState.settings.configs.user!.locales).toContain('cs');
     });
 

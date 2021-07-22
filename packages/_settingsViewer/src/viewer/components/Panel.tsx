@@ -5,7 +5,5 @@ interface Props {
 }
 
 export function Panel(props: React.PropsWithChildren<Props>) {
-    return <div className={props.className}>
-        {props.children}
-    </div>
+    return <div className={props.className}>{props.children}</div>;
 }

@@ -133,7 +133,7 @@ const mock = jest
     .fn<Watcher, [string, Options | WatcherCallback | undefined, WatcherCallback | undefined]>()
     .mockImplementation(addCallback);
 
-const mockWatcher: NodeWatchMock = (mock as unknown) as NodeWatchMock;
+const mockWatcher: NodeWatchMock = mock as unknown as NodeWatchMock;
 mockWatcher.__trigger = trigger;
 mockWatcher.__getWatchers = getWatchers;
 mockWatcher.__reset = reset;

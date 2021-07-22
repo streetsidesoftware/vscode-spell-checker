@@ -23,7 +23,8 @@ import { DictionaryTargetTypes } from './DictionaryTargets';
 import * as config from './vsConfig';
 import { InspectScope } from './vsConfig';
 import { CSpellSettings } from '@cspell/cspell-types';
-import { fileExists } from '../util/file';
+import { fileExists } from 'common-utils/file.js';
+import { writeConfigFile } from './configFileReadWrite';
 
 performance.mark('settings.ts imports done');
 
@@ -349,7 +350,7 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
 
     async function updateCSpellFile(settingsFilename: Uri | undefined, defaultValue: CSpellUserSettings[K] | undefined): Promise<boolean> {
         if (!settingsFilename) return false;
-        await readSettingsFileAndApplyUpdate(settingsFilename, (settings) => {
+        await readSettingsFileAndApplyUpdate(settingsFilename, (settings: CSpellUserSettings) => {
             const v = settings[section];
             const newValue = v !== undefined ? applyFn(v) : applyFn(defaultValue);
             const newSettings = { ...settings };
@@ -423,7 +424,7 @@ export async function createConfigFileInFolder(folder: Uri, overwrite?: boolean)
         }
     }
 
-    await fs.writeJson(fileUri.fsPath, settingsFileTemplate, { encoding: 'utf8', spaces: 4 });
+    await writeConfigFile(fileUri, settingsFileTemplate);
 
     return fileUri;
 }

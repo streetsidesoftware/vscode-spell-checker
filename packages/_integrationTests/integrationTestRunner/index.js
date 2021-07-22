@@ -73,17 +73,19 @@ function runTests(executablePath) {
 }
 
 function resolvePath(optionalPath, defaultPath) {
-    return optionalPath && path.resolve(process.cwd(), optionalPath) || defaultPath;
+    return (optionalPath && path.resolve(process.cwd(), optionalPath)) || defaultPath;
 }
 
 function downloadExecutableAndRunTests() {
-    downloadAndUnzipVSCode(process.env.CODE_VERSION).then(executablePath => {
-        runTests(executablePath)
-    }).catch(err => {
-        console.error('Failed to run test with error:')
-        console.log(err);
-        process.exit(1);
-    })
+    downloadAndUnzipVSCode(process.env.CODE_VERSION)
+        .then((executablePath) => {
+            runTests(executablePath);
+        })
+        .catch((err) => {
+            console.error('Failed to run test with error:');
+            console.log(err);
+            process.exit(1);
+        });
 }
 
-downloadExecutableAndRunTests()
+downloadExecutableAndRunTests();

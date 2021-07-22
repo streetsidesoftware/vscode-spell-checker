@@ -21,12 +21,10 @@
         "clean-build": "yarn run clean && yarn run build",
         "build": "webpack --mode none",
         "build-production": "yarn run clean && webpack --mode production",
-        "build-integration-test": "yarn run build && cd ../_integrationTests && yarn install && yarn run build",
-        "lint": "eslint 'src/**'",
+        "lint": "eslint \"src/**/*.{ts,js}\"",
         "version": "yarn run package-extension",
         "watch": "yarn run build --watch",
         "test": "jest",
-        "test-integration": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_DATA_DIR=./temp/vscode node ../_integrationTests/integrationTestRunner",
         "test-watch": "jest --watch"
     },
     "devDependencies": {
@@ -38,6 +36,7 @@
         "@types/source-map-support": "^0.5.3",
         "@types/vscode": "^1.54.0",
         "comment-json": "^4.1.0",
+        "common-utils": "1.0.0",
         "cross-env": "^7.0.3",
         "fs-extra": "^10.0.0",
         "jest": "^27.0.1",

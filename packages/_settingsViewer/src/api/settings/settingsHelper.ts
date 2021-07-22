@@ -6,7 +6,6 @@ export interface ExtractConfigResult<T> {
 }
 
 export function extractConfig<K extends keyof Config>(configs: Configs, key: K): ExtractConfigResult<Config[K]> {
-
     for (let i = configTargets.length - 1; i >= 0; i--) {
         const target = configTargets[i];
         if (configs[target] && configs[target]![key]) {
@@ -44,5 +43,8 @@ export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>(
     folder: 2,
 });
 
-
-export const configTargetOrder = Object.freeze(Object.entries(configTargetToIndex).sort((a, b) => a[1] - b[1]).map(a => a[0]) as ConfigTarget[]);
+export const configTargetOrder = Object.freeze(
+    Object.entries(configTargetToIndex)
+        .sort((a, b) => a[1] - b[1])
+        .map((a) => a[0]) as ConfigTarget[]
+);

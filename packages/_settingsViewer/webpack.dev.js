@@ -15,9 +15,8 @@ const baseDevConfig = {
         },
         compress: true,
         port: 3000,
-    }
+    },
 };
-
 
 const viewerConfig = {
     ...baseDevConfig,
@@ -44,7 +43,7 @@ const viewerConfig = {
     ],
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
-        fallback: { 'path': require.resolve('path-browserify') }
+        fallback: { path: require.resolve('path-browserify') },
     },
 };
 

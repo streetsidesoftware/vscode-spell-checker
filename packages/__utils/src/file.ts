@@ -1,4 +1,4 @@
-import { Uri } from 'vscode';
+import { URI as Uri } from 'vscode-uri';
 import { access } from 'fs/promises';
 
 export async function fileExists(uri: Uri): Promise<boolean> {

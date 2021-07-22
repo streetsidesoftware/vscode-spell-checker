@@ -3,15 +3,14 @@
 /** @type { import("@cspell/cspell-types").CSpellUserSettings } */
 const cspell = {
     description: 'js-config example',
-    languageSettings: [
-    ],
+    languageSettings: [],
     allowCompoundWords: false,
     dictionaryDefinitions: [
         {
             name: 'custom-terms',
             path: './custom-terms.txt',
             scope: 'workspace',
-            addWords: true
+            addWords: true,
         },
     ],
     dictionaries: ['custom-terms'],

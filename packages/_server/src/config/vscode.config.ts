@@ -1,5 +1,5 @@
 import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
-import { log } from '../utils/log';
+import { log } from 'common-utils/log.js';
 
 export interface TextDocumentUri {
     uri: string;

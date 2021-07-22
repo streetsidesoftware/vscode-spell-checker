@@ -1,0 +1,17 @@
+.pnp.js
+.vscode
+.vscode-test
+.vscode/
+[tT]emp/
+*.d.ts
+**/dist/
+**/yarn.lock
+CHANGELOG.md
+coverage
+docs/_site
+node_modules
+packages/_integrationTests/out/
+packages/*/dist/
+packages/client/settingsViewer/
+tsconfig*.json
+samples/php/**/vendor

@@ -1,4 +1,3 @@
-
 export function commonPrefix(values: string[]): string {
     if (!values.length) return '';
     const min = values.reduce((min, curr) => (min <= curr ? min : curr));

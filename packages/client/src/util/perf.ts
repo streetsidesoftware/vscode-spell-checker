@@ -46,7 +46,7 @@ export class PerformanceTimeline {
     }
 
     public getEntriesByName(name: string): TimeLineEvent[] {
-        return this.timeLine.filter(e => e.name === name);
+        return this.timeLine.filter((e) => e.name === name);
     }
 }
 
@@ -55,7 +55,7 @@ export function calcDuration(a: HTime, b: HTime): number {
 }
 
 export function toMilliseconds(t: HTime): number {
-    return (t[0] + t[1] * 1.e-9) * 1000;
+    return (t[0] + t[1] * 1e-9) * 1000;
 }
 
 export const performance = new PerformanceTimeline();

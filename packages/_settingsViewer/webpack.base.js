@@ -30,25 +30,25 @@ const baseConfig = {
                 exclude: /node_modules/,
                 loader: 'file-loader',
                 options: {
-                    name: '[path][name].[ext]'
-                }
+                    name: '[path][name].[ext]',
+                },
             },
             {
                 test: /\.(woff2?)$/,
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: 'url-loader'
+                        loader: 'url-loader',
                     },
-                ]
+                ],
             },
             {
                 test: /\.(pdf|jpg|png|gif|svg|ico)$/,
                 use: [
                     {
-                        loader: 'url-loader'
+                        loader: 'url-loader',
                     },
-                ]
+                ],
             },
         ],
     },

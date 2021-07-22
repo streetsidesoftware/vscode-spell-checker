@@ -1,2 +1,1 @@
-export * from './util';
-export * from './uriHelper';
+export * from 'common-utils/util.js';

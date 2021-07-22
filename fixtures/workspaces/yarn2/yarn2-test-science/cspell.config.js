@@ -5,9 +5,7 @@ require('./.pnp.js').setup();
 /** @type { import("@cspell/cspell-types").CSpellUserSettings } */
 const cspell = {
     description: 'Make cspell Yarn 2 PNP aware',
-    import: [
-        '@cspell/dict-scientific-terms-us/cspell-ext.json'
-    ]
+    import: ['@cspell/dict-scientific-terms-us/cspell-ext.json'],
 };
 
 module.exports = cspell;

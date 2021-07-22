@@ -830,10 +830,12 @@
     "version-prerelease": "yarn run version-release -p alpha",
     "version-release": "yarn run test-vsce-build && standard-version",
     "package-extension": "vsce package -o ./build",
+    "prettier": "prettier \"**/*.{ts,tsx,js}\" -c",
+    "prettier-fix": "yarn run prettier -w",
     "test-vsce-build": "vsce package -o ./temp",
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
-    "lint": "yarn workspaces run lint",
+    "lint": "yarn workspaces run lint && yarn run prettier",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
     "update-packages": "yarn upgrade"

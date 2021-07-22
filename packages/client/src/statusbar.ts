@@ -4,7 +4,7 @@ import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client';
 import * as infoViewer from './infoViewer';
-import { isSupportedUri, isSupportedDoc } from './util';
+import { isSupportedUri, isSupportedDoc } from 'common-utils/uriHelper.js';
 import { sectionCSpell } from './settings';
 import { getCSpellDiags } from './diags';
 

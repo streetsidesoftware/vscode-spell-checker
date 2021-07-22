@@ -33,9 +33,10 @@ import {
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
-import { Maybe, setOfSupportedSchemes, supportedSchemes } from '../util';
+import { Maybe } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
 import { logErrors, silenceErrors } from '../util/errors';
+import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];

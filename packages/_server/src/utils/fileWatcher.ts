@@ -1,7 +1,7 @@
 import watch from 'node-watch';
 import { FSWatcher } from 'fs';
 import { Disposable } from 'vscode-languageserver/node';
-import { logError } from './log';
+import { logError } from 'common-utils/log.js';
 
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;

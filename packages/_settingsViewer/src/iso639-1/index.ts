@@ -8,11 +8,10 @@ export interface LangCountryPair {
 }
 
 const langCodes = new Map<string, LangCountryPair>(
-    codes
-        .map((parts) => {
-            const [code, lang, country = ''] = parts;
-            return [code, { code, lang, country }] as [string, LangCountryPair];
-        })
+    codes.map((parts) => {
+        const [code, lang, country = ''] = parts;
+        return [code, { code, lang, country }] as [string, LangCountryPair];
+    })
 );
 
 const regExReplace = /^([a-z]{2})[-_]?([a-z]{0,2})$/i;

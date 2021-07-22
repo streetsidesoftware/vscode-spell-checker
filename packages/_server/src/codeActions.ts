@@ -7,7 +7,7 @@ import { SpellingDictionary, constructSettingsForText, getDictionary, Text } fro
 import { isUriAllowed } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
-import { log, logDebug } from './utils/log';
+import { log, logDebug } from 'common-utils/log.js';
 import { ClientApi } from './clientApi';
 import { format } from 'util';
 import { clientCommands as cc } from './commands';
@@ -21,7 +21,7 @@ import {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from './config/configTargets';
-import { capitalize } from './utils/util';
+import { capitalize } from 'common-utils/util.js';
 
 const createCommand = LangServerCommand.create;
 

@@ -27,6 +27,7 @@
     "@cspell/cspell-types": "^5.3.12",
     "@types/jest": "^26.0.21",
     "@types/node": "^16.0.0",
+    "common-utils": "1.0.0",
     "jest": "^27.0.1",
     "ts-jest": "^27.0.1",
     "ts-loader": "^9.0.2",

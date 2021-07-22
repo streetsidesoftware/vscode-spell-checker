@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {observer} from 'mobx-react';
+import { observer } from 'mobx-react';
 import { AppState } from '../AppState';
 import { toJS } from 'mobx';
 import { SectionDictionaries } from './sectionDictionaries';
@@ -15,9 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { SectionConfigFileList } from './sectionConfigFileList';
 
-
 @observer
-export class PanelFile extends React.Component<{appState: AppState}> {
+export class PanelFile extends React.Component<{ appState: AppState }> {
     render(): JSX.Element {
         const appState = this.props.appState;
         const settings = appState.settings;
@@ -33,9 +32,7 @@ export class PanelFile extends React.Component<{appState: AppState}> {
         };
         return (
             <div>
-                <h2>
-                    File
-                </h2>
+                <h2>File</h2>
                 <FormControl>
                     <InputLabel id="select-file-label">File</InputLabel>
                     <Select
@@ -44,7 +41,11 @@ export class PanelFile extends React.Component<{appState: AppState}> {
                         value={appState.activeFileUri}
                         onChange={(evt) => select(evt.target as HTMLSelectElement)}
                     >
-                        {appState.documentSelection.map(item => (<MenuItem value={item.value} key={item.value}>{item.label}</MenuItem>))}
+                        {appState.documentSelection.map((item) => (
+                            <MenuItem value={item.value} key={item.value}>
+                                {item.label}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <h2>Settings</h2>
@@ -53,14 +54,9 @@ export class PanelFile extends React.Component<{appState: AppState}> {
                         <ListItemIcon>
                             <IconDescription />
                         </ListItemIcon>
-                        <ListItemText
-                            primary="File enabled"
-                        />
+                        <ListItemText primary="File enabled" />
                         <ListItemSecondaryAction>
-                            <Checkbox
-                                disabled={true}
-                                checked={fileEnabled}
-                            />
+                            <Checkbox disabled={true} checked={fileEnabled} />
                         </ListItemSecondaryAction>
                     </ListItem>
                     <ListItem role="checkbox" onClick={onClick}>
@@ -71,21 +67,19 @@ export class PanelFile extends React.Component<{appState: AppState}> {
                             primary={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
                         />
                         <ListItemSecondaryAction>
-                            <Checkbox
-                                id="checkbox-language-enabled"
-                                checked={languageEnabled}
-                                onClick={onClick}
-                            />
+                            <Checkbox id="checkbox-language-enabled" checked={languageEnabled} onClick={onClick} />
                         </ListItemSecondaryAction>
                     </ListItem>
                 </List>
                 <SectionConfigFileList configFiles={configFiles}></SectionConfigFileList>
                 <SectionDictionaries dictionaries={dictionaries} sectionTitle="Active Dictionaries"></SectionDictionaries>
-                {appState.debugMode ?
+                {appState.debugMode ? (
                     <div>
                         <pre>{JSON.stringify(toJS(config), null, 2)}</pre>
                     </div>
-                : ''}
+                ) : (
+                    ''
+                )}
             </div>
         );
     }

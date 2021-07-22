@@ -3,9 +3,24 @@ import * as config from './vsConfig';
 import { addWordsToSettings, resolveTarget as resolveConfigTarget } from './settings';
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
-import { addWordsToCustomDictionary, addWordsToSettingsAndUpdate, normalizeWords, CustomDictDef } from './CSpellSettings';
-import type { ConfigTarget, ConfigKind, ConfigScope, ConfigTargetDictionary, ConfigTargetCSpell, ConfigTargetVSCode } from '../server';
+import {
+    addWordsToCustomDictionary,
+    addWordsToSettingsAndUpdate,
+    normalizeWords,
+    CustomDictDef,
+    readSettingsFileAndApplyUpdate,
+} from './CSpellSettings';
+import type {
+    ConfigTarget,
+    ConfigKind,
+    ConfigScope,
+    ConfigTargetDictionary,
+    ConfigTargetCSpell,
+    ConfigTargetVSCode,
+    DictionaryDefinitionCustom,
+} from '../server';
 import { getCSpellDiags } from '../diags';
+import { Utils as UriUtils } from 'vscode-uri';
 
 type ConfigKindMask = {
     [key in ConfigKind]: boolean;
@@ -79,6 +94,30 @@ export class DictionaryHelper {
         if (!diags.length) return;
         const words = new Set(diags.map((d) => doc.getText(d.range)));
         return this.addWordsToTarget([...words], dictionaryTargetBestMatch, doc.uri);
+    }
+
+    /**
+     * createCustomDictionary
+     */
+    public createCustomDictionary() {}
+
+    /**
+     * addCustomDictionaryToConfig
+     */
+    public async addCustomDictionaryToConfig(configUri: Uri, dictionaryUri: Uri, name: string) {
+        const def: DictionaryDefinitionCustom = {
+            name,
+            path: '',
+            addWords: true,
+        };
+
+        try {
+            await readSettingsFileAndApplyUpdate(configUri, (cfg) => {
+                return {};
+            });
+        } catch (e) {
+            throw e;
+        }
     }
 
     private _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
