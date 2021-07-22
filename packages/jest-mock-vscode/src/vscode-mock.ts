@@ -9,6 +9,8 @@
 
 import type * as vscode from 'vscode';
 
+export * from './workspace';
+
 enum StatusBarAlignment {
     Left = 1,
     Right = 2,
@@ -112,13 +114,6 @@ export const window: Window = {
     showWorkspaceFolderPick: jest.fn(() => Promise.resolve(undefined)),
     withProgress: jest.fn(),
     withScmProgress: jest.fn(),
-};
-
-export const workspace = {
-    getConfiguration: jest.fn(),
-    workspaceFolders: [],
-    onDidSaveTextDocument: jest.fn(),
-    getWorkspaceFolder: jest.fn(),
 };
 
 export const OverviewRulerLane = {
