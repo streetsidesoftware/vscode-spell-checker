@@ -26,7 +26,11 @@
     }
   },
   "scripts": {
+    "build-production": "yarn run clean-build",
     "build": "tsc -p .",
+    "clean-build": "yarn run clean && yarn run build",
+    "clean": "rimraf out dist coverage",
+    "lint": "eslint \"src/**\" \"*.js\"",
     "test": "jest",
     "watch": "tsc -p . --watch"
   },
