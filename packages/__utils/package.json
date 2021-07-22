@@ -30,7 +30,7 @@
     "build": "tsc -p .",
     "clean-build": "yarn run clean && yarn run build",
     "clean": "rimraf out dist coverage",
-    "lint": "eslint \"src/**\" \"*.js\"",
+    "lint": "eslint \"src/**/*.ts\" \"*.js\"",
     "test": "jest",
     "watch": "tsc -p . --watch"
   },

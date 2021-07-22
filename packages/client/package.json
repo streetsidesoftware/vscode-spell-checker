@@ -21,7 +21,7 @@
         "clean-build": "yarn run clean && yarn run build",
         "build": "webpack --mode none",
         "build-production": "yarn run clean && webpack --mode production",
-        "lint": "eslint 'src/**'",
+        "lint": "eslint \"src/**/*.{ts,js}\"",
         "version": "yarn run package-extension",
         "watch": "yarn run build --watch",
         "test": "jest",
