@@ -44,12 +44,6 @@ export function toFileUri(uri: string | Uri | undefined): Uri | undefined {
  * @param uriTo
  */
 export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
-    function splitUri(uri: Uri) {
-        return cleanUri(uri)
-            .toString()
-            .split('/')
-            .filter((a) => !!a);
-    }
     const fromSegments = splitUri(uriFrom);
     const toSegments = splitUri(uriTo);
     let i = 0;
@@ -60,4 +54,20 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
 
 export function cleanUri(uri: Uri): Uri {
     return uri.with({ fragment: '', query: '' });
+}
+
+/**
+ * Try to make a friendly name out of a Uri
+ * @param uri - uri of file
+ */
+export function uriToName(uri: Uri, segments = 2): string {
+    const parts = splitUri(uri).slice(-segments);
+    return parts.join('/');
+}
+
+function splitUri(uri: Uri) {
+    return cleanUri(uri)
+        .toString()
+        .split('/')
+        .filter((a) => !!a);
 }
