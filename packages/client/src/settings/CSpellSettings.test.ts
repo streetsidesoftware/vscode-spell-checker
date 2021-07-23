@@ -4,6 +4,7 @@ import { unique } from '../util';
 import { CSpellUserSettings } from '.';
 import { Uri } from 'vscode';
 import { fsRemove, getPathToTemp, getUriToSample, writeFile, readFile, mkdirp } from '../test/helpers';
+import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
 
 describe('Validate CSpellSettings functions', () => {
     const filenameSampleCSpellFile = getUriToSample('cSpell.json');
@@ -139,9 +140,9 @@ describe('Validate CSpellSettings functions', () => {
         const words1 = ['one', 'two', 'three'];
         const words2 = ['alpha', 'beta', 'delta', 'zeta', 'one'];
         const expected = [...['alpha', 'beta', 'delta', 'zeta', 'one', 'two', 'three'].sort(), ''].join('\n');
-        await expect(CSS.addWordsToCustomDictionary(words1, dict)).resolves.toBeUndefined();
+        await expect(addWordsToCustomDictionary(words1, dict)).resolves.toBeUndefined();
         expect(readFile(dict.uri)).resolves.toBe([...words1].sort().join('\n') + '\n');
-        await expect(CSS.addWordsToCustomDictionary(words2, dict)).resolves.toBeUndefined();
+        await expect(addWordsToCustomDictionary(words2, dict)).resolves.toBeUndefined();
         expect(readFile(dict.uri)).resolves.toBe(expected);
     });
 
@@ -155,7 +156,7 @@ describe('Validate CSpellSettings functions', () => {
         await mkdirp(pathUri);
         const dict = { name, uri: Uri.joinPath(pathUri, file), scope: -1 };
         const words = ['one', 'two', 'three'];
-        await expect(CSS.addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
+        await expect(addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
     });
 
     test.each`
@@ -167,7 +168,7 @@ describe('Validate CSpellSettings functions', () => {
         // Make the file into a directory to force the error.
         await mkdirp(dict.uri);
         const words = ['one', 'two', 'three'];
-        await expect(CSS.addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
+        await expect(addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
     });
 });
 

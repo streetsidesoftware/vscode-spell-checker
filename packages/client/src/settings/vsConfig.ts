@@ -1,4 +1,4 @@
-import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration } from 'vscode';
+import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration, ConfigurationScope } from 'vscode';
 import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../server';
 import { DictionaryTargetTypes, isDictionaryTargetTypes, TargetType } from './DictionaryTargets';
@@ -15,13 +15,15 @@ export interface InspectValues<T> {
     globalValue?: T;
     workspaceValue?: T;
     workspaceFolderValue?: T;
+}
 
-    // defaultLanguageValue?: T;
-    // globalLanguageValue?: T;
-    // workspaceLanguageValue?: T;
-    // workspaceFolderLanguageValue?: T;
+export interface FullInspectValues<T> extends InspectValues<T> {
+    defaultLanguageValue?: T;
+    globalLanguageValue?: T;
+    workspaceLanguageValue?: T;
+    workspaceFolderLanguageValue?: T;
 
-    // languageIds?: string[];
+    languageIds?: string[];
 }
 
 export const GlobalTarget = ConfigurationTarget.Global;
@@ -39,7 +41,7 @@ export interface ConfigTargetWithResource extends ConfigTargetWithOptionalResour
 export type ConfigTargetResourceFree = ConfigurationTarget.Global | ConfigurationTarget.Workspace;
 export type ConfigTarget = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
 
-export interface Inspect<T> extends InspectValues<T> {
+export interface Inspect<T> extends FullInspectValues<T> {
     key: string;
 }
 
@@ -80,14 +82,14 @@ export function getSectionName(subSection?: keyof CSpellUserSettings): string {
     return [sectionCSpell, subSection].filter((a) => !!a).join('.');
 }
 
-export function getSettingsFromVSConfig(resource: Uri | null): CSpellUserSettings {
-    const config = getConfiguration(resource);
+export function getSettingsFromVSConfig(scope: GetConfigurationScope): CSpellUserSettings {
+    const config = getConfiguration(scope);
     return config.get<CSpellUserSettings>(sectionCSpell, {});
 }
 
 export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    resource: Uri | null
+    resource: GetConfigurationScope
 ): CSpellUserSettings[K] | undefined {
     const config = getConfiguration(resource);
     const settings = config.get<CSpellUserSettings>(sectionCSpell, {});
@@ -105,7 +107,7 @@ export function inspectScopedSettingFromVSConfig<K extends keyof CSpellUserSetti
 ): CSpellUserSettings[K] | undefined {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
-    return ins && ins[scope.scope];
+    return ins?.[scope.scope];
 }
 
 /**
@@ -136,9 +138,9 @@ export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings
 
 export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    resource: Uri | null
+    scope: GetConfigurationScope
 ): Inspect<CSpellUserSettings[K]> {
-    return inspectConfigKey(resource, subSection);
+    return inspectConfigByScopeAndKey(scope, subSection);
 }
 
 export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
@@ -157,14 +159,23 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
 /**
  * @deprecated Use inspectConfigKey -- this is not guaranteed to work in the future.
  */
-export function inspectConfig(resource: Uri | null): Inspect<CSpellUserSettings> {
-    const config = getConfiguration(resource);
+export function inspectConfig(scope: GetConfigurationScope): Inspect<CSpellUserSettings> {
+    const config = getConfiguration(scope);
     const settings = config.inspect<CSpellUserSettings>(sectionCSpell) || { key: sectionCSpell };
     return settings;
 }
 
-export function inspectConfigKey<K extends keyof CSpellUserSettings>(resource: Uri | null, key: K): Inspect<CSpellUserSettings[K]> {
-    const config = getConfiguration(resource);
+export function inspectConfigByScopeAndKey<K extends keyof CSpellUserSettings>(
+    scope: GetConfigurationScope,
+    key: K
+): Inspect<CSpellUserSettings[K]> {
+    const config = getConfiguration(scope);
+    const sectionKey = [sectionCSpell, key].join('.');
+    const settings = config.inspect<CSpellUserSettings[K]>(sectionKey) || { key: sectionKey };
+    return settings;
+}
+
+function inspectConfigByKey<K extends keyof CSpellUserSettings>(config: WorkspaceConfiguration, key: K): Inspect<CSpellUserSettings[K]> {
     const sectionKey = [sectionCSpell, key].join('.');
     const settings = config.inspect<CSpellUserSettings[K]>(sectionKey) || { key: sectionKey };
     return settings;
@@ -176,10 +187,11 @@ type InspectByKeys<T> = {
 
 type InspectCSpellSettings = InspectByKeys<CSpellUserSettings>;
 
-export function inspectConfigKeys(resource: Uri | null, keys: (keyof InspectCSpellSettings)[]): InspectCSpellSettings {
+export function inspectConfigKeys(scope: GetConfigurationScope, keys: readonly (keyof InspectCSpellSettings)[]): InspectCSpellSettings {
+    const config = getConfiguration(scope);
     const r: InspectCSpellSettings = {};
     for (const k of keys) {
-        const x: InspectCSpellSettings = { [k]: inspectConfigKey(resource, k) };
+        const x: InspectCSpellSettings = { [k]: inspectConfigByKey(config, k) };
         Object.assign(r, x);
     }
     return r;
@@ -253,6 +265,20 @@ const targetToScopeMap: TargetToScopeMap = {
     [TargetType.Workspace]: 'workspaceValue',
     [TargetType.Folder]: 'workspaceFolderValue',
 };
+
+type ConfigTargetToName = {
+    [key in ConfigurationTarget]: string;
+};
+
+const configTargetToName: ConfigTargetToName = {
+    [ConfigurationTarget.Global]: 'user',
+    [ConfigurationTarget.Workspace]: 'workspace',
+    [ConfigurationTarget.WorkspaceFolder]: 'folder',
+};
+
+export function configurationTargetToName(target: ConfigurationTarget): string {
+    return configTargetToName[target];
+}
 
 export function targetToConfigurationTarget(target: AllTargetTypes): ConfigurationTarget | undefined {
     return targetToConfigurationTargetMap[target];
@@ -340,8 +366,10 @@ export function extractTargetUri(target: ConfigTarget): Uri | null {
     return isConfigTargetWithResource(target) ? target.uri || null : null;
 }
 
-export function getConfiguration(uri?: Uri | null): WorkspaceConfiguration {
-    return workspace.getConfiguration(undefined, uri);
+type GetConfigurationScope = ConfigurationScope | undefined | null;
+
+export function getConfiguration(scope: GetConfigurationScope): WorkspaceConfiguration {
+    return workspace.getConfiguration(undefined, scope);
 }
 
 export function normalizeTarget(target: ConfigTarget): ConfigTarget {
@@ -356,4 +384,73 @@ export function normalizeTarget(target: ConfigTarget): ConfigTarget {
         return ConfigurationTarget.Workspace;
     }
     return { target: target.target, uri };
+}
+
+type ConfigKeys = keyof CSpellUserSettings;
+
+export function calculateConfigForTarget(
+    target: ConfigurationTarget,
+    scope: GetConfigurationScope,
+    keys: readonly ConfigKeys[]
+): CSpellUserSettings {
+    const s: CSpellUserSettings = {};
+    const inspectResult = inspectConfigKeys(scope, keys);
+    for (const k of keys) {
+        const v = extract(target, k, inspectResult);
+        Object.assign(s, v);
+    }
+    return s;
+}
+
+function extract<K extends keyof InspectCSpellSettings>(
+    target: ConfigurationTarget,
+    k: K,
+    s: InspectCSpellSettings
+): Partial<CSpellUserSettings> {
+    const v = s[k] as FullInspectValues<CSpellUserSettings[K]>;
+    const m = mergeInspect<CSpellUserSettings[K]>(target, v);
+    if (m !== undefined) {
+        return { [k]: m };
+    }
+    return {};
+}
+
+function mergeInspect<T>(target: ConfigurationTarget, value: FullInspectValues<T> | undefined): T | undefined {
+    if (value === undefined) return undefined;
+    let t: T | undefined = firstValue(value.globalLanguageValue, value.globalValue, value.defaultLanguageValue, value.defaultValue);
+    if (target === ConfigurationTarget.Global) return t;
+    t = firstValue(value.workspaceLanguageValue, value.workspaceValue, t);
+    if (target === ConfigurationTarget.Workspace) return t;
+    t = firstValue(value.workspaceFolderLanguageValue, value.workspaceFolderValue, t);
+    if (target !== ConfigurationTarget.WorkspaceFolder) throw new Error(`Unknown Config Target "${target}"`);
+    return t;
+}
+
+function firstValue<T>(...v: T[]): T | undefined {
+    for (const t of v) {
+        if (t !== undefined) return t;
+    }
+    return undefined;
+}
+
+/**
+ * Update VS Code Configuration for the Extension
+ * @param target - configuration level
+ * @param scope - the configuration scope / context
+ * @param keys - keys needed for the update function.
+ * @param updateFn - A function that will return the fields to be updated.
+ * @returns
+ */
+export function updateConfig(
+    target: ConfigurationTarget,
+    scope: GetConfigurationScope,
+    keys: readonly ConfigKeys[],
+    updateFn: (c: Partial<CSpellUserSettings>) => Partial<CSpellUserSettings>
+): Promise<void> {
+    const cfg = calculateConfigForTarget(target, scope, keys);
+    const updated = updateFn(cfg);
+    const config = getConfiguration(scope);
+
+    const p = Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
+    return Promise.all(p).then();
 }
