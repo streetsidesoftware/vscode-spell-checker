@@ -9,7 +9,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
  * An update function returns the fields to be updated. To remove a field, make it undefined: `{ description: undefined }`
  * Note it is only a top level merge. The update function uses `Object.assign`.
  */
-export type ConfigUpdateFn = (cfg: CSpellSettings) => Partial<CSpellSettings>;
+export type ConfigUpdateFn = (cfg: Partial<CSpellSettings>) => Partial<CSpellSettings>;
 
 const SymbolFormat = Symbol('format');
 
@@ -32,9 +32,10 @@ const spacesPackage = 2;
 /**
  *
  * @param uri - uri of the configuration file.
- * @param updateFn - function to be called with the config data to be updated.
+ * @param updateFn - function to be called with the config data to be updated. It should only return the fields to be update.
+ *  A fields with a value of `undefined` will be removed from the file.
  *
- * @returns resolves if it was handled.
+ * @returns resolves if successful.
  */
 export async function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const handler = mustMatchHandler(uri);
