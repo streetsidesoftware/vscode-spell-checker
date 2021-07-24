@@ -1,3 +1,5 @@
+import { toUri } from 'common-utils/uriHelper.js';
+import { isDefined } from 'common-utils/util.js';
 import {
     CodeAction,
     commands,
@@ -27,9 +29,10 @@ import {
     setEnableSpellChecking,
     toggleEnableSpellChecker,
 } from './settings';
+import { CSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
+import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import * as CSpellSettings from './settings/CSpellSettings';
 import {
-    TargetMatchFn,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -38,36 +41,30 @@ import {
     dictionaryTargetVSCodeFolder as dtVSCodeFolder,
     dictionaryTargetVSCodeUser as dtVSCodeUser,
     dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
+    TargetMatchFn,
 } from './settings/DictionaryHelper';
-import {
-    DictionaryTargetInfoCSpellConfig,
-    DictionaryTargetInfoDictionary,
-    DictionaryTargetInfoFolder,
-    DictionaryTargetInfo,
-    DictionaryTargetInfoTypes,
-    DictionaryTargetInfoUser,
-    DictionaryTargetInfoWorkspace,
-    TargetInfoType,
-} from './settings/DictionaryTargetInfo';
-import { writeWordsToDictionary } from './settings/DictionaryWriter';
-import { isDefined } from 'common-utils/util.js';
-import { toUri } from 'common-utils/uriHelper.js';
-
+import { createDictionaryTargetForConfig, createDictionaryTargetForFile } from './settings/DictionaryTarget';
+import { dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
-import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 
 export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
-    'cSpell.addWordsToConfigFileFromServer': (words, documentUri, config) => {
-        return pVoid(writeWordsToDictionary(toDictionaryTarget('cspell', documentUri, config.name, config.uri), words));
+    'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
+        const cfgRepo = new CSpellConfigRepository(toUri(config.uri), config.name);
+        const dictTarget = createDictionaryTargetForConfig(cfgRepo);
+        return pVoid(dictTarget.addWords(words));
     },
     'cSpell.addWordsToDictionaryFileFromServer': (words, documentUri, dict) => {
-        return pVoid(writeWordsToDictionary(toDictionaryTarget('dictionary', documentUri, dict.name, dict.uri), words));
+        const dictTarget = createDictionaryTargetForFile(toUri(dict.uri), dict.name);
+        return pVoid(dictTarget.addWords(words));
     },
     'cSpell.addWordsToVSCodeSettingsFromServer': (words, documentUri, target) => {
-        return pVoid(writeWordsToDictionary(toDictionaryTarget(target, documentUri), words));
+        const cfgTarget = dictionaryScopeToConfigurationTarget(target);
+        const cfgRepo = new VSCodeRepository(cfgTarget, toUri(documentUri));
+        const dictTarget = createDictionaryTargetForConfig(cfgRepo);
+        return pVoid(dictTarget.addWords(words));
     },
 };
 
@@ -410,54 +407,6 @@ function determineWordRangeToAddToDictionaryFromSelection(
     // was wanted, otherwise use the diag range.
 
     return regExpIsWordLike.test(selectedText) ? selection : diagRange;
-}
-
-function toDictionaryTarget(targetType: TargetInfoType.User, docUri?: string | Uri): DictionaryTargetInfoUser;
-function toDictionaryTarget(targetType: TargetInfoType.Workspace, docUri?: string | Uri): DictionaryTargetInfoWorkspace;
-function toDictionaryTarget(targetType: TargetInfoType.Folder, docUri: string | Uri): DictionaryTargetInfoFolder;
-function toDictionaryTarget(
-    targetType: TargetInfoType.User | TargetInfoType.Workspace,
-    docUri?: string | Uri
-): DictionaryTargetInfoUser | DictionaryTargetInfoWorkspace;
-function toDictionaryTarget(
-    targetType: TargetInfoType.User | TargetInfoType.Workspace | TargetInfoType.Folder,
-    docUri: string | Uri
-): DictionaryTargetInfoUser | DictionaryTargetInfoWorkspace | DictionaryTargetInfoFolder;
-function toDictionaryTarget(
-    targetType: TargetInfoType.CSpell | TargetInfoType.Dictionary,
-    docUri: string | Uri,
-    name: string,
-    uri: string | Uri
-): DictionaryTargetInfoCSpellConfig | DictionaryTargetInfoDictionary;
-function toDictionaryTarget(
-    targetType: DictionaryTargetInfoTypes,
-    docUri?: string | Uri,
-    name?: string,
-    uri?: string | Uri
-): DictionaryTargetInfo {
-    switch (targetType) {
-        case TargetInfoType.User:
-            return { type: targetType, docUri: toMaybeUri(docUri) };
-        case TargetInfoType.Workspace:
-            return { type: targetType, docUri: toMaybeUri(docUri) };
-        case TargetInfoType.Folder:
-            return { type: targetType, docUri: toUri(mustBeDefined(docUri)) };
-        case TargetInfoType.CSpell:
-            return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
-        case TargetInfoType.Dictionary:
-            return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
-    }
-    throw new Error(`Unknown target type ${targetType}`);
-}
-
-function toMaybeUri(uri: string | Uri | undefined): Uri | undefined {
-    if (!uri) return undefined;
-    return toUri(uri);
-}
-
-function mustBeDefined<T>(t: T | undefined): T {
-    if (t === undefined || t === null) throw new Error('Value must be defined.');
-    return t;
 }
 
 function parseOptionalUri(uri: string | Uri): Uri;
