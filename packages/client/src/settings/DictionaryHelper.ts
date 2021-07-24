@@ -9,8 +9,7 @@ import { getCSpellDiags } from '../diags';
 import type { ConfigKind, ConfigScope, ConfigTarget, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
-import { cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
-import { addWordsToCustomDictionary } from './DictionaryTarget';
+import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 
 type ConfigKindMask = {
@@ -116,8 +115,8 @@ export class DictionaryHelper {
             scope: scope ?? cfgRep.defaultDictionaryScope,
         };
 
-        await cfgRep.update(
-            (cfg) => {
+        await cfgRep.update({
+            updateFn: (cfg) => {
                 const { dictionaries = [], dictionaryDefinitions = [] } = cfg;
                 const defsByName = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
                 const dictNames = new Set(dictionaries);
@@ -130,8 +129,8 @@ export class DictionaryHelper {
                     dictionaryDefinitions: [...defsByName.values()],
                 };
             },
-            [ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions]
-        );
+            keys: [ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions],
+        });
     }
 
     private async _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
@@ -146,18 +145,6 @@ export class DictionaryHelper {
             return this.client.getConfigurationForDocument(doc);
         }
         return this.client.getConfigurationForDocument(undefined);
-    }
-
-    /**
-     * Add words to a set of dictionaries.
-     * @param words - words to add
-     * @param dicts - dictionaries to target.
-     */
-    public async addWordsToCustomDictionaries(words: string[], dicts: CustomDictDef[]): Promise<void> {
-        const process = dicts
-            .map((dict) => addWordsToCustomDictionary(words, dict))
-            .map((p) => p.catch((e: Error) => vscode.window.showWarningMessage(e.message)));
-        await Promise.all(process);
     }
 
     private async resolveTarget(target: ConfigTarget | TargetMatchFn, docUri: Uri | undefined): Promise<ConfigTarget | undefined> {

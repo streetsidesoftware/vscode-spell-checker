@@ -4,6 +4,7 @@ import { ConfigurationScope, ConfigurationTarget, Uri } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { updateConfigFile } from './configFileReadWrite';
+import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 import { configurationTargetToName, updateConfig } from './vsConfig';
 
@@ -21,7 +22,7 @@ export interface ConfigRepository {
      * @param neededKeys - a list of fields needed by `updateFn`.
      *   This is needed to retrieve config from VS Code.
      */
-    readonly update: (updateFn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]) => Promise<void>;
+    readonly update: <K extends ConfigKeys>(updater: ConfigUpdater<K>) => Promise<void>;
     readonly setValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]) => Promise<void>;
     readonly updateValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K] | UpdateConfigFieldFn<K>) => Promise<void>;
 }
@@ -38,14 +39,14 @@ abstract class ConfigRepositoryBase implements ConfigRepository {
     abstract readonly kind: ConfigRepositoryKind;
     abstract readonly defaultDictionaryScope: CustomDictionaryScope | undefined;
 
-    abstract update(fn: ConfigUpdateFn, _neededKeys: readonly ConfigKeys[]): Promise<void>;
+    abstract update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void>;
 
     setValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]): Promise<void> {
-        return this.update(() => ({ [key]: value }), []);
+        return this.update(configUpdaterForKey(key, value));
     }
 
     updateValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K] | UpdateConfigFieldFn<K>): Promise<void> {
-        return this.update(updateConfigByKeyFn(key, value), [key]);
+        return this.update(configUpdaterForKey(key, value));
     }
 }
 export class CSpellConfigRepository extends ConfigRepositoryBase {
@@ -59,8 +60,8 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         this.kind = 'cspell';
     }
 
-    update(fn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]): Promise<void> {
-        return updateConfigFile(this.configFileUri, fnUpdateFilterKeys(fn, neededKeys));
+    update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
+        return updateConfigFile(this.configFileUri, fnUpdateFilterKeys(updater));
     }
 }
 
@@ -76,8 +77,8 @@ export class VSCodeRepository extends ConfigRepositoryBase {
         this.kind = 'vscode';
     }
 
-    update(updateFn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]): Promise<void> {
-        const { fn, keys } = this.mappers(neededKeys, updateFn);
+    update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
+        const { fn, keys } = this.mappers(updater.keys, updater.updateFn);
 
         return updateConfig(this.target, this.scope, keys, fn);
     }
@@ -132,19 +133,6 @@ export class VSCodeRepository extends ConfigRepositoryBase {
     }
 }
 
-export function updateConfigByKeyFn<K extends keyof CSpellUserSettings>(
-    key: K,
-    updateFnOrValue: CSpellUserSettings[K] | UpdateConfigFieldFn<K>
-): (cfg: CSpellUserSettings) => CSpellUserSettings {
-    if (typeof updateFnOrValue === 'function') {
-        return (cfg) => ({
-            [key]: updateFnOrValue(cfg[key]),
-        });
-    }
-
-    return () => ({ [key]: updateFnOrValue });
-}
-
-function fnUpdateFilterKeys(fn: ConfigUpdateFn, keys: readonly ConfigKeys[]): ConfigUpdateFn {
-    return (cfg) => fn(pick(cfg, keys));
+function fnUpdateFilterKeys<K extends ConfigKeys>(updater: ConfigUpdater<K>): ConfigUpdateFn {
+    return (cfg) => updater.updateFn(pick(cfg, updater.keys));
 }

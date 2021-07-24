@@ -2,35 +2,12 @@ import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import { ConfigTargetCSpell, ConfigTargetDictionary } from '../server';
 import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers';
 import { readConfigFile } from './configFileReadWrite';
-import { addWordsFn, removeWordsFn, DictionaryTarget } from './DictionaryTarget';
+import { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 import { createConfigFileInFolder } from './settings';
 import { __testing__ as DictionaryHelperTesting } from './DictionaryHelper';
 
 describe('Validate DictionaryTarget', () => {
-    test.each`
-        current       | toAdd              | expected
-        ${[]}         | ${[]}              | ${[]}
-        ${[]}         | ${['a']}           | ${['a']}
-        ${['b', 'a']} | ${['a']}           | ${['a', 'b']}
-        ${['c', 'b']} | ${['a', 'd', 'c']} | ${['a', 'b', 'c', 'd']}
-    `('addWordsFn $toAdd', ({ toAdd, current, expected }) => {
-        const fn = addWordsFn(toAdd);
-        expect(fn(current)).toEqual(expected);
-    });
-
-    test.each`
-        current            | toAdd         | expected
-        ${[]}              | ${[]}         | ${[]}
-        ${[]}              | ${['a']}      | ${[]}
-        ${['b', 'a']}      | ${['a']}      | ${['b']}
-        ${['c', 'b']}      | ${['a']}      | ${['b', 'c']}
-        ${['c', 'd', 'b']} | ${['d', 'a']} | ${['b', 'c']}
-    `('removeWordsFn $toAdd', ({ toAdd, current, expected }) => {
-        const fn = removeWordsFn(toAdd);
-        expect(fn(current)).toEqual(expected);
-    });
-
     interface TestUpdating {
         createFn: (tempDir: Uri) => Promise<TargetAndReader>;
     }

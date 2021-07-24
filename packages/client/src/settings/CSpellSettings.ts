@@ -2,6 +2,7 @@ import { CSpellUserSettingsWithComments, DictionaryDefinitionCustom } from '../s
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
 import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
+import { CustomDictDef } from './DictionaryTarget';
 
 const currentSettingsFileVersion = '0.2';
 
@@ -64,17 +65,8 @@ export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<
     return writeConfigFile(filename, settings).then(() => settings);
 }
 
-export function addWordsToSettingsAndUpdate(filename: Uri, words: string | string[]): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdateWithResult(filename, (settings) => addWordsToSettings(settings, normalizeWords(words)));
-}
-
-export function addWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
-    const words = mergeWords(settings.words, wordsToAdd);
-    return { ...settings, words };
-}
-
-export function addIgnoreWordToSettingsAndUpdate(filename: Uri, word: string): Promise<CSpellSettings> {
-    return readSettingsFileAndApplyUpdateWithResult(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWords(word)));
+export function addIgnoreWordToSettingsAndUpdate(filename: Uri, word: string): Promise<void> {
+    return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWords(word)));
 }
 
 export function addIgnoreWordsToSettings(settings: CSpellSettings, wordsToAdd: string[]): CSpellSettings {
@@ -166,11 +158,6 @@ export class FailedToUpdateConfigFile extends Error {
     constructor(message: string) {
         super(message);
     }
-}
-
-export interface CustomDictDef {
-    name: string;
-    uri: Uri;
 }
 
 export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCustom): CustomDictDef {
