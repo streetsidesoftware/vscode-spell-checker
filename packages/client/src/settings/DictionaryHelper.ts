@@ -105,7 +105,7 @@ export class DictionaryHelper {
      */
     public async createCustomDictionary(cfgRep: CSpellConfigRepository, name = 'custom-words', filename?: string): Promise<void> {
         const dir = UriUtils.dirname(cfgRep.configFileUri);
-        const dictUri = await this.createCustomDictionaryFile(dir, filename);
+        const dictUri = await createCustomDictionaryFile(dir, filename);
         const relPath = './' + relativeTo(dir, dictUri);
         return this.addCustomDictionaryToConfig(cfgRep, relPath, name);
     }
@@ -142,18 +142,6 @@ export class DictionaryHelper {
             },
             [ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions]
         );
-    }
-
-    private async createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename): Promise<Uri> {
-        const dictDir =
-            UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
-        const dictUri = UriUtils.joinPath(dictDir, filename);
-        const doesExist = await fileExists(dictUri);
-        if (!doesExist) {
-            await fs.mkdirp(dictDir.fsPath);
-            await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
-        }
-        return dictUri;
     }
 
     private _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
@@ -233,6 +221,18 @@ function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets:
     return matches;
 }
 
+async function createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename, overwrite = false): Promise<Uri> {
+    const dictDir =
+        UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
+    const dictUri = UriUtils.joinPath(dictDir, filename);
+    overwrite = overwrite || !(await fileExists(dictUri));
+    if (overwrite) {
+        await fs.mkdirp(dictDir.fsPath);
+        await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+    }
+    return dictUri;
+}
+
 export function buildMatchTargetFn(kind: Partial<DictionaryHelperTargetKind>, scope: Partial<DictionaryHelperTargetScope>): TargetMatchFn {
     const match = {
         kind: fillKind(kind),
@@ -285,4 +285,5 @@ export class UnableToFindTarget extends Error {
 
 export const __testing__ = {
     isTextDocument,
+    createCustomDictionaryFile,
 };

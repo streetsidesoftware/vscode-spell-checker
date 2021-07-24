@@ -1,8 +1,11 @@
+import { mustBeDefined } from 'common-utils/util';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
-import * as fs from 'fs-extra';
 import { isDefined } from '../util';
 import { PackageJson } from '../vscode/packageJson';
+
+export { mustBeDefined } from 'common-utils/util';
 export { isDefined } from '../util';
 
 const rootClient = path.join(__dirname, '../..');
@@ -98,11 +101,4 @@ export function toNum(n: string | undefined): number | undefined {
 
 export function isString(s: unknown): s is string {
     return typeof s === 'string';
-}
-
-export function mustBeDefined<T>(t: T | undefined): T {
-    if (t === undefined) {
-        throw new Error('Must Be Defined');
-    }
-    return t;
 }
