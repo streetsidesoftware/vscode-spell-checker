@@ -1,5 +1,5 @@
 import { Uri } from 'vscode';
-import { TargetType } from './DictionaryTargets';
+import { TargetInfoType } from './DictionaryTargetInfo';
 import {
     ConfigurationTarget,
     createTargetForDocument,
@@ -39,7 +39,7 @@ describe('Validate vsConfig', () => {
     test('isWorkspaceLevelTarget', () => {
         expect(isWorkspaceLevelTarget(GlobalTarget)).toBe(false);
         expect(isWorkspaceLevelTarget(WorkspaceTarget)).toBe(true);
-        expect(isWorkspaceLevelTarget(TargetType.Workspace)).toBe(true);
+        expect(isWorkspaceLevelTarget(TargetInfoType.Workspace)).toBe(true);
     });
 
     test('isFolderLevelTarget', () => {

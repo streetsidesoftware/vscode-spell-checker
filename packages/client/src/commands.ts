@@ -40,15 +40,15 @@ import {
     dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
 } from './settings/DictionaryHelper';
 import {
-    DictionaryTargetCSpellConfig,
-    DictionaryTargetDictionary,
-    DictionaryTargetFolder,
-    DictionaryTargets,
-    DictionaryTargetTypes,
-    DictionaryTargetUser,
-    DictionaryTargetWorkspace,
-    TargetType,
-} from './settings/DictionaryTargets';
+    DictionaryTargetInfoCSpellConfig,
+    DictionaryTargetInfoDictionary,
+    DictionaryTargetInfoFolder,
+    DictionaryTargetInfo,
+    DictionaryTargetInfoTypes,
+    DictionaryTargetInfoUser,
+    DictionaryTargetInfoWorkspace,
+    TargetInfoType,
+} from './settings/DictionaryTargetInfo';
 import { writeWordsToDictionary } from './settings/DictionaryWriter';
 import { isDefined } from 'common-utils/util.js';
 import { toUri } from 'common-utils/uriHelper.js';
@@ -412,39 +412,39 @@ function determineWordRangeToAddToDictionaryFromSelection(
     return regExpIsWordLike.test(selectedText) ? selection : diagRange;
 }
 
-function toDictionaryTarget(targetType: TargetType.User, docUri?: string | Uri): DictionaryTargetUser;
-function toDictionaryTarget(targetType: TargetType.Workspace, docUri?: string | Uri): DictionaryTargetWorkspace;
-function toDictionaryTarget(targetType: TargetType.Folder, docUri: string | Uri): DictionaryTargetFolder;
+function toDictionaryTarget(targetType: TargetInfoType.User, docUri?: string | Uri): DictionaryTargetInfoUser;
+function toDictionaryTarget(targetType: TargetInfoType.Workspace, docUri?: string | Uri): DictionaryTargetInfoWorkspace;
+function toDictionaryTarget(targetType: TargetInfoType.Folder, docUri: string | Uri): DictionaryTargetInfoFolder;
 function toDictionaryTarget(
-    targetType: TargetType.User | TargetType.Workspace,
+    targetType: TargetInfoType.User | TargetInfoType.Workspace,
     docUri?: string | Uri
-): DictionaryTargetUser | DictionaryTargetWorkspace;
+): DictionaryTargetInfoUser | DictionaryTargetInfoWorkspace;
 function toDictionaryTarget(
-    targetType: TargetType.User | TargetType.Workspace | TargetType.Folder,
+    targetType: TargetInfoType.User | TargetInfoType.Workspace | TargetInfoType.Folder,
     docUri: string | Uri
-): DictionaryTargetUser | DictionaryTargetWorkspace | DictionaryTargetFolder;
+): DictionaryTargetInfoUser | DictionaryTargetInfoWorkspace | DictionaryTargetInfoFolder;
 function toDictionaryTarget(
-    targetType: TargetType.CSpell | TargetType.Dictionary,
+    targetType: TargetInfoType.CSpell | TargetInfoType.Dictionary,
     docUri: string | Uri,
     name: string,
     uri: string | Uri
-): DictionaryTargetCSpellConfig | DictionaryTargetDictionary;
+): DictionaryTargetInfoCSpellConfig | DictionaryTargetInfoDictionary;
 function toDictionaryTarget(
-    targetType: DictionaryTargetTypes,
+    targetType: DictionaryTargetInfoTypes,
     docUri?: string | Uri,
     name?: string,
     uri?: string | Uri
-): DictionaryTargets {
+): DictionaryTargetInfo {
     switch (targetType) {
-        case TargetType.User:
+        case TargetInfoType.User:
             return { type: targetType, docUri: toMaybeUri(docUri) };
-        case TargetType.Workspace:
+        case TargetInfoType.Workspace:
             return { type: targetType, docUri: toMaybeUri(docUri) };
-        case TargetType.Folder:
+        case TargetInfoType.Folder:
             return { type: targetType, docUri: toUri(mustBeDefined(docUri)) };
-        case TargetType.CSpell:
+        case TargetInfoType.CSpell:
             return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
-        case TargetType.Dictionary:
+        case TargetInfoType.Dictionary:
             return { type: targetType, docUri: toMaybeUri(docUri), name: mustBeDefined(name), uri: toUri(mustBeDefined(uri)) };
     }
     throw new Error(`Unknown target type ${targetType}`);

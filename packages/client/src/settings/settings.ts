@@ -19,7 +19,7 @@ import {
     readSettings,
     readSettingsFileAndApplyUpdate,
 } from './CSpellSettings';
-import { DictionaryTargetTypes } from './DictionaryTargets';
+import { DictionaryTargetInfoTypes } from './DictionaryTargetInfo';
 import * as config from './vsConfig';
 import { InspectScope } from './vsConfig';
 import { CSpellSettings } from '@cspell/cspell-types';
@@ -382,7 +382,7 @@ export function resolveTarget(target: config.ConfigurationTarget, docUri?: null 
 }
 
 export async function determineSettingsPaths(
-    target: config.ConfigTarget | DictionaryTargetTypes,
+    target: config.ConfigTarget | DictionaryTargetInfoTypes,
     docUri: Uri | undefined,
     docConfigFiles?: Uri[]
 ): Promise<Uri[]> {
