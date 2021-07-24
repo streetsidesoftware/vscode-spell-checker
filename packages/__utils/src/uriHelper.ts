@@ -1,4 +1,4 @@
-import { URI as Uri } from 'vscode-uri';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 export const supportedSchemes = ['gist', 'file', 'sftp', 'untitled'];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
@@ -50,6 +50,16 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
     for (i = 0; i < fromSegments.length && i < toSegments.length && fromSegments[i] === toSegments[i]; ++i) {}
     const prefix = '../'.repeat(fromSegments.length - i);
     return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '');
+}
+
+/**
+ * Generate a relative path from one file to another.
+ * @param uriFromFile - uri of from file.
+ * @param uriTo - uri of destination.
+ * @returns
+ */
+export function relativeToFile(uriFromFile: Uri, uriTo: Uri): string {
+    return relativeTo(UriUtils.dirname(uriFromFile), uriTo);
 }
 
 export function cleanUri(uri: Uri): Uri {
