@@ -55,7 +55,7 @@ import { toUri } from 'common-utils/uriHelper.js';
 
 import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
-import { configTargetToConfigRepo } from './settings/configRepository';
+import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 
 export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
 
