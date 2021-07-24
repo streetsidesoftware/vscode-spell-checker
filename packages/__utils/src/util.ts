@@ -58,3 +58,17 @@ export function textToWords(text: string): string[] {
 export function capitalize(text: string): string {
     return text.slice(0, 1).toUpperCase() + text.slice(1);
 }
+
+/**
+ * Pick out fields from an Object.
+ * @param src - source object
+ * @param keys - keys to use
+ * @returns a new object with key/values copied from src
+ */
+export function pick<T, K extends keyof T>(src: T, keys: readonly K[]): Pick<T, K> {
+    const r: Partial<T> = {};
+    for (const k of keys) {
+        r[k] = src[k];
+    }
+    return r as Pick<T, K>;
+}
