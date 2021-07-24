@@ -1,10 +1,10 @@
 import { Uri } from 'vscode';
 import { CSpellUserSettings } from '.';
-import { fsRemove, getPathToTemp, getUriToSample, mkdirp, readFile, writeFile } from '../test/helpers';
+import { fsRemove, getPathToTemp, getUriToSample, mkdirp, readFile, writeFile, oc } from '../test/helpers';
 import { unique } from '../util';
 import * as CSS from './CSpellSettings';
 import { readSettings, writeSettings } from './CSpellSettings';
-import { addWordsToCustomDictionary } from './DictionaryTarget';
+import { createDictionaryTargetForFile } from './DictionaryTarget';
 
 describe('Validate CSpellSettings functions', () => {
     const filenameSampleCSpellFile = getUriToSample('cSpell.json');
@@ -41,20 +41,12 @@ describe('Validate CSpellSettings functions', () => {
         await expect(r).rejects.toBeInstanceOf(CSS.FailedToUpdateConfigFile);
     });
 
-    test('addWordToSettingsAndUpdate', async () => {
-        const word = 'word';
-        const filename = getPathToTemp('addWordToSettingsAndUpdate/cspell.json');
-        await writeFile(filename, sampleJsonConfig);
-        const r = await CSS.addWordsToSettingsAndUpdate(filename, word);
-        expect(r.words).toEqual(expect.arrayContaining([word]));
-        expect(await readSettings(filename)).toEqual(r);
-    });
-
     test('addIgnoreWordToSettingsAndUpdate', async () => {
         const word = 'word';
         const filename = getPathToTemp('addIgnoreWordToSettingsAndUpdate/cspell.json');
         await writeFile(filename, sampleJsonConfig);
-        const r = await CSS.addIgnoreWordToSettingsAndUpdate(filename, word);
+        await CSS.addIgnoreWordToSettingsAndUpdate(filename, word);
+        const r = await CSS.readSettings(filename);
         expect(r.ignoreWords).toEqual(expect.arrayContaining([word]));
         expect(await readSettings(filename)).toEqual(r);
     });
@@ -63,16 +55,6 @@ describe('Validate CSpellSettings functions', () => {
         const defaultSetting = CSS.getDefaultSettings();
         expect(defaultSetting.words).toBeUndefined();
         expect(defaultSetting.version).toBe('0.2');
-    });
-
-    test('tests adding words', () => {
-        const words = ['test', 'case', 'case'];
-        const defaultSettings = CSS.getDefaultSettings();
-        Object.freeze(defaultSettings);
-        const newSettings = CSS.addWordsToSettings(defaultSettings, words);
-        expect(newSettings).not.toBe(defaultSettings);
-        expect(newSettings.words).not.toHaveLength(0);
-        expect(newSettings.words?.sort()).toEqual(unique(words).sort());
     });
 
     test('tests adding languageIds', () => {
@@ -134,15 +116,15 @@ describe('Validate CSpellSettings functions', () => {
         const dict = {
             name: 'custom dictionary',
             uri: getPathToTemp('addWordsToCustomDictionary/dict.txt'),
-            scope: -1,
         };
         await fsRemove(dict.uri);
         const words1 = ['one', 'two', 'three'];
         const words2 = ['alpha', 'beta', 'delta', 'zeta', 'one'];
         const expected = [...['alpha', 'beta', 'delta', 'zeta', 'one', 'two', 'three'].sort(), ''].join('\n');
-        await expect(addWordsToCustomDictionary(words1, dict)).resolves.toBeUndefined();
+        const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
+        await expect(dictTarget.addWords(words1)).resolves.toBeUndefined();
         expect(readFile(dict.uri)).resolves.toBe([...words1].sort().join('\n') + '\n');
-        await expect(addWordsToCustomDictionary(words2, dict)).resolves.toBeUndefined();
+        await expect(dictTarget.addWords(words2)).resolves.toBeUndefined();
         expect(readFile(dict.uri)).resolves.toBe(expected);
     });
 
@@ -154,9 +136,10 @@ describe('Validate CSpellSettings functions', () => {
     `('addWordsToCustomDictionary_failures "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_failures');
         await mkdirp(pathUri);
-        const dict = { name, uri: Uri.joinPath(pathUri, file), scope: -1 };
+        const dict = { name, uri: Uri.joinPath(pathUri, file) };
         const words = ['one', 'two', 'three'];
-        await expect(addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
+        const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
+        await expect(dictTarget.addWords(words)).rejects.toEqual(error);
     });
 
     test.each`
@@ -164,17 +147,14 @@ describe('Validate CSpellSettings functions', () => {
         ${'words.txt'} | ${'custom-words'} | ${e(sm(/Failed to add words to dictionary "custom-words".*EISDIR/))}
     `('addWordsToCustomDictionary_cannot_write "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_cannot_write');
-        const dict = { name, uri: Uri.joinPath(pathUri, file), scope: -1 };
+        const dict = { name, uri: Uri.joinPath(pathUri, file) };
         // Make the file into a directory to force the error.
         await mkdirp(dict.uri);
         const words = ['one', 'two', 'three'];
-        await expect(addWordsToCustomDictionary(words, dict)).rejects.toEqual(error);
+        const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
+        await expect(dictTarget.addWords(words)).rejects.toEqual(error);
     });
 });
-
-function oc(...args: Parameters<typeof expect.objectContaining>) {
-    return expect.objectContaining(...args);
-}
 
 function sm(...args: Parameters<typeof expect.stringMatching>) {
     return expect.stringMatching(...args);

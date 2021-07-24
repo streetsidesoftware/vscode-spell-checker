@@ -136,13 +136,6 @@ export async function disableLanguage(target: config.ConfigTarget, languageId: s
     await enableLanguageIdForTarget(languageId, false, target, true, true);
 }
 
-export function addWordsToSettings(target: config.ConfigTarget, words: string | string[], updateCSpell?: boolean): Promise<boolean> {
-    const useGlobal = config.isGlobalTarget(target) || !hasWorkspaceLocation();
-    const addWords = normalizeWords(words);
-    const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    return updateSettingInConfig(section, target, (words) => unique(addWords.concat(words || []).sort()), true, updateCSpell);
-}
-
 export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
     const addWords = normalizeWords(word);
     return updateSettingInConfig('ignoreWords', target, (words) => unique(addWords.concat(words || []).sort()), true);

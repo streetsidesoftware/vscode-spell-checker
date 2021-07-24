@@ -1,10 +1,9 @@
-import { CSpellUserSettings } from '../server';
 import { uriToName } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
-import { ConfigRepository } from './configRepository';
-import { CustomDictDef } from './CSpellSettings';
+import { ConfigRepository, CSpellConfigRepository } from './configRepository';
+import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
 
 const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
 
@@ -35,8 +34,6 @@ class DictionaryTargetFileInstance implements DictionaryTargetFile {
     }
 }
 
-const configKeyWords = ['words'] as const;
-
 class DictionaryTargetInConfig implements DictionaryTarget {
     readonly name: string;
     constructor(readonly rep: ConfigRepository) {
@@ -44,54 +41,40 @@ class DictionaryTargetInConfig implements DictionaryTarget {
     }
 
     addWords(words: string[]): Promise<void> {
-        return this.rep.update(updateConfigFn(addWordsFn(words)), configKeyWords);
+        return this.rep.update(updaterAddWords(words));
     }
 
     removeWords(words: string[]): Promise<void> {
-        return this.rep.update(updateConfigFn(removeWordsFn(words)), configKeyWords);
+        return this.rep.update(updaterRemoveWords(words));
     }
 }
 
-export function createDictionaryTargetForFile(uri: Uri, name?: string): DictionaryTargetFile {
+export function createDictionaryTargetForFile(def: CustomDictDef): DictionaryTargetFile;
+export function createDictionaryTargetForFile(uri: Uri, name?: string): DictionaryTargetFile;
+export function createDictionaryTargetForFile(defOrUri: Uri | CustomDictDef, maybeName?: string): DictionaryTargetFile {
+    const { uri, name } = isCustomDictDef(defOrUri) ? defOrUri : { uri: defOrUri, name: maybeName };
     return new DictionaryTargetFileInstance(uri, name);
+}
+
+function isCustomDictDef(d: CustomDictDef | Uri): d is CustomDictDef {
+    const def = <CustomDictDef>d;
+    return typeof def.name === 'string' && typeof def.uri === 'object';
+}
+
+export function createDictionaryTargetForCSpell(cspellUri: Uri, name?: string): DictionaryTarget {
+    return new DictionaryTargetInConfig(new CSpellConfigRepository(cspellUri, name));
 }
 
 export function createDictionaryTargetForConfig(rep: ConfigRepository): DictionaryTarget {
     return new DictionaryTargetInConfig(rep);
 }
 
-type UpdateWords = (lines: string[]) => string[];
-
-function updateConfigFn(updateFn: UpdateWords): (cfg: CSpellUserSettings) => CSpellUserSettings {
-    return (cfg) => {
-        const words = updateFn(cfg.words ?? []);
-        return { words };
-    };
+export interface CustomDictDef {
+    name: string;
+    uri: Uri;
 }
 
-export function addWordsFn(words: string[]): (lines: string[]) => string[] {
-    return (lines) => sortWords([...new Set(lines.concat(words))]);
-}
-
-export function removeWordsFn(words: string[]): (lines: string[]) => string[] {
-    return (lines) => {
-        const current = new Set(lines);
-        for (const w of words) {
-            current.delete(w);
-        }
-        return sortWords([...current]);
-    };
-}
-
-function sortWords(words: string[]): string[] {
-    return words.sort(compare);
-}
-
-function compare(a: string, b: string): number {
-    return a.localeCompare(b);
-}
-
-export async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef): Promise<void> {
+async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef): Promise<void> {
     return updateWordInCustomDictionary(addWordsFn(words), dict);
 }
 
