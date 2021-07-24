@@ -3,6 +3,7 @@ import * as fs from 'fs-extra';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
+import { fileExists } from 'common-utils/file.js';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
 import type {
@@ -103,8 +104,10 @@ export class DictionaryHelper {
      * createCustomDictionary
      */
     public async createCustomDictionary(cfgRep: CSpellConfigRepository, name = 'custom-words', filename?: string): Promise<void> {
-        const dictUri = await this.createCustomDictionaryFile(cfgRep.configFileUri, filename);
-        return this.addCustomDictionaryToConfig(cfgRep, relativeTo(cfgRep.configFileUri, dictUri), name);
+        const dir = UriUtils.dirname(cfgRep.configFileUri);
+        const dictUri = await this.createCustomDictionaryFile(dir, filename);
+        const relPath = './' + relativeTo(dir, dictUri);
+        return this.addCustomDictionaryToConfig(cfgRep, relPath, name);
     }
 
     /**
@@ -145,8 +148,11 @@ export class DictionaryHelper {
         const dictDir =
             UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
         const dictUri = UriUtils.joinPath(dictDir, filename);
-        await fs.mkdirp(dictDir.fsPath);
-        await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+        const doesExist = await fileExists(dictUri);
+        if (!doesExist) {
+            await fs.mkdirp(dictDir.fsPath);
+            await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+        }
         return dictUri;
     }
 

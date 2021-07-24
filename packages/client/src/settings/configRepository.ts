@@ -1,9 +1,20 @@
-import { CSpellUserSettings, CustomDictionaryScope } from '../server';
+import {
+    CSpellUserSettings,
+    CustomDictionaryScope,
+    ConfigTarget,
+    ConfigTargetCSpell,
+    ConfigTargetVSCode,
+    ConfigTargetDictionary,
+    ConfigKind,
+} from '../server';
 import { uriToName } from 'common-utils/uriHelper.js';
 import { ConfigurationScope, ConfigurationTarget, Uri } from 'vscode';
 import { updateConfigFile } from './configFileReadWrite';
 import { configurationTargetToName, updateConfig } from './vsConfig';
 import { ConfigKeysByField } from './configFields';
+import { toUri } from 'common-utils/uriHelper.js';
+
+type ConfigScopeVScode = ConfigTargetVSCode['scope'];
 
 type ConfigKeys = keyof CSpellUserSettings;
 
@@ -51,8 +62,8 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         this.name = name || uriToName(configFileUri);
     }
 
-    update(fn: ConfigUpdateFn, _neededKeys: readonly ConfigKeys[]): Promise<void> {
-        return updateConfigFile(this.configFileUri, fn);
+    update(fn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]): Promise<void> {
+        return updateConfigFile(this.configFileUri, fnUpdateFilterKeys(fn, neededKeys));
     }
 }
 
@@ -135,16 +146,60 @@ export function updateConfigByKeyFn<K extends keyof CSpellUserSettings>(
     return () => ({ [key]: updateFnOrValue });
 }
 
-type TargetToScope = {
-    [key in ConfigurationTarget]: CustomDictionaryScope;
+function fnUpdateFilterKeys(fn: ConfigUpdateFn, keys: readonly ConfigKeys[]): ConfigUpdateFn {
+    return (cfg) => fn(shallowCopy(cfg, keys));
+}
+
+function shallowCopy<T>(t: T, keys: readonly (keyof T)[]): Partial<T> {
+    const r: Partial<T> = {};
+    for (const k of keys) {
+        r[k] = t[k];
+    }
+    return r;
+}
+
+type TargetToConfigScope = {
+    [key in ConfigurationTarget]: ConfigScopeVScode;
 };
 
-const targetToScope: TargetToScope = {
+type ConfigScopeToTarget = {
+    [key in ConfigScopeVScode]: ConfigurationTarget;
+};
+
+const targetToScope: TargetToConfigScope = {
     [ConfigurationTarget.Global]: 'user',
     [ConfigurationTarget.Workspace]: 'workspace',
     [ConfigurationTarget.WorkspaceFolder]: 'folder',
 } as const;
 
+const ScopeToTarget: ConfigScopeToTarget = {
+    user: ConfigurationTarget.Global,
+    workspace: ConfigurationTarget.Workspace,
+    folder: ConfigurationTarget.WorkspaceFolder,
+} as const;
+
 function configurationTargetToDictionaryScope(target: ConfigurationTarget): CustomDictionaryScope {
     return targetToScope[target];
+}
+
+function dictionaryScopeToConfigurationTarget(scope: ConfigScopeVScode): ConfigurationTarget {
+    return ScopeToTarget[scope];
+}
+
+const KnownTargetKinds = new Set<ConfigKind>(['dictionary', 'cspell', 'vscode']);
+
+export function configTargetToConfigRepo(target: ConfigTargetDictionary): undefined;
+export function configTargetToConfigRepo(target: ConfigTargetVSCode): VSCodeRepository;
+export function configTargetToConfigRepo(target: ConfigTargetCSpell): CSpellConfigRepository;
+export function configTargetToConfigRepo(target: ConfigTarget): ConfigRepository | undefined;
+export function configTargetToConfigRepo(target: ConfigTarget): ConfigRepository | undefined {
+    if (!KnownTargetKinds.has(target.kind)) throw new Error(`Unknown target ${target.kind}`);
+    switch (target.kind) {
+        case 'dictionary':
+            return undefined;
+        case 'cspell':
+            return new CSpellConfigRepository(toUri(target.configUri), target.name);
+        case 'vscode':
+            return new VSCodeRepository(dictionaryScopeToConfigurationTarget(target.scope), toUri(target.docUri));
+    }
 }
