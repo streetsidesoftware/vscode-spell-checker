@@ -1,9 +1,9 @@
+import { fileExists } from 'common-utils/file.js';
 import { relativeTo } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import { fileExists } from 'common-utils/file.js';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
 import type {
@@ -19,7 +19,7 @@ import type {
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
 import { addWordsToSettingsAndUpdate, cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
-import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
+import { addWordsToCustomDictionary } from './DictionaryTarget';
 import { addWordsToSettings, resolveTarget as resolveConfigTarget } from './settings';
 import * as config from './vsConfig';
 

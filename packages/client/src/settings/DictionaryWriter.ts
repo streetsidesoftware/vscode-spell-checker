@@ -1,5 +1,6 @@
-import { ConfigTarget, createTargetForUri } from './vsConfig';
 import { ConfigurationTarget } from 'vscode';
+import { addWordsToSettingsAndUpdate } from './CSpellSettings';
+import { addWordsToCustomDictionary } from './DictionaryTarget';
 import {
     DictionaryTargetInfo,
     isDictionaryTargetInfoCSpellConfig,
@@ -9,8 +10,7 @@ import {
     isDictionaryTargetInfoWorkspace,
 } from './DictionaryTargetInfo';
 import { addWordsToSettings } from './settings';
-import { addWordsToSettingsAndUpdate } from './CSpellSettings';
-import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
+import { ConfigTarget, createTargetForUri } from './vsConfig';
 
 export async function writeWordsToDictionary(target: DictionaryTargetInfo, words: string[]): Promise<boolean> {
     const configTarget = dictionaryTargetToConfigTarget(target);

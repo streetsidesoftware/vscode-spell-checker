@@ -1,10 +1,10 @@
-import { readSettings, writeSettings } from './CSpellSettings';
-import * as CSS from './CSpellSettings';
-import { unique } from '../util';
-import { CSpellUserSettings } from '.';
 import { Uri } from 'vscode';
-import { fsRemove, getPathToTemp, getUriToSample, writeFile, readFile, mkdirp } from '../test/helpers';
-import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
+import { CSpellUserSettings } from '.';
+import { fsRemove, getPathToTemp, getUriToSample, mkdirp, readFile, writeFile } from '../test/helpers';
+import { unique } from '../util';
+import * as CSS from './CSpellSettings';
+import { readSettings, writeSettings } from './CSpellSettings';
+import { addWordsToCustomDictionary } from './DictionaryTarget';
 
 describe('Validate CSpellSettings functions', () => {
     const filenameSampleCSpellFile = getUriToSample('cSpell.json');

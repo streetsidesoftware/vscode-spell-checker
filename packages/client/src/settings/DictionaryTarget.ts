@@ -9,19 +9,19 @@ import { CustomDictDef } from './CSpellSettings';
 
 const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
 
-export interface Dictionary {
+export interface DictionaryTarget {
     /** Name of dictionary */
     readonly name: string;
     addWords: (words: string[]) => Promise<void>;
     removeWords: (words: string[]) => Promise<void>;
 }
 
-export interface DictionaryFile extends Dictionary {
+export interface DictionaryTargetFile extends DictionaryTarget {
     /** Uri of the dictionary file */
     readonly uri: Uri;
 }
 
-class DictionaryFileInstance implements DictionaryFile {
+class DictionaryTargetFileInstance implements DictionaryTargetFile {
     readonly name: string;
     constructor(readonly uri: Uri, name?: string) {
         this.name = name ?? uriToName(uri);
@@ -38,7 +38,7 @@ class DictionaryFileInstance implements DictionaryFile {
 
 const configKeyWords = ['words'] as const;
 
-class DictionaryInConfig implements Dictionary {
+class DictionaryTargetInConfig implements DictionaryTarget {
     readonly name: string;
     constructor(readonly rep: ConfigRepository) {
         this.name = rep.name;
@@ -53,12 +53,12 @@ class DictionaryInConfig implements Dictionary {
     }
 }
 
-export function createDictionaryFileInstance(uri: Uri, name?: string): DictionaryFile {
-    return new DictionaryFileInstance(uri, name);
+export function createDictionaryTargetForFile(uri: Uri, name?: string): DictionaryTargetFile {
+    return new DictionaryTargetFileInstance(uri, name);
 }
 
-export function createDictionaryInConfig(rep: ConfigRepository): Dictionary {
-    return new DictionaryInConfig(rep);
+export function createDictionaryTargetForConfig(rep: ConfigRepository): DictionaryTarget {
+    return new DictionaryTargetInConfig(rep);
 }
 
 type UpdateWords = (lines: string[]) => string[];
