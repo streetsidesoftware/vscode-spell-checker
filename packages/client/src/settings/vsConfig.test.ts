@@ -1,5 +1,5 @@
+import { readTextDocument } from 'jest-mock-vscode';
 import { Uri } from 'vscode';
-import { TargetInfoType } from './DictionaryTargetInfo';
 import {
     ConfigurationTarget,
     createTargetForDocument,
@@ -16,7 +16,6 @@ import {
     toScope,
     WorkspaceTarget,
 } from './vsConfig';
-import { readTextDocument } from 'jest-mock-vscode';
 
 const uri = Uri.file(__filename);
 
@@ -39,7 +38,6 @@ describe('Validate vsConfig', () => {
     test('isWorkspaceLevelTarget', () => {
         expect(isWorkspaceLevelTarget(GlobalTarget)).toBe(false);
         expect(isWorkspaceLevelTarget(WorkspaceTarget)).toBe(true);
-        expect(isWorkspaceLevelTarget(TargetInfoType.Workspace)).toBe(true);
     });
 
     test('isFolderLevelTarget', () => {

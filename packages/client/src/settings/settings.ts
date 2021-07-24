@@ -19,7 +19,6 @@ import {
     readSettings,
     readSettingsFileAndApplyUpdate,
 } from './CSpellSettings';
-import { DictionaryTargetInfoTypes } from './DictionaryTargetInfo';
 import * as config from './vsConfig';
 import { InspectScope } from './vsConfig';
 import { CSpellSettings } from '@cspell/cspell-types';
@@ -381,11 +380,7 @@ export function resolveTarget(target: config.ConfigurationTarget, docUri?: null 
     return config.createTargetForUri(target, docUri);
 }
 
-export async function determineSettingsPaths(
-    target: config.ConfigTarget | DictionaryTargetInfoTypes,
-    docUri: Uri | undefined,
-    docConfigFiles?: Uri[]
-): Promise<Uri[]> {
+export async function determineSettingsPaths(target: config.ConfigTarget, docUri: Uri | undefined, docConfigFiles?: Uri[]): Promise<Uri[]> {
     if (config.isWorkspaceLevelTarget(target)) {
         const files = await findSettingsFiles(undefined, true);
         const cfgFileSet = new Set(docConfigFiles?.map((u) => u.toString()) || []);

@@ -6,22 +6,12 @@ import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
-import type {
-    ConfigKind,
-    ConfigScope,
-    ConfigTarget,
-    ConfigTargetCSpell,
-    ConfigTargetDictionary,
-    ConfigTargetVSCode,
-    CustomDictionaryScope,
-    DictionaryDefinitionCustom,
-} from '../server';
+import type { ConfigKind, ConfigScope, ConfigTarget, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
-import { addWordsToSettingsAndUpdate, cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
+import { cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
 import { addWordsToCustomDictionary } from './DictionaryTarget';
-import { addWordsToSettings, resolveTarget as resolveConfigTarget } from './settings';
-import * as config from './vsConfig';
+import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 
 type ConfigKindMask = {
     [key in ConfigKind]: boolean;
@@ -144,37 +134,10 @@ export class DictionaryHelper {
         );
     }
 
-    private _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
-        switch (target.kind) {
-            case 'dictionary':
-                return this.addToDictionary(words, target);
-            case 'cspell':
-                return this.addToCSpellConfig(words, target);
-            case 'vscode':
-                return this.addToVSCodeConfig(words, target);
-        }
-        return Promise.resolve(false);
-    }
-
-    private async addToDictionary(words: string[], target: ConfigTargetDictionary): Promise<boolean> {
-        const def: CustomDictDef = {
-            name: target.name,
-            uri: Uri.parse(target.dictionaryUri),
-        };
-        await this.addWordsToCustomDictionaries(words, [def]);
+    private async _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
+        const dictTarget = configTargetToDictionaryTarget(target);
+        await dictTarget.addWords(words);
         return true;
-    }
-
-    private async addToCSpellConfig(words: string[], target: ConfigTargetCSpell): Promise<boolean> {
-        await addWordsToSettingsAndUpdate(Uri.parse(target.configUri), words);
-        return true;
-    }
-
-    private async addToVSCodeConfig(words: string[], target: ConfigTargetVSCode): Promise<boolean> {
-        const t = config.targetToConfigurationTarget(target.scope);
-        if (!t) return false;
-        const actualTarget = resolveConfigTarget(t, Uri.parse(target.docUri));
-        return addWordsToSettings(actualTarget, words, false);
     }
 
     private async getDocConfig(uri: Uri | undefined) {
