@@ -1,4 +1,4 @@
-import { URI as Uri } from 'vscode-uri';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 export const supportedSchemes = ['gist', 'file', 'sftp', 'untitled'];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
@@ -44,12 +44,6 @@ export function toFileUri(uri: string | Uri | undefined): Uri | undefined {
  * @param uriTo
  */
 export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
-    function splitUri(uri: Uri) {
-        return cleanUri(uri)
-            .toString()
-            .split('/')
-            .filter((a) => !!a);
-    }
     const fromSegments = splitUri(uriFrom);
     const toSegments = splitUri(uriTo);
     let i = 0;
@@ -58,6 +52,32 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
     return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '');
 }
 
+/**
+ * Generate a relative path from one file to another.
+ * @param uriFromFile - uri of from file.
+ * @param uriTo - uri of destination.
+ * @returns
+ */
+export function relativeToFile(uriFromFile: Uri, uriTo: Uri): string {
+    return relativeTo(UriUtils.dirname(uriFromFile), uriTo);
+}
+
 export function cleanUri(uri: Uri): Uri {
     return uri.with({ fragment: '', query: '' });
+}
+
+/**
+ * Try to make a friendly name out of a Uri
+ * @param uri - uri of file
+ */
+export function uriToName(uri: Uri, segments = 2): string {
+    const parts = splitUri(uri).slice(-segments);
+    return parts.join('/');
+}
+
+function splitUri(uri: Uri) {
+    return cleanUri(uri)
+        .toString()
+        .split('/')
+        .filter((a) => !!a);
 }

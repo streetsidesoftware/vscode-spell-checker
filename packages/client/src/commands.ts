@@ -55,6 +55,7 @@ import { toUri } from 'common-utils/uriHelper.js';
 
 import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
+import { configTargetToConfigRepo } from './settings/configRepository';
 
 export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker } from './settings';
 
@@ -134,7 +135,7 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
-    'cSpell.createCustomDictionary': notImplemented('cSpell.createCustomDictionary'),
+    'cSpell.createCustomDictionary': createCustomDictionary,
     'cSpell.createCSpellConfig': createCSpellConfig,
 };
 
@@ -142,9 +143,9 @@ function pVoid<T>(p: Promise<T> | Thenable<T>, errorHandler = handleErrors): Pro
     return errorHandler(Promise.resolve(p).then(() => {}));
 }
 
-function notImplemented(cmd: string) {
-    return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
-}
+// function notImplemented(cmd: string) {
+//     return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
+// }
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
 
@@ -334,6 +335,19 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
 
         commands.executeCommand(cmd, ...args);
     }
+}
+
+async function createCustomDictionary(): Promise<void> {
+    const document = window.activeTextEditor?.document;
+
+    const config = await di.get('client').getConfigurationForDocument(document);
+
+    const cspellTargets = config.configTargets.filter((t) => t.kind === 'cspell');
+    const t = cspellTargets[0];
+    if (!t?.kind || t.kind !== 'cspell') return;
+
+    const cfg = configTargetToConfigRepo(t);
+    await di.get('dictionaryHelper').createCustomDictionary(cfg);
 }
 
 function dumpPerfTimeline(): void {

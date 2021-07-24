@@ -1,4 +1,4 @@
-import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, toFileUri, toUri } from './uriHelper';
+import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 const uri = Uri.file(__filename);
@@ -58,5 +58,35 @@ describe('Validate uriHelper', () => {
         expect(UriUtils.joinPath(uriA, rel).toString()).toBe(
             UriUtils.joinPath(cleanUri(uriB), '.').with({ fragment: uriA.fragment, query: uriA.query }).toString()
         );
+    });
+
+    test.each`
+        a                               | b                           | expected
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/c/file.txt'} | ${'file.txt'}
+        ${'file:///a/b/'}               | ${'file:///a/b/c/file.txt'} | ${'b/c/file.txt'}
+        ${'file:///a/b'}                | ${'file:///a/b/c/file.txt'} | ${'b/c/file.txt'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/'}           | ${'..'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b'}            | ${'..'}
+        ${'file:///a/b/c/file.txt#156'} | ${'file:///a/b?x=1;b=2'}    | ${'..'}
+        ${'file:///a/b/c/file.txt?x=1'} | ${'file:///a/b/c#55'}       | ${''}
+    `('relativeToFile "$a" "$b"', ({ a, b, expected }) => {
+        const uriA = toUri(a);
+        const uriB = toUri(b);
+        const rel = relativeToFile(uriA, uriB);
+        expect(rel).toBe(expected);
+    });
+
+    test.each`
+        uri                             | segments     | expected
+        ${'file:///a/b/c/file.txt'}     | ${undefined} | ${'c/file.txt'}
+        ${'file:///a/b/'}               | ${undefined} | ${'a/b'}
+        ${'file:///a/b'}                | ${undefined} | ${'a/b'}
+        ${'file:///a/b/c/file.txt'}     | ${3}         | ${'b/c/file.txt'}
+        ${'file:///a/b/c/file.txt'}     | ${1}         | ${'file.txt'}
+        ${'file:///a/b/c/file.txt#156'} | ${undefined} | ${'c/file.txt'}
+        ${'file:///a/b/c/file.txt?x=1'} | ${undefined} | ${'c/file.txt'}
+    `('uriToName "$uri" -> "$expected"', ({ uri, segments, expected }) => {
+        const uriA = toUri(uri);
+        expect(uriToName(uriA, segments)).toBe(expected);
     });
 });

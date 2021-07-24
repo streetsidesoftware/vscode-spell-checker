@@ -1,5 +1,3 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
 import { CSpellUserSettingsWithComments, DictionaryDefinitionCustom } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
@@ -38,8 +36,6 @@ export const configFileLocations = [
 export const nestedConfigLocations = ['package.json'];
 
 export const cspellConfigDirectory = '.cspell';
-
-const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
 
 export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConfigLocations));
 /**
@@ -182,21 +178,4 @@ export function dictionaryDefinitionToCustomDictDef(def: DictionaryDefinitionCus
         name: def.name,
         uri: Uri.file(def.path),
     };
-}
-
-export async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef): Promise<void> {
-    const fsPath = dict.uri.fsPath;
-    if (!regIsSupportedCustomDictionaryFormat.test(fsPath)) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${dict.uri.fsPath}".`));
-    }
-    try {
-        const data = await fs.readFile(fsPath, 'utf8').catch(() => '');
-        const lines = unique(data.split(/\r?\n/g).concat(words))
-            .filter((a) => !!a)
-            .sort();
-        await fs.mkdirp(path.dirname(fsPath));
-        await fs.writeFile(fsPath, lines.join('\n') + '\n');
-    } catch (e) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${e.toString()}`));
-    }
 }

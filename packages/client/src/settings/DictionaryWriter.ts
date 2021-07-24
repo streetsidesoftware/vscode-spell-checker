@@ -9,7 +9,8 @@ import {
     isDictionaryTargetWorkspace,
 } from './DictionaryTargets';
 import { addWordsToSettings } from './settings';
-import { addWordsToCustomDictionary, addWordsToSettingsAndUpdate } from './CSpellSettings';
+import { addWordsToSettingsAndUpdate } from './CSpellSettings';
+import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
 
 export async function writeWordsToDictionary(target: DictionaryTargets, words: string[]): Promise<boolean> {
     const configTarget = dictionaryTargetToConfigTarget(target);

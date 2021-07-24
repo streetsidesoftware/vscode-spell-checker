@@ -1,25 +1,36 @@
 {
 	"folders": [
 		{
+			"name": "Spell Checker Root",
 			"path": "."
 		},
 		{
+			"name": "Client",
 			"path": "packages/client"
 		},
 		{
+			"name": "Server - Spell Checker",
 			"path": "packages/_server"
 		},
 		{
+			"name": "Server - Pattern Matcher",
 			"path": "packages/_serverPatternMatcher"
 		},
 		{
+			"name": "Settings Viewer",
 			"path": "packages/_settingsViewer"
 		},
 		{
+			"name": "Integration Tests",
 			"path": "packages/_integrationTests"
 		},
 		{
+			"name": "Mock VS Code",
 			"path": "packages/jest-mock-vscode"
+		},
+		{
+			"name": "Utils",
+			"path": "packages/__utils"
 		}
 	],
 	"settings": {
