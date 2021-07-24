@@ -1,27 +1,17 @@
+import { fileExists } from 'common-utils/file.js';
 import { relativeTo } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import { fileExists } from 'common-utils/file.js';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
-import type {
-    ConfigKind,
-    ConfigScope,
-    ConfigTarget,
-    ConfigTargetCSpell,
-    ConfigTargetDictionary,
-    ConfigTargetVSCode,
-    CustomDictionaryScope,
-    DictionaryDefinitionCustom,
-} from '../server';
+import type { ConfigKind, ConfigScope, ConfigTarget, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
-import { addWordsToSettingsAndUpdate, cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
-import { addWordsToCustomDictionary } from './DictionaryReaderWriter';
-import { addWordsToSettings, resolveTarget as resolveConfigTarget } from './settings';
-import * as config from './vsConfig';
+import { cspellConfigDirectory, CustomDictDef, normalizeWords } from './CSpellSettings';
+import { addWordsToCustomDictionary } from './DictionaryTarget';
+import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 
 type ConfigKindMask = {
     [key in ConfigKind]: boolean;
@@ -105,7 +95,7 @@ export class DictionaryHelper {
      */
     public async createCustomDictionary(cfgRep: CSpellConfigRepository, name = 'custom-words', filename?: string): Promise<void> {
         const dir = UriUtils.dirname(cfgRep.configFileUri);
-        const dictUri = await this.createCustomDictionaryFile(dir, filename);
+        const dictUri = await createCustomDictionaryFile(dir, filename);
         const relPath = './' + relativeTo(dir, dictUri);
         return this.addCustomDictionaryToConfig(cfgRep, relPath, name);
     }
@@ -144,49 +134,10 @@ export class DictionaryHelper {
         );
     }
 
-    private async createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename): Promise<Uri> {
-        const dictDir =
-            UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
-        const dictUri = UriUtils.joinPath(dictDir, filename);
-        const doesExist = await fileExists(dictUri);
-        if (!doesExist) {
-            await fs.mkdirp(dictDir.fsPath);
-            await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
-        }
-        return dictUri;
-    }
-
-    private _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
-        switch (target.kind) {
-            case 'dictionary':
-                return this.addToDictionary(words, target);
-            case 'cspell':
-                return this.addToCSpellConfig(words, target);
-            case 'vscode':
-                return this.addToVSCodeConfig(words, target);
-        }
-        return Promise.resolve(false);
-    }
-
-    private async addToDictionary(words: string[], target: ConfigTargetDictionary): Promise<boolean> {
-        const def: CustomDictDef = {
-            name: target.name,
-            uri: Uri.parse(target.dictionaryUri),
-        };
-        await this.addWordsToCustomDictionaries(words, [def]);
+    private async _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
+        const dictTarget = configTargetToDictionaryTarget(target);
+        await dictTarget.addWords(words);
         return true;
-    }
-
-    private async addToCSpellConfig(words: string[], target: ConfigTargetCSpell): Promise<boolean> {
-        await addWordsToSettingsAndUpdate(Uri.parse(target.configUri), words);
-        return true;
-    }
-
-    private async addToVSCodeConfig(words: string[], target: ConfigTargetVSCode): Promise<boolean> {
-        const t = config.targetToConfigurationTarget(target.scope);
-        if (!t) return false;
-        const actualTarget = resolveConfigTarget(t, Uri.parse(target.docUri));
-        return addWordsToSettings(actualTarget, words, false);
     }
 
     private async getDocConfig(uri: Uri | undefined) {
@@ -231,6 +182,18 @@ function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets:
     }
 
     return matches;
+}
+
+async function createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename, overwrite = false): Promise<Uri> {
+    const dictDir =
+        UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
+    const dictUri = UriUtils.joinPath(dictDir, filename);
+    overwrite = overwrite || !(await fileExists(dictUri));
+    if (overwrite) {
+        await fs.mkdirp(dictDir.fsPath);
+        await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+    }
+    return dictUri;
 }
 
 export function buildMatchTargetFn(kind: Partial<DictionaryHelperTargetKind>, scope: Partial<DictionaryHelperTargetScope>): TargetMatchFn {
@@ -285,4 +248,5 @@ export class UnableToFindTarget extends Error {
 
 export const __testing__ = {
     isTextDocument,
+    createCustomDictionaryFile,
 };

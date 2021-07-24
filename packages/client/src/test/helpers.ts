@@ -1,8 +1,11 @@
+import { mustBeDefined } from 'common-utils/util';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
-import * as fs from 'fs-extra';
 import { isDefined } from '../util';
 import { PackageJson } from '../vscode/packageJson';
+
+export { mustBeDefined } from 'common-utils/util';
 export { isDefined } from '../util';
 
 const rootClient = path.join(__dirname, '../..');
@@ -76,14 +79,13 @@ export function getCallStack(): StackItem[] {
 
 export function parseStackTrace(stackTrace: string): StackItem[] {
     const regStackLine = /^at\s+(.*)/;
-    const regStackFile = /\((.*)\)$/;
     const regParts = /^(.*):(\d+):(\d+)$/;
     const lines = stackTrace
         .split('\n')
         .map((a) => a.trim())
         .map((line) => line.match(regStackLine)?.[1])
         .filter(isString)
-        .map((line) => line.match(regStackFile)?.[1] || line)
+        .map((line) => extractBetween(line, '(', ')') || line)
         .filter(isString);
     const stack: StackItem[] = lines
         .map((line) => line.match(regParts))
@@ -92,17 +94,18 @@ export function parseStackTrace(stackTrace: string): StackItem[] {
     return stack.slice(1);
 }
 
+function extractBetween(line: string, start: string, end: string): string {
+    const iS = line.indexOf(start);
+    if (iS < 0) return '';
+    const iE = line.indexOf(end, iS + 1);
+    if (iE < 0) return '';
+    return line.slice(iS + 1, iE);
+}
+
 export function toNum(n: string | undefined): number | undefined {
     return typeof n === 'string' ? Number.parseInt(n, 10) : undefined;
 }
 
 export function isString(s: unknown): s is string {
     return typeof s === 'string';
-}
-
-export function mustBeDefined<T>(t: T | undefined): T {
-    if (t === undefined) {
-        throw new Error('Must Be Defined');
-    }
-    return t;
 }

@@ -1,14 +1,11 @@
 import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration, ConfigurationScope } from 'vscode';
 import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../server';
-import { DictionaryTargetTypes, isDictionaryTargetTypes, TargetType } from './DictionaryTargets';
 
 export { CSpellUserSettings } from '../server';
 export { ConfigurationTarget } from 'vscode';
 
 export const sectionCSpell = extensionId;
-
-export type AllTargetTypes = ConfigurationTarget | DictionaryTargetTypes;
 
 export interface InspectValues<T> {
     defaultValue?: T;
@@ -204,10 +201,7 @@ export function isGlobalLevelTarget(target: ConfigTarget): boolean {
     );
 }
 
-export function isWorkspaceLevelTarget(target: ConfigTarget | DictionaryTargetTypes): boolean {
-    if (isDictionaryTargetTypes(target)) {
-        return target === TargetType.Workspace;
-    }
+export function isWorkspaceLevelTarget(target: ConfigTarget): boolean {
     return (
         (isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Workspace) ||
         target === ConfigurationTarget.Workspace
@@ -226,44 +220,16 @@ export function isConfigTargetWithOptionalResource(target: ConfigTarget): target
     return typeof target === 'object' && target.target !== undefined;
 }
 
-type TargetToConfigurationTargetMap = {
-    [ConfigurationTarget.Global]: ConfigurationTarget.Global;
-    [ConfigurationTarget.Workspace]: ConfigurationTarget.Workspace;
-    [ConfigurationTarget.WorkspaceFolder]: ConfigurationTarget.WorkspaceFolder;
-    [TargetType.User]: ConfigurationTarget.Global;
-    [TargetType.Workspace]: ConfigurationTarget.Workspace;
-    [TargetType.Folder]: ConfigurationTarget.WorkspaceFolder;
-    [TargetType.CSpell]: undefined;
-    [TargetType.Dictionary]: undefined;
-};
-
-const targetToConfigurationTargetMap: TargetToConfigurationTargetMap = {
-    [ConfigurationTarget.Global]: ConfigurationTarget.Global,
-    [ConfigurationTarget.Workspace]: ConfigurationTarget.Workspace,
-    [ConfigurationTarget.WorkspaceFolder]: ConfigurationTarget.WorkspaceFolder,
-    [TargetType.User]: ConfigurationTarget.Global,
-    [TargetType.Workspace]: ConfigurationTarget.Workspace,
-    [TargetType.Folder]: ConfigurationTarget.WorkspaceFolder,
-    [TargetType.CSpell]: undefined,
-    [TargetType.Dictionary]: undefined,
-};
-
 type TargetToScopeMap = {
     [ConfigurationTarget.Global]: 'globalValue';
     [ConfigurationTarget.Workspace]: 'workspaceValue';
     [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue';
-    [TargetType.User]: 'globalValue';
-    [TargetType.Workspace]: 'workspaceValue';
-    [TargetType.Folder]: 'workspaceFolderValue';
 };
 
 const targetToScopeMap: TargetToScopeMap = {
     [ConfigurationTarget.Global]: 'globalValue',
     [ConfigurationTarget.Workspace]: 'workspaceValue',
     [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue',
-    [TargetType.User]: 'globalValue',
-    [TargetType.Workspace]: 'workspaceValue',
-    [TargetType.Folder]: 'workspaceFolderValue',
 };
 
 type ConfigTargetToName = {
@@ -278,10 +244,6 @@ const configTargetToName: ConfigTargetToName = {
 
 export function configurationTargetToName(target: ConfigurationTarget): string {
     return configTargetToName[target];
-}
-
-export function targetToConfigurationTarget(target: AllTargetTypes): ConfigurationTarget | undefined {
-    return targetToConfigurationTargetMap[target];
 }
 
 export function configTargetToScope(target: ConfigTarget): InspectScope {

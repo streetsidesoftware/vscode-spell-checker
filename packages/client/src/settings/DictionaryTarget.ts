@@ -3,25 +3,24 @@ import { uriToName } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
-import { unique } from '../util';
 import { ConfigRepository } from './configRepository';
 import { CustomDictDef } from './CSpellSettings';
 
 const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
 
-export interface Dictionary {
+export interface DictionaryTarget {
     /** Name of dictionary */
     readonly name: string;
     addWords: (words: string[]) => Promise<void>;
     removeWords: (words: string[]) => Promise<void>;
 }
 
-export interface DictionaryFile extends Dictionary {
+export interface DictionaryTargetFile extends DictionaryTarget {
     /** Uri of the dictionary file */
     readonly uri: Uri;
 }
 
-class DictionaryFileInstance implements DictionaryFile {
+class DictionaryTargetFileInstance implements DictionaryTargetFile {
     readonly name: string;
     constructor(readonly uri: Uri, name?: string) {
         this.name = name ?? uriToName(uri);
@@ -38,7 +37,7 @@ class DictionaryFileInstance implements DictionaryFile {
 
 const configKeyWords = ['words'] as const;
 
-class DictionaryInConfig implements Dictionary {
+class DictionaryTargetInConfig implements DictionaryTarget {
     readonly name: string;
     constructor(readonly rep: ConfigRepository) {
         this.name = rep.name;
@@ -53,12 +52,12 @@ class DictionaryInConfig implements Dictionary {
     }
 }
 
-export function createDictionaryFileInstance(uri: Uri, name?: string): DictionaryFile {
-    return new DictionaryFileInstance(uri, name);
+export function createDictionaryTargetForFile(uri: Uri, name?: string): DictionaryTargetFile {
+    return new DictionaryTargetFileInstance(uri, name);
 }
 
-export function createDictionaryInConfig(rep: ConfigRepository): Dictionary {
-    return new DictionaryInConfig(rep);
+export function createDictionaryTargetForConfig(rep: ConfigRepository): DictionaryTarget {
+    return new DictionaryTargetInConfig(rep);
 }
 
 type UpdateWords = (lines: string[]) => string[];
@@ -70,18 +69,26 @@ function updateConfigFn(updateFn: UpdateWords): (cfg: CSpellUserSettings) => CSp
     };
 }
 
-function addWordsFn(words: string[]): (lines: string[]) => string[] {
-    return (lines) => lines.concat(words);
+export function addWordsFn(words: string[]): (lines: string[]) => string[] {
+    return (lines) => sortWords([...new Set(lines.concat(words))]);
 }
 
-function removeWordsFn(words: string[]): (lines: string[]) => string[] {
+export function removeWordsFn(words: string[]): (lines: string[]) => string[] {
     return (lines) => {
         const current = new Set(lines);
         for (const w of words) {
             current.delete(w);
         }
-        return [...current];
+        return sortWords([...current]);
     };
+}
+
+function sortWords(words: string[]): string[] {
+    return words.sort(compare);
+}
+
+function compare(a: string, b: string): number {
+    return a.localeCompare(b);
 }
 
 export async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef): Promise<void> {
@@ -95,12 +102,9 @@ async function updateWordInCustomDictionary(updateFn: (words: string[]) => strin
     }
     try {
         const data = await fs.readFile(fsPath, 'utf8').catch(() => '');
-
-        const lines = unique(updateFn(data.split(/\r?\n/g)))
-            .filter((a) => !!a)
-            .sort();
+        const lines = updateFn(data.split(/\r?\n/g).filter((a) => !!a));
         await fs.mkdirp(path.dirname(fsPath));
-        await fs.writeFile(fsPath, lines.join('\n').concat('\n'));
+        await fs.writeFile(fsPath, lines.join('\n').trim().concat('\n'));
     } catch (e) {
         return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${e.toString()}`));
     }

@@ -1,4 +1,4 @@
-import { unique, uniqueFilter, freqCount, mustBeDefined, isDefined, textToWords } from './util';
+import { unique, uniqueFilter, freqCount, mustBeDefined, isDefined, textToWords, pick } from './util';
 
 describe('Util', () => {
     test('unique', () => {
@@ -63,6 +63,17 @@ describe('Validate Util Functions', () => {
         expect(r).toEqual(expected);
         const r2 = textToWords(line.normalize('NFD'));
         expect(r2).toEqual(expected);
+    });
+
+    test('pick', () => {
+        const src = {
+            a: 'aaa',
+            b: { ba: 'a', bb: 'b' },
+            c: 'ccc',
+        } as const;
+
+        const r = pick(Object.freeze(src), ['a', 'b']);
+        expect(r).toEqual({ a: src.a, b: src.b });
     });
 
     // cspell:ignore spéciale geschäft aåáâäñãæ
