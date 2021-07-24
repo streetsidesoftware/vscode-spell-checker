@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { uriToName } from 'common-utils/uriHelper.js';
 import { ConfigurationScope, ConfigurationTarget, Uri } from 'vscode';
 import { updateConfigFile } from './configFileReadWrite';
@@ -10,6 +10,7 @@ type ConfigKeys = keyof CSpellUserSettings;
 /** Interface for a location where CSpell configuration is stored */
 export interface ConfigRepository {
     readonly name: string;
+    readonly defaultDictionaryScope: CustomDictionaryScope | undefined;
     /**
      * @param updateFn - a function that will return the updated config fields
      * @param neededKeys - a list of fields needed by `updateFn`.
@@ -17,6 +18,7 @@ export interface ConfigRepository {
      */
     readonly update: (updateFn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]) => Promise<void>;
     readonly setValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]) => Promise<void>;
+    readonly updateValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K] | UpdateConfigFieldFn<K>) => Promise<void>;
 }
 
 /**
@@ -24,37 +26,50 @@ export interface ConfigRepository {
  */
 export type ConfigUpdateFn = (cfg: Partial<CSpellUserSettings>) => Partial<CSpellUserSettings>;
 
-export class CSpellConfigRepository implements ConfigRepository {
+export type UpdateConfigFieldFn<K extends keyof CSpellUserSettings> = (value: CSpellUserSettings[K]) => CSpellUserSettings[K];
+
+abstract class ConfigRepositoryBase implements ConfigRepository {
+    abstract readonly name: string;
+    abstract readonly defaultDictionaryScope: CustomDictionaryScope | undefined;
+
+    abstract update(fn: ConfigUpdateFn, _neededKeys: readonly ConfigKeys[]): Promise<void>;
+
+    setValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]): Promise<void> {
+        return this.update(() => ({ [key]: value }), []);
+    }
+
+    updateValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K] | UpdateConfigFieldFn<K>): Promise<void> {
+        return this.update(updateConfigByKeyFn(key, value), [key]);
+    }
+}
+export class CSpellConfigRepository extends ConfigRepositoryBase {
     readonly name: string;
+    readonly defaultDictionaryScope: undefined;
 
     constructor(readonly configFileUri: Uri, name?: string | undefined) {
+        super();
         this.name = name || uriToName(configFileUri);
     }
 
     update(fn: ConfigUpdateFn, _neededKeys: readonly ConfigKeys[]): Promise<void> {
         return updateConfigFile(this.configFileUri, fn);
     }
-
-    setValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]): Promise<void> {
-        return this.update(() => ({ [key]: value }), []);
-    }
 }
 
-export class VSCodeRepository implements ConfigRepository {
+export class VSCodeRepository extends ConfigRepositoryBase {
     readonly name: string;
+    readonly defaultDictionaryScope: CustomDictionaryScope;
 
     constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope) {
+        super();
         this.name = configurationTargetToName(target);
+        this.defaultDictionaryScope = configurationTargetToDictionaryScope(target);
     }
 
     update(updateFn: ConfigUpdateFn, neededKeys: readonly ConfigKeys[]): Promise<void> {
         const { fn, keys } = this.mappers(neededKeys, updateFn);
 
         return updateConfig(this.target, this.scope, keys, fn);
-    }
-
-    setValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]): Promise<void> {
-        return this.update(() => ({ [key]: value }), []);
     }
 
     /**
@@ -105,4 +120,31 @@ export class VSCodeRepository implements ConfigRepository {
             keys: [...keys],
         };
     }
+}
+
+export function updateConfigByKeyFn<K extends keyof CSpellUserSettings>(
+    key: K,
+    updateFnOrValue: CSpellUserSettings[K] | UpdateConfigFieldFn<K>
+): (cfg: CSpellUserSettings) => CSpellUserSettings {
+    if (typeof updateFnOrValue === 'function') {
+        return (cfg) => ({
+            [key]: updateFnOrValue(cfg[key]),
+        });
+    }
+
+    return () => ({ [key]: updateFnOrValue });
+}
+
+type TargetToScope = {
+    [key in ConfigurationTarget]: CustomDictionaryScope;
+};
+
+const targetToScope: TargetToScope = {
+    [ConfigurationTarget.Global]: 'user',
+    [ConfigurationTarget.Workspace]: 'workspace',
+    [ConfigurationTarget.WorkspaceFolder]: 'folder',
+} as const;
+
+function configurationTargetToDictionaryScope(target: ConfigurationTarget): CustomDictionaryScope {
+    return targetToScope[target];
 }
