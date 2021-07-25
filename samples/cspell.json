@@ -4,6 +4,7 @@
     "enableFiletypes": [
         "FortranFreeForm",
         "php",
+        "ini",
         "ruby"
     ],
     "dictionaryDefinitions": [
