@@ -29,10 +29,10 @@ import {
     setEnableSpellChecking,
     toggleEnableSpellChecker,
 } from './settings';
-import { CSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
+import { ConfigRepository, createCSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
-import * as CSpellSettings from './settings/CSpellSettings';
 import {
+    createClientConfigTargetFromConfigurationTarget,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -42,8 +42,10 @@ import {
     dictionaryTargetVSCodeUser as dtVSCodeUser,
     dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
     TargetMatchFn,
-} from './settings/DictionaryHelper';
-import { createDictionaryTargetForConfig, createDictionaryTargetForFile } from './settings/DictionaryTarget';
+} from './settings/configTargetHelper';
+import * as CSpellSettings from './settings/CSpellSettings';
+import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
+import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, logErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
@@ -52,19 +54,15 @@ export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
-        const cfgRepo = new CSpellConfigRepository(toUri(config.uri), config.name);
-        const dictTarget = createDictionaryTargetForConfig(cfgRepo);
-        return pVoid(dictTarget.addWords(words));
+        return addWordsToConfig(words, createCSpellConfigRepository(toUri(config.uri), config.name));
     },
-    'cSpell.addWordsToDictionaryFileFromServer': (words, documentUri, dict) => {
-        const dictTarget = createDictionaryTargetForFile(toUri(dict.uri), dict.name);
-        return pVoid(dictTarget.addWords(words));
+    'cSpell.addWordsToDictionaryFileFromServer': (words, _documentUri, dict) => {
+        return addWordsToDictionaryTarget(words, createDictionaryTargetForFile(toUri(dict.uri), dict.name));
     },
     'cSpell.addWordsToVSCodeSettingsFromServer': (words, documentUri, target) => {
         const cfgTarget = dictionaryScopeToConfigurationTarget(target);
         const cfgRepo = new VSCodeRepository(cfgTarget, toUri(documentUri));
-        const dictTarget = createDictionaryTargetForConfig(cfgRepo);
-        return pVoid(dictTarget.addWords(words));
+        return addWordsToConfig(words, cfgRepo);
     },
 };
 
@@ -81,7 +79,7 @@ const actionAddWordToWorkspaceSettings = prompt('Add Word to Workspace Settings'
 const actionAddWordToUserSettings = prompt('Add Word to User Settings', fnWTarget(addWordToTarget, dtVSCodeUser));
 const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
 const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
-const actionRemoveWordFromDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
+const actionRemoveWordFromUserDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
 const actionAddIgnoreWord = prompt('Ignore Word', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder));
 const actionAddIgnoreWordToFolder = prompt(
     'Ignore Word in Folder Settings',
@@ -107,7 +105,7 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.removeWordFromFolderDictionary': actionRemoveWordFromFolderDictionary,
     'cSpell.removeWordFromWorkspaceDictionary': actionRemoveWordFromWorkspaceDictionary,
-    'cSpell.removeWordFromUserDictionary': actionRemoveWordFromDictionary,
+    'cSpell.removeWordFromUserDictionary': actionRemoveWordFromUserDictionary,
 
     'cSpell.addIgnoreWord': actionAddIgnoreWord,
     'cSpell.addIgnoreWordToFolder': actionAddIgnoreWordToFolder,
@@ -202,6 +200,22 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     }
 }
 
+function addWordsToConfig(words: string[], cfg: ConfigRepository) {
+    return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg));
+}
+
+function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarget) {
+    return handleErrors(di.get('dictionaryHelper').addWordToDictionary(words, dictTarget));
+}
+
+// function removeWordsFromConfig(words: string[], cfg: ConfigRepository) {
+//     return handleErrors(di.get('dictionaryHelper').removeWordsFromConfigRep(words, cfg));
+// }
+
+// function removeWordsFromDictionaryTarget(words: string[], dictTarget: DictionaryTarget) {
+//     return handleErrors(di.get('dictionaryHelper').removeWordFromDictionary(words, dictTarget));
+// }
+
 function registerCmd(cmd: string, fn: (...args: any[]) => any): Disposable {
     return commands.registerCommand(cmd, catchErrors(fn));
 }
@@ -231,7 +245,7 @@ function addWordToTarget(word: string, target: TargetMatchFn, docUri: string | n
 }
 
 function _addWordToTarget(word: string, target: TargetMatchFn, docUri: string | null | Uri | undefined) {
-    docUri = parseOptionalUri(docUri);
+    docUri = toUri(docUri);
     return di.get('dictionaryHelper').addWordsToTarget(word, target, docUri);
 }
 
@@ -244,7 +258,7 @@ function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: s
 }
 
 async function _addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
-    uri = parseOptionalUri(uri);
+    uri = toUri(uri);
     const actualTarget = resolveTarget(target, uri);
     await Settings.addIgnoreWordToSettings(actualTarget, word);
     const paths = await determineSettingsPaths(actualTarget, uri);
@@ -267,21 +281,19 @@ function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: st
     return handleErrors(_removeWordFromTarget(word, target, uri));
 }
 
-async function _removeWordFromTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined) {
-    uri = parseOptionalUri(uri);
-    const actualTarget = resolveTarget(target, uri);
-    await Settings.removeWordFromSettings(actualTarget, word);
-    const paths = await determineSettingsPaths(actualTarget, uri);
-    await Promise.all(paths.map((path) => CSpellSettings.removeWordFromSettingsAndUpdate(path, word)));
+function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, docUri: string | null | Uri | undefined) {
+    docUri = toUri(docUri);
+    const target = createClientConfigTargetFromConfigurationTarget(cfgTarget, docUri);
+    return di.get('dictionaryHelper').removeWordsFromTarget(word, target, docUri);
 }
 
 export function enableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
-    uri = parseOptionalUri(uri);
+    uri = toUri(uri);
     return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, true, uri));
 }
 
 export function disableLanguageId(languageId: string, uri?: string | Uri): Promise<void> {
-    uri = parseOptionalUri(uri);
+    uri = toUri(uri);
     return handleErrors(Settings.enableLanguageIdForClosestTarget(languageId, false, uri));
 }
 
@@ -339,7 +351,7 @@ async function createCustomDictionary(): Promise<void> {
 
     const config = await di.get('client').getConfigurationForDocument(document);
 
-    const cspellTargets = config.configTargets.filter((t) => t.kind === 'cspell');
+    const cspellTargets = config.configTargets.map(mapConfigTargetToClientConfigTarget).filter((t) => t.kind === 'cspell');
     const t = cspellTargets[0];
     if (!t?.kind || t.kind !== 'cspell') return;
 
@@ -407,16 +419,6 @@ function determineWordRangeToAddToDictionaryFromSelection(
     // was wanted, otherwise use the diag range.
 
     return regExpIsWordLike.test(selectedText) ? selection : diagRange;
-}
-
-function parseOptionalUri(uri: string | Uri): Uri;
-function parseOptionalUri(uri: null | undefined): Uri | undefined;
-function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined;
-function parseOptionalUri(uri: string | Uri | null | undefined): Uri | undefined {
-    if (typeof uri === 'string') {
-        return Uri.parse(uri);
-    }
-    return uri || undefined;
 }
 
 function fnWTarget<TT>(

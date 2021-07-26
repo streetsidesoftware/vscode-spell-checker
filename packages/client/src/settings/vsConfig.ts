@@ -328,7 +328,7 @@ export function extractTargetUri(target: ConfigTarget): Uri | null {
     return isConfigTargetWithResource(target) ? target.uri || null : null;
 }
 
-type GetConfigurationScope = ConfigurationScope | undefined | null;
+export type GetConfigurationScope = ConfigurationScope | undefined | null;
 
 export function getConfiguration(scope: GetConfigurationScope): WorkspaceConfiguration {
     return workspace.getConfiguration(undefined, scope);
@@ -358,23 +358,22 @@ export function calculateConfigForTarget(
     const s: CSpellUserSettings = {};
     const inspectResult = inspectConfigKeys(scope, keys);
     for (const k of keys) {
-        const v = extract(target, k, inspectResult);
-        Object.assign(s, v);
+        assignExtract(s, target, k, inspectResult);
     }
     return s;
 }
 
-function extract<K extends keyof InspectCSpellSettings>(
+function assignExtract<K extends keyof InspectCSpellSettings>(
+    dest: CSpellUserSettings,
     target: ConfigurationTarget,
     k: K,
     s: InspectCSpellSettings
-): Partial<CSpellUserSettings> {
+) {
     const v = s[k] as FullInspectValues<CSpellUserSettings[K]>;
     const m = mergeInspect<CSpellUserSettings[K]>(target, v);
     if (m !== undefined) {
-        return { [k]: m };
+        dest[k] = m;
     }
-    return {};
 }
 
 function mergeInspect<T>(target: ConfigurationTarget, value: FullInspectValues<T> | undefined): T | undefined {

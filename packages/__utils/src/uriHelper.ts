@@ -19,12 +19,12 @@ export function isSupportedDoc(doc?: TextDocumentLike): boolean {
 const regExpIsUri = /^[\w.-]{2,}:/;
 
 export function toUri(uri: string | Uri): Uri;
-export function toUri(uri: string | Uri | undefined): Uri | undefined;
-export function toUri(uri: string | Uri | undefined): Uri | undefined {
+export function toUri(uri: string | Uri | undefined | null): Uri | undefined;
+export function toUri(uri: string | Uri | undefined | null): Uri | undefined {
     if (typeof uri === 'string') {
         return Uri.parse(uri);
     }
-    return uri;
+    return uri || undefined;
 }
 
 export function toFileUri(uri: string | Uri): Uri;

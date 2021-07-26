@@ -1,14 +1,15 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import { ConfigurationScope, ConfigurationTarget, Uri } from 'vscode';
+import type { ConfigurationScope, Uri } from 'vscode';
+import { ConfigurationTarget } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { ConfigKeysByField } from './configFields';
-import { updateConfigFile } from './configFileReadWrite';
+import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 import { configurationTargetToName, updateConfig } from './vsConfig';
 
-type ConfigKeys = keyof CSpellUserSettings;
+export type ConfigKeys = keyof CSpellUserSettings;
 
 export type ConfigRepositoryKind = 'cspell' | 'vscode';
 
@@ -34,7 +35,7 @@ export type ConfigUpdateFn = (cfg: Partial<CSpellUserSettings>) => Partial<CSpel
 
 export type UpdateConfigFieldFn<K extends keyof CSpellUserSettings> = (value: CSpellUserSettings[K]) => CSpellUserSettings[K];
 
-abstract class ConfigRepositoryBase implements ConfigRepository {
+export abstract class ConfigRepositoryBase implements ConfigRepository {
     abstract readonly name: string;
     abstract readonly kind: ConfigRepositoryKind;
     abstract readonly defaultDictionaryScope: CustomDictionaryScope | undefined;
@@ -49,19 +50,32 @@ abstract class ConfigRepositoryBase implements ConfigRepository {
         return this.update(configUpdaterForKey(key, value));
     }
 }
+
+export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, name?: string): CSpellConfigRepository {
+    const rw = isReaderWriter(src) ? src : createConfigFileReaderWriter(src);
+    return new CSpellConfigRepository(rw, name);
+}
+
+function isReaderWriter(src: Uri | ConfigFileReaderWriter): src is ConfigFileReaderWriter {
+    const rw = <ConfigFileReaderWriter>src;
+    return !!rw.update && !!rw.uri;
+}
+
 export class CSpellConfigRepository extends ConfigRepositoryBase {
     readonly name: string;
     readonly kind: ConfigRepositoryKind;
     readonly defaultDictionaryScope: undefined;
+    readonly configFileUri: Uri;
 
-    constructor(readonly configFileUri: Uri, name?: string | undefined) {
+    constructor(readonly configRW: ConfigFileReaderWriter, name?: string | undefined) {
         super();
-        this.name = name || uriToName(configFileUri);
+        this.name = name || uriToName(configRW.uri);
         this.kind = 'cspell';
+        this.configFileUri = configRW.uri;
     }
 
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
-        return updateConfigFile(this.configFileUri, fnUpdateFilterKeys(updater));
+        return this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
     }
 }
 
@@ -70,7 +84,7 @@ export class VSCodeRepository extends ConfigRepositoryBase {
     readonly kind: ConfigRepositoryKind;
     readonly defaultDictionaryScope: CustomDictionaryScope;
 
-    constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope) {
+    constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope | undefined) {
         super();
         this.name = configurationTargetToName(target);
         this.defaultDictionaryScope = configurationTargetToDictionaryScope(target);
@@ -136,3 +150,7 @@ export class VSCodeRepository extends ConfigRepositoryBase {
 function fnUpdateFilterKeys<K extends ConfigKeys>(updater: ConfigUpdater<K>): ConfigUpdateFn {
     return (cfg) => updater.updateFn(pick(cfg, updater.keys));
 }
+
+export const __testing__ = {
+    fnUpdateFilterKeys,
+};
