@@ -31,7 +31,7 @@ const spacesPackage = 2;
  */
 export function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
     const rw = createConfigFileReaderWriter(uri);
-    return rw.update(updateFn);
+    return rw._update(updateFn);
 }
 
 export function readConfigFile(uri: Uri, defaultValueIfNotFound: CSpellSettings): Promise<CSpellSettings>;
@@ -156,6 +156,7 @@ function detectFormatting(content: string): ContentFormat {
 
 export interface ConfigFileReaderWriter extends ConfigReaderWriter {
     readonly uri: Uri;
+    _update(fn: ConfigUpdateFn): Promise<void>;
     _read(): Promise<CSpellUserSettings>;
 }
 
@@ -168,7 +169,12 @@ abstract class AbstractConfigFileReaderWriter implements ConfigFileReaderWriter 
 
     abstract _read(): Promise<CSpellUserSettings>;
     abstract write(settings: CSpellSettings): Promise<void>;
-    abstract update(fn: ConfigUpdateFn): Promise<void>;
+
+    update<K extends keyof CSpellUserSettings>(fn: ConfigUpdateFn, keys: K[]): Promise<void> {
+        return this._update((cfg) => fn(extractKeys(cfg, keys)));
+    }
+
+    abstract _update(fn: ConfigUpdateFn): Promise<void>;
 
     mkdir(): Promise<void> {
         return fs.mkdirp(Uri.joinPath(this.uri, '..').fsPath);
@@ -176,7 +182,7 @@ abstract class AbstractConfigFileReaderWriter implements ConfigFileReaderWriter 
 }
 
 class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
-    async update(updateFn: ConfigUpdateFn): Promise<void> {
+    async _update(updateFn: ConfigUpdateFn): Promise<void> {
         const cspell = await orDefault(this._read(), settingsFileTemplate);
         const updated = assignJson(cspell, updateFn(cspell));
         return this.write(updated);
@@ -196,7 +202,7 @@ class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
 }
 
 class ConfigFileReaderWriterPackage extends AbstractConfigFileReaderWriter {
-    async update(updateFn: ConfigUpdateFn): Promise<void> {
+    async _update(updateFn: ConfigUpdateFn): Promise<void> {
         const fsPath = this.uri.fsPath;
         const content = await fs.readFile(fsPath, 'utf8');
         const pkg = parseJson(content) as PackageWithCSpell;
@@ -224,7 +230,7 @@ class ConfigFileReaderWriterPackage extends AbstractConfigFileReaderWriter {
 }
 
 class ConfigFileReaderWriterYaml extends AbstractConfigFileReaderWriter {
-    async update(updateFn: ConfigUpdateFn): Promise<void> {
+    async _update(updateFn: ConfigUpdateFn): Promise<void> {
         const cspell = await orDefault(this._read(), settingsFileTemplate);
         const updated = Object.assign({}, cspell, updateFn(cspell));
         return this.write(updated);

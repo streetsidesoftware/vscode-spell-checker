@@ -57,7 +57,11 @@ class MemoryReaderWriter implements ConfigReaderWriter {
         this._data = data;
     }
 
-    async update(fn: ConfigUpdateFn) {
+    update<K extends keyof CSpellUserSettings>(fn: ConfigUpdateFn, keys: K[]): Promise<void> {
+        return this._update((cfg) => fn(extractKeys(cfg, keys)));
+    }
+
+    async _update(fn: ConfigUpdateFn) {
         Object.assign(this._data, fn(this._data));
     }
 }

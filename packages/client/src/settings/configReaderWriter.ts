@@ -11,7 +11,7 @@ type ConfigKeys = keyof CSpellUserSettings;
 export interface ConfigReaderWriter {
     read<K extends ConfigKeys>(keys: K[]): Promise<Pick<CSpellUserSettings, K>>;
     write(settings: CSpellUserSettings): Promise<void>;
-    update(fn: ConfigUpdateFn): Promise<void>;
+    update<K extends ConfigKeys>(fn: ConfigUpdateFn, keys: K[]): Promise<void>;
 }
 
 export function extractKeys<K extends ConfigKeys>(s: CSpellUserSettings, keys: K[]): Pick<CSpellUserSettings, K> {

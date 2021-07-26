@@ -75,7 +75,7 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     }
 
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
-        return this.configRW.update(fnUpdateFilterKeys(updater));
+        return this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
     }
 }
 
