@@ -1,5 +1,5 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
-import { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../server';
+import { ClientConfigTarget, ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from './clientConfigTarget';
 import { ConfigRepository } from './configRepository';
 import { configTargetToConfigRepo } from './configRepositoryHelper';
 
@@ -12,14 +12,17 @@ describe('Validate configRepositoryHelper', () => {
         ${configTargetDict()}         | ${undefined}
         ${configTargetCSpell()}       | ${oc<ConfigRepository>({ kind: 'cspell' })}
         ${configTargetVSCode('user')} | ${oc<ConfigRepository>({ kind: 'vscode' })}
-    `('configTargetToConfigRepo $target', ({ target, expected }: { target: ConfigTarget; expected: ConfigRepository | undefined }) => {
-        const r = configTargetToConfigRepo(target);
-        expect(r).toEqual(expected);
-    });
+    `(
+        'configTargetToConfigRepo $target',
+        ({ target, expected }: { target: ClientConfigTarget; expected: ConfigRepository | undefined }) => {
+            const r = configTargetToConfigRepo(target);
+            expect(r).toEqual(expected);
+        }
+    );
 
     test('configTargetToConfigRepo Unknown config', () => {
         const badTarget = { kind: 'new kind' };
-        expect(() => configTargetToConfigRepo(badTarget as unknown as ConfigTarget)).toThrowError(`Unknown target ${badTarget.kind}`);
+        expect(() => configTargetToConfigRepo(badTarget as unknown as ClientConfigTarget)).toThrowError(`Unknown target ${badTarget.kind}`);
     });
 });
 
@@ -27,32 +30,29 @@ function oc<T>(s: Partial<T>): T {
     return expect.objectContaining(s);
 }
 
-function configTargetDict(): ConfigTargetDictionary {
+function configTargetDict(): ClientConfigTargetDictionary {
     return {
         name: 'custom-words',
         kind: 'dictionary',
-        dictionaryUri: UriUtils.joinPath(dirUri, '.cspell/words.txt').toString(),
+        dictionaryUri: UriUtils.joinPath(dirUri, '.cspell/words.txt'),
         scope: 'unknown',
     };
 }
 
-function configTargetCSpell(): ConfigTargetCSpell {
+function configTargetCSpell(): ClientConfigTargetCSpell {
     return {
         name: 'cspell.json',
         kind: 'cspell',
         scope: 'unknown',
-        sortKey: 0,
-        configUri: UriUtils.joinPath(dirUri, '../../cspell.json').toString(),
-        has: { words: true, ignoreWords: undefined },
+        configUri: UriUtils.joinPath(dirUri, '../../cspell.json'),
     };
 }
 
-function configTargetVSCode(scope: 'user' | 'workspace' | 'folder'): ConfigTargetVSCode {
+function configTargetVSCode(scope: 'user' | 'workspace' | 'folder'): ClientConfigTargetVSCode {
     return {
         name: 'VSCode ' + scope,
         kind: 'vscode',
         scope,
-        docUri: fileUri.toString(),
-        has: { words: true, ignoreWords: undefined },
+        docUri: fileUri,
     };
 }

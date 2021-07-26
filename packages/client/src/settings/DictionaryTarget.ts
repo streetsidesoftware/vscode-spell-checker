@@ -65,10 +65,9 @@ export function createDictionaryTargetForCSpell(cspellUri: Uri, name?: string): 
     return new DictionaryTargetInConfig(new CSpellConfigRepository(cspellUri, name));
 }
 
-export function createDictionaryTargetForConfig(rep: ConfigRepository): DictionaryTarget {
+export function createDictionaryTargetForConfigRep(rep: ConfigRepository): DictionaryTarget {
     return new DictionaryTargetInConfig(rep);
 }
-
 export interface CustomDictDef {
     name: string;
     uri: Uri;

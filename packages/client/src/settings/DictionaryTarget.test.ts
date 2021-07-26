@@ -1,5 +1,5 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
-import { ConfigTargetCSpell, ConfigTargetDictionary } from '../server';
+import { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget';
 import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers';
 import { readConfigFile } from './configFileReadWrite';
 import { DictionaryTarget } from './DictionaryTarget';
@@ -69,22 +69,20 @@ async function makeDictionaryTarget(tempDir: Uri): Promise<TargetAndReader> {
     };
 }
 
-function configTargetCSpell(configUri: Uri): ConfigTargetCSpell {
+function configTargetCSpell(configUri: Uri): ClientConfigTargetCSpell {
     return {
         name: 'cspell.json',
         kind: 'cspell',
         scope: 'unknown',
-        sortKey: 0,
-        configUri: configUri.toString(),
-        has: { words: true, ignoreWords: undefined },
+        configUri: configUri,
     };
 }
 
-function configTargetDict(dirUri: Uri): ConfigTargetDictionary {
+function configTargetDict(dirUri: Uri): ClientConfigTargetDictionary {
     return {
         name: 'custom-words',
         kind: 'dictionary',
-        dictionaryUri: dirUri.toString(),
+        dictionaryUri: dirUri,
         scope: 'unknown',
     };
 }

@@ -1,6 +1,7 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import { ConfigurationScope, ConfigurationTarget, Uri } from 'vscode';
+import type { ConfigurationScope, Uri } from 'vscode';
+import { ConfigurationTarget } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { updateConfigFile } from './configFileReadWrite';
@@ -70,7 +71,7 @@ export class VSCodeRepository extends ConfigRepositoryBase {
     readonly kind: ConfigRepositoryKind;
     readonly defaultDictionaryScope: CustomDictionaryScope;
 
-    constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope) {
+    constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope | undefined) {
         super();
         this.name = configurationTargetToName(target);
         this.defaultDictionaryScope = configurationTargetToDictionaryScope(target);

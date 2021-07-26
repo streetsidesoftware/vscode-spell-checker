@@ -1,5 +1,6 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
-import { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../server';
+import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../server';
+import { ClientConfigTarget } from './clientConfigTarget';
 import { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 
@@ -14,7 +15,7 @@ describe('Validate DictionaryTargetHelper', () => {
         ${configTargetVSCode('user')} | ${oc<DictionaryTarget>({ name: 'user' })}
     `(
         'configTargetToDictionaryTarget $target',
-        ({ target, expected }: { target: ConfigTarget; expected: DictionaryTarget | undefined }) => {
+        ({ target, expected }: { target: ClientConfigTarget; expected: DictionaryTarget | undefined }) => {
             const r = configTargetToDictionaryTarget(target);
             expect(r).toEqual(expected);
         }
@@ -22,7 +23,9 @@ describe('Validate DictionaryTargetHelper', () => {
 
     test('configTargetToDictionaryTarget Unknown config', () => {
         const badTarget = { kind: 'new kind' };
-        expect(() => configTargetToDictionaryTarget(badTarget as unknown as ConfigTarget)).toThrowError(`Unknown target ${badTarget.kind}`);
+        expect(() => configTargetToDictionaryTarget(badTarget as unknown as ClientConfigTarget)).toThrowError(
+            `Unknown target ${badTarget.kind}`
+        );
     });
 });
 

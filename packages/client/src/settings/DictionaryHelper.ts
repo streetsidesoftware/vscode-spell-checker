@@ -6,53 +6,18 @@ import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
-import type { ConfigKind, ConfigScope, ConfigTarget, CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
+import type { CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
+import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
+import { dictionaryTargetBestMatch, TargetMatchFn } from './configTargetHelper';
 import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
+import { createDictionaryTargetForConfigRep, DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
-
-type ConfigKindMask = {
-    [key in ConfigKind]: boolean;
-};
-
-type ConfigScopeMask = {
-    [key in ConfigScope]: boolean;
-};
-
-interface DictionaryHelperTargetKind extends ConfigKindMask {}
-interface DictionaryHelperTargetScope extends ConfigScopeMask {}
+import { mapConfigTargetToClientConfigTarget } from './mappers/configTarget';
 
 const defaultCustomDictionaryFilename = 'custom-dictionary-words.txt';
 const dictionaryTemplate = '# Custom Dictionary Words\n';
-
-export interface DictionaryHelperTarget {
-    kind: ConfigKindMask;
-    scope: ConfigScopeMask;
-}
-
-const matchKindNone: ConfigKindMask = { dictionary: false, cspell: false, vscode: false };
-const matchKindAll: ConfigKindMask = { dictionary: true, cspell: true, vscode: true };
-const matchKindCSpell: ConfigKindMask = { dictionary: false, cspell: true, vscode: false };
-const matchKindVSCode: ConfigKindMask = { dictionary: false, cspell: false, vscode: true };
-
-const matchScopeNone: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: false };
-const matchScopeAll: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: true };
-const matchScopeAllButUser: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: false };
-const matchScopeUser: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: true };
-const matchScopeWorkspace: ConfigScopeMask = { unknown: false, folder: false, workspace: true, user: false };
-const matchScopeFolder: ConfigScopeMask = { unknown: false, folder: true, workspace: false, user: false };
-
-export type TargetMatchFn = (configTargets: ConfigTarget[]) => Promise<ConfigTarget | undefined> | ConfigTarget | undefined;
-
-export const dictionaryTargetBestMatch = buildMatchTargetFn(matchKindAll, matchScopeAllButUser);
-export const dictionaryTargetBestMatchUser = buildMatchTargetFn(matchKindAll, matchScopeUser);
-export const dictionaryTargetBestMatchWorkspace = buildMatchTargetFn(matchKindAll, matchScopeWorkspace);
-export const dictionaryTargetBestMatchFolder = buildMatchTargetFn(matchKindAll, matchScopeFolder);
-export const dictionaryTargetCSpell = buildMatchTargetFn(matchKindCSpell, matchScopeAll);
-export const dictionaryTargetVSCodeUser = buildMatchTargetFn(matchKindVSCode, matchScopeUser);
-export const dictionaryTargetVSCodeWorkspace = buildMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
-export const dictionaryTargetVSCodeFolder = buildMatchTargetFn(matchKindVSCode, matchScopeFolder);
 
 export class DictionaryHelper {
     constructor(public client: CSpellClient) {}
@@ -60,17 +25,86 @@ export class DictionaryHelper {
     /**
      * Add word or words to the configuration
      * @param words - a single word or multiple words separated with a space or an array of words.
-     * @param target - where the word should be written: Folder, Workspace, User
+     * @param target - where the word should be written: ClientConfigTarget or a matching function.
      * @param docUri - the related document (helps to determine the configuration location)
      * @returns the promise resolves upon completion.
      */
-    public async addWordsToTarget(words: string | string[], target: ConfigTarget | TargetMatchFn, docUri: Uri | undefined): Promise<void> {
-        words = normalizeWords(words);
+    public async addWordsToTarget(
+        words: string | string[],
+        target: ClientConfigTarget | TargetMatchFn,
+        docUri: Uri | undefined
+    ): Promise<void> {
         const cfgTarget = await this.resolveTarget(target, docUri);
         if (!cfgTarget) return;
-        const result = await this._addWordsToTarget(words, cfgTarget);
-        if (!result) {
-            throw new UnableToAddWordError(`Unable to add "${words}"`, words);
+        return this.addWordToDictionary(words, cfgTarget);
+    }
+
+    /**
+     * Add words to the configuration
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param rep - configuration to add the words to
+     * @returns
+     */
+    public addWordsToConfigRep(words: string | string[], rep: ConfigRepository): Promise<void> {
+        const dict = createDictionaryTargetForConfigRep(rep);
+        return this.addWordToDictionary(words, dict);
+    }
+
+    /**
+     * Add words to a dictionary (configuration or dictionary file)
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param dictTarget - where to add the words
+     */
+    public async addWordToDictionary(words: string | string[], dictTarget: DictionaryTarget): Promise<void> {
+        words = normalizeWords(words);
+        try {
+            await dictTarget.addWords(words);
+        } catch (e) {
+            throw new UnableToAddWordError(`Unable to add "${words}"`, dictTarget, words);
+        }
+    }
+
+    /**
+     * Remove word or words from the configuration
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param target - where the word should be written: ClientConfigTarget or a matching function.
+     * @param docUri - the related document (helps to determine the configuration location)
+     * @returns the promise resolves upon completion.
+     */
+    public async removeWordsFromTarget(
+        words: string | string[],
+        target: ClientConfigTarget | TargetMatchFn,
+        docUri: Uri | undefined
+    ): Promise<void> {
+        words = normalizeWords(words);
+        const dictTarget = await this.resolveTarget(target, docUri);
+        if (!dictTarget) return;
+        return this.removeWordFromDictionary(words, dictTarget);
+    }
+
+    /**
+     * Remove words from the configuration
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param rep - configuration to add the words to
+     * @returns the promise resolves upon completion.
+     */
+    public removeWordsFromConfigRep(words: string | string[], rep: ConfigRepository): Promise<void> {
+        const dict = createDictionaryTargetForConfigRep(rep);
+        return this.removeWordFromDictionary(words, dict);
+    }
+
+    /**
+     * Remove words from a dictionary file or configuration
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param dictTarget - where to remove the words
+     * @returns the promise resolves upon completion.
+     */
+    public async removeWordFromDictionary(words: string | string[], dictTarget: DictionaryTarget): Promise<void> {
+        words = normalizeWords(words);
+        try {
+            await dictTarget.addWords(words);
+        } catch (e) {
+            throw new DictionaryTargetError(`Unable to remove "${words}" from "${dictTarget.name}"`, dictTarget);
         }
     }
 
@@ -133,12 +167,6 @@ export class DictionaryHelper {
         });
     }
 
-    private async _addWordsToTarget(words: string[], target: ConfigTarget): Promise<boolean> {
-        const dictTarget = configTargetToDictionaryTarget(target);
-        await dictTarget.addWords(words);
-        return true;
-    }
-
     private async getDocConfig(uri: Uri | undefined) {
         if (uri) {
             const doc = await vscode.workspace.openTextDocument(uri);
@@ -147,28 +175,21 @@ export class DictionaryHelper {
         return this.client.getConfigurationForDocument(undefined);
     }
 
-    private async resolveTarget(target: ConfigTarget | TargetMatchFn, docUri: Uri | undefined): Promise<ConfigTarget | undefined> {
-        if (typeof target !== 'function') return target;
+    private async resolveTarget(
+        target: ClientConfigTarget | TargetMatchFn,
+        docUri: Uri | undefined
+    ): Promise<DictionaryTarget | undefined> {
+        if (typeof target !== 'function') return configTargetToDictionaryTarget(target);
 
         const docConfig = await this.getDocConfig(docUri);
-        return target(docConfig.configTargets);
+        const targets = docConfig.configTargets.map(mapConfigTargetToClientConfigTarget);
+        const cfgTarget = await target(targets);
+        return cfgTarget && configTargetToDictionaryTarget(cfgTarget);
     }
 }
 
 function isTextDocument(d: vscode.TextDocument | vscode.Uri): d is vscode.TextDocument {
     return !!(<vscode.TextDocument>d).uri;
-}
-
-function findMatchingConfigTarget(target: DictionaryHelperTarget, configTargets: ConfigTarget[]): ConfigTarget[] {
-    const matches: ConfigTarget[] = [];
-
-    for (const t of configTargets) {
-        if (!target.kind[t.kind] || !target.scope[t.scope]) continue;
-        if (matches.length && (matches[0].kind !== t.kind || matches[0].scope !== t.scope)) break;
-        matches.push(t);
-    }
-
-    return matches;
 }
 
 async function createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename, overwrite = false): Promise<Uri> {
@@ -183,53 +204,15 @@ async function createCustomDictionaryFile(configDir: Uri, filename = defaultCust
     return dictUri;
 }
 
-export function buildMatchTargetFn(kind: Partial<DictionaryHelperTargetKind>, scope: Partial<DictionaryHelperTargetScope>): TargetMatchFn {
-    const match = {
-        kind: fillKind(kind),
-        scope: fillScope(scope),
-    };
-
-    return async function (configTargets: ConfigTarget[]) {
-        const found = findMatchingConfigTarget(match, configTargets);
-        if (!found.length) throw new UnableToFindTarget('No matching configuration found.');
-        if (found.length === 1) return found[0];
-
-        const sel = await vscode.window.showQuickPick(
-            found.map((f) => ({ label: f.name, _found: f })),
-            { title: 'Choose Destination' }
-        );
-        return sel?._found;
-    };
-}
-
-function fillKind(kind: Partial<DictionaryHelperTargetKind>): DictionaryHelperTargetKind {
-    return merge(matchKindNone, kind);
-}
-
-function fillScope(scope: Partial<DictionaryHelperTargetScope>): DictionaryHelperTargetScope {
-    return merge(matchScopeNone, scope);
-}
-
-function merge<T>(a: T, b: Partial<T>): T {
-    const v: T = { ...a };
-    type KeyOfT = keyof T;
-    for (const [key, value] of Object.entries(b) as [KeyOfT, T[KeyOfT] | undefined][]) {
-        if (value !== undefined) {
-            v[key] = value;
-        }
-    }
-    return v;
-}
-
-export class UnableToAddWordError extends Error {
-    constructor(msg: string, readonly words: string | string[]) {
+export class DictionaryTargetError extends Error {
+    constructor(msg: string, readonly dictTarget: DictionaryTarget) {
         super(msg);
     }
 }
 
-export class UnableToFindTarget extends Error {
-    constructor(msg: string) {
-        super(msg);
+export class UnableToAddWordError extends DictionaryTargetError {
+    constructor(msg: string, dictTarget: DictionaryTarget, readonly words: string | string[]) {
+        super(msg, dictTarget);
     }
 }
 
