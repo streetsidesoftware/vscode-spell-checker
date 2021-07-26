@@ -9,9 +9,9 @@ export type ConfigUpdateFn = (cfg: Partial<CSpellUserSettings>) => Partial<CSpel
 type ConfigKeys = keyof CSpellUserSettings;
 
 export interface ConfigReaderWriter {
-    read<K extends ConfigKeys>(keys: K[]): Promise<Pick<CSpellUserSettings, K>>;
+    read<K extends ConfigKeys>(keys: readonly K[]): Promise<Pick<CSpellUserSettings, K>>;
     write(settings: CSpellUserSettings): Promise<void>;
-    update<K extends ConfigKeys>(fn: ConfigUpdateFn, keys: K[]): Promise<void>;
+    update<K extends ConfigKeys>(fn: ConfigUpdateFn, keys: readonly K[]): Promise<void>;
 }
 
 export function extractKeys<K extends ConfigKeys>(s: CSpellUserSettings, keys: K[]): Pick<CSpellUserSettings, K> {
