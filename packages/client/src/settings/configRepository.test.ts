@@ -51,6 +51,7 @@ describe('configRepository', () => {
     });
 
     test('VSCodeConfigRepository Memory Global userWords', async () => {
+        // cspell:ignore hmmm
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Global, Uri.file(__filename), {
             words: ['hmmm'],
             userWords: ['user'],
