@@ -32,7 +32,7 @@ import {
 import { ConfigRepository, createCSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
-    createClientConfigTargetFromConfigurationTarget,
+    createClientConfigTargetVSCode,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -283,7 +283,7 @@ function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: st
 
 function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, docUri: string | null | Uri | undefined) {
     docUri = toUri(docUri);
-    const target = createClientConfigTargetFromConfigurationTarget(cfgTarget, docUri);
+    const target = createClientConfigTargetVSCode(cfgTarget, docUri);
     return di.get('dictionaryHelper').removeWordsFromTarget(word, target, docUri);
 }
 
