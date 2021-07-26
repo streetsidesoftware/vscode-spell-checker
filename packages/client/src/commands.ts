@@ -29,7 +29,7 @@ import {
     setEnableSpellChecking,
     toggleEnableSpellChecker,
 } from './settings';
-import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
+import { ConfigRepository, createCSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
     createClientConfigTargetFromConfigurationTarget,
@@ -54,7 +54,7 @@ export { disableCurrentLanguage, enableCurrentLanguage, toggleEnableSpellChecker
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
-        return addWordsToConfig(words, new CSpellConfigRepository(toUri(config.uri), config.name));
+        return addWordsToConfig(words, createCSpellConfigRepository(toUri(config.uri), config.name));
     },
     'cSpell.addWordsToDictionaryFileFromServer': (words, _documentUri, dict) => {
         return addWordsToDictionaryTarget(words, createDictionaryTargetForFile(toUri(dict.uri), dict.name));

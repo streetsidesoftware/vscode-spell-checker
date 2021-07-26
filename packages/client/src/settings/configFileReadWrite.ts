@@ -1,29 +1,21 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
-import { parse as parseJsonc, stringify as stringifyJsonc, assign as assignJson } from 'comment-json';
+import { CSpellUserSettings } from '../server';
+import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
+import * as fs from 'fs-extra';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import * as fs from 'fs-extra';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-
-/**
- * An update function returns the fields to be updated. To remove a field, make it undefined: `{ description: undefined }`
- * Note it is only a top level merge. The update function uses `Object.assign`.
- */
-export type ConfigUpdateFn = (cfg: Partial<CSpellSettings>) => Partial<CSpellSettings>;
+import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
+export type { ConfigUpdateFn } from './configReaderWriter';
 
 const SymbolFormat = Symbol('format');
 
-type HandlerDef = [
-    match: RegExp,
-    update: (uri: Uri, updateFn: ConfigUpdateFn) => Promise<void>,
-    read: (uri: Uri) => Promise<CSpellSettings>,
-    write: (uri: Uri, cfg: CSpellSettings) => Promise<void>
-];
+type HandlerDef = { match: RegExp; handler: (uri: Uri) => ConfigFileReaderWriter };
 
 const handlers: HandlerDef[] = [
-    [/package\.json$/i, updatePackageJson, readPackageJson, writePackageJson],
-    [/\.jsonc?$/i, updateCSpellJson, readCSpellJson, writeCSpellJson],
-    [/\.ya?ml$/i, updateCSpellYaml, readCSpellYaml, writeCSpellYaml],
+    { match: /package\.json$/i, handler: (uri) => new ConfigFileReaderWriterPackage(uri) },
+    { match: /\.jsonc?$/i, handler: (uri) => new ConfigFileReaderWriterJson(uri) },
+    { match: /\.ya?ml$/i, handler: (uri) => new ConfigFileReaderWriterYaml(uri) },
 ];
 
 const spacesJson = 4;
@@ -37,39 +29,38 @@ const spacesPackage = 2;
  *
  * @returns resolves if successful.
  */
-export async function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const handler = mustMatchHandler(uri);
-    const [, fn] = handler;
-    await fs.mkdirp(Uri.joinPath(uri, '..').fsPath);
-    return fn(uri, updateFn);
+export function updateConfigFile(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
+    const rw = createConfigFileReaderWriter(uri);
+    return rw.update(updateFn);
 }
 
 export function readConfigFile(uri: Uri, defaultValueIfNotFound: CSpellSettings): Promise<CSpellSettings>;
 export function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSettings): Promise<CSpellSettings | undefined>;
 export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSettings): Promise<CSpellSettings | undefined> {
-    const handler = mustMatchHandler(uri);
-    const [, , fn] = handler;
     try {
-        return await fn(uri);
+        const rw = createConfigFileReaderWriter(uri);
+        return await rw._read();
     } catch (e) {
         return e.code === 'ENOENT' ? Promise.resolve(defaultValueIfNotFound) : Promise.reject(e);
     }
 }
 
-export async function writeConfigFile(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    const handler = mustMatchHandler(uri);
-    const [, , , fn] = handler;
-    await fs.mkdirp(Uri.joinPath(uri, '..').fsPath);
-    return fn(uri, cfg);
+export function writeConfigFile(uri: Uri, cfg: CSpellSettings): Promise<void> {
+    const rw = createConfigFileReaderWriter(uri);
+    return rw.write(cfg);
 }
 
 export function isHandled(uri: Uri): boolean {
     return !!matchHandler(uri);
 }
 
-function mustMatchHandler(uri: Uri): HandlerDef {
-    const handler = matchHandler(uri);
-    if (handler) return handler;
+export function createConfigFileReaderWriter(uri: Uri): ConfigFileReaderWriter {
+    return mustMatchHandler(uri);
+}
+
+function mustMatchHandler(uri: Uri): ConfigFileReaderWriter {
+    const h = matchHandler(uri);
+    if (h) return h.handler(uri);
     throw new UnhandledFileType(uri);
 }
 
@@ -77,8 +68,7 @@ function matchHandler(uri: Uri): HandlerDef | undefined {
     const u = uri.with({ fragment: '', query: '' });
     const s = u.toString();
     for (const h of handlers) {
-        const [rTest] = h;
-        if (!rTest.test(s)) continue;
+        if (!h.match.test(s)) continue;
         return h;
     }
     return undefined;
@@ -96,63 +86,6 @@ const settingsFileTemplate: CSpellSettings = {
 
 interface PackageWithCSpell {
     cspell?: CSpellPackageSettings;
-}
-
-async function updateCSpellJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const cspell = await orDefault(readCSpellJson(uri), settingsFileTemplate);
-    const updated = assignJson(cspell, updateFn(cspell));
-    return fs.writeFile(uri.fsPath, stringifyJson(updated));
-}
-
-async function writeCSpellJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    return fs.writeFile(uri.fsPath, stringifyJson(cfg));
-}
-
-async function readCSpellJson(uri: Uri): Promise<CSpellSettings> {
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    const s = parseJson(content) as CSpellSettings;
-    return s;
-}
-
-async function updatePackageJson(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const fsPath = uri.fsPath;
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    const pkg = parseJson(content) as PackageWithCSpell;
-    const cspell = pkg.cspell || { ...settingsFileTemplate };
-    pkg.cspell = Object.assign(cspell, updateFn(cspell));
-    return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
-}
-
-async function writePackageJson(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    const fsPath = uri.fsPath;
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    const pkg = parseJson(content) as PackageWithCSpell;
-    pkg.cspell = cfg;
-    return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
-}
-
-async function readPackageJson(uri: Uri): Promise<CSpellSettings> {
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    const pkg = parseJson(content) as { cspell?: CSpellPackageSettings };
-    if (!pkg.cspell || typeof pkg.cspell !== 'object') {
-        throw new SysLikeError('`cspell` section missing from package.json', 'ENOENT');
-    }
-    return pkg.cspell;
-}
-
-async function updateCSpellYaml(uri: Uri, updateFn: ConfigUpdateFn): Promise<void> {
-    const cspell = await orDefault(readCSpellYaml(uri), settingsFileTemplate);
-    const updated = Object.assign({}, cspell, updateFn(cspell));
-    return fs.writeFile(uri.fsPath, stringifyYaml(updated));
-}
-
-async function writeCSpellYaml(uri: Uri, cfg: CSpellSettings): Promise<void> {
-    return fs.writeFile(uri.fsPath, stringifyYaml(cfg));
-}
-
-async function readCSpellYaml(uri: Uri): Promise<CSpellSettings> {
-    const content = await fs.readFile(uri.fsPath, 'utf8');
-    return parseYaml(content) as CSpellSettings;
 }
 
 function orDefault<T>(p: Promise<T>, defaultValue: T): Promise<T> {
@@ -219,6 +152,93 @@ function detectFormatting(content: string): ContentFormat {
         spaces: detectIndent(content),
         newlineAtEndOfFile: hasTrailingNewline(content),
     };
+}
+
+export interface ConfigFileReaderWriter extends ConfigReaderWriter {
+    readonly uri: Uri;
+    _read(): Promise<CSpellUserSettings>;
+}
+
+abstract class AbstractConfigFileReaderWriter implements ConfigFileReaderWriter {
+    constructor(readonly uri: Uri) {}
+
+    async read<K extends keyof CSpellUserSettings>(keys: K[]): Promise<Pick<CSpellUserSettings, K>> {
+        return extractKeys(await this._read(), keys);
+    }
+
+    abstract _read(): Promise<CSpellUserSettings>;
+    abstract write(settings: CSpellSettings): Promise<void>;
+    abstract update(fn: ConfigUpdateFn): Promise<void>;
+
+    mkdir(): Promise<void> {
+        return fs.mkdirp(Uri.joinPath(this.uri, '..').fsPath);
+    }
+}
+
+class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
+    async update(updateFn: ConfigUpdateFn): Promise<void> {
+        const cspell = await orDefault(this._read(), settingsFileTemplate);
+        const updated = assignJson(cspell, updateFn(cspell));
+        return this.write(updated);
+    }
+
+    async write(cfg: CSpellSettings): Promise<void> {
+        await this.mkdir();
+        return fs.writeFile(this.uri.fsPath, stringifyJson(cfg));
+    }
+
+    async _read(): Promise<CSpellSettings> {
+        const uri = this.uri;
+        const content = await fs.readFile(uri.fsPath, 'utf8');
+        const s = parseJson(content) as CSpellSettings;
+        return s;
+    }
+}
+
+class ConfigFileReaderWriterPackage extends AbstractConfigFileReaderWriter {
+    async update(updateFn: ConfigUpdateFn): Promise<void> {
+        const fsPath = this.uri.fsPath;
+        const content = await fs.readFile(fsPath, 'utf8');
+        const pkg = parseJson(content) as PackageWithCSpell;
+        const cspell = pkg.cspell || { ...settingsFileTemplate };
+        pkg.cspell = Object.assign(cspell, updateFn(cspell));
+        return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
+    }
+
+    async write(cfg: CSpellSettings): Promise<void> {
+        const fsPath = this.uri.fsPath;
+        const content = await fs.readFile(fsPath, 'utf8');
+        const pkg = parseJson(content) as PackageWithCSpell;
+        pkg.cspell = cfg;
+        return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
+    }
+
+    async _read(): Promise<CSpellSettings> {
+        const content = await fs.readFile(this.uri.fsPath, 'utf8');
+        const pkg = parseJson(content) as { cspell?: CSpellPackageSettings };
+        if (!pkg.cspell || typeof pkg.cspell !== 'object') {
+            throw new SysLikeError('`cspell` section missing from package.json', 'ENOENT');
+        }
+        return pkg.cspell;
+    }
+}
+
+class ConfigFileReaderWriterYaml extends AbstractConfigFileReaderWriter {
+    async update(updateFn: ConfigUpdateFn): Promise<void> {
+        const cspell = await orDefault(this._read(), settingsFileTemplate);
+        const updated = Object.assign({}, cspell, updateFn(cspell));
+        return this.write(updated);
+    }
+
+    async write(cfg: CSpellSettings): Promise<void> {
+        await this.mkdir();
+        return fs.writeFile(this.uri.fsPath, stringifyYaml(cfg));
+    }
+
+    async _read(): Promise<CSpellSettings> {
+        const content = await fs.readFile(this.uri.fsPath, 'utf8');
+        return parseYaml(content) as CSpellSettings;
+    }
 }
 
 export const __testing__ = {

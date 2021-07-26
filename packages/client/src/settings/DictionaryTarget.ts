@@ -2,7 +2,7 @@ import { uriToName } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
-import { ConfigRepository, CSpellConfigRepository } from './configRepository';
+import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
 
 const regIsSupportedCustomDictionaryFormat = /\.txt$/i;
@@ -62,7 +62,7 @@ function isCustomDictDef(d: CustomDictDef | Uri): d is CustomDictDef {
 }
 
 export function createDictionaryTargetForCSpell(cspellUri: Uri, name?: string): DictionaryTarget {
-    return new DictionaryTargetInConfig(new CSpellConfigRepository(cspellUri, name));
+    return new DictionaryTargetInConfig(createCSpellConfigRepository(cspellUri, name));
 }
 
 export function createDictionaryTargetForConfigRep(rep: ConfigRepository): DictionaryTarget {

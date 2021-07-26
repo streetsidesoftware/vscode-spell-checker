@@ -6,7 +6,7 @@ import {
     ClientConfigTargetDictionary,
     ClientConfigTargetVSCode,
 } from './clientConfigTarget';
-import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
+import { ConfigRepository, createCSpellConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
 import { dictionaryScopeToConfigurationTarget } from './targetAndScope';
 
 const KnownTargetKinds = new Set<ClientConfigKind>(['dictionary', 'cspell', 'vscode']);
@@ -21,7 +21,7 @@ export function configTargetToConfigRepo(target: ClientConfigTarget): ConfigRepo
         case 'dictionary':
             return undefined;
         case 'cspell':
-            return new CSpellConfigRepository(toUri(target.configUri), target.name);
+            return createCSpellConfigRepository(toUri(target.configUri), target.name);
         case 'vscode':
             return new VSCodeRepository(dictionaryScopeToConfigurationTarget(target.scope), target.docUri);
     }
