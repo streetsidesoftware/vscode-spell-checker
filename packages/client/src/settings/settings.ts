@@ -1,7 +1,5 @@
-import { performance } from '../util/perf';
-
-performance.mark('settings.ts');
-
+import { CSpellSettings } from '@cspell/cspell-types';
+import { fileExists } from 'common-utils/file.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as vscode from 'vscode';
@@ -9,23 +7,16 @@ import { ConfigurationTarget, Uri, workspace } from 'vscode';
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import { isDefined, unique } from '../util';
 import * as watcher from '../util/watcher';
+import { writeConfigFile } from './configFileReadWrite';
 import {
     configFileLocations,
-    defaultFileName as baseConfigName,
     defaultFileName,
     filterOutWords,
     isUpdateSupportedForConfigFileFormat,
     normalizeWords,
-    readSettings,
     readSettingsFileAndApplyUpdate,
 } from './CSpellSettings';
 import * as config from './vsConfig';
-import { InspectScope } from './vsConfig';
-import { CSpellSettings } from '@cspell/cspell-types';
-import { fileExists } from 'common-utils/file.js';
-import { writeConfigFile } from './configFileReadWrite';
-
-performance.mark('settings.ts imports done');
 
 export { ConfigTarget, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
@@ -57,11 +48,6 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     });
 }
 
-export function getDefaultWorkspaceConfigFile(docUri?: Uri): Uri | undefined {
-    const folder = getDefaultWorkspaceConfigLocation(docUri);
-    return folder && Uri.joinPath(folder, baseConfigName);
-}
-
 function getDefaultWorkspaceConfigLocation(docUri?: Uri): Uri | undefined {
     const defaultFolderUri = docUri && vscode.workspace.getWorkspaceFolder(docUri)?.uri;
     return defaultFolderUri || workspace.workspaceFolders?.[0]?.uri;
@@ -75,7 +61,7 @@ export function hasWorkspaceLocation(): boolean {
  * Returns a list of files in the order of Best to Worst Match.
  * @param docUri
  */
-export function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> {
+function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> {
     const { workspaceFolders } = workspace;
     if (!workspaceFolders || !hasWorkspaceLocation()) {
         return Promise.resolve([]);
@@ -99,28 +85,12 @@ export function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<
     );
 }
 
-export function findExistingSettingsFileLocation(docUri?: Uri, isUpdatable?: boolean): Promise<Uri | undefined> {
+function findExistingSettingsFileLocation(docUri?: Uri, isUpdatable?: boolean): Promise<Uri | undefined> {
     return findSettingsFiles(docUri, isUpdatable).then((paths) => paths[0]);
-}
-
-export function findSettingsFileLocation(isUpdatable?: boolean): Promise<Uri | undefined> {
-    return findExistingSettingsFileLocation(undefined, isUpdatable).then((path) => path || getDefaultWorkspaceConfigFile());
-}
-
-export function loadTheSettingsFile(): Promise<SettingsInfo | undefined> {
-    return findSettingsFileLocation().then(loadSettingsFile);
-}
-
-export function loadSettingsFile(path: Uri | undefined): Promise<SettingsInfo | undefined> {
-    return path ? readSettings(path).then((settings) => (path ? { path, settings } : undefined)) : Promise.resolve(undefined);
 }
 
 export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Promise<void> {
     return config.setSettingInVSConfig('enabled', enabled, target);
-}
-
-export function getEnabledLanguagesFromConfig(scope: InspectScope): string[] {
-    return config.getScopedSettingFromVSConfig('enabledLanguageIds', scope) || [];
 }
 
 /**
@@ -426,5 +396,3 @@ export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Ur
 
     return createConfigFileInFolder(location, overwrite);
 }
-
-performance.mark('settings.ts done');
