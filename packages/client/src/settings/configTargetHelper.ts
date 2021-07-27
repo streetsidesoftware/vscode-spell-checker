@@ -3,9 +3,16 @@
  */
 
 import * as vscode from 'vscode';
-import { toUri } from 'common-utils/uriHelper.js';
+import { toUri, uriToName } from 'common-utils/uriHelper.js';
 import { mustBeDefined } from '../util';
-import type { ClientConfigKind, ClientConfigScope, ClientConfigTarget, ClientConfigTargetVSCode } from './clientConfigTarget';
+import type {
+    ClientConfigKind,
+    ClientConfigScope,
+    ClientConfigTarget,
+    ClientConfigTargetCSpell,
+    ClientConfigTargetDictionary,
+    ClientConfigTargetVSCode,
+} from './clientConfigTarget';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 
 type ConfigKindMask = {
@@ -60,10 +67,7 @@ export function findMatchingConfigTargets(target: ConfigTargetMatchPattern, conf
 }
 
 export function buildMatchTargetFn(kind: Partial<ConfigKindMask>, scope: Partial<ConfigScopeMask>): TargetMatchFn {
-    const match = {
-        kind: fillKind(kind),
-        scope: fillScope(scope),
-    };
+    const match = createConfigTargetMatchPattern(kind, scope);
 
     return async function (configTargets: ClientConfigTarget[]) {
         const found = findMatchingConfigTargets(match, configTargets);
@@ -75,6 +79,13 @@ export function buildMatchTargetFn(kind: Partial<ConfigKindMask>, scope: Partial
             { title: 'Choose Destination' }
         );
         return sel?._found;
+    };
+}
+
+export function createConfigTargetMatchPattern(kind: Partial<ConfigKindMask>, scope: Partial<ConfigScopeMask>): ConfigTargetMatchPattern {
+    return {
+        kind: fillKind(kind),
+        scope: fillScope(scope),
     };
 }
 
@@ -97,7 +108,29 @@ function merge<T>(a: T, b: Partial<T>): T {
     return v;
 }
 
-export function createClientConfigTargetFromConfigurationTarget(
+export function createClientConfigTargetCSpell(configUri: vscode.Uri, scope: ClientConfigScope, name?: string): ClientConfigTargetCSpell {
+    return {
+        kind: 'cspell',
+        scope,
+        name: name || uriToName(configUri),
+        configUri,
+    };
+}
+
+export function createClientConfigTargetDictionary(
+    dictionaryUri: vscode.Uri,
+    scope: ClientConfigScope,
+    name?: string
+): ClientConfigTargetDictionary {
+    return {
+        kind: 'dictionary',
+        scope,
+        name: name || uriToName(dictionaryUri),
+        dictionaryUri,
+    };
+}
+
+export function createClientConfigTargetVSCode(
     target: vscode.ConfigurationTarget,
     uri: string | null | vscode.Uri | undefined
 ): ClientConfigTargetVSCode {
@@ -105,16 +138,16 @@ export function createClientConfigTargetFromConfigurationTarget(
     const scope = configurationTargetToDictionaryScope(target);
     if (scope === 'user') {
         return {
-            name: scope,
-            scope,
             kind: 'vscode',
-            docUri: scope === 'user' ? uri : mustBeDefined(uri),
+            scope,
+            name: scope,
+            docUri: uri,
         };
     }
     const ct: ClientConfigTargetVSCode = {
-        name: scope,
-        scope,
         kind: 'vscode',
+        scope,
+        name: scope,
         docUri: mustBeDefined(uri),
     };
     return ct;

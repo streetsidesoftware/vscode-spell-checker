@@ -29,10 +29,10 @@ import {
     setEnableSpellChecking,
     toggleEnableSpellChecker,
 } from './settings';
-import { ConfigRepository, createCSpellConfigRepository, VSCodeRepository } from './settings/configRepository';
+import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
-    createClientConfigTargetFromConfigurationTarget,
+    createClientConfigTargetVSCode,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -61,7 +61,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
     },
     'cSpell.addWordsToVSCodeSettingsFromServer': (words, documentUri, target) => {
         const cfgTarget = dictionaryScopeToConfigurationTarget(target);
-        const cfgRepo = new VSCodeRepository(cfgTarget, toUri(documentUri));
+        const cfgRepo = createVSCodeConfigRepository(cfgTarget, toUri(documentUri));
         return addWordsToConfig(words, cfgRepo);
     },
 };
@@ -283,7 +283,7 @@ function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: st
 
 function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, docUri: string | null | Uri | undefined) {
     docUri = toUri(docUri);
-    const target = createClientConfigTargetFromConfigurationTarget(cfgTarget, docUri);
+    const target = createClientConfigTargetVSCode(cfgTarget, docUri);
     return di.get('dictionaryHelper').removeWordsFromTarget(word, target, docUri);
 }
 

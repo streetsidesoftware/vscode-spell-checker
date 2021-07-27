@@ -1,13 +1,14 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import type { ConfigurationScope, Uri } from 'vscode';
+import type { Uri } from 'vscode';
 import { ConfigurationTarget } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { configurationTargetToName, updateConfig } from './vsConfig';
+import { GetConfigurationScope, updateConfig } from './vsConfig';
+import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
 
 export type ConfigKeys = keyof CSpellUserSettings;
 
@@ -56,6 +57,20 @@ export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, 
     return new CSpellConfigRepository(rw, name);
 }
 
+export function createVSCodeConfigRepository(target: ConfigurationTarget, scope: GetConfigurationScope): VSCodeRepository;
+export function createVSCodeConfigRepository(src: VSConfigReaderWriter): VSCodeRepository;
+export function createVSCodeConfigRepository(
+    src: ConfigurationTarget | VSConfigReaderWriter,
+    scope?: GetConfigurationScope
+): VSCodeRepository {
+    const rw = isVSReaderWriter(src) ? src : createVSConfigReaderWriter(src, scope);
+    return new VSCodeRepository(rw);
+}
+
+function isVSReaderWriter(src: ConfigurationTarget | VSConfigReaderWriter): src is VSConfigReaderWriter {
+    return typeof src === 'object' && !!src.read && !!src.write;
+}
+
 function isReaderWriter(src: Uri | ConfigFileReaderWriter): src is ConfigFileReaderWriter {
     const rw = <ConfigFileReaderWriter>src;
     return !!rw.update && !!rw.uri;
@@ -84,17 +99,24 @@ export class VSCodeRepository extends ConfigRepositoryBase {
     readonly kind: ConfigRepositoryKind;
     readonly defaultDictionaryScope: CustomDictionaryScope;
 
-    constructor(readonly target: ConfigurationTarget, readonly scope: ConfigurationScope | undefined) {
+    constructor(readonly rw: VSConfigReaderWriter) {
         super();
-        this.name = configurationTargetToName(target);
-        this.defaultDictionaryScope = configurationTargetToDictionaryScope(target);
+        this.name = rw.name;
+        this.defaultDictionaryScope = configurationTargetToDictionaryScope(rw.target);
         this.kind = 'vscode';
+    }
+
+    get target(): ConfigurationTarget {
+        return this.rw.target;
+    }
+
+    get scope(): GetConfigurationScope {
+        return this.rw.scope;
     }
 
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
         const { fn, keys } = this.mappers(updater.keys, updater.updateFn);
-
-        return updateConfig(this.target, this.scope, keys, fn);
+        return this.rw.update(fn, keys);
     }
 
     /**
@@ -114,7 +136,6 @@ export class VSCodeRepository extends ConfigRepositoryBase {
 
         const keys = new Set(neededKeys);
         if (keys.has(ConfigKeysByField.words)) {
-            keys.delete(ConfigKeysByField.words);
             keys.add(ConfigKeysByField.userWords);
         }
 

@@ -38,4 +38,12 @@ describe('Validate di', () => {
         expect(p?.writable).toBe(false);
         expect(p?.enumerable).toBe(true);
     });
+
+    test('get unknown', () => {
+        expect(() => di.get(toKey('unknown'))).toThrowError("Missing Dependency Resolver: 'unknown'");
+    });
 });
+
+function toKey(k: string): keyof di.GlobalDependencies {
+    return k as keyof di.GlobalDependencies;
+}
