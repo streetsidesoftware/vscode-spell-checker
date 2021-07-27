@@ -2824,9 +2824,9 @@ commander@^8.0.0:
   integrity sha512-Xvf85aAtu6v22+E5hfVoLHqyul/jyxh91zvqk/ioJTQuJR7Z78n7H558vMPKanPSRgIEeZemT92I2g9Y8LPbSQ==
 
 comment-json@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/comment-json/-/comment-json-4.1.0.tgz#09d08f0fbc4ad5eeccbac20f469adbb967dcbd2c"
-  integrity sha512-WEghmVYaNq9NlWbrkzQTSsya9ycLyxJxpTQfZEan6a5Jomnjw18zS3Podf8q1Zf9BvonvQd/+Z7Z39L7KKzzdQ==
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/comment-json/-/comment-json-4.1.1.tgz#49df4948704bebb1cc0ffa6910e25669b668b7c5"
+  integrity sha512-v8gmtPvxhBlhdRBLwdHSjGy9BgA23t9H1FctdQKyUrErPjSrJcdDMqBq9B4Irtm7w3TNYLQJNH6ARKnpyag1sA==
   dependencies:
     array-timsort "^1.0.3"
     core-util-is "^1.0.2"
