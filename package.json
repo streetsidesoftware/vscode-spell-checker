@@ -822,6 +822,7 @@
     ]
   },
   "scripts": {
+    "build-tools": "build-tools",
     "postinstall": "yarn run build",
     "build": "yarn workspaces run build",
     "clean": "yarn workspaces run clean && rimraf \"packages/*/node_modules\"",
