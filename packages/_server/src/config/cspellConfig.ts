@@ -120,6 +120,8 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customUserDictionaries?: CustomDictionaryEntry[];
 
@@ -129,6 +131,8 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customWorkspaceDictionaries?: CustomDictionaryEntry[];
 
@@ -138,11 +142,43 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customFolderDictionaries?: CustomDictionaryEntry[];
+
+    /**
+     * @title Custom Dictionaries
+     * @scope resource
+     * @markdownDescription
+     * Define custom dictionaries to be included by default for the folder.
+     * If `addWords` is `true` words will be added to this dictionary.
+     */
+    customDictionaries?: CustomDictionaries;
 }
 
+/**
+ * @title Named dictionary to be enabled / disabled
+ * @markdownDescription
+ * - `true` - turn on the named dictionary
+ * - `false` - turn off the named dictionary
+ */
+type EnableCustomDictionary = boolean;
+
+export type CustomDictionaries = {
+    [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
+};
+
 export type CustomDictionaryEntry = CustomDictionary | DictionaryId;
+
+type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
+
+/**
+ * @title Custom Dictionary Entry
+ * @markdownDescription
+ * Define a custom dictionary to be included.
+ */
+interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
 
 export interface CustomDictionary {
     /**
@@ -163,9 +199,11 @@ export interface CustomDictionary {
     description?: string;
 
     /**
-     * @title Path to Dictionary Text File
+     * @title Optional Path to Dictionary Text File
      * @markdownDescription
      * Define the path to the dictionary text file.
+     * Note: if path is `undefined` the `name`d dictionary is expected to be found
+     * in the `dictionaryDefinitions`.
      *
      * File Format: Each line in the file is considered a dictionary entry.
      *
@@ -205,11 +243,19 @@ export interface CustomDictionary {
      * @default false
      */
     addWords?: boolean;
+
+    /**
+     * @title Scope of dictionary
+     * @markdownDescription
+     * Options are
+     * - `user` - words that apply to all projects and workspaces
+     * - `workspace` - words that apply to the entire workspace
+     * - `folder` - words that apply to only a workspace folder
+     */
+    scope?: CustomDictionaryScope | CustomDictionaryScope[];
 }
 
-export interface CustomDictionaryWithScope extends CustomDictionary {
-    scope: CustomDictionaryScope;
-}
+export interface CustomDictionaryWithScope extends CustomDictionary {}
 
 export interface CSpellUserSettingsWithComments extends CSpellLibUserSettingsWithComments, SpellCheckerSettings {}
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings {}
@@ -223,6 +269,8 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
-export type SpellCheckerSettingsVSCodeProperties = Prefix<CSpellUserSettings, 'cSpell.'>;
+export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
 
-export type SpellCheckerSettingsVSCode = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
+export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
+
+export type SpellCheckerSettingsVSCode = SpellCheckerSettingsVSCodeBase;

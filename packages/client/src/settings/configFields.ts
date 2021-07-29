@@ -11,6 +11,7 @@ export const ConfigKeysByField: CSpellUserSettingsFields = {
     allowedSchemas: 'allowedSchemas',
     caseSensitive: 'caseSensitive',
     checkLimit: 'checkLimit',
+    customDictionaries: 'customDictionaries',
     customFolderDictionaries: 'customFolderDictionaries',
     customUserDictionaries: 'customUserDictionaries',
     customWorkspaceDictionaries: 'customWorkspaceDictionaries',
