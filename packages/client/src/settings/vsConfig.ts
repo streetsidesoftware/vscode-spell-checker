@@ -15,6 +15,8 @@ export interface InspectValues<T> {
 }
 
 export interface FullInspectValues<T> extends InspectValues<T> {
+    key: string;
+
     defaultLanguageValue?: T;
     globalLanguageValue?: T;
     workspaceLanguageValue?: T;
@@ -378,20 +380,26 @@ function assignExtract<K extends keyof InspectCSpellSettings>(
 
 function mergeInspect<T>(target: ConfigurationTarget, value: FullInspectValues<T> | undefined): T | undefined {
     if (value === undefined) return undefined;
-    let t: T | undefined = firstValue(value.globalLanguageValue, value.globalValue, value.defaultLanguageValue, value.defaultValue);
+    let t: T | undefined = mergeValues(value.defaultValue, value.defaultLanguageValue, value.globalValue, value.globalLanguageValue);
     if (target === ConfigurationTarget.Global) return t;
-    t = firstValue(value.workspaceLanguageValue, value.workspaceValue, t);
+    t = mergeValues(t, value.workspaceValue, value.workspaceLanguageValue);
     if (target === ConfigurationTarget.Workspace) return t;
-    t = firstValue(value.workspaceFolderLanguageValue, value.workspaceFolderValue, t);
+    t = mergeValues(t, value.workspaceFolderValue, value.workspaceFolderLanguageValue);
     if (target !== ConfigurationTarget.WorkspaceFolder) throw new Error(`Unknown Config Target "${target}"`);
     return t;
 }
 
-function firstValue<T>(...v: T[]): T | undefined {
+function mergeValues<T>(...v: T[]): T | undefined {
+    let m: T | undefined = undefined;
     for (const t of v) {
-        if (t !== undefined) return t;
+        if (t === undefined) continue;
+        if (typeof m !== 'object' || typeof t !== 'object' || Array.isArray(t) || Array.isArray(m)) {
+            m = t;
+            continue;
+        }
+        m = Object.assign({}, m, t);
     }
-    return undefined;
+    return m;
 }
 
 /**
@@ -415,3 +423,7 @@ export function updateConfig(
     const p = Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
     return Promise.all(p).then();
 }
+
+export const __testing__ = {
+    mergeInspect,
+};

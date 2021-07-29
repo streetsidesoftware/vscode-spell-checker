@@ -74,6 +74,7 @@ permalinks
 quickfix
 quotemark
 restructuredtext
+rfdc
 rmwc
 scrollbar
 shortname

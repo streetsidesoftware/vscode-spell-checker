@@ -1,5 +1,6 @@
 import type * as vscode from 'vscode';
 import { createMockFileSystem } from './fs';
+import { createMockWorkspaceConfiguration } from './WorkspaceConfiguration';
 
 export type Workspace = typeof vscode.workspace;
 
@@ -27,11 +28,13 @@ export class MockWorkspace implements Workspace {
     textDocuments = [];
     notebookDocuments = [];
 
+    __mockConfig = createMockWorkspaceConfiguration();
+
     applyEdit = jest.fn();
     asRelativePath = jest.fn((a) => a);
     createFileSystemWatcher = jest.fn();
     findFiles = jest.fn();
-    getConfiguration = jest.fn();
+    getConfiguration = jest.fn((...args: Parameters<Workspace['getConfiguration']>) => this.__mockConfig.__getConfiguration(...args));
     getWorkspaceFolder = jest.fn(() => this.workspaceFolders?.[0]);
     onDidSaveTextDocument = jest.fn();
     openTextDocument = jest.fn();

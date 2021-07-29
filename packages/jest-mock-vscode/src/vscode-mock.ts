@@ -9,8 +9,6 @@
 
 import type * as vscode from 'vscode';
 
-export * from './workspace';
-
 enum StatusBarAlignment {
     Left = 1,
     Right = 2,

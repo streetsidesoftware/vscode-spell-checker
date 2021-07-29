@@ -1,5 +1,8 @@
-import { readTextDocument } from 'jest-mock-vscode';
-import { Uri } from 'vscode';
+import { createMockWorkspaceConfiguration, readTextDocument, MockWorkspaceConfigurationData } from 'jest-mock-vscode';
+import rfdc from 'rfdc';
+import { mocked } from 'ts-jest/utils';
+import { ConfigurationScope, Uri, workspace, WorkspaceConfiguration } from 'vscode';
+import { CSpellUserSettings } from '../server';
 import {
     ConfigurationTarget,
     createTargetForDocument,
@@ -8,6 +11,7 @@ import {
     extractTargetUri,
     getSectionName,
     GlobalTarget,
+    inspectConfigKeys,
     isFolderLevelTarget,
     isGlobalLevelTarget,
     isGlobalTarget,
@@ -15,12 +19,85 @@ import {
     Scopes,
     toScope,
     WorkspaceTarget,
+    __testing__,
 } from './vsConfig';
+
+const clone = rfdc();
+const { mergeInspect } = __testing__;
 
 const uri = Uri.file(__filename);
 
+const mockedWorkspace = mocked(workspace, true);
+
+interface CSpellUserSettingsWithCustomDictionaries extends CSpellUserSettings {
+    customDictionaries?: Record<string, { name?: string; path: string; addWords: true }>;
+}
+
+const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWithCustomDictionaries }> = {
+    '[*]': {
+        defaultValue: {
+            cSpell: {
+                version: '0.2',
+            },
+        },
+        globalValue: {
+            cSpell: {
+                userWords: ['cspell'],
+                customDictionaries: {
+                    'user-words': {
+                        path: '~/user-words',
+                        addWords: true,
+                    },
+                },
+            },
+        },
+        workspaceValue: {
+            cSpell: {
+                words: ['one', 'two'],
+                ignorePaths: ['node_modules', '*.dat'],
+                dictionaries: ['cpp', 'html'],
+                customDictionaries: {
+                    'workspace-words': {
+                        path: '~/workspace-words',
+                        addWords: true,
+                    },
+                },
+            },
+        },
+        workspaceFolderValue: {
+            cSpell: {
+                words: ['three'],
+                ignorePaths: ['node_modules', 'dist', 'coverage'],
+                dictionaries: [],
+                customDictionaries: {
+                    'folder-words': {
+                        path: '~/folder-words',
+                        addWords: true,
+                    },
+                },
+            },
+        },
+    },
+    '[cpp]': {
+        workspaceValue: {
+            cSpell: {
+                customDictionaries: {
+                    'workspace-words-cpp': {
+                        path: '~/workspace-words',
+                        addWords: true,
+                    },
+                },
+            },
+        },
+    },
+};
+
 describe('Validate vsConfig', () => {
     const pDoc = readTextDocument(Uri.file(__filename));
+
+    beforeEach(() => {
+        mockedWorkspace.getConfiguration.mockClear();
+    });
 
     test('getSectionName', () => {
         expect(getSectionName('words')).toBe('cSpell.words');
@@ -73,4 +150,67 @@ describe('Validate vsConfig', () => {
     `('isGlobalTarget $target', ({ target, expected }) => {
         expect(isGlobalTarget(target)).toBe(expected);
     });
+
+    test('inspectConfigKeys', async () => {
+        const wsConfig = workspace.getConfiguration(undefined, { languageId: 'cpp' });
+        await applySampleConfig(wsConfig);
+        const r = inspectConfigKeys(Uri.file(__filename), ['words', 'ignorePaths', 'userWords']);
+        expect(r).toEqual({
+            words: {
+                key: 'cSpell.words',
+                workspaceValue: ['one', 'two'],
+                workspaceFolderValue: ['three'],
+            },
+            ignorePaths: {
+                key: 'cSpell.ignorePaths',
+                workspaceValue: ['node_modules', '*.dat'],
+                workspaceFolderValue: ['node_modules', 'dist', 'coverage'],
+            },
+            userWords: {
+                key: 'cSpell.userWords',
+                globalValue: ['cspell'],
+            },
+        });
+    });
+
+    test.each`
+        section                        | target                                 | expected
+        ${'cSpell.words'}              | ${ConfigurationTarget.Global}          | ${undefined}
+        ${'cSpell.words'}              | ${ConfigurationTarget.Workspace}       | ${['one', 'two']}
+        ${'cSpell.words'}              | ${ConfigurationTarget.WorkspaceFolder} | ${['three']}
+        ${'cSpell.userWords'}          | ${ConfigurationTarget.Global}          | ${['cspell']}
+        ${'cSpell.userWords'}          | ${ConfigurationTarget.Workspace}       | ${['cspell']}
+        ${'cSpell.userWords'}          | ${ConfigurationTarget.WorkspaceFolder} | ${['cspell']}
+        ${'cSpell.version'}            | ${ConfigurationTarget.Global}          | ${'0.2'}
+        ${'cSpell.version'}            | ${ConfigurationTarget.Workspace}       | ${'0.2'}
+        ${'cSpell.version'}            | ${ConfigurationTarget.WorkspaceFolder} | ${'0.2'}
+        ${'cSpell.customDictionaries'} | ${ConfigurationTarget.Global}          | ${baseConfig['[*]'].globalValue?.cSpell.customDictionaries}
+    `('mergeInspect $section $target', async ({ section, target, expected }) => {
+        const config = sampleConfig();
+        const values = config.inspect(section);
+        expect(mergeInspect(target, values)).toEqual(expected);
+    });
 });
+
+type UpdateParams = Parameters<WorkspaceConfiguration['update']>;
+
+function applyToConfig(config: WorkspaceConfiguration, updates: UpdateParams[]) {
+    return Promise.all(updates.map((params) => config.update(...params)));
+}
+
+async function applySampleConfig(config: WorkspaceConfiguration) {
+    const cfg = clone(baseConfig);
+    return applyToConfig(config, [
+        ['cSpell', cfg['[*]'].globalValue?.cSpell, ConfigurationTarget.Global],
+        ['cSpell', cfg['[*]'].workspaceFolderValue?.cSpell, ConfigurationTarget.WorkspaceFolder],
+        ['cSpell', cfg['[*]'].workspaceValue?.cSpell, ConfigurationTarget.Workspace],
+        ['cSpell', cfg['[cpp]'].globalValue?.cSpell, ConfigurationTarget.Global, true],
+        ['cSpell', cfg['[cpp]'].workspaceFolderValue?.cSpell, ConfigurationTarget.WorkspaceFolder, true],
+        ['cSpell', cfg['[cpp]'].workspaceValue?.cSpell, ConfigurationTarget.Workspace, true],
+    ]);
+}
+
+function sampleConfig(key?: string, scope?: ConfigurationScope | null) {
+    const config = createMockWorkspaceConfiguration(clone(baseConfig), key, scope);
+    return config;
+}
