@@ -29,7 +29,11 @@ const uri = Uri.file(__filename);
 
 const mockedWorkspace = mocked(workspace, true);
 
-const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }> = {
+interface CSpellUserSettingsWithCustomDictionaries extends CSpellUserSettings {
+    customDictionaries?: Record<string, { name?: string; path: string; addWords: true }>;
+}
+
+const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWithCustomDictionaries }> = {
     '[*]': {
         defaultValue: {
             cSpell: {
