@@ -823,6 +823,7 @@
   },
   "scripts": {
     "build-tools": "build-tools",
+    "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema",
     "postinstall": "yarn run build",
     "build": "yarn workspaces run build",
     "clean": "yarn workspaces run clean && rimraf \"packages/*/node_modules\"",

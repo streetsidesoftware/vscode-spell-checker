@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import deepEqual from 'deep-equal';
 import type { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 import * as fs from 'fs/promises';
 import * as Path from 'path';
@@ -36,12 +37,49 @@ function update(packageConfig: JSONSchema7, schema: JSONSchema7) {
         ([key, value]) => ['cSpell.' + key, value] as [string, JSONSchema7Definition]
     );
     const { properties = {} } = packageConfig;
+    const newProps: Record<string, JSONSchema7Definition> = {};
 
-    for (const [key, value] of props) {
-        properties[key] = value;
+    // Try to keep the order by first copying the existing properties
+    for (const key of Object.keys(properties)) {
+        if (schema.properties?.[key] === undefined) continue;
+        newProps[key] = copyProperty(properties[key], schema.properties[key]);
     }
 
-    packageConfig.properties = properties;
+    // Now copy the rest.
+    for (const [key, value] of props) {
+        newProps[key] = copyProperty(properties[key], value);
+    }
+
+    packageConfig.properties = newProps;
+}
+
+/**
+ * Copy the source onto the destination while trying to preserve the order of the
+ * existing fields.
+ * @param current - current
+ * @param value
+ * @returns
+ */
+function copyProperty(current: JSONSchema7Definition | undefined, value: JSONSchema7Definition): JSONSchema7Definition {
+    if (typeof current !== 'object') return value;
+    if (typeof value !== 'object') return value;
+
+    if (deepEqual(current, value)) return current;
+
+    // The idea here is to try and preserve the key order
+    const r: JSONSchema7 = {};
+    const rr: Record<string, any> = r;
+
+    for (const key of Object.keys(current) as (keyof JSONSchema7)[]) {
+        if (value[key] === undefined) continue;
+        rr[key] = value[key];
+    }
+
+    for (const key of Object.keys(value) as (keyof JSONSchema7)[]) {
+        rr[key] = value[key];
+    }
+
+    return r;
 }
 
 interface PackageJson {

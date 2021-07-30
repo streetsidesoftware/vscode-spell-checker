@@ -5,8 +5,8 @@
   },
   "properties": {
     "allowCompoundWords": {
-      "default": false,
       "description": "True to enable compound word checking.",
+      "scope": "resource",
       "type": "boolean"
     },
     "allowedSchemas": {
@@ -20,17 +20,18 @@
       "items": {
         "type": "string"
       },
-      "scope": "resource",
+      "scope": "window",
       "type": "array"
     },
     "caseSensitive": {
-      "default": false,
       "description": "Words must match case rules.",
+      "markdownDescription": "Turns on case sensitive checking by default",
+      "scope": "resource",
       "type": "boolean"
     },
     "checkLimit": {
       "default": 500,
-      "description": "The limit in K-Bytes to be checked in a file.",
+      "description": "The limit in K-Characters to be checked in a file.",
       "scope": "resource",
       "type": "number"
     },
@@ -345,6 +346,7 @@
         "description": "This matches the name in a dictionary definition",
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "dictionaryDefinitions": {
@@ -503,6 +505,7 @@
           }
         ]
       },
+      "scope": "resource",
       "type": "array"
     },
     "enableFiletypes": {
@@ -517,23 +520,60 @@
       "uniqueItems": true
     },
     "enabled": {
-      "default": true,
-      "description": "Is the spell checker enabled",
+      "description": "Enable / Disable the spell checker.",
+      "scope": "resource",
       "type": "boolean"
     },
     "enabledLanguageIds": {
-      "description": "languageIds for the files to spell check.",
+      "default": [
+        "asciidoc",
+        "c",
+        "cpp",
+        "csharp",
+        "css",
+        "git-commit",
+        "go",
+        "graphql",
+        "handlebars",
+        "haskell",
+        "html",
+        "jade",
+        "java",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "jsonc",
+        "latex",
+        "less",
+        "markdown",
+        "php",
+        "plaintext",
+        "python",
+        "pug",
+        "restructuredtext",
+        "rust",
+        "scala",
+        "scss",
+        "text",
+        "typescript",
+        "typescriptreact",
+        "yaml",
+        "yml"
+      ],
+      "description": "Specify file types to spell check. Use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
       "items": {
-        "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-        "pattern": "^(!?[\\w_\\-\\s]+)|(\\*)$",
         "type": "string"
       },
-      "type": "array"
+      "markdownDescription": "Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
+      "scope": "resource",
+      "title": "Enabled Language Ids",
+      "type": "array",
+      "uniqueItems": true
     },
     "fixSpellingWithRenameProvider": {
       "default": true,
       "description": "Use Rename when fixing spelling issues.",
-      "scope": "application",
+      "scope": "language-overridable",
       "type": "boolean"
     },
     "flagWords": {
@@ -541,18 +581,31 @@
       "items": {
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "globRoot": {
+      "default": "/",
       "description": "The root to use for glop patterns found in this configuration. Default: location of the configuration file.   For compatibility reasons, config files with version 0.1, the glob root will   default to be `${cwd}`.\n\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n- `${cwd}` - will be replaced with the current working directory.\n- `.` - will be the location of the containing configuration file.",
+      "scope": "resource",
       "type": "string"
     },
     "ignorePaths": {
-      "description": "Glob patterns of files to be ignored Glob patterns are relative to the `globRoot` of the configuration file that defines them.",
+      "default": [
+        "package-lock.json",
+        "node_modules",
+        "vscode-extension",
+        ".git/objects",
+        ".vscode",
+        ".vscode-insiders"
+      ],
+      "description": "Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.",
       "items": {
-        "description": "These are glob expressions",
+        "description": "Simple Glob string, the root will be globRoot",
         "type": "string"
       },
+      "scope": "resource",
+      "title": "Glob patterns of files to be ignored",
       "type": "array"
     },
     "ignoreRegExpList": {
@@ -561,30 +614,25 @@
         "description": "A PatternRef is a Pattern or PatternId.",
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "ignoreWords": {
-      "description": "list of words to be ignored",
+      "description": "A list of words to be ignored by the spell checker.",
       "items": {
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "import": {
-      "anyOf": [
-        {
-          "description": "A File System Path",
-          "type": "string"
-        },
-        {
-          "items": {
-            "description": "A File System Path",
-            "type": "string"
-          },
-          "type": "array"
-        }
-      ],
-      "description": "Other settings files to be included"
+      "description": "Other settings files to be included",
+      "items": {
+        "description": "A File System Path",
+        "type": "string"
+      },
+      "scope": "resource",
+      "type": "array"
     },
     "includeRegExpList": {
       "description": "List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.",
@@ -592,11 +640,14 @@
         "description": "A PatternRef is a Pattern or PatternId.",
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "language": {
       "default": "en",
-      "description": "Current active spelling language.\n\nExample: \"en-GB\" for British English\n\nExample: \"en,nl\" to enable both English and Dutch",
+      "description": "Current active spelling language.\nExample: \"en-GB\" for British English\nExample: \"en,nl\" to enable both English and Dutch",
+      "scope": "resource",
+      "title": "Language Locales",
       "type": "string"
     },
     "languageId": {
@@ -921,6 +972,7 @@
         ],
         "type": "object"
       },
+      "scope": "resource",
       "type": "array"
     },
     "logLevel": {
@@ -939,26 +991,32 @@
     "maxDuplicateProblems": {
       "default": 5,
       "description": "The maximum number of times the same word can be flagged as an error in a file.",
+      "scope": "resource",
       "type": "number"
     },
     "maxNumberOfProblems": {
       "default": 100,
-      "description": "The maximum number of problems to report in a file.",
+      "description": "Controls the maximum number of spelling errors per document.",
+      "scope": "resource",
+      "title": "Maximum Number of Issues",
       "type": "number"
     },
     "minWordLength": {
       "default": 4,
       "description": "The minimum length of a word before checking it against a dictionary.",
+      "scope": "resource",
       "type": "number"
     },
     "noConfigSearch": {
-      "default": false,
       "description": "Prevents searching for local configuration when checking individual documents.",
+      "scope": "resource",
       "type": "boolean"
     },
     "numSuggestions": {
-      "default": 10,
-      "description": "Number of suggestions to make",
+      "default": 8,
+      "description": "Controls the number of suggestions shown.",
+      "scope": "resource",
+      "title": "Number of Suggestions",
       "type": "number"
     },
     "overrides": {
@@ -1639,6 +1697,7 @@
         ],
         "type": "object"
       },
+      "scope": "resource",
       "type": "array"
     },
     "patterns": {
@@ -1655,18 +1714,8 @@
             "type": "string"
           },
           "pattern": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              }
-            ],
-            "description": "RegExp pattern or array of RegExp patterns"
+            "description": "RegExp pattern or array of RegExp patterns",
+            "type": "string"
           }
         },
         "required": [
@@ -1675,6 +1724,7 @@
         ],
         "type": "object"
       },
+      "scope": "resource",
       "type": "array"
     },
     "pnpFiles": {
@@ -1701,7 +1751,7 @@
       "type": "boolean"
     },
     "showStatusAlignment": {
-      "default": "Left",
+      "default": "Right",
       "description": "The side of the status bar to display the spell checker status.",
       "enum": [
         "Left",
@@ -1717,8 +1767,8 @@
       "type": "number"
     },
     "usePnP": {
-      "default": false,
       "description": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence of a PnP file and load it.",
+      "scope": "resource",
       "type": "boolean"
     },
     "userWords": {
@@ -1726,6 +1776,7 @@
       "items": {
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "words": {
@@ -1733,6 +1784,7 @@
       "items": {
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "workspaceRootPath": {

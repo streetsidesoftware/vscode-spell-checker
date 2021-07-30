@@ -1,4 +1,4 @@
-import { CSpellUserSettingsWithComments, DictionaryDefinitionCustom } from '../server';
+import { CSpellUserSettings, DictionaryDefinitionCustom } from '../server';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
 import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
@@ -46,7 +46,7 @@ export const possibleConfigFiles = new Set(configFileLocations.concat(nestedConf
  */
 export const configFilesToWatch = possibleConfigFiles;
 
-export interface CSpellSettings extends CSpellUserSettingsWithComments {}
+export interface CSpellSettings extends CSpellUserSettings {}
 
 const defaultSettings: CSpellSettings = Object.freeze({
     version: currentSettingsFileVersion,
