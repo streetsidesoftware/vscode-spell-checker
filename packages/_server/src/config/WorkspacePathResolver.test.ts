@@ -2,7 +2,7 @@ import { debugExports, createWorkspaceNamesResolver, resolveSettings } from './W
 import * as Path from 'path';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
-import { CSpellUserSettings } from '../config/cspellConfig';
+import { CSpellUserSettings, CustomDictionaries } from '../config/cspellConfig';
 import { logError } from 'common-utils/log.js';
 
 jest.mock('vscode-languageserver/node');
@@ -145,6 +145,26 @@ describe('Validate workspace substitution resolver', () => {
         ].map((f) => Object.freeze(f)),
     });
 
+    const settingsDictionaryDefinitions2: CSpellUserSettings = Object.freeze({
+        dictionaryDefinitions: (settingsDictionaryDefinitions.dictionaryDefinitions || [])
+            .concat([
+                {
+                    name: 'python-terms',
+                    path: '${workspaceFolder:Root Folder}/python-words.txt',
+                },
+                {
+                    name: 'legacy-definition',
+                    file: 'legacy-words.txt',
+                    path: '${workspaceFolder:Root Folder}',
+                },
+                {
+                    name: 'legacy-definition-file',
+                    file: '${workspaceFolder:Root Folder}/legacy-words-2.txt',
+                },
+            ])
+            .map((f) => Object.freeze(f)),
+    });
+
     const settingsLanguageSettings: CSpellUserSettings = Object.freeze({
         languageSettings: [
             {
@@ -169,6 +189,19 @@ describe('Validate workspace substitution resolver', () => {
             languageId: 'jsonc',
         },
     ];
+
+    const customDictionaries: CustomDictionaries = {
+        'company-terms': {
+            description: 'Company Wide Terms',
+            path: '${root}/node_modules/@company/terms/company-terms.txt',
+            addWords: false,
+        },
+        'Project Dictionary': {
+            addWords: true,
+        },
+        'python-terms': true,
+        html: false,
+    } as const;
 
     const settingsOverride: CSpellUserSettings = {
         overrides: overrides.map((f) => Object.freeze(f)),
@@ -286,33 +319,46 @@ describe('Validate workspace substitution resolver', () => {
     test('resolve custom dictionaries', () => {
         const settings: CSpellUserSettings = {
             ...cspellConfigInVsCode,
-            ...settingsDictionaryDefinitions,
+            ...settingsDictionaryDefinitions2,
             ...cspellConfigCustomFolderDictionary,
             ...cspellConfigCustomUserDictionary,
             ...cspellConfigCustomWorkspaceDictionary,
+            customDictionaries,
             dictionaries: ['typescript'],
         };
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
         const result = resolveSettings(settings, resolver);
-        expect(result.dictionaries).toEqual([
-            'Global Dictionary',
-            'Workspace Dictionary',
-            'Project Dictionary',
-            'Folder Dictionary',
-            'Root Dictionary',
-            'Workspace Dictionary 2',
-            'typescript',
-        ]);
-        expect(result.dictionaryDefinitions?.map((d) => d.name)).toEqual([
-            'Global Dictionary',
-            'My Dictionary',
-            'Company Dictionary',
-            'Project Dictionary',
-            'Workspace Dictionary',
-            'Folder Dictionary',
-            'Root Dictionary',
-            'Workspace Dictionary 2',
-        ]);
+        const dictDefs = new Map(result.dictionaryDefinitions?.map((d) => [d.name, d]) || []);
+        expect(new Set(result.dictionaries)).toEqual(
+            new Set([
+                '!html',
+                'Global Dictionary',
+                'Workspace Dictionary',
+                'Project Dictionary',
+                'Folder Dictionary',
+                'Root Dictionary',
+                'Workspace Dictionary 2',
+                'company-terms',
+                'python-terms',
+                'typescript',
+            ])
+        );
+        expect(new Set(dictDefs.keys())).toEqual(
+            new Set([
+                'Global Dictionary',
+                'My Dictionary',
+                'Company Dictionary',
+                'Project Dictionary',
+                'Workspace Dictionary',
+                'Folder Dictionary',
+                'Root Dictionary',
+                'Workspace Dictionary 2',
+                'company-terms',
+                'python-terms',
+                'legacy-definition',
+                'legacy-definition-file',
+            ])
+        );
         expect(normalizePath(result.dictionaryDefinitions)).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
@@ -329,6 +375,7 @@ describe('Validate workspace substitution resolver', () => {
                 }),
             ])
         );
+        expect(dictDefs.get('legacy-definition-file')?.path).toEqual(expect.stringMatching(/legacy-words-2\.txt$/));
     });
 
     test('resolve custom dictionaries by name', () => {
@@ -341,7 +388,7 @@ describe('Validate workspace substitution resolver', () => {
         };
         const resolver = createWorkspaceNamesResolver(workspaces[1], workspaces, 'custom root');
         const result = resolveSettings(settings, resolver);
-        expect(result.dictionaries).toEqual(['Project Dictionary', 'Folder Dictionary', 'typescript']);
+        expect(new Set(result.dictionaries)).toEqual(new Set(['Project Dictionary', 'Folder Dictionary', 'typescript']));
         expect(result.dictionaryDefinitions?.map((d) => d.name)).toEqual(['My Dictionary', 'Company Dictionary', 'Project Dictionary']);
         expect(normalizePath(result.dictionaryDefinitions)).toEqual(
             expect.arrayContaining([

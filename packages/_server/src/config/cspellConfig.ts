@@ -202,7 +202,7 @@ type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
  * @markdownDescription
  * Define a custom dictionary to be included.
  */
-interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
+export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
 
 export interface CustomDictionary {
     /**
