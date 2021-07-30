@@ -24,7 +24,7 @@
     "clean-build": "yarn run clean && yarn run build",
     "clean": "rimraf out dist coverage",
     "lint": "eslint \"src/**/*.ts\" \"*.js\"",
-    "test": "jest",
+    "test": "echo No tests yet.",
     "watch": "tsc -p . --watch"
   },
   "devDependencies": {
