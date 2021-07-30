@@ -29,11 +29,7 @@ const uri = Uri.file(__filename);
 
 const mockedWorkspace = mocked(workspace, true);
 
-interface CSpellUserSettingsWithCustomDictionaries extends CSpellUserSettings {
-    customDictionaries?: Record<string, { name?: string; path: string; addWords: true }>;
-}
-
-const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWithCustomDictionaries }> = {
+const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }> = {
     '[*]': {
         defaultValue: {
             cSpell: {
@@ -45,6 +41,7 @@ const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWit
                 userWords: ['cspell'],
                 customDictionaries: {
                     'user-words': {
+                        name: 'user-words',
                         path: '~/user-words',
                         addWords: true,
                     },
@@ -58,6 +55,7 @@ const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWit
                 dictionaries: ['cpp', 'html'],
                 customDictionaries: {
                     'workspace-words': {
+                        name: 'workspace-words',
                         path: '~/workspace-words',
                         addWords: true,
                     },
@@ -71,6 +69,7 @@ const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettingsWit
                 dictionaries: [],
                 customDictionaries: {
                     'folder-words': {
+                        name: 'folder-words',
                         path: '~/folder-words',
                         addWords: true,
                     },

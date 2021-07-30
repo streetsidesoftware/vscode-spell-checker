@@ -1,6 +1,6 @@
 import type { CSpellUserSettings } from '../server';
 
-export type ConfigKeys = Exclude<keyof CSpellUserSettings, '$schema' | 'version' | 'id'>;
+export type ConfigKeys = Exclude<keyof CSpellUserSettings, '$schema' | 'version' | 'id' | 'experimental.enableRegexpView'>;
 
 type CSpellUserSettingsFields = {
     [key in ConfigKeys]: key;
@@ -11,6 +11,7 @@ export const ConfigKeysByField: CSpellUserSettingsFields = {
     allowedSchemas: 'allowedSchemas',
     caseSensitive: 'caseSensitive',
     checkLimit: 'checkLimit',
+    customDictionaries: 'customDictionaries',
     customFolderDictionaries: 'customFolderDictionaries',
     customUserDictionaries: 'customUserDictionaries',
     customWorkspaceDictionaries: 'customWorkspaceDictionaries',

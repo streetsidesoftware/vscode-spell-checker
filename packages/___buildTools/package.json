@@ -1,0 +1,40 @@
+{
+  "name": "build-tools",
+  "version": "1.0.0",
+  "description": "Build tools",
+  "private": true,
+  "main": "dist/index.js",
+  "bin": "./bin.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*",
+        "dist/*.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "update-package-schema": "node ./bin.js",
+    "build-production": "yarn run clean-build",
+    "build": "tsc -p .",
+    "clean-build": "yarn run clean && yarn run build",
+    "clean": "rimraf out dist coverage",
+    "lint": "eslint \"src/**/*.ts\" \"*.js\"",
+    "test": "echo No tests yet.",
+    "watch": "tsc -p . --watch"
+  },
+  "devDependencies": {
+    "@types/deep-equal": "^1.0.1",
+    "@types/jest": "^26.0.24",
+    "@types/json-schema": "^7.0.8",
+    "ts-jest": "^27.0.4"
+  },
+  "dependencies": {
+    "commander": "^8.1.0",
+    "deep-equal": "^2.0.5"
+  }
+}

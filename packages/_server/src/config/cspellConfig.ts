@@ -1,23 +1,27 @@
 // Export the cspell settings to the client.
 
 import type {
+    CSpellSettings,
+    CustomDictionaryScope,
     DictionaryId,
     FsPath,
-    CSpellSettings,
-    CSpellUserSettingsWithComments as CSpellLibUserSettingsWithComments,
-    CustomDictionaryScope,
+    GlobDef,
+    Pattern,
+    PatternId,
+    RegExpPatternDefinition,
+    SimpleGlob,
 } from '@cspell/cspell-types';
 export type {
-    LanguageSetting,
-    DictionaryDefinition,
-    DictionaryFileTypes,
     CustomDictionaryScope,
+    DictionaryDefinition,
     DictionaryDefinitionCustom,
+    DictionaryFileTypes,
+    LanguageSetting,
 } from '@cspell/cspell-types';
 
 export interface SpellCheckerSettings {
     /**
-     * The limit in K-Bytes to be checked in a file.
+     * The limit in K-Characters to be checked in a file.
      * @scope resource
      * @default 500
      */
@@ -32,7 +36,7 @@ export interface SpellCheckerSettings {
 
     /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
-     * @scope resource
+     * @scope window
      * @default ["file", "gist", "sftp", "untitled"]
      */
     allowedSchemas?: string[];
@@ -55,7 +59,7 @@ export interface SpellCheckerSettings {
     /**
      * The side of the status bar to display the spell checker status.
      * @scope application
-     * @default "Left"
+     * @default "Right"
      */
     showStatusAlignment?: 'Left' | 'Right';
 
@@ -68,7 +72,7 @@ export interface SpellCheckerSettings {
 
     /**
      * Use Rename when fixing spelling issues.
-     * @scope application
+     * @scope language-overridable
      * @default true
      */
     fixSpellingWithRenameProvider?: boolean;
@@ -120,6 +124,8 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customUserDictionaries?: CustomDictionaryEntry[];
 
@@ -129,6 +135,8 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customWorkspaceDictionaries?: CustomDictionaryEntry[];
 
@@ -138,18 +146,72 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @deprecated
+     * @deprecationMessage - Use `customDictionaries` instead.
      */
     customFolderDictionaries?: CustomDictionaryEntry[];
+
+    /**
+     * @title Custom Dictionaries
+     * @scope resource
+     * @markdownDescription
+     * Define custom dictionaries to be included by default for the folder.
+     * If `addWords` is `true` words will be added to this dictionary.
+     *
+     * **Example:**
+     *
+     * ```js
+     * customDictionaries: {
+     *   "project-words": {
+     *     "name": "project-words",
+     *     "path": "${workspaceRoot}/project-words.txt",
+     *     "description": "Words used in this project",
+     *     "addWords": true
+     *   }
+     * }
+     * ```
+     */
+    customDictionaries?: CustomDictionaries;
+
+    /**
+     * Show Regular Expression Explorer
+     * @scope application
+     * @default false
+     */
+    'experimental.enableRegexpView'?: boolean;
 }
 
+/**
+ * @title Named dictionary to be enabled / disabled
+ * @markdownDescription
+ * - `true` - turn on the named dictionary
+ * - `false` - turn off the named dictionary
+ */
+type EnableCustomDictionary = boolean;
+
+export type CustomDictionaries = {
+    [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
+};
+
 export type CustomDictionaryEntry = CustomDictionary | DictionaryId;
+
+type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
+
+/**
+ * @title Custom Dictionary Entry
+ * @markdownDescription
+ * Define a custom dictionary to be included.
+ */
+interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
 
 export interface CustomDictionary {
     /**
      * @title Name of Dictionary
      * @markdownDescription
      * The reference name of the dictionary.
-     * example: `My Words` or `custom`
+     *
+     * Example: `My Words` or `custom`
+     *
      * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
      * If you use: `typescript` it will replace the built-in TypeScript dictionary.
      */
@@ -163,9 +225,12 @@ export interface CustomDictionary {
     description?: string;
 
     /**
-     * @title Path to Dictionary Text File
+     * @title Optional Path to Dictionary Text File
      * @markdownDescription
      * Define the path to the dictionary text file.
+     *
+     * **Note:** if path is `undefined` the `name`d dictionary is expected to be found
+     * in the `dictionaryDefinitions`.
      *
      * File Format: Each line in the file is considered a dictionary entry.
      *
@@ -173,25 +238,30 @@ export interface CustomDictionary {
      *
      * The path should be absolute, or relative to the workspace.
      *
-     * Example: relative to User's folder
+     * **Example:** relative to User's folder
+     *
      * ```
      * ~/dictionaries/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the `client` folder in a multi-root workspace
+     * **Example:** relative to the `client` folder in a multi-root workspace
+     *
      * ```
      * ${workspaceFolder:client}/build/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the current workspace folder in a single-root workspace
-     * Note - this might no as expected in a multi-root workspace since it is based upon the relative
+     * **Example:** relative to the current workspace folder in a single-root workspace
+     *
+     * **Note:** this might no as expected in a multi-root workspace since it is based upon the relative
      * workspace for the currently open file.
+     *
      * ```
      * ${workspaceFolder}/build/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the workspace folder in a single-root workspace or the first folder in
+     * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
      * a multi-root workspace
+     *
      * ```
      * ./build/custom_dictionary.txt
      * ```
@@ -205,14 +275,270 @@ export interface CustomDictionary {
      * @default false
      */
     addWords?: boolean;
+
+    /**
+     * @title Scope of dictionary
+     * @markdownDescription
+     * Options are
+     * - `user` - words that apply to all projects and workspaces
+     * - `workspace` - words that apply to the entire workspace
+     * - `folder` - words that apply to only a workspace folder
+     */
+    scope?: CustomDictionaryScope | CustomDictionaryScope[];
 }
 
-export interface CustomDictionaryWithScope extends CustomDictionary {
-    scope: CustomDictionaryScope;
+/**
+ * @hidden
+ */
+type HiddenFsPath = FsPath;
+
+/**
+ * CSpellSettingsPackageProperties are used to annotate CSpellSettings found in
+ * the `package.json#contributes.configuration`
+ */
+interface CSpellSettingsPackageProperties extends CSpellSettings {
+    /**
+     * Enable / Disable the spell checker.
+     * @scope resource
+     * @default true
+     */
+    enabled?: boolean;
+
+    /**
+     * @scope resource
+     * @description
+     * Current active spelling language.
+     * Example: "en-GB" for British English
+     * Example: "en,nl" to enable both English and Dutch
+     * @default "en"
+     */
+    language?: string;
+
+    /**
+     * @scope resource
+     * @description
+     * Controls the maximum number of spelling errors per document.
+     * @default 100
+     */
+    maxNumberOfProblems?: number;
+
+    /**
+     * @scope resource
+     * @description
+     * Controls the number of suggestions shown.
+     * @default 8
+     */
+    numSuggestions?: number;
+
+    /**
+     * @scope resource
+     * @default 4
+     */
+    minWordLength?: number;
+
+    /**
+     * @scope resource
+     * @default 5
+     */
+    maxDuplicateProblems?: number;
+
+    /**
+     * @title Enabled Language Ids
+     * @scope resource
+     * @description
+     * Specify file types to spell check. Use `cSpell.enableFiletypes` to Enable / Disable checking files types.
+     * @markdownDescription
+     * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
+     * @uniqueItems true
+     * @default [
+     *       "asciidoc",
+     *       "c",
+     *       "cpp",
+     *       "csharp",
+     *       "css",
+     *       "git-commit",
+     *       "go",
+     *       "graphql",
+     *       "handlebars",
+     *       "haskell",
+     *       "html",
+     *       "jade",
+     *       "java",
+     *       "javascript",
+     *       "javascriptreact",
+     *       "json",
+     *       "jsonc",
+     *       "latex",
+     *       "less",
+     *       "markdown",
+     *       "php",
+     *       "plaintext",
+     *       "python",
+     *       "pug",
+     *       "restructuredtext",
+     *       "rust",
+     *       "scala",
+     *       "scss",
+     *       "text",
+     *       "typescript",
+     *       "typescriptreact",
+     *       "yaml",
+     *       "yml"
+     *     ]
+     */
+    enabledLanguageIds?: string[];
+
+    /**
+     * @scope resource
+     */
+    import?: FsPath[] | HiddenFsPath;
+
+    /**
+     * @scope resource
+     */
+    words?: string[];
+
+    /**
+     * @scope resource
+     */
+    userWords?: string[];
+
+    /**
+     * A list of words to be ignored by the spell checker.
+     * @scope resource
+     */
+    ignoreWords?: string[];
+
+    /**
+     * Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.
+     * @title Glob patterns of files to be ignored
+     * @scope resource
+     * @default [
+     *      "package-lock.json",
+     *      "node_modules",
+     *      "vscode-extension",
+     *      ".git/objects",
+     *      ".vscode",
+     *      ".vscode-insiders"
+     *    ]
+     */
+    ignorePaths?: (SimpleGlob | GlobDefX)[];
+
+    /**
+     * @scope resource
+     */
+    globRoot?: CSpellSettings['globRoot'];
+
+    /**
+     * @scope resource
+     */
+    flagWords?: string[];
+
+    /**
+     * @scope resource
+     */
+    patterns?: RegExpPatternDefinitionX[];
+
+    /**
+     * @scope resource
+     */
+    includeRegExpList?: CSpellSettings['includeRegExpList'];
+
+    /**
+     * @scope resource
+     */
+    ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
+
+    /**
+     * Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means it would not pass.
+     * @scope resource
+     * @default false
+     * @markdownDescription
+     * Enable / Disable allowing word compounds.
+     * - `true` means `arraylength` would be ok
+     * - `false` means it would not pass.
+     *
+     * Note: this can also cause many misspelled words to seem correct.
+     */
+    allowCompoundWords?: CSpellSettings['allowCompoundWords'];
+
+    /**
+     * @scope resource
+     */
+    languageSettings?: CSpellSettings['languageSettings'];
+
+    /**
+     * @scope resource
+     */
+    dictionaries?: CSpellSettings['dictionaries'];
+
+    /**
+     * @scope resource
+     */
+    dictionaryDefinitions?: CSpellSettings['dictionaryDefinitions'];
+
+    /**
+     * @scope resource
+     */
+    overrides?: CSpellSettings['overrides'];
+
+    /**
+     * @scope resource
+     * @markdownDescription
+     * Turns on case sensitive checking by default
+     */
+    caseSensitive?: CSpellSettings['caseSensitive'];
+
+    /**
+     * @hidden
+     */
+    languageId?: CSpellSettings['languageId'];
+
+    /**
+     * @scope resource
+     */
+    noConfigSearch?: CSpellSettings['noConfigSearch'];
+
+    /**
+     * @hidden
+     */
+    pnpFiles?: CSpellSettings['pnpFiles'];
+
+    /**
+     * @scope resource
+     */
+    usePnP?: CSpellSettings['usePnP'];
 }
 
-export interface CSpellUserSettingsWithComments extends CSpellLibUserSettingsWithComments, SpellCheckerSettings {}
-export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings {}
+/**
+ * @hidden
+ */
+type GlobDefX = GlobDef;
+
+/**
+ * @hidden
+ */
+type HiddenPatterns = Pattern[];
+
+interface RegExpPatternDefinitionX extends RegExpPatternDefinition {
+    /**
+     * Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.
+     * It is possible to redefine one of the predefined patterns to override its value.
+     */
+    name: PatternId;
+    /**
+     * RegExp pattern or array of RegExp patterns
+     */
+    pattern: Pattern | HiddenPatterns;
+    /**
+     * Description of the pattern.
+     */
+    description?: string;
+}
+
+export interface CustomDictionaryWithScope extends CustomDictionary {}
+
+export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
@@ -223,6 +549,8 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
-export type SpellCheckerSettingsVSCodeProperties = Prefix<CSpellUserSettings, 'cSpell.'>;
+export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
 
-export type SpellCheckerSettingsVSCode = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
+export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
+
+export type SpellCheckerSettingsVSCode = SpellCheckerSettingsVSCodeBase;

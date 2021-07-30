@@ -30,7 +30,6 @@ export type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
     CSpellUserSettings,
-    CSpellUserSettingsWithComments,
     CustomDictionaryScope,
     DictionaryDefinition,
     DictionaryDefinitionCustom,

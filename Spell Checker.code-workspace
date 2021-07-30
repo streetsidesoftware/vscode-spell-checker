@@ -31,6 +31,10 @@
 		{
 			"name": "Utils",
 			"path": "packages/__utils"
+		},
+		{
+			"name": "Tools",
+			"path": "packages/___buildTools"
 		}
 	],
 	"settings": {
