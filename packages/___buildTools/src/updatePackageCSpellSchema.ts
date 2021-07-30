@@ -36,27 +36,25 @@ function update(packageConfig: JSONSchema7, schema: JSONSchema7) {
     const props = Object.entries(schema.properties || {}).map(
         ([key, value]) => ['cSpell.' + key, value] as [string, JSONSchema7Definition]
     );
+    const propsMap = new Map(props);
     const { properties = {} } = packageConfig;
-    const newProps: Record<string, JSONSchema7Definition> = {};
 
-    // Try to keep the order by first copying the existing properties
-    for (const key of Object.keys(properties)) {
-        if (schema.properties?.[key] === undefined) continue;
-        newProps[key] = copyProperty(properties[key], schema.properties[key]);
-    }
-
-    // Now copy the rest.
     for (const [key, value] of props) {
-        newProps[key] = copyProperty(properties[key], value);
+        properties[key] = copyProperty(properties[key], value);
     }
 
-    packageConfig.properties = newProps;
+    // Remove unknown properties
+    for (const [key] of Object.entries(properties)) {
+        if (!propsMap.has(key)) delete properties[key];
+    }
+
+    packageConfig.properties = properties;
 }
 
 /**
  * Copy the source onto the destination while trying to preserve the order of the
  * existing fields.
- * @param current - current
+ * @param current - current - is MODIFIED!!!
  * @param value
  * @returns
  */
@@ -66,20 +64,19 @@ function copyProperty(current: JSONSchema7Definition | undefined, value: JSONSch
 
     if (deepEqual(current, value)) return current;
 
-    // The idea here is to try and preserve the key order
-    const r: JSONSchema7 = {};
-    const rr: Record<string, any> = r;
+    const newKeys = new Set(Object.keys(value) as (keyof JSONSchema7)[]);
+    // Alias of current to make types easier.
+    const rr: Partial<Record<string, any>> = current;
 
-    for (const key of Object.keys(current) as (keyof JSONSchema7)[]) {
-        if (value[key] === undefined) continue;
+    for (const key of newKeys) {
         rr[key] = value[key];
     }
 
-    for (const key of Object.keys(value) as (keyof JSONSchema7)[]) {
-        rr[key] = value[key];
+    for (const key of Object.keys(rr)) {
+        if (!newKeys.has(key as keyof JSONSchema7)) delete rr[key];
     }
 
-    return r;
+    return current;
 }
 
 interface PackageJson {

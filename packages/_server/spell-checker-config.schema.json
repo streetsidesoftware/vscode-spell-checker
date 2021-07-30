@@ -5,7 +5,9 @@
   },
   "properties": {
     "allowCompoundWords": {
-      "description": "True to enable compound word checking.",
+      "default": false,
+      "description": "Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means it would not pass.",
+      "markdownDescription": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
       "scope": "resource",
       "type": "boolean"
     },
@@ -59,12 +61,12 @@
                 "type": "string"
               },
               "name": {
-                "markdownDescription": "The reference name of the dictionary.\nexample: `My Words` or `custom`\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
               "path": {
-                "markdownDescription": "Define the path to the dictionary text file.\nNote: if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
               },
@@ -101,7 +103,7 @@
           }
         ]
       },
-      "markdownDescription": "Define custom dictionaries to be included by default for the folder.\nIf `addWords` is `true` words will be added to this dictionary.",
+      "markdownDescription": "Define custom dictionaries to be included by default for the folder.\nIf `addWords` is `true` words will be added to this dictionary.\n\n**Example:**\n\n```js\ncustomDictionaries: {\n  \"project-words\": {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n}\n```",
       "scope": "resource",
       "title": "Custom Dictionaries",
       "type": "object"
@@ -126,13 +128,13 @@
               },
               "name": {
                 "description": "This matches the name in a dictionary definition",
-                "markdownDescription": "The reference name of the dictionary.\nexample: `My Words` or `custom`\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
               "path": {
                 "description": "A File System Path",
-                "markdownDescription": "Define the path to the dictionary text file.\nNote: if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
               },
@@ -200,13 +202,13 @@
               },
               "name": {
                 "description": "This matches the name in a dictionary definition",
-                "markdownDescription": "The reference name of the dictionary.\nexample: `My Words` or `custom`\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
               "path": {
                 "description": "A File System Path",
-                "markdownDescription": "Define the path to the dictionary text file.\nNote: if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
               },
@@ -274,13 +276,13 @@
               },
               "name": {
                 "description": "This matches the name in a dictionary definition",
-                "markdownDescription": "The reference name of the dictionary.\nexample: `My Words` or `custom`\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
               "path": {
                 "description": "A File System Path",
-                "markdownDescription": "Define the path to the dictionary text file.\nNote: if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\nExample: relative to User's folder\n```\n~/dictionaries/custom_dictionary.txt\n```\n\nExample: relative to the `client` folder in a multi-root workspace\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\nExample: relative to the current workspace folder in a single-root workspace\nNote - this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\nExample: relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n```\n./build/custom_dictionary.txt\n```",
+                "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
               },
@@ -520,6 +522,7 @@
       "uniqueItems": true
     },
     "enabled": {
+      "default": true,
       "description": "Enable / Disable the spell checker.",
       "scope": "resource",
       "type": "boolean"
@@ -570,6 +573,12 @@
       "type": "array",
       "uniqueItems": true
     },
+    "experimental.enableRegexpView": {
+      "default": false,
+      "description": "Show Regular Expression Explorer",
+      "scope": "application",
+      "type": "boolean"
+    },
     "fixSpellingWithRenameProvider": {
       "default": true,
       "description": "Use Rename when fixing spelling issues.",
@@ -585,7 +594,6 @@
       "type": "array"
     },
     "globRoot": {
-      "default": "/",
       "description": "The root to use for glop patterns found in this configuration. Default: location of the configuration file.   For compatibility reasons, config files with version 0.1, the glob root will   default to be `${cwd}`.\n\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n- `${cwd}` - will be replaced with the current working directory.\n- `.` - will be the location of the containing configuration file.",
       "scope": "resource",
       "type": "string"
@@ -647,7 +655,6 @@
       "default": "en",
       "description": "Current active spelling language.\nExample: \"en-GB\" for British English\nExample: \"en,nl\" to enable both English and Dutch",
       "scope": "resource",
-      "title": "Language Locales",
       "type": "string"
     },
     "languageId": {
@@ -998,7 +1005,6 @@
       "default": 100,
       "description": "Controls the maximum number of spelling errors per document.",
       "scope": "resource",
-      "title": "Maximum Number of Issues",
       "type": "number"
     },
     "minWordLength": {
@@ -1016,7 +1022,6 @@
       "default": 8,
       "description": "Controls the number of suggestions shown.",
       "scope": "resource",
-      "title": "Number of Suggestions",
       "type": "number"
     },
     "overrides": {

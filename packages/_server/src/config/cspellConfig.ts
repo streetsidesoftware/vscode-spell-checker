@@ -157,6 +157,19 @@ export interface SpellCheckerSettings {
      * @markdownDescription
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
+     *
+     * **Example:**
+     *
+     * ```js
+     * customDictionaries: {
+     *   "project-words": {
+     *     "name": "project-words",
+     *     "path": "${workspaceRoot}/project-words.txt",
+     *     "description": "Words used in this project",
+     *     "addWords": true
+     *   }
+     * }
+     * ```
      */
     customDictionaries?: CustomDictionaries;
 
@@ -196,7 +209,9 @@ export interface CustomDictionary {
      * @title Name of Dictionary
      * @markdownDescription
      * The reference name of the dictionary.
-     * example: `My Words` or `custom`
+     *
+     * Example: `My Words` or `custom`
+     *
      * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
      * If you use: `typescript` it will replace the built-in TypeScript dictionary.
      */
@@ -213,7 +228,8 @@ export interface CustomDictionary {
      * @title Optional Path to Dictionary Text File
      * @markdownDescription
      * Define the path to the dictionary text file.
-     * Note: if path is `undefined` the `name`d dictionary is expected to be found
+     *
+     * **Note:** if path is `undefined` the `name`d dictionary is expected to be found
      * in the `dictionaryDefinitions`.
      *
      * File Format: Each line in the file is considered a dictionary entry.
@@ -222,25 +238,30 @@ export interface CustomDictionary {
      *
      * The path should be absolute, or relative to the workspace.
      *
-     * Example: relative to User's folder
+     * **Example:** relative to User's folder
+     *
      * ```
      * ~/dictionaries/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the `client` folder in a multi-root workspace
+     * **Example:** relative to the `client` folder in a multi-root workspace
+     *
      * ```
      * ${workspaceFolder:client}/build/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the current workspace folder in a single-root workspace
-     * Note - this might no as expected in a multi-root workspace since it is based upon the relative
+     * **Example:** relative to the current workspace folder in a single-root workspace
+     *
+     * **Note:** this might no as expected in a multi-root workspace since it is based upon the relative
      * workspace for the currently open file.
+     *
      * ```
      * ${workspaceFolder}/build/custom_dictionary.txt
      * ```
      *
-     * Example: relative to the workspace folder in a single-root workspace or the first folder in
+     * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
      * a multi-root workspace
+     *
      * ```
      * ./build/custom_dictionary.txt
      * ```
@@ -277,7 +298,13 @@ type HiddenFsPath = FsPath;
  */
 interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
-     * @title Language Locales
+     * Enable / Disable the spell checker.
+     * @scope resource
+     * @default true
+     */
+    enabled?: boolean;
+
+    /**
      * @scope resource
      * @description
      * Current active spelling language.
@@ -288,7 +315,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     language?: string;
 
     /**
-     * @title Maximum Number of Issues
      * @scope resource
      * @description
      * Controls the maximum number of spelling errors per document.
@@ -297,7 +323,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     maxNumberOfProblems?: number;
 
     /**
-     * @title Number of Suggestions
      * @scope resource
      * @description
      * Controls the number of suggestions shown.
@@ -385,12 +410,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignoreWords?: string[];
 
     /**
-     * Enable / Disable the spell checker.
-     * @scope resource
-     */
-    enabled?: boolean;
-
-    /**
      * Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.
      * @title Glob patterns of files to be ignored
      * @scope resource
@@ -407,7 +426,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
-     * @default "/"
      */
     globRoot?: CSpellSettings['globRoot'];
 
@@ -432,7 +450,15 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
     /**
+     * Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means it would not pass.
      * @scope resource
+     * @default false
+     * @markdownDescription
+     * Enable / Disable allowing word compounds.
+     * - `true` means `arraylength` would be ok
+     * - `false` means it would not pass.
+     *
+     * Note: this can also cause many misspelled words to seem correct.
      */
     allowCompoundWords?: CSpellSettings['allowCompoundWords'];
 
