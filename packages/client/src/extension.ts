@@ -149,8 +149,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const server = {
         registerConfig,
         triggerGetSettings,
-        enableLanguageId: commands.enableLanguageId,
-        disableLanguageId: commands.disableLanguageId,
+        enableLanguageId: commands.enableLanguageIdCmd,
+        disableLanguageId: commands.disableLanguageIdCmd,
         enableCurrentLanguage: commands.enableCurrentLanguage,
         disableCurrentLanguage: commands.disableCurrentLanguage,
         addWordToUserDictionary: commands.addWordToUserDictionary,

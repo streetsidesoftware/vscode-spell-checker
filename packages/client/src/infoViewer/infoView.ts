@@ -1,47 +1,37 @@
-import { performance } from '../util/perf';
-performance.mark('infoView.ts');
+import * as Kefir from 'kefir';
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
-import * as path from 'path';
 import {
-    Settings,
-    DictionaryEntry,
-    Configs,
-    Config,
-    Workspace,
-    WorkspaceFolder,
-    TextDocument,
-    FileConfig,
-    ConfigTarget,
-    ConfigSource,
-} from '../../settingsViewer/api/settings';
-import { Maybe, uniqueFilter } from '../util';
-import {
-    MessageBus,
-    SelectTabMessage,
-    SelectFolderMessage,
-    SelectFileMessage,
     EnableLanguageIdMessage,
     EnableLocaleMessage,
+    MessageBus,
     OpenFileMessage,
+    SelectFileMessage,
+    SelectFolderMessage,
+    SelectTabMessage,
 } from '../../settingsViewer';
-import { WebviewApi, MessageListener } from '../../settingsViewer/api/WebviewApi';
-import { findMatchingDocument, commandDisplayCSpellInfo } from './cSpellInfo';
-import { CSpellClient } from '../client';
-import { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
 import {
-    inspectConfig,
-    Inspect,
-    enableLanguageIdForClosestTarget,
-    enableLanguageIdForTarget,
-    enableLocale,
-    disableLocale,
-    InspectValues,
-    getSettingFromVSConfig,
-} from '../settings';
-import { pipe, map, defaultTo } from '../util/pipe';
+    Config,
+    Configs,
+    ConfigSource,
+    ConfigTarget,
+    DictionaryEntry,
+    FileConfig,
+    Settings,
+    TextDocument,
+    Workspace,
+    WorkspaceFolder,
+} from '../../settingsViewer/api/settings';
+import { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
+import { CSpellClient } from '../client';
+import { enableLanguageId } from '../commands';
+import type { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
+import { disableLocale, enableLocale, getSettingFromVSConfig, Inspect, inspectConfig, InspectValues } from '../settings';
+import { Maybe, uniqueFilter } from '../util';
 import { commonPrefix } from '../util/commonPrefix';
-import * as Kefir from 'kefir';
+import { defaultTo, map, pipe } from '../util/pipe';
+import { commandDisplayCSpellInfo, findMatchingDocument } from './cSpellInfo';
 
 const viewerPath = 'packages/client/settingsViewer/webapp';
 const title = 'Spell Checker Preferences';
@@ -128,7 +118,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     );
 
     async function refreshStateAndNotify() {
-        const level = getSettingFromVSConfig('logLevel', null);
+        const level = getSettingFromVSConfig('logLevel', undefined);
         isDebugLogEnabled = level === 'Debug';
         log('refreshStateAndNotify');
         await refreshState();
@@ -197,12 +187,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 const { target, languageId, enable, uri } = msg.value;
                 log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
                 const uriFolder = uri ? Uri.parse(uri) : undefined;
-                if (target) {
-                    const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-                    enableLanguageIdForTarget(languageId, enable, configTarget, true, true);
-                } else {
-                    enableLanguageIdForClosestTarget(languageId, enable, uriFolder, true);
-                }
+                return enableLanguageId(languageId, uriFolder, target ? targetToConfigurationTarget[target] : undefined);
             })
     );
 
@@ -216,11 +201,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
                 const uriFolder = uri ? Uri.parse(uri) : undefined;
                 const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-                if (enable) {
-                    enableLocale(configTarget, locale);
-                } else {
-                    disableLocale(configTarget, locale);
-                }
+                return enable ? enableLocale(configTarget, locale) : disableLocale(configTarget, locale);
             })
     );
 
@@ -284,7 +265,7 @@ function normalizeFileName(filename: string): string {
 }
 
 async function calcSettings(document: Maybe<vscode.TextDocument>, folderUri: Maybe<Uri>, client: CSpellClient): Promise<Settings> {
-    const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri() || null;
+    const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri();
     const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
@@ -293,7 +274,7 @@ async function calcSettings(document: Maybe<vscode.TextDocument>, folderUri: May
         configs: extractViewerConfigFromConfig(config, docConfig, document),
         workspace: mapWorkspace(client.allowedSchemas),
         activeFileUri: document && document.uri.toString(),
-        activeFolderUri: (activeFolderUri && activeFolderUri.toString()) || undefined,
+        activeFolderUri: activeFolderUri?.toString(),
     };
     return settings;
 }
@@ -547,5 +528,3 @@ function log(msg: any) {
     const now = new Date();
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
-
-performance.mark('infoView.ts Done');
