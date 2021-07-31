@@ -152,11 +152,17 @@ export class CSpellClient implements Disposable {
     }
 
     public notifySettingsChanged(): Promise<void> {
-        return silenceErrors(this.whenReady(() => this.serverApi.notifyConfigChange()));
+        return silenceErrors(
+            this.whenReady(() => this.serverApi.notifyConfigChange()),
+            'notifySettingsChanged'
+        );
     }
 
     public registerConfiguration(path: string): Promise<void> {
-        return logErrors(this.whenReady(() => this.serverApi.registerConfigurationFile(path)));
+        return logErrors(
+            this.whenReady(() => this.serverApi.registerConfigurationFile(path)),
+            'registerConfiguration'
+        );
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {

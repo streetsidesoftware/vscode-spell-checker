@@ -39,7 +39,7 @@ import { createDictionaryTargetForFile, DictionaryTarget } from './settings/Dict
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { mapConfigTargetLegacyToClientConfigTarget } from './settings/mappers/configTargetLegacy';
 import { dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
-import { catchErrors, handleErrors, handleErrorsEx, logErrors } from './util/errors';
+import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
@@ -124,8 +124,9 @@ const commandHandlers: CommandHandler = {
     'cSpell.createCSpellConfig': createCSpellConfig,
 };
 
-function pVoid<T>(p: Promise<T> | Thenable<T>, errorHandler = handleErrors): Promise<void> {
-    return errorHandler(Promise.resolve(p).then(() => {}));
+function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorHandler = onError): Promise<void> {
+    const v = Promise.resolve(p).then(() => {});
+    return handleErrors(v, context, onErrorHandler);
 }
 
 // function notImplemented(cmd: string) {
@@ -141,7 +142,10 @@ function handlerApplyTextEdits() {
         if (!textEditor || textEditor.document.uri.toString() !== uri) return;
 
         if (textEditor.document.version !== documentVersion) {
-            return pVoid(window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'));
+            return pVoid(
+                window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
+                'handlerApplyTextEdits'
+            );
         }
 
         const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
@@ -160,7 +164,11 @@ function handlerApplyTextEdits() {
                     mutator.replace(client.protocol2CodeConverter.asRange(edit.range), edit.newText);
                 }
             })
-            .then((success) => (success ? undefined : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'))));
+            .then((success) =>
+                success
+                    ? undefined
+                    : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2')
+            );
     };
 }
 
@@ -191,11 +199,11 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
 }
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
-    return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg));
+    return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg), 'addWordsToConfig');
 }
 
 function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarget) {
-    return handleErrors(di.get('dictionaryHelper').addWordToDictionary(words, dictTarget));
+    return handleErrors(di.get('dictionaryHelper').addWordToDictionary(words, dictTarget), 'addWordsToDictionaryTarget');
 }
 
 // function removeWordsFromConfig(words: string[], cfg: ConfigRepository) {
@@ -207,7 +215,7 @@ function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarge
 // }
 
 function registerCmd(cmd: string, fn: (...args: any[]) => any): Disposable {
-    return commands.registerCommand(cmd, catchErrors(fn));
+    return commands.registerCommand(cmd, catchErrors(fn, `Register command: ${cmd}`));
 }
 
 export function registerCommands(): Disposable[] {
@@ -231,7 +239,7 @@ export function addWordToUserDictionary(word: string): Promise<void> {
 }
 
 function addWordToTarget(word: string, target: TargetBestMatchFn, docUri: string | null | Uri | undefined) {
-    return handleErrors(_addWordToTarget(word, target, docUri));
+    return handleErrors(_addWordToTarget(word, target, docUri), 'addWordToTarget');
 }
 
 function _addWordToTarget(word: string, target: TargetBestMatchFn, docUri: string | null | Uri | undefined) {
@@ -240,11 +248,11 @@ function _addWordToTarget(word: string, target: TargetBestMatchFn, docUri: strin
 }
 
 function addAllIssuesFromDocument(): Promise<void> {
-    return handleErrors(di.get('dictionaryHelper').addIssuesToDictionary());
+    return handleErrors(di.get('dictionaryHelper').addIssuesToDictionary(), 'addAllIssuesFromDocument');
 }
 
 function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
-    return handleErrors(_addIgnoreWordToTarget(word, target, uri));
+    return handleErrors(_addIgnoreWordToTarget(word, target, uri), ctx('addIgnoreWordToTarget', target, uri));
 }
 
 async function _addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
@@ -269,7 +277,7 @@ function removeWordFromUserDictionary(word: string): Promise<void> {
 }
 
 function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined) {
-    return handleErrors(_removeWordFromTarget(word, target, uri));
+    return handleErrors(_removeWordFromTarget(word, target, uri), ctx('removeWordFromTarget', target, uri));
 }
 
 function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, docUri: string | null | Uri | undefined) {
@@ -290,14 +298,14 @@ export function enableLanguageId(languageId: string, uri?: Uri, configTarget?: C
     return handleErrorsEx(async () => {
         const t = configTarget ? targets(configTarget, uri) : await targetsForUri(uri);
         return Settings.enableLanguageId(t, languageId);
-    });
+    }, ctx('enableLanguageId', configTarget, uri));
 }
 
 export function disableLanguageId(languageId: string, uri?: Uri, configTarget?: ConfigurationTarget): Promise<void> {
     return handleErrorsEx(async () => {
         const t = configTarget ? targets(configTarget, uri) : await targetsForUri(uri);
         return Settings.enableLanguageId(t, languageId);
-    });
+    }, ctx('disableLanguageId', configTarget, uri));
 }
 
 export function enableCurrentLanguage(): Promise<void> {
@@ -306,7 +314,7 @@ export function enableCurrentLanguage(): Promise<void> {
         if (!document) return;
         const targets = await targetsForTextDocument(document);
         return Settings.enableLanguageId(targets, document.languageId);
-    });
+    }, 'enableCurrentLanguage');
 }
 
 export function disableCurrentLanguage(): Promise<void> {
@@ -315,7 +323,7 @@ export function disableCurrentLanguage(): Promise<void> {
         if (!document) return;
         const targets = await targetsForTextDocument(document);
         return Settings.disableLanguageId(targets, document.languageId);
-    });
+    }, 'disableCurrentLanguage');
 }
 
 function targets(cfgTarget: ConfigurationTarget, docUri?: string | null | Uri | undefined): ClientConfigTarget[] {
@@ -356,6 +364,10 @@ function onCommandUseDiagsSelectionOrPrompt(
     };
 }
 
+function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri | string | null | undefined): string {
+    return `${method} ${target} ${toUri(uri)}`;
+}
+
 interface SuggestionQuickPickItem extends QuickPickItem {
     _action: CodeAction;
 }
@@ -369,12 +381,16 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
     const r = matchingRanges?.[0] || range;
     const matchingDiags = r && diags?.filter((d) => !!d.range.intersection(r));
     if (!document || !selection || !r || !matchingDiags) {
-        return pVoid(window.showWarningMessage('Nothing to suggest.'), logErrors);
+        return pVoid(window.showWarningMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections', onError);
     }
 
     const actions = await di.get('client').requestSpellingSuggestions(document, r, matchingDiags);
     if (!actions || !actions.length) {
-        return pVoid(window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`), logErrors);
+        return pVoid(
+            window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`),
+            'actionSuggestSpellingCorrections',
+            logError
+        );
     }
     const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
     const picked = await window.showQuickPick(items);
@@ -466,7 +482,7 @@ function fnWTarget<TT>(
 }
 
 function createCSpellConfig(): Promise<void> {
-    return pVoid(createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri));
+    return pVoid(createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri), 'createCSpellConfig');
 }
 
 export const __testing__ = {

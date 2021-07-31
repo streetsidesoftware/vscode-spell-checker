@@ -58,7 +58,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(client.start());
 
     function triggerGetSettings(delayInMs = 0) {
-        setTimeout(() => silenceErrors(client.triggerSettingsRefresh()), delayInMs);
+        setTimeout(() => silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings'), delayInMs);
     }
 
     initStatusBar(context, client);
@@ -113,11 +113,11 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
-        logErrors(updateDocumentRelatedContext(client, e?.document));
+        logErrors(updateDocumentRelatedContext(client, e?.document), 'handleOnDidChangeActiveTextEditor');
     }
 
     function handleOnDidChangeVisibleTextEditors(_e: vscode.TextEditor[]) {
-        logErrors(updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document));
+        logErrors(updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document), 'handleOnDidChangeVisibleTextEditors');
     }
 
     function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
@@ -126,7 +126,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
         const uris = new Set(e.uris.map((u) => u.toString()));
         if (uris.has(activeTextEditor.document.uri.toString())) {
-            logErrors(updateDocumentRelatedContext(client, activeTextEditor.document));
+            logErrors(updateDocumentRelatedContext(client, activeTextEditor.document), 'handleOnDidChangeDiagnostics');
         }
     }
 
