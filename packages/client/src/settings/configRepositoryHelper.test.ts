@@ -54,5 +54,6 @@ function configTargetVSCode(scope: 'user' | 'workspace' | 'folder'): ClientConfi
         kind: 'vscode',
         scope,
         docUri: fileUri,
+        configScope: undefined,
     };
 }

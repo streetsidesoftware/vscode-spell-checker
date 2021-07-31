@@ -18,7 +18,6 @@ import {
     isWorkspaceLevelTarget,
     Scopes,
     toScope,
-    WorkspaceTarget,
     __testing__,
 } from './vsConfig';
 
@@ -91,6 +90,8 @@ const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }>
     },
 };
 
+const WorkspaceTarget = createTargetForUri(ConfigurationTarget.Workspace, uri);
+
 describe('Validate vsConfig', () => {
     const pDoc = readTextDocument(Uri.file(__filename));
 
@@ -119,7 +120,7 @@ describe('Validate vsConfig', () => {
     test('isFolderLevelTarget', () => {
         expect(isFolderLevelTarget(GlobalTarget)).toBe(false);
         expect(isFolderLevelTarget(WorkspaceTarget)).toBe(false);
-        expect(isFolderLevelTarget(createTargetForUri(WorkspaceTarget, uri))).toBe(false);
+        expect(isFolderLevelTarget(createTargetForUri(ConfigurationTarget.Workspace, uri))).toBe(false);
         expect(isFolderLevelTarget(createTargetForUri(ConfigurationTarget.WorkspaceFolder, uri))).toBe(true);
     });
 
@@ -142,10 +143,10 @@ describe('Validate vsConfig', () => {
     });
 
     test.each`
-        target                                   | expected
-        ${GlobalTarget}                          | ${true}
-        ${WorkspaceTarget}                       | ${false}
-        ${createTargetForUri(GlobalTarget, uri)} | ${true}
+        target                                                    | expected
+        ${GlobalTarget}                                           | ${true}
+        ${createTargetForUri(ConfigurationTarget.Workspace, uri)} | ${false}
+        ${createTargetForUri(GlobalTarget, uri)}                  | ${true}
     `('isGlobalTarget $target', ({ target, expected }) => {
         expect(isGlobalTarget(target)).toBe(expected);
     });

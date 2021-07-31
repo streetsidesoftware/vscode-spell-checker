@@ -26,7 +26,6 @@ export interface FullInspectValues<T> extends InspectValues<T> {
 }
 
 export const GlobalTarget = ConfigurationTarget.Global;
-export const WorkspaceTarget = ConfigurationTarget.Workspace;
 
 export interface ConfigTargetWithOptionalResource {
     target: ConfigurationTarget;
