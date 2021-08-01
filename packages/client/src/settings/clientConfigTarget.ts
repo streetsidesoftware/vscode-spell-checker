@@ -29,25 +29,22 @@ export interface ClientConfigTargetCSpell extends ClientConfigTargetBase {
     configUri: Uri;
 }
 
-export interface ClientConfigTargetVSCodeUser extends ClientConfigTargetBase {
+interface ClientConfigTargetVSCodeBase extends ClientConfigTargetBase {
     kind: 'vscode';
+    docUri: Uri | undefined;
+    configScope: ConfigurationScope | undefined;
+}
+
+export interface ClientConfigTargetVSCodeUser extends ClientConfigTargetVSCodeBase {
     scope: 'user';
-    docUri: Uri | undefined;
-    configScope: ConfigurationScope | undefined;
 }
 
-export interface ClientConfigTargetVSCodeWorkspace extends ClientConfigTargetBase {
-    kind: 'vscode';
+export interface ClientConfigTargetVSCodeWorkspace extends ClientConfigTargetVSCodeBase {
     scope: 'workspace';
-    docUri: Uri | undefined;
-    configScope: ConfigurationScope | undefined;
 }
 
-export interface ClientConfigTargetVSCodeFolder extends ClientConfigTargetBase {
-    kind: 'vscode';
+export interface ClientConfigTargetVSCodeFolder extends ClientConfigTargetVSCodeBase {
     scope: 'folder';
-    docUri: Uri;
-    configScope: ConfigurationScope | undefined;
 }
 
 export type ClientConfigTargetVSCode = ClientConfigTargetVSCodeUser | ClientConfigTargetVSCodeWorkspace | ClientConfigTargetVSCodeFolder;

@@ -239,7 +239,7 @@ export interface WorkspaceConfigForDocumentRequest {
 }
 
 export interface WorkspaceConfigForDocument {
-    uri: DocumentUri;
+    uri: DocumentUri | undefined;
     workspaceFile: UriString | undefined;
     workspaceFolder: UriString | undefined;
     words: FieldExistsInTarget;

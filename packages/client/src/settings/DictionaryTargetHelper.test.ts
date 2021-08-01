@@ -59,6 +59,7 @@ function configTargetVSCode(scope: 'user' | 'workspace' | 'folder'): ConfigTarge
         kind: 'vscode',
         scope,
         docUri: fileUri.toString(),
+        folderUri: undefined,
         has: { words: true, ignoreWords: undefined },
     };
 }
