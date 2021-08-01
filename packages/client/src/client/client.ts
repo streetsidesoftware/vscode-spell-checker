@@ -137,8 +137,8 @@ export class CSpellClient implements Disposable {
     ): Promise<GetConfigurationForDocumentResult> {
         const { uri, languageId } = document || {};
 
-        if (!uri || !languageId) {
-            return this.serverApi.getConfigurationForDocument({ uri: uri?.toString(), languageId });
+        if (!uri) {
+            return this.serverApi.getConfigurationForDocument({});
         }
         const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });

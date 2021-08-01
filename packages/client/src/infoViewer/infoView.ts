@@ -25,7 +25,7 @@ import {
 } from '../../settingsViewer/api/settings';
 import { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
 import { CSpellClient } from '../client';
-import { enableLanguageId } from '../commands';
+import { enableDisableLanguageId } from '../commands';
 import type { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
 import { disableLocale, enableLocale, getSettingFromVSConfig, Inspect, inspectConfig, InspectValues } from '../settings';
 import { Maybe, uniqueFilter } from '../util';
@@ -187,7 +187,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 const { target, languageId, enable, uri } = msg.value;
                 log(`EnableLanguageIdMessage: ${target}, ${languageId}, ${enable ? 'enable' : 'disable'}`);
                 const uriFolder = uri ? Uri.parse(uri) : undefined;
-                return enableLanguageId(languageId, uriFolder, target ? targetToConfigurationTarget[target] : undefined);
+                return enableDisableLanguageId(languageId, uriFolder, target ? targetToConfigurationTarget[target] : undefined, enable);
             })
     );
 

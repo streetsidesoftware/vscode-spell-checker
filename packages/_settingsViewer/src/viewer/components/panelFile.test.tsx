@@ -23,7 +23,7 @@ describe('File Panel Verification', () => {
                     enable: false,
                     languageId: 'typescript',
                     target: undefined,
-                    uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
+                    uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
                 },
             },
         ]);

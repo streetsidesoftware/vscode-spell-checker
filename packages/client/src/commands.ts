@@ -5,6 +5,7 @@ import {
     commands,
     Diagnostic,
     Disposable,
+    FileType,
     QuickPickItem,
     Range,
     Selection,
@@ -287,25 +288,23 @@ function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, doc
 }
 
 export function enableLanguageIdCmd(languageId: string, uri?: Uri | string): Promise<void> {
-    return enableLanguageId(languageId, toUri(uri));
+    return enableDisableLanguageId(languageId, toUri(uri), undefined, true);
 }
 
 export function disableLanguageIdCmd(languageId: string, uri?: string | Uri): Promise<void> {
-    return disableLanguageId(languageId, toUri(uri));
+    return enableDisableLanguageId(languageId, toUri(uri), undefined, false);
 }
 
-export function enableLanguageId(languageId: string, uri?: Uri, configTarget?: ConfigurationTarget): Promise<void> {
+export function enableDisableLanguageId(
+    languageId: string,
+    uri: Uri | undefined,
+    configTarget: ConfigurationTarget | undefined,
+    enable: boolean
+): Promise<void> {
     return handleErrorsEx(async () => {
         const t = configTarget ? targets(configTarget, uri) : await targetsForUri(uri);
-        return Settings.enableLanguageId(t, languageId);
-    }, ctx('enableLanguageId', configTarget, uri));
-}
-
-export function disableLanguageId(languageId: string, uri?: Uri, configTarget?: ConfigurationTarget): Promise<void> {
-    return handleErrorsEx(async () => {
-        const t = configTarget ? targets(configTarget, uri) : await targetsForUri(uri);
-        return Settings.enableLanguageId(t, languageId);
-    }, ctx('disableLanguageId', configTarget, uri));
+        return enable ? Settings.enableLanguageId(t, languageId) : Settings.disableLanguageId(t, languageId);
+    }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
 }
 
 export function enableCurrentLanguage(): Promise<void> {
@@ -332,7 +331,7 @@ function targets(cfgTarget: ConfigurationTarget, docUri?: string | null | Uri | 
     return targets;
 }
 
-async function targetsForTextDocument(document: TextDocument | undefined) {
+async function targetsForTextDocument(document: TextDocument | { uri: Uri; languageId?: string } | undefined) {
     const { uri, languageId } = document || {};
     const config = await di.get('client').getConfigurationForDocument({ uri, languageId });
     const targets = config.configTargets.map(mapConfigTargetToClientConfigTarget);
@@ -341,8 +340,14 @@ async function targetsForTextDocument(document: TextDocument | undefined) {
 
 async function targetsForUri(docUri?: string | null | Uri | undefined) {
     docUri = toUri(docUri || window.activeTextEditor?.document.uri);
-    const document = docUri ? await workspace.openTextDocument(docUri) : undefined;
+    const document = docUri ? await uriToTextDocInfo(docUri) : undefined;
     return targetsForTextDocument(document);
+}
+
+async function uriToTextDocInfo(uri: Uri): Promise<{ uri: Uri; languageId?: string }> {
+    const fsStat = await workspace.fs.stat(uri);
+    if (fsStat.type !== FileType.File) return { uri };
+    return await workspace.openTextDocument(uri);
 }
 
 function onCommandUseDiagsSelectionOrPrompt(
