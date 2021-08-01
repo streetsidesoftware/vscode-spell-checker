@@ -1,4 +1,4 @@
-import type { Uri } from 'vscode';
+import type { Uri, ConfigurationScope } from 'vscode';
 
 export type ClientConfigKind = 'cspell' | 'dictionary' | 'vscode';
 export type ClientConfigScopeVScode = 'user' | 'workspace' | 'folder';
@@ -13,6 +13,8 @@ interface ClientConfigTargetBase {
     name: string;
     /** Document Uri */
     docUri?: Uri;
+    /** Configuration Scope */
+    configScope?: ConfigurationScope;
 }
 
 export interface ClientConfigTargetDictionary extends ClientConfigTargetBase {
@@ -31,18 +33,21 @@ export interface ClientConfigTargetVSCodeUser extends ClientConfigTargetBase {
     kind: 'vscode';
     scope: 'user';
     docUri: Uri | undefined;
+    configScope: ConfigurationScope | undefined;
 }
 
 export interface ClientConfigTargetVSCodeWorkspace extends ClientConfigTargetBase {
     kind: 'vscode';
     scope: 'workspace';
-    docUri: Uri;
+    docUri: Uri | undefined;
+    configScope: ConfigurationScope | undefined;
 }
 
 export interface ClientConfigTargetVSCodeFolder extends ClientConfigTargetBase {
     kind: 'vscode';
     scope: 'folder';
     docUri: Uri;
+    configScope: ConfigurationScope | undefined;
 }
 
 export type ClientConfigTargetVSCode = ClientConfigTargetVSCodeUser | ClientConfigTargetVSCodeWorkspace | ClientConfigTargetVSCodeFolder;

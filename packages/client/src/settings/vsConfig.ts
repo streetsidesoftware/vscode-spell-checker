@@ -26,19 +26,19 @@ export interface FullInspectValues<T> extends InspectValues<T> {
 }
 
 export const GlobalTarget = ConfigurationTarget.Global;
-export const WorkspaceTarget = ConfigurationTarget.Workspace;
 
 export interface ConfigTargetWithOptionalResource {
     target: ConfigurationTarget;
     uri?: Uri;
+    configScope?: ConfigurationScope;
 }
 
 export interface ConfigTargetWithResource extends ConfigTargetWithOptionalResource {
     uri: Uri;
 }
 
-export type ConfigTargetResourceFree = ConfigurationTarget.Global | ConfigurationTarget.Workspace;
-export type ConfigTarget = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
+export type ConfigTargetResourceFree = ConfigurationTarget.Global;
+export type ConfigTargetLegacy = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
 
 export interface Inspect<T> extends FullInspectValues<T> {
     key: string;
@@ -63,7 +63,7 @@ export const Scopes: ScopeValues = {
 
 export interface FullInspectScope {
     scope: Scope;
-    resource: Uri | null;
+    resource: Uri | undefined;
 }
 
 export type InspectScope = FullInspectScope | ScopeResourceFree;
@@ -145,7 +145,7 @@ export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
 export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     value: CSpellUserSettings[K],
-    configTarget: ConfigTarget
+    configTarget: ConfigTargetLegacy
 ): Promise<void> {
     const nTarget = normalizeTarget(configTarget);
     const target = extractTarget(nTarget);
@@ -196,29 +196,26 @@ export function inspectConfigKeys(scope: GetConfigurationScope, keys: readonly (
     return r;
 }
 
-export function isGlobalLevelTarget(target: ConfigTarget): boolean {
+export function isGlobalLevelTarget(target: ConfigTargetLegacy): boolean {
     return (
         (isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Global) ||
         target === ConfigurationTarget.Global
     );
 }
 
-export function isWorkspaceLevelTarget(target: ConfigTarget): boolean {
-    return (
-        (isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Workspace) ||
-        target === ConfigurationTarget.Workspace
-    );
+export function isWorkspaceLevelTarget(target: ConfigTargetLegacy): boolean {
+    return isConfigTargetWithOptionalResource(target) && target.target === ConfigurationTarget.Workspace;
 }
 
-export function isFolderLevelTarget(target: ConfigTarget): boolean {
+export function isFolderLevelTarget(target: ConfigTargetLegacy): boolean {
     return isConfigTargetWithResource(target) && target.target === ConfigurationTarget.WorkspaceFolder;
 }
 
-export function isConfigTargetWithResource(target: ConfigTarget): target is ConfigTargetWithResource {
+export function isConfigTargetWithResource(target: ConfigTargetLegacy): target is ConfigTargetWithResource {
     return isConfigTargetWithOptionalResource(target) && target.uri !== undefined;
 }
 
-export function isConfigTargetWithOptionalResource(target: ConfigTarget): target is ConfigTargetWithOptionalResource {
+export function isConfigTargetWithOptionalResource(target: ConfigTargetLegacy): target is ConfigTargetWithOptionalResource {
     return typeof target === 'object' && target.target !== undefined;
 }
 
@@ -248,11 +245,11 @@ export function configurationTargetToName(target: ConfigurationTarget): string {
     return configTargetToName[target];
 }
 
-export function configTargetToScope(target: ConfigTarget): InspectScope {
+export function configTargetToScope(target: ConfigTargetLegacy): InspectScope {
     if (isConfigTargetWithOptionalResource(target)) {
         return {
             scope: toScope(target.target),
-            resource: target.uri || null,
+            resource: target.uri || undefined,
         };
     }
     return targetToScopeMap[target];
@@ -277,18 +274,18 @@ function normalizeScope(scope: InspectScope): FullInspectScope {
     if (isFullInspectScope(scope)) {
         return {
             scope: scope.scope,
-            resource: scope.scope === Scopes.Folder ? normalizeResourceUri(scope.resource) : null,
+            resource: scope.scope === Scopes.Folder ? normalizeResourceUri(scope.resource) : undefined,
         };
     }
-    return { scope, resource: null };
+    return { scope, resource: undefined };
 }
 
-function normalizeResourceUri(uri: Uri | null | undefined): Uri | null {
+function normalizeResourceUri(uri: Uri | null | undefined): Uri | undefined {
     if (uri) {
         const folder = workspace.getWorkspaceFolder(uri);
-        return (folder && folder.uri) || null;
+        return folder?.uri;
     }
-    return null;
+    return undefined;
 }
 
 export interface FindBestConfigResult<K extends keyof CSpellUserSettings> {
@@ -307,7 +304,7 @@ function findBestConfig<K extends keyof CSpellUserSettings>(config: Inspect<CSpe
     return { scope: 'defaultValue', value: undefined };
 }
 
-export function isGlobalTarget(target: ConfigTarget): boolean {
+export function isGlobalTarget(target: ConfigTargetLegacy): boolean {
     return extractTarget(target) === ConfigurationTarget.Global;
 }
 
@@ -322,32 +319,26 @@ export function createTargetForDocument(target: ConfigurationTarget, doc: TextDo
     return createTargetForUri(target, doc.uri);
 }
 
-export function extractTarget(target: ConfigTarget): ConfigurationTarget {
+export function extractTarget(target: ConfigTargetLegacy): ConfigurationTarget {
     return isConfigTargetWithOptionalResource(target) ? target.target : target;
 }
 
-export function extractTargetUri(target: ConfigTarget): Uri | null {
-    return isConfigTargetWithResource(target) ? target.uri || null : null;
+export function extractTargetUri(target: ConfigTargetLegacy): Uri | undefined {
+    return isConfigTargetWithOptionalResource(target) ? target.uri : undefined;
 }
 
-export type GetConfigurationScope = ConfigurationScope | undefined | null;
+export type GetConfigurationScope = ConfigurationScope | undefined;
 
 export function getConfiguration(scope: GetConfigurationScope): WorkspaceConfiguration {
     return workspace.getConfiguration(undefined, scope);
 }
 
-export function normalizeTarget(target: ConfigTarget): ConfigTarget {
-    if (!isConfigTargetWithOptionalResource(target)) {
-        return target;
-    }
-    if (target.target !== ConfigurationTarget.WorkspaceFolder) {
-        return target.target;
-    }
-    const uri = normalizeResourceUri(target.uri);
-    if (!uri) {
-        return ConfigurationTarget.Workspace;
-    }
-    return { target: target.target, uri };
+export function normalizeTarget(target: ConfigTargetLegacy): ConfigTargetWithOptionalResource {
+    if (isConfigTargetWithOptionalResource(target)) return target;
+    return {
+        target,
+        uri: undefined,
+    };
 }
 
 type ConfigKeys = keyof CSpellUserSettings;

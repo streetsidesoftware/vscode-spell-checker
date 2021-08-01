@@ -49,6 +49,11 @@ export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponse
     uri: Uri;
 }
 
+interface TextDocumentInfo {
+    uri?: Uri;
+    languageId?: string;
+}
+
 export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
     readonly import: Set<string> = new Set();
@@ -127,15 +132,13 @@ export class CSpellClient implements Disposable {
         return { ...response, uri };
     }
 
-    public async getConfigurationForDocument(document: TextDocument | undefined): Promise<GetConfigurationForDocumentResult> {
-        if (!document) {
-            return this.serverApi.getConfigurationForDocument({});
-        }
-
-        const { uri, languageId = '' } = document;
+    public async getConfigurationForDocument(
+        document: TextDocument | TextDocumentInfo | undefined
+    ): Promise<GetConfigurationForDocumentResult> {
+        const { uri, languageId } = document || {};
 
         if (!uri || !languageId) {
-            return this.serverApi.getConfigurationForDocument({});
+            return this.serverApi.getConfigurationForDocument({ uri: uri?.toString(), languageId });
         }
         const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
@@ -149,11 +152,17 @@ export class CSpellClient implements Disposable {
     }
 
     public notifySettingsChanged(): Promise<void> {
-        return silenceErrors(this.whenReady(() => this.serverApi.notifyConfigChange()));
+        return silenceErrors(
+            this.whenReady(() => this.serverApi.notifyConfigChange()),
+            'notifySettingsChanged'
+        );
     }
 
     public registerConfiguration(path: string): Promise<void> {
-        return logErrors(this.whenReady(() => this.serverApi.registerConfigurationFile(path)));
+        return logErrors(
+            this.whenReady(() => this.serverApi.registerConfigurationFile(path)),
+            'registerConfiguration'
+        );
     }
 
     get diagnostics(): Maybe<DiagnosticCollection> {

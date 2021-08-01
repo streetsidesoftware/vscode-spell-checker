@@ -27,6 +27,7 @@ describe('clientConfigTarget', () => {
         kind: 'vscode',
         scope: 'user',
         docUri: Uri.file(__filename),
+        configScope: undefined,
     };
 
     test('isClientConfigTargetCSpell', () => {

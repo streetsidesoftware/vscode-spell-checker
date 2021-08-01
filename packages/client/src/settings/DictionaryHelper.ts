@@ -10,7 +10,7 @@ import type { CustomDictionaryScope, DictionaryDefinitionCustom } from '../serve
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
-import { dictionaryTargetBestMatch, TargetMatchFn } from './configTargetHelper';
+import { dictionaryTargetBestMatch, TargetBestMatchFn } from './configTargetHelper';
 import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
 import { createDictionaryTargetForConfigRep, DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
@@ -31,7 +31,7 @@ export class DictionaryHelper {
      */
     public async addWordsToTarget(
         words: string | string[],
-        target: ClientConfigTarget | TargetMatchFn,
+        target: ClientConfigTarget | TargetBestMatchFn,
         docUri: Uri | undefined
     ): Promise<void> {
         const cfgTarget = await this.resolveTarget(target, docUri);
@@ -73,7 +73,7 @@ export class DictionaryHelper {
      */
     public async removeWordsFromTarget(
         words: string | string[],
-        target: ClientConfigTarget | TargetMatchFn,
+        target: ClientConfigTarget | TargetBestMatchFn,
         docUri: Uri | undefined
     ): Promise<void> {
         words = normalizeWords(words);
@@ -176,7 +176,7 @@ export class DictionaryHelper {
     }
 
     private async resolveTarget(
-        target: ClientConfigTarget | TargetMatchFn,
+        target: ClientConfigTarget | TargetBestMatchFn,
         docUri: Uri | undefined
     ): Promise<DictionaryTarget | undefined> {
         if (typeof target !== 'function') return configTargetToDictionaryTarget(target);

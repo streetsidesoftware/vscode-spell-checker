@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
 import { extensionId } from '../constants';
-import { PatternMatch, CSpellUserSettings, NamedPattern } from '../server';
-import { catchErrors, handleErrors, logErrors } from '../util/errors';
+import { CSpellUserSettings, NamedPattern, PatternMatch } from '../server';
+import { catchErrors, logError, logErrors, onError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 
@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
     let pattern: string | undefined = undefined;
     let history: string[] = [];
 
-    const updateDecorations = catchErrors(_updateDecorations, handleErrors);
+    const updateDecorations = catchErrors(_updateDecorations, 'updateDecorations', onError);
 
     async function _updateDecorations() {
         disposeCurrent();
@@ -174,7 +174,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                 updateHistory(pattern);
                 triggerUpdateDecorations();
             });
-        return logErrors(p);
+        return logErrors(p, 'userTestRegExp');
     }
 
     function isNonEmptyString(s: string | undefined): s is string {
@@ -229,7 +229,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
     context.subscriptions.push(
         { dispose },
-        vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', catchErrors(userTestRegExp, logErrors)),
+        vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', catchErrors(userTestRegExp, 'testRegExp', logError)),
         vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
         vscode.commands.registerCommand('cSpellRegExpTester.editRegExp', editRegExp),
         vscode.workspace.onDidChangeConfiguration(updateIsActive)

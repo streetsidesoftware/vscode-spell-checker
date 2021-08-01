@@ -10,25 +10,26 @@ import {
 export function mapConfigTargetToClientConfigTarget(ct: ConfigTarget): ClientConfigTarget {
     switch (ct.kind) {
         case 'vscode':
-            return mapConfigTargetVSCodeToClinetConfigTargetVSCode(ct);
+            return mapConfigTargetVSCodeToClientConfigTargetVSCode(ct);
         case 'cspell':
-            return mapConfigTargetCSpellToClinetConfigTargetCSpell(ct);
+            return mapConfigTargetCSpellToClientConfigTargetCSpell(ct);
         case 'dictionary':
-            return mapConfigTargetDictionaryToClinetConfigTargetDictionary(ct);
+            return mapConfigTargetDictionaryToClientConfigTargetDictionary(ct);
     }
 }
 
-function mapConfigTargetVSCodeToClinetConfigTargetVSCode(ct: ConfigTargetVSCode): ClientConfigTargetVSCode {
+function mapConfigTargetVSCodeToClientConfigTargetVSCode(ct: ConfigTargetVSCode): ClientConfigTargetVSCode {
     const { name, kind, scope, docUri } = ct;
     return {
         name,
         kind,
         scope,
         docUri: toUri(docUri),
+        configScope: undefined,
     };
 }
 
-function mapConfigTargetCSpellToClinetConfigTargetCSpell(ct: ConfigTargetCSpell): ClientConfigTargetCSpell {
+function mapConfigTargetCSpellToClientConfigTargetCSpell(ct: ConfigTargetCSpell): ClientConfigTargetCSpell {
     const { name, kind, scope, configUri, docUri } = ct;
     return {
         name,
@@ -39,7 +40,7 @@ function mapConfigTargetCSpellToClinetConfigTargetCSpell(ct: ConfigTargetCSpell)
     };
 }
 
-function mapConfigTargetDictionaryToClinetConfigTargetDictionary(ct: ConfigTargetDictionary): ClientConfigTargetDictionary {
+function mapConfigTargetDictionaryToClientConfigTargetDictionary(ct: ConfigTargetDictionary): ClientConfigTargetDictionary {
     const { name, kind, scope, dictionaryUri, docUri } = ct;
     return {
         name,

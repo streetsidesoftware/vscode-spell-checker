@@ -1,6 +1,6 @@
 import type { Uri } from 'vscode';
 import type { CSpellClient } from './client';
-import type { ConfigTarget } from './settings';
+import type { ConfigTargetLegacy } from './settings';
 
 export interface ExtensionApi {
     registerConfig(path: string): void;
@@ -11,8 +11,8 @@ export interface ExtensionApi {
     disableCurrentLanguage(): Thenable<void>;
     addWordToUserDictionary(word: string): Thenable<void>;
     addWordToWorkspaceDictionary(word: string, uri?: string | null | Uri): Thenable<void>;
-    enableLocale(target: ConfigTarget, locale: string): Thenable<void>;
-    disableLocale(target: ConfigTarget, locale: string): Thenable<void>;
+    enableLocale(target: ConfigTargetLegacy, locale: string): Thenable<void>;
+    disableLocale(target: ConfigTargetLegacy, locale: string): Thenable<void>;
     updateSettings(): boolean;
     cSpellClient(): CSpellClient;
 }

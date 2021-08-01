@@ -7,7 +7,7 @@ import { ConfigKeysByField } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { GetConfigurationScope, updateConfig } from './vsConfig';
+import { GetConfigurationScope } from './vsConfig';
 import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
 
 export type ConfigKeys = keyof CSpellUserSettings;

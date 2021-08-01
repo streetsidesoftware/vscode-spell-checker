@@ -3,22 +3,25 @@ import { fileExists } from 'common-utils/file.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { ConfigurationTarget, Uri, workspace } from 'vscode';
+import { Uri, workspace } from 'vscode';
 import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
 import { isDefined, unique } from '../util';
 import * as watcher from '../util/watcher';
+import { ClientConfigTarget } from './clientConfigTarget';
 import { writeConfigFile } from './configFileReadWrite';
+import { applyUpdateToConfigTargets } from './configRepositoryHelper';
+import { ConfigTargetMatchPattern, filterClientConfigTargets, patternNoDictionaries, quickPickBestMatchTarget } from './configTargetHelper';
+import { configUpdaterForKey } from './configUpdater';
 import {
     configFileLocations,
     defaultFileName,
-    filterOutWords,
     isUpdateSupportedForConfigFileFormat,
     normalizeWords,
     readSettingsFileAndApplyUpdate,
 } from './CSpellSettings';
 import * as config from './vsConfig';
 
-export { ConfigTarget, InspectScope, Scope } from './vsConfig';
+export { ConfigTargetLegacy as ConfigTarget, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
     path: Uri;
     settings: CSpellUserSettings;
@@ -89,8 +92,8 @@ function findExistingSettingsFileLocation(docUri?: Uri, isUpdatable?: boolean): 
     return findSettingsFiles(docUri, isUpdatable).then((paths) => paths[0]);
 }
 
-export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boolean): Promise<void> {
-    return config.setSettingInVSConfig('enabled', enabled, target);
+export function setEnableSpellChecking(targets: ClientConfigTarget[], enabled: boolean): Promise<void> {
+    return setConfigFieldQuickPick(targets, 'enabled', enabled);
 }
 
 /**
@@ -98,80 +101,58 @@ export function setEnableSpellChecking(target: config.ConfigTarget, enabled: boo
  * @param target - which level of setting to set
  * @param languageId - the language id, e.g. 'typescript'
  */
-export async function enableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, true, target, true, true);
+export async function enableLanguageId(targets: ClientConfigTarget[], languageId: string): Promise<void> {
+    await enableLanguageIdForTarget(languageId, true, targets);
 }
 
-export async function disableLanguage(target: config.ConfigTarget, languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, false, target, true, true);
+export async function disableLanguageId(targets: ClientConfigTarget[], languageId: string): Promise<void> {
+    await enableLanguageIdForTarget(languageId, false, targets);
 }
 
-export function addIgnoreWordToSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
+export function addIgnoreWordToSettings(targets: ClientConfigTarget[], word: string): Promise<void> {
     const addWords = normalizeWords(word);
-    return updateSettingInConfig('ignoreWords', target, (words) => unique(addWords.concat(words || []).sort()), true);
+    return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
 }
 
-export async function removeWordFromSettings(target: config.ConfigTarget, word: string): Promise<boolean> {
-    const useGlobal = config.isGlobalTarget(target);
-    const section: 'userWords' | 'words' = useGlobal ? 'userWords' : 'words';
-    const toRemove = normalizeWords(word);
-    return updateSettingInConfig(section, target, (words) => filterOutWords(words || [], toRemove), true);
+export function toggleEnableSpellChecker(targets: ClientConfigTarget[]): Promise<void> {
+    return setConfigFieldQuickPick(targets, 'enabled', (enabled) => !enabled);
 }
 
-export function toggleEnableSpellChecker(target: config.ConfigTarget): Promise<void> {
-    const resource = config.isConfigTargetWithResource(target) ? target.uri : null;
-    const curr = config.getSettingFromVSConfig('enabled', resource);
-    return config.setSettingInVSConfig('enabled', !curr, target);
+async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
+    targets: ClientConfigTarget[],
+    key: K,
+    value: ApplyValueOrFn<K>
+) {
+    const t = await quickPickBestMatchTarget(patternNoDictionaries, targets);
+    if (!t) return;
+    return applyToConfig([t], key, value);
 }
 
-/**
- * Enables the current programming language of the active file in the editor.
- */
-export async function enableCurrentLanguage(): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (editor?.document?.languageId) {
-        const target = selectBestTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
-        return enableLanguage(target, editor.document.languageId);
-    }
-    return;
+type ApplyValueOrFn<K extends keyof CSpellUserSettings> = CSpellUserSettings[K] | ((v: CSpellUserSettings[K]) => CSpellUserSettings[K]);
+
+function applyToConfig<K extends keyof CSpellUserSettings>(
+    targets: ClientConfigTarget[],
+    key: K,
+    value: ApplyValueOrFn<K>,
+    filter?: ConfigTargetMatchPattern
+) {
+    targets = filter ? filterClientConfigTargets(targets, filter) : targets;
+    const updater = configUpdaterForKey<K>(key, value);
+    return applyUpdateToConfigTargets(updater, targets);
 }
 
-/**
- * Disables the current programming language of the active file in the editor.
- */
-export function disableCurrentLanguage(): Promise<void> {
-    const editor = vscode.window.activeTextEditor;
-    if (editor?.document?.languageId) {
-        const target = selectBestTargetForDocument(ConfigurationTarget.WorkspaceFolder, editor.document);
-        return disableLanguage(target, editor.document.languageId);
-    }
-    return Promise.resolve();
-}
-
-function selectBestTargetForDocument(desiredTarget: vscode.ConfigurationTarget, doc: vscode.TextDocument | undefined): config.ConfigTarget {
-    if (desiredTarget === ConfigurationTarget.Global || !vscode.workspace.workspaceFolders) {
-        return ConfigurationTarget.Global;
-    }
-    if (desiredTarget === ConfigurationTarget.Workspace || !doc?.uri) {
-        return ConfigurationTarget.Workspace;
-    }
-
-    const folder = workspace.getWorkspaceFolder(doc.uri);
-    return folder ? config.createTargetForDocument(ConfigurationTarget.WorkspaceFolder, doc) : ConfigurationTarget.Workspace;
-}
-
-export async function enableLocale(target: config.ConfigTarget, locale: string): Promise<void> {
+export async function enableLocale(target: config.ConfigTargetLegacy, locale: string): Promise<void> {
     await enableLocaleForTarget(locale, true, target, true);
 }
 
-export async function disableLocale(target: config.ConfigTarget, locale: string): Promise<void> {
+export async function disableLocale(target: config.ConfigTargetLegacy, locale: string): Promise<void> {
     await enableLocaleForTarget(locale, false, target, true);
 }
 
 export function enableLocaleForTarget(
     locale: string,
     enable: boolean,
-    target: config.ConfigTarget,
+    target: config.ConfigTargetLegacy,
     isCreateAllowed: boolean
 ): Promise<boolean> {
     const applyFn: (src: string | undefined) => string | undefined = enable
@@ -211,50 +192,9 @@ function updateEnableFiletypes(languageId: string, enable: boolean, currentValue
     return values.size ? [...values].sort() : undefined;
 }
 
-export function enableLanguageIdForTarget(
-    languageId: string,
-    enable: boolean,
-    target: config.ConfigTarget,
-    isCreateAllowed: boolean,
-    forceUpdateVSCode: boolean
-): Promise<boolean> {
+export function enableLanguageIdForTarget(languageId: string, enable: boolean, targets: ClientConfigTarget[]): Promise<void> {
     const fn = (src: string[] | undefined) => updateEnableFiletypes(languageId, enable, src);
-    return updateSettingInConfig('enableFiletypes', target, fn, isCreateAllowed, shouldUpdateCSpell(target), forceUpdateVSCode);
-}
-
-/**
- * Try to enable / disable a programming language id starting at folder level going to global level, stopping when successful.
- * @param languageId
- * @param enable
- * @param uri
- */
-export async function enableLanguageIdForClosestTarget(
-    languageId: string,
-    enable: boolean,
-    uri: Uri | undefined,
-    forceUpdateVSCode: boolean = false
-): Promise<void> {
-    if (languageId) {
-        if (uri) {
-            // Apply it to the workspace folder if it exists.
-            const target: config.ConfigTargetWithResource = {
-                target: ConfigurationTarget.WorkspaceFolder,
-                uri,
-            };
-            if (await enableLanguageIdForTarget(languageId, enable, target, false, forceUpdateVSCode)) return;
-        }
-
-        if (
-            vscode.workspace.workspaceFolders?.length &&
-            (await enableLanguageIdForTarget(languageId, enable, config.ConfigurationTarget.Workspace, false, forceUpdateVSCode))
-        ) {
-            return;
-        }
-
-        // Apply it to User settings.
-        await enableLanguageIdForTarget(languageId, enable, config.ConfigurationTarget.Global, true, forceUpdateVSCode);
-    }
-    return;
+    return setConfigFieldQuickPick(targets, 'enableFiletypes', fn);
 }
 
 /**
@@ -264,7 +204,7 @@ export async function enableLanguageIdForClosestTarget(
  * 1. Update is not allowed for the Global target.
  * @param target
  */
-function shouldUpdateCSpell(target: config.ConfigTarget) {
+function shouldUpdateCSpell(target: config.ConfigTargetLegacy) {
     const cfgTarget = config.extractTarget(target);
     return (
         cfgTarget !== config.ConfigurationTarget.Global &&
@@ -285,7 +225,7 @@ function shouldUpdateCSpell(target: config.ConfigTarget) {
  */
 export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     section: K,
-    configTarget: config.ConfigTarget,
+    configTarget: config.ConfigTargetLegacy,
     applyFn: (origValue: CSpellUserSettings[K]) => CSpellUserSettings[K],
     create: boolean,
     updateCSpell: boolean = true,
@@ -332,18 +272,22 @@ export async function updateSettingInConfig<K extends keyof CSpellUserSettings>(
     return !!configResult;
 }
 
-export function resolveTarget(target: config.ConfigurationTarget, docUri?: null | Uri): config.ConfigTarget {
+export function resolveTarget(target: config.ConfigurationTarget, docUri?: null | Uri): config.ConfigTargetLegacy {
     if (target === config.ConfigurationTarget.Global || !hasWorkspaceLocation()) {
         return config.ConfigurationTarget.Global;
     }
 
     if (!docUri) {
-        return config.ConfigurationTarget.Workspace;
+        return { target };
     }
     return config.createTargetForUri(target, docUri);
 }
 
-export async function determineSettingsPaths(target: config.ConfigTarget, docUri: Uri | undefined, docConfigFiles?: Uri[]): Promise<Uri[]> {
+export async function determineSettingsPaths(
+    target: config.ConfigTargetLegacy,
+    docUri: Uri | undefined,
+    docConfigFiles?: Uri[]
+): Promise<Uri[]> {
     if (config.isWorkspaceLevelTarget(target)) {
         const files = await findSettingsFiles(undefined, true);
         const cfgFileSet = new Set(docConfigFiles?.map((u) => u.toString()) || []);
