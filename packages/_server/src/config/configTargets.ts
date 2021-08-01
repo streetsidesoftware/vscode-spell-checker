@@ -64,7 +64,8 @@ type HasConfigField = {
 export interface ConfigTargetVSCode extends TargetBaseWithHas {
     kind: 'vscode';
     scope: ConfigScopeVScode;
-    docUri: UriString;
+    docUri: UriString | undefined;
+    folderUri: UriString | undefined;
 }
 
 export type ConfigTarget = ConfigTargetDictionary | ConfigTargetCSpell | ConfigTargetVSCode;

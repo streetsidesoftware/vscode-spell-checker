@@ -145,6 +145,7 @@ function tVSCode(scope: ConfigScopeVScode, words = true, ignoreWords = false): C
         scope,
         name: capitalize(scope),
         docUri: '',
+        folderUri: undefined,
         has: { words, ignoreWords },
     };
 }

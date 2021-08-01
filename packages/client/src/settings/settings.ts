@@ -10,7 +10,12 @@ import * as watcher from '../util/watcher';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { writeConfigFile } from './configFileReadWrite';
 import { applyUpdateToConfigTargets } from './configRepositoryHelper';
-import { ConfigTargetMatchPattern, filterClientConfigTargets, patternNoDictionaries, quickPickBestMatchTarget } from './configTargetHelper';
+import {
+    ConfigTargetMatchPattern,
+    filterClientConfigTargets,
+    patternMatchNoDictionaries,
+    quickPickBestMatchTarget,
+} from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
 import {
     configFileLocations,
@@ -123,7 +128,7 @@ async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
     key: K,
     value: ApplyValueOrFn<K>
 ) {
-    const t = await quickPickBestMatchTarget(patternNoDictionaries, targets);
+    const t = await quickPickBestMatchTarget(patternMatchNoDictionaries, targets);
     if (!t) return;
     return applyToConfig([t], key, value);
 }

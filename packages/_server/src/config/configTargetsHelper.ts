@@ -37,6 +37,7 @@ function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocument):
             scope,
             name: capitalize(scope),
             docUri: workspaceConfig.uri,
+            folderUri: workspaceConfig.workspaceFolder,
             has: {
                 words: workspaceConfig.words[scope],
                 ignoreWords: workspaceConfig.ignoreWords[scope],

@@ -1,32 +1,16 @@
-import { ConfigurationTarget } from 'vscode';
-import { mustBeDefined } from '../../util';
+import { capitalize } from '../../util';
 import { ClientConfigTarget } from '../clientConfigTarget';
-import { ConfigTargetLegacy } from '../vsConfig';
+import { configurationTargetToDictionaryScope } from '../targetAndScope';
+import { ConfigTargetLegacy, normalizeTarget } from '../vsConfig';
 
 export function mapConfigTargetLegacyToClientConfigTarget(t: ConfigTargetLegacy): ClientConfigTarget {
-    if (t === ConfigurationTarget.Global) {
-        return {
-            name: 'User',
-            kind: 'vscode',
-            scope: 'user',
-            docUri: undefined,
-            configScope: undefined,
-        };
-    }
-    if (t.target === ConfigurationTarget.Workspace) {
-        return {
-            name: 'Workspace',
-            kind: 'vscode',
-            scope: 'workspace',
-            docUri: t.uri,
-            configScope: t.configScope,
-        };
-    }
+    const target = normalizeTarget(t);
+    const scope = configurationTargetToDictionaryScope(target.target);
     return {
-        name: 'Folder',
+        name: capitalize(scope),
         kind: 'vscode',
-        scope: 'folder',
-        docUri: mustBeDefined(t.uri),
-        configScope: t.configScope,
+        scope,
+        docUri: target.uri,
+        configScope: target.configScope,
     };
 }

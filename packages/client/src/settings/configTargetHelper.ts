@@ -2,9 +2,8 @@
  * This helper is to help with matching possible configuration targets to configuration fields.
  */
 
-import * as vscode from 'vscode';
 import { toUri, uriToName } from 'common-utils/uriHelper.js';
-import { mustBeDefined } from '../util';
+import * as vscode from 'vscode';
 import type {
     ClientConfigKind,
     ClientConfigScope,
@@ -64,7 +63,8 @@ export const dictionaryTargetVSCodeUser = _buildQuickPickBestMatchTargetFn(match
 export const dictionaryTargetVSCodeWorkspace = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
 export const dictionaryTargetVSCodeFolder = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeFolder);
 
-export const patternNoDictionaries = createConfigTargetMatchPattern(negateKind(matchKindDictionary), matchScopeAll);
+export const patternMatchNoDictionaries = createConfigTargetMatchPattern(negateKind(matchKindDictionary), matchScopeAll);
+export const patternMatchAll = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
 
 export function findBestMatchingConfigTargets(target: ConfigTargetMatchPattern, configTargets: ClientConfigTarget[]): ClientConfigTarget[] {
     const matches: ClientConfigTarget[] = [];
@@ -201,16 +201,15 @@ export function createClientConfigTargetDictionary(
 
 export function createClientConfigTargetVSCode(
     target: vscode.ConfigurationTarget,
-    uri: string | null | vscode.Uri | undefined,
+    docUri: string | null | vscode.Uri | undefined,
     configScope: vscode.ConfigurationScope | undefined
 ): ClientConfigTargetVSCode {
-    uri = toUri(uri);
     const scope = configurationTargetToDictionaryScope(target);
     const ct: ClientConfigTargetVSCode = {
         kind: 'vscode',
         scope,
         name: scope,
-        docUri: mustBeDefined(uri),
+        docUri: toUri(docUri),
         configScope,
     };
     return ct;

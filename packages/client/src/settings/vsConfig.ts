@@ -219,6 +219,10 @@ export function isConfigTargetWithOptionalResource(target: ConfigTargetLegacy): 
     return typeof target === 'object' && target.target !== undefined;
 }
 
+export function getConfigurationTargetFromLegacy(target: ConfigTargetLegacy): ConfigurationTarget {
+    return typeof target === 'object' ? target.target : target;
+}
+
 type TargetToScopeMap = {
     [ConfigurationTarget.Global]: 'globalValue';
     [ConfigurationTarget.Workspace]: 'workspaceValue';

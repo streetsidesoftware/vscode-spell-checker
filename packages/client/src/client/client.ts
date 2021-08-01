@@ -137,10 +137,10 @@ export class CSpellClient implements Disposable {
     ): Promise<GetConfigurationForDocumentResult> {
         const { uri, languageId } = document || {};
 
-        if (!uri) {
-            return this.serverApi.getConfigurationForDocument({});
-        }
         const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
+        if (!uri) {
+            return this.serverApi.getConfigurationForDocument({ workspaceConfig });
+        }
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
     }
 
@@ -252,10 +252,10 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
     return calculateWorkspaceConfigForDocument(docUri);
 }
 
-function calculateWorkspaceConfigForDocument(docUri: Uri): WorkspaceConfigForDocument {
+function calculateWorkspaceConfigForDocument(docUri: Uri | undefined): WorkspaceConfigForDocument {
     const cfg = inspectConfigKeys(docUri, ['words', 'userWords', 'ignoreWords']);
     const workspaceFile = workspace.workspaceFile?.toString();
-    const workspaceFolder = workspace.getWorkspaceFolder(docUri)?.uri.toString();
+    const workspaceFolder = docUri && workspace.getWorkspaceFolder(docUri)?.uri.toString();
 
     const allowFolder = workspaceFile !== undefined;
 
@@ -266,7 +266,7 @@ function calculateWorkspaceConfigForDocument(docUri: Uri): WorkspaceConfigForDoc
     tWords.user = tUserWords.user;
 
     const resp: WorkspaceConfigForDocumentResponse = {
-        uri: docUri.toString(),
+        uri: docUri?.toString(),
         workspaceFile,
         workspaceFolder,
         words: tWords,
