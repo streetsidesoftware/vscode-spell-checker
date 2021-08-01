@@ -128,7 +128,7 @@ async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
     key: K,
     value: ApplyValueOrFn<K>
 ) {
-    const t = await quickPickBestMatchTarget(patternMatchNoDictionaries, targets);
+    const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
     if (!t) return;
     return applyToConfig([t], key, value);
 }

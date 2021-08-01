@@ -4,42 +4,59 @@
 
 import { toUri, uriToName } from 'common-utils/uriHelper.js';
 import * as vscode from 'vscode';
-import type {
+import {
     ClientConfigKind,
     ClientConfigScope,
     ClientConfigTarget,
     ClientConfigTargetCSpell,
     ClientConfigTargetDictionary,
     ClientConfigTargetVSCode,
+    ConfigKinds,
 } from './clientConfigTarget';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 
 type ConfigKindMask = {
-    [key in ClientConfigKind]: boolean;
+    [key in ClientConfigKind]?: boolean;
 };
 
 type ConfigScopeMask = {
-    [key in ClientConfigScope]: boolean;
+    [key in ClientConfigScope]?: boolean;
 };
 
-export interface ConfigTargetMatchPattern {
-    kind: ConfigKindMask;
-    scope: ConfigScopeMask;
-}
+export type ConfigTargetMatchPattern = {
+    [key in ClientConfigKind | ClientConfigScope]?: boolean;
+};
+
+export type ConfigTargetMatchPatternKey = keyof ConfigTargetMatchPattern;
+
+type ConfigTargetMatchPatternKeyNames = {
+    [key in ConfigTargetMatchPatternKey]-?: key;
+};
+
+const configTargetMatchPatternKeyNames: ConfigTargetMatchPatternKeyNames = {
+    dictionary: 'dictionary',
+    cspell: 'cspell',
+    vscode: 'vscode',
+    unknown: 'unknown',
+    folder: 'folder',
+    workspace: 'workspace',
+    user: 'user',
+} as const;
 
 export const matchKindNone: ConfigKindMask = { dictionary: false, cspell: false, vscode: false };
 export const matchKindAll: ConfigKindMask = { dictionary: true, cspell: true, vscode: true };
-export const matchKindConfig: ConfigKindMask = { dictionary: false, cspell: true, vscode: true };
-export const matchKindCSpell: ConfigKindMask = { dictionary: false, cspell: true, vscode: false };
-export const matchKindVSCode: ConfigKindMask = { dictionary: false, cspell: false, vscode: true };
+export const matchKindConfig: ConfigKindMask = { cspell: true, vscode: true };
+export const matchKindCSpell: ConfigKindMask = { cspell: true };
+export const matchKindVSCode: ConfigKindMask = { vscode: true };
 export const matchKindDictionary: ConfigKindMask = { dictionary: true, cspell: false, vscode: false };
 
 export const matchScopeNone: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: false };
 export const matchScopeAll: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: true };
 export const matchScopeAllButUser: ConfigScopeMask = { unknown: true, folder: true, workspace: true, user: false };
-export const matchScopeUser: ConfigScopeMask = { unknown: false, folder: false, workspace: false, user: true };
-export const matchScopeWorkspace: ConfigScopeMask = { unknown: false, folder: false, workspace: true, user: false };
-export const matchScopeFolder: ConfigScopeMask = { unknown: false, folder: true, workspace: false, user: false };
+export const matchScopeUser: ConfigScopeMask = { user: true };
+export const matchScopeWorkspace: ConfigScopeMask = { workspace: true };
+export const matchScopeFolder: ConfigScopeMask = { folder: true };
+export const matchScopeUnknown: ConfigScopeMask = { unknown: true };
 
 export type TargetBestMatchSyncFn = (configTargets: ClientConfigTarget[]) => ClientConfigTarget | undefined;
 
@@ -51,8 +68,9 @@ export type TargetBestMatchFn = TargetBestMatchSyncFn | TargetBestMatchAsyncFn;
 
 export type TargetMatchFn = (target: ClientConfigTarget) => boolean;
 
-const KindKeys = Object.freeze(Object.keys(matchKindAll) as (keyof ConfigKindMask)[]);
-const ScopeKeys = Object.freeze(Object.keys(matchScopeAll) as (keyof ConfigScopeMask)[]);
+const KindKeys = Object.freeze(Object.values(ConfigKinds));
+// const ScopeKeys = Object.freeze(Object.keys(matchScopeAll) as ClientConfigScope[]);
+const AllKeys = Object.freeze(Object.values(configTargetMatchPatternKeyNames));
 
 export const dictionaryTargetBestMatch = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeAllButUser);
 export const dictionaryTargetBestMatchUser = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeUser);
@@ -66,11 +84,14 @@ export const dictionaryTargetVSCodeFolder = _buildQuickPickBestMatchTargetFn(mat
 export const patternMatchNoDictionaries = createConfigTargetMatchPattern(negateKind(matchKindDictionary), matchScopeAll);
 export const patternMatchAll = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
 
-export function findBestMatchingConfigTargets(target: ConfigTargetMatchPattern, configTargets: ClientConfigTarget[]): ClientConfigTarget[] {
+export function findBestMatchingConfigTargets(
+    pattern: ConfigTargetMatchPattern,
+    configTargets: ClientConfigTarget[]
+): ClientConfigTarget[] {
     const matches: ClientConfigTarget[] = [];
 
     for (const t of configTargets) {
-        if (!target.kind[t.kind] || !target.scope[t.scope]) continue;
+        if (!pattern[t.kind] || !pattern[t.scope]) continue;
         if (matches.length && (matches[0].kind !== t.kind || matches[0].scope !== t.scope)) break;
         matches.push(t);
     }
@@ -78,31 +99,42 @@ export function findBestMatchingConfigTargets(target: ConfigTargetMatchPattern, 
     return matches;
 }
 
-export function _buildQuickPickBestMatchTargetFn(kind: Partial<ConfigKindMask>, scope: Partial<ConfigScopeMask>): TargetBestMatchFn {
-    const match = createConfigTargetMatchPattern(kind, scope);
+export function _buildQuickPickBestMatchTargetFn(...params: ConfigTargetMatchPattern[]): TargetBestMatchFn {
+    const match = createConfigTargetMatchPattern(...params);
     return buildQuickPickBestMatchTargetFn(match);
 }
 
 export function buildQuickPickBestMatchTargetFn(match: ConfigTargetMatchPattern): TargetBestMatchFn {
     return async function (configTargets: ClientConfigTarget[]) {
-        const found = findBestMatchingConfigTargets(match, configTargets);
-        if (!found.length) throw new UnableToFindTarget('No matching configuration found.');
-        if (found.length === 1) return found[0];
+        const foundTargets = findBestMatchingConfigTargets(match, configTargets);
+        return quickPickTarget(foundTargets);
+    };
+}
 
-        const sel = await vscode.window.showQuickPick(
-            found.map((f) => ({ label: f.name, _found: f })),
-            { title: 'Choose Destination' }
-        );
-        return sel?._found;
+export function buildQuickPickMatchTargetFn(match: ConfigTargetMatchPattern): TargetBestMatchFn {
+    return async function (configTargets: ClientConfigTarget[]) {
+        const foundTargets = filterClientConfigTargets(configTargets, match);
+        return quickPickTarget(foundTargets);
     };
 }
 
 export async function quickPickBestMatchTarget(
-    match: ConfigTargetMatchPattern,
-    targets: ClientConfigTarget[]
+    targets: ClientConfigTarget[],
+    match: ConfigTargetMatchPattern
 ): Promise<ClientConfigTarget | undefined> {
     const fn = buildQuickPickBestMatchTargetFn(match);
     return fn(targets);
+}
+
+export async function quickPickTarget(targets: ClientConfigTarget[]): Promise<ClientConfigTarget | undefined> {
+    if (!targets.length) throw new UnableToFindTarget('No matching configuration found.');
+    if (targets.length === 1) return targets[0];
+
+    const sel = await vscode.window.showQuickPick(
+        targets.map((f) => ({ label: f.name, _found: f })),
+        { title: 'Choose Destination' }
+    );
+    return sel?._found;
 }
 
 export function filterClientConfigTargets(
@@ -118,63 +150,86 @@ export function filterClientConfigTarget(pattern: ConfigTargetMatchPattern): Tar
 }
 
 export function doesTargetMatchPattern(target: ClientConfigTarget, pattern: ConfigTargetMatchPattern): boolean {
-    return pattern.kind[target.kind] && pattern.scope[target.scope];
+    return !!pattern[target.kind] && !!pattern[target.scope];
 }
 
-export function createConfigTargetMatchPattern(kind: Partial<ConfigKindMask>, scope: Partial<ConfigScopeMask>): ConfigTargetMatchPattern {
-    return {
-        kind: fillKind(kind),
-        scope: fillScope(scope),
-    };
+export function createConfigTargetMatchPattern(
+    ...patterns: (ConfigTargetMatchPattern | ConfigTargetMatchPatternKey)[]
+): ConfigTargetMatchPattern {
+    let r: ConfigTargetMatchPattern = {};
+    for (const p of patterns) {
+        if (typeof p === 'string') {
+            r[p] = true;
+        } else {
+            r = mergeKeys(r, p, AllKeys);
+        }
+    }
+    return r;
 }
 
 export function negatePattern(p: ConfigTargetMatchPattern): ConfigTargetMatchPattern {
-    return {
-        kind: negateKind(p.kind),
-        scope: negateScope(p.scope),
-    };
+    return negKeys(p, AllKeys);
 }
 
 export function andPattern(a: ConfigTargetMatchPattern, b: ConfigTargetMatchPattern): ConfigTargetMatchPattern {
-    return {
-        kind: andKeys(a.kind, b.kind, KindKeys),
-        scope: andKeys(a.scope, b.scope, ScopeKeys),
-    };
+    return andKeys(a, b, AllKeys);
 }
 
-function fillKind(kind: Partial<ConfigKindMask>): ConfigKindMask {
-    return merge(matchKindNone, kind, KindKeys);
-}
-
-function fillScope(scope: Partial<ConfigScopeMask>): ConfigScopeMask {
-    return merge(matchScopeNone, scope, ScopeKeys);
-}
-
-function merge<T>(a: T, b: Partial<T>, keys: readonly (keyof T)[]): T {
-    const v: Partial<T> = {};
-    for (const key of keys) {
-        const value = b[key];
+function andKeys<K extends keyof ConfigTargetMatchPattern>(
+    a: ConfigTargetMatchPattern,
+    b: ConfigTargetMatchPattern,
+    keys: readonly K[]
+): ConfigTargetMatchPattern {
+    const r: ConfigTargetMatchPattern = {};
+    for (const k of keys) {
+        const value = and(a[k], b[k]);
         if (value !== undefined) {
-            v[key] = value;
+            r[k] = value;
         }
     }
-    return Object.assign({}, a, v);
+    return r;
 }
 
-function andKeys<K extends keyof any>(a: Record<K, boolean>, b: Record<K, boolean>, keys: readonly K[]): Record<K, boolean> {
-    const r: Partial<Record<K, boolean>> = {};
+/**
+ * copy ALL of `a` and selected keys from `b`
+ * @param a
+ * @param b
+ * @param keys - keys to copy from b
+ * @returns `a` merged with selected keys from `b`
+ */
+function mergeKeys<K extends keyof ConfigTargetMatchPattern>(
+    a: ConfigTargetMatchPattern,
+    b: ConfigTargetMatchPattern,
+    keys: readonly K[]
+): ConfigTargetMatchPattern {
+    const r: ConfigTargetMatchPattern = Object.assign({}, a);
     for (const k of keys) {
-        r[k] = a[k] && b[k];
+        const value = b[k];
+        if (value !== undefined) {
+            r[k] = value;
+        }
     }
-    return r as Record<K, boolean>;
+    return r;
+}
+
+function negKeys<K extends keyof ConfigTargetMatchPattern>(a: ConfigTargetMatchPattern, keys: readonly K[]): ConfigTargetMatchPattern {
+    const r: ConfigTargetMatchPattern = {};
+    for (const k of keys) {
+        r[k] = neg(a[k]);
+    }
+    return r;
+}
+
+function and(a: boolean | undefined, b: boolean | undefined): boolean | undefined {
+    return a === undefined ? b : b === undefined ? a : a && b;
+}
+
+function neg(a: boolean | undefined): boolean | undefined {
+    return a === undefined ? undefined : !a;
 }
 
 function negateKind(k: ConfigKindMask): ConfigKindMask {
-    return { dictionary: !k.dictionary, cspell: !k.cspell, vscode: !k.vscode };
-}
-
-function negateScope(s: ConfigScopeMask): ConfigScopeMask {
-    return { unknown: !s.unknown, folder: !s.folder, workspace: !s.workspace, user: !s.user };
+    return negKeys(k, KindKeys);
 }
 
 export function createClientConfigTargetCSpell(configUri: vscode.Uri, scope: ClientConfigScope, name?: string): ClientConfigTargetCSpell {
