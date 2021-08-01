@@ -25,6 +25,7 @@ import {
     matchScopeWorkspace,
     negatePattern,
     quickPickBestMatchTarget,
+    buildQuickPickMatchTargetFn,
 } from './configTargetHelper';
 
 const dirUri = Uri.file(__dirname);
@@ -41,6 +42,10 @@ const ctDictU = createClientConfigTargetDictionary(Uri.joinPath(dirUri, 'a/user-
 const ctVSCodeU = createClientConfigTargetVSCode(ConfigurationTarget.Global, fileUri, undefined);
 
 describe('configTargetHelper', () => {
+    beforeEach(() => {
+        mockedShowQuickPick.mockClear();
+    });
+
     test('findMatchingConfigTargets all', () => {
         const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
         const targets = sampleTargets();
@@ -105,18 +110,28 @@ describe('configTargetHelper', () => {
         mockedShowQuickPick.mockImplementation(async (items) => (await items)[1]);
         const targets = sampleTargets();
         const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAllButUser);
-        const r = await quickPickBestMatchTarget(pattern, targets);
+        const r = await quickPickBestMatchTarget(targets, pattern);
         expect(r).toBe(targets[1]);
     });
 
+    test('buildQuickPickMatchTargetFn', async () => {
+        mockedShowQuickPick.mockImplementation(async (items) => (await items)[0]);
+        const targets = sampleTargets();
+        const pattern = createConfigTargetMatchPattern('cspell', matchScopeAll);
+        const fn = buildQuickPickMatchTargetFn(pattern);
+        const r = await fn(targets);
+        expect(r).toBe(ctCspell);
+        expect(mockedShowQuickPick).toHaveBeenCalledTimes(0);
+    });
+
     test.each`
-        kind               | scope             | eKind                                 | eScope
-        ${{}}              | ${{}}             | ${matchKindAll}                       | ${matchScopeAll}
-        ${matchKindAll}    | ${matchScopeAll}  | ${{}}                                 | ${{}}
-        ${matchKindCSpell} | ${matchScopeUser} | ${{ ...matchKindAll, cspell: false }} | ${matchScopeAllButUser}
-    `('negatePattern kind: $kind, scope: $scope', ({ kind, scope, eKind, eScope }) => {
-        const p = createConfigTargetMatchPattern(kind, scope);
-        const e = createConfigTargetMatchPattern(eKind, eScope);
+        patterns                                                            | expected
+        ${[matchKindAll, matchScopeAll]}                                    | ${[{ cspell: false, dictionary: false, folder: false, unknown: false, user: false, vscode: false, workspace: false }]}
+        ${[matchKindCSpell, matchScopeUser]}                                | ${[{ cspell: false, user: false }]}
+        ${[matchKindNone, matchKindCSpell, matchScopeNone, matchScopeUser]} | ${[{ cspell: false, dictionary: true, folder: true, unknown: true, user: false, vscode: true, workspace: true }]}
+    `('negatePattern $patterns', ({ patterns, expected }) => {
+        const p = createConfigTargetMatchPattern(...patterns);
+        const e = createConfigTargetMatchPattern(...expected);
         expect(negatePattern(p)).toEqual(e);
     });
 
@@ -132,12 +147,14 @@ describe('configTargetHelper', () => {
     });
 
     test.each`
-        targets                         | kind                   | scope            | expected
-        ${[ctCspell]}                   | ${matchKindCSpell}     | ${matchScopeAll} | ${[ctCspell]}
-        ${[ctCspell, ctDictA, ctDictB]} | ${matchKindCSpell}     | ${matchScopeAll} | ${[ctCspell]}
-        ${[ctCspell, ctDictA, ctDictB]} | ${matchKindDictionary} | ${matchScopeAll} | ${[ctDictA, ctDictB]}
-    `('filterClientConfigTargets', ({ targets, kind, scope, expected }) => {
-        const pattern = createConfigTargetMatchPattern(kind, scope);
+        targets                         | patterns                                | expected
+        ${[ctCspell]}                   | ${[matchKindCSpell, matchScopeAll]}     | ${[ctCspell]}
+        ${[ctCspell, ctDictA, ctDictB]} | ${[matchKindCSpell, matchScopeAll]}     | ${[ctCspell]}
+        ${[ctCspell, ctDictA, ctDictB]} | ${[matchKindCSpell]}                    | ${[]}
+        ${[ctCspell, ctDictA, ctDictU]} | ${[matchKindAll, matchScopeUser]}       | ${[ctDictU]}
+        ${[ctCspell, ctDictA, ctDictB]} | ${[matchKindDictionary, matchScopeAll]} | ${[ctDictA, ctDictB]}
+    `('filterClientConfigTargets', ({ targets, patterns, expected }) => {
+        const pattern = createConfigTargetMatchPattern(...patterns);
         expect(filterClientConfigTargets(targets, pattern)).toEqual(expected);
         const fn = (t: ClientConfigTarget) => doesTargetMatchPattern(t, pattern);
         expect(filterClientConfigTargets(targets, fn)).toEqual(expected);
