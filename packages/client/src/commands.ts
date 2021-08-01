@@ -43,6 +43,7 @@ import { mapConfigTargetLegacyToClientConfigTarget } from './settings/mappers/co
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
+import { findMatchingDocument } from './vscode/findDocument';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -361,6 +362,8 @@ async function targetsForUri(docUri?: string | null | Uri | undefined, patternMa
 }
 
 async function uriToTextDocInfo(uri: Uri): Promise<{ uri: Uri; languageId?: string }> {
+    const doc = findMatchingDocument(uri);
+    if (doc) return doc;
     const fsStat = await workspace.fs.stat(uri);
     if (fsStat.type !== FileType.File) return { uri };
     return await workspace.openTextDocument(uri);

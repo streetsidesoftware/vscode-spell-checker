@@ -1,1 +1,1 @@
-export * from './cSpellInfo';
+export { commandDisplayCSpellInfo } from './commands';

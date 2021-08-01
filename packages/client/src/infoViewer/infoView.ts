@@ -31,7 +31,8 @@ import { disableLocale, enableLocale, getSettingFromVSConfig, Inspect, inspectCo
 import { Maybe, uniqueFilter } from '../util';
 import { commonPrefix } from '../util/commonPrefix';
 import { defaultTo, map, pipe } from '../util/pipe';
-import { commandDisplayCSpellInfo, findMatchingDocument } from './cSpellInfo';
+import { findMatchingDocument } from '../vscode/findDocument';
+import { commandDisplayCSpellInfo } from './commands';
 
 const viewerPath = 'packages/client/settingsViewer/webapp';
 const title = 'Spell Checker Preferences';
