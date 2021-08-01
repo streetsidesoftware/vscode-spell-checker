@@ -1,14 +1,11 @@
 import { toUri } from 'common-utils/uriHelper.js';
-import { isDefined } from 'common-utils/util.js';
 import {
     CodeAction,
     commands,
-    Diagnostic,
     Disposable,
     FileType,
     QuickPickItem,
     Range,
-    Selection,
     TextDocument,
     Uri,
     window,
@@ -17,7 +14,7 @@ import {
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
-import { getCSpellDiags } from './diags';
+import { extractMatchingDiagRanges, extractMatchingDiagText, getCSpellDiags } from './diags';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './server';
 import * as Settings from './settings';
 import { ConfigurationTarget, createConfigFileRelativeToDocumentUri, setEnableSpellChecking, toggleEnableSpellChecker } from './settings';
@@ -26,6 +23,7 @@ import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepos
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
     createClientConfigTargetVSCode,
+    createConfigTargetMatchPattern,
     dictionaryTargetBestMatch,
     dictionaryTargetBestMatchFolder,
     dictionaryTargetBestMatchUser,
@@ -35,17 +33,16 @@ import {
     dictionaryTargetVSCodeUser as dtVSCodeUser,
     dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
     filterClientConfigTargets,
+    matchKindAll,
     patternMatchNoDictionaries,
     TargetBestMatchFn,
 } from './settings/configTargetHelper';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { mapConfigTargetLegacyToClientConfigTarget } from './settings/mappers/configTargetLegacy';
-import { dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
+import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
-
-const tfCfg = targetsFromConfigurationTarget;
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -66,6 +63,7 @@ type CommandHandler = {
 };
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
+const tfCfg = targetsFromConfigurationTarget;
 const actionAddWordToFolder = prompt('Add Word to Folder Dictionary', addWordToFolderDictionary);
 const actionAddWordToWorkspace = prompt('Add Word to Workspace Dictionaries', addWordToWorkspaceDictionary);
 const actionAddWordToUser = prompt('Add Word to User Dictionary', addWordToUserDictionary);
@@ -111,12 +109,12 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.enableLanguage': enableLanguageIdCmd,
     'cSpell.disableLanguage': disableLanguageIdCmd,
-    'cSpell.enableForGlobal': () => setEnableSpellChecking(tfCfg(ConfigurationTarget.Global), true),
-    'cSpell.disableForGlobal': () => setEnableSpellChecking(tfCfg(ConfigurationTarget.Global), false),
-    'cSpell.toggleEnableForGlobal': () => toggleEnableSpellChecker(tfCfg(ConfigurationTarget.Global)),
-    'cSpell.enableForWorkspace': () => setEnableSpellChecking(tfCfg(ConfigurationTarget.Workspace), true),
-    'cSpell.disableForWorkspace': () => setEnableSpellChecking(tfCfg(ConfigurationTarget.Workspace), false),
-    'cSpell.toggleEnableSpellChecker': () => toggleEnableSpellChecker(tfCfg(ConfigurationTarget.Workspace)),
+    'cSpell.enableForGlobal': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Global), true),
+    'cSpell.disableForGlobal': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Global), false),
+    'cSpell.toggleEnableForGlobal': async () => toggleEnableSpellChecker(await tfCfg(ConfigurationTarget.Global)),
+    'cSpell.enableForWorkspace': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Workspace), true),
+    'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Workspace), false),
+    'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tfCfg(ConfigurationTarget.Workspace)),
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
 
@@ -306,7 +304,7 @@ export function enableDisableLanguageId(
     enable: boolean
 ): Promise<void> {
     return handleErrorsEx(async () => {
-        const t = configTarget ? tfCfg(configTarget, uri) : await targetsForUri(uri);
+        const t = await (configTarget ? tfCfg(configTarget, uri) : targetsForUri(uri));
         return enable ? Settings.enableLanguageId(t, languageId) : Settings.disableLanguageId(t, languageId);
     }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
 }
@@ -329,9 +327,20 @@ export function disableCurrentLanguage(): Promise<void> {
     }, 'disableCurrentLanguage');
 }
 
-function targetsFromConfigurationTarget(cfgTarget: ConfigurationTarget, docUri?: string | null | Uri | undefined): ClientConfigTarget[] {
-    const uri = toUri(docUri || window.activeTextEditor?.document.uri);
-    const targets: ClientConfigTarget[] = [createClientConfigTargetVSCode(cfgTarget, uri, undefined)];
+async function targetsFromConfigurationTarget(
+    cfgTarget: ConfigurationTarget,
+    docUri?: string | null | Uri | undefined
+): Promise<ClientConfigTarget[]> {
+    if (cfgTarget === ConfigurationTarget.Global) {
+        const uri = toUri(docUri || window.activeTextEditor?.document.uri);
+        const targets: ClientConfigTarget[] = [createClientConfigTargetVSCode(cfgTarget, uri, undefined)];
+        return targets;
+    }
+    const scope = configurationTargetToDictionaryScope(cfgTarget);
+    const pattern = createConfigTargetMatchPattern(matchKindAll, { dictionary: false }, scope, 'unknown');
+
+    docUri = toUri(docUri);
+    const targets = await (docUri ? targetsForUri(docUri, pattern) : targetsForTextDocument(window.activeTextEditor?.document, pattern));
     return targets;
 }
 
@@ -430,62 +439,6 @@ function dumpPerfTimeline(): void {
     });
 }
 
-function extractMatchingDiagText(
-    doc: TextDocument | undefined,
-    selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
-): string | undefined {
-    if (!doc || !selection || !diags) return undefined;
-    return extractMatchingDiagTexts(doc, selection, diags)?.join(' ');
-}
-
-function extractMatchingDiagTexts(
-    doc: TextDocument | undefined,
-    selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
-): string[] | undefined {
-    if (!doc || !diags) return undefined;
-    const ranges = extractMatchingDiagRanges(doc, selection, diags);
-    return ranges?.map((r) => doc.getText(r));
-}
-
-function extractMatchingDiagRanges(
-    doc: TextDocument | undefined,
-    selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
-): Range[] | undefined {
-    if (!doc || !diags) return undefined;
-    const selText = selection && doc.getText(selection);
-    const matching = diags
-        .map((d) => d.range)
-        .map((r) => determineWordRangeToAddToDictionaryFromSelection(selText, selection, r))
-        .filter(isDefined);
-    return matching;
-}
-
-/**
- * An expression that matches most word like constructions. It just needs to be close.
- * If it doesn't match, the idea is to fall back to the diagnostic selection.
- */
-const regExpIsWordLike = /^[\p{L}\w.-]+$/u;
-
-function determineWordRangeToAddToDictionaryFromSelection(
-    selectedText: string | undefined,
-    selection: Selection | undefined,
-    diagRange: Range
-): Range | undefined {
-    if (!selection || selectedText === undefined || diagRange.contains(selection)) return diagRange;
-
-    const intersect = selection.intersection(diagRange);
-    if (!intersect || intersect.isEmpty) return undefined;
-
-    // The selection is bigger than the diagRange. Did the person intend for the entire selection to
-    // be included or just the diag. If the selected text is a word, then assume the entire selection
-    // was wanted, otherwise use the diag range.
-
-    return regExpIsWordLike.test(selectedText) ? selection : diagRange;
-}
-
 function fnWTarget<TT>(
     fn: (word: string, t: TT, uri: Uri | undefined) => Promise<void>,
     t: TT
@@ -498,8 +451,5 @@ function createCSpellConfig(): Promise<void> {
 }
 
 export const __testing__ = {
-    determineWordRangeToAddToDictionaryFromSelection,
-    extractMatchingDiagText,
-    extractMatchingDiagTexts,
     commandHandlers,
 };
