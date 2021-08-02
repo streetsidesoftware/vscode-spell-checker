@@ -58,13 +58,19 @@ export const matchScopeWorkspace: ConfigScopeMask = { workspace: true };
 export const matchScopeFolder: ConfigScopeMask = { folder: true };
 export const matchScopeUnknown: ConfigScopeMask = { unknown: true };
 
-export type TargetBestMatchSyncFn = (configTargets: ClientConfigTarget[]) => ClientConfigTarget | undefined;
+export type MatchTargetsSyncFn = (configTargets: ClientConfigTarget[]) => ClientConfigTarget[] | undefined;
 
-export type TargetBestMatchAsyncFn = (
+export type MatchTargetsAsyncFn = (
     configTargets: ClientConfigTarget[]
-) => Promise<ClientConfigTarget | undefined> | ClientConfigTarget | undefined;
+) => Promise<ClientConfigTarget[] | undefined> | ClientConfigTarget[] | undefined;
 
-export type TargetBestMatchFn = TargetBestMatchSyncFn | TargetBestMatchAsyncFn;
+export type MatchTargetsSingleSyncFn = (configTargets: ClientConfigTarget[]) => [ClientConfigTarget] | undefined;
+
+export type MatchTargetsSingleAsyncFn = (
+    configTargets: ClientConfigTarget[]
+) => Promise<ClientConfigTarget[] | undefined> | [ClientConfigTarget] | undefined;
+
+export type MatchTargetsFn = MatchTargetsSyncFn | MatchTargetsSingleSyncFn | MatchTargetsAsyncFn | MatchTargetsSingleAsyncFn;
 
 export type TargetMatchFn = (target: ClientConfigTarget) => boolean;
 
@@ -72,14 +78,14 @@ const KindKeys = Object.freeze(Object.values(ConfigKinds));
 // const ScopeKeys = Object.freeze(Object.keys(matchScopeAll) as ClientConfigScope[]);
 const AllKeys = Object.freeze(Object.values(configTargetMatchPatternKeyNames));
 
-export const dictionaryTargetBestMatch = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeAllButUser);
-export const dictionaryTargetBestMatchUser = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeUser);
-export const dictionaryTargetBestMatchWorkspace = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeWorkspace);
-export const dictionaryTargetBestMatchFolder = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeFolder);
-export const dictionaryTargetCSpell = _buildQuickPickBestMatchTargetFn(matchKindCSpell, matchScopeAll);
-export const dictionaryTargetVSCodeUser = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeUser);
-export const dictionaryTargetVSCodeWorkspace = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
-export const dictionaryTargetVSCodeFolder = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeFolder);
+export const dictionaryTargetBestMatches = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeAllButUser);
+export const dictionaryTargetBestMatchesUser = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeUser);
+export const dictionaryTargetBestMatchesWorkspace = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeWorkspace);
+export const dictionaryTargetBestMatchesFolder = _buildQuickPickBestMatchTargetFn(matchKindAll, matchScopeFolder);
+export const dictionaryTargetBestMatchesCSpell = _buildQuickPickBestMatchTargetFn(matchKindCSpell, matchScopeAll);
+export const dictionaryTargetBestMatchesVSCodeUser = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeUser);
+export const dictionaryTargetBestMatchesVSCodeWorkspace = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeWorkspace);
+export const dictionaryTargetBestMatchesVSCodeFolder = _buildQuickPickBestMatchTargetFn(matchKindVSCode, matchScopeFolder);
 
 export const patternMatchNoDictionaries = createConfigTargetMatchPattern(negateKind(matchKindDictionary), matchScopeAll);
 export const patternMatchAll = createConfigTargetMatchPattern(matchKindAll, matchScopeAll);
@@ -99,42 +105,71 @@ export function findBestMatchingConfigTargets(
     return matches;
 }
 
-export function _buildQuickPickBestMatchTargetFn(...params: ConfigTargetMatchPattern[]): TargetBestMatchFn {
+export function _buildQuickPickBestMatchTargetFn(...params: ConfigTargetMatchPattern[]): MatchTargetsFn {
     const match = createConfigTargetMatchPattern(...params);
     return buildQuickPickBestMatchTargetFn(match);
 }
 
-export function buildQuickPickBestMatchTargetFn(match: ConfigTargetMatchPattern): TargetBestMatchFn {
+export function buildQuickPickBestMatchTargetFn(match: ConfigTargetMatchPattern, canPickMany: boolean = false): MatchTargetsFn {
     return async function (configTargets: ClientConfigTarget[]) {
         const foundTargets = findBestMatchingConfigTargets(match, configTargets);
-        return quickPickTarget(foundTargets);
+        return quickPickTargets(foundTargets, canPickMany);
     };
 }
 
-export function buildQuickPickMatchTargetFn(match: ConfigTargetMatchPattern): TargetBestMatchFn {
+export function buildQuickPickMatchTargetFn(match: ConfigTargetMatchPattern): MatchTargetsFn {
     return async function (configTargets: ClientConfigTarget[]) {
         const foundTargets = filterClientConfigTargets(configTargets, match);
-        return quickPickTarget(foundTargets);
+        return quickPickTargets(foundTargets);
     };
 }
 
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
-    match: ConfigTargetMatchPattern
-): Promise<ClientConfigTarget | undefined> {
-    const fn = buildQuickPickBestMatchTargetFn(match);
+    match: ConfigTargetMatchPattern,
+    canPickMany?: false | undefined
+): Promise<[ClientConfigTarget] | undefined>;
+export async function quickPickBestMatchTarget(
+    targets: ClientConfigTarget[],
+    match: ConfigTargetMatchPattern,
+    canPickMany: true
+): Promise<ClientConfigTarget[] | undefined>;
+export async function quickPickBestMatchTarget(
+    targets: ClientConfigTarget[],
+    match: ConfigTargetMatchPattern,
+    canPickMany: boolean = false
+): Promise<ClientConfigTarget[] | undefined> {
+    const fn = buildQuickPickBestMatchTargetFn(match, canPickMany);
     return fn(targets);
 }
 
-export async function quickPickTarget(targets: ClientConfigTarget[]): Promise<ClientConfigTarget | undefined> {
+export async function quickPickTargets(
+    targets: ClientConfigTarget[],
+    canPickMany?: undefined | false
+): Promise<[ClientConfigTarget] | undefined>;
+export async function quickPickTargets(targets: ClientConfigTarget[], canPickMany: true): Promise<ClientConfigTarget[] | undefined>;
+export async function quickPickTargets(
+    targets: ClientConfigTarget[],
+    canPickMany: boolean | undefined
+): Promise<ClientConfigTarget[] | undefined>;
+export async function quickPickTargets(
+    targets: ClientConfigTarget[],
+    canPickMany: boolean = false
+): Promise<ClientConfigTarget[] | undefined> {
     if (!targets.length) throw new UnableToFindTarget('No matching configuration found.');
-    if (targets.length === 1) return targets[0];
+    if (targets.length === 1) return targets;
 
-    const sel = await vscode.window.showQuickPick(
-        targets.map((f) => ({ label: f.name, _found: f })),
-        { title: 'Choose Destination' }
-    );
-    return sel?._found;
+    const title = 'Choose Destination';
+    const items = targets.map((f) => ({ label: f.name, _found: f }));
+
+    // This bit of strangeness is done to keep the correct return type of `sel`.
+    const sel = canPickMany
+        ? await vscode.window.showQuickPick(items, { title, canPickMany: true })
+        : await vscode.window.showQuickPick(items, { title });
+
+    if (!sel) return undefined;
+    const selected = Array.isArray(sel) ? sel : [sel];
+    return selected.map((s) => s._found);
 }
 
 export function filterClientConfigTargets(

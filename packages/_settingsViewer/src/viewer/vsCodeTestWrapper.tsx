@@ -1,27 +1,27 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { observable, toJS, computed, makeObservable, action } from 'mobx';
-import { observer } from 'mobx-react';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
+import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { posix as Path } from 'path';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { MessageBus } from '../api';
 import {
     ConfigurationChangeMessage,
-    SelectTabMessage,
-    SelectFolderMessage,
-    SelectFileMessage,
     EnableLanguageIdMessage,
+    SelectFileMessage,
+    SelectFolderMessage,
+    SelectTabMessage,
 } from '../api/message';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { Settings, ConfigTarget, WorkspaceFolder, TextDocument, Config } from '../api/settings';
-import { MessageBus } from '../api';
-import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
+import { Config, ConfigFile, ConfigTarget, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
-import { posix as Path } from 'path';
+import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
+import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
     currentSample: number = 0;
@@ -208,7 +208,14 @@ function calcFileConfig() {
         fileEnabled: true,
         languageEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
-        configFiles: [Path.join(folderPath, 'cspell.json'), Path.join(workspacePath, 'cspell.config.json')],
+        configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
+    };
+}
+
+function cfgFile(path: string, file: string): ConfigFile {
+    return {
+        uri: Path.join(path, file),
+        name: [Path.basename(path), file].join('/'),
     };
 }
 

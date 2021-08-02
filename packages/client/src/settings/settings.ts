@@ -15,6 +15,7 @@ import {
     filterClientConfigTargets,
     patternMatchNoDictionaries,
     quickPickBestMatchTarget,
+    quickPickTargets,
 } from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
 import {
@@ -116,11 +117,21 @@ export async function disableLanguageId(targets: ClientConfigTarget[], languageI
 
 export function addIgnoreWordToSettings(targets: ClientConfigTarget[], word: string): Promise<void> {
     const addWords = normalizeWords(word);
-    return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
+    return setConfigFieldQuickPickBestTarget(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
 }
 
 export function toggleEnableSpellChecker(targets: ClientConfigTarget[]): Promise<void> {
     return setConfigFieldQuickPick(targets, 'enabled', (enabled) => !enabled);
+}
+
+async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
+    targets: ClientConfigTarget[],
+    key: K,
+    value: ApplyValueOrFn<K>
+) {
+    const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
+    if (!t || !t.length) return;
+    return applyToConfig(t, key, value);
 }
 
 async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
@@ -128,9 +139,9 @@ async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
     key: K,
     value: ApplyValueOrFn<K>
 ) {
-    const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
-    if (!t) return;
-    return applyToConfig([t], key, value);
+    const t = await quickPickTargets(targets);
+    if (!t || !t.length) return;
+    return applyToConfig(t, key, value);
 }
 
 type ApplyValueOrFn<K extends keyof CSpellUserSettings> = CSpellUserSettings[K] | ((v: CSpellUserSettings[K]) => CSpellUserSettings[K]);
@@ -194,6 +205,10 @@ function updateEnableFiletypes(languageId: string, enable: boolean, currentValue
             values.add(disabledLangId);
         }
     }
+
+    // values.delete(languageId);
+    // values.delete(disabledLangId);
+    // values.add(enable ? languageId : disabledLangId);
     return values.size ? [...values].sort() : undefined;
 }
 

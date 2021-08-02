@@ -10,10 +10,10 @@ import type { CustomDictionaryScope, DictionaryDefinitionCustom } from '../serve
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository } from './configRepository';
-import { dictionaryTargetBestMatch, TargetBestMatchFn } from './configTargetHelper';
+import { dictionaryTargetBestMatches, MatchTargetsFn } from './configTargetHelper';
 import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
 import { createDictionaryTargetForConfigRep, DictionaryTarget } from './DictionaryTarget';
-import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
+import { configTargetsToDictionaryTargets } from './DictionaryTargetHelper';
 import { mapConfigTargetToClientConfigTarget } from './mappers/configTarget';
 
 const defaultCustomDictionaryFilename = 'custom-dictionary-words.txt';
@@ -29,14 +29,14 @@ export class DictionaryHelper {
      * @param docUri - the related document (helps to determine the configuration location)
      * @returns the promise resolves upon completion.
      */
-    public async addWordsToTarget(
+    public async addWordsToTargets(
         words: string | string[],
-        target: ClientConfigTarget | TargetBestMatchFn,
+        target: ClientConfigTarget[] | MatchTargetsFn,
         docUri: Uri | undefined
     ): Promise<void> {
-        const cfgTarget = await this.resolveTarget(target, docUri);
+        const cfgTarget = await this.resolveTargets(target, docUri);
         if (!cfgTarget) return;
-        return this.addWordToDictionary(words, cfgTarget);
+        return this.addWordToDictionaries(words, cfgTarget);
     }
 
     /**
@@ -48,6 +48,16 @@ export class DictionaryHelper {
     public addWordsToConfigRep(words: string | string[], rep: ConfigRepository): Promise<void> {
         const dict = createDictionaryTargetForConfigRep(rep);
         return this.addWordToDictionary(words, dict);
+    }
+
+    /**
+     * Add words to a dictionary (configuration or dictionary file)
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param dictTarget - where to add the words
+     */
+    public addWordToDictionaries(words: string | string[], dictTarget: DictionaryTarget[]): Promise<void> {
+        const all = Promise.all(dictTarget.map((t) => this.addWordToDictionary(words, t)));
+        return all.then();
     }
 
     /**
@@ -71,15 +81,15 @@ export class DictionaryHelper {
      * @param docUri - the related document (helps to determine the configuration location)
      * @returns the promise resolves upon completion.
      */
-    public async removeWordsFromTarget(
+    public async removeWordsFromTargets(
         words: string | string[],
-        target: ClientConfigTarget | TargetBestMatchFn,
+        target: ClientConfigTarget[] | MatchTargetsFn,
         docUri: Uri | undefined
     ): Promise<void> {
         words = normalizeWords(words);
-        const dictTarget = await this.resolveTarget(target, docUri);
+        const dictTarget = await this.resolveTargets(target, docUri);
         if (!dictTarget) return;
-        return this.removeWordFromDictionary(words, dictTarget);
+        return this.removeWordFromDictionaries(words, dictTarget);
     }
 
     /**
@@ -91,6 +101,17 @@ export class DictionaryHelper {
     public removeWordsFromConfigRep(words: string | string[], rep: ConfigRepository): Promise<void> {
         const dict = createDictionaryTargetForConfigRep(rep);
         return this.removeWordFromDictionary(words, dict);
+    }
+
+    /**
+     * Remove words from a dictionary file or configuration
+     * @param words - a single word or multiple words separated with a space or an array of words.
+     * @param dictTargets - where to remove the words
+     * @returns the promise resolves upon completion.
+     */
+    public removeWordFromDictionaries(words: string | string[], dictTargets: DictionaryTarget[]): Promise<void> {
+        const all = Promise.all(dictTargets.map((t) => this.removeWordFromDictionary(words, t)));
+        return all.then();
     }
 
     /**
@@ -120,7 +141,7 @@ export class DictionaryHelper {
         const diags = getCSpellDiags(doc.uri);
         if (!diags.length) return;
         const words = new Set(diags.map((d) => doc.getText(d.range)));
-        return this.addWordsToTarget([...words], dictionaryTargetBestMatch, doc.uri);
+        return this.addWordsToTargets([...words], dictionaryTargetBestMatches, doc.uri);
     }
 
     /**
@@ -175,16 +196,16 @@ export class DictionaryHelper {
         return this.client.getConfigurationForDocument(undefined);
     }
 
-    private async resolveTarget(
-        target: ClientConfigTarget | TargetBestMatchFn,
+    private async resolveTargets(
+        target: ClientConfigTarget[] | MatchTargetsFn,
         docUri: Uri | undefined
-    ): Promise<DictionaryTarget | undefined> {
-        if (typeof target !== 'function') return configTargetToDictionaryTarget(target);
+    ): Promise<DictionaryTarget[] | undefined> {
+        if (typeof target !== 'function') return configTargetsToDictionaryTargets(target);
 
         const docConfig = await this.getDocConfig(docUri);
         const targets = docConfig.configTargets.map(mapConfigTargetToClientConfigTarget);
         const cfgTarget = await target(targets);
-        return cfgTarget && configTargetToDictionaryTarget(cfgTarget);
+        return cfgTarget && configTargetsToDictionaryTargets(cfgTarget);
     }
 }
 

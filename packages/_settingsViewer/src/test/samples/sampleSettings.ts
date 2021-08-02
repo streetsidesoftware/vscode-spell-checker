@@ -1,6 +1,6 @@
-import { Settings, DictionaryEntry } from '../../api/settings';
-import { sampleWorkspace, sampleWorkspaceSingleFolder } from './sampleWorkspace';
+import { ConfigFile, DictionaryEntry, Settings } from '../../api/settings';
 import { uniqueFilter } from '../../api/utils';
+import { sampleWorkspace, sampleWorkspaceSingleFolder } from './sampleWorkspace';
 
 const languageIdsA = [
     'asciidoc',
@@ -67,6 +67,10 @@ const dictionaries: DictionaryEntry[] = [
     { name: 'cs-cz', locales: ['cs'], languageIds: [], description: 'Czech dictionary for cspell.' },
 ];
 
+const _configFiles: ConfigFile[] = [
+    { name: 'dutch/cspell.json', uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json' },
+    { name: 'vscode-cspell-dict-extensions/cspell.json', uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json' },
+];
 const _sampleSettings: Settings = {
     dictionaries,
     knownLanguageIds,
@@ -82,7 +86,7 @@ const _sampleSettings: Settings = {
             languageEnabled: true,
             fileEnabled: true,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
-            configFiles: ['file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json', 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json'],
+            configFiles: _configFiles,
         },
     },
     workspace: sampleWorkspace,
@@ -105,7 +109,7 @@ const _sampleSettingsSingleFolder: Settings = {
             languageEnabled: true,
             fileEnabled: true,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
-            configFiles: ['file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json', 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json'],
+            configFiles: _configFiles,
         },
     },
     workspace: sampleWorkspaceSingleFolder,

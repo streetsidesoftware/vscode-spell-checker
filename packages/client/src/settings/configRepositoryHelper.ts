@@ -30,7 +30,11 @@ export function configTargetToConfigRepo(target: ClientConfigTarget): ConfigRepo
         case 'cspell':
             return createCSpellConfigRepository(toUri(target.configUri), target.name);
         case 'vscode':
-            return createVSCodeConfigRepository(dictionaryScopeToConfigurationTarget(target.scope), target.configScope || target.docUri);
+            return createVSCodeConfigRepository(
+                dictionaryScopeToConfigurationTarget(target.scope),
+                target.configScope || target.docUri,
+                !!target.useMerge
+            );
     }
 }
 

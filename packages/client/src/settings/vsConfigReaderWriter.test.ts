@@ -11,19 +11,23 @@ const mockedCalculateConfigForTarget = mocked(calculateConfigForTarget);
 
 describe('vsConfigReaderWriter', () => {
     test('createVSConfigReaderWriter', () => {
-        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename));
+        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), false);
         expect(rw.name).toBe('workspace');
     });
 
-    test('createVSConfigReaderWriter.read', async () => {
+    test.each`
+        useMerge
+        ${true}
+        ${false}
+    `('createVSConfigReaderWriter.read $useMerge', async ({ useMerge }) => {
         mockedCalculateConfigForTarget.mockImplementation(() => ({ words: ['one'] }));
 
-        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename));
+        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), useMerge);
 
         const keys = ['words', 'dictionaries'] as const;
         const r = await rw.read(keys);
         expect(r).toEqual({ words: ['one'] });
-        expect(mockedCalculateConfigForTarget).lastCalledWith(rw.target, rw.scope, keys);
+        expect(mockedCalculateConfigForTarget).lastCalledWith(rw.target, rw.scope, keys, useMerge);
     });
 
     test('createVSConfigReaderWriter.update', async () => {
@@ -31,12 +35,12 @@ describe('vsConfigReaderWriter', () => {
         mockedUpdateConfig.mockImplementation(async (_t, _s, keys, fn) => {
             Object.assign(cfgData, fn(cfgData));
         });
-        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename));
+        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), false);
 
         const fn = (cfg: CSpellUserSettings) => ({ words: ['two'].concat(cfg.words || []) });
         const keys = ['words', 'dictionaries'] as const;
         await rw.update(fn, keys);
-        expect(mockedUpdateConfig).lastCalledWith(rw.target, rw.scope, keys, fn);
+        expect(mockedUpdateConfig).lastCalledWith(rw.target, rw.scope, keys, fn, false);
         expect(cfgData).toEqual({ words: ['two'] });
     });
 
@@ -46,7 +50,7 @@ describe('vsConfigReaderWriter', () => {
             Object.assign(cfgData, fn(cfgData));
         });
 
-        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename));
+        const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), false);
 
         const data = { words: ['word'] };
         await rw.write(data);

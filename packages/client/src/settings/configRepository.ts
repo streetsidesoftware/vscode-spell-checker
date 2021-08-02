@@ -57,13 +57,18 @@ export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, 
     return new CSpellConfigRepository(rw, name);
 }
 
-export function createVSCodeConfigRepository(target: ConfigurationTarget, scope: GetConfigurationScope): VSCodeRepository;
+export function createVSCodeConfigRepository(
+    target: ConfigurationTarget,
+    scope: GetConfigurationScope,
+    useMerge: boolean
+): VSCodeRepository;
 export function createVSCodeConfigRepository(src: VSConfigReaderWriter): VSCodeRepository;
 export function createVSCodeConfigRepository(
     src: ConfigurationTarget | VSConfigReaderWriter,
-    scope?: GetConfigurationScope
+    scope?: GetConfigurationScope,
+    useMerge?: boolean
 ): VSCodeRepository {
-    const rw = isVSReaderWriter(src) ? src : createVSConfigReaderWriter(src, scope);
+    const rw = isVSReaderWriter(src) ? src : createVSConfigReaderWriter(src, scope, !!useMerge);
     return new VSCodeRepository(rw);
 }
 

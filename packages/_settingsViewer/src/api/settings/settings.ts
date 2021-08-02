@@ -49,5 +49,10 @@ export interface FileConfig extends TextDocument {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean | undefined;
     dictionaries: DictionaryEntry[];
-    configFiles: FileUri[];
+    configFiles: ConfigFile[];
+}
+
+export interface ConfigFile {
+    uri: FileUri;
+    name: string;
 }

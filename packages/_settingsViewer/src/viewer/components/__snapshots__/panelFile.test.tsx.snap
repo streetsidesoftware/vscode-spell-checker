@@ -256,7 +256,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
               onClick={[Function]}
               onFocus={[Function]}
             >
-              file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/cspell.json
+              dutch/cspell.json
             </a>
           </span>
         </div>
@@ -292,7 +292,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
               onClick={[Function]}
               onFocus={[Function]}
             >
-              file:///Users/cspell/projects/vscode-cspell-dict-extensions/cspell.json
+              vscode-cspell-dict-extensions/cspell.json
             </a>
           </span>
         </div>
