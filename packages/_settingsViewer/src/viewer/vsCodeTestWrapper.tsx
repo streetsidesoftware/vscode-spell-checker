@@ -11,7 +11,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { MessageBus } from '../api';
 import {
-    ConfigurationChangeMessage, EnableLanguageIdMessage, SelectFileMessage, SelectFolderMessage, SelectTabMessage
+    ConfigurationChangeMessage,
+    EnableLanguageIdMessage,
+    SelectFileMessage,
+    SelectFolderMessage,
+    SelectTabMessage,
 } from '../api/message';
 import { Config, ConfigFile, ConfigTarget, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
@@ -211,8 +215,8 @@ function calcFileConfig() {
 function cfgFile(path: string, file: string): ConfigFile {
     return {
         uri: Path.join(path, file),
-        name: [Path.basename(path), file].join('/')
-    }
+        name: [Path.basename(path), file].join('/'),
+    };
 }
 
 messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
