@@ -2,6 +2,7 @@ import { toUri } from 'common-utils/uriHelper.js';
 import {
     CodeAction,
     commands,
+    ConfigurationScope,
     Disposable,
     FileType,
     QuickPickItem,
@@ -17,7 +18,14 @@ import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagText, getCSpellDiags } from './diags';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './server';
 import * as Settings from './settings';
-import { ConfigurationTarget, createConfigFileRelativeToDocumentUri, setEnableSpellChecking, toggleEnableSpellChecker } from './settings';
+import {
+    ConfigTargetLegacy,
+    ConfigurationTarget,
+    createConfigFileRelativeToDocumentUri,
+    normalizeTarget,
+    setEnableSpellChecking,
+    toggleEnableSpellChecker,
+} from './settings';
 import { ClientConfigTarget } from './settings/clientConfigTarget';
 import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
@@ -25,17 +33,17 @@ import {
     createClientConfigTargetVSCode,
     createConfigTargetMatchPattern,
     dictionaryTargetBestMatches,
+    dictionaryTargetBestMatchesCSpell,
     dictionaryTargetBestMatchesFolder,
     dictionaryTargetBestMatchesUser,
-    dictionaryTargetBestMatchesWorkspace,
-    dictionaryTargetBestMatchesCSpell,
     dictionaryTargetBestMatchesVSCodeFolder as dtVSCodeFolder,
     dictionaryTargetBestMatchesVSCodeUser as dtVSCodeUser,
     dictionaryTargetBestMatchesVSCodeWorkspace as dtVSCodeWorkspace,
+    dictionaryTargetBestMatchesWorkspace,
     filterClientConfigTargets,
     matchKindAll,
-    patternMatchNoDictionaries,
     MatchTargetsFn,
+    patternMatchNoDictionaries,
 } from './settings/configTargetHelper';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
@@ -310,6 +318,24 @@ export function enableDisableLanguageId(
     }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
 }
 
+export function enableDisableLocale(
+    locale: string,
+    uri: Uri | undefined,
+    configTarget: ConfigurationTarget | undefined,
+    configScope: ConfigurationScope | undefined,
+    enable: boolean
+): Promise<void> {
+    return handleErrorsEx(async () => {
+        const t = await (configTarget ? tfCfg(configTarget, uri, configScope) : targetsForUri(uri));
+        return Settings.enableLocaleForTarget(locale, enable, t);
+    }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
+}
+
+export function enableDisableLocaleLegacy(target: ConfigTargetLegacy, locale: string, enable: boolean): Promise<void> {
+    const t = normalizeTarget(target);
+    return enableDisableLocale(locale, t.uri, t.target, t.configScope, enable);
+}
+
 export function enableCurrentLanguage(): Promise<void> {
     return handleErrorsEx(async () => {
         const document = window.activeTextEditor?.document;
@@ -330,11 +356,12 @@ export function disableCurrentLanguage(): Promise<void> {
 
 async function targetsFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
-    docUri?: string | null | Uri | undefined
+    docUri?: string | null | Uri | undefined,
+    configScope?: ConfigurationScope
 ): Promise<ClientConfigTarget[]> {
     if (cfgTarget === ConfigurationTarget.Global) {
         const uri = toUri(docUri || window.activeTextEditor?.document.uri);
-        const targets: ClientConfigTarget[] = [createClientConfigTargetVSCode(cfgTarget, uri, undefined)];
+        const targets: ClientConfigTarget[] = [createClientConfigTargetVSCode(cfgTarget, uri, configScope)];
         return targets;
     }
     const scope = configurationTargetToDictionaryScope(cfgTarget);
@@ -342,7 +369,7 @@ async function targetsFromConfigurationTarget(
 
     docUri = toUri(docUri);
     const targets = await (docUri ? targetsForUri(docUri, pattern) : targetsForTextDocument(window.activeTextEditor?.document, pattern));
-    return targets;
+    return targets.map((t) => (t.kind === 'vscode' ? { ...t, configScope } : t));
 }
 
 async function targetsForTextDocument(

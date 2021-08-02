@@ -1,3 +1,4 @@
+import { toUri } from 'common-utils/uriHelper';
 import * as Kefir from 'kefir';
 import { format } from 'util';
 import * as vscode from 'vscode';
@@ -14,8 +15,8 @@ import {
 import { ConfigTarget, Settings } from '../../settingsViewer/api/settings';
 import { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
 import { CSpellClient } from '../client';
-import { enableDisableLanguageId } from '../commands';
-import { disableLocale, enableLocale, getSettingFromVSConfig } from '../settings';
+import { enableDisableLanguageId, enableDisableLocale } from '../commands';
+import { getSettingFromVSConfig } from '../settings';
 import { Maybe } from '../util';
 import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';
@@ -206,8 +207,8 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 const { target, locale, enable, uri } = msg.value;
                 log(`EnableLocaleMessage: ${target}, ${locale}, ${enable ? 'enable' : 'disable'}`);
                 const uriFolder = uri ? Uri.parse(uri) : undefined;
-                const configTarget = { target: targetToConfigurationTarget[target], uri: uriFolder };
-                return enable ? enableLocale(configTarget, locale) : disableLocale(configTarget, locale);
+                const configTarget = targetToConfigurationTarget[target];
+                return enableDisableLocale(locale, toUri(uri), configTarget, uriFolder, enable);
             })
             .flatMap(resolvePromise(refreshDelay))
             .observe(refreshStateAndNotify)
