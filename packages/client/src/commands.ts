@@ -24,18 +24,18 @@ import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
     createClientConfigTargetVSCode,
     createConfigTargetMatchPattern,
-    dictionaryTargetBestMatch,
-    dictionaryTargetBestMatchFolder,
-    dictionaryTargetBestMatchUser,
-    dictionaryTargetBestMatchWorkspace,
-    dictionaryTargetCSpell,
-    dictionaryTargetVSCodeFolder as dtVSCodeFolder,
-    dictionaryTargetVSCodeUser as dtVSCodeUser,
-    dictionaryTargetVSCodeWorkspace as dtVSCodeWorkspace,
+    dictionaryTargetBestMatches,
+    dictionaryTargetBestMatchesFolder,
+    dictionaryTargetBestMatchesUser,
+    dictionaryTargetBestMatchesWorkspace,
+    dictionaryTargetBestMatchesCSpell,
+    dictionaryTargetBestMatchesVSCodeFolder as dtVSCodeFolder,
+    dictionaryTargetBestMatchesVSCodeUser as dtVSCodeUser,
+    dictionaryTargetBestMatchesVSCodeWorkspace as dtVSCodeWorkspace,
     filterClientConfigTargets,
     matchKindAll,
     patternMatchNoDictionaries,
-    TargetBestMatchFn,
+    MatchTargetsFn,
 } from './settings/configTargetHelper';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
@@ -54,7 +54,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
     },
     'cSpell.addWordsToVSCodeSettingsFromServer': (words, documentUri, target) => {
         const cfgTarget = dictionaryScopeToConfigurationTarget(target);
-        const cfgRepo = createVSCodeConfigRepository(cfgTarget, toUri(documentUri));
+        const cfgRepo = createVSCodeConfigRepository(cfgTarget, toUri(documentUri), false);
         return addWordsToConfig(words, cfgRepo);
     },
 };
@@ -84,8 +84,8 @@ const actionAddIgnoreWordToWorkspace = prompt(
     fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
 );
 const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
-const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetCSpell));
-const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatch));
+const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
+const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
 
 const commandHandlers: CommandHandler = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
@@ -229,26 +229,26 @@ export function registerCommands(): Disposable[] {
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    return addWordToTarget(word, dictionaryTargetBestMatchFolder, docUri);
+    return addWordToTarget(word, dictionaryTargetBestMatchesFolder, docUri);
 }
 
 export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     // eslint-disable-next-line prefer-rest-params
     console.log('addWordToWorkspaceDictionary %o', arguments);
-    return addWordToTarget(word, dictionaryTargetBestMatchWorkspace, docUri);
+    return addWordToTarget(word, dictionaryTargetBestMatchesWorkspace, docUri);
 }
 
 export function addWordToUserDictionary(word: string): Promise<void> {
-    return addWordToTarget(word, dictionaryTargetBestMatchUser, undefined);
+    return addWordToTarget(word, dictionaryTargetBestMatchesUser, undefined);
 }
 
-function addWordToTarget(word: string, target: TargetBestMatchFn, docUri: string | null | Uri | undefined) {
+function addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined) {
     return handleErrors(_addWordToTarget(word, target, docUri), 'addWordToTarget');
 }
 
-function _addWordToTarget(word: string, target: TargetBestMatchFn, docUri: string | null | Uri | undefined) {
+function _addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined) {
     docUri = toUri(docUri);
-    return di.get('dictionaryHelper').addWordsToTarget(word, target, docUri);
+    return di.get('dictionaryHelper').addWordsToTargets(word, target, docUri);
 }
 
 function addAllIssuesFromDocument(): Promise<void> {
@@ -287,7 +287,7 @@ function removeWordFromTarget(word: string, target: ConfigurationTarget, uri: st
 function _removeWordFromTarget(word: string, cfgTarget: ConfigurationTarget, docUri: string | null | Uri | undefined) {
     docUri = toUri(docUri);
     const target = createClientConfigTargetVSCode(cfgTarget, docUri, undefined);
-    return di.get('dictionaryHelper').removeWordsFromTarget(word, target, docUri);
+    return di.get('dictionaryHelper').removeWordsFromTargets(word, [target], docUri);
 }
 
 export function enableLanguageIdCmd(languageId: string, uri?: Uri | string): Promise<void> {
@@ -306,7 +306,7 @@ export function enableDisableLanguageId(
 ): Promise<void> {
     return handleErrorsEx(async () => {
         const t = await (configTarget ? tfCfg(configTarget, uri) : targetsForUri(uri));
-        return enable ? Settings.enableLanguageId(t, languageId) : Settings.disableLanguageId(t, languageId);
+        return Settings.enableLanguageIdForTarget(languageId, enable, t);
     }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
 }
 
@@ -356,8 +356,8 @@ async function targetsForTextDocument(
 }
 
 async function targetsForUri(docUri?: string | null | Uri | undefined, patternMatch = patternMatchNoDictionaries) {
-    docUri = toUri(docUri || window.activeTextEditor?.document.uri);
-    const document = docUri ? await uriToTextDocInfo(docUri) : undefined;
+    docUri = toUri(docUri);
+    const document = docUri ? await uriToTextDocInfo(docUri) : window.activeTextEditor?.document;
     return targetsForTextDocument(document, patternMatch);
 }
 

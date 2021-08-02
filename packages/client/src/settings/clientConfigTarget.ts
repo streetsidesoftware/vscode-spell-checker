@@ -15,6 +15,8 @@ interface ClientConfigTargetBase {
     docUri?: Uri;
     /** Configuration Scope */
     configScope?: ConfigurationScope;
+    /** Merge Global / Workspace / WorkspaceFolder values when calculating the values to update */
+    useMerge?: boolean;
 }
 
 export interface ClientConfigTargetDictionary extends ClientConfigTargetBase {

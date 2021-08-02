@@ -350,17 +350,19 @@ type ConfigKeys = keyof CSpellUserSettings;
 export function calculateConfigForTarget(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
-    keys: readonly ConfigKeys[]
+    keys: readonly ConfigKeys[],
+    useMergeInspect: boolean
 ): CSpellUserSettings {
     const s: CSpellUserSettings = {};
     const inspectResult = inspectConfigKeys(scope, keys);
+    const fn = useMergeInspect ? assignExtractAndMerge : assignExtract;
     for (const k of keys) {
-        assignExtract(s, target, k, inspectResult);
+        fn(s, target, k, inspectResult);
     }
     return s;
 }
 
-function assignExtract<K extends keyof InspectCSpellSettings>(
+function assignExtractAndMerge<K extends keyof InspectCSpellSettings>(
     dest: CSpellUserSettings,
     target: ConfigurationTarget,
     k: K,
@@ -370,6 +372,31 @@ function assignExtract<K extends keyof InspectCSpellSettings>(
     const m = mergeInspect<CSpellUserSettings[K]>(target, v);
     if (m !== undefined) {
         dest[k] = m;
+    }
+}
+
+function assignExtract<K extends keyof InspectCSpellSettings>(
+    dest: CSpellUserSettings,
+    target: ConfigurationTarget,
+    k: K,
+    s: InspectCSpellSettings
+) {
+    const v = s[k] as FullInspectValues<CSpellUserSettings[K]>;
+    const m = extractInspect<CSpellUserSettings[K]>(target, v);
+    if (m !== undefined) {
+        dest[k] = m;
+    }
+}
+
+function extractInspect<T>(target: ConfigurationTarget, value: FullInspectValues<T> | undefined): T | undefined {
+    if (value === undefined) return undefined;
+    switch (target) {
+        case ConfigurationTarget.Global:
+            return value.globalLanguageValue ?? value.globalValue;
+        case ConfigurationTarget.Workspace:
+            return value.workspaceLanguageValue ?? value.workspaceValue;
+        case ConfigurationTarget.WorkspaceFolder:
+            return value.workspaceFolderLanguageValue ?? value.workspaceFolderValue;
     }
 }
 
@@ -409,9 +436,10 @@ export function updateConfig(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
     keys: readonly ConfigKeys[],
-    updateFn: (c: Partial<CSpellUserSettings>) => Partial<CSpellUserSettings>
+    updateFn: (c: Partial<CSpellUserSettings>) => Partial<CSpellUserSettings>,
+    useMerge: boolean
 ): Promise<void> {
-    const cfg = calculateConfigForTarget(target, scope, keys);
+    const cfg = calculateConfigForTarget(target, scope, keys, useMerge);
     const updated = updateFn(cfg);
     const config = getConfiguration(scope);
 

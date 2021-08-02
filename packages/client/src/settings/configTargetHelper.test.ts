@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { ConfigurationTarget, Uri, window } from 'vscode';
+import { CancellationToken, ConfigurationTarget, QuickPickItem, QuickPickOptions, Uri, window } from 'vscode';
 import { ClientConfigTarget } from './clientConfigTarget';
 import {
     _buildQuickPickBestMatchTargetFn,
@@ -7,8 +7,8 @@ import {
     createClientConfigTargetDictionary,
     createClientConfigTargetVSCode,
     createConfigTargetMatchPattern,
-    dictionaryTargetBestMatch,
-    dictionaryTargetCSpell,
+    dictionaryTargetBestMatches,
+    dictionaryTargetBestMatchesCSpell,
     doesTargetMatchPattern,
     filterClientConfigTargets,
     findBestMatchingConfigTargets,
@@ -32,6 +32,7 @@ const dirUri = Uri.file(__dirname);
 const fileUri = Uri.file(__filename);
 
 const mockedShowQuickPick = mocked(window.showQuickPick);
+type MockedShowQuickPick = typeof mockedShowQuickPick;
 
 const ctDictA = createClientConfigTargetDictionary(Uri.joinPath(dirUri, 'a/words1.txt'), 'unknown');
 const ctDictB = createClientConfigTargetDictionary(Uri.joinPath(dirUri, 'a/words2.txt'), 'unknown', 'more-words');
@@ -79,23 +80,23 @@ describe('configTargetHelper', () => {
     });
 
     test('buildMatchTargetFn best dictionary', async () => {
-        mockedShowQuickPick.mockImplementation(async (items) => (await items)[1]);
+        setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
-        const r = await dictionaryTargetBestMatch(targets);
-        expect(r).toEqual(targets[1]);
+        const r = await dictionaryTargetBestMatches(targets);
+        expect(r).toEqual([targets[1]]);
     });
 
     test('buildMatchTargetFn best dictionary', async () => {
-        mockedShowQuickPick.mockImplementation(async (items) => (await items)[1]);
+        setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
-        const r = await dictionaryTargetCSpell(targets);
-        expect(r).toEqual(targets[2]);
+        const r = await dictionaryTargetBestMatchesCSpell(targets);
+        expect(r).toEqual([targets[2]]);
     });
 
     test('buildMatchTargetFn best dictionary user canceled quickPick', async () => {
         mockedShowQuickPick.mockImplementation(async () => undefined);
         const targets = sampleTargets();
-        const r = await dictionaryTargetBestMatch(targets);
+        const r = await dictionaryTargetBestMatches(targets);
         expect(r).toBeUndefined();
     });
 
@@ -107,20 +108,20 @@ describe('configTargetHelper', () => {
     });
 
     test('quickPickBestMatchTarget', async () => {
-        mockedShowQuickPick.mockImplementation(async (items) => (await items)[1]);
+        setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
         const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAllButUser);
         const r = await quickPickBestMatchTarget(targets, pattern);
-        expect(r).toBe(targets[1]);
+        expect(r).toEqual([targets[1]]);
     });
 
     test('buildQuickPickMatchTargetFn', async () => {
-        mockedShowQuickPick.mockImplementation(async (items) => (await items)[0]);
+        setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
         const pattern = createConfigTargetMatchPattern('cspell', matchScopeAll);
         const fn = buildQuickPickMatchTargetFn(pattern);
         const r = await fn(targets);
-        expect(r).toBe(ctCspell);
+        expect(r).toEqual([ctCspell]);
         expect(mockedShowQuickPick).toHaveBeenCalledTimes(0);
     });
 
@@ -160,6 +161,56 @@ describe('configTargetHelper', () => {
         expect(filterClientConfigTargets(targets, fn)).toEqual(expected);
     });
 });
+
+function setQuickPickSelection(mock: MockedShowQuickPick, selected: undefined | number | number[]) {
+    const qp = new QuickPickImpl(selected);
+    mock.mockImplementation((...p) => qp.showQuickPick(...p));
+}
+
+class QuickPickImpl {
+    selected: undefined | number | number[] = [];
+
+    constructor(selected: undefined | number | number[]) {
+        this.selected = selected;
+    }
+
+    setSelect(selected: undefined | number | number[]) {
+        this.selected = selected;
+    }
+
+    showQuickPick(
+        items: readonly string[] | Thenable<readonly string[]>,
+        options: QuickPickOptions & { canPickMany: true },
+        token?: CancellationToken
+    ): Thenable<string[] | undefined>;
+    showQuickPick(
+        items: readonly string[] | Thenable<readonly string[]>,
+        options?: QuickPickOptions,
+        token?: CancellationToken
+    ): Thenable<string | undefined>;
+    showQuickPick<T extends QuickPickItem>(
+        items: readonly T[] | Thenable<readonly T[]>,
+        options: QuickPickOptions & { canPickMany: true },
+        token?: CancellationToken
+    ): Thenable<T[] | undefined>;
+    showQuickPick<T extends QuickPickItem>(
+        items: readonly T[] | Thenable<readonly T[]>,
+        options?: QuickPickOptions,
+        token?: CancellationToken
+    ): Thenable<T | undefined>;
+    async showQuickPick<T extends QuickPickItem>(
+        items: readonly T[] | Thenable<readonly T[]>,
+        options?: QuickPickOptions,
+        _token?: CancellationToken
+    ): Promise<T | T[] | undefined> {
+        const { canPickMany = false } = options || {};
+        const list = await items;
+        if (this.selected === undefined) return undefined;
+        const indexes = typeof this.selected === 'number' ? [this.selected] : this.selected;
+        const values = indexes.map((idx) => list[idx]);
+        return canPickMany ? values : values[0];
+    }
+}
 
 function sampleTargets(): ClientConfigTarget[] {
     return [ctDictA, ctDictB, ctCspell, ctVSCodeF, ctVSCodeW, ctDictU, ctVSCodeU];

@@ -2,7 +2,9 @@ import { ClientConfigTarget } from './clientConfigTarget';
 import { configTargetToConfigRepo } from './configRepositoryHelper';
 import { createDictionaryTargetForConfigRep, createDictionaryTargetForFile, DictionaryTarget } from './DictionaryTarget';
 
-// type ConfigTarget
+export function configTargetsToDictionaryTargets(configTargets: ClientConfigTarget[]): DictionaryTarget[] {
+    return configTargets.map(configTargetToDictionaryTarget);
+}
 
 export function configTargetToDictionaryTarget(configTarget: ClientConfigTarget): DictionaryTarget {
     const cfg = configTargetToConfigRepo(configTarget);
