@@ -1,8 +1,9 @@
-import * as path from 'path';
+import { toUri, uriToName } from 'common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import {
     Config,
+    ConfigFile,
     Configs,
     ConfigSource,
     DictionaryEntry,
@@ -13,10 +14,9 @@ import {
     WorkspaceFolder,
 } from '../../settingsViewer/api/settings';
 import { CSpellClient } from '../client';
-import type { CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
+import type { ConfigTarget, ConfigTargetCSpell, CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
 import { Inspect, inspectConfig, InspectValues } from '../settings';
 import { Maybe, uniqueFilter } from '../util';
-import { commonPrefix } from '../util/commonPrefix';
 import { defaultTo, map, pipe } from '../util/pipe';
 
 type Logger = typeof console.log;
@@ -31,18 +31,7 @@ function getDefaultWorkspaceFolderUri() {
 }
 
 function normalizeFileName(filename: string): string {
-    const uri = Uri.file(filename);
-    const folder = vscode.workspace.getWorkspaceFolder(uri);
-    if (folder) {
-        const folderPath = folder.uri.fsPath;
-        return folder.name + filename.slice(folderPath.length);
-    }
-    if (!vscode.workspace.workspaceFolders || !vscode.workspace.workspaceFolders.length) {
-        return path.basename(filename);
-    }
-    const folders = vscode.workspace.workspaceFolders;
-    const prefix = commonPrefix(folders.map((f) => f.uri.fsPath).concat([filename]));
-    return filename.slice(prefix.length);
+    return vscode.workspace.asRelativePath(filename, true);
 }
 
 export async function calcSettings(
@@ -171,7 +160,7 @@ function extractViewerConfigFromConfig(
             dictionaries,
             languageEnabled,
             fileEnabled,
-            configFiles: docConfig.configFiles,
+            configFiles: extractConfigFiles(docConfig),
         };
         return cfg;
     }
@@ -182,6 +171,21 @@ function extractViewerConfigFromConfig(
         folder: extractNearestConfig(3),
         file: extractFileConfig(),
     };
+}
+
+function extractConfigFiles(docConfig: GetConfigurationForDocumentResult): ConfigFile[] {
+    const { configFiles, configTargets } = docConfig;
+    const t: ConfigFile[] = configTargets.filter(isConfigTargetCSpell).map(({ name, configUri: uri }) => ({ name, uri }));
+    if (t.length) return t;
+    const c: ConfigFile[] = configFiles.map((uri) => ({
+        name: uriToName(toUri(uri)),
+        uri,
+    }));
+    return c;
+}
+
+function isConfigTargetCSpell(t: ConfigTarget): t is ConfigTargetCSpell {
+    return t.kind === 'cspell';
 }
 
 function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
