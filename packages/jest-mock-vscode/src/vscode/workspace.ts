@@ -31,7 +31,7 @@ export class MockWorkspace implements Workspace {
     __mockConfig = createMockWorkspaceConfiguration();
 
     applyEdit = jest.fn();
-    asRelativePath = jest.fn((a) => a);
+    asRelativePath = jest.fn((a) => a?.toString());
     createFileSystemWatcher = jest.fn();
     findFiles = jest.fn();
     getConfiguration = jest.fn((...args: Parameters<Workspace['getConfiguration']>) => this.__mockConfig.__getConfiguration(...args));

@@ -44,7 +44,7 @@
 		"cSpell.customWorkspaceDictionaries": [
 			"cspell-words"
 		],
-		"typescript.tsdk": "vscode-spell-checker/node_modules/typescript/lib",
+		"typescript.tsdk": "node_modules/typescript/lib",
 		"svg.preview.background": "black",
 		"editor.formatOnSave": true
 	},

@@ -14,24 +14,18 @@ import {
     WorkspaceFolder,
 } from '../../settingsViewer/api/settings';
 import { CSpellClient } from '../client';
-import type { ConfigTarget, ConfigTargetCSpell, CSpellUserSettings, GetConfigurationForDocumentResult } from '../server';
+import type {
+    ConfigTarget,
+    ConfigTargetCSpell,
+    CSpellUserSettings,
+    DictionaryDefinition,
+    GetConfigurationForDocumentResult,
+} from '../server';
 import { Inspect, inspectConfig, InspectValues } from '../settings';
 import { Maybe, uniqueFilter } from '../util';
 import { defaultTo, map, pipe } from '../util/pipe';
 
 type Logger = typeof console.log;
-
-function getDefaultWorkspaceFolder() {
-    return vscode.workspace.workspaceFolders?.[0];
-}
-
-function getDefaultWorkspaceFolderUri() {
-    return getDefaultWorkspaceFolder()?.uri;
-}
-
-function normalizeFileName(filename: string): string {
-    return vscode.workspace.asRelativePath(filename, true);
-}
 
 export async function calcSettings(
     document: Maybe<vscode.TextDocument>,
@@ -46,7 +40,7 @@ export async function calcSettings(
         knownLanguageIds: [...client.languageIds].sort(),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig, document, log),
-        workspace: mapWorkspace(client.allowedSchemas),
+        workspace: mapWorkspace(client.allowedSchemas, vscode.workspace),
         activeFileUri: document && document.uri.toString(),
         activeFolderUri: activeFolderUri?.toString(),
     };
@@ -80,72 +74,97 @@ function extractViewerConfigFromConfig(
     doc: vscode.TextDocument | undefined,
     log: Logger
 ): Configs {
-    function findNearestConfigField<K extends keyof CSpellUserSettings>(orderPos: keyof ConfigOrder, key: K): InspectKeys {
-        for (let i = orderPos; i > 0; --i) {
-            const inspectKey = configOrder[i];
-            const setting = config[inspectKey];
-            if (setting && setting[key]) {
-                return inspectKey;
-            }
-        }
-        return 'defaultValue';
-    }
-
-    function inspectKeyToOrder(a: InspectKeys): number {
-        return configOrderRev.get(a) || 0;
-    }
-
-    function mergeSource(a: InspectKeys, b: InspectKeys): InspectKeys {
-        return inspectKeyToOrder(a) > inspectKeyToOrder(b) ? a : b;
-    }
-
-    function extractNearestConfig(orderPos: keyof ConfigOrder): Config {
-        const localeSource = findNearestConfigField(orderPos, 'language');
-        const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds');
-        const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes');
-        const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
-            config[languageIdsEnabledSource]?.enabledLanguageIds,
-            config[enableFiletypesSource]?.enableFiletypes
-        );
-        const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
-
-        const cfg: Config = {
-            inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[langSource] },
-            locales: normalizeLocales(config[localeSource]?.language),
-            languageIdsEnabled,
-        };
-        return cfg;
-    }
-
-    function extractFileConfig(): FileConfig | undefined {
-        const { languageEnabled, docSettings, fileEnabled } = docConfig;
-        if (!doc) return undefined;
-        const { uri, fileName, languageId, isUntitled } = doc;
-        const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
-        const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
-        log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
-        const cfg: FileConfig = {
-            uri: uri.toString(),
-            fileName,
-            isUntitled,
-            languageId,
-            dictionaries,
-            languageEnabled,
-            fileEnabled,
-            configFiles: extractConfigFiles(docConfig),
-        };
-        return cfg;
-    }
-
     return {
-        user: extractNearestConfig(1),
-        workspace: extractNearestConfig(2),
-        folder: extractNearestConfig(3),
-        file: extractFileConfig(),
+        user: extractNearestConfig(1, config),
+        workspace: extractNearestConfig(2, config),
+        folder: extractNearestConfig(3, config),
+        file: extractFileConfig(docConfig, doc, log),
     };
 }
 
-function extractConfigFiles(docConfig: GetConfigurationForDocumentResult): ConfigFile[] {
+function inspectKeyToOrder(a: InspectKeys): number {
+    return configOrderRev.get(a) || 0;
+}
+
+function mergeSource(a: InspectKeys, b: InspectKeys): InspectKeys {
+    return inspectKeyToOrder(a) > inspectKeyToOrder(b) ? a : b;
+}
+
+function findNearestConfigField<K extends keyof CSpellUserSettings>(
+    orderPos: keyof ConfigOrder,
+    key: K,
+    config: Inspect<CSpellUserSettings>
+): InspectKeys {
+    for (let i = orderPos; i > 0; --i) {
+        const inspectKey = configOrder[i];
+        const setting = config[inspectKey];
+        if (setting && setting[key]) {
+            return inspectKey;
+        }
+    }
+    return 'defaultValue';
+}
+
+function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpellUserSettings>): Config {
+    const localeSource = findNearestConfigField(orderPos, 'language', config);
+    const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds', config);
+    const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes', config);
+    const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
+        config[languageIdsEnabledSource]?.enabledLanguageIds,
+        config[enableFiletypesSource]?.enableFiletypes
+    );
+    const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
+
+    const cfg: Config = {
+        inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[langSource] },
+        locales: normalizeLocales(config[localeSource]?.language),
+        languageIdsEnabled,
+    };
+    return cfg;
+}
+
+function extractFileConfig(
+    docConfig: GetConfigurationForDocumentResult,
+    doc: vscode.TextDocument | undefined,
+    log: Logger
+): FileConfig | undefined {
+    const { languageEnabled, docSettings, fileEnabled } = docConfig;
+    if (!doc) return undefined;
+    const { uri, fileName, languageId, isUntitled } = doc;
+    const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
+    const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
+    log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
+    const cfg: FileConfig = {
+        uri: uri.toString(),
+        fileName,
+        isUntitled,
+        languageId,
+        dictionaries,
+        languageEnabled,
+        fileEnabled,
+        configFiles: extractConfigFiles(docConfig),
+    };
+    return cfg;
+}
+
+function getDefaultWorkspaceFolder() {
+    return vscode.workspace.workspaceFolders?.[0];
+}
+
+function getDefaultWorkspaceFolderUri() {
+    return getDefaultWorkspaceFolder()?.uri;
+}
+
+function normalizeFilenameToFriendlyName(filename: string | Uri): string {
+    return vscode.workspace.asRelativePath(filename, true);
+}
+
+interface ExtractConfigFilesRequest {
+    configFiles: string[];
+    configTargets: ConfigTarget[];
+}
+
+function extractConfigFiles(docConfig: ExtractConfigFilesRequest): ConfigFile[] {
     const { configFiles, configTargets } = docConfig;
     const t: ConfigFile[] = configTargets.filter(isConfigTargetCSpell).map(({ name, configUri: uri }) => ({ name, uri }));
     if (t.length) return t;
@@ -160,17 +179,16 @@ function isConfigTargetCSpell(t: ConfigTarget): t is ConfigTargetCSpell {
     return t.kind === 'cspell';
 }
 
+const regIsTextFile = /\.txt$/;
+const regIsCspellDict = /(?:@|%40)cspell\//;
+
 function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
     if (!config) {
         return [];
     }
 
     const dictionaries = config.dictionaryDefinitions || [];
-    const dictionariesByName = new Map(
-        dictionaries
-            .map((e) => ({ name: e.name, locales: [], languageIds: [], description: e.description }))
-            .map((e) => [e.name, e] as [string, DictionaryEntry])
-    );
+    const dictionariesByName = new Map(dictionaries.map(mapDict).map((e) => [e.name, e] as [string, DictionaryEntry]));
     const languageSettings = config.languageSettings || [];
     languageSettings.forEach((setting) => {
         const locales = normalizeLocales(setting.locale || setting.local);
@@ -187,7 +205,22 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
     return [...dictionariesByName.values()];
 }
 
-function normalizeLocales(locale: string | string[] | undefined) {
+function mapDict(e: DictionaryDefinition): DictionaryEntry {
+    const dictUri = Uri.joinPath(Uri.file(e.path || ''), e.file || '');
+    const dictUriStr = dictUri.toString();
+    const isCustomDict = regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr);
+
+    return {
+        name: e.name,
+        locales: [],
+        languageIds: [],
+        description: e.description,
+        uri: isCustomDict ? dictUriStr : undefined,
+        uriName: isCustomDict ? normalizeFilenameToFriendlyName(dictUri) : undefined,
+    };
+}
+
+function normalizeLocales(locale: string | string[] | undefined): string[] {
     return normalizeId(locale);
 }
 
@@ -210,7 +243,13 @@ function merge(left: string[], right: string[]): string[] {
     return left.concat(right).filter(uniqueFilter());
 }
 
-function mapWorkspace(allowedSchemas: Set<string>): Workspace {
+interface VSCodeWorkspace {
+    name: string | undefined;
+    workspaceFolders: readonly vscode.WorkspaceFolder[] | undefined;
+    textDocuments: readonly vscode.TextDocument[];
+}
+
+function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace): Workspace {
     function mapWorkspaceFolder(wsf: vscode.WorkspaceFolder): WorkspaceFolder {
         const { name, index } = wsf;
         return {
@@ -224,13 +263,13 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
         const { fileName, languageId, isUntitled } = td;
         return {
             uri: td.uri.toString(),
-            fileName: normalizeFileName(fileName),
+            fileName: normalizeFilenameToFriendlyName(fileName),
             languageId,
             isUntitled,
         };
     }
 
-    const { name, workspaceFolders, textDocuments } = vscode.workspace;
+    const { name, workspaceFolders, textDocuments } = vsWorkspace;
     const workspace: Workspace = {
         name,
         workspaceFolders: workspaceFolders ? workspaceFolders.map(mapWorkspaceFolder) : undefined,
@@ -279,5 +318,10 @@ function splitBangPrefix(value: string): [prefix: string, value: string] {
 export const __testing__ = {
     applyEnableFiletypesToEnabledLanguageIds,
     calcEnableLang,
+    extractConfigFiles,
+    extractDictionariesFromConfig,
+    extractViewerConfigFromConfig,
+    mapWorkspace,
+    normalizeLocales,
     splitBangPrefix,
 };

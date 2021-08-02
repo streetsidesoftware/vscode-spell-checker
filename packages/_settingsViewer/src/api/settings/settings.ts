@@ -37,6 +37,8 @@ export interface DictionaryEntry {
     locales: LocaleList;
     languageIds: FileTypeList;
     description?: string;
+    uri?: FileUri;
+    uriName?: string;
 }
 
 export interface Config {

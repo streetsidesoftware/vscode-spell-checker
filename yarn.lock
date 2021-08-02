@@ -3257,7 +3257,7 @@ cspell-io@^5.6.5:
     iconv-lite "^0.6.3"
     iterable-to-stream "^2.0.0"
 
-cspell-lib@^5.4.0:
+cspell-lib@^5.4.0, cspell-lib@^5.6.6:
   version "5.6.6"
   resolved "https://registry.npmjs.org/cspell-lib/-/cspell-lib-5.6.6.tgz#241924d83d9df9714692946246afe37c9074a79b"
   integrity sha512-Sum4U7/xWTJm99DeZF0bFBBN5SQ7roArlwnnKMmuRRcYl3s9/3OgtIK2YOOgqoSCxh4G51f7aal+bNAlAnx1bA==

@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconSettings from '@material-ui/icons/Settings';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { OpenFileMessage } from '../../api';
+import { clickLink } from '../../api/link';
 import { ConfigFile } from '../../api/settings';
 import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
 import { listStyles } from './primitives';
@@ -42,18 +42,5 @@ function _SectionConfigFileList({ configFiles }: { configFiles: ConfigFile[] }) 
 }
 
 function click(event: React.MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
-    const attrib = event.currentTarget.attributes;
-    const href = attrib.getNamedItem('href')?.value;
-    if (href) {
-        openUri(href);
-    }
-}
-
-function openUri(uri: string) {
-    const msg: OpenFileMessage = {
-        command: 'OpenFileMessage',
-        value: { uri },
-    };
-    vsCodeApi.postMessage(msg);
+    clickLink(vsCodeApi, event);
 }
