@@ -22,12 +22,11 @@ import { defaultTo, map, pipe } from '../util/pipe';
 type Logger = typeof console.log;
 
 function getDefaultWorkspaceFolder() {
-    return vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
+    return vscode.workspace.workspaceFolders?.[0];
 }
 
 function getDefaultWorkspaceFolderUri() {
-    const folder = getDefaultWorkspaceFolder();
-    return folder && folder.uri;
+    return getDefaultWorkspaceFolder()?.uri;
 }
 
 function normalizeFileName(filename: string): string {
@@ -92,33 +91,6 @@ function extractViewerConfigFromConfig(
         return 'defaultValue';
     }
 
-    function applyEnableFiletypesToEnabledLanguageIds(
-        languageIds: string[] | undefined = [],
-        enableFiletypes: string[] | undefined = []
-    ): string[] {
-        const ids = new Set(languageIds);
-        normalizeEnableFiletypes(enableFiletypes)
-            .map((lang) => ({ enable: lang[0] !== '!', lang: lang.replace('!', '') }))
-            .forEach(({ enable, lang }) => {
-                if (enable) {
-                    ids.add(lang);
-                } else {
-                    ids.delete(lang);
-                }
-            });
-        return [...ids];
-    }
-
-    function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
-        const ids = enableFiletypes
-            .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
-            .sort()
-            .map((id) => id.replace(/~/g, '!')) // Restore the !
-            .map((id) => id.replace(/^(!!)+/, '')); // Remove extra !! pairs
-
-        return ids;
-    }
-
     function inspectKeyToOrder(a: InspectKeys): number {
         return configOrderRev.get(a) || 0;
     }
@@ -132,14 +104,14 @@ function extractViewerConfigFromConfig(
         const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds');
         const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes');
         const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
-            config[languageIdsEnabledSource]!.enabledLanguageIds,
-            config[enableFiletypesSource]!.enableFiletypes
+            config[languageIdsEnabledSource]?.enabledLanguageIds,
+            config[enableFiletypesSource]?.enableFiletypes
         );
         const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
 
         const cfg: Config = {
             inherited: { locales: keyMap[localeSource], languageIdsEnabled: keyMap[langSource] },
-            locales: normalizeLocales(config[localeSource]!.language),
+            locales: normalizeLocales(config[localeSource]?.language),
             languageIdsEnabled,
         };
         return cfg;
@@ -267,3 +239,45 @@ function mapWorkspace(allowedSchemas: Set<string>): Workspace {
 
     return workspace;
 }
+
+function applyEnableFiletypesToEnabledLanguageIds(
+    languageIds: string[] | undefined = [],
+    enableFiletypes: string[] | undefined = []
+): string[] {
+    const ids = new Set<string>();
+    normalizeEnableFiletypes(languageIds.concat(enableFiletypes))
+        .map(calcEnableLang)
+        .forEach(({ enable, lang }) => {
+            enable ? ids.add(lang) : ids.delete(lang);
+        });
+    return [...ids].sort();
+}
+
+function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
+    const ids = enableFiletypes
+        .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
+        .sort()
+        .map((id) => id.replace(/~/g, '!')); // Restore the !
+
+    return ids;
+}
+
+function calcEnableLang(lang: string): { enable: boolean; lang: string } {
+    const [pfx, value] = splitBangPrefix(lang);
+    return {
+        enable: !(pfx.length & 1),
+        lang: value,
+    };
+}
+
+function splitBangPrefix(value: string): [prefix: string, value: string] {
+    const m = value.match(/^!*/);
+    const pfx = m?.[0] || '';
+    return [pfx, value.slice(pfx.length)];
+}
+
+export const __testing__ = {
+    applyEnableFiletypesToEnabledLanguageIds,
+    calcEnableLang,
+    splitBangPrefix,
+};
