@@ -105,18 +105,18 @@ export async function disableLanguageId(targets: ClientConfigTarget[], languageI
 
 export function addIgnoreWordToSettings(targets: ClientConfigTarget[], word: string): Promise<void> {
     const addWords = normalizeWords(word);
-    return setConfigFieldQuickPickBestTarget(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
+    return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
 }
 
 export function toggleEnableSpellChecker(targets: ClientConfigTarget[]): Promise<void> {
     return setConfigFieldQuickPick(targets, 'enabled', (enabled) => !enabled);
 }
 
-async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
+export async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
     key: K,
     value: ApplyValueOrFn<K>
-) {
+): Promise<void> {
     const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
     if (!t || !t.length) return;
     return applyToConfig(t, key, value);
