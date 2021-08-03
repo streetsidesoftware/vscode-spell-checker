@@ -47,7 +47,6 @@ import {
 } from './settings/configTargetHelper';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
-import { mapConfigTargetLegacyToClientConfigTarget } from './settings/mappers/configTargetLegacy';
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
@@ -82,7 +81,7 @@ const actionAddWordToUserSettings = prompt('Add Word to User Settings', fnWTarge
 const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
 const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
 const actionRemoveWordFromUserDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
-const actionAddIgnoreWord = prompt('Ignore Word', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder));
+const actionAddIgnoreWord = prompt('Ignore Word', fnWTarget(addIgnoreWordToTarget, undefined));
 const actionAddIgnoreWordToFolder = prompt(
     'Ignore Word in Folder Settings',
     fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder)
@@ -263,17 +262,19 @@ function addAllIssuesFromDocument(): Promise<void> {
     return handleErrors(di.get('dictionaryHelper').addIssuesToDictionary(), 'addAllIssuesFromDocument');
 }
 
-function addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
-    return handleErrors(_addIgnoreWordToTarget(word, target, uri), ctx('addIgnoreWordToTarget', target, uri));
+function addIgnoreWordToTarget(word: string, target: ConfigurationTarget | undefined, uri: string | null | Uri | undefined): Promise<void> {
+    return handleErrors(_addIgnoreWordToTarget(word, target, uri), ctx('addIgnoreWordToTarget', undefined, uri));
 }
 
-async function _addIgnoreWordToTarget(word: string, target: ConfigurationTarget, uri: string | null | Uri | undefined): Promise<void> {
+async function _addIgnoreWordToTarget(
+    word: string,
+    target: ConfigurationTarget | undefined,
+    uri: string | null | Uri | undefined
+): Promise<void> {
     uri = toUri(uri);
-    const ct = mapConfigTargetLegacyToClientConfigTarget({ target, uri });
-    const targets = (await targetsForUri(uri)).filter((t) => {
-        t.kind === 'cspell' || (t.kind === ct.kind && t.scope === ct.scope);
-    });
-    return Settings.addIgnoreWordToSettings(targets, word);
+    const targets = await targetsForUri(uri);
+    const filteredTargets = target ? targets.filter((t) => t.scope === configurationTargetToDictionaryScope(target)) : targets;
+    return Settings.addIgnoreWordToSettings(filteredTargets, word);
 }
 
 function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
@@ -416,7 +417,8 @@ function onCommandUseDiagsSelectionOrPrompt(
 }
 
 function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri | string | null | undefined): string {
-    return `${method} ${target} ${toUri(uri)}`;
+    const scope = target ? configurationTargetToDictionaryScope(target) : '';
+    return scope ? `${method} ${scope} ${toUri(uri)}` : `${method} ${toUri(uri)}`;
 }
 
 interface SuggestionQuickPickItem extends QuickPickItem {
