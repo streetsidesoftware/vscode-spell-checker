@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.11](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.10...v2.0.1-alpha.11) (2021-08-03)
+
+
+### Features
+
+* support `customDictionaries` ([#1105](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1105)) ([f983a24](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f983a243409b42d693546e5ec164232b794f791f))
+
+
+### Bug Fixes
+
+* merging of inspect results. ([#1100](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1100)) ([be03a09](https://github.com/streetsidesoftware/vscode-spell-checker/commit/be03a0917c20c43636a0c517e2f2a1f143d6ca84))
+* turn on `dart` by default ([#1079](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1079)) ([329189b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/329189b6589ee99bae7c6a905d8832484b09db0e))
+
 ### [2.0.1-alpha.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.9...v2.0.1-alpha.10) (2021-07-22)
 
 
