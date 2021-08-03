@@ -1,40 +1,21 @@
-import { performance } from './util/perf';
-performance.mark('cspell_start_extension');
 import * as path from 'path';
-performance.mark('import 1');
-import { sectionCSpell } from './settings';
-performance.mark('import 2');
-import * as settings from './settings';
-performance.mark('import 3');
-import { Utils as UriUtils } from 'vscode-uri';
-performance.mark('import 4');
-import { CSpellClient } from './client';
-performance.mark('import 5');
-
-import { ExtensionContext } from 'vscode';
-
-import * as di from './di';
-
-performance.mark('import 6');
 import * as vscode from 'vscode';
-performance.mark('import 7');
-
-import { initStatusBar } from './statusbar';
-performance.mark('import 8');
-
-performance.mark('import 9');
-import * as commands from './commands';
-performance.mark('import 10');
-
-import * as settingsViewer from './infoViewer/infoView';
-import { ExtensionApi } from './extensionApi';
-
-import * as modules from './modules';
-
-import * as ExtensionRegEx from './extensionRegEx';
+import { ExtensionContext } from 'vscode';
+import { Utils as UriUtils } from 'vscode-uri';
 import { registerCspellInlineCompletionProviders } from './autocomplete';
+import { CSpellClient } from './client';
+import * as commands from './commands';
 import { updateDocumentRelatedContext } from './context';
+import * as di from './di';
+import { ExtensionApi } from './extensionApi';
+import * as ExtensionRegEx from './extensionRegEx';
+import * as settingsViewer from './infoViewer/infoView';
+import * as modules from './modules';
+import * as settings from './settings';
+import { ConfigTargetLegacy, sectionCSpell } from './settings';
+import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
+import { performance } from './util/perf';
 
 performance.mark('cspell_done_import');
 
@@ -155,8 +136,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableCurrentLanguage: commands.disableCurrentLanguage,
         addWordToUserDictionary: commands.addWordToUserDictionary,
         addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
-        enableLocale: settings.enableLocale,
-        disableLocale: settings.disableLocale,
+        enableLocale: (target: ConfigTargetLegacy, locale: string) => commands.enableDisableLocaleLegacy(target, locale, true),
+        disableLocale: (target: ConfigTargetLegacy, locale: string) => commands.enableDisableLocaleLegacy(target, locale, false),
         updateSettings: () => false,
         cSpellClient: () => client,
         getConfigurationForDocument: (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc),
