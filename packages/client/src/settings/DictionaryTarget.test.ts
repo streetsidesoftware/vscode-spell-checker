@@ -1,11 +1,11 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
-import { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget';
 import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers';
+import { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget';
 import { readConfigFile } from './configFileReadWrite';
+import { __testing__ as DictionaryHelperTesting } from './DictionaryHelper';
 import { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
-import { createConfigFileInFolder } from './settings';
-import { __testing__ as DictionaryHelperTesting } from './DictionaryHelper';
+import { createConfigFile } from './settings';
 
 describe('Validate DictionaryTarget', () => {
     interface TestUpdating {
@@ -42,7 +42,8 @@ async function fetchWords(cfgUri: Uri): Promise<string[] | undefined> {
 }
 
 async function makeTestConfigTarget(tempDir: Uri): Promise<TargetAndReader> {
-    const cfgUri = mustBeDefined(await createConfigFileInFolder(tempDir, true));
+    const uri = UriUtils.joinPath(tempDir, 'cspell.json');
+    const cfgUri = mustBeDefined(await createConfigFile(uri, true));
     const target = configTargetToDictionaryTarget(configTargetCSpell(cfgUri));
     return {
         target,
