@@ -52,6 +52,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),
         vscode.workspace.onDidCreateFiles(handleCreateFile),
+        vscode.workspace.onDidOpenTextDocument(handleOpenFile),
         vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
@@ -91,6 +92,10 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function handleCreateFile(event: vscode.FileCreateEvent) {
         detectPossibleCSpellConfigChange(event.files);
+    }
+
+    function handleOpenFile(doc: vscode.TextDocument) {
+        detectPossibleCSpellConfigChange([doc.uri]);
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {

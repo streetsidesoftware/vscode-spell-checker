@@ -8,7 +8,7 @@ import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../serve
 import { isDefined, unique } from '../util';
 import * as watcher from '../util/watcher';
 import { ClientConfigTarget } from './clientConfigTarget';
-import { writeConfigFile } from './configFileReadWrite';
+import { readConfigFile, writeConfigFile } from './configFileReadWrite';
 import { applyUpdateToConfigTargets } from './configRepositoryHelper';
 import {
     ConfigTargetMatchPattern,
@@ -18,7 +18,7 @@ import {
     quickPickTargets,
 } from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
-import { configFileLocations, defaultFileName, isUpdateSupportedForConfigFileFormat, normalizeWords } from './CSpellSettings';
+import { configFileLocations, isUpdateSupportedForConfigFileFormat, normalizeWords, preferredConfigFiles } from './CSpellSettings';
 export { ConfigTargetLegacy, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
     path: Uri;
@@ -49,9 +49,9 @@ export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     });
 }
 
-function getDefaultWorkspaceConfigLocation(docUri?: Uri): Uri | undefined {
-    const defaultFolderUri = docUri && vscode.workspace.getWorkspaceFolder(docUri)?.uri;
-    return defaultFolderUri || workspace.workspaceFolders?.[0]?.uri;
+function getDefaultWorkspaceConfigLocation(docUri?: Uri): vscode.WorkspaceFolder | undefined {
+    const defaultFolderUri = docUri && vscode.workspace.getWorkspaceFolder(docUri);
+    return defaultFolderUri || workspace.workspaceFolders?.[0];
 }
 
 export function hasWorkspaceLocation(): boolean {
@@ -210,10 +210,8 @@ const settingsFileTemplate: CSpellSettings = {
     import: [],
 };
 
-export async function createConfigFileInFolder(folder: Uri, overwrite?: boolean): Promise<Uri | undefined> {
-    const fileUri = Uri.joinPath(folder, defaultFileName);
-
-    if (!overwrite && (await fileExists(fileUri))) {
+export async function createConfigFile(fileUri: Uri, overwrite?: boolean): Promise<Uri | undefined> {
+    if (!overwrite && (await readConfigFile(fileUri, undefined))) {
         const overwrite = 'Overwrite';
         const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite);
         if (choice !== overwrite) {
@@ -226,12 +224,36 @@ export async function createConfigFileInFolder(folder: Uri, overwrite?: boolean)
     return fileUri;
 }
 
+async function directoryHasPackageJson(dir: vscode.Uri): Promise<boolean> {
+    const uri = Uri.joinPath(dir, 'package.json');
+    try {
+        const stat = await workspace.fs.stat(uri);
+        return stat.type === vscode.FileType.File;
+    } catch (e) {
+        return false;
+    }
+}
+
+function folderHasPackageJson(folder: vscode.WorkspaceFolder): Promise<boolean> {
+    return directoryHasPackageJson(folder.uri);
+}
+
+const msgNoPossibleConfigLocation = 'Unable to determine location for configuration file.';
+
 export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Uri, overwrite?: boolean): Promise<Uri | undefined> {
     const folder = getDefaultWorkspaceConfigLocation(referenceDocUri);
-    const refDocFolder = referenceDocUri && Uri.joinPath(referenceDocUri, '..');
 
-    const location = folder || refDocFolder;
-    if (!location || location.scheme !== 'file') throw new Error('Unable to determine location for configuration file.');
+    if (!folder) throw new Error(msgNoPossibleConfigLocation);
+    if (folder.uri.scheme !== 'file') throw new Error(`Unsupported scheme: ${folder.uri.scheme}`);
 
-    return createConfigFileInFolder(location, overwrite);
+    const optionalFiles = new Set(preferredConfigFiles);
+
+    if (!(await folderHasPackageJson(folder))) optionalFiles.delete('package.json');
+
+    const choice = await vscode.window.showQuickPick([...optionalFiles], { title: 'Choose config file' });
+    if (!choice) return;
+
+    const configFile = Uri.joinPath(folder.uri, choice);
+    await createConfigFile(configFile, overwrite);
+    return configFile;
 }

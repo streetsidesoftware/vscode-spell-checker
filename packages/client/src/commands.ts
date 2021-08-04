@@ -478,8 +478,11 @@ function fnWTarget<TT>(
     return (word, uri) => fn(word, t, uri);
 }
 
-function createCSpellConfig(): Promise<void> {
-    return pVoid(createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri), 'createCSpellConfig');
+async function createCSpellConfig(): Promise<void> {
+    const uri = await createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri);
+    if (uri) {
+        await window.showTextDocument(uri);
+    }
 }
 
 export const __testing__ = {
