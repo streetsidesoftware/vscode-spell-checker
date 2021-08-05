@@ -11,13 +11,13 @@ import type {
     ServerRequestApi,
 } from 'server/api';
 import {
+    CodeAction,
+    CodeActionParams,
+    CodeActionRequest,
+    Command,
     LanguageClient,
     NotificationType,
     RequestType,
-    CodeActionRequest,
-    CodeActionParams,
-    Command,
-    CodeAction,
 } from 'vscode-languageclient/node';
 export type {
     ClientNotifications,
@@ -30,6 +30,9 @@ export type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
     CSpellUserSettings,
+    CustomDictionaries,
+    CustomDictionary,
+    CustomDictionaryEntry,
     CustomDictionaryScope,
     DictionaryDefinition,
     DictionaryDefinitionCustom,

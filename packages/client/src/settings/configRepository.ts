@@ -1,7 +1,6 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import type { Uri } from 'vscode';
-import { ConfigurationTarget } from 'vscode';
+import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
@@ -97,6 +96,10 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
         return this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
     }
+
+    static isCSpellConfigRepository(rep: ConfigRepository): rep is CSpellConfigRepository {
+        return rep instanceof CSpellConfigRepository;
+    }
 }
 
 export class VSCodeRepository extends ConfigRepositoryBase {
@@ -117,6 +120,17 @@ export class VSCodeRepository extends ConfigRepositoryBase {
 
     get scope(): GetConfigurationScope {
         return this.rw.scope;
+    }
+
+    getWorkspaceFolder(): WorkspaceFolder | undefined {
+        if (this.defaultDictionaryScope === 'user') return undefined;
+        if (this.defaultDictionaryScope === 'workspace') return workspace.workspaceFolders?.[0];
+        const scope = this.scope;
+        if (!scope) return undefined;
+        if (isWorkspaceFolder(scope)) return scope;
+        if (isUri(scope)) return workspace.getWorkspaceFolder(scope);
+        if (hasUri(scope)) return workspace.getWorkspaceFolder(scope.uri);
+        return workspace.workspaceFolders?.[0];
     }
 
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
@@ -171,12 +185,43 @@ export class VSCodeRepository extends ConfigRepositoryBase {
             keys: [...keys],
         };
     }
+
+    static isVSCodeRepository(rep: ConfigRepository): rep is VSCodeRepository {
+        return rep instanceof VSCodeRepository;
+    }
+}
+
+function isWorkspaceFolder(f: GetConfigurationScope): f is WorkspaceFolder {
+    if (!f) return false;
+    const wf = <Partial<WorkspaceFolder>>f;
+
+    return isUri(wf.uri) && typeof wf.name === 'string' && typeof wf.index === 'number';
 }
 
 function fnUpdateFilterKeys<K extends ConfigKeys>(updater: ConfigUpdater<K>): ConfigUpdateFn {
     return (cfg) => updater.updateFn(pick(cfg, updater.keys));
 }
 
+interface HasUri {
+    uri: Uri;
+}
+
+function hasUri(u: HasUri | any | undefined): u is HasUri {
+    if (typeof u !== 'object') return false;
+    const p = <Partial<HasUri>>u;
+    return isUri(p.uri);
+}
+
+function isUri(u: Uri | any | undefined): u is Uri {
+    if (typeof u !== 'object') return false;
+    if (u instanceof Uri) return true;
+    const pUri = <Partial<Uri>>u;
+    return pUri.scheme !== undefined && pUri.authority !== undefined && pUri.path !== undefined;
+}
+
 export const __testing__ = {
     fnUpdateFilterKeys,
+    hasUri,
+    isUri,
+    isWorkspaceFolder,
 };

@@ -15,6 +15,12 @@
             "options": {
                 "printWidth": 280
             }
+        },
+        {
+            "files": "packages/client/src/**/configUpdater.ts",
+            "options": {
+                "printWidth": 200
+            }
         }
     ]
 }

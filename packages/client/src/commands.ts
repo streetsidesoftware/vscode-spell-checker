@@ -44,6 +44,8 @@ import {
     matchKindAll,
     MatchTargetsFn,
     patternMatchNoDictionaries,
+    quickPickTarget,
+    quickPickTargets,
 } from './settings/configTargetHelper';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
@@ -457,11 +459,11 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
 
 async function createCustomDictionary(): Promise<void> {
     const targets = await targetsForTextDocument(window.activeTextEditor?.document);
-    const cspellTargets = targets.filter((t) => t.kind === 'cspell');
-    const t = cspellTargets[0];
-    if (!t?.kind || t.kind !== 'cspell') return;
 
+    const t = await quickPickTarget(targets);
+    if (!t) return;
     const cfg = configTargetToConfigRepo(t);
+    if (!cfg) return;
     await di.get('dictionaryHelper').createCustomDictionary(cfg);
 }
 
