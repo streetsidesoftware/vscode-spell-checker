@@ -1,13 +1,27 @@
-import { ConfigurationTarget, Uri } from 'vscode';
-import { CSpellUserSettings } from '../server';
+import { when } from 'jest-when';
+import { mocked } from 'ts-jest/utils';
+import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { getPathToTemp } from '../test/helpers';
-import { ConfigFileReaderWriter } from './configFileReadWrite';
-import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
-import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
+import { createCSpellConfigRepository, createVSCodeConfigRepository, __testing__ } from './configRepository';
 import { addWordsFn } from './configUpdaters';
-import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { GetConfigurationScope } from './vsConfig';
-import { VSConfigReaderWriter } from './vsConfigReaderWriter';
+import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
+
+const { isUri, hasUri, isWorkspaceFolder } = __testing__;
+
+const uri = Uri.file(__filename);
+const folderUri = Uri.file(__dirname);
+const workspaceFolder: WorkspaceFolder = {
+    uri: folderUri,
+    name: 'Folder',
+    index: 0,
+};
+
+const workspaceFolderWorkspace: WorkspaceFolder = {
+    uri: folderUri,
+    name: 'Workspace',
+    index: 0,
+};
+const mockedWorkspace = mocked(workspace, true);
 
 describe('configRepository', () => {
     test('CSpellConfigRepository', async () => {
@@ -37,7 +51,7 @@ describe('configRepository', () => {
     });
 
     test('VSCodeConfigRepository Memory', async () => {
-        const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), {});
+        const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Workspace, uri, {});
         const rep = createVSCodeConfigRepository(rw);
 
         expect(rep.name).toBe('workspace');
@@ -52,7 +66,7 @@ describe('configRepository', () => {
 
     test('VSCodeConfigRepository Memory Global userWords', async () => {
         // cspell:ignore hmmm
-        const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Global, Uri.file(__filename), {
+        const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Global, uri, {
             words: ['hmmm'],
             userWords: ['user'],
         });
@@ -74,51 +88,66 @@ describe('configRepository', () => {
         expect(data2.userWords).toEqual(['one', 'two', 'three', 'four'].sort());
         expect(data2.words).toBeUndefined();
     });
+
+    test.each`
+        target                                 | scope                          | expected
+        ${ConfigurationTarget.WorkspaceFolder} | ${undefined}                   | ${undefined}
+        ${ConfigurationTarget.WorkspaceFolder} | ${{ languageId: 'cpp ' }}      | ${workspaceFolderWorkspace}
+        ${ConfigurationTarget.WorkspaceFolder} | ${{ uri, languageId: 'cpp ' }} | ${workspaceFolder}
+        ${ConfigurationTarget.WorkspaceFolder} | ${uri}                         | ${workspaceFolder}
+        ${ConfigurationTarget.WorkspaceFolder} | ${workspaceFolder}             | ${workspaceFolder}
+        ${ConfigurationTarget.Workspace}       | ${uri}                         | ${workspaceFolderWorkspace}
+        ${ConfigurationTarget.Global}          | ${uri}                         | ${undefined}
+    `('getWorkspaceFolder $target $scope', ({ target, scope, expected }) => {
+        const rw = new MemoryConfigVSReaderWriter(target, scope, {});
+        const rep = createVSCodeConfigRepository(rw);
+
+        when(mockedWorkspace.getWorkspaceFolder).calledWith(expect.objectContaining(uri)).mockReturnValue(workspaceFolder);
+        const spy = jest.spyOn(workspace, 'workspaceFolders', 'get');
+        spy.mockReturnValue([workspaceFolderWorkspace, workspaceFolder]);
+
+        expect(rep.getWorkspaceFolder()).toEqual(expected);
+    });
+
+    test.each`
+        u            | expected
+        ${'hello'}   | ${false}
+        ${5}         | ${false}
+        ${undefined} | ${false}
+        ${{}}        | ${false}
+        ${[]}        | ${false}
+        ${uri}       | ${true}
+    `('isUri $u', ({ u, expected }) => {
+        expect(isUri(u)).toBe(expected);
+    });
+
+    test.each`
+        u                      | expected
+        ${'hello'}             | ${false}
+        ${5}                   | ${false}
+        ${undefined}           | ${false}
+        ${{}}                  | ${false}
+        ${[]}                  | ${false}
+        ${{ uri }}             | ${true}
+        ${{ uri: __filename }} | ${false}
+    `('hasUri $u', ({ u, expected }) => {
+        expect(hasUri(u)).toBe(expected);
+    });
+
+    test.each`
+        u                                  | expected
+        ${'hello'}                         | ${false}
+        ${5}                               | ${false}
+        ${undefined}                       | ${false}
+        ${{}}                              | ${false}
+        ${[]}                              | ${false}
+        ${{ uri }}                         | ${false}
+        ${{ uri, name: '', index: 0 }}     | ${true}
+        ${{ uri, name: '', index: '0' }}   | ${false}
+        ${{ uri, name: {}, index: 0 }}     | ${false}
+        ${{ uri: {}, name: '', index: 0 }} | ${false}
+        ${{ uri: __filename }}             | ${false}
+    `('isWorkspaceFolder $u', ({ u, expected }) => {
+        expect(isWorkspaceFolder(u)).toBe(expected);
+    });
 });
-
-class MemoryReaderWriter implements ConfigReaderWriter {
-    private _data: CSpellUserSettings;
-
-    constructor(data: CSpellUserSettings) {
-        this._data = data;
-    }
-
-    get data() {
-        return this._data;
-    }
-
-    async read<K extends keyof CSpellUserSettings>(keys: K[]) {
-        return extractKeys(this.data, keys);
-    }
-
-    async _read() {
-        return this.data;
-    }
-
-    async write(data: CSpellUserSettings) {
-        this._data = data;
-    }
-
-    update<K extends keyof CSpellUserSettings>(fn: ConfigUpdateFn, keys: K[]): Promise<void> {
-        return this._update((cfg) => fn(extractKeys(cfg, keys)));
-    }
-
-    async _update(fn: ConfigUpdateFn) {
-        Object.assign(this._data, fn(this._data));
-    }
-}
-
-class MemoryConfigFileReaderWriter extends MemoryReaderWriter implements ConfigFileReaderWriter {
-    constructor(readonly uri: Uri, data: CSpellUserSettings) {
-        super(data);
-    }
-}
-
-class MemoryConfigVSReaderWriter extends MemoryReaderWriter implements VSConfigReaderWriter {
-    readonly name: string;
-
-    constructor(readonly target: ConfigurationTarget, readonly scope: GetConfigurationScope, data: CSpellUserSettings) {
-        super(data);
-        this.name = configurationTargetToDictionaryScope(this.target);
-    }
-}

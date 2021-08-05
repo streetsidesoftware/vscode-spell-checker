@@ -11,6 +11,8 @@ export type {
 } from './config/configTargets';
 export type {
     CSpellUserSettings,
+    CustomDictionaries,
+    CustomDictionary,
     CustomDictionaryEntry,
     CustomDictionaryScope,
     CustomDictionaryWithScope,

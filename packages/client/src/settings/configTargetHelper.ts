@@ -172,6 +172,11 @@ export async function quickPickTargets(
     return selected.map((s) => s._found);
 }
 
+export async function quickPickTarget(targets: ClientConfigTarget[]): Promise<ClientConfigTarget | undefined> {
+    const t = await quickPickTargets(targets, false);
+    return t && t[0];
+}
+
 export function filterClientConfigTargets(
     targets: ClientConfigTarget[],
     filterBy: ConfigTargetMatchPattern | TargetMatchFn

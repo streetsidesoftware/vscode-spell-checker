@@ -61,7 +61,8 @@ async function makeTestPackageTarget(tempDir: Uri): Promise<TargetAndReader> {
 }
 
 async function makeDictionaryTarget(tempDir: Uri): Promise<TargetAndReader> {
-    const dictUri = await DictionaryHelperTesting.createCustomDictionaryFile(tempDir, undefined, true);
+    const dictUri = UriUtils.joinPath(tempDir, '.cspell/custom-dictionary.txt');
+    await DictionaryHelperTesting.createCustomDictionaryFile(dictUri, true);
     const cfgTarget = configTargetDict(dictUri);
     const target = configTargetToDictionaryTarget(cfgTarget);
     return {

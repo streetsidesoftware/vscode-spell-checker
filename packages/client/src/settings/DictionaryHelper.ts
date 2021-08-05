@@ -1,22 +1,31 @@
 import { fileExists } from 'common-utils/file.js';
-import { relativeTo } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
+import { homedir } from 'os';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
-import type { CustomDictionaryScope, DictionaryDefinitionCustom } from '../server';
+import type {
+    CSpellUserSettings,
+    CustomDictionaries,
+    CustomDictionary,
+    CustomDictionaryEntry,
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+} from '../server';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';
-import { ConfigRepository, CSpellConfigRepository } from './configRepository';
+import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
 import { dictionaryTargetBestMatches, MatchTargetsFn } from './configTargetHelper';
+import { configUpdaterForKeys } from './configUpdater';
 import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
 import { createDictionaryTargetForConfigRep, DictionaryTarget } from './DictionaryTarget';
 import { configTargetsToDictionaryTargets } from './DictionaryTargetHelper';
 import { mapConfigTargetToClientConfigTarget } from './mappers/configTarget';
+import { configurationTargetToDictionaryScope } from './targetAndScope';
 
-const defaultCustomDictionaryFilename = 'custom-dictionary-words.txt';
+const defaultCustomDictionaryName = 'custom-dictionary';
 const dictionaryTemplate = '# Custom Dictionary Words\n';
 
 export class DictionaryHelper {
@@ -147,17 +156,16 @@ export class DictionaryHelper {
     /**
      * createCustomDictionary
      */
-    public async createCustomDictionary(cfgRep: CSpellConfigRepository, name = 'custom-words', filename?: string): Promise<void> {
-        const dir = UriUtils.dirname(cfgRep.configFileUri);
-        const dictUri = await createCustomDictionaryFile(dir, filename);
-        const relPath = './' + relativeTo(dir, dictUri);
-        return this.addCustomDictionaryToConfig(cfgRep, relPath, name);
+    public async createCustomDictionary(cfgRep: ConfigRepository, name?: string): Promise<void> {
+        const dictInfo = await createCustomDictionaryForConfigRep(cfgRep);
+        if (!dictInfo) throw new Error('Unable to determine location to create dictionary.');
+        return this.addCustomDictionaryToConfig(cfgRep, dictInfo.relPath, name || dictInfo.name, dictInfo.scope);
     }
 
     /**
      * addCustomDictionaryToConfig
      */
-    public async addCustomDictionaryToConfig(
+    public addCustomDictionaryToConfig(
         cfgRep: ConfigRepository,
         relativePathToDictionary: string,
         name: string,
@@ -169,23 +177,7 @@ export class DictionaryHelper {
             addWords: true,
             scope: scope ?? cfgRep.defaultDictionaryScope,
         };
-
-        await cfgRep.update({
-            updateFn: (cfg) => {
-                const { dictionaries = [], dictionaryDefinitions = [] } = cfg;
-                const defsByName = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
-                const dictNames = new Set(dictionaries);
-
-                defsByName.set(name, def);
-                dictNames.add(name);
-
-                return {
-                    dictionaries: [...dictNames],
-                    dictionaryDefinitions: [...defsByName.values()],
-                };
-            },
-            keys: [ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions],
-        });
+        return addCustomDictionaryToConfig(cfgRep, def);
     }
 
     private async getDocConfig(uri: Uri | undefined) {
@@ -213,16 +205,167 @@ function isTextDocument(d: vscode.TextDocument | vscode.Uri): d is vscode.TextDo
     return !!(<vscode.TextDocument>d).uri;
 }
 
-async function createCustomDictionaryFile(configDir: Uri, filename = defaultCustomDictionaryFilename, overwrite = false): Promise<Uri> {
-    const dictDir =
-        UriUtils.basename(configDir) === cspellConfigDirectory ? configDir : UriUtils.joinPath(configDir, cspellConfigDirectory);
-    const dictUri = UriUtils.joinPath(dictDir, filename);
-    overwrite = overwrite || !(await fileExists(dictUri));
-    if (overwrite) {
-        await fs.mkdirp(dictDir.fsPath);
-        await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+interface DictInfo {
+    uri: Uri;
+    relPath: string;
+    name: string;
+    scope: CustomDictionaryScope | undefined;
+}
+
+async function createCustomDictionaryForConfigRep(configRep: ConfigRepository): Promise<DictInfo | undefined> {
+    const dictInfo = calcDictInfoForConfigRep(configRep);
+    if (!dictInfo) return;
+
+    await createCustomDictionaryFile(dictInfo.uri);
+    return dictInfo;
+}
+
+function calcDictInfoForConfigRep(configRep: ConfigRepository): DictInfo | undefined {
+    const dictInfo = CSpellConfigRepository.isCSpellConfigRepository(configRep)
+        ? calcDictInfoForConfigRepCSpell(configRep)
+        : VSCodeRepository.isVSCodeRepository(configRep)
+        ? calcDictInfoForConfigRepVSCode(configRep)
+        : undefined;
+
+    return dictInfo;
+}
+
+function calcDictInfoForConfigRepCSpell(cfgRep: CSpellConfigRepository): DictInfo | undefined {
+    const scope = cfgRep.defaultDictionaryScope;
+    const name = scopeToName(scope);
+    const dir = UriUtils.dirname(cfgRep.configFileUri);
+    const path = `${cspellConfigDirectory}/${name}.txt`;
+    const dictUri = Uri.joinPath(dir, path);
+    const relPath = './' + path;
+    return { uri: dictUri, relPath, name, scope };
+}
+
+function calcDictInfoForConfigRepVSCode(configRep: VSCodeRepository): DictInfo | undefined {
+    const scope = configurationTargetToDictionaryScope(configRep.target);
+    if (configRep.target === vscode.ConfigurationTarget.Global) {
+        const name = scopeToName(scope);
+        const path = `${cspellConfigDirectory}/${name}.txt`;
+        const dir = Uri.file(homedir());
+        const uri = Uri.joinPath(dir, path);
+        const relPath = '~/' + path;
+        return { uri, relPath, name, scope };
     }
-    return dictUri;
+    const folder = configRep.getWorkspaceFolder();
+    if (!folder) return;
+    const suffix = scope === 'folder' ? '-' + cleanFolderName(folder.name) : '';
+    const name = scopeToName(configurationTargetToDictionaryScope(configRep.target)) + suffix;
+    const path = `${cspellConfigDirectory}/${name}.txt`;
+    const uri = Uri.joinPath(folder.uri, path);
+    const relPath = `\${workspaceFolder:${folder.name}}/${path}`;
+    return { uri, relPath, name, scope };
+}
+
+function scopeToName(scope: CustomDictionaryScope | undefined): string {
+    return scope ? `${defaultCustomDictionaryName}-${scope}` : defaultCustomDictionaryName;
+}
+
+function cleanFolderName(name: string): string {
+    return name.toLowerCase().replace(/[^\w]/g, '-');
+}
+
+async function createCustomDictionaryFile(dictUri: Uri, overwrite = false): Promise<void> {
+    overwrite = overwrite || !(await fileExists(dictUri));
+    if (!overwrite) return;
+
+    await fs.mkdirp(UriUtils.dirname(dictUri).fsPath);
+    await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+}
+
+async function addCustomDictionaryToConfig(cfgRep: ConfigRepository, def: DictionaryDefinitionCustom): Promise<void> {
+    const updater = CSpellConfigRepository.isCSpellConfigRepository(cfgRep)
+        ? updaterForCustomDictionaryToConfigCSpell(def)
+        : VSCodeRepository.isVSCodeRepository(cfgRep)
+        ? updaterForCustomDictionaryToConfigVSCode(def)
+        : undefined;
+    if (!updater) throw Error(`Unsupported config ${cfgRep.kind}`);
+    return cfgRep.update(updater);
+}
+
+function updaterForCustomDictionaryToConfigCSpell(def: DictionaryDefinitionCustom) {
+    const name = def.name;
+    return configUpdaterForKeys([ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions], (cfg) => {
+        const { dictionaries = [], dictionaryDefinitions = [] } = cfg;
+        const defsByName = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
+        const dictNames = new Set(dictionaries);
+
+        defsByName.set(name, def);
+        dictNames.add(name);
+
+        return {
+            dictionaries: [...dictNames],
+            dictionaryDefinitions: [...defsByName.values()],
+        };
+    });
+}
+
+function updaterForCustomDictionaryToConfigVSCode(def: DictionaryDefinitionCustom) {
+    const name = def.name;
+    return configUpdaterForKeys(
+        [
+            ConfigKeysByField.customDictionaries,
+            ConfigKeysByField.customFolderDictionaries,
+            ConfigKeysByField.customWorkspaceDictionaries,
+            ConfigKeysByField.customUserDictionaries,
+        ],
+        (cfg) => {
+            const { customDictionaries, ...rest } = combineCustomDictionaries(cfg);
+            customDictionaries[name] = def;
+            return {
+                ...rest,
+                customDictionaries,
+            };
+        }
+    );
+}
+
+interface CombineCustomDictionariesResult extends Required<Pick<CSpellUserSettings, 'customDictionaries'>> {
+    customFolderDictionaries: undefined;
+    customWorkspaceDictionaries: undefined;
+    customUserDictionaries: undefined;
+}
+
+function combineCustomDictionaries(s: CSpellUserSettings): CombineCustomDictionariesResult {
+    const { customDictionaries = {}, customFolderDictionaries = [], customWorkspaceDictionaries = [], customUserDictionaries = [] } = s;
+
+    const cdLegacy = [
+        customUserDictionaries.map(mapScopeToCustomDictionaryEntry('user')),
+        customWorkspaceDictionaries.map(mapScopeToCustomDictionaryEntry('workspace')),
+        customFolderDictionaries.map(mapScopeToCustomDictionaryEntry('folder')),
+    ].reduce(combineDictionaryEntries, customDictionaries);
+
+    return {
+        customDictionaries: { ...cdLegacy, ...customDictionaries },
+        customFolderDictionaries: undefined,
+        customWorkspaceDictionaries: undefined,
+        customUserDictionaries: undefined,
+    };
+}
+
+function mapScopeToCustomDictionaryEntry(scope: CustomDictionary['scope']): (c: CustomDictionaryEntry) => CustomDictionaryEntry {
+    return (c: CustomDictionaryEntry) => {
+        if (typeof c === 'string') return c;
+        return { ...c, scope: c.scope || scope };
+    };
+}
+
+function combineDictionaryEntries(c: CustomDictionaries, entries: CustomDictionaryEntry[]): CustomDictionaries {
+    return entries.reduce(combineDictionaryEntry, c);
+}
+
+function combineDictionaryEntry(c: CustomDictionaries, entry: CustomDictionaryEntry): CustomDictionaries {
+    const r = { ...c };
+    if (typeof entry === 'string') {
+        r[entry] = true;
+    } else {
+        r[entry.name] = entry;
+    }
+
+    return r;
 }
 
 export class DictionaryTargetError extends Error {
@@ -238,6 +381,10 @@ export class UnableToAddWordError extends DictionaryTargetError {
 }
 
 export const __testing__ = {
-    isTextDocument,
+    addCustomDictionaryToConfig,
+    calcDictInfoForConfigRep,
+    combineCustomDictionaries,
     createCustomDictionaryFile,
+    createCustomDictionaryForConfigRep,
+    isTextDocument,
 };
