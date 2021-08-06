@@ -14,6 +14,7 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
 } from '../server';
+import { scrollToText } from '../util/textEditor';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';
 import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
@@ -159,7 +160,12 @@ export class DictionaryHelper {
     public async createCustomDictionary(cfgRep: ConfigRepository, name?: string): Promise<void> {
         const dictInfo = await createCustomDictionaryForConfigRep(cfgRep);
         if (!dictInfo) throw new Error('Unable to determine location to create dictionary.');
-        return this.addCustomDictionaryToConfig(cfgRep, dictInfo.relPath, name || dictInfo.name, dictInfo.scope);
+        await this.addCustomDictionaryToConfig(cfgRep, dictInfo.relPath, name || dictInfo.name, dictInfo.scope);
+        if (CSpellConfigRepository.isCSpellConfigRepository(cfgRep)) {
+            const editor = await vscode.window.showTextDocument(cfgRep.configFileUri, { viewColumn: vscode.ViewColumn.Active });
+            scrollToText(editor, 'dictionaryDefinitions');
+        }
+        await vscode.window.showTextDocument(dictInfo.uri, { viewColumn: vscode.ViewColumn.Beside });
     }
 
     /**
