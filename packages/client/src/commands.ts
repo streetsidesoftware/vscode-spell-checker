@@ -52,6 +52,7 @@ import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTa
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
 import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
+import { scrollToText } from './util/textEditor';
 import { findMatchingDocument } from './vscode/findDocument';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
@@ -483,7 +484,9 @@ function fnWTarget<TT>(
 async function createCSpellConfig(): Promise<void> {
     const uri = await createConfigFileRelativeToDocumentUri(window.activeTextEditor?.document.uri);
     if (uri) {
-        await window.showTextDocument(uri);
+        const editor = await window.showTextDocument(uri);
+        // for `package.json` files, we might need to scroll to the right position.
+        scrollToText(editor, '"cspell":');
     }
 }
 

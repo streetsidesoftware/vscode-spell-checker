@@ -1,6 +1,8 @@
 import type * as vscode from 'vscode';
 import { createMockFileSystem } from './fs';
 import { createMockWorkspaceConfiguration } from './WorkspaceConfiguration';
+import { createTextDocument, readTextDocument } from '../vscodeTypesHelper';
+import { isUri, Uri } from './uri';
 
 export type Workspace = typeof vscode.workspace;
 
@@ -37,7 +39,7 @@ export class MockWorkspace implements Workspace {
     getConfiguration = jest.fn((...args: Parameters<Workspace['getConfiguration']>) => this.__mockConfig.__getConfiguration(...args));
     getWorkspaceFolder = jest.fn(() => this.workspaceFolders?.[0]);
     onDidSaveTextDocument = jest.fn();
-    openTextDocument = jest.fn();
+    openTextDocument = openTextDocument;
     openNotebookDocument = jest.fn();
     onDidChangeConfiguration = jest.fn();
     onDidChangeTextDocument = jest.fn();
@@ -63,3 +65,20 @@ export class MockWorkspace implements Workspace {
 }
 
 export const workspace = new MockWorkspace();
+
+interface OpenTextDocumentOptions {
+    language?: string;
+    content?: string;
+}
+function openTextDocument(uri: vscode.Uri): Thenable<vscode.TextDocument>;
+function openTextDocument(fileName: string): Thenable<vscode.TextDocument>;
+function openTextDocument(options?: OpenTextDocumentOptions): Thenable<vscode.TextDocument>;
+function openTextDocument(param?: string | vscode.Uri | OpenTextDocumentOptions): Promise<vscode.TextDocument> {
+    const uri = typeof param === 'string' ? Uri.file(param) : isUri(param) ? param : undefined;
+    const options = typeof param !== 'string' && !isUri(param) ? param : undefined;
+    if (uri) {
+        return readTextDocument(uri);
+    }
+
+    return Promise.resolve(createTextDocument(Uri.parse('untitled:Untitled-1'), options?.content || '', options?.language));
+}

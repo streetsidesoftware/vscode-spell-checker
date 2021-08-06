@@ -371,11 +371,11 @@ export class Selection extends Range implements vscode.Selection {
         return this._active;
     }
 
-    constructor(anchor: Position, active: Position);
+    constructor(anchor: vscode.Position, active: vscode.Position);
     constructor(anchorLine: number, anchorColumn: number, activeLine: number, activeColumn: number);
     constructor(
-        anchorLineOrAnchor: number | Position,
-        anchorColumnOrActive: number | Position,
+        anchorLineOrAnchor: number | vscode.Position,
+        anchorColumnOrActive: number | vscode.Position,
         activeLine?: number,
         activeColumn?: number
     ) {
