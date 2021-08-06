@@ -1,5 +1,4 @@
 import { CSpellSettings } from '@cspell/cspell-types';
-import { fileExists } from 'common-utils/file.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as vscode from 'vscode';
