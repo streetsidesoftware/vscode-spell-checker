@@ -25,7 +25,7 @@ describe('Validate TextDocument', () => {
 
     test.each`
         key             | expected
-        ${'fileName'}   | ${__filename}
+        ${'fileName'}   | ${Uri.file(__filename).fsPath}
         ${'lineCount'}  | ${10}
         ${'languageId'} | ${'plaintext'}
         ${'isUntitled'} | ${false}
