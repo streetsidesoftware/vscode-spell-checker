@@ -153,32 +153,32 @@
       {
         "command": "cSpell.addWordToWorkspaceDictionary",
         "category": "Spell",
-        "title": "Add Word to Workspace Dictionary"
+        "title": "Add Words to Workspace Dictionary"
       },
       {
         "command": "cSpell.addWordToFolderDictionary",
         "category": "Spell",
-        "title": "Add Word to Folder Dictionary"
+        "title": "Add Words to Folder Dictionary"
       },
       {
         "command": "cSpell.addWordToUserDictionary",
         "category": "Spell",
-        "title": "Add Word to User Dictionary"
+        "title": "Add Words to User Dictionary"
       },
       {
         "command": "cSpell.addWordToWorkspaceSettings",
         "category": "Spell",
-        "title": "Add Word to Workspace Settings"
+        "title": "Add Words to Workspace Settings"
       },
       {
         "command": "cSpell.addWordToFolderSettings",
         "category": "Spell",
-        "title": "Add Word to Folder Settings"
+        "title": "Add Words to Folder Settings"
       },
       {
         "command": "cSpell.addWordToUserSettings",
         "category": "Spell",
-        "title": "Add Word to User Settings"
+        "title": "Add Words to User Settings"
       },
       {
         "command": "cSpell.enableForWorkspace",
@@ -248,32 +248,32 @@
       {
         "command": "cSpell.addIgnoreWord",
         "category": "Spell",
-        "title": "Ignore Word"
+        "title": "Ignore Words"
       },
       {
-        "command": "cSpell.addIgnoreWordToFolder",
+        "command": "cSpell.addIgnoreWordsToFolder",
         "category": "Spell",
         "title": "Ignore Word in Folder Settings"
       },
       {
-        "command": "cSpell.addIgnoreWordToWorkspace",
+        "command": "cSpell.addIgnoreWordsToWorkspace",
         "category": "Spell",
-        "title": "Ignore Word in Workspace Settings"
+        "title": "Ignore Words in Workspace Settings"
       },
       {
-        "command": "cSpell.addIgnoreWordToUser",
+        "command": "cSpell.addIgnoreWordsToUser",
         "category": "Spell",
-        "title": "Ignore Word in User Settings"
+        "title": "Ignore Words in User Settings"
       },
       {
         "command": "cSpell.addWordToDictionary",
         "category": "Spell",
-        "title": "Add Word to Dictionary"
+        "title": "Add Words to Dictionary"
       },
       {
         "command": "cSpell.addWordToCSpellConfig",
         "category": "Spell",
-        "title": "Add Word to CSpell Configuration"
+        "title": "Add Words to CSpell Configuration"
       },
       {
         "command": "cSpell.addIssuesToDictionary",

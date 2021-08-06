@@ -102,8 +102,8 @@ export async function disableLanguageId(targets: ClientConfigTarget[], languageI
     await enableLanguageIdForTarget(languageId, false, targets);
 }
 
-export function addIgnoreWordToSettings(targets: ClientConfigTarget[], word: string): Promise<void> {
-    const addWords = normalizeWords(word);
+export function addIgnoreWordsToSettings(targets: ClientConfigTarget[], words: string | string[]): Promise<void> {
+    const addWords = normalizeWords(words);
     return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
 }
 

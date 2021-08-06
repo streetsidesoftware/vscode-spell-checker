@@ -41,11 +41,11 @@ describe('Validate CSpellSettings functions', () => {
         await expect(r).rejects.toBeInstanceOf(CSS.FailedToUpdateConfigFile);
     });
 
-    test('addIgnoreWordToSettingsAndUpdate', async () => {
+    test('addIgnoreWordsToSettingsAndUpdate', async () => {
         const word = 'word';
-        const filename = getPathToTemp('addIgnoreWordToSettingsAndUpdate/cspell.json');
+        const filename = getPathToTemp('addIgnoreWordsToSettingsAndUpdate/cspell.json');
         await writeFile(filename, sampleJsonConfig);
-        await CSS.addIgnoreWordToSettingsAndUpdate(filename, word);
+        await CSS.addIgnoreWordsToSettingsAndUpdate(filename, word);
         const r = await CSS.readSettings(filename);
         expect(r.ignoreWords).toEqual(expect.arrayContaining([word]));
         expect(await readSettings(filename)).toEqual(r);

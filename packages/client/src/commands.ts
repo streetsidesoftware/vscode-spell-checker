@@ -6,6 +6,7 @@ import {
     Disposable,
     FileType,
     QuickPickItem,
+    QuickPickOptions,
     Range,
     TextDocument,
     Uri,
@@ -15,7 +16,7 @@ import {
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
-import { extractMatchingDiagRanges, extractMatchingDiagText, getCSpellDiags } from './diags';
+import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './server';
 import * as Settings from './settings';
 import {
@@ -45,11 +46,12 @@ import {
     MatchTargetsFn,
     patternMatchNoDictionaries,
     quickPickTarget,
-    quickPickTargets,
 } from './settings/configTargetHelper';
+import { normalizeWords } from './settings/CSpellSettings';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
+import { pick } from './util';
 import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
@@ -75,27 +77,27 @@ type CommandHandler = {
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
 const tfCfg = targetsFromConfigurationTarget;
-const actionAddWordToFolder = prompt('Add Word to Folder Dictionary', addWordToFolderDictionary);
-const actionAddWordToWorkspace = prompt('Add Word to Workspace Dictionaries', addWordToWorkspaceDictionary);
-const actionAddWordToUser = prompt('Add Word to User Dictionary', addWordToUserDictionary);
-const actionAddWordToFolderSettings = prompt('Add Word to Folder Settings', fnWTarget(addWordToTarget, dtVSCodeFolder));
-const actionAddWordToWorkspaceSettings = prompt('Add Word to Workspace Settings', fnWTarget(addWordToTarget, dtVSCodeWorkspace));
-const actionAddWordToUserSettings = prompt('Add Word to User Settings', fnWTarget(addWordToTarget, dtVSCodeUser));
-const actionRemoveWordFromFolderDictionary = prompt('Remove Word from Folder Dictionary', removeWordFromFolderDictionary);
-const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Word from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
-const actionRemoveWordFromUserDictionary = prompt('Remove Word from Global Dictionary', removeWordFromUserDictionary);
-const actionAddIgnoreWord = prompt('Ignore Word', fnWTarget(addIgnoreWordToTarget, undefined));
+const actionAddWordToFolder = prompt('Add Words to Folder Dictionary', addWordToFolderDictionary);
+const actionAddWordToWorkspace = prompt('Add Words to Workspace Dictionaries', addWordToWorkspaceDictionary);
+const actionAddWordToUser = prompt('Add Words to User Dictionary', addWordToUserDictionary);
+const actionAddWordToFolderSettings = prompt('Add Words to Folder Settings', fnWTarget(addWordToTarget, dtVSCodeFolder));
+const actionAddWordToWorkspaceSettings = prompt('Add Words to Workspace Settings', fnWTarget(addWordToTarget, dtVSCodeWorkspace));
+const actionAddWordToUserSettings = prompt('Add Words to User Settings', fnWTarget(addWordToTarget, dtVSCodeUser));
+const actionRemoveWordFromFolderDictionary = prompt('Remove Words from Folder Dictionary', removeWordFromFolderDictionary);
+const actionRemoveWordFromWorkspaceDictionary = prompt('Remove Words from Workspace Dictionaries', removeWordFromWorkspaceDictionary);
+const actionRemoveWordFromUserDictionary = prompt('Remove Words from Global Dictionary', removeWordFromUserDictionary);
+const actionAddIgnoreWord = prompt('Ignore Words', fnWTarget(addIgnoreWordsToTarget, undefined));
 const actionAddIgnoreWordToFolder = prompt(
-    'Ignore Word in Folder Settings',
-    fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.WorkspaceFolder)
+    'Ignore Words in Folder Settings',
+    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.WorkspaceFolder)
 );
 const actionAddIgnoreWordToWorkspace = prompt(
-    'Ignore Word in Workspace Settings',
-    fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Workspace)
+    'Ignore Words in Workspace Settings',
+    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.Workspace)
 );
-const actionAddIgnoreWordToUser = prompt('Ignore Word in User Settings', fnWTarget(addIgnoreWordToTarget, ConfigurationTarget.Global));
-const actionAddWordToCSpell = prompt('Add Word to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
-const actionAddWordToDictionary = prompt('Add Word to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
+const actionAddIgnoreWordToUser = prompt('Ignore Words in User Settings', fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.Global));
+const actionAddWordToCSpell = prompt('Add Words to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
+const actionAddWordToDictionary = prompt('Add Words to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
 
 const commandHandlers: CommandHandler = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
@@ -112,9 +114,9 @@ const commandHandlers: CommandHandler = {
     'cSpell.removeWordFromUserDictionary': actionRemoveWordFromUserDictionary,
 
     'cSpell.addIgnoreWord': actionAddIgnoreWord,
-    'cSpell.addIgnoreWordToFolder': actionAddIgnoreWordToFolder,
-    'cSpell.addIgnoreWordToWorkspace': actionAddIgnoreWordToWorkspace,
-    'cSpell.addIgnoreWordToUser': actionAddIgnoreWordToUser,
+    'cSpell.addIgnoreWordsToFolder': actionAddIgnoreWordToFolder,
+    'cSpell.addIgnoreWordsToWorkspace': actionAddIgnoreWordToWorkspace,
+    'cSpell.addIgnoreWordsToUser': actionAddIgnoreWordToUser,
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
 
@@ -265,11 +267,15 @@ function addAllIssuesFromDocument(): Promise<void> {
     return handleErrors(di.get('dictionaryHelper').addIssuesToDictionary(), 'addAllIssuesFromDocument');
 }
 
-function addIgnoreWordToTarget(word: string, target: ConfigurationTarget | undefined, uri: string | null | Uri | undefined): Promise<void> {
-    return handleErrors(_addIgnoreWordToTarget(word, target, uri), ctx('addIgnoreWordToTarget', undefined, uri));
+function addIgnoreWordsToTarget(
+    word: string,
+    target: ConfigurationTarget | undefined,
+    uri: string | null | Uri | undefined
+): Promise<void> {
+    return handleErrors(_addIgnoreWordsToTarget(word, target, uri), ctx('addIgnoreWordsToTarget', undefined, uri));
 }
 
-async function _addIgnoreWordToTarget(
+async function _addIgnoreWordsToTarget(
     word: string,
     target: ConfigurationTarget | undefined,
     uri: string | null | Uri | undefined
@@ -277,7 +283,7 @@ async function _addIgnoreWordToTarget(
     uri = toUri(uri);
     const targets = await targetsForUri(uri);
     const filteredTargets = target ? targets.filter((t) => t.scope === configurationTargetToDictionaryScope(target)) : targets;
-    return Settings.addIgnoreWordToSettings(filteredTargets, word);
+    return Settings.addIgnoreWordsToSettings(filteredTargets, word);
 }
 
 function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
@@ -400,23 +406,55 @@ async function uriToTextDocInfo(uri: Uri): Promise<{ uri: Uri; languageId?: stri
     return await workspace.openTextDocument(uri);
 }
 
+const compareStrings = new Intl.Collator().compare;
+
 function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
     fnAction: (text: string, uri: Uri | undefined) => Promise<void>
 ): () => Promise<void> {
-    return function () {
+    return async function () {
         const document = window.activeTextEditor?.document;
         const selection = window.activeTextEditor?.selection;
         const range = selection && document?.getWordRangeAtPosition(selection.active);
         const diags = document ? getCSpellDiags(document.uri) : undefined;
-        const value = extractMatchingDiagText(document, selection, diags) || (range && document?.getText(range));
-        const r = value
-            ? fnAction(value, document?.uri)
-            : window.showInputBox({ prompt, value }).then((word) => {
-                  word && fnAction(word, document && document.uri);
-              });
-        return Promise.resolve(r);
+        const matchingDiagWords = normalizeWords(extractMatchingDiagTexts(document, selection, diags) || []);
+        if (matchingDiagWords.length) {
+            const picked =
+                selection?.anchor.isEqual(selection.active) && matchingDiagWords.length === 1
+                    ? matchingDiagWords
+                    : await chooseWords(matchingDiagWords.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' });
+            if (!picked) return;
+            return fnAction(picked.join(' '), document?.uri);
+        }
+
+        if (!range || !selection || !document || !document.getText(range)) {
+            const word = await window.showInputBox({ title: prompt, prompt });
+            if (!word) return;
+            return fnAction(word, document?.uri);
+        }
+
+        const text = selection.contains(range) ? document.getText(selection) : document.getText(range);
+        const words = normalizeWords(text);
+        const picked =
+            words.length > 1
+                ? await chooseWords(words.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' })
+                : [await window.showInputBox({ title: prompt, prompt, value: words[0] })];
+        if (!picked) return;
+        return fnAction(picked.join(' '), document?.uri);
     };
+}
+
+async function chooseWords(words: string[], options: QuickPickOptions): Promise<string[] | undefined> {
+    if (words.length <= 1) {
+        const picked = await window.showInputBox({ ...options, value: words[0] });
+        if (!picked) return;
+        return [picked];
+    }
+
+    const items = words.map((label) => ({ label, picked: true }));
+
+    const picked = await window.showQuickPick(items, { ...options, canPickMany: true });
+    return picked?.map((p) => p.label);
 }
 
 function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri | string | null | undefined): string {

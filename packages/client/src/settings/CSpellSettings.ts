@@ -70,7 +70,7 @@ export function writeSettings(filename: Uri, settings: CSpellSettings): Promise<
     return writeConfigFile(filename, settings).then(() => settings);
 }
 
-export function addIgnoreWordToSettingsAndUpdate(filename: Uri, word: string): Promise<void> {
+export function addIgnoreWordsToSettingsAndUpdate(filename: Uri, word: string): Promise<void> {
     return readSettingsFileAndApplyUpdate(filename, (settings) => addIgnoreWordsToSettings(settings, normalizeWords(word)));
 }
 
@@ -148,12 +148,22 @@ export async function readSettingsFileAndApplyUpdate(cspellConfigUri: Uri, actio
     }
 }
 
+// const regExWordCharacters = /[\w\p{L}\p{M}_'’-]+/gu;
+const regExNonWordCharacters = /[^\w\p{L}\p{M}_'’-]+/gu;
+const regExpIsWordLike = /^[\w\p{L}\p{M}_'’-]+$/u;
+
+export function isWordLike(text: string): boolean {
+    return regExpIsWordLike.test(text);
+}
+
 export function normalizeWords(words: string | string[]): string[] {
-    if (typeof words !== 'string') return words;
+    words = typeof words !== 'string' ? words.join(' ') : words;
     return words
+        .replace(regExNonWordCharacters, ' ')
         .split(' ')
         .map((a) => a.trim())
-        .filter((a) => !!a);
+        .filter((a) => !!a)
+        .filter(uniqueFilter());
 }
 
 export function isUpdateSupportedForConfigFileFormat(uri: Uri): boolean {
