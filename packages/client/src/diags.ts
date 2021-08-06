@@ -1,6 +1,7 @@
 import { Uri, languages, Diagnostic, TextDocument, Selection, Range } from 'vscode';
 import { diagnosticSource } from './constants';
-import { isDefined } from './util';
+import { isWordLike } from './settings/CSpellSettings';
+import { isDefined, uniqueFilter } from './util';
 
 /**
  * Return cspell diags for a given uri.
@@ -19,10 +20,10 @@ export function extractMatchingDiagText(
     diags: Diagnostic[] | undefined
 ): string | undefined {
     if (!doc || !selection || !diags) return undefined;
-    return extractMatchingDiagTexts(doc, selection, diags)?.join(' ');
+    return extractMatchingDiagTexts(doc, selection, diags)?.filter(uniqueFilter()).join(' ');
 }
 
-function extractMatchingDiagTexts(
+export function extractMatchingDiagTexts(
     doc: TextDocument | undefined,
     selection: Selection | undefined,
     diags: Diagnostic[] | undefined
@@ -50,7 +51,6 @@ export function extractMatchingDiagRanges(
  * An expression that matches most word like constructions. It just needs to be close.
  * If it doesn't match, the idea is to fall back to the diagnostic selection.
  */
-const regExpIsWordLike = /^[\p{L}\w.-]+$/u;
 
 function determineWordRangeToAddToDictionaryFromSelection(
     selectedText: string | undefined,
@@ -66,7 +66,7 @@ function determineWordRangeToAddToDictionaryFromSelection(
     // be included or just the diag. If the selected text is a word, then assume the entire selection
     // was wanted, otherwise use the diag range.
 
-    return regExpIsWordLike.test(selectedText) ? selection : diagRange;
+    return isWordLike(selectedText) ? selection : diagRange;
 }
 
 export const __testing__ = {

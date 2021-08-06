@@ -42,7 +42,7 @@ describe('Validate text extractors', () => {
         ${/(?<=Co)(?=de)/}                     | ${'Code'}  | ${'Code'}
         ${/(?=Code)/}                          | ${'Code'}  | ${'Code'}
         ${/(?<=Code)/}                         | ${'Code'}  | ${'Code'}
-        ${'important_computations-and2.vélos'} | ${'vélos'} | ${'important_computations-and2.vélos'}
+        ${'important_computations-and2.vélos'} | ${'vélos'} | ${'vélos'}
         ${'__not_found__'}                     | ${'text'}  | ${'text'}
         ${undefined}                           | ${'text'}  | ${'text'}
     `('determineWordToAddToDictionaryFromSelection sel: "$selection" diag: "$diag"', ({ selection, diag, expected }) => {

@@ -112,7 +112,9 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
         const uris = new Set(e.uris.map((u) => u.toString()));
         if (uris.has(activeTextEditor.document.uri.toString())) {
-            logErrors(updateDocumentRelatedContext(client, activeTextEditor.document), 'handleOnDidChangeDiagnostics');
+            setTimeout(() => {
+                logErrors(updateDocumentRelatedContext(client, activeTextEditor.document), 'handleOnDidChangeDiagnostics');
+            }, 10);
         }
     }
 
