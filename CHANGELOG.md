@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.13](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.12...v2.0.1-alpha.13) (2021-08-07)
+
+
+### Bug Fixes
+
+* be able to select config file to create. ([#1122](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1122)) ([6ffe7d0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6ffe7d054a3729efec94a4005d7fb7462ed56a9d))
+* Improve experience to add words to dictionary ([#1132](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1132)) ([e9895da](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e9895da928b9c6010e1278cf7ad56ae6299195f0))
+* Improve user experience when creating CSpell config or a custom dictionary. ([#1131](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1131)) ([fb86d94](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fb86d9486a5b3a7afac5f75ef68550fcbd40b76a))
+
 ### [2.0.1-alpha.12](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.11...v2.0.1-alpha.12) (2021-08-03)
 
 
