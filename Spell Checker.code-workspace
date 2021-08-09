@@ -35,11 +35,15 @@
 		{
 			"name": "Tools",
 			"path": "packages/___buildTools"
+		},
+		{
+			"name": "Docs",
+			"path": "docs"
 		}
 	],
 	"settings": {
 		"cSpell.import": [
-			"${workspaceFolder:vscode-spell-checker}/cSpell.json"
+			"${workspaceFolder:Spell Checker Root}/cSpell.json"
 		],
 		"cSpell.customWorkspaceDictionaries": [
 			"cspell-words"
