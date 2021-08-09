@@ -52,19 +52,19 @@
           "group": "A_cspell@001"
         },
         {
+          "command": "cSpell.addWordToDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary",
+          "group": "A_cspell@010"
+        },
+        {
           "command": "cSpell.addWordToFolderDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToFolderDictionary",
-          "group": "A_cspell@010"
+          "group": "A_cspell@020"
         },
         {
           "command": "cSpell.addWordToWorkspaceDictionary",
           "when": "editorTextFocus && cSpell.editorMenuContext.addWordToWorkspaceDictionary",
-          "group": "A_cspell@020"
-        },
-        {
-          "command": "cSpell.addWordToDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addWordToDictionary",
-          "group": "A_cspell@040"
+          "group": "A_cspell@030"
         },
         {
           "command": "cSpell.addWordToCSpellConfig",
