@@ -99,11 +99,13 @@ function createWorkspaceNameToGlobResolver(
     folders: FolderPath[],
     workspaceRoot: string | undefined
 ): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
+    const _folder = { ...folder };
+    const _folders = [...folders];
     return (globRoot: string | undefined) => {
-        const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]].concat(
-            folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
+        const folderPairs = [['${workspaceFolder}', _folder.path] as [string, string]].concat(
+            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
         );
-        workspaceRoot = workspaceRoot || folder.path;
+        workspaceRoot = workspaceRoot || _folder.path;
         const map = new Map(folderPairs);
         const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
         const root = resolveRoot(globRoot || '${workspaceFolder}');
