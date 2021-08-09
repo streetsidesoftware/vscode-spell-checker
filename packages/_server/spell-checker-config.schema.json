@@ -579,6 +579,15 @@
       "scope": "application",
       "type": "boolean"
     },
+    "files": {
+      "description": "Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.",
+      "items": {
+        "description": "These are glob expressions",
+        "type": "string"
+      },
+      "scope": "resource",
+      "type": "array"
+    },
     "fixSpellingWithRenameProvider": {
       "default": true,
       "description": "Use Rename when fixing spelling issues.",
@@ -594,7 +603,7 @@
       "type": "array"
     },
     "globRoot": {
-      "description": "The root to use for glop patterns found in this configuration. Default: location of the configuration file.   For compatibility reasons, config files with version 0.1, the glob root will   default to be `${cwd}`.\n\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n- `${cwd}` - will be replaced with the current working directory.\n- `.` - will be the location of the containing configuration file.",
+      "description": "The root to use for glop patterns found in this configuration. Default: The current workspace folder. Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
       "scope": "resource",
       "type": "string"
     },
