@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-// cSpell:ignore pycache
 import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
 import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
 import type {
@@ -59,8 +57,7 @@ interface ExtSettings {
 
 const defaultExclude: Glob[] = [
     '**/*.rendered',
-    '**/*.*.rendered',
-    '__pycache__/**', // ignore cache files.
+    '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
 const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled'];
@@ -105,7 +102,7 @@ export class DocumentSettings {
         return calcExcludedBy(uri, extSettings);
     }
 
-    resetSettings() {
+    resetSettings(): void {
         log('resetSettings');
         clearCachedFiles();
         this.cachedValues.forEach((cache) => cache.clear());
@@ -122,11 +119,11 @@ export class DocumentSettings {
         return readSettingsFiles(importPaths);
     }
 
-    get version() {
+    get version(): number {
         return this._version;
     }
 
-    registerConfigurationFile(path: string) {
+    registerConfigurationFile(path: string): void {
         log('registerConfigurationFile:', path);
         this.configsToImport.add(path);
         this.importedSettings.clear();
@@ -147,9 +144,16 @@ export class DocumentSettings {
         return folderSettings;
     }
 
-    private async findMatchingFolder(docUri: string): Promise<WorkspaceFolder> {
+    private async findMatchingFolder(docUri: string, defaultTo: WorkspaceFolder): Promise<WorkspaceFolder>;
+    private async findMatchingFolder(docUri: string, defaultTo?: WorkspaceFolder | undefined): Promise<WorkspaceFolder | undefined>;
+    private async findMatchingFolder(docUri: string, defaultTo: WorkspaceFolder | undefined): Promise<WorkspaceFolder | undefined> {
+        return (await this.matchingFoldersForUri(docUri))[0] || defaultTo;
+    }
+
+    private async findMatchingFolderDefaultToRoot(docUri: string): Promise<WorkspaceFolder> {
         const root = Uri.parse(docUri || defaultRootUri).with({ path: '' });
-        return (await this.matchingFoldersForUri(docUri))[0] || { uri: root.toString(), name: 'root' };
+        const defaultFolder = { uri: root.toString(), name: 'root' };
+        return this.findMatchingFolder(docUri, defaultFolder);
     }
 
     private async fetchFolders() {
@@ -157,9 +161,11 @@ export class DocumentSettings {
     }
 
     private async _fetchVSCodeConfiguration(uri: string) {
-        return (
+        const [cSpell, search] = (
             await getConfiguration(this.connection, [{ scopeUri: uri || undefined, section: cSpellSection }, { section: 'search' }])
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
+
+        return { cSpell, search };
     }
 
     public async findCSpellConfigurationFilesForUri(docUri: string | Uri): Promise<Uri[]> {
@@ -186,14 +192,14 @@ export class DocumentSettings {
     readonly extractTargetDictionaries = extractTargetDictionaries;
 
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
-        const configs = await this.fetchVSCodeConfiguration(uri || '');
-        const [cSpell, search] = configs;
+        const { cSpell, search } = await this.fetchVSCodeConfiguration(uri || '');
         const { exclude = {} } = search;
-        const { ignorePaths = [] } = cSpell;
+        const { ignorePaths = [], files = ['**'] } = cSpell;
         const cSpellConfigSettings: CSpellUserSettings = {
             ...cSpell,
             id: 'VSCode-Config',
             ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
+            files,
         };
         return cSpellConfigSettings;
     }
@@ -205,7 +211,7 @@ export class DocumentSettings {
         const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
         const settings = await searchForConfig(fsPath);
-        const folder = await this.findMatchingFolder(docUri);
+        const folder = await this.findMatchingFolderDefaultToRoot(docUri);
         const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
 
         const settingsToMerge: CSpellUserSettings[] = [];
@@ -225,7 +231,7 @@ export class DocumentSettings {
         const fileSettings = calcOverrideSettings(spellSettings, fsPath);
         const { ignorePaths = [] } = fileSettings;
 
-        const globs = defaultExclude.concat(ignorePaths);
+        const globs = ignorePaths.concat(defaultExclude);
         const root = Uri.parse(folder.uri).fsPath;
         const globMatcher = new GlobMatcher(globs, root);
 
@@ -240,7 +246,7 @@ export class DocumentSettings {
 
     private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string): Promise<CSpellUserSettings> {
         const folders = await this.folders;
-        const folder = await this.findMatchingFolder(docUri);
+        const folder = await this.findMatchingFolderDefaultToRoot(docUri);
         const resolver = createWorkspaceNamesResolver(folder, folders, settings.workspaceRootPath);
         return resolveSettings(settings, resolver);
     }
@@ -294,12 +300,12 @@ function resolvePath(...parts: string[]): string {
     return path.resolve(...normalizedParts);
 }
 
-export function isUriAllowed(uri: string, schemes?: string[]) {
+export function isUriAllowed(uri: string, schemes?: string[]): boolean {
     schemes = schemes || defaultAllowedSchemes;
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
-export function isUriBlocked(uri: string, schemes: string[] = schemeBlockList) {
+export function isUriBlocked(uri: string, schemes: string[] = schemeBlockList): boolean {
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
