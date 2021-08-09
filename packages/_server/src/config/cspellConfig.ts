@@ -425,9 +425,24 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignorePaths?: (SimpleGlob | GlobDefX)[];
 
     /**
+     * The root to use for glop patterns found in this configuration.
+     * Default: The current workspace folder.
+     * Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
+     * Defining globRoot, does not impact imported configurations.
+     *
+     * Special Values:
+     *
+     * - `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\n
+     * - `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
+     *
      * @scope resource
      */
     globRoot?: CSpellSettings['globRoot'];
+
+    /**
+     * @scope resource
+     */
+    files?: CSpellSettings['files'];
 
     /**
      * @scope resource
@@ -549,7 +564,7 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
-export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, '$schema' | 'description' | 'files' | 'id' | 'name' | 'version'>;
+export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, '$schema' | 'description' | 'id' | 'name' | 'version'>;
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
