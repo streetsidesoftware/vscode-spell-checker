@@ -1,0 +1,13 @@
+# Custom Dictionary Words
+disqus
+Disqus
+gtag
+jemoji
+mademistakes
+michaelrose
+msvalidate
+naver
+Naver
+staticman
+Staticman
+staticmanapp
