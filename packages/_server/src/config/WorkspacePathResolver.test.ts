@@ -258,7 +258,7 @@ describe('Validate workspace substitution resolver', () => {
         ${undefined}                        | ${undefined}               | ${undefined}
         ${['**']}                           | ${undefined}               | ${[{ glob: '**', root: paths.client }]}
         ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: '~/glob-root' }]}
-        ${['**']}                           | ${'${workspaceFolder}/..'} | ${[{ glob: '**', root: rootPath }]}
+        ${['**']}                           | ${'${workspaceFolder}/..'} | ${[{ glob: '**', root: paths.root }]}
         ${['${workspaceFolder}/**']}        | ${''}                      | ${[{ glob: '/**', root: paths.client }]}
         ${['${workspaceFolder}/**']}        | ${undefined}               | ${[{ glob: '/**', root: paths.client }]}
         ${['${workspaceFolder}/**']}        | ${'~/glob-root'}           | ${[{ glob: '/**', root: paths.client }]}
