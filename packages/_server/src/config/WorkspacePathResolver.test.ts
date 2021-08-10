@@ -101,6 +101,14 @@ describe('Validate workspace substitution resolver', () => {
             uri: testUri.toString(),
         },
     };
+
+    const paths = {
+        root: uriToFsPath(workspaceFolders.root.uri),
+        client: uriToFsPath(workspaceFolders.client.uri),
+        server: uriToFsPath(workspaceFolders.server.uri),
+        test: uriToFsPath(workspaceFolders.test.uri),
+    };
+
     const workspaces: WorkspaceFolder[] = [workspaceFolders.root, workspaceFolders.client, workspaceFolders.server, workspaceFolders.test];
 
     const settingsImports: CSpellUserSettings = Object.freeze({
@@ -237,12 +245,30 @@ describe('Validate workspace substitution resolver', () => {
         // '${workspaceFolder:Server}/samples/**',
         // '${workspaceFolder:client-test}/**/*.json',
         expect(result.ignorePaths).toEqual([
-            { glob: '**/node_modules/**', root: root },
+            { glob: '**/node_modules/**', root: uriToFsPath(workspaceFolders.client.uri) },
             { glob: '/node_modules/**', root: uriToFsPath(workspaceFolders.client.uri) },
             { glob: '/samples/**', root: uriToFsPath(workspaceFolders.server.uri) },
             { glob: '/**/*.json', root: uriToFsPath(workspaceFolders.test.uri) },
             { glob: 'dist/**', root: uriToFsPath(workspaceFolders.server.uri) },
         ]);
+    });
+
+    test.each`
+        files                               | globRoot                   | expected
+        ${undefined}                        | ${undefined}               | ${undefined}
+        ${['**']}                           | ${undefined}               | ${[{ glob: '**', root: paths.client }]}
+        ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: '~/glob-root' }]}
+        ${['**']}                           | ${'${workspaceFolder}/..'} | ${[{ glob: '**', root: paths.root }]}
+        ${['${workspaceFolder}/**']}        | ${''}                      | ${[{ glob: '/**', root: paths.client }]}
+        ${['${workspaceFolder}/**']}        | ${undefined}               | ${[{ glob: '/**', root: paths.client }]}
+        ${['${workspaceFolder}/**']}        | ${'~/glob-root'}           | ${[{ glob: '/**', root: paths.client }]}
+        ${['${workspaceFolder:Server}/**']} | ${'~/glob-root'}           | ${[{ glob: '/**', root: paths.server }]}
+    `('resolveSettings files $files $globRoot', ({ files, globRoot, expected }) => {
+        const root = '/config root';
+        const resolver = createWorkspaceNamesResolver(workspaceFolders.client, workspaces, root);
+        const settings: CSpellUserSettings = { globRoot, files };
+        const result = resolveSettings(settings, resolver);
+        expect(result.files).toEqual(expected);
     });
 
     test('resolveSettings dictionaryDefinitions', () => {
@@ -288,15 +314,15 @@ describe('Validate workspace substitution resolver', () => {
             [
                 {
                     glob: '*.md',
-                    root: undefined,
+                    root: uriToFsPath(workspaceFolders.client.uri),
                 },
                 {
                     glob: '**/*.ts',
-                    root: undefined,
+                    root: uriToFsPath(workspaceFolders.client.uri),
                 },
                 {
                     glob: '**/*.js',
-                    root: undefined,
+                    root: uriToFsPath(workspaceFolders.client.uri),
                 },
             ],
             {

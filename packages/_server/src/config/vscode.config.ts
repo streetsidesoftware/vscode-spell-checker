@@ -1,5 +1,6 @@
 import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
 import { log } from 'common-utils/log.js';
+import { isDefined } from '../utils';
 
 export interface TextDocumentUri {
     uri: string;
@@ -9,36 +10,10 @@ export interface TextDocumentUriLangId extends TextDocumentUri {
     languageId: string;
 }
 
-export type GetConfigurationParams = string | ConfigurationItem | ConfigurationItem[];
-export function getConfiguration(connection: Connection): Thenable<any>;
-export function getConfiguration(connection: Connection, section: string): Thenable<any>;
-export function getConfiguration(connection: Connection, item: ConfigurationItem): Thenable<any>;
-export function getConfiguration(connection: Connection, items: ConfigurationItem[]): Thenable<any[]>;
-export function getConfiguration(connection: Connection, params?: GetConfigurationParams): Thenable<any> {
-    if (typeof params === 'string') {
-        log(`getConfiguration\t${params}`);
-        return connection.workspace.getConfiguration(params);
-    }
-    if (Array.isArray(params)) {
-        const uris = params
-            .map((p) => {
-                if (!p) {
-                    return '';
-                }
-                if (typeof p === 'string') {
-                    return p;
-                }
-                return p.scopeUri || '';
-            })
-            .filter((p) => !!p);
-        log('getConfiguration', uris);
-        return connection.workspace.getConfiguration(params);
-    }
-    if (params) {
-        log('getConfiguration', params.scopeUri);
-        return connection.workspace.getConfiguration(params);
-    }
-    return connection.workspace.getConfiguration();
+export function getConfiguration(connection: Connection, items: ConfigurationItem[]): Promise<any[]> {
+    const uris = items.map((p) => p.scopeUri).filter(isDefined);
+    log('getConfiguration', uris);
+    return connection.workspace.getConfiguration(items);
 }
 
 /**

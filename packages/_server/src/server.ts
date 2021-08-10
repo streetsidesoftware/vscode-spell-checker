@@ -35,6 +35,7 @@ import {
     stringifyPatterns,
 } from './config/documentSettings';
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
+import { toUri } from 'common-utils/uriHelper.js';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';
@@ -371,7 +372,8 @@ export function run(): void {
     }
 
     async function isUriExcluded(uri: string) {
-        return documentSettings.isExcluded(uri);
+        const ie = await documentSettings.calcIncludeExclude(toUri(uri));
+        return !ie.include || ie.exclude;
     }
 
     async function getBaseSettings(doc: TextDocument) {

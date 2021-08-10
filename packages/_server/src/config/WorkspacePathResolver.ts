@@ -12,7 +12,7 @@ export type WorkspacePathResolverFn = (path: string) => string;
 
 interface WorkspacePathResolver {
     resolveFile: WorkspacePathResolverFn;
-    resolveGlob: WorkspaceGlobResolverFn;
+    resolveGlob: (globRoot: string | undefined) => WorkspaceGlobResolverFn;
 }
 
 interface FolderPath {
@@ -31,7 +31,7 @@ export function resolveSettings<T extends CSpellUserSettings>(settings: T, resol
     // There is a more elegant way of doing this, but for now just change each section.
     const newSettings = resolveCoreSettings(settings, resolver);
     newSettings.import = resolveImportsToWorkspace(newSettings.import, resolver);
-    newSettings.overrides = resolveOverrides(newSettings.overrides, resolver);
+    newSettings.overrides = resolveOverrides(newSettings, resolver);
 
     // Merge custom dictionaries
     const dictionaryDefinitions = resolveDictionaryPathReferences(extractDictionaryDefinitions(newSettings), resolver);
@@ -43,9 +43,9 @@ export function resolveSettings<T extends CSpellUserSettings>(settings: T, resol
     newSettings.dictionaries = dictionaries.length ? dictionaries : undefined;
 
     // Remove unwanted settings.
-    delete newSettings['customUserDictionaries'];
-    delete newSettings['customWorkspaceDictionaries'];
-    delete newSettings['customFolderDictionaries'];
+    delete newSettings.customUserDictionaries;
+    delete newSettings.customWorkspaceDictionaries;
+    delete newSettings.customFolderDictionaries;
 
     return shallowCleanObject(newSettings);
 }
@@ -88,55 +88,67 @@ function createWorkspaceNamesGlobPathResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
     root: string | undefined
-): WorkspaceGlobResolverFn {
+): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
     const rootFolder = toFolderPath(folder);
 
     return createWorkspaceNameToGlobResolver(rootFolder, folders.map(toFolderPath), root);
 }
 
-function createWorkspaceNameToGlobResolver(folder: FolderPath, folders: FolderPath[], root: string | undefined): WorkspaceGlobResolverFn {
-    const folderPairs = [['${workspaceFolder}', folder.path] as [string, string]].concat(
-        folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
-    );
-    const map = new Map(folderPairs);
-    const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
+function createWorkspaceNameToGlobResolver(
+    folder: FolderPath,
+    folders: FolderPath[],
+    workspaceRoot: string | undefined
+): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
+    const _folder = { ...folder };
+    const _folders = [...folders];
+    return (globRoot: string | undefined) => {
+        const folderPairs = [['${workspaceFolder}', _folder.path] as [string, string]].concat(
+            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
+        );
+        workspaceRoot = workspaceRoot || _folder.path;
+        const map = new Map(folderPairs);
+        const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
+        const root = resolveRoot(globRoot || '${workspaceFolder}');
 
-    function lookUpWorkspaceFolder(match: string): string {
-        const r = map.get(match);
-        if (r !== undefined) return r;
-        logError(`Failed to resolve ${match}`);
-        return match;
-    }
-
-    return (glob: Glob) => {
-        if (typeof glob == 'string') {
-            glob = {
-                glob,
-                root,
-            };
+        function lookUpWorkspaceFolder(match: string): string {
+            const r = map.get(match);
+            if (r !== undefined) return r;
+            logError(`Failed to resolve ${match}`);
+            return match;
         }
 
-        const matchGlob = glob.glob.match(regEx);
-        if (matchGlob) {
-            const root = lookUpWorkspaceFolder(matchGlob[0]);
+        function resolveRoot(globRoot: string | undefined): string | undefined {
+            const matchRoot = globRoot?.match(regEx);
+            if (matchRoot && globRoot) {
+                const workspaceRoot = lookUpWorkspaceFolder(matchRoot[0]);
+                return Path.join(workspaceRoot, globRoot.slice(matchRoot[0].length));
+            }
+            return globRoot;
+        }
+
+        return (glob: Glob) => {
+            if (typeof glob == 'string') {
+                glob = {
+                    glob,
+                    root,
+                };
+            }
+
+            const matchGlob = glob.glob.match(regEx);
+            if (matchGlob) {
+                const root = lookUpWorkspaceFolder(matchGlob[0]);
+                return {
+                    ...glob,
+                    glob: glob.glob.slice(matchGlob[0].length),
+                    root,
+                };
+            }
+
             return {
                 ...glob,
-                glob: glob.glob.slice(matchGlob[0].length),
-                root,
+                root: resolveRoot(glob.root),
             };
-        }
-
-        const matchRoot = glob.root?.match(regEx);
-        if (matchRoot && glob.root) {
-            const root = lookUpWorkspaceFolder(matchRoot[0]);
-            return {
-                ...glob,
-                glob: glob.glob,
-                root: Path.join(root, glob.root.slice(matchRoot[0].length)),
-            };
-        }
-
-        return glob;
+        };
     };
 }
 
@@ -185,7 +197,8 @@ function resolveCoreSettings<T extends CSpellUserSettings>(settings: T, resolver
     // There is a more elegant way of doing this, but for now just change each section.
     newSettings.dictionaryDefinitions = resolveDictionaryPathReferences(newSettings.dictionaryDefinitions, resolver);
     newSettings.languageSettings = resolveLanguageSettings(newSettings.languageSettings, resolver);
-    newSettings.ignorePaths = resolveGlobArray(newSettings.ignorePaths, resolver.resolveGlob);
+    newSettings.ignorePaths = resolveGlobArray(newSettings.ignorePaths, resolver.resolveGlob(newSettings.globRoot));
+    newSettings.files = resolveGlobArray(newSettings.files, resolver.resolveGlob(newSettings.globRoot));
     newSettings.workspaceRootPath = newSettings.workspaceRootPath ? resolver.resolveFile(newSettings.workspaceRootPath) : undefined;
     return shallowCleanObject(newSettings) as T;
 }
@@ -228,12 +241,15 @@ function resolveLanguageSettings(
         return shallowCleanObject({ ...resolveBaseSettings(langSetting, resolver) });
     });
 }
-function resolveOverrides(overrides: CSpellUserSettings['overrides'], resolver: WorkspacePathResolver): CSpellUserSettings['overrides'] {
+function resolveOverrides(settings: CSpellUserSettings, resolver: WorkspacePathResolver): CSpellUserSettings['overrides'] {
+    const { overrides } = settings;
     if (!overrides) return overrides;
+
+    const resolveGlob = resolver.resolveGlob(settings.globRoot);
 
     function resolve(glob: Glob | Glob[]) {
         if (!glob) return glob;
-        return Array.isArray(glob) ? glob.map(resolver.resolveGlob) : resolver.resolveGlob(glob);
+        return Array.isArray(glob) ? glob.map(resolveGlob) : resolveGlob(glob);
     }
 
     return overrides.map((src) => {
