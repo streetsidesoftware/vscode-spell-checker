@@ -20,7 +20,7 @@ import * as Validator from './validator';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
 import { filter, tap, debounce, debounceTime, mergeMap, take } from 'rxjs/operators';
 import { onCodeActionHandler } from './codeActions';
-import { Glob } from 'cspell-lib';
+import { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
 
 import * as CSpell from 'cspell-lib';
 import { CSpellUserSettings } from './config/cspellConfig';
@@ -35,7 +35,7 @@ import {
     stringifyPatterns,
 } from './config/documentSettings';
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toUri } from 'common-utils/uriHelper.js';
+import { toUri, toFileUri } from 'common-utils/uriHelper.js';
 import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
 import { DictionaryWatcher } from './config/dictionaryWatcher';
 import { ConfigWatcher } from './config/configWatcher';
@@ -196,42 +196,27 @@ export function run(): void {
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
     disposables.push(configWatcher.listen(onConfigFileChange));
 
-    async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
-        const { uri, languageId } = params;
-        const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
-        const settings = await getActiveUriSettings(uri);
-        const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
-        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
-
-        return {
-            languageEnabled,
-            fileEnabled,
-            excludedBy,
-        };
+    function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
+        return calcIncludeExcludeInfo(params);
     }
 
     async function handleGetConfigurationForDocument(
         params: Api.GetConfigurationForDocumentRequest
     ): Promise<Api.GetConfigurationForDocumentResult> {
-        const { uri, languageId, workspaceConfig } = params;
+        const { uri, workspaceConfig } = params;
         const doc = uri && documents.get(uri);
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
         const settings = stringifyPatterns(await getActiveUriSettings(uri));
-        const languageEnabled = languageId && doc ? await isLanguageEnabled(doc, settings) : undefined;
         const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
-
         const configTargets = workspaceConfig ? calculateConfigTargets(settings, workspaceConfig) : [];
+        const ieInfo = await calcIncludeExcludeInfo(params);
 
-        const fileEnabled = uri ? !(await isUriExcluded(uri)) : undefined;
-        const excludedBy = !fileEnabled && uri ? await getExcludedBy(uri) : undefined;
         return {
-            languageEnabled,
-            fileEnabled,
-            settings,
-            docSettings,
-            excludedBy,
             configFiles,
             configTargets,
+            docSettings,
+            settings,
+            ...ieInfo,
         };
     }
 
@@ -240,10 +225,16 @@ export function run(): void {
             if (typeof g === 'string') return g;
             return g.glob;
         }
+
+        function extractGlobSourceUri(settings: CSpellSettingsWithSourceTrace): string | undefined {
+            const filename = settings.__importRef?.filename || settings.source?.filename;
+            return filename ?? toFileUri(filename)?.toString();
+        }
+
         const ex = await documentSettings.calcExcludedBy(uri);
         return ex.map((ex) => ({
             glob: globToString(ex.glob),
-            filename: ex.settings.__importRef?.filename || ex.settings.source?.filename,
+            configUri: extractGlobSourceUri(ex.settings),
             id: ex.settings.id,
             name: ex.settings.name,
         }));
@@ -371,9 +362,30 @@ export function run(): void {
         return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
     }
 
+    async function calcIncludeExcludeInfo(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
+        const { uri, languageId } = params;
+        const settings = await getActiveUriSettings(uri);
+        const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
+
+        const { include: fileIsIncluded = true, exclude: fileIsExcluded = false } = uri ? await calcFileIncludeExclude(uri) : {};
+        const fileEnabled = fileIsIncluded && !fileIsExcluded;
+        const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
+        return {
+            excludedBy,
+            fileEnabled,
+            fileIsExcluded,
+            fileIsIncluded,
+            languageEnabled,
+        };
+    }
+
     async function isUriExcluded(uri: string) {
-        const ie = await documentSettings.calcIncludeExclude(toUri(uri));
+        const ie = await calcFileIncludeExclude(uri);
         return !ie.include || ie.exclude;
+    }
+
+    function calcFileIncludeExclude(uri: string) {
+        return documentSettings.calcIncludeExclude(toUri(uri));
     }
 
     async function getBaseSettings(doc: TextDocument) {

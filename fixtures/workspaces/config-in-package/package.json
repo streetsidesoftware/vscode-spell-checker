@@ -7,10 +7,17 @@
   "scripts": {
     "test": "echo test"
   },
+  "author": "",
+  "license": "MIT",
   "cspell": {
     "version": "0.2",
-    "words": []
-  },
-  "author": "",
-  "license": "MIT"
+    "ignorePaths": [
+      "out"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [],
+    "ignoreWords": [],
+    "import": []
+  }
 }

@@ -243,7 +243,7 @@ export class DocumentSettings {
         const { ignorePaths = [], files = [] } = fileSettings;
 
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
-        if (!files.length) {
+        if (!files.length && cSpellConfigSettings.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
             files.push({ glob: '**', root: globRoot });
             files.push({ glob: '**/.*/**', root: globRoot });
@@ -561,7 +561,8 @@ export function calcIncludeExclude(settings: ExtSettings, uri: Uri): { include: 
 }
 
 export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
-    return settings.includeGlobMatcher.match(uri.fsPath);
+    const files = settings.settings.files;
+    return !files?.length || settings.includeGlobMatcher.match(uri.fsPath);
 }
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {

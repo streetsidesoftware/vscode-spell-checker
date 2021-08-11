@@ -20,7 +20,7 @@ export type FileUri = string;
 export type ConfigTarget = keyof SettingByConfigTarget<void>;
 export type ConfigSource = ConfigTarget | 'default';
 
-export type Inherited<T> = T;
+export type Extends<T> = T;
 
 export interface SettingByConfigTarget<T> {
     user: T;
@@ -43,15 +43,28 @@ export interface DictionaryEntry {
 
 export interface Config {
     inherited: { [key in keyof Config]?: ConfigSource };
-    locales: Inherited<LocaleList>;
-    languageIdsEnabled: Inherited<FileTypeList>;
+    locales: Extends<LocaleList>;
+    languageIdsEnabled: Extends<FileTypeList>;
 }
 
-export interface FileConfig extends TextDocument {
-    languageEnabled: boolean | undefined;
-    fileEnabled: boolean | undefined;
+export interface FileConfig extends TextDocument, IsSpellCheckEnabledResult {
     dictionaries: DictionaryEntry[];
     configFiles: ConfigFile[];
+}
+
+export interface ExcludeRef {
+    glob: string;
+    id?: string | undefined;
+    name?: string | undefined;
+    configUri?: string | undefined;
+}
+
+export interface IsSpellCheckEnabledResult {
+    languageEnabled?: boolean | undefined;
+    fileEnabled: boolean;
+    fileIsIncluded: boolean;
+    fileIsExcluded: boolean;
+    excludedBy?: ExcludeRef[] | undefined;
 }
 
 export interface ConfigFile {

@@ -123,14 +123,23 @@ function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpel
     return cfg;
 }
 
+function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): FileConfig['excludedBy'] {
+    if (!refs) return undefined;
+
+    return refs.map((r) => ({
+        ...r,
+        name: r.name || (r.configUri && uriToName(toUri(r.configUri))),
+    }));
+}
+
 function extractFileConfig(
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
     log: Logger
 ): FileConfig | undefined {
-    const { languageEnabled, docSettings, fileEnabled } = docConfig;
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
+    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, excludedBy } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
@@ -143,6 +152,9 @@ function extractFileConfig(
         languageEnabled,
         fileEnabled,
         configFiles: extractConfigFiles(docConfig),
+        fileIsExcluded,
+        fileIsIncluded,
+        excludedBy: mapExcludedBy(excludedBy),
     };
     return cfg;
 }

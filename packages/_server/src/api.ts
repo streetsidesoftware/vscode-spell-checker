@@ -114,12 +114,9 @@ export interface GetConfigurationForDocumentRequest extends TextDocumentInfo {
     workspaceConfig?: WorkspaceConfigForDocument;
 }
 
-export interface GetConfigurationForDocumentResult {
-    languageEnabled: boolean | undefined;
-    fileEnabled: boolean | undefined;
+export interface GetConfigurationForDocumentResult extends IsSpellCheckEnabledResult {
     settings: config.CSpellUserSettings | undefined;
     docSettings: config.CSpellUserSettings | undefined;
-    excludedBy: ExcludeRef[] | undefined;
     configFiles: UriString[];
     configTargets: ConfigTarget[];
 }
@@ -128,12 +125,14 @@ export interface ExcludeRef {
     glob: string;
     id: string | undefined;
     name: string | undefined;
-    filename: string | undefined;
+    configUri: string | undefined;
 }
 
 export interface IsSpellCheckEnabledResult {
     languageEnabled: boolean | undefined;
-    fileEnabled: boolean | undefined;
+    fileEnabled: boolean;
+    fileIsIncluded: boolean;
+    fileIsExcluded: boolean;
     excludedBy: ExcludeRef[] | undefined;
 }
 
