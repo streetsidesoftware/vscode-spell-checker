@@ -15,7 +15,7 @@ import {
     EnableLanguageIdMessage,
     SelectFileMessage,
     SelectFolderMessage,
-    SelectTabMessage
+    SelectTabMessage,
 } from '../api/message';
 import { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
@@ -57,8 +57,6 @@ class AppState {
         this._activeTab = tab;
         return this._activeTab;
     }
-
-
 
     @computed get activeFolder(): WorkspaceFolder | undefined {
         const folders = this.workspaceFolders;
