@@ -21,6 +21,12 @@ const textDocuments: TextDocument[] = [
         isUntitled: false,
         languageId: 'rust',
     },
+    {
+        uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/package-lock.json',
+        fileName: 'package-lock.json',
+        isUntitled: false,
+        languageId: 'json',
+    },
 ];
 
 const _sampleWorkspace: Workspace = {
@@ -34,6 +40,11 @@ const _sampleWorkspace: Workspace = {
             index: 1,
             name: 'dutch',
             uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch',
+        },
+        {
+            index: 1,
+            name: 'vscode-cspell-dict-extensions',
+            uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions',
         },
     ],
     name: 'ripgrep',

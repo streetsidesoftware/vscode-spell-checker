@@ -6,7 +6,8 @@ const mockedRegisterCompletionItemProvider = mocked(languages.registerCompletion
 
 describe('autocomplete', () => {
     test('registerCspellInlineCompletionProviders', () => {
-        const d = registerCspellInlineCompletionProviders();
+        const disposables = registerCspellInlineCompletionProviders();
         expect(mockedRegisterCompletionItemProvider).toHaveBeenCalledTimes(2);
+        expect(disposables).toHaveLength(2);
     });
 });

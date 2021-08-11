@@ -48,6 +48,7 @@ export const ConfigKeysByField: CSpellUserSettingsFields = {
     showStatus: 'showStatus',
     showStatusAlignment: 'showStatusAlignment',
     spellCheckDelayMs: 'spellCheckDelayMs',
+    spellCheckOnlyWorkspaceFiles: 'spellCheckOnlyWorkspaceFiles',
     usePnP: 'usePnP',
     userWords: 'userWords',
     words: 'words',

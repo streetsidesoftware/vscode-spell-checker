@@ -85,6 +85,9 @@ const _sampleSettings: Settings = {
             languageId: 'typescript',
             languageEnabled: true,
             fileEnabled: true,
+            fileIsIncluded: true,
+            fileIsExcluded: false,
+            excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
         },
@@ -108,6 +111,9 @@ const _sampleSettingsSingleFolder: Settings = {
             languageId: 'typescript',
             languageEnabled: true,
             fileEnabled: true,
+            fileIsIncluded: true,
+            fileIsExcluded: false,
+            excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
         },
@@ -117,7 +123,34 @@ const _sampleSettingsSingleFolder: Settings = {
     activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
 };
 
+const _sampleSettingsExcluded: Settings = {
+    dictionaries,
+    knownLanguageIds,
+    configs: {
+        user: { locales: ['en'], languageIdsEnabled: languageIdsUser, inherited: {} },
+        workspace: { locales: ['en'], languageIdsEnabled: languageIdsWorkspace, inherited: { locales: 'user' } },
+        folder: { locales: ['en'], languageIdsEnabled: languageIdsWorkspace, inherited: { locales: 'user', languageIdsEnabled: 'workspace' } },
+        file: {
+            uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/package-lock.json',
+            fileName: 'package-lock.json',
+            isUntitled: false,
+            languageId: 'typescript',
+            languageEnabled: true,
+            fileEnabled: false,
+            fileIsIncluded: true,
+            fileIsExcluded: true,
+            excludedBy: [{ glob: 'package-lock.json', id: 'VSCode-Config' }],
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
+            configFiles: _configFiles,
+        },
+    },
+    workspace: sampleWorkspace,
+    activeFolderUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions',
+    activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/package-lock.json',
+};
+
 export const sampleSettings = Object.freeze(_sampleSettings);
 export const sampleSettingsSingleFolder = Object.freeze(_sampleSettingsSingleFolder);
+export const sampleSettingsExcluded = Object.freeze(_sampleSettingsExcluded);
 
 // cspell:ignore ripgrep

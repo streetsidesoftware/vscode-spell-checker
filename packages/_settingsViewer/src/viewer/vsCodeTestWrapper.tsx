@@ -17,27 +17,31 @@ import {
     SelectFolderMessage,
     SelectTabMessage,
 } from '../api/message';
-import { Config, ConfigFile, ConfigTarget, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
+import { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
+import { sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded } from '../test/samples/sampleSettings';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
     currentSample: number = 0;
-    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder];
+    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded];
     _settings: Settings = this.sampleSettings[this.currentSample];
     _activeTab: string = 'About';
 
     constructor() {
         makeObservable(this, {
-            currentSample: observable,
-            _settings: observable,
-            sampleSettings: observable,
             _activeTab: observable,
+            _settings: observable,
+            currentSample: observable,
+            sampleSettings: observable,
             nextSample: action,
-            updateSettings: action,
+            updateActiveFileUri: action,
+            updateActiveFolderUri: action,
             updateActiveTab: action,
+            updateConfigs: action,
+            updateConfigsFile: action,
+            updateSettings: action,
         });
     }
 
@@ -66,9 +70,19 @@ class AppState {
     @computed get activeFolderUri(): string | undefined {
         return this.settings.activeFolderUri;
     }
+
+    updateActiveFolderUri(fileUri: string | undefined) {
+        this._settings.activeFolderUri = fileUri;
+    }
+
     @computed get activeFileUri(): string | undefined {
         return this.settings.activeFileUri;
     }
+
+    updateActiveFileUri(fileUri: string | undefined) {
+        this._settings.activeFileUri = fileUri;
+    }
+
     @computed get activeDocument(): TextDocument | undefined {
         const uri = this.activeFileUri;
         return this.workspaceDocuments.filter((d) => d.uri === uri)[0];
@@ -91,6 +105,14 @@ class AppState {
         this.sampleSettings[this.currentSample] = toJS(this.settings);
         this.currentSample = (this.currentSample + 1) % this.sampleSettings.length;
         this._settings = this.sampleSettings[this.currentSample];
+    }
+
+    updateConfigs<K extends keyof Configs>(key: K, value: Configs[K]): void {
+        this._settings.configs[key] = value;
+    }
+
+    updateConfigsFile(file: FileConfig | undefined) {
+        this.updateConfigs('file', file);
     }
 }
 
@@ -203,13 +225,16 @@ function calcFileConfig() {
     const folderPath = Path.dirname(Path.dirname(doc.uri));
     const workspacePath = Path.dirname(folderPath);
 
-    appState.settings.configs.file = {
+    appState.updateConfigsFile({
         ...doc,
         fileEnabled: true,
+        fileIsIncluded: true,
+        fileIsExcluded: false,
+        excludedBy: undefined,
         languageEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
-    };
+    });
 }
 
 function cfgFile(path: string, file: string): ConfigFile {
@@ -231,12 +256,12 @@ messageBus.listenFor('SelectTabMessage', (msg: SelectTabMessage) => {
 
 messageBus.listenFor('SelectFolderMessage', (msg: SelectFolderMessage) => {
     console.log('SelectFolderMessage');
-    appState.settings.activeFolderUri = msg.value;
+    appState.updateActiveFolderUri(msg.value);
 });
 
 messageBus.listenFor('SelectFileMessage', (msg: SelectFileMessage) => {
     console.log('SelectFileMessage');
-    appState.settings.activeFileUri = msg.value;
+    appState.updateActiveFileUri(msg.value);
     calcFileConfig();
     postSettings();
 });
@@ -254,7 +279,7 @@ messageBus.listenFor('EnableLanguageIdMessage', (msg: EnableLanguageIdMessage) =
         ids.delete(languageId);
     }
     const languageIdsEnabled = [...ids].sort();
-    appState.settings.configs[target] = { ...config, languageIdsEnabled };
+    appState.updateConfigs(target, { ...config, languageIdsEnabled });
     calcFileConfig();
     postSettings();
 });

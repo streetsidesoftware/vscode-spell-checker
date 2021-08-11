@@ -174,6 +174,20 @@ export interface SpellCheckerSettings {
     customDictionaries?: CustomDictionaries;
 
     /**
+     * @title Spell Check Only Workspace Files
+     * @scope window
+     * @markdownDescription
+     * Only spell check files that are in the currently open workspace.
+     * This same effect can be achieved using the `files` setting.
+     *
+     * ```
+     * "cSpell.files": ["**", "**​/.*​/**"]
+     * ```
+     * @default true
+     */
+    spellCheckOnlyWorkspaceFiles?: boolean;
+
+    /**
      * Show Regular Expression Explorer
      * @scope application
      * @default false

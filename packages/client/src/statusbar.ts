@@ -59,8 +59,8 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         }
         const ex = response.excludedBy[0];
         const { glob, name, id } = ex;
-        const filename = ex.filename && vscode.workspace.asRelativePath(ex.filename);
-        return `File excluded by ${JSON.stringify(glob)} in ${filename || id || name || 'settings'}`;
+        const configPath = ex.configUri && vscode.workspace.asRelativePath(ex.configUri);
+        return `File excluded by ${JSON.stringify(glob)} in ${configPath || id || name || 'settings'}`;
     }
 
     function toStatusBarAlignment(showStatusAlignment: CSpellUserSettings['showStatusAlignment']): vscode.StatusBarAlignment {
@@ -164,7 +164,7 @@ function statusBarText({ languageEnabled, fileEnabled, diags }: StatusBarTextPar
         return `$(exclude) ${cspellStatusBarIcon}`;
     }
     if (diags.length) {
-        return `$(issues) ${diags.length} ${cspellStatusBarIcon}`;
+        return `$(warning) ${diags.length} ${cspellStatusBarIcon}`;
     }
     return `$(check) ${cspellStatusBarIcon}`;
 }
