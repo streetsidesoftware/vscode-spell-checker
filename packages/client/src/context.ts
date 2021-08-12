@@ -1,4 +1,5 @@
-import { commands, TextDocument } from 'vscode';
+import { commands, TextDocument, workspace } from 'vscode';
+import { toUri } from 'common-utils/uriHelper.js';
 import { CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
@@ -118,14 +119,14 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     const diag = getCSpellDiags(doc.uri);
     const cfg = await pCfg;
 
-    const { agg, matrix } = calcTargetAggregates(cfg.configTargets);
+    const { agg, matrix, configFoundInWorkspace } = calcTargetAggregates(cfg.configTargets);
     const workspaceDicts = (agg.dictionary || 0) - (matrix.dictionary.user || 0);
 
     const usesConfigFile = !!agg.cspell;
     const usesCustomDictionary = workspaceDicts > 0;
     const hasIssues = diag.length > 0;
     const hasMultipleIssues = diag.length > 1;
-    const showCreateConfig = !agg.cspell;
+    const showCreateConfig = !configFoundInWorkspace || !agg.cspell;
     const showCreateDictionary = !usesCustomDictionary;
 
     const showWorkspace = !!matrix.vscode.workspace;
@@ -154,7 +155,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     context.editorMenuContext.addIssuesToDictionary = show && hasIssues && hasMultipleIssues;
     context.editorMenuContext.createCustomDictionary = show && showCreateDictionary;
-    context.editorMenuContext.createCSpellConfig = show && !usesConfigFile;
+    context.editorMenuContext.createCSpellConfig = show && showCreateConfig;
     context.editorMenuContext.addIgnoreWord = show && hasIssues;
 
     context.editorMenuContext.showSuggestions = show && hasIssues;
@@ -177,7 +178,13 @@ type ConfigMatrix = {
     [key in ConfigKind]: ConfigScopeCnt;
 };
 
-function calcTargetAggregates(configTargets: ConfigTarget[]): { agg: ConfigAggregates; matrix: ConfigMatrix } {
+interface CalcTargetAggregates {
+    agg: ConfigAggregates;
+    matrix: ConfigMatrix;
+    configFoundInWorkspace: boolean;
+}
+
+function calcTargetAggregates(configTargets: ConfigTarget[]): CalcTargetAggregates {
     const agg: ConfigAggregates = {};
     const matrix: ConfigMatrix = {
         vscode: {},
@@ -185,11 +192,15 @@ function calcTargetAggregates(configTargets: ConfigTarget[]): { agg: ConfigAggre
         dictionary: {},
     };
 
+    let configFoundInWorkspace = false;
+
     for (const t of configTargets) {
         agg[t.kind] = (agg[t.kind] || 0) + 1;
         agg[t.scope] = (agg[t.scope] || 0) + 1;
         matrix[t.kind][t.scope] = (matrix[t.kind][t.scope] || 0) + 1;
+
+        configFoundInWorkspace = configFoundInWorkspace || (t.kind === 'cspell' && !!workspace.getWorkspaceFolder(toUri(t.configUri)));
     }
 
-    return { agg, matrix };
+    return { agg, matrix, configFoundInWorkspace };
 }
