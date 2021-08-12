@@ -2,6 +2,7 @@ import { Uri } from 'vscode';
 import {} from './infoView';
 
 // const { execCommandUri } = __testing__;
+// cspell:ignoreRegExp /%[0-9A-F][0-9A-F]/g
 
 describe('infoView', () => {
     test('execCommandUri', () => {
