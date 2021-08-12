@@ -11,7 +11,7 @@ export interface DefinedCommands {
     SelectFileMessage: SelectFileMessage;
     SelectFolderMessage: SelectFolderMessage;
     SelectTabMessage: SelectTabMessage;
-    OpenFileMessage: OpenFileMessage;
+    OpenLinkMessage: OpenLinkMessage;
 }
 
 export type Commands = keyof DefinedCommands;
@@ -82,8 +82,8 @@ export interface EnableLocaleMessage extends Message {
     };
 }
 
-export interface OpenFileMessage extends Message {
-    command: 'OpenFileMessage';
+export interface OpenLinkMessage extends Message {
+    command: 'OpenLinkMessage';
     value: {
         uri: string;
     };
@@ -96,7 +96,7 @@ export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('R
 export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
 export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
-export const isOpenFileMessage = isA<OpenFileMessage>('OpenFileMessage', [['value', isString]]);
+export const isOpenLinkMessage = isA<OpenLinkMessage>('OpenLinkMessage', [['value', isString]]);
 
 function isObject(v: unknown): v is Record<string, unknown> {
     return typeof v === 'object' && v !== null;

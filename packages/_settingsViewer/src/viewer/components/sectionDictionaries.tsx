@@ -11,7 +11,7 @@ import IconCode from '@material-ui/icons/Code';
 import IconSelectAll from '@material-ui/icons/SelectAll';
 import IconImportContacts from '@material-ui/icons/ImportContacts';
 import { listStyles } from './primitives';
-import { clickLink } from '../../api/link';
+import { clickLink } from '../../helpers/link';
 import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
 
 const vsCodeApi = new VsCodeWebviewApi();

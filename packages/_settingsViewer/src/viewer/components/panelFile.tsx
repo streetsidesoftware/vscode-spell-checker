@@ -1,11 +1,3 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { AppState } from '../AppState';
-import { toJS } from 'mobx';
-import { SectionDictionaries } from './sectionDictionaries';
-import { CsCheckBox as Checkbox, CsList as List, CsFormControl as FormControl } from './primitives';
-import IconDescription from '@material-ui/icons/Description';
-import IconCode from '@material-ui/icons/Code';
 import InputLabel from '@material-ui/core/InputLabel';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -13,7 +5,17 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import IconCode from '@material-ui/icons/Code';
+import IconDescription from '@material-ui/icons/Description';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+import { FileConfig } from '../../api/settings';
+import { AppState } from '../AppState';
+import { LinkOpenFile } from './link';
+import { CsCheckBox as Checkbox, CsFormControl as FormControl, CsList as List } from './primitives';
 import { SectionConfigFileList } from './sectionConfigFileList';
+import { SectionDictionaries } from './sectionDictionaries';
 
 @observer
 export class PanelFile extends React.Component<{ appState: AppState }> {
@@ -23,7 +25,7 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
         const config = settings.configs.file;
         const languageId = config?.languageId || 'unknown';
         const languageEnabled = config?.languageEnabled;
-        const fileEnabled = config?.fileEnabled;
+        const name = config?.uri.replace(/.*\//, '') || 'File';
         const dictionaries = config?.dictionaries || [];
         const configFiles = config?.configFiles || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
@@ -54,17 +56,18 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
                         <ListItemIcon>
                             <IconDescription />
                         </ListItemIcon>
-                        <ListItemText primary="File enabled" />
-                        <ListItemSecondaryAction>
-                            <Checkbox disabled={true} checked={fileEnabled} />
-                        </ListItemSecondaryAction>
+                        <ListItemText primary={<i>{name}</i>} secondary={secondaryFileMessage(config)} />
                     </ListItem>
                     <ListItem role="checkbox" onClick={onClick}>
                         <ListItemIcon>
                             <IconCode />
                         </ListItemIcon>
                         <ListItemText
-                            primary={<label htmlFor="checkbox-language-enabled">{`Programming Language: ${languageId}`}</label>}
+                            primary={
+                                <label htmlFor="checkbox-language-enabled">
+                                    File Type: <i>{languageId}</i>
+                                </label>
+                            }
                         />
                         <ListItemSecondaryAction>
                             <Checkbox id="checkbox-language-enabled" checked={languageEnabled} onClick={onClick} />
@@ -91,4 +94,48 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
             this.props.appState.actionEnableLanguageId(languageId, enable);
         }
     }
+}
+
+function* br(frags: React.ReactFragment[] | undefined) {
+    if (!frags) return;
+    let index = 0;
+    for (const f of frags) {
+        if (index++) {
+            yield <br />;
+        }
+        yield f;
+    }
+}
+
+function isDefined<T>(t: T | undefined): t is T {
+    return t !== undefined;
+}
+
+function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragment | undefined {
+    if (!config) return undefined;
+
+    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled } = config;
+
+    const excludedBy = config.excludedBy
+        ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
+        .filter(isDefined);
+
+    const msg = fileIsInWorkspace
+        ? fileIsIncluded
+            ? fileIsExcluded
+                ? 'File is excluded.'
+                : undefined
+            : 'File in NOT in `files` to be checked.'
+        : fileIsExcluded
+        ? 'File is NOT in the workspace and excluded.'
+        : fileEnabled
+        ? 'File is NOT in the workspace.'
+        : 'File is NOT spell checked because it is not in the workspace.';
+    return msg ? (
+        <div>
+            {msg}
+            <br />
+            {[...br(excludedBy)]}
+        </div>
+    ) : undefined;
 }

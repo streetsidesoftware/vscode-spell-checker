@@ -228,7 +228,7 @@ export function run(): void {
 
         function extractGlobSourceUri(settings: CSpellSettingsWithSourceTrace): string | undefined {
             const filename = settings.__importRef?.filename || settings.source?.filename;
-            return filename ?? toFileUri(filename)?.toString();
+            return toFileUri(filename)?.toString();
         }
 
         const ex = await documentSettings.calcExcludedBy(uri);
