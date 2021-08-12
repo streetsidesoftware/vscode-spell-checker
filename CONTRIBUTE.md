@@ -131,7 +131,7 @@ They tell the suggestion algorithm to suggest: 'newYork', 'new_york', 'new york'
 
 The default language is English: `"cSpell.language": "en"`
 
-cSpell currently has English locals: `en-US` and `en-GB`.
+CSpell currently has English locals: `en-US` and `en-GB`.
 
 Example words differences: behaviour (en-GB) vs behavior (en-US)
 
