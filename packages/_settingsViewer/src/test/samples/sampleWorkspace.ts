@@ -27,6 +27,12 @@ const textDocuments: TextDocument[] = [
         isUntitled: false,
         languageId: 'json',
     },
+    {
+        uri: 'file:///Users/cspell/projects/other-project/package.json',
+        fileName: 'package.json',
+        isUntitled: false,
+        languageId: 'json',
+    },
 ];
 
 const _sampleWorkspace: Workspace = {

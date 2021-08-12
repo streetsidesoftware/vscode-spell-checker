@@ -61,77 +61,32 @@ exports[`File Panel Verification tests the snapshot 1`] = `
     className="MuiList-root WithStyles(ForwardRef(List))-root-2 MuiList-padding"
   >
     <li
-      className="MuiListItem-container"
+      className="MuiListItem-root MuiListItem-gutters"
+      disabled={false}
     >
       <div
-        className="MuiListItem-root MuiListItem-gutters MuiListItem-secondaryAction"
-        disabled={false}
+        className="MuiListItemIcon-root"
       >
-        <div
-          className="MuiListItemIcon-root"
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root"
+          focusable="false"
+          viewBox="0 0 24 24"
         >
-          <svg
-            aria-hidden={true}
-            className="MuiSvgIcon-root"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
-            />
-          </svg>
-        </div>
-        <div
-          className="MuiListItemText-root"
-        >
-          <span
-            className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
-          >
-            File enabled
-          </span>
-        </div>
+          <path
+            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+          />
+        </svg>
       </div>
       <div
-        className="MuiListItemSecondaryAction-root"
+        className="MuiListItemText-root"
       >
         <span
-          aria-disabled={true}
-          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-8 MuiCheckbox-root WithStyles(ForwardRef(Checkbox))-root-3 MuiCheckbox-colorSecondary WithStyles(ForwardRef(Checkbox))-colorSecondary-5 PrivateSwitchBase-checked-9 Mui-checked WithStyles(ForwardRef(Checkbox))-checked-7 PrivateSwitchBase-disabled-10 Mui-disabled WithStyles(ForwardRef(Checkbox))-disabled-6 MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
-          onBlur={[Function]}
-          onDragLeave={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseLeave={[Function]}
-          onMouseUp={[Function]}
-          onTouchEnd={[Function]}
-          onTouchMove={[Function]}
-          onTouchStart={[Function]}
-          tabIndex={-1}
+          className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
         >
-          <span
-            className="MuiIconButton-label"
-          >
-            <input
-              checked={true}
-              className="PrivateSwitchBase-input-11"
-              data-indeterminate={false}
-              disabled={true}
-              onChange={[Function]}
-              type="checkbox"
-            />
-            <svg
-              aria-hidden={true}
-              className="MuiSvgIcon-root"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-              />
-            </svg>
-          </span>
+          <i>
+            extension.ts
+          </i>
         </span>
       </div>
     </li>
@@ -167,7 +122,10 @@ exports[`File Panel Verification tests the snapshot 1`] = `
             <label
               htmlFor="checkbox-language-enabled"
             >
-              Programming Language: typescript
+              File Type: 
+              <i>
+                typescript
+              </i>
             </label>
           </span>
         </div>

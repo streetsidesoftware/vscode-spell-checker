@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconSettings from '@material-ui/icons/Settings';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { clickLink } from '../../api/link';
+import { clickLink } from '../../helpers/link';
 import { ConfigFile } from '../../api/settings';
 import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
 import { listStyles } from './primitives';

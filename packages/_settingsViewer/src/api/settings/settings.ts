@@ -64,6 +64,7 @@ export interface IsSpellCheckEnabledResult {
     fileEnabled: boolean;
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;
+    fileIsInWorkspace: boolean;
     excludedBy?: ExcludeRef[] | undefined;
 }
 

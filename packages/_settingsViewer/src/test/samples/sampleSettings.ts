@@ -87,6 +87,7 @@ const _sampleSettings: Settings = {
             fileEnabled: true,
             fileIsIncluded: true,
             fileIsExcluded: false,
+            fileIsInWorkspace: true,
             excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
@@ -113,6 +114,7 @@ const _sampleSettingsSingleFolder: Settings = {
             fileEnabled: true,
             fileIsIncluded: true,
             fileIsExcluded: false,
+            fileIsInWorkspace: true,
             excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
@@ -134,13 +136,14 @@ const _sampleSettingsExcluded: Settings = {
             uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/package-lock.json',
             fileName: 'package-lock.json',
             isUntitled: false,
-            languageId: 'typescript',
+            languageId: 'json',
             languageEnabled: true,
             fileEnabled: false,
             fileIsIncluded: true,
             fileIsExcluded: true,
-            excludedBy: [{ glob: 'package-lock.json', id: 'VSCode-Config' }],
-            dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
+            fileIsInWorkspace: true,
+            excludedBy: [{ glob: 'package-lock.json', id: 'VSCode-Config', configUri: _configFiles[1].uri }],
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('json')),
             configFiles: _configFiles,
         },
     },
@@ -149,8 +152,36 @@ const _sampleSettingsExcluded: Settings = {
     activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/package-lock.json',
 };
 
+const _sampleSettingsExcludedNotInWorkspace: Settings = {
+    dictionaries,
+    knownLanguageIds,
+    configs: {
+        user: { locales: ['en'], languageIdsEnabled: languageIdsUser, inherited: {} },
+        workspace: { locales: ['en'], languageIdsEnabled: languageIdsWorkspace, inherited: { locales: 'user' } },
+        folder: { locales: ['en'], languageIdsEnabled: languageIdsWorkspace, inherited: { locales: 'user', languageIdsEnabled: 'workspace' } },
+        file: {
+            uri: 'file:///Users/cspell/projects/other-project/package.json',
+            fileName: 'package.json',
+            isUntitled: false,
+            languageId: 'json',
+            languageEnabled: true,
+            fileEnabled: false,
+            fileIsIncluded: false,
+            fileIsExcluded: false,
+            fileIsInWorkspace: false,
+            excludedBy: undefined,
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('json')),
+            configFiles: [],
+        },
+    },
+    workspace: sampleWorkspace,
+    activeFolderUri: undefined,
+    activeFileUri: 'file:///Users/cspell/projects/other-project/package.json',
+};
+
 export const sampleSettings = Object.freeze(_sampleSettings);
 export const sampleSettingsSingleFolder = Object.freeze(_sampleSettingsSingleFolder);
 export const sampleSettingsExcluded = Object.freeze(_sampleSettingsExcluded);
+export const sampleSettingsExcludedNotInWorkspace = Object.freeze(_sampleSettingsExcludedNotInWorkspace);
 
 // cspell:ignore ripgrep

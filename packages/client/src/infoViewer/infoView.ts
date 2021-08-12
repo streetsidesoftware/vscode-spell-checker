@@ -7,7 +7,7 @@ import {
     EnableLanguageIdMessage,
     EnableLocaleMessage,
     MessageBus,
-    OpenFileMessage,
+    OpenLinkMessage,
     SelectFileMessage,
     SelectFolderMessage,
     SelectTabMessage,
@@ -86,8 +86,9 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     let notifyViewEmitter: RefreshEmitter;
     const subscriptions: Subscription[] = [];
 
-    const options = {
+    const options: vscode.WebviewOptions = {
         enableScripts: true,
+        enableCommandUris: true,
         localResourceRoots: [Uri.file(root), Uri.file(extPath)],
     };
     const panel = vscode.window.createWebviewPanel('cspellConfigViewer', title, column, options);
@@ -178,9 +179,15 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     messageBus.listenFor('ConfigurationChangeMessage', () => {
         /* Do nothing */
     });
-    messageBus.listenFor('OpenFileMessage', (msg: OpenFileMessage) => {
+    messageBus.listenFor('OpenLinkMessage', (msg: OpenLinkMessage) => {
         const uri = Uri.parse(msg.value.uri);
-        return vscode.window.showTextDocument(uri);
+        switch (uri.scheme) {
+            case 'file':
+                return vscode.window.showTextDocument(uri);
+            case 'command':
+                return execCommandUri(uri);
+        }
+        throw new Error(`Unknown link: ${uri.toString()}`);
     });
 
     subscriptions.push(
@@ -269,6 +276,10 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
     }
 }
 
+function execCommandUri(_uri: Uri): never {
+    throw new Error('not implemented.');
+}
+
 function webviewApiFromPanel(panel: vscode.WebviewPanel): WebviewApi {
     let _listener: MessageListener | undefined;
 
@@ -323,3 +334,7 @@ function log(...params: Parameters<typeof console.log>) {
     const now = new Date();
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
 }
+
+export const __testing__ = {
+    execCommandUri,
+};

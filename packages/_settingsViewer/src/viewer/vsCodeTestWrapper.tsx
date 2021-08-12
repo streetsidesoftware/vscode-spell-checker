@@ -20,12 +20,17 @@ import {
 import { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
-import { sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded } from '../test/samples/sampleSettings';
+import {
+    sampleSettings,
+    sampleSettingsSingleFolder,
+    sampleSettingsExcluded,
+    sampleSettingsExcludedNotInWorkspace,
+} from '../test/samples/sampleSettings';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
     currentSample: number = 0;
-    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded];
+    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded, sampleSettingsExcludedNotInWorkspace];
     _settings: Settings = this.sampleSettings[this.currentSample];
     _activeTab: string = 'About';
 
@@ -113,6 +118,15 @@ class AppState {
 
     updateConfigsFile(file: FileConfig | undefined) {
         this.updateConfigs('file', file);
+    }
+
+    findMatchingSampleConfig(docUri: string): Configs | undefined {
+        for (const sample of this.sampleSettings) {
+            if (sample.activeFileUri === docUri) {
+                return sample.configs;
+            }
+        }
+        return undefined;
     }
 }
 
@@ -224,17 +238,20 @@ function calcFileConfig() {
     const languageEnabled = appState.enabledLanguageIds.includes(languageId);
     const folderPath = Path.dirname(Path.dirname(doc.uri));
     const workspacePath = Path.dirname(folderPath);
-
-    appState.updateConfigsFile({
+    const config = appState.findMatchingSampleConfig(doc.uri);
+    const useConfig: FileConfig = config?.file ?? {
         ...doc,
         fileEnabled: true,
         fileIsIncluded: true,
         fileIsExcluded: false,
+        fileIsInWorkspace: true,
         excludedBy: undefined,
         languageEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
-    });
+    };
+
+    appState.updateConfigsFile(useConfig);
 }
 
 function cfgFile(path: string, file: string): ConfigFile {

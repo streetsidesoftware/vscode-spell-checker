@@ -143,6 +143,7 @@ function extractFileConfig(
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
+    const folder = vscode.workspace.getWorkspaceFolder(uri);
     const cfg: FileConfig = {
         uri: uri.toString(),
         fileName,
@@ -154,6 +155,7 @@ function extractFileConfig(
         configFiles: extractConfigFiles(docConfig),
         fileIsExcluded,
         fileIsIncluded,
+        fileIsInWorkspace: !!folder,
         excludedBy: mapExcludedBy(excludedBy),
     };
     return cfg;
