@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.14](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.13...v2.0.1-alpha.14) (2021-08-12)
+
+
+### Features
+
+* Add ability to check only workspace files. ([#1146](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1146)) ([85a4586](https://github.com/streetsidesoftware/vscode-spell-checker/commit/85a458663f99e57802b6bc6a5b1037c14743fd6a))
+* Support `files` in the VS Code config ([#1138](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1138)) ([966248a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/966248a29ee189312b7f483b0a8507dbefaadab1))
+
 ### [2.0.1-alpha.13](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.12...v2.0.1-alpha.13) (2021-08-07)
 
 
