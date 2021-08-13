@@ -1,14 +1,16 @@
-import { TextDocumentUri, getWorkspaceFolders, getConfiguration } from './vscode.config';
-import { WorkspaceFolder, Connection } from 'vscode-languageserver/node';
 import type {
-    Glob,
-    RegExpPatternDefinition,
-    Pattern,
     CSpellSettingsWithSourceTrace,
-    GlobDef,
     DictionaryDefinition,
     DictionaryDefinitionCustom,
+    FileSource,
+    Glob,
+    GlobDef,
+    Pattern,
+    RegExpPatternDefinition,
 } from '@cspell/cspell-types';
+import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
+import { log } from 'common-utils/log.js';
+import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
     calcOverrideSettings,
     clearCachedFiles,
@@ -19,19 +21,18 @@ import {
     readSettingsFiles as cspellReadSettingsFiles,
     searchForConfig,
 } from 'cspell-lib';
-import * as path from 'path';
 import * as fs from 'fs-extra';
-import { CSpellUserSettings } from '../config/cspellConfig';
-import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
-import { log } from 'common-utils/log.js';
-import { createAutoLoadCache, AutoLoadCache, LazyValue, createLazyValue } from 'common-utils/autoLoad.js';
-import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
-import * as os from 'os';
-import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
 import { genSequence, Sequence } from 'gensequence';
-import { uniqueFilter } from '../utils';
+import * as os from 'os';
+import * as path from 'path';
+import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import { VSCodeSettingsCspell } from '../api';
+import { CSpellUserSettings } from '../config/cspellConfig';
 import { extensionId } from '../constants';
+import { uniqueFilter } from '../utils';
+import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config';
+import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell extends VSCodeSettingsCspell {}
@@ -482,12 +483,6 @@ function areGlobsEqual(globA: Glob, globB: Glob): boolean {
 
 function toGlobDef(g: Glob): GlobDef {
     return typeof g === 'string' ? { glob: g } : g;
-}
-
-type Source = Exclude<CSpellSettingsWithSourceTrace['source'], undefined>;
-
-interface FileSource extends Source {
-    filename: Exclude<Source['filename'], undefined>;
 }
 
 export interface CSpellSettingsWithFileSource extends CSpellSettingsWithSourceTrace {

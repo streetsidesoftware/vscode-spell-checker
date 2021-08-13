@@ -2119,25 +2119,10 @@
           "scope": "resource",
           "type": "string"
         },
-        "cSpell.languageId": {
-          "description": "Forces the spell checker to assume a give language id. Used mainly as an Override.",
-          "type": "string"
-        },
         "cSpell.noConfigSearch": {
           "description": "Prevents searching for local configuration when checking individual documents.",
           "scope": "resource",
           "type": "boolean"
-        },
-        "cSpell.pnpFiles": {
-          "default": [
-            ".pnp.js",
-            ".pnp.cjs"
-          ],
-          "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         },
         "cSpell.usePnP": {
           "description": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence of a PnP file and load it.",
@@ -2207,8 +2192,8 @@
     "vsce": "^1.95.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.4.0",
-    "@cspell/cspell-types": "^5.4.0",
+    "@cspell/cspell-bundled-dicts": "^5.6.7",
+    "@cspell/cspell-types": "^5.6.7",
     "cosmiconfig": "^7.0.0",
     "regexp-worker": "^1.1.0"
   }

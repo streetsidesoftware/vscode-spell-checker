@@ -44,6 +44,7 @@ export const ConfigKeysByField: CSpellUserSettingsFields = {
     overrides: 'overrides',
     patterns: 'patterns',
     pnpFiles: 'pnpFiles',
+    readonly: 'readonly',
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',
     showStatus: 'showStatus',
     showStatusAlignment: 'showStatusAlignment',

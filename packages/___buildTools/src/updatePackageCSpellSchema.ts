@@ -33,9 +33,9 @@ Update Package Cspell Schema
 }
 
 function update(packageConfig: JSONSchema7, schema: JSONSchema7) {
-    const props = Object.entries(schema.properties || {}).map(
-        ([key, value]) => ['cSpell.' + key, value] as [string, JSONSchema7Definition]
-    );
+    const props = Object.entries(schema.properties || {})
+        .map(([key, value]) => ['cSpell.' + key, value] as [string, JSONSchema7Definition])
+        .filter(([_, value]) => hasScope(value));
     const propsMap = new Map(props);
     const { properties = {} } = packageConfig;
 
@@ -49,6 +49,16 @@ function update(packageConfig: JSONSchema7, schema: JSONSchema7) {
     }
 
     packageConfig.properties = properties;
+}
+
+/**
+ * Help filter out definitions without a VS Code Scope attribute.
+ * @param def - schema definition
+ * @returns
+ */
+function hasScope(def: JSONSchema7Definition): boolean {
+    if (typeof def !== 'object') return false;
+    return !!(<any>def)['scope'];
 }
 
 /**
