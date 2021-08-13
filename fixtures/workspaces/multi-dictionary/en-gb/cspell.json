@@ -1,0 +1,15 @@
+{
+    "language": "en-gb",
+    "import": [
+        "../cspell.json"
+    ],
+    "flagWords": [
+        "behavior",
+        "color",
+        "customize",
+        "favor",
+        "favorite",
+        "meter",
+        "savor"
+    ]
+}
