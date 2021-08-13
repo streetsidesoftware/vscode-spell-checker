@@ -1752,6 +1752,11 @@
       },
       "type": "array"
     },
+    "readonly": {
+      "default": false,
+      "description": "Indicate that the configuration file should not be modified. This is used to prevent tools like the VS Code Spell Checker from modifying the file to add words and other configuration.",
+      "type": "boolean"
+    },
     "showCommandsInEditorContextMenu": {
       "default": true,
       "description": "Show Spell Checker actions in Editor Context Menu",

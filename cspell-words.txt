@@ -59,6 +59,7 @@ permalinks
 Preformat
 quickfix
 quotemark
+readonly
 restructuredtext
 rfdc
 rmwc

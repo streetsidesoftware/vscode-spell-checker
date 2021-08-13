@@ -537,6 +537,11 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      */
     usePnP?: CSpellSettings['usePnP'];
+
+    /**
+     * @hidden
+     */
+    readonly?: CSpellSettings['readonly'];
 }
 
 /**
