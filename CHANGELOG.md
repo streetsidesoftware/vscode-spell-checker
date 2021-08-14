@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1-alpha.15](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.14...v2.0.1-alpha.15) (2021-08-14)
+
+
+### Bug Fixes
+
+* [#284](https://github.com/streetsidesoftware/vscode-spell-checker/issues/284) ([#1159](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1159)) ([d9d753c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d9d753ce37abc4a62abcdb3e1d190e9b507bf170))
+* Support forbidden words ([f6a9bcb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f6a9bcb0b6f34942fe3bf19c4da482737aef5144))
+
 ### [2.0.1-alpha.14](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1-alpha.13...v2.0.1-alpha.14) (2021-08-12)
 
 
