@@ -25,20 +25,20 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
     const r = await validateText(text, options);
     const diags = r
         // Convert the offset into a position
-        .map((offsetWord) => ({ ...offsetWord, position: textDocument.positionAt(offsetWord.offset) }))
+        .map((issue) => ({ ...issue, position: textDocument.positionAt(issue.offset) }))
         // Calculate the range
-        .map((word) => ({
-            ...word,
+        .map((issue) => ({
+            ...issue,
             range: {
-                start: word.position,
-                end: { ...word.position, character: word.position.character + word.text.length },
+                start: issue.position,
+                end: { ...issue.position, character: issue.position.character + issue.text.length },
             },
         }))
         // Convert it to a Diagnostic
-        .map(({ text, range }) => ({
+        .map(({ text, range, isFlagged }) => ({
             severity,
             range: range,
-            message: `"${text}": Unknown word.`,
+            message: `"${text}": ${isFlagged ? 'Forbidden' : 'Unknown'} word.`,
             source: diagSource,
         }));
     return diags;

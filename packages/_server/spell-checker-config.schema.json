@@ -666,10 +666,6 @@
       "scope": "resource",
       "type": "string"
     },
-    "languageId": {
-      "description": "Forces the spell checker to assume a give language id. Used mainly as an Override.",
-      "type": "string"
-    },
     "languageSettings": {
       "description": "Additional settings for individual languages.",
       "items": {
@@ -1740,22 +1736,6 @@
       },
       "scope": "resource",
       "type": "array"
-    },
-    "pnpFiles": {
-      "default": [
-        ".pnp.js",
-        ".pnp.cjs"
-      ],
-      "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
-    "readonly": {
-      "default": false,
-      "description": "Indicate that the configuration file should not be modified. This is used to prevent tools like the VS Code Spell Checker from modifying the file to add words and other configuration.",
-      "type": "boolean"
     },
     "showCommandsInEditorContextMenu": {
       "default": true,
