@@ -4,8 +4,9 @@ This directory contains American English files.
 
 Words like favor and behavior are correct.
 
-But colour is not.
+But colour, favour, and behaviour is not.
 
 <!---
-cspell:ignore colour
+Ignoring the forbidden words will prevent the spell checker errors:
+cspell:ignore colour favour behaviour
 --->

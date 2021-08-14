@@ -1,0 +1,8 @@
+# Forbidden Words
+!behavior
+!color
+!customize
+!favor
+!favorite
+!meter
+!savor

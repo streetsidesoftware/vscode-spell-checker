@@ -3,13 +3,20 @@
     "import": [
         "../cspell.json"
     ],
+    "ignorePaths": [
+        ".cspell/**"
+    ],
     "flagWords": [
-        "behavior",
-        "color",
-        "customize",
-        "favor",
-        "favorite",
-        "meter",
-        "savor"
+        "color"
+    ],
+    "dictionaries": [
+        "forbidden-words"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "name": "forbidden-words",
+            "path": "./.cspell/forbidden-words.txt",
+            "addWords": true
+        }
     ]
 }
