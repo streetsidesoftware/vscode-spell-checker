@@ -11,10 +11,6 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 
 const defaultSettings: CSpellSettings = { ...getDefaultSettings(), enabledLanguageIds: ['plaintext', 'javascript'] };
 
-function getSettings(text: string, languageId: string) {
-    return cspell.constructSettingsForText(defaultSettings, text, languageId);
-}
-
 const timeout = 30000; // 30 seconds
 
 describe('Validator', () => {
@@ -142,6 +138,27 @@ describe('Validator', () => {
         timeout
     );
 
+    // cspell:ignore legacyy codez badcoffee
+    const ignoreWords = ['bogus', 'legacyy-codez'];
+
+    test.each`
+        text                       | expected
+        ${'hello there'}           | ${[]}
+        ${'bogus musings'}         | ${[]}
+        ${'writing legacyy-codez'} | ${[]}
+        ${'badcoffee tastes good'} | ${[expect.objectContaining({ text: 'badcoffee', isFound: false })]}
+    `(
+        'validateText ignoreWords $text',
+        async ({ text, expected }) => {
+            const languageId = 'plaintext';
+            const _settings = getSettings(text, languageId);
+            const settings = { ..._settings, maxNumberOfProblems: 10, ignoreWords };
+            const results = await Validator.validateText(text, settings, {});
+            expect(results).toEqual(expected);
+        },
+        timeout
+    );
+
     test(
         'validateTextDocument',
         async () => {
@@ -184,3 +201,7 @@ const message = "\\nmove to next line";
 const hex = 0xBADC0FFEE;
 
 `;
+
+function getSettings(text: string, languageId: string) {
+    return cspell.constructSettingsForText(defaultSettings, text, languageId);
+}
