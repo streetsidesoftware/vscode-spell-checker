@@ -37,7 +37,7 @@ export interface ConfigTargetWithResource extends ConfigTargetWithOptionalResour
     uri: Uri;
 }
 
-export type ConfigTargetResourceFree = ConfigurationTarget.Global;
+export type ConfigTargetResourceFree = ConfigurationTarget.Global | ConfigurationTarget.Workspace;
 export type ConfigTargetLegacy = ConfigTargetResourceFree | ConfigTargetWithResource | ConfigTargetWithOptionalResource;
 
 export interface Inspect<T> extends FullInspectValues<T> {

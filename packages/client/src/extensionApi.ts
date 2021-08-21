@@ -15,4 +15,6 @@ export interface ExtensionApi {
     disableLocale(target: ConfigTargetLegacy, locale: string): Thenable<void>;
     updateSettings(): boolean;
     cSpellClient(): CSpellClient;
+    enableLocal(isGlobal: boolean, locale: string): Thenable<void>;
+    disableLocal(isGlobal: boolean, locale: string): Thenable<void>;
 }

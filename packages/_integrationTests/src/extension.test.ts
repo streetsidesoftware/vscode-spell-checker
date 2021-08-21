@@ -28,6 +28,8 @@ const apiSignature: Api = {
     triggerGetSettings: 'triggerGetSettings',
     updateSettings: 'updateSettings',
     cSpellClient: 'cSpellClient',
+    enableLocal: 'enableLocal',
+    disableLocal: 'disableLocal',
 };
 
 describe('Launch code spell extension', function () {

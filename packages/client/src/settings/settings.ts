@@ -154,7 +154,14 @@ export function disableLocale(targets: ClientConfigTarget[], locale: string): Pr
 
 export function enableLocaleForTarget(locale: string, enable: boolean, targets: ClientConfigTarget[]): Promise<void> {
     const applyFn: (src: string | undefined) => string | undefined = enable
-        ? (currentLanguage) => unique(normalizeLocale(currentLanguage).split(',').concat(locale.split(','))).join(',')
+        ? (currentLanguage) =>
+              unique(
+                  normalizeLocale(currentLanguage || 'en')
+                      .split(',')
+                      .concat(locale.split(','))
+              )
+                  .filter((a) => !!a)
+                  .join(',')
         : (currentLanguage) => {
               const value = unique(normalizeLocale(currentLanguage).split(','))
                   .filter((lang) => lang !== locale)
