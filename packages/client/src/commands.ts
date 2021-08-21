@@ -340,8 +340,9 @@ export function enableDisableLocale(
     }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
 }
 
-export function enableDisableLocaleLegacy(target: ConfigTargetLegacy, locale: string, enable: boolean): Promise<void> {
-    const t = normalizeTarget(target);
+export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, locale: string, enable: boolean): Promise<void> {
+    const _target = typeof target === 'boolean' ? (target ? ConfigurationTarget.Global : ConfigurationTarget.Workspace) : target;
+    const t = normalizeTarget(_target);
     return enableDisableLocale(locale, t.uri, t.target, t.configScope, enable);
 }
 

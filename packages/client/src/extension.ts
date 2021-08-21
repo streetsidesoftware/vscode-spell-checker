@@ -134,6 +134,11 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         client.registerConfiguration(path);
     }
 
+    const methods = {
+        enableLocale: (target: ConfigTargetLegacy | boolean, locale: string) => commands.enableDisableLocaleLegacy(target, locale, true),
+        disableLocale: (target: ConfigTargetLegacy | boolean, locale: string) => commands.enableDisableLocaleLegacy(target, locale, false),
+    };
+
     const server = {
         registerConfig,
         triggerGetSettings,
@@ -143,15 +148,15 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableCurrentLanguage: commands.disableCurrentLanguage,
         addWordToUserDictionary: commands.addWordToUserDictionary,
         addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
-        enableLocale: (target: ConfigTargetLegacy, locale: string) => commands.enableDisableLocaleLegacy(target, locale, true),
-        disableLocale: (target: ConfigTargetLegacy, locale: string) => commands.enableDisableLocaleLegacy(target, locale, false),
+        enableLocale: methods.enableLocale,
+        disableLocale: methods.disableLocale,
         updateSettings: () => false,
         cSpellClient: () => client,
         getConfigurationForDocument: (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc),
 
         // Legacy
-        enableLocal: settings.enableLocale,
-        disableLocal: settings.disableLocale,
+        enableLocal: methods.enableLocale,
+        disableLocal: methods.disableLocale,
     };
 
     performance.mark('cspell_activate_end');
