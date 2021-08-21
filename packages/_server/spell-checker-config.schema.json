@@ -127,8 +127,9 @@
                 "type": "string"
               },
               "name": {
-                "description": "This matches the name in a dictionary definition",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
                 "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
@@ -172,7 +173,8 @@
             "type": "object"
           },
           {
-            "description": "This matches the name in a dictionary definition",
+            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
             "type": "string"
           }
         ]
@@ -201,8 +203,9 @@
                 "type": "string"
               },
               "name": {
-                "description": "This matches the name in a dictionary definition",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
                 "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
@@ -246,7 +249,8 @@
             "type": "object"
           },
           {
-            "description": "This matches the name in a dictionary definition",
+            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
             "type": "string"
           }
         ]
@@ -275,8 +279,9 @@
                 "type": "string"
               },
               "name": {
-                "description": "This matches the name in a dictionary definition",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
                 "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "title": "Name of Dictionary",
                 "type": "string"
               },
@@ -320,7 +325,8 @@
             "type": "object"
           },
           {
-            "description": "This matches the name in a dictionary definition",
+            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
             "type": "string"
           }
         ]
@@ -343,9 +349,9 @@
       "type": "string"
     },
     "dictionaries": {
-      "description": "Optional list of dictionaries to use.",
+      "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn of the dictionary with the name `typescript`.",
       "items": {
-        "description": "This matches the name in a dictionary definition",
+        "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
         "type": "string"
       },
       "scope": "resource",
@@ -363,8 +369,13 @@
                 "type": "string"
               },
               "name": {
-                "description": "The reference name of the dictionary, used with program language settings",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
+              },
+              "noSuggest": {
+                "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                "type": "boolean"
               },
               "path": {
                 "description": "Path to the file",
@@ -407,8 +418,13 @@
                 "type": "string"
               },
               "name": {
-                "description": "The reference name of the dictionary, used with program language settings",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
+              },
+              "noSuggest": {
+                "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                "type": "boolean"
               },
               "path": {
                 "description": "Path to custom dictionary text file.",
@@ -467,6 +483,7 @@
           },
           {
             "additionalProperties": false,
+            "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
             "description": "Only for legacy dictionary definitions",
             "properties": {
               "description": {
@@ -474,13 +491,19 @@
                 "type": "string"
               },
               "file": {
+                "deprecationMessage": "Use `path` instead.",
                 "description": "Path to the file, only for legacy dictionary definitions",
                 "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                 "type": "string"
               },
               "name": {
-                "description": "The reference name of the dictionary, used with program language settings",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
+              },
+              "noSuggest": {
+                "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                "type": "boolean"
               },
               "repMap": {
                 "description": "Replacement pairs",
@@ -686,9 +709,9 @@
             "type": "string"
           },
           "dictionaries": {
-            "description": "Optional list of dictionaries to use.",
+            "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn of the dictionary with the name `typescript`.",
             "items": {
-              "description": "This matches the name in a dictionary definition",
+              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
               "type": "string"
             },
             "type": "array"
@@ -705,8 +728,13 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "path": {
                       "description": "Path to the file",
@@ -749,8 +777,13 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "path": {
                       "description": "Path to custom dictionary text file.",
@@ -809,6 +842,7 @@
                 },
                 {
                   "additionalProperties": false,
+                  "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                   "description": "Only for legacy dictionary definitions",
                   "properties": {
                     "description": {
@@ -816,13 +850,19 @@
                       "type": "string"
                     },
                     "file": {
+                      "deprecationMessage": "Use `path` instead.",
                       "description": "Path to the file, only for legacy dictionary definitions",
                       "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "repMap": {
                       "description": "Replacement pairs",
@@ -891,7 +931,7 @@
               {
                 "items": {
                   "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                  "pattern": "^(!?[\\w_\\-\\s]+)|(\\*)$",
+                  "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
                 "type": "array"
@@ -913,6 +953,7 @@
                 "type": "array"
               }
             ],
+            "deprecationMessage": "Use `locale` instead",
             "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
           },
           "locale": {
@@ -934,6 +975,14 @@
           "name": {
             "description": "Optional name of configuration",
             "type": "string"
+          },
+          "noSuggestDictionaries": {
+            "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
+            "items": {
+              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+              "type": "string"
+            },
+            "type": "array"
           },
           "patterns": {
             "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList",
@@ -1023,6 +1072,14 @@
       "scope": "resource",
       "type": "boolean"
     },
+    "noSuggestDictionaries": {
+      "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
+      "items": {
+        "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+        "type": "string"
+      },
+      "type": "array"
+    },
     "numSuggestions": {
       "default": 8,
       "description": "Controls the number of suggestions shown.",
@@ -1049,9 +1106,9 @@
             "type": "string"
           },
           "dictionaries": {
-            "description": "Optional list of dictionaries to use.",
+            "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn of the dictionary with the name `typescript`.",
             "items": {
-              "description": "This matches the name in a dictionary definition",
+              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
               "type": "string"
             },
             "type": "array"
@@ -1068,8 +1125,13 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "path": {
                       "description": "Path to the file",
@@ -1112,8 +1174,13 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "path": {
                       "description": "Path to custom dictionary text file.",
@@ -1172,6 +1239,7 @@
                 },
                 {
                   "additionalProperties": false,
+                  "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                   "description": "Only for legacy dictionary definitions",
                   "properties": {
                     "description": {
@@ -1179,13 +1247,19 @@
                       "type": "string"
                     },
                     "file": {
+                      "deprecationMessage": "Use `path` instead.",
                       "description": "Path to the file, only for legacy dictionary definitions",
                       "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                       "type": "string"
                     },
                     "name": {
-                      "description": "The reference name of the dictionary, used with program language settings",
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
                     },
                     "repMap": {
                       "description": "Replacement pairs",
@@ -1217,7 +1291,7 @@
           "enableFiletypes": {
             "items": {
               "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-              "pattern": "^(!?[\\w_\\-\\s]+)|(\\*)$",
+              "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
               "type": "string"
             },
             "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
@@ -1235,7 +1309,7 @@
             "description": "languageIds for the files to spell check.",
             "items": {
               "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-              "pattern": "^(!?[\\w_\\-\\s]+)|(\\*)$",
+              "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
               "type": "string"
             },
             "type": "array"
@@ -1318,9 +1392,9 @@
                   "type": "string"
                 },
                 "dictionaries": {
-                  "description": "Optional list of dictionaries to use.",
+                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn of the dictionary with the name `typescript`.",
                   "items": {
-                    "description": "This matches the name in a dictionary definition",
+                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
                   },
                   "type": "array"
@@ -1337,8 +1411,13 @@
                             "type": "string"
                           },
                           "name": {
-                            "description": "The reference name of the dictionary, used with program language settings",
+                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                             "type": "string"
+                          },
+                          "noSuggest": {
+                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "type": "boolean"
                           },
                           "path": {
                             "description": "Path to the file",
@@ -1381,8 +1460,13 @@
                             "type": "string"
                           },
                           "name": {
-                            "description": "The reference name of the dictionary, used with program language settings",
+                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                             "type": "string"
+                          },
+                          "noSuggest": {
+                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "type": "boolean"
                           },
                           "path": {
                             "description": "Path to custom dictionary text file.",
@@ -1441,6 +1525,7 @@
                       },
                       {
                         "additionalProperties": false,
+                        "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                         "description": "Only for legacy dictionary definitions",
                         "properties": {
                           "description": {
@@ -1448,13 +1533,19 @@
                             "type": "string"
                           },
                           "file": {
+                            "deprecationMessage": "Use `path` instead.",
                             "description": "Path to the file, only for legacy dictionary definitions",
                             "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                             "type": "string"
                           },
                           "name": {
-                            "description": "The reference name of the dictionary, used with program language settings",
+                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                             "type": "string"
+                          },
+                          "noSuggest": {
+                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "type": "boolean"
                           },
                           "repMap": {
                             "description": "Replacement pairs",
@@ -1523,7 +1614,7 @@
                     {
                       "items": {
                         "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                        "pattern": "^(!?[\\w_\\-\\s]+)|(\\*)$",
+                        "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                         "type": "string"
                       },
                       "type": "array"
@@ -1545,6 +1636,7 @@
                       "type": "array"
                     }
                   ],
+                  "deprecationMessage": "Use `locale` instead",
                   "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                 },
                 "locale": {
@@ -1566,6 +1658,14 @@
                 "name": {
                   "description": "Optional name of configuration",
                   "type": "string"
+                },
+                "noSuggestDictionaries": {
+                  "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
+                  "items": {
+                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                    "type": "string"
+                  },
+                  "type": "array"
                 },
                 "patterns": {
                   "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList",
@@ -1636,6 +1736,14 @@
           "name": {
             "description": "Optional name of configuration",
             "type": "string"
+          },
+          "noSuggestDictionaries": {
+            "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
+            "items": {
+              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+              "type": "string"
+            },
+            "type": "array"
           },
           "numSuggestions": {
             "default": 10,

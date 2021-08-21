@@ -40,6 +40,7 @@ export const ConfigKeysByField: CSpellUserSettingsFields = {
     minWordLength: 'minWordLength',
     name: 'name',
     noConfigSearch: 'noConfigSearch',
+    noSuggestDictionaries: 'noSuggestDictionaries',
     numSuggestions: 'numSuggestions',
     overrides: 'overrides',
     patterns: 'patterns',
