@@ -54,7 +54,7 @@
     "vscode-uri": "^3.0.2",
     "webpack": "^5.26.3",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^4.0.0"
   },
   "files": [
     "out/api/**",
