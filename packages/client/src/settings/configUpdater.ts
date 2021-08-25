@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings } from '../client/server';
 
 export type ConfigKeys = keyof CSpellUserSettings;
 

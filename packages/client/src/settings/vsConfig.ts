@@ -1,8 +1,8 @@
 import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration, ConfigurationScope } from 'vscode';
 import { extensionId } from '../constants';
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings } from '../client/server';
 
-export { CSpellUserSettings } from '../server';
+export { CSpellUserSettings } from '../client/server';
 export { ConfigurationTarget } from 'vscode';
 
 export const sectionCSpell = extensionId;

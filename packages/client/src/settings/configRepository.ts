@@ -1,7 +1,7 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
-import { CSpellUserSettings, CustomDictionaryScope } from '../server';
+import { CSpellUserSettings, CustomDictionaryScope } from '../client/server';
 import { ConfigKeysByField } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';

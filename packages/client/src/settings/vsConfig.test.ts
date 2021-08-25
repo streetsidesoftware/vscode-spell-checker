@@ -2,7 +2,7 @@ import { createMockWorkspaceConfiguration, readTextDocument, MockWorkspaceConfig
 import rfdc from 'rfdc';
 import { mocked } from 'ts-jest/utils';
 import { ConfigurationScope, Uri, workspace, WorkspaceConfiguration } from 'vscode';
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings } from '../client/server';
 import {
     ConfigurationTarget,
     createTargetForDocument,

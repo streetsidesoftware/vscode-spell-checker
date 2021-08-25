@@ -1,5 +1,5 @@
 import { ConfigurationTarget, Uri } from 'vscode';
-import { CSpellUserSettings } from '../../server';
+import { CSpellUserSettings } from '../../client/server';
 import { ConfigFileReaderWriter } from '../configFileReadWrite';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from '../configReaderWriter';
 import { configurationTargetToDictionaryScope } from '../targetAndScope';

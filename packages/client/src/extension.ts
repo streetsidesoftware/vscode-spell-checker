@@ -24,10 +24,8 @@ modules.init();
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
 
-    // The server is implemented in node
-    const serverModule = context.asAbsolutePath(path.join('packages/_server/dist/main.js'));
     // Get the cSpell Client
-    const client = await CSpellClient.create(serverModule);
+    const client = await CSpellClient.create(context);
     context.subscriptions.push(client);
 
     di.set('client', client);

@@ -20,7 +20,7 @@ import type {
     CSpellUserSettings,
     DictionaryDefinition,
     GetConfigurationForDocumentResult,
-} from '../server';
+} from '../client/server';
 import { Inspect, inspectConfig, InspectValues } from '../settings';
 import { Maybe, uniqueFilter } from '../util';
 import { defaultTo, map, pipe } from '../util/pipe';
