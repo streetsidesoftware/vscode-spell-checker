@@ -1,4 +1,4 @@
-import type { CSpellUserSettings } from '../server';
+import type { CSpellUserSettings } from '../client';
 
 export type ConfigKeys = Exclude<keyof CSpellUserSettings, '$schema' | 'version' | 'id' | 'experimental.enableRegexpView'>;
 

@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '../server';
+import { CSpellUserSettings } from '../client';
 import { ConfigKeys, configUpdaterForKey, UpdateConfigFieldFn } from './configUpdater';
 
 describe('Validate configUpdater', () => {

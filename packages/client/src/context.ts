@@ -3,7 +3,7 @@ import { toUri } from 'common-utils/uriHelper.js';
 import { CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
-import { ConfigKind, ConfigScope, ConfigTarget } from './server';
+import { ConfigKind, ConfigScope, ConfigTarget } from './client';
 
 const prefix = extensionId;
 

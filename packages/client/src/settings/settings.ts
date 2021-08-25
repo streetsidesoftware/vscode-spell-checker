@@ -3,7 +3,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Uri, workspace } from 'vscode';
-import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../server';
+import { CSpellUserSettings, normalizeLocale as normalizeLocale } from '../client';
 import { isDefined, unique } from '../util';
 import * as watcher from '../util/watcher';
 import { ClientConfigTarget } from './clientConfigTarget';

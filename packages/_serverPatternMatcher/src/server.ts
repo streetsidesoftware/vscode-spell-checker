@@ -34,7 +34,7 @@ export function run(): void {
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
         log('onInitialize');
-        setWorkspaceBase(params.rootUri ? params.rootUri : '');
+        setWorkspaceBase(params.workspaceFolders?.[0].uri ?? '');
         const capabilities: ServerCapabilities = {
             // Tell the client that the server works in FULL text document sync mode
             textDocumentSync: {

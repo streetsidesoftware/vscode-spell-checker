@@ -1,8 +1,8 @@
 import { CSpellUserSettings, LanguageSetting } from './server';
-import { normalizeCode } from '../iso639-1';
-import * as util from '../util';
+import { normalizeCode } from '../../iso639-1';
+import * as util from '../../util';
 import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { isDefined } from '../util';
+import { isDefined } from '../../util';
 
 export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
     return (config && config.language && normalizeToLocales(config.language)) || undefined;

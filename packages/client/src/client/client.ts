@@ -6,6 +6,7 @@ import {
     DiagnosticCollection,
     DiagnosticSeverity,
     Disposable,
+    ExtensionContext,
     languages as vsCodeSupportedLanguages,
     Position,
     Range,
@@ -15,7 +16,7 @@ import {
 } from 'vscode';
 import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import * as VSCodeLangClient from 'vscode-languageclient/node';
-import { WorkspaceConfigForDocument } from '../../../_server/dist/api';
+import { WorkspaceConfigForDocument } from 'server/api';
 import { diagnosticSource } from '../constants';
 import {
     createServerApi,
@@ -29,7 +30,7 @@ import {
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
     requestCodeAction,
-} from '../server';
+} from './server';
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
@@ -68,7 +69,10 @@ export class CSpellClient implements Disposable {
     /**
      * @param: {string} module -- absolute path to the server module.
      */
-    constructor(module: string, languageIds: string[]) {
+    constructor(context: ExtensionContext, languageIds: string[]) {
+        // The server is implemented in node
+        const module = context.asAbsolutePath('packages/_server/dist/main.js');
+
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
         this.allowedSchemas = new Set(
             Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes
@@ -178,8 +182,8 @@ export class CSpellClient implements Disposable {
         return fn();
     }
 
-    public static create(module: string): Promise<CSpellClient> {
-        return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(module, langIds)));
+    public static create(context: ExtensionContext): Promise<CSpellClient> {
+        return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(context, langIds)));
     }
 
     /**
