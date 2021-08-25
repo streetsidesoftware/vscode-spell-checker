@@ -1,5 +1,5 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
-import { CSpellUserSettings } from '../client/server';
+import { CSpellUserSettings } from '../client';
 import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
 import * as fs from 'fs-extra';
 import { Uri } from 'vscode';

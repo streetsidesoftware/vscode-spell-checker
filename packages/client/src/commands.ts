@@ -17,7 +17,7 @@ import {
 import { TextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client/server';
+import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as Settings from './settings';
 import {
     ConfigTargetLegacy,

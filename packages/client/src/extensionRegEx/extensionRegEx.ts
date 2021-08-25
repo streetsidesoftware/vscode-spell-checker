@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { CSpellClient } from '../client';
 import { extensionId } from '../constants';
-import { CSpellUserSettings, NamedPattern, PatternMatch } from '../client/server';
+import { CSpellUserSettings, NamedPattern, PatternMatch } from '../client';
 import { catchErrors, logError, logErrors, onError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';

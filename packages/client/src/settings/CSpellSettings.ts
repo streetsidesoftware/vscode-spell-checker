@@ -1,4 +1,4 @@
-import { CSpellUserSettings, DictionaryDefinitionCustom } from '../client/server';
+import { CSpellUserSettings, DictionaryDefinitionCustom } from '../client';
 import { unique, uniqueFilter } from '../util';
 import { Uri } from 'vscode';
 import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';

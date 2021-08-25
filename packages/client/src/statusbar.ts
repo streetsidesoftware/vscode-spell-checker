@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { CSpellUserSettings } from './client/server';
+import { CSpellUserSettings } from './client';
 import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client';

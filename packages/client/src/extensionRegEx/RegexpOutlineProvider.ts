@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { PatternMatch } from '../client/server';
+import { PatternMatch } from '../client';
 
 export class RegexpOutlineProvider implements vscode.TreeDataProvider<OutlineItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<OutlineItem | undefined> = new vscode.EventEmitter<OutlineItem | undefined>();

@@ -1,4 +1,4 @@
-import { ConfigTarget, ConfigKind, ConfigScope, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client/server';
+import { ConfigTarget, ConfigKind, ConfigScope, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
 import { oc } from '../../test/helpers';
 import { mapConfigTargetToClientConfigTarget } from './configTarget';
 import { Uri } from 'vscode';

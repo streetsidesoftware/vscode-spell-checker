@@ -13,7 +13,7 @@ import type {
     CustomDictionaryEntry,
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
-} from '../client/server';
+} from '../client';
 import { scrollToText } from '../util/textEditor';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigKeysByField } from './configFields';

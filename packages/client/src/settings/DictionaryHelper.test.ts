@@ -4,7 +4,7 @@ import { mocked } from 'ts-jest/utils';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client/client';
-import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client/server';
+import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client';
 import { getPathToTemp } from '../test/helpers';
 import { createConfigFileReaderWriter } from './configFileReadWrite';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
