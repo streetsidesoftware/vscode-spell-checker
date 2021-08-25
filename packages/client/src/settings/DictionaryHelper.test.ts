@@ -1,7 +1,7 @@
 // import { mocked } from 'ts-jest/utils';
 import { homedir } from 'os';
 import { mocked } from 'ts-jest/utils';
-import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
+import { ConfigurationTarget, Uri, workspace, WorkspaceFolder, ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client/client';
 import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client';
@@ -29,6 +29,8 @@ jest.mock('../client/client', () => {
         }),
     };
 });
+
+const fakeExtensionContext: ExtensionContext = {} as any;
 
 const defByName = {
     'custom-workspace': cd('custom-workspace'),
@@ -64,7 +66,7 @@ describe('Validate DictionaryHelper', () => {
     });
 
     test('DictionaryHelper', () => {
-        const client = new CSpellClient('', []);
+        const client = new CSpellClient(fakeExtensionContext, []);
         const helper = new DictionaryHelper(client);
         expect(helper).toBeDefined();
     });
@@ -214,7 +216,7 @@ describe('Validate DictionaryHelper', () => {
 });
 
 function client(): CSpellClient {
-    return new CSpellClient('', []);
+    return new CSpellClient(fakeExtensionContext, []);
 }
 
 function cd(name: string, addWords?: boolean, scope?: DictionaryDefinitionCustom['scope']): DictionaryDefinitionCustom {
