@@ -358,9 +358,9 @@
     "@cspell/dict-typescript" "^1.0.19"
 
 "@cspell/cspell-types@^5.8.0":
-  version "5.8.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-5.8.0.tgz#04f71f8b13af1c054620000356e54601f0c95158"
-  integrity sha512-hwLIbk/G/cBMJkFReAHQgVc7qrQ/Nz8Cm4dL3P/TLSly/kK0JHNPYC5tYW/vbkrH/BjD7vvCEmSoTJ/bc845RA==
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-5.8.1.tgz#b655e8fb8e5add0f1493c80ef1ed7a0c7f3965d7"
+  integrity sha512-pLGL1f7v/JXjsDSCdjErir1SXzKOQsGOghJe27nU0n3HhIYSzwNKFa9P0YgCpYH4H5tmyc9eUpZsDwdqN8+jcg==
 
 "@cspell/dict-ada@^1.1.2":
   version "1.1.2"
