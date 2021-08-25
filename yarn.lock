@@ -317,9 +317,9 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@cspell/cspell-bundled-dicts@^5.8.0":
-  version "5.8.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.8.0.tgz#e7fefd97fdbd0ed755e108626c9c626f955a8684"
-  integrity sha512-oagWPj4+Mcbb6wocnn2OfqZFInvcWtpvBolQ7rCZDawTQQg5yzG4FDAxHCdf24LMLFvVfZsycVfQNhCCVI/3tA==
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.8.1.tgz#411b7b485f1c00603bb9f3f48ab9ab9a7454a0d7"
+  integrity sha512-qP6LwqtirHidGDB0WGT7MRcf8QmgzbidS3qA5XYuDZiHqTSlzNkCrbPU/KMmW1zN7oZPcvratVabJGwUhmMKIw==
   dependencies:
     "@cspell/dict-ada" "^1.1.2"
     "@cspell/dict-aws" "^1.0.14"
