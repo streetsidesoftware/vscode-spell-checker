@@ -304,7 +304,7 @@
       {
         "command": "cSpell.goToPreviousSpellingError",
         "category": "Spell",
-        "title": "Go to previous spelling error"
+        "title": "Go to Previous Spelling Issue"
       },
       {
         "command": "cSpellRegExpTester.testRegExp",
