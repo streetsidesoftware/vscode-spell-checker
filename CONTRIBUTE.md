@@ -16,14 +16,14 @@ For the readme on the plugin: [README](./packages/client/README.md).
 
 ## Building the extension
 
-1. `npm install`
+1. `yarn install`
 1. Launch vscode: `code Spell Checker.code-workspace`
 1. Run the extension from vscode:
     1. `Debug Tab`
     1. Choose `Launch Extension` configuration.
     1. `F5`
 
-<sup>\*</sup> Requires Node >= 12
+<sup>\*</sup> Requires Node >= 14
 
 ### Debugging the Client
 
