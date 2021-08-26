@@ -9,10 +9,13 @@ import {
     QuickPickOptions,
     Range,
     TextDocument,
+    TextEditorRevealType,
     Uri,
     window,
     workspace,
     WorkspaceEdit,
+    Selection,
+    Diagnostic,
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
@@ -118,6 +121,11 @@ const commandHandlers: CommandHandler = {
     'cSpell.addIgnoreWordsToUser': actionAddIgnoreWordToUser,
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
+
+    'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
+    'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
+    'cSpell.goToNextSpellingIssueAndSuggest': () => actionJumpToSpellingError('next', true),
+    'cSpell.goToPreviousSpellingIssueAndSuggest': () => actionJumpToSpellingError('previous', true),
 
     'cSpell.enableLanguage': enableLanguageIdCmd,
     'cSpell.disableLanguage': disableLanguageIdCmd,
@@ -531,3 +539,34 @@ async function createCSpellConfig(): Promise<void> {
 export const __testing__ = {
     commandHandlers,
 };
+
+function nextDiags(diags: Diagnostic[], selection: Selection): Diagnostic | undefined {
+    // concat next diags with the first diag to get a cycle
+    return diags.filter((d) => d.range?.start.isAfter(selection.end)).concat(diags[0])[0];
+}
+
+function previousDiags(diags: Diagnostic[], selection: Selection): Diagnostic | undefined {
+    // concat the last diag with all previous diags to get a cycle
+    return [diags[diags.length - 1]].concat(diags.filter((d) => d.range?.end.isBefore(selection.start))).pop();
+}
+
+async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: boolean) {
+    const editor = window.activeTextEditor;
+    if (!editor) return;
+    const document = editor.document;
+    const selection = editor.selection;
+    const diags = document ? getCSpellDiags(document.uri) : undefined;
+
+    const matchingDiags = diags ? (which === 'next' ? nextDiags(diags, selection) : previousDiags(diags, selection)) : undefined;
+    const range = matchingDiags?.range;
+    if (!document || !selection || !range || !matchingDiags) {
+        return pVoid(window.showInformationMessage('No issues found in this document.'), 'actionSuggestSpellingCorrections', onError);
+    }
+
+    editor.revealRange(range, TextEditorRevealType.InCenterIfOutsideViewport);
+    editor.selection = new Selection(range.start, range.end);
+
+    if (suggest) {
+       await commands.executeCommand('cSpell.suggestSpellingCorrections');
+    }
+}
