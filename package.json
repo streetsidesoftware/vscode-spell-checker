@@ -297,6 +297,16 @@
         "title": "Spelling Suggestions..."
       },
       {
+        "command": "cSpell.goToNextSpellingError",
+        "category": "Spell",
+        "title": "Go to next spelling error"
+      },
+      {
+        "command": "cSpell.goToPreviousSpellingError",
+        "category": "Spell",
+        "title": "Go to previous spelling error"
+      },
+      {
         "command": "cSpellRegExpTester.testRegExp",
         "title": "Test a Regular Expression on the current document."
       },
