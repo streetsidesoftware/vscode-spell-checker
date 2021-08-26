@@ -1,3 +1,5 @@
+import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
+import { WorkspaceConfigForDocument } from 'server/api';
 import {
     CodeAction,
     CodeActionKind,
@@ -14,30 +16,26 @@ import {
     Uri,
     workspace,
 } from 'vscode';
-import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import * as VSCodeLangClient from 'vscode-languageclient/node';
-import { WorkspaceConfigForDocument } from 'server/api';
+import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import { diagnosticSource } from '../constants';
-import {
-    createServerApi,
-    FieldExistsInTarget,
-    GetConfigurationForDocumentResult,
-    IsSpellCheckEnabledResult,
-    MatchPatternsToDocumentResult,
-    NamedPattern,
-    OnSpellCheckDocumentStep,
-    ServerApi,
-    WorkspaceConfigForDocumentRequest,
-    WorkspaceConfigForDocumentResponse,
-    requestCodeAction,
-} from './server';
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
 import { Maybe } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
 import { logErrors, silenceErrors } from '../util/errors';
-import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
+import {
+    createServerApi,
+    FieldExistsInTarget,
+    GetConfigurationForDocumentResult,
+    IsSpellCheckEnabledResult,
+    OnSpellCheckDocumentStep,
+    requestCodeAction,
+    ServerApi,
+    WorkspaceConfigForDocumentRequest,
+    WorkspaceConfigForDocumentResponse,
+} from './server';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -146,13 +144,6 @@ export class CSpellClient implements Disposable {
             return this.serverApi.getConfigurationForDocument({ workspaceConfig });
         }
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
-    }
-
-    public async matchPatternsInDocument(
-        document: TextDocument,
-        patterns: (string | NamedPattern)[]
-    ): Promise<MatchPatternsToDocumentResult> {
-        return this.serverApi.matchPatternsInDocument({ uri: document.uri.toString(), patterns });
     }
 
     public notifySettingsChanged(): Promise<void> {

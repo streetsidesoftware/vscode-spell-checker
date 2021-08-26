@@ -52,7 +52,6 @@ export type ServerMethods = {
     isSpellCheckEnabled: ReqRes<TextDocumentInfo, IsSpellCheckEnabledResult>;
     splitTextIntoWords: ReqRes<string, SplitTextIntoWordsResult>;
     spellingSuggestions: ReqRes<TextDocumentInfo, SpellingSuggestionsResult>;
-    matchPatternsInDocument: ReqRes<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
 };
 
 /**
