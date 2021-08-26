@@ -37,7 +37,6 @@ import {
     stringifyPatterns,
 } from './config/documentSettings';
 import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
-import { PatternMatcher } from './PatternMatcher';
 import { createProgressNotifier } from './progressNotifier';
 import { textToWords } from './utils';
 import * as Validator from './validator';
@@ -102,8 +101,6 @@ export function run(): void {
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
-
-    const patternMatcher = new PatternMatcher();
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
@@ -464,8 +461,7 @@ export function run(): void {
             }
             // A text document was closed we clear the diagnostics
             connection.sendDiagnostics({ uri, diagnostics: [] });
-        }),
-        patternMatcher
+        })
     );
 
     function updateLogLevel() {
