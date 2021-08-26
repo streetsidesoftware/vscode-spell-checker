@@ -558,7 +558,7 @@ async function actionJumpToSpellingError(which: 'next' | 'previous') {
     const matchingDiags = diags ? (which === 'next' ? nextDiags(diags, selection) : previousDiags(diags, selection)) : undefined;
     const range = matchingDiags?.range;
     if (!document || !selection || !range || !matchingDiags) {
-        return pVoid(window.showWarningMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections', onError);
+        return pVoid(window.showWarningMessage('No issues found in this document.'), 'actionSuggestSpellingCorrections', onError);
     }
 
     const actions = await di.get('client').requestSpellingSuggestions(document, range, [matchingDiags]);
