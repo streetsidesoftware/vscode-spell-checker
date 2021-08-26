@@ -1,4 +1,3 @@
-import * as path from 'path';
 import * as vscode from 'vscode';
 import { ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
