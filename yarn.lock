@@ -418,9 +418,9 @@
   integrity sha512-ZmawoBYjM5k+8fNudRMkK+PpHjhyAFAZt2rUu1EGj2rbCvE3Fn2lhRbDjbreN7nWRvcLRTW+xuPXtKP11X0ahQ==
 
 "@cspell/dict-en-gb@^1.1.32":
-  version "1.1.32"
-  resolved "https://registry.npmjs.org/@cspell/dict-en-gb/-/dict-en-gb-1.1.32.tgz#587057d1cfac67aa3f2a950ec00ec3e33a239689"
-  integrity sha512-iu83IDyCefo0T4NipEa3jtpJ/WDSr1IWt35kljolj7HFDFrjLr4Y/2t8yqtmB4otturWpa5T/G3/k90y2KU08Q==
+  version "1.1.33"
+  resolved "https://registry.npmjs.org/@cspell/dict-en-gb/-/dict-en-gb-1.1.33.tgz#7f1fd90fc364a5cb77111b5438fc9fcf9cc6da0e"
+  integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
 "@cspell/dict-en_us@^1.2.45":
   version "1.2.45"
