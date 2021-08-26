@@ -567,6 +567,6 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
-       await commands.executeCommand('cSpell.suggestSpellingCorrections');
+        await commands.executeCommand('cSpell.suggestSpellingCorrections');
     }
 }
