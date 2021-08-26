@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
-import { CSpellClient } from '../client';
+import { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
-import { CSpellUserSettings, NamedPattern, PatternMatch } from '../client';
 import { catchErrors, logError, logErrors, onError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
+import { PatternMatcherClient } from './patternMatcherClient';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
+import { NamedPattern, PatternMatch, PatternSettings } from './server';
 
 interface DisposableLike {
     dispose(): any;
@@ -13,9 +14,11 @@ interface DisposableLike {
 const MAX_HISTORY_LENGTH = 5;
 
 // this method is called when vs code is activated
-export function activate(context: vscode.ExtensionContext, client: CSpellClient): void {
+export function activate(context: vscode.ExtensionContext, clientSpellChecker: CSpellClient): void {
     const disposables = new Set<DisposableLike>();
     const outline = new RegexpOutlineProvider();
+    const patternMatcherClient = PatternMatcherClient.create(context);
+
     vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
 
     let timeout: NodeJS.Timer | undefined = undefined;
@@ -55,13 +58,18 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
 
         const document = activeEditor.document;
         const version = document.version;
-        const config = await client.getConfigurationForDocument(document);
+        const config = await clientSpellChecker.getConfigurationForDocument(document);
         const extractedPatterns = extractPatternsFromConfig(config.docSettings, history);
         const patterns = extractedPatterns.map((p) => p.pattern);
 
         const highlightIndex = pattern ? 0 : -1;
 
-        await client.matchPatternsInDocument(document, patterns).then((result) => {
+        const client = await patternMatcherClient;
+        const patternSettings: PatternSettings = {
+            patterns: config.docSettings?.patterns || config.settings?.patterns || [],
+        };
+
+        await client.matchPatternsInDocument(document, patterns, patternSettings).then((result) => {
             if (!vscode.window.activeTextEditor || document.version !== version || vscode.window.activeTextEditor?.document != document) {
                 return;
             }

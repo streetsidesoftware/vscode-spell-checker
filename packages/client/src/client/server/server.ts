@@ -111,7 +111,6 @@ export function createServerApi(client: LanguageClient): ServerApi {
         getConfigurationForDocument: (param) => sendRequest('getConfigurationForDocument', param),
         splitTextIntoWords: (param) => sendRequest('splitTextIntoWords', param),
         spellingSuggestions: (param) => sendRequest('spellingSuggestions', param),
-        matchPatternsInDocument: (param) => sendRequest('matchPatternsInDocument', param),
         notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
         registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
         onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),

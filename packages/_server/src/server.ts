@@ -1,31 +1,33 @@
 // cSpell:ignore pycache
 
-import {
-    createConnection,
-    TextDocuments,
-    Disposable,
-    InitializeResult,
-    InitializeParams,
-    ServerCapabilities,
-    CodeActionKind,
-    TextDocumentSyncKind,
-    ProposedFeatures,
-    DidChangeConfigurationParams,
-    PublishDiagnosticsParams,
-    Diagnostic,
-} from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
-import * as Validator from './validator';
-import { ReplaySubject, Subscription, timer } from 'rxjs';
-import { filter, tap, debounce, debounceTime, mergeMap, take } from 'rxjs/operators';
-import { onCodeActionHandler } from './codeActions';
-import { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
-
+import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
+import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
-import { CSpellUserSettings } from './config/cspellConfig';
-import { getDefaultSettings, refreshDictionaryCache, extractImportErrors } from 'cspell-lib';
+import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
+import { ReplaySubject, Subscription, timer } from 'rxjs';
+import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import {
+    CodeActionKind,
+    createConnection,
+    Diagnostic,
+    DidChangeConfigurationParams,
+    Disposable,
+    InitializeParams,
+    InitializeResult,
+    ProposedFeatures,
+    PublishDiagnosticsParams,
+    ServerCapabilities,
+    TextDocuments,
+    TextDocumentSyncKind,
+} from 'vscode-languageserver/node';
 import * as Api from './api';
+import { createClientApi } from './clientApi';
+import { onCodeActionHandler } from './codeActions';
+import { calculateConfigTargets } from './config/configTargetsHelper';
+import { ConfigWatcher } from './config/configWatcher';
+import { CSpellUserSettings } from './config/cspellConfig';
+import { DictionaryWatcher } from './config/dictionaryWatcher';
 import {
     correctBadSettings,
     DocumentSettings,
@@ -34,15 +36,10 @@ import {
     SettingsCspell,
     stringifyPatterns,
 } from './config/documentSettings';
-import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toUri, toFileUri } from 'common-utils/uriHelper.js';
-import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
-import { DictionaryWatcher } from './config/dictionaryWatcher';
-import { ConfigWatcher } from './config/configWatcher';
-import { textToWords } from './utils';
+import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import { createProgressNotifier } from './progressNotifier';
-import { createClientApi } from './clientApi';
-import { calculateConfigTargets } from './config/configTargetsHelper';
+import { textToWords } from './utils';
+import * as Validator from './validator';
 
 log('Starting Spell Checker Server');
 
@@ -91,7 +88,6 @@ export function run(): void {
         getConfigurationForDocument: handleGetConfigurationForDocument,
         splitTextIntoWords: handleSplitTextIntoWords,
         spellingSuggestions: handleSpellingSuggestions,
-        matchPatternsInDocument: handleMatchPatternsInDocument,
     };
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
@@ -105,8 +101,6 @@ export function run(): void {
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
-
-    const patternMatcher = new PatternMatcher();
 
     connection.onInitialize((params: InitializeParams): InitializeResult => {
         // Hook up the logger to the connection.
@@ -248,46 +242,6 @@ export function run(): void {
 
     async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
-    }
-
-    async function handleMatchPatternsInDocument(params: Api.MatchPatternsToDocumentRequest): Promise<Api.MatchPatternsToDocumentResult> {
-        const { uri, patterns } = params;
-        const doc = uri && documents.get(uri);
-        if (!doc) {
-            return {
-                uri,
-                version: -1,
-                patternMatches: [],
-                message: 'Document not found.',
-            };
-        }
-        const text = doc.getText();
-        const version = doc.version;
-        const docSettings = await getSettingsToUseForDocument(doc);
-        const settings = { patterns: [], ...docSettings };
-        const result = await patternMatcher.matchPatternsInText(patterns, text, settings);
-        const emptyResult = { ranges: [], message: undefined };
-        function mapMatch(r: RegExpMatches): Api.RegExpMatchResults {
-            const { elapsedTimeMs, message, regexp, ranges } = { ...emptyResult, ...r };
-            return {
-                regexp: regexp.toString(),
-                elapsedTime: elapsedTimeMs,
-                matches: ranges,
-                errorMessage: message,
-            };
-        }
-        function mapResult(r: MatchResult): Api.PatternMatch {
-            return {
-                name: r.name,
-                defs: r.matches.map(mapMatch),
-            };
-        }
-        const patternMatches = result.map(mapResult);
-        return {
-            uri,
-            version,
-            patternMatches,
-        };
     }
 
     // Register API Handlers
@@ -507,8 +461,7 @@ export function run(): void {
             }
             // A text document was closed we clear the diagnostics
             connection.sendDiagnostics({ uri, diagnostics: [] });
-        }),
-        patternMatcher
+        })
     );
 
     function updateLogLevel() {

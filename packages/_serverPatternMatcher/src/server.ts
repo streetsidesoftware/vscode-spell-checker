@@ -1,18 +1,17 @@
+import { log, setWorkspaceBase } from 'common-utils/log.js';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
     createConnection,
-    TextDocuments,
     Disposable,
-    InitializeResult,
     InitializeParams,
-    ServerCapabilities,
-    CodeActionKind,
-    TextDocumentSyncKind,
+    InitializeResult,
     ProposedFeatures,
+    ServerCapabilities,
+    TextDocuments,
+    TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 import * as Api from './api';
-import { log, setWorkspaceBase } from 'common-utils/log.js';
-import { PatternMatcher, MatchResult, RegExpMatches } from './PatternMatcher';
+import { MatchResult, PatternMatcher, RegExpMatches } from './PatternMatcher';
 
 log('Starting Pattern Matcher Server');
 
@@ -36,15 +35,12 @@ export function run(): void {
         log('onInitialize');
         setWorkspaceBase(params.workspaceFolders?.[0].uri ?? '');
         const capabilities: ServerCapabilities = {
-            // Tell the client that the server works in FULL text document sync mode
+            // Tell the client that the server works in text document sync mode
             textDocumentSync: {
                 openClose: true,
                 change: TextDocumentSyncKind.Incremental,
                 willSave: true,
                 save: { includeText: true },
-            },
-            codeActionProvider: {
-                codeActionKinds: [CodeActionKind.QuickFix],
             },
         };
         return { capabilities };
