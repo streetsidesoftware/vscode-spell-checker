@@ -299,7 +299,7 @@
       {
         "command": "cSpell.goToNextSpellingError",
         "category": "Spell",
-        "title": "Go to next spelling error"
+        "title": "Go to Next Spelling Issue"
       },
       {
         "command": "cSpell.goToPreviousSpellingError",
