@@ -564,7 +564,7 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     }
 
     editor.revealRange(range, TextEditorRevealType.InCenterIfOutsideViewport);
-    editor.selection = new Selection(range.start, range.start);
+    editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
         const actions = await di.get('client').requestSpellingSuggestions(document, range, [matchingDiags]);
