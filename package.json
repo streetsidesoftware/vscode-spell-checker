@@ -297,14 +297,24 @@
         "title": "Spelling Suggestions..."
       },
       {
-        "command": "cSpell.goToNextSpellingError",
+        "command": "cSpell.goToNextSpellingIssue",
         "category": "Spell",
         "title": "Go to Next Spelling Issue"
       },
       {
-        "command": "cSpell.goToPreviousSpellingError",
+        "command": "cSpell.goToPreviousSpellingIssue",
         "category": "Spell",
         "title": "Go to Previous Spelling Issue"
+      },
+      {
+        "command": "cSpell.goToNextSpellingIssueAndSuggest",
+        "category": "Spell",
+        "title": "Go to Next Spelling Issue and Suggest"
+      },
+      {
+        "command": "cSpell.goToPreviousSpellingIssueAndSuggest",
+        "category": "Spell",
+        "title": "Go to Previous Spelling Issue and Suggest"
       },
       {
         "command": "cSpellRegExpTester.testRegExp",

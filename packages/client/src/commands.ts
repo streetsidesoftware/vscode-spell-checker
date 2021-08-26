@@ -122,8 +122,10 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
 
-    'cSpell.goToNextSpellingError': () => actionJumpToSpellingError('next'),
-    'cSpell.goToPreviousSpellingError': () => actionJumpToSpellingError('previous'),
+    'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
+    'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
+    'cSpell.goToNextSpellingIssueAndSuggest': () => actionJumpToSpellingError('next', true),
+    'cSpell.goToPreviousSpellingIssueAndSuggest': () => actionJumpToSpellingError('previous', true),
 
     'cSpell.enableLanguage': enableLanguageIdCmd,
     'cSpell.disableLanguage': disableLanguageIdCmd,
@@ -548,7 +550,7 @@ function previousDiags(diags: Diagnostic[], selection: Selection): Diagnostic | 
     return [diags[diags.length - 1]].concat(diags.filter((d) => d.range?.end.isBefore(selection.start))).pop();
 }
 
-async function actionJumpToSpellingError(which: 'next' | 'previous') {
+async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: boolean) {
     const editor = window.activeTextEditor;
     if (!editor) return;
     const document = editor.document;
@@ -561,24 +563,25 @@ async function actionJumpToSpellingError(which: 'next' | 'previous') {
         return pVoid(window.showInformationMessage('No issues found in this document.'), 'actionSuggestSpellingCorrections', onError);
     }
 
-    const actions = await di.get('client').requestSpellingSuggestions(document, range, [matchingDiags]);
-    if (!actions || !actions.length) {
-        return pVoid(
-            window.showWarningMessage(`No Suggestions Found for ${document.getText(range)}`),
-            'actionSuggestSpellingCorrections',
-            logError
-        );
-    }
-
     editor.revealRange(range, TextEditorRevealType.InCenterIfOutsideViewport);
     editor.selection = new Selection(range.start, range.start);
 
-    const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
-    const picked = await window.showQuickPick(items);
+    if (suggest) {
+        const actions = await di.get('client').requestSpellingSuggestions(document, range, [matchingDiags]);
+        if (!actions || !actions.length) {
+            return pVoid(
+                window.showWarningMessage(`No Suggestions Found for ${document.getText(range)}`),
+                'actionSuggestSpellingCorrections',
+                logError
+            );
+        }
+        const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
+        const picked = await window.showQuickPick(items);
 
-    if (picked && picked._action.command) {
-        const { command: cmd, arguments: args = [] } = picked._action.command;
+        if (picked && picked._action.command) {
+            const { command: cmd, arguments: args = [] } = picked._action.command;
 
-        commands.executeCommand(cmd, ...args);
+            commands.executeCommand(cmd, ...args);
+        }
     }
 }
