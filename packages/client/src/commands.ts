@@ -567,21 +567,6 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
-        const actions = await di.get('client').requestSpellingSuggestions(document, range, [matchingDiags]);
-        if (!actions || !actions.length) {
-            return pVoid(
-                window.showWarningMessage(`No Suggestions Found for ${document.getText(range)}`),
-                'actionSuggestSpellingCorrections',
-                logError
-            );
-        }
-        const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
-        const picked = await window.showQuickPick(items);
-
-        if (picked && picked._action.command) {
-            const { command: cmd, arguments: args = [] } = picked._action.command;
-
-            commands.executeCommand(cmd, ...args);
-        }
+       await commands.executeCommand('cSpell.suggestSpellingCorrections');
     }
 }
