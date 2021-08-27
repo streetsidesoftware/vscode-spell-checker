@@ -9,6 +9,9 @@ type CSpellUserSettingsFields = {
 export const ConfigKeysByField: CSpellUserSettingsFields = {
     allowCompoundWords: 'allowCompoundWords',
     allowedSchemas: 'allowedSchemas',
+    blockCheckingWhenAverageChunkSizeGreatherThan: 'blockCheckingWhenAverageChunkSizeGreatherThan',
+    blockCheckingWhenLineLengthGreaterThan: 'blockCheckingWhenLineLengthGreaterThan',
+    blockCheckingWhenTextChunkSizeGreaterThan: 'blockCheckingWhenTextChunkSizeGreaterThan',
     caseSensitive: 'caseSensitive',
     checkLimit: 'checkLimit',
     customDictionaries: 'customDictionaries',
