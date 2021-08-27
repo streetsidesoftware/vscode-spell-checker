@@ -6,7 +6,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   Become a [<img src="./images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
+-   Become a [<img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
 
 ## Functionality
 
