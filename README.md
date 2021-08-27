@@ -6,7 +6,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   Become a [<img src="./resources/patreon-logo.svg" height="12" width="12" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
+-   Become a [<img src="./images/patreon/Digital-Patreon-Logo_FieryCoral.png" height="12" width="12" alt="Patreon">Patreon!](https://patreon.com/streetsidesoftware)
 
 ## Functionality
 
