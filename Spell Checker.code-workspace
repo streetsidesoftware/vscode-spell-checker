@@ -50,7 +50,8 @@
 		],
 		"typescript.tsdk": "node_modules/typescript/lib",
 		"svg.preview.background": "black",
-		"editor.formatOnSave": true
+		"editor.formatOnSave": true,
+		"files.eol": "\n"
 	},
 	"launch": {
 		"configurations": [
