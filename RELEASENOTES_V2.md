@@ -11,7 +11,7 @@ Work is still underway for the final release to the VS Code Marketplace.
 -   Spelling suggestions available from the context menu.
 -   Improved context menu options.
 -   Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.7.1.
--   Supports case sensitive dictionaries
+-   Supports case sensitive dictionaries. [See](#Turning-on-case-sensitive-spell-checking)
 -   Full support of Yaml configuration files: `cspell.config.yaml`
 -   Full support of configuration in `package.json` under `cspell` section.
 -   Partial support of JavaScript configuration files: `cspell.config.js`
@@ -20,6 +20,7 @@ Work is still underway for the final release to the VS Code Marketplace.
 -   Supports more word splitting formats
     It correctly splits both `ERRORcode` and `ERRORCode`
 -   Reduced installation size and faster loading
+-   Added Commands to move between issues in a document. [See](#Previous-and-Next-Issue-Commands)
 
 ## Manual Installation
 
@@ -29,7 +30,18 @@ Work is still underway for the final release to the VS Code Marketplace.
 
 # Features
 
+## Previous and Next Issue Commands
+
+| Command                                      | Description                               |
+| -------------------------------------------- | ----------------------------------------- |
+| `cSpell.goToNextSpellingIssue`               | Go to Next Spelling Issue                 |
+| `cSpell.goToPreviousSpellingIssue`           | Go to Previous Spelling Issue             |
+| `cSpell.goToNextSpellingIssueAndSuggest`     | Go to Next Spelling Issue and Suggest     |
+| `cSpell.goToPreviousSpellingIssueAndSuggest` | Go to Previous Spelling Issue and Suggest |
+
 ## Turning on case sensitive spell checking
+
+See: [Case Sensitivity - CSpell](https://streetsidesoftware.github.io/cspell/docs/case-sensitive/)
 
 **VS Code UI**
 
@@ -67,41 +79,12 @@ Work is still underway for the final release to the VS Code Marketplace.
 
 ## Making Words Forbidden
 
-There are several ways to mark a word as forbidden:
+See: [How to Forbid Words - CSpell](https://streetsidesoftware.github.io/cspell/docs/forbidden-words/)
 
-1. In a custom word list with words beginning with `!`.
-    ```
-    !forbiddenWord
-    ```
-2. In `words` section of `cspell` configuration:
-    ```
-    "words": [
-        "!forbiddenWord",
-        "configstore"
-    ],
-    ```
-3. In `flagWords` section of `cspell` configuration:
-    ```
-    "flagWords": ["forbiddenWord"]
-    ```
+# Contributions
 
-## Overriding Forbidden words
+-   [elazarcoh](https://github.com/elazarcoh) - added previous/next issue commands.
 
-Sometimes it is necessary to allow a word even if it is forbidden.
-
-### In a comment
-
-```js
-/**
- * Do not mark `forbiddenWord` as incorrect.
- * cspell:ignore forbiddenWord
- */
-```
-
-### In the `cspell` configuration
-
-```jsonc
-{
-    "ignoreWords": ["forbiddenWord"]
-}
-```
+<!---
+cspell:ignore elazarcoh
+--->
