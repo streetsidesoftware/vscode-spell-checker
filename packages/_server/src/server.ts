@@ -1,7 +1,7 @@
 // cSpell:ignore pycache
 
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toFileUri, toUri } from 'common-utils/uriHelper.js';
+import { toFileUri, toUri, uriToName } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
 import { ReplaySubject, Subscription, timer } from 'rxjs';
@@ -39,6 +39,7 @@ import {
 import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import { createProgressNotifier } from './progressNotifier';
 import { textToWords } from './utils';
+import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis';
 import * as Validator from './validator';
 
 log('Starting Spell Checker Server');
@@ -79,6 +80,8 @@ export function run(): void {
     const disposables: Disposable[] = [];
     const dictionaryWatcher = new DictionaryWatcher();
     disposables.push(dictionaryWatcher);
+
+    const blockedFiles = new Set<string>();
 
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
@@ -308,7 +311,34 @@ export function run(): void {
 
     async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
         const { uri } = textDocument;
-        return !!settings.enabled && isLanguageEnabled(textDocument, settings) && !(await isUriExcluded(uri));
+        return (
+            !!settings.enabled &&
+            isLanguageEnabled(textDocument, settings) &&
+            !(await isUriExcluded(uri)) &&
+            !isBlocked(textDocument, settings)
+        );
+    }
+
+    function isBlocked(textDocument: TextDocument, settings: CSpellUserSettings): boolean {
+        const { uri } = textDocument;
+        const {
+            blockCheckingWhenLineLengthGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenLineLengthGreaterThan,
+            blockCheckingWhenAverageChunkSizeGreatherThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreatherThan,
+            blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
+        } = settings;
+        if (blockedFiles.has(uri)) return true;
+        const isMiniReason = isTextLikelyMinified(textDocument.getText(), {
+            blockCheckingWhenAverageChunkSizeGreatherThan,
+            blockCheckingWhenLineLengthGreaterThan,
+            blockCheckingWhenTextChunkSizeGreaterThan,
+        });
+
+        if (isMiniReason) {
+            blockedFiles.add(uri);
+            connection.window.showInformationMessage(`File not spell checked:\n${isMiniReason}\n\"${uriToName(toUri(uri))}"`);
+        }
+
+        return !!isMiniReason;
     }
 
     function isLanguageEnabled(textDocument: TextDocumentUriLangId, settings: CSpellUserSettings) {
