@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
-import { catchErrors, logError, logErrors, onError } from '../util/errors';
+import { catchErrors, logError, logErrors, showError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
     let pattern: string | undefined = undefined;
     let history: string[] = [];
 
-    const updateDecorations = catchErrors(_updateDecorations, 'updateDecorations', onError);
+    const updateDecorations = catchErrors(_updateDecorations, 'updateDecorations', showError);
 
     async function _updateDecorations() {
         disposeCurrent();
