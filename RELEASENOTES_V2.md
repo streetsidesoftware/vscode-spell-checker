@@ -10,7 +10,7 @@ Work is still underway for the final release to the VS Code Marketplace.
 -   Be able to specify which files to check by adding globs to `files` setting.
 -   Spelling suggestions available from the context menu.
 -   Improved context menu options.
--   Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.7.1.
+-   Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.8.2.
 -   Supports case sensitive dictionaries. [See](#Turning-on-case-sensitive-spell-checking)
 -   Full support of Yaml configuration files: `cspell.config.yaml`
 -   Full support of configuration in `package.json` under `cspell` section.
@@ -25,7 +25,7 @@ Work is still underway for the final release to the VS Code Marketplace.
 ## Manual Installation
 
 -   Download and decompress `code-spell-checker.zip`
--   From VS Code Install from VSIX `code-spell-checker-2.0.1-alpha.16.vsix`
+-   From VS Code Install from VSIX `code-spell-checker-2.0.1-alpha.18.vsix`
     ![image](https://user-images.githubusercontent.com/3740137/120071300-f0a27600-c08e-11eb-9828-155be0405510.png)
 
 # Features
