@@ -542,6 +542,11 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @hidden
      */
     readonly?: CSpellSettings['readonly'];
+
+    /**
+     * @scope resource
+     */
+    noSuggestDictionaries?: CSpellSettings['noSuggestDictionaries'];
 }
 
 /**

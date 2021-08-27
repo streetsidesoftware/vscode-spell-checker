@@ -9,6 +9,7 @@
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
     "./autoLoad.js": "./dist/autoLoad.js",
+    "./errors.js": "./dist/errors.js",
     "./file.js": "./dist/file.js",
     "./index.js": "./dist/index.js",
     "./log.js": "./dist/log.js",
@@ -36,7 +37,8 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
-    "ts-jest": "^27.0.4"
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.5"
   },
   "dependencies": {
     "vscode-uri": "^3.0.2"

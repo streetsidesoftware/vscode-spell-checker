@@ -1,6 +1,7 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { format } from 'util';
 import { Uri } from 'vscode';
 import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
@@ -88,6 +89,6 @@ async function updateWordInCustomDictionary(updateFn: (words: string[]) => strin
         await fs.mkdirp(path.dirname(fsPath));
         await fs.writeFile(fsPath, lines.join('\n').trim().concat('\n'));
     } catch (e) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${e.toString()}`));
+        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${format(e)}`));
     }
 }
