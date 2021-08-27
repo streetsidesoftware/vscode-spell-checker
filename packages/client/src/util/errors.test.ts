@@ -1,5 +1,5 @@
-import { isError, logErrors, handleErrors, catchErrors, Resolvers, ErrorHandlers } from './errors';
 import { window } from 'vscode';
+import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors';
 
 const debug = jest.spyOn(console, 'debug').mockImplementation(() => {});
 const log = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -82,8 +82,26 @@ describe('Validate errors', () => {
         ${'error'}    | ${false} | ${Resolvers.ignoreError} | ${'error'}   | ${0}     | ${0}
         ${'error'}    | ${true}  | ${Resolvers.ignoreError} | ${undefined} | ${0}     | ${0}
         ${'Canceled'} | ${true}  | ${Resolvers.ignoreError} | ${undefined} | ${0}     | ${0}
-    `('handleErrors with resolvers  $message $doThrow $resolver', async ({ message, doThrow, resolver, expected, errorCnt, logCnt }) => {
+    `('Resolvers:  $message $doThrow $resolver', async ({ message, doThrow, resolver, expected, errorCnt, logCnt }) => {
         await expect(handleErrors(e(message, doThrow), 'handleErrors', resolver)).resolves.toBe(expected);
+        expect(error).toHaveBeenCalledTimes(errorCnt);
+        expect(log).toHaveBeenCalledTimes(logCnt);
+        expect(debug).toHaveBeenCalledTimes(0);
+    });
+
+    test.each`
+        message       | doThrow  | handler                        | expected     | errorCnt | logCnt
+        ${'error'}    | ${false} | ${ErrorHandlers.showErrors}    | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${ErrorHandlers.showErrors}    | ${undefined} | ${1}     | ${0}
+        ${'Canceled'} | ${true}  | ${ErrorHandlers.showErrors}    | ${undefined} | ${0}     | ${0}
+        ${'error'}    | ${false} | ${ErrorHandlers.logErrors}     | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${ErrorHandlers.logErrors}     | ${undefined} | ${0}     | ${1}
+        ${'Canceled'} | ${true}  | ${ErrorHandlers.logErrors}     | ${undefined} | ${0}     | ${0}
+        ${'error'}    | ${false} | ${ErrorHandlers.silenceErrors} | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${ErrorHandlers.silenceErrors} | ${undefined} | ${0}     | ${0}
+        ${'Canceled'} | ${true}  | ${ErrorHandlers.silenceErrors} | ${undefined} | ${0}     | ${0}
+    `('Handlers:  $message $doThrow $handler', async ({ message, doThrow, handler, expected, errorCnt, logCnt }) => {
+        await expect(handler(e(message, doThrow), 'handleErrors')).resolves.toBe(expected);
         expect(error).toHaveBeenCalledTimes(errorCnt);
         expect(log).toHaveBeenCalledTimes(logCnt);
         expect(debug).toHaveBeenCalledTimes(0);

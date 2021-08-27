@@ -63,14 +63,10 @@ export function ignoreError(reason: unknown, context: string): Promise<void> {
     return Promise.resolve(toUndefined(msg));
 }
 
-export function handleErrors<T>(promise: Promise<T>, context: string, onErrorResolver: OnErrorResolver = showError): Promise<T | void> {
-    return handleErrorsEx(promise, context, onErrorResolver);
-}
-
-export function handleErrorsEx<T>(
-    promiseOrFn: Promise<T> | (() => Promise<T>),
+export function handleErrors<T>(
+    promiseOrFn: Promise<T> | (() => T | Promise<T>),
     context: string,
-    onErrorResolver = showError
+    onErrorResolver: OnErrorResolver = showError
 ): Promise<T | void> {
     const q = typeof promiseOrFn === 'function' ? (async () => promiseOrFn())() : promiseOrFn;
     return q.catch(withContextOnError(context, onErrorResolver));
@@ -92,7 +88,7 @@ export function catchErrors<P extends Array<any>, R>(
     context: string,
     onErrorResolver: OnErrorResolver = showError
 ): (...p: P) => Promise<R | void> {
-    return (...p) => handleErrors((async () => fn(...p))(), context, onErrorResolver);
+    return (...p) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }
 
 export function logErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | void> {

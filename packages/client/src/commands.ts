@@ -3,24 +3,24 @@ import {
     CodeAction,
     commands,
     ConfigurationScope,
+    Diagnostic,
     Disposable,
     FileType,
     QuickPickItem,
     QuickPickOptions,
     Range,
+    Selection,
     TextDocument,
     TextEditorRevealType,
     Uri,
     window,
     workspace,
     WorkspaceEdit,
-    Selection,
-    Diagnostic,
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
+import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as Settings from './settings';
 import {
     ConfigTargetLegacy,
@@ -54,7 +54,7 @@ import { normalizeWords } from './settings/CSpellSettings';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
-import { catchErrors, handleErrors, handleErrorsEx, logError, showError, OnErrorResolver, ignoreError } from './util/errors';
+import { catchErrors, handleErrors, ignoreError, OnErrorResolver } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
 import { findMatchingDocument } from './vscode/findDocument';
@@ -329,7 +329,7 @@ export function enableDisableLanguageId(
     configTarget: ConfigurationTarget | undefined,
     enable: boolean
 ): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const t = await (configTarget ? tfCfg(configTarget, uri) : targetsForUri(uri));
         return Settings.enableLanguageIdForTarget(languageId, enable, t);
     }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
@@ -342,7 +342,7 @@ export function enableDisableLocale(
     configScope: ConfigurationScope | undefined,
     enable: boolean
 ): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const t = await (configTarget ? tfCfg(configTarget, uri, configScope) : targetsForUri(uri));
         return Settings.enableLocaleForTarget(locale, enable, t);
     }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
@@ -355,7 +355,7 @@ export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, 
 }
 
 export function enableCurrentLanguage(): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
@@ -364,7 +364,7 @@ export function enableCurrentLanguage(): Promise<void> {
 }
 
 export function disableCurrentLanguage(): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
