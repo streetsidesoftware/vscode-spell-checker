@@ -28,9 +28,14 @@ export interface SpellCheckerSettings {
     checkLimit?: number;
 
     /**
-     * @default "Information"
      * @scope resource
      * @description Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle.
+     * @default "Information"
+     * @enumDescriptions [
+     *  "Report Spelling Issues as Errors",
+     *  "Report Spelling Issues as Warnings",
+     *  "Report Spelling Issues as Information",
+     *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
     diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
 
@@ -45,6 +50,12 @@ export interface SpellCheckerSettings {
      * Set the Debug Level for logging messages.
      * @scope window
      * @default "Error"
+     * @enumDescriptions [
+     *  "Do not log",
+     *  "Log only errors",
+     *  "Log errors and warnings",
+     *  "Log errors, warnings, and info",
+     *  "Log everything (noisy)"]
      */
     logLevel?: 'None' | 'Error' | 'Warning' | 'Information' | 'Debug';
 
@@ -60,6 +71,9 @@ export interface SpellCheckerSettings {
      * The side of the status bar to display the spell checker status.
      * @scope application
      * @default "Right"
+     * @enumDescriptions [
+     *  "Left Side of Statusbar",
+     *  "Right Side of Statusbar"]
      */
     showStatusAlignment?: 'Left' | 'Right';
 
@@ -87,7 +101,6 @@ export interface SpellCheckerSettings {
      * @title File Types to Check
      * @scope resource
      * @uniqueItems true
-     * @pattern ^!?[\w_\-]+$
      * @markdownDescription
      * Enable / Disable checking file types (languageIds).
      * These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
@@ -100,7 +113,7 @@ export interface SpellCheckerSettings {
      * kotlin      // enable checking for kotlin
      * ```
      */
-    enableFiletypes?: string[];
+    enableFiletypes?: EnableFileTypeId[];
 
     /**
      * @title Workspace Root Folder Path
@@ -202,6 +215,22 @@ export interface SpellCheckerSettings {
  * - `false` - turn off the named dictionary
  */
 type EnableCustomDictionary = boolean;
+
+/**
+ * @markdownDescription
+ * Enable / Disable checking file types (languageIds).
+ * To disable a language, prefix with `!` as in `!json`,
+ *
+ * Example:
+ * ```
+ * jsonc       // enable checking for jsonc
+ * !json       // disable checking for json
+ * kotlin      // enable checking for kotlin
+ * ```
+ * @pattern ^!?(?!\s)[\s\w_.\-]+$
+ * @patternErrorMessage "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space."
+ */
+type EnableFileTypeId = string;
 
 export type CustomDictionaries = {
     [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
