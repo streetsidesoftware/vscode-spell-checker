@@ -3,24 +3,24 @@ import {
     CodeAction,
     commands,
     ConfigurationScope,
+    Diagnostic,
     Disposable,
     FileType,
     QuickPickItem,
     QuickPickOptions,
     Range,
+    Selection,
     TextDocument,
     TextEditorRevealType,
     Uri,
     window,
     workspace,
     WorkspaceEdit,
-    Selection,
-    Diagnostic,
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
+import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as Settings from './settings';
 import {
     ConfigTargetLegacy,
@@ -54,7 +54,7 @@ import { normalizeWords } from './settings/CSpellSettings';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
-import { catchErrors, handleErrors, handleErrorsEx, logError, onError, OnErrorHandler } from './util/errors';
+import { catchErrors, handleErrors, ignoreError, OnErrorResolver } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
 import { findMatchingDocument } from './vscode/findDocument';
@@ -147,7 +147,7 @@ const commandHandlers: CommandHandler = {
     'cSpell.createCSpellConfig': createCSpellConfig,
 };
 
-function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorHandler = onError): Promise<void> {
+function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorResolver = ignoreError): Promise<void> {
     const v = Promise.resolve(p).then(() => {});
     return handleErrors(v, context, onErrorHandler);
 }
@@ -329,7 +329,7 @@ export function enableDisableLanguageId(
     configTarget: ConfigurationTarget | undefined,
     enable: boolean
 ): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const t = await (configTarget ? tfCfg(configTarget, uri) : targetsForUri(uri));
         return Settings.enableLanguageIdForTarget(languageId, enable, t);
     }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
@@ -342,7 +342,7 @@ export function enableDisableLocale(
     configScope: ConfigurationScope | undefined,
     enable: boolean
 ): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const t = await (configTarget ? tfCfg(configTarget, uri, configScope) : targetsForUri(uri));
         return Settings.enableLocaleForTarget(locale, enable, t);
     }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
@@ -355,7 +355,7 @@ export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, 
 }
 
 export function enableCurrentLanguage(): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
@@ -364,7 +364,7 @@ export function enableCurrentLanguage(): Promise<void> {
 }
 
 export function disableCurrentLanguage(): Promise<void> {
-    return handleErrorsEx(async () => {
+    return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
@@ -482,24 +482,20 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
     const r = matchingRanges?.[0] || range;
     const matchingDiags = r && diags?.filter((d) => !!d.range.intersection(r));
+
     if (!document || !selection || !r || !matchingDiags) {
-        return pVoid(window.showWarningMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections', onError);
+        return pVoid(window.showInformationMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections');
     }
 
     const actions = await di.get('client').requestSpellingSuggestions(document, r, matchingDiags);
     if (!actions || !actions.length) {
-        return pVoid(
-            window.showWarningMessage(`No Suggestions Found for ${document.getText(r)}`),
-            'actionSuggestSpellingCorrections',
-            logError
-        );
+        return pVoid(window.showInformationMessage(`No Suggestions Found for ${document.getText(r)}`), 'actionSuggestSpellingCorrections');
     }
+
     const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
     const picked = await window.showQuickPick(items);
-
     if (picked && picked._action.command) {
         const { command: cmd, arguments: args = [] } = picked._action.command;
-
         commands.executeCommand(cmd, ...args);
     }
 }
@@ -560,7 +556,7 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     const matchingDiags = diags ? (which === 'next' ? nextDiags(diags, selection) : previousDiags(diags, selection)) : undefined;
     const range = matchingDiags?.range;
     if (!document || !selection || !range || !matchingDiags) {
-        return pVoid(window.showInformationMessage('No issues found in this document.'), 'actionSuggestSpellingCorrections', onError);
+        return pVoid(window.showInformationMessage('No issues found in this document.'), 'actionJumpToSpellingError');
     }
 
     editor.revealRange(range, TextEditorRevealType.InCenterIfOutsideViewport);
