@@ -18,7 +18,7 @@ const MAX_HISTORY_LENGTH = 5;
 export function activate(context: vscode.ExtensionContext, clientSpellChecker: CSpellClient): void {
     const disposables = new Set<DisposableLike>();
     const outline = new RegexpOutlineProvider();
-    const patternMatcherClient = PatternMatcherClient.create(context);
+    let patternMatcherClient: PatternMatcherClient | undefined;
 
     vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
 
@@ -33,12 +33,12 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
         light: {
             // this color will be used in light color themes
             // borderColor: 'darkblue',
-            backgroundColor: '#C0C0FF44',
+            backgroundColor: '#C0C0FFCC',
         },
         dark: {
             // this color will be used in dark color themes
             // borderColor: 'lightblue',
-            backgroundColor: '#34789044',
+            backgroundColor: '#347890CC',
         },
     });
 
@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
 
         const highlightIndex = pattern ? 0 : -1;
 
-        const client = await patternMatcherClient;
+        const client = await getPatternMatcherClient();
         const patternSettings: PatternSettings = {
             patterns: config.docSettings?.patterns || config.settings?.patterns || [],
         };
@@ -226,6 +226,14 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
         } else {
             clearDecorations();
         }
+    }
+
+    function getPatternMatcherClient(): Promise<PatternMatcherClient> {
+        if (!patternMatcherClient) {
+            patternMatcherClient = PatternMatcherClient.create(context);
+        }
+        const client = patternMatcherClient;
+        return client.onReady().then(() => client);
     }
 
     function dispose() {
