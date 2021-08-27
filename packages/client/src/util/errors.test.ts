@@ -1,4 +1,4 @@
-import { isError, silenceErrors, logErrors, handleErrors, catchErrors } from './errors';
+import { isError, logErrors, handleErrors, catchErrors, Resolvers, ErrorHandlers } from './errors';
 import { window } from 'vscode';
 
 const debug = jest.spyOn(console, 'debug').mockImplementation(() => {});
@@ -31,9 +31,9 @@ describe('Validate errors', () => {
         ${'error'} | ${false} | ${'error'}
         ${'error'} | ${true}  | ${undefined}
     `('silenceErrors $message $doThrow', async ({ message, doThrow, expected }) => {
-        await expect(silenceErrors(e(message, doThrow), 'silenceErrors')).resolves.toBe(expected);
+        await expect(ErrorHandlers.silenceErrors(e(message, doThrow), 'silenceErrors')).resolves.toBe(expected);
         expect(error).toHaveBeenCalledTimes(0);
-        expect(log).toHaveBeenCalledTimes(expected ? 0 : 1);
+        expect(log).toHaveBeenCalledTimes(0);
         expect(debug).toHaveBeenCalledTimes(0);
     });
 
@@ -70,9 +70,32 @@ describe('Validate errors', () => {
         expect(log).toHaveBeenCalledTimes(0);
         expect(debug).toHaveBeenCalledTimes(0);
     });
+
+    test.each`
+        message       | doThrow  | resolver                 | expected     | errorCnt | logCnt
+        ${'error'}    | ${false} | ${Resolvers.showError}   | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${Resolvers.showError}   | ${undefined} | ${1}     | ${0}
+        ${'Canceled'} | ${true}  | ${Resolvers.showError}   | ${undefined} | ${0}     | ${0}
+        ${'error'}    | ${false} | ${Resolvers.logError}    | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${Resolvers.logError}    | ${undefined} | ${0}     | ${1}
+        ${'Canceled'} | ${true}  | ${Resolvers.logError}    | ${undefined} | ${0}     | ${0}
+        ${'error'}    | ${false} | ${Resolvers.ignoreError} | ${'error'}   | ${0}     | ${0}
+        ${'error'}    | ${true}  | ${Resolvers.ignoreError} | ${undefined} | ${0}     | ${0}
+        ${'Canceled'} | ${true}  | ${Resolvers.ignoreError} | ${undefined} | ${0}     | ${0}
+    `('handleErrors with resolvers  $message $doThrow $resolver', async ({ message, doThrow, resolver, expected, errorCnt, logCnt }) => {
+        await expect(handleErrors(e(message, doThrow), 'handleErrors', resolver)).resolves.toBe(expected);
+        expect(error).toHaveBeenCalledTimes(errorCnt);
+        expect(log).toHaveBeenCalledTimes(logCnt);
+        expect(debug).toHaveBeenCalledTimes(0);
+    });
 });
 
 async function e(message: string, doThrow = true): Promise<string> {
-    if (doThrow) throw new Error(message);
+    if (doThrow) {
+        const error = new Error(message);
+        error.name = message;
+        throw error;
+    }
+
     return message;
 }
