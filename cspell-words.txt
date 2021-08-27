@@ -5,6 +5,7 @@ algolia
 anonymize
 appid
 arraylength
+autocrlf
 Bing
 cfml
 codeblock

@@ -1,0 +1,13 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto eol=lf
+*.cjs       text eol=lf
+*.CRLF.txt	text eol=crlf
+*.go        text eol=lf
+*.js        text eol=lf
+*.json      text eol=lf
+*.lock      text eol=lf
+*.md        text eol=lf
+*.ts        text eol=lf
+*.txt       text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf

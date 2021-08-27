@@ -5,7 +5,6 @@
 // ${fileDirname}: the current opened file's dirname
 // ${fileExtname}: the current opened file's extension
 // ${cwd}: the current working directory of the spawned process
-
 // A task runner that calls the Typescript compiler (tsc) and
 // Compiles a HelloWorld.ts program
 {
@@ -13,10 +12,13 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-		{
+        {
             "label": "Client Build",
             "command": "npm",
-            "args": ["run", "build"],
+            "args": [
+                "run",
+                "build"
+            ],
             "options": {
                 "cwd": "${workspaceRoot}"
             }
@@ -31,6 +33,6 @@
                 "kind": "build",
                 "isDefault": true
             }
-		}
+        }
     ]
 }
