@@ -2284,6 +2284,20 @@
           },
           "type": "array",
           "scope": "resource"
+        },
+        "cSpell.suggestionMenu": {
+          "title": "Suggestions Menu",
+          "description": "Which menu type is used for suggestions.",
+          "type": "string",
+          "enum": [
+            "quickPick",
+            "quickFix"
+          ],
+          "enumDescriptions": [
+            "Suggestions will appear in the suggestion bar at the IDE top",
+            "Suggestions will appear near the word, inside the text editor"
+          ],
+          "default": "quickPick"
         }
       }
     }

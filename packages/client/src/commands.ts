@@ -563,6 +563,12 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
-        await commands.executeCommand('cSpell.suggestSpellingCorrections');
+        type SuggestionMenu = 'quickPick' | 'quickFix';
+        const menu = workspace.getConfiguration('cSpell').get<SuggestionMenu>('suggestionMenu');
+        if (menu === 'quickPick') {
+            await commands.executeCommand('cSpell.suggestSpellingCorrections');
+        } else if (menu === 'quickFix') {
+            await commands.executeCommand('editor.action.quickFix');
+        }
     }
 }
