@@ -323,10 +323,7 @@
       {
         "command": "cSpellRegExpTester.editRegExp",
         "title": "Edit",
-        "icon": {
-          "dark": "resources/dark/edit.svg",
-          "light": "resources/light/edit.svg"
-        }
+        "icon": "$(edit)"
       }
     ],
     "languages": [

@@ -7,6 +7,8 @@ import { createServerApi } from './server';
 
 const debugExecArgv = ['--nolazy', '--inspect=60148'];
 
+const enableDebugLogging = false;
+
 export class PatternMatcherClient implements Disposable {
     readonly client: LanguageClient;
     readonly serverApi: PatternMatcherServerApi;
@@ -62,12 +64,22 @@ export class PatternMatcherClient implements Disposable {
     }
 
     public dispose(): void {
-        // console.log('Dispose: Pattern Matcher Client');
+        debugLog('Dispose: Pattern Matcher Client');
+    }
+
+    public onReady(): Promise<void> {
+        return this.client.onReady();
     }
 
     private async initWhenReady() {
-        // console.log('waiting initWhenReady');
-        await this.client.onReady();
-        // console.log('done initWhenReady');
+        debugLog('waiting initWhenReady');
+        await this.onReady();
+        debugLog('done initWhenReady');
     }
 }
+
+const debugLog: typeof console.log = (...params) => {
+    if (enableDebugLogging) {
+        console.log(...params);
+    }
+};
