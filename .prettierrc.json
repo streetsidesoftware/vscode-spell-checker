@@ -2,9 +2,24 @@
     "printWidth": 140,
     "singleQuote": true,
     "tabWidth": 4,
+    "endOfLine": "lf",
     "overrides": [
         {
             "files": "**/*.{yaml,yml}",
+            "options": {
+                "tabWidth": 2,
+                "singleQuote": false
+            }
+        },
+        {
+            "files": "**/*.json",
+            "options": {
+                "tabWidth": 4,
+                "singleQuote": false
+            }
+        },
+        {
+            "files": "**/package.json",
             "options": {
                 "tabWidth": 2,
                 "singleQuote": false
