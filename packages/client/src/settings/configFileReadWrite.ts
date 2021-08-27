@@ -1,10 +1,11 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
-import { CSpellUserSettings } from '../client';
 import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
+import { isErrnoException } from 'common-utils/index.js';
 import * as fs from 'fs-extra';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import { CSpellUserSettings } from '../client';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
 export type { ConfigUpdateFn } from './configReaderWriter';
 
@@ -41,7 +42,10 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
         const rw = createConfigFileReaderWriter(uri);
         return await rw._read();
     } catch (e) {
-        return e.code === 'ENOENT' ? Promise.resolve(defaultValueIfNotFound) : Promise.reject(e);
+        if (isErrnoException(e) && e.code === 'ENOENT') {
+            return Promise.resolve(defaultValueIfNotFound);
+        }
+        return Promise.reject(e);
     }
 }
 

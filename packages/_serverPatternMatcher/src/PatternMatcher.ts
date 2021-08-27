@@ -1,7 +1,8 @@
 import { RegExpPatternDefinition } from '@cspell/cspell-types';
-import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { isDefined } from 'common-utils/index.js';
 import { logError } from 'common-utils/log.js';
+import { RegExpWorker, TimeoutError } from 'regexp-worker';
+import { format } from 'util';
 import { PatternSettings } from './api';
 
 export type Range = [number, number];
@@ -187,7 +188,7 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp | un
         }
         return new RegExp(r, defaultFlags);
     } catch (e) {
-        logError(e.toString());
+        logError(format(e));
     }
     return undefined;
 }

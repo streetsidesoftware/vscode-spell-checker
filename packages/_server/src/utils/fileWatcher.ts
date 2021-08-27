@@ -1,7 +1,8 @@
-import watch from 'node-watch';
-import { FSWatcher } from 'fs';
-import type { Disposable } from 'vscode-languageserver/node';
 import { logError } from 'common-utils/log.js';
+import { FSWatcher } from 'fs';
+import watch from 'node-watch';
+import { format } from 'util';
+import type { Disposable } from 'vscode-languageserver/node';
 
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;
@@ -52,7 +53,7 @@ export class FileWatcher implements Disposable {
             try {
                 this.watchedFile.set(filename, watch(filename, { persistent: false }, this.trigger));
             } catch (e) {
-                logError(e?.toString());
+                logError(format(e));
                 return false;
             }
         }

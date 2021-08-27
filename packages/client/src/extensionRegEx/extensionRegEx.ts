@@ -6,6 +6,7 @@ import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 import { NamedPattern, PatternMatch, PatternSettings } from './server';
+import { format } from 'util';
 
 interface DisposableLike {
     dispose(): any;
@@ -166,7 +167,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             try {
                 toRegExp(input, 'g');
             } catch (e) {
-                return e.toString();
+                return format(e);
             }
         }
         pattern = defaultRegexp || pattern;

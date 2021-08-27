@@ -1085,6 +1085,7 @@
         "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
         "type": "string"
       },
+      "scope": "resource",
       "type": "array"
     },
     "numSuggestions": {
