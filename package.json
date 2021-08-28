@@ -2290,7 +2290,7 @@
         },
         "cSpell.spellCheckOnlyWorkspaceFiles": {
           "default": true,
-          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*​/**\"]\n```",
+          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*\", \"**​/.*​/**\"]\n```",
           "scope": "window",
           "title": "Spell Check Only Workspace Files",
           "type": "boolean"

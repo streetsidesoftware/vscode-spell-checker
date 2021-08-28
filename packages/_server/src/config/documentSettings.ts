@@ -247,6 +247,7 @@ export class DocumentSettings {
         if (!files.length && cSpellConfigSettings.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
             files.push({ glob: '**', root: globRoot });
+            files.push({ glob: '**/.*', root: globRoot });
             files.push({ glob: '**/.*/**', root: globRoot });
         }
         fileSettings.files = files;
