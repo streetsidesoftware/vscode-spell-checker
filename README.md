@@ -8,6 +8,22 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 -   Become a [<img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
 
+## Sponsors
+
+<p>
+    <a  title="Try CodeStream"
+        href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=codespellchecker&amp;utm_medium=banner">
+        <img src="https://alt-images.codestream.com/codestream_logo_codespellchecker.png">
+    </a></br>
+    Manage pull requests and conduct code reviews in your IDE with full source-tree context.
+    Comment on any line, not just the diffs. Use jump-to-definition, your favorite keybindings,
+    and code intelligence with more of your workflow.<br>
+    <a  title="Try CodeStream"
+        href="https://sponsorlink.codestream.com/?utm_source=vscmarket&amp;utm_campaign=codespellchecker&amp;utm_medium=banner">
+        Learn More
+    </a>
+</p>
+
 ## Functionality
 
 Load a TypeScript, JavaScript, Text, etc. file. Words not in the dictionary files will have
