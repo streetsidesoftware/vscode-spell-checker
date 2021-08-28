@@ -194,7 +194,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * This same effect can be achieved using the `files` setting.
      *
      * ```
-     * "cSpell.files": ["**", "**​/.*​/**"]
+     * "cSpell.files": ["**", "**​/.*", "**​/.*​/**"]
      * ```
      * @default true
      */
