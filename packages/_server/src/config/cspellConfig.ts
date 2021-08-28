@@ -19,7 +19,7 @@ export type {
     LanguageSetting,
 } from '@cspell/cspell-types';
 
-export interface SpellCheckerSettings {
+export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**
      * The limit in K-Characters to be checked in a file.
      * @scope resource
@@ -231,6 +231,29 @@ type EnableCustomDictionary = boolean;
  * @patternErrorMessage "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space."
  */
 type EnableFileTypeId = string;
+
+interface SpellCheckerShouldCheckDocSettings {
+    /**
+     * The maximum line length
+     * @scope resource
+     * @default 1000
+     */
+    blockCheckingWhenLineLengthGreaterThan?: number;
+    /**
+     * The maximum size of text chunks
+     * @scope resource
+     * @default 200
+     */
+    blockCheckingWhenTextChunkSizeGreaterThan?: number;
+    /**
+     * The maximum average chunk of text size.
+     * A chunk is the characters between absolute word breaks.
+     * Absolute word breaks match: `/[\s,{}[\]]/`
+     * @scope resource
+     * @default 40
+     */
+    blockCheckingWhenAverageChunkSizeGreatherThan?: number;
+}
 
 export type CustomDictionaries = {
     [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;

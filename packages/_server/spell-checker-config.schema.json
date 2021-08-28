@@ -25,6 +25,24 @@
       "scope": "window",
       "type": "array"
     },
+    "blockCheckingWhenAverageChunkSizeGreatherThan": {
+      "default": 40,
+      "description": "The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\\s,{}[\\]]/`",
+      "scope": "resource",
+      "type": "number"
+    },
+    "blockCheckingWhenLineLengthGreaterThan": {
+      "default": 1000,
+      "description": "The maximum line length",
+      "scope": "resource",
+      "type": "number"
+    },
+    "blockCheckingWhenTextChunkSizeGreaterThan": {
+      "default": 200,
+      "description": "The maximum size of text chunks",
+      "scope": "resource",
+      "type": "number"
+    },
     "caseSensitive": {
       "description": "Words must match case rules.",
       "markdownDescription": "Turns on case sensitive checking by default",
