@@ -26,6 +26,7 @@ import {
     ConfigTargetLegacy,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
+    getSettingFromVSConfig,
     normalizeTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
@@ -563,6 +564,12 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
-        await commands.executeCommand('cSpell.suggestSpellingCorrections');
+        type SuggestionMenu = 'quickPick' | 'quickFix';
+        const menu = getSettingFromVSConfig('suggestionMenuType', document);
+        if (menu === 'quickPick') {
+            await commands.executeCommand('cSpell.suggestSpellingCorrections');
+        } else if (menu === 'quickFix') {
+            await commands.executeCommand('editor.action.quickFix');
+        }
     }
 }
