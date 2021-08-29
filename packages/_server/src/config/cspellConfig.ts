@@ -599,6 +599,16 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      */
     noSuggestDictionaries?: CSpellSettings['noSuggestDictionaries'];
+
+    /**
+     * @scope resource
+     * @description Which menu type is used for suggestions.
+     * @default "quickPick"
+     * @enumDescriptions [
+     *  "Suggestions will appear in the suggestion bar at the IDE top",
+     *  "Suggestions will appear near the word, inside the text editor"]
+     */
+    suggestionMenuType?: 'quickPick' | 'quickFix';
 }
 
 /**

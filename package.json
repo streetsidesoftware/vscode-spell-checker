@@ -2321,6 +2321,20 @@
           "description": "The maximum size of text chunks",
           "scope": "resource",
           "type": "number"
+        },
+        "cSpell.suggestionMenuType": {
+          "default": "quickPick",
+          "description": "Which menu type is used for suggestions.",
+          "enum": [
+            "quickPick",
+            "quickFix"
+          ],
+          "enumDescriptions": [
+            "Suggestions will appear in the suggestion bar at the IDE top",
+            "Suggestions will appear near the word, inside the text editor"
+          ],
+          "scope": "resource",
+          "type": "string"
         }
       }
     }

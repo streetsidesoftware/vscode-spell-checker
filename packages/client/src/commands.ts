@@ -26,6 +26,7 @@ import {
     ConfigTargetLegacy,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
+    getSettingFromVSConfig,
     normalizeTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
@@ -564,7 +565,7 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
 
     if (suggest) {
         type SuggestionMenu = 'quickPick' | 'quickFix';
-        const menu = workspace.getConfiguration('cSpell').get<SuggestionMenu>('suggestionMenu');
+        const menu = getSettingFromVSConfig('suggestionMenuType', document);
         if (menu === 'quickPick') {
             await commands.executeCommand('cSpell.suggestSpellingCorrections');
         } else if (menu === 'quickFix') {
