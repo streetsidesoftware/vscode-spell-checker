@@ -37,6 +37,12 @@
 !packages/_server/dist/main.js
 !packages/_server/dist/main.js.LICENSE.txt
 !packages/_server/package.json
+
+!packages/_serverPatternMatcher/dist/api.js
+!packages/_serverPatternMatcher/dist/main.js
+!packages/_serverPatternMatcher/dist/main.js.LICENSE.txt
+!packages/_serverPatternMatcher/package.json
+
 !packages/client/dist/**/*.{js,LICENSE.txt}
 !packages/client/License.txt
 !packages/client/package.json

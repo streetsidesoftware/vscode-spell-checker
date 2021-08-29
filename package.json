@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "GPL-3.0-or-later",
-  "version": "2.0.1-alpha.18",
+  "version": "2.0.1-alpha.19",
   "publisher": "streetsidesoftware",
   "private": true,
   "repository": {
@@ -411,10 +411,12 @@
         },
         "cSpell.enableFiletypes": {
           "items": {
+            "markdownDescription": "Enable / Disable checking file types (languageIds).\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+            "pattern": "^!?(?!\\s)[\\s\\w_.\\-]+$",
+            "patternErrorMessage": "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space.",
             "type": "string"
           },
           "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
-          "pattern": "^!?[\\w_\\-]+$",
           "scope": "resource",
           "title": "File Types to Check",
           "type": "array",
@@ -515,7 +517,13 @@
             "Hint"
           ],
           "default": "Information",
-          "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle."
+          "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle.",
+          "enumDescriptions": [
+            "Report Spelling Issues as Errors",
+            "Report Spelling Issues as Warnings",
+            "Report Spelling Issues as Information",
+            "Report Spelling Issues as Hints, will not show up in Problems"
+          ]
         },
         "cSpell.showStatus": {
           "type": "boolean",
@@ -531,7 +539,11 @@
             "Left",
             "Right"
           ],
-          "description": "The side of the status bar to display the spell checker status."
+          "description": "The side of the status bar to display the spell checker status.",
+          "enumDescriptions": [
+            "Left Side of Statusbar",
+            "Right Side of Statusbar"
+          ]
         },
         "cSpell.spellCheckDelayMs": {
           "type": "number",
@@ -1179,7 +1191,14 @@
             "Information",
             "Debug"
           ],
-          "default": "Error"
+          "default": "Error",
+          "enumDescriptions": [
+            "Do not log",
+            "Log only errors",
+            "Log errors and warnings",
+            "Log errors, warnings, and info",
+            "Log everything (noisy)"
+          ]
         },
         "cSpell.allowedSchemas": {
           "type": "array",
@@ -2271,7 +2290,7 @@
         },
         "cSpell.spellCheckOnlyWorkspaceFiles": {
           "default": true,
-          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*​/**\"]\n```",
+          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*\", \"**​/.*​/**\"]\n```",
           "scope": "window",
           "title": "Spell Check Only Workspace Files",
           "type": "boolean"
@@ -2285,19 +2304,23 @@
           "type": "array",
           "scope": "resource"
         },
-        "cSpell.suggestionMenu": {
-          "title": "Suggestions Menu",
-          "description": "Which menu type is used for suggestions.",
-          "type": "string",
-          "enum": [
-            "quickPick",
-            "quickFix"
-          ],
-          "enumDescriptions": [
-            "Suggestions will appear in the suggestion bar at the IDE top",
-            "Suggestions will appear near the word, inside the text editor"
-          ],
-          "default": "quickPick"
+        "cSpell.blockCheckingWhenAverageChunkSizeGreatherThan": {
+          "default": 40,
+          "description": "The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\\s,{}[\\]]/`",
+          "scope": "resource",
+          "type": "number"
+        },
+        "cSpell.blockCheckingWhenLineLengthGreaterThan": {
+          "default": 1000,
+          "description": "The maximum line length",
+          "scope": "resource",
+          "type": "number"
+        },
+        "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": {
+          "default": 200,
+          "description": "The maximum size of text chunks",
+          "scope": "resource",
+          "type": "number"
         }
       }
     }

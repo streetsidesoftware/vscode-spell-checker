@@ -25,6 +25,24 @@
       "scope": "window",
       "type": "array"
     },
+    "blockCheckingWhenAverageChunkSizeGreatherThan": {
+      "default": 40,
+      "description": "The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\\s,{}[\\]]/`",
+      "scope": "resource",
+      "type": "number"
+    },
+    "blockCheckingWhenLineLengthGreaterThan": {
+      "default": 1000,
+      "description": "The maximum line length",
+      "scope": "resource",
+      "type": "number"
+    },
+    "blockCheckingWhenTextChunkSizeGreaterThan": {
+      "default": 200,
+      "description": "The maximum size of text chunks",
+      "scope": "resource",
+      "type": "number"
+    },
     "caseSensitive": {
       "description": "Words must match case rules.",
       "markdownDescription": "Turns on case sensitive checking by default",
@@ -345,6 +363,12 @@
         "Information",
         "Hint"
       ],
+      "enumDescriptions": [
+        "Report Spelling Issues as Errors",
+        "Report Spelling Issues as Warnings",
+        "Report Spelling Issues as Information",
+        "Report Spelling Issues as Hints, will not show up in Problems"
+      ],
       "scope": "resource",
       "type": "string"
     },
@@ -535,10 +559,12 @@
     },
     "enableFiletypes": {
       "items": {
+        "markdownDescription": "Enable / Disable checking file types (languageIds).\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+        "pattern": "^!?(?!\\s)[\\s\\w_.\\-]+$",
+        "patternErrorMessage": "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space.",
         "type": "string"
       },
       "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
-      "pattern": "^!?[\\w_\\-]+$",
       "scope": "resource",
       "title": "File Types to Check",
       "type": "array",
@@ -1052,6 +1078,13 @@
         "Warning",
         "Information",
         "Debug"
+      ],
+      "enumDescriptions": [
+        "Do not log",
+        "Log only errors",
+        "Log errors and warnings",
+        "Log errors, warnings, and info",
+        "Log everything (noisy)"
       ],
       "scope": "window",
       "type": "string"
@@ -1879,6 +1912,10 @@
         "Left",
         "Right"
       ],
+      "enumDescriptions": [
+        "Left Side of Statusbar",
+        "Right Side of Statusbar"
+      ],
       "scope": "application",
       "type": "string"
     },
@@ -1890,7 +1927,7 @@
     },
     "spellCheckOnlyWorkspaceFiles": {
       "default": true,
-      "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*​/**\"]\n```",
+      "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `files` setting.\n\n```\n\"cSpell.files\": [\"**\", \"**​/.*\", \"**​/.*​/**\"]\n```",
       "scope": "window",
       "title": "Spell Check Only Workspace Files",
       "type": "boolean"
