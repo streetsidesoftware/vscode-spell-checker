@@ -59,7 +59,7 @@ If anything shows up, then the port is still locked.
 
 ## Adding configurations
 
-1. Edit `CSpellSettingsPackageProperties` in [server/src/config/cspellConfig.ts](./packages/_server/src/config/cspellConfig.ts) to add your configuration field, e.g.
+1. Edit `SpellCheckerSettings` in [server/src/config/cspellConfig.ts](./packages/_server/src/config/cspellConfig.ts) to add your configuration field, e.g.
    ```typescript
    /**
      * @scope resource
