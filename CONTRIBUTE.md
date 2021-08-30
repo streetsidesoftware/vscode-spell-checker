@@ -83,7 +83,7 @@ If anything shows up, then the port is still locked.
    yarn run build-package-schema
    yarn workspace server run build
    ```
-   It'll update the _package.json_ with the new confiurations.
+   It'll update the _package.json_ with the new configurations.
 1. Use the configurations with:
    ```typescript
    const yourConfigValue = getSettingFromVSConfig(ConfigFields.myEnumConfig, document);
