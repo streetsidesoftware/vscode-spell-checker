@@ -2,7 +2,7 @@ import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../client';
-import { ConfigKeysByField } from './configFields';
+import { ConfigFields } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
@@ -154,14 +154,14 @@ export class VSCodeRepository extends ConfigRepositoryBase {
         if (this.target !== ConfigurationTarget.Global) return { fn, keys: neededKeys };
 
         const keys = new Set(neededKeys);
-        if (keys.has(ConfigKeysByField.words)) {
-            keys.add(ConfigKeysByField.userWords);
+        if (keys.has(ConfigFields.words)) {
+            keys.add(ConfigFields.userWords);
         }
 
         function userWordsToWords(cfg: CSpellUserSettings): CSpellUserSettings {
             const { userWords, words, ...rest } = cfg;
             const c: CSpellUserSettings = { ...rest };
-            if (keys.has(ConfigKeysByField.userWords) || userWords || words) {
+            if (keys.has(ConfigFields.userWords) || userWords || words) {
                 c.words = userWords?.concat(words ?? []) ?? words;
             }
             return c;
@@ -170,7 +170,7 @@ export class VSCodeRepository extends ConfigRepositoryBase {
         function wordsToUserWords(cfg: CSpellUserSettings): CSpellUserSettings {
             const { words, userWords, ...cfgResult } = cfg;
             const r: CSpellUserSettings = { ...cfgResult };
-            if (Object.keys(cfg).includes(ConfigKeysByField.words)) {
+            if (Object.keys(cfg).includes(ConfigFields.words)) {
                 r.words = undefined;
                 r.userWords = words?.concat(userWords || []);
             }

@@ -1934,15 +1934,15 @@
     },
     "suggestionMenuType": {
       "default": "quickPick",
-      "description": "Which menu type is used for suggestions.",
       "enum": [
         "quickPick",
         "quickFix"
       ],
       "enumDescriptions": [
-        "Suggestions will appear in the suggestion bar at the IDE top",
-        "Suggestions will appear near the word, inside the text editor"
+        "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
+        "Suggestions will appear inline near the word, inside the text editor."
       ],
+      "markdownDescription": "The type of menu used to display spelling suggestions.",
       "scope": "resource",
       "type": "string"
     },
