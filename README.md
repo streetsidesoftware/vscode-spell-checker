@@ -8,6 +8,8 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 -   Become a [<img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
 
+-   [<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="PayPal Acceptance Mark"> <br>![PayPal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AE7RWCXNQ2ZYC&item_name=Support+VS+Code+Spell+Checker&currency_code=EUR&source=url)
+
 ## Sponsors
 
 <p>
