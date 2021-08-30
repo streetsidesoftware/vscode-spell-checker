@@ -10,6 +10,8 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 -   [<img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="PayPal Acceptance Mark"> <br>![PayPal Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=AE7RWCXNQ2ZYC&item_name=Support+VS+Code+Spell+Checker&currency_code=EUR&source=url)
 
+-   [Support through ![PayPal](./images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+
 ## Sponsors
 
 <p>
