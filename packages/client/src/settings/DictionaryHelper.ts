@@ -16,7 +16,7 @@ import type {
 } from '../client';
 import { scrollToText } from '../util/textEditor';
 import { ClientConfigTarget } from './clientConfigTarget';
-import { ConfigKeysByField } from './configFields';
+import { ConfigFields } from './configFields';
 import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
 import { dictionaryTargetBestMatches, MatchTargetsFn } from './configTargetHelper';
 import { configUpdaterForKeys } from './configUpdater';
@@ -294,7 +294,7 @@ async function addCustomDictionaryToConfig(cfgRep: ConfigRepository, def: Dictio
 
 function updaterForCustomDictionaryToConfigCSpell(def: DictionaryDefinitionCustom) {
     const name = def.name;
-    return configUpdaterForKeys([ConfigKeysByField.dictionaries, ConfigKeysByField.dictionaryDefinitions], (cfg) => {
+    return configUpdaterForKeys([ConfigFields.dictionaries, ConfigFields.dictionaryDefinitions], (cfg) => {
         const { dictionaries = [], dictionaryDefinitions = [] } = cfg;
         const defsByName = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
         const dictNames = new Set(dictionaries);
@@ -313,10 +313,10 @@ function updaterForCustomDictionaryToConfigVSCode(def: DictionaryDefinitionCusto
     const name = def.name;
     return configUpdaterForKeys(
         [
-            ConfigKeysByField.customDictionaries,
-            ConfigKeysByField.customFolderDictionaries,
-            ConfigKeysByField.customWorkspaceDictionaries,
-            ConfigKeysByField.customUserDictionaries,
+            ConfigFields.customDictionaries,
+            ConfigFields.customFolderDictionaries,
+            ConfigFields.customWorkspaceDictionaries,
+            ConfigFields.customUserDictionaries,
         ],
         (cfg) => {
             const { customDictionaries, ...rest } = combineCustomDictionaries(cfg);

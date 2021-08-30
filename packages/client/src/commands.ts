@@ -21,6 +21,7 @@ import { TextEdit } from 'vscode-languageclient/node';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
+import { ConfigFields } from './settings';
 import * as Settings from './settings';
 import {
     ConfigTargetLegacy,
@@ -488,6 +489,11 @@ async function actionSuggestSpellingCorrections(): Promise<void> {
         return pVoid(window.showInformationMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections');
     }
 
+    const menu = getSettingFromVSConfig(ConfigFields.suggestionMenuType, document);
+    if (menu === 'quickFix') {
+        return await commands.executeCommand('editor.action.quickFix');
+    }
+
     const actions = await di.get('client').requestSpellingSuggestions(document, r, matchingDiags);
     if (!actions || !actions.length) {
         return pVoid(window.showInformationMessage(`No Suggestions Found for ${document.getText(r)}`), 'actionSuggestSpellingCorrections');
@@ -564,12 +570,6 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     editor.selection = new Selection(range.start, range.end);
 
     if (suggest) {
-        type SuggestionMenu = 'quickPick' | 'quickFix';
-        const menu = getSettingFromVSConfig('suggestionMenuType', document);
-        if (menu === 'quickPick') {
-            await commands.executeCommand('cSpell.suggestSpellingCorrections');
-        } else if (menu === 'quickFix') {
-            await commands.executeCommand('editor.action.quickFix');
-        }
+        return actionSuggestSpellingCorrections();
     }
 }

@@ -201,6 +201,17 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     spellCheckOnlyWorkspaceFiles?: boolean;
 
     /**
+     * @scope resource
+     * @markdownDescription
+     * The type of menu used to display spelling suggestions.
+     * @default "quickPick"
+     * @enumDescriptions [
+     *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
+     *  "Suggestions will appear inline near the word, inside the text editor."]
+     */
+    suggestionMenuType?: 'quickPick' | 'quickFix';
+
+    /**
      * Show Regular Expression Explorer
      * @scope application
      * @default false
@@ -599,16 +610,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      */
     noSuggestDictionaries?: CSpellSettings['noSuggestDictionaries'];
-
-    /**
-     * @scope resource
-     * @description Which menu type is used for suggestions.
-     * @default "quickPick"
-     * @enumDescriptions [
-     *  "Suggestions will appear in the suggestion bar at the IDE top",
-     *  "Suggestions will appear near the word, inside the text editor"]
-     */
-    suggestionMenuType?: 'quickPick' | 'quickFix';
 }
 
 /**

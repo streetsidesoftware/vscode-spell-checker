@@ -6,7 +6,7 @@ type CSpellUserSettingsFields = {
     [key in ConfigKeys]: key;
 };
 
-export const ConfigKeysByField: CSpellUserSettingsFields = {
+export const ConfigFields: CSpellUserSettingsFields = {
     allowCompoundWords: 'allowCompoundWords',
     allowedSchemas: 'allowedSchemas',
     blockCheckingWhenAverageChunkSizeGreatherThan: 'blockCheckingWhenAverageChunkSizeGreatherThan',
