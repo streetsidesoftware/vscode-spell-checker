@@ -57,6 +57,38 @@ If anything shows up, then the port is still locked.
 -   `_settingsViewer` - a webapp that provides a visual interface to the configuration files.
 -   `_integrationTests` - a test suite that launches the extension in VS Code.
 
+## Adding configurations
+
+1. Edit `SpellCheckerSettings` in [server/src/config/cspellConfig.ts](./packages/_server/src/config/cspellConfig.ts) to add your configuration field, e.g.
+    ```typescript
+    /**
+      * @scope resource
+      * @description Configuration description.
+      * @default "option2"
+      * @enumDescriptions [
+      *  "Option 1 Description",
+      *  "Option 2 Description"]
+      */
+     myEnumConfig?: 'option1' | 'option2';
+    ```
+1. Edit [client/src/settings/configFields.ts](./packages/client/src/settings/configFields.ts) by adding a new entry to `ConfigFields`:
+    ```typescript
+    export const ConfigFields: CSpellUserSettingsFields = {
+        ...
+        myEnumConfig: 'myEnumConfig'
+    }
+    ```
+1. Run
+    ```bash
+    yarn run build-package-schema
+    yarn workspace server run build
+    ```
+    It'll update the [package.json](./package.json) with the new configurations.
+1. Use the configurations with:
+    ```typescript
+    const yourConfigValue = getSettingFromVSConfig(ConfigFields.myEnumConfig, document);
+    ```
+
 ## Dictionaries / Word List
 
 Improvements to existing word lists and new word lists are welcome.
