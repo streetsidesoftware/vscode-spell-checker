@@ -59,7 +59,7 @@ If anything shows up, then the port is still locked.
 
 ## Adding configurations
 
-1. Edit `CSpellSettingsPackageProperties` in _server/src/config/cspellConfig.ts_ to add your configuration field, e.g.
+1. Edit `CSpellSettingsPackageProperties` in [server/src/config/cspellConfig.ts](./packages/_server/src/config/cspellConfig.ts) to add your configuration field, e.g.
    ```typescript
    /**
      * @scope resource
@@ -71,9 +71,9 @@ If anything shows up, then the port is still locked.
      */
     myEnumConfig?: 'option1' | 'option2';
    ```
-1. Edit _client/src/settings/configFields.ts_ by adding a new entry to `ConfigKeysByField`:
+1. Edit [client/src/settings/configFields.ts](./packages/client/src/settings/configFields.ts) by adding a new entry to `ConfigFields`:
    ```typescript
-   export const ConfigKeysByField: CSpellUserSettingsFields = {
+   export const ConfigFields: CSpellUserSettingsFields = {
        ...
        myEnumConfig: 'myEnumConfig'
    }
@@ -81,13 +81,12 @@ If anything shows up, then the port is still locked.
 1. Run 
    ```bash
    yarn run build-package-schema
-   cd _server
-   yarn run build
+   yarn workspace server run build
    ```
    It'll update the _package.json_ with the new confiurations.
 1. Use the configurations with:
    ```typescript
-   const yourConfigValue = getSettingFromVSConfig('myEnumConfig', document);
+   const yourConfigValue = getSettingFromVSConfig(ConfigFields.myEnumConfig, document);
    ```
 
 ## Dictionaries / Word List
