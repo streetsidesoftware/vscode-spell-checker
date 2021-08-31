@@ -1,9 +1,13 @@
 name: "build-test"
 on: # rebuild any PRs and main branch changes
   pull_request:
+    paths-ignore:
+      - "docs/**"
   push:
     branches:
       - main
+    paths-ignore:
+      - "docs/**"
 
 jobs:
   build-test:
