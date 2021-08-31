@@ -1,0 +1,8 @@
+{
+  "name": "@internal/docs",
+  "description": "Documentation",
+  "private": true,
+  "scripts": {
+    "serve": "bundle exec jekyll serve"
+  }
+}

@@ -1,4 +1,13 @@
-# Spelling Checker for Visual Studio Code
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+title: Spell Checker
+nav_order: 1
+description: 'Spelling Checker for Visual Studio Code'
+permalink: /
+---
+
+# Spell Checker for Visual Studio Code
 
 A basic spell checker that works well with camelCase code.
 
@@ -6,9 +15,8 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   Become a [<img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
-
--   [Support through ![PayPal](./images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+- Become a [![Patreon](./assets/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
+- Support through [![PayPal](./assets/images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
 
 ## Sponsors
 
@@ -36,70 +44,75 @@ To see the list of suggestions:
 
 After positioning the cursor in the word, any of the following should display the list of suggestions:
 
--   Click on the 💡 (lightbulb) in the left hand margin.
--   [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
-    -   Mac: `⌘`+`.` or `Cmd`+`.`
-    -   PC: `Ctrl`+`.`
+- Click on the 💡 (lightbulb) in the left hand margin.
+- [`Quick Fix`](https://code.visualstudio.com/docs/getstarted/keybindings#_rich-languages-editing) Editor action command:
+  - Mac: `⌘`+`.` or `Cmd`+`.`
+  - PC: `Ctrl`+`.`
 
 ## Install
+
+See:
+
+- [Code Spell Checker - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+- [Code Spell Checker – Open VSX Registry](https://open-vsx.org/extension/streetsidesoftware/code-spell-checker)
 
 Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-checker` hit enter and reload window to enable.
 
 ## Supported Languages
 
--   English (US)
--   English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
+- English (US)
+- English (GB) - turn on by changing `"cSpell.language": "en"` to `"cSpell.language": "en-GB"`
 
 ## Add-On Language Dictionaries
 
--   [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
--   [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
--   [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish)
--   [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
--   [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
--   [French <!-- cSpell:disable -->Réforme<!-- cSpell:enable --> 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme)
--   [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
--   [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek)
--   [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew)
--   [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian)
--   [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian)
--   [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish)
--   [Portuguese - Brazilian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian)
--   [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese)
--   [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
--   [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
--   [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
--   [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish)
--   [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian)
+- [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
+- [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
+- [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish)
+- [Dutch](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-dutch)
+- [French](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french)
+- [French <!-- cSpell:disable -->Réforme<!-- cSpell:enable --> 90](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-french-reforme)
+- [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german)
+- [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek)
+- [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew)
+- [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian)
+- [Persian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-persian)
+- [Polish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-polish)
+- [Portuguese - Brazilian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian)
+- [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese)
+- [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+- [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
+- [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
+- [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish)
+- [Ukrainian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-ukrainian)
 
 ## Add-On Specialized Dictionaries
 
--   [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
+- [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms)
 
 ## Enabled File Types
 
--   AsciiDoc
--   C, C++
--   C#
--   css, less, scss
--   Elixir
--   Go
--   Html
--   Java
--   JavaScript
--   JSON / JSONC
--   LaTex
--   Markdown
--   PHP
--   PowerShell
--   Pug / Jade
--   Python
--   reStructuredText
--   Rust
--   Scala
--   Text
--   TypeScript
--   YAML
+- AsciiDoc
+- C, C++
+- C#
+- css, less, scss
+- Elixir
+- Go
+- Html
+- Java
+- JavaScript
+- JSON / JSONC
+- LaTex
+- Markdown
+- PHP
+- PowerShell
+- Pug / Jade
+- Python
+- reStructuredText
+- Rust
+- Scala
+- Text
+- TypeScript
+- YAML
 
 ### Enable / Disable File Types
 
@@ -117,10 +130,10 @@ To _Enable_ or _Disable_ spell checking for a file type:
 
 The concept is simple, split camelCase words before checking them against a list of known English words.
 
--   camelCase -> camel case
--   HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
--   snake_case_words -> snake case words
--   camel2snake -> camel snake -- (the 2 is ignored)
+- camelCase -> camel case
+- HTMLInput -> html input -- Notice that the `I` is associated with `Input` and not `HTML`
+- snake_case_words -> snake case words
+- camel2snake -> camel snake -- (the 2 is ignored)
 
 ### Special case with ALL CAPS words
 
@@ -128,17 +141,17 @@ There are a few special cases to help with common spelling practices for ALL CAP
 
 Trailing `s`, `ing`, `ies`, `es`, `ed` are kept with the previous word.
 
--   CURLs -> curls -- trailing `s`
--   CURLedRequest -> curled request -- trailing `ed`
+- CURLs -> curls -- trailing `s`
+- CURLedRequest -> curled request -- trailing `ed`
 
 ## Things to note
 
--   This spellchecker is case insensitive. It will not catch errors like english which should be English.
--   The spellchecker uses a local word dictionary. It does not send anything outside your machine.
--   The words in the dictionary can and do contain errors.
--   There are missing words.
--   Only words longer than 3 characters are checked. "jsj" is ok, while "jsja" is not.
--   All symbols and punctuation are ignored.
+- This spellchecker is case insensitive. It will not catch errors like english which should be English.
+- The spellchecker uses a local word dictionary. It does not send anything outside your machine.
+- The words in the dictionary can and do contain errors.
+- There are missing words.
+- Only words longer than 3 characters are checked. "jsj" is ok, while "jsja" is not.
+- All symbols and punctuation are ignored.
 
 ## In Document Settings
 
@@ -147,13 +160,13 @@ This is to help with file specific issues that may not be applicable to the enti
 
 All settings are prefixed with `cSpell:` or `spell-checker:`.
 
--   `disable` -- turn off the spell checker for a section of code.
--   `enable` -- turn the spell checker back on after it has been turned off.
--   `ignore` -- specify a list of words to be ignored.
--   `words` -- specify a list of words to be considered correct and will appear in the suggestions list.
--   `ignoreRegExp` -- Any text matching the regular expression will NOT be checked for spelling.
--   `includeRegExp` -- Only text matching the collection of includeRegExp will be checked.
--   `enableCompoundWords` / `disableCompoundWords` -- Allow / disallow words like: "stringlength".
+- `disable` -- turn off the spell checker for a section of code.
+- `enable` -- turn the spell checker back on after it has been turned off.
+- `ignore` -- specify a list of words to be ignored.
+- `words` -- specify a list of words to be considered correct and will appear in the suggestions list.
+- `ignoreRegExp` -- Any text matching the regular expression will NOT be checked for spelling.
+- `includeRegExp` -- Only text matching the collection of includeRegExp will be checked.
+- `enableCompoundWords` / `disableCompoundWords` -- Allow / disallow words like: "stringlength".
 
 ### Enable / Disable checking sections of code
 
@@ -161,18 +174,18 @@ It is possible to disable / enable the spell checker by adding comments to your 
 
 #### Disable Checking
 
--   `/* cSpell:disable */`
--   `/* spell-checker: disable */`
--   `/* spellchecker: disable */`
--   `/* cspell: disable-line */`
--   `/* cspell: disable-next-line */`
+- `/* cSpell:disable */`
+- `/* spell-checker: disable */`
+- `/* spellchecker: disable */`
+- `/* cspell: disable-line */`
+- `/* cspell: disable-next-line */`
 <!--- cSpell:enable -->
 
 #### Enable Checking
 
--   `/* cSpell:enable */`
--   `/* spell-checker: enable */`
--   `/* spellchecker: enable */`
+- `/* cSpell:enable */`
+- `/* spell-checker: enable */`
+- `/* spellchecker: enable */`
 
 #### Example
 
@@ -298,18 +311,18 @@ def sum_it(self, seq):
 
 ### Exclude patterns
 
--   `Urls`<sup>1</sup> -- Matches urls
--   `HexValues` -- Matches common hex format like #aaa, 0xfeef, \\u0134
--   `EscapeCharacters`<sup>1</sup> -- matches special characters: '\\n', '\\t' etc.
--   `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
--   `Email` -- matches most email addresses.
+- `Urls`<sup>1</sup> -- Matches urls
+- `HexValues` -- Matches common hex format like #aaa, 0xfeef, \\u0134
+- `EscapeCharacters`<sup>1</sup> -- matches special characters: '\\n', '\\t' etc.
+- `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
+- `Email` -- matches most email addresses.
 
 ### Include Patterns
 
--   `Everything`<sup>1</sup> -- By default we match an entire document and remove the excludes.
--   `string` -- This matches common string formats like '...', "...", and \`...\`
--   `CStyleComment` -- These are C Style comments /\* \*/ and //
--   `PhpHereDoc` -- This matches PHPHereDoc strings.
+- `Everything`<sup>1</sup> -- By default we match an entire document and remove the excludes.
+- `string` -- This matches common string formats like '...', "...", and \`...\`
+- `CStyleComment` -- These are C Style comments /\* \*/ and //
+- `PhpHereDoc` -- This matches PHPHereDoc strings.
 
 <sup>1.</sup> These patterns are part of the default include/exclude list for every file.
 
@@ -438,26 +451,26 @@ The spell checker includes a set of default dictionaries.
 
 ### General Dictionaries
 
--   **wordsEn** - Derived from Hunspell US English words.
--   **wordsEnGb** - Derived from Hunspell GB English words.
--   **companies** - List of well known companies
--   **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
--   **misc** - Terms that do not belong in the other dictionaries.
+- **wordsEn** - Derived from Hunspell US English words.
+- **wordsEnGb** - Derived from Hunspell GB English words.
+- **companies** - List of well known companies
+- **softwareTerms** - Software Terms and concepts like "coroutine", "debounce", "tree", etc.
+- **misc** - Terms that do not belong in the other dictionaries.
 
 ### Programming Language Dictionaries
 
--   **typescript** - keywords for Typescript and Javascript
--   **node** - terms related to using nodejs.
--   **php** - _php_ keywords and library methods
--   **go** - _go_ keywords and library methods
--   **python** - _python_ keywords
--   **powershell** - _powershell_ keywords
--   **html** - _html_ related keywords
--   **css** - _css_, _less_, and _scss_ related keywords
+- **typescript** - keywords for Typescript and Javascript
+- **node** - terms related to using nodejs.
+- **php** - _php_ keywords and library methods
+- **go** - _go_ keywords and library methods
+- **python** - _python_ keywords
+- **powershell** - _powershell_ keywords
+- **html** - _html_ related keywords
+- **css** - _css_, _less_, and _scss_ related keywords
 
 ### Miscellaneous Dictionaries
 
--   **fonts** - long list of fonts - to assist with _css_
+- **fonts** - long list of fonts - to assist with _css_
 
 Based upon the programming language, different dictionaries will be loaded.
 

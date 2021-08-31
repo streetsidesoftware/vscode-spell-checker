@@ -1,3 +1,11 @@
-# VS Code Spell Checker Docs
+# VS Code Spell Checker Documentation
 
-These are note related to creating and updating documentation.
+This is where the documentation is stored.
+
+## Run locally
+
+```sh
+bundle exec jekyll serve
+# or
+yarn run serve
+```
