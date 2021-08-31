@@ -18,40 +18,29 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title                     : Spell Checker for VS Code
-email                     : &email "jason@streetsidesoftware.nl"
-name                      : &name "Jason Dent" # &name is a YAML anchor which can be *referenced later
-description: >-
-  User guide for Street Side Software's spell checker for Visual Studio Code.
-url                       : https://streetsidesoftware.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                   : "/vscode-spell-checker" # the subpath of your site, e.g. "/blog"
-repository                : "streetsidesoftware/vscode-spell-checker"
-github_username           : jason3s
+title: Spell Checker
+email: &email "jason@streetsidesoftware.nl"
+name: &name "Jason Dent" # &name is a YAML anchor which can be *referenced later
+description: >- # this means to ignore newlines until "baseurl:"
+  A Spell Checker for Code!
+url: https://streetsidesoftware.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl: "/vscode-spell-checker" # the subpath of your site, e.g. "/blog"
+repository: "streetsidesoftware/vscode-spell-checker"
+github_username: streetsidesoftware
+# twitter_username: jekyllrb
+# github_username: jekyll
 
 # Build settings
+# theme: jekyll-theme-slate
 # theme: minima
-# theme: jekyll-theme-hacker
-# theme: jekyll-theme-minimal
-remote_theme: "mmistakes/minimal-mistakes@4.19.2"
+remote_theme: pmarsceill/just-the-docs
 
-# Site Author
-author:
-  name             : *name # *name is a YAML reference pointing to the &anchor earlier
-  avatar           : "https://avatars3.githubusercontent.com/u/3740137"
-  bio              : "Solving cool problems."
-  location         : "Haarlem, Netherlands"
-  links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/jason3s"
+plugins:
+  # - jekyll-feed
+  - jekyll-relative-links
 
-
-# Site Footer
-footer:
-  links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/streetsidesoftware"
+# permalink: pretty
+permalink: /:categories/:title/
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -61,7 +50,10 @@ footer:
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
+exclude:
+  - "**/.cspell.*"
+  - "**/.cspell/**"
+  - README.md
 #   - .sass-cache/
 #   - .jekyll-cache/
 #   - gemfiles/
@@ -72,71 +64,39 @@ footer:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-# Reading Files
-include:
-  - .htaccess
-  - _pages
 
-# Collections
+#
+# just-the-docs
+# See: [Home | Just the Docs](https://pmarsceill.github.io/just-the-docs/)
+#
+
 collections:
-  docs:
-    output: true
-    permalink: /:collection/:path/
+  - docs
+  - drafts
 
-# Defaults
 defaults:
-  # _posts
   - scope:
-      path: ""
-      type: posts
+      path: "assets/images"
     values:
-      layout: single
-      author_profile: true
-      read_time: true
-      comments: true
-      share: true
-      related: true
-  # _pages
-  - scope:
-      path: "_pages"
-      type: pages
-    values:
-      layout: single
-      author_profile: true
-  # _docs
-  - scope:
-      path: ""
-      type: docs
-    values:
-      layout: single
-      read_time: false
-      author_profile: false
-      share: false
-      comments: false
-      sidebar:
-        nav: "docs"
+      image: true
 
-# Sass/SCSS
-sass:
-  sass_dir: _sass
-  style: compressed # http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
+# Aux links for the upper right navigation
+aux_links:
+  "CSpell":
+    - "https://streetsidesoftware.github.io/cspell"
+  "GitHub":
+    - "https://github.com/streetsidesoftware/vscode-spell-checker"
+  "Issues":
+    - "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
 
-# Outputting
-permalink: /:categories/:title/
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
 
-
-plugins:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jemoji
-  - jekyll-include-cache
-
-whitelist:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jemoji
-  - jekyll-include-cache
+# Footer "Edit this page on GitHub" link text
+gh_edit_link: true # show or hide edit this page link
+gh_edit_link_text: "Edit this page on GitHub."
+gh_edit_repository: "https://github.com/streetsidesoftware/vscode-spell-checker" # the github URL for your repo
+gh_edit_branch: "main" # the branch that your docs is served from
+gh_edit_source: docs # the source that your files originate from
+gh_edit_view_mode: "blob" # "tree" or "edit" if you want the user to jump into the editor immediately
