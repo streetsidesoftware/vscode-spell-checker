@@ -450,15 +450,3 @@ export function updateConfig(
 export const __testing__ = {
     mergeInspect,
 };
-
-type T = {
-    [key: string]: number;
-    default: number;
-};
-
-type S = { [P in keyof T]: T[P] };
-
-declare const s: S;
-
-// Would've expected "default" to be preserved by above mapping
-const t: T = s;
