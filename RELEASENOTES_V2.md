@@ -24,8 +24,8 @@ Work is still underway for the final release to the VS Code Marketplace.
 
 ## Manual Installation
 
--   Download and decompress `code-spell-checker.zip`
--   From VS Code Install from VSIX `code-spell-checker-2.0.1-alpha.21.vsix`
+-   Download and decompress `code-spell-checker.zip` from [VS Code Spell Checker Releases](https://github.com/streetsidesoftware/vscode-spell-checker/releases)
+-   From VS Code Install from VSIX `code-spell-checker-2.0.1.vsix`
     ![image](https://user-images.githubusercontent.com/3740137/120071300-f0a27600-c08e-11eb-9828-155be0405510.png)
 
 # Features
