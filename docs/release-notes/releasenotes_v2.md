@@ -15,7 +15,7 @@ nav_order: 4
 - Spelling suggestions available from the context menu.
 - Improved context menu options.
 - Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.9.0.
-- Supports case sensitive dictionaries. [See](#turning-on-case-sensitive-spell-checking)
+- Supports case sensitive dictionaries. See: [Turning on case sensitive spell checking](#turning-on-case-sensitive-spell-checking)
 - Full support of Yaml configuration files: `cspell.config.yaml`
 - Full support of configuration in `package.json` under `cspell` section.
 - Partial support of JavaScript configuration files: `cspell.config.js`
@@ -24,7 +24,7 @@ nav_order: 4
 - Supports more word splitting formats
   It correctly splits both `ERRORcode` and `ERRORCode`
 - Reduced installation size and faster loading
-- Added Commands to move between issues in a document. [See](#Previous-and-Next-Issue-Commands)
+- Added Commands to move between issues in a document. See: [Previous and Next Issue Commands](#previous-and-next-issue-commands)
 
 ## Manual Installation
 
