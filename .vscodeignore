@@ -6,6 +6,7 @@
 # Bring back the things we need.
 !CHANGELOG.md
 !images/SpellCheck.png
+!LICENSE
 
 # Include root level items
 !cspell.code-snippets
