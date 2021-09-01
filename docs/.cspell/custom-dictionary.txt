@@ -2,5 +2,6 @@
 mswin
 pmarsceill
 streetsidesoftware
+VSIX
 webrick
 zoneinfo
