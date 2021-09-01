@@ -10,16 +10,9 @@ const entries = Object.entries(config).sort((a, b) => compare(a[0], b[0]));
 
 const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
-const doc = `---
-# Note this document is automatically generated.
-# See \`_scripts/extract-config.js\`
-layout: default
-title: Configuration Settings
-categories: docs
-# parent: Docs
-nav_order: 4
----
+const descriptionWidth = 90;
 
+const doc = `
 <!--- AUTO-GENERATED ALL CHANGES WILL BE LOST --->
 
 # Configuration Settings
@@ -55,7 +48,7 @@ function tableEntry([key, value]) {
     value.description?.replace(/\n/g, '<br>') ||
     value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') ||
     '';
-  return `| [\`${key}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${shortenLine(description, 50)} |`;
+  return `| [\`${key}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${shortenLine(description, descriptionWidth)} |`;
 }
 
 /**
@@ -156,8 +149,6 @@ function extractEnumDescriptions(def) {
 
   return `
 
-| Value | Description |
-| ----- | ----------- |
 ${defs}
 `;
 }
