@@ -10,7 +10,7 @@ Work is still underway for the final release to the VS Code Marketplace.
 -   Be able to specify which files to check by adding globs to `files` setting.
 -   Spelling suggestions available from the context menu.
 -   Improved context menu options.
--   Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.8.2.
+-   Upgrades [cspell](https://www.npmjs.com/package/cspell) to version 5.9.0.
 -   Supports case sensitive dictionaries. [See](#Turning-on-case-sensitive-spell-checking)
 -   Full support of Yaml configuration files: `cspell.config.yaml`
 -   Full support of configuration in `package.json` under `cspell` section.
