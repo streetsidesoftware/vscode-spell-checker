@@ -3,6 +3,9 @@
   "description": "Documentation",
   "private": true,
   "scripts": {
+    "gen-docs": "yarn run gen-config-docs && yarn run lint",
+    "gen-config-docs": "node _scripts/extract-config.js > docs/configuration.md",
+    "lint": "prettier -w \"**/*.{md,markdown,yaml,yml,json,html,htm}\"",
     "serve": "bundle exec jekyll serve"
   }
 }
