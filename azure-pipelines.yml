@@ -1,5 +1,18 @@
 trigger:
-  - main
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - docs/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - docs/**
 
 strategy:
   matrix:
