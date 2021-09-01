@@ -73,6 +73,7 @@ exclude:
 collections:
   - docs
   - drafts
+  - release-notes
 
 defaults:
   - scope:
