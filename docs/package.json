@@ -3,6 +3,8 @@
   "description": "Documentation",
   "private": true,
   "scripts": {
+    "gen-docs": "yarn run gen-config-docs",
+    "gen-config-docs": "node _scripts/extract-config.js > docs/configuration.md",
     "serve": "bundle exec jekyll serve"
   }
 }
