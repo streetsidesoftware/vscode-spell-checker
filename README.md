@@ -6,9 +6,9 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   Become a [<img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png" alt="Patreon"> Patreon!](https://patreon.com/streetsidesoftware)
+-   Become a [![Patreon](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
 
--   [Support through ![PayPal](./images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+-   [Support through ![PayPal](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
 
 ## Sponsors
 
