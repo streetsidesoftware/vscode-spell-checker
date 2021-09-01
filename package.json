@@ -2368,7 +2368,8 @@
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint && yarn run prettier",
-    "lint-docs": "echo Lint Docs",
+    "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm}\"",
+    "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm}\"",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
     "update-packages": "yarn upgrade"
