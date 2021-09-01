@@ -1,0 +1,74 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+categories:
+  - title: "Features"
+    labels:
+      - "feat"
+      - "feature"
+      - "enhancement"
+  - title: "**BREAKING**"
+    labels:
+      - "breaking"
+  - title: "Fixes"
+    labels:
+      - "fix"
+      - "bugfix"
+      - "bug"
+  - title: "Documentation"
+    labels:
+      - "documentation"
+  - title: "Maintenance"
+    labels:
+      - "chore"
+    change-template: |
+      - $TITLE (#$NUMBER)
+
+change-template: |
+  - $TITLE (#$NUMBER)
+      > $BODY
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "minor"
+  patch:
+    labels:
+      - "patch"
+  default: patch
+exclude-labels:
+  - "dependencies"
+autolabeler:
+  - label: "dependencies"
+    title:
+      - "/Workflow Bot/i"
+  - label: "chore"
+    title:
+      - "/chore/i"
+      - "/ci[:]/i"
+  - label: "documentation"
+    files:
+      - "/docs/**/*.md"
+    title:
+      - "/docs?/i"
+  - label: "fix"
+    title:
+      - "/fix/i"
+      - "/dev:/i"
+      - "/refactor/i"
+  - label: "feature"
+    title:
+      - "/^feat/i"
+  - label: "breaking"
+    title:
+      - "/^fix[!]/i"
+      - "/^feat[!]/i"
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+# cspell:ignore autolabeler
