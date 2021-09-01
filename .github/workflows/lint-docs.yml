@@ -18,5 +18,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
-      - run: yarn
-      - run: yarn lint-docs-ci
+      - run: npx prettier -c "docs/**/*.{md,markdown,yaml,yml,json,html,htm}"
