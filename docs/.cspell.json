@@ -1,7 +1,5 @@
 {
-  "dictionaries": [
-    "custom-dictionary"
-  ],
+  "dictionaries": ["custom-dictionary"],
   "dictionaryDefinitions": [
     {
       "name": "custom-dictionary",
@@ -18,15 +16,9 @@
           "pattern": "/(?<=\\])\\(#\\w+\\)/g"
         }
       ],
-      "ignoreRegExpList": [
-        "Internal Link"
-      ]
+      "ignoreRegExpList": ["Internal Link"]
     }
   ],
-  "enableFiletypes": [
-    "ruby"
-  ],
-  "ignorePaths": [
-    "_site/**"
-  ]
+  "enableFiletypes": ["ruby"],
+  "ignorePaths": ["_site/**"]
 }
