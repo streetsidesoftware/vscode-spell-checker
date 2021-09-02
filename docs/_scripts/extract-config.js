@@ -31,8 +31,8 @@ console.log(doc);
 
 function configTable(entries) {
   return `
-| Command | Description |
-| ------- | ----------- |
+| Command | Scope | Description |
+| ------- | ----- | ----------- |
 ${entries.map(tableEntry).join('\n')}
 `;
 }
@@ -48,7 +48,11 @@ function tableEntry([key, value]) {
     value.description?.replace(/\n/g, '<br>') ||
     value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') ||
     '';
-  return `| [\`${key}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${shortenLine(description, descriptionWidth)} |`;
+  const scope = value.scope || '';
+  return `| [\`${shorten(key, 40)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
+    description,
+    descriptionWidth
+  )} |`;
 }
 
 /**
@@ -68,7 +72,7 @@ function shortenLine(line, len) {
   while (i < line.length && !isSpace.test(line[i])) {
     ++i;
   }
-  return i < line.length ? line.slice(0, i) + '...' : line;
+  return i < line.length ? line.slice(0, i) + '…' : line;
 }
 
 function configDefinitions(entries) {
@@ -106,6 +110,9 @@ Name
 
 Type
 : ${formatType(value).replace(/\n/g, '\n    ')}
+
+Scope
+: ${value.scope || ''}
 
 Description
 : ${description.replace(/\n/g, '\n    ')}
@@ -157,4 +164,13 @@ function formatType(def) {
   const type = extractType(def);
   const enumDefs = extractEnumDescriptions(def);
   return type + enumDefs;
+}
+
+/**
+ *
+ * @param {string} text
+ * @param {number} len
+ */
+function shorten(text, len) {
+  return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }

@@ -2311,19 +2311,19 @@
         "cSpell.blockCheckingWhenAverageChunkSizeGreatherThan": {
           "default": 40,
           "description": "The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\\s,{}[\\]]/`",
-          "scope": "resource",
+          "scope": "language-overridable",
           "type": "number"
         },
         "cSpell.blockCheckingWhenLineLengthGreaterThan": {
           "default": 1000,
           "description": "The maximum line length",
-          "scope": "resource",
+          "scope": "language-overridable",
           "type": "number"
         },
         "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": {
           "default": 200,
           "description": "The maximum size of text chunks",
-          "scope": "resource",
+          "scope": "language-overridable",
           "type": "number"
         },
         "cSpell.suggestionMenuType": {
@@ -2375,8 +2375,8 @@
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint && yarn run prettier",
-    "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm}\"",
-    "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm}\"",
+    "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
+    "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
     "update-packages": "yarn upgrade"
