@@ -252,13 +252,13 @@ type EnableFileTypeId = string;
 interface SpellCheckerShouldCheckDocSettings {
     /**
      * The maximum line length
-     * @scope resource
+     * @scope language-overridable
      * @default 1000
      */
     blockCheckingWhenLineLengthGreaterThan?: number;
     /**
      * The maximum size of text chunks
-     * @scope resource
+     * @scope language-overridable
      * @default 200
      */
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
@@ -266,7 +266,7 @@ interface SpellCheckerShouldCheckDocSettings {
      * The maximum average chunk of text size.
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`
-     * @scope resource
+     * @scope language-overridable
      * @default 40
      */
     blockCheckingWhenAverageChunkSizeGreatherThan?: number;
