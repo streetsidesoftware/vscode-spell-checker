@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.4-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.3...v2.0.4-alpha.0) (2021-09-02)
+
+
+### Bug Fixes
+
+* Have the completion provider auto fill ignore, words, and dictionaries ([#1255](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1255)) ([98f17f2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/98f17f2f759a8884f5b135f2628f435a6f47e29b))
+* make `cSpell.blockCheckingWhen*` settings `language-overridable` ([#1258](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1258)) ([08e8359](https://github.com/streetsidesoftware/vscode-spell-checker/commit/08e83591e4e11953be7b65335e87c96dd3a199c4))
+
 ### [2.0.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.2...v2.0.3) (2021-09-02)
 
 
