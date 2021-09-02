@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.2...v2.0.3) (2021-09-02)
+
+
+### Bug Fixes
+
+* Support Jupyter Notebooks ([#1253](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1253)) ([6fe65a6](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6fe65a66417cdf58b220406f960491155cd6e5cc))
+
 ### [2.0.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.1...v2.0.2) (2021-09-01)
 
 
