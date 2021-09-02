@@ -1,16 +1,19 @@
 import * as vscode from 'vscode';
 import { getCSpellDiags } from './diags';
+import * as di from './di';
 
 export function registerCspellInlineCompletionProviders(): vscode.Disposable[] {
     return [
         vscode.languages.registerCompletionItemProvider({ language: '*', scheme: '*' }, cspellTriggerCompletionProvider, 'c', 's', 'p'),
         vscode.languages.registerCompletionItemProvider('*', cspellInlineCompletionProvider, ':'),
+        vscode.languages.registerCompletionItemProvider('*', cspellInlineDictionaryNameCompletionProvider, ' '),
+        vscode.languages.registerCompletionItemProvider('*', cspellInlineIssuesCompletionProvider, ' '),
     ];
 }
 
 const cspellInlineCompletionProvider: vscode.CompletionItemProvider = {
     provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-        const diags = findNearestDiags(getCSpellDiags(document.uri), position, 3);
+        const diags = findNearestDiags(getCSpellDiags(document.uri), position, 1);
         // get all text until the `position` and check if it reads `cspell.`
         const linePrefix = document.lineAt(position).text.substr(0, position.character);
         if (!linePrefix.endsWith('spell:')) {
@@ -33,6 +36,7 @@ function genCompletionItem(c: Completion): vscode.CompletionItem {
     item.insertText = new vscode.SnippetString(c.insertText);
     item.documentation = c.description;
     item.sortText = c.sortText;
+    item.commitCharacters = c.commitCharacters || [' '];
     return item;
 }
 
@@ -42,6 +46,7 @@ interface Completion {
     description: string;
     sortText?: string;
     kind?: vscode.CompletionItemKind;
+    commitCharacters?: string[];
 }
 
 interface CompletionContext {
@@ -51,27 +56,19 @@ interface CompletionContext {
 type CompletionFn = (context: CompletionContext) => Completion;
 
 const completions: (Completion | CompletionFn)[] = [
-    (ctx) => {
-        const placeHolders = ctx.words.map((w, i) => `\${${i + 1}:${w}}`).join(' ');
-
-        return {
-            label: 'words',
-            insertText: `words ${placeHolders || '${1:word}'}`,
-            description: 'Words to be allowed in the document',
-            sortText: '1',
-            kind: vscode.CompletionItemKind.Snippet,
-        };
+    {
+        label: 'words',
+        insertText: 'words',
+        description: 'Words to be allowed in the document',
+        sortText: '1',
+        kind: vscode.CompletionItemKind.Snippet,
     },
-    (ctx) => {
-        const placeHolders = ctx.words.map((w, i) => `\${${i + 1}:${w}}`).join(' ');
-
-        return {
-            label: 'ignore words',
-            insertText: `ignore ${placeHolders || '${1:word}'}`,
-            description: 'Words to be ignored in the document',
-            sortText: '2',
-            kind: vscode.CompletionItemKind.Snippet,
-        };
+    {
+        label: 'ignore words',
+        insertText: 'ignore',
+        description: 'Words to be ignored in the document',
+        sortText: '2',
+        kind: vscode.CompletionItemKind.Snippet,
     },
     {
         label: 'ignoreRegExp',
@@ -101,7 +98,8 @@ const completions: (Completion | CompletionFn)[] = [
     },
     {
         label: 'dictionaries',
-        insertText: 'dictionaries ${1:dictionary_name}',
+        insertText: 'dictionaries',
+        commitCharacters: [' '],
         description: 'Add dictionaries to be used in this document.',
         kind: vscode.CompletionItemKind.Snippet,
     },
@@ -174,3 +172,59 @@ function findNearestDiags(diags: vscode.Diagnostic[], position: vscode.Position,
     const sorted = [...diags].sort((a, b) => dist(a) - dist(b));
     return sorted.slice(0, count);
 }
+
+const cspellInlineDictionaryNameCompletionProvider: vscode.CompletionItemProvider = {
+    async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+        // get all text until the `position` and check if it reads `cspell.`
+        const linePrefix = document.lineAt(position).text.substr(0, position.character);
+
+        const isDictionaryRequest = /cspell:dictionaries/;
+
+        if (!isDictionaryRequest.test(linePrefix)) {
+            return undefined;
+        }
+
+        const settings = await di.get('client').getConfigurationForDocument(document);
+        const docSettings = settings.docSettings || settings.settings;
+        if (!docSettings) return undefined;
+
+        const enabledDicts = new Set(docSettings.dictionaries || []);
+        const dicts = (docSettings.dictionaryDefinitions || [])
+            .map((def) => def.name)
+            .filter((a) => !!a)
+            .filter((name) => !enabledDicts.has(name));
+
+        return dicts.map((d) => new vscode.CompletionItem(d, vscode.CompletionItemKind.Text)).map((c) => ((c.commitCharacters = [' ']), c));
+    },
+    resolveCompletionItem(item: vscode.CompletionItem) {
+        return item;
+    },
+};
+
+const cspellInlineIssuesCompletionProvider: vscode.CompletionItemProvider = {
+    provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+        // get all text until the `position` and check if it reads `cspell.`
+        const line = document.lineAt(position);
+        const linePrefix = line.text.substr(0, position.character);
+        const isDictionaryRequest = /cspell:(words|ignore)/;
+
+        if (!isDictionaryRequest.test(linePrefix)) {
+            return undefined;
+        }
+        const wordsOnline = new Set(line.text.split(/[\s:.]/));
+        const allDiags = getCSpellDiags(document.uri).filter((d) => !wordsOnline.has(document.getText(d.range)));
+
+        const diags = findNearestDiags(allDiags, position, 10);
+
+        if (!diags.length) return undefined;
+
+        const words = [...new Set(diags.map((d) => document.getText(d.range)))].sort();
+
+        return words
+            .map((word) => new vscode.CompletionItem(word, vscode.CompletionItemKind.Text))
+            .map((c) => ((c.commitCharacters = [' ']), c));
+    },
+    resolveCompletionItem(item: vscode.CompletionItem) {
+        return item;
+    },
+};
