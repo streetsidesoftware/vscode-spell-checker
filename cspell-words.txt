@@ -39,7 +39,7 @@ IANA
 Interop
 issuehunt
 Jupyter
-kotlinscript
+KotlinScript
 languageclient
 lerna
 liga

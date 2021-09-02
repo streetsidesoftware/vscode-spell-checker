@@ -41,8 +41,14 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
+     * @markdownDescription
+     * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
+     *
+     * Some schemas have special meaning like:
+     * - `untitled` - Used for new documents that have not yet been saved
+     * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
      * @scope window
-     * @default ["file", "gist", "sftp", "untitled"]
+     * @default ["file", "gist", "sftp", "untitled", "vscode-notebook-cell"]
      */
     allowedSchemas?: string[];
 
@@ -445,6 +451,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      *       "javascriptreact",
      *       "json",
      *       "jsonc",
+     *       "jupyter",
      *       "latex",
      *       "less",
      *       "markdown",
