@@ -16,12 +16,14 @@
         "file",
         "gist",
         "sftp",
-        "untitled"
+        "untitled",
+        "vscode-notebook-cell"
       ],
       "description": "Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).",
       "items": {
         "type": "string"
       },
+      "markdownDescription": "Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\nSome schemas have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.",
       "scope": "window",
       "type": "array"
     },
@@ -595,6 +597,7 @@
         "javascriptreact",
         "json",
         "jsonc",
+        "jupyter",
         "latex",
         "less",
         "markdown",

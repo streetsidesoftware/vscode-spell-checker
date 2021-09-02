@@ -83,8 +83,12 @@ Type
 Description
 : Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
 
+    Some schemas have special meaning like:
+    - `untitled` - Used for new documents that have not yet been saved
+    - `vscode-notebook-cell` - Used for validating segments of a Notebook.
+
 Default
-: [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_ ]
+: [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_ ]
 
 ---
 
@@ -339,7 +343,7 @@ Description
 : Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
 
 Default
-: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"yaml"`_, _`"yml"`_ ]
+: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"yaml"`_, _`"yml"`_ ]
 
 ---
 
