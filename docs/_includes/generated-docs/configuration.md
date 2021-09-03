@@ -117,7 +117,7 @@ Description
 
     **Error Message:** _Average Word Size is Too High._
 
-    If you are seeing this message, it means that the file contains a very long lines
+    If you are seeing this message, it means that the file contains mostly long lines
     without many word breaks.
 
 Default
@@ -167,7 +167,7 @@ Description
 
     **Error Message:** _Maximum Word Length is Too High._
 
-    If you are seeing this message, it means that the file contains a very long lines
+    If you are seeing this message, it means that the file contains a very long line
     without many word breaks.
 
 Default
