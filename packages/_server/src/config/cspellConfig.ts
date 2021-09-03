@@ -252,22 +252,49 @@ type EnableFileTypeId = string;
 interface SpellCheckerShouldCheckDocSettings {
     /**
      * The maximum line length
+     * @markdownDescription
+     * The maximum line length use to prevent spell checking generated files
+     *
+     * **Error Message:** _Lines are too long._
+     *
      * @scope language-overridable
-     * @default 1000
+     * @default 10000
      */
     blockCheckingWhenLineLengthGreaterThan?: number;
     /**
      * The maximum size of text chunks
+     * @markdownDescription
+     * The maximum size of text chunks looks for long strings of
+     *
+     * It is used to prevent spell checking of generated files.
+     *
+     * A chunk is the characters between absolute word breaks.
+     * Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
+     *
+     * **Error Message:** _Maximum Word Length is Too High._
+     *
+     * If you are seeing this message, it means that the file contains a very long lines
+     * without many word breaks.
+     *
      * @scope language-overridable
-     * @default 200
+     * @default 500
      */
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
     /**
      * The maximum average chunk of text size.
+     * @markdownDescription
+     * The maximum average chunk of text size.
+     *
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`
+     *
+     * **Error Message:** _Average Word Size is Too High._
+     *
+     * If you are seeing this message, it means that the file contains a very long lines
+     * without many word breaks.
+     *
      * @scope language-overridable
-     * @default 40
+     * @default 80
      */
     blockCheckingWhenAverageChunkSizeGreatherThan?: number;
 }

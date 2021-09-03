@@ -8,7 +8,7 @@
 | -------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
 | [`cSpell.allowCompoundWords`](#cspellallowcompoundwords)                                           | resource             | Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means…         |
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                                                   | window               | Control which file schemas will be checked for spelling (VS Code must be restarted for this…             |
-| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreatherthan) | language-overridable | The maximum average chunk of text size. A chunk is the characters between absolute word breaks.…         |
+| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreatherthan) | language-overridable | The maximum average chunk of text size.                                                                  |
 | [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)        | language-overridable | The maximum line length                                                                                  |
 | [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)     | language-overridable | The maximum size of text chunks                                                                          |
 | [`cSpell.caseSensitive`](#cspellcasesensitive)                                                     | resource             | Words must match case rules.                                                                             |
@@ -110,10 +110,18 @@ Scope
 : language-overridable
 
 Description
-: The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\s,{}[\]]/`
+: The maximum average chunk of text size.
+
+    A chunk is the characters between absolute word breaks.
+    Absolute word breaks match: `/[\s,{}[\]]/`
+
+    **Error Message:** _Average Word Size is Too High._
+
+    If you are seeing this message, it means that the file contains a very long lines
+    without many word breaks.
 
 Default
-: _`40`_
+: _`80`_
 
 ---
 
@@ -129,10 +137,12 @@ Scope
 : language-overridable
 
 Description
-: The maximum line length
+: The maximum line length use to prevent spell checking generated files
+
+    **Error Message:** _Lines are too long._
 
 Default
-: _`1000`_
+: _`10000`_
 
 ---
 
@@ -148,10 +158,20 @@ Scope
 : language-overridable
 
 Description
-: The maximum size of text chunks
+: The maximum size of text chunks looks for long strings of
+
+    It is used to prevent spell checking of generated files.
+
+    A chunk is the characters between absolute word breaks.
+    Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
+
+    **Error Message:** _Maximum Word Length is Too High._
+
+    If you are seeing this message, it means that the file contains a very long lines
+    without many word breaks.
 
 Default
-: _`200`_
+: _`500`_
 
 ---
 

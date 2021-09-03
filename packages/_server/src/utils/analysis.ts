@@ -1,8 +1,8 @@
 import { genSequence } from 'gensequence';
 
 export const ReasonLineLength = 'Lines are too long.' as const;
-export const ReasonAverageWordsSize = 'Average Word Size is Too High' as const;
-export const ReasonMaxWordsSize = 'Maximum Word Length is Too High' as const;
+export const ReasonAverageWordsSize = 'Average Word Size is Too High.' as const;
+export const ReasonMaxWordsSize = 'Maximum Word Length is Too High.' as const;
 
 type MinifiedReasons = typeof ReasonLineLength | typeof ReasonAverageWordsSize | typeof ReasonMaxWordsSize;
 
@@ -20,9 +20,9 @@ export interface IsTextLikelyMinifiedOptions {
 }
 
 export const defaultIsTextLikelyMinifiedOptions: IsTextLikelyMinifiedOptions = {
-    blockCheckingWhenLineLengthGreaterThan: 1000,
-    blockCheckingWhenTextChunkSizeGreaterThan: 200,
-    blockCheckingWhenAverageChunkSizeGreatherThan: 40,
+    blockCheckingWhenLineLengthGreaterThan: 10000,
+    blockCheckingWhenTextChunkSizeGreaterThan: 500,
+    blockCheckingWhenAverageChunkSizeGreatherThan: 80,
 };
 
 /**
