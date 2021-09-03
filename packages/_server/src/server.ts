@@ -155,6 +155,7 @@ export function run(): void {
         log('updateActiveSettings');
         documentSettings.resetSettings();
         dictionaryWatcher.clear();
+        blockedFiles.clear();
         triggerValidateAll.next(undefined);
     }
 

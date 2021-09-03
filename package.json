@@ -2309,22 +2309,25 @@
           "scope": "resource"
         },
         "cSpell.blockCheckingWhenAverageChunkSizeGreatherThan": {
-          "default": 40,
-          "description": "The maximum average chunk of text size. A chunk is the characters between absolute word breaks. Absolute word breaks match: `/[\\s,{}[\\]]/`",
+          "default": 80,
+          "description": "The maximum average chunk of text size.",
           "scope": "language-overridable",
-          "type": "number"
+          "type": "number",
+          "markdownDescription": "The maximum average chunk of text size.\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`\n\n**Error Message:** _Average Word Size is Too High._\n\nIf you are seeing this message, it means that the file contains mostly long lines\nwithout many word breaks."
         },
         "cSpell.blockCheckingWhenLineLengthGreaterThan": {
-          "default": 1000,
+          "default": 10000,
           "description": "The maximum line length",
           "scope": "language-overridable",
-          "type": "number"
+          "type": "number",
+          "markdownDescription": "The maximum line length use to prevent spell checking generated files\n\n**Error Message:** _Lines are too long._"
         },
         "cSpell.blockCheckingWhenTextChunkSizeGreaterThan": {
-          "default": 200,
+          "default": 500,
           "description": "The maximum size of text chunks",
           "scope": "language-overridable",
-          "type": "number"
+          "type": "number",
+          "markdownDescription": "The maximum size of text chunks looks for long strings of\n\nIt is used to prevent spell checking of generated files.\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`, i.e. spaces or braces.\n\n**Error Message:** _Maximum Word Length is Too High._\n\nIf you are seeing this message, it means that the file contains a very long line\nwithout many word breaks."
         },
         "cSpell.suggestionMenuType": {
           "default": "quickPick",
