@@ -1,8 +1,11 @@
 import { genSequence } from 'gensequence';
 
-export const ReasonLineLength = 'Lines are too long.' as const;
-export const ReasonAverageWordsSize = 'Average Word Size is Too High.' as const;
-export const ReasonMaxWordsSize = 'Maximum Word Length is Too High.' as const;
+export const ReasonLineLength =
+    'Lines are too long. [More Info…](https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenlinelengthgreaterthan)' as const;
+export const ReasonAverageWordsSize =
+    'Average Word Size is Too High. [More Info...](https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenaveragechunksizegreatherthan)' as const;
+export const ReasonMaxWordsSize =
+    'Maximum Word Length is Too High. [More Info…](https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhentextchunksizegreaterthan)' as const;
 
 type MinifiedReasons = typeof ReasonLineLength | typeof ReasonAverageWordsSize | typeof ReasonMaxWordsSize;
 
