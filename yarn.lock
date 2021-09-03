@@ -423,9 +423,9 @@
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
 "@cspell/dict-en_us@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.0.2.tgz#9087b99ef9efa9e77d1b2546feb454e4067cbaac"
-  integrity sha512-g6TL4ynWHoxVKvQ0kdiMCbh4+FeXwmHFTL/dWgQbyfy6cqKXjsOqPK0OPVFIbqI5rV8QeBx5IH6ny/q/XQOvXQ==
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.1.0.tgz#f87aa12e6d56a213bab90260c89cda0f46ae31bd"
+  integrity sha512-c4ZpbBZwiO43eBSMFkbB6rdYUF9ruEExu2/iBr0M+3FIAAktUCkeLYT3VVkRCjnz4Oms8GzZBdDS7dmuSLSDgw==
 
 "@cspell/dict-filetypes@^1.1.8":
   version "1.1.8"
@@ -3664,9 +3664,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.3.811:
-  version "1.3.828"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.828.tgz#0dee975b5bf45d6357af266f350fcdb6736a5e40"
-  integrity sha512-2kx537tLqIVfUpx7LRknZce5PcCyxyBB1YUVOhxlkrDoCqFITGJGYfBAvSxGOdqlp+R9pHeU9Ai/dsHgsqjrvQ==
+  version "1.3.829"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.829.tgz#efd360b594824fcd84e24c6eb0c8e41e2a44fbc7"
+  integrity sha512-5EXDbvsaLRxS1UOfRr8Hymp3dR42bvBNPgzVuPwUFj3v66bpvDUcNwwUywQUQYn/scz26/3Sgd3fNVGQOlVwvQ==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -8337,9 +8337,9 @@ terminal-link@^2.0.0:
     supports-hyperlinks "^2.0.0"
 
 terser-webpack-plugin@^5.1.3:
-  version "5.2.2"
-  resolved "https://registry.npmjs.org/terser-webpack-plugin/-/terser-webpack-plugin-5.2.2.tgz#d7fd08109d47b8d4ec7dbfeee6b18fe1a9142d8c"
-  integrity sha512-/SNcbgI4Igd0E02R6HY7BnKkQBfAdV6BHcYYXk++QrGXpQoayMt79eaOtTrghtdRoDL5w3hgyMh+AippkuOEFg==
+  version "5.2.3"
+  resolved "https://registry.npmjs.org/terser-webpack-plugin/-/terser-webpack-plugin-5.2.3.tgz#4852c91f709a4ea2bcf324cf48e7e88124cda0cc"
+  integrity sha512-eDbuaDlXhVaaoKuLD3DTNTozKqln6xOG6Us0SzlKG5tNlazG+/cdl8pm9qiF1Di89iWScTI0HcO+CDcf2dkXiw==
   dependencies:
     jest-worker "^27.0.6"
     p-limit "^3.1.0"
