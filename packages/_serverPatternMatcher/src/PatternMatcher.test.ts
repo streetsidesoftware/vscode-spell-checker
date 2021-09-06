@@ -59,6 +59,21 @@ describe('Validate PatternMatcher', () => {
         }
     });
 
+    testMatcher('regexp unicode', async (matcher) => {
+        const result = await matcher.matchPatternsInText([/p{ID_Continue}+/.toString()], "öre:som_kronor()", settings);
+        const r = mapResults(result);
+        expect(r.get('ör')).toBeDefined();
+        const matchedResults = r.get('ör')!;
+        expect(matchedResults.matches).toHaveLength(1);
+        const matches = matchedResults.matches[0];
+        expect(isRegExpMatchTimeout(matches)).toBe(false);
+        expect(isRegExpMatch(matches)).toBe(true);
+        if (isRegExpMatch(matches)) {
+            const matchedText = matches.ranges.map((r) => extract(sampleText, r));
+            expect(matchedText).toEqual(['']);
+        }
+    });
+
     testMatcher(
         'timeout',
         async (matcher) => {
