@@ -151,7 +151,7 @@ function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, M
     if (isNamedPattern(pat)) {
         return namedPatternToMultiPattern(pat);
     }
-    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || { name: pat, regexp: [toRegExp(pat, 'g')].filter(isDefined) };
+    return knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || { name: pat, regexp: [toRegExp(pat, 'gu')].filter(isDefined) };
 }
 
 function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern {
@@ -160,7 +160,7 @@ function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern
 
 function namedPatternToMultiPattern(pat: NamedPattern): MultiPattern {
     const { name, pattern } = pat;
-    const regexp = (typeof pattern === 'string' ? [toRegExp(pattern)] : pattern.map((p) => toRegExp(p))).filter(isDefined);
+    const regexp = (typeof pattern === 'string' ? [toRegExp(pattern, 'u')] : pattern.map((p) => toRegExp(p, 'u'))).filter(isDefined);
     return { name, regexp };
 }
 
@@ -173,8 +173,8 @@ function extractPatternsFromSettings(settings: PatternSettings): Map<string, Mul
 
 function mapDef(pat: RegExpPatternDefinition): MultiPattern {
     const { name, pattern } = pat;
-    const patterns = (Array.isArray(pattern) ? pattern.map((r) => toRegExp(r)) : [toRegExp(pattern)]).filter(isDefined);
-    // ) => ({ name, patterns: toRegExp(pattern) })
+    const patterns = (Array.isArray(pattern) ? pattern.map((r) => toRegExp(r, 'u')) : [toRegExp(pattern, 'u')]).filter(isDefined);
+    // ) => ({ name, patterns: toRegExp(pattern, 'u') })
     return { name, regexp: patterns };
 }
 
