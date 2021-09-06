@@ -354,8 +354,8 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
 ```javascript
 // cSpell Settings
 {
-    // Version of the setting file.  Always 0.1
-    "version": "0.1",
+    // Version of the setting file.  Always 0.2
+    "version": "0.2",
     // language - current active spelling language
     "language": "en",
     // words - list of words to be always considered correct
