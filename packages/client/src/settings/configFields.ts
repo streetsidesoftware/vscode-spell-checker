@@ -55,6 +55,8 @@ export const ConfigFields: CSpellUserSettingsFields = {
     spellCheckDelayMs: 'spellCheckDelayMs',
     spellCheckOnlyWorkspaceFiles: 'spellCheckOnlyWorkspaceFiles',
     suggestionMenuType: 'suggestionMenuType',
+    suggestionNumChanges: 'suggestionNumChanges',
+    suggestionsTimeout: 'suggestionsTimeout',
     usePnP: 'usePnP',
     userWords: 'userWords',
     words: 'words',

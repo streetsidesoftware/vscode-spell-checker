@@ -1937,6 +1937,16 @@
                 },
                 "type": "array"
               },
+              "suggestionNumChanges": {
+                "default": 3,
+                "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
+                "type": "number"
+              },
+              "suggestionsTimeout": {
+                "default": 500,
+                "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
+                "type": "number"
+              },
               "usePnP": {
                 "default": false,
                 "description": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence of a PnP file and load it.",
@@ -2342,6 +2352,18 @@
           "scope": "resource",
           "type": "string",
           "markdownDescription": "The type of menu used to display spelling suggestions."
+        },
+        "cSpell.suggestionNumChanges": {
+          "default": 3,
+          "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
+          "type": "number",
+          "scope": "resource"
+        },
+        "cSpell.suggestionsTimeout": {
+          "default": 400,
+          "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
+          "type": "number",
+          "scope": "resource"
         }
       }
     }

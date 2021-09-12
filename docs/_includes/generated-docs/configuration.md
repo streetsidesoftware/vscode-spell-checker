@@ -47,6 +47,8 @@
 | [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                             | application          | Delay in ms after a document has changed before checking it for spelling errors.                         |
 | [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles)                       | window               | Spell Check Only Workspace Files                                                                         |
 | [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                           | resource             | The type of menu used to display spelling suggestions.                                                   |
+| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                       | resource             | The maximum number of changes allowed on a word to be considered a suggestions.                          |
+| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                           | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.                           |
 | [`cSpell.usePnP`](#cspellusepnp)                                                                   | resource             | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
 | [`cSpell.userWords`](#cspelluserwords)                                                             | resource             | Words to add to global dictionary -- should only be in the user config file.                             |
 | [`cSpell.words`](#cspellwords)                                                                     | resource             | list of words to be always considered correct                                                            |
@@ -981,6 +983,48 @@ Description
 
 Default
 : _`"quickPick"`_
+
+---
+
+### `cSpell.suggestionNumChanges`
+
+Name
+: `cSpell.suggestionNumChanges`
+
+Type
+: number
+
+Scope
+: resource
+
+Description
+: The maximum number of changes allowed on a word to be considered a suggestions.
+
+    For example, appending an `s` onto `example` -> `examples` is considered 1 change.
+
+    Range: between 1 and 5.
+
+Default
+: _`3`_
+
+---
+
+### `cSpell.suggestionsTimeout`
+
+Name
+: `cSpell.suggestionsTimeout`
+
+Type
+: number
+
+Scope
+: resource
+
+Description
+: The maximum amount of time in milliseconds to generate suggestions for a word.
+
+Default
+: _`400`_
 
 ---
 

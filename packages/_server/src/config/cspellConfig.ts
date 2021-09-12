@@ -442,6 +442,18 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
+     * @default 3
+     */
+    suggestionNumChanges?: CSpellSettings['suggestionNumChanges'];
+
+    /**
+     * @scope resource
+     * @default 400
+     */
+    suggestionsTimeout?: CSpellSettings['suggestionsTimeout'];
+
+    /**
+     * @scope resource
      * @default 4
      */
     minWordLength?: number;
