@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@cspell/cspell-types": "^5.8.2",
+    "@cspell/cspell-types": "^5.9.1",
     "@cspell/dict-scientific-terms-us": "^1.0.21"
   }
 }
