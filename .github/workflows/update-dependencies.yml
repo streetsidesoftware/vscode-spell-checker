@@ -42,7 +42,7 @@ jobs:
           echo "" >> $GITHUB_ENV
           echo "#### Summary"  >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
-          git --no-pater diff --stat  >> $GITHUB_ENV
+          git --no-pager diff --stat  >> $GITHUB_ENV
           echo "DIFF" >> $GITHUB_ENV
       - name: Echo git_status
         run: echo ${{ env.git_status }}
