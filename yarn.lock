@@ -316,7 +316,7 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^5.8.2", "@cspell/cspell-bundled-dicts@^5.9.1":
+"@cspell/cspell-bundled-dicts@^5.9.1":
   version "5.9.1"
   resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.9.1.tgz#3ebcdfdd929ddbd8c0e0fdc5dea5589f45baf8b0"
   integrity sha512-xnLHhqb5BdfnVrLDZIdfPKlsNt4OKgvWx6T/MpS5pC7/Unqjcj3Do1fVDNlJ/nmxWkWPJnWDc6c6yQWC1kEnuw==
@@ -357,7 +357,7 @@
     "@cspell/dict-software-terms" "^1.0.42"
     "@cspell/dict-typescript" "^1.0.19"
 
-"@cspell/cspell-types@^5.8.2", "@cspell/cspell-types@^5.9.1":
+"@cspell/cspell-types@^5.9.1":
   version "5.9.1"
   resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-5.9.1.tgz#4076a88b52687e44844bbc4d7c5889e4c4636cf5"
   integrity sha512-h8CWnGAKtItJG5FkoD+6BICfH7LqLi1GdiiF6IP1ZcRbWFybmgV/Y8Vj7KvKlkG7enw3IIJKHln4UxFB7UV5qw==
@@ -3173,7 +3173,7 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-glob@^5.8.2, cspell-glob@^5.9.1:
+cspell-glob@^5.9.1:
   version "5.9.1"
   resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-5.9.1.tgz#b0516bb2bbf7c96b26fc77a041706d0620730bb4"
   integrity sha512-UtdXtwqX+K3jQ/8unIRQeqWW/tuTgbgiuojuw7C2xNURg5ZVDXODAa5v4cBZLJwkFnMZ2k4h+vSzk92NKwz7Cg==
@@ -3185,7 +3185,7 @@ cspell-io@^5.9.1:
   resolved "https://registry.npmjs.org/cspell-io/-/cspell-io-5.9.1.tgz#1c6071173917a33e25c600196abd5393a5105c71"
   integrity sha512-sv71xxKjU0WKUO7w1OKZHtfMpQIu0cDgz480CkP7ptj+q10bwx6in6rHgAdE43+bvn2steZU7eVYas7MO785IA==
 
-cspell-lib@^5.8.2, cspell-lib@^5.9.1:
+cspell-lib@^5.9.1:
   version "5.9.1"
   resolved "https://registry.npmjs.org/cspell-lib/-/cspell-lib-5.9.1.tgz#945d90f4b37eea330683ba94e443b3552b3cc2c6"
   integrity sha512-qcU6T+yLgiVpC2MXVN9h30qDgSpBNdFUhui8NLpmcy9gjzcQX/uTCkc3h4gxQ/tyc6gxjh1CQVQ2Xg56pak3PA==
@@ -3215,7 +3215,7 @@ cspell-trie-lib@^5.9.1:
     fs-extra "^10.0.0"
     gensequence "^3.1.1"
 
-cspell@^5.8.2:
+cspell@^5.9.1:
   version "5.9.1"
   resolved "https://registry.npmjs.org/cspell/-/cspell-5.9.1.tgz#21745f93ee3740e8d5e0e542ee1003b270dcc23e"
   integrity sha512-4dec5W4K4c7TUREDfUYtcbwh70SL7oqkFim9XOpg3Ax0YadMZ8A4Xb8LKL+J7Egj/MqV+neMwomAakpWphDIrA==
