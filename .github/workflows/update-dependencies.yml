@@ -31,9 +31,19 @@ jobs:
           git --no-pager diff --compact-summary
       - name: Gen Body
         run: |
-          echo 'git_body<<DIFF' >> $GITHUB_ENV
-          git --no-pager diff --compact-summary >> $GITHUB_ENV
-          echo 'DIFF' >> $GITHUB_ENV
+          echo "git_body<<DIFF" >> $GITHUB_ENV
+          echo "### Workflow Bot -- Update ALL Dependencies" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "#### Package.json"  >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "\`\`\`\`\`\`diff"  >> $GITHUB_ENV
+          git --no-pager diff package.json  >> $GITHUB_ENV
+          echo "\`\`\`\`\`\`"  >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "#### Summary"  >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          git --no-pater diff --stat  >> $GITHUB_ENV
+          echo "DIFF" >> $GITHUB_ENV
       - name: Echo git_status
         run: echo ${{ env.git_status }}
       - uses: tibdex/github-app-token@v1.4 # cspell:ignore tibdex
