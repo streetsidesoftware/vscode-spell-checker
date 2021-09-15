@@ -24,7 +24,11 @@ jobs:
         with:
           ref: ${{ env.REF_BRANCH }}
       - name: Update
-        run: yarn upgrade
+        run: |
+          yarn
+          yarn upgrade
+          yarn package-json-dependency-updater --update
+          yarn
       - name: Has changes
         run: |
           git --no-pager diff --compact-summary  --exit-code && echo "git_status=clean" >> $GITHUB_ENV || echo "git_status=dirty" >> $GITHUB_ENV
