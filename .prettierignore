@@ -11,7 +11,8 @@ coverage
 docs/_site
 node_modules
 packages/_integrationTests/out/
+packages/_server/spell-checker-config.schema.json
 packages/*/dist/
 packages/client/settingsViewer/
-tsconfig*.json
 samples/php/**/vendor
+tsconfig*.json
