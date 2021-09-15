@@ -29,12 +29,12 @@
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.1",
-    "@types/jest": "^27.0.0",
-    "@types/json-schema": "^7.0.8",
-    "ts-jest": "^27.0.4"
+    "@types/jest": "^27.0.1",
+    "@types/json-schema": "^7.0.9",
+    "ts-jest": "^27.0.5"
   },
   "dependencies": {
-    "commander": "^8.1.0",
+    "commander": "^8.2.0",
     "deep-equal": "^2.0.5"
   }
 }
