@@ -5,14 +5,9 @@
             "name": "Repository Words",
             "description": "Terms related to Revinate/Sequence",
             "addWords": true,
-            "scope": [
-                "folder",
-                "workspace"
-            ],
+            "scope": ["folder", "workspace"],
             "path": "./custom-words.txt"
         }
     ],
-    "dictionaries": [
-        "Repository Words"
-    ]
+    "dictionaries": ["Repository Words"]
 }

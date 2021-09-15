@@ -1,10 +1,4 @@
 {
-    "ignorePaths": [
-        "*.dist",
-        "/Tutorial/Data/**",
-        "/vendor"
-    ],
-    "import": [
-        "./cspell-extra.json"
-    ]
+    "ignorePaths": ["*.dist", "/Tutorial/Data/**", "/vendor"],
+    "import": ["./cspell-extra.json"]
 }

@@ -8,7 +8,5 @@
             "addWords": true
         }
     ],
-    "dictionaries": [
-        "custom-terms"
-    ]
+    "dictionaries": ["custom-terms"]
 }

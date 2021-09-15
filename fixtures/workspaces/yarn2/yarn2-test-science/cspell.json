@@ -1,5 +1,3 @@
 {
-    "import": [
-        "./cspell.config.js"
-    ]
+    "import": ["./cspell.config.js"]
 }

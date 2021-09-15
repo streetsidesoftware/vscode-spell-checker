@@ -3,6 +3,7 @@
 This library makes it easier to use functional style programming in PHP
 
 ## PHP Backward Compatibility
+
 As we move our codebase forward, it is no longer possible for us to support older versions of PHP.
 With release version 1.0 and onward, we will stop supporting PHP 5.3 and PHP 5.4.
 
@@ -70,5 +71,3 @@ phpunit
 ```
 
 That's all you need to start working on Sequence. Please, include tests in your pull requests.
-
-

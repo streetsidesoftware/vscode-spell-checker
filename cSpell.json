@@ -1,9 +1,7 @@
 {
     "version": "0.2",
     "language": "en-US",
-    "flagWords": [
-        "hte"
-    ],
+    "flagWords": ["hte"],
     "ignorePaths": [
         ".git",
         ".vscodeignore",
@@ -40,17 +38,11 @@
         {
             "name": "cspell-words",
             "addWords": true,
-            "scope": [
-                "folder",
-                "workspace"
-            ],
+            "scope": ["folder", "workspace"],
             "path": "./cspell-words.txt"
         }
     ],
-    "dictionaries": [
-        "cities",
-        "cspell-words"
-    ],
+    "dictionaries": ["cities", "cspell-words"],
     "languageSettings": [
         {
             "languageId": "*",

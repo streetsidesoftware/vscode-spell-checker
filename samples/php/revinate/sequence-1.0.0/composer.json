@@ -1,59 +1,59 @@
 {
-  "name": "revinate/sequence",
-  "description": "A functional programming library for PHP",
-  "keywords": [
-    "functional"
-  ],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Jason Dent"
+    "name": "revinate/sequence",
+    "description": "A functional programming library for PHP",
+    "keywords": [
+        "functional"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Dent"
+        },
+        {
+            "name": "Eric Madar"
+        }
+    ],
+    "repositories": [
+        {
+            "name": "revinate",
+            "type": "git",
+            "url": "https://github.com/revinate/php-getter-setter"
+        }
+    ],
+    "require": {
+        "php": ">=7",
+        "revinate/php-getter-setter": "1.0.0",
+        "react/partial": "^3",
+        "ext-json": "*",
+        "ext-mbstring": "*"
     },
-    {
-      "name": "Eric Madar"
-    }
-  ],
-  "repositories": [
-    {
-      "name": "revinate",
-      "type": "git",
-      "url": "https://github.com/revinate/php-getter-setter"
-    }
-  ],
-  "require": {
-    "php": ">=7",
-    "revinate/php-getter-setter": "1.0.0",
-    "react/partial": "^3",
-    "ext-json": "*",
-    "ext-mbstring": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Revinate\\Sequence\\": "src",
-      "Revinate\\SequenceBundle\\Lib\\": "Lib",
-      "Revinate\\Sequence\\Tutorial\\": "Tutorial"
+    "autoload": {
+        "psr-4": {
+            "Revinate\\Sequence\\": "src",
+            "Revinate\\SequenceBundle\\Lib\\": "Lib",
+            "Revinate\\Sequence\\Tutorial\\": "Tutorial"
+        },
+        "files": [
+            "src/func/converters.php",
+            "src/func/filters.php",
+            "src/func/mappers.php",
+            "src/func/reducers.php",
+            "src/func/sorting.php",
+            "src/func/strings.php",
+            "src/func/paramBinding.php"
+        ]
     },
-    "files": [
-      "src/func/converters.php",
-      "src/func/filters.php",
-      "src/func/mappers.php",
-      "src/func/reducers.php",
-      "src/func/sorting.php",
-      "src/func/strings.php",
-      "src/func/paramBinding.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Revinate\\Sequence\\": "Tests"
+    "autoload-dev": {
+        "psr-4": {
+            "Revinate\\Sequence\\": "Tests"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.8"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
-  },
-  "config": {
-    "platform": {
-      "php": "8.0.8"
-    }
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^9"
-  }
 }
