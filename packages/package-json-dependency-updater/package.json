@@ -1,0 +1,39 @@
+{
+  "name": "package-json-dependency-updater",
+  "version": "1.0.0",
+  "description": "Update package.json dependencies to match lock files.",
+  "main": "index.js",
+  "repository": "https://github.com/streetsidesoftware/vscode-spell-checker",
+  "author": "Jason Dent",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "package-json-dependency-updater": "./bin.js"
+  },
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "scripts": {
+    "test": "echo Test",
+    "lint": "echo Lint",
+    "prepare": "yarn run build",
+    "build-production": "yarn run build",
+    "build": "tsc -p .",
+    "watch": "yarn run build --watch"
+  },
+  "dependencies": {
+    "@yarnpkg/lockfile": "^1.1.0",
+    "chalk": "^4.1.2",
+    "commander": "^8.2.0",
+    "find-up": "^6.0.0",
+    "glob": "^7.1.7",
+    "semver": "^7.3.5"
+  },
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/glob": "^7.1.4",
+    "@types/semver": "^7.3.8",
+    "@types/yarnpkg__lockfile": "^1.1.5"
+  }
+}
