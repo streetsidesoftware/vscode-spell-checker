@@ -2407,19 +2407,19 @@
     "update-packages": "yarn upgrade"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
-    "eslint": "^7.22.0",
-    "prettier": "^2.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "eslint": "^7.32.0",
+    "prettier": "^2.4.0",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.1.1",
-    "typescript": "^4.4.2",
-    "vsce": "^1.95.0"
+    "standard-version": "^9.3.1",
+    "typescript": "^4.4.3",
+    "vsce": "^1.99.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.9.1",
     "@cspell/cspell-types": "^5.9.1",
-    "cosmiconfig": "^7.0.0",
+    "cosmiconfig": "^7.0.1",
     "cspell": "^5.9.1",
     "regexp-worker": "^1.1.0"
   }
