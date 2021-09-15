@@ -1,16 +1,6 @@
 {
     "language": "en-us",
-    "import": [
-        "../cspell.json"
-    ],
+    "import": ["../cspell.json"],
     "words": [],
-    "flagWords": [
-        "behaviour",
-        "colour",
-        "customise",
-        "favour",
-        "favourite",
-        "metre",
-        "savour"
-    ]
+    "flagWords": ["behaviour", "colour", "customise", "favour", "favourite", "metre", "savour"]
 }

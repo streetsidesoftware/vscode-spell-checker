@@ -6,25 +6,13 @@
     // language - current active spelling language
     "language": "en",
     // words - list of words to be always considered correct
-    "words": [
-        "languageserver",
-        "xregexp",
-        "ramda",
-        "gimuy",
-        "gensequence"
-    ],
+    "words": ["languageserver", "xregexp", "ramda", "gimuy", "gensequence"],
     "globRoot": "../../..",
-    "ignorePaths": [
-        "samples",
-        "package-lock.json",
-        ".eslintrc.js"
-    ],
+    "ignorePaths": ["samples", "package-lock.json", ".eslintrc.js"],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"
-    "flagWords": [
-        "hte"
-    ],
+    "flagWords": ["hte"],
     "dictionaryDefinitions": [
         {
             "name": "cpp2",
@@ -34,15 +22,11 @@
     "languageSettings": [
         {
             "languageId": "c",
-            "dictionaries": [
-                "cpp2"
-            ]
+            "dictionaries": ["cpp2"]
         },
         {
             "languageId": "cpp",
-            "dictionaries": [
-                "cpp2"
-            ]
+            "dictionaries": ["cpp2"]
         }
     ],
     "overrides": [
@@ -51,7 +35,5 @@
             "language": "en-gb"
         }
     ],
-    "import": [
-        "./cspell-ext.json"
-    ]
+    "import": ["./cspell-ext.json"]
 }

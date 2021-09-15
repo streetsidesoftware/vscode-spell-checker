@@ -8,8 +8,6 @@
             "scope": "user"
         }
     ],
-    "dictionaries": [
-        "user-words"
-    ],
+    "dictionaries": ["user-words"],
     "words": []
 }

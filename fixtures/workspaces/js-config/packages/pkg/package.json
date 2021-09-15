@@ -1,16 +1,16 @@
 {
-    "name": "pkg",
-    "version": "1.0.0",
-    "description": "Sample Package",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo test"
-    },
-    "cspell": {
-        "words": [
-            "customterm"
-        ]
-    },
-    "author": "",
-    "license": "MIT"
+  "name": "pkg",
+  "version": "1.0.0",
+  "description": "Sample Package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test"
+  },
+  "cspell": {
+    "words": [
+      "customterm"
+    ]
+  },
+  "author": "",
+  "license": "MIT"
 }

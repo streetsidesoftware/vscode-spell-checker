@@ -1,5 +1,3 @@
 {
-    "ignorePaths": [
-        "cspell.json"
-    ]
+    "ignorePaths": ["cspell.json"]
 }

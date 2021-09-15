@@ -1,9 +1,0 @@
-{
-  "packages": [
-    "packages/_integrationTests",
-    "packages/_server",
-    "packages/_settingsViewer",
-    "packages/client"
-  ],
-  "version": "2.0.0-alpha.1"
-}

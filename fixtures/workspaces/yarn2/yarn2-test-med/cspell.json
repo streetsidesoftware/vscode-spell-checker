@@ -6,16 +6,9 @@
             "name": "custom-terms",
             "path": "./custom-terms.txt",
             "addWords": true,
-            "scope": [
-                "folder",
-                "workspace"
-            ]
+            "scope": ["folder", "workspace"]
         }
     ],
-    "dictionaries": [
-        "custom-terms"
-    ],
-    "import": [
-        "@cspell/dict-medicalterms/cspell-ext.json"
-    ]
+    "dictionaries": ["custom-terms"],
+    "import": ["@cspell/dict-medicalterms/cspell-ext.json"]
 }

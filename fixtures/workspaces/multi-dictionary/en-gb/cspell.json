@@ -1,17 +1,9 @@
 {
     "language": "en-gb",
-    "import": [
-        "../cspell.json"
-    ],
-    "ignorePaths": [
-        ".cspell/**"
-    ],
-    "flagWords": [
-        "color"
-    ],
-    "dictionaries": [
-        "forbidden-words"
-    ],
+    "import": ["../cspell.json"],
+    "ignorePaths": [".cspell/**"],
+    "flagWords": ["color"],
+    "dictionaries": ["forbidden-words"],
     "dictionaryDefinitions": [
         {
             "name": "forbidden-words",

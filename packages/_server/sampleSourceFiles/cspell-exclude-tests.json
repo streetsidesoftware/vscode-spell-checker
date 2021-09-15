@@ -3,21 +3,9 @@
     "version": "0.2",
     "language": "en",
     "globRoot": "../../..",
-    "words": [
-        "languageserver",
-        "xregexp",
-        "ramda",
-        "gimuy",
-        "gensequence"
-    ],
-    "ignorePaths": [
-        "samples",
-        "package-lock.json",
-        ".eslintrc.js"
-    ],
-    "flagWords": [
-        "hte"
-    ],
+    "words": ["languageserver", "xregexp", "ramda", "gimuy", "gensequence"],
+    "ignorePaths": ["samples", "package-lock.json", ".eslintrc.js"],
+    "flagWords": ["hte"],
     "dictionaryDefinitions": [
         {
             "name": "cpp2",
@@ -27,15 +15,11 @@
     "languageSettings": [
         {
             "languageId": "c",
-            "dictionaries": [
-                "cpp2"
-            ]
+            "dictionaries": ["cpp2"]
         },
         {
             "languageId": "cpp",
-            "dictionaries": [
-                "cpp2"
-            ]
+            "dictionaries": ["cpp2"]
         }
     ],
     "overrides": [

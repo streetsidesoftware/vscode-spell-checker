@@ -1,10 +1,5 @@
 {
     "version": "0.2",
-    "import": [
-        "../../cSpell.json"
-    ],
-    "ignorePaths": [
-        "cspell.json",
-        "**/mld/{*.svg,*.ttf,*.ijmap,codepoints}"
-    ]
+    "import": ["../../cSpell.json"],
+    "ignorePaths": ["cspell.json", "**/mld/{*.svg,*.ttf,*.ijmap,codepoints}"]
 }

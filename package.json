@@ -2394,7 +2394,7 @@
     "version-prerelease": "yarn run version-release -p alpha",
     "version-release": "yarn run test-vsce-build && standard-version",
     "package-extension": "vsce package -o ./build",
-    "prettier": "prettier \"**/*.{ts,tsx,js}\" -c",
+    "prettier": "prettier \"**/*.{ts,tsx,js,json,md}\" -c",
     "prettier-fix": "yarn run prettier -w",
     "test-vsce-build": "vsce package -o ./temp",
     "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",

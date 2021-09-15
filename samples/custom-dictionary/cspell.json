@@ -8,8 +8,6 @@
             "path": "./words.txt"
         }
     ],
-    "dictionaries": [
-        "words"
-    ],
+    "dictionaries": ["words"],
     "words": []
 }
