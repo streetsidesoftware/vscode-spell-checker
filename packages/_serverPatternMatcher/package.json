@@ -39,7 +39,7 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "regexp-worker": "^1.1.0"
+    "regexp-worker": "^1.1.1"
   },
   "scripts": {
     "clean": "rimraf dist temp out coverage",

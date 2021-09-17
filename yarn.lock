@@ -7526,10 +7526,10 @@ regex-parser@^2.2.11:
   resolved "https://registry.npmjs.org/regex-parser/-/regex-parser-2.2.11.tgz#3b37ec9049e19479806e878cabe7c1ca83ccfe58"
   integrity sha512-jbD/FT0+9MBU2XAZluI7w2OBs1RBi6p9M83nkoZayQXXU9e8Robt69FcZc7wU4eJD/YFTjn1JdCk3rbMJajz8Q==
 
-regexp-worker@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/regexp-worker/-/regexp-worker-1.1.0.tgz#3e63ba6a97619957f171f3cea459a4be0cd7c895"
-  integrity sha512-IDDOhDlI972T7bexYwyw+JKdqFsBtJvX8RA+ChVwjhgcK/gv4eG3oZu8Rbidnamh2U2b0ZWdawKksjzY2dmVFw==
+regexp-worker@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/regexp-worker/-/regexp-worker-1.1.1.tgz#01ceba166e26d7b436c001d7a9216823f32ac9fc"
+  integrity sha512-FpHJ2gdS6VI0LF+HkksqkugJqlPZwxXW8xRRCWBrx/wh2MQnYsST0WUHCe36WqGk/KpLo9DEaLVzjl3CvxPDEw==
 
 regexp.prototype.flags@^1.2.0, regexp.prototype.flags@^1.3.0, regexp.prototype.flags@^1.3.1:
   version "1.3.1"
