@@ -194,7 +194,9 @@ class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
 
     async write(cfg: CSpellSettings): Promise<void> {
         await this.mkdir();
-        return fs.writeFile(this.uri.fsPath, stringifyJson(cfg));
+        const json = stringifyJson(cfg);
+        const content = json[json.length - 1] !== '\n' ? json + '\n' : json;
+        return fs.writeFile(this.uri.fsPath, content);
     }
 
     async _read(): Promise<CSpellSettings> {
