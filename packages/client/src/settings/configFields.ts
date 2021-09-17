@@ -49,6 +49,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     patterns: 'patterns',
     pnpFiles: 'pnpFiles',
     readonly: 'readonly',
+    reporters: 'reporters',
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',
     showStatus: 'showStatus',
     showStatusAlignment: 'showStatusAlignment',

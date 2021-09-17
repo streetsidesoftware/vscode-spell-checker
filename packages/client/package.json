@@ -28,7 +28,7 @@
     "test-watch": "jest --watch"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.9.1",
+    "@cspell/cspell-types": "^5.10.0",
     "@types/fs-extra": "^9.0.12",
     "@types/jest": "^27.0.1",
     "@types/jest-when": "^2.7.3",
@@ -39,7 +39,7 @@
     "comment-json": "^4.1.1",
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
-    "cspell-lib": "^5.9.1",
+    "cspell-lib": "^5.10.0",
     "fs-extra": "^10.0.0",
     "jest": "^27.2.0",
     "jest-mock-vscode": "0.1.0",

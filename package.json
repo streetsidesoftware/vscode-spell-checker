@@ -2404,7 +2404,7 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
-    "update-packages": "yarn upgrade"
+    "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.31.1",
@@ -2417,10 +2417,10 @@
     "vsce": "^1.99.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.9.1",
-    "@cspell/cspell-types": "^5.9.1",
+    "@cspell/cspell-bundled-dicts": "^5.10.0",
+    "@cspell/cspell-types": "^5.10.0",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.9.1",
+    "cspell": "^5.10.0",
     "regexp-worker": "^1.1.1"
   }
 }
