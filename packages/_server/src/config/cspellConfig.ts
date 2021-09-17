@@ -697,9 +697,18 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
-type CSpellOmitFieldsFromPackageJson = '$schema' | 'description' | 'id' | 'name' | 'version' | 'languageId' | 'pnpFiles' | 'readonly';
+type CSpellOmitFieldsFromExtensionContributesInPackageJson =
+    | '$schema'
+    | 'description'
+    | 'id'
+    | 'name'
+    | 'version'
+    | 'languageId'
+    | 'pnpFiles'
+    | 'readonly'
+    | 'reporters';
 
-export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, CSpellOmitFieldsFromPackageJson>;
+export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson>;
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
