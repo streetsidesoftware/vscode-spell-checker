@@ -41,6 +41,7 @@ describe('Validate configFileReadWrite', () => {
     test.each`
         filename                | initialContent
         ${'cspell.json'}        | ${undefined}
+        ${'cspell.config.json'} | ${toJson(parseJsonc('{}'))}
         ${'cspell.jsonc'}       | ${undefined}
         ${'cspell.config.yaml'} | ${undefined}
         ${'package.json'}       | ${toJson(samplePackageJson)}
