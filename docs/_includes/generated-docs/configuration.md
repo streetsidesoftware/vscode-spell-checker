@@ -960,7 +960,7 @@ This same effect can be achieved using the `files` setting.
     ```
 
 Default
-: _`true`_
+: _`false`_
 
 ---
 
