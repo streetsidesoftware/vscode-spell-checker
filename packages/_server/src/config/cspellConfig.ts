@@ -202,7 +202,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * ```
      * "cSpell.files": ["**", "**​/.*", "**​/.*​/**"]
      * ```
-     * @default true
+     * @default false
      */
     spellCheckOnlyWorkspaceFiles?: boolean;
 
