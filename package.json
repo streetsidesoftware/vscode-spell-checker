@@ -2418,10 +2418,10 @@
     "vsce": "^1.99.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.10.0",
+    "@cspell/cspell-bundled-dicts": "^5.10.1",
     "@cspell/cspell-types": "^5.10.0",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.10.0",
+    "cspell": "^5.10.1",
     "regexp-worker": "^1.1.1"
   }
 }
