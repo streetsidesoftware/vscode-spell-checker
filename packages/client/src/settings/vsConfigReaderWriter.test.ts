@@ -32,7 +32,7 @@ describe('vsConfigReaderWriter', () => {
 
     test('createVSConfigReaderWriter.update', async () => {
         const cfgData = {};
-        mockedUpdateConfig.mockImplementation(async (_t, _s, keys, fn) => {
+        mockedUpdateConfig.mockImplementation(async (_t, _s, _keys, fn) => {
             Object.assign(cfgData, fn(cfgData));
         });
         const rw = createVSConfigReaderWriter(ConfigurationTarget.Workspace, Uri.file(__filename), false);
@@ -46,7 +46,7 @@ describe('vsConfigReaderWriter', () => {
 
     test('createVSConfigReaderWriter.write', async () => {
         const cfgData = {};
-        mockedUpdateConfig.mockImplementation(async (_t, _s, keys, fn) => {
+        mockedUpdateConfig.mockImplementation(async (_t, _s, _keys, fn) => {
             Object.assign(cfgData, fn(cfgData));
         });
 

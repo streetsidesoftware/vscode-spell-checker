@@ -1,12 +1,12 @@
 import { AppState } from '../../viewer/AppState';
-import { MessageBus, Message, isMessage } from '../../api';
+import { MessageBus, CommandMessage, isMessage } from '../../api';
 import { WebviewApi } from '../../api/WebviewApi';
 import { sampleSettings } from '../samples/sampleSettings';
 import dcopy from 'clone-deep';
 
 export class AppStateFixture extends AppState {
     _webviewApi: WebviewApi;
-    _postedMessages: Message[];
+    _postedMessages: CommandMessage[];
 
     constructor() {
         const webviewApi: WebviewApi = {

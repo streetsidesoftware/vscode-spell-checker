@@ -1,18 +1,13 @@
 {
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Jest Mock for VS Code Typescript Config",
+	"extends": "@tsconfig/node14/tsconfig.json",
 	"compilerOptions": {
-		"target": "es2020",
-		"lib": [
-			"ES2020"
-		],
 		"declaration": true,
-		"strictNullChecks": true,
-		"strict": true,
-		"strictFunctionTypes": true,
-		"module": "CommonJS",
+		"declarationMap": true,
 		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"outDir": "dist",
 		"sourceMap": true,
+		"outDir": "dist",
 		"rootDir": "src"
 	},
 	"include": [

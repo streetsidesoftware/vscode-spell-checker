@@ -62,7 +62,6 @@ export class CSpellClient implements Disposable {
     private serverApi: ServerApi;
     private disposables: Set<Disposable> = new Set();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
-    private initComplete: Promise<void>;
 
     /**
      * @param: {string} module -- absolute path to the server module.
@@ -109,7 +108,7 @@ export class CSpellClient implements Disposable {
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
-        this.initComplete = this.initWhenReady();
+        this.initWhenReady().catch((e) => console.error(e));
     }
 
     public needsStart(): boolean {

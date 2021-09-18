@@ -9,7 +9,7 @@ describe('Config Panel Verification', () => {
     it('tests the snapshot', () => {
         const appState = getSampleAppState();
         const targets: ConfigTarget[] = ['user', 'workspace', 'folder'];
-        targets.forEach((target) => {
+        targets.forEach((_target) => {
             const panelRenderer = create(<PanelConfig appState={appState} target="user"></PanelConfig>).toJSON()!;
             expect(panelRenderer).toMatchSnapshot();
         });

@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "Spell Checker Base Config",
+    "extends": "@tsconfig/node14/tsconfig.json",
+    "compilerOptions": {
+        "strict": true,
+        "strictFunctionTypes": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "declarationMap": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "newLine": "LF",
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "sourceMap": true,
+        "strictNullChecks": true
+    }
+}

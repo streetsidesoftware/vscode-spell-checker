@@ -1,41 +1,47 @@
-import {
-    isConfigurationChangeMessage,
-    ConfigurationChangeMessage,
-    isMessage,
-    SelectFileMessage,
-    isSelectFileMessage,
-    SelectFolderMessage,
-    isSelectFolderMessage,
-    EnableLocaleMessage,
-    isEnableLocaleMessage,
-} from './message';
 import { sampleSettings } from '../test/samples/sampleSettings';
+import {
+    ConfigurationChangeMessage,
+    EnableLocaleMessage,
+    isConfigurationChangeMessage,
+    isEnableLocaleMessage,
+    isMessage,
+    isSelectFileMessage,
+    isSelectFolderMessage,
+    SelectFileMessage,
+    SelectFolderMessage,
+} from './message';
 
 describe('Validate Messages', () => {
-    it('isMessage', () => {
-        const msgSelectFolder: SelectFolderMessage = {
-            command: 'SelectFolderMessage',
-            value: '/',
-        };
-        const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
-            command: 'ConfigurationChangeMessage',
-            value: { settings: sampleSettings },
-        };
-        expect(isMessage({})).toBe(false);
-        expect(isMessage(5)).toBe(false);
-        expect(isMessage(new Date())).toBe(false);
-        expect(isMessage(null)).toBe(false);
-        expect(isMessage(undefined)).toBe(false);
-        expect(isMessage({ command: 'UpdateCounter' })).toBe(true);
-        expect(isMessage({ command: 33 })).toBe(false);
-        expect(isMessage({ command: 'SelectFolderMessage' })).toBe(true);
-        expect(isMessage({ command: 'SelectFolderMessage', value: '/' })).toBe(true);
-        expect(isMessage(msgSelectFolder)).toBe(true);
-        expect(isMessage({ command: 'ConfigurationChangeMessage' })).toBe(true);
-        expect(isMessage(msgConfigurationChangeMessage)).toBe(true);
+    const msgSelectFolder: SelectFolderMessage = {
+        command: 'SelectFolderMessage',
+        value: '/',
+    };
+    const msgConfigurationChangeMessage: ConfigurationChangeMessage = {
+        command: 'ConfigurationChangeMessage',
+        value: { settings: sampleSettings },
+    };
+    test.each`
+        msg                                                       | expected
+        ${{}}                                                     | ${false}
+        ${5}                                                      | ${false}
+        ${new Date()}                                             | ${false}
+        ${null}                                                   | ${false}
+        ${undefined}                                              | ${false}
+        ${{ command: 'UpdateCounter' }}                           | ${false}
+        ${{ command: 33 }}                                        | ${false}
+        ${{ command: 'SelectFolderMessage' }}                     | ${false}
+        ${{ command: 'SelectFolderMessage', value: '/' }}         | ${true}
+        ${msgSelectFolder}                                        | ${true}
+        ${{ command: 'ConfigurationChangeMessage', value: {} }}   | ${true}
+        ${{ command: 'ConfigurationChangeMessage', value: true }} | ${false}
+        ${{ command: 'ConfigurationChangeMessage', value: null }} | ${false}
+        ${{ command: 'ConfigurationChangeMessage' }}              | ${false}
+        ${msgConfigurationChangeMessage}                          | ${true}
+    `('isMessage $msg', ({ msg, expected }) => {
+        expect(isMessage(msg)).toBe(expected);
     });
 
-    it('isConfigurationChangeMessage', () => {
+    test('isConfigurationChangeMessage', () => {
         const msgSelectFolder: SelectFolderMessage = {
             command: 'SelectFolderMessage',
             value: '/',

@@ -14,22 +14,33 @@ export interface DefinedCommands {
     OpenLinkMessage: OpenLinkMessage;
 }
 
+type IsAMessageOf = {
+    [k in keyof DefinedCommands]: (msg: IMessage) => msg is DefinedCommands[k];
+};
+
 export type Commands = keyof DefinedCommands;
 
-export interface Message {
+interface IMessage {
     command: Commands;
 }
 
-export type Messages = DefinedCommands[Commands];
+export type CommandMessage = DefinedCommands[Commands];
 
-export function isMessage(data: unknown): data is Message {
-    return !!(data && typeof data === 'object' && data.hasOwnProperty('command') && typeof data['command'] === 'string');
+function isIMessage(data: unknown): data is IMessage {
+    if (typeof data !== 'object' || !data || !data.hasOwnProperty('command')) return false;
+    return typeof (<IMessage>data).command === 'string';
 }
 
-function isA<T extends Message>(cmd: T['command'], fields: [keyof T, (v: any) => boolean][]): (msg: Message) => msg is T {
-    return function (msg: Message): msg is T {
+export function isMessage(data: unknown): data is CommandMessage {
+    if (!isIMessage(data)) return false;
+    const msg = <CommandMessage>data;
+    return isMessageOf<CommandMessage>(msg);
+}
+
+function isA<T extends IMessage>(cmd: T['command'], fields: [keyof T, (v: any) => boolean][]): (msg: IMessage) => msg is T {
+    return function (msg: IMessage): msg is T {
         const t = msg as T;
-        return msg.command === cmd && fields.reduce((success, [key, fn]) => success && fn(t[key]), true);
+        return msg.command === cmd && fields.reduce((success: boolean, [key, fn]) => success && fn(t[key]), true);
     };
 }
 
@@ -38,31 +49,31 @@ export interface ConfigurationChange {
     settings: Settings;
 }
 
-export interface ConfigurationChangeMessage extends Message {
+export interface ConfigurationChangeMessage extends IMessage {
     command: 'ConfigurationChangeMessage';
     value: ConfigurationChange;
 }
 
-export interface RequestConfigurationMessage extends Message {
+export interface RequestConfigurationMessage extends IMessage {
     command: 'RequestConfigurationMessage';
 }
 
-export interface SelectTabMessage extends Message {
+export interface SelectTabMessage extends IMessage {
     command: 'SelectTabMessage';
     value: string;
 }
 
-export interface SelectFolderMessage extends Message {
+export interface SelectFolderMessage extends IMessage {
     command: 'SelectFolderMessage';
     value: string;
 }
 
-export interface SelectFileMessage extends Message {
+export interface SelectFileMessage extends IMessage {
     command: 'SelectFileMessage';
     value: string;
 }
 
-export interface EnableLanguageIdMessage extends Message {
+export interface EnableLanguageIdMessage extends IMessage {
     command: 'EnableLanguageIdMessage';
     value: {
         target?: ConfigTarget;
@@ -72,7 +83,7 @@ export interface EnableLanguageIdMessage extends Message {
     };
 }
 
-export interface EnableLocaleMessage extends Message {
+export interface EnableLocaleMessage extends IMessage {
     command: 'EnableLocaleMessage';
     value: {
         target: ConfigTarget;
@@ -82,7 +93,7 @@ export interface EnableLocaleMessage extends Message {
     };
 }
 
-export interface OpenLinkMessage extends Message {
+export interface OpenLinkMessage extends IMessage {
     command: 'OpenLinkMessage';
     value: {
         uri: string;
@@ -103,4 +114,20 @@ function isObject(v: unknown): v is Record<string, unknown> {
 }
 function isString(v: unknown): v is string {
     return typeof v === 'string';
+}
+
+const isMessageOfMap: IsAMessageOf = {
+    ConfigurationChangeMessage: isConfigurationChangeMessage,
+    EnableLanguageIdMessage: isEnableLanguageIdMessage,
+    EnableLocaleMessage: isEnableLocaleMessage,
+    RequestConfigurationMessage: isRequestConfigurationMessage,
+    SelectFileMessage: isSelectFileMessage,
+    SelectFolderMessage: isSelectFolderMessage,
+    SelectTabMessage: isSelectTabMessage,
+    OpenLinkMessage: isOpenLinkMessage,
+};
+
+export function isMessageOf<M extends CommandMessage>(msg: CommandMessage): msg is M {
+    const fn = isMessageOfMap[msg.command];
+    return fn?.(msg) ?? false;
 }

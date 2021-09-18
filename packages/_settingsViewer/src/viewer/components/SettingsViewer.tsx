@@ -33,7 +33,8 @@ export class SettingsViewer extends React.Component<{ appState: AppState }> {
             </Panel>
         );
 
-        const handleChange = (_event: React.ChangeEvent<JSX.Element>, newValue: number) => {
+        const handleChange = (_event: React.ChangeEvent<any>, newValue: any) => {
+            if (typeof newValue !== 'number') return;
             this.activateTab(newValue);
         };
 
