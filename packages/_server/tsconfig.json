@@ -1,24 +1,7 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"target": "ES2019",
-		"lib": [
-			"es2019",
-			"es2020.promise",
-			"es2020.bigint",
-			"es2020.string"
-		],
-		"moduleResolution": "node",
-		"strict": true,
-		"sourceMap": true,
-		"alwaysStrict": true,
-		"declaration": true,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"strictNullChecks": true,
-		"strictFunctionTypes": true,
-		"noUnusedLocals": true,
-		"outDir": "./dist",
-		"forceConsistentCasingInFileNames": true
+		"outDir": "./dist"
 	},
 	"include": [
 		"src"

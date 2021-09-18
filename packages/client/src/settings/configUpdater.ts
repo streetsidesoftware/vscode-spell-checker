@@ -37,7 +37,7 @@ export function configUpdaterForKeys<K extends ConfigKeys>(keys: K[], updateFn: 
     };
 }
 
-function updateConfigByKeyFn<K extends keyof CSpellUserSettings>(key: K, updateFnOrValue: CSpellUserSettings[K] | UpdateConfigFieldFn<K>): UpdateConfigFieldFn<K> {
+function updateConfigByKeyFn<K extends keyof CSpellUserSettings>(_key: K, updateFnOrValue: CSpellUserSettings[K] | UpdateConfigFieldFn<K>): UpdateConfigFieldFn<K> {
     if (typeof updateFnOrValue === 'function') {
         return updateFnOrValue;
     }
