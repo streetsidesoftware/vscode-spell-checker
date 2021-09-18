@@ -1,7 +1,7 @@
 import { Color, RGBA } from './Colors';
 
 const nls = {
-    localize: (_, desc: string) => desc,
+    localize: (_: string, desc: string) => desc,
 };
 
 interface ColorParts {

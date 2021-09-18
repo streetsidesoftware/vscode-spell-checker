@@ -1,7 +1,7 @@
+import { sampleSettings } from '../test/samples/sampleSettings';
+import { ConfigurationChangeMessage, RequestConfigurationMessage } from './message';
 import { Logger, MessageBus } from './MessageBus';
 import { WebviewApi } from './WebviewApi';
-import { RequestConfigurationMessage, ConfigurationChangeMessage } from './message';
-import { sampleSettings } from '../test/samples/sampleSettings';
 
 describe('Validate MessageBus', () => {
     test('constructor', () => {

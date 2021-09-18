@@ -1,15 +1,15 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2020"
+    ],
     "esModuleInterop": true,
-    "target": "es2019",
-    "moduleResolution": "node",
-    "noImplicitAny": false,
-    "sourceMap": true,
-    "declaration": true,
     "jsx": "react",
     "outDir": "../client/settingsViewer",
     "experimentalDecorators": true,
-    "strictNullChecks": true,
     "useDefineForClassFields": true
   },
   "include": [

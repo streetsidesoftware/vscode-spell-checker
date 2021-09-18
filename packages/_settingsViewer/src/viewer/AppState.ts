@@ -250,7 +250,7 @@ export class AppState implements State {
         this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enable, target, uri } });
     }
 
-    @action updateSettings(settings): Settings {
+    @action updateSettings(settings: Settings): Settings {
         this._settings = settings;
         return this._settings;
     }

@@ -13,7 +13,7 @@ import { CsCheckBox, CsList as List } from './primitives';
 @observer
 export class SectionLanguage extends React.Component<{ appState: AppState; target: ConfigTarget }> {
     render(): JSX.Element {
-        const handleSelect = (index) => this.handleSelect(index);
+        const handleSelect = (index: LanguageInfo) => this.handleSelect(index);
         const target = this.props.target;
         const langConfig = this.props.appState.languageConfig[target];
         const inherited = langConfig.inherited;
