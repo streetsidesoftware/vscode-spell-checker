@@ -154,20 +154,8 @@ export function disableLocale(targets: ClientConfigTarget[], locale: string): Pr
 
 export function enableLocaleForTarget(locale: string, enable: boolean, targets: ClientConfigTarget[]): Promise<void> {
     const applyFn: (src: string | undefined) => string | undefined = enable
-        ? (currentLanguage) =>
-              unique(
-                  normalizeLocale(currentLanguage || 'en')
-                      .split(',')
-                      .concat(locale.split(','))
-              )
-                  .filter((a) => !!a)
-                  .join(',')
-        : (currentLanguage) => {
-              const value = unique(normalizeLocale(currentLanguage).split(','))
-                  .filter((lang) => lang !== locale)
-                  .join(',');
-              return value || undefined;
-          };
+        ? (currentLanguage) => addLocaleToCurrentLocale(locale, currentLanguage)
+        : (currentLanguage) => removeLocaleFromCurrentLocale(locale, currentLanguage);
     return setConfigFieldQuickPick(targets, 'language', applyFn);
 }
 
@@ -262,4 +250,28 @@ export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Ur
     const configFile = Uri.joinPath(folder.uri, choice);
     await createConfigFile(configFile, overwrite);
     return configFile;
+}
+
+function normalize(locale: string) {
+    return normalizeLocale(locale)
+        .split(',')
+        .filter((a) => !!a);
+}
+
+export function addLocaleToCurrentLocale(locale: string, currentLocale: string | undefined): string | undefined {
+    const toAdd = normalize(locale);
+    const currentSet = new Set(normalize(currentLocale || ''));
+
+    toAdd.forEach((locale) => currentSet.add(locale));
+
+    return [...currentSet].join(',') || undefined;
+}
+
+export function removeLocaleFromCurrentLocale(locale: string, currentLocale: string | undefined): string | undefined {
+    const toRemove = normalize(locale);
+    const currentSet = new Set(normalize(currentLocale || ''));
+
+    toRemove.forEach((locale) => currentSet.delete(locale));
+
+    return [...currentSet].join(',') || undefined;
 }

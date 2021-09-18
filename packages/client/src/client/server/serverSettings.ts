@@ -70,7 +70,7 @@ export function normalizeLocale(locale: string | string[] = ''): string {
 
 export function normalizeToLocales(locale: string = ''): string[] {
     return locale
-        .replace(/[|;]/g, ',')
+        .replace(/[|;\s]/g, ',')
         .replace(/[*]/g, '')
         .split(',')
         .map(normalizeCode)
