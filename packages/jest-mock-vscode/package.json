@@ -21,6 +21,7 @@
     "dist/**"
   ],
   "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
     "@types/jest": "^27.0.1",
     "@types/node": "16",
     "@types/vscode": "^1.60.0",

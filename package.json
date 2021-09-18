@@ -2407,6 +2407,7 @@
     "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
   },
   "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
@@ -2419,7 +2420,6 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.10.0",
     "@cspell/cspell-types": "^5.10.0",
-    "@tsconfig/node14": "^1.0.1",
     "cosmiconfig": "^7.0.1",
     "cspell": "^5.10.0",
     "regexp-worker": "^1.1.1"
