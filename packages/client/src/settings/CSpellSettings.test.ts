@@ -1,6 +1,6 @@
 import { Uri } from 'vscode';
-import { CSpellUserSettings } from '.';
-import { fsRemove, getPathToTemp, getUriToSample, mkdirp, readFile, writeFile, oc } from '../test/helpers';
+import { CSpellUserSettings } from '../client';
+import { fsRemove, getPathToTemp, getUriToSample, mkdirp, oc, readFile, writeFile } from '../test/helpers';
 import { unique } from '../util';
 import * as CSS from './CSpellSettings';
 import { readSettings, writeSettings } from './CSpellSettings';

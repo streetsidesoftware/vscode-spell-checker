@@ -98,3 +98,27 @@ export function isClientConfigTargetOfKind<K extends ClientConfigKind>(
 export const isClientConfigTargetDictionary = isA<ClientConfigTargetDictionary>(ConfigKinds.Dictionary);
 export const isClientConfigTargetCSpell = isA<ClientConfigTargetCSpell>(ConfigKinds.Cspell);
 export const isClientConfigTargetVSCode = isA<ClientConfigTargetVSCode>(ConfigKinds.Vscode);
+
+type ScopeToOrder = {
+    [K in ClientConfigScope]: number;
+};
+
+const scopeOrderGlobalToLocal: ScopeToOrder = {
+    user: 1,
+    workspace: 2,
+    folder: 3,
+    unknown: 4,
+};
+
+function compareClientConfigScopesGlobalToLocal(a: ClientConfigScope, b: ClientConfigScope): number {
+    return scopeOrderGlobalToLocal[a] - scopeOrderGlobalToLocal[b];
+}
+
+function compareClientConfigScopesLocalToGlobal(a: ClientConfigScope, b: ClientConfigScope): number {
+    return scopeOrderGlobalToLocal[b] - scopeOrderGlobalToLocal[a];
+}
+
+export function orderScope(scopes: ClientConfigScope[], localToGlobal = true): ClientConfigScope[] {
+    const compare = localToGlobal ? compareClientConfigScopesLocalToGlobal : compareClientConfigScopesGlobalToLocal;
+    return [...scopes].sort(compare);
+}

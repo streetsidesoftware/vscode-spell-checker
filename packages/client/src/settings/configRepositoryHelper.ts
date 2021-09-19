@@ -15,6 +15,7 @@ import {
 } from './configRepository';
 import { ConfigKeys, ConfigUpdater } from './configUpdater';
 import { dictionaryScopeToConfigurationTarget } from './targetAndScope';
+import { CSpellUserSettings } from '../client';
 
 const KnownTargetKinds = new Set<ClientConfigKind>(['dictionary', 'cspell', 'vscode']);
 
@@ -48,15 +49,39 @@ export function configTargetToConfigRepo(target: ClientConfigTarget): ConfigRepo
  * - rejects with `ErrorCannotFindConfigRepoForTarget` if it could not find a ConfigRepository for one of the targets.
  */
 export function applyUpdateToConfigTargets<K extends ConfigKeys>(updater: ConfigUpdater<K>, targets: ClientConfigTarget[]): Promise<void> {
-    function mapTarget(t: ClientConfigTarget) {
-        const r = configTargetToConfigRepo(t);
-        if (r === undefined) throw new ErrorCannotFindConfigRepoForTarget(t);
-        return r;
-    }
-
-    const repos = targets.map(mapTarget);
+    const repos = targets.map(mapTargetToRepo);
     const results = repos.map((r) => r.update(updater));
     return Promise.all(results).then(() => {});
+}
+
+/**
+ * Read value from Config Targets
+ *
+ * @param updater - update to apply
+ * @param targets - targets to apply.
+ * @returns
+ * - resolves if it was able to read the values.
+ * - rejects with `ErrorCannotFindConfigRepoForTarget` if it could not find a ConfigRepository for one of the targets.
+ */
+export function readFromConfigTargets<K extends ConfigKeys>(
+    key: K,
+    targets: ClientConfigTarget[]
+): Promise<[ClientConfigTarget, Pick<CSpellUserSettings, K>][]> {
+    type ReadFromConfigTargetsResultItem = [ClientConfigTarget, Pick<CSpellUserSettings, K>];
+
+    const readResults = targets.map(async (target) => {
+        const repo = mapTargetToRepo(target);
+        const value = await repo.getValue(key);
+        return [target, value] as ReadFromConfigTargetsResultItem;
+    });
+
+    return Promise.all(readResults);
+}
+
+function mapTargetToRepo(t: ClientConfigTarget) {
+    const r = configTargetToConfigRepo(t);
+    if (r === undefined) throw new ErrorCannotFindConfigRepoForTarget(t);
+    return r;
 }
 
 export class ErrorCannotFindConfigRepoForTarget extends Error {

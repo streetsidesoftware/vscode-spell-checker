@@ -32,7 +32,7 @@ import {
     setEnableSpellChecking,
     toggleEnableSpellChecker,
 } from './settings';
-import { ClientConfigTarget } from './settings/clientConfigTarget';
+import { ClientConfigScope, ClientConfigTarget } from './settings/clientConfigTarget';
 import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
@@ -48,6 +48,7 @@ import {
     dictionaryTargetBestMatchesWorkspace,
     filterClientConfigTargets,
     matchKindAll,
+    matchScopeAll,
     MatchTargetsFn,
     patternMatchNoDictionaries,
     quickPickTarget,
@@ -55,7 +56,11 @@ import {
 import { normalizeWords } from './settings/CSpellSettings';
 import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
-import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope';
+import {
+    configurationTargetToClientConfigScopeInfluenceRange,
+    configurationTargetToDictionaryScope,
+    dictionaryScopeToConfigurationTarget,
+} from './settings/targetAndScope';
 import { catchErrors, handleErrors, ignoreError, OnErrorResolver } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
@@ -345,8 +350,12 @@ export function enableDisableLocale(
     enable: boolean
 ): Promise<void> {
     return handleErrors(async () => {
-        const t = await (configTarget ? tfCfg(configTarget, uri, configScope) : targetsForUri(uri));
-        return Settings.enableLocaleForTarget(locale, enable, t);
+        const { targets, scopes } = await targetsAndScopeFromConfigurationTarget(
+            configTarget || ConfigurationTarget.Global,
+            uri,
+            configScope
+        );
+        return Settings.enableLocaleForTarget(locale, enable, targets, scopes);
     }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
 }
 
@@ -374,22 +383,31 @@ export function disableCurrentLanguage(): Promise<void> {
     }, 'disableCurrentLanguage');
 }
 
+async function targetsAndScopeFromConfigurationTarget(
+    cfgTarget: ConfigurationTarget,
+    docUri?: string | null | Uri | undefined,
+    configScope?: ConfigurationScope
+): Promise<{ targets: ClientConfigTarget[]; scopes: ClientConfigScope[] }> {
+    const scopes = configurationTargetToClientConfigScopeInfluenceRange(cfgTarget);
+    const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAll, { dictionary: false });
+
+    docUri = toUri(docUri);
+    const targets = await (docUri ? targetsForUri(docUri, pattern) : targetsForTextDocument(window.activeTextEditor?.document, pattern));
+    return {
+        targets: targets.map((t) => (t.kind === 'vscode' ? { ...t, configScope } : t)),
+        scopes,
+    };
+}
+
 async function targetsFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
     docUri?: string | null | Uri | undefined,
     configScope?: ConfigurationScope
 ): Promise<ClientConfigTarget[]> {
-    if (cfgTarget === ConfigurationTarget.Global) {
-        const uri = toUri(docUri || window.activeTextEditor?.document.uri);
-        const targets: ClientConfigTarget[] = [createClientConfigTargetVSCode(cfgTarget, uri, configScope)];
-        return targets;
-    }
-    const scope = configurationTargetToDictionaryScope(cfgTarget);
-    const pattern = createConfigTargetMatchPattern(matchKindAll, { dictionary: false }, scope, 'unknown');
-
-    docUri = toUri(docUri);
-    const targets = await (docUri ? targetsForUri(docUri, pattern) : targetsForTextDocument(window.activeTextEditor?.document, pattern));
-    return targets.map((t) => (t.kind === 'vscode' ? { ...t, configScope } : t));
+    const r = await targetsAndScopeFromConfigurationTarget(cfgTarget, docUri, configScope);
+    const { targets, scopes } = r;
+    const allowedScopes = new Set(scopes);
+    return targets.filter((t) => allowedScopes.has(t.scope));
 }
 
 async function targetsForTextDocument(
