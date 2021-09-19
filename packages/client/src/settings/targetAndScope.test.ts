@@ -18,9 +18,9 @@ describe('targetAndScope', () => {
 
     test.each`
         target                                 | expected
-        ${ConfigurationTarget.Global}          | ${['user', 'workspace', 'folder']}
-        ${ConfigurationTarget.Workspace}       | ${['workspace', 'folder']}
-        ${ConfigurationTarget.WorkspaceFolder} | ${['folder']}
+        ${ConfigurationTarget.Global}          | ${['user', 'workspace', 'folder', 'unknown']}
+        ${ConfigurationTarget.Workspace}       | ${['workspace', 'folder', 'unknown']}
+        ${ConfigurationTarget.WorkspaceFolder} | ${['folder', 'unknown']}
     `('configurationTargetToClientConfigScopeInfluenceRange', ({ target, expected }) => {
         expect(configurationTargetToClientConfigScopeInfluenceRange(target)).toEqual(expected);
     });
