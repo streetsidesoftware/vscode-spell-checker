@@ -25,6 +25,7 @@ export interface ConfigRepository {
      */
     readonly update: <K extends ConfigKeys>(updater: ConfigUpdater<K>) => Promise<void>;
     readonly setValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]) => Promise<void>;
+    readonly getValue: <K extends ConfigKeys>(key: K) => Promise<Partial<CSpellUserSettings>>;
     readonly updateValue: <K extends ConfigKeys>(key: K, value: CSpellUserSettings[K] | UpdateConfigFieldFn<K>) => Promise<void>;
 }
 
@@ -41,6 +42,7 @@ export abstract class ConfigRepositoryBase implements ConfigRepository {
     abstract readonly defaultDictionaryScope: CustomDictionaryScope | undefined;
 
     abstract update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void>;
+    abstract getValue<K extends ConfigKeys>(key: K): Promise<Partial<CSpellUserSettings>>;
 
     setValue<K extends ConfigKeys>(key: K, value: CSpellUserSettings[K]): Promise<void> {
         return this.update(configUpdaterForKey(key, value));
@@ -93,6 +95,10 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         this.configFileUri = configRW.uri;
     }
 
+    getValue<K extends ConfigKeys>(key: K): Promise<Partial<CSpellUserSettings>> {
+        return this.configRW.read([key]);
+    }
+
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
         return this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
     }
@@ -136,6 +142,10 @@ export class VSCodeRepository extends ConfigRepositoryBase {
     update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
         const { fn, keys } = this.mappers(updater.keys, updater.updateFn);
         return this.rw.update(fn, keys);
+    }
+
+    getValue<K extends ConfigKeys>(key: K): Promise<Partial<CSpellUserSettings>> {
+        return this.rw.read([key]);
     }
 
     /**
