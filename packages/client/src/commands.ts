@@ -21,18 +21,19 @@ import { TextEdit } from 'vscode-languageclient/node';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { ConfigFields } from './settings';
 import * as Settings from './settings';
 import {
+    ConfigFields,
     ConfigTargetLegacy,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
     getSettingFromVSConfig,
     normalizeTarget,
     setEnableSpellChecking,
+    TargetsAndScopes,
     toggleEnableSpellChecker,
 } from './settings';
-import { ClientConfigScope, ClientConfigTarget } from './settings/clientConfigTarget';
+import { ClientConfigTarget } from './settings/clientConfigTarget';
 import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
 import {
@@ -86,6 +87,7 @@ type CommandHandler = {
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
 const tfCfg = targetsFromConfigurationTarget;
+const tsFCfg = targetsAndScopeFromConfigurationTarget;
 const actionAddWordToFolder = prompt('Add Words to Folder Dictionary', addWordToFolderDictionary);
 const actionAddWordToWorkspace = prompt('Add Words to Workspace Dictionaries', addWordToWorkspaceDictionary);
 const actionAddWordToUser = prompt('Add Words to User Dictionary', addWordToUserDictionary);
@@ -136,12 +138,12 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.enableLanguage': enableLanguageIdCmd,
     'cSpell.disableLanguage': disableLanguageIdCmd,
-    'cSpell.enableForGlobal': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Global), true),
-    'cSpell.disableForGlobal': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Global), false),
-    'cSpell.toggleEnableForGlobal': async () => toggleEnableSpellChecker(await tfCfg(ConfigurationTarget.Global)),
-    'cSpell.enableForWorkspace': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Workspace), true),
-    'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tfCfg(ConfigurationTarget.Workspace), false),
-    'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tfCfg(ConfigurationTarget.Workspace)),
+    'cSpell.enableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), true),
+    'cSpell.disableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), false),
+    'cSpell.toggleEnableForGlobal': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global)),
+    'cSpell.enableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), true),
+    'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), false),
+    'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Workspace)),
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
 
@@ -387,7 +389,7 @@ async function targetsAndScopeFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
     docUri?: string | null | Uri | undefined,
     configScope?: ConfigurationScope
-): Promise<{ targets: ClientConfigTarget[]; scopes: ClientConfigScope[] }> {
+): Promise<TargetsAndScopes> {
     const scopes = configurationTargetToClientConfigScopeInfluenceRange(cfgTarget);
     const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAll, { dictionary: false });
 

@@ -1,7 +1,7 @@
-import { CSpellUserSettings, normalizeLocale } from '../client';
 import { ClientConfigScope, ClientConfigTarget, orderScope } from './clientConfigTarget';
 import { quickPickTarget } from './configTargetHelper';
-import { applyToConfig, readConfigTargetValues, orderTargetsLocalToGlobal } from './settings.base';
+import type { CSpellUserSettings } from './settings.base';
+import { applyToConfig, normalizeLocale, orderTargetsLocalToGlobal, readConfigTargetValues } from './settings.base';
 
 /**
  * Try to add or remove a locale from the nearest configuration.

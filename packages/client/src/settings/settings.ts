@@ -18,6 +18,7 @@ export interface SettingsInfo {
     path: Uri;
     settings: CSpellUserSettings;
 }
+export type { TargetsAndScopes } from './settings.types';
 
 export function watchSettingsFiles(callback: () => void): vscode.Disposable {
     // Every 10 seconds see if we have new files to watch.

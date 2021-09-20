@@ -3,7 +3,7 @@
  */
 
 import { CSpellUserSettings } from '../client';
-import { ClientConfigTarget, orderScope } from './clientConfigTarget';
+import { ClientConfigTarget, ClientConfigScope, orderScope } from './clientConfigTarget';
 import { applyUpdateToConfigTargets, readFromConfigTargets } from './configRepositoryHelper';
 import {
     ConfigTargetMatchPattern,
@@ -13,6 +13,9 @@ import {
     quickPickTargets,
 } from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
+import { TargetsAndScopes } from './settings.types';
+
+export { CSpellUserSettings, normalizeLocale } from '../client';
 
 export function readConfigTargetValues<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
@@ -62,4 +65,53 @@ export async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings
     const t = await quickPickTargets(targets);
     if (!t || !t.length) return;
     return applyToConfig(t, key, value);
+}
+
+/**
+ * Simple Inherited Value calculation. Does not merge values.
+ * @param mapTargetsToValue - an ordered map of target / values - ordered from local to global
+ * @param target - desired target
+ * @param key - configuration key
+ * @returns - the value found or undefined.
+ */
+export function findInheritedTargetValue<K extends keyof CSpellUserSettings>(
+    mapTargetsToValue: Map<ClientConfigTarget, CSpellUserSettings>,
+    target: ClientConfigTarget,
+    key: K
+): CSpellUserSettings[K] | undefined {
+    let lastValue: CSpellUserSettings[K] | undefined = undefined;
+    for (const [t, v] of [...mapTargetsToValue].reverse()) {
+        if (t === target) return lastValue;
+        lastValue = v[key] ?? lastValue;
+    }
+    return lastValue;
+}
+
+interface RelevantTargetInfo {
+    /**
+     * All Known Targets, even if they are not in scope.
+     * Used to calculate possible targets. Should be in order from locale to global.
+     */
+    targets: ClientConfigTarget[];
+    /**
+     * Possible set of scope to apply any changes.
+     */
+    possibleScopes: ClientConfigScope[];
+    /** All Known Targets, in order from local to global */
+    orderedTargets: ClientConfigTarget[];
+    /** ordered targets matching possible scopes. */
+    possibleTargets: ClientConfigTarget[];
+}
+
+export function calcRelevantTargetInfo(targetsAndScopes: TargetsAndScopes): RelevantTargetInfo {
+    const { targets, scopes: possibleScopes } = targetsAndScopes;
+    const allowedScopes = new Set(orderScope(possibleScopes));
+    const orderedTargets = orderTargetsLocalToGlobal(targets);
+    const possibleTargets = orderedTargets.filter((t) => allowedScopes.has(t.scope));
+    return {
+        targets,
+        possibleScopes,
+        orderedTargets,
+        possibleTargets,
+    };
 }
