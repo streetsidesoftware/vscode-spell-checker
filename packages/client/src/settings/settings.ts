@@ -8,10 +8,11 @@ import { isDefined, unique } from '../util';
 import * as watcher from '../util/watcher';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { readConfigFile, writeConfigFile } from './configFileReadWrite';
-import { patternMatchNoDictionaries, quickPickBestMatchTarget, quickPickTargets } from './configTargetHelper';
 import { configFileLocations, isUpdateSupportedForConfigFileFormat, normalizeWords, preferredConfigFiles } from './CSpellSettings';
-import { applyToConfig, ApplyValueOrFn } from './settings.base';
+import { setConfigFieldQuickPick } from './settings.base';
 
+export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable';
+export { enableLocaleForTarget } from './settings.locale';
 export { ConfigTargetLegacy, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
     path: Uri;
@@ -79,10 +80,6 @@ function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> 
     );
 }
 
-export function setEnableSpellChecking(targets: ClientConfigTarget[], enabled: boolean): Promise<void> {
-    return setConfigFieldQuickPick(targets, 'enabled', enabled);
-}
-
 /**
  * @description Enable a programming language
  * @param target - which level of setting to set
@@ -99,30 +96,6 @@ export async function disableLanguageId(targets: ClientConfigTarget[], languageI
 export function addIgnoreWordsToSettings(targets: ClientConfigTarget[], words: string | string[]): Promise<void> {
     const addWords = normalizeWords(words);
     return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
-}
-
-export function toggleEnableSpellChecker(targets: ClientConfigTarget[]): Promise<void> {
-    return setConfigFieldQuickPick(targets, 'enabled', (enabled) => !enabled);
-}
-
-export async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
-    targets: ClientConfigTarget[],
-    key: K,
-    value: ApplyValueOrFn<K>
-): Promise<void> {
-    const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
-    if (!t || !t.length) return;
-    return applyToConfig(t, key, value);
-}
-
-async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
-    targets: ClientConfigTarget[],
-    key: K,
-    value: ApplyValueOrFn<K>
-) {
-    const t = await quickPickTargets(targets);
-    if (!t || !t.length) return;
-    return applyToConfig(t, key, value);
 }
 
 /**

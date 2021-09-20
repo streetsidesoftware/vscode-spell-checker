@@ -7,11 +7,11 @@ export {
     disableLanguageId,
     enableLanguageId,
     enableLanguageIdForTarget,
+    enableLocaleForTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
     watchSettingsFiles,
 } from './settings';
-export { enableLocaleForTarget } from './settings.locale';
 export {
     ConfigurationTarget,
     getScopedSettingFromVSConfig,

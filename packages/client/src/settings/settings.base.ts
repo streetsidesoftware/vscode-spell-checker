@@ -5,7 +5,13 @@
 import { CSpellUserSettings } from '../client';
 import { ClientConfigTarget, orderScope } from './clientConfigTarget';
 import { applyUpdateToConfigTargets, readFromConfigTargets } from './configRepositoryHelper';
-import { ConfigTargetMatchPattern, filterClientConfigTargets } from './configTargetHelper';
+import {
+    ConfigTargetMatchPattern,
+    filterClientConfigTargets,
+    patternMatchNoDictionaries,
+    quickPickBestMatchTarget,
+    quickPickTargets,
+} from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
 
 export function readConfigTargetValues<K extends keyof CSpellUserSettings>(
@@ -36,4 +42,24 @@ export function orderTargetsLocalToGlobal(targets: ClientConfigTarget[]): Client
     const orderedTargets: ClientConfigTarget[] = [];
     orderedScopes.map((scope) => targets.filter((t) => t.scope === scope)).forEach((t) => t.forEach((t) => orderedTargets.push(t)));
     return orderedTargets;
+}
+
+export async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
+    targets: ClientConfigTarget[],
+    key: K,
+    value: ApplyValueOrFn<K>
+): Promise<void> {
+    const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
+    if (!t || !t.length) return;
+    return applyToConfig(t, key, value);
+}
+
+export async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
+    targets: ClientConfigTarget[],
+    key: K,
+    value: ApplyValueOrFn<K>
+): Promise<void> {
+    const t = await quickPickTargets(targets);
+    if (!t || !t.length) return;
+    return applyToConfig(t, key, value);
 }
