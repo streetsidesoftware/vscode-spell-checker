@@ -9,6 +9,7 @@ export {
     enableLanguageIdForTarget,
     enableLocaleForTarget,
     setEnableSpellChecking,
+    TargetsAndScopes,
     toggleEnableSpellChecker,
     watchSettingsFiles,
 } from './settings';
