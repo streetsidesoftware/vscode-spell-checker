@@ -3,14 +3,6 @@ import { ClientConfigScope, ClientConfigTarget, orderScope } from './clientConfi
 import { quickPickTarget } from './configTargetHelper';
 import { applyToConfig, readConfigTargetValues, orderTargetsLocalToGlobal } from './settings.base';
 
-export function enableLocale(targets: ClientConfigTarget[], locale: string, possibleScopes: ClientConfigScope[]): Promise<void> {
-    return enableLocaleForTarget(locale, true, targets, possibleScopes);
-}
-
-export function disableLocale(targets: ClientConfigTarget[], locale: string, possibleScopes: ClientConfigScope[]): Promise<void> {
-    return enableLocaleForTarget(locale, false, targets, possibleScopes);
-}
-
 /**
  * Try to add or remove a locale from the nearest configuration.
  * Present the user with the option to pick a target if more than one viable target is available.
