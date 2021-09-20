@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.5...v2.0.6) (2021-09-20)
+
+
+### Bug Fixes
+
+* Always add a new line at the end of ([#1316](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1316)) ([62b7894](https://github.com/streetsidesoftware/vscode-spell-checker/commit/62b7894287335de92ac0f5a06ceb87e2e266a347))
+* check all files by default ([#1314](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1314)) ([30853a6](https://github.com/streetsidesoftware/vscode-spell-checker/commit/30853a654be5ee6ce0b15b55a30c53bb7033a84d)), closes [#1283](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1283) [#1308](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1308)
+* Fix add / remove locale from configuration ([#1325](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1325)) ([b5699ef](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b5699eff5ee1357022aa0480abb3c92e784ee3da))
+* Fix Enable / Disable Locale matching logic. ([#1318](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1318)) ([b745e39](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b745e39b38480cf24f2e912dbce7f133c249a5b8))
+* Fix Toggle Enable Spell Checker  ([#1329](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1329)) ([0812d6a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0812d6ae3f8a533e1c425a8fb61d425f7cb361d2)), closes [#1289](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1289)
+
 ### [2.0.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.4...v2.0.5) (2021-09-12)
 
 
