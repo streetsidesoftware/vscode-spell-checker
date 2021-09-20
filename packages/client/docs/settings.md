@@ -43,3 +43,20 @@ Workspaces - means it is possible to adjust any configuration that is not Global
 1. Only present targets that will have an impact.
 1. If no targets will have an impact, do nothing.
 1. If there is only 1 target, then perform action without asking.
+
+# Toggle Enable Spell Checker
+
+## Logic
+
+There are currently two different target scopes (Workspace and Global). These are really max level of influence.
+
+The goal of the Toggle is to turn on / off the spell checker in a intuitive and predictable way. In other words:
+
+> If the spell checker is currently off for the file I have open, I want it on and vice versa.
+
+The logic to the Toggler is as follows:
+
+-   Find the most local configuration with the `enable` value set.
+-   Remove it if it will become the same as the inherited value otherwise set it to the negation.
+
+Having a scope of Workspace prevents the Global value from being updated, but the rest of the logic is the same.
