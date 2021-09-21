@@ -22,7 +22,7 @@
   ],
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "@types/node": "16",
     "@types/vscode": "^1.60.0",
     "jest": "^27.2.0",

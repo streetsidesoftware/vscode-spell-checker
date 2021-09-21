@@ -36,7 +36,7 @@
     "watch": "tsc -p . --watch"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "jest": "^27.2.0",
     "ts-jest": "^27.0.5"
   },
