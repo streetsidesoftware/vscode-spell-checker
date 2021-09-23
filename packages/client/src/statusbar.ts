@@ -89,7 +89,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         } else {
             sbCheck.text = `$(stop) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'Enable spell checking';
-            sbCheck.command = 'cSpell.enableForWorkspace';
+            sbCheck.command = 'cSpell.enableForGlobal';
             sbCheck.show();
         }
     }
