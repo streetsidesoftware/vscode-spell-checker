@@ -1,4 +1,3 @@
-import { toUri } from 'common-utils/uriHelper';
 import * as Kefir from 'kefir';
 import { format } from 'util';
 import * as vscode from 'vscode';
@@ -18,6 +17,7 @@ import { CSpellClient } from '../client';
 import { enableDisableLanguageId, enableDisableLocale } from '../commands';
 import { getSettingFromVSConfig } from '../settings';
 import { Maybe } from '../util';
+import { toUri } from '../util/uriHelper';
 import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';
 import { calcSettings } from './infoHelper';

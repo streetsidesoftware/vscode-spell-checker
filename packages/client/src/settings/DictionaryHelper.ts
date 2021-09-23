@@ -80,7 +80,7 @@ export class DictionaryHelper {
         try {
             await dictTarget.addWords(words);
         } catch (e) {
-            throw new UnableToAddWordError(`Unable to add "${words}"`, dictTarget, words);
+            throw new UnableToAddWordError(`Unable to add "${words}"`, dictTarget, words, e);
         }
     }
 
@@ -135,7 +135,7 @@ export class DictionaryHelper {
         try {
             await dictTarget.addWords(words);
         } catch (e) {
-            throw new DictionaryTargetError(`Unable to remove "${words}" from "${dictTarget.name}"`, dictTarget);
+            throw new DictionaryTargetError(`Unable to remove "${words}" from "${dictTarget.name}"`, dictTarget, e);
         }
     }
 
@@ -375,14 +375,14 @@ function combineDictionaryEntry(c: CustomDictionaries, entry: CustomDictionaryEn
 }
 
 export class DictionaryTargetError extends Error {
-    constructor(msg: string, readonly dictTarget: DictionaryTarget) {
+    constructor(msg: string, readonly dictTarget: DictionaryTarget, readonly cause: Error | unknown) {
         super(msg);
     }
 }
 
 export class UnableToAddWordError extends DictionaryTargetError {
-    constructor(msg: string, dictTarget: DictionaryTarget, readonly words: string | string[]) {
-        super(msg, dictTarget);
+    constructor(msg: string, dictTarget: DictionaryTarget, readonly words: string | string[], readonly cause: Error | unknown) {
+        super(msg, dictTarget, cause);
     }
 }
 

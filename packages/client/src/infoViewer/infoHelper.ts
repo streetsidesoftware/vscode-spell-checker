@@ -1,4 +1,4 @@
-import { toUri, uriToName } from 'common-utils/uriHelper';
+import { uriToName } from 'common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import {
@@ -13,7 +13,6 @@ import {
     Workspace,
     WorkspaceFolder,
 } from '../../settingsViewer/api/settings';
-import { CSpellClient } from '../client';
 import type {
     ConfigTarget,
     ConfigTargetCSpell,
@@ -21,9 +20,11 @@ import type {
     DictionaryDefinition,
     GetConfigurationForDocumentResult,
 } from '../client';
+import { CSpellClient } from '../client';
 import { Inspect, inspectConfig, InspectValues } from '../settings';
 import { Maybe, uniqueFilter } from '../util';
 import { defaultTo, map, pipe } from '../util/pipe';
+import { toUri } from '../util/uriHelper';
 
 type Logger = typeof console.log;
 

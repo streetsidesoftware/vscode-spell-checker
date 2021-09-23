@@ -1,4 +1,5 @@
-import { toUri } from 'common-utils/uriHelper.js';
+import { CSpellUserSettings } from '../client';
+import { toUri } from '../util/uriHelper';
 import {
     ClientConfigKind,
     ClientConfigTarget,
@@ -15,7 +16,6 @@ import {
 } from './configRepository';
 import { ConfigKeys, ConfigUpdater } from './configUpdater';
 import { dictionaryScopeToConfigurationTarget } from './targetAndScope';
-import { CSpellUserSettings } from '../client';
 
 const KnownTargetKinds = new Set<ClientConfigKind>(['dictionary', 'cspell', 'vscode']);
 

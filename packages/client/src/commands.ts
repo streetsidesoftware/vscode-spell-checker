@@ -1,4 +1,3 @@
-import { toUri } from 'common-utils/uriHelper.js';
 import {
     CodeAction,
     commands,
@@ -65,6 +64,7 @@ import {
 import { catchErrors, handleErrors, ignoreError, OnErrorResolver } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
+import { toUri } from './util/uriHelper';
 import { findMatchingDocument } from './vscode/findDocument';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
