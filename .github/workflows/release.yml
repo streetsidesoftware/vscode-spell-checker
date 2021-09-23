@@ -19,7 +19,7 @@ jobs:
         run: yarn run package-extension
       - run: zip code-spell-checker build/*
       - name: Release
-        uses: softprops/action-gh-release@v0.1.13
+        uses: softprops/action-gh-release@v1
         with:
           files: |
             code-spell-checker.zip
