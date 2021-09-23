@@ -202,11 +202,6 @@
         "title": "Disable Spell Checking by Default"
       },
       {
-        "command": "cSpell.toggleEnableForGlobal",
-        "category": "Spell",
-        "title": "Toggle Spell Checking"
-      },
-      {
         "command": "cSpell.enableCurrentLanguage",
         "category": "Spell",
         "title": "Enable Spell Checking Document Language"
@@ -222,9 +217,19 @@
         "title": "Show Spell Checker Configuration Info"
       },
       {
+        "command": "cSpell.toggleEnableForGlobal",
+        "category": "Spell",
+        "title": "Toggle Spell Checking in User Settings"
+      },
+      {
+        "command": "cSpell.toggleEnableForWorkspace",
+        "category": "Spell",
+        "title": "Toggle Spell Checking for Workspace"
+      },
+      {
         "command": "cSpell.toggleEnableSpellChecker",
         "category": "Spell",
-        "title": "Toggle Spell Checking For the Current Workspace"
+        "title": "Toggle Spell Checking"
       },
       {
         "command": "cSpell.removeWordFromFolderDictionary",

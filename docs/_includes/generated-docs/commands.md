@@ -35,5 +35,6 @@
 | `cSpell.removeWordFromUserDictionary`        | Remove Words from the Global Dictionary                                                                |
 | `cSpell.removeWordFromWorkspaceDictionary`   | Remove Words from the Workspace Dictionaries                                                           |
 | `cSpell.suggestSpellingCorrections`          | Spelling Suggestions...<br>**When:**<br> `editorTextFocus && cSpell.editorMenuContext.showSuggestions` |
-| `cSpell.toggleEnableForGlobal`               | Toggle Spell Checking                                                                                  |
-| `cSpell.toggleEnableSpellChecker`            | Toggle Spell Checking For the Current Workspace                                                        |
+| `cSpell.toggleEnableForGlobal`               | Toggle Spell Checking in User Settings                                                                 |
+| `cSpell.toggleEnableForWorkspace`            | Toggle Spell Checking for Workspace                                                                    |
+| `cSpell.toggleEnableSpellChecker`            | Toggle Spell Checking                                                                                  |
