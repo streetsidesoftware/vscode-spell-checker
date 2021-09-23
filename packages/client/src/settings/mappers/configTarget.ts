@@ -1,4 +1,4 @@
-import { toUri } from '../../../../__utils/dist/uriHelper';
+import { toUri } from '../../util/uriHelper';
 import { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
 import {
     ClientConfigTarget,

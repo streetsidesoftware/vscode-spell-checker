@@ -334,7 +334,7 @@ export function extractTargetUri(target: ConfigTargetLegacy): Uri | undefined {
 export type GetConfigurationScope = ConfigurationScope | undefined;
 
 export function getConfiguration(scope: GetConfigurationScope): WorkspaceConfiguration {
-    return workspace.getConfiguration(undefined, scope);
+    return workspace.getConfiguration(undefined, normalizeConfigurationScope(scope));
 }
 
 export function normalizeTarget(target: ConfigTargetLegacy): ConfigTargetWithOptionalResource {
@@ -445,6 +445,63 @@ export function updateConfig(
 
     const p = Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
     return Promise.all(p).then();
+}
+
+interface UriLike {
+    readonly authority: string;
+    readonly fragment: string;
+    readonly path: string;
+    readonly query: string;
+    readonly scheme: string;
+}
+
+interface HasUri {
+    uri: Uri | UriLike;
+}
+
+function normalizeConfigurationScope(scope: GetConfigurationScope): GetConfigurationScope {
+    if (isUriLike(scope)) return fixUri(scope);
+    if (isHasUri(scope)) {
+        if (isUri(scope.uri)) return scope;
+        return {
+            ...scope,
+            uri: fixUri(scope.uri),
+        };
+    }
+    return scope;
+}
+
+/**
+ * Fix any Uri's that are not VS Code Specific Uri instances.
+ * The Configuration is very picky and will break if it is not a VS Code instance.
+ * @param scope - A ConfigurationScope
+ * @returns
+ */
+function fixUri(scope: UriLike | Uri): Uri {
+    if (isUri(scope)) return scope;
+    return Uri.parse(scope.toString());
+}
+
+function isUriLike(possibleUri: unknown): possibleUri is UriLike {
+    if (!possibleUri || typeof possibleUri !== 'object') return false;
+    const uri = <UriLike>possibleUri;
+    return (
+        uri.authority !== undefined &&
+        uri.fragment !== undefined &&
+        uri.path != undefined &&
+        uri.query != undefined &&
+        uri.scheme != undefined
+    );
+}
+
+function isUri(uri: unknown): uri is Uri {
+    return uri instanceof Uri;
+}
+
+function isHasUri(scope: unknown): scope is HasUri {
+    if (!scope || typeof scope !== 'object') return false;
+    const h = <HasUri>scope;
+    return h.uri !== undefined;
 }
 
 export const __testing__ = {

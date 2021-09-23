@@ -1,9 +1,8 @@
 import { commands, TextDocument, workspace } from 'vscode';
-import { toUri } from 'common-utils/uriHelper.js';
-import { CSpellClient } from './client';
+import { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
-import { ConfigKind, ConfigScope, ConfigTarget } from './client';
+import { toUri } from './util/uriHelper';
 
 const prefix = extensionId;
 
