@@ -8,9 +8,9 @@
 | -------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
 | [`cSpell.allowCompoundWords`](#cspellallowcompoundwords)                                           | resource             | Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means…         |
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                                                   | window               | Control which file schemas will be checked for spelling (VS Code must be restarted for this…             |
-| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreatherthan) | language-overridable | The maximum average chunk of text size.                                                                  |
-| [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)        | language-overridable | The maximum line length                                                                                  |
-| [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)     | language-overridable | The maximum size of text chunks                                                                          |
+| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreatherthan) | language-overridable | The maximum average length of chunks of text without word breaks.                                        |
+| [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)        | language-overridable | The maximum line length.                                                                                 |
+| [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)     | language-overridable | The maximum length of a chunk of text without word breaks.                                               |
 | [`cSpell.caseSensitive`](#cspellcasesensitive)                                                     | resource             | Words must match case rules.                                                                             |
 | [`cSpell.checkLimit`](#cspellchecklimit)                                                           | resource             | The limit in K-Characters to be checked in a file.                                                       |
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)                                           | resource             | Custom Dictionaries                                                                                      |
@@ -112,7 +112,7 @@ Scope
 : language-overridable
 
 Description
-: The maximum average chunk of text size.
+: The maximum average length of chunks of text without word breaks.
 
     A chunk is the characters between absolute word breaks.
     Absolute word breaks match: `/[\s,{}[\]]/`
@@ -139,7 +139,10 @@ Scope
 : language-overridable
 
 Description
-: The maximum line length use to prevent spell checking generated files
+: The maximum line length.
+
+    Block spell checking if lines are longer than the value given.
+    This is used to prevent spell checking generated files.
 
     **Error Message:** _Lines are too long._
 
@@ -160,7 +163,7 @@ Scope
 : language-overridable
 
 Description
-: The maximum size of text chunks looks for long strings of
+: The maximum length of a chunk of text without word breaks.
 
     It is used to prevent spell checking of generated files.
 
