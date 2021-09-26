@@ -251,9 +251,11 @@ type EnableFileTypeId = string;
 
 interface SpellCheckerShouldCheckDocSettings {
     /**
-     * The maximum line length
      * @markdownDescription
-     * The maximum line length use to prevent spell checking generated files
+     * The maximum line length.
+     *
+     * Block spell checking if lines are longer than the value given.
+     * This is used to prevent spell checking generated files.
      *
      * **Error Message:** _Lines are too long._
      *
@@ -262,9 +264,8 @@ interface SpellCheckerShouldCheckDocSettings {
      */
     blockCheckingWhenLineLengthGreaterThan?: number;
     /**
-     * The maximum size of text chunks
      * @markdownDescription
-     * The maximum size of text chunks looks for long strings of
+     * The maximum length of a chunk of text without word breaks.
      *
      * It is used to prevent spell checking of generated files.
      *
@@ -281,9 +282,8 @@ interface SpellCheckerShouldCheckDocSettings {
      */
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
     /**
-     * The maximum average chunk of text size.
      * @markdownDescription
-     * The maximum average chunk of text size.
+     * The maximum average length of chunks of text without word breaks.
      *
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`
