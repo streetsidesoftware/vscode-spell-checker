@@ -2410,8 +2410,8 @@
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.31.2",
-    "@typescript-eslint/parser": "^4.31.2",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
     "eslint": "^7.32.0",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
