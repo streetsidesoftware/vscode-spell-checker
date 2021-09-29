@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.8-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.7...v2.0.8-alpha.0) (2021-09-29)
+
+
+### Bug Fixes
+
+* docs/Gemfile & docs/Gemfile.lock to reduce vulnerabilities ([#1361](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1361)) ([2bf5875](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2bf58753b55667aac034d743f51fa6bb84ccc654))
+
 ### [2.0.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.7-alpha.1...v2.0.7) (2021-09-23)
 
 ### [2.0.7-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.7-alpha.0...v2.0.7-alpha.1) (2021-09-23)
