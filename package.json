@@ -2420,10 +2420,10 @@
     "vsce": "^1.100.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.11.0",
-    "@cspell/cspell-types": "^5.11.0",
+    "@cspell/cspell-bundled-dicts": "^5.11.1",
+    "@cspell/cspell-types": "^5.11.1",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.11.0",
+    "cspell": "^5.11.1",
     "regexp-worker": "^1.1.1"
   }
 }
