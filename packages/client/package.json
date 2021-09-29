@@ -28,7 +28,7 @@
     "test-watch": "jest --watch"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.10.0",
+    "@cspell/cspell-types": "^5.11.0",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/jest-when": "^2.7.3",
@@ -39,9 +39,9 @@
     "comment-json": "^4.1.1",
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
-    "cspell-lib": "^5.10.1",
+    "cspell-lib": "^5.11.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.2.2",
+    "jest": "^27.2.3",
     "jest-mock-vscode": "0.1.0",
     "jest-when": "^3.4.0",
     "kefir": "^3.8.8",
@@ -57,7 +57,7 @@
     "typescript": "^4.4.3",
     "vscode-languageclient": "^7.0.0",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.54.0",
+    "webpack": "^5.55.0",
     "webpack-cli": "^4.8.0",
     "yaml": "^1.10.2"
   },

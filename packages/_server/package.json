@@ -24,19 +24,19 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.10.0",
+    "@cspell/cspell-types": "^5.11.0",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/micromatch": "^4.0.2",
     "@types/node": "^16.10.1",
     "common-utils": "1.0.0",
-    "cspell-glob": "^5.10.0",
-    "cspell-lib": "^5.10.1",
+    "cspell-glob": "^5.11.0",
+    "cspell-lib": "^5.11.0",
     "fs-extra": "^10.0.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
-    "jest": "^27.2.2",
-    "jest-diff": "^27.2.2",
+    "jest": "^27.2.3",
+    "jest-diff": "^27.2.3",
     "lorem-ipsum": "^2.0.3",
     "micromatch": "^4.0.4",
     "minimatch": "^3.0.4",
@@ -49,11 +49,11 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.1",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.54.0",
+    "webpack": "^5.55.0",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.10.1"
+    "@cspell/cspell-bundled-dicts": "^5.11.0"
   },
   "scripts": {
     "clean": "rimraf dist temp out coverage",
