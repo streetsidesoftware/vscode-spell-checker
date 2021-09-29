@@ -3021,10 +3021,10 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-glob@^5.10.0:
-  version "5.10.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-5.10.0.tgz#04c1ed153fedc2b9bfaafbef4efb4865fbd65893"
-  integrity sha512-aMt4OxvrdP1QM7rhsOvmkmdKmMY1oq11iHwEf/e/XCezmkab61QJaSM+oGk2Io+xKjdJrJVKOnkikxfQtyP6vw==
+cspell-glob@^5.10.0, cspell-glob@^5.11.0:
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-5.11.0.tgz#8cd3e5fd58d30b0544a78c51184424ff6a795dc1"
+  integrity sha512-vyqGx9emHOreafSBdNPPDsRTcJEwV5Rums0UMnB7nU25a1Hwu1HLNQnxJXDs/trptJUiJ3wep26ROlkWmZ/pFQ==
   dependencies:
     micromatch "^4.0.4"
 

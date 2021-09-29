@@ -30,7 +30,7 @@
     "@types/micromatch": "^4.0.2",
     "@types/node": "^16.10.1",
     "common-utils": "1.0.0",
-    "cspell-glob": "^5.10.0",
+    "cspell-glob": "^5.11.0",
     "cspell-lib": "^5.10.1",
     "fs-extra": "^10.0.0",
     "gensequence": "^3.1.1",
