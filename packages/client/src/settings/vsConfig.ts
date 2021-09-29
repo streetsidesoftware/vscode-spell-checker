@@ -1,6 +1,7 @@
 import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration, ConfigurationScope } from 'vscode';
 import { extensionId } from '../constants';
 import { CSpellUserSettings } from '../client';
+import { findConicalDocumentScope } from '../util/documentUri';
 
 export { CSpellUserSettings } from '../client';
 export { ConfigurationTarget } from 'vscode';
@@ -460,7 +461,7 @@ interface HasUri {
 }
 
 function normalizeConfigurationScope(scope: GetConfigurationScope): GetConfigurationScope {
-    if (isUriLike(scope)) return fixUri(scope);
+    if (isUriLike(scope)) return findConicalDocumentScope(fixUri(scope));
     if (isHasUri(scope)) {
         if (isUri(scope.uri)) return scope;
         return {

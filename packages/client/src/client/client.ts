@@ -24,6 +24,7 @@ import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
 import { Maybe } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
+import { findConicalDocumentScope } from '../util/documentUri';
 import { logErrors, silenceErrors } from '../util/errors';
 import {
     createServerApi,
@@ -247,9 +248,10 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
 }
 
 function calculateWorkspaceConfigForDocument(docUri: Uri | undefined): WorkspaceConfigForDocument {
-    const cfg = inspectConfigKeys(docUri, ['words', 'userWords', 'ignoreWords']);
+    const scope = findConicalDocumentScope(docUri);
+    const cfg = inspectConfigKeys(scope, ['words', 'userWords', 'ignoreWords']);
     const workspaceFile = workspace.workspaceFile?.toString();
-    const workspaceFolder = docUri && workspace.getWorkspaceFolder(docUri)?.uri.toString();
+    const workspaceFolder = scope && workspace.getWorkspaceFolder(scope)?.uri.toString();
 
     const allowFolder = workspaceFile !== undefined;
 

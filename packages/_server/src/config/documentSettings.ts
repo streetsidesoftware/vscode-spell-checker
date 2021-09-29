@@ -69,6 +69,12 @@ const defaultRootUri = Uri.file('').toString();
 
 const _defaultSettings: CSpellUserSettings = Object.freeze({});
 
+const _schemaMapToFile = {
+    'vscode-notebook-cell': true,
+} as const;
+
+const schemeMapToFile: Record<string, true> = Object.freeze(_schemaMapToFile);
+
 interface Clearable {
     clear: () => any;
 }
@@ -216,6 +222,9 @@ export class DocumentSettings {
     private async _fetchSettingsForUri(docUri: string): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${docUri}`);
         const uri = Uri.parse(docUri);
+        if (uri.scheme in schemeMapToFile) {
+            return this.fetchSettingsForUri(mapToFileUri(uri).toString());
+        }
         const fsPath = path.normalize(uri.fsPath);
         const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
@@ -563,6 +572,14 @@ export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uri.fsPath);
+}
+
+function mapToFileUri(uri: Uri): Uri {
+    return uri.with({
+        scheme: 'file',
+        query: '',
+        fragment: '',
+    });
 }
 
 export const __testing__ = {
