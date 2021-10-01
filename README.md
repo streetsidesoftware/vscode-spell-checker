@@ -282,7 +282,7 @@ In general you should not need to use `includeRegExp`. But if you are mixing lan
 
 ```Python
 # cSpell:includeRegExp #.*
-# cSpell:includeRegExp ("""|''')[^\1]*\1
+# cSpell:includeRegExp /(["]{3}|[']{3})[^\1]*?\1/g
 # only comments and block strings will be checked for spelling.
 def sum_it(self, seq):
     """This is checked for spelling"""
