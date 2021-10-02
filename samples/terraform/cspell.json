@@ -19,7 +19,7 @@
     ],
     "overrides": [
         {
-            "filename": ["*.tf", "*..tfvars"],
+            "filename": ["*.tf", "*.tfvars"],
             "languageId": "terraform"
         }
     ],
