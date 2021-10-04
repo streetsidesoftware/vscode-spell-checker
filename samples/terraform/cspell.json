@@ -1,0 +1,28 @@
+{
+    "patterns": [
+        {
+            "name": "terraform.comment.single-line",
+            "description": "Matches Terraform single-line comments",
+            "pattern": "/(#|\\/\\/).*/g"
+        },
+        {
+            "name": "terraform.comment",
+            "description": "Matches Terraform comments",
+            "pattern": ["CStyleComment", "terraform.comment.single-line"]
+        }
+    ],
+    "languageSettings": [
+        {
+            "languageId": "terraform,tf",
+            "includeRegExpList": ["terraform.comment"]
+        }
+    ],
+    "overrides": [
+        {
+            "filename": ["*.tf", "*.tfvars"],
+            "languageId": "terraform"
+        }
+    ],
+    "ignoreWords": ["tfvars"],
+    "enableFiletypes": ["tf", "terraform"]
+}
