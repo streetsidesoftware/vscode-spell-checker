@@ -1103,10 +1103,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.26":
-  version "17.0.26"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.26.tgz#960ea4b3518cc154ed7df3b35656c508df653331"
-  integrity sha512-MXxuXrH2xOcv5cp/su4oz69dNQnSA90JjFw5HBd5wifw6Ihi94j7dRJm7qNsB30tnruXSCPc9qmlhGop4nh9Hw==
+"@types/react@*", "@types/react@^17.0.27":
+  version "17.0.27"
+  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.27.tgz#6498ed9b3ad117e818deb5525fa1946c09f2e0e6"
+  integrity sha512-zgiJwtsggVGtr53MndV7jfiUESTqrbxOcBvwfe6KS/9bzaVPCTDieTWnFNecVNx6EAaapg5xsLLWFfHHR437AA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -1429,9 +1429,9 @@ acorn-globals@^6.0.0:
     acorn-walk "^7.1.1"
 
 acorn-import-assertions@^1.7.6:
-  version "1.7.6"
-  resolved "https://registry.npmjs.org/acorn-import-assertions/-/acorn-import-assertions-1.7.6.tgz#580e3ffcae6770eebeec76c3b9723201e9d01f78"
-  integrity sha512-FlVvVFA1TX6l3lp8VjDnYYq7R1nyW6x3svAt4nDgrWQ9SBaSh9CnbwgSUTasgfNfOG5HlM1ehugCvM+hjo56LA==
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/acorn-import-assertions/-/acorn-import-assertions-1.8.0.tgz#ba2b5939ce62c238db6d93d81c9b111b29b855e9"
+  integrity sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==
 
 acorn-jsx@^5.3.1:
   version "5.3.2"
@@ -2471,9 +2471,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001261:
-  version "1.0.30001263"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001263.tgz#7ce7a6fb482a137585cbc908aaf38e90c53a16a4"
-  integrity sha512-doiV5dft6yzWO1WwU19kt8Qz8R0/8DgEziz6/9n2FxUasteZNwNNYSmJO3GLBH8lCVE73AB1RPDPAeYbcO5Cvw==
+  version "1.0.30001264"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001264.tgz#88f625a60efb6724c7c62ac698bc8dbd9757e55b"
+  integrity sha512-Ftfqqfcs/ePiUmyaySsQ4PUsdcYyXG2rfoBVsk3iY1ahHaJEw65vfb7Suzqm+cEkwwPIv/XWkg27iCpRavH4zA==
 
 chai@^4.3.4:
   version "4.3.4"
@@ -3529,7 +3529,7 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.18.0-next.2, es-abstract@^1.18.1, es-abstract@^1.18.2, es-abstract@^1.18.5, es-abstract@^1.19.0:
+es-abstract@^1.18.0-next.2, es-abstract@^1.18.2, es-abstract@^1.18.5, es-abstract@^1.19.0, es-abstract@^1.19.1:
   version "1.19.1"
   resolved "https://registry.npmjs.org/es-abstract/-/es-abstract-1.19.1.tgz#d4885796876916959de78edaa0df456627115ec3"
   integrity sha512-2vJ6tjA/UfqLm2MPs7jxVybLoB8i1t1Jd9R3kISld20sIxPcTbLuggQOUxeWeAvIUkduv/CfMjuh4WmiXr2v9w==
@@ -4570,9 +4570,9 @@ import-fresh@^3.0.0, import-fresh@^3.2.1, import-fresh@^3.3.0:
     resolve-from "^4.0.0"
 
 import-local@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/import-local/-/import-local-3.0.2.tgz#a8cfd0431d1de4a2199703d003e3e62364fa6db6"
-  integrity sha512-vjL3+w0oulAVZ0hBHnxa/Nm5TAurf9YLQJDhqRZyqb+VKGOB6LU8t9H1Nr5CIo16vh9XfJTOoHwU0B71S557gA==
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/import-local/-/import-local-3.0.3.tgz#4d51c2c495ca9393da259ec66b62e022920211e0"
+  integrity sha512-bE9iaUY3CXH8Cwfan/abDKAxe1KGT9kyGsBPqf6DMK/z0a2OzAsrukeYNgIH6cH5Xr452jb1TUL8rSfCLjZ9uA==
   dependencies:
     pkg-dir "^4.2.0"
     resolve-cwd "^3.0.0"
@@ -6213,40 +6213,39 @@ object.assign@^4.1.2:
     object-keys "^1.1.1"
 
 object.entries@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/object.entries/-/object.entries-1.1.4.tgz#43ccf9a50bc5fd5b649d45ab1a579f24e088cafd"
-  integrity sha512-h4LWKWE+wKQGhtMjZEBud7uLGhqyLwj8fpHOarZhD2uY3C9cRtk57VQ89ke3moByLXMedqs3XCHzyb4AmA2DjA==
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/object.entries/-/object.entries-1.1.5.tgz#e1acdd17c4de2cd96d5a08487cfb9db84d881861"
+  integrity sha512-TyxmjUoZggd4OrrU1W66FMDG6CuqJxsFvymeyXI51+vQLN67zYfZseptRge703kKQdo4uccgAKebXFcRCzk4+g==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.3"
-    es-abstract "^1.18.2"
+    es-abstract "^1.19.1"
 
 object.fromentries@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/object.fromentries/-/object.fromentries-2.0.4.tgz#26e1ba5c4571c5c6f0890cef4473066456a120b8"
-  integrity sha512-EsFBshs5RUUpQEY1D4q/m59kMfz4YJvxuNCJcv/jWwOJr34EaVnG11ZrZa0UHB3wnzV1wx8m58T4hQL8IuNXlQ==
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/object.fromentries/-/object.fromentries-2.0.5.tgz#7b37b205109c21e741e605727fe8b0ad5fa08251"
+  integrity sha512-CAyG5mWQRRiBU57Re4FKoTBjXfDoNwdFVH2Y1tS9PqCsfUTymAohOkEMSG3aRNKmv4lV3O7p1et7c187q6bynw==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.3"
-    es-abstract "^1.18.0-next.2"
-    has "^1.0.3"
+    es-abstract "^1.19.1"
 
 object.hasown@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/object.hasown/-/object.hasown-1.0.0.tgz#bdbade33cfacfb25d7f26ae2b6cb870bf99905c2"
-  integrity sha512-qYMF2CLIjxxLGleeM0jrcB4kiv3loGVAjKQKvH8pSU/i2VcRRvUNmxbD+nEMmrXRfORhuVJuH8OtSYCZoue3zA==
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/object.hasown/-/object.hasown-1.1.0.tgz#7232ed266f34d197d15cac5880232f7a4790afe5"
+  integrity sha512-MhjYRfj3GBlhSkDHo6QmvgjRLXQ2zndabdf3nX0yTyZK9rPfxb6uRpAac8HXNLy1GpqWtZ81Qh4v3uOls2sRAg==
   dependencies:
     define-properties "^1.1.3"
-    es-abstract "^1.18.1"
+    es-abstract "^1.19.1"
 
 object.values@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/object.values/-/object.values-1.1.4.tgz#0d273762833e816b693a637d30073e7051535b30"
-  integrity sha512-TnGo7j4XSnKQoK3MfvkzqKCi0nVe/D9I9IjwTNYdb/fxYHpjrluHVOgw0AF6jrRFGMPHdfuidR09tIDiIvnaSg==
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/object.values/-/object.values-1.1.5.tgz#959f63e3ce9ef108720333082131e4a459b716ac"
+  integrity sha512-QUZRW0ilQ3PnPpbNtgdNV1PDbEqLIiSFB3l+EnGtBQ/8SUTLj1PZwtQHABZtLgwpJZTSZhuGLOGk57Drx2IvYg==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.3"
-    es-abstract "^1.18.2"
+    es-abstract "^1.19.1"
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
@@ -8250,10 +8249,10 @@ webpack-sources@^3.2.0:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.1.tgz#251a7d9720d75ada1469ca07dbb62f3641a05b6d"
   integrity sha512-t6BMVLQ0AkjBOoRTZgqrWm7xbXMBzD+XDq2EZ96+vMfn3qKgsvdXZhbPZ4ElUOpdv4u+iiGe+w3+J75iy/bYGA==
 
-webpack@^5.56.0:
-  version "5.56.0"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-5.56.0.tgz#91a04de09c85765002818678538c319b6e461324"
-  integrity sha512-pJ7esw2AGkpZL0jqsEAKnDEfRZdrc9NVjAWA+d1mFkwj68ng9VQ6+Wnrl+kS5dlDHvrat5ASK5vd7wp6I7f53Q==
+webpack@^5.56.1:
+  version "5.56.1"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-5.56.1.tgz#e39d1d1f1acdb6f07e346f74b7dcfe323da4ded9"
+  integrity sha512-MRbTPooHJuSAfbx7Lh/qEMRUe/d0p4cRj2GPo/fq+4JUeR/+Q1EfLvS1lexslbMcJZyPXxxz/k/NzVepkA5upA==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
