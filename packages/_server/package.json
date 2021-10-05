@@ -49,7 +49,7 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.1",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.56.0",
+    "webpack": "^5.56.1",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
