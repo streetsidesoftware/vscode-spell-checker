@@ -71,12 +71,6 @@ describe('Launch code spell extension', function () {
             log(chalk.yellow('Verifies that the right config was found'));
             const ext = isDefined(await activateExtension());
             const uri = docUri;
-            const folders = vscode.workspace.workspaceFolders;
-            log(
-                `Workspace Folders: %O
-            `,
-                folders
-            );
             const docContextMaybe = await loadDocument(uri);
             expect(docContextMaybe).to.not.be.undefined;
             const docContext = isDefined(docContextMaybe);
