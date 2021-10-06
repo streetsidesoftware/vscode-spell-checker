@@ -17,6 +17,8 @@ export function run(): Promise<void> {
                 return e(err);
             }
 
+            console.log('files: %o', files);
+
             // Add files to the test suite
             files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
 

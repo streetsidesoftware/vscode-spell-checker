@@ -3,13 +3,13 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import { getDocUri, activateExtension, loadDocument, sleep, log, chalk, sampleWorkspaceUri } from './helper';
 import { expect } from 'chai';
-import { ExtensionApi } from './ExtensionApi';
-import * as vscode from 'vscode';
-import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
 import { stream, Stream } from 'kefir';
+import * as vscode from 'vscode';
 import { CSpellClient } from '../../client/dist/client';
+import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
+import { ExtensionApi } from './ExtensionApi';
+import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';
 
 type Api = {
     [K in keyof ExtensionApi]: K;
@@ -44,9 +44,10 @@ describe('Launch code spell extension', function () {
         });
     });
 
-    this.afterAll(() => {
+    this.afterEach(async () => {
         disposables.forEach((d) => d.dispose());
         disposables.length = 0;
+        await sleep(1000);
     });
 
     it('Verify the extension starts', async () => {
@@ -104,6 +105,8 @@ describe('Launch code spell extension', function () {
         if (!diags.length) {
             log('all diags: %o', vscode.languages.getDiagnostics());
         }
+
+        await sleep(10 * 1000);
 
         log('found %o', found);
         expect(found).to.not.be.undefined;
