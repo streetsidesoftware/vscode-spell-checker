@@ -7796,7 +7796,7 @@ ts-jest@^27.0.5:
 
 ts-json-schema-generator@^0.96.0:
   version "0.96.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.96.0.tgz#b15147ed1b43eee47e4eed7d95c90a3f456b8128"
+  resolved "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-0.96.0.tgz#b15147ed1b43eee47e4eed7d95c90a3f456b8128"
   integrity sha512-41w/r/2xFeVh8HWHLgGlh0877aOkLERJ5LIzk2y+MXxqL84JF44e6OLKkgIF60m3s9/FlzDA5mUfmxYP6E82yQ==
   dependencies:
     "@types/json-schema" "^7.0.9"
