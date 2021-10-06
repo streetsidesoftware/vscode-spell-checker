@@ -3,6 +3,8 @@ logs
 *.log
 npm-debug.log*
 
+.cspellcache
+
 # Runtime data
 pids
 *.pid
@@ -34,12 +36,12 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-**/.vscode-test
+.vscode-test
 
 /temp
-packages/*/dist
-packages/*/out
-packages/*/temp
+packages/*/dist/
+packages/*/out/
+packages/*/temp/
 
 !**/server/.vscode
 !**/client/.vscode
