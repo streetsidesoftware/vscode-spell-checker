@@ -66,6 +66,7 @@ export interface IsSpellCheckEnabledResult {
     fileIsExcluded: boolean;
     fileIsInWorkspace: boolean;
     excludedBy?: ExcludeRef[] | undefined;
+    gitignored: boolean | undefined;
 }
 
 export interface ConfigFile {

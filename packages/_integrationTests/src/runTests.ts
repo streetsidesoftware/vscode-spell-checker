@@ -12,7 +12,7 @@ async function main() {
         // Passed to --extensionTestsPath
         const extensionTestsPath = path.resolve(__dirname, './index');
 
-        const launchArgs: string[] = ['--disable-extensions'];
+        const launchArgs: string[] = ['--disable-extensions', __filename];
 
         // Download VS Code, unzip it and run the integration test
         await runTests({ extensionDevelopmentPath, extensionTestsPath, launchArgs });

@@ -140,7 +140,7 @@ function extractFileConfig(
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
-    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, excludedBy } = docConfig;
+    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, gitignored, excludedBy } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
@@ -158,6 +158,7 @@ function extractFileConfig(
         fileIsIncluded,
         fileIsInWorkspace: !!folder,
         excludedBy: mapExcludedBy(excludedBy),
+        gitignored,
     };
     return cfg;
 }

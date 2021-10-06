@@ -249,6 +249,7 @@ function calcFileConfig() {
         languageEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
+        gitignored: undefined,
     };
 
     appState.updateConfigsFile(useConfig);

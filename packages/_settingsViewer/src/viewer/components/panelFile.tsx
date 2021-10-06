@@ -114,23 +114,22 @@ function isDefined<T>(t: T | undefined): t is T {
 function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragment | undefined {
     if (!config) return undefined;
 
-    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled } = config;
+    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignored } = config;
 
     const excludedBy = config.excludedBy
         ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
         .filter(isDefined);
 
-    const msg = fileIsInWorkspace
-        ? fileIsIncluded
-            ? fileIsExcluded
-                ? 'File is excluded.'
-                : undefined
-            : 'File in NOT in `files` to be checked.'
-        : fileIsExcluded
-        ? 'File is NOT in the workspace and excluded.'
-        : fileEnabled
-        ? 'File is NOT in the workspace.'
-        : 'File is NOT spell checked because it is not in the workspace.';
+    const messages = [
+        ['File is excluded by .gitignore', gitignored],
+        ['File is excluded', fileIsInWorkspace && fileIsIncluded && fileIsExcluded],
+        ['File in NOT in `files` to be checked.', fileIsInWorkspace && !fileIsIncluded],
+        ['File is NOT in the workspace and excluded.', !fileIsInWorkspace && fileIsExcluded],
+        ['File is NOT in the workspace.', !fileIsInWorkspace && !fileIsExcluded && fileEnabled],
+        ['File is NOT spell checked because it is not in the workspace.', !fileIsInWorkspace && !fileIsExcluded && !fileEnabled],
+    ] as const;
+
+    const msg = messages.filter(([_, m]) => m).map(([m]) => m)[0] || undefined;
     return msg ? (
         <div>
             {msg}

@@ -352,8 +352,12 @@ export function run(): void {
         const settings = await getActiveUriSettings(uri);
         const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
 
-        const { include: fileIsIncluded = true, exclude: fileIsExcluded = false } = uri ? await calcFileIncludeExclude(uri) : {};
-        const fileEnabled = fileIsIncluded && !fileIsExcluded;
+        const {
+            include: fileIsIncluded = true,
+            exclude: fileIsExcluded = false,
+            ignored: gitignored = undefined,
+        } = uri ? await calcFileIncludeExclude(uri) : {};
+        const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
         return {
             excludedBy,
@@ -361,12 +365,13 @@ export function run(): void {
             fileIsExcluded,
             fileIsIncluded,
             languageEnabled,
+            gitignored,
         };
     }
 
-    async function isUriExcluded(uri: string) {
+    async function isUriExcluded(uri: string): Promise<boolean> {
         const ie = await calcFileIncludeExclude(uri);
-        return !ie.include || ie.exclude;
+        return !ie.include || ie.exclude || !!ie.ignored;
     }
 
     function calcFileIncludeExclude(uri: string) {

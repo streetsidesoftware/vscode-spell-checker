@@ -33,6 +33,7 @@ import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';
 import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
+import { GitIgnore } from 'cspell-gitignore';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell extends VSCodeSettingsCspell {}
@@ -88,6 +89,7 @@ export class DocumentSettings {
     readonly configsToImport = new Set<string>();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
     private _version = 0;
+    private gitIgnore = new GitIgnore();
 
     constructor(readonly connection: Connection, readonly defaultSettings: CSpellUserSettings = _defaultSettings) {}
 
@@ -100,14 +102,41 @@ export class DocumentSettings {
         return this.fetchUriSettings(uri || '');
     }
 
-    async calcIncludeExclude(uri: Uri): Promise<{ include: boolean; exclude: boolean }> {
+    async calcIncludeExclude(uri: Uri): Promise<{ include: boolean; exclude: boolean; ignored: boolean | undefined }> {
         const settings = await this.fetchSettingsForUri(uri.toString());
-        return calcIncludeExclude(settings, uri);
+        const ie = calcIncludeExclude(settings, uri);
+        return {
+            ...ie,
+            ignored: await this._isGitIgnored(settings, uri),
+        };
     }
 
     async isExcluded(uri: string): Promise<boolean> {
         const settings = await this.fetchSettingsForUri(uri);
-        return settings.excludeGlobMatcher.match(Uri.parse(uri).fsPath);
+        return isExcluded(settings, Uri.parse(uri));
+    }
+
+    /**
+     * If `useGitIgnore` is true, checks to see if a uri matches a `.gitignore` file glob.
+     * @param uri - file uri
+     * @returns `useGitignore` && the file matches a `.gitignore` file glob.
+     */
+    async isGitIgnored(uri: Uri): Promise<boolean | undefined> {
+        const extSettings = await this.fetchUriSettingsEx(uri.toString());
+        return this._isGitIgnored(extSettings, uri);
+    }
+
+    /**
+     * If `useGitIgnore` is true, checks to see if a uri matches a `.gitignore` file glob.
+     * @param uri - file uri
+     * @returns
+     *   - `undefined` if `useGitignore` is falsy. -- meaning we do not know.
+     *   - `true` if it is ignored
+     *   - `false` otherwise
+     */
+    private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
+        if (!extSettings.settings.useGitignore) return undefined;
+        return await this.gitIgnore.isIgnored(uri.fsPath);
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
@@ -120,6 +149,7 @@ export class DocumentSettings {
         clearCachedFiles();
         this.cachedValues.forEach((cache) => cache.clear());
         this._version += 1;
+        this.gitIgnore = new GitIgnore();
     }
 
     get folders(): Promise<WorkspaceFolder[]> {

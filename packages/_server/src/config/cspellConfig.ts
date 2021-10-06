@@ -689,7 +689,6 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'pnpFiles'
     | 'readonly'
     | 'reporters'
-    | 'useGitignore' // Hide until implemented
     | 'version';
 
 export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson>;

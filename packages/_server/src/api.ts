@@ -133,6 +133,7 @@ export interface IsSpellCheckEnabledResult {
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;
     excludedBy: ExcludeRef[] | undefined;
+    gitignored: boolean | undefined;
 }
 
 export interface SplitTextIntoWordsResult {

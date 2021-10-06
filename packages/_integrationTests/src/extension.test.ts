@@ -3,13 +3,13 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import { getDocUri, activateExtension, loadDocument, sleep, log, chalk, sampleWorkspaceUri } from './helper';
 import { expect } from 'chai';
-import { ExtensionApi } from './ExtensionApi';
-import * as vscode from 'vscode';
-import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
 import { stream, Stream } from 'kefir';
+import * as vscode from 'vscode';
 import { CSpellClient } from '../../client/dist/client';
+import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
+import { ExtensionApi } from './ExtensionApi';
+import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';
 
 type Api = {
     [K in keyof ExtensionApi]: K;
@@ -44,9 +44,10 @@ describe('Launch code spell extension', function () {
         });
     });
 
-    this.afterAll(() => {
+    this.afterEach(async () => {
         disposables.forEach((d) => d.dispose());
         disposables.length = 0;
+        await sleep(1000);
     });
 
     it('Verify the extension starts', async () => {
@@ -88,24 +89,26 @@ describe('Launch code spell extension', function () {
 
     it('Verifies that some spelling errors were found', async () => {
         log(chalk.yellow('Verifies that some spelling errors were found'));
-        const ext = isDefined(await activateExtension());
-        const client = ext.extApi.cSpellClient();
         const uri = getDocUri('example.md');
         const docContextMaybe = await loadDocument(uri);
+        await sleep(500);
+        // Force a spell check by making an edit.
+        const r = vscode.window.activeTextEditor?.edit((edit) => edit.insert(new vscode.Position(0, 0), '#'));
         expect(docContextMaybe).to.not.be.undefined;
         const wait = waitForSpellComplete(uri, 5000);
-
-        // Force a spell check.
-        client.notifySettingsChanged();
+        await r;
 
         const found = await wait;
+        log('found %o', found);
+
         const diags = await getDiagsFromVsCode(uri, 2000);
 
         if (!diags.length) {
             log('all diags: %o', vscode.languages.getDiagnostics());
         }
 
-        log('found %o', found);
+        // await sleep(5 * 1000);
+
         expect(found).to.not.be.undefined;
 
         const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');

@@ -54,6 +54,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
     function formatFileReason(response: ServerResponseIsSpellCheckEnabledForFile): string {
         if (response.fileEnabled) return '';
+        if (response.gitignored) return 'The file is excluded by .gitignore.';
         if (!response.excludedBy?.length) {
             return 'The file path is excluded in settings.';
         }
