@@ -599,8 +599,18 @@
                 "type": "string"
               },
               "pattern": {
-                "description": "RegExp pattern or array of RegExp patterns",
-                "type": "string"
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ],
+                "description": "RegExp pattern or array of RegExp patterns"
               }
             },
             "required": [
@@ -2420,10 +2430,10 @@
     "vsce": "^1.100.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.11.1",
-    "@cspell/cspell-types": "^5.11.1",
+    "@cspell/cspell-bundled-dicts": "^5.12.1",
+    "@cspell/cspell-types": "^5.12.1",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.11.1",
+    "cspell": "^5.12.1",
     "regexp-worker": "^1.1.1"
   }
 }

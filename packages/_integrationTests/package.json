@@ -23,11 +23,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cspell/cspell-types": "^5.11.1",
+    "@cspell/cspell-types": "^5.12.1",
     "@types/chai": "^4.2.22",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^16.10.2",
+    "@types/node": "^16.10.3",
     "@types/vscode": "^1.60.0",
     "@vscode/test-electron": "^1.6.2",
     "chai": "^4.3.4",
