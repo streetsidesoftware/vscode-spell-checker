@@ -49,6 +49,7 @@
 | [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                           | resource             | The type of menu used to display spelling suggestions.                                                   |
 | [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                       | resource             | The maximum number of changes allowed on a word to be considered a suggestions.                          |
 | [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                           | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.                           |
+| [`cSpell.useGitignore`](#cspellusegitignore)                                                       | window               | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…           |
 | [`cSpell.usePnP`](#cspellusepnp)                                                                   | resource             | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
 | [`cSpell.userWords`](#cspelluserwords)                                                             | resource             | Words to add to global dictionary -- should only be in the user config file.                             |
 | [`cSpell.words`](#cspellwords)                                                                     | resource             | list of words to be always considered correct                                                            |
@@ -1028,6 +1029,25 @@ Description
 
 Default
 : _`400`_
+
+---
+
+### `cSpell.useGitignore`
+
+Name
+: `cSpell.useGitignore`
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.
+
+Default
+: _`true`_
 
 ---
 

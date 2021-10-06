@@ -1,4 +1,5 @@
 {
+    "$schema": "./node_modules/@cspell/cspell-types/cspell.schema.json",
     "version": "0.2",
     "language": "en-US",
     "flagWords": ["hte"],
@@ -10,13 +11,11 @@
         "*.vsix",
         "**/__snapshots__/**",
         "**/server.js",
-        "**/server/**/*.js",
         "coverage",
         "cSpell.json",
         "docs/_site/**",
         "fixtures/workspaces/**",
         "languageCodes.ts",
-        "node_modules",
         "npm-shrinkwrap.json",
         "package-lock.json",
         "packages/_server/sampleSourceFiles/**",
@@ -26,7 +25,6 @@
         "packages/client/server/**",
         "packages/client/settingsViewer/**",
         "samples",
-        "temp",
         "testFixtures"
     ],
     "ignoreWords": [],
@@ -38,7 +36,7 @@
         {
             "name": "cspell-words",
             "addWords": true,
-            "scope": ["folder", "workspace"],
+            "scope": ["workspace"],
             "path": "./cspell-words.txt"
         }
     ],
@@ -48,5 +46,6 @@
             "languageId": "*",
             "allowCompoundWords": false
         }
-    ]
+    ],
+    "useGitignore": true
 }

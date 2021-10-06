@@ -2376,6 +2376,12 @@
           "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
           "type": "number",
           "scope": "resource"
+        },
+        "cSpell.useGitignore": {
+          "default": true,
+          "description": "Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.",
+          "scope": "window",
+          "type": "boolean"
         }
       }
     }
