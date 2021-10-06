@@ -420,6 +420,17 @@
                 },
                 "type": "array"
               },
+              "type": {
+                "default": "S",
+                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                "enum": [
+                  "S",
+                  "W",
+                  "C",
+                  "T"
+                ],
+                "type": "string"
+              },
               "useCompounds": {
                 "description": "Use Compounds",
                 "type": "boolean"
@@ -495,6 +506,17 @@
                 ],
                 "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
               },
+              "type": {
+                "default": "S",
+                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                "enum": [
+                  "S",
+                  "W",
+                  "C",
+                  "T"
+                ],
+                "type": "string"
+              },
               "useCompounds": {
                 "description": "Use Compounds",
                 "type": "boolean"
@@ -542,6 +564,17 @@
                   "type": "array"
                 },
                 "type": "array"
+              },
+              "type": {
+                "default": "S",
+                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                "enum": [
+                  "S",
+                  "W",
+                  "C",
+                  "T"
+                ],
+                "type": "string"
               },
               "useCompounds": {
                 "description": "Use Compounds",
@@ -782,6 +815,17 @@
                       },
                       "type": "array"
                     },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
+                    },
                     "useCompounds": {
                       "description": "Use Compounds",
                       "type": "boolean"
@@ -857,6 +901,17 @@
                       ],
                       "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
                     },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
+                    },
                     "useCompounds": {
                       "description": "Use Compounds",
                       "type": "boolean"
@@ -904,6 +959,17 @@
                         "type": "array"
                       },
                       "type": "array"
+                    },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
                     },
                     "useCompounds": {
                       "description": "Use Compounds",
@@ -1194,6 +1260,17 @@
                       },
                       "type": "array"
                     },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
+                    },
                     "useCompounds": {
                       "description": "Use Compounds",
                       "type": "boolean"
@@ -1269,6 +1346,17 @@
                       ],
                       "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
                     },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
+                    },
                     "useCompounds": {
                       "description": "Use Compounds",
                       "type": "boolean"
@@ -1316,6 +1404,17 @@
                         "type": "array"
                       },
                       "type": "array"
+                    },
+                    "type": {
+                      "default": "S",
+                      "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                      "enum": [
+                        "S",
+                        "W",
+                        "C",
+                        "T"
+                      ],
+                      "type": "string"
                     },
                     "useCompounds": {
                       "description": "Use Compounds",
@@ -1480,6 +1579,17 @@
                             },
                             "type": "array"
                           },
+                          "type": {
+                            "default": "S",
+                            "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                            "enum": [
+                              "S",
+                              "W",
+                              "C",
+                              "T"
+                            ],
+                            "type": "string"
+                          },
                           "useCompounds": {
                             "description": "Use Compounds",
                             "type": "boolean"
@@ -1555,6 +1665,17 @@
                             ],
                             "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
                           },
+                          "type": {
+                            "default": "S",
+                            "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                            "enum": [
+                              "S",
+                              "W",
+                              "C",
+                              "T"
+                            ],
+                            "type": "string"
+                          },
                           "useCompounds": {
                             "description": "Use Compounds",
                             "type": "boolean"
@@ -1602,6 +1723,17 @@
                               "type": "array"
                             },
                             "type": "array"
+                          },
+                          "type": {
+                            "default": "S",
+                            "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                            "enum": [
+                              "S",
+                              "W",
+                              "C",
+                              "T"
+                            ],
+                            "type": "string"
                           },
                           "useCompounds": {
                             "description": "Use Compounds",
