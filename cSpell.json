@@ -5,6 +5,7 @@
     "flagWords": ["hte"],
     "ignorePaths": [
         ".git",
+        ".gitignore",
         ".vscodeignore",
         "*.lock",
         "*.log",
@@ -14,6 +15,7 @@
         "cSpell.json",
         "fixtures/workspaces/**",
         "languageCodes.ts",
+        "package-lock.json",
         "packages/_server/sampleSourceFiles/**",
         "packages/client/resources/**",
         "packages/client/samples/**",
