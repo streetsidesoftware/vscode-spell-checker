@@ -357,10 +357,10 @@
     "@cspell/dict-software-terms" "^1.0.45"
     "@cspell/dict-typescript" "^1.0.19"
 
-"@cspell/cspell-types@^5.11.1":
-  version "5.11.1"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-5.11.1.tgz#61e744782acb8f1fd21a44f0aa59de0572c6ccab"
-  integrity sha512-QSPqbrzbGOWDCibFirDQwheNyf0RIO4+GgYN5CQWis0y4ZY9GIBkQkxaqbgLQEu/lTRNyVhg+m/Y9yNv73t59A==
+"@cspell/cspell-types@^5.11.1", "@cspell/cspell-types@^5.12.1":
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-5.12.1.tgz#617064835b9c1f02a74d5d6e6ae5c2e7d146f4f5"
+  integrity sha512-cUQ+D1N8jFN4wwPAJ/hxERyur/ciz2Jf5Ix5Ek69RLYiSuPdsGyXV+HKWgNAszvegdcf7xL4a28RtSgfbWIxQA==
 
 "@cspell/dict-ada@^1.1.2":
   version "1.1.2"
