@@ -36,14 +36,11 @@ function runTests(executablePath) {
         '--extensionTestsPath=' + testsFolder,
         '--locale=' + locale,
         '--log=debug',
+        '--disable-extensions',
     ];
 
     if (userDataDir) {
         args.push('--user-data-dir=' + userDataDir);
-    }
-
-    if (process.env.CODE_DISABLE_EXTENSIONS) {
-        args.push('--disable-extensions');
     }
 
     console.log('Running extension tests: ' + [executablePath, args.join(' ')].join(' '));
