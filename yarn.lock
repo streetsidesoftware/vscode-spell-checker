@@ -316,10 +316,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^5.11.1":
-  version "5.11.1"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.11.1.tgz#3cc1c81b446eb5efc25e60921edb30a23a4dd672"
-  integrity sha512-i/xbEfAP162BeZRftS+1l/BnOgoyBLauzGLp7c9MgBrB6hJf0fWjYndyLsKKXmHNRjPzqA8C6BHJRQh4ZSXi4g==
+"@cspell/cspell-bundled-dicts@^5.11.1", "@cspell/cspell-bundled-dicts@^5.12.1":
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.12.1.tgz#9f71f686534c06cdbcdee123103f6c10becf191a"
+  integrity sha512-o5kxlRxaFZLdXeXXO1Yfu2ZM2MWN2WLjCkEOY6QaVoK30WF3mcQ7G9aKVDmGHO1Lp+3Hit1vWiveokRCTmc5+A==
   dependencies:
     "@cspell/dict-ada" "^1.1.2"
     "@cspell/dict-aws" "^1.0.14"
@@ -354,7 +354,7 @@
     "@cspell/dict-ruby" "^1.0.14"
     "@cspell/dict-rust" "^1.0.23"
     "@cspell/dict-scala" "^1.0.21"
-    "@cspell/dict-software-terms" "^1.0.45"
+    "@cspell/dict-software-terms" "^1.0.46"
     "@cspell/dict-typescript" "^1.0.19"
 
 "@cspell/cspell-types@^5.11.1":
@@ -527,7 +527,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-scala/-/dict-scala-1.0.21.tgz#bfda392329061e2352fbcd33d228617742c93831"
   integrity sha512-5V/R7PRbbminTpPS3ywgdAalI9BHzcEjEj9ug4kWYvBIGwSnS7T6QCFCiu+e9LvEGUqQC+NHgLY4zs1NaBj2vA==
 
-"@cspell/dict-software-terms@^1.0.45":
+"@cspell/dict-software-terms@^1.0.46":
   version "1.0.46"
   resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-1.0.46.tgz#edbb4d0585252e1f3deb14ffdacc9d12917118c5"
   integrity sha512-W4Lf0AmWo7V/tS0kXKsTUW/edfYOQ7QTVisuuQM7bnttrykhlNuNrmcSSYNg5xn46H6MlaZvk3+oz4tHH30nbg==
