@@ -136,9 +136,7 @@ export class DocumentSettings {
      */
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!extSettings.settings.useGitignore) return undefined;
-        const isIgnored = await this.gitIgnore.isIgnored(uri.fsPath);
-        console.log('isIgnored: %o', isIgnored);
-        return isIgnored;
+        return await this.gitIgnore.isIgnored(uri.fsPath);
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {

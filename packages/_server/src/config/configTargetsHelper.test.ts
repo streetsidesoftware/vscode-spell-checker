@@ -148,12 +148,6 @@ describe('Validate configTargetsHelper', () => {
             oc<ConfigTargetDictionary>({
                 kind: 'dictionary',
                 name: 'cspell-words',
-                scope: 'folder',
-                dictionaryUri: expect.stringContaining('cspell-words.txt'),
-            }),
-            oc<ConfigTargetDictionary>({
-                kind: 'dictionary',
-                name: 'cspell-words',
                 scope: 'workspace',
                 dictionaryUri: expect.stringContaining('cspell-words.txt'),
             }),
@@ -179,12 +173,6 @@ describe('Validate configTargetsHelper', () => {
         const cfg = mustBeDefined(await searchForConfig(__dirname));
         const r = calculateConfigTargets(cfg, wConfig);
         expect(r).toEqual([
-            oc<ConfigTargetDictionary>({
-                kind: 'dictionary',
-                name: 'cspell-words',
-                scope: 'folder',
-                dictionaryUri: expect.stringContaining('cspell-words.txt'),
-            }),
             oc<ConfigTargetDictionary>({
                 kind: 'dictionary',
                 name: 'cspell-words',

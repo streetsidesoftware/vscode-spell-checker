@@ -270,7 +270,6 @@ describe('Validate DocumentSettings', () => {
     test.each`
         filename                               | expected
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
-        ${sampleFiles.sampleNodePackage}       | ${[ex('cSpell.json', 'node_modules', pathWorkspaceRoot)]}
         ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}      | ${[]}
@@ -286,6 +285,24 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
+        expect(result).toEqual(expected);
+    });
+
+    test.each`
+        filename                                   | expected
+        ${sampleFiles.sampleNodePackage}           | ${true}
+        ${Path.join(__dirname, 'temp/my_file.js')} | ${true}
+        ${sampleFiles.sampleClientEsLint}          | ${false}
+        ${sampleFiles.sampleServerPackageLock}     | ${false}
+    `('isGitIgnored $filename', async ({ filename, expected }: IsExcludeByTest) => {
+        const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
+        mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
+        const docSettings = newDocumentSettings();
+        docSettings.registerConfigurationFile(Path.join(pathWorkspaceRoot, 'cSpell.json'));
+
+        const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename));
+        const result = await docSettings.isGitIgnored(uri);
         expect(result).toEqual(expected);
     });
 
