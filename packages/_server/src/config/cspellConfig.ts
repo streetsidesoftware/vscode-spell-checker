@@ -1,16 +1,6 @@
 // Export the cspell settings to the client.
 
-import type {
-    CSpellSettings,
-    CustomDictionaryScope,
-    DictionaryId,
-    FsPath,
-    GlobDef,
-    Pattern,
-    PatternId,
-    RegExpPatternDefinition,
-    SimpleGlob,
-} from '@cspell/cspell-types';
+import type { CSpellSettings, CustomDictionaryScope, DictionaryId, FsPath, GlobDef, SimpleGlob } from '@cspell/cspell-types';
 export type {
     CustomDictionaryScope,
     DictionaryDefinition,
@@ -575,7 +565,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
      * @scope resource
      */
-    patterns?: RegExpPatternDefinitionX[];
+    patterns?: CSpellSettings['patterns'];
 
     /**
      * @scope resource
@@ -638,6 +628,19 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     noConfigSearch?: CSpellSettings['noConfigSearch'];
 
     /**
+     * @scope window
+     * @default true
+     */
+    useGitignore?: CSpellSettings['useGitignore'];
+
+    /**
+     * Hide this for now.
+     * Need to resolve the roots and support substitution of workspace paths.
+     * @hidden
+     */
+    gitignoreRoot?: CSpellSettings['gitignoreRoot'];
+
+    /**
      * @hidden
      */
     pnpFiles?: CSpellSettings['pnpFiles'];
@@ -663,27 +666,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
  */
 type GlobDefX = GlobDef;
 
-/**
- * @hidden
- */
-type HiddenPatterns = Pattern[];
-
-interface RegExpPatternDefinitionX extends RegExpPatternDefinition {
-    /**
-     * Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.
-     * It is possible to redefine one of the predefined patterns to override its value.
-     */
-    name: PatternId;
-    /**
-     * RegExp pattern or array of RegExp patterns
-     */
-    pattern: Pattern | HiddenPatterns;
-    /**
-     * Description of the pattern.
-     */
-    description?: string;
-}
-
 export interface CustomDictionaryWithScope extends CustomDictionary {}
 
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties {}
@@ -700,13 +682,15 @@ type Prefix<T, P extends string> = {
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
     | 'description'
+    | 'gitignoreRoot' // Hide until implemented
     | 'id'
-    | 'name'
-    | 'version'
     | 'languageId'
+    | 'name'
     | 'pnpFiles'
     | 'readonly'
-    | 'reporters';
+    | 'reporters'
+    | 'useGitignore' // Hide until implemented
+    | 'version';
 
 export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson>;
 

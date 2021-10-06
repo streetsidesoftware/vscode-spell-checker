@@ -1893,8 +1893,18 @@
             "type": "string"
           },
           "pattern": {
-            "description": "RegExp pattern or array of RegExp patterns",
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "description": "RegExp pattern or array of RegExp patterns"
           }
         },
         "required": [

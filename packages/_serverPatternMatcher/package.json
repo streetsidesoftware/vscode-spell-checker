@@ -24,9 +24,9 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.11.1",
+    "@cspell/cspell-types": "^5.12.1",
     "@types/jest": "^27.0.2",
-    "@types/node": "^16.10.2",
+    "@types/node": "^16.10.3",
     "common-utils": "1.0.0",
     "jest": "^27.2.4",
     "ts-jest": "^27.0.5",
@@ -35,7 +35,7 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.1",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.56.1",
+    "webpack": "^5.57.1",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
