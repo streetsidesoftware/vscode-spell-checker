@@ -92,8 +92,8 @@ describe('Launch code spell extension', function () {
         const uri = getDocUri('example.md');
         const docContextMaybe = await loadDocument(uri);
         await sleep(500);
-        // Force a spell check.
-        const r = vscode.window.activeTextEditor?.edit(edit => edit.insert(new vscode.Position(0, 0), '#'));
+        // Force a spell check by making an edit.
+        const r = vscode.window.activeTextEditor?.edit((edit) => edit.insert(new vscode.Position(0, 0), '#'));
         expect(docContextMaybe).to.not.be.undefined;
         const wait = waitForSpellComplete(uri, 5000);
         await r;
@@ -107,7 +107,7 @@ describe('Launch code spell extension', function () {
             log('all diags: %o', vscode.languages.getDiagnostics());
         }
 
-        await sleep(5 * 1000);
+        // await sleep(5 * 1000);
 
         expect(found).to.not.be.undefined;
 
