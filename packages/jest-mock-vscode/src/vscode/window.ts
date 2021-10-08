@@ -42,6 +42,7 @@ export const window: Window = {
     onDidChangeActiveColorTheme: jest.fn(),
     onDidChangeActiveTerminal: jest.fn(),
     onDidChangeActiveTextEditor: jest.fn(),
+    onDidChangeTerminalState: jest.fn(),
     onDidChangeTextEditorOptions: jest.fn(),
     onDidChangeTextEditorSelection: jest.fn(),
     onDidChangeTextEditorViewColumn: jest.fn(),

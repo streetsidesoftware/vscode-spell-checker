@@ -43,6 +43,7 @@ export const languages: Languages = {
     registerSelectionRangeProvider: jest.fn(),
     registerSignatureHelpProvider: jest.fn(),
     registerTypeDefinitionProvider: jest.fn(),
+    registerTypeHierarchyProvider: jest.fn(),
     registerWorkspaceSymbolProvider: jest.fn(),
     setLanguageConfiguration: jest.fn(),
     setTextDocumentLanguage: jest.fn(),
