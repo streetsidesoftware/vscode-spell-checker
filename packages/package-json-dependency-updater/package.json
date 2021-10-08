@@ -1,6 +1,6 @@
 {
   "name": "package-json-dependency-updater",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Update package.json dependencies to match lock files.",
   "main": "index.js",
   "repository": "https://github.com/streetsidesoftware/vscode-spell-checker",
