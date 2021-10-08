@@ -6,7 +6,6 @@
   "repository": "https://github.com/streetsidesoftware/vscode-spell-checker",
   "author": "Jason Dent",
   "license": "MIT",
-  "private": true,
   "type": "module",
   "bin": {
     "package-json-dependency-updater": "./bin.js"
