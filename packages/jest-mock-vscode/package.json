@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "author": "Jason Dent",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "test": "jest",
     "lint": "echo Lint",
