@@ -41,6 +41,7 @@ import { createProgressNotifier } from './progressNotifier';
 import { textToWords } from './utils';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis';
 import * as Validator from './validator';
+import { debounce as simpleDebounce } from './utils/debounce';
 
 log('Starting Spell Checker Server');
 
@@ -164,7 +165,14 @@ export function run(): void {
     }
 
     function getActiveUriSettings(uri?: string) {
+        return _getActiveUriSettings(uri);
+    }
+
+    const _getActiveUriSettings = simpleDebounce(__getActiveUriSettings, 50);
+
+    function __getActiveUriSettings(uri?: string) {
         // Give the dictionaries a chance to refresh if they need to.
+        log('getActiveUriSettings', uri);
         refreshDictionaryCache(dictionaryRefreshRateMs);
         return documentSettings.getUriSettings(uri || '');
     }
@@ -194,20 +202,42 @@ export function run(): void {
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
     disposables.push(configWatcher.listen(onConfigFileChange));
 
-    function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
-        return calcIncludeExcludeInfo(params);
+    async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
+        return _handleIsSpellCheckEnabled(params);
+    }
+
+    const _handleIsSpellCheckEnabled = simpleDebounce(
+        __handleIsSpellCheckEnabled,
+        50,
+        ({ uri, languageId }) => `(${uri})::(${languageId})`
+    );
+
+    async function __handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
+        log('handleIsSpellCheckEnabled', params.uri);
+        const activeSettings = await getActiveUriSettings(params.uri);
+        return calcIncludeExcludeInfo(activeSettings, params);
     }
 
     async function handleGetConfigurationForDocument(
         params: Api.GetConfigurationForDocumentRequest
     ): Promise<Api.GetConfigurationForDocumentResult> {
+        return _handleGetConfigurationForDocument(params);
+    }
+
+    const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 50, (params) => JSON.stringify(params));
+
+    async function __handleGetConfigurationForDocument(
+        params: Api.GetConfigurationForDocumentRequest
+    ): Promise<Api.GetConfigurationForDocumentResult> {
+        log('handleGetConfigurationForDocument', params.uri);
         const { uri, workspaceConfig } = params;
         const doc = uri && documents.get(uri);
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
-        const settings = stringifyPatterns(await getActiveUriSettings(uri));
+        const activeSettings = await getActiveUriSettings(uri);
+        const settings = stringifyPatterns(activeSettings);
         const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
         const configTargets = workspaceConfig ? calculateConfigTargets(settings, workspaceConfig) : [];
-        const ieInfo = await calcIncludeExcludeInfo(params);
+        const ieInfo = await calcIncludeExcludeInfo(activeSettings, params);
 
         return {
             configFiles,
@@ -347,9 +377,12 @@ export function run(): void {
         return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
     }
 
-    async function calcIncludeExcludeInfo(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
+    async function calcIncludeExcludeInfo(
+        settings: Api.CSpellUserSettings,
+        params: TextDocumentInfo
+    ): Promise<Api.IsSpellCheckEnabledResult> {
+        log('calcIncludeExcludeInfo', params.uri);
         const { uri, languageId } = params;
-        const settings = await getActiveUriSettings(uri);
         const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
 
         const {

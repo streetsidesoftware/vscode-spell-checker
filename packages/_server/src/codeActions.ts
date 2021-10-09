@@ -29,6 +29,8 @@ function extractText(textDocument: TextDocument, range: LangServerRange) {
     return textDocument.getText(range);
 }
 
+const debugTargets = false;
+
 export function onCodeActionHandler(
     documents: TextDocuments<TextDocument>,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
@@ -118,7 +120,7 @@ export function onCodeActionHandler(
             if (word && spellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
                 const targets = calculateConfigTargets(docSetting, wConfig);
-                logDebug(format('Config Targets %o', targets));
+                debugTargets && logTargets(targets);
 
                 actions.push(...generateTargetActions(textDocument, spellCheckerDiags, word, targets));
             }
@@ -129,6 +131,10 @@ export function onCodeActionHandler(
     };
 
     return handler;
+}
+
+function logTargets(targets: ConfigTarget[]): void {
+    logDebug(format('Config Targets %o', targets));
 }
 
 function createAction(cmd: LangServerCommand, diags: Diagnostic[] | undefined): CodeAction {
