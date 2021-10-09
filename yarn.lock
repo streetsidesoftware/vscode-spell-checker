@@ -5199,6 +5199,11 @@ jest-message-util@^27.2.5:
     slash "^3.0.0"
     stack-utils "^2.0.3"
 
+jest-mock-vscode@0.1.0:
+  version "0.1.1"
+  dependencies:
+    vscode-uri "^3.0.2"
+
 jest-mock@^27.2.5:
   version "27.2.5"
   resolved "https://registry.npmjs.org/jest-mock/-/jest-mock-27.2.5.tgz#0ec38d5ff1e49c4802e7a4a8179e8d7a2fd84de0"
