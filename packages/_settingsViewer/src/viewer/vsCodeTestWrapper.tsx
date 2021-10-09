@@ -31,7 +31,13 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
     currentSample: number = 0;
-    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded, sampleSettingsExcludedNotInWorkspace, sampleSettingsGitignore];
+    sampleSettings: Settings[] = [
+        sampleSettings,
+        sampleSettingsSingleFolder,
+        sampleSettingsExcluded,
+        sampleSettingsExcludedNotInWorkspace,
+        sampleSettingsGitignore,
+    ];
     _settings: Settings = this.sampleSettings[this.currentSample];
     _activeTab: string = 'About';
 

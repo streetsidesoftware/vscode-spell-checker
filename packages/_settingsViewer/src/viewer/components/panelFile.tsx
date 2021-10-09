@@ -117,9 +117,10 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
     const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignoreInfo } = config;
     const gitignored = !!gitignoreInfo?.matched;
 
-    const excludedBy = config.excludedBy
-        ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
-        .filter(isDefined) ?? [];
+    const excludedBy =
+        config.excludedBy
+            ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
+            .filter(isDefined) ?? [];
 
     const linkGitignore = formatGitignoreLink(gitignoreInfo);
 
@@ -133,12 +134,11 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
         ['File is NOT spell checked because it is not in the workspace.', !fileIsInWorkspace && !fileIsExcluded && !fileEnabled],
     ] as const;
 
-    const msg = messages.filter(([_, m]) => m).map(([m]) => m).filter(isDefined);
-    return msg ? (
-        <div>
-            {[...br(...msg, ...excludedBy)]}
-        </div>
-    ) : undefined;
+    const msg = messages
+        .filter(([_, m]) => m)
+        .map(([m]) => m)
+        .filter(isDefined);
+    return msg ? <div>{[...br(...msg, ...excludedBy)]}</div> : undefined;
 }
 
 function formatGitignoreLink(gitignore: FileConfig['gitignoreInfo']) {
@@ -146,7 +146,7 @@ function formatGitignoreLink(gitignore: FileConfig['gitignoreInfo']) {
 
     const { gitignoreFileUri: uri, gitignoreName: name, line } = gitignore;
 
-    return LinkOpenFile({ uri: uri, text: name, line })
+    return LinkOpenFile({ uri: uri, text: name, line });
 }
 
 function formatGitignoreMsg(gitignore: FileConfig['gitignoreInfo']) {
@@ -154,5 +154,9 @@ function formatGitignoreMsg(gitignore: FileConfig['gitignoreInfo']) {
 
     const { line, glob } = gitignore;
 
-    return (<span>File is exclude by <b>.gitignore</b>. Line: <b>{line}</b>, Glob: <b>{glob}</b></span>)
+    return (
+        <span>
+            File is exclude by <b>.gitignore</b>. Line: <b>{line}</b>, Glob: <b>{glob}</b>
+        </span>
+    );
 }
