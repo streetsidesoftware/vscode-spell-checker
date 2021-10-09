@@ -8,7 +8,7 @@ const baseDevConfig = {
     devtool: 'source-map',
     mode: 'development',
     devServer: {
-        contentBase: baseConfig.output.path,
+        static: baseConfig.output.path,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',

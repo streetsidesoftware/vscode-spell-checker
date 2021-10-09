@@ -140,11 +140,26 @@ function extractFileConfig(
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
-    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, gitignored, excludedBy } = docConfig;
+    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, gitignoreInfo, excludedBy } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
     const folder = vscode.workspace.getWorkspaceFolder(uri);
+
+    function extractGitignoreInfo(): FileConfig['gitignoreInfo'] {
+        if (!gitignoreInfo) return undefined;
+        const { glob, gitIgnoreFile, line, matched, root } = gitignoreInfo;
+        const uri = Uri.file(gitIgnoreFile);
+        return {
+            matched,
+            glob,
+            line,
+            root,
+            gitignoreFileUri: uri.toString(),
+            gitignoreName: uriToName(uri),
+        };
+    }
+
     const cfg: FileConfig = {
         uri: uri.toString(),
         fileName,
@@ -158,7 +173,7 @@ function extractFileConfig(
         fileIsIncluded,
         fileIsInWorkspace: !!folder,
         excludedBy: mapExcludedBy(excludedBy),
-        gitignored,
+        gitignoreInfo: extractGitignoreInfo(),
     };
     return cfg;
 }

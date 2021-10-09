@@ -5,6 +5,7 @@ import {
     Diagnostic,
     Disposable,
     FileType,
+    Position,
     QuickPickItem,
     QuickPickOptions,
     Range,
@@ -156,6 +157,8 @@ const commandHandlers: CommandHandler = {
     'cSpell.addIssuesToDictionary': addAllIssuesFromDocument,
     'cSpell.createCustomDictionary': createCustomDictionary,
     'cSpell.createCSpellConfig': createCSpellConfig,
+
+    'cSpell.openFileAtLine': openFileAtLine,
 };
 
 function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorResolver = ignoreError): Promise<void> {
@@ -597,4 +600,24 @@ async function actionJumpToSpellingError(which: 'next' | 'previous', suggest: bo
     if (suggest) {
         return actionSuggestSpellingCorrections();
     }
+}
+
+async function openFileAtLine(uri: string | Uri, line: number | undefined): Promise<void> {
+    uri = toUri(uri);
+
+    const options =
+        (line && {
+            selection: lineToRange(line),
+        }) ||
+        undefined;
+
+    await window.showTextDocument(uri, options);
+}
+
+function lineToRange(line: number | string | undefined) {
+    if (line === undefined) return undefined;
+    line = typeof line === 'string' ? Number.parseInt(line) : line;
+    const pos = new Position(line - 1, 0);
+    const range = new Range(pos, pos);
+    return range;
 }

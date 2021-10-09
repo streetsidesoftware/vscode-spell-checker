@@ -127,6 +127,14 @@ export interface ExcludeRef {
     configUri: string | undefined;
 }
 
+export interface GitignoreInfo {
+    gitIgnoreFile: string;
+    glob: string | undefined;
+    line: number | undefined;
+    matched: boolean;
+    root: string | undefined;
+}
+
 export interface IsSpellCheckEnabledResult {
     languageEnabled: boolean | undefined;
     fileEnabled: boolean;
@@ -134,6 +142,7 @@ export interface IsSpellCheckEnabledResult {
     fileIsExcluded: boolean;
     excludedBy: ExcludeRef[] | undefined;
     gitignored: boolean | undefined;
+    gitignoreInfo: GitignoreInfo | undefined;
 }
 
 export interface SplitTextIntoWordsResult {

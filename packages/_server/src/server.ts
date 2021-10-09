@@ -356,6 +356,7 @@ export function run(): void {
             include: fileIsIncluded = true,
             exclude: fileIsExcluded = false,
             ignored: gitignored = undefined,
+            gitignoreInfo = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
@@ -366,6 +367,7 @@ export function run(): void {
             fileIsIncluded,
             languageEnabled,
             gitignored,
+            gitignoreInfo,
         };
     }
 

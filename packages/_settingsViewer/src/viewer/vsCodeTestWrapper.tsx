@@ -25,12 +25,13 @@ import {
     sampleSettingsSingleFolder,
     sampleSettingsExcluded,
     sampleSettingsExcludedNotInWorkspace,
+    sampleSettingsGitignore,
 } from '../test/samples/sampleSettings';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
     currentSample: number = 0;
-    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded, sampleSettingsExcludedNotInWorkspace];
+    sampleSettings: Settings[] = [sampleSettings, sampleSettingsSingleFolder, sampleSettingsExcluded, sampleSettingsExcludedNotInWorkspace, sampleSettingsGitignore];
     _settings: Settings = this.sampleSettings[this.currentSample];
     _activeTab: string = 'About';
 
@@ -249,7 +250,7 @@ function calcFileConfig() {
         languageEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
-        gitignored: undefined,
+        gitignoreInfo: undefined,
     };
 
     appState.updateConfigsFile(useConfig);
