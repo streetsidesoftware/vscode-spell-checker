@@ -9,8 +9,9 @@ import type {
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
 import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
+import { toUri } from 'common-utils/uriHelper.js';
 import { log } from 'common-utils/log.js';
-import { GitIgnore } from 'cspell-gitignore';
+import { GitIgnore, findRepoRoot } from 'cspell-gitignore';
 import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
     calcOverrideSettings,
@@ -40,6 +41,7 @@ export interface SettingsCspell extends VSCodeSettingsCspell {}
 
 const cSpellSection: keyof SettingsCspell = extensionId;
 
+type FsPath = string;
 export interface SettingsVSCode {
     search?: {
         exclude?: ExcludeFilesGlobMap;
@@ -93,9 +95,9 @@ interface Clearable {
 export class DocumentSettings {
     // Cache per folder settings
     private cachedValues: Clearable[] = [];
-    readonly getUriSettings = this.createCache((key: string = '') => this._getUriSettings(key));
     private readonly fetchSettingsForUri = this.createCache((key: string) => this._fetchSettingsForUri(key));
     private readonly fetchVSCodeConfiguration = this.createCache((key: string) => this._fetchVSCodeConfiguration(key));
+    private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
     readonly configsToImport = new Set<string>();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
@@ -108,9 +110,9 @@ export class DocumentSettings {
         return this.getUriSettings(document.uri);
     }
 
-    _getUriSettings(uri: string): Promise<CSpellUserSettings> {
+    getUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('getUriSettings:', uri);
-        return this.fetchUriSettings(uri || '');
+        return this.fetchUriSettings(uri);
     }
 
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
@@ -162,6 +164,10 @@ export class DocumentSettings {
      */
     private async _isGitIgnoredEx(extSettings: ExtSettings, uri: Uri): Promise<GitignoreResultInfo | undefined> {
         if (!extSettings.settings.useGitignore) return undefined;
+        const root = await this.fetchRepoRootForFile(uri);
+        if (root) {
+            this.gitIgnore.addRoots([root]);
+        }
         return await this.gitIgnore.isIgnoredEx(uri.fsPath);
     }
 
@@ -238,6 +244,12 @@ export class DocumentSettings {
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
 
         return { cSpell, search };
+    }
+
+    private async fetchRepoRootForFile(uriFile: string | Uri) {
+        const u = toUri(uriFile);
+        const uriDir = UriUtils.dirname(u);
+        return this.fetchRepoRootForDir(uriDir.fsPath);
     }
 
     public async findCSpellConfigurationFilesForUri(docUri: string | Uri): Promise<Uri[]> {

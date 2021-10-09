@@ -166,7 +166,7 @@ export function run(): void {
     function getActiveUriSettings(uri?: string) {
         // Give the dictionaries a chance to refresh if they need to.
         refreshDictionaryCache(dictionaryRefreshRateMs);
-        return documentSettings.getUriSettings(uri);
+        return documentSettings.getUriSettings(uri || '');
     }
 
     function registerConfigurationFile([path]: [string]) {
