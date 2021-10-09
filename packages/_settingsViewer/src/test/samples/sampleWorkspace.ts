@@ -16,6 +16,12 @@ const textDocuments: TextDocument[] = [
         uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/extensions/dutch/src/extension.ts',
     },
     {
+        fileName: 'vscode-cspell-dict-extensions/node_modules/jq/index.js',
+        isUntitled: false,
+        languageId: 'javascript',
+        uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/node_modules/jq/index.js',
+    },
+    {
         uri: 'file:///Users/cspell/projects/clones/ripgrep/src/decoder.rs',
         fileName: 'ripgrep/src/decoder.rs',
         isUntitled: false,

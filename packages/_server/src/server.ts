@@ -166,7 +166,7 @@ export function run(): void {
     function getActiveUriSettings(uri?: string) {
         // Give the dictionaries a chance to refresh if they need to.
         refreshDictionaryCache(dictionaryRefreshRateMs);
-        return documentSettings.getUriSettings(uri);
+        return documentSettings.getUriSettings(uri || '');
     }
 
     function registerConfigurationFile([path]: [string]) {
@@ -356,6 +356,7 @@ export function run(): void {
             include: fileIsIncluded = true,
             exclude: fileIsExcluded = false,
             ignored: gitignored = undefined,
+            gitignoreInfo = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
@@ -366,6 +367,7 @@ export function run(): void {
             fileIsIncluded,
             languageEnabled,
             gitignored,
+            gitignoreInfo,
         };
     }
 

@@ -79,7 +79,7 @@ exports[`File Panel Verification tests the snapshot 1`] = `
         </svg>
       </div>
       <div
-        className="MuiListItemText-root"
+        className="MuiListItemText-root MuiListItemText-multiline"
       >
         <span
           className="MuiTypography-root MuiListItemText-primary MuiTypography-body1 MuiTypography-displayBlock"
@@ -88,6 +88,11 @@ exports[`File Panel Verification tests the snapshot 1`] = `
             extension.ts
           </i>
         </span>
+        <p
+          className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+        >
+          <div />
+        </p>
       </div>
     </li>
     <li

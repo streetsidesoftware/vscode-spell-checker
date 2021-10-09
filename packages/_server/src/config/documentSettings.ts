@@ -9,7 +9,9 @@ import type {
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
 import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
+import { toUri } from 'common-utils/uriHelper.js';
 import { log } from 'common-utils/log.js';
+import { GitIgnore, findRepoRoot } from 'cspell-gitignore';
 import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
     calcOverrideSettings,
@@ -33,13 +35,13 @@ import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';
 import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
-import { GitIgnore } from 'cspell-gitignore';
 
 // The settings interface describe the server relevant settings part
 export interface SettingsCspell extends VSCodeSettingsCspell {}
 
 const cSpellSection: keyof SettingsCspell = extensionId;
 
+type FsPath = string;
 export interface SettingsVSCode {
     search?: {
         exclude?: ExcludeFilesGlobMap;
@@ -56,6 +58,17 @@ interface ExtSettings {
     settings: CSpellUserSettings;
     excludeGlobMatcher: GlobMatcher;
     includeGlobMatcher: GlobMatcher;
+}
+
+type PromiseType<T extends Promise<any>> = T extends Promise<infer R> ? R : never;
+type GitignoreResultP = ReturnType<GitIgnore['isIgnoredEx']>;
+type GitignoreResultInfo = PromiseType<GitignoreResultP>;
+
+export interface ExcludeIncludeIgnoreInfo {
+    include: boolean;
+    exclude: boolean;
+    ignored: boolean | undefined;
+    gitignoreInfo: GitignoreResultInfo | undefined;
 }
 
 const defaultExclude: Glob[] = [
@@ -82,9 +95,9 @@ interface Clearable {
 export class DocumentSettings {
     // Cache per folder settings
     private cachedValues: Clearable[] = [];
-    readonly getUriSettings = this.createCache((key: string = '') => this._getUriSettings(key));
     private readonly fetchSettingsForUri = this.createCache((key: string) => this._fetchSettingsForUri(key));
     private readonly fetchVSCodeConfiguration = this.createCache((key: string) => this._fetchVSCodeConfiguration(key));
+    private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
     readonly configsToImport = new Set<string>();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
@@ -97,17 +110,19 @@ export class DocumentSettings {
         return this.getUriSettings(document.uri);
     }
 
-    _getUriSettings(uri: string): Promise<CSpellUserSettings> {
+    getUriSettings(uri: string): Promise<CSpellUserSettings> {
         log('getUriSettings:', uri);
-        return this.fetchUriSettings(uri || '');
+        return this.fetchUriSettings(uri);
     }
 
-    async calcIncludeExclude(uri: Uri): Promise<{ include: boolean; exclude: boolean; ignored: boolean | undefined }> {
+    async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
         const settings = await this.fetchSettingsForUri(uri.toString());
         const ie = calcIncludeExclude(settings, uri);
+        const ignoredEx = await this._isGitIgnoredEx(settings, uri);
         return {
             ...ie,
-            ignored: await this._isGitIgnored(settings, uri),
+            ignored: ignoredEx?.matched,
+            gitignoreInfo: ignoredEx,
         };
     }
 
@@ -137,6 +152,23 @@ export class DocumentSettings {
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!extSettings.settings.useGitignore) return undefined;
         return await this.gitIgnore.isIgnored(uri.fsPath);
+    }
+
+    /**
+     * If `useGitIgnore` is true, checks to see if a uri matches a `.gitignore` file glob.
+     * @param uri - file uri
+     * @returns
+     *   - `undefined` if `useGitignore` is falsy. -- meaning we do not know.
+     *   - `true` if it is ignored
+     *   - `false` otherwise
+     */
+    private async _isGitIgnoredEx(extSettings: ExtSettings, uri: Uri): Promise<GitignoreResultInfo | undefined> {
+        if (!extSettings.settings.useGitignore) return undefined;
+        const root = await this.fetchRepoRootForFile(uri);
+        if (root) {
+            this.gitIgnore.addRoots([root]);
+        }
+        return await this.gitIgnore.isIgnoredEx(uri.fsPath);
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
@@ -212,6 +244,12 @@ export class DocumentSettings {
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
 
         return { cSpell, search };
+    }
+
+    private async fetchRepoRootForFile(uriFile: string | Uri) {
+        const u = toUri(uriFile);
+        const uriDir = UriUtils.dirname(u);
+        return this.fetchRepoRootForDir(uriDir.fsPath);
     }
 
     public async findCSpellConfigurationFilesForUri(docUri: string | Uri): Promise<Uri[]> {

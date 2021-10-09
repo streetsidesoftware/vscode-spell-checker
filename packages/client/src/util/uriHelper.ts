@@ -6,5 +6,5 @@ export function toUri(uri: string | Uri | undefined | null): Uri | undefined {
     if (typeof uri === 'string') {
         return Uri.parse(uri);
     }
-    return uri || undefined;
+    return (uri && Uri.from(uri)) || undefined;
 }

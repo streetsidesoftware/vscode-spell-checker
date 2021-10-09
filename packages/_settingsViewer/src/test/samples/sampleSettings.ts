@@ -91,7 +91,7 @@ const _sampleSettings: Settings = {
             excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
-            gitignored: undefined,
+            gitignoreInfo: undefined,
         },
     },
     workspace: sampleWorkspace,
@@ -119,7 +119,7 @@ const _sampleSettingsSingleFolder: Settings = {
             excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
             configFiles: _configFiles,
-            gitignored: undefined,
+            gitignoreInfo: undefined,
         },
     },
     workspace: sampleWorkspaceSingleFolder,
@@ -147,7 +147,7 @@ const _sampleSettingsExcluded: Settings = {
             excludedBy: [{ glob: 'package-lock.json', id: 'VSCode-Config', configUri: _configFiles[1].uri }],
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('json')),
             configFiles: _configFiles,
-            gitignored: undefined,
+            gitignoreInfo: undefined,
         },
     },
     workspace: sampleWorkspace,
@@ -175,7 +175,7 @@ const _sampleSettingsExcludedNotInWorkspace: Settings = {
             excludedBy: undefined,
             dictionaries: dictionaries.filter((e) => e.languageIds.includes('json')),
             configFiles: [],
-            gitignored: undefined,
+            gitignoreInfo: undefined,
         },
     },
     workspace: sampleWorkspace,
@@ -183,9 +183,45 @@ const _sampleSettingsExcludedNotInWorkspace: Settings = {
     activeFileUri: 'file:///Users/cspell/projects/other-project/package.json',
 };
 
+const _sampleSettingsGitignore: Settings = {
+    dictionaries,
+    knownLanguageIds,
+    configs: {
+        user: { locales: ['en'], languageIdsEnabled: languageIdsUser, inherited: {} },
+        workspace: { locales: ['en', 'da'], languageIdsEnabled: languageIdsWorkspace, inherited: {} },
+        folder: { locales: ['en', 'da'], languageIdsEnabled: languageIdsWorkspace, inherited: { locales: 'workspace', languageIdsEnabled: 'workspace' } },
+        file: {
+            uri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/node_modules/jq/index.js',
+            fileName: 'vscode-cspell-dict-extensions/node_modules/jq/index.js',
+            isUntitled: false,
+            languageId: 'javascript',
+            languageEnabled: true,
+            fileEnabled: true,
+            fileIsIncluded: true,
+            fileIsExcluded: false,
+            fileIsInWorkspace: true,
+            excludedBy: undefined,
+            dictionaries: dictionaries.filter((e) => e.languageIds.includes('typescript')),
+            configFiles: _configFiles,
+            gitignoreInfo: {
+                matched: true,
+                gitignoreFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/.gitignore',
+                gitignoreName: '.gitignore',
+                glob: 'node_modules/',
+                line: 55,
+                root: '/Users/cspell/projects/vscode-cspell-dict-extensions/',
+            },
+        },
+    },
+    workspace: sampleWorkspaceSingleFolder,
+    activeFolderUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions',
+    activeFileUri: 'file:///Users/cspell/projects/vscode-cspell-dict-extensions/node_modules/jq/index.js',
+};
+
 export const sampleSettings = Object.freeze(_sampleSettings);
 export const sampleSettingsSingleFolder = Object.freeze(_sampleSettingsSingleFolder);
 export const sampleSettingsExcluded = Object.freeze(_sampleSettingsExcluded);
 export const sampleSettingsExcludedNotInWorkspace = Object.freeze(_sampleSettingsExcludedNotInWorkspace);
+export const sampleSettingsGitignore = Object.freeze(_sampleSettingsGitignore);
 
 // cspell:ignore ripgrep

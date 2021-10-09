@@ -1,9 +1,10 @@
-import * as React from 'react';
 import Link from '@material-ui/core/Link';
-import { parseFileUri, commandUri } from '../../helpers/link';
+import * as React from 'react';
+import { commandUri } from '../../helpers/link';
 
-export function LinkOpenFile({ uri, text }: { uri: string; text: string | JSX.Element }): JSX.Element {
-    return LinkCommand({ command: 'vscode.open', args: [parseFileUri(uri)], text });
+export function LinkOpenFile({ uri, text, line }: { uri: string; text: string | JSX.Element; line?: number }): JSX.Element {
+    const args = [uri, line].filter((a) => !!a);
+    return LinkCommand({ command: 'cSpell.openFileAtLine', args, text });
 }
 
 export function LinkCommand({ command, args, text }: { command: string; args: any[]; text: string | JSX.Element }): JSX.Element {

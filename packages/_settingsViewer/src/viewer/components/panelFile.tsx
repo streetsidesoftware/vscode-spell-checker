@@ -96,8 +96,8 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
     }
 }
 
-function* br(frags: React.ReactFragment[] | undefined) {
-    if (!frags) return;
+function* br(...frags: React.ReactFragment[]) {
+    if (!frags.length) return;
     let index = 0;
     for (const f of frags) {
         if (index++) {
@@ -114,14 +114,19 @@ function isDefined<T>(t: T | undefined): t is T {
 function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragment | undefined {
     if (!config) return undefined;
 
-    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignored } = config;
+    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignoreInfo } = config;
+    const gitignored = !!gitignoreInfo?.matched;
 
-    const excludedBy = config.excludedBy
-        ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
-        .filter(isDefined);
+    const excludedBy =
+        config.excludedBy
+            ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
+            .filter(isDefined) ?? [];
+
+    const linkGitignore = formatGitignoreLink(gitignoreInfo);
 
     const messages = [
-        ['File is excluded by .gitignore', gitignored],
+        [formatGitignoreMsg(gitignoreInfo), gitignored],
+        [linkGitignore, gitignored],
         ['File is excluded', fileIsInWorkspace && fileIsIncluded && fileIsExcluded],
         ['File in NOT in `files` to be checked.', fileIsInWorkspace && !fileIsIncluded],
         ['File is NOT in the workspace and excluded.', !fileIsInWorkspace && fileIsExcluded],
@@ -129,12 +134,29 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
         ['File is NOT spell checked because it is not in the workspace.', !fileIsInWorkspace && !fileIsExcluded && !fileEnabled],
     ] as const;
 
-    const msg = messages.filter(([_, m]) => m).map(([m]) => m)[0] || undefined;
-    return msg ? (
-        <div>
-            {msg}
-            <br />
-            {[...br(excludedBy)]}
-        </div>
-    ) : undefined;
+    const msg = messages
+        .filter(([_, m]) => m)
+        .map(([m]) => m)
+        .filter(isDefined);
+    return msg ? <div>{[...br(...msg, ...excludedBy)]}</div> : undefined;
+}
+
+function formatGitignoreLink(gitignore: FileConfig['gitignoreInfo']) {
+    if (!gitignore) return undefined;
+
+    const { gitignoreFileUri: uri, gitignoreName: name, line } = gitignore;
+
+    return LinkOpenFile({ uri: uri, text: name, line });
+}
+
+function formatGitignoreMsg(gitignore: FileConfig['gitignoreInfo']) {
+    if (!gitignore) return undefined;
+
+    const { line, glob } = gitignore;
+
+    return (
+        <span>
+            File is exclude by <b>.gitignore</b>. Line: <b>{line}</b>, Glob: <b>{glob}</b>
+        </span>
+    );
 }
