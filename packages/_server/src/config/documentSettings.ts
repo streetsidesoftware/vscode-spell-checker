@@ -111,7 +111,6 @@ export class DocumentSettings {
     }
 
     getUriSettings(uri: string): Promise<CSpellUserSettings> {
-        log('getUriSettings:', uri);
         return this.fetchUriSettings(uri);
     }
 
@@ -206,17 +205,12 @@ export class DocumentSettings {
     }
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
-        log('Start fetchUriSettings:', uri);
         const exSettings = await this.fetchUriSettingsEx(uri);
-        log('Finish fetchUriSettings:', uri);
         return exSettings.settings;
     }
 
-    private async fetchUriSettingsEx(uri: string): Promise<ExtSettings> {
-        log('Start fetchUriSettingsEx:', uri);
-        const folderSettings = await this.fetchSettingsForUri(uri);
-        log('Finish fetchUriSettingsEx:', uri);
-        return folderSettings;
+    private fetchUriSettingsEx(uri: string): Promise<ExtSettings> {
+        return this.fetchSettingsForUri(uri);
     }
 
     private async findMatchingFolder(docUri: string, defaultTo: WorkspaceFolder): Promise<WorkspaceFolder>;
