@@ -28,7 +28,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/micromatch": "^4.0.2",
-    "@types/node": "^16.10.3",
+    "@types/node": "^16.10.8",
     "common-utils": "1.0.0",
     "cspell-glob": "^5.12.3",
     "cspell-lib": "^5.12.3",
@@ -49,7 +49,7 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.2",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.58.1",
+    "webpack": "^5.58.2",
     "webpack-cli": "^4.9.0"
   },
   "dependencies": {
