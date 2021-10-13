@@ -128,7 +128,7 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
         [formatGitignoreMsg(gitignoreInfo), gitignored],
         [linkGitignore, gitignored],
         ['File is excluded', fileIsInWorkspace && fileIsIncluded && fileIsExcluded],
-        ['File in NOT in `files` to be checked.', fileIsInWorkspace && !fileIsIncluded],
+        ['File is NOT in `files` to be checked.', fileIsInWorkspace && !fileIsIncluded],
         ['File is NOT in the workspace and excluded.', !fileIsInWorkspace && fileIsExcluded],
         ['File is NOT in the workspace.', !fileIsInWorkspace && !fileIsExcluded && fileEnabled],
         ['File is NOT spell checked because it is not in the workspace.', !fileIsInWorkspace && !fileIsExcluded && !fileEnabled],
