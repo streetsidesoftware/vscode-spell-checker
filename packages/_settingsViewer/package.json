@@ -25,7 +25,7 @@
     "@types/clone-deep": "^4.0.1",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.9",
-    "@types/react": "^17.0.29",
+    "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",
     "@types/react-test-renderer": "^17.0.1",
     "browser-resolve": "^2.0.0",
