@@ -2563,7 +2563,7 @@
     "eslint": "^7.32.0",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.3.1",
+    "standard-version": "^9.3.2",
     "typescript": "^4.4.4",
     "vsce": "^1.100.1"
   },
