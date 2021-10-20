@@ -35,8 +35,8 @@
     "fs-extra": "^10.0.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
-    "jest": "^27.3.0",
-    "jest-diff": "^27.3.0",
+    "jest": "^27.3.1",
+    "jest-diff": "^27.3.1",
     "lorem-ipsum": "^2.0.4",
     "micromatch": "^4.0.4",
     "minimatch": "^3.0.4",
@@ -49,8 +49,8 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.2",
     "vscode-uri": "^3.0.2",
-    "webpack": "^5.58.2",
-    "webpack-cli": "^4.9.0"
+    "webpack": "^5.59.0",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.12.3",
