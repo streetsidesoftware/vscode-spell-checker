@@ -36,7 +36,7 @@
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
     "jest": "^27.3.0",
-    "jest-diff": "^27.3.0",
+    "jest-diff": "^27.3.1",
     "lorem-ipsum": "^2.0.4",
     "micromatch": "^4.0.4",
     "minimatch": "^3.0.4",
