@@ -963,10 +963,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/glob@^7.1.4":
-  version "7.1.4"
-  resolved "https://registry.npmjs.org/@types/glob/-/glob-7.1.4.tgz#ea59e21d2ee5c517914cb4bc8e4153b99e566672"
-  integrity sha512-w+LsMxKyYQm347Otw+IfBXOv9UWVjpHpCDdbBMt8Kz/xbvCYNjP+0qPh91Km3iKfSRLBB0P7fAMf0KHrPu+MyA==
+"@types/glob@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
+  integrity sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==
   dependencies:
     "@types/minimatch" "*"
     "@types/node" "*"
@@ -8251,10 +8251,10 @@ webpack-sources@^3.2.0:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.1.tgz#251a7d9720d75ada1469ca07dbb62f3641a05b6d"
   integrity sha512-t6BMVLQ0AkjBOoRTZgqrWm7xbXMBzD+XDq2EZ96+vMfn3qKgsvdXZhbPZ4ElUOpdv4u+iiGe+w3+J75iy/bYGA==
 
-webpack@^5.58.2:
-  version "5.58.2"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-5.58.2.tgz#6b4af12fc9bd5cbedc00dc0a2fc2b9592db16b44"
-  integrity sha512-3S6e9Vo1W2ijk4F4PPWRIu6D/uGgqaPmqw+av3W3jLDujuNkdxX5h5c+RQ6GkjVR+WwIPOfgY8av+j5j4tMqJw==
+webpack@^5.59.0:
+  version "5.59.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.59.0.tgz#a5038fc0d4d9350ee528e7e1e0282080c63efcf5"
+  integrity sha512-2HiFHKnWIb/cBfOfgssQn8XIRvntISXiz//F1q1+hKMs+uzC1zlVCJZEP7XqI1wzrDyc/ZdB4G+MYtz5biJxCA==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
