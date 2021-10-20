@@ -26,7 +26,7 @@
   "devDependencies": {
     "@cspell/cspell-types": "^5.12.3",
     "@types/chai": "^4.2.22",
-    "@types/glob": "^7.1.4",
+    "@types/glob": "^7.2.0",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.1",
     "@types/vscode": "^1.61.0",
