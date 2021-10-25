@@ -34,7 +34,7 @@
     "ts-jest": "^27.0.7"
   },
   "dependencies": {
-    "commander": "^8.2.0",
+    "commander": "^8.3.0",
     "deep-equal": "^2.0.5"
   }
 }
