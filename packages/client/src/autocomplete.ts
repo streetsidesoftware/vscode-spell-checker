@@ -6,10 +6,10 @@ import * as di from './di';
 // See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
 const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
 
-export async function registerCspellInlineCompletionProviders(context: vscode.ExtensionContext): Promise<void> {
+export async function registerCspellInlineCompletionProviders(subscriptions: { dispose(): any }[]): Promise<void> {
     const langIds = await vscode.languages.getLanguages();
     const inlineCompletionLangIds = langIds.filter((lang) => !blockLangIdsForInlineCompletion.has(lang) && !lang.includes('latex'));
-    context.subscriptions.push(
+    subscriptions.push(
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),
         vscode.languages.registerCompletionItemProvider('*', cspellInlineCompletionProvider, ' '),
         vscode.languages.registerCompletionItemProvider('*', cspellInlineDictionaryNameCompletionProvider, ' '),

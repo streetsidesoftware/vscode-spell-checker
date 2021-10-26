@@ -66,7 +66,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration)
     );
 
-    registerCspellInlineCompletionProviders(context).catch(() => {});
+    registerCspellInlineCompletionProviders(context.subscriptions).catch(() => {});
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {
