@@ -2420,7 +2420,7 @@
               }
             ]
           },
-          "markdownDescription": "Define custom dictionaries to be included by default for the folder.\nIf `addWords` is `true` words will be added to this dictionary.\n\n**Example:**\n\n```js\ncustomDictionaries: {\n  \"project-words\": {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n}\n```",
+          "markdownDescription": "Define custom dictionaries to be included by default.\nIf `addWords` is `true` words will be added to this dictionary.\n\n**Example:**\n\n```js\n\"cSpell.customDictionaries\": {\n  \"project-words\": {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  },\n  \"custom\": true, // Enable the `custom` dictionary\n  \"internal-terms\": false // Disable the `internal-terms` dictionary\n}\n```",
           "scope": "resource",
           "title": "Custom Dictionaries",
           "type": "object"

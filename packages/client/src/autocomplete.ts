@@ -2,21 +2,28 @@ import * as vscode from 'vscode';
 import { getCSpellDiags } from './diags';
 import * as di from './di';
 
-export function registerCspellInlineCompletionProviders(): vscode.Disposable[] {
-    return [
-        vscode.languages.registerCompletionItemProvider({ language: '*', scheme: '*' }, cspellTriggerCompletionProvider, 'c', 's', 'p'),
-        vscode.languages.registerCompletionItemProvider('*', cspellInlineCompletionProvider, ':'),
+// cspell:ignore bibtex doctex expl jlweave rsweave
+// See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
+const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
+
+export async function registerCspellInlineCompletionProviders(subscriptions: { dispose(): any }[]): Promise<void> {
+    const langIds = await vscode.languages.getLanguages();
+    const inlineCompletionLangIds = langIds.filter((lang) => !blockLangIdsForInlineCompletion.has(lang) && !lang.includes('latex'));
+    subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),
+        vscode.languages.registerCompletionItemProvider('*', cspellInlineCompletionProvider, ' '),
         vscode.languages.registerCompletionItemProvider('*', cspellInlineDictionaryNameCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider('*', cspellInlineIssuesCompletionProvider, ' '),
-    ];
+        vscode.languages.registerCompletionItemProvider('*', cspellInlineIssuesCompletionProvider, ' ')
+    );
 }
 
 const cspellInlineCompletionProvider: vscode.CompletionItemProvider = {
     provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
         const diags = findNearestDiags(getCSpellDiags(document.uri), position, 1);
+        const isCSpell = /cspell:\s?$/i;
         // get all text until the `position` and check if it reads `cspell.`
         const linePrefix = document.lineAt(position).text.substr(0, position.character);
-        if (!linePrefix.endsWith('spell:')) {
+        if (!isCSpell.test(linePrefix)) {
             return undefined;
         }
 
@@ -121,36 +128,6 @@ const completions: (Completion | CompletionFn)[] = [
     },
 ];
 
-// a completion item that can be accepted by a commit character,
-// the `commitCharacters`-property is set which means that the completion will
-// be inserted and then the character will be typed.
-const triggerText = 'cspell';
-const triggerCSpellCompletion = new vscode.CompletionItem('cspell', vscode.CompletionItemKind.Snippet);
-triggerCSpellCompletion.commitCharacters = [':'];
-triggerCSpellCompletion.insertText = new vscode.SnippetString('${LINE_COMMENT} cspell');
-triggerCSpellCompletion.documentation = new vscode.MarkdownString('Press `:` to get `cspell` options');
-
-const cspellTriggerCompletionProvider: vscode.CompletionItemProvider = {
-    provideCompletionItems(
-        document: vscode.TextDocument,
-        position: vscode.Position,
-        _token: vscode.CancellationToken,
-        _context: vscode.CompletionContext
-    ) {
-        const linePrefix = document.lineAt(position).text.substr(0, position.character);
-        const lastWord = linePrefix.split(/\s/g).pop();
-        if (!lastWord || lastWord.length < 3 || !triggerText.startsWith(lastWord)) {
-            return undefined;
-        }
-
-        // return all completion items as array
-        return [triggerCSpellCompletion];
-    },
-    resolveCompletionItem(item: vscode.CompletionItem) {
-        return item;
-    },
-};
-
 // function flatten<T>(nested: T[][]): T[] {
 //     function* _flatten<T>(nested: T[][]) {
 //         for (const a of nested) {
@@ -178,7 +155,7 @@ const cspellInlineDictionaryNameCompletionProvider: vscode.CompletionItemProvide
         // get all text until the `position` and check if it reads `cspell.`
         const linePrefix = document.lineAt(position).text.substr(0, position.character);
 
-        const isDictionaryRequest = /cspell:dictionaries/;
+        const isDictionaryRequest = /cspell:\s*dictionaries/i;
 
         if (!isDictionaryRequest.test(linePrefix)) {
             return undefined;
@@ -206,8 +183,7 @@ const cspellInlineIssuesCompletionProvider: vscode.CompletionItemProvider = {
         // get all text until the `position` and check if it reads `cspell.`
         const line = document.lineAt(position);
         const linePrefix = line.text.substr(0, position.character);
-        const isDictionaryRequest = /cspell:(words|ignore)/;
-
+        const isDictionaryRequest = /cspell:\s*(words|ignore)/i;
         if (!isDictionaryRequest.test(linePrefix)) {
             return undefined;
         }
