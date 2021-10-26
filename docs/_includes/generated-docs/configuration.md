@@ -231,19 +231,21 @@ Scope
 : resource
 
 Description
-: Define custom dictionaries to be included by default for the folder.
+: Define custom dictionaries to be included by default.
 If `addWords` is `true` words will be added to this dictionary.
 
     **Example:**
 
     ```js
-    customDictionaries: {
+    "cSpell.customDictionaries": {
       "project-words": {
         "name": "project-words",
         "path": "${workspaceRoot}/project-words.txt",
         "description": "Words used in this project",
         "addWords": true
-      }
+      },
+      "custom": true, // Enable the `custom` dictionary
+      "internal-terms": false // Disable the `internal-terms` dictionary
     }
     ```
 
