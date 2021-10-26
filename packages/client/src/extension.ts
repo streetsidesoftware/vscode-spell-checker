@@ -54,7 +54,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
 
-        ...registerCspellInlineCompletionProviders(),
         ...commands.registerCommands(),
 
         /*
@@ -66,6 +65,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          */
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration)
     );
+
+    registerCspellInlineCompletionProviders(context).catch(() => {});
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {

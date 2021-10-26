@@ -5,8 +5,8 @@ import { languages } from 'vscode';
 const mockedRegisterCompletionItemProvider = mocked(languages.registerCompletionItemProvider);
 
 describe('autocomplete', () => {
-    test('registerCspellInlineCompletionProviders', () => {
-        const disposables = registerCspellInlineCompletionProviders();
+    test('registerCspellInlineCompletionProviders', async () => {
+        const disposables = await registerCspellInlineCompletionProviders();
         expect(mockedRegisterCompletionItemProvider).toHaveBeenCalledTimes(4);
         expect(disposables).toHaveLength(4);
     });
