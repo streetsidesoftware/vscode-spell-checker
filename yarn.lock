@@ -3454,9 +3454,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.3.878:
-  version "1.3.882"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.882.tgz#ec57bb0c3a97f0ddfe6e39c5a9655ea9566b2db6"
-  integrity sha512-Kllt2R9+7yEIBbASR0MReJSK9TjPmHoomLbCLRP7r4SVtSy+Y0hYIhQ7LGjnMhlAyWUtGXTiznoGsaKxEH0ttw==
+  version "1.3.883"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.883.tgz#cc409921469b3aa6ab6efd65cc2a4375128bb703"
+  integrity sha512-goyjNx4wB9j911PBteb+AXNbErug7rJVkmDXWdw5SCVn2JlARBwsqucPkvp1h5mXWxHUbBRK3bwXTrqSxSiAIQ==
 
 emittery@^0.8.1:
   version "0.8.1"
