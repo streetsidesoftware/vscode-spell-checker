@@ -107,7 +107,7 @@ export const isRequestConfigurationMessage = isA<RequestConfigurationMessage>('R
 export const isSelectFileMessage = isA<SelectFileMessage>('SelectFileMessage', [['value', isString]]);
 export const isSelectFolderMessage = isA<SelectFolderMessage>('SelectFolderMessage', [['value', isString]]);
 export const isSelectTabMessage = isA<SelectTabMessage>('SelectTabMessage', [['value', isString]]);
-export const isOpenLinkMessage = isA<OpenLinkMessage>('OpenLinkMessage', [['value', isString]]);
+export const isOpenLinkMessage = isA<OpenLinkMessage>('OpenLinkMessage', [['value', isObject]]);
 
 function isObject(v: unknown): v is Record<string, unknown> {
     return typeof v === 'object' && v !== null;
