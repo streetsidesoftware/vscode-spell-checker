@@ -4,7 +4,7 @@ import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspac
 import { toFileUri, toUri, uriToName } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
-import { ReplaySubject, Subscription, timer } from 'rxjs';
+import { interval, ReplaySubject, Subscription } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
@@ -290,46 +290,48 @@ export function run(): void {
 
     // validate documents
     const disposableValidate = validationRequestStream.pipe(filter((doc) => !validationByDoc.has(doc.uri))).subscribe((doc) => {
-        if (!validationByDoc.has(doc.uri)) {
-            const uri = doc.uri;
-            if (isUriBlocked(uri)) {
-                validationByDoc.set(
-                    doc.uri,
-                    validationRequestStream
-                        .pipe(
-                            filter((doc) => uri === doc.uri),
-                            take(1),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
-                            tap((doc) => log('Ignoring:', doc.uri))
-                        )
-                        .subscribe()
-                );
-            } else {
-                validationByDoc.set(
-                    doc.uri,
-                    validationRequestStream
-                        .pipe(
-                            filter((doc) => uri === doc.uri),
-                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                            tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
-                            mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
-                            tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
-                            debounce((dsp) =>
-                                timer(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
-                            ),
-                            filter((dsp) => !blockValidation.has(dsp.doc.uri)),
-                            mergeMap(validateTextDocument)
-                        )
-                        .subscribe((diag) => connection.sendDiagnostics(diag))
-                );
-            }
+        if (validationByDoc.has(doc.uri)) return;
+        const uri = doc.uri;
+
+        if (isUriBlocked(uri)) {
+            validationByDoc.set(
+                doc.uri,
+                validationRequestStream
+                    .pipe(
+                        filter((doc) => uri === doc.uri),
+                        take(1),
+                        tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
+                        tap((doc) => log('Ignoring:', doc.uri))
+                    )
+                    .subscribe()
+            );
+        } else {
+            validationByDoc.set(
+                doc.uri,
+                validationRequestStream
+                    .pipe(
+                        filter((doc) => uri === doc.uri),
+                        tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
+                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
+                        debounceTime(defaultDebounceMs),
+                        mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
+                        tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
+                        debounce((dsp) =>
+                            interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
+                        ),
+                        filter((dsp) => !blockValidation.has(dsp.doc.uri)),
+                        mergeMap(validateTextDocument)
+                    )
+                    .subscribe((diag) => connection.sendDiagnostics(diag))
+            );
         }
     });
 
     const disposableTriggerUpdateConfigStream = triggerUpdateConfig
         .pipe(
             tap(() => log('Trigger Update Config')),
-            debounceTime(100)
+            debounceTime(100),
+            tap(() => log('Update Config Triggered'))
         )
         .subscribe(() => {
             updateActiveSettings();
