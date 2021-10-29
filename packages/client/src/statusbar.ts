@@ -4,7 +4,7 @@ import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
 import * as vscode from 'vscode';
 import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client';
 import * as infoViewer from './infoViewer';
-import { isSupportedUri, isSupportedDoc } from 'common-utils/uriHelper.js';
+import { isSupportedUri, isSupportedDoc, uriToName } from 'common-utils/uriHelper.js';
 import { sectionCSpell } from './settings';
 import { getCSpellDiags } from './diags';
 
@@ -61,7 +61,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         }
         const ex = response.excludedBy[0];
         const { glob, name, id } = ex;
-        const configPath = ex.configUri && vscode.workspace.asRelativePath(ex.configUri);
+        const configPath = ex.configUri && uriToName(vscode.Uri.parse(ex.configUri));
         return `File excluded by ${JSON.stringify(glob)} in ${configPath || id || name || 'settings'}`;
     }
 

@@ -21,7 +21,7 @@
         "packages/client/samples/**",
         "packages/client/server/**",
         "packages/client/settingsViewer/**",
-        "samples",
+        "/samples",
         "testFixtures"
     ],
     "ignoreWords": [],
