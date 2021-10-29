@@ -38,7 +38,7 @@ class AppState {
         sampleSettingsExcluded,
         sampleSettingsExcludedNotInWorkspace,
         sampleSettingsGitignore,
-        sampleSettingsBlocked
+        sampleSettingsBlocked,
     ];
     _settings: Settings = this.sampleSettings[this.currentSample];
     _activeTab: string = 'About';
