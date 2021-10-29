@@ -53,6 +53,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     }
 
     function formatFileReason(response: ServerResponseIsSpellCheckEnabledForFile): string {
+        if (response.blockedReason) return response.blockedReason.message;
         if (response.fileEnabled) return '';
         if (response.gitignored) return 'The file is excluded by .gitignore.';
         if (!response.excludedBy?.length) {

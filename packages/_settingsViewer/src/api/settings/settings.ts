@@ -68,6 +68,12 @@ export interface GitignoreInfo {
     root: string | undefined;
 }
 
+export interface BlockedFileReason {
+    code: string;
+    message: string;
+    documentationRefUri?: string;
+}
+
 export interface IsSpellCheckEnabledResult {
     languageEnabled?: boolean | undefined;
     fileEnabled: boolean;
@@ -76,6 +82,7 @@ export interface IsSpellCheckEnabledResult {
     fileIsInWorkspace: boolean;
     excludedBy?: ExcludeRef[] | undefined;
     gitignoreInfo: GitignoreInfo | undefined;
+    blockedReason: BlockedFileReason | undefined;
 }
 
 export interface ConfigFile {

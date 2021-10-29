@@ -174,6 +174,7 @@ function extractFileConfig(
         fileIsInWorkspace: !!folder,
         excludedBy: mapExcludedBy(excludedBy),
         gitignoreInfo: extractGitignoreInfo(),
+        blockedReason: docConfig.blockedReason,
     };
     return cfg;
 }

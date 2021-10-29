@@ -3,6 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import IconCode from '@material-ui/icons/Code';
@@ -114,7 +115,7 @@ function isDefined<T>(t: T | undefined): t is T {
 function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragment | undefined {
     if (!config) return undefined;
 
-    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignoreInfo } = config;
+    const { fileIsInWorkspace, fileIsExcluded, fileIsIncluded, fileEnabled, gitignoreInfo, blockedReason } = config;
     const gitignored = !!gitignoreInfo?.matched;
 
     const excludedBy =
@@ -126,6 +127,7 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
 
     const messages = [
         [formatGitignoreMsg(gitignoreInfo), gitignored],
+        [formatBlockedMsg(blockedReason), !!blockedReason],
         [linkGitignore, gitignored],
         ['File is excluded', fileIsInWorkspace && fileIsIncluded && fileIsExcluded],
         ['File is NOT in `files` to be checked.', fileIsInWorkspace && !fileIsIncluded],
@@ -157,6 +159,18 @@ function formatGitignoreMsg(gitignore: FileConfig['gitignoreInfo']) {
     return (
         <span>
             File is exclude by <b>.gitignore</b>. Line: <b>{line}</b>, Glob: <b>{glob}</b>
+        </span>
+    );
+}
+
+function formatBlockedMsg(blockedReason: FileConfig['blockedReason']) {
+    if (!blockedReason) return undefined;
+
+    const { message, documentationRefUri } = blockedReason;
+
+    return (
+        <span>
+            {message} {documentationRefUri ? <Link href={documentationRefUri}>More Info...</Link> : undefined}
         </span>
     );
 }
