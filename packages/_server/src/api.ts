@@ -143,6 +143,7 @@ export interface IsSpellCheckEnabledResult {
     excludedBy: ExcludeRef[] | undefined;
     gitignored: boolean | undefined;
     gitignoreInfo: GitignoreInfo | undefined;
+    blockedReason: BlockedFileReason | undefined;
 }
 
 export interface SplitTextIntoWordsResult {
@@ -299,3 +300,9 @@ export type ApiHandlers<ApiReqRes> = {
 export type ApiReqResMethods<ApiReqRes> = {
     [M in keyof ApiReqRes]: ApiReqResFn<ApiReqRes[M]>;
 };
+
+export interface BlockedFileReason {
+    code: string;
+    message: string;
+    documentationRefUri?: UriString;
+}

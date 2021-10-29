@@ -1,7 +1,7 @@
 // cSpell:ignore pycache
 
 import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toFileUri, toUri, uriToName } from 'common-utils/uriHelper.js';
+import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
 import { interval, ReplaySubject, Subscription } from 'rxjs';
@@ -40,8 +40,8 @@ import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
 import { createProgressNotifier } from './progressNotifier';
 import { textToWords } from './utils';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis';
-import * as Validator from './validator';
 import { debounce as simpleDebounce } from './utils/debounce';
+import * as Validator from './validator';
 
 log('Starting Spell Checker Server');
 
@@ -82,7 +82,7 @@ export function run(): void {
     const dictionaryWatcher = new DictionaryWatcher();
     disposables.push(dictionaryWatcher);
 
-    const blockedFiles = new Set<string>();
+    const blockedFiles = new Map<string, Api.BlockedFileReason>();
 
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
@@ -359,7 +359,10 @@ export function run(): void {
             blockCheckingWhenAverageChunkSizeGreatherThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreatherThan,
             blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
         } = settings;
-        if (blockedFiles.has(uri)) return true;
+        if (blockedFiles.has(uri)) {
+            log(`File is blocked ${blockedFiles.get(uri)?.message}`, uri);
+            return true;
+        }
         const isMiniReason = isTextLikelyMinified(textDocument.getText(), {
             blockCheckingWhenAverageChunkSizeGreatherThan,
             blockCheckingWhenLineLengthGreaterThan,
@@ -367,8 +370,9 @@ export function run(): void {
         });
 
         if (isMiniReason) {
-            blockedFiles.add(uri);
-            connection.window.showInformationMessage(`File not spell checked:\n${isMiniReason}\n\"${uriToName(toUri(uri))}"`);
+            blockedFiles.set(uri, isMiniReason);
+            // connection.window.showInformationMessage(`File not spell checked:\n${isMiniReason}\n\"${uriToName(toUri(uri))}"`);
+            log(`File is blocked: ${isMiniReason.message}`, uri);
         }
 
         return !!isMiniReason;
@@ -393,7 +397,8 @@ export function run(): void {
             ignored: gitignored = undefined,
             gitignoreInfo = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
-        const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored;
+        const blockedReason = uri ? blockedFiles.get(uri) : undefined;
+        const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored && !blockedReason;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
         return {
             excludedBy,
@@ -403,6 +408,7 @@ export function run(): void {
             languageEnabled,
             gitignored,
             gitignoreInfo,
+            blockedReason: uri ? blockedFiles.get(uri) : undefined,
         };
     }
 
