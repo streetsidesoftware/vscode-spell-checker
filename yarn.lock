@@ -3013,10 +3013,10 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-gitignore@^5.12.4:
-  version "5.12.4"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-5.12.4.tgz#6738d1655f5ef606a5ab15b0f32a368c3a472c22"
-  integrity sha512-a5pK6gFEtcGAEESV74m21KvRi0afMw3QE2WXcC0v2lHYyHyHeDK/eLQbk8cVSbuMTaXgDyFtyBwSP7Qq0PAnFg==
+cspell-gitignore@^5.12.4, cspell-gitignore@^5.12.5:
+  version "5.12.5"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-5.12.5.tgz#0ba388c5c553e0342fd0289bfef9061f17ce4d8d"
+  integrity sha512-I1QizO6LSSpeaEzBjtmcPu09l7bMvvUsVhsHWtzp6RVz3DXQq/ntn/s5HPGCcRVTXO9eeRePTy1LfOsHZO1cMQ==
   dependencies:
     cspell-glob "^5.12.4"
     find-up "^5.0.0"
