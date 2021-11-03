@@ -316,10 +316,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^5.12.4":
-  version "5.12.4"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.12.4.tgz#330fb7c851a65ab783bb47eb3345d0b8ded0648f"
-  integrity sha512-+rbeDNGVX9kYF6ARNLyCRL0lHsS0Kxwb38Dk9bPk/qx3HeKjrVfg6mupFH+kTDWJFCh+ua3D07yPc3TZzcdVIg==
+"@cspell/cspell-bundled-dicts@^5.12.4", "@cspell/cspell-bundled-dicts@^5.12.5":
+  version "5.12.5"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.12.5.tgz#fb31d9d0e90302303a01063113a81e1bac0e3ef5"
+  integrity sha512-uuoAYkw1O+AcHx16XN8u42eCm4yLgT0D9vOWnrOKJEScpIvyrgHbL/B71PAkmeTwfhPWhyHb3m/QjYXzio3Olw==
   dependencies:
     "@cspell/dict-ada" "^1.1.2"
     "@cspell/dict-aws" "^1.0.14"
@@ -333,7 +333,7 @@
     "@cspell/dict-dotnet" "^1.0.32"
     "@cspell/dict-elixir" "^1.0.26"
     "@cspell/dict-en-gb" "^1.1.33"
-    "@cspell/dict-en_us" "^2.1.2"
+    "@cspell/dict-en_us" "^2.1.3"
     "@cspell/dict-filetypes" "^2.0.1"
     "@cspell/dict-fonts" "^1.0.14"
     "@cspell/dict-fullstack" "^2.0.4"
@@ -424,10 +424,10 @@
   resolved "https://registry.npmjs.org/@cspell/dict-en-gb/-/dict-en-gb-1.1.33.tgz#7f1fd90fc364a5cb77111b5438fc9fcf9cc6da0e"
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
-"@cspell/dict-en_us@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.1.2.tgz#e599eb18398466ab9d9b31232115cd41474d4aa8"
-  integrity sha512-VWaUR55G/COhAWo4eOmbVAxnYwDnt2o+GsdLjVGdjqA4xPztMyAhtlmciDrv2Wi4kmDsq9n2+AyoaUl51h1ULg==
+"@cspell/dict-en_us@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-en_us/-/dict-en_us-2.1.3.tgz#d63b16c7f0c78e63dc462f2428ddedb4de932aa4"
+  integrity sha512-71YlVhKRBd758UNPMNeZrZQdPafEKS0e4LAgbhyuGhJhwxzAJnJolKT3vQpiFdaH4zsEGVvK1l2oTHpQDt9sng==
 
 "@cspell/dict-filetypes@^2.0.1":
   version "2.0.1"
@@ -3033,12 +3033,12 @@ cspell-io@^5.12.4:
   resolved "https://registry.npmjs.org/cspell-io/-/cspell-io-5.12.4.tgz#ea8330118f92b4fcf266fa1f87f9d7918a8d34cc"
   integrity sha512-1CS6GHIoTSCYo/Lb7PTINtEbFAsIgowNNgsRAArdUiiOpmoJtCw4SXxIUPMaX5liV3Jo4crLheuCEiXHEqZnSA==
 
-cspell-lib@^5.12.4:
-  version "5.12.4"
-  resolved "https://registry.npmjs.org/cspell-lib/-/cspell-lib-5.12.4.tgz#c8539f51cbda3df852b73dfd9a753b68710a21bd"
-  integrity sha512-NqmQ1j5PsQZJxUqdPaEMrNSKmIiaWSQVzITGfW08FEiTCqSpHxRQdNMM6B7nYUS0NgS5wYwycNMkEWaRQebI+Q==
+cspell-lib@^5.12.4, cspell-lib@^5.12.5:
+  version "5.12.5"
+  resolved "https://registry.yarnpkg.com/cspell-lib/-/cspell-lib-5.12.5.tgz#93c62d17d578d9cd02a36983c18787087463fb78"
+  integrity sha512-7pPFWrojoeQnYchFKLBpeF+39ZKIyLuuneydZCaOIFGzUwyKX6uK4Cfz9rEs0CBLqXqlsectm9WOloW3KTs8KA==
   dependencies:
-    "@cspell/cspell-bundled-dicts" "^5.12.4"
+    "@cspell/cspell-bundled-dicts" "^5.12.5"
     "@cspell/cspell-types" "^5.12.4"
     clear-module "^4.1.1"
     comment-json "^4.1.1"
@@ -3046,7 +3046,7 @@ cspell-lib@^5.12.4:
     cosmiconfig "^7.0.1"
     cspell-glob "^5.12.4"
     cspell-io "^5.12.4"
-    cspell-trie-lib "^5.12.4"
+    cspell-trie-lib "^5.12.5"
     find-up "^5.0.0"
     fs-extra "^10.0.0"
     gensequence "^3.1.1"
@@ -3055,10 +3055,10 @@ cspell-lib@^5.12.4:
     resolve-global "^1.0.0"
     vscode-uri "^3.0.2"
 
-cspell-trie-lib@^5.12.4:
-  version "5.12.4"
-  resolved "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-5.12.4.tgz#9a78ba9d96cf21e7ae9d8c89195ead1a060544ec"
-  integrity sha512-WXnqSVyqP7ZhRWxF3C4olXATETyxD+43f0T0Jzlq0Dz8nxXmzEl79Ws9sEZo4ssLTMXaEcx4Uh361vQYZY+irA==
+cspell-trie-lib@^5.12.5:
+  version "5.12.5"
+  resolved "https://registry.yarnpkg.com/cspell-trie-lib/-/cspell-trie-lib-5.12.5.tgz#483025bd4e5a7cc8d5f2af0695489c05dad3c1c1"
+  integrity sha512-oF2LR860BhKISIyQ8FSzq7a+dB9fbFcYP42LeO8NsXk0qhv9gTR3ReiyA1rcp9ocClpg26AhU08dNuAxcHQBmA==
   dependencies:
     fs-extra "^10.0.0"
     gensequence "^3.1.1"
