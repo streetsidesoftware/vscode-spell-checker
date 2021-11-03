@@ -31,7 +31,7 @@
     "@types/node": "^16.11.6",
     "common-utils": "1.0.0",
     "cspell-glob": "^5.12.4",
-    "cspell-lib": "^5.12.4",
+    "cspell-lib": "^5.12.5",
     "fs-extra": "^10.0.0",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
@@ -53,8 +53,8 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.12.4",
-    "cspell-gitignore": "^5.12.4"
+    "@cspell/cspell-bundled-dicts": "^5.12.5",
+    "cspell-gitignore": "^5.12.5"
   },
   "scripts": {
     "clean": "rimraf dist temp out coverage",
