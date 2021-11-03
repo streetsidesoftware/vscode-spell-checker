@@ -494,9 +494,11 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      *       "rust",
      *       "scala",
      *       "scss",
+     *       "swift",
      *       "text",
      *       "typescript",
      *       "typescriptreact",
+     *       "vue",
      *       "yaml",
      *       "yml"
      *     ]
