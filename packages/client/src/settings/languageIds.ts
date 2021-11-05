@@ -48,6 +48,7 @@ export const languageIds: string[] = [
     'typescript',
     'typescriptreact',
     'vb',
+    'vue',
     'xml',
     'xsl',
     'yaml',

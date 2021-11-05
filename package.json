@@ -465,9 +465,11 @@
             "rust",
             "scala",
             "scss",
+            "swift",
             "text",
             "typescript",
             "typescriptreact",
+            "vue",
             "yaml",
             "yml"
           ],
@@ -660,7 +662,7 @@
               },
               "caseSensitive": {
                 "default": false,
-                "description": "Words must match case rules.",
+                "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                 "type": "boolean"
               },
               "description": {
@@ -1312,7 +1314,7 @@
               },
               "caseSensitive": {
                 "default": false,
-                "description": "Words must match case rules.",
+                "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                 "type": "boolean"
               },
               "description": {
@@ -1631,7 +1633,7 @@
                     },
                     "caseSensitive": {
                       "default": false,
-                      "description": "Words must match case rules.",
+                      "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                       "type": "boolean"
                     },
                     "description": {
@@ -2349,7 +2351,7 @@
           "deprecationMessage": "- Use `customDictionaries` instead."
         },
         "cSpell.caseSensitive": {
-          "description": "Words must match case rules.",
+          "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
           "markdownDescription": "Turns on case sensitive checking by default",
           "scope": "resource",
           "type": "boolean"
@@ -2568,10 +2570,10 @@
     "vsce": "^1.103.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.12.5",
-    "@cspell/cspell-types": "^5.12.4",
+    "@cspell/cspell-bundled-dicts": "^5.12.6",
+    "@cspell/cspell-types": "^5.12.6",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.12.5",
+    "cspell": "^5.12.6",
     "regexp-worker": "^1.1.1"
   }
 }

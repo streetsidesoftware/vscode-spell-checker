@@ -11,7 +11,7 @@
 | [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreatherthan) | language-overridable | The maximum average length of chunks of text without word breaks.                                        |
 | [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)        | language-overridable | The maximum line length.                                                                                 |
 | [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)     | language-overridable | The maximum length of a chunk of text without word breaks.                                               |
-| [`cSpell.caseSensitive`](#cspellcasesensitive)                                                     | resource             | Words must match case rules.                                                                             |
+| [`cSpell.caseSensitive`](#cspellcasesensitive)                                                     | resource             | Determines if words must match case and accent rules.                                                    |
 | [`cSpell.checkLimit`](#cspellchecklimit)                                                           | resource             | The limit in K-Characters to be checked in a file.                                                       |
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)                                           | resource             | Custom Dictionaries                                                                                      |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                                 | resource             | Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects…             |
@@ -419,7 +419,7 @@ Description
 : Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
 
 Default
-: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"yaml"`_, _`"yml"`_ ]
+: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vue"`_, _`"yaml"`_, _`"yml"`_ ]
 
 ---
 
