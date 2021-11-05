@@ -2571,7 +2571,7 @@
     "@cspell/cspell-bundled-dicts": "^5.12.5",
     "@cspell/cspell-types": "^5.12.4",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.12.5",
+    "cspell": "^5.12.6",
     "regexp-worker": "^1.1.1"
   }
 }
