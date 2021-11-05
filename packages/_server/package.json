@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.12.5",
-    "cspell-gitignore": "^5.12.5"
+    "cspell-gitignore": "^5.12.6"
   },
   "scripts": {
     "clean": "rimraf dist temp out coverage",
