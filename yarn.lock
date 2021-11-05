@@ -316,10 +316,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^5.12.5":
-  version "5.12.5"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.12.5.tgz#fb31d9d0e90302303a01063113a81e1bac0e3ef5"
-  integrity sha512-uuoAYkw1O+AcHx16XN8u42eCm4yLgT0D9vOWnrOKJEScpIvyrgHbL/B71PAkmeTwfhPWhyHb3m/QjYXzio3Olw==
+"@cspell/cspell-bundled-dicts@^5.12.5", "@cspell/cspell-bundled-dicts@^5.12.6":
+  version "5.12.6"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.12.6.tgz#3ca89c5f8f4f9bc43bbbf9c327ceac47bfc182b2"
+  integrity sha512-EInU8wtlT0j5XKh73pe60VF0H+rlVMycy6ZEXo6+6LJC80eUoovASGzWHzdtQhAVVhzny4wJG36Jbcz006HJPw==
   dependencies:
     "@cspell/dict-ada" "^1.1.2"
     "@cspell/dict-aws" "^1.0.14"
@@ -327,7 +327,7 @@
     "@cspell/dict-companies" "^2.0.2"
     "@cspell/dict-cpp" "^1.1.40"
     "@cspell/dict-cryptocurrencies" "^1.0.10"
-    "@cspell/dict-csharp" "^1.0.11"
+    "@cspell/dict-csharp" "^2.0.1"
     "@cspell/dict-css" "^1.0.12"
     "@cspell/dict-django" "^1.0.26"
     "@cspell/dict-dotnet" "^1.0.32"
@@ -354,7 +354,7 @@
     "@cspell/dict-ruby" "^1.0.14"
     "@cspell/dict-rust" "^1.0.23"
     "@cspell/dict-scala" "^1.0.21"
-    "@cspell/dict-software-terms" "^2.0.8"
+    "@cspell/dict-software-terms" "^2.0.9"
     "@cspell/dict-swift" "^1.0.1"
     "@cspell/dict-typescript" "^1.0.19"
     "@cspell/dict-vue" "^2.0.1"
@@ -394,10 +394,10 @@
   resolved "https://registry.npmjs.org/@cspell/dict-cryptocurrencies/-/dict-cryptocurrencies-1.0.10.tgz#04426fdfee8752818b375686d34a154b2fb40c7d"
   integrity sha512-47ABvDJOkaST/rXipNMfNvneHUzASvmL6K/CbOFpYKfsd0x23Jc9k1yaOC7JAm82XSC/8a7+3Yu+Fk2jVJNnsA==
 
-"@cspell/dict-csharp@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.npmjs.org/@cspell/dict-csharp/-/dict-csharp-1.0.11.tgz#cacdf477a31ca8326c2c91bee0b42b9f6b3c4a7c"
-  integrity sha512-nub+ZCiTgmT87O+swI+FIAzNwaZPWUGckJU4GN402wBq420V+F4ZFqNV7dVALJrGaWH7LvADRtJxi6cZVHJKeA==
+"@cspell/dict-csharp@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-csharp/-/dict-csharp-2.0.1.tgz#86ec4fa42ba9a4cc57df28ec7a335b56bf751c5b"
+  integrity sha512-ZzAr+WRP2FUtXHZtfhe8f3j9vPjH+5i44Hcr5JqbWxmqciGoTbWBPQXwu9y+J4mbdC69HSWRrVGkNJ8rQk8pSw==
 
 "@cspell/dict-css@^1.0.12":
   version "1.0.12"
@@ -529,7 +529,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-scala/-/dict-scala-1.0.21.tgz#bfda392329061e2352fbcd33d228617742c93831"
   integrity sha512-5V/R7PRbbminTpPS3ywgdAalI9BHzcEjEj9ug4kWYvBIGwSnS7T6QCFCiu+e9LvEGUqQC+NHgLY4zs1NaBj2vA==
 
-"@cspell/dict-software-terms@^2.0.8":
+"@cspell/dict-software-terms@^2.0.9":
   version "2.0.9"
   resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.0.9.tgz#c374901fee16c42aa07739decc9bcb002a6dcb50"
   integrity sha512-LhUmmJYD5Kzj04UgqPW7EvJ4eEVKkrPl4ki29ClwUg/uQNZh5JwcsxEMqh5+PHD7GggDqKPYcYZanytDELTZpg==
