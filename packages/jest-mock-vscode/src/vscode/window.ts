@@ -102,6 +102,7 @@ function _createStatusBarItem(id: string, alignment?: StatusBarAlignment, priori
         color: undefined,
         backgroundColor: undefined,
         command: undefined,
+        accessibilityInformation: undefined,
         show: jest.fn(),
         hide: jest.fn(),
         dispose: jest.fn(),
