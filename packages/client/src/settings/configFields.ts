@@ -25,6 +25,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     enabled: 'enabled',
     enabledLanguageIds: 'enabledLanguageIds',
     enableFiletypes: 'enableFiletypes',
+    enableGlobDot: 'enableGlobDot',
     files: 'files',
     fixSpellingWithRenameProvider: 'fixSpellingWithRenameProvider',
     flagWords: 'flagWords',

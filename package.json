@@ -825,6 +825,7 @@
                     },
                     {
                       "additionalProperties": false,
+                      "deprecated": true,
                       "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                       "description": "Only for legacy dictionary definitions",
                       "properties": {
@@ -833,6 +834,7 @@
                           "type": "string"
                         },
                         "file": {
+                          "deprecated": true,
                           "deprecationMessage": "Use `path` instead.",
                           "description": "Path to the file, only for legacy dictionary definitions",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
@@ -954,6 +956,7 @@
                     "type": "array"
                   }
                 ],
+                "deprecated": true,
                 "deprecationMessage": "Use `locale` instead",
                 "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
               },
@@ -1194,6 +1197,7 @@
               },
               {
                 "additionalProperties": false,
+                "deprecated": true,
                 "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                 "description": "Only for legacy dictionary definitions",
                 "properties": {
@@ -1202,6 +1206,7 @@
                     "type": "string"
                   },
                   "file": {
+                    "deprecated": true,
                     "deprecationMessage": "Use `path` instead.",
                     "description": "Path to the file, only for legacy dictionary definitions",
                     "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
@@ -1477,6 +1482,7 @@
                     },
                     {
                       "additionalProperties": false,
+                      "deprecated": true,
                       "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                       "description": "Only for legacy dictionary definitions",
                       "properties": {
@@ -1485,6 +1491,7 @@
                           "type": "string"
                         },
                         "file": {
+                          "deprecated": true,
                           "deprecationMessage": "Use `path` instead.",
                           "description": "Path to the file, only for legacy dictionary definitions",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
@@ -1796,6 +1803,7 @@
                           },
                           {
                             "additionalProperties": false,
+                            "deprecated": true,
                             "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
                             "description": "Only for legacy dictionary definitions",
                             "properties": {
@@ -1804,6 +1812,7 @@
                                 "type": "string"
                               },
                               "file": {
+                                "deprecated": true,
                                 "deprecationMessage": "Use `path` instead.",
                                 "description": "Path to the file, only for legacy dictionary definitions",
                                 "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
@@ -1925,6 +1934,7 @@
                           "type": "array"
                         }
                       ],
+                      "deprecated": true,
                       "deprecationMessage": "Use `locale` instead",
                       "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                     },
