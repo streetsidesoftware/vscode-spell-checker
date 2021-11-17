@@ -686,6 +686,7 @@ type Prefix<T, P extends string> = {
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
     | 'description'
+    | 'enableGlobDot' // Might add this later
     | 'gitignoreRoot' // Hide until implemented
     | 'id'
     | 'languageId'
