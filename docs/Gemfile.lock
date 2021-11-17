@@ -280,7 +280,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  github-pages
+  github-pages (>= 222)
   jekyll-feed (~> 0.12)
   jekyll-relative-links (~> 0.6.1)
   minima (~> 2.5)
