@@ -2526,6 +2526,13 @@
           "description": "Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.",
           "scope": "window",
           "type": "boolean"
+        },
+        "cSpell.showAutocompleteSuggestions": {
+          "default": false,
+          "description": "Show CSpell in-document directives as you type.",
+          "scope": "language-overridable",
+          "type": "boolean",
+          "markdownDescription": "Show CSpell in-document directives as you type.\n**Note:** VS Code must be restarted for this setting to take effect."
         }
       }
     }

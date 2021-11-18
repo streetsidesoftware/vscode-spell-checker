@@ -74,6 +74,16 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     showStatusAlignment?: 'Left' | 'Right';
 
     /**
+     * Show CSpell in-document directives as you type.
+     * @markdownDescription
+     * Show CSpell in-document directives as you type.
+     * **Note:** VS Code must be restarted for this setting to take effect.
+     * @scope language-overridable
+     * @default false
+     */
+    showAutocompleteSuggestions?: boolean;
+
+    /**
      * Delay in ms after a document has changed before checking it for spelling errors.
      * @scope application
      * @default 50

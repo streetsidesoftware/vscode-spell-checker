@@ -41,6 +41,7 @@
 | [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                   | resource             | Controls the number of suggestions shown.                                                                |
 | [`cSpell.overrides`](#cspelloverrides)                                                             | resource             | Overrides to apply based upon the file path.                                                             |
 | [`cSpell.patterns`](#cspellpatterns)                                                               | resource             | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList                    |
+| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                         | language-overridable | Show CSpell in-document directives as you type.                                                          |
 | [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)                 | application          | Show Spell Checker actions in Editor Context Menu                                                        |
 | [`cSpell.showStatus`](#cspellshowstatus)                                                           | application          | Display the spell checker status on the status bar.                                                      |
 | [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                         | application          | The side of the status bar to display the spell checker status.                                          |
@@ -864,6 +865,26 @@ Description
 
 Default
 : _- none -_
+
+---
+
+### `cSpell.showAutocompleteSuggestions`
+
+Name
+: `cSpell.showAutocompleteSuggestions`
+
+Type
+: boolean
+
+Scope
+: language-overridable
+
+Description
+: Show CSpell in-document directives as you type.
+**Note:** VS Code must be restarted for this setting to take effect.
+
+Default
+: _`false`_
 
 ---
 
