@@ -2060,6 +2060,13 @@
       "scope": "resource",
       "type": "array"
     },
+    "showAutocompleteSuggestions": {
+      "default": false,
+      "description": "Show CSpell in-document directives as you type.",
+      "markdownDescription": "Show CSpell in-document directives as you type.\n**Note:** VS Code must be restarted for this setting to take effect.",
+      "scope": "language-overridable",
+      "type": "boolean"
+    },
     "showCommandsInEditorContextMenu": {
       "default": true,
       "description": "Show Spell Checker actions in Editor Context Menu",

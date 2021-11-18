@@ -1,19 +1,19 @@
 import * as vscode from 'vscode';
 import { getCSpellDiags } from './diags';
 import * as di from './di';
+import { inspectConfigByScopeAndKey, getSettingFromVSConfig } from './settings/vsConfig';
 
 // cspell:ignore bibtex doctex expl jlweave rsweave
 // See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
 const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
 
 export async function registerCspellInlineCompletionProviders(subscriptions: { dispose(): any }[]): Promise<void> {
-    const langIds = await vscode.languages.getLanguages();
-    const inlineCompletionLangIds = langIds.filter((lang) => !blockLangIdsForInlineCompletion.has(lang) && !lang.includes('latex'));
+    const inlineCompletionLangIds = await calcInlineCompletionIds();
     subscriptions.push(
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),
-        vscode.languages.registerCompletionItemProvider('*', cspellInlineCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider('*', cspellInlineDictionaryNameCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider('*', cspellInlineIssuesCompletionProvider, ' ')
+        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ' '),
+        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineDictionaryNameCompletionProvider, ' '),
+        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineIssuesCompletionProvider, ' ')
     );
 }
 
@@ -204,3 +204,28 @@ const cspellInlineIssuesCompletionProvider: vscode.CompletionItemProvider = {
         return item;
     },
 };
+
+interface ShowSuggestionsSettings {
+    value: boolean;
+    byLangId: Map<string, boolean>;
+}
+
+function getShowSuggestionsSettings(): ShowSuggestionsSettings {
+    const key = 'showAutocompleteSuggestions';
+    const setting = inspectConfigByScopeAndKey(undefined, key);
+    const byLangOverrideIds = setting.languageIds ?? [];
+
+    const value = getSettingFromVSConfig(key, undefined) ?? false;
+    const byLangOverrides = byLangOverrideIds.map(
+        (languageId) => [languageId, getSettingFromVSConfig(key, { languageId })] as [string, boolean]
+    );
+    const byLangId = new Map(byLangOverrides);
+    return { value, byLangId };
+}
+
+async function calcInlineCompletionIds(): Promise<string[]> {
+    const langIds = await vscode.languages.getLanguages();
+    const { value, byLangId } = getShowSuggestionsSettings();
+    const inlineCompletionLangIds = langIds.filter((lang) => byLangId.get(lang) ?? (!blockLangIdsForInlineCompletion.has(lang) && value));
+    return inlineCompletionLangIds;
+}
