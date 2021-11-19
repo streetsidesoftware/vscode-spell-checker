@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.13](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.12...v2.0.13) (2021-11-19)
+
+
+### Bug Fixes
+
+* docs/Gemfile & docs/Gemfile.lock to reduce vulnerabilities ([#1539](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1539)) ([30abf4f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/30abf4fb79e5dd5e3c3b92f4b36192decf74aa44))
+* Put cspell autocompletion behind a configuration setting. ([#1545](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1545)) ([c5b0b7f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c5b0b7f6c75a29553156d59473f13de1da59866e))
+* use short path name in statusbar message. ([#1485](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1485)) ([6edabe7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6edabe781b8de4f94c85cc1a994f70f77de0988f))
+
 ### [2.0.12](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.0.11...v2.0.12) (2021-10-29)
 
 
