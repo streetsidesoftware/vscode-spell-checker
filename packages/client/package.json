@@ -30,7 +30,7 @@
   "devDependencies": {
     "@cspell/cspell-types": "^5.13.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^27.0.3",
     "@types/jest-when": "^2.7.3",
     "@types/kefir": "^3.8.7",
     "@types/node": "^16.11.7",
