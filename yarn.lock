@@ -3077,18 +3077,18 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-gitignore@^5.13.0:
-  version "5.13.0"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-5.13.0.tgz#2ba0e79cf13a26f120469b008e358db2a8ac58c2"
-  integrity sha512-Z5xfwGBwlW3m3HFWauq+1yLWY6Hu6PYkTnnSk3igOFcGxC3Ie+ZLiGac+0C58QwjZ9BrIibTjLMx2Fy+Pw7Mxw==
+cspell-gitignore@^5.13.0, cspell-gitignore@^5.13.1:
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-5.13.1.tgz#c8862cf95f91537fd4e535cc3b2b0178f641ed6e"
+  integrity sha512-Mrm60SMqZFfujsymIIGPR9WSGruDBIayG2T7Pgvhb7wUeqFCZoOWGDBXBSF0j8XuE8bEnOCwfjtNV88y47fywg==
   dependencies:
-    cspell-glob "^5.13.0"
+    cspell-glob "^5.13.1"
     find-up "^5.0.0"
 
-cspell-glob@^5.13.0:
-  version "5.13.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-5.13.0.tgz#cf06d2e79f3d7022394c4bacdf218310abd8957f"
-  integrity sha512-JOneRm1lWBuUKvF2uXo0/NnjfjUQKUT5q9Mu50+HLNSrqpaGv0ZlWaVRzmRakNiDE+fI6iHzBko7CrjugfE09w==
+cspell-glob@^5.13.0, cspell-glob@^5.13.1:
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-5.13.1.tgz#4c4064029fe7545b07d4ac19772a68da3521af61"
+  integrity sha512-URp+CzN3TSqP62/dJKZRMZW0lhe5aONlu3+xT8eYCUPxGhTe7ESBXW19S8ZxAHtyC2hkHXvkq7wvZHQPdQQbww==
   dependencies:
     micromatch "^4.0.4"
 
