@@ -37,7 +37,7 @@
   ],
   "qna": "marketplace",
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./packages/client/dist/extension.js",
   "contributes": {
