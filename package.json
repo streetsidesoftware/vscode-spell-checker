@@ -2580,17 +2580,17 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
-    "prettier": "^2.4.1",
+    "prettier": "^2.5.0",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.5.2",
     "vsce": "^2.5.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.13.0",
-    "@cspell/cspell-types": "^5.13.0",
+    "@cspell/cspell-bundled-dicts": "^5.13.1",
+    "@cspell/cspell-types": "^5.13.1",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.13.0",
+    "cspell": "^5.13.1",
     "regexp-worker": "^1.1.1"
   }
 }
