@@ -37,8 +37,6 @@
   ],
   "qna": "marketplace",
   "activationEvents": [
-    "workspaceContains:cspell.json",
-    "workspaceContains:.vscode/cspell.json",
     "onStartupFinished"
   ],
   "main": "./packages/client/dist/extension.js",
