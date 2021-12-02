@@ -2584,7 +2584,7 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.5.2",
-    "vsce": "^2.5.0"
+    "vsce": "^2.5.1"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.13.1",
