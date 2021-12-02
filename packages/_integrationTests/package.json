@@ -32,7 +32,7 @@
     "@types/vscode": "^1.62.0",
     "@vscode/test-electron": "^1.6.2",
     "chai": "^4.3.4",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.0",
     "cross-env": "^7.0.3",
     "glob": "^7.2.0",
     "kefir": "^3.8.8",
