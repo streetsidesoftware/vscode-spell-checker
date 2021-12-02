@@ -70,7 +70,7 @@ function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> 
         .map((root) => configFileLocations.map((rel) => path.join(root, rel)))
         .reduce((a, b) => a.concat(b), []);
 
-    const found = possibleLocations.map(async (filename) => ({ filename, exists: await fs.pathExists(filename) }));
+    const found = possibleLocations.map(async (filename) => ({ filename, exists: fs.existsSync(filename) }));
 
     return Promise.all(found).then((found) =>
         found
