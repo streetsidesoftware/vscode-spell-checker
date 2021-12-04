@@ -88,7 +88,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 -   Java
 -   JavaScript
 -   JSON / JSONC
--   LaTex
+-   LaTeX
 -   Markdown
 -   PHP
 -   PowerShell
