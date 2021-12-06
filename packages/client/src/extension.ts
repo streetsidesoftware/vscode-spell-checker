@@ -39,12 +39,21 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         setTimeout(() => silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings'), delayInMs);
     }
 
+    function triggerConfigChange() {
+        triggerGetSettings();
+    }
+
     initStatusBar(context, client);
+
+    const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
-        settings.watchSettingsFiles(triggerGetSettings),
+        configWatcher,
+        configWatcher.onDidChange(triggerConfigChange),
+        configWatcher.onDidCreate(triggerConfigChange),
+        configWatcher.onDidDelete(triggerConfigChange),
         vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),
