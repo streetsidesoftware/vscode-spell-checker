@@ -1,5 +1,5 @@
 export { ConfigFields } from './configFields';
-export { configFilesToWatch, CSpellSettings } from './CSpellSettings';
+export { configFileLocationGlob, configFilesToWatch, CSpellSettings } from './CSpellSettings';
 export {
     addIgnoreWordsToSettings,
     ConfigTargetLegacy,
@@ -11,7 +11,6 @@ export {
     setEnableSpellChecking,
     TargetsAndScopes,
     toggleEnableSpellChecker,
-    watchSettingsFiles,
 } from './settings';
 export {
     ConfigurationTarget,

@@ -1,47 +1,20 @@
 import { CSpellSettings } from '@cspell/cspell-types';
-import * as fs from 'fs-extra';
-import * as path from 'path';
 import * as vscode from 'vscode';
 import { Uri, workspace } from 'vscode';
 import { CSpellUserSettings } from '../client';
-import { isDefined, unique } from '../util';
-import * as watcher from '../util/watcher';
+import { unique } from '../util';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { readConfigFile, writeConfigFile } from './configFileReadWrite';
-import { configFileLocations, isUpdateSupportedForConfigFileFormat, normalizeWords, preferredConfigFiles } from './CSpellSettings';
+import { normalizeWords, preferredConfigFiles } from './CSpellSettings';
 import { setConfigFieldQuickPick } from './settings.base';
 
 export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable';
 export { enableLocaleForTarget } from './settings.locale';
+export type { TargetsAndScopes } from './settings.types';
 export { ConfigTargetLegacy, InspectScope, Scope } from './vsConfig';
 export interface SettingsInfo {
     path: Uri;
     settings: CSpellUserSettings;
-}
-export type { TargetsAndScopes } from './settings.types';
-
-export function watchSettingsFiles(callback: () => void): vscode.Disposable {
-    // Every 10 seconds see if we have new files to watch.
-    let busy = false;
-    const intervalObj = setInterval(async () => {
-        if (busy) {
-            return;
-        }
-        busy = true;
-        const settingsFiles = await findSettingsFiles();
-        settingsFiles
-            .map((uri) => uri.fsPath)
-            .filter((file) => !watcher.isWatching(file))
-            .forEach((file) => watcher.add(file, callback));
-        busy = false;
-    }, 10000);
-
-    return vscode.Disposable.from({
-        dispose: () => {
-            watcher.dispose();
-            clearInterval(intervalObj);
-        },
-    });
 }
 
 function getDefaultWorkspaceConfigLocation(docUri?: Uri): vscode.WorkspaceFolder | undefined {
@@ -51,34 +24,6 @@ function getDefaultWorkspaceConfigLocation(docUri?: Uri): vscode.WorkspaceFolder
 
 export function hasWorkspaceLocation(): boolean {
     return !!workspace.workspaceFile || !!workspace.workspaceFolders?.[0];
-}
-
-/**
- * Returns a list of files in the order of Best to Worst Match.
- * @param docUri
- */
-function findSettingsFiles(docUri?: Uri, isUpdatable?: boolean): Promise<Uri[]> {
-    const { workspaceFolders } = workspace;
-    if (!workspaceFolders || !hasWorkspaceLocation()) {
-        return Promise.resolve([]);
-    }
-
-    const folders = docUri ? [workspace.getWorkspaceFolder(docUri)].filter(isDefined).concat(workspaceFolders) : workspaceFolders;
-
-    const possibleLocations = folders
-        .map((folder) => folder.uri.fsPath)
-        .map((root) => configFileLocations.map((rel) => path.join(root, rel)))
-        .reduce((a, b) => a.concat(b), []);
-
-    const found = possibleLocations.map(async (filename) => ({ filename, exists: await fs.pathExists(filename) }));
-
-    return Promise.all(found).then((found) =>
-        found
-            .filter((found) => found.exists)
-            .map((found) => found.filename)
-            .map((filename) => Uri.file(filename))
-            .filter((uri) => !isUpdatable || isUpdateSupportedForConfigFileFormat(uri))
-    );
 }
 
 /**

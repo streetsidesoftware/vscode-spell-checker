@@ -34,6 +34,8 @@ export const configFileLocations = [
     'cspell.config.cjs',
 ] as const;
 
+export const configFileLocationGlob = `**/{${configFileLocations.join(',')}}`;
+
 type ConfigFileNames = typeof configFileLocations[number];
 
 export const nestedConfigLocations = ['package.json'];
