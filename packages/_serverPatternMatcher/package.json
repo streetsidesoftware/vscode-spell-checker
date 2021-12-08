@@ -29,7 +29,7 @@
     "@types/node": "^16.11.12",
     "common-utils": "1.0.0",
     "jest": "^27.4.3",
-    "ts-jest": "^27.1.0",
+    "ts-jest": "^27.1.1",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.2",
     "vscode-languageserver": "^7.0.0",
