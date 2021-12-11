@@ -1283,6 +1283,7 @@ export enum TaskPanelKind {
 
 export class TaskGroup implements vscode.TaskGroup {
     private _id: string;
+    readonly isDefault: boolean = false;
 
     public static Clean: TaskGroup = new TaskGroup('clean', 'Clean');
 
