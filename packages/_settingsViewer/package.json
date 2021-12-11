@@ -36,7 +36,7 @@
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^27.4.3",
+    "jest": "^27.4.4",
     "mobx": "^6.3.8",
     "mobx-react": "^7.2.1",
     "mobx-react-devtools": "^6.1.1",
