@@ -109,7 +109,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         logErrors(updateDocumentRelatedContext(client, e?.document), 'handleOnDidChangeActiveTextEditor');
     }
 
-    function handleOnDidChangeVisibleTextEditors(_e: vscode.TextEditor[]) {
+    function handleOnDidChangeVisibleTextEditors(_e: readonly vscode.TextEditor[]) {
         logErrors(updateDocumentRelatedContext(client, vscode.window.activeTextEditor?.document), 'handleOnDidChangeVisibleTextEditors');
     }
 
