@@ -51,7 +51,7 @@
     "server": "^2.0.0-alpha.1",
     "settings-webview": "^2.0.0-alpha.1",
     "source-map-support": "^0.5.21",
-    "ts-jest": "^27.1.1",
+    "ts-jest": "^27.1.2",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.4",
     "vscode-languageclient": "^7.0.0",
