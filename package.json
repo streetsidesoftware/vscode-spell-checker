@@ -2584,13 +2584,13 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.5.4",
-    "vsce": "^2.5.2"
+    "vsce": "^2.5.3"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.13.3",
-    "@cspell/cspell-types": "^5.13.3",
+    "@cspell/cspell-bundled-dicts": "^5.13.4",
+    "@cspell/cspell-types": "^5.13.4",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.13.3",
+    "cspell": "^5.13.4",
     "regexp-worker": "^1.1.1"
   }
 }
