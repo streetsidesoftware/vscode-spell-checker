@@ -33,6 +33,6 @@
     "jest": "^27.0.5"
   },
   "dependencies": {
-    "vscode-uri": "^3.0.2"
+    "vscode-uri": "^3.0.3"
   }
 }
