@@ -1054,10 +1054,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest-when@^2.7.3":
-  version "2.7.3"
-  resolved "https://registry.npmjs.org/@types/jest-when/-/jest-when-2.7.3.tgz#40735b320d8655ebff01123cb58afbdaf8274658"
-  integrity sha512-BdDZnKj3ZO1VsRlJFyRx6yLa0hG9++qetnBKhESjCGRVAm6S4aaKXXLm9xGFmtAQpzuMC44wxhvkG2cl6axvyQ==
+"@types/jest-when@^2.7.4":
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/@types/jest-when/-/jest-when-2.7.4.tgz#1bedac232f4a54c1a1c01cc641c03ecfd0dad0ec"
+  integrity sha512-2OC69oyaD33tmSaOjtxvy7ZpBO85OWIw1AbpWVziL4bek5mr795H59qK5EKDpp4dLhtH1QIs54tXpoHEb2mE/A==
   dependencies:
     "@types/jest" "*"
 
