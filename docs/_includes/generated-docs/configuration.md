@@ -16,19 +16,19 @@
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)                                           | resource             | Custom Dictionaries                                                                                      |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                                 | resource             | Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects…             |
 | [`cSpell.dictionaries`](#cspelldictionaries)                                                       | resource             | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…            |
-| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions)                                     | resource             | Define additional available dictionaries                                                                 |
+| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions)                                     | resource             | Define additional available dictionaries.                                                                |
 | [`cSpell.enabled`](#cspellenabled)                                                                 | resource             | Enable / Disable the spell checker.                                                                      |
 | [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids)                                           | resource             | Enabled Language Ids                                                                                     |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)                                                 | resource             | File Types to Check                                                                                      |
 | [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)                      | application          | Show Regular Expression Explorer                                                                         |
 | [`cSpell.files`](#cspellfiles)                                                                     | resource             | Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration… |
 | [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                     | language-overridable | Use Rename when fixing spelling issues.                                                                  |
-| [`cSpell.flagWords`](#cspellflagwords)                                                             | resource             | list of words to always be considered incorrect.                                                         |
+| [`cSpell.flagWords`](#cspellflagwords)                                                             | resource             | List of words to always be considered incorrect.                                                         |
 | [`cSpell.globRoot`](#cspellglobroot)                                                               | resource             | The root to use for glop patterns found in this configuration. Default: The current workspace…           |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                                         | resource             | Glob patterns of files to be ignored                                                                     |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                               | resource             | List of RegExp patterns or Pattern names to exclude from spell checking.                                 |
 | [`cSpell.ignoreWords`](#cspellignorewords)                                                         | resource             | A list of words to be ignored by the spell checker.                                                      |
-| [`cSpell.import`](#cspellimport)                                                                   | resource             | Other settings files to be included                                                                      |
+| [`cSpell.import`](#cspellimport)                                                                   | resource             | Other settings files to be included.                                                                     |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                             | resource             | List of RegExp patterns or defined Pattern names to define the text to be included for spell…            |
 | [`cSpell.language`](#cspelllanguage)                                                               | resource             | Current active spelling language.                                                                        |
 | [`cSpell.languageSettings`](#cspelllanguagesettings)                                               | resource             | Additional settings for individual languages.                                                            |
@@ -40,7 +40,7 @@
 | [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries)                                     | resource             | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries…        |
 | [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                   | resource             | Controls the number of suggestions shown.                                                                |
 | [`cSpell.overrides`](#cspelloverrides)                                                             | resource             | Overrides to apply based upon the file path.                                                             |
-| [`cSpell.patterns`](#cspellpatterns)                                                               | resource             | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList                    |
+| [`cSpell.patterns`](#cspellpatterns)                                                               | resource             | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.                   |
 | [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                         | language-overridable | Show CSpell in-document directives as you type.                                                          |
 | [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)                 | application          | Show Spell Checker actions in Editor Context Menu                                                        |
 | [`cSpell.showStatus`](#cspellshowstatus)                                                           | application          | Display the spell checker status on the status bar.                                                      |
@@ -53,7 +53,7 @@
 | [`cSpell.useGitignore`](#cspellusegitignore)                                                       | window               | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…           |
 | [`cSpell.usePnP`](#cspellusepnp)                                                                   | resource             | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
 | [`cSpell.userWords`](#cspelluserwords)                                                             | resource             | Words to add to global dictionary -- should only be in the user config file.                             |
-| [`cSpell.words`](#cspellwords)                                                                     | resource             | list of words to be always considered correct                                                            |
+| [`cSpell.words`](#cspellwords)                                                                     | resource             | List of words to be always considered correct.                                                           |
 | [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                                             | resource             | Workspace Root Folder Path                                                                               |
 
 ## Definitions
@@ -379,7 +379,7 @@ Scope
 : resource
 
 Description
-: Define additional available dictionaries
+: Define additional available dictionaries.
 
 Default
 : _- none -_
@@ -521,7 +521,7 @@ Scope
 : resource
 
 Description
-: list of words to always be considered incorrect.
+: List of words to always be considered incorrect.
 
 Default
 : _- none -_
@@ -585,7 +585,7 @@ Scope
 Description
 : List of RegExp patterns or Pattern names to exclude from spell checking.
 
-    Example: ["href"] - to exclude html href
+    Example: ["href"] - to exclude html href.
 
 Default
 : _- none -_
@@ -623,7 +623,7 @@ Scope
 : resource
 
 Description
-: Other settings files to be included
+: Other settings files to be included.
 
 Default
 : _- none -_
@@ -861,7 +861,7 @@ Scope
 : resource
 
 Description
-: Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList
+: Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.
 
 Default
 : _- none -_
@@ -1126,7 +1126,7 @@ Scope
 : resource
 
 Description
-: list of words to be always considered correct
+: List of words to be always considered correct.
 
 Default
 : _- none -_
