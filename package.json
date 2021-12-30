@@ -481,10 +481,10 @@
           "type": "array",
           "scope": "resource",
           "items": {
-            "description": "A File System Path",
+            "description": "A File System Path.",
             "type": "string"
           },
-          "description": "Other settings files to be included"
+          "description": "Other settings files to be included."
         },
         "cSpell.words": {
           "type": "array",
@@ -492,7 +492,7 @@
           "items": {
             "type": "string"
           },
-          "description": "list of words to be always considered correct"
+          "description": "List of words to be always considered correct."
         },
         "cSpell.userWords": {
           "type": "array",
@@ -564,7 +564,7 @@
           "type": "array",
           "scope": "resource",
           "items": {
-            "description": "Simple Glob string, the root will be globRoot",
+            "description": "Simple Glob string, the root will be globRoot.",
             "type": "string"
           },
           "default": [
@@ -584,7 +584,7 @@
           "items": {
             "type": "string"
           },
-          "description": "list of words to always be considered incorrect."
+          "description": "List of words to always be considered incorrect."
         },
         "cSpell.patterns": {
           "type": "array",
@@ -612,7 +612,7 @@
                     "type": "array"
                   }
                 ],
-                "description": "RegExp pattern or array of RegExp patterns"
+                "description": "RegExp pattern or array of RegExp patterns."
               }
             },
             "required": [
@@ -621,7 +621,7 @@
             ],
             "type": "object"
           },
-          "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList"
+          "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList."
         },
         "cSpell.ignoreRegExpList": {
           "type": "array",
@@ -630,7 +630,7 @@
             "description": "A PatternRef is a Pattern or PatternId.",
             "type": "string"
           },
-          "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href"
+          "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href."
         },
         "cSpell.includeRegExpList": {
           "type": "array",
@@ -666,7 +666,7 @@
                 "type": "boolean"
               },
               "description": {
-                "description": "Optional description of configuration",
+                "description": "Optional description of configuration.",
                 "type": "string"
               },
               "dictionaries": {
@@ -678,18 +678,18 @@
                 "type": "array"
               },
               "dictionaryDefinitions": {
-                "description": "Define additional available dictionaries",
+                "description": "Define additional available dictionaries.",
                 "items": {
                   "anyOf": [
                     {
                       "additionalProperties": false,
                       "properties": {
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -698,12 +698,12 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to the file",
+                          "description": "Path to the file.",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                           "type": "string"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -716,7 +716,7 @@
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -726,7 +726,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -745,11 +745,11 @@
                           "type": "boolean"
                         },
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -763,7 +763,7 @@
                           "type": "string"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -798,11 +798,11 @@
                               "type": "array"
                             }
                           ],
-                          "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
+                          "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -812,7 +812,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -826,22 +826,22 @@
                     {
                       "additionalProperties": false,
                       "deprecated": true,
-                      "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
-                      "description": "Only for legacy dictionary definitions",
+                      "deprecationMessage": "Use `DictionaryDefinitionPreferred` instead.",
+                      "description": "Only for legacy dictionary definitions.",
                       "properties": {
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "file": {
                           "deprecated": true,
                           "deprecationMessage": "Use `path` instead.",
-                          "description": "Path to the file, only for legacy dictionary definitions",
+                          "description": "Path to the file, only for legacy dictionary definitions.",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -850,7 +850,7 @@
                           "type": "boolean"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -863,7 +863,7 @@
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -873,7 +873,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -889,22 +889,22 @@
               },
               "enabled": {
                 "default": true,
-                "description": "Is the spell checker enabled",
+                "description": "Is the spell checker enabled.",
                 "type": "boolean"
               },
               "flagWords": {
-                "description": "list of words to always be considered incorrect.",
+                "description": "List of words to always be considered incorrect.",
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
               },
               "id": {
-                "description": "Optional identifier",
+                "description": "Optional identifier.",
                 "type": "string"
               },
               "ignoreRegExpList": {
-                "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href",
+                "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"
@@ -940,7 +940,7 @@
                     "type": "array"
                   }
                 ],
-                "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages"
+                "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
               },
               "local": {
                 "anyOf": [
@@ -957,7 +957,7 @@
                   }
                 ],
                 "deprecated": true,
-                "deprecationMessage": "Use `locale` instead",
+                "deprecationMessage": "Use `locale` instead.",
                 "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
               },
               "locale": {
@@ -977,7 +977,7 @@
                 "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
               },
               "name": {
-                "description": "Optional name of configuration",
+                "description": "Optional name of configuration.",
                 "type": "string"
               },
               "noSuggestDictionaries": {
@@ -989,7 +989,7 @@
                 "type": "array"
               },
               "patterns": {
-                "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList",
+                "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
                 "items": {
                   "additionalProperties": false,
                   "properties": {
@@ -1013,7 +1013,7 @@
                           "type": "array"
                         }
                       ],
-                      "description": "RegExp pattern or array of RegExp patterns"
+                      "description": "RegExp pattern or array of RegExp patterns."
                     }
                   },
                   "required": [
@@ -1025,7 +1025,7 @@
                 "type": "array"
               },
               "words": {
-                "description": "list of words to be always considered correct",
+                "description": "List of words to be always considered correct.",
                 "items": {
                   "type": "string"
                 },
@@ -1050,18 +1050,18 @@
         "cSpell.dictionaryDefinitions": {
           "type": "array",
           "scope": "resource",
-          "description": "Define additional available dictionaries",
+          "description": "Define additional available dictionaries.",
           "items": {
             "anyOf": [
               {
                 "additionalProperties": false,
                 "properties": {
                   "description": {
-                    "description": "Optional description",
+                    "description": "Optional description.",
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "type": "string"
                   },
@@ -1070,12 +1070,12 @@
                     "type": "boolean"
                   },
                   "path": {
-                    "description": "Path to the file",
+                    "description": "Path to the file.",
                     "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                     "type": "string"
                   },
                   "repMap": {
-                    "description": "Replacement pairs",
+                    "description": "Replacement pairs.",
                     "items": {
                       "items": {
                         "type": "string"
@@ -1088,7 +1088,7 @@
                   },
                   "type": {
                     "default": "S",
-                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                     "enum": [
                       "S",
                       "W",
@@ -1098,7 +1098,7 @@
                     "type": "string"
                   },
                   "useCompounds": {
-                    "description": "Use Compounds",
+                    "description": "Use Compounds.",
                     "type": "boolean"
                   }
                 },
@@ -1117,11 +1117,11 @@
                     "type": "boolean"
                   },
                   "description": {
-                    "description": "Optional description",
+                    "description": "Optional description.",
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "type": "string"
                   },
@@ -1135,7 +1135,7 @@
                     "type": "string"
                   },
                   "repMap": {
-                    "description": "Replacement pairs",
+                    "description": "Replacement pairs.",
                     "items": {
                       "items": {
                         "type": "string"
@@ -1170,11 +1170,11 @@
                         "type": "array"
                       }
                     ],
-                    "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
+                    "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                   },
                   "type": {
                     "default": "S",
-                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                     "enum": [
                       "S",
                       "W",
@@ -1184,7 +1184,7 @@
                     "type": "string"
                   },
                   "useCompounds": {
-                    "description": "Use Compounds",
+                    "description": "Use Compounds.",
                     "type": "boolean"
                   }
                 },
@@ -1198,22 +1198,22 @@
               {
                 "additionalProperties": false,
                 "deprecated": true,
-                "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
-                "description": "Only for legacy dictionary definitions",
+                "deprecationMessage": "Use `DictionaryDefinitionPreferred` instead.",
+                "description": "Only for legacy dictionary definitions.",
                 "properties": {
                   "description": {
-                    "description": "Optional description",
+                    "description": "Optional description.",
                     "type": "string"
                   },
                   "file": {
                     "deprecated": true,
                     "deprecationMessage": "Use `path` instead.",
-                    "description": "Path to the file, only for legacy dictionary definitions",
+                    "description": "Path to the file, only for legacy dictionary definitions.",
                     "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "type": "string"
                   },
@@ -1222,7 +1222,7 @@
                     "type": "boolean"
                   },
                   "repMap": {
-                    "description": "Replacement pairs",
+                    "description": "Replacement pairs.",
                     "items": {
                       "items": {
                         "type": "string"
@@ -1235,7 +1235,7 @@
                   },
                   "type": {
                     "default": "S",
-                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                     "enum": [
                       "S",
                       "W",
@@ -1245,7 +1245,7 @@
                     "type": "string"
                   },
                   "useCompounds": {
-                    "description": "Use Compounds",
+                    "description": "Use Compounds.",
                     "type": "boolean"
                   }
                 },
@@ -1323,7 +1323,7 @@
                 "type": "boolean"
               },
               "description": {
-                "description": "Optional description of configuration",
+                "description": "Optional description of configuration.",
                 "type": "string"
               },
               "dictionaries": {
@@ -1335,18 +1335,18 @@
                 "type": "array"
               },
               "dictionaryDefinitions": {
-                "description": "Define additional available dictionaries",
+                "description": "Define additional available dictionaries.",
                 "items": {
                   "anyOf": [
                     {
                       "additionalProperties": false,
                       "properties": {
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -1355,12 +1355,12 @@
                           "type": "boolean"
                         },
                         "path": {
-                          "description": "Path to the file",
+                          "description": "Path to the file.",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                           "type": "string"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -1373,7 +1373,7 @@
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -1383,7 +1383,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -1402,11 +1402,11 @@
                           "type": "boolean"
                         },
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -1420,7 +1420,7 @@
                           "type": "string"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -1455,11 +1455,11 @@
                               "type": "array"
                             }
                           ],
-                          "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
+                          "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -1469,7 +1469,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -1483,22 +1483,22 @@
                     {
                       "additionalProperties": false,
                       "deprecated": true,
-                      "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
-                      "description": "Only for legacy dictionary definitions",
+                      "deprecationMessage": "Use `DictionaryDefinitionPreferred` instead.",
+                      "description": "Only for legacy dictionary definitions.",
                       "properties": {
                         "description": {
-                          "description": "Optional description",
+                          "description": "Optional description.",
                           "type": "string"
                         },
                         "file": {
                           "deprecated": true,
                           "deprecationMessage": "Use `path` instead.",
-                          "description": "Path to the file, only for legacy dictionary definitions",
+                          "description": "Path to the file, only for legacy dictionary definitions.",
                           "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                           "type": "string"
                         },
                         "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                           "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                           "type": "string"
                         },
@@ -1507,7 +1507,7 @@
                           "type": "boolean"
                         },
                         "repMap": {
-                          "description": "Replacement pairs",
+                          "description": "Replacement pairs.",
                           "items": {
                             "items": {
                               "type": "string"
@@ -1520,7 +1520,7 @@
                         },
                         "type": {
                           "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                           "enum": [
                             "S",
                             "W",
@@ -1530,7 +1530,7 @@
                           "type": "string"
                         },
                         "useCompounds": {
-                          "description": "Use Compounds",
+                          "description": "Use Compounds.",
                           "type": "boolean"
                         }
                       },
@@ -1558,7 +1558,7 @@
               },
               "enabled": {
                 "default": true,
-                "description": "Is the spell checker enabled",
+                "description": "Is the spell checker enabled.",
                 "type": "boolean"
               },
               "enabledLanguageIds": {
@@ -1573,32 +1573,32 @@
               "filename": {
                 "anyOf": [
                   {
-                    "description": "These are glob expressions",
+                    "description": "These are glob expressions.",
                     "type": "string"
                   },
                   {
                     "items": {
-                      "description": "These are glob expressions",
+                      "description": "These are glob expressions.",
                       "type": "string"
                     },
                     "type": "array"
                   }
                 ],
-                "description": "Glob pattern or patterns to match against"
+                "description": "Glob pattern or patterns to match against."
               },
               "flagWords": {
-                "description": "list of words to always be considered incorrect.",
+                "description": "List of words to always be considered incorrect.",
                 "items": {
                   "type": "string"
                 },
                 "type": "array"
               },
               "id": {
-                "description": "Optional identifier",
+                "description": "Optional identifier.",
                 "type": "string"
               },
               "ignoreRegExpList": {
-                "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href",
+                "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"
@@ -1621,11 +1621,11 @@
                 "type": "array"
               },
               "language": {
-                "description": "Sets the locale",
+                "description": "Sets the locale.",
                 "type": "string"
               },
               "languageId": {
-                "description": "Sets the programming language id",
+                "description": "Sets the programming language id.",
                 "type": "string"
               },
               "languageSettings": {
@@ -1644,7 +1644,7 @@
                       "type": "boolean"
                     },
                     "description": {
-                      "description": "Optional description of configuration",
+                      "description": "Optional description of configuration.",
                       "type": "string"
                     },
                     "dictionaries": {
@@ -1656,18 +1656,18 @@
                       "type": "array"
                     },
                     "dictionaryDefinitions": {
-                      "description": "Define additional available dictionaries",
+                      "description": "Define additional available dictionaries.",
                       "items": {
                         "anyOf": [
                           {
                             "additionalProperties": false,
                             "properties": {
                               "description": {
-                                "description": "Optional description",
+                                "description": "Optional description.",
                                 "type": "string"
                               },
                               "name": {
-                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                                 "type": "string"
                               },
@@ -1676,12 +1676,12 @@
                                 "type": "boolean"
                               },
                               "path": {
-                                "description": "Path to the file",
+                                "description": "Path to the file.",
                                 "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                                 "type": "string"
                               },
                               "repMap": {
-                                "description": "Replacement pairs",
+                                "description": "Replacement pairs.",
                                 "items": {
                                   "items": {
                                     "type": "string"
@@ -1694,7 +1694,7 @@
                               },
                               "type": {
                                 "default": "S",
-                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                                 "enum": [
                                   "S",
                                   "W",
@@ -1704,7 +1704,7 @@
                                 "type": "string"
                               },
                               "useCompounds": {
-                                "description": "Use Compounds",
+                                "description": "Use Compounds.",
                                 "type": "boolean"
                               }
                             },
@@ -1723,11 +1723,11 @@
                                 "type": "boolean"
                               },
                               "description": {
-                                "description": "Optional description",
+                                "description": "Optional description.",
                                 "type": "string"
                               },
                               "name": {
-                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                                 "type": "string"
                               },
@@ -1741,7 +1741,7 @@
                                 "type": "string"
                               },
                               "repMap": {
-                                "description": "Replacement pairs",
+                                "description": "Replacement pairs.",
                                 "items": {
                                   "items": {
                                     "type": "string"
@@ -1776,11 +1776,11 @@
                                     "type": "array"
                                   }
                                 ],
-                                "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`"
+                                "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                               },
                               "type": {
                                 "default": "S",
-                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                                 "enum": [
                                   "S",
                                   "W",
@@ -1790,7 +1790,7 @@
                                 "type": "string"
                               },
                               "useCompounds": {
-                                "description": "Use Compounds",
+                                "description": "Use Compounds.",
                                 "type": "boolean"
                               }
                             },
@@ -1804,22 +1804,22 @@
                           {
                             "additionalProperties": false,
                             "deprecated": true,
-                            "deprecationMessage": "Use `DictionaryDefinitionPreferred`",
-                            "description": "Only for legacy dictionary definitions",
+                            "deprecationMessage": "Use `DictionaryDefinitionPreferred` instead.",
+                            "description": "Only for legacy dictionary definitions.",
                             "properties": {
                               "description": {
-                                "description": "Optional description",
+                                "description": "Optional description.",
                                 "type": "string"
                               },
                               "file": {
                                 "deprecated": true,
                                 "deprecationMessage": "Use `path` instead.",
-                                "description": "Path to the file, only for legacy dictionary definitions",
+                                "description": "Path to the file, only for legacy dictionary definitions.",
                                 "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
                                 "type": "string"
                               },
                               "name": {
-                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                                 "type": "string"
                               },
@@ -1828,7 +1828,7 @@
                                 "type": "boolean"
                               },
                               "repMap": {
-                                "description": "Replacement pairs",
+                                "description": "Replacement pairs.",
                                 "items": {
                                   "items": {
                                     "type": "string"
@@ -1841,7 +1841,7 @@
                               },
                               "type": {
                                 "default": "S",
-                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed) Default is S C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
                                 "enum": [
                                   "S",
                                   "W",
@@ -1851,7 +1851,7 @@
                                 "type": "string"
                               },
                               "useCompounds": {
-                                "description": "Use Compounds",
+                                "description": "Use Compounds.",
                                 "type": "boolean"
                               }
                             },
@@ -1867,22 +1867,22 @@
                     },
                     "enabled": {
                       "default": true,
-                      "description": "Is the spell checker enabled",
+                      "description": "Is the spell checker enabled.",
                       "type": "boolean"
                     },
                     "flagWords": {
-                      "description": "list of words to always be considered incorrect.",
+                      "description": "List of words to always be considered incorrect.",
                       "items": {
                         "type": "string"
                       },
                       "type": "array"
                     },
                     "id": {
-                      "description": "Optional identifier",
+                      "description": "Optional identifier.",
                       "type": "string"
                     },
                     "ignoreRegExpList": {
-                      "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href",
+                      "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
                       "items": {
                         "description": "A PatternRef is a Pattern or PatternId.",
                         "type": "string"
@@ -1918,7 +1918,7 @@
                           "type": "array"
                         }
                       ],
-                      "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages"
+                      "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
                     },
                     "local": {
                       "anyOf": [
@@ -1935,7 +1935,7 @@
                         }
                       ],
                       "deprecated": true,
-                      "deprecationMessage": "Use `locale` instead",
+                      "deprecationMessage": "Use `locale` instead.",
                       "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                     },
                     "locale": {
@@ -1955,7 +1955,7 @@
                       "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                     },
                     "name": {
-                      "description": "Optional name of configuration",
+                      "description": "Optional name of configuration.",
                       "type": "string"
                     },
                     "noSuggestDictionaries": {
@@ -1967,7 +1967,7 @@
                       "type": "array"
                     },
                     "patterns": {
-                      "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList",
+                      "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
                       "items": {
                         "additionalProperties": false,
                         "properties": {
@@ -1991,7 +1991,7 @@
                                 "type": "array"
                               }
                             ],
-                            "description": "RegExp pattern or array of RegExp patterns"
+                            "description": "RegExp pattern or array of RegExp patterns."
                           }
                         },
                         "required": [
@@ -2003,7 +2003,7 @@
                       "type": "array"
                     },
                     "words": {
-                      "description": "list of words to be always considered correct",
+                      "description": "List of words to be always considered correct.",
                       "items": {
                         "type": "string"
                       },
@@ -2033,7 +2033,7 @@
                 "type": "number"
               },
               "name": {
-                "description": "Optional name of configuration",
+                "description": "Optional name of configuration.",
                 "type": "string"
               },
               "noSuggestDictionaries": {
@@ -2046,11 +2046,11 @@
               },
               "numSuggestions": {
                 "default": 10,
-                "description": "Number of suggestions to make",
+                "description": "Number of suggestions to make.",
                 "type": "number"
               },
               "patterns": {
-                "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList",
+                "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
                 "items": {
                   "additionalProperties": false,
                   "properties": {
@@ -2074,7 +2074,7 @@
                           "type": "array"
                         }
                       ],
-                      "description": "RegExp pattern or array of RegExp patterns"
+                      "description": "RegExp pattern or array of RegExp patterns."
                     }
                   },
                   "required": [
@@ -2112,7 +2112,7 @@
                 "type": "boolean"
               },
               "words": {
-                "description": "list of words to be always considered correct",
+                "description": "List of words to be always considered correct.",
                 "items": {
                   "type": "string"
                 },
@@ -2150,14 +2150,14 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "title": "Name of Dictionary",
                     "type": "string"
                   },
                   "path": {
-                    "description": "A File System Path",
+                    "description": "A File System Path.",
                     "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                     "title": "Optional Path to Dictionary Text File",
                     "type": "string"
@@ -2196,7 +2196,7 @@
                 "type": "object"
               },
               {
-                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
               }
@@ -2226,14 +2226,14 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "title": "Name of Dictionary",
                     "type": "string"
                   },
                   "path": {
-                    "description": "A File System Path",
+                    "description": "A File System Path.",
                     "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                     "title": "Optional Path to Dictionary Text File",
                     "type": "string"
@@ -2272,7 +2272,7 @@
                 "type": "object"
               },
               {
-                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
               }
@@ -2302,14 +2302,14 @@
                     "type": "string"
                   },
                   "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                     "markdownDescription": "The reference name of the dictionary.\n\nExample: `My Words` or `custom`\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                     "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                     "title": "Name of Dictionary",
                     "type": "string"
                   },
                   "path": {
-                    "description": "A File System Path",
+                    "description": "A File System Path.",
                     "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                     "title": "Optional Path to Dictionary Text File",
                     "type": "string"
@@ -2348,7 +2348,7 @@
                 "type": "object"
               },
               {
-                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`",
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                 "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                 "type": "string"
               }
@@ -2455,7 +2455,7 @@
         "cSpell.files": {
           "description": "Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.",
           "items": {
-            "description": "These are glob expressions",
+            "description": "These are glob expressions.",
             "type": "string"
           },
           "scope": "resource",
@@ -2587,10 +2587,10 @@
     "vsce": "^2.5.3"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.13.4",
-    "@cspell/cspell-types": "^5.13.4",
+    "@cspell/cspell-bundled-dicts": "^5.14.0",
+    "@cspell/cspell-types": "^5.14.0",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.13.4",
+    "cspell": "^5.14.0",
     "regexp-worker": "^1.1.1"
   }
 }
