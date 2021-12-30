@@ -6205,10 +6205,10 @@ mobx-react-devtools@^6.1.1:
   resolved "https://registry.npmjs.org/mobx-react-devtools/-/mobx-react-devtools-6.1.1.tgz#a462b944085cf11ff96fc937d12bf31dab4c8984"
   integrity sha512-nc5IXLdEUFLn3wZal65KF3/JFEFd+mbH4KTz/IG5BOPyw7jo8z29w/8qm7+wiCyqVfUIgJ1gL4+HVKmcXIOgqA==
 
-mobx-react-lite@^3.2.0, mobx-react-lite@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.2.2.tgz#cee5f09e6b0e4d2705d87276baf1de74d997fa33"
-  integrity sha512-FxJJMqmHcnQYOVVs2DdjNHioGlFsXF5/9VHztS9NAfIT3DYrxNZzVi119Zr/OmlWKkWNkAsssSNzPkqautfL4A==
+mobx-react-lite@^3.2.0, mobx-react-lite@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.2.3.tgz#83d2b32ebf4383cd0dc0d397acbf53a8e9c66765"
+  integrity sha512-7exWp1FV0M9dP08H9PIeHlJqDw4IdkQVRMfLYaZFMmlbzSS6ZU6p/kx392KN+rVf81hH3IQYewvRGQ70oiwmbw==
 
 mobx-react@^7.2.1:
   version "7.2.1"
