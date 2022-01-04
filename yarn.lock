@@ -8357,10 +8357,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vsce@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.npmjs.org/vsce/-/vsce-2.6.0.tgz#1a31898173f4b3f6bcae05f26fd022818183ce98"
-  integrity sha512-cF2+RdWq7+VztKWyxtKR74khPKUEqvipBnLu46aJyQmuLAusIzJbQB+Rq5AQx8T8T5dkAELfHh/AyJVxRi5huw==
+vsce@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-2.6.3.tgz#5a50ec9894573350b10457064f71d1f2701789cf"
+  integrity sha512-PKfvAtG9rLT1evHiKOJpBHND1hUHOOf4lL7chZFp0KGu+Bpgcx3g3T5eq0d8Hmzd08zd3KJunsaA3iaNSmTU/A==
   dependencies:
     azure-devops-node-api "^11.0.1"
     chalk "^2.4.2"
