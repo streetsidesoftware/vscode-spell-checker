@@ -41,7 +41,7 @@
     "cross-env": "^7.0.3",
     "cspell-lib": "^5.14.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.4.5",
+    "jest": "^27.4.6",
     "jest-mock-vscode": "0.1.2",
     "jest-when": "^3.5.0",
     "kefir": "^3.8.8",
