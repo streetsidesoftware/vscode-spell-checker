@@ -143,7 +143,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @markdownDescription
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
-     * @deprecated
+     * @deprecated true
      * @deprecationMessage - Use `customDictionaries` instead.
      */
     customUserDictionaries?: CustomDictionaryEntry[];
@@ -154,7 +154,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @markdownDescription
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
-     * @deprecated
+     * @deprecated true
      * @deprecationMessage - Use `customDictionaries` instead.
      */
     customWorkspaceDictionaries?: CustomDictionaryEntry[];
@@ -165,7 +165,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @markdownDescription
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
-     * @deprecated
+     * @deprecated true
      * @deprecationMessage - Use `customDictionaries` instead.
      */
     customFolderDictionaries?: CustomDictionaryEntry[];
@@ -695,6 +695,7 @@ type Prefix<T, P extends string> = {
 
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
+    | 'cache'
     | 'description'
     | 'enableGlobDot' // Might add this later
     | 'gitignoreRoot' // Hide until implemented

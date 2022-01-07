@@ -1,8 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "definitions": {
-  },
+  "definitions": {},
   "properties": {
     "allowCompoundWords": {
       "default": false,
@@ -129,6 +128,7 @@
       "type": "object"
     },
     "customFolderDictionaries": {
+      "deprecated": true,
       "deprecationMessage": "- Use `customDictionaries` instead.",
       "items": {
         "anyOf": [
@@ -154,7 +154,7 @@
                 "type": "string"
               },
               "path": {
-                "description": "A File System Path.",
+                "description": "A File System Path. Relative paths are relative to the configuration file.",
                 "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
@@ -205,6 +205,7 @@
       "type": "array"
     },
     "customUserDictionaries": {
+      "deprecated": true,
       "deprecationMessage": "- Use `customDictionaries` instead.",
       "items": {
         "anyOf": [
@@ -230,7 +231,7 @@
                 "type": "string"
               },
               "path": {
-                "description": "A File System Path.",
+                "description": "A File System Path. Relative paths are relative to the configuration file.",
                 "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
@@ -281,6 +282,7 @@
       "type": "array"
     },
     "customWorkspaceDictionaries": {
+      "deprecated": true,
       "deprecationMessage": "- Use `customDictionaries` instead.",
       "items": {
         "anyOf": [
@@ -306,7 +308,7 @@
                 "type": "string"
               },
               "path": {
-                "description": "A File System Path.",
+                "description": "A File System Path. Relative paths are relative to the configuration file.",
                 "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                 "title": "Optional Path to Dictionary Text File",
                 "type": "string"
@@ -734,7 +736,7 @@
     "import": {
       "description": "Other settings files to be included.",
       "items": {
-        "description": "A File System Path.",
+        "description": "A File System Path. Relative paths are relative to the configuration file.",
         "type": "string"
       },
       "scope": "resource",
