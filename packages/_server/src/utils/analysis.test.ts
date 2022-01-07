@@ -12,7 +12,7 @@ const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.js')
 
 const defaultOptions: IsTextLikelyMinifiedOptions = {
     blockCheckingWhenLineLengthGreaterThan: 1000,
-    blockCheckingWhenAverageChunkSizeGreatherThan: 40,
+    blockCheckingWhenAverageChunkSizeGreaterThan: 40,
     blockCheckingWhenTextChunkSizeGreaterThan: 180,
 };
 

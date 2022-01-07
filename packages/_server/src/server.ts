@@ -356,7 +356,7 @@ export function run(): void {
         const { uri } = textDocument;
         const {
             blockCheckingWhenLineLengthGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenLineLengthGreaterThan,
-            blockCheckingWhenAverageChunkSizeGreatherThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreatherThan,
+            blockCheckingWhenAverageChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenAverageChunkSizeGreaterThan,
             blockCheckingWhenTextChunkSizeGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenTextChunkSizeGreaterThan,
         } = settings;
         if (blockedFiles.has(uri)) {
@@ -364,7 +364,7 @@ export function run(): void {
             return true;
         }
         const isMiniReason = isTextLikelyMinified(textDocument.getText(), {
-            blockCheckingWhenAverageChunkSizeGreatherThan,
+            blockCheckingWhenAverageChunkSizeGreaterThan,
             blockCheckingWhenLineLengthGreaterThan,
             blockCheckingWhenTextChunkSizeGreaterThan,
         });

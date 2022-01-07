@@ -157,7 +157,8 @@ export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
 }
 
 /**
- * @deprecated Use inspectConfigKey -- this is not guaranteed to work in the future.
+ * @deprecationMessage Use inspectConfigKey -- this is not guaranteed to work in the future.
+ * @deprecated true
  */
 export function inspectConfig(scope: GetConfigurationScope): Inspect<CSpellUserSettings> {
     const config = getConfiguration(scope);
