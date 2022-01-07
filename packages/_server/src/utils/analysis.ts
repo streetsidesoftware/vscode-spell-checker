@@ -16,7 +16,7 @@ export const ReasonAverageWordsSize: MinifiedReason = {
     code: 'Word_Size_Too_High.',
     message: 'Average Word Size is Too High.',
     documentationRefUri:
-        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenaveragechunksizegreatherthan',
+        'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhenaveragechunksizegreaterthan',
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
@@ -35,13 +35,13 @@ export interface IsTextLikelyMinifiedOptions {
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`
      */
-    blockCheckingWhenAverageChunkSizeGreatherThan: number;
+    blockCheckingWhenAverageChunkSizeGreaterThan: number;
 }
 
 export const defaultIsTextLikelyMinifiedOptions: IsTextLikelyMinifiedOptions = {
     blockCheckingWhenLineLengthGreaterThan: 10000,
     blockCheckingWhenTextChunkSizeGreaterThan: 500,
-    blockCheckingWhenAverageChunkSizeGreatherThan: 80,
+    blockCheckingWhenAverageChunkSizeGreaterThan: 80,
 };
 
 /**
@@ -73,7 +73,7 @@ export function isTextLikelyMinified(text: string, options: IsTextLikelyMinified
     chunks.push(sampleText.length);
     const wordCount = chunks.length;
     const avgChunkSize = sampleText.length / wordCount;
-    if (avgChunkSize > options.blockCheckingWhenAverageChunkSizeGreatherThan) return ReasonAverageWordsSize;
+    if (avgChunkSize > options.blockCheckingWhenAverageChunkSizeGreaterThan) return ReasonAverageWordsSize;
 
     const maxChunkSize = chunks.reduce((a, b) => [b, Math.max(a[1], b - a[0])], [0, 0])[1];
     if (maxChunkSize > options.blockCheckingWhenTextChunkSizeGreaterThan) return ReasonMaxWordsSize;

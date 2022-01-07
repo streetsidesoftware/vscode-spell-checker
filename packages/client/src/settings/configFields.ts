@@ -10,7 +10,7 @@ type CSpellUserSettingsFields = {
 export const ConfigFields: CSpellUserSettingsFields = {
     ...CSpellConfigFields,
     allowedSchemas: 'allowedSchemas',
-    blockCheckingWhenAverageChunkSizeGreatherThan: 'blockCheckingWhenAverageChunkSizeGreatherThan',
+    blockCheckingWhenAverageChunkSizeGreaterThan: 'blockCheckingWhenAverageChunkSizeGreaterThan',
     blockCheckingWhenLineLengthGreaterThan: 'blockCheckingWhenLineLengthGreaterThan',
     blockCheckingWhenTextChunkSizeGreaterThan: 'blockCheckingWhenTextChunkSizeGreaterThan',
     checkLimit: 'checkLimit',

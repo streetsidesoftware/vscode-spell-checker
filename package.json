@@ -2480,7 +2480,7 @@
           "type": "array",
           "scope": "resource"
         },
-        "cSpell.blockCheckingWhenAverageChunkSizeGreatherThan": {
+        "cSpell.blockCheckingWhenAverageChunkSizeGreaterThan": {
           "default": 80,
           "scope": "language-overridable",
           "type": "number",

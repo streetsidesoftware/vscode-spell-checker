@@ -26,7 +26,7 @@
       "scope": "window",
       "type": "array"
     },
-    "blockCheckingWhenAverageChunkSizeGreatherThan": {
+    "blockCheckingWhenAverageChunkSizeGreaterThan": {
       "default": 80,
       "markdownDescription": "The maximum average length of chunks of text without word breaks.\n\nA chunk is the characters between absolute word breaks.\nAbsolute word breaks match: `/[\\s,{}[\\]]/`\n\n**Error Message:** _Average Word Size is Too High._\n\nIf you are seeing this message, it means that the file contains mostly long lines\nwithout many word breaks.",
       "scope": "language-overridable",

@@ -298,7 +298,7 @@ interface SpellCheckerShouldCheckDocSettings {
      * @scope language-overridable
      * @default 80
      */
-    blockCheckingWhenAverageChunkSizeGreatherThan?: number;
+    blockCheckingWhenAverageChunkSizeGreaterThan?: number;
 }
 
 export type CustomDictionaries = {
