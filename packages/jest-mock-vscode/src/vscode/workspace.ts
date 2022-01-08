@@ -9,8 +9,14 @@ export type Workspace = typeof vscode.workspace;
 const fs = createMockFileSystem();
 
 export class MockWorkspace implements Workspace {
+    private _workspaceFolders: Workspace['workspaceFolders'] = undefined;
+
     get workspaceFolders(): Workspace['workspaceFolders'] {
-        return undefined;
+        return this._workspaceFolders;
+    }
+
+    setWorkspaceFolders(folders: vscode.WorkspaceFolder[] | undefined): void {
+        this._workspaceFolders = folders;
     }
 
     get fs(): Workspace['fs'] {
@@ -37,7 +43,7 @@ export class MockWorkspace implements Workspace {
     createFileSystemWatcher = jest.fn();
     findFiles = jest.fn();
     getConfiguration = jest.fn((...args: Parameters<Workspace['getConfiguration']>) => this.__mockConfig.__getConfiguration(...args));
-    getWorkspaceFolder = jest.fn(() => this.workspaceFolders?.[0]);
+    getWorkspaceFolder = jest.fn((uri) => getWorkspaceFolder(uri, this.workspaceFolders || []));
     onDidSaveTextDocument = jest.fn();
     openTextDocument = openTextDocument;
     openNotebookDocument = jest.fn();
@@ -81,4 +87,16 @@ function openTextDocument(param?: string | vscode.Uri | OpenTextDocumentOptions)
     }
 
     return Promise.resolve(createTextDocument(Uri.parse('untitled:Untitled-1'), options?.content || '', options?.language));
+}
+
+function getWorkspaceFolder(uri: vscode.Uri, folders: readonly vscode.WorkspaceFolder[]): vscode.WorkspaceFolder | undefined {
+    const uriFolder = Uri.joinPath(uri, '..');
+
+    return folders
+        .filter((f) => uriFolder.path.startsWith(f.uri.path))
+        .reduce((bestMatch: vscode.WorkspaceFolder | undefined, folder) => {
+            if (!bestMatch) return folder;
+            if (bestMatch.uri.path.length < folder.uri.path.length) return folder;
+            return bestMatch;
+        }, undefined);
 }

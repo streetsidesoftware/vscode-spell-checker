@@ -1,0 +1,25 @@
+{
+  "name": "jest-mock-vscode-examples",
+  "version": "1.0.0",
+  "description": "Jest Mock VS Code Examples",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "lint": "echo Lint",
+    "prepare": "yarn run build",
+    "build-production": "yarn run build",
+    "build": "tsc -p .",
+    "watch": "yarn run build --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/jest-when": "^2.7.4",
+    "@types/vscode": "^1.63.1",
+    "jest-mock-vscode": "^0.1.2",
+    "jest-when": "^3.5.0",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
+  }
+}

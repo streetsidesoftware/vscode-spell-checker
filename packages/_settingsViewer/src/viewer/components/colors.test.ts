@@ -2,7 +2,6 @@ import * as colors from './colors';
 import * as colorsStatic from './colorsStatic';
 import * as path from 'path';
 import * as fs from 'fs';
-
 import { getCssVar, Theme } from '../VSCodeColors/vscodeColors';
 
 const generateColors = false;

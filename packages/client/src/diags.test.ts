@@ -1,5 +1,4 @@
 import { createTextDocument } from 'jest-mock-vscode';
-import { mocked } from 'ts-jest/utils';
 import * as vscode from 'vscode';
 import { Diagnostic, DiagnosticSeverity, languages, Position, Range, Uri } from 'vscode';
 import { extractMatchingDiagText, getCSpellDiags, __testing__ } from './diags';
@@ -7,7 +6,7 @@ import { isDefined, mustBeDefined } from './util';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;
 
-const mockGetDiagnostics = mocked(languages.getDiagnostics);
+const mockGetDiagnostics = jest.mocked(languages.getDiagnostics);
 
 describe('Validate diags', () => {
     test('getCSpellDiags empty', () => {

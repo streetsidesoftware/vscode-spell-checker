@@ -1,13 +1,12 @@
 import { CSpellUserSettings } from '@cspell/cspell-types';
-import { mocked } from 'ts-jest/utils';
 import { ConfigurationTarget, Uri } from 'vscode';
 import { calculateConfigForTarget, updateConfig } from './vsConfig';
 import { createVSConfigReaderWriter } from './vsConfigReaderWriter';
 
 jest.mock('./vsConfig');
 
-const mockedUpdateConfig = mocked(updateConfig);
-const mockedCalculateConfigForTarget = mocked(calculateConfigForTarget);
+const mockedUpdateConfig = jest.mocked(updateConfig);
+const mockedCalculateConfigForTarget = jest.mocked(calculateConfigForTarget);
 
 describe('vsConfigReaderWriter', () => {
     test('createVSConfigReaderWriter', () => {

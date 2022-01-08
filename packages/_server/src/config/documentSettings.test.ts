@@ -2,7 +2,6 @@ import * as cspell from 'cspell-lib';
 import { getDefaultSettings, Pattern } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
-import { mocked } from 'ts-jest/utils';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 import { CSpellUserSettings } from '../config/cspellConfig';
@@ -21,8 +20,8 @@ import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
 
-const mockGetWorkspaceFolders = mocked(getWorkspaceFolders);
-const mockGetConfiguration = mocked(getConfiguration);
+const mockGetWorkspaceFolders = jest.mocked(getWorkspaceFolders);
+const mockGetConfiguration = jest.mocked(getConfiguration);
 const pathWorkspaceServer = Path.resolve(Path.join(__dirname, '..', '..'));
 const pathWorkspaceRoot = Path.resolve(Path.join(pathWorkspaceServer, '..', '..'));
 const pathWorkspaceClient = Path.resolve(Path.join(pathWorkspaceServer, '..', 'client'));

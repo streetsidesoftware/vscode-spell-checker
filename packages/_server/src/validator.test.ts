@@ -3,7 +3,6 @@ import { loremIpsum } from 'lorem-ipsum';
 import { CSpellSettings } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { URI } from 'vscode-uri';
-
 import { getDefaultSettings } from 'cspell-lib';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
