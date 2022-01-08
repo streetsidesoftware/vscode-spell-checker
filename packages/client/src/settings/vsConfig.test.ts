@@ -1,6 +1,5 @@
 import { createMockWorkspaceConfiguration, readTextDocument, MockWorkspaceConfigurationData } from 'jest-mock-vscode';
 import rfdc from 'rfdc';
-import { mocked } from 'ts-jest/utils';
 import { ConfigurationScope, Uri, workspace, WorkspaceConfiguration } from 'vscode';
 import { CSpellUserSettings } from '../client';
 import {
@@ -26,7 +25,7 @@ const { mergeInspect } = __testing__;
 
 const uri = Uri.file(__filename);
 
-const mockedWorkspace = mocked(workspace, true);
+const mockedWorkspace = jest.mocked(workspace, true);
 
 const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }> = {
     '[*]': {

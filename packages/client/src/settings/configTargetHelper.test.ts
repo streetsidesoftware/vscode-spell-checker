@@ -1,4 +1,3 @@
-import { mocked } from 'ts-jest/utils';
 import { CancellationToken, ConfigurationTarget, QuickPickItem, QuickPickOptions, Uri, window } from 'vscode';
 import { ClientConfigTarget } from './clientConfigTarget';
 import {
@@ -31,7 +30,7 @@ import {
 const dirUri = Uri.file(__dirname);
 const fileUri = Uri.file(__filename);
 
-const mockedShowQuickPick = mocked(window.showQuickPick);
+const mockedShowQuickPick = jest.mocked(window.showQuickPick);
 type MockedShowQuickPick = typeof mockedShowQuickPick;
 
 const ctDictA = createClientConfigTargetDictionary(Uri.joinPath(dirUri, 'a/words1.txt'), 'unknown');

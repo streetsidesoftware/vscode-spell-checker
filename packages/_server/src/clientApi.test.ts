@@ -1,5 +1,4 @@
 import { createClientApi } from './clientApi';
-import { mocked } from 'ts-jest/utils';
 import { Connection } from 'vscode-languageserver';
 import { OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api';
 
@@ -9,7 +8,7 @@ const stub: any = {
 };
 const connection = stub as Connection;
 
-const mockConnection = mocked(connection, true);
+const mockConnection = jest.mocked(connection, true);
 
 describe('Validate Client Api', () => {
     beforeEach(() => {

@@ -1,5 +1,4 @@
 import { when } from 'jest-when';
-import { mocked } from 'ts-jest/utils';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { getPathToTemp } from '../test/helpers';
 import { createCSpellConfigRepository, createVSCodeConfigRepository, __testing__ } from './configRepository';
@@ -21,7 +20,7 @@ const workspaceFolderWorkspace: WorkspaceFolder = {
     name: 'Workspace',
     index: 0,
 };
-const mockedWorkspace = mocked(workspace, true);
+const mockedWorkspace = jest.mocked(workspace, true);
 
 describe('configRepository', () => {
     test('CSpellConfigRepository', async () => {

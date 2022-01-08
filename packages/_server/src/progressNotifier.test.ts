@@ -1,4 +1,3 @@
-import { mocked } from 'ts-jest/utils';
 import { Connection } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { createProgressNotifier } from './progressNotifier';
@@ -6,8 +5,8 @@ import { createClientApi } from './clientApi';
 
 jest.mock('./clientApi');
 
-const mockedCreateClientApi = mocked(createClientApi);
-// const mockedCreateConnection = mocked(createConnection);
+const mockedCreateClientApi = jest.mocked(createClientApi);
+// const mockedCreateConnection = jest.mocked(createConnection);
 
 mockedCreateClientApi.mockImplementation(() => {
     return {
@@ -23,7 +22,7 @@ describe('Validate Progress Notifier', () => {
     test('createProgressNotifier', async () => {
         const clientApi = createClientApi(connection);
         const notifier = createProgressNotifier(clientApi);
-        const mockSendOnSpellCheckDocument = mocked(clientApi.sendOnSpellCheckDocument);
+        const mockSendOnSpellCheckDocument = jest.mocked(clientApi.sendOnSpellCheckDocument);
 
         expect(notifier.emitSpellCheckDocumentStep).toBeDefined();
 

@@ -1,6 +1,5 @@
-// import { mocked } from 'ts-jest/utils';
+//
 import { homedir } from 'os';
-import { mocked } from 'ts-jest/utils';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder, ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { CSpellClient } from '../client/client';
@@ -109,7 +108,7 @@ describe('Validate DictionaryHelper', () => {
     test('calcDictInfoForConfigRep vscode workspace', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[0];
-        mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Workspace, undefined, {});
         const rep = createVSCodeConfigRepository(rw);
         expect(calcDictInfoForConfigRep(rep)).toEqual({
@@ -123,7 +122,7 @@ describe('Validate DictionaryHelper', () => {
     test('calcDictInfoForConfigRep vscode folder', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[1];
-        mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.WorkspaceFolder, scope, {});
         const rep = createVSCodeConfigRepository(rw);
         const folderName = 'pkg-b';
@@ -139,7 +138,7 @@ describe('Validate DictionaryHelper', () => {
     test('calcDictInfoForConfigRep vscode folder uri', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[2];
-        mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const uri = Uri.joinPath(scope.uri, 'package.json');
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.WorkspaceFolder, uri, {});
         const rep = createVSCodeConfigRepository(rw);
@@ -156,7 +155,7 @@ describe('Validate DictionaryHelper', () => {
     test('calcDictInfoForConfigRep vscode user', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[0];
-        mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Global, scope, {});
         const rep = createVSCodeConfigRepository(rw);
         expect(calcDictInfoForConfigRep(rep)).toEqual({
