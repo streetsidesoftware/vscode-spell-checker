@@ -4,8 +4,12 @@
   "description": "Jest Mock VS Code Examples",
   "private": true,
   "scripts": {
+    "test": "jest",
+    "lint": "echo Lint",
+    "prepare": "yarn run build",
+    "build-production": "yarn run build",
     "build": "tsc -p .",
-    "test": "jest"
+    "watch": "yarn run build --watch"
   },
   "author": "",
   "license": "MIT",
