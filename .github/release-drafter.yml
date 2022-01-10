@@ -74,6 +74,8 @@ autolabeler:
     title:
       - "/^fix[!]/i"
       - "/^feat[!]/i"
+    body:
+      - "/BREAKING/"
 
 template: |
   ## Changes
