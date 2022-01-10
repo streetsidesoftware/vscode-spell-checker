@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.4.0
+      - uses: actions/setup-node@v2
+        with:
+          cache: yarn
       - name: Install
         run: yarn --frozen-lockfile
       - name: Build Extension .vsix
@@ -29,4 +32,4 @@ jobs:
         with:
           asset_paths: '["build/code-spell*.vsix"]'
 
-# cspell:ignore vsix alexellis
+# cspell:ignore vsix alexellis prereleased
