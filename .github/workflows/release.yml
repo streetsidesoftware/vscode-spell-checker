@@ -4,11 +4,11 @@ on:
     tags:
       - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Create Release
+name: Upload Release Assets
 
 jobs:
   build:
-    name: Create Release
+    name: Upload Assets
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,10 +18,9 @@ jobs:
       - name: Build Extension .vsix
         run: yarn run package-extension
       - run: zip code-spell-checker build/*
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload Release Assets
+        uses: alexellis/upload-assets@0.3.0
         with:
-          files: |
-            code-spell-checker.zip
+          asset_paths: '["code-spell-checker.zip"]'
 
-# cspell:ignore vsix softprops
+# cspell:ignore vsix alexellis
