@@ -13,16 +13,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.4.0
-      - name: Install # This would actually build your project, using zip for an example artifact
+      - name: Install 
         run: yarn --frozen-lockfile
       - name: Build Extension .vsix
         run: yarn run package-extension
       - run: zip code-spell-checker build/*
-      - name: Upload Release Assets
-        uses: alexellis/upload-assets@0.3.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}        
+      - name: Upload Assets
+        uses: meeDamian/github-release@v2.0.3
         with:
-          asset_paths: '["code-spell-checker.zip"]'
+          token: ${{ github.token }}
+          files: >
+            code-spell-checker.zip
 
 # cspell:ignore vsix alexellis
