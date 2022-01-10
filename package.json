@@ -5,7 +5,7 @@
   "icon": "images/SpellCheck.png",
   "author": "Jason Dent",
   "license": "GPL-3.0-or-later",
-  "version": "2.0.15",
+  "version": "2.1.0",
   "publisher": "streetsidesoftware",
   "private": true,
   "repository": {
@@ -2565,6 +2565,8 @@
     "version-prerelease-patch": "yarn run version-prerelease -r patch",
     "version-prerelease": "yarn run version-release -p alpha",
     "version-release": "yarn run test-vsce-build && standard-version",
+    "version-release-patch": "yarn run test-vsce-build && standard-version -r patch",
+    "version-release-minor": "yarn run test-vsce-build && standard-version -r minor",
     "package-extension": "vsce package -o ./build",
     "prettier": "prettier \"**/*.{ts,tsx,js,json,md}\" -c",
     "prettier-fix": "yarn run prettier -w",
