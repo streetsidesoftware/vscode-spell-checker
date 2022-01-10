@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-node@v2.5.1
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn --frozen-lockfile
       - run: yarn test
       # Ensure the repository is clean after build & test
