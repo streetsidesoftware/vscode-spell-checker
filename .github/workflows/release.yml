@@ -20,6 +20,8 @@ jobs:
       - run: zip code-spell-checker build/*
       - name: Upload Release Assets
         uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}        
         with:
           asset_paths: '["code-spell-checker.zip"]'
 
