@@ -15,17 +15,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.4.0
-      - name: Install 
+      - name: Install
         run: yarn --frozen-lockfile
       - name: Build Extension .vsix
         run: yarn run package-extension
       - run: zip code-spell-checker build/*
       - name: Upload Assets
-        uses: meeDamian/github-release@v2.0.3
+        uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ github.token }}
-          allow_override: true
-          files: >
-            code-spell-checker.zip
+          asset_paths: '["build/code-spell*.vsix"]'
 
 # cspell:ignore vsix alexellis
