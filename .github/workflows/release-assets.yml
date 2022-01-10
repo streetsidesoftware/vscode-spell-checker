@@ -1,8 +1,7 @@
 on:
   release:
     types:
-      - prereleased
-      - released
+      - published
   # push:
   #   # Sequence of patterns matched against refs/tags
   #   tags:
