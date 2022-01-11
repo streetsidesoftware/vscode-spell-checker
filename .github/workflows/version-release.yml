@@ -23,4 +23,4 @@ jobs:
         run: yarn run version-release
       - name: Push tags
         run: |
-          echo git push --follow-tags origin main
+          git push --follow-tags origin main
