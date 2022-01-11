@@ -15,7 +15,7 @@ jobs:
           cache: yarn
       - name: Install
         run: yarn --frozen-lockfile
-      - name: Build Extension .vsix
+      - name: Generate Tags
         run: yarn run version-release
       - name: Push tags
         run: |
