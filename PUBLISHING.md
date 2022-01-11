@@ -21,4 +21,4 @@ Use the following steps:
 
 1. Download the `code-spell-checker-*.vsix` file and test it out in VS Code. If it works as expected, update the release and remove the `This is a pre-release` check.
 
-    **_This will cause it to be Published to the Marketplaces_**
+1. Manually Publish to the Marketplace: [Action Manual Publish](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/manual-publish.yml)
