@@ -5,7 +5,7 @@ on:
 
 jobs:
   tag:
-    name: Upload Assets
+    name: Generate Tags
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
