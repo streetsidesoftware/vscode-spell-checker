@@ -49,7 +49,8 @@ version-resolver:
       - "patch"
   default: patch
 exclude-labels:
-  - "dependencies"
+  - hide
+  # - "dependencies"
 autolabeler:
   - label: "dependencies"
     title:
