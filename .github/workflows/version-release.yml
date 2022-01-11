@@ -1,0 +1,22 @@
+name: Tag Version for Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tag:
+    name: Upload Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          cache: yarn
+      - name: Install
+        run: yarn --frozen-lockfile
+      - name: Build Extension .vsix
+        run: yarn run version-release
+      - name: Push tags
+        run: |
+          echo git push --follow-tags origin main
