@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.1.3 (2022-01-11)
+
 ### [2.1.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.1.2-test-3...v2.1.2) (2022-01-11)
 
 ### [2.1.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.1.0...v2.1.1) (2022-01-10)
