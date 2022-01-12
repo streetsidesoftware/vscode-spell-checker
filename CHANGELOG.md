@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.1.4 (2022-01-12)
+
+
+### Bug Fixes
+
+* Remove words ([#1672](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1672)) ([bd0e821](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bd0e8214b52c1dba836f8100f9a5d85542103ec7)), closes [#1671](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1671)
+
 ### 2.1.3 (2022-01-11)
 
 ### [2.1.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.1.2-test-3...v2.1.2) (2022-01-11)
