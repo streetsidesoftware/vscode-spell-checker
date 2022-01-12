@@ -1,13 +1,15 @@
 //
 import { homedir } from 'os';
-import { ConfigurationTarget, Uri, workspace, WorkspaceFolder, ExtensionContext } from 'vscode';
+import { ConfigurationTarget, ExtensionContext, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import { CSpellClient } from '../client/client';
 import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client';
+import { CSpellClient } from '../client/client';
 import { getPathToTemp } from '../test/helpers';
 import { createConfigFileReaderWriter } from './configFileReadWrite';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
+import { createClientConfigTargetCSpell } from './configTargetHelper';
 import { DictionaryHelper, __testing__ } from './DictionaryHelper';
+import { createDictionaryTargetForConfigRep } from './DictionaryTarget';
 import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
 
 const {
@@ -59,15 +61,65 @@ const cfg_1_out: CSpellUserSettings = {
 describe('Validate DictionaryHelper', () => {
     beforeEach(() => {});
 
-    test('isTextDocument', () => {
-        const uri = Uri.file(__filename);
-        expect(isTextDocument(uri)).toBe(false);
-    });
-
     test('DictionaryHelper', () => {
         const client = new CSpellClient(fakeExtensionContext, []);
         const helper = new DictionaryHelper(client);
         expect(helper).toBeDefined();
+    });
+
+    test('addWordsToConfigRep/removeWordsFromConfigRep', async () => {
+        const uri = getPathToTemp('cspell.json');
+        const rw = new MemoryConfigFileReaderWriter(uri, {});
+        const rep = createCSpellConfigRepository(rw);
+        const client = new CSpellClient(fakeExtensionContext, []);
+        const helper = new DictionaryHelper(client);
+
+        await helper.addWordsToConfigRep(['one', 'two'], rep);
+
+        expect(await rep.getValue('words')).toEqual({ words: ['one', 'two'] });
+
+        await helper.removeWordsFromConfigRep(['two'], rep);
+        expect(await rep.getValue('words')).toEqual({ words: ['one'] });
+    });
+
+    test('addWordToDictionaries/removeWordFromDictionaries', async () => {
+        const uri = getPathToTemp('cspell.json');
+        const rw = new MemoryConfigFileReaderWriter(uri, {});
+        const rep = createCSpellConfigRepository(rw);
+        const client = new CSpellClient(fakeExtensionContext, []);
+        const helper = new DictionaryHelper(client);
+        const dict = createDictionaryTargetForConfigRep(rep);
+
+        await helper.addWordToDictionaries(['one', 'two'], [dict]);
+
+        expect(await rep.getValue('words')).toEqual({ words: ['one', 'two'] });
+
+        await helper.removeWordFromDictionaries(['two'], [dict]);
+        expect(await rep.getValue('words')).toEqual({ words: ['one'] });
+    });
+
+    test('addWordToDictionaries/removeWordFromDictionaries', async () => {
+        const uri = getPathToTemp('cspell.json');
+        const target = createClientConfigTargetCSpell(uri, 'unknown');
+        const rep = createCSpellConfigRepository(uri);
+        const client = new CSpellClient(fakeExtensionContext, []);
+        const helper = new DictionaryHelper(client);
+
+        await helper.addWordsToTargets(['one', 'two'], [target], undefined);
+
+        expect(await rep.getValue('words')).toEqual({ words: ['one', 'two'] });
+
+        await helper.removeWordsFromTargets(['two'], [target], undefined);
+        expect(await rep.getValue('words')).toEqual({ words: ['one'] });
+    });
+});
+
+describe('Validate DictionaryHelper methods', () => {
+    beforeEach(() => {});
+
+    test('isTextDocument', () => {
+        const uri = Uri.file(__filename);
+        expect(isTextDocument(uri)).toBe(false);
     });
 
     test.each`
