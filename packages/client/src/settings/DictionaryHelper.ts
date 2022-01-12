@@ -133,7 +133,7 @@ export class DictionaryHelper {
     public async removeWordFromDictionary(words: string | string[], dictTarget: DictionaryTarget): Promise<void> {
         words = normalizeWords(words);
         try {
-            await dictTarget.addWords(words);
+            await dictTarget.removeWords(words);
         } catch (e) {
             throw new DictionaryTargetError(`Unable to remove "${words}" from "${dictTarget.name}"`, dictTarget, e);
         }
