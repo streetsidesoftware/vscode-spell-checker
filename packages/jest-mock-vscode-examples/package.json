@@ -19,7 +19,7 @@
     "@types/vscode": "^1.63.1",
     "jest-mock-vscode": "^0.1.2",
     "jest-when": "^3.5.0",
-    "ts-jest": "^27.1.2",
+    "ts-jest": "^27.1.3",
     "typescript": "^4.5.4"
   }
 }
