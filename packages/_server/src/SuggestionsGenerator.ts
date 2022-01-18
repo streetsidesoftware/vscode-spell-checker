@@ -1,6 +1,7 @@
 import { CSpellUserSettings } from './config/cspellConfig';
 import { SuggestionResult, CompoundWordsMethod } from 'cspell-lib';
-import { SuggestOptions, SpellingDictionaryCollection } from 'cspell-lib/dist/SpellingDictionary';
+import { SpellingDictionaryCollection } from 'cspell-lib';
+import type { SuggestOptions } from 'cspell-lib/dist/SpellingDictionary';
 
 const defaultNumSuggestions = 10;
 
