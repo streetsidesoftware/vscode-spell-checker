@@ -1,6 +1,7 @@
 # Project Words
 acanthopterygious
 activitybar
+aeiouy
 algolia
 anonymize
 appid
