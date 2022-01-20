@@ -698,6 +698,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'cache'
     | 'description'
     | 'enableGlobDot' // Might add this later
+    | 'features' // add this back when they are in use.
     | 'gitignoreRoot' // Hide until implemented
     | 'id'
     | 'languageId'
