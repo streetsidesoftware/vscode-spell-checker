@@ -1326,10 +1326,10 @@
   resolved "https://registry.npmjs.org/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
   integrity sha512-sL/cEvJWAnClXw0wHk85/2L0G6Sj8UB0Ctc1TEMbKSsmpRosqhwj9gWgFRZSrBr2f9tiXISwNhCPmlfqUqyb9Q==
 
-"@vscode/test-electron@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@vscode/test-electron/-/test-electron-2.1.0.tgz#3e787e3ffb354051294529f451e6f0f6529ff8eb"
-  integrity sha512-nE5ha/V+l4WnS0QS5wJhb2S75Ceamif30UOcURHYw+8FoJJHg2g1xM8/dSpvX2Xk4+04Rbl76/ui/tgI5qia+Q==
+"@vscode/test-electron@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/@vscode/test-electron/-/test-electron-2.1.1.tgz#f1616f2e88d67fbcce599064007a99e703eccfa1"
+  integrity sha512-7G9gFGjJGOJ+hQ1ZgZYEV973pzQBclLZngXOEGMyRyvK4GUkl7XeIOwQN/iMv2ttq7gPUKmIxSKF7YGF5J7DZQ==
   dependencies:
     http-proxy-agent "^4.0.1"
     https-proxy-agent "^5.0.0"
@@ -2610,9 +2610,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001286:
-  version "1.0.30001300"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001300.tgz#11ab6c57d3eb6f964cba950401fd00a146786468"
-  integrity sha512-cVjiJHWGcNlJi8TZVKNMnvMid3Z3TTdDHmLDzlOdIiZq138Exvo0G+G0wTdVYolxKb4AYwC+38pxodiInVtJSA==
+  version "1.0.30001301"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001301.tgz#ebc9086026534cab0dab99425d9c3b4425e5f450"
+  integrity sha512-csfD/GpHMqgEL3V3uIgosvh+SVIQvCh43SNu9HRbP1lnxkKm1kjDG4f32PP571JplkLjfS+mg2p1gxR7MYrrIA==
 
 chai@^4.3.4:
   version "4.3.4"
@@ -7289,9 +7289,9 @@ resolve.exports@^1.1.0:
   integrity sha512-J1l+Zxxp4XK3LUDZ9m60LRJF/mAe4z6a4xyabPHk7pvK5t35dACV32iIjJDFeWZFfZlO29w6SZ67knR0tHzJtQ==
 
 resolve@^1.10.0, resolve@^1.17.0, resolve@^1.20.0, resolve@^1.8.1, resolve@^1.9.0:
-  version "1.21.0"
-  resolved "https://registry.npmjs.org/resolve/-/resolve-1.21.0.tgz#b51adc97f3472e6a5cf4444d34bc9d6b9037591f"
-  integrity sha512-3wCbTpk5WJlyE4mSOtDLhqQmGFi0/TD9VPwmiolnk8U0wRgMEktqCXd3vy5buTO3tljvalNvKrjHEfrd2WpEKA==
+  version "1.21.1"
+  resolved "https://registry.npmjs.org/resolve/-/resolve-1.21.1.tgz#1a88c73f5ca8ab0aabc8b888c4170de26c92c4cc"
+  integrity sha512-lfEImVbnolPuaSZuLQ52cAxPBHeI77sPwCOWRdy12UG/CNa8an7oBHH1R+Fp1/mUqSJi4c8TIP6FOIPSZAUrEQ==
   dependencies:
     is-core-module "^2.8.0"
     path-parse "^1.0.7"
