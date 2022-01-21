@@ -3920,7 +3920,7 @@
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
-    "typescript": "^4.5.4",
+    "typescript": "^4.5.5",
     "vsce": "^2.6.3"
   },
   "dependencies": {
