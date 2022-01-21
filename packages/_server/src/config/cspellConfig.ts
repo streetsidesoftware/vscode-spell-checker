@@ -1,6 +1,15 @@
 // Export the cspell settings to the client.
 
-import type { CSpellSettings, CustomDictionaryScope, DictionaryId, FsPath, GlobDef, SimpleGlob } from '@cspell/cspell-types';
+import type {
+    CSpellSettings,
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+    DictionaryDefinitionPreferred,
+    DictionaryId,
+    FsPath,
+    GlobDef,
+    SimpleGlob,
+} from '@cspell/cspell-types';
 export type {
     CustomDictionaryScope,
     DictionaryDefinition,
@@ -708,7 +717,13 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'reporters'
     | 'version';
 
-export type SpellCheckerSettingsVSCodeBase = Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson>;
+export interface SpellCheckerSettingsVSCodeBase extends Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson> {
+    /**
+     * Define additional available dictionaries.
+     * @scope resource
+     */
+    dictionaryDefinitions?: (DictionaryDefinitionPreferred | DictionaryDefinitionCustom)[];
+}
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
