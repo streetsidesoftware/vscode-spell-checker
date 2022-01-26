@@ -3750,7 +3750,7 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.5.5",
-    "vsce": "^2.6.3"
+    "vsce": "^2.6.4"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^5.16.0",
