@@ -373,7 +373,7 @@ Name
 : `cSpell.dictionaryDefinitions`
 
 Type
-: object[]
+: []
 
 Scope
 : resource

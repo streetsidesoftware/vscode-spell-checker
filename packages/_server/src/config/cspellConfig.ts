@@ -6,6 +6,7 @@ import type {
     DictionaryDefinitionCustom,
     DictionaryDefinitionPreferred,
     LanguageSetting,
+    OverrideSettings,
     DictionaryId,
     FsPath,
     GlobDef,
@@ -703,7 +704,9 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
-type DictionaryDef = Omit<DictionaryDefinitionPreferred | DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+type DictionaryDef =
+    | Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>
+    | Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
 
 interface DictionaryDefinitions {
     /**
@@ -714,6 +717,23 @@ interface DictionaryDefinitions {
 }
 
 type LanguageSettingsReduced = Omit<LanguageSetting, 'local' | 'dictionaryDefinitions'> & DictionaryDefinitions;
+
+interface LanguageSettings {
+    /**
+     * Additional settings for individual programming languages and locales.
+     * @scope resource
+     */
+    languageSettings?: LanguageSettingsReduced[];
+}
+
+type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> & DictionaryDefinitions & LanguageSettings;
+interface Overrides {
+    /**
+     * Overrides to apply based upon the file path.
+     * @scope resource
+     */
+    overrides?: OverridesReduced[];
+}
 
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
@@ -732,14 +752,13 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'version';
 
 export interface SpellCheckerSettingsVSCodeBase
-    extends Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings'>,
-        DictionaryDefinitions {
-    /**
-     * Additional settings for individual programming languages and locales.
-     * @scope resource
-     */
-    languageSettings?: LanguageSettingsReduced[];
-}
+    extends Omit<
+            CSpellUserSettings,
+            CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
+        >,
+        DictionaryDefinitions,
+        LanguageSettings,
+        Overrides {}
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
