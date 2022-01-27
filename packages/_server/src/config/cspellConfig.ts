@@ -5,6 +5,8 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
     DictionaryDefinitionPreferred,
+    LanguageSetting,
+    OverrideSettings,
     DictionaryId,
     FsPath,
     GlobDef,
@@ -702,6 +704,37 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
+type DictionaryDef =
+    | Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>
+    | Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+
+interface DictionaryDefinitions {
+    /**
+     * Define additional available dictionaries.
+     * @scope resource
+     */
+    dictionaryDefinitions?: DictionaryDef[];
+}
+
+type LanguageSettingsReduced = Omit<LanguageSetting, 'local' | 'dictionaryDefinitions'> & DictionaryDefinitions;
+
+interface LanguageSettings {
+    /**
+     * Additional settings for individual programming languages and locales.
+     * @scope resource
+     */
+    languageSettings?: LanguageSettingsReduced[];
+}
+
+type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> & DictionaryDefinitions & LanguageSettings;
+interface Overrides {
+    /**
+     * Overrides to apply based upon the file path.
+     * @scope resource
+     */
+    overrides?: OverridesReduced[];
+}
+
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
     | 'cache'
@@ -709,6 +742,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'enableGlobDot' // Might add this later
     | 'features' // add this back when they are in use.
     | 'gitignoreRoot' // Hide until implemented
+    | 'failFast'
     | 'id'
     | 'languageId'
     | 'name'
@@ -717,13 +751,14 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'reporters'
     | 'version';
 
-export interface SpellCheckerSettingsVSCodeBase extends Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson> {
-    /**
-     * Define additional available dictionaries.
-     * @scope resource
-     */
-    dictionaryDefinitions?: (DictionaryDefinitionPreferred | DictionaryDefinitionCustom)[];
-}
+export interface SpellCheckerSettingsVSCodeBase
+    extends Omit<
+            CSpellUserSettings,
+            CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
+        >,
+        DictionaryDefinitions,
+        LanguageSettings,
+        Overrides {}
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
