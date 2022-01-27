@@ -5,6 +5,7 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
     DictionaryDefinitionPreferred,
+    LanguageSetting,
     DictionaryId,
     FsPath,
     GlobDef,
@@ -702,6 +703,18 @@ type Prefix<T, P extends string> = {
     [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
 };
 
+type DictionaryDef = Omit<DictionaryDefinitionPreferred | DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+
+interface DictionaryDefinitions {
+    /**
+     * Define additional available dictionaries.
+     * @scope resource
+     */
+    dictionaryDefinitions?: DictionaryDef[];
+}
+
+type LanguageSettingsReduced = Omit<LanguageSetting, 'local' | 'dictionaryDefinitions'> & DictionaryDefinitions;
+
 type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | '$schema'
     | 'cache'
@@ -709,6 +722,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'enableGlobDot' // Might add this later
     | 'features' // add this back when they are in use.
     | 'gitignoreRoot' // Hide until implemented
+    | 'failFast'
     | 'id'
     | 'languageId'
     | 'name'
@@ -717,12 +731,14 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'reporters'
     | 'version';
 
-export interface SpellCheckerSettingsVSCodeBase extends Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson> {
+export interface SpellCheckerSettingsVSCodeBase
+    extends Omit<CSpellUserSettings, CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings'>,
+        DictionaryDefinitions {
     /**
-     * Define additional available dictionaries.
+     * Additional settings for individual programming languages and locales.
      * @scope resource
      */
-    dictionaryDefinitions?: (DictionaryDefinitionPreferred | DictionaryDefinitionCustom)[];
+    languageSettings?: LanguageSettingsReduced[];
 }
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;

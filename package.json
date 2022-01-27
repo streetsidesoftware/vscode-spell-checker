@@ -651,7 +651,7 @@
         "cSpell.languageSettings": {
           "type": "array",
           "scope": "resource",
-          "description": "Additional settings for individual languages.",
+          "description": "Additional settings for individual programming languages and locales.",
           "items": {
             "additionalProperties": false,
             "properties": {
@@ -680,544 +680,63 @@
               "dictionaryDefinitions": {
                 "description": "Define additional available dictionaries.",
                 "items": {
-                  "anyOf": [
-                    {
-                      "additionalProperties": false,
-                      "properties": {
-                        "description": {
-                          "description": "Optional description.",
-                          "type": "string"
-                        },
-                        "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-                          "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                          "type": "string"
-                        },
-                        "noSuggest": {
-                          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-                          "type": "boolean"
-                        },
-                        "path": {
-                          "description": "Path to the file.",
-                          "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
-                          "type": "string"
-                        },
-                        "repMap": {
-                          "description": "Replacement pairs.",
-                          "items": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "maxItems": 2,
-                            "minItems": 2,
-                            "type": "array"
-                          },
-                          "type": "array"
-                        },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                          },
-                          "type": "array"
-                        },
-                        "type": {
-                          "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
-                          "enum": [
-                            "S",
-                            "W",
-                            "C",
-                            "T"
-                          ],
-                          "type": "string"
-                        },
-                        "useCompounds": {
-                          "description": "Use Compounds.",
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "name",
-                        "path"
-                      ],
-                      "type": "object"
+                  "additionalProperties": false,
+                  "properties": {
+                    "addWords": {
+                      "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                      "type": "boolean"
                     },
-                    {
-                      "additionalProperties": false,
-                      "description": "For Defining Custom dictionaries. They are generally scoped to a `user`, `workspace`, or `folder`. When `addWords` is true, indicates that the spell checker can add words to the file. Note: only plain text files with one word per line are supported at this moment.",
-                      "properties": {
-                        "addWords": {
-                          "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
-                          "type": "boolean"
-                        },
-                        "description": {
-                          "description": "Optional description.",
-                          "type": "string"
-                        },
-                        "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-                          "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                          "type": "string"
-                        },
-                        "noSuggest": {
-                          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-                          "type": "boolean"
-                        },
-                        "path": {
-                          "description": "Path to custom dictionary text file.",
-                          "pattern": "^.*\\.txt$",
-                          "type": "string"
-                        },
-                        "repMap": {
-                          "description": "Replacement pairs.",
-                          "items": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "maxItems": 2,
-                            "minItems": 2,
-                            "type": "array"
-                          },
-                          "type": "array"
-                        },
-                        "scope": {
-                          "anyOf": [
-                            {
-                              "description": "Specifies the scope of a dictionary.",
-                              "enum": [
-                                "user",
-                                "workspace",
-                                "folder"
-                              ],
-                              "type": "string"
-                            },
-                            {
-                              "items": {
-                                "description": "Specifies the scope of a dictionary.",
-                                "enum": [
-                                  "user",
-                                  "workspace",
-                                  "folder"
-                                ],
-                                "type": "string"
-                              },
-                              "type": "array"
-                            }
-                          ],
-                          "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
-                        },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                          },
-                          "type": "array"
-                        },
-                        "type": {
-                          "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
-                          "enum": [
-                            "S",
-                            "W",
-                            "C",
-                            "T"
-                          ],
-                          "type": "string"
-                        },
-                        "useCompounds": {
-                          "description": "Use Compounds.",
-                          "type": "boolean"
-                        }
-                      },
-                      "required": [
-                        "addWords",
-                        "name",
-                        "path"
-                      ],
-                      "type": "object"
+                    "description": {
+                      "description": "Optional description.",
+                      "type": "string"
                     },
-                    {
-                      "additionalProperties": false,
-                      "deprecated": true,
-                      "deprecationMessage": "Use `DictionaryDefinitionPreferred` instead.",
-                      "description": "Only for legacy dictionary definitions.",
-                      "properties": {
-                        "description": {
-                          "description": "Optional description.",
-                          "type": "string"
-                        },
-                        "file": {
-                          "deprecated": true,
-                          "deprecationMessage": "Use `path` instead.",
-                          "description": "Path to the file, only for legacy dictionary definitions.",
-                          "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
-                          "type": "string"
-                        },
-                        "name": {
-                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-                          "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                          "type": "string"
-                        },
-                        "noSuggest": {
-                          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-                          "type": "boolean"
-                        },
-                        "repMap": {
-                          "description": "Replacement pairs.",
-                          "items": {
-                            "items": {
-                              "type": "string"
-                            },
-                            "maxItems": 2,
-                            "minItems": 2,
-                            "type": "array"
-                          },
-                          "type": "array"
-                        },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                          },
-                          "type": "array"
-                        },
-                        "type": {
-                          "default": "S",
-                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                    "name": {
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "Path to the file.",
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
-                            "S",
-                            "W",
-                            "C",
-                            "T"
+                            "user",
+                            "workspace",
+                            "folder"
                           ],
                           "type": "string"
                         },
-                        "useCompounds": {
-                          "description": "Use Compounds.",
-                          "type": "boolean"
+                        {
+                          "items": {
+                            "description": "Specifies the scope of a dictionary.",
+                            "enum": [
+                              "user",
+                              "workspace",
+                              "folder"
+                            ],
+                            "type": "string"
+                          },
+                          "type": "array"
                         }
-                      },
-                      "required": [
-                        "file",
-                        "name"
                       ],
-                      "type": "object"
+                      "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                     }
-                  ]
+                  },
+                  "required": [
+                    "path",
+                    "name",
+                    "addWords"
+                  ],
+                  "type": "object"
                 },
+                "scope": "resource",
                 "type": "array"
               },
               "enabled": {
@@ -1262,6 +781,18 @@
               "languageId": {
                 "anyOf": [
                   {
+                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                    "type": "string"
+                  },
+                  {
+                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                    "type": "string"
+                  },
+                  {
+                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
                     "type": "string"
                   },
                   {
@@ -1274,24 +805,6 @@
                   }
                 ],
                 "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
-              },
-              "local": {
-                "anyOf": [
-                  {
-                    "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                    "type": "string"
-                  },
-                  {
-                    "items": {
-                      "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  }
-                ],
-                "deprecated": true,
-                "deprecationMessage": "Use `locale` instead.",
-                "description": "Deprecated - The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
               },
               "locale": {
                 "anyOf": [
@@ -1385,372 +898,61 @@
           "scope": "resource",
           "description": "Define additional available dictionaries.",
           "items": {
-            "anyOf": [
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "description": {
-                    "description": "Optional description.",
-                    "type": "string"
-                  },
-                  "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-                    "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                    "type": "string"
-                  },
-                  "noSuggest": {
-                    "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-                    "type": "boolean"
-                  },
-                  "path": {
-                    "description": "Path to the file.",
-                    "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
-                    "type": "string"
-                  },
-                  "repMap": {
-                    "description": "Replacement pairs.",
-                    "items": {
-                      "items": {
-                        "type": "string"
-                      },
-                      "maxItems": 2,
-                      "minItems": 2,
-                      "type": "array"
-                    },
-                    "type": "array"
-                  },
-                  "suggestionEditCosts": {
-                    "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "map",
-                            "replace"
-                          ],
-                          "type": "object"
-                        },
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "insDel",
-                            "map"
-                          ],
-                          "type": "object"
-                        },
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "map",
-                            "swap"
-                          ],
-                          "type": "object"
-                        }
-                      ],
-                      "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                    },
-                    "type": "array"
-                  },
-                  "type": {
-                    "default": "S",
-                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
-                    "enum": [
-                      "S",
-                      "W",
-                      "C",
-                      "T"
-                    ],
-                    "type": "string"
-                  },
-                  "useCompounds": {
-                    "description": "Use Compounds.",
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "name",
-                  "path"
-                ],
-                "type": "object"
+            "additionalProperties": false,
+            "properties": {
+              "addWords": {
+                "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                "type": "boolean"
               },
-              {
-                "additionalProperties": false,
-                "description": "For Defining Custom dictionaries. They are generally scoped to a `user`, `workspace`, or `folder`. When `addWords` is true, indicates that the spell checker can add words to the file. Note: only plain text files with one word per line are supported at this moment.",
-                "properties": {
-                  "addWords": {
-                    "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
-                    "type": "boolean"
-                  },
-                  "description": {
-                    "description": "Optional description.",
-                    "type": "string"
-                  },
-                  "name": {
-                    "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
-                    "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                    "type": "string"
-                  },
-                  "noSuggest": {
-                    "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
-                    "type": "boolean"
-                  },
-                  "path": {
-                    "description": "Path to custom dictionary text file.",
-                    "pattern": "^.*\\.txt$",
-                    "type": "string"
-                  },
-                  "repMap": {
-                    "description": "Replacement pairs.",
-                    "items": {
-                      "items": {
-                        "type": "string"
-                      },
-                      "maxItems": 2,
-                      "minItems": 2,
-                      "type": "array"
-                    },
-                    "type": "array"
-                  },
-                  "scope": {
-                    "anyOf": [
-                      {
-                        "description": "Specifies the scope of a dictionary.",
-                        "enum": [
-                          "user",
-                          "workspace",
-                          "folder"
-                        ],
-                        "type": "string"
-                      },
-                      {
-                        "items": {
-                          "description": "Specifies the scope of a dictionary.",
-                          "enum": [
-                            "user",
-                            "workspace",
-                            "folder"
-                          ],
-                          "type": "string"
-                        },
-                        "type": "array"
-                      }
-                    ],
-                    "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
-                  },
-                  "suggestionEditCosts": {
-                    "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "map",
-                            "replace"
-                          ],
-                          "type": "object"
-                        },
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "insDel",
-                            "map"
-                          ],
-                          "type": "object"
-                        },
-                        {
-                          "additionalProperties": false,
-                          "properties": {
-                            "description": {
-                              "description": "A description to describe the purpose of the map.",
-                              "type": "string"
-                            },
-                            "insDel": {
-                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                              "type": "number"
-                            },
-                            "map": {
-                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                              "type": "string"
-                            },
-                            "penalty": {
-                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                              "type": "number"
-                            },
-                            "replace": {
-                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                              "type": "number"
-                            },
-                            "swap": {
-                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "map",
-                            "swap"
-                          ],
-                          "type": "object"
-                        }
-                      ],
-                      "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                    },
-                    "type": "array"
-                  },
-                  "type": {
-                    "default": "S",
-                    "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
+              "description": {
+                "description": "Optional description.",
+                "type": "string"
+              },
+              "name": {
+                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                "type": "string"
+              },
+              "noSuggest": {
+                "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                "type": "boolean"
+              },
+              "path": {
+                "description": "Path to the file.",
+                "type": "string"
+              },
+              "scope": {
+                "anyOf": [
+                  {
+                    "description": "Specifies the scope of a dictionary.",
                     "enum": [
-                      "S",
-                      "W",
-                      "C",
-                      "T"
+                      "user",
+                      "workspace",
+                      "folder"
                     ],
                     "type": "string"
                   },
-                  "useCompounds": {
-                    "description": "Use Compounds.",
-                    "type": "boolean"
+                  {
+                    "items": {
+                      "description": "Specifies the scope of a dictionary.",
+                      "enum": [
+                        "user",
+                        "workspace",
+                        "folder"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
-                },
-                "required": [
-                  "addWords",
-                  "name",
-                  "path"
                 ],
-                "type": "object"
+                "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
               }
-            ]
+            },
+            "required": [
+              "path",
+              "name",
+              "addWords"
+            ],
+            "type": "object"
           }
         },
         "cSpell.showCommandsInEditorContextMenu": {
@@ -1866,117 +1068,6 @@
                           },
                           "type": "array"
                         },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                          },
-                          "type": "array"
-                        },
                         "type": {
                           "default": "S",
                           "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
@@ -2063,114 +1154,229 @@
                           ],
                           "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                         },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
+                        "type": {
+                          "default": "S",
+                          "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                          "enum": [
+                            "S",
+                            "W",
+                            "C",
+                            "T"
+                          ],
+                          "type": "string"
+                        },
+                        "useCompounds": {
+                          "description": "Use Compounds.",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "addWords",
+                        "name",
+                        "path"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "description": "Used to provide extra data related to the dictionary",
+                      "properties": {
+                        "description": {
+                          "description": "Optional description.",
+                          "type": "string"
+                        },
+                        "dictionaryInformation": {
+                          "additionalProperties": false,
+                          "description": "Use by dictionary authors to help improve the quality of suggestions given from the dictionary.\n\nAdded with `v5.16.0`.",
+                          "properties": {
+                            "hunspellInformation": {
+                              "additionalProperties": false,
+                              "description": "Used by dictionary authors",
+                              "properties": {
+                                "aff": {
+                                  "description": "Selected Hunspell AFF content. The content must be UTF-8\n\nSections:\n- TRY\n- MAP\n- REP\n- KEY\n- ICONV\n- OCONV\n\nExample: ```hunspell # Comment TRY aeistlunkodmrvpgjhäõbüoöfcwzxðqþ` MAP aàâäAÀÂÄ MAP eéèêëEÉÈÊË MAP iîïyIÎÏY MAP oôöOÔÖ MAP (IJ)(Ĳ) ```",
+                                  "type": "string"
+                                },
+                                "costs": {
+                                  "additionalProperties": false,
+                                  "description": "The costs to apply when using the hunspell settings",
+                                  "properties": {
+                                    "firstLetterPenalty": {
+                                      "default": 4,
+                                      "description": "The extra cost incurred for changing the first letter of a word. This value should be less than `100 - tryCharCost`.",
+                                      "type": "number"
+                                    },
+                                    "ioConvertCost": {
+                                      "default": 30,
+                                      "description": "The cost to convert between convert pairs.\n\nThe value should be slightly higher than the mapCost.",
+                                      "type": "number"
+                                    },
+                                    "keyboardCost": {
+                                      "default": 94,
+                                      "description": "The cost of replacing or swapping any adjacent keyboard characters.\n\nThis should be slightly cheaper than `tryCharCost`.",
+                                      "type": "number"
+                                    },
+                                    "mapCost": {
+                                      "default": 25,
+                                      "description": "mapSet replacement cost is the cost to substitute one character with another from the same set.\n\nMap characters are considered very similar to each other and are often the cause of simple mistakes.",
+                                      "type": "number"
+                                    },
+                                    "replaceCosts": {
+                                      "default": 75,
+                                      "description": "The cost to substitute pairs found in the replace settings.",
+                                      "type": "number"
+                                    },
+                                    "tryCharCost": {
+                                      "default": 95,
+                                      "description": "The cost of inserting / deleting / or swapping any `tryChars`",
+                                      "type": "number"
+                                    }
+                                  },
+                                  "type": "object"
+                                }
+                              },
+                              "required": [
+                                "aff"
+                              ],
+                              "type": "object"
+                            },
+                            "suggestionEditCosts": {
+                              "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.",
+                              "items": {
+                                "anyOf": [
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "description": {
+                                        "description": "A description to describe the purpose of the map.",
+                                        "type": "string"
+                                      },
+                                      "insDel": {
+                                        "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                        "type": "number"
+                                      },
+                                      "map": {
+                                        "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                        "type": "string"
+                                      },
+                                      "penalty": {
+                                        "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                        "type": "number"
+                                      },
+                                      "replace": {
+                                        "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                        "type": "number"
+                                      },
+                                      "swap": {
+                                        "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "map",
+                                      "replace"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "description": {
+                                        "description": "A description to describe the purpose of the map.",
+                                        "type": "string"
+                                      },
+                                      "insDel": {
+                                        "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                        "type": "number"
+                                      },
+                                      "map": {
+                                        "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                        "type": "string"
+                                      },
+                                      "penalty": {
+                                        "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                        "type": "number"
+                                      },
+                                      "replace": {
+                                        "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                        "type": "number"
+                                      },
+                                      "swap": {
+                                        "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "insDel",
+                                      "map"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "description": {
+                                        "description": "A description to describe the purpose of the map.",
+                                        "type": "string"
+                                      },
+                                      "insDel": {
+                                        "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                        "type": "number"
+                                      },
+                                      "map": {
+                                        "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                        "type": "string"
+                                      },
+                                      "penalty": {
+                                        "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                        "type": "number"
+                                      },
+                                      "replace": {
+                                        "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                        "type": "number"
+                                      },
+                                      "swap": {
+                                        "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "map",
+                                      "swap"
+                                    ],
+                                    "type": "object"
+                                  }
+                                ],
+                                "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
+                              },
+                              "type": "array"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "name": {
+                          "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                          "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                          "type": "string"
+                        },
+                        "noSuggest": {
+                          "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                          "type": "boolean"
+                        },
+                        "path": {
+                          "description": "Path to the file.",
+                          "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
+                          "type": "string"
+                        },
+                        "repMap": {
+                          "description": "Replacement pairs.",
                           "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
+                            "items": {
+                              "type": "string"
+                            },
+                            "maxItems": 2,
+                            "minItems": 2,
+                            "type": "array"
                           },
                           "type": "array"
                         },
@@ -2191,7 +1397,6 @@
                         }
                       },
                       "required": [
-                        "addWords",
                         "name",
                         "path"
                       ],
@@ -2232,117 +1437,6 @@
                             "maxItems": 2,
                             "minItems": 2,
                             "type": "array"
-                          },
-                          "type": "array"
-                        },
-                        "suggestionEditCosts": {
-                          "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                          "items": {
-                            "anyOf": [
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "replace"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "insDel",
-                                  "map"
-                                ],
-                                "type": "object"
-                              },
-                              {
-                                "additionalProperties": false,
-                                "properties": {
-                                  "description": {
-                                    "description": "A description to describe the purpose of the map.",
-                                    "type": "string"
-                                  },
-                                  "insDel": {
-                                    "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                    "type": "number"
-                                  },
-                                  "map": {
-                                    "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                    "type": "string"
-                                  },
-                                  "penalty": {
-                                    "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                    "type": "number"
-                                  },
-                                  "replace": {
-                                    "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                    "type": "number"
-                                  },
-                                  "swap": {
-                                    "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "map",
-                                  "swap"
-                                ],
-                                "type": "object"
-                              }
-                            ],
-                            "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
                           },
                           "type": "array"
                         },
@@ -2520,117 +1614,6 @@
                                 },
                                 "type": "array"
                               },
-                              "suggestionEditCosts": {
-                                "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                                "items": {
-                                  "anyOf": [
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "replace"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "insDel",
-                                        "map"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "swap"
-                                      ],
-                                      "type": "object"
-                                    }
-                                  ],
-                                  "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
-                                },
-                                "type": "array"
-                              },
                               "type": {
                                 "default": "S",
                                 "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
@@ -2717,114 +1700,229 @@
                                 ],
                                 "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                               },
-                              "suggestionEditCosts": {
-                                "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
+                              "type": {
+                                "default": "S",
+                                "description": "Type of file: S - single word per line, W - each line can contain one or more words separated by space, C - each line is treated like code (Camel Case is allowed). Default is S. C is the slowest to load due to the need to split each line based upon code splitting rules.",
+                                "enum": [
+                                  "S",
+                                  "W",
+                                  "C",
+                                  "T"
+                                ],
+                                "type": "string"
+                              },
+                              "useCompounds": {
+                                "description": "Use Compounds.",
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "addWords",
+                              "name",
+                              "path"
+                            ],
+                            "type": "object"
+                          },
+                          {
+                            "additionalProperties": false,
+                            "description": "Used to provide extra data related to the dictionary",
+                            "properties": {
+                              "description": {
+                                "description": "Optional description.",
+                                "type": "string"
+                              },
+                              "dictionaryInformation": {
+                                "additionalProperties": false,
+                                "description": "Use by dictionary authors to help improve the quality of suggestions given from the dictionary.\n\nAdded with `v5.16.0`.",
+                                "properties": {
+                                  "hunspellInformation": {
+                                    "additionalProperties": false,
+                                    "description": "Used by dictionary authors",
+                                    "properties": {
+                                      "aff": {
+                                        "description": "Selected Hunspell AFF content. The content must be UTF-8\n\nSections:\n- TRY\n- MAP\n- REP\n- KEY\n- ICONV\n- OCONV\n\nExample: ```hunspell # Comment TRY aeistlunkodmrvpgjhäõbüoöfcwzxðqþ` MAP aàâäAÀÂÄ MAP eéèêëEÉÈÊË MAP iîïyIÎÏY MAP oôöOÔÖ MAP (IJ)(Ĳ) ```",
+                                        "type": "string"
+                                      },
+                                      "costs": {
+                                        "additionalProperties": false,
+                                        "description": "The costs to apply when using the hunspell settings",
+                                        "properties": {
+                                          "firstLetterPenalty": {
+                                            "default": 4,
+                                            "description": "The extra cost incurred for changing the first letter of a word. This value should be less than `100 - tryCharCost`.",
+                                            "type": "number"
+                                          },
+                                          "ioConvertCost": {
+                                            "default": 30,
+                                            "description": "The cost to convert between convert pairs.\n\nThe value should be slightly higher than the mapCost.",
+                                            "type": "number"
+                                          },
+                                          "keyboardCost": {
+                                            "default": 94,
+                                            "description": "The cost of replacing or swapping any adjacent keyboard characters.\n\nThis should be slightly cheaper than `tryCharCost`.",
+                                            "type": "number"
+                                          },
+                                          "mapCost": {
+                                            "default": 25,
+                                            "description": "mapSet replacement cost is the cost to substitute one character with another from the same set.\n\nMap characters are considered very similar to each other and are often the cause of simple mistakes.",
+                                            "type": "number"
+                                          },
+                                          "replaceCosts": {
+                                            "default": 75,
+                                            "description": "The cost to substitute pairs found in the replace settings.",
+                                            "type": "number"
+                                          },
+                                          "tryCharCost": {
+                                            "default": 95,
+                                            "description": "The cost of inserting / deleting / or swapping any `tryChars`",
+                                            "type": "number"
+                                          }
+                                        },
+                                        "type": "object"
+                                      }
+                                    },
+                                    "required": [
+                                      "aff"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "suggestionEditCosts": {
+                                    "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "description": {
+                                              "description": "A description to describe the purpose of the map.",
+                                              "type": "string"
+                                            },
+                                            "insDel": {
+                                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                              "type": "number"
+                                            },
+                                            "map": {
+                                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                              "type": "string"
+                                            },
+                                            "penalty": {
+                                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                              "type": "number"
+                                            },
+                                            "replace": {
+                                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                              "type": "number"
+                                            },
+                                            "swap": {
+                                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "map",
+                                            "replace"
+                                          ],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "description": {
+                                              "description": "A description to describe the purpose of the map.",
+                                              "type": "string"
+                                            },
+                                            "insDel": {
+                                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                              "type": "number"
+                                            },
+                                            "map": {
+                                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                              "type": "string"
+                                            },
+                                            "penalty": {
+                                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                              "type": "number"
+                                            },
+                                            "replace": {
+                                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                              "type": "number"
+                                            },
+                                            "swap": {
+                                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "insDel",
+                                            "map"
+                                          ],
+                                          "type": "object"
+                                        },
+                                        {
+                                          "additionalProperties": false,
+                                          "properties": {
+                                            "description": {
+                                              "description": "A description to describe the purpose of the map.",
+                                              "type": "string"
+                                            },
+                                            "insDel": {
+                                              "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
+                                              "type": "number"
+                                            },
+                                            "map": {
+                                              "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
+                                              "type": "string"
+                                            },
+                                            "penalty": {
+                                              "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
+                                              "type": "number"
+                                            },
+                                            "replace": {
+                                              "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
+                                              "type": "number"
+                                            },
+                                            "swap": {
+                                              "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "map",
+                                            "swap"
+                                          ],
+                                          "type": "object"
+                                        }
+                                      ],
+                                      "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "name": {
+                                "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                                "type": "string"
+                              },
+                              "noSuggest": {
+                                "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                                "type": "boolean"
+                              },
+                              "path": {
+                                "description": "Path to the file.",
+                                "pattern": "^.*\\.(?:txt|trie)(?:\\.gz)?$",
+                                "type": "string"
+                              },
+                              "repMap": {
+                                "description": "Replacement pairs.",
                                 "items": {
-                                  "anyOf": [
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "replace"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "insDel",
-                                        "map"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "swap"
-                                      ],
-                                      "type": "object"
-                                    }
-                                  ],
-                                  "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "maxItems": 2,
+                                  "minItems": 2,
+                                  "type": "array"
                                 },
                                 "type": "array"
                               },
@@ -2845,7 +1943,6 @@
                               }
                             },
                             "required": [
-                              "addWords",
                               "name",
                               "path"
                             ],
@@ -2886,117 +1983,6 @@
                                   "maxItems": 2,
                                   "minItems": 2,
                                   "type": "array"
-                                },
-                                "type": "array"
-                              },
-                              "suggestionEditCosts": {
-                                "description": "Used in making suggestions. The lower the value, the more likely the suggestion will be near the top of the suggestion list.\n\nAdded with `v5.16.0`.",
-                                "items": {
-                                  "anyOf": [
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "replace"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "insDel",
-                                        "map"
-                                      ],
-                                      "type": "object"
-                                    },
-                                    {
-                                      "additionalProperties": false,
-                                      "properties": {
-                                        "description": {
-                                          "description": "A description to describe the purpose of the map.",
-                                          "type": "string"
-                                        },
-                                        "insDel": {
-                                          "description": "The cost to insert/delete one of the substrings in the map. Note: insert/delete costs are symmetrical.",
-                                          "type": "number"
-                                        },
-                                        "map": {
-                                          "description": "The set of substrings to map, these are generally single character strings.\n\nMultiple sets can be defined by using a `|` to separate them.\n\nExample: `\"eéê|aåá\"` contains two different sets.\n\nTo add a multi-character substring use `()`.\n\nExample: `\"f(ph)(gh)\"` results in the following set: `f`, `ph`, `gh`.\n\n- To match the beginning of a word, use `^`: `\"(^I)\"\"`.\n- To match the end of a word, use `$`: `\"(e$)(ing$)\"`.",
-                                          "type": "string"
-                                        },
-                                        "penalty": {
-                                          "description": "Add a penalty to the final cost. This is used to discourage certain suggestions.\n\nExample: ```yaml # Match adding/removing `-` to the end of a word. map: \"$(-$)\" replace: 50 penalty: 100 ```\n\nThis makes adding a `-` to the end of a word more expensive.\n\nThink of it as taking the toll way for speed but getting the bill later.",
-                                          "type": "number"
-                                        },
-                                        "replace": {
-                                          "description": "The cost to replace of of the substrings in the map with another substring in the map. Example: Map['a', 'i'] This would be the cost to substitute `a` with `i`: Like `bat` to `bit` or the reverse.",
-                                          "type": "number"
-                                        },
-                                        "swap": {
-                                          "description": "The cost to swap two adjacent substrings found in the map. Example: Map['e', 'i'] This represents the cost to change `ei` to `ie` or the reverse.",
-                                          "type": "number"
-                                        }
-                                      },
-                                      "required": [
-                                        "map",
-                                        "swap"
-                                      ],
-                                      "type": "object"
-                                    }
-                                  ],
-                                  "description": "A WeightedMapDef enables setting weights for edits between related characters and substrings.\n\nMultiple groups can be defined using a `|`. A multi-character substring is defined using `()`.\n\nFor example, in some languages, some letters sound alike.\n\n```yaml   map: 'sc(sh)(sch)(ss)|t(tt)' # two groups.   replace: 50    # Make it 1/2 the cost of a normal edit to replace a `t` with `tt`. ```\n\nThe following could be used to make inserting, removing, or replacing vowels cheaper. ```yaml   map: 'aeiouy'   insDel: 50     # Make it is cheaper to insert or delete a vowel.   replace: 45    # It is even cheaper to replace one with another. ```\n\nNote: the default edit distance is 100."
                                 },
                                 "type": "array"
                               },
@@ -3750,13 +2736,13 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.5.5",
-    "vsce": "^2.6.4"
+    "vsce": "^2.6.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.16.0",
-    "@cspell/cspell-types": "^5.16.0",
+    "@cspell/cspell-bundled-dicts": "^5.17.0",
+    "@cspell/cspell-types": "^5.17.0",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.16.0",
+    "cspell": "^5.17.0",
     "regexp-worker": "^1.1.1"
   }
 }

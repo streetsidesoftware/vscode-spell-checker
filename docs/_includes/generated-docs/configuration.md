@@ -31,7 +31,7 @@
 | [`cSpell.import`](#cspellimport)                                                                  | resource             | Other settings files to be included.                                                                     |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                            | resource             | List of RegExp patterns or defined Pattern names to define the text to be included for spell…            |
 | [`cSpell.language`](#cspelllanguage)                                                              | resource             | Current active spelling language.                                                                        |
-| [`cSpell.languageSettings`](#cspelllanguagesettings)                                              | resource             | Additional settings for individual languages.                                                            |
+| [`cSpell.languageSettings`](#cspelllanguagesettings)                                              | resource             | Additional settings for individual programming languages and locales.                                    |
 | [`cSpell.logLevel`](#cspellloglevel)                                                              | window               | Set the Debug Level for logging messages.                                                                |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                      | resource             | The maximum number of times the same word can be flagged as an error in a file.                          |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                        | resource             | Controls the maximum number of spelling errors per document.                                             |
@@ -373,7 +373,7 @@ Name
 : `cSpell.dictionaryDefinitions`
 
 Type
-: []
+: object[]
 
 Scope
 : resource
@@ -682,7 +682,7 @@ Scope
 : resource
 
 Description
-: Additional settings for individual languages.
+: Additional settings for individual programming languages and locales.
 
 Default
 : _- none -_
