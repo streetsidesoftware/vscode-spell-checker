@@ -347,6 +347,8 @@
     "jsonValidation": [
       {
         "fileMatch": [
+          ".cspell.config.json",
+          ".cspell.config.jsonc",
           ".cspell.json",
           ".cspell.jsonc",
           "cspell-default.json",
