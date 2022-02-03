@@ -5,11 +5,11 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
     DictionaryDefinitionPreferred,
-    LanguageSetting,
-    OverrideSettings,
     DictionaryId,
     FsPath,
     GlobDef,
+    LanguageSetting,
+    OverrideSettings,
     SimpleGlob,
 } from '@cspell/cspell-types';
 export type {
@@ -325,7 +325,7 @@ type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
  * @markdownDescription
  * Define a custom dictionary to be included.
  */
-export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
+export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> { }
 
 export interface CustomDictionary {
     /**
@@ -599,6 +599,25 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
+     * @description
+     * @markdownDescription
+     * List of RegExp patterns or Pattern names to exclude from spell checking.
+     * The default RegExp flag is `//gi`
+     * 
+     * **GUI Examples**
+     * 
+     * Everyline is a RegExp pattern or a Pattern names - comment
+     * 
+     * - `/["href"]/`: exclude the word "href", for its frequent use in HTML.
+     * - `/\b[A-Z]{1,5}\b/g`: exclude full-caps acronyms with 1-5 length.
+     * 
+     * **JSON Example**
+     * 
+     * `.vscode/settings.json` file, `cSpell.ignoreRegExpList`
+     * accepts an array of strings with vscode escaped chars, where
+     * `\` escape to `\\`, like in `.code-snippets` files.
+     * 
+     * - `/\b[A-Z]{1,5}\b/g` in GUI becomes `/\\b[A-Z]{1,5}\\b/g` in JSON.
      */
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
@@ -691,9 +710,9 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
  */
 type GlobDefX = GlobDef;
 
-export interface CustomDictionaryWithScope extends CustomDictionary {}
+export interface CustomDictionaryWithScope extends CustomDictionary { }
 
-export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties {}
+export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties { }
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
@@ -753,12 +772,12 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
 
 export interface SpellCheckerSettingsVSCodeBase
     extends Omit<
-            CSpellUserSettings,
-            CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
-        >,
-        DictionaryDefinitions,
-        LanguageSettings,
-        Overrides {}
+    CSpellUserSettings,
+    CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
+    >,
+    DictionaryDefinitions,
+    LanguageSettings,
+    Overrides { }
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 

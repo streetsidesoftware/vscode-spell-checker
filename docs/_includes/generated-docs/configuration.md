@@ -584,8 +584,22 @@ Scope
 
 Description
 : List of RegExp patterns or Pattern names to exclude from spell checking.
+The default RegExp flag is `//gi`
 
-    Example: ["href"] - to exclude html href.
+    **GUI Examples**
+
+    Everyline is a RegExp pattern or a Pattern names - comment
+
+    - `/["href"]/`: exclude the word "href", for its frequent use in HTML.
+    - `/\b[A-Z]{1,5}\b/g`: exclude full-caps acronyms with 1-5 length.
+
+    **JSON Example**
+
+    `.vscode/settings.json` file, `cSpell.ignoreRegExpList`
+    accepts an array of strings with vscode escaped chars, where
+    `\` escape to `\\`, like in `.code-snippets` files.
+
+    - `/\b[A-Z]{1,5}\b/g` in GUI becomes `/\\b[A-Z]{1,5}\\b/g` in JSON.
 
 Default
 : _- none -_
