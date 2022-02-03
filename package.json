@@ -633,7 +633,7 @@
             "type": "string"
           },
           "description": "",
-          "markdownDescription": "List of RegExp patterns or Pattern names to exclude from spell checking.\nThe default RegExp flag is `//gi`\n\n**GUI Examples**\n\nEveryline is a RegExp pattern or a Pattern names - comment\n\n- `/[\"href\"]/`: exclude the word \"href\", for its frequent use in HTML.\n- `/\\b[A-Z]{1,5}\\b/g`: exclude full-caps acronyms with 1-5 length.\n\n**JSON Example**\n\n`.vscode/settings.json` file, `cSpell.ignoreRegExpList`\naccepts an array of strings with vscode escaped chars, where\n`\\` escape to `\\\\`, like in `.code-snippets` files.\n\n- `/\\b[A-Z]{1,5}\\b/g` in GUI becomes `/\\\\b[A-Z]{1,5}\\\\b/g` in JSON."
+          "markdownDescription": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\n- In Settings GUI every line is a RegExp pattern or a Pattern names.\n- In `.vscode/settings.json` file, `cSpell.ignoreRegExpList`\n  accepts an array of strings with vscode escaped chars, where\n  `\\` escape to `\\\\`, like in `.code-snippets` files.\n\nThe default RegExp flag is `//gi`.\n\n| GUI                 | JSON                  | Explain                                      |\n| :------------------ | :-------------------- | -------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `venv`              | `venv`                | For Python, Best way: use `cSpell.userWords` |"
         },
         "cSpell.includeRegExpList": {
           "type": "array",

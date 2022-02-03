@@ -602,22 +602,19 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @description
      * @markdownDescription
      * List of RegExp patterns or Pattern names to exclude from spell checking.
-     * The default RegExp flag is `//gi`
      * 
-     * **GUI Examples**
+     * - In Settings GUI every line is a RegExp pattern or a Pattern names.
+     * - In `.vscode/settings.json` file, `cSpell.ignoreRegExpList`
+     *   accepts an array of strings with vscode escaped chars, where
+     *   `\` escape to `\\`, like in `.code-snippets` files.
      * 
-     * Everyline is a RegExp pattern or a Pattern names - comment
+     * The default RegExp flag is `//gi`.
      * 
-     * - `/["href"]/`: exclude the word "href", for its frequent use in HTML.
-     * - `/\b[A-Z]{1,5}\b/g`: exclude full-caps acronyms with 1-5 length.
-     * 
-     * **JSON Example**
-     * 
-     * `.vscode/settings.json` file, `cSpell.ignoreRegExpList`
-     * accepts an array of strings with vscode escaped chars, where
-     * `\` escape to `\\`, like in `.code-snippets` files.
-     * 
-     * - `/\b[A-Z]{1,5}\b/g` in GUI becomes `/\\b[A-Z]{1,5}\\b/g` in JSON.
+     * | GUI                 | JSON                  | Explain                                      |
+     * | :------------------ | :-------------------- | -------------------------------------------- |
+     * | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
+     * | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
+     * | `venv`              | `venv`                | For Python, Best way: use `cSpell.userWords` |
      */
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
