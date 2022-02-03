@@ -598,11 +598,12 @@
       "type": "array"
     },
     "ignoreRegExpList": {
-      "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
+      "description": "",
       "items": {
         "description": "A PatternRef is a Pattern or PatternId.",
         "type": "string"
       },
+      "markdownDescription": "List of RegExp patterns or Pattern names to exclude from spell checking.\nThe default RegExp flag is `//gi`\n\n**GUI Examples**\n\nEveryline is a RegExp pattern or a Pattern names - comment\n\n- `/[\"href\"]/`: exclude the word \"href\", for its frequent use in HTML.\n- `/\\b[A-Z]{1,5}\\b/g`: exclude full-caps acronyms with 1-5 length.\n\n**JSON Example**\n\n`.vscode/settings.json` file, `cSpell.ignoreRegExpList`\naccepts an array of strings with vscode escaped chars, where\n`\\` escape to `\\\\`, like in `.code-snippets` files.\n\n- `/\\b[A-Z]{1,5}\\b/g` in GUI becomes `/\\\\b[A-Z]{1,5}\\\\b/g` in JSON.",
       "scope": "resource",
       "type": "array"
     },
