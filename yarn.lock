@@ -1296,10 +1296,10 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/vscode@^1.63.2":
-  version "1.63.2"
-  resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.63.2.tgz#1ee18eb7b1c1075b28a08afeb0910db915271613"
-  integrity sha512-awvdx4vX7SkMKyvWIlRjycjb4blYRSQI3Bav0YMn+lJLGN6gJgb20urN/dQCv/2ejDu5S6ADEBt6O15DOpIAkg==
+"@types/vscode@^1.64.0":
+  version "1.64.0"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.64.0.tgz#bfd82c8d92dc7824c1be084be1ab46ce20d7fb55"
+  integrity sha512-bSlAWz5WtcSL3cO9tAT/KpEH9rv5OBnm93OIIFwdCshaAiqr2bp1AUyEwW9MWeCvZBHEXc3V0fTYVdVyzDNwHA==
 
 "@types/ws@^8.2.2":
   version "8.2.2"
