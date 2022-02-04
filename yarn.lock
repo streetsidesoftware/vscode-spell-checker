@@ -399,11 +399,6 @@
   resolved "https://registry.yarnpkg.com/@cspell/cspell-pipe/-/cspell-pipe-5.18.2.tgz#b846abcf703e2e88f3d35c80e5ec7d8461313108"
   integrity sha512-d6e0jwEFWQ3UQQAiOdVzdrT4CMUImkCIx6fuFXJTtgZR58gKtieLlFgOsKIHQkkIkHT9lb/q0k0qEIF9c1LnNg==
 
-"@cspell/cspell-types@^5.18.1":
-  version "5.18.1"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-5.18.1.tgz#6680a6eca802d3fe411b601cfa529aae38b86273"
-  integrity sha512-Xsqc6prKKM2cQmYkiGB6fteoEGiyTesr2OdA1qnHU9UqwYN/gqHUU/W1ZdP+IpfTcqKSkgrWhrhhu4yhRbjGAA==
-
 "@cspell/cspell-types@^5.18.2":
   version "5.18.2"
   resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-5.18.2.tgz#1a1b87c8b16a1ed517f09b64970e711409ddbc00"
@@ -8417,10 +8412,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vsce@^2.6.6:
-  version "2.6.6"
-  resolved "https://registry.npmjs.org/vsce/-/vsce-2.6.6.tgz#9f9f20ae62ba2da95a548cc368665a7776f7a4d7"
-  integrity sha512-i43WxqgX0qESGsfja/A4Nw+cyuFWdhErU0WtStI/CYZYCInbNczYWs1yDCdjj0bqc9V/10vBRyRhUe+mdd2Q4A==
+vsce@^2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/vsce/-/vsce-2.6.7.tgz#e590ff957d07910c471334857627c3e7f57e87bc"
+  integrity sha512-5dEtdi/yzWQbOU7JDUSOs8lmSzzkewBR5P122BUkmXE6A/DEdFsKNsg2773NGXJTwwF1MfsOgUR6QVF3cLLJNQ==
   dependencies:
     azure-devops-node-api "^11.0.1"
     chalk "^2.4.2"
