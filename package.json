@@ -2110,7 +2110,7 @@
     "vsce": "^2.6.7"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.18.1",
+    "@cspell/cspell-bundled-dicts": "^5.18.2",
     "@cspell/cspell-types": "^5.18.1",
     "cosmiconfig": "^7.0.1",
     "cspell": "^5.18.2",
