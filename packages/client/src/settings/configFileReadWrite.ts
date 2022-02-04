@@ -111,13 +111,23 @@ export class SysLikeError extends Error {
     }
 }
 
-export function parseJson(content: string): CSpellSettings {
-    const formatting = detectFormatting(content);
-    return injectFormatting(parseJsonc(content), formatting);
+export class FormatError extends Error {
+    constructor(msg: string) {
+        super(msg);
+    }
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function stringifyJson(obj: Object, spaces?: string | number | undefined, keepComments = true): string {
+export function parseJson(content: string): CSpellSettings {
+    const formatting = detectFormatting(content);
+    const json = parseJsonc(content);
+    if (json === null || json === undefined) return {};
+    if (typeof json !== 'object') {
+        throw new FormatError('Invalid cspell JSON file.');
+    }
+    return injectFormatting<CSpellSettings>(json as CSpellSettings, formatting);
+}
+
+export function stringifyJson(obj: unknown, spaces?: string | number | undefined, keepComments = true): string {
     const formatting = retrieveFormatting(obj);
     spaces = formatting?.spaces || spaces || spacesJson;
     const newlineAtEndOfFile = formatting?.newlineAtEndOfFile ?? true;
@@ -125,14 +135,14 @@ export function stringifyJson(obj: Object, spaces?: string | number | undefined,
     return newlineAtEndOfFile ? json + '\n' : json;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-function injectFormatting<T extends Object>(s: T, format: ContentFormat): T {
+function injectFormatting<T extends unknown>(s: T, format: ContentFormat): T {
+    if (s === undefined || s === null || typeof s !== 'object') return s;
     (<any>s)[SymbolFormat] = format;
     return s;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-function retrieveFormatting<T extends Object>(s: T): ContentFormat | undefined {
+function retrieveFormatting<T extends unknown>(s: T): ContentFormat | undefined {
+    if (s === undefined || s === null || typeof s !== 'object') return undefined;
     return (<any>s)[SymbolFormat];
 }
 

@@ -64,8 +64,9 @@ describe('Validate configFileReadWrite', () => {
         await fsRemove(getPathToTemp());
         const uri = getPathToTemp('cspell.jsonc');
         await writeFile(uri, sampleJsonc());
-        const sample = parseJsonc(sampleJsonc());
-        const sampleWithSpacesSymbol = __testing__.injectFormatting({ ...sample }, { spaces: '    ', newlineAtEndOfFile: true });
+        const parsedJson = parseJsonc(sampleJsonc());
+        const sample = parsedJson !== null && typeof parsedJson === 'object' ? { ...parsedJson } : parsedJson;
+        const sampleWithSpacesSymbol = __testing__.injectFormatting(sample, { spaces: '    ', newlineAtEndOfFile: true });
         await expect(readConfigFile(uri)).resolves.toEqual(sampleWithSpacesSymbol);
 
         await updateConfigFile(uri, () => sampleCSpell);
