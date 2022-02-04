@@ -1080,10 +1080,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest-when@^2.7.4":
-  version "2.7.4"
-  resolved "https://registry.npmjs.org/@types/jest-when/-/jest-when-2.7.4.tgz#1bedac232f4a54c1a1c01cc641c03ecfd0dad0ec"
-  integrity sha512-2OC69oyaD33tmSaOjtxvy7ZpBO85OWIw1AbpWVziL4bek5mr795H59qK5EKDpp4dLhtH1QIs54tXpoHEb2mE/A==
+"@types/jest-when@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@types/jest-when/-/jest-when-3.5.0.tgz#6a573cd521da131e6801f0991b4f1d4dee2ebab5"
+  integrity sha512-rNUuZ3Mn/HDzpImPXDeOtW18zqyerPoOS2aKU0zUFbirWgJ7sN7LnRv73RmbBQ/uzw28sxf/nUofxbhJ5DWB0w==
   dependencies:
     "@types/jest" "*"
 
