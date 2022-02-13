@@ -3,9 +3,9 @@
 
 
 "@ampproject/remapping@^2.0.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.1.0.tgz#72becdf17ee44b2d1ac5651fb12f1952c336fe23"
-  integrity sha512-d5RysTlJ7hmw5Tw4UxgxcY3lkMe92n8sXCcuLPAyIAHK6j8DefDwtGnVVDgOnv+RnEosulDJ9NPKQL27bDId0g==
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.1.1.tgz#7922fb0817bf3166d8d9e258c57477e3fd1c3610"
+  integrity sha512-Aolwjd7HSC2PyY0fDj/wA/EimQT4HfEnFYNp5s9CQlrdhyvWTtvZ5YzrUPu6R6/1jKiUlxu8bUhkdSnKHNAHMA==
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
@@ -507,9 +507,9 @@
   integrity sha512-h4xULfVEDUeWyvp1OO19pcGDqWcBEQ7WGMp3QBHyYpjsamlzsyYYjCRSY2ZvpM7wruDmywSRFmRHJ/+uNFT7nA==
 
 "@cspell/dict-python@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/@cspell/dict-python/-/dict-python-2.0.5.tgz#eebe6f53a8b5f29addd963951a701a7afedfe6b0"
-  integrity sha512-WkyGYtNmUsOHsWixck7AxNvveDgVPqw0H51hzIY+/5u3c94wZUweIj0vfFOGIfOBq8e1ZxpjumKBxVDGXTmQkw==
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/@cspell/dict-python/-/dict-python-2.0.6.tgz#2c1b4f61d72c582db03382f72f08fb4192dcd378"
+  integrity sha512-54ICgMRiGwavorg8UJC38Fwx8tW8WKj8pimJmFUd0F/ImQ8wmeg4VrmyMach5MZVUaw1qUe2aP5uSyqA15Q0mg==
 
 "@cspell/dict-r@^1.0.1":
   version "1.0.2"
@@ -532,9 +532,9 @@
   integrity sha512-5V/R7PRbbminTpPS3ywgdAalI9BHzcEjEj9ug4kWYvBIGwSnS7T6QCFCiu+e9LvEGUqQC+NHgLY4zs1NaBj2vA==
 
 "@cspell/dict-software-terms@^2.0.14":
-  version "2.0.15"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.0.15.tgz#a2b42a60195c043e070302f23d09af78a91d567f"
-  integrity sha512-/+wNw2XQiEebw0f8tiTA2lDp4W4HCoEEL70e87f+VGgLXYSLbV70PzeL7VK2wB5A+AlS8BvLadyzON9XRFlDaQ==
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.0.tgz#de835c9b9312de404bddfb21504ba5fa7938c2f9"
+  integrity sha512-R9vfnNqp+cUqILsK3wofGvMrerr6biq+pIY1ayobLf4vUU8Wo4lK+DwRBUd7mHOu1GjXGM/scU54BP19BcYoTw==
 
 "@cspell/dict-swift@^1.0.1":
   version "1.0.2"
@@ -781,14 +781,14 @@
     chalk "^4.0.0"
 
 "@jridgewell/resolve-uri@^3.0.3":
-  version "3.0.4"
-  resolved "https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.0.4.tgz#b876e3feefb9c8d3aa84014da28b5e52a0640d72"
-  integrity sha512-cz8HFjOFfUBtvN+NXYSFMHYRdxZMaEl0XypVrhzxBgadKIXhIkRd8aMeHhmF56Sl7SuS8OnUpQ73/k9LE4VnLg==
+  version "3.0.5"
+  resolved "https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.0.5.tgz#68eb521368db76d040a6315cdb24bf2483037b9c"
+  integrity sha512-VPeQ7+wH0itvQxnG+lIzWgkysKIr3L9sslimFW55rHMdGu/qCQ5z5h9zq4gI8uBtqkpHhsF4Z/OwExufUCThew==
 
 "@jridgewell/sourcemap-codec@^1.4.10":
-  version "1.4.10"
-  resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.10.tgz#baf57b4e2a690d4f38560171f91783656b7f8186"
-  integrity sha512-Ht8wIW5v165atIX1p+JvKR5ONzUyF4Ac8DZIQ5kZs9zrb6M8SJNXpx1zn04rn65VjBMygRoMXcyYwNK0fT7bEg==
+  version "1.4.11"
+  resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.11.tgz#771a1d8d744eeb71b6adb35808e1a6c7b9b8c8ec"
+  integrity sha512-Fg32GrJo61m+VqYSdRSjRXMjQ06j8YIYfcTqndLYVAaHmroZHLJZCydsWBOTDqXS2v+mjxohBWEMfg97GXmYQg==
 
 "@jridgewell/trace-mapping@^0.3.0":
   version "0.3.4"
@@ -2651,9 +2651,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001286:
-  version "1.0.30001310"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001310.tgz#da02cd07432c9eece6992689d1b84ca18139eea8"
-  integrity sha512-cb9xTV8k9HTIUA3GnPUJCk0meUnrHL5gy5QePfDjxHyNBcnzPzrHFv5GqfP7ue5b1ZyzZL0RJboD6hQlPXjhjg==
+  version "1.0.30001312"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001312.tgz#e11eba4b87e24d22697dae05455d5aea28550d5f"
+  integrity sha512-Wiz1Psk2MEK0pX3rUzWaunLTZzqS2JYZFzNKqAiJGiuxIjRPLgV6+VDPOg6lQOUxmDwhTlh198JsTTi8Hzw6aQ==
 
 chai@^4.3.6:
   version "4.3.6"
@@ -6021,9 +6021,9 @@ lorem-ipsum@^2.0.4:
     commander "^2.17.1"
 
 loupe@^2.3.1:
-  version "2.3.3"
-  resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.3.tgz#5a92027d54cfb6de4c327d3c3b705561d394d3c6"
-  integrity sha512-krIV4Cf1BIGIx2t1e6tucThhrBemUnIUjMtD2vN4mrMxnxpBvrcosBSpooqunBqP/hOEEV1w/Cr1YskGtqw5Jg==
+  version "2.3.4"
+  resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.4.tgz#7e0b9bffc76f148f9be769cb1321d3dcf3cb25f3"
+  integrity sha512-OvKfgCC2Ndby6aSTREl5aCCPTNIzlDfQZvZxNUrBrihDhL3xcrYegTblhmEiCrg2kKQz4XsFIaemE5BF4ybSaQ==
   dependencies:
     get-func-name "^2.0.0"
 
@@ -6187,10 +6187,10 @@ minimatch@3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^3.0.3, minimatch@^3.0.4, minimatch@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.npmjs.org/minimatch/-/minimatch-3.0.5.tgz#4da8f1290ee0f0f8e83d60ca69f8f134068604a3"
-  integrity sha512-tUpxzX0VAzJHjLu0xUfFv1gwVp9ba3IOuRAVH2EGuRW8a5emA2FlACLqiT/lDVtS1W+TGNwqz3sWaNyLgDJWuw==
+minimatch@^3.0.3, minimatch@^3.0.4, minimatch@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/minimatch/-/minimatch-3.1.1.tgz#879ad447200773912898b46cd516a7abbb5e50b0"
+  integrity sha512-reLxBcKUPNBnc/sVtAbxgRVFSegoGeLaSjmphNhcwcolhYLRgtJscn5mRl6YRZNQv40Y7P6JM2YhSIsbL9OB5A==
   dependencies:
     brace-expansion "^1.1.7"
 
