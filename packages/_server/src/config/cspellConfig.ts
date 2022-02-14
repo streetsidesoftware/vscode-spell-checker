@@ -602,15 +602,14 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      * @description
      * @markdownDescription
-     * List of regular expressions or Pattern names to exclude from spell checking.
+     * List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
      *
-     * - When using the VS Code Preferences UI, it is not necessary to escape the `\`,
-     *    VS Code takes care of that.
-     * - When editing the `.vscode/settings.json` file `cSpell.ignoreRegExpList`
-     *   It is necessary to escape `\`.
+     * - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
+     * - When editing the VS Code `settings.json` file,
+     *   it is necessary to escape `\`.
      *   Each `\` becomes `\\`.
      *
-     * The default regular expression flag is `//gi`.
+     * The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
      *
      * | VS Code UI          | JSON                  | Description                                  |
      * | :------------------ | :-------------------- | :------------------------------------------- |
