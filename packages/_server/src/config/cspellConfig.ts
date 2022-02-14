@@ -325,7 +325,7 @@ type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
  * @markdownDescription
  * Define a custom dictionary to be included.
  */
-export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> { }
+export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
 
 export interface CustomDictionary {
     /**
@@ -597,24 +597,26 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      */
     includeRegExpList?: CSpellSettings['includeRegExpList'];
 
+    // cspell:ignore mapsto venv
     /**
      * @scope resource
      * @description
      * @markdownDescription
-     * List of RegExp patterns or Pattern names to exclude from spell checking.
-     * 
-     * - In Settings GUI every line is a RegExp pattern or a Pattern names.
-     * - In `.vscode/settings.json` file, `cSpell.ignoreRegExpList`
-     *   accepts an array of strings with vscode escaped chars, where
-     *   `\` escape to `\\`, like in `.code-snippets` files.
-     * 
-     * The default RegExp flag is `//gi`.
-     * 
-     * | GUI                 | JSON                  | Explain                                      |
-     * | :------------------ | :-------------------- | -------------------------------------------- |
+     * List of regular expressions or Pattern names to exclude from spell checking.
+     *
+     * - When using the VS Code Preferences UI, it is not necessary to escape the `\`,
+     *    VS Code takes care of that.
+     * - When editing the `.vscode/settings.json` file `cSpell.ignoreRegExpList`
+     *   It is necessary to escape `\`.
+     *   Each `\` becomes `\\`.
+     *
+     * The default regular expression flag is `//gi`.
+     *
+     * | VS Code UI          | JSON                  | Description                                  |
+     * | :------------------ | :-------------------- | :------------------------------------------- |
      * | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
      * | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
-     * | `venv`              | `venv`                | For Python, Best way: use `cSpell.userWords` |
+     * | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
      */
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
@@ -707,9 +709,9 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
  */
 type GlobDefX = GlobDef;
 
-export interface CustomDictionaryWithScope extends CustomDictionary { }
+export interface CustomDictionaryWithScope extends CustomDictionary {}
 
-export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties { }
+export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
@@ -769,12 +771,12 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
 
 export interface SpellCheckerSettingsVSCodeBase
     extends Omit<
-    CSpellUserSettings,
-    CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
-    >,
-    DictionaryDefinitions,
-    LanguageSettings,
-    Overrides { }
+            CSpellUserSettings,
+            CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
+        >,
+        DictionaryDefinitions,
+        LanguageSettings,
+        Overrides {}
 
 export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
 
