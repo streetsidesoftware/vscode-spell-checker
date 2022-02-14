@@ -48,6 +48,7 @@ lightblue
 lightbulb
 lightgrey
 Lunr
+mapsto
 minification
 mobx
 multiroot

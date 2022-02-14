@@ -47,3 +47,6 @@ packages/*/temp/
 !**/client/.vscode
 
 # cspell:ignore pids jscoverage wscript
+
+# mac temp file
+.DS_Store

@@ -26,7 +26,7 @@
 | [`cSpell.flagWords`](#cspellflagwords)                                                            | resource             | List of words to always be considered incorrect.                                                         |
 | [`cSpell.globRoot`](#cspellglobroot)                                                              | resource             | The root to use for glop patterns found in this configuration. Default: The current workspace…           |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                                        | resource             | Glob patterns of files to be ignored                                                                     |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                              | resource             | List of RegExp patterns or Pattern names to exclude from spell checking.                                 |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                              | resource             | List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from…             |
 | [`cSpell.ignoreWords`](#cspellignorewords)                                                        | resource             | A list of words to be ignored by the spell checker.                                                      |
 | [`cSpell.import`](#cspellimport)                                                                  | resource             | Other settings files to be included.                                                                     |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                            | resource             | List of RegExp patterns or defined Pattern names to define the text to be included for spell…            |
@@ -583,9 +583,20 @@ Scope
 : resource
 
 Description
-: List of RegExp patterns or Pattern names to exclude from spell checking.
+: List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
 
-    Example: ["href"] - to exclude html href.
+    - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
+    - When editing the VS Code `settings.json` file,
+      it is necessary to escape `\`.
+      Each `\` becomes `\\`.
+
+    The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
+
+    | VS Code UI          | JSON                  | Description                                  |
+    | :------------------ | :-------------------- | :------------------------------------------- |
+    | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
+    | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
+    | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
 
 Default
 : _- none -_

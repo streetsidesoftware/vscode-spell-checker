@@ -5,11 +5,11 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
     DictionaryDefinitionPreferred,
-    LanguageSetting,
-    OverrideSettings,
     DictionaryId,
     FsPath,
     GlobDef,
+    LanguageSetting,
+    OverrideSettings,
     SimpleGlob,
 } from '@cspell/cspell-types';
 export type {
@@ -597,8 +597,25 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      */
     includeRegExpList?: CSpellSettings['includeRegExpList'];
 
+    // cspell:ignore mapsto venv
     /**
      * @scope resource
+     * @description
+     * @markdownDescription
+     * List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
+     *
+     * - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
+     * - When editing the VS Code `settings.json` file,
+     *   it is necessary to escape `\`.
+     *   Each `\` becomes `\\`.
+     *
+     * The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
+     *
+     * | VS Code UI          | JSON                  | Description                                  |
+     * | :------------------ | :-------------------- | :------------------------------------------- |
+     * | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
+     * | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
+     * | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
      */
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
