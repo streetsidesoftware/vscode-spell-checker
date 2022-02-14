@@ -83,6 +83,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 -   C, C++
 -   C#
 -   css, less, scss
+-   Dart
 -   Elixir
 -   Go
 -   Html
