@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.1.7 (2022-02-15)
+
+
+### Bug Fixes
+
+* Add dart support out of the box ([#1762](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1762)) ([9d97bf6](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9d97bf6374911dbdf9528193e10854b24415de81))
+
 ### 2.1.6 (2022-02-08)
 
 ### 2.1.5 (2022-02-04)
