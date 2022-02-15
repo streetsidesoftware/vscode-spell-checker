@@ -7,6 +7,7 @@ export const languageIds: string[] = [
     'cpp',
     'csharp',
     'css',
+    'dart',
     'diff',
     'dockerfile',
     'fsharp',
