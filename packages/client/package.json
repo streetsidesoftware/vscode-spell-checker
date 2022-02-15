@@ -33,7 +33,7 @@
     "@types/jest": "^27.4.0",
     "@types/jest-when": "^3.5.0",
     "@types/kefir": "^3.8.7",
-    "@types/node": "^17.0.17",
+    "@types/node": "^17.0.18",
     "@types/source-map-support": "^0.5.4",
     "@types/vscode": "^1.64.0",
     "comment-json": "^4.2.2",
