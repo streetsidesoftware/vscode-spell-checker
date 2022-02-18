@@ -29,9 +29,9 @@
   integrity sha512-392byTlpGWXMv4FbyWw3sAZ/FrW/DrwqLGXpy0mbyNe9Taqv1mg9yON5/o0cnr8XYCkFTZbC1eV+c+LAROgrng==
 
 "@babel/core@^7.1.0", "@babel/core@^7.12.3", "@babel/core@^7.7.2", "@babel/core@^7.8.0":
-  version "7.17.4"
-  resolved "https://registry.npmjs.org/@babel/core/-/core-7.17.4.tgz#a22f1ae8999122873b3d18865e98c7a3936b8c8b"
-  integrity sha512-R9x5r4t4+hBqZTmioSnkrW+I6NmbojwjGT8p4G2Gw1thWbXIHGDnmGdLdFw0/7ljucdIrNRp7Npgb4CyBYzzJg==
+  version "7.17.5"
+  resolved "https://registry.npmjs.org/@babel/core/-/core-7.17.5.tgz#6cd2e836058c28f06a4ca8ee7ed955bbf37c8225"
+  integrity sha512-/BBMw4EvjmyquN5O+t5eh0+YqB3XXJkYD2cjKpYtWOfFy4lQ4UozNSmxAcWT8r2XtZs0ewG+zrfsqeR15i1ajA==
   dependencies:
     "@ampproject/remapping" "^2.1.0"
     "@babel/code-frame" "^7.16.7"
@@ -5847,9 +5847,9 @@ kefir@^3.8.8:
   integrity sha512-xWga7QCZsR2Wjy2vNL3Kq/irT+IwxwItEWycRRlT5yhqHZK2fmEhziP+LzcJBWSTAMranGKtGTQ6lFpyJS3+jA==
 
 keytar@^7.7.0:
-  version "7.8.0"
-  resolved "https://registry.npmjs.org/keytar/-/keytar-7.8.0.tgz#28cf5ceeb1275350888870022869b8b4fe6a87f9"
-  integrity sha512-mR+BqtAOIW8j+T5FtLVyckCbvROWQD+4FzPeFMuk5njEZkXLpVPCGF26Y3mTyxMAAL1XCfswR7S6kIf+THSRFA==
+  version "7.9.0"
+  resolved "https://registry.npmjs.org/keytar/-/keytar-7.9.0.tgz#4c6225708f51b50cbf77c5aae81721964c2918cb"
+  integrity sha512-VPD8mtVtm5JNtA2AErl6Chp06JBfy7diFQ7TQQhdpWOl6MrCRB+eRbvAZUsbGQS9kiMq0coJsy0W0vHpDCkWsQ==
   dependencies:
     node-addon-api "^4.3.0"
     prebuild-install "^7.0.1"
@@ -6240,22 +6240,22 @@ mobx-react-devtools@^6.1.1:
   resolved "https://registry.npmjs.org/mobx-react-devtools/-/mobx-react-devtools-6.1.1.tgz#a462b944085cf11ff96fc937d12bf31dab4c8984"
   integrity sha512-nc5IXLdEUFLn3wZal65KF3/JFEFd+mbH4KTz/IG5BOPyw7jo8z29w/8qm7+wiCyqVfUIgJ1gL4+HVKmcXIOgqA==
 
-mobx-react-lite@^3.2.0, mobx-react-lite@^3.2.3:
-  version "3.2.3"
-  resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.2.3.tgz#83d2b32ebf4383cd0dc0d397acbf53a8e9c66765"
-  integrity sha512-7exWp1FV0M9dP08H9PIeHlJqDw4IdkQVRMfLYaZFMmlbzSS6ZU6p/kx392KN+rVf81hH3IQYewvRGQ70oiwmbw==
+mobx-react-lite@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.3.0.tgz#7174e807201943beff6f9d3701492314c9fc0db3"
+  integrity sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==
 
-mobx-react@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-7.2.1.tgz#e9d4c04dc63d05e1139ce773f5fee7a5b4cb7c78"
-  integrity sha512-LZS99KFLn75VWDXPdRJhILzVQ7qLcRjQbzkK+wVs0Qg4kWw5hOI2USp7tmu+9zP9KYsVBmKyx2k/8cTTBfsymw==
+mobx-react@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-7.3.0.tgz#a17dedb71b75dad2337e3f95eb753179f6cfe732"
+  integrity sha512-RGEcwZokopqyJE5JPwXKB9FWMSqFM9NJVO2QPI+z6laJTJeBHqvPicjnKgY5mvihxTeXB1+72TnooqUePeGV1g==
   dependencies:
-    mobx-react-lite "^3.2.0"
+    mobx-react-lite "^3.3.0"
 
-mobx@^6.3.13:
-  version "6.3.13"
-  resolved "https://registry.npmjs.org/mobx/-/mobx-6.3.13.tgz#93e56a57ee72369f850cf3d6398fd36ee8ef062e"
-  integrity sha512-zDDKDhYUk9QCHQUdLG+wb4Jv/nXutSLt/P8kkwHyjdbrJO4OZS6QTEsrOnrKM39puqXSrJZHdB6+yRys2NBFFA==
+mobx@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.npmjs.org/mobx/-/mobx-6.4.0.tgz#71beda560230527f75ad150638f061af9d9f5312"
+  integrity sha512-HluTl14lJjL1xeUfXekDstHT/RqdxtmgIQ+75eMXsy9zAwt5vOWMdrbYD/sLS3CAKTo7ctIZi6cI2aX47Fk05g==
 
 mocha@^9.2.0:
   version "9.2.0"
@@ -8598,7 +8598,7 @@ webpack-sources@^3.2.3:
 
 webpack@^5.69.1:
   version "5.69.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.69.1.tgz#8cfd92c192c6a52c99ab00529b5a0d33aa848dc5"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-5.69.1.tgz#8cfd92c192c6a52c99ab00529b5a0d33aa848dc5"
   integrity sha512-+VyvOSJXZMT2V5vLzOnDuMz5GxEqLk7hKWQ56YxPW/PQRUuKimPqmEIJOx8jHYeyo65pKbapbW464mvsKbaj4A==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
