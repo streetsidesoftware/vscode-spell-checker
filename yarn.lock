@@ -538,9 +538,9 @@
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
 "@cspell/dict-software-terms@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.0.tgz#de835c9b9312de404bddfb21504ba5fa7938c2f9"
-  integrity sha512-R9vfnNqp+cUqILsK3wofGvMrerr6biq+pIY1ayobLf4vUU8Wo4lK+DwRBUd7mHOu1GjXGM/scU54BP19BcYoTw==
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.1.tgz#1f59b63de03b0b288156112fb40bc1e8401ad294"
+  integrity sha512-PmmqysKSvNwksjEfXrzD1wEVvctR6qppxDhwNc4IQQjwpjmtN8e+8HiXxIbCsBcll1rO0vOmnhpXUdl+d9apXQ==
 
 "@cspell/dict-swift@^1.0.2":
   version "1.0.2"
@@ -1270,9 +1270,9 @@
   integrity sha512-bSlAWz5WtcSL3cO9tAT/KpEH9rv5OBnm93OIIFwdCshaAiqr2bp1AUyEwW9MWeCvZBHEXc3V0fTYVdVyzDNwHA==
 
 "@types/ws@^8.2.2":
-  version "8.2.2"
-  resolved "https://registry.npmjs.org/@types/ws/-/ws-8.2.2.tgz#7c5be4decb19500ae6b3d563043cd407bf366c21"
-  integrity sha512-NOn5eIcgWLOo6qW8AcuLZ7G8PycXu0xTxxkS6Q18VWFxgPUSOwV0pBj2a/4viNZVu25i7RIB7GttdkAIUUXOOg==
+  version "8.2.3"
+  resolved "https://registry.npmjs.org/@types/ws/-/ws-8.2.3.tgz#0bca6b03ba2f41e0fab782d4a573fe284aa907ae"
+  integrity sha512-ahRJZquUYCdOZf/rCsWg88S0/+cb9wazUBHv6HZEe3XdYaBe2zr/slM8J28X07Hn88Pnm4ezo7N8/ofnOgrPVQ==
   dependencies:
     "@types/node" "*"
 
@@ -2546,9 +2546,9 @@ browserslist@^3.2.6:
     electron-to-chromium "^1.3.47"
 
 browserslist@^4.14.5, browserslist@^4.17.5:
-  version "4.19.2"
-  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.19.2.tgz#9ba98791192a39e1242f0670bb265ceee1baf0a4"
-  integrity sha512-97XU1CTZ5TwU9Qy/Taj+RtiI6SQM1WIhZ9osT7EY0oO2aWXGABZT2OZeRL+6PfaQsiiMIjjwIoYFPq4APgspgQ==
+  version "4.19.3"
+  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.19.3.tgz#29b7caad327ecf2859485f696f9604214bedd383"
+  integrity sha512-XK3X4xtKJ+Txj8G5c30B4gsm71s69lqXlkYui4s6EkKxuv49qjYlY6oVd+IFJ73d4YymtM3+djvvt/R/iJwwDg==
   dependencies:
     caniuse-lite "^1.0.30001312"
     electron-to-chromium "^1.4.71"
@@ -6252,15 +6252,15 @@ mobx-react@^7.3.0:
   dependencies:
     mobx-react-lite "^3.3.0"
 
-mobx@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/mobx/-/mobx-6.4.0.tgz#71beda560230527f75ad150638f061af9d9f5312"
-  integrity sha512-HluTl14lJjL1xeUfXekDstHT/RqdxtmgIQ+75eMXsy9zAwt5vOWMdrbYD/sLS3CAKTo7ctIZi6cI2aX47Fk05g==
+mobx@^6.4.1:
+  version "6.4.1"
+  resolved "https://registry.npmjs.org/mobx/-/mobx-6.4.1.tgz#c1d0eeb37ceb31bb2020a85f6bf856782d47fe60"
+  integrity sha512-NFXx0uMbGBgsa0uxhH099L8cMuoRQWh01q6Sf0ZX/3hFU7svJ7yfTD+1LnLMa5wzY/b7gImAeMsR1p0wordDnA==
 
-mocha@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/mocha/-/mocha-9.2.0.tgz#2bfba73d46e392901f877ab9a47b7c9c5d0275cc"
-  integrity sha512-kNn7E8g2SzVcq0a77dkphPsDSN7P+iYkqE0ZsGCYWRsoiKjOt+NvXfaagik8vuDa6W5Zw3qxe8Jfpt5qKf+6/Q==
+mocha@^9.2.1:
+  version "9.2.1"
+  resolved "https://registry.npmjs.org/mocha/-/mocha-9.2.1.tgz#a1abb675aa9a8490798503af57e8782a78f1338e"
+  integrity sha512-T7uscqjJVS46Pq1XDXyo9Uvey9gd3huT/DD9cYBb4K2Xc/vbKRPUWK067bxDQRK0yIz6Jxk73IrnimvASzBNAQ==
   dependencies:
     "@ungap/promise-all-settled" "1.1.2"
     ansi-colors "4.1.1"
