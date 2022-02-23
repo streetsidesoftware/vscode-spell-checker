@@ -40,7 +40,7 @@
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
     "cspell-lib": "^5.18.5",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "jest": "^27.5.1",
     "jest-mock-vscode": "0.1.2",
     "jest-when": "^3.5.1",
