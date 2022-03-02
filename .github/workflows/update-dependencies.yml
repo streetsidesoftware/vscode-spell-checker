@@ -20,7 +20,7 @@ jobs:
       REF_BRANCH: main
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v2
         with:
           ref: ${{ env.REF_BRANCH }}
       - name: Update
@@ -58,7 +58,7 @@ jobs:
           private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
       - name: Create Pull Request
         if: env.git_status == 'dirty'
-        uses: peter-evans/create-pull-request@v3.13.0
+        uses: peter-evans/create-pull-request@v3
         with:
           commit-message: "ci: Workflow Bot -- Update ALL Dependencies"
           branch: ${{ env.NEW_BRANCH }}
