@@ -11,11 +11,11 @@ jobs:
   cspell:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - run: npx cspell "docs/**"
 
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - run: npx prettier -c "docs/**/*.{md,markdown,yaml,yml,json,html,htm}"
