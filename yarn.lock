@@ -418,9 +418,9 @@
   integrity sha512-WOHfjwMuLbo76khDsDa1lJvP/dXcwXVwonWwfUFRt82BL/GtyMalh1HEtCWwKDuK/9f8PCEt/EZMkHT3D5ZV3w==
 
 "@cspell/dict-elixir@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-elixir/-/dict-elixir-2.0.0.tgz#2633a290d2eab068ce6035d76529b24abd295b3b"
-  integrity sha512-NeDObcqiYuqWRrzMAQLZDSrZlChTEZwTA2zHdI2nPtpeDl4FQcTz2BHP8zVt6Lj6G2QHJmNGmQtSmDguX86NYA==
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-elixir/-/dict-elixir-2.0.1.tgz#1a9b422215b5edabb84568cfa5c0c70bc164a2ce"
+  integrity sha512-eTTTxZt1FqGkM780yFDxsGHvTbWqvlK8YISSccK8FyrB6ULW+uflQlNS5AnWg3uWKC48b7pQott+odYCsPJ+Ow==
 
 "@cspell/dict-en-gb@^1.1.33":
   version "1.1.33"
@@ -523,9 +523,9 @@
   integrity sha512-Rp3d4sgD6izW9TW5yVI3D//3HTl9oOGBuzTvXRdoHksVPRvzIu2liVhj8MnQ3XIRe5Kc6IhLBAm6izuV2BpGwQ==
 
 "@cspell/dict-ruby@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-ruby/-/dict-ruby-2.0.0.tgz#3f2c78ceb38bec272adc7187fda72bb47799cf4e"
-  integrity sha512-ux73GEIZrApxIG/BDnpdxWE7r9TY3n+3HFAEp+LDJjSjpwpn2VXopd7GsjwsvmlAv5F3Jch8tzgzujFZkvqdoA==
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-ruby/-/dict-ruby-2.0.1.tgz#1cbd4d8803428bd421a5562b2d2bb4b3bae80bce"
+  integrity sha512-qGqhYfFeoBOashv/l0Kj5o4ilyvfq0s+t+r32juPOkOnbHz+hzxnJo2tMMg/L/UdjVV7Y8ovg4LDBC/seVrMYQ==
 
 "@cspell/dict-rust@^2.0.0":
   version "2.0.0"
@@ -538,9 +538,9 @@
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
 "@cspell/dict-software-terms@^2.1.0":
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.1.tgz#1f59b63de03b0b288156112fb40bc1e8401ad294"
-  integrity sha512-PmmqysKSvNwksjEfXrzD1wEVvctR6qppxDhwNc4IQQjwpjmtN8e+8HiXxIbCsBcll1rO0vOmnhpXUdl+d9apXQ==
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.2.tgz#16a18f275e81426b0fbbb5342fd37701038b01c8"
+  integrity sha512-iTkkduYX4+NVHt1CKbDGDQJsSTqMCafGZKhtasPQTUN6UxIaDFM9Hxl1wAoECDaRRDgkaGP0v1C7F8jY7nFyKQ==
 
 "@cspell/dict-swift@^1.0.2":
   version "1.0.2"
@@ -3728,7 +3728,7 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@^5.0.0, enhanced-resolve@^5.8.3:
+enhanced-resolve@^5.0.0, enhanced-resolve@^5.9.2:
   version "5.9.2"
   resolved "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.9.2.tgz#0224dcd6a43389ebfb2d55efee517e5466772dd9"
   integrity sha512-GIm3fQfwLJ8YZx2smuHpBKkXC1yOk+OBEmKckVyL0i/ea8mqDEykK3ld5dgH1QYPNyT/lIllxV2LULnxCHaHkA==
@@ -8607,10 +8607,10 @@ webpack-sources@^3.2.3:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@^5.69.1:
-  version "5.69.1"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-5.69.1.tgz#8cfd92c192c6a52c99ab00529b5a0d33aa848dc5"
-  integrity sha512-+VyvOSJXZMT2V5vLzOnDuMz5GxEqLk7hKWQ56YxPW/PQRUuKimPqmEIJOx8jHYeyo65pKbapbW464mvsKbaj4A==
+webpack@^5.70.0:
+  version "5.70.0"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-5.70.0.tgz#3461e6287a72b5e6e2f4872700bc8de0d7500e6d"
+  integrity sha512-ZMWWy8CeuTTjCxbeaQI21xSswseF2oNOwc70QSKNePvmxE7XW36i7vpBMYZFAUHPwQiEbNGCEYIOOlyRbdGmxw==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^0.0.51"
@@ -8621,7 +8621,7 @@ webpack@^5.69.1:
     acorn-import-assertions "^1.7.6"
     browserslist "^4.14.5"
     chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.8.3"
+    enhanced-resolve "^5.9.2"
     es-module-lexer "^0.9.0"
     eslint-scope "5.1.1"
     events "^3.2.0"
