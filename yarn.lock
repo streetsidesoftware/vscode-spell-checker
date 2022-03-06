@@ -1264,11 +1264,6 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/vscode@^1.64.0":
-  version "1.64.0"
-  resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.64.0.tgz#bfd82c8d92dc7824c1be084be1ab46ce20d7fb55"
-  integrity sha512-bSlAWz5WtcSL3cO9tAT/KpEH9rv5OBnm93OIIFwdCshaAiqr2bp1AUyEwW9MWeCvZBHEXc3V0fTYVdVyzDNwHA==
-
 "@types/vscode@^1.65.0":
   version "1.65.0"
   resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.65.0.tgz#042dd8d93c32ac62cb826cd0fa12376069d1f448"
