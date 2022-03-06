@@ -4,6 +4,7 @@ export type Languages = typeof vscode.languages;
 
 export const languages: Languages = {
     createDiagnosticCollection: jest.fn(),
+    createLanguageStatusItem: jest.fn(),
     getDiagnostics: jest.fn(),
     getLanguages: jest.fn(async () => knownLanguageIDs),
     match: jest.fn(),
@@ -26,6 +27,7 @@ export const languages: Languages = {
     registerFoldingRangeProvider: jest.fn(),
     registerHoverProvider: jest.fn(),
     registerImplementationProvider: jest.fn(),
+    registerInlayHintsProvider: jest.fn(),
     registerInlineValuesProvider: jest.fn(),
     registerLinkedEditingRangeProvider: jest.fn(),
     registerOnTypeFormattingEditProvider: jest.fn(),
