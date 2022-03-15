@@ -3218,12 +3218,12 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-gitignore@^5.19.1:
-  version "5.19.1"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-5.19.1.tgz#59bcaadfa0c22777456bc60dbc6f64b08b8e59d8"
-  integrity sha512-RfJ5u6M3I2RD7pqyQzZWeNfJJLR986KlrAUXHtzvekgUej6b0dWj2yJ4/MYCoaJ8oq3uRO8hddZDWsp4TogU+w==
+cspell-gitignore@^5.19.1, cspell-gitignore@^5.19.2:
+  version "5.19.2"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-5.19.2.tgz#8a364a18fbeef7b35356f2537933ea4fc1761063"
+  integrity sha512-j0iMQoLmq4J/19hM0j0rNUQoHsw1b9Yg1AZMus8WJgABPUPGgk4fRKJChUQu0+ys3wwWT/4vhKt7hU89ScphJQ==
   dependencies:
-    cspell-glob "^5.19.1"
+    cspell-glob "^5.19.2"
     find-up "^5.0.0"
 
 cspell-glob@^5.19.1, cspell-glob@^5.19.2:
