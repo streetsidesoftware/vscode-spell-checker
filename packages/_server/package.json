@@ -24,7 +24,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^5.19.1",
+    "@cspell/cspell-types": "^5.19.2",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.4.1",
     "@types/micromatch": "^4.0.2",

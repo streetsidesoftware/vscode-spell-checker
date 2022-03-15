@@ -357,10 +357,10 @@
   resolved "https://registry.npmjs.org/@cspell/cspell-pipe/-/cspell-pipe-5.19.1.tgz#2709ef12bf99e0f5de153fd065d391131a1b81c1"
   integrity sha512-nAS3hEbkCt2k4SA4Q37fJwUypOiZ3dlU4u4IwVAxiGrUaOZa0u+uvCp175Pv3I+bQaTr9RUNlTJm/YRL+Hu2Lg==
 
-"@cspell/cspell-types@^5.19.1":
-  version "5.19.1"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-5.19.1.tgz#acd2a9d5a172566d040f3ffcf8e25cb443ba8aee"
-  integrity sha512-0IIC0Yi+Ku7pQR17Kd407C+unvvA+b6jHNEbGCIaJd1RS3mDq0kyWuhAWDnJq57TBIRvAN/hUbHk1PCF9DCysA==
+"@cspell/cspell-types@^5.19.1", "@cspell/cspell-types@^5.19.2":
+  version "5.19.2"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-5.19.2.tgz#faae04c918dca53d6a266d86d00c3bd1682ebe16"
+  integrity sha512-IkMQpa7IzoFm9NXzRz8Gp38f3aoMZf6xjT7J3FvWtIntPvkIFaY53R1/I9U/gujH/zflf2VmZGxoDuFg1VcD0g==
 
 "@cspell/dict-ada@^2.0.0":
   version "2.0.0"
