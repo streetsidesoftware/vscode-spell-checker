@@ -31,7 +31,7 @@
     "@types/node": "^17.0.21",
     "common-utils": "1.0.0",
     "cspell-glob": "^5.19.1",
-    "cspell-lib": "^5.19.1",
+    "cspell-lib": "^5.19.2",
     "fs-extra": "^10.0.1",
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
