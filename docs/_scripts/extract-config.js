@@ -2,13 +2,11 @@
 
 const package = require('../../package.json');
 
-const config = package.contributes.configuration.properties;
+const configSections = package.contributes.configuration;
 
 const compare = new Intl.Collator().compare;
 
-const entries = Object.entries(config).sort((a, b) => compare(a[0], b[0]));
-
-const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
+configSections.sort((a, b) => a.order - b.order || compare(a.title, b.title));
 
 const descriptionWidth = 90;
 
@@ -17,7 +15,41 @@ const doc = `
 
 # Configuration Settings
 
-## Settings in VS Code
+${sectionTOC(configSections)}
+
+${formatSections(configSections)}
+
+`.replace(/\*\u200B/g, '*'); // remove zero width spaces
+
+console.log(doc);
+
+function sectionTOC(sections) {
+  /**
+   *
+   * @param {[string, any]} param0
+   * @returns
+   */
+  function tocEntry(value) {
+    const title = value.title;
+    return `- [${title}](#${title.toLowerCase().replace(/\W/g, '')})`;
+  }
+
+  return `
+${sections.map(tocEntry).join('\n')}
+`;
+}
+
+function formatSections(sections) {
+  return sections.map(sectionEntry).join('\n');
+}
+
+function sectionEntry(section) {
+  const entries = Object.entries(section.properties);
+  entries.sort(([a], [b]) => compare(a, b));
+  const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
+
+  return `
+# ${section.title}
 
 ${configTable(activeEntries)}
 
@@ -25,34 +57,33 @@ ${configTable(activeEntries)}
 
 ${configDefinitions(entries)}
 
-`.replace(/\*\u200B/g, '*'); // remove zero width spaces
-
-console.log(doc);
-
-function configTable(entries) {
-  return `
-| Command | Scope | Description |
-| ------- | ----- | ----------- |
-${entries.map(tableEntry).join('\n')}
 `;
 }
 
-/**
- *
- * @param {[string, any]} param0
- * @returns
- */
-function tableEntry([key, value]) {
-  const description =
-    value.title ||
-    value.description?.replace(/\n/g, '<br>') ||
-    value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') ||
-    '';
-  const scope = value.scope || '';
-  return `| [\`${shorten(key, 40)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
-    description,
-    descriptionWidth
-  )} |`;
+function configTable(entries) {
+  /**
+   *
+   * @param {[string, any]} param0
+   * @returns
+   */
+  function tableEntryConfig([key, value]) {
+    const description =
+      value.title ||
+      value.description?.replace(/\n/g, '<br>') ||
+      value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') ||
+      '';
+    const scope = value.scope || '';
+    return `| [\`${shorten(key, 40)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
+      description,
+      descriptionWidth
+    )} |`;
+  }
+
+  return `
+| Setting | Scope | Description |
+| ------- | ----- | ----------- |
+${entries.map(tableEntryConfig).join('\n')}
+`;
 }
 
 /**

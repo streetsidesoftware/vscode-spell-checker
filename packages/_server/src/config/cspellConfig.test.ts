@@ -1,7 +1,7 @@
-import { SpellCheckerSettingsVSCode, CSpellUserSettings } from './cspellConfig';
+import { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig';
 
 describe('cspellConfig', () => {
-    const sampleSettings: SpellCheckerSettingsVSCode[] = [
+    const sampleSettings: AllSpellCheckerSettingsInVSCode[] = [
         s({}),
         s({
             overrides: [
@@ -74,6 +74,29 @@ describe('cspellConfig', () => {
     });
 });
 
-function s(s: SpellCheckerSettingsVSCode): SpellCheckerSettingsVSCode {
+describe('Verify all config items are accounted for in configuration.', () => {
+    type ArrayEntry<T extends unknown[]> = T extends (infer R)[] ? R : never;
+    type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer R) => any ? R : never;
+
+    type PartialFlatConfig = { [K in keyof AllSpellCheckerSettingsInVSCode as `cSpell.${K}`]: AllSpellCheckerSettingsInVSCode[K] };
+    type FullConfig = Required<UnionToIntersection<ArrayEntry<SpellCheckerSettingsVSCode>>>;
+    type FlatConfig = Required<PartialFlatConfig>;
+
+    it('Just make sure it compiles', () => {
+        // If these functions do not compile, then there is a missing field.
+        function toFull(c: FlatConfig): FullConfig {
+            return c;
+        }
+
+        function toFlat(c: FullConfig): FlatConfig {
+            return c;
+        }
+
+        expect(toFlat).toBeDefined();
+        expect(toFull).toBeDefined();
+    });
+});
+
+function s(s: AllSpellCheckerSettingsInVSCode): AllSpellCheckerSettingsInVSCode {
     return s;
 }

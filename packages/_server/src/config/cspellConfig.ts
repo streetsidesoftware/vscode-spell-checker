@@ -30,7 +30,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * @scope resource
-     * @description Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle.
+     * @description Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
      * @default "Information"
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
@@ -213,7 +213,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * This same effect can be achieved using the `files` setting.
      *
      * ```
-     * "cSpell.files": ["**", "**​/.*", "**​/.*​/**"]
+     * "cSpell.files": ["**"]
      * ```
      * @default false
      */
@@ -481,7 +481,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @title Enabled Language Ids
      * @scope resource
      * @description
-     * Specify file types to spell check. Use `cSpell.enableFiletypes` to Enable / Disable checking files types.
+     * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
      * @markdownDescription
      * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
      * @uniqueItems true
@@ -715,12 +715,6 @@ export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
 
-type AsString<S extends string> = S;
-
-type Prefix<T, P extends string> = {
-    [Property in keyof T as `${P}${AsString<string & Property>}`]: T[Property];
-};
-
 type DictionaryDef =
     | Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>
     | Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
@@ -777,6 +771,137 @@ export interface SpellCheckerSettingsVSCodeBase
         LanguageSettings,
         Overrides {}
 
-export type SpellCheckerSettingsVSCodeProperties = Prefix<SpellCheckerSettingsVSCodeBase, 'cSpell.'>;
+export type AllSpellCheckerSettingsInVSCode = SpellCheckerSettingsVSCodeBase;
 
-export type SpellCheckerSettingsVSCode = SpellCheckerSettingsVSCodeBase;
+type Prefix<T, P extends string> = {
+    [K in keyof T as K extends string ? `${P}${K}` : K]: T[K];
+};
+type PrefixWithCspell<T> = Prefix<T, 'cSpell.'>;
+
+/**
+ * @title Code Spell Checker
+ * @order 0
+ */
+type VSConfigRoot = PrefixWithCspell<_VSConfigRoot>;
+type _VSConfigRoot = Pick<SpellCheckerSettingsVSCodeBase, 'enabled'>;
+
+/**
+ * @title Languages and Dictionaries
+ * @order 1
+ */
+type VSConfigLanguageAndDictionaries = PrefixWithCspell<_VSConfigLanguageAndDictionaries>;
+type _VSConfigLanguageAndDictionaries = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'caseSensitive'
+    | 'customDictionaries'
+    | 'dictionaries'
+    | 'dictionaryDefinitions'
+    | 'enableFiletypes'
+    | 'flagWords'
+    | 'ignoreWords'
+    | 'language'
+    | 'languageSettings'
+    | 'noSuggestDictionaries'
+    | 'userWords'
+    | 'words'
+>;
+
+/**
+ * @title Reporting and Display
+ * @order 2
+ */
+type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
+type _VSConfigReporting = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'diagnosticLevel'
+    | 'fixSpellingWithRenameProvider'
+    | 'logLevel'
+    | 'maxDuplicateProblems'
+    | 'maxNumberOfProblems'
+    | 'minWordLength'
+    | 'numSuggestions'
+    | 'showAutocompleteSuggestions'
+    | 'showCommandsInEditorContextMenu'
+    | 'showStatus'
+    | 'showStatusAlignment'
+    | 'suggestionMenuType'
+    | 'suggestionNumChanges'
+>;
+
+/**
+ * @title Performance
+ * @order 4
+ */
+type VSConfigPerf = PrefixWithCspell<_VSConfigPerf>;
+type _VSConfigPerf = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'blockCheckingWhenAverageChunkSizeGreaterThan'
+    | 'blockCheckingWhenLineLengthGreaterThan'
+    | 'blockCheckingWhenTextChunkSizeGreaterThan'
+    | 'checkLimit'
+    | 'spellCheckDelayMs'
+    | 'suggestionsTimeout'
+>;
+
+/**
+ * @title CSpell
+ * @order 5
+ */
+type VSConfigCSpell = PrefixWithCspell<_VSConfigCSpell>;
+type _VSConfigCSpell = Omit<
+    SpellCheckerSettingsVSCodeBase,
+    | keyof _VSConfigExperimental
+    | keyof _VSConfigLanguageAndDictionaries
+    | keyof _VSConfigLegacy
+    | keyof _VSConfigPerf
+    | keyof _VSConfigReporting
+    | keyof _VSConfigRoot
+    | keyof _VSConfigFilesAndFolders
+>;
+
+/**
+ * @title Files, Folders, and Workspaces
+ * @order 3
+ */
+type VSConfigFilesAndFolders = PrefixWithCspell<_VSConfigFilesAndFolders>;
+type _VSConfigFilesAndFolders = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'allowedSchemas'
+    | 'files'
+    | 'globRoot'
+    | 'ignorePaths'
+    | 'import'
+    | 'noConfigSearch'
+    | 'spellCheckOnlyWorkspaceFiles'
+    | 'useGitignore'
+    | 'usePnP'
+    | 'workspaceRootPath'
+>;
+
+/**
+ * @title Legacy
+ * @order 20
+ */
+type VSConfigLegacy = PrefixWithCspell<_VSConfigLegacy>;
+type _VSConfigLegacy = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    'enabledLanguageIds' | 'allowCompoundWords' | 'customFolderDictionaries' | 'customUserDictionaries' | 'customWorkspaceDictionaries'
+>;
+
+/**
+ * @title Experimental
+ * @order 19
+ */
+type VSConfigExperimental = PrefixWithCspell<_VSConfigExperimental>;
+type _VSConfigExperimental = Pick<SpellCheckerSettingsVSCodeBase, 'experimental.enableRegexpView'>;
+
+export type SpellCheckerSettingsVSCode = [
+    VSConfigRoot,
+    VSConfigCSpell,
+    VSConfigExperimental,
+    VSConfigFilesAndFolders,
+    VSConfigLanguageAndDictionaries,
+    VSConfigLegacy,
+    VSConfigPerf,
+    VSConfigReporting
+];
