@@ -2,66 +2,27 @@
 
 # Configuration Settings
 
-## Settings in VS Code
+- [Code Spell Checker](#codespellchecker)
+- [Languages and Dictionaries](#languagesanddictionaries)
+- [Reporting and Display](#reportinganddisplay)
+- [Files, Folders, and Workspaces](#filesfoldersandworkspaces)
+- [Performance](#performance)
+- [CSpell](#cspell)
+- [Experimental](#experimental)
+- [Legacy](#legacy)
 
-| Command                                                                                           | Scope                | Description                                                                                              |
-| ------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
-| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords)                                          | resource             | Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means…         |
-| [`cSpell.allowedSchemas`](#cspellallowedschemas)                                                  | window               | Control which file schemas will be checked for spelling (VS Code must be restarted for this…             |
-| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks.                                        |
-| [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)       | language-overridable | The maximum line length.                                                                                 |
-| [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)    | language-overridable | The maximum length of a chunk of text without word breaks.                                               |
-| [`cSpell.caseSensitive`](#cspellcasesensitive)                                                    | resource             | Determines if words must match case and accent rules.                                                    |
-| [`cSpell.checkLimit`](#cspellchecklimit)                                                          | resource             | The limit in K-Characters to be checked in a file.                                                       |
-| [`cSpell.customDictionaries`](#cspellcustomdictionaries)                                          | resource             | Custom Dictionaries                                                                                      |
-| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                                | resource             | Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects…             |
-| [`cSpell.dictionaries`](#cspelldictionaries)                                                      | resource             | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…            |
-| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions)                                    | resource             | Define additional available dictionaries.                                                                |
-| [`cSpell.enabled`](#cspellenabled)                                                                | resource             | Enable / Disable the spell checker.                                                                      |
-| [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids)                                          | resource             | Enabled Language Ids                                                                                     |
-| [`cSpell.enableFiletypes`](#cspellenablefiletypes)                                                | resource             | File Types to Check                                                                                      |
-| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)                     | application          | Show Regular Expression Explorer                                                                         |
-| [`cSpell.files`](#cspellfiles)                                                                    | resource             | Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration… |
-| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                    | language-overridable | Use Rename when fixing spelling issues.                                                                  |
-| [`cSpell.flagWords`](#cspellflagwords)                                                            | resource             | List of words to always be considered incorrect.                                                         |
-| [`cSpell.globRoot`](#cspellglobroot)                                                              | resource             | The root to use for glop patterns found in this configuration. Default: The current workspace…           |
-| [`cSpell.ignorePaths`](#cspellignorepaths)                                                        | resource             | Glob patterns of files to be ignored                                                                     |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                              | resource             | List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from…             |
-| [`cSpell.ignoreWords`](#cspellignorewords)                                                        | resource             | A list of words to be ignored by the spell checker.                                                      |
-| [`cSpell.import`](#cspellimport)                                                                  | resource             | Other settings files to be included.                                                                     |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                            | resource             | List of RegExp patterns or defined Pattern names to define the text to be included for spell…            |
-| [`cSpell.language`](#cspelllanguage)                                                              | resource             | Current active spelling language.                                                                        |
-| [`cSpell.languageSettings`](#cspelllanguagesettings)                                              | resource             | Additional settings for individual programming languages and locales.                                    |
-| [`cSpell.logLevel`](#cspellloglevel)                                                              | window               | Set the Debug Level for logging messages.                                                                |
-| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                      | resource             | The maximum number of times the same word can be flagged as an error in a file.                          |
-| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                        | resource             | Controls the maximum number of spelling errors per document.                                             |
-| [`cSpell.minWordLength`](#cspellminwordlength)                                                    | resource             | The minimum length of a word before checking it against a dictionary.                                    |
-| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                                                  | resource             | Prevents searching for local configuration when checking individual documents.                           |
-| [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries)                                    | resource             | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries…        |
-| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                  | resource             | Controls the number of suggestions shown.                                                                |
-| [`cSpell.overrides`](#cspelloverrides)                                                            | resource             | Overrides to apply based upon the file path.                                                             |
-| [`cSpell.patterns`](#cspellpatterns)                                                              | resource             | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.                   |
-| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                        | language-overridable | Show CSpell in-document directives as you type.                                                          |
-| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)                | application          | Show Spell Checker actions in Editor Context Menu                                                        |
-| [`cSpell.showStatus`](#cspellshowstatus)                                                          | application          | Display the spell checker status on the status bar.                                                      |
-| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                        | application          | The side of the status bar to display the spell checker status.                                          |
-| [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                            | application          | Delay in ms after a document has changed before checking it for spelling errors.                         |
-| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles)                      | window               | Spell Check Only Workspace Files                                                                         |
-| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                          | resource             | The type of menu used to display spelling suggestions.                                                   |
-| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                      | resource             | The maximum number of changes allowed on a word to be considered a suggestions.                          |
-| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                          | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.                           |
-| [`cSpell.useGitignore`](#cspellusegitignore)                                                      | window               | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…           |
-| [`cSpell.usePnP`](#cspellusepnp)                                                                  | resource             | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
-| [`cSpell.userWords`](#cspelluserwords)                                                            | resource             | Words to add to global dictionary -- should only be in the user config file.                             |
-| [`cSpell.words`](#cspellwords)                                                                    | resource             | List of words to be always considered correct.                                                           |
-| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                                            | resource             | Workspace Root Folder Path                                                                               |
+# Code Spell Checker
+
+| Setting                            | Scope    | Description                         |
+| ---------------------------------- | -------- | ----------------------------------- |
+| [`cSpell.enabled`](#cspellenabled) | resource | Enable / Disable the spell checker. |
 
 ## Definitions
 
-### `cSpell.allowCompoundWords`
+### `cSpell.enabled`
 
 Name
-: `cSpell.allowCompoundWords`
+: `cSpell.enabled`
 
 Type
 : boolean
@@ -70,117 +31,31 @@ Scope
 : resource
 
 Description
-: Enable / Disable allowing word compounds. - `true` means `arraylength` would be ok - `false` means it would not pass.
-
-    Note: this can also cause many misspelled words to seem correct.
+: Enable / Disable the spell checker.
 
 Default
-: _`false`_
+: _`true`_
 
 ---
 
-### `cSpell.allowedSchemas`
+# Languages and Dictionaries
 
-Name
-: `cSpell.allowedSchemas`
+| Setting                                                        | Scope    | Description                                                                                       |
+| -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
+| [`cSpell.caseSensitive`](#cspellcasesensitive)                 | resource | Determines if words must match case and accent rules.                                             |
+| [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
+| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…     |
+| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
+| [`cSpell.enableFiletypes`](#cspellenablefiletypes)             | resource | File Types to Check                                                                               |
+| [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect.                                                  |
+| [`cSpell.ignoreWords`](#cspellignorewords)                     | resource | A list of words to be ignored by the spell checker.                                               |
+| [`cSpell.language`](#cspelllanguage)                           | resource | Current active spelling language.                                                                 |
+| [`cSpell.languageSettings`](#cspelllanguagesettings)           | resource | Additional settings for individual programming languages and locales.                             |
+| [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries) | resource | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries… |
+| [`cSpell.userWords`](#cspelluserwords)                         | resource | Words to add to global dictionary -- should only be in the user config file.                      |
+| [`cSpell.words`](#cspellwords)                                 | resource | List of words to be always considered correct.                                                    |
 
-Type
-: string[]
-
-Scope
-: window
-
-Description
-: Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
-
-    Some schemas have special meaning like:
-    - `untitled` - Used for new documents that have not yet been saved
-    - `vscode-notebook-cell` - Used for validating segments of a Notebook.
-
-Default
-: [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_ ]
-
----
-
-### `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`
-
-Name
-: `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`
-
-Type
-: number
-
-Scope
-: language-overridable
-
-Description
-: The maximum average length of chunks of text without word breaks.
-
-    A chunk is the characters between absolute word breaks.
-    Absolute word breaks match: `/[\s,{}[\]]/`
-
-    **Error Message:** _Average Word Size is Too High._
-
-    If you are seeing this message, it means that the file contains mostly long lines
-    without many word breaks.
-
-Default
-: _`80`_
-
----
-
-### `cSpell.blockCheckingWhenLineLengthGreaterThan`
-
-Name
-: `cSpell.blockCheckingWhenLineLengthGreaterThan`
-
-Type
-: number
-
-Scope
-: language-overridable
-
-Description
-: The maximum line length.
-
-    Block spell checking if lines are longer than the value given.
-    This is used to prevent spell checking generated files.
-
-    **Error Message:** _Lines are too long._
-
-Default
-: _`10000`_
-
----
-
-### `cSpell.blockCheckingWhenTextChunkSizeGreaterThan`
-
-Name
-: `cSpell.blockCheckingWhenTextChunkSizeGreaterThan`
-
-Type
-: number
-
-Scope
-: language-overridable
-
-Description
-: The maximum length of a chunk of text without word breaks.
-
-    It is used to prevent spell checking of generated files.
-
-    A chunk is the characters between absolute word breaks.
-    Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
-
-    **Error Message:** _Maximum Word Length is Too High._
-
-    If you are seeing this message, it means that the file contains a very long line
-    without many word breaks.
-
-Default
-: _`500`_
-
----
+## Definitions
 
 ### `cSpell.caseSensitive`
 
@@ -198,25 +73,6 @@ Description
 
 Default
 : _- none -_
-
----
-
-### `cSpell.checkLimit`
-
-Name
-: `cSpell.checkLimit`
-
-Type
-: number
-
-Scope
-: resource
-
-Description
-: The limit in K-Characters to be checked in a file.
-
-Default
-: _`500`_
 
 ---
 
@@ -252,99 +108,6 @@ If `addWords` is `true` words will be added to this dictionary.
 
 Default
 : _- none -_
-
----
-
-### ~~`cSpell.customFolderDictionaries`~~
-
-Name
-: ~~`cSpell.customFolderDictionaries`~~ -- Custom Folder Dictionaries
-
-Type
-: []
-
-Scope
-: resource
-
-Description
-: Define custom dictionaries to be included by default for the folder.
-If `addWords` is `true` words will be added to this dictionary.
-
-Deprecation Message
-: - Use `customDictionaries` instead.
-
-Default
-: _- none -_
-
----
-
-### ~~`cSpell.customUserDictionaries`~~
-
-Name
-: ~~`cSpell.customUserDictionaries`~~ -- Custom User Dictionaries
-
-Type
-: []
-
-Scope
-: application
-
-Description
-: Define custom dictionaries to be included by default for the user.
-If `addWords` is `true` words will be added to this dictionary.
-
-Deprecation Message
-: - Use `customDictionaries` instead.
-
-Default
-: _- none -_
-
----
-
-### ~~`cSpell.customWorkspaceDictionaries`~~
-
-Name
-: ~~`cSpell.customWorkspaceDictionaries`~~ -- Custom Workspace Dictionaries
-
-Type
-: []
-
-Scope
-: resource
-
-Description
-: Define custom dictionaries to be included by default for the workspace.
-If `addWords` is `true` words will be added to this dictionary.
-
-Deprecation Message
-: - Use `customDictionaries` instead.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.diagnosticLevel`
-
-Name
-: `cSpell.diagnosticLevel`
-
-Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
-
-    | `Error` | Report Spelling Issues as Errors |
-    | `Warning` | Report Spelling Issues as Warnings |
-    | `Information` | Report Spelling Issues as Information |
-    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-
-Scope
-: resource
-
-Description
-: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of squiggle.
-
-Default
-: _`"Information"`_
 
 ---
 
@@ -386,44 +149,6 @@ Default
 
 ---
 
-### `cSpell.enabled`
-
-Name
-: `cSpell.enabled`
-
-Type
-: boolean
-
-Scope
-: resource
-
-Description
-: Enable / Disable the spell checker.
-
-Default
-: _`true`_
-
----
-
-### `cSpell.enabledLanguageIds`
-
-Name
-: `cSpell.enabledLanguageIds` -- Enabled Language Ids
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
-
-Default
-: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vue"`_, _`"yaml"`_, _`"yml"`_ ]
-
----
-
 ### `cSpell.enableFiletypes`
 
 Name
@@ -452,63 +177,6 @@ Default
 
 ---
 
-### `cSpell.experimental.enableRegexpView`
-
-Name
-: `cSpell.experimental.enableRegexpView`
-
-Type
-: boolean
-
-Scope
-: application
-
-Description
-: Show Regular Expression Explorer
-
-Default
-: _`false`_
-
----
-
-### `cSpell.files`
-
-Name
-: `cSpell.files`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.fixSpellingWithRenameProvider`
-
-Name
-: `cSpell.fixSpellingWithRenameProvider`
-
-Type
-: boolean
-
-Scope
-: language-overridable
-
-Description
-: Use Rename when fixing spelling issues.
-
-Default
-: _`true`_
-
----
-
 ### `cSpell.flagWords`
 
 Name
@@ -528,81 +196,6 @@ Default
 
 ---
 
-### `cSpell.globRoot`
-
-Name
-: `cSpell.globRoot`
-
-Type
-: string
-
-Scope
-: resource
-
-Description
-: The root to use for glop patterns found in this configuration. Default: The current workspace folder. Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.
-
-    Special Values:
-
-    - `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\n
-    - `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.ignorePaths`
-
-Name
-: `cSpell.ignorePaths` -- Glob patterns of files to be ignored
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.
-
-Default
-: [ _`"package-lock.json"`_, _`"node_modules"`_, _`"vscode-extension"`_, _`".git/objects"`_, _`".vscode"`_, _`".vscode-insiders"`_ ]
-
----
-
-### `cSpell.ignoreRegExpList`
-
-Name
-: `cSpell.ignoreRegExpList`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
-
-    - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
-    - When editing the VS Code `settings.json` file,
-      it is necessary to escape `\`.
-      Each `\` becomes `\\`.
-
-    The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
-
-    | VS Code UI          | JSON                  | Description                                  |
-    | :------------------ | :-------------------- | :------------------------------------------- |
-    | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
-    | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
-    | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
-
-Default
-: _- none -_
-
----
-
 ### `cSpell.ignoreWords`
 
 Name
@@ -616,44 +209,6 @@ Scope
 
 Description
 : A list of words to be ignored by the spell checker.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.import`
-
-Name
-: `cSpell.import`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Other settings files to be included.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.includeRegExpList`
-
-Name
-: `cSpell.includeRegExpList`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.
 
 Default
 : _- none -_
@@ -697,6 +252,128 @@ Description
 
 Default
 : _- none -_
+
+---
+
+### `cSpell.noSuggestDictionaries`
+
+Name
+: `cSpell.noSuggestDictionaries`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.
+
+    Note: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.userWords`
+
+Name
+: `cSpell.userWords`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Words to add to global dictionary -- should only be in the user config file.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.words`
+
+Name
+: `cSpell.words`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: List of words to be always considered correct.
+
+Default
+: _- none -_
+
+---
+
+# Reporting and Display
+
+| Setting                                                                            | Scope                | Description                                                                                  |
+| ---------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                 | resource             | Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects… |
+| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)     | language-overridable | Use Rename when fixing spelling issues.                                                      |
+| [`cSpell.logLevel`](#cspellloglevel)                                               | window               | Set the Debug Level for logging messages.                                                    |
+| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                       | resource             | The maximum number of times the same word can be flagged as an error in a file.              |
+| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                         | resource             | Controls the maximum number of spelling errors per document.                                 |
+| [`cSpell.minWordLength`](#cspellminwordlength)                                     | resource             | The minimum length of a word before checking it against a dictionary.                        |
+| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                   | resource             | Controls the number of suggestions shown.                                                    |
+| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)         | language-overridable | Show CSpell in-document directives as you type.                                              |
+| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu) | application          | Show Spell Checker actions in Editor Context Menu                                            |
+| [`cSpell.showStatus`](#cspellshowstatus)                                           | application          | Display the spell checker status on the status bar.                                          |
+| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                         | application          | The side of the status bar to display the spell checker status.                              |
+| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                           | resource             | The type of menu used to display spelling suggestions.                                       |
+| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                       | resource             | The maximum number of changes allowed on a word to be considered a suggestions.              |
+
+## Definitions
+
+### `cSpell.diagnosticLevel`
+
+Name
+: `cSpell.diagnosticLevel`
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+Scope
+: resource
+
+Description
+: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+
+Default
+: _`"Information"`_
+
+---
+
+### `cSpell.fixSpellingWithRenameProvider`
+
+Name
+: `cSpell.fixSpellingWithRenameProvider`
+
+Type
+: boolean
+
+Scope
+: language-overridable
+
+Description
+: Use Rename when fixing spelling issues.
+
+Default
+: _`true`_
 
 ---
 
@@ -782,46 +459,6 @@ Default
 
 ---
 
-### `cSpell.noConfigSearch`
-
-Name
-: `cSpell.noConfigSearch`
-
-Type
-: boolean
-
-Scope
-: resource
-
-Description
-: Prevents searching for local configuration when checking individual documents.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.noSuggestDictionaries`
-
-Name
-: `cSpell.noSuggestDictionaries`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.
-
-    Note: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.
-
-Default
-: _- none -_
-
----
-
 ### `cSpell.numSuggestions`
 
 Name
@@ -838,44 +475,6 @@ Description
 
 Default
 : _`8`_
-
----
-
-### `cSpell.overrides`
-
-Name
-: `cSpell.overrides`
-
-Type
-: object[]
-
-Scope
-: resource
-
-Description
-: Overrides to apply based upon the file path.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.patterns`
-
-Name
-: `cSpell.patterns`
-
-Type
-: object[]
-
-Scope
-: resource
-
-Description
-: Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.
-
-Default
-: _- none -_
 
 ---
 
@@ -959,49 +558,6 @@ Default
 
 ---
 
-### `cSpell.spellCheckDelayMs`
-
-Name
-: `cSpell.spellCheckDelayMs`
-
-Type
-: number
-
-Scope
-: application
-
-Description
-: Delay in ms after a document has changed before checking it for spelling errors.
-
-Default
-: _`50`_
-
----
-
-### `cSpell.spellCheckOnlyWorkspaceFiles`
-
-Name
-: `cSpell.spellCheckOnlyWorkspaceFiles` -- Spell Check Only Workspace Files
-
-Type
-: boolean
-
-Scope
-: window
-
-Description
-: Only spell check files that are in the currently open workspace.
-This same effect can be achieved using the `files` setting.
-
-    ```
-    "cSpell.files": ["**", "**/.*", "**/.*/**"]
-    ```
-
-Default
-: _`false`_
-
----
-
 ### `cSpell.suggestionMenuType`
 
 Name
@@ -1047,22 +603,167 @@ Default
 
 ---
 
-### `cSpell.suggestionsTimeout`
+# Files, Folders, and Workspaces
+
+| Setting                                                                      | Scope    | Description                                                                                              |
+| ---------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…             |
+| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration… |
+| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration. Default: The current workspace…           |
+| [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                                     |
+| [`cSpell.import`](#cspellimport)                                             | resource | Other settings files to be included.                                                                     |
+| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                           |
+| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                                         |
+| [`cSpell.useGitignore`](#cspellusegitignore)                                 | window   | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…           |
+| [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
+| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                               |
+
+## Definitions
+
+### `cSpell.allowedSchemas`
 
 Name
-: `cSpell.suggestionsTimeout`
+: `cSpell.allowedSchemas`
 
 Type
-: number
+: string[]
+
+Scope
+: window
+
+Description
+: Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+    Some schemas have special meaning like:
+    - `untitled` - Used for new documents that have not yet been saved
+    - `vscode-notebook-cell` - Used for validating segments of a Notebook.
+
+Default
+: [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_ ]
+
+---
+
+### `cSpell.files`
+
+Name
+: `cSpell.files`
+
+Type
+: string[]
 
 Scope
 : resource
 
 Description
-: The maximum amount of time in milliseconds to generate suggestions for a word.
+: Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.
 
 Default
-: _`400`_
+: _- none -_
+
+---
+
+### `cSpell.globRoot`
+
+Name
+: `cSpell.globRoot`
+
+Type
+: string
+
+Scope
+: resource
+
+Description
+: The root to use for glop patterns found in this configuration. Default: The current workspace folder. Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.
+
+    Special Values:
+
+    - `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\n
+    - `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.ignorePaths`
+
+Name
+: `cSpell.ignorePaths` -- Glob patterns of files to be ignored
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.
+
+Default
+: [ _`"package-lock.json"`_, _`"node_modules"`_, _`"vscode-extension"`_, _`".git/objects"`_, _`".vscode"`_, _`".vscode-insiders"`_ ]
+
+---
+
+### `cSpell.import`
+
+Name
+: `cSpell.import`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Other settings files to be included.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.noConfigSearch`
+
+Name
+: `cSpell.noConfigSearch`
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: Prevents searching for local configuration when checking individual documents.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.spellCheckOnlyWorkspaceFiles`
+
+Name
+: `cSpell.spellCheckOnlyWorkspaceFiles` -- Spell Check Only Workspace Files
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: Only spell check files that are in the currently open workspace.
+This same effect can be achieved using the `files` setting.
+
+    ```
+    "cSpell.files": ["**"]
+    ```
+
+Default
+: _`false`_
 
 ---
 
@@ -1106,44 +807,6 @@ Default
 
 ---
 
-### `cSpell.userWords`
-
-Name
-: `cSpell.userWords`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Words to add to global dictionary -- should only be in the user config file.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.words`
-
-Name
-: `cSpell.words`
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: List of words to be always considered correct.
-
-Default
-: _- none -_
-
----
-
 ### `cSpell.workspaceRootPath`
 
 Name
@@ -1168,5 +831,400 @@ By default it is the first folder.
 
 Default
 : _- none -_
+
+---
+
+# Performance
+
+| Setting                                                                                           | Scope                | Description                                                                      |
+| ------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------- |
+| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks.                |
+| [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)       | language-overridable | The maximum line length.                                                         |
+| [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)    | language-overridable | The maximum length of a chunk of text without word breaks.                       |
+| [`cSpell.checkLimit`](#cspellchecklimit)                                                          | resource             | The limit in K-Characters to be checked in a file.                               |
+| [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                            | application          | Delay in ms after a document has changed before checking it for spelling errors. |
+| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                          | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.   |
+
+## Definitions
+
+### `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`
+
+Name
+: `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`
+
+Type
+: number
+
+Scope
+: language-overridable
+
+Description
+: The maximum average length of chunks of text without word breaks.
+
+    A chunk is the characters between absolute word breaks.
+    Absolute word breaks match: `/[\s,{}[\]]/`
+
+    **Error Message:** _Average Word Size is Too High._
+
+    If you are seeing this message, it means that the file contains mostly long lines
+    without many word breaks.
+
+Default
+: _`80`_
+
+---
+
+### `cSpell.blockCheckingWhenLineLengthGreaterThan`
+
+Name
+: `cSpell.blockCheckingWhenLineLengthGreaterThan`
+
+Type
+: number
+
+Scope
+: language-overridable
+
+Description
+: The maximum line length.
+
+    Block spell checking if lines are longer than the value given.
+    This is used to prevent spell checking generated files.
+
+    **Error Message:** _Lines are too long._
+
+Default
+: _`10000`_
+
+---
+
+### `cSpell.blockCheckingWhenTextChunkSizeGreaterThan`
+
+Name
+: `cSpell.blockCheckingWhenTextChunkSizeGreaterThan`
+
+Type
+: number
+
+Scope
+: language-overridable
+
+Description
+: The maximum length of a chunk of text without word breaks.
+
+    It is used to prevent spell checking of generated files.
+
+    A chunk is the characters between absolute word breaks.
+    Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
+
+    **Error Message:** _Maximum Word Length is Too High._
+
+    If you are seeing this message, it means that the file contains a very long line
+    without many word breaks.
+
+Default
+: _`500`_
+
+---
+
+### `cSpell.checkLimit`
+
+Name
+: `cSpell.checkLimit`
+
+Type
+: number
+
+Scope
+: resource
+
+Description
+: The limit in K-Characters to be checked in a file.
+
+Default
+: _`500`_
+
+---
+
+### `cSpell.spellCheckDelayMs`
+
+Name
+: `cSpell.spellCheckDelayMs`
+
+Type
+: number
+
+Scope
+: application
+
+Description
+: Delay in ms after a document has changed before checking it for spelling errors.
+
+Default
+: _`50`_
+
+---
+
+### `cSpell.suggestionsTimeout`
+
+Name
+: `cSpell.suggestionsTimeout`
+
+Type
+: number
+
+Scope
+: resource
+
+Description
+: The maximum amount of time in milliseconds to generate suggestions for a word.
+
+Default
+: _`400`_
+
+---
+
+# CSpell
+
+| Setting                                                | Scope    | Description                                                                                   |
+| ------------------------------------------------------ | -------- | --------------------------------------------------------------------------------------------- |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | true                                                                                          |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of RegExp patterns or defined Pattern names to define the text to be included for spell… |
+| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides to apply based upon the file path.                                                  |
+| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.        |
+
+## Definitions
+
+### `cSpell.ignoreRegExpList`
+
+Name
+: `cSpell.ignoreRegExpList`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
+
+    - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
+    - When editing the VS Code `settings.json` file,
+      it is necessary to escape `\`.
+      Each `\` becomes `\\`.
+
+    The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
+
+    | VS Code UI          | JSON                  | Description                                  |
+    | :------------------ | :-------------------- | :------------------------------------------- |
+    | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
+    | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
+    | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.includeRegExpList`
+
+Name
+: `cSpell.includeRegExpList`
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.overrides`
+
+Name
+: `cSpell.overrides`
+
+Type
+: object[]
+
+Scope
+: resource
+
+Description
+: Overrides to apply based upon the file path.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.patterns`
+
+Name
+: `cSpell.patterns`
+
+Type
+: object[]
+
+Scope
+: resource
+
+Description
+: Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.
+
+Default
+: _- none -_
+
+---
+
+# Experimental
+
+| Setting                                                                       | Scope       | Description                      |
+| ----------------------------------------------------------------------------- | ----------- | -------------------------------- |
+| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
+
+## Definitions
+
+### `cSpell.experimental.enableRegexpView`
+
+Name
+: `cSpell.experimental.enableRegexpView`
+
+Type
+: boolean
+
+Scope
+: application
+
+Description
+: Show Regular Expression Explorer
+
+Default
+: _`false`_
+
+---
+
+# Legacy
+
+| Setting                                                  | Scope    | Description                                                                                      |
+| -------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means… |
+| [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids) | resource | Enabled Language Ids                                                                             |
+
+## Definitions
+
+### `cSpell.allowCompoundWords`
+
+Name
+: `cSpell.allowCompoundWords`
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: Enable / Disable allowing word compounds. - `true` means `arraylength` would be ok - `false` means it would not pass.
+
+    Note: this can also cause many misspelled words to seem correct.
+
+Default
+: _`false`_
+
+---
+
+### ~~`cSpell.customFolderDictionaries`~~
+
+Name
+: ~~`cSpell.customFolderDictionaries`~~ -- Custom Folder Dictionaries
+
+Type
+: []
+
+Scope
+: resource
+
+Description
+: Define custom dictionaries to be included by default for the folder.
+If `addWords` is `true` words will be added to this dictionary.
+
+Deprecation Message
+: - Use `customDictionaries` instead.
+
+Default
+: _- none -_
+
+---
+
+### ~~`cSpell.customUserDictionaries`~~
+
+Name
+: ~~`cSpell.customUserDictionaries`~~ -- Custom User Dictionaries
+
+Type
+: []
+
+Scope
+: application
+
+Description
+: Define custom dictionaries to be included by default for the user.
+If `addWords` is `true` words will be added to this dictionary.
+
+Deprecation Message
+: - Use `customDictionaries` instead.
+
+Default
+: _- none -_
+
+---
+
+### ~~`cSpell.customWorkspaceDictionaries`~~
+
+Name
+: ~~`cSpell.customWorkspaceDictionaries`~~ -- Custom Workspace Dictionaries
+
+Type
+: []
+
+Scope
+: resource
+
+Description
+: Define custom dictionaries to be included by default for the workspace.
+If `addWords` is `true` words will be added to this dictionary.
+
+Deprecation Message
+: - Use `customDictionaries` instead.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.enabledLanguageIds`
+
+Name
+: `cSpell.enabledLanguageIds` -- Enabled Language Ids
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
+
+Default
+: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vue"`_, _`"yaml"`_, _`"yml"`_ ]
 
 ---
