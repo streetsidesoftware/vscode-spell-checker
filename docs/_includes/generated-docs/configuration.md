@@ -988,7 +988,7 @@ Default
 
 | Setting                                                | Scope    | Description                                                                                   |
 | ------------------------------------------------------ | -------- | --------------------------------------------------------------------------------------------- |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | true                                                                                          |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from…  |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of RegExp patterns or defined Pattern names to define the text to be included for spell… |
 | [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides to apply based upon the file path.                                                  |
 | [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.        |

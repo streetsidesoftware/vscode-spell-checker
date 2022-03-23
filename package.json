@@ -390,7 +390,7 @@
         "order": 5,
         "properties": {
           "cSpell.ignoreRegExpList": {
-            "description": "true",
+            "description": "",
             "items": {
               "description": "A PatternRef is a Pattern or PatternId.",
               "type": "string"
