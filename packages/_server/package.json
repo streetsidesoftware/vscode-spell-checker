@@ -45,7 +45,7 @@
     "ts-jest": "^27.1.3",
     "ts-json-schema-generator": "^1.0.1-next.0",
     "ts-loader": "^9.2.8",
-    "typescript": "^4.6.2",
+    "typescript": "^4.6.3",
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.4",
     "vscode-uri": "^3.0.3",
