@@ -1,6 +1,7 @@
 // cSpell:ignore pycache
 
-import { log, logError, logger, logInfo, LogLevel, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
+import { LogFileConnection } from 'common-utils/index.js';
+import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
 import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
@@ -224,7 +225,7 @@ export function run(): void {
         return _handleGetConfigurationForDocument(params);
     }
 
-    const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 50, (params) => JSON.stringify(params));
+    const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 100, (params) => JSON.stringify(params));
 
     async function __handleGetConfigurationForDocument(
         params: Api.GetConfigurationForDocumentRequest
@@ -293,6 +294,8 @@ export function run(): void {
         if (validationByDoc.has(doc.uri)) return;
         const uri = doc.uri;
 
+        log('Register Document Handler:', uri);
+
         if (isUriBlocked(uri)) {
             validationByDoc.set(
                 doc.uri,
@@ -312,7 +315,9 @@ export function run(): void {
                     .pipe(
                         filter((doc) => uri === doc.uri),
                         tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
+                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri))
+                    )
+                    .pipe(
                         debounceTime(defaultDebounceMs),
                         mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
                         tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
@@ -322,10 +327,20 @@ export function run(): void {
                         filter((dsp) => !blockValidation.has(dsp.doc.uri)),
                         mergeMap(validateTextDocument)
                     )
-                    .subscribe((diag) => connection.sendDiagnostics(diag))
+                    .subscribe(sendDiagnostics)
             );
         }
     });
+
+    function sendDiagnostics(result: ValidationResult) {
+        log(`Send Diagnostics v${result.version}`, result.uri);
+        const diags: Required<PublishDiagnosticsParams> = {
+            uri: result.uri,
+            version: result.version,
+            diagnostics: result.diagnostics,
+        };
+        connection.sendDiagnostics(diags);
+    }
 
     const disposableTriggerUpdateConfigStream = triggerUpdateConfig
         .pipe(
@@ -400,6 +415,7 @@ export function run(): void {
         const blockedReason = uri ? blockedFiles.get(uri) : undefined;
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored && !blockedReason;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
+        log('calcIncludeExcludeInfo done', params.uri);
         return {
             excludedBy,
             fileEnabled,
@@ -430,39 +446,60 @@ export function run(): void {
         return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
     }
 
-    interface ValidationResult extends PublishDiagnosticsParams {}
+    interface ValidationResult extends PublishDiagnosticsParams {
+        version: number;
+    }
+
+    function isStale(doc: TextDocument, writeLog = true): boolean {
+        const currDoc = documents.get(doc.uri);
+        const stale = currDoc?.version !== doc.version;
+        if (stale && writeLog) {
+            log(`validateTextDocument stale ${currDoc?.version} <> ${doc.version}:`, doc.uri);
+        }
+        return stale;
+    }
 
     async function validateTextDocument(dsp: DocSettingPair): Promise<ValidationResult> {
-        async function validate() {
+        async function validate(): Promise<ValidationResult> {
             const { doc, settings } = dsp;
-            const uri = doc.uri;
+            const { uri, version } = doc;
+
             try {
                 if (!isUriAllowed(uri, settings.allowedSchemas)) {
                     const schema = uri.split(':')[0];
                     log(`Schema not allowed (${schema}), skipping:`, uri);
-                    return { uri, diagnostics: [] };
+                    return { uri, version, diagnostics: [] };
+                }
+                if (isStale(doc)) {
+                    return { uri, version, diagnostics: [] };
                 }
                 const shouldCheck = await shouldValidateDocument(doc, settings);
                 if (!shouldCheck) {
                     log('validateTextDocument skip:', uri);
-                    return { uri, diagnostics: [] };
+                    return { uri, version, diagnostics: [] };
                 }
+                log(`getSettingsToUseForDocument start ${doc.version}`, uri);
                 const settingsToUse = await getSettingsToUseForDocument(doc);
+                log(`getSettingsToUseForDocument middle ${doc.version}`, uri);
                 configWatcher.processSettings(settingsToUse);
+                log(`getSettingsToUseForDocument done ${doc.version}`, uri);
+                if (isStale(doc)) {
+                    return { uri, version, diagnostics: [] };
+                }
                 if (settingsToUse.enabled) {
-                    logInfo('Validate File', uri);
+                    logInfo(`Validate File: v${doc.version}`, uri);
                     log(`validateTextDocument start: v${doc.version}`, uri);
                     const settings = correctBadSettings(settingsToUse);
                     logProblemsWithSettings(settings);
                     dictionaryWatcher.processSettings(settings);
                     const diagnostics: Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
-                    return { uri, diagnostics };
+                    return { uri, version, diagnostics };
                 }
             } catch (e) {
                 logError(`validateTextDocument: ${JSON.stringify(e)}`);
             }
-            return { uri, diagnostics: [] };
+            return { uri, version, diagnostics: [] };
         }
 
         isValidationBusy = true;
@@ -543,20 +580,38 @@ export function run(): void {
         })
     );
 
-    function updateLogLevel() {
-        connection.workspace.getConfiguration({ section: 'cSpell.logLevel' }).then(
-            (result: string) => {
-                fetchFolders();
-                logger.level = result;
-                logger.setConnection(connection);
-            },
-            (reject) => {
-                fetchFolders();
-                logger.level = LogLevel.DEBUG;
-                logger.error(`Failed to get config: ${JSON.stringify(reject)}`);
-                logger.setConnection(connection);
-            }
-        );
+    async function updateLogLevel() {
+        try {
+            const results: string[] = await connection.workspace.getConfiguration([
+                { section: 'cSpell.logLevel' },
+                { section: 'cSpell.logFile' },
+            ]);
+            const logLevel = results[0];
+            const logFile = results[1];
+            logger.level = logLevel;
+            updateLoggerConnection(logFile);
+            console.error('UpdateLogLevel: %o %s', [logLevel, logFile], process.cwd());
+        } catch (reject) {
+            logger.setConnection({ console, onExit: () => undefined });
+            const message = `Failed to get config: ${JSON.stringify(reject)}`;
+            logger.error(message);
+        }
+        fetchFolders();
+    }
+
+    function updateLoggerConnection(logFile: string | undefined) {
+        if (!logFile?.endsWith('.log')) {
+            logger.setConnection(connection);
+            return;
+        }
+        const oldConnection = logger.connection;
+        if (oldConnection instanceof LogFileConnection && oldConnection.filename === logFile) {
+            return;
+        }
+        logger.setConnection(new LogFileConnection(logFile));
+        if (oldConnection instanceof LogFileConnection) {
+            oldConnection.close();
+        }
     }
 
     async function fetchFolders() {
@@ -566,6 +621,7 @@ export function run(): void {
         } else {
             setWorkspaceFolders([]);
         }
+        return folders || undefined;
     }
 
     connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientApi));

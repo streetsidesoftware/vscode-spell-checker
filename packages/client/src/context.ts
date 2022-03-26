@@ -97,6 +97,10 @@ async function setContext(context: ContextTypes): Promise<void> {
     await Promise.all(calls);
 }
 
+type DebounceEntry = { value: Promise<void>; pending: boolean; stale: boolean };
+const cachedUpdateDocumentRelatedContext = new WeakMap<TextDocument, DebounceEntry>();
+const cachedTimeout = 1000;
+
 /**
  * Update any menu related context values because the active document changed.
  * @param client - used to fetch the configuration.
@@ -113,6 +117,49 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
         await setContext(context);
         return;
     }
+
+    const _doc = doc;
+
+    const cached = cachedUpdateDocumentRelatedContext.get(_doc);
+    if (cached) {
+        cached.stale = !cached.pending;
+        return cached.value;
+    }
+
+    const entry: DebounceEntry = {
+        value: _updateDocumentRelatedContext(client, _doc),
+        pending: true,
+        stale: false,
+    };
+
+    entry.value.finally(() => {
+        entry.pending = false;
+        setTimeout(cleanup, cachedTimeout);
+    });
+
+    function cleanup() {
+        cachedUpdateDocumentRelatedContext.delete(_doc);
+        if (entry.stale) {
+            updateDocumentRelatedContext(client, _doc);
+        }
+    }
+
+    cachedUpdateDocumentRelatedContext.set(_doc, entry);
+
+    return entry.value;
+}
+
+/**
+ * Update any menu related context values because the active document changed.
+ * @param client - used to fetch the configuration.
+ * @param doc - the new active document or undefined
+ * @returns resolves on success.
+ */
+async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocument): Promise<void> {
+    const context: ContextTypes = {
+        documentConfigContext: { ...defaultDocumentConfigContext },
+        editorMenuContext: { ...defaultEditorMenuContext },
+    };
 
     const pCfg = client.getConfigurationForDocument(doc);
     const diag = getCSpellDiags(doc.uri);

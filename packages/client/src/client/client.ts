@@ -14,10 +14,11 @@ import {
     Range,
     TextDocument,
     Uri,
+    window,
     workspace,
 } from 'vscode';
 import * as VSCodeLangClient from 'vscode-languageclient/node';
-import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { ForkOptions, LanguageClient, LanguageClientOptions, Trace, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 import { diagnosticSource } from '../constants';
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
@@ -53,6 +54,8 @@ interface TextDocumentInfo {
     uri?: Uri;
     languageId?: string;
 }
+
+const traceMode: Trace = Trace.Off;
 
 export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
@@ -91,7 +94,17 @@ export class CSpellClient implements Disposable {
                 // Synchronize the setting section 'spellChecker' to the server
                 configurationSection: [sectionCSpell, 'search'],
             },
+            middleware: {
+                handleDiagnostics(uri, diagnostics, next) {
+                    // console.error(`${new Date().toISOString()} Client handleDiagnostics: ${uri.toString()}`);
+                    next(uri, diagnostics);
+                },
+            },
         };
+
+        if (traceMode !== Trace.Off) {
+            clientOptions.traceOutputChannel = window.createOutputChannel('Trace CSpell');
+        }
 
         const execArgv = this.calcServerArgs();
         const options: ForkOptions = { execArgv };
@@ -108,6 +121,12 @@ export class CSpellClient implements Disposable {
         // Create the language client and start the client.
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
+        setTimeout(() => {
+            this.client.trace = traceMode;
+            if (traceMode !== Trace.Off) {
+                this.client.traceOutputChannel.show();
+            }
+        }, 1000);
         this.serverApi = createServerApi(this.client);
         this.initWhenReady().catch((e) => console.error(e));
     }
@@ -134,7 +153,9 @@ export class CSpellClient implements Disposable {
         return { ...response, uri };
     }
 
-    public async getConfigurationForDocument(
+    readonly getConfigurationForDocument = this.factoryGetConfigurationForDocument();
+
+    private async _getConfigurationForDocument(
         document: TextDocument | TextDocumentInfo | undefined
     ): Promise<GetConfigurationForDocumentResult> {
         const { uri, languageId } = document || {};
@@ -144,6 +165,22 @@ export class CSpellClient implements Disposable {
             return this.serverApi.getConfigurationForDocument({ workspaceConfig });
         }
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
+    }
+
+    private factoryGetConfigurationForDocument(): (
+        document: TextDocument | TextDocumentInfo | undefined
+    ) => Promise<GetConfigurationForDocumentResult> {
+        const cache = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
+        this.registerDisposable(workspace.onDidChangeConfiguration(() => cache.clear()));
+
+        return (document: TextDocument | TextDocumentInfo | undefined) => {
+            const key = document?.uri?.toString();
+            const found = cache.get(key);
+            if (found) return found;
+            const result = this._getConfigurationForDocument(document);
+            cache.set(key, result);
+            return result;
+        };
     }
 
     public notifySettingsChanged(): Promise<void> {

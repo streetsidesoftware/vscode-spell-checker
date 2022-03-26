@@ -66,6 +66,12 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      */
     logLevel?: 'None' | 'Error' | 'Warning' | 'Information' | 'Debug';
 
+    /**
+     * Have the logs written to a file instead of to VS Code.
+     * @scope window
+     */
+    logFile?: string;
+
     // Show the spell checker status on the status bar.
     /**
      * Display the spell checker status on the status bar.
@@ -815,6 +821,7 @@ type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'diagnosticLevel'
     | 'fixSpellingWithRenameProvider'
+    | 'logFile'
     | 'logLevel'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'

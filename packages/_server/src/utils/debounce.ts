@@ -9,16 +9,17 @@ export function debounce<V, R>(fn: FN<V, R>, timeoutMs: number, extractKey?: (k:
  * @returns a function
  */
 export function debounce<V, R>(fn: FN<V, R>, timeoutMs: number, extractKey: (k: V) => V = (k) => k): FN<V, R> {
-    const m = new Map<V, R>();
+    type Box<T> = { v: T };
+    const m = new Map<V, Box<R>>();
     return (value: V) => {
         const key = extractKey(value);
         const v = m.get(key);
-        if (v !== undefined || m.has(key)) {
-            return v!;
+        if (v) {
+            return v.v;
         }
         setTimeout(() => m.delete(key), timeoutMs);
         const r = fn(value);
-        m.set(key, r);
+        m.set(key, { v: r });
         return r;
     };
 }

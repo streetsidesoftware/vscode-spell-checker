@@ -45,7 +45,7 @@ const levelMap = new Map<string, LogLevel>(logLevels);
 const stub = () => {};
 
 export class Logger {
-    private connection: LoggerConnection | undefined;
+    private _connection: LoggerConnection | undefined;
     private seq = 0;
     private logs: LogEntry[] = [];
     private loggers: LoggerFunctionMap = {
@@ -63,7 +63,7 @@ export class Logger {
     }
 
     private writeLog(entry: LogEntry) {
-        if (!this.connection) {
+        if (!this._connection) {
             this.logs.push(entry);
         } else {
             if (entry.level > this.logLevel) {
@@ -78,6 +78,10 @@ export class Logger {
                 console.error(`Unknown log level: ${entry.level}; msg: ${entry.msg}`);
             }
         }
+    }
+
+    get connection() {
+        return this._connection;
     }
 
     logMessage(level: LogLevel, msg: string) {
@@ -100,9 +104,9 @@ export class Logger {
     }
 
     setConnection(connection: LoggerConnection) {
-        this.connection = connection;
-        this.connection.onExit(() => {
-            this.connection = undefined;
+        this._connection = connection;
+        this._connection.onExit(() => {
+            this._connection = undefined;
             this.loggers[LogLevel.ERROR] = stub;
             this.loggers[LogLevel.WARNING] = stub;
             this.loggers[LogLevel.INFO] = stub;

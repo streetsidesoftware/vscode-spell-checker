@@ -13,7 +13,11 @@
             "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
             ],
-            "protocol": "inspector"
+            "protocol": "inspector",
+            "smartStep": false,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         }
     ]
 }

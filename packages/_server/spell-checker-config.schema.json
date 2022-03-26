@@ -1646,6 +1646,11 @@
           "scope": "language-overridable",
           "type": "boolean"
         },
+        "cSpell.logFile": {
+          "description": "Have the logs written to a file instead of to VS Code.",
+          "scope": "window",
+          "type": "string"
+        },
         "cSpell.logLevel": {
           "default": "Error",
           "description": "Set the Debug Level for logging messages.",
