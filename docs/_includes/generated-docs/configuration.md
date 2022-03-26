@@ -320,6 +320,7 @@ Default
 | ---------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                 | resource             | Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects… |
 | [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)     | language-overridable | Use Rename when fixing spelling issues.                                                      |
+| [`cSpell.logFile`](#cspelllogfile)                                                 | window               | Have the logs written to a file instead of to VS Code.                                       |
 | [`cSpell.logLevel`](#cspellloglevel)                                               | window               | Set the Debug Level for logging messages.                                                    |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                       | resource             | The maximum number of times the same word can be flagged as an error in a file.              |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                         | resource             | Controls the maximum number of spelling errors per document.                                 |
@@ -374,6 +375,25 @@ Description
 
 Default
 : _`true`_
+
+---
+
+### `cSpell.logFile`
+
+Name
+: `cSpell.logFile`
+
+Type
+: string
+
+Scope
+: window
+
+Description
+: Have the logs written to a file instead of to VS Code.
+
+Default
+: _- none -_
 
 ---
 
