@@ -21,7 +21,53 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
     let lastUri = '';
 
-    async function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument, showClock?: boolean) {
+    interface DebounceStatusBar {
+        document: vscode.TextDocument | undefined;
+        showClock: boolean | undefined;
+        value: Promise<void>;
+        pending: boolean;
+        stale: boolean;
+    }
+    let debounceStatusBar: DebounceStatusBar | undefined;
+
+    function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument, showClock?: boolean): void {
+        if (showClock ?? true) {
+            sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
+            sbCheck.tooltip = 'cSpell waiting...';
+            sbCheck.show();
+        }
+        if (debounceStatusBar) {
+            debounceStatusBar.stale = !debounceStatusBar.pending || debounceStatusBar.document !== document;
+            debounceStatusBar.document = document;
+            debounceStatusBar.showClock = showClock;
+            return;
+        }
+        if (!document) return;
+
+        const entry = {
+            document,
+            showClock,
+            value: _updateStatusBarWithSpellCheckStatus(document, showClock).catch(),
+            pending: true,
+            stale: false,
+        };
+
+        entry.value.finally(() => {
+            entry.pending = false;
+            setTimeout(cleanup, 1000);
+        });
+
+        function cleanup() {
+            if (debounceStatusBar !== entry) return;
+            debounceStatusBar = undefined;
+            if (entry.stale) {
+                updateStatusBarWithSpellCheckStatus(entry.document, entry.showClock);
+            }
+        }
+        debounceStatusBar = entry;
+    }
+
+    async function _updateStatusBarWithSpellCheckStatus(document: vscode.TextDocument, showClock?: boolean) {
         if (showClock ?? true) {
             sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'cSpell waiting...';
@@ -87,7 +133,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         }
 
         if (enabled) {
-            updateStatusBarWithSpellCheckStatus(document, showClock).catch();
+            updateStatusBarWithSpellCheckStatus(document, showClock);
         } else {
             sbCheck.text = `$(stop) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'Enable spell checking';
@@ -101,6 +147,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     }
 
     function onDidChangeDiag(e: vscode.DiagnosticChangeEvent) {
+        console.error(`onDidChangeDiag ${new Date().toISOString()} %o`, e);
         for (const uri of e.uris) {
             if (uri.toString() === lastUri) {
                 setTimeout(() => updateStatusBar(undefined, false), 250);
