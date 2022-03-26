@@ -21,6 +21,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     diagnosticLevel: 'diagnosticLevel',
     fixSpellingWithRenameProvider: 'fixSpellingWithRenameProvider',
     logLevel: 'logLevel',
+    logFile: 'logFile',
     maxDuplicateProblems: 'maxDuplicateProblems',
     maxNumberOfProblems: 'maxNumberOfProblems',
     noSuggestDictionaries: 'noSuggestDictionaries',
