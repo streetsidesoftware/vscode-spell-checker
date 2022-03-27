@@ -30,7 +30,7 @@ change-template: |
   
   ### $TITLE (#$NUMBER)
 
-  $BODY
+  $URL
   
   ---
   
