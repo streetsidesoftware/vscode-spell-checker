@@ -694,16 +694,18 @@
           "type": "array"
         },
         "cSpell.files": {
-          "description": "Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.",
+          "description": "",
           "items": {
             "description": "These are glob expressions.",
             "type": "string"
           },
+          "markdownDescription": "Glob patterns of files to be checked.\nGlob patterns are relative to the `globRoot` of the configuration file that defines them.",
           "scope": "resource",
           "type": "array"
         },
         "cSpell.globRoot": {
-          "description": "The root to use for glop patterns found in this configuration. Default: The current workspace folder. Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
+          "description": "",
+          "markdownDescription": "The root to use for glop patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
           "scope": "resource",
           "type": "string"
         },
@@ -772,8 +774,8 @@
       "order": 1,
       "properties": {
         "cSpell.caseSensitive": {
-          "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
-          "markdownDescription": "Turns on case sensitive checking by default",
+          "description": "",
+          "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  Note: Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `languageSettings` to turn it off.\n- `true` - Case and accents are enforced by default.",
           "scope": "resource",
           "type": "boolean"
         },
@@ -849,11 +851,12 @@
           "type": "object"
         },
         "cSpell.dictionaries": {
-          "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.",
+          "description": "",
           "items": {
             "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
             "type": "string"
           },
+          "markdownDescription": "Optional list of dictionaries to use.\nEach entry should match the name of the dictionary.\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.",
           "scope": "resource",
           "type": "array"
         },
@@ -1285,7 +1288,7 @@
       "properties": {
         "cSpell.allowCompoundWords": {
           "default": false,
-          "description": "Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means it would not pass.",
+          "description": "",
           "markdownDescription": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
           "scope": "resource",
           "type": "boolean"
@@ -1560,7 +1563,7 @@
             "yaml",
             "yml"
           ],
-          "description": "Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.",
+          "description": "",
           "items": {
             "type": "string"
           },

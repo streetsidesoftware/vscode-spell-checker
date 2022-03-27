@@ -72,7 +72,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      */
     logFile?: string;
 
-    // Show the spell checker status on the status bar.
     /**
      * Display the spell checker status on the status bar.
      * @scope application
@@ -487,7 +486,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @title Enabled Language Ids
      * @scope resource
      * @description
-     * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
      * @markdownDescription
      * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
      * @uniqueItems true
@@ -569,6 +567,8 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignorePaths?: (SimpleGlob | GlobDefX)[];
 
     /**
+     * @description
+     * @markdownDescription
      * The root to use for glop patterns found in this configuration.
      * Default: The current workspace folder.
      * Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
@@ -584,6 +584,10 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     globRoot?: CSpellSettings['globRoot'];
 
     /**
+     * @description
+     * @markdownDescription
+     * Glob patterns of files to be checked.
+     * Glob patterns are relative to the `globRoot` of the configuration file that defines them.
      * @scope resource
      */
     files?: CSpellSettings['files'];
@@ -626,9 +630,9 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
     /**
-     * Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means it would not pass.
      * @scope resource
      * @default false
+     * @description
      * @markdownDescription
      * Enable / Disable allowing word compounds.
      * - `true` means `arraylength` would be ok
@@ -645,6 +649,12 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
+     * @description
+     * @markdownDescription
+     * Optional list of dictionaries to use.
+     * Each entry should match the name of the dictionary.
+     * To remove a dictionary from the list add `!` before the name.
+     * i.e. `!typescript` will turn off the dictionary with the name `typescript`.
      */
     dictionaries?: CSpellSettings['dictionaries'];
 
@@ -660,8 +670,15 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
+     * @description
      * @markdownDescription
-     * Turns on case sensitive checking by default
+     * Determines if words must match case and accent rules.
+     *
+     * - `false` - Case is ignored and accents can be missing on the entire word.
+     *   Incorrect accents or partially missing accents will be marked as incorrect.
+     *   Note: Some languages like Portuguese have case sensitivity turned on by default.
+     *   You must use `languageSettings` to turn it off.
+     * - `true` - Case and accents are enforced by default.
      */
     caseSensitive?: CSpellSettings['caseSensitive'];
 

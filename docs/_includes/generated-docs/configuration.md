@@ -44,7 +44,7 @@ Default
 | -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
 | [`cSpell.caseSensitive`](#cspellcasesensitive)                 | resource | Determines if words must match case and accent rules.                                             |
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
-| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…     |
+| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use.                                                             |
 | [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)             | resource | File Types to Check                                                                               |
 | [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect.                                                  |
@@ -69,7 +69,13 @@ Scope
 : resource
 
 Description
-: Turns on case sensitive checking by default
+: Determines if words must match case and accent rules.
+
+    - `false` - Case is ignored and accents can be missing on the entire word.
+      Incorrect accents or partially missing accents will be marked as incorrect.
+      Note: Some languages like Portuguese have case sensitivity turned on by default.
+      You must use `languageSettings` to turn it off.
+    - `true` - Case and accents are enforced by default.
 
 Default
 : _- none -_
@@ -123,7 +129,10 @@ Scope
 : resource
 
 Description
-: Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.
+: Optional list of dictionaries to use.
+Each entry should match the name of the dictionary.
+To remove a dictionary from the list add `!` before the name.
+i.e. `!typescript` will turn off the dictionary with the name `typescript`.
 
 Default
 : _- none -_
@@ -625,18 +634,18 @@ Default
 
 # Files, Folders, and Workspaces
 
-| Setting                                                                      | Scope    | Description                                                                                              |
-| ---------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
-| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…             |
-| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration… |
-| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration. Default: The current workspace…           |
-| [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                                     |
-| [`cSpell.import`](#cspellimport)                                             | resource | Other settings files to be included.                                                                     |
-| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                           |
-| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                                         |
-| [`cSpell.useGitignore`](#cspellusegitignore)                                 | window   | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…           |
-| [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…             |
-| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                               |
+| Setting                                                                      | Scope    | Description                                                                                    |
+| ---------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…   |
+| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
+| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
+| [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
+| [`cSpell.import`](#cspellimport)                                             | resource | Other settings files to be included.                                                           |
+| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
+| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                               |
+| [`cSpell.useGitignore`](#cspellusegitignore)                                 | window   | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
+| [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…   |
+| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                     |
 
 ## Definitions
 
@@ -675,7 +684,8 @@ Scope
 : resource
 
 Description
-: Glob patterns of files to be checked. Glob patterns are relative to the `globRoot` of the configuration file that defines them.
+: Glob patterns of files to be checked.
+Glob patterns are relative to the `globRoot` of the configuration file that defines them.
 
 Default
 : _- none -_
@@ -694,7 +704,10 @@ Scope
 : resource
 
 Description
-: The root to use for glop patterns found in this configuration. Default: The current workspace folder. Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file. Defining globRoot, does not impact imported configurations.
+: The root to use for glop patterns found in this configuration.
+Default: The current workspace folder.
+Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
+Defining globRoot, does not impact imported configurations.
 
     Special Values:
 
@@ -1133,10 +1146,10 @@ Default
 
 # Legacy
 
-| Setting                                                  | Scope    | Description                                                                                      |
-| -------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------ |
-| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. `true` means `arraylength` would be ok, `false` means… |
-| [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids) | resource | Enabled Language Ids                                                                             |
+| Setting                                                  | Scope    | Description                               |
+| -------------------------------------------------------- | -------- | ----------------------------------------- |
+| [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. |
+| [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids) | resource | Enabled Language Ids                      |
 
 ## Definitions
 
