@@ -2,10 +2,10 @@
 
 # Configuration Settings
 
-- [Code Spell Checker](#codespellchecker)
-- [Languages and Dictionaries](#languagesanddictionaries)
-- [Reporting and Display](#reportinganddisplay)
-- [Files, Folders, and Workspaces](#filesfoldersandworkspaces)
+- [Code Spell Checker](#code-spell-checker)
+- [Languages and Dictionaries](#languages-and-dictionaries)
+- [Reporting and Display](#reporting-and-display)
+- [Files, Folders, and Workspaces](#files-folders-and-workspaces)
 - [Performance](#performance)
 - [CSpell](#cspell)
 - [Experimental](#experimental)

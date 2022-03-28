@@ -31,7 +31,7 @@ function sectionTOC(sections) {
    */
   function tocEntry(value) {
     const title = value.title;
-    return `- [${title}](#${title.toLowerCase().replace(/\W/g, '')})`;
+    return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
   }
 
   return `
