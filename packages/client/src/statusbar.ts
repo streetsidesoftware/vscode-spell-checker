@@ -147,7 +147,6 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     }
 
     function onDidChangeDiag(e: vscode.DiagnosticChangeEvent) {
-        console.error(`onDidChangeDiag ${new Date().toISOString()} %o`, e);
         for (const uri of e.uris) {
             if (uri.toString() === lastUri) {
                 setTimeout(() => updateStatusBar(undefined, false), 250);
