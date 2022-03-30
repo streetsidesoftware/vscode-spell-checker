@@ -20,7 +20,7 @@ import { CSpellSettingsWithFileSource, extractCSpellFileConfigurations, extractT
 
 export function calculateConfigTargets(settings: CSpellUserSettings, workspaceConfig: WorkspaceConfigForDocument): ConfigTarget[] {
     const targets: ConfigTarget[] = [];
-    const sources = extractCSpellFileConfigurations(settings);
+    const sources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
     const dictionaries = extractTargetDictionaries(settings);
 
     targets.push(...workspaceConfigToTargets(workspaceConfig));

@@ -12,7 +12,11 @@ const statusBarId = 'spell checker status id';
 
 const cspellStatusBarIcon = 'Spell'; // '$(symbol-text)'
 
-export function initStatusBar(context: ExtensionContext, client: CSpellClient): void {
+export interface SpellCheckerStatusBar {
+    refresh(): void;
+}
+
+export function initStatusBar(context: ExtensionContext, client: CSpellClient): SpellCheckerStatusBar {
     const settings: CSpellUserSettings = workspace.getConfiguration().get(sectionCSpell) as CSpellUserSettings;
     const { showStatusAlignment } = settings;
     const alignment = toStatusBarAlignment(showStatusAlignment);
@@ -31,16 +35,16 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     let debounceStatusBar: DebounceStatusBar | undefined;
 
     function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument, showClock?: boolean): void {
-        if (showClock ?? true) {
-            sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
-            sbCheck.tooltip = 'cSpell waiting...';
-            sbCheck.show();
-        }
         if (debounceStatusBar) {
             debounceStatusBar.stale = !debounceStatusBar.pending || debounceStatusBar.document !== document;
             debounceStatusBar.document = document;
             debounceStatusBar.showClock = showClock;
             return;
+        }
+        if (showClock ?? true) {
+            sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
+            sbCheck.tooltip = 'cSpell waiting...';
+            sbCheck.show();
         }
         if (!document) return;
 
@@ -158,8 +162,8 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     function onDidChangeConfiguration(e: vscode.ConfigurationChangeEvent) {
         const doc = selectDocument();
         if (e.affectsConfiguration(sectionCSpell, doc?.uri)) {
-            setTimeout(() => updateStatusBar(undefined, false), 250);
-            setTimeout(() => updateStatusBar(undefined, false), 1000);
+            setTimeout(() => updateStatusBar(doc, false), 250);
+            setTimeout(() => updateStatusBar(doc, false), 2000);
         }
     }
 
@@ -199,6 +203,13 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     if (window.activeTextEditor) {
         onDidChangeActiveTextEditor(window.activeTextEditor);
     }
+
+    return {
+        refresh() {
+            const doc = selectDocument();
+            setTimeout(() => updateStatusBar(doc, false), 250);
+        },
+    };
 }
 
 interface StatusBarTextParams {

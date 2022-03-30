@@ -171,7 +171,7 @@ function extractFileConfig(
         configFiles: extractConfigFiles(docConfig),
         fileIsExcluded,
         fileIsIncluded,
-        fileIsInWorkspace: !!folder,
+        fileIsInWorkspace: !!folder || isUntitled,
         excludedBy: mapExcludedBy(excludedBy),
         gitignoreInfo: extractGitignoreInfo(),
         blockedReason: docConfig.blockedReason,

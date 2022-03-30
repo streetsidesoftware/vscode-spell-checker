@@ -167,23 +167,24 @@ export class CSpellClient implements Disposable {
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
     }
 
+    private cacheGetConfigurationForDocument = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
+
     private factoryGetConfigurationForDocument(): (
         document: TextDocument | TextDocumentInfo | undefined
     ) => Promise<GetConfigurationForDocumentResult> {
-        const cache = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
-        this.registerDisposable(workspace.onDidChangeConfiguration(() => cache.clear()));
-
         return (document: TextDocument | TextDocumentInfo | undefined) => {
             const key = document?.uri?.toString();
-            const found = cache.get(key);
+            const found = this.cacheGetConfigurationForDocument.get(key);
             if (found) return found;
             const result = this._getConfigurationForDocument(document);
-            cache.set(key, result);
+            this.cacheGetConfigurationForDocument.set(key, result);
             return result;
         };
     }
 
     public notifySettingsChanged(): Promise<void> {
+        this.cacheGetConfigurationForDocument.clear();
+        setTimeout(() => this.cacheGetConfigurationForDocument.clear(), 250);
         return silenceErrors(
             this.whenReady(() => this.serverApi.notifyConfigChange()),
             'notifySettingsChanged'

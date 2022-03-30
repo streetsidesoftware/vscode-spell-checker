@@ -1,4 +1,4 @@
-import { unique, uniqueFilter, freqCount, mustBeDefined, isDefined, textToWords, pick } from './util';
+import { unique, uniqueFilter, freqCount, mustBeDefined, isDefined, textToWords, pick, setIfDefined } from './util';
 
 describe('Util', () => {
     test('unique', () => {
@@ -74,6 +74,18 @@ describe('Validate Util Functions', () => {
 
         const r = pick(Object.freeze(src), ['a', 'b']);
         expect(r).toEqual({ a: src.a, b: src.b });
+    });
+
+    test('setIfDefined', () => {
+        interface Person {
+            name: string;
+            dob?: string;
+        }
+
+        const p0: Person = { name: 'tester' };
+        setIfDefined(p0, 'dob', 'today');
+        setIfDefined(p0, 'name', undefined);
+        expect(p0).toEqual({ name: 'tester', dob: 'today' });
     });
 
     // cspell:ignore spéciale geschäft aåáâäñãæ

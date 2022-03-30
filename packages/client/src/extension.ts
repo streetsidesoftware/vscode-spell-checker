@@ -34,16 +34,22 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     // Start the client.
     context.subscriptions.push(client.start());
+    const statusBar = initStatusBar(context, client);
 
     function triggerGetSettings(delayInMs = 0) {
-        setTimeout(() => silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings'), delayInMs);
+        setTimeout(triggerGetSettingsNow, delayInMs);
+    }
+
+    function triggerGetSettingsNow() {
+        silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings').then(() => {
+            settingsViewer.update();
+            statusBar.refresh();
+        });
     }
 
     function triggerConfigChange() {
         triggerGetSettings();
     }
-
-    initStatusBar(context, client);
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
 

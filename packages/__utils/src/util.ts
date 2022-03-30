@@ -72,3 +72,10 @@ export function pick<T, K extends keyof T>(src: T, keys: readonly K[]): Pick<T, 
     }
     return r as Pick<T, K>;
 }
+
+export function setIfDefined<T, K extends keyof T>(record: T, key: K, value: T[K] | undefined): T {
+    if (value !== undefined) {
+        record[key] = value;
+    }
+    return record;
+}

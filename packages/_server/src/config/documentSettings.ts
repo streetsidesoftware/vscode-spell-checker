@@ -9,10 +9,11 @@ import type {
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
 import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
-import { toUri } from 'common-utils/uriHelper.js';
+import { setIfDefined } from 'common-utils/index.js';
 import { log } from 'common-utils/log.js';
-import { GitIgnore, findRepoRoot } from 'cspell-gitignore';
-import { GlobMatcher, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
+import { toUri } from 'common-utils/uriHelper.js';
+import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
+import { GlobMatcher, GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
     calcOverrideSettings,
     clearCachedFiles,
@@ -317,15 +318,16 @@ export class DocumentSettings {
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
         if (!files.length && cSpellConfigSettings.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
-            files.push({ glob: '**', root: globRoot });
-            files.push({ glob: '**/.*', root: globRoot });
-            files.push({ glob: '**/.*/**', root: globRoot });
+            folders.forEach((folder) => files.push({ glob: '**', root: Uri.parse(folder.uri).fsPath }));
+            fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
         }
         fileSettings.files = files;
 
         const globs = ignorePaths.concat(defaultExclude);
         const excludeGlobMatcher = new GlobMatcher(globs, globRoot);
-        const includeGlobMatcher = new GlobMatcher(files, { root: globRoot, mode: 'include' });
+        const includeOptions: GlobMatchOptions = { root: globRoot, mode: 'include' };
+        setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
+        const includeGlobMatcher = new GlobMatcher(files, includeOptions);
 
         const ext: ExtSettings = {
             uri: docUri,

@@ -637,6 +637,7 @@ Default
 | Setting                                                                      | Scope    | Description                                                                                    |
 | ---------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…   |
+| [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
@@ -669,6 +670,34 @@ Description
 
 Default
 : [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_ ]
+
+---
+
+### `cSpell.enableFiletypes`
+
+Name
+: `cSpell.enableFiletypes` -- File Types to Check
+
+Type
+: string[]
+
+Scope
+: resource
+
+Description
+: Enable / Disable checking file types (languageIds).
+These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
+To disable a language, prefix with `!` as in `!json`,
+
+    Example:
+    ```
+    jsonc       // enable checking for jsonc
+    !json       // disable checking for json
+    kotlin      // enable checking for kotlin
+    ```
+
+Default
+: _- none -_
 
 ---
 
