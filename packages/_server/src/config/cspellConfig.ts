@@ -891,6 +891,7 @@ type VSConfigFilesAndFolders = PrefixWithCspell<_VSConfigFilesAndFolders>;
 type _VSConfigFilesAndFolders = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'allowedSchemas'
+    | 'enableFiletypes'
     | 'files'
     | 'globRoot'
     | 'ignorePaths'

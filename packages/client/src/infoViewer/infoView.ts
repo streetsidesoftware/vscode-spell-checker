@@ -21,9 +21,12 @@ import { toUri } from '../util/uriHelper';
 import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';
 import { calcSettings } from './infoHelper';
+import { promisify } from 'util';
 
 const viewerPath = 'packages/client/settingsViewer/webapp';
 const title = 'Spell Checker Preferences';
+
+const wait = promisify(setTimeout);
 
 type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;
 
@@ -101,6 +104,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
 
     async function refreshState() {
         log(`refreshState: uri "${state.activeDocumentUri}"`);
+        await wait(500);
         state.settings = await calcStateSettings(state.activeDocumentUri, state.activeFolderUri);
     }
 
@@ -333,6 +337,10 @@ function log(...params: Parameters<typeof console.log>) {
     const msg = format(...params);
     const now = new Date();
     console.log(`${now.toISOString()} InfoView -- ${msg}`);
+}
+
+export function update(): void {
+    currentPanel?.updateView();
 }
 
 export const __testing__ = {
