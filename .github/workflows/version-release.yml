@@ -14,7 +14,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-      - uses: actions/setup-node@v3.0.0
+      - uses: actions/setup-node@v3.1.0
         with:
           cache: yarn
       - name: Install
