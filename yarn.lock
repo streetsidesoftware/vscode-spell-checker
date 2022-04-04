@@ -307,10 +307,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^5.19.3":
-  version "5.19.3"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.19.3.tgz#826e166eb56f193c2d770575adfbb1557816f1af"
-  integrity sha512-YAz68AgXTFFtrBUhNJlOQ7KOjUE6ncYt578/esa2GStMJHgJoUtPnOZsE41hh+cVWXqO5yRRI+Qkwub99zLMgQ==
+"@cspell/cspell-bundled-dicts@^5.19.3", "@cspell/cspell-bundled-dicts@^5.19.5":
+  version "5.19.5"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-5.19.5.tgz#09906e24a13dd919ba9e19d0b7a93e9ef2383d28"
+  integrity sha512-qXW99H+S/529cTOtRBTPiTV1Ay+I2+kcF5lfVblSRsij7fBM6d99dB3Fg6oL0i6okRwOUNFAV4qbxgg7zxA3wA==
   dependencies:
     "@cspell/dict-ada" "^2.0.0"
     "@cspell/dict-aws" "^2.0.0"
