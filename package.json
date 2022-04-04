@@ -877,6 +877,11 @@
                   "scope": "resource",
                   "type": "array"
                 },
+                "loadDefaultConfiguration": {
+                  "default": "true;",
+                  "description": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false` will prevent ALL default configuration from being loaded.",
+                  "type": "boolean"
+                },
                 "maxDuplicateProblems": {
                   "default": 5,
                   "description": "The maximum number of times the same word can be flagged as an error in a file.",
@@ -2184,17 +2189,17 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
-    "prettier": "^2.6.1",
+    "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
     "typescript": "^4.6.3",
     "vsce": "^2.7.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.19.3",
-    "@cspell/cspell-types": "^5.19.3",
+    "@cspell/cspell-bundled-dicts": "^5.19.5",
+    "@cspell/cspell-types": "^5.19.5",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.19.3",
+    "cspell": "^5.19.5",
     "regexp-worker": "^1.1.1"
   }
 }

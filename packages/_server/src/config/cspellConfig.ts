@@ -779,6 +779,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
     | 'failFast'
     | 'id'
     | 'languageId'
+    | 'loadDefaultConfiguration'
     | 'name'
     | 'pnpFiles'
     | 'readonly'

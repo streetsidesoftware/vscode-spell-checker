@@ -508,6 +508,11 @@
                 "scope": "resource",
                 "type": "array"
               },
+              "loadDefaultConfiguration": {
+                "default": "true;",
+                "description": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false` will prevent ALL default configuration from being loaded.",
+                "type": "boolean"
+              },
               "maxDuplicateProblems": {
                 "default": 5,
                 "description": "The maximum number of times the same word can be flagged as an error in a file.",
