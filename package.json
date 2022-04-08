@@ -2201,11 +2201,5 @@
     "cosmiconfig": "^7.0.1",
     "cspell": "^5.19.5",
     "regexp-worker": "^1.1.1"
-  },
-  "comment-resolutions": {
-    "@types/react": "Can be removed after moving to react 18."
-  },
-  "resolutions": {
-    "@types/react": "^17.0.44"
   }
 }
