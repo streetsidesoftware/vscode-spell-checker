@@ -27,7 +27,7 @@
     "commander": "^9.1.0",
     "find-up": "^6.3.0",
     "glob": "^7.2.0",
-    "semver": "^7.3.5"
+    "semver": "^7.3.6"
   },
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
