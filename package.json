@@ -878,7 +878,7 @@
                   "type": "array"
                 },
                 "loadDefaultConfiguration": {
-                  "default": "true;",
+                  "default": true,
                   "description": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false` will prevent ALL default configuration from being loaded.",
                   "type": "boolean"
                 },
@@ -2196,10 +2196,10 @@
     "vsce": "^2.7.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.19.5",
-    "@cspell/cspell-types": "^5.19.5",
+    "@cspell/cspell-bundled-dicts": "^5.19.7",
+    "@cspell/cspell-types": "^5.19.7",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.19.5",
+    "cspell": "^5.19.7",
     "regexp-worker": "^1.1.1"
   },
   "comment-resolutions": {
