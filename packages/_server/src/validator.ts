@@ -31,7 +31,7 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             ...issue,
             range: {
                 start: issue.position,
-                end: { ...issue.position, character: issue.position.character + issue.text.length },
+                end: { ...issue.position, character: issue.position.character + (issue.length ?? issue.text.length) },
             },
         }))
         // Convert it to a Diagnostic
