@@ -878,7 +878,7 @@
                   "type": "array"
                 },
                 "loadDefaultConfiguration": {
-                  "default": "true;",
+                  "default": true,
                   "description": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false` will prevent ALL default configuration from being loaded.",
                   "type": "boolean"
                 },
