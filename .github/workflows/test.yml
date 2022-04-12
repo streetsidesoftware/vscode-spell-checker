@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Node.js
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Node.js
-        uses: actions/setup-node@v3.1.0
+        uses: actions/setup-node@v3.1.1
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
