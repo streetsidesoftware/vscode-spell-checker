@@ -24,7 +24,7 @@
     "@material-ui/icons": "^4.11.3",
     "@types/clone-deep": "^4.0.1",
     "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.25",
+    "@types/node": "^17.0.26",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.15",
     "@types/react-test-renderer": "^17.0.2",
