@@ -820,7 +820,6 @@ type _VSConfigLanguageAndDictionaries = Pick<
     | 'customDictionaries'
     | 'dictionaries'
     | 'dictionaryDefinitions'
-    | 'enableFiletypes'
     | 'flagWords'
     | 'ignoreWords'
     | 'language'

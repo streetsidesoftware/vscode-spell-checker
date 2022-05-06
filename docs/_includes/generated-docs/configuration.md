@@ -46,7 +46,6 @@ Default
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
 | [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use.                                                             |
 | [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
-| [`cSpell.enableFiletypes`](#cspellenablefiletypes)             | resource | File Types to Check                                                                               |
 | [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect.                                                  |
 | [`cSpell.ignoreWords`](#cspellignorewords)                     | resource | A list of words to be ignored by the spell checker.                                               |
 | [`cSpell.language`](#cspelllanguage)                           | resource | Current active spelling language.                                                                 |
@@ -152,34 +151,6 @@ Scope
 
 Description
 : Define additional available dictionaries.
-
-Default
-: _- none -_
-
----
-
-### `cSpell.enableFiletypes`
-
-Name
-: `cSpell.enableFiletypes` -- File Types to Check
-
-Type
-: string[]
-
-Scope
-: resource
-
-Description
-: Enable / Disable checking file types (languageIds).
-These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
-To disable a language, prefix with `!` as in `!json`,
-
-    Example:
-    ```
-    jsonc       // enable checking for jsonc
-    !json       // disable checking for json
-    kotlin      // enable checking for kotlin
-    ```
 
 Default
 : _- none -_
