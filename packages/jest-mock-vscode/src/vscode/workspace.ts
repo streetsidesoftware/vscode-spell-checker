@@ -48,6 +48,7 @@ export class MockWorkspace implements Workspace {
     openTextDocument = openTextDocument;
     openNotebookDocument = jest.fn();
     onDidChangeConfiguration = jest.fn();
+    onDidChangeNotebookDocument = jest.fn();
     onDidChangeTextDocument = jest.fn();
     onDidChangeWorkspaceFolders = jest.fn();
     onDidCloseNotebookDocument = jest.fn();
@@ -58,6 +59,7 @@ export class MockWorkspace implements Workspace {
     onDidOpenNotebookDocument = jest.fn();
     onDidOpenTextDocument = jest.fn();
     onDidRenameFiles = jest.fn();
+    onDidSaveNotebookDocument = jest.fn();
     onWillCreateFiles = jest.fn();
     onWillDeleteFiles = jest.fn();
     onWillRenameFiles = jest.fn();

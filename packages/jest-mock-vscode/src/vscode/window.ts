@@ -4,6 +4,7 @@ import { workspace } from './workspace';
 import { Selection } from './extHostTypes';
 import { MockTextEditor } from './TextEditor';
 import { isUri } from './uri';
+import { MockTabGroups } from './TabGroups';
 
 enum StatusBarAlignment {
     Left = 1,
@@ -26,6 +27,8 @@ export const window: Window = {
     state: { focused: true },
     terminals: [],
     visibleTextEditors: [],
+
+    tabGroups: new MockTabGroups([]),
 
     // Fully mocked methods
     createStatusBarItem: jest.fn(createStatusBarItem),
