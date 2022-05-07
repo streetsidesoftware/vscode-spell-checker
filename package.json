@@ -2183,10 +2183,11 @@
     "vsce": "^2.7.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.19.7",
-    "@cspell/cspell-types": "^5.19.7",
+    "@cspell/cspell-bundled-dicts": "^5.20.0",
+    "@cspell/cspell-types": "^5.20.0",
+    "@types/react": "^17.0.45",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.19.7",
+    "cspell": "^5.20.0",
     "regexp-worker": "^1.1.1"
   },
   "comment-resolutions": {
