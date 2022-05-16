@@ -26,9 +26,9 @@
   "devDependencies": {
     "@cspell/cspell-types": "^5.20.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^27.5.0",
+    "@types/jest": "^27.5.1",
     "@types/micromatch": "^4.0.2",
-    "@types/node": "^17.0.31",
+    "@types/node": "^17.0.33",
     "common-utils": "1.0.0",
     "cspell-glob": "^5.20.0",
     "cspell-lib": "^5.20.0",
@@ -36,7 +36,7 @@
     "gensequence": "^3.1.1",
     "iconv-lite": "^0.6.3",
     "jest": "^27.5.1",
-    "jest-diff": "^27.5.1",
+    "jest-diff": "^28.1.0",
     "lorem-ipsum": "^2.0.4",
     "micromatch": "^4.0.5",
     "minimatch": "^5.0.1",
@@ -49,7 +49,7 @@
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.4",
     "vscode-uri": "^3.0.3",
-    "webpack": "^5.72.0",
+    "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
