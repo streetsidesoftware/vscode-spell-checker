@@ -472,9 +472,9 @@
   integrity sha512-9f5LDATlAiXRGqxLxgqbOLlQxuMW2zcN7tBgxwtN+4u90vM03ZUOR/gKIuDV/y0ZuAiWBIjA73cjk8DJ13Q1eA==
 
 "@cspell/dict-latex@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.1.tgz#e0a7b65ca9ded8d449e47e60e38d838346c0f706"
-  integrity sha512-MtR5K8KMLBKRl2s7UuGyTMlVEbfX0GJAox8GuyHHxPjL/gYUWdU/Qy7PRo8hbvuIRnLjEUduEzSpyta1M23GQQ==
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.2.tgz#f34150db2c4c781ccc7d551dbd8431c0a3938529"
+  integrity sha512-4tjuaieh5NJsYLco45lWu9SRT5H61aC1vtUNKS0+bpA+JaRJYvlpv/wAsq5HB0I9Iz17XHATDvX1zkp3QJ89gw==
 
 "@cspell/dict-lorem-ipsum@^2.0.0":
   version "2.0.0"
@@ -537,9 +537,9 @@
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
 "@cspell/dict-software-terms@^2.1.5":
-  version "2.1.6"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.6.tgz#abf94d31559809621b7eab70669acac51d57068c"
-  integrity sha512-99UV5wlv2cR1dkdv9u3lPqQ/0LVWWdF6J+9RYnXRwVVV/qPBk1+sFKAeR9JdXAMq5YK9lZQiZICTKjNcy55x5g==
+  version "2.1.7"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.7.tgz#30d45d23003980e01854d57788c6c134fa0387f5"
+  integrity sha512-2FW5MlbazmWPFHzMh2xKYFcYnX+E5MdOPRrfYkbVXvWecA0466l54V+op2zlh1CbngMk4eY7AY3qahfWv6gDHA==
 
 "@cspell/dict-swift@^1.0.2":
   version "1.0.2"
@@ -726,7 +726,7 @@
 
 "@jest/schemas@^28.0.2":
   version "28.0.2"
-  resolved "https://registry.yarnpkg.com/@jest/schemas/-/schemas-28.0.2.tgz#08c30df6a8d07eafea0aef9fb222c5e26d72e613"
+  resolved "https://registry.npmjs.org/@jest/schemas/-/schemas-28.0.2.tgz#08c30df6a8d07eafea0aef9fb222c5e26d72e613"
   integrity sha512-YVDJZjd4izeTDkij00vHHAymNXQ6WWsdChFRK86qck6Jpr3DCL5W3Is3vslviRlP+bLuMYRLbdp98amMvqudhA==
   dependencies:
     "@sinclair/typebox" "^0.23.3"
@@ -922,7 +922,7 @@
 
 "@sinclair/typebox@^0.23.3":
   version "0.23.5"
-  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.23.5.tgz#93f7b9f4e3285a7a9ade7557d9a8d36809cbc47d"
+  resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.23.5.tgz#93f7b9f4e3285a7a9ade7557d9a8d36809cbc47d"
   integrity sha512-AFBVi/iT4g20DHoujvMH1aEDn8fGJh4xsRGCP6d8RpLPMqsNPvW01Jcn0QysXTsg++/xj25NmJsGyH9xug/wKg==
 
 "@sinonjs/commons@^1.7.0":
@@ -1237,7 +1237,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.45":
   version "17.0.45"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
+  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
   integrity sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg==
   dependencies:
     "@types/prop-types" "*"
@@ -3511,7 +3511,7 @@ diff-sequences@^27.5.1:
 
 diff-sequences@^28.0.2:
   version "28.0.2"
-  resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-28.0.2.tgz#40f8d4ffa081acbd8902ba35c798458d0ff1af41"
+  resolved "https://registry.npmjs.org/diff-sequences/-/diff-sequences-28.0.2.tgz#40f8d4ffa081acbd8902ba35c798458d0ff1af41"
   integrity sha512-YtEoNynLDFCRznv/XDalsKGSZDoj0U5kLnXvY0JSq3nBboRrZXjD81+eSiwi+nzcZDwedMmcowcxNwwgFW23mQ==
 
 diff@5.0.0:
@@ -5229,7 +5229,7 @@ jest-diff@^27.5.1:
 
 jest-diff@^28.1.0:
   version "28.1.0"
-  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-28.1.0.tgz#77686fef899ec1873dbfbf9330e37dd429703269"
+  resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-28.1.0.tgz#77686fef899ec1873dbfbf9330e37dd429703269"
   integrity sha512-8eFd3U3OkIKRtlasXfiAQfbovgFgRDb0Ngcs2E+FMeBZ4rUezqIaGjuyggJBp+llosQXNEWofk/Sz4Hr5gMUhA==
   dependencies:
     chalk "^4.0.0"
@@ -5287,7 +5287,7 @@ jest-get-type@^27.5.1:
 
 jest-get-type@^28.0.2:
   version "28.0.2"
-  resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-28.0.2.tgz#34622e628e4fdcd793d46db8a242227901fcf203"
+  resolved "https://registry.npmjs.org/jest-get-type/-/jest-get-type-28.0.2.tgz#34622e628e4fdcd793d46db8a242227901fcf203"
   integrity sha512-ioj2w9/DxSYHfOm5lJKCdcAmPJzQXmbM/Url3rhlghrPvT3tt+7a/+oXc9azkKmLvoiXjtV83bEWqi+vs5nlPA==
 
 jest-haste-map@^27.5.1:
@@ -6840,7 +6840,7 @@ pretty-format@^27.0.0, pretty-format@^27.5.1:
 
 pretty-format@^28.1.0:
   version "28.1.0"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-28.1.0.tgz#8f5836c6a0dfdb834730577ec18029052191af55"
+  resolved "https://registry.npmjs.org/pretty-format/-/pretty-format-28.1.0.tgz#8f5836c6a0dfdb834730577ec18029052191af55"
   integrity sha512-79Z4wWOYCdvQkEoEuSlBhHJqWeZ8D8YRPiPctJFCtvuaClGpiwiQYSCUOE6IEKUbbFukKOTFIUAXE8N4EQTo1Q==
   dependencies:
     "@jest/schemas" "^28.0.2"
