@@ -8055,10 +8055,10 @@ ts-jest@^27.1.4:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-json-schema-generator@^1.0.1-next.1:
-  version "1.0.1-next.1"
-  resolved "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-1.0.1-next.1.tgz#3ba3961f20981e12abf889473e47dc19c92d6c6f"
-  integrity sha512-yhNdMLdFu+XIs675Zwk4RHizTZXj7nc2QbqQcMlEt5B9o4S7tFo9C9lycVN9vtq0/sZSp9OPkqQQ95iDAyLEtw==
+ts-json-schema-generator@^1.0.1--canary.1222.31471bc.0:
+  version "1.0.1--canary.1222.31471bc.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-1.0.1--canary.1222.31471bc.0.tgz#7a8ec1f7ec6695ed4365973ea8524a5a6491f377"
+  integrity sha512-VpvzWaKAl/GFPo7Ap0sPtFQmMnOf5thd+5H6Rlr2s/g8L8L0Yq4O0ubudYpE2hrOwbZGNqiNxVEJvMHiaiJNew==
   dependencies:
     "@types/json-schema" "^7.0.9"
     commander "^9.0.0"
