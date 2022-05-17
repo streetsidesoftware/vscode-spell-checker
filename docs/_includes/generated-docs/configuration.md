@@ -684,11 +684,17 @@ Description
 These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
 To disable a language, prefix with `!` as in `!json`,
 
-    Example:
+    **Example: individual file types**
     ```
     jsonc       // enable checking for jsonc
     !json       // disable checking for json
     kotlin      // enable checking for kotlin
+    ```
+
+    **Example: enable all file types**
+    ```
+    *           // enable checking for all file types
+    !json       // except for json
     ```
 
 Default

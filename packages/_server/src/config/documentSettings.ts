@@ -451,8 +451,9 @@ function calcMapOfEnabledFileTypes(
 export function isLanguageEnabled(languageId: string, settings: CSpellUserSettings): boolean {
     const mapOfEnabledFileTypes = settings.mapOfEnabledFileTypes || calcMapOfEnabledFileTypes(settings.enableFiletypes || [], settings);
     const enabled = mapOfEnabledFileTypes.get(languageId);
+    const starEnabled = mapOfEnabledFileTypes.get('*');
     const checkOnly = settings.checkOnlyEnabledFileTypes ?? defaultCheckOnlyEnabledFileTypes;
-    return checkOnly ? !!enabled : enabled !== false;
+    return checkOnly && starEnabled !== true ? !!enabled : enabled !== false;
 }
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {

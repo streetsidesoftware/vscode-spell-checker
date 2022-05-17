@@ -1081,7 +1081,7 @@
               "patternErrorMessage": "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space.",
               "type": "string"
             },
-            "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+            "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\n**Example: individual file types**\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
             "scope": "resource",
             "title": "File Types to Check",
             "type": "array",

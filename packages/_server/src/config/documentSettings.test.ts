@@ -193,6 +193,12 @@ describe('Validate DocumentSettings', () => {
         ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: false }}      | ${true}
         ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: true }}       | ${false}
         ${'javascript'} | ${{ enableFiletypes: ['!javascript'], checkOnlyEnabledFileTypes: false }}     | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['*'] }}                                                 | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: true }}                | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: false }}               | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: true }}               | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: false }}              | ${true}
+        ${'java'}       | ${{ enableFiletypes: ['!*', 'java'], checkOnlyEnabledFileTypes: true }}       | ${true}
     `('isLanguageEnabled $languageId $settings', ({ languageId, settings, expected }) => {
         expect(isLanguageEnabled(languageId, settings)).toBe(expected);
     });
