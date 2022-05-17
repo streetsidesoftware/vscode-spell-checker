@@ -32,12 +32,13 @@ import { DictionaryWatcher } from './config/dictionaryWatcher';
 import {
     correctBadSettings,
     DocumentSettings,
+    isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,
     SettingsCspell,
     stringifyPatterns,
 } from './config/documentSettings';
-import { TextDocumentUri, TextDocumentUriLangId } from './config/vscode.config';
+import { TextDocumentUri } from './config/vscode.config';
 import { createProgressNotifier } from './progressNotifier';
 import { textToWords } from './utils';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis';
@@ -358,10 +359,10 @@ export function run(): void {
     });
 
     async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
-        const { uri } = textDocument;
+        const { uri, languageId } = textDocument;
         return (
             !!settings.enabled &&
-            isLanguageEnabled(textDocument, settings) &&
+            isLanguageEnabled(languageId, settings) &&
             !(await isUriExcluded(uri)) &&
             !isBlocked(textDocument, settings)
         );
@@ -393,18 +394,13 @@ export function run(): void {
         return !!isMiniReason;
     }
 
-    function isLanguageEnabled(textDocument: TextDocumentUriLangId, settings: CSpellUserSettings) {
-        const { enabledLanguageIds = [] } = settings;
-        return enabledLanguageIds.indexOf(textDocument.languageId) >= 0;
-    }
-
     async function calcIncludeExcludeInfo(
         settings: Api.CSpellUserSettings,
         params: TextDocumentInfo
     ): Promise<Api.IsSpellCheckEnabledResult> {
         log('calcIncludeExcludeInfo', params.uri);
         const { uri, languageId } = params;
-        const languageEnabled = languageId && uri ? await isLanguageEnabled({ uri, languageId }, settings) : undefined;
+        const languageEnabled = languageId ? isLanguageEnabled(languageId, settings) : undefined;
 
         const {
             include: fileIsIncluded = true,

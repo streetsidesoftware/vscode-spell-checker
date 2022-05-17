@@ -67,6 +67,8 @@ const configFiles = {
     serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
 };
 
+const ac = expect.arrayContaining;
+
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {
         // Clear all mock instances and calls to constructor and all methods:
@@ -179,7 +181,7 @@ describe('Validate DocumentSettings', () => {
         });
         const r = __testing__.applyEnableFiletypes(enabled, settings);
         // cspell:ignore freeformfortran
-        expect(r.enabledLanguageIds).toEqual(['typescript', 'markdown', 'FreeFormFortran', 'json']);
+        expect(r.enabledLanguageIds).toEqual(ac(['typescript', 'markdown', 'FreeFormFortran', 'json']));
     });
 
     test('isExcludedBy', async () => {

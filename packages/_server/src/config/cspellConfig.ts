@@ -243,6 +243,16 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     'experimental.enableRegexpView'?: boolean;
 }
 
+interface InternalSettings {
+    /**
+     * Map of known and enabled file types.
+     * `true` - enabled
+     * `false` - disabled
+     * @hidden
+     */
+    mapOfEnabledFileTypes?: Map<string, boolean>;
+}
+
 /**
  * @title Named dictionary to be enabled / disabled
  * @markdownDescription
@@ -733,7 +743,7 @@ type GlobDefX = GlobDef;
 
 export interface CustomDictionaryWithScope extends CustomDictionary {}
 
-export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties {}
+export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
