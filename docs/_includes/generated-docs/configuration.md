@@ -612,7 +612,7 @@ Default
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
-| [`cSpell.import`](#cspellimport)                                             | resource | Other settings files to be included.                                                           |
+| [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
 | [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
 | [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                               |
 | [`cSpell.useGitignore`](#cspellusegitignore)                                 | window   | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
@@ -750,7 +750,9 @@ Scope
 : resource
 
 Description
-: Other settings files to be included.
+: Allows this configuration to inherit configuration for one or more other files.
+
+    See [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.
 
 Default
 : _- none -_
@@ -1019,12 +1021,12 @@ Default
 
 # CSpell
 
-| Setting                                                | Scope    | Description                                                                                   |
-| ------------------------------------------------------ | -------- | --------------------------------------------------------------------------------------------- |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from…  |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of RegExp patterns or defined Pattern names to define the text to be included for spell… |
-| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides to apply based upon the file path.                                                  |
-| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.        |
+| Setting                                                | Scope    | Description                                                                                      |
+| ------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------------ |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from…     |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.        |
+| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides to apply based upon the file path.                                                     |
+| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList`… |
 
 ## Definitions
 
@@ -1072,7 +1074,11 @@ Scope
 : resource
 
 Description
-: List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.
+: List of regular expression patterns or defined pattern names to match for spell checking.
+
+    If this property is defined, only text matching the included patterns will be checked.
+
+    While you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).
 
 Default
 : _- none -_
@@ -1110,7 +1116,11 @@ Scope
 : resource
 
 Description
-: Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.
+: Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.
+
+    For example:
+
+    ```javascript "ignoreRegExpList": ["comments"], "patterns": [   {     "name": "comment-single-line",     "pattern": "/#.*/g"   },   {     "name": "comment-multi-line",     "pattern": "/(?:\\/\\*[\\s\\S]*?\\*\\/)/g"   },   // You can also combine multiple named patterns into one single named pattern   {     "name": "comments",     "pattern": ["comment-single-line", "comment-multi-line"]   } ] ```
 
 Default
 : _- none -_

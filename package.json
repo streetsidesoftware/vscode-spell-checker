@@ -400,7 +400,7 @@
             "type": "array"
           },
           "cSpell.includeRegExpList": {
-            "description": "List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.",
+            "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
             "items": {
               "description": "A PatternRef is a Pattern or PatternId.",
               "type": "string"
@@ -415,7 +415,7 @@
               "properties": {
                 "allowCompoundWords": {
                   "default": false,
-                  "description": "True to enable compound word checking.",
+                  "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                   "type": "boolean"
                 },
                 "caseSensitive": {
@@ -428,7 +428,7 @@
                   "type": "string"
                 },
                 "dictionaries": {
-                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.",
+                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "items": {
                     "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
@@ -581,7 +581,7 @@
                   "type": "string"
                 },
                 "ignoreRegExpList": {
-                  "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
+                  "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                   "items": {
                     "description": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
@@ -589,14 +589,14 @@
                   "type": "array"
                 },
                 "ignoreWords": {
-                  "description": "List of words to be ignored. An Ignored word will not show up as an error even if it is also in the `flagWords`.",
+                  "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                   "items": {
                     "type": "string"
                   },
                   "type": "array"
                 },
                 "includeRegExpList": {
-                  "description": "List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.",
+                  "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                   "items": {
                     "description": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
@@ -618,7 +618,7 @@
                     "properties": {
                       "allowCompoundWords": {
                         "default": false,
-                        "description": "True to enable compound word checking.",
+                        "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                         "type": "boolean"
                       },
                       "caseSensitive": {
@@ -631,7 +631,7 @@
                         "type": "string"
                       },
                       "dictionaries": {
-                        "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.",
+                        "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                         "items": {
                           "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                           "type": "string"
@@ -747,7 +747,7 @@
                         "type": "string"
                       },
                       "ignoreRegExpList": {
-                        "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
+                        "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                         "items": {
                           "description": "A PatternRef is a Pattern or PatternId.",
                           "type": "string"
@@ -755,14 +755,14 @@
                         "type": "array"
                       },
                       "ignoreWords": {
-                        "description": "List of words to be ignored. An Ignored word will not show up as an error even if it is also in the `flagWords`.",
+                        "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                         "items": {
                           "type": "string"
                         },
                         "type": "array"
                       },
                       "includeRegExpList": {
-                        "description": "List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.",
+                        "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                         "items": {
                           "description": "A PatternRef is a Pattern or PatternId.",
                           "type": "string"
@@ -826,7 +826,7 @@
                         "type": "array"
                       },
                       "patterns": {
-                        "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
+                        "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                         "items": {
                           "additionalProperties": false,
                           "properties": {
@@ -915,7 +915,7 @@
                   "type": "number"
                 },
                 "patterns": {
-                  "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
+                  "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                   "items": {
                     "additionalProperties": false,
                     "properties": {
@@ -993,7 +993,7 @@
             "type": "array"
           },
           "cSpell.patterns": {
-            "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
+            "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
             "items": {
               "additionalProperties": false,
               "properties": {
@@ -1115,7 +1115,7 @@
             "type": "array"
           },
           "cSpell.import": {
-            "description": "Other settings files to be included.",
+            "description": "Allows this configuration to inherit configuration for one or more other files.\n\nSee [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.",
             "items": {
               "description": "A File System Path. Relative paths are relative to the configuration file.",
               "type": "string"
@@ -1368,7 +1368,7 @@
               "properties": {
                 "allowCompoundWords": {
                   "default": false,
-                  "description": "True to enable compound word checking.",
+                  "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                   "type": "boolean"
                 },
                 "caseSensitive": {
@@ -1381,7 +1381,7 @@
                   "type": "string"
                 },
                 "dictionaries": {
-                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary. To remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.",
+                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "items": {
                     "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
@@ -1497,7 +1497,7 @@
                   "type": "string"
                 },
                 "ignoreRegExpList": {
-                  "description": "List of RegExp patterns or Pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.",
+                  "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                   "items": {
                     "description": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
@@ -1505,14 +1505,14 @@
                   "type": "array"
                 },
                 "ignoreWords": {
-                  "description": "List of words to be ignored. An Ignored word will not show up as an error even if it is also in the `flagWords`.",
+                  "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                   "items": {
                     "type": "string"
                   },
                   "type": "array"
                 },
                 "includeRegExpList": {
-                  "description": "List of RegExp patterns or defined Pattern names to define the text to be included for spell checking. If includeRegExpList is defined, ONLY, text matching the included patterns will be checked.",
+                  "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
                   "items": {
                     "description": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
@@ -1576,7 +1576,7 @@
                   "type": "array"
                 },
                 "patterns": {
-                  "description": "Defines a list of patterns that can be used in ignoreRegExpList and includeRegExpList.",
+                  "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                   "items": {
                     "additionalProperties": false,
                     "properties": {
@@ -2183,11 +2183,11 @@
     "vsce": "^2.7.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^5.20.0",
-    "@cspell/cspell-types": "^5.20.0",
+    "@cspell/cspell-bundled-dicts": "^5.21.0",
+    "@cspell/cspell-types": "^5.21.0",
     "@types/react": "^17.0.45",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.20.0",
+    "cspell": "^5.21.0",
     "regexp-worker": "^1.1.1"
   },
   "comment-resolutions": {
