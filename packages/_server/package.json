@@ -39,7 +39,7 @@
     "jest-diff": "^28.1.0",
     "lorem-ipsum": "^2.0.4",
     "micromatch": "^4.0.5",
-    "minimatch": "^5.0.1",
+    "minimatch": "^5.1.0",
     "node-watch": "^0.7.3",
     "rxjs": "^7.5.5",
     "ts-jest": "^27.1.4",
