@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.2.0 (2022-05-17)
+
+
+### Features
+
+* Add `checkOnlyEnabledFileTypes` option ([#1954](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1954)) ([37cacc1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/37cacc1b059a83ac08ec8a5b2836b0033961ec6d))
+
 ### 2.1.12 (2022-04-28)
 
 ### 2.1.11 (2022-03-30)
