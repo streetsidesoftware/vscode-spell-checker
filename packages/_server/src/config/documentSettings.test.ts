@@ -11,6 +11,7 @@ import {
     debugExports,
     DocumentSettings,
     ExcludedByMatch,
+    isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,
     __testing__,
@@ -182,6 +183,18 @@ describe('Validate DocumentSettings', () => {
         const r = __testing__.applyEnableFiletypes(enabled, settings);
         // cspell:ignore freeformfortran
         expect(r.enabledLanguageIds).toEqual(ac(['typescript', 'markdown', 'FreeFormFortran', 'json']));
+    });
+
+    test.each`
+        languageId      | settings                                                                      | expected
+        ${'typescript'} | ${{}}                                                                         | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['typescript'] }}                                        | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['!!!typescript'], enabledLanguageIds: ['typescript'] }} | ${false}
+        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: false }}      | ${true}
+        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: true }}       | ${false}
+        ${'javascript'} | ${{ enableFiletypes: ['!javascript'], checkOnlyEnabledFileTypes: false }}     | ${false}
+    `('isLanguageEnabled $languageId $settings', ({ languageId, settings, expected }) => {
+        expect(isLanguageEnabled(languageId, settings)).toBe(expected);
     });
 
     test('isExcludedBy', async () => {

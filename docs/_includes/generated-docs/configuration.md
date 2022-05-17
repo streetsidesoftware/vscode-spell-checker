@@ -608,6 +608,7 @@ Default
 | Setting                                                                      | Scope    | Description                                                                                    |
 | ---------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…   |
+| [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                  |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
@@ -641,6 +642,29 @@ Description
 
 Default
 : [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_ ]
+
+---
+
+### `cSpell.checkOnlyEnabledFileTypes`
+
+Name
+: `cSpell.checkOnlyEnabledFileTypes` -- Check Only Enabled File Types
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: By default, the spell checker checks only enabled file types. Use `cSpell.enableFiletypes`
+to turn on / off various file types.
+
+    When this setting is `false`, all file types are checked except for the ones disabled by `cSpell.enableFiletypes`.
+    See `cSpell.enableFiletypes` on how to disable a file type.
+
+Default
+: _`true`_
 
 ---
 

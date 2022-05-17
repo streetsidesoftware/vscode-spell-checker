@@ -90,6 +90,8 @@ const _schemaMapToFile = {
 
 const schemeMapToFile: Record<string, true> = Object.freeze(_schemaMapToFile);
 
+const defaultCheckOnlyEnabledFileTypes = true;
+
 interface Clearable {
     clear: () => any;
 }
@@ -448,8 +450,9 @@ function calcMapOfEnabledFileTypes(
 
 export function isLanguageEnabled(languageId: string, settings: CSpellUserSettings): boolean {
     const mapOfEnabledFileTypes = settings.mapOfEnabledFileTypes || calcMapOfEnabledFileTypes(settings.enableFiletypes || [], settings);
-    const found = mapOfEnabledFileTypes.get(languageId);
-    return !!found;
+    const enabled = mapOfEnabledFileTypes.get(languageId);
+    const checkOnly = settings.checkOnlyEnabledFileTypes ?? defaultCheckOnlyEnabledFileTypes;
+    return checkOnly ? !!enabled : enabled !== false;
 }
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {

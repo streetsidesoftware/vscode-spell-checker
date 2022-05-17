@@ -14,6 +14,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     blockCheckingWhenLineLengthGreaterThan: 'blockCheckingWhenLineLengthGreaterThan',
     blockCheckingWhenTextChunkSizeGreaterThan: 'blockCheckingWhenTextChunkSizeGreaterThan',
     checkLimit: 'checkLimit',
+    checkOnlyEnabledFileTypes: 'checkOnlyEnabledFileTypes',
     customDictionaries: 'customDictionaries',
     customFolderDictionaries: 'customFolderDictionaries',
     customUserDictionaries: 'customUserDictionaries',

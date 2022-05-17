@@ -138,6 +138,19 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     enableFiletypes?: EnableFileTypeId[];
 
     /**
+     * @title Check Only Enabled File Types
+     * @scope resource
+     * @default true
+     * @markdownDescription
+     * By default, the spell checker checks only enabled file types. Use `cSpell.enableFiletypes`
+     * to turn on / off various file types.
+     *
+     * When this setting is `false`, all file types are checked except for the ones disabled by `cSpell.enableFiletypes`.
+     * See `cSpell.enableFiletypes` on how to disable a file type.
+     */
+    checkOnlyEnabledFileTypes?: boolean;
+
+    /**
      * @title Workspace Root Folder Path
      * @scope resource
      * @markdownDescription
@@ -901,6 +914,7 @@ type VSConfigFilesAndFolders = PrefixWithCspell<_VSConfigFilesAndFolders>;
 type _VSConfigFilesAndFolders = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'allowedSchemas'
+    | 'checkOnlyEnabledFileTypes'
     | 'enableFiletypes'
     | 'files'
     | 'globRoot'

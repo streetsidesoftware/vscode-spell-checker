@@ -698,6 +698,13 @@
           "scope": "window",
           "type": "array"
         },
+        "cSpell.checkOnlyEnabledFileTypes": {
+          "default": true,
+          "markdownDescription": "By default, the spell checker checks only enabled file types. Use `cSpell.enableFiletypes`\nto turn on / off various file types.\n\nWhen this setting is `false`, all file types are checked except for the ones disabled by `cSpell.enableFiletypes`.\nSee `cSpell.enableFiletypes` on how to disable a file type.",
+          "scope": "resource",
+          "title": "Check Only Enabled File Types",
+          "type": "boolean"
+        },
         "cSpell.enableFiletypes": {
           "items": {
             "markdownDescription": "Enable / Disable checking file types (languageIds).\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
