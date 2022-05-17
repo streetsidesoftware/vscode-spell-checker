@@ -45,6 +45,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @markdownDescription
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      *
+     *
      * Some schemas have special meaning like:
      * - `untitled` - Used for new documents that have not yet been saved
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
@@ -90,9 +91,9 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     showStatusAlignment?: 'Left' | 'Right';
 
     /**
-     * Show CSpell in-document directives as you type.
      * @markdownDescription
      * Show CSpell in-document directives as you type.
+     *
      * **Note:** VS Code must be restarted for this setting to take effect.
      * @scope language-overridable
      * @default false
@@ -125,8 +126,10 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @uniqueItems true
      * @markdownDescription
      * Enable / Disable checking file types (languageIds).
+     *
      * These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
      * To disable a language, prefix with `!` as in `!json`,
+     *
      *
      * **Example: individual file types**
      * ```
@@ -134,6 +137,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * !json       // disable checking for json
      * kotlin      // enable checking for kotlin
      * ```
+     *
      *
      * **Example: enable all file types**
      * ```
@@ -165,7 +169,8 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * This is used to find the `cspell.json` file for the workspace.
      *
-     * Example: use the `client` folder
+     *
+     * **Example: use the `client` folder**
      * ```
      * ${workspaceFolder:client}
      * ```
@@ -212,6 +217,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Define custom dictionaries to be included by default.
      * If `addWords` is `true` words will be added to this dictionary.
      *
+     *
      * **Example:**
      *
      * ```js
@@ -236,7 +242,8 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Only spell check files that are in the currently open workspace.
      * This same effect can be achieved using the `files` setting.
      *
-     * ```
+     *
+     * ```js
      * "cSpell.files": ["**"]
      * ```
      * @default false
@@ -285,13 +292,14 @@ type EnableCustomDictionary = boolean;
  * Enable / Disable checking file types (languageIds).
  * To disable a language, prefix with `!` as in `!json`,
  *
+ *
  * Example:
  * ```
  * jsonc       // enable checking for jsonc
  * !json       // disable checking for json
  * kotlin      // enable checking for kotlin
  * ```
- * @pattern ^!?(?!\s)[\s\w_.\-]+$
+ * @pattern (^!*(?!\s)[\s\w_.\-]+$)|(^!*[*]$)
  * @patternErrorMessage "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space."
  */
 type EnableFileTypeId = string;
@@ -301,10 +309,13 @@ interface SpellCheckerShouldCheckDocSettings {
      * @markdownDescription
      * The maximum line length.
      *
+     *
      * Block spell checking if lines are longer than the value given.
      * This is used to prevent spell checking generated files.
      *
+     *
      * **Error Message:** _Lines are too long._
+     *
      *
      * @scope language-overridable
      * @default 10000
@@ -314,12 +325,16 @@ interface SpellCheckerShouldCheckDocSettings {
      * @markdownDescription
      * The maximum length of a chunk of text without word breaks.
      *
+     *
      * It is used to prevent spell checking of generated files.
+     *
      *
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
      *
+     *
      * **Error Message:** _Maximum Word Length is Too High._
+     *
      *
      * If you are seeing this message, it means that the file contains a very long line
      * without many word breaks.
@@ -332,10 +347,13 @@ interface SpellCheckerShouldCheckDocSettings {
      * @markdownDescription
      * The maximum average length of chunks of text without word breaks.
      *
+     *
      * A chunk is the characters between absolute word breaks.
      * Absolute word breaks match: `/[\s,{}[\]]/`
      *
+     *
      * **Error Message:** _Average Word Size is Too High._
+     *
      *
      * If you are seeing this message, it means that the file contains mostly long lines
      * without many word breaks.
@@ -367,7 +385,9 @@ export interface CustomDictionary {
      * @markdownDescription
      * The reference name of the dictionary.
      *
+     *
      * Example: `My Words` or `custom`
+     *
      *
      * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
      * If you use: `typescript` it will replace the built-in TypeScript dictionary.
@@ -386,14 +406,19 @@ export interface CustomDictionary {
      * @markdownDescription
      * Define the path to the dictionary text file.
      *
+     *
      * **Note:** if path is `undefined` the `name`d dictionary is expected to be found
      * in the `dictionaryDefinitions`.
      *
+     *
      * File Format: Each line in the file is considered a dictionary entry.
+     *
      *
      * Case is preserved while leading and trailing space is removed.
      *
+     *
      * The path should be absolute, or relative to the workspace.
+     *
      *
      * **Example:** relative to User's folder
      *
@@ -401,11 +426,13 @@ export interface CustomDictionary {
      * ~/dictionaries/custom_dictionary.txt
      * ```
      *
+     *
      * **Example:** relative to the `client` folder in a multi-root workspace
      *
      * ```
      * ${workspaceFolder:client}/build/custom_dictionary.txt
      * ```
+     *
      *
      * **Example:** relative to the current workspace folder in a single-root workspace
      *
@@ -415,6 +442,7 @@ export interface CustomDictionary {
      * ```
      * ${workspaceFolder}/build/custom_dictionary.txt
      * ```
+     *
      *
      * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
      * a multi-root workspace

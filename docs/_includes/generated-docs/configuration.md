@@ -491,7 +491,8 @@ Scope
 
 Description
 : Show CSpell in-document directives as you type.
-**Note:** VS Code must be restarted for this setting to take effect.
+
+    **Note:** VS Code must be restarted for this setting to take effect.
 
 Default
 : _`false`_
@@ -681,8 +682,10 @@ Scope
 
 Description
 : Enable / Disable checking file types (languageIds).
-These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
-To disable a language, prefix with `!` as in `!json`,
+
+    These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
+    To disable a language, prefix with `!` as in `!json`,
+
 
     **Example: individual file types**
     ```
@@ -690,6 +693,7 @@ To disable a language, prefix with `!` as in `!json`,
     !json       // disable checking for json
     kotlin      // enable checking for kotlin
     ```
+
 
     **Example: enable all file types**
     ```
@@ -823,7 +827,7 @@ Description
 : Only spell check files that are in the currently open workspace.
 This same effect can be achieved using the `files` setting.
 
-    ```
+    ```js
     "cSpell.files": ["**"]
     ```
 
@@ -889,7 +893,8 @@ By default it is the first folder.
 
     This is used to find the `cspell.json` file for the workspace.
 
-    Example: use the `client` folder
+
+    **Example: use the `client` folder**
     ```
     ${workspaceFolder:client}
     ```
@@ -929,7 +934,9 @@ Description
     A chunk is the characters between absolute word breaks.
     Absolute word breaks match: `/[\s,{}[\]]/`
 
+
     **Error Message:** _Average Word Size is Too High._
+
 
     If you are seeing this message, it means that the file contains mostly long lines
     without many word breaks.
@@ -956,6 +963,7 @@ Description
     Block spell checking if lines are longer than the value given.
     This is used to prevent spell checking generated files.
 
+
     **Error Message:** _Lines are too long._
 
 Default
@@ -979,10 +987,13 @@ Description
 
     It is used to prevent spell checking of generated files.
 
+
     A chunk is the characters between absolute word breaks.
     Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 
+
     **Error Message:** _Maximum Word Length is Too High._
+
 
     If you are seeing this message, it means that the file contains a very long line
     without many word breaks.
