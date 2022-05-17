@@ -11,6 +11,7 @@ import {
     debugExports,
     DocumentSettings,
     ExcludedByMatch,
+    isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,
     __testing__,
@@ -66,6 +67,8 @@ const configFiles = {
     clientConfigVSCode: Path.resolve(pathWorkspaceClient, '.vscode/cspell.json'),
     serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
 };
+
+const ac = expect.arrayContaining;
 
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {
@@ -179,7 +182,25 @@ describe('Validate DocumentSettings', () => {
         });
         const r = __testing__.applyEnableFiletypes(enabled, settings);
         // cspell:ignore freeformfortran
-        expect(r.enabledLanguageIds).toEqual(['typescript', 'markdown', 'FreeFormFortran', 'json']);
+        expect(r.enabledLanguageIds).toEqual(ac(['typescript', 'markdown', 'FreeFormFortran', 'json']));
+    });
+
+    test.each`
+        languageId      | settings                                                                      | expected
+        ${'typescript'} | ${{}}                                                                         | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['typescript'] }}                                        | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['!!!typescript'], enabledLanguageIds: ['typescript'] }} | ${false}
+        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: false }}      | ${true}
+        ${'javascript'} | ${{ enableFiletypes: ['typescript'], checkOnlyEnabledFileTypes: true }}       | ${false}
+        ${'javascript'} | ${{ enableFiletypes: ['!javascript'], checkOnlyEnabledFileTypes: false }}     | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['*'] }}                                                 | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: true }}                | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['*'], checkOnlyEnabledFileTypes: false }}               | ${true}
+        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: true }}               | ${false}
+        ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: false }}              | ${true}
+        ${'java'}       | ${{ enableFiletypes: ['!*', 'java'], checkOnlyEnabledFileTypes: true }}       | ${true}
+    `('isLanguageEnabled $languageId $settings', ({ languageId, settings, expected }) => {
+        expect(isLanguageEnabled(languageId, settings)).toBe(expected);
     });
 
     test('isExcludedBy', async () => {

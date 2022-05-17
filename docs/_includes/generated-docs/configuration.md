@@ -491,7 +491,8 @@ Scope
 
 Description
 : Show CSpell in-document directives as you type.
-**Note:** VS Code must be restarted for this setting to take effect.
+
+    **Note:** VS Code must be restarted for this setting to take effect.
 
 Default
 : _`false`_
@@ -608,6 +609,7 @@ Default
 | Setting                                                                      | Scope    | Description                                                                                    |
 | ---------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Control which file schemas will be checked for spelling (VS Code must be restarted for this…   |
+| [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                  |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
@@ -644,6 +646,29 @@ Default
 
 ---
 
+### `cSpell.checkOnlyEnabledFileTypes`
+
+Name
+: `cSpell.checkOnlyEnabledFileTypes` -- Check Only Enabled File Types
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: By default, the spell checker checks only enabled file types. Use `cSpell.enableFiletypes`
+to turn on / off various file types.
+
+    When this setting is `false`, all file types are checked except for the ones disabled by `cSpell.enableFiletypes`.
+    See `cSpell.enableFiletypes` on how to disable a file type.
+
+Default
+: _`true`_
+
+---
+
 ### `cSpell.enableFiletypes`
 
 Name
@@ -657,14 +682,23 @@ Scope
 
 Description
 : Enable / Disable checking file types (languageIds).
-These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
-To disable a language, prefix with `!` as in `!json`,
 
-    Example:
+    These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
+    To disable a language, prefix with `!` as in `!json`,
+
+
+    **Example: individual file types**
     ```
     jsonc       // enable checking for jsonc
     !json       // disable checking for json
     kotlin      // enable checking for kotlin
+    ```
+
+
+    **Example: enable all file types**
+    ```
+    *           // enable checking for all file types
+    !json       // except for json
     ```
 
 Default
@@ -793,7 +827,7 @@ Description
 : Only spell check files that are in the currently open workspace.
 This same effect can be achieved using the `files` setting.
 
-    ```
+    ```js
     "cSpell.files": ["**"]
     ```
 
@@ -859,7 +893,8 @@ By default it is the first folder.
 
     This is used to find the `cspell.json` file for the workspace.
 
-    Example: use the `client` folder
+
+    **Example: use the `client` folder**
     ```
     ${workspaceFolder:client}
     ```
@@ -899,7 +934,9 @@ Description
     A chunk is the characters between absolute word breaks.
     Absolute word breaks match: `/[\s,{}[\]]/`
 
+
     **Error Message:** _Average Word Size is Too High._
+
 
     If you are seeing this message, it means that the file contains mostly long lines
     without many word breaks.
@@ -926,6 +963,7 @@ Description
     Block spell checking if lines are longer than the value given.
     This is used to prevent spell checking generated files.
 
+
     **Error Message:** _Lines are too long._
 
 Default
@@ -949,10 +987,13 @@ Description
 
     It is used to prevent spell checking of generated files.
 
+
     A chunk is the characters between absolute word breaks.
     Absolute word breaks match: `/[\s,{}[\]]/`, i.e. spaces or braces.
 
+
     **Error Message:** _Maximum Word Length is Too High._
+
 
     If you are seeing this message, it means that the file contains a very long line
     without many word breaks.

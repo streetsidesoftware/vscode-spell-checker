@@ -90,6 +90,8 @@ const _schemaMapToFile = {
 
 const schemeMapToFile: Record<string, true> = Object.freeze(_schemaMapToFile);
 
+const defaultCheckOnlyEnabledFileTypes = true;
+
 interface Clearable {
     clear: () => any;
 }
@@ -414,16 +416,10 @@ function extractEnableFiletypes(...settings: CSpellUserSettings[]): string[] {
 }
 
 function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSettings): CSpellUserSettings {
-    const { enableFiletypes: _, enabledLanguageIds = [], ...rest } = settings;
-    const enabled = new Set(enabledLanguageIds);
-    normalizeEnableFiletypes(enableFiletypes).forEach((lang) => {
-        if (lang[0] === '!') {
-            enabled.delete(lang.slice(1));
-        } else {
-            enabled.add(lang);
-        }
-    });
-    return enabled.size || settings.enabledLanguageIds !== undefined ? { ...rest, enabledLanguageIds: [...enabled] } : { ...rest };
+    const mapOfEnabledFileTypes = calcMapOfEnabledFileTypes(enableFiletypes, settings);
+    const enabledLanguageIds = [...mapOfEnabledFileTypes.entries()].filter(([_, enabled]) => enabled).map(([lang]) => lang);
+    const { enableFiletypes: _, enabledLanguageIds: __, ...rest } = settings;
+    return { enabledLanguageIds, mapOfEnabledFileTypes, ...rest };
 }
 
 function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
@@ -434,6 +430,30 @@ function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
         .map((id) => id.replace(/^(!!)+/, '')); // Remove extra !! pairs
 
     return ids;
+}
+
+function calcMapOfEnabledFileTypes(
+    enableFiletypes: string[],
+    settings: CSpellUserSettings
+): Required<CSpellUserSettings>['mapOfEnabledFileTypes'] {
+    const { enabledLanguageIds = [] } = settings;
+    const enabled = new Map<string, boolean>();
+    normalizeEnableFiletypes(enabledLanguageIds.concat(enableFiletypes)).forEach((lang) => {
+        if (lang[0] === '!') {
+            enabled.set(lang.slice(1), false);
+        } else {
+            enabled.set(lang, true);
+        }
+    });
+    return enabled;
+}
+
+export function isLanguageEnabled(languageId: string, settings: CSpellUserSettings): boolean {
+    const mapOfEnabledFileTypes = settings.mapOfEnabledFileTypes || calcMapOfEnabledFileTypes(settings.enableFiletypes || [], settings);
+    const enabled = mapOfEnabledFileTypes.get(languageId);
+    const starEnabled = mapOfEnabledFileTypes.get('*');
+    const checkOnly = settings.checkOnlyEnabledFileTypes ?? defaultCheckOnlyEnabledFileTypes;
+    return checkOnly && starEnabled !== true ? !!enabled : enabled !== false;
 }
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
