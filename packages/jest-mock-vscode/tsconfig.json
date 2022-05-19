@@ -1,7 +1,7 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"display": "Jest Mock for VS Code Typescript Config",
-	"extends": "@tsconfig/node14/tsconfig.json",
+	"extends": "@tsconfig/node16/tsconfig.json",
 	"compilerOptions": {
 		"declaration": true,
 		"declarationMap": true,
