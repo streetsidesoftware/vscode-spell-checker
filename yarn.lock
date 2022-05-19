@@ -1246,7 +1246,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.45":
   version "17.0.45"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
   integrity sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg==
   dependencies:
     "@types/prop-types" "*"
@@ -1832,10 +1832,10 @@ astral-regex@^2.0.0:
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-async@~0.2.10:
-  version "0.2.10"
-  resolved "https://registry.npmjs.org/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
-  integrity sha512-eAkdoKxU6/LkKDBzLpT+t6Ff5EtfSF4wx1WfJiPEEV7WNLnDaRXk0oVysiEPm262roaachGexwUv94WhSgN5TQ==
+async@^3.2.2:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/async/-/async-3.2.3.tgz#ac53dafd3f4720ee9e8a160628f18ea91df196c9"
+  integrity sha512-spZRyzKL5l5BZQrr/6m/SqFdBN0q3OCI0f9rjfBzCMBIP4p75P620rR3gTmaksNOhmzgdxcaxdNfMy6anrbM0g==
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -4506,12 +4506,12 @@ handle-thing@^2.0.0:
   resolved "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
   integrity sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==
 
-handlebars-loader@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/handlebars-loader/-/handlebars-loader-1.7.1.tgz#07088f09d8a559344908f7c88c68c0ffdacc555d"
-  integrity sha512-Q+Z/hDPQzU8ZTlVnAe/0T1LHABlyhL7opNcSKcQDhmUXK2ByGTqib1Z2Tfv4Ic50WqDcLFWQcOb3mhjcBRbscQ==
+handlebars-loader@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/handlebars-loader/-/handlebars-loader-1.7.2.tgz#1694cc7cb3de1d16bec718af257eed853e4af84d"
+  integrity sha512-rEzru8REzqeJlbotJD+gPQ8AHyxcAjeXbGqGmrz3+sbjecI0ungieONwMR27Htr+AoKI5W36oPLwcwGrPzO8gw==
   dependencies:
-    async "~0.2.10"
+    async "^3.2.2"
     fastparse "^1.0.0"
     loader-utils "1.0.x"
     object-assign "^4.1.0"
