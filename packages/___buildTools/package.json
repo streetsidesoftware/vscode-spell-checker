@@ -31,7 +31,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^27.5.1",
     "@types/json-schema": "^7.0.11",
-    "ts-jest": "^27.1.4"
+    "ts-jest": "^27.1.5"
   },
   "dependencies": {
     "commander": "^9.2.0"

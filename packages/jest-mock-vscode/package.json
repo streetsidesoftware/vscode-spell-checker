@@ -31,7 +31,7 @@
     "@types/vscode": "^1.67.0",
     "jest": "^27.5.1",
     "rfdc": "^1.3.0",
-    "ts-jest": "^27.1.4",
+    "ts-jest": "^27.1.5",
     "typescript": "^4.6.4"
   },
   "peerDependencies": {
