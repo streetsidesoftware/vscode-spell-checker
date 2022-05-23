@@ -2193,7 +2193,7 @@
     "@cspell/cspell-types": "^5.21.2",
     "@types/react": "^17.0.45",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^5.21.2",
+    "cspell": "^6.0.0",
     "regexp-worker": "^1.1.1"
   },
   "comment-resolutions": {
