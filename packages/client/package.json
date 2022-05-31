@@ -58,7 +58,7 @@
     "vscode-uri": "^3.0.3",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
-    "yaml": "^2.1.0"
+    "yaml": "^2.1.1"
   },
   "dependencies": {}
 }
