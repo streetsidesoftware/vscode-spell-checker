@@ -1252,7 +1252,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.45":
   version "17.0.45"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.45.tgz#9b3d5b661fd26365fefef0e766a1c6c30ccf7b3f"
   integrity sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg==
   dependencies:
     "@types/prop-types" "*"
@@ -3226,18 +3226,18 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-gitignore@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.0.0.tgz#a98a8f5f20e2c8ccab507c9f2ca3658f05a27a7d"
-  integrity sha512-VngxI9wdb72CWElxGNJQ24MmEewhXNCEkW2Bx5AMOM/vgmuim8JlslEGYWCdN0XqJ4OtOVzIZ2muMV9/Oy5AvQ==
+cspell-gitignore@^6.0.0, cspell-gitignore@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-6.1.0.tgz#1a3f942767df46368295cb16701a6a4c64a703e5"
+  integrity sha512-ACEAVvzCP4lOCnfRqKBC7YWMM30kSSCaQql+VvkFACwGQezTnK4LUDT0WfbMY/22pPvXbjOiMjBXH7NwcEctKg==
   dependencies:
-    cspell-glob "^6.0.0"
+    cspell-glob "^6.1.0"
     find-up "^5.0.0"
 
-cspell-glob@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.0.0.tgz#ccbfcb7f888683afd6453146f42bb848799bf818"
-  integrity sha512-H0FiYJm5Zv+HzJseRdNwHQMeJBNC8JqAzBw+5dS78RHzDyU8P3XeFEhUEy2baS2od2zxIRPLvL0/8fBXEzxPhQ==
+cspell-glob@^6.0.0, cspell-glob@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-6.1.0.tgz#0bbef1da1a7904713efd387b62e269db5cf54f50"
+  integrity sha512-Uugw9fnANu4alMIgwF7nCh4phXmyZ8kzuPdF6r3a2sbcXE9HjhkKcVHB0cNJyKmex6Fox09SEHE6kzaOzI1phg==
   dependencies:
     micromatch "^4.0.5"
 
@@ -8432,10 +8432,10 @@ vscode-languageserver-protocol@3.16.0:
     vscode-jsonrpc "6.0.0"
     vscode-languageserver-types "3.16.0"
 
-vscode-languageserver-textdocument@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.npmjs.org/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.4.tgz#3cd56dd14cec1d09e86c4bb04b09a246cb3df157"
-  integrity sha512-/xhqXP/2A2RSs+J8JNXpiiNVvvNM0oTosNVmQnunlKvq9o4mupHOBAnnzH0lwIPKazXKvAKsVp1kr+H/K4lgoQ==
+vscode-languageserver-textdocument@^1.0.4, vscode-languageserver-textdocument@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.5.tgz#838769940ece626176ec5d5a2aa2d0aa69f5095c"
+  integrity sha512-1ah7zyQjKBudnMiHbZmxz5bYNM9KKZYz+5VQLj+yr8l+9w3g+WAhCkUkWbhMEdC5u0ub4Ndiye/fDyS8ghIKQg==
 
 vscode-languageserver-types@3.16.0:
   version "3.16.0"
