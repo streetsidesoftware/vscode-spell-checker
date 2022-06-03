@@ -14,7 +14,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^27.5.1",
+    "@types/jest": "^27.5.2",
     "@types/jest-when": "^3.5.0",
     "@types/vscode": "^1.67.0",
     "jest-mock-vscode": "^0.1.2",
