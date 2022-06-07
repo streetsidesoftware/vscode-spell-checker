@@ -11,6 +11,7 @@ import {
     Range,
     Selection,
     TextDocument,
+    Location,
     TextEditorRevealType,
     Uri,
     window,
@@ -21,6 +22,7 @@ import { TextEdit } from 'vscode-languageclient/node';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
+import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
 import {
     ConfigFields,
@@ -171,6 +173,8 @@ function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: 
 // }
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
+const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
+const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
 
 function handlerApplyTextEdits() {
     return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
@@ -187,10 +191,12 @@ function handlerApplyTextEdits() {
 
         const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
         if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
-            console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
+            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
+            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
             const edit = edits[0];
             const range = client.protocol2CodeConverter.asRange(edit.range);
-            if (await attemptRename(textEditor.document, range, edit.newText)) {
+            if (await attemptRename(textEditor.document, range, edit.newText, { useReference, removeRegExp })) {
                 return;
             }
         }
@@ -209,11 +215,17 @@ function handlerApplyTextEdits() {
     };
 }
 
-async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean> {
+interface UseRefInfo {
+    useReference: boolean;
+    removeRegExp: RegExp | undefined;
+}
+
+async function attemptRename(document: TextDocument, range: Range, text: string, refInfo: UseRefInfo): Promise<boolean> {
     if (range.start.line !== range.end.line) {
         return false;
     }
-    const wordRange = document.getWordRangeAtPosition(range.start);
+    const { useReference, removeRegExp } = refInfo;
+    const wordRange = await findEditBounds(document, range, useReference);
     if (!wordRange || !wordRange.contains(range)) {
         return false;
     }
@@ -221,7 +233,8 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     const a = range.start.character - orig;
     const b = range.end.character - orig;
     const docText = document.getText(wordRange);
-    const newText = [docText.slice(0, a), text, docText.slice(b)].join('');
+    const fullNewText = [docText.slice(0, a), text, docText.slice(b)].join('');
+    const newText = removeRegExp ? fullNewText.replace(removeRegExp, '') : fullNewText;
     try {
         const workspaceEdit = await commands
             .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
@@ -233,6 +246,29 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     } catch (e) {
         return false;
     }
+}
+
+async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
+    try {
+        const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
+        if (!Array.isArray(locations)) return undefined;
+        return locations.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
+    } catch (e) {
+        return undefined;
+    }
+}
+
+async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
+    if (useReference) {
+        const refLocation = await findLocalReference(document.uri, range);
+        return refLocation?.range;
+    }
+
+    const wordRange = document.getWordRangeAtPosition(range.start);
+    if (!wordRange || !wordRange.contains(range)) {
+        return undefined;
+    }
+    return wordRange;
 }
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
@@ -620,4 +656,14 @@ function lineToRange(line: number | string | undefined) {
     const pos = new Position(line - 1, 0);
     const range = new Range(pos, pos);
     return range;
+}
+
+function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
+    if (!regExStr) return undefined;
+    try {
+        return toRegExp(regExStr, flags);
+    } catch (e) {
+        console.log('Invalid Regular Expression: %s', regExStr);
+    }
+    return undefined;
 }
