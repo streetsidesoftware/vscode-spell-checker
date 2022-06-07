@@ -16,3 +16,4 @@ export { Workspace, workspace, MockWorkspace } from './workspace';
 export { Window, window } from './window';
 export { MockTextEditor } from './TextEditor';
 export { languages, Languages } from './languages';
+export { TypeHierarchyItem } from './TypeHierarchyItem';
