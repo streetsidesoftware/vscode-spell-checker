@@ -6,7 +6,7 @@ It assumes that the `main` branch is stable.
 
 Use the following steps:
 
-1. Run [Action - Tag Version for Release](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/version-release.yml).
+1. Run [Action - Pub Step 1: Tag Version for Release](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/version-release.yml).
 
     This will update the `package.json:version` and push the tags to GitHub. (~5 min)
 
@@ -21,6 +21,6 @@ Use the following steps:
 
 1. Download the `code-spell-checker-*.vsix` file and test it out in VS Code. If it works as expected, update the release and remove the `This is a pre-release` check.
 
-1. Manually Publish to the Marketplace: [Action Manual Publish](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/manual-publish.yml)
+1. Manually Publish to the Marketplace: [Pub Step 2: Publish to Marketplace](https://github.com/streetsidesoftware/vscode-spell-checker/actions/workflows/manual-publish.yml)
 
     Enter the release tag from the previous step. Looks like `v2.1.3`.
