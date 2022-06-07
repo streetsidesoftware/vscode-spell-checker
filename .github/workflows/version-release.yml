@@ -1,4 +1,4 @@
-name: Tag Version for Release
+name: "Pub Step 1: Tag Version for Release"
 
 on:
   workflow_dispatch:
