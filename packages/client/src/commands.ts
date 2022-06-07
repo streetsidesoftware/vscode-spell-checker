@@ -193,7 +193,7 @@ function handlerApplyTextEdits() {
         if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
             const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
             const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-            console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
+            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
             const edit = edits[0];
             const range = client.protocol2CodeConverter.asRange(edit.range);
             if (await attemptRename(textEditor.document, range, edit.newText, { useReference, removeRegExp })) {
@@ -261,7 +261,7 @@ async function findLocalReference(uri: Uri, range: Range): Promise<Location | un
 async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
     if (useReference) {
         const refLocation = await findLocalReference(document.uri, range);
-        if (refLocation) return refLocation.range;
+        return refLocation?.range;
     }
 
     const wordRange = document.getWordRangeAtPosition(range.start);
