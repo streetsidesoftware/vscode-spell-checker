@@ -33,7 +33,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     ExtensionRegEx.activate(context, client);
 
     // Start the client.
-    context.subscriptions.push(client.start());
+    await client.start();
     const statusBar = initStatusBar(context, client);
 
     function triggerGetSettings(delayInMs = 0) {

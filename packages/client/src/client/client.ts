@@ -121,26 +121,13 @@ export class CSpellClient implements Disposable {
         // Create the language client and start the client.
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
-        setTimeout(() => {
-            this.client.trace = traceMode;
-            if (traceMode !== Trace.Off) {
-                this.client.traceOutputChannel.show();
-            }
-        }, 1000);
         this.serverApi = createServerApi(this.client);
-        this.initWhenReady().catch((e) => console.error(e));
+        this.registerHandleNotificationsFromServer();
+        this.registerHandleOnWorkspaceConfigForDocumentRequest();
     }
 
-    public needsStart(): boolean {
-        return this.client.needsStart();
-    }
-
-    public needsStop(): boolean {
-        return this.client.needsStop();
-    }
-
-    public start(): Disposable {
-        return this.exposeDisposable(this.client.start());
+    public start(): Promise<void> {
+        return this.client.start();
     }
 
     public async isSpellCheckEnabled(document: TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {
@@ -207,21 +194,16 @@ export class CSpellClient implements Disposable {
     }
 
     public async whenReady<R>(fn: () => R): Promise<R> {
-        await this.client.onReady();
+        await this.onReady();
         return fn();
+    }
+
+    private onReady(): Promise<void> {
+        return this.start();
     }
 
     public static create(context: ExtensionContext): Promise<CSpellClient> {
         return Promise.resolve(vsCodeSupportedLanguages.getLanguages().then((langIds) => new CSpellClient(context, langIds)));
-    }
-
-    /**
-     * @param d - internal disposable to register
-     * @returns the disposable to hand out.
-     */
-    private exposeDisposable(d: Disposable): Disposable {
-        this.registerDisposable(d);
-        return new Disposable(() => this.disposeOf(d));
     }
 
     private registerDisposable(...disposables: Disposable[]) {
@@ -230,13 +212,8 @@ export class CSpellClient implements Disposable {
         }
     }
 
-    private disposeOf(d: Disposable) {
-        if (!this.disposables.has(d)) return;
-        this.disposables.delete(d);
-        d.dispose();
-    }
-
     public dispose(): void {
+        this.client.stop();
         const toDispose = [...this.disposables];
         this.disposables.clear();
         Disposable.from(...toDispose).dispose();
@@ -262,12 +239,6 @@ export class CSpellClient implements Disposable {
 
         const actions = r.filter(isCodeAction).map(mapCodeAction);
         return actions;
-    }
-
-    private async initWhenReady() {
-        await this.client.onReady();
-        this.registerHandleNotificationsFromServer();
-        this.registerHandleOnWorkspaceConfigForDocumentRequest();
     }
 
     private registerHandleOnWorkspaceConfigForDocumentRequest() {

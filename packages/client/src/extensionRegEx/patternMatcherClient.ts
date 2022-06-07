@@ -52,7 +52,6 @@ export class PatternMatcherClient implements Disposable {
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
         logErrors(this.initWhenReady(), 'Init Pattern Matcher Server');
-        context.subscriptions.push(this.client.start(), this);
     }
 
     public async matchPatternsInDocument(
@@ -65,10 +64,11 @@ export class PatternMatcherClient implements Disposable {
 
     public dispose(): void {
         debugLog('Dispose: Pattern Matcher Client');
+        this.client.stop();
     }
 
     public onReady(): Promise<void> {
-        return this.client.onReady();
+        return this.client.start();
     }
 
     private async initWhenReady() {
