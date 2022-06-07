@@ -41,7 +41,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
 
     /**
-     * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      * @markdownDescription
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      *
@@ -49,8 +48,9 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Some schemas have special meaning like:
      * - `untitled` - Used for new documents that have not yet been saved
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
+     * - `vscode-userdata` - Needed to spell check `.code-snippets`
      * @scope window
-     * @default ["file", "gist", "sftp", "untitled", "vscode-notebook-cell"]
+     * @default ["file", "gist", "sftp", "untitled", "vscode-notebook-cell", "vscode-userdata"]
      */
     allowedSchemas?: string[];
 
@@ -108,11 +108,22 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     spellCheckDelayMs?: number;
 
     /**
+     * @markdownDescription
      * Use Rename when fixing spelling issues.
      * @scope language-overridable
      * @default true
      */
     fixSpellingWithRenameProvider?: boolean;
+
+    /**
+     * @markdownDescription
+     * Use the Reference Provider when fixing spelling issues with the Rename Provider.
+     * This feature is used in connection with `#cSpell.fixSpellingWithRenameProvider#`
+     * @scope language-overridable
+     * @default false
+     */
+    'advanced.feature.useReferenceProviderWithRename'?: boolean;
+
     /**
      * Show Spell Checker actions in Editor Context Menu
      * @scope application
@@ -127,19 +138,20 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @markdownDescription
      * Enable / Disable checking file types (languageIds).
      *
-     * These are in additional to the file types specified by `cSpell.enabledLanguageIds`.
+     * These are in additional to the file types specified by `#cSpell.enabledLanguageIds#`.
      * To disable a language, prefix with `!` as in `!json`,
      *
      *
      * **Example: individual file types**
+     *
      * ```
      * jsonc       // enable checking for jsonc
      * !json       // disable checking for json
      * kotlin      // enable checking for kotlin
      * ```
      *
-     *
      * **Example: enable all file types**
+     *
      * ```
      * *           // enable checking for all file types
      * !json       // except for json
@@ -152,11 +164,11 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @scope resource
      * @default true
      * @markdownDescription
-     * By default, the spell checker checks only enabled file types. Use `cSpell.enableFiletypes`
+     * By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
      * to turn on / off various file types.
      *
-     * When this setting is `false`, all file types are checked except for the ones disabled by `cSpell.enableFiletypes`.
-     * See `cSpell.enableFiletypes` on how to disable a file type.
+     * When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enableFiletypes#`.
+     * See `#cSpell.enableFiletypes#` on how to disable a file type.
      */
     checkOnlyEnabledFileTypes?: boolean;
 
@@ -184,7 +196,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
      * @deprecated true
-     * @deprecationMessage - Use `customDictionaries` instead.
+     * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customUserDictionaries?: CustomDictionaryEntry[];
 
@@ -195,7 +207,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
      * @deprecated true
-     * @deprecationMessage - Use `customDictionaries` instead.
+     * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customWorkspaceDictionaries?: CustomDictionaryEntry[];
 
@@ -206,7 +218,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
      * @deprecated true
-     * @deprecationMessage - Use `customDictionaries` instead.
+     * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customFolderDictionaries?: CustomDictionaryEntry[];
 
@@ -240,7 +252,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @scope window
      * @markdownDescription
      * Only spell check files that are in the currently open workspace.
-     * This same effect can be achieved using the `files` setting.
+     * This same effect can be achieved using the `#cSpell.files#` setting.
      *
      *
      * ```js
@@ -321,6 +333,7 @@ interface SpellCheckerShouldCheckDocSettings {
      * @default 10000
      */
     blockCheckingWhenLineLengthGreaterThan?: number;
+
     /**
      * @markdownDescription
      * The maximum length of a chunk of text without word breaks.
@@ -343,6 +356,7 @@ interface SpellCheckerShouldCheckDocSettings {
      * @default 500
      */
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
+
     /**
      * @markdownDescription
      * The maximum average length of chunks of text without word breaks.
@@ -544,7 +558,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      * @description
      * @markdownDescription
-     * Specify a list of file types to spell check. It is better to use `cSpell.enableFiletypes` to Enable / Disable checking files types.
+     * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
      * @uniqueItems true
      * @default [
      *       "asciidoc",
@@ -588,6 +602,11 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     enabledLanguageIds?: string[];
 
     /**
+     * @description
+     * @markdownDescription
+     * Allows this configuration to inherit configuration for one or more other files.
+     *
+     * See [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.
      * @scope resource
      */
     import?: FsPath[] | HiddenFsPath;
@@ -609,7 +628,8 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignoreWords?: string[];
 
     /**
-     * Glob patterns of files to be ignored. The patterns are relative to the `globRoot` of the configuration file that defines them.
+     * @markdownDescription
+     * Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @title Glob patterns of files to be ignored
      * @scope resource
      * @default [
@@ -644,7 +664,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @description
      * @markdownDescription
      * Glob patterns of files to be checked.
-     * Glob patterns are relative to the `globRoot` of the configuration file that defines them.
+     * Glob patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @scope resource
      */
     files?: CSpellSettings['files'];
@@ -655,11 +675,37 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     flagWords?: string[];
 
     /**
+     * @description
+     * @markdownDescription
+     * Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and
+     * `#cSpell.includeRegExpList#` options.
+     *
+     * **Example:**
+     *
+     * ```jsonc
+     * "cSpell.patterns": [
+     *   {
+     *     "name": "comment-single-line",
+     *     "pattern": "/#.*​/g"
+     *   },
+     *   {
+     *     "name": "comment-multi-line",
+     *     "pattern": "/(?:\\/\\*[\\s\\S]*?\\*\\/)/g"
+     *   }
+     * ]
+     * ```
+     *
      * @scope resource
      */
     patterns?: CSpellSettings['patterns'];
 
     /**
+     * @description
+     * @markdownDescription
+     * List of regular expression patterns or defined pattern names to match for spell checking.
+     *
+     * If this property is defined, only text matching the included patterns will be checked.
+     *
      * @scope resource
      */
     includeRegExpList?: CSpellSettings['includeRegExpList'];
@@ -669,7 +715,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      * @description
      * @markdownDescription
-     * List of regular expressions or Pattern names (defined in `cSpell.patterns`) to exclude from spell checking.
+     * List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.
      *
      * - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
      * - When editing the VS Code `settings.json` file,
@@ -716,14 +762,21 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     dictionaries?: CSpellSettings['dictionaries'];
 
     /**
+     * @description
+     * @markdownDescription
+     * Define additional available dictionaries.
+     *
+     * For example, you can use the following to add a custom dictionary:
+     *
+     * ```json
+     * "cSpell.dictionaryDefinitions": [
+     *   { "name": "custom-words", "path": "./custom-words.txt"}
+     * ],
+     * "cSpell.dictionaries": ["custom-words"]
+     * ```
      * @scope resource
      */
     dictionaryDefinitions?: CSpellSettings['dictionaryDefinitions'];
-
-    /**
-     * @scope resource
-     */
-    overrides?: CSpellSettings['overrides'];
 
     /**
      * @scope resource
@@ -734,7 +787,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * - `false` - Case is ignored and accents can be missing on the entire word.
      *   Incorrect accents or partially missing accents will be marked as incorrect.
      *   Note: Some languages like Portuguese have case sensitivity turned on by default.
-     *   You must use `languageSettings` to turn it off.
+     *   You must use `#cSpell.languageSettings#` to turn it off.
      * - `true` - Case and accents are enforced by default.
      */
     caseSensitive?: CSpellSettings['caseSensitive'];
@@ -820,7 +873,26 @@ interface LanguageSettings {
 type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> & DictionaryDefinitions & LanguageSettings;
 interface Overrides {
     /**
-     * Overrides to apply based upon the file path.
+     * @description
+     * @markdownDescription
+     * Overrides are used to apply settings for specific files in your project.
+     *
+     * **Example:**
+     *
+     * ```jsonc
+     * "cSpell.overrides": [
+     *   // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:
+     *   {
+     *     "filename": "**​/{*.hrr,*.crr}",
+     *     "languageId": "cpp"
+     *   },
+     *   // Force `dutch/**​/*.txt` to be treated as Dutch (dictionary needs to be installed separately):
+     *   {
+     *     "filename": "**​/dutch/**​/*.txt",
+     *     "language": "nl"
+     *   }
+     * ]
+     * ```
      * @scope resource
      */
     overrides?: OverridesReduced[];
@@ -894,9 +966,6 @@ type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
 type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'diagnosticLevel'
-    | 'fixSpellingWithRenameProvider'
-    | 'logFile'
-    | 'logLevel'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
     | 'minWordLength'
@@ -931,6 +1000,7 @@ type _VSConfigPerf = Pick<
 type VSConfigCSpell = PrefixWithCspell<_VSConfigCSpell>;
 type _VSConfigCSpell = Omit<
     SpellCheckerSettingsVSCodeBase,
+    | keyof _VSConfigAdvanced
     | keyof _VSConfigExperimental
     | keyof _VSConfigLanguageAndDictionaries
     | keyof _VSConfigLegacy
@@ -972,6 +1042,16 @@ type _VSConfigLegacy = Pick<
 >;
 
 /**
+ * @title Advanced
+ * @order 18
+ */
+type VSConfigAdvanced = PrefixWithCspell<_VSConfigAdvanced>;
+type _VSConfigAdvanced = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    'advanced.feature.useReferenceProviderWithRename' | 'fixSpellingWithRenameProvider' | 'logFile' | 'logLevel'
+>;
+
+/**
  * @title Experimental
  * @order 19
  */
@@ -980,6 +1060,7 @@ type _VSConfigExperimental = Pick<SpellCheckerSettingsVSCodeBase, 'experimental.
 
 export type SpellCheckerSettingsVSCode = [
     VSConfigRoot,
+    VSConfigAdvanced,
     VSConfigCSpell,
     VSConfigExperimental,
     VSConfigFilesAndFolders,

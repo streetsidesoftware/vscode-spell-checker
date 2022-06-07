@@ -11,6 +11,7 @@ import {
     Range,
     Selection,
     TextDocument,
+    Location,
     TextEditorRevealType,
     Uri,
     window,
@@ -171,6 +172,7 @@ function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: 
 // }
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
+const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
 
 function handlerApplyTextEdits() {
     return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
@@ -187,10 +189,11 @@ function handlerApplyTextEdits() {
 
         const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
         if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
+            const useReference = cfg.get(propertyUseReferenceProviderWithRename);
             console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
             const edit = edits[0];
             const range = client.protocol2CodeConverter.asRange(edit.range);
-            if (await attemptRename(textEditor.document, range, edit.newText)) {
+            if (await attemptRename(textEditor.document, range, edit.newText, !!useReference)) {
                 return;
             }
         }
@@ -209,11 +212,11 @@ function handlerApplyTextEdits() {
     };
 }
 
-async function attemptRename(document: TextDocument, range: Range, text: string): Promise<boolean> {
+async function attemptRename(document: TextDocument, range: Range, text: string, useReference: boolean): Promise<boolean> {
     if (range.start.line !== range.end.line) {
         return false;
     }
-    const wordRange = document.getWordRangeAtPosition(range.start);
+    const wordRange = await findEditBounds(document, range, useReference);
     if (!wordRange || !wordRange.contains(range)) {
         return false;
     }
@@ -233,6 +236,29 @@ async function attemptRename(document: TextDocument, range: Range, text: string)
     } catch (e) {
         return false;
     }
+}
+
+async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
+    try {
+        const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
+        if (!Array.isArray(locations)) return undefined;
+        return locations.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
+    } catch (e) {
+        return undefined;
+    }
+}
+
+async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
+    if (useReference) {
+        const refLocation = await findLocalReference(document.uri, range);
+        if (refLocation) return refLocation.range;
+    }
+
+    const wordRange = document.getWordRangeAtPosition(range.start);
+    if (!wordRange || !wordRange.contains(range)) {
+        return undefined;
+    }
+    return wordRange;
 }
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {

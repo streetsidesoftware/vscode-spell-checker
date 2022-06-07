@@ -83,6 +83,7 @@ unelevated
 untracked
 untrusted
 uri's
+userdata
 visualstudio
 vsce
 VSIX

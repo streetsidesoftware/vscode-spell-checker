@@ -586,7 +586,7 @@ export function run(): void {
             const logFile = results[1];
             logger.level = logLevel;
             updateLoggerConnection(logFile);
-            console.error('UpdateLogLevel: %o %s', [logLevel, logFile], process.cwd());
+            // console.error('UpdateLogLevel: %o %s', [logLevel, logFile], process.cwd());
         } catch (reject) {
             logger.setConnection({ console, onExit: () => undefined });
             const message = `Failed to get config: ${JSON.stringify(reject)}`;
