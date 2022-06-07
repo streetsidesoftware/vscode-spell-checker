@@ -29,6 +29,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     checkLimit?: number;
 
     /**
+     * @title Set Diagnostic Reporting Level
      * @scope resource
      * @description Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
      * @default "Information"
@@ -41,6 +42,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
 
     /**
+     * @title Define Allowed Schemas
      * @markdownDescription
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      *
@@ -56,6 +58,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * Set the Debug Level for logging messages.
+     * @title Set Logging Level
      * @scope window
      * @default "Error"
      * @enumDescriptions [
@@ -69,6 +72,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * Have the logs written to a file instead of to VS Code.
+     * @title Write Logs to a File
      * @scope window
      */
     logFile?: string;
@@ -109,13 +113,14 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * @markdownDescription
-     * Use Rename when fixing spelling issues.
+     * Use Rename Provider when fixing spelling issues.
      * @scope language-overridable
      * @default true
      */
     fixSpellingWithRenameProvider?: boolean;
 
     /**
+     * @title Use Reference Provider During Rename
      * @markdownDescription
      * Use the Reference Provider when fixing spelling issues with the Rename Provider.
      * This feature is used in connection with `#cSpell.fixSpellingWithRenameProvider#`
@@ -123,6 +128,23 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default false
      */
     'advanced.feature.useReferenceProviderWithRename'?: boolean;
+
+    /**
+     * @title Remove Matching Characters Before Rename
+     * @markdownDescription
+     * Used to work around bugs in Reference Providers and Rename Providers.
+     * Anything matching the provided Regular Expression will be removed from the text
+     * before sending it to the Rename Provider.
+     *
+     * See: [Markdown: Fixing spelling issues in Header sections changes the entire line · Issue #1987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1987)
+     *
+     * It is unlikely that you would need to edit this setting. If you need to, please open an issue at
+     * [Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
+     *
+     * This feature is used in connection with `#cSpell.advanced.feature.useReferenceProviderWithRename#`
+     * @scope language-overridable
+     */
+    'advanced.feature.useReferenceProviderRemove'?: RegExpString;
 
     /**
      * Show Spell Checker actions in Editor Context Menu
@@ -315,6 +337,12 @@ type EnableCustomDictionary = boolean;
  * @patternErrorMessage "Allowed characters are `a-zA-Z`, `.`, `-`, `_` and space."
  */
 type EnableFileTypeId = string;
+
+/**
+ * @markdownDescription
+ * A string representation of a Regular Expression.
+ */
+type RegExpString = string;
 
 interface SpellCheckerShouldCheckDocSettings {
     /**
@@ -1048,7 +1076,11 @@ type _VSConfigLegacy = Pick<
 type VSConfigAdvanced = PrefixWithCspell<_VSConfigAdvanced>;
 type _VSConfigAdvanced = Pick<
     SpellCheckerSettingsVSCodeBase,
-    'advanced.feature.useReferenceProviderWithRename' | 'fixSpellingWithRenameProvider' | 'logFile' | 'logLevel'
+    | 'advanced.feature.useReferenceProviderWithRename'
+    | 'advanced.feature.useReferenceProviderRemove'
+    | 'fixSpellingWithRenameProvider'
+    | 'logFile'
+    | 'logLevel'
 >;
 
 /**

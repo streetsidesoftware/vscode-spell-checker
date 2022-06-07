@@ -9,6 +9,7 @@ type CSpellUserSettingsFields = {
 
 export const ConfigFields: CSpellUserSettingsFields = {
     ...CSpellConfigFields,
+    'advanced.feature.useReferenceProviderRemove': 'advanced.feature.useReferenceProviderRemove',
     'advanced.feature.useReferenceProviderWithRename': 'advanced.feature.useReferenceProviderWithRename',
     allowedSchemas: 'allowedSchemas',
     blockCheckingWhenAverageChunkSizeGreaterThan: 'blockCheckingWhenAverageChunkSizeGreaterThan',

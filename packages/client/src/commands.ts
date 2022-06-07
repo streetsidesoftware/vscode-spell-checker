@@ -22,6 +22,7 @@ import { TextEdit } from 'vscode-languageclient/node';
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
+import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
 import {
     ConfigFields,
@@ -173,6 +174,7 @@ function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: 
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
 const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
+const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
 
 function handlerApplyTextEdits() {
     return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
@@ -189,11 +191,12 @@ function handlerApplyTextEdits() {
 
         const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
         if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
-            const useReference = cfg.get(propertyUseReferenceProviderWithRename);
+            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
+            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
             console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
             const edit = edits[0];
             const range = client.protocol2CodeConverter.asRange(edit.range);
-            if (await attemptRename(textEditor.document, range, edit.newText, !!useReference)) {
+            if (await attemptRename(textEditor.document, range, edit.newText, { useReference, removeRegExp })) {
                 return;
             }
         }
@@ -212,10 +215,16 @@ function handlerApplyTextEdits() {
     };
 }
 
-async function attemptRename(document: TextDocument, range: Range, text: string, useReference: boolean): Promise<boolean> {
+interface UseRefInfo {
+    useReference: boolean;
+    removeRegExp: RegExp | undefined;
+}
+
+async function attemptRename(document: TextDocument, range: Range, text: string, refInfo: UseRefInfo): Promise<boolean> {
     if (range.start.line !== range.end.line) {
         return false;
     }
+    const { useReference, removeRegExp } = refInfo;
     const wordRange = await findEditBounds(document, range, useReference);
     if (!wordRange || !wordRange.contains(range)) {
         return false;
@@ -224,7 +233,8 @@ async function attemptRename(document: TextDocument, range: Range, text: string,
     const a = range.start.character - orig;
     const b = range.end.character - orig;
     const docText = document.getText(wordRange);
-    const newText = [docText.slice(0, a), text, docText.slice(b)].join('');
+    const fullNewText = [docText.slice(0, a), text, docText.slice(b)].join('');
+    const newText = removeRegExp ? fullNewText.replace(removeRegExp, '') : fullNewText;
     try {
         const workspaceEdit = await commands
             .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
@@ -646,4 +656,14 @@ function lineToRange(line: number | string | undefined) {
     const pos = new Position(line - 1, 0);
     const range = new Range(pos, pos);
     return range;
+}
+
+function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
+    if (!regExStr) return undefined;
+    try {
+        return toRegExp(regExStr, flags);
+    } catch (e) {
+        console.log('Invalid Regular Expression: %s', regExStr);
+    }
+    return undefined;
 }
