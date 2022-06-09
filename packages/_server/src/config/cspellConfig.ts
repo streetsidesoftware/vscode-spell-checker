@@ -594,6 +594,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      *       "cpp",
      *       "csharp",
      *       "css",
+     *       "elixir",
      *       "git-commit",
      *       "go",
      *       "graphql",
