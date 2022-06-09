@@ -625,17 +625,16 @@ export function extractTargetDictionaries(settings: CSpellUserSettings): Diction
     const { dictionaries = [], dictionaryDefinitions = [] } = settings;
     const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
     const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);
-    const regIsTextFile = /\.txt$/;
     const targetDicts = activeDicts
         .filter(isDictionaryDefinitionCustom)
-        .filter((d) => d.addWords || (regIsTextFile.test(d.path) && d.addWords))
+        .filter((d) => d.addWords)
         .filter((d) => !regExIsOwnedByCspell.test(d.path))
         .filter((d) => !regExIsOwnedByExtension.test(d.path));
     return targetDicts;
 }
 
 function isDictionaryDefinitionCustom(d: DictionaryDefinition): d is DictionaryDefinitionCustom {
-    return d.file === undefined && !!d.path && (<DictionaryDefinitionCustom>d).addWords;
+    return d.file === undefined && !!d.path && (<DictionaryDefinitionCustom>d).addWords !== undefined;
 }
 
 function isDefined<T>(t: T | undefined): t is T {
