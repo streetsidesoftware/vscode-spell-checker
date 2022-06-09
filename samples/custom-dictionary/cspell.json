@@ -13,9 +13,6 @@
             "addWords": true
         }
     ],
-    "dictionaries": [
-        "words",
-        "dict"
-    ],
+    "dictionaries": ["words", "dict"],
     "words": []
 }
