@@ -18,6 +18,7 @@ import type {
     ConfigTargetCSpell,
     CSpellUserSettings,
     DictionaryDefinition,
+    DictionaryDefinitionCustom,
     GetConfigurationForDocumentResult,
 } from '../client';
 import { CSpellClient } from '../client';
@@ -237,16 +238,17 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
     return [...dictionariesByName.values()];
 }
 
-function mapDict(e: DictionaryDefinition): DictionaryEntry {
-    const dictUri = Uri.joinPath(Uri.file(e.path || ''), e.file || '');
+function mapDict(def: DictionaryDefinition): DictionaryEntry {
+    const dictUri = Uri.joinPath(Uri.file(def.path || ''), def.file || '');
     const dictUriStr = dictUri.toString();
-    const isCustomDict = regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr);
+    const isCustomDict =
+        (<DictionaryDefinitionCustom>def).addWords || (regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr));
 
     return {
-        name: e.name,
+        name: def.name,
         locales: [],
         languageIds: [],
-        description: e.description,
+        description: def.description,
         uri: isCustomDict ? dictUriStr : undefined,
         uriName: isCustomDict ? normalizeFilenameToFriendlyName(dictUri) : undefined,
     };

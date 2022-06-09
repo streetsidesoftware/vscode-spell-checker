@@ -130,7 +130,7 @@ describe('Validate CSpellSettings functions', () => {
 
     test.each`
         file              | name       | error
-        ${''}             | ${'dict'}  | ${e(sm(/Failed to add words to dictionary "dict".*, unsupported format./))}
+        ${''}             | ${'dict'}  | ${e(sm(/Failed to add words to dictionary "dict", EISDIR/))}
         ${'words.txt.gz'} | ${'words'} | ${e(sm(/"words".*unsupported format:.*words.txt.gz/))}
         ${'cspell.json'}  | ${'json'}  | ${e(sm(/"json".*unsupported format:.*cspell.json/))}
     `('addWordsToCustomDictionary_failures "$name" $file', async ({ file, name, error }) => {

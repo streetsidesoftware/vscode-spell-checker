@@ -628,7 +628,7 @@ export function extractTargetDictionaries(settings: CSpellUserSettings): Diction
     const regIsTextFile = /\.txt$/;
     const targetDicts = activeDicts
         .filter(isDictionaryDefinitionCustom)
-        .filter((d) => regIsTextFile.test(d.path) && d.addWords)
+        .filter((d) => d.addWords || (regIsTextFile.test(d.path) && d.addWords))
         .filter((d) => !regExIsOwnedByCspell.test(d.path))
         .filter((d) => !regExIsOwnedByExtension.test(d.path));
     return targetDicts;

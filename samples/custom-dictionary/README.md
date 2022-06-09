@@ -7,3 +7,7 @@ wordb
 wordc
 wordd
 worde
+
+Here is text from `dict`:
+
+Compaknee.
