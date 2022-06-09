@@ -20,6 +20,9 @@
     "node": ">14.16.0",
     "vscode": "^1.59.1"
   },
+  "sponsor": {
+    "url": "https://opencollective.com/code-spell-checker"
+  },
   "extensionKind": [
     "workspace"
   ],
