@@ -1603,6 +1603,7 @@
             "cpp",
             "csharp",
             "css",
+            "elixir",
             "git-commit",
             "go",
             "graphql",

@@ -10,6 +10,7 @@ export const languageIds: string[] = [
     'dart',
     'diff',
     'dockerfile',
+    'elixir',
     'fsharp',
     'git-commit',
     'git-rebase',
