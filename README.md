@@ -153,6 +153,7 @@ All settings are prefixed with `cSpell:` or `spell-checker:`.
 -   `enable` -- turn the spell checker back on after it has been turned off.
 -   `ignore` -- specify a list of words to be ignored.
 -   `words` -- specify a list of words to be considered correct and will appear in the suggestions list.
+-   `locale` -- set locale (example: `cSpell:locale fr` to use French language)
 -   `ignoreRegExp` -- Any text matching the regular expression will NOT be checked for spelling.
 -   `includeRegExp` -- Only text matching the collection of includeRegExp will be checked.
 -   `enableCompoundWords` / `disableCompoundWords` -- Allow / disallow words like: "stringlength".
