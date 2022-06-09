@@ -1,13 +1,18 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "name": "custom-dictionary",
     "description": "Config with a custom dictionary.",
     "dictionaryDefinitions": [
         {
             "name": "words",
             "path": "./words.txt"
+        },
+        {
+            "name": "dict",
+            "path": "./dict.dic",
+            "addWords": true
         }
     ],
-    "dictionaries": ["words"],
+    "dictionaries": ["words", "dict"],
     "words": []
 }
