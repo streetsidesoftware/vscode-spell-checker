@@ -28,6 +28,7 @@ export const languages: Languages = {
     registerHoverProvider: jest.fn(),
     registerImplementationProvider: jest.fn(),
     registerInlayHintsProvider: jest.fn(),
+    registerInlineCompletionItemProvider: jest.fn(),
     registerInlineValuesProvider: jest.fn(),
     registerLinkedEditingRangeProvider: jest.fn(),
     registerOnTypeFormattingEditProvider: jest.fn(),

@@ -37,7 +37,7 @@
     "iconv-lite": "^0.6.3",
     "jest": "^27.5.1",
     "jest-diff": "^28.1.1",
-    "lorem-ipsum": "^2.0.4",
+    "lorem-ipsum": "^2.0.8",
     "micromatch": "^4.0.5",
     "minimatch": "^5.1.0",
     "node-watch": "^0.7.3",
