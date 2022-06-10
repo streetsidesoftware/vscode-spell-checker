@@ -12,9 +12,10 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: [14.x]
+        node-version: [17.x]
 
     runs-on: ${{ matrix.os }}
     steps:
