@@ -2217,7 +2217,7 @@
     "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.2",
+    "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
