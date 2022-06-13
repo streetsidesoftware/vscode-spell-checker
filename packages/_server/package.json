@@ -50,7 +50,7 @@
     "vscode-languageserver-textdocument": "^1.0.5",
     "vscode-uri": "^3.0.3",
     "webpack": "^5.73.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.1.2",
