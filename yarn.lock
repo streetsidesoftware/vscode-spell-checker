@@ -531,9 +531,9 @@
   integrity sha512-qGqhYfFeoBOashv/l0Kj5o4ilyvfq0s+t+r32juPOkOnbHz+hzxnJo2tMMg/L/UdjVV7Y8ovg4LDBC/seVrMYQ==
 
 "@cspell/dict-rust@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-rust/-/dict-rust-2.0.0.tgz#89acc6c251164b09c424d23abb5ee560a4484ee6"
-  integrity sha512-EWlQivTKXMU3TTcq/Pi6KPKTQADknasQ700UrxRPzxhwQ4sKVZ88GDu6VZJlsbFUz8Vko289KS6wjiox/7WpmQ==
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-rust/-/dict-rust-2.0.1.tgz#2923392a41784e76ee00b9456d581f86a83097fb"
+  integrity sha512-ATDpIh0VWpQdUIZa8zqqJY4wQz3q00BTXlQCodeOmObYSb23+L6KWWzJ8mKLgpbc1lqTkogWrqxiCxlrCmqNmg==
 
 "@cspell/dict-scala@^2.0.0":
   version "2.0.0"
