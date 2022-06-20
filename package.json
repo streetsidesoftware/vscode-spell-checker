@@ -2221,16 +2221,16 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
-    "prettier": "^2.7.0",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "standard-version": "^9.5.0",
-    "typescript": "^4.7.3",
+    "typescript": "^4.7.4",
     "vsce": "^2.9.1"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.1.2",
     "@cspell/cspell-types": "^6.1.2",
-    "@types/react": "^17.0.45",
+    "@types/react": "^17.0.47",
     "cosmiconfig": "^7.0.1",
     "cspell": "^6.1.2",
     "regexp-worker": "^1.1.1"
