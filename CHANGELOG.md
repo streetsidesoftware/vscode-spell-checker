@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.2.5 (2022-06-20)
+
+
+### Bug Fixes
+
+* Update CSpell dictionaries ([#2033](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2033)) ([9cc8a01](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9cc8a01e8b498f593055878b3023eb4bafaab710))
+
 ### 2.2.4 (2022-06-13)
 
 
