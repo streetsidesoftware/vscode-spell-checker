@@ -371,9 +371,9 @@
   integrity sha512-iw78lmxm49q2LhHTQCSu9zs85E8Sm6ui82OvxajU9rdhckFzZoj/KCQi9P0gFuL+w3WmQObHqdH2/sxK4oi2wA==
 
 "@cspell/dict-companies@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-2.0.5.tgz#0365e74a55b43d4493d44ea1071998bab16d6227"
-  integrity sha512-H8+LU+gDUeJ8RcV1kMSIiHa5PE/8tYyA2tg/s6ssHtsgsJ206I+cRFV8yAlu0mUUCXD617+KKXmclZ0eZ7ku4w==
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-2.0.6.tgz#55bd1c0bb48cd10682ea023506503fcba82c3de7"
+  integrity sha512-S1U+ZqvwDwiMYEFPKNxRmH0z7YlmOj93xadga4U0LMa3S4ORSf192uMB0w0AFBwXUPnXHM5uqIGP0LTt0b4Ygg==
 
 "@cspell/dict-cpp@^3.1.0":
   version "3.1.0"
@@ -436,9 +436,9 @@
   integrity sha512-do7/Iwxjx+FHybe6UTocsWNRF1ar4cwhQoV2K2YzYTm73CoU5LMEwi2LY0Mwp/mn90TKbpPPQGCJ0sRpvaZ4AA==
 
 "@cspell/dict-fonts@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-fonts/-/dict-fonts-2.0.0.tgz#76e7781b44cdda6933144e15cba80e978c29bd15"
-  integrity sha512-AgkTalphfDPtKFPYmEExDcj8rRCh86xlOSXco8tehOEkYVYbksOk9XH0YVH34RFpy93YBd2nnVGLgyGVwagcPw==
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-fonts/-/dict-fonts-2.0.1.tgz#16a99591fef8ba616d09db8973494e9d9ecdd3c9"
+  integrity sha512-UX9evXp7IPZ55G1NxVLADoRgGa+6MPSFx4zWveT6vHIVI9k50yZZY2QkIgQIOEPgk8RNrNe1Tf6HLfndgFL2kQ==
 
 "@cspell/dict-fullstack@^2.0.6":
   version "2.0.6"
@@ -2680,9 +2680,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001349:
-  version "1.0.30001356"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001356.tgz#cbf5fe7b33f90962bfbca532212ea478d4ec9de8"
-  integrity sha512-/30854bktMLhxtjieIxsrJBfs2gTM1pel6MXKF3K+RdIVJZcsn2A2QdhsuR4/p9+R204fZw0zCBBhktX8xWuyQ==
+  version "1.0.30001357"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001357.tgz#dec7fc4158ef6ad24690d0eec7b91f32b8cb1b5d"
+  integrity sha512-b+KbWHdHePp+ZpNj+RDHFChZmuN+J5EvuQUlee9jOQIUAdhv9uvAZeEtUeLAknXbkiu1uxjQ9NLp1ie894CuWg==
 
 chai@^4.3.6:
   version "4.3.6"
