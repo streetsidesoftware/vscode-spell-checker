@@ -1266,7 +1266,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.47":
   version "17.0.47"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.47.tgz#4ee71aaf4c5a9e290e03aa4d0d313c5d666b3b78"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.47.tgz#4ee71aaf4c5a9e290e03aa4d0d313c5d666b3b78"
   integrity sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==
   dependencies:
     "@types/prop-types" "*"
@@ -8078,10 +8078,10 @@ ts-json-schema-generator@^1.0.1-next.1:
     safe-stable-stringify "^2.3.1"
     typescript "~4.6.2"
 
-ts-loader@^9.3.0:
-  version "9.3.0"
-  resolved "https://registry.npmjs.org/ts-loader/-/ts-loader-9.3.0.tgz#980f4dbfb60e517179e15e10ed98e454b132159f"
-  integrity sha512-2kLLAdAD+FCKijvGKi9sS0OzoqxLCF3CxHpok7rVgCZ5UldRzH0TkbwG9XECKjBzHsAewntC5oDaI/FwKzEUog==
+ts-loader@^9.3.1:
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-9.3.1.tgz#fe25cca56e3e71c1087fe48dc67f4df8c59b22d4"
+  integrity sha512-OkyShkcZTsTwyS3Kt7a4rsT/t2qvEVQuKCTg4LJmpj9fhFR7ukGdZwV6Qq3tRUkqcXtfGpPR7+hFKHCG/0d3Lw==
   dependencies:
     chalk "^4.1.0"
     enhanced-resolve "^5.0.0"
