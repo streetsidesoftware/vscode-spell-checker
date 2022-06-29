@@ -16,7 +16,7 @@
   "devDependencies": {
     "@types/jest": "^27.5.2",
     "@types/jest-when": "^3.5.1",
-    "@types/vscode": "^1.68.0",
+    "@types/vscode": "^1.68.1",
     "jest-mock-vscode": "^0.1.2",
     "jest-when": "^3.5.1",
     "ts-jest": "^27.1.5",

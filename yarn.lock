@@ -1271,7 +1271,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.47":
   version "17.0.47"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.47.tgz#4ee71aaf4c5a9e290e03aa4d0d313c5d666b3b78"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.47.tgz#4ee71aaf4c5a9e290e03aa4d0d313c5d666b3b78"
   integrity sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==
   dependencies:
     "@types/prop-types" "*"
@@ -1327,10 +1327,10 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/vscode@^1.68.0":
-  version "1.68.0"
-  resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.68.0.tgz#c0864e4ea43c509bfc6b53f4e91aa923fd0475b8"
-  integrity sha512-duBwEK5ta/eBBMJMQ7ECMEsMvlE3XJdRGh3xoS1uOO4jl2Z4LPBl5vx8WvBP10ERAgDRmIt/FaSD4RHyBGbChw==
+"@types/vscode@^1.68.1":
+  version "1.68.1"
+  resolved "https://registry.yarnpkg.com/@types/vscode/-/vscode-1.68.1.tgz#a9e5b33f825f715cae80593cb6d5d6d4cabbe998"
+  integrity sha512-fXlaq13NT5yHh6yZ3c+UxXloTSk34mIvsNFYyQCeO5Po2BLFAwz7EZT4kQ43B64/aPcnAenyWy3QasrTofBOnQ==
 
 "@types/ws@^8.5.1":
   version "8.5.3"
