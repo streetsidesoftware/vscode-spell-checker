@@ -1,3 +1,4 @@
+import assert from 'assert';
 import type * as vscode from 'vscode';
 import { ConfigurationTarget } from './extHostTypes';
 
@@ -209,7 +210,8 @@ function setKeyValue(data: Record<string, any>, section: string, value: any): an
     function r(data: Record<string, any>, path: string[]): any {
         if (!path.length) return value;
         const head = path[0];
-        data[head] = r(data[head] || {}, path.slice(1));
+        assert(head !== '__proto__');
+        data[head] = r(data[head] || Object.create(null), path.slice(1));
         return data;
     }
 
