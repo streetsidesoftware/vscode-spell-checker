@@ -1,0 +1,16 @@
+{
+    "dictionaryDefinitions": [
+        {
+            "name": "cities-remote",
+            "path": "https://github.com/streetsidesoftware/cspell/raw/main/packages/cspell-io/samples/cities.txt.gz",
+            "type": "W"
+        }
+    ],
+    "dictionaries": ["cities-remote"],
+    "overrides": [
+        {
+            "filename": "**/test.txt",
+            "language": "unknown"
+        }
+    ]
+}
