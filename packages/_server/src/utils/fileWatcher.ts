@@ -1,6 +1,7 @@
 import { logError } from 'common-utils/log.js';
+import { toFileUri } from 'common-utils/uriHelper.js';
 import { FSWatcher } from 'fs';
-import watch from 'node-watch';
+import nodeWatch from 'node-watch';
 import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node';
 
@@ -9,8 +10,10 @@ export type EventType = KnownEvents | string;
 
 export type Listener = (eventType?: EventType, filename?: string) => void;
 
+type Watcher = Pick<FSWatcher, 'close'>;
+
 export class FileWatcher implements Disposable {
-    private watchedFile = new Map<string, FSWatcher>();
+    private watchedFile = new Map<string, Watcher>();
     private listeners = new Set<Listener>();
 
     /**
@@ -51,7 +54,7 @@ export class FileWatcher implements Disposable {
     addFile(filename: string): boolean {
         if (!this.watchedFile.has(filename)) {
             try {
-                this.watchedFile.set(filename, watch(filename, { persistent: false }, this.trigger));
+                this.watchedFile.set(filename, watch(filename, this.trigger));
             } catch (e) {
                 logError(format(e));
                 return false;
@@ -91,4 +94,17 @@ export class FileWatcher implements Disposable {
             listener(eventType, filename);
         }
     }
+}
+
+function watch(filename: string, callback: (eventType?: EventType, filename?: string) => void): Watcher {
+    const uri = toFileUri(filename);
+    if (uri.scheme === 'file') {
+        return nodeWatch(filename, { persistent: false }, callback);
+    }
+
+    return {
+        close() {
+            callback('close', filename);
+        },
+    };
 }
