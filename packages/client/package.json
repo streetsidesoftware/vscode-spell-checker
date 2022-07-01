@@ -28,10 +28,10 @@
     "test-watch": "jest --watch"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^6.1.2",
+    "@cspell/cspell-types": "^6.2.2",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.5.2",
-    "@types/jest-when": "^3.5.1",
+    "@types/jest-when": "^3.5.2",
     "@types/kefir": "^3.8.7",
     "@types/node": "^18.0.0",
     "@types/source-map-support": "^0.5.4",
@@ -39,7 +39,7 @@
     "comment-json": "^4.2.2",
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
-    "cspell-lib": "^6.1.2",
+    "cspell-lib": "^6.2.2",
     "fs-extra": "^10.1.0",
     "jest": "^27.5.1",
     "jest-mock-vscode": "0.1.2",
