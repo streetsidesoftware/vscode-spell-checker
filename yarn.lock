@@ -3228,10 +3228,10 @@ cspell-gitignore@^6.1.2:
     cspell-glob "^6.1.2"
     find-up "^5.0.0"
 
-cspell-glob@^6.1.2:
-  version "6.1.2"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.1.2.tgz#1081bce9a480f6de61dec7058a6faa31dbff248e"
-  integrity sha512-+EN4DEyK8ohwZLShPw9vhU6114fnGYi8q4IQAGc5qCCcnMTgb1H3N840YyG+EuP0Q1o3TwMYMA+B+tw4w+yQSg==
+cspell-glob@^6.1.2, cspell-glob@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-6.2.0.tgz#39c11ff3f0ae33c1e5bb8012dd7867fd4e0409c1"
+  integrity sha512-w1DRgsa5VBacMPeAD42eahqcs1s14ZRHVgAaJIXL6/KfzqVsnrSzTDBxmjcwCskkObZvdgy3WDitohNOUnAWMw==
   dependencies:
     micromatch "^4.0.5"
 
