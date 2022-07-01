@@ -99,7 +99,7 @@ export class FileWatcher implements Disposable {
 function watch(filename: string, callback: (eventType?: EventType, filename?: string) => void): Watcher {
     const uri = toFileUri(filename);
     if (uri.scheme === 'file') {
-        return nodeWatch(uri.fsPath, { persistent: false }, callback);
+        return nodeWatch(filename, { persistent: false }, callback);
     }
 
     return {
