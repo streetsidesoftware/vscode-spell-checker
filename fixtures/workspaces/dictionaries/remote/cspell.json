@@ -2,7 +2,7 @@
     "dictionaryDefinitions": [
         {
             "name": "cities-remote",
-            "path": "https://github.com/streetsidesoftware/cspell/raw/main/packages/cspell-io/samples/cities.txt.gz",
+            "path": "https://github.com/streetsidesoftware/cspell/raw/main/packages/cspell-io/samples/cities.txt",
             "type": "W"
         }
     ],
