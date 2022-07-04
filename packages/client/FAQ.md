@@ -20,7 +20,7 @@ See: [FAQ Issues](https://github.com/streetsidesoftware/vscode-spell-checker/iss
 
 ### _Can I use the spell checker with other languages like Spanish or French?_
 
-> Yes, please visit [cspell-dicts](https://github.com/Jason3S/cspell-dicts).
+> Yes, please visit [cspell-dicts](https://github.com/streetsidesoftware/cspell-dicts).
 > See also: [#119](https://github.com/streetsidesoftware/vscode-spell-checker/issues/119)
 
 ### _Is it possible to only spell check comments_
