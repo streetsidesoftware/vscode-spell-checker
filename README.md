@@ -370,7 +370,7 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
 
 ```javascript
     //-------- Code Spell Checker Configuration --------
-    // The Language local to use when spell checking. "en", "en-US" and "en-GB" are currently supported by default.
+    // The Language locale to use when spell checking. "en", "en-US" and "en-GB" are currently supported by default.
     "cSpell.language": "en",
 
     // Controls the maximum number of spelling errors per document.
@@ -465,14 +465,14 @@ The spell checker includes a set of default dictionaries.
 Based upon the programming language, different dictionaries will be loaded.
 
 Here are the default rules: "\*" matches any language.
-`"local"` is used to filter based upon the `"cSpell.language"` setting.
+`"locale"` is used to filter based upon the `"cSpell.language"` setting.
 
 ```javascript
 {
 "cSpell.languageSettings": [
-    { "languageId": '*',      "local": 'en',               "dictionaries": ['wordsEn'] },
-    { "languageId": '*',      "local": 'en-US',            "dictionaries": ['wordsEn'] },
-    { "languageId": '*',      "local": 'en-GB',            "dictionaries": ['wordsEnGb'] },
+    { "languageId": '*',      "locale": 'en',              "dictionaries": ['wordsEn'] },
+    { "languageId": '*',      "locale": 'en-US',           "dictionaries": ['wordsEn'] },
+    { "languageId": '*',      "locale": 'en-GB',           "dictionaries": ['wordsEnGb'] },
     { "languageId": '*',                                   "dictionaries": ['companies', 'softwareTerms', 'misc'] },
     { "languageId": "python", "allowCompoundWords": true,  "dictionaries": ["python"]},
     { "languageId": "go",     "allowCompoundWords": true,  "dictionaries": ["go"] },
