@@ -50,6 +50,8 @@ export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponse
     uri: Uri;
 }
 
+const cacheTimeout = 2000;
+
 interface TextDocumentInfo {
     uri?: Uri;
     languageId?: string;
@@ -162,6 +164,7 @@ export class CSpellClient implements Disposable {
             if (found) return found;
             const result = this._getConfigurationForDocument(document);
             this.cacheGetConfigurationForDocument.set(key, result);
+            setTimeout(() => this.cacheGetConfigurationForDocument.delete(key), cacheTimeout);
             return result;
         };
     }
