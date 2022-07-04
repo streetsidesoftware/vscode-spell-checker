@@ -192,6 +192,10 @@ function normalizeFilenameToFriendlyName(filename: string | Uri): string {
     return vscode.workspace.asRelativePath(filename, true);
 }
 
+function normalizeUriToFriendlyName(uri: Uri): string {
+    return uri.scheme === 'file' ? vscode.workspace.asRelativePath(uri, true) : uri.toString();
+}
+
 interface ExtractConfigFilesRequest {
     configFiles: string[];
     configTargets: ConfigTarget[];
@@ -239,7 +243,7 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
 }
 
 function mapDict(def: DictionaryDefinition): DictionaryEntry {
-    const dictUri = Uri.joinPath(Uri.file(def.path || ''), def.file || '');
+    const dictUri = Uri.joinPath(toUri(def.path || ''), def.file || '');
     const dictUriStr = dictUri.toString();
     const isCustomDict =
         (<DictionaryDefinitionCustom>def).addWords || (regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr));
@@ -250,7 +254,7 @@ function mapDict(def: DictionaryDefinition): DictionaryEntry {
         languageIds: [],
         description: def.description,
         uri: isCustomDict ? dictUriStr : undefined,
-        uriName: isCustomDict ? normalizeFilenameToFriendlyName(dictUri) : undefined,
+        uriName: isCustomDict ? normalizeUriToFriendlyName(dictUri) : undefined,
     };
 }
 

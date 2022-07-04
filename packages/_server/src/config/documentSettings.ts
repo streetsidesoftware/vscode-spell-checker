@@ -11,7 +11,7 @@ import type {
 import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
 import { setIfDefined } from 'common-utils/index.js';
 import { log } from 'common-utils/log.js';
-import { toUri } from 'common-utils/uriHelper.js';
+import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
 import { GlobMatcher, GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
@@ -80,7 +80,7 @@ const defaultExclude: Glob[] = [
 const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
 const schemeBlockList = ['git', 'output', 'debug', 'vscode'];
 
-const defaultRootUri = Uri.file('').toString();
+const defaultRootUri = toFileUri(process.cwd()).toString();
 
 const _defaultSettings: CSpellUserSettings = Object.freeze({});
 
@@ -594,7 +594,7 @@ function isCSpellSettingsWithFileSource(s: CSpellUserSettings | CSpellSettingsWi
  */
 function extractCSpellConfigurationFiles(settings: CSpellUserSettings): Uri[] {
     const configs = extractCSpellFileConfigurations(settings);
-    return configs.map(({ source }) => Uri.file(source.filename));
+    return configs.map(({ source }) => toFileUri(source.filename));
 }
 
 const regExIsOwnedByCspell = /@cspell\b/;
