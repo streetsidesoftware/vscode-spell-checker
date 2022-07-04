@@ -19,15 +19,14 @@ export function isSupportedDoc(doc?: TextDocumentLike): boolean {
 const regExpIsUri = /^[\w.-]{2,}:/;
 
 export function toUri(uri: string | Uri): Uri;
+export function toUri(uri: undefined | null): undefined;
 export function toUri(uri: string | Uri | undefined | null): Uri | undefined;
 export function toUri(uri: string | Uri | undefined | null): Uri | undefined {
-    if (typeof uri === 'string') {
-        return Uri.parse(uri);
-    }
-    return uri || undefined;
+    return toFileUri(uri || undefined);
 }
 
 export function toFileUri(uri: string | Uri): Uri;
+export function toFileUri(uri: undefined): undefined;
 export function toFileUri(uri: string | Uri | undefined): Uri | undefined;
 export function toFileUri(uri: string | Uri | undefined): Uri | undefined {
     if (typeof uri === 'string') {

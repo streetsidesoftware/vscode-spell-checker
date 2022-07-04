@@ -1,9 +1,9 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
+import { toUri } from 'common-utils/uriHelper.js';
+import { capitalize } from 'common-utils/util.js';
 import { genSequence } from 'gensequence';
 import * as Path from 'path';
-import { URI as Uri } from 'vscode-uri';
 import { WorkspaceConfigForDocument } from '../api';
-import { capitalize } from 'common-utils/util.js';
 import {
     ConfigKinds,
     ConfigScope,
@@ -64,7 +64,7 @@ function cspellToTargets(sources: CSpellSettingsWithFileSource[]): ConfigTargetC
             kind: ConfigKinds.Cspell,
             scope: ConfigScopes.Unknown,
             name: cfg.name || Path.basename(cfg.source.filename),
-            configUri: Uri.file(cfg.source.filename).toString(),
+            configUri: toUri(cfg.source.filename).toString(),
             has: {
                 words: cfg.words && true,
                 ignoreWords: cfg.ignoreWords && true,
@@ -81,7 +81,7 @@ function dictionariesToTargets(dicts: DictionaryDefinitionCustom[]): ConfigTarge
         const base: ConfigTargetDictionary = {
             kind: 'dictionary',
             name: d.name,
-            dictionaryUri: Uri.file(d.path).toString(),
+            dictionaryUri: toUri(d.path).toString(),
             scope: ConfigScopes.Unknown,
         };
         if (scopeMask & scopeMaskMap.user) yield { ...base, scope: ConfigScopes.User };

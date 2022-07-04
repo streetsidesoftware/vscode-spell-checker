@@ -36,7 +36,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
 
     function updateStatusBarWithSpellCheckStatus(document?: vscode.TextDocument, showClock?: boolean): void {
         if (debounceStatusBar) {
-            debounceStatusBar.stale = !debounceStatusBar.pending || debounceStatusBar.document !== document;
+            debounceStatusBar.stale = debounceStatusBar.stale || !debounceStatusBar.pending || debounceStatusBar.document !== document;
             debounceStatusBar.document = document;
             debounceStatusBar.showClock = showClock;
             return;
@@ -57,17 +57,25 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         };
 
         entry.value.finally(() => {
-            entry.pending = false;
-            setTimeout(cleanup, 1000);
+            cleanEntry(entry, true);
         });
 
-        function cleanup() {
+        function cleanEntry(entry: DebounceStatusBar, wait = false) {
+            entry.pending = false;
             if (debounceStatusBar !== entry) return;
-            debounceStatusBar = undefined;
             if (entry.stale) {
+                debounceStatusBar = undefined;
                 updateStatusBarWithSpellCheckStatus(entry.document, entry.showClock);
+                return;
+            }
+
+            if (wait) {
+                setTimeout(() => cleanEntry(entry), 1000);
+            } else {
+                debounceStatusBar = undefined;
             }
         }
+
         debounceStatusBar = entry;
     }
 
@@ -83,7 +91,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         lastUri = uri.toString();
         const response = await client.isSpellCheckEnabled(document);
         const docUri = window.activeTextEditor?.document?.uri;
-        if (docUri === response.uri || !docUri || docUri.scheme !== 'file') {
+        if (docUri?.toString() === response.uri.toString() || !docUri || docUri.scheme !== 'file') {
             const diags = getCSpellDiags(docUri);
             const { languageEnabled = true, fileEnabled = true } = response;
             const isChecked = languageEnabled && fileEnabled;
