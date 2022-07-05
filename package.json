@@ -1254,7 +1254,7 @@
                   "markdownDescription": "Define a custom dictionary to be included.",
                   "properties": {
                     "addWords": {
-                      "default": false,
+                      "default": true,
                       "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
                       "title": "Add Words to Dictionary",
                       "type": "boolean"
@@ -1271,7 +1271,7 @@
                     },
                     "path": {
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
-                      "title": "Optional Path to Dictionary Text File",
+                      "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
@@ -1751,7 +1751,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "addWords": {
-                      "default": false,
+                      "default": true,
                       "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
                       "title": "Add Words to Dictionary",
                       "type": "boolean"
@@ -1771,7 +1771,7 @@
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
-                      "title": "Optional Path to Dictionary Text File",
+                      "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
@@ -1828,7 +1828,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "addWords": {
-                      "default": false,
+                      "default": true,
                       "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
                       "title": "Add Words to Dictionary",
                       "type": "boolean"
@@ -1848,7 +1848,7 @@
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
-                      "title": "Optional Path to Dictionary Text File",
+                      "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
@@ -1905,7 +1905,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "addWords": {
-                      "default": false,
+                      "default": true,
                       "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
                       "title": "Add Words to Dictionary",
                       "type": "boolean"
@@ -1925,7 +1925,7 @@
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
-                      "title": "Optional Path to Dictionary Text File",
+                      "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
