@@ -426,9 +426,9 @@
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
 "@cspell/dict-en_us@^2.2.8":
-  version "2.2.8"
-  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.2.8.tgz#44b1f0003e668197e17abf43749c8bd2c5d75802"
-  integrity sha512-qJS3yXuuui8/SQ/PHn2fyi54duL/Cn0vTsxRcVdYz2+MS8ayjIAauxgRkU4M2BrhJTasacN08j8CP9/udm+kLA==
+  version "2.2.9"
+  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.2.9.tgz#6acb90534a53349561159f986b8d80680fdee6da"
+  integrity sha512-hzI+Pr2LwhvnqVk0ZOIHx/+2EkgVmpDCLMSdCevCvBuiw35uW/++KJV/2DrglQxgE+QmwZYAebQzmaWToscz+Q==
 
 "@cspell/dict-filetypes@^2.0.2":
   version "2.0.2"
@@ -456,9 +456,9 @@
   integrity sha512-0KNfXTbxHW2l8iVjxeOf+KFv9Qrw3z5cyKnkuYJWlBTSB5KcUBfeKCb4fsds26VdANqiy6U91b4gDx5kNEmBjQ==
 
 "@cspell/dict-haskell@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-haskell/-/dict-haskell-2.0.0.tgz#9e7e58eba2b4633221650dcdcc43f73588b48119"
-  integrity sha512-cjX1Br+gSWqtcmJD/IMHz1UoP3pUaKIIKy/JfhEs7ANtRt6hhfEKe9dl2kQzDkkKt4pXol+YgdYxL/sVc/nLgQ==
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-haskell/-/dict-haskell-2.0.1.tgz#941aa5eed0eb5e327e1a2b04dcad4f0e60f663c0"
+  integrity sha512-ooA23qIG7InOOxlLm67CNH5O2J85QsPHEAzEU9KEqVfYG5ovFs5tx6n9pHekDVk3MpQULpqfNUYDR0KigPLg5g==
 
 "@cspell/dict-html-symbol-entities@^3.0.0":
   version "3.0.0"
@@ -471,14 +471,14 @@
   integrity sha512-ugMVQHZTvpYA/w8/E2dbSx2hdfFU9y91Omx40VUC6cNyF7jx00VKueK6gcRF3QZoB1PUhjla2YzxqRxuXI908A==
 
 "@cspell/dict-java@^3.0.5":
-  version "3.0.5"
-  resolved "https://registry.npmjs.org/@cspell/dict-java/-/dict-java-3.0.5.tgz#f15c30ce34884cd76eeffed626237c0bbea012cb"
-  integrity sha512-8ztQSshk5EmPuHWvjolHp8KVKNWHnHZ5Pxo+bTcWuluDnUscRkEPALmjcom7i702LvXPo5ojvJsHyf8lHJI40g==
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/@cspell/dict-java/-/dict-java-3.0.6.tgz#ad14240a086c0ec6c0b77b42455e772e184ec16f"
+  integrity sha512-iLazWIQSovjknaHaiQFx/Q7ivXWalsKG9CN5TZokfCb9A/y3sfpdHlu4OyCAO7NJWhI4O/ChWPT1QGHeEDYPzQ==
 
 "@cspell/dict-latex@^2.0.7":
-  version "2.0.7"
-  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.7.tgz#2305efa2c2c808f954acb4e9700c7c8466526d17"
-  integrity sha512-cSLN6Q/fs4F7a9bUvr5Ipe8f6sDrigjKWyvsbtp1lIcGMeNjmcop7V9bMChO+oZOvuYaA5e1BYl67NNh98z/LA==
+  version "2.0.8"
+  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.8.tgz#c666b51a7fd2205665b388f2860d60e742b8a264"
+  integrity sha512-GApXddAh2J52nyvSwFpwPymN5zjzRhjO2iukeANs9u6y3xiQ0Kob+Btv9Z8ChmicP9QSXaHgG3g5T2KFpZjqbQ==
 
 "@cspell/dict-lorem-ipsum@^2.0.0":
   version "2.0.0"
@@ -541,9 +541,9 @@
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
 "@cspell/dict-software-terms@^2.1.9":
-  version "2.1.9"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.9.tgz#742eff186a8ff11b3505ca164b1cd9740d904361"
-  integrity sha512-OoAY2i8G3u0fdH3keoB71Ljd5SCH/zmESESs4cBZeq8XascAxtntaB103qt0tuwkjxLfMC7+2FTuirJszVUyRw==
+  version "2.1.10"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.10.tgz#de290a0d153299baece5401f7faa81a7443d39d2"
+  integrity sha512-L/4XuWQj0EAzWiuq16+9Mk5bTD2FtLCT+VY1gMgrzWtrwdMNTuunyGDzOC6iN5/yxrMSm7BeOKmaVpBhx4Et9g==
 
 "@cspell/dict-swift@^1.0.3":
   version "1.0.3"
@@ -2692,9 +2692,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001359:
-  version "1.0.30001362"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001362.tgz#4a2a7136ca98313bee9b42f4f9a25bc2802e579d"
-  integrity sha512-PFykHuC7BQTzCGQFaV6wD8IDRM3HpI83BXr99nNJhoOyDufgSuKlt0QVlWYt5ZJtEYFeuNVF5QY3kJcu8hVFjQ==
+  version "1.0.30001363"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001363.tgz#26bec2d606924ba318235944e1193304ea7c4f15"
+  integrity sha512-HpQhpzTGGPVMnCjIomjt+jvyUu8vNFo3TaDiZ/RcoTrlOq/5+tC8zHdsbgFB6MxmaY+jCpsH09aD80Bb4Ow3Sg==
 
 chai@^4.3.6:
   version "4.3.6"
@@ -3695,9 +3695,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.4.172:
-  version "1.4.177"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.177.tgz#b6a4436eb788ca732556cd69f384b8a3c82118c5"
-  integrity sha512-FYPir3NSBEGexSZUEeht81oVhHfLFl6mhUKSkjHN/iB/TwEIt/WHQrqVGfTLN5gQxwJCQkIJBe05eOXjI7omgg==
+  version "1.4.179"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.179.tgz#450561ade3ca3497dfed65af412c672972b2dad5"
+  integrity sha512-1XeTb/U/8Xgh2YgPOqhakLYsvCcU4U7jUjTMbEnhIJoIWd/Qt3yC8y0cbG+fHzn4zUNF99Ey1xiPf20bwgLO3Q==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -4517,9 +4517,9 @@ globals@^11.1.0:
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
 globals@^13.6.0, globals@^13.9.0:
-  version "13.15.0"
-  resolved "https://registry.npmjs.org/globals/-/globals-13.15.0.tgz#38113218c907d2f7e98658af246cef8b77e90bac"
-  integrity sha512-bpzcOlgDhMG070Av0Vy5Owklpv1I6+j96GhUI7Rh7IzDCKLzboflLrrfqMu8NquDbiR4EOQk7XzJwqVJxicxog==
+  version "13.16.0"
+  resolved "https://registry.npmjs.org/globals/-/globals-13.16.0.tgz#9be4aca28f311aaeb974ea54978ebbb5e35ce46a"
+  integrity sha512-A1lrQfpNF+McdPOnnFqY3kSN0AFTy485bTi1bkLk4mVPODIUEcSfhHgRqA+QdXPksrSTTztYXx37NFV+GpGk3Q==
   dependencies:
     type-fest "^0.20.2"
 
@@ -6930,9 +6930,9 @@ proxy-addr@~2.0.7:
     ipaddr.js "1.9.1"
 
 psl@^1.1.33:
-  version "1.8.0"
-  resolved "https://registry.npmjs.org/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
-  integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/psl/-/psl-1.9.0.tgz#d0df2a137f00794565fcaf3b2c00cd09f8d5a5a7"
+  integrity sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==
 
 pump@^3.0.0:
   version "3.0.0"
@@ -8242,9 +8242,9 @@ uc.micro@^1.0.1, uc.micro@^1.0.5:
   integrity sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==
 
 uglify-js@^3.1.4:
-  version "3.16.1"
-  resolved "https://registry.npmjs.org/uglify-js/-/uglify-js-3.16.1.tgz#0e7ec928b3d0b1e1d952bce634c384fd56377317"
-  integrity sha512-X5BGTIDH8U6IQ1TIRP62YC36k+ULAa1d59BxlWvPUJ1NkW5L3FwcGfEzuVvGmhJFBu0YJ5Ge25tmRISqCmLiRQ==
+  version "3.16.2"
+  resolved "https://registry.npmjs.org/uglify-js/-/uglify-js-3.16.2.tgz#0481e1dbeed343ad1c2ddf3c6d42e89b7a6d4def"
+  integrity sha512-AaQNokTNgExWrkEYA24BTNMSjyqEXPSfhqoS0AxmHkCJ4U+Dyy5AvbGV/sqxuxficEfGGoX3zWw9R7QpLFfEsg==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
