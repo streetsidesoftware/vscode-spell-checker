@@ -109,11 +109,11 @@ To _Enable_ or _Disable_ spell checking for a file type:
 
 1. Click on the Spell Checker status in the status bar:
 
- <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/StatusBarJsonDisabled.png" alt="Spell Checker Status Bar" width=200>
+ <img width="57" alt="Spell Checker Status Bar" src="https://user-images.githubusercontent.com/3740137/177296936-54d5a88c-a596-4178-bd91-0be06161e1fc.png">
 
-2. On the Info screen, click the **_Enable_** link.
+2. On the Info screen, click the checkbox.
 
- <img src="https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/CSpellInfoJsonDisabled.png" alt="Spell Checker Information Window" width=500>
+ <img width="710" alt="Spell Checker Information Window" src="https://user-images.githubusercontent.com/3740137/177297717-88da81d8-9a8c-4907-9424-66e013899318.png">
 
 ## How it works with camelCase
 
@@ -491,6 +491,101 @@ Here are the default rules: "\*" matches any language.
 
 ### How to add your own Dictionaries
 
+#### `cSpell.customDictionaries`
+
+````ts
+interface Settings {
+    'cSpell.customDictionaries': {
+        [name: string]: CustomDictionary;
+    };
+}
+
+interface CustomDictionary {
+    /**
+     * @title Name of Dictionary
+     * @markdownDescription
+     * The reference name of the dictionary.
+     *
+     *
+     * Example: `My Words` or `custom`
+     *
+     *
+     * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+     * If you use: `typescript` it will replace the built-in TypeScript dictionary.
+     */
+    name?: DictionaryId;
+
+    /**
+     * @title Description of the Dictionary
+     * @markdownDescription
+     * Optional: A human readable description.
+     */
+    description?: string;
+
+    /**
+     * @title Path to Dictionary Text File
+     * @markdownDescription
+     * Define the path to the dictionary text file.
+     *
+     *
+     * **Note:** if path is `undefined` the `name`d dictionary is expected to be found
+     * in the `dictionaryDefinitions`.
+     *
+     *
+     * File Format: Each line in the file is considered a dictionary entry.
+     * Case is preserved while leading and trailing space is removed.
+     * The path should be absolute, or relative to the workspace.
+     *
+     * **Example:** relative to User's folder
+     *
+     * ```
+     * ~/dictionaries/custom_dictionary.txt
+     * ```
+     *
+     * **Example:** relative to the `client` folder in a multi-root workspace
+     *
+     * ```
+     * ${workspaceFolder:client}/build/custom_dictionary.txt
+     * ```
+     *
+     * **Example:** relative to the current workspace folder in a single-root workspace
+     *
+     * **Note:** this might no as expected in a multi-root workspace since it is based upon the relative
+     * workspace for the currently open file.
+     *
+     * ```
+     * ${workspaceFolder}/build/custom_dictionary.txt
+     * ```
+     *
+     * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
+     * a multi-root workspace
+     *
+     * ```
+     * ./build/custom_dictionary.txt
+     * ```
+     */
+    path?: FsPath;
+
+    /**
+     * @title Add Words to Dictionary
+     * @markdownDescription
+     * Indicate if this custom dictionary should be used to store added words.
+     * @default true
+     */
+    addWords?: boolean;
+
+    /**
+     * @title Scope of dictionary
+     * @markdownDescription
+     * Options are
+     * - `user` - words that apply to all projects and workspaces
+     * - `workspace` - words that apply to the entire workspace
+     * - `folder` - words that apply to only a workspace folder
+     */
+    scope?: CustomDictionaryScope | CustomDictionaryScope[];
+}
+````
+
 #### Global Dictionary
 
 To add a global dictionary, you will need change your user settings.
@@ -501,31 +596,29 @@ In your user settings, you will need to tell the spell checker where to find you
 
 Example adding medical terms, so words like _acanthopterygious_ can be found.
 
-```javascript
-// A List of Dictionary Definitions.
-"cSpell.dictionaryDefinitions": [
-    { "name": "medicalTerms", "path": "/Users/guest/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt"},
-    // To specify a path relative to the workspace folder use ${workspaceFolder} or ${workspaceFolder:Name}
-    { "name": "companyTerms", "path": "${workspaceFolder}/../company/terms.txt"}
-],
-// List of dictionaries to use when checking files.
-"cSpell.dictionaries": [
-    "medicalTerms",
-    "companyTerms"
-]
+**VS Code Settings**
+
+```js
+"cSpell.customDictionaries": {
+  "myWords": {
+    "name": "myWords",
+    "path": "~/my-words.txt",
+    "scope": "user",
+    "addWords": true
+  }
+}
 ```
 
-**Explained:** In this example, we have told the spell checker where to find the word list file.
-Since it is in the user settings, we have to use absolute paths.
+**Explained:** In this example, we have told the spell checker where to find our personal dictionary called `myWords`.
 
-Once the dictionary is defined. We need to tell the spell checker when to use it.
-Adding it to `cSpell.dictionaries` advises the spell checker to always include the medical terms when spell checking.
+-   `name` - this is the name of the dictionary, all references to this dictionary is done by the name.
+-   `path` - this the path to the dictionary file. Since it is in the user settings, we have to use absolute paths or paths relative to the user directory by using `~/`.
+-   `scope` - (Optional) this is used to "scope" a dictionary to `user`, `workspace`, or `folder`. Scope is used to help communicate the intended use of the dictionary.
+-   `addWords` - (Optional) default - `true` - is used to show / hide the dictionary as a possible target for adding words.
 
-**Note:** Adding large dictionary files to be always used will slow down the generation of suggestions.
+#### Project / Workspace Dictionary using `cspell.json`
 
-#### Project / Workspace Dictionary
-
-To add a dictionary at the project level, it needs to be in the `cspell.json` file.
+To add a dictionary at the project level should be defined in a `cspell.json` file so it can be used with the `cspell` command line tool.
 This file can be either at the project root or in the .vscode directory.
 
 Example adding medical terms, where the terms are checked into the project and we only want to use it for .md files.
@@ -552,9 +645,67 @@ The paths are relative to the location of the _cSpell.json_ file. This allows fo
 The _cities_ dictionary is used for every file type, because it was added to the list to _dictionaries_.
 The _medicalTerms_ dictionary is only used when editing _markdown_ or _plaintext_ files.
 
+**DictionaryDefinition**
+
+```ts
+interface DictionaryDefinition {
+    /**
+     * This is the name of a dictionary.
+     *
+     * Name Format:
+     * - Must contain at least 1 number or letter.
+     * - Spaces are allowed.
+     * - Leading and trailing space will be removed.
+     * - Names ARE case-sensitive.
+     * - Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.
+     */
+    name: DictionaryId;
+    /** Optional description. */
+    description?: string;
+    /** Path to custom dictionary text file. */
+    path: CustomDictionaryPath;
+    /**
+     * Defines the scope for when words will be added to the dictionary.
+     * Scope values: `user`, `workspace`, `folder`.
+     */
+    scope?: CustomDictionaryScope | CustomDictionaryScope[];
+    /**
+     * When `true`, let's the spell checker know that words can be added to this dictionary.
+     */
+    addWords: boolean;
+}
+```
+
+#### Project / Workspace Dictionary using VS Code Settings
+
+**VS Code Settings**
+
+```js
+"cSpell.customDictionaries": {
+  "project-words": {
+    "name": "project-words",
+    "path": "${workspaceRoot}/project-words.txt",
+    "description": "Words used in this project",
+    "addWords": true
+  },
+  "medicalTerms": {
+    "name": "medicalTerms",
+    "path": "/Users/guest/projects/cSpell-WordLists/dictionaries/medicalterms-en.txt",
+    "addWords": false // Do not add words to this dictionary
+  },
+  "companyTerms": {
+    "name": "companyTerms",
+    "path": "${workspaceFolder}/../company/terms.txt"
+    // "addWords": true -- is implied
+  }
+  "custom": true, // Enable the `custom` dictionary
+  "internal-terms": false // Disable the `internal-terms` dictionary
+}
+```
+
 ## FAQ
 
-See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/packages/client/FAQ.md)
+See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/FAQ.md)
 
 <!---
     These are at the bottom because the VSCode Marketplace leaves a bit space at the top

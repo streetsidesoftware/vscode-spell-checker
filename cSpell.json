@@ -28,7 +28,8 @@
     "dictionaryDefinitions": [
         {
             "name": "cities",
-            "path": "./sampleDictionaries/cities.txt"
+            "path": "./sampleDictionaries/cities.txt",
+            "addWords": false
         },
         {
             "name": "cspell-words",
