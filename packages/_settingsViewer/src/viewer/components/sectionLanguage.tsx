@@ -27,7 +27,14 @@ export class SectionLanguage extends React.Component<{ appState: AppState; targe
                         {langConfig.languages.map((entry, index) => {
                             const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
                             const icon = hasLocales ? <IconImportContacts /> : <IconBlock />;
-                            const text =  <React.Fragment>{entry.name}<sup><i>{entry.code}</i></sup></React.Fragment>
+                            const text = (
+                                <React.Fragment>
+                                    {entry.name}
+                                    <sup>
+                                        <i>{entry.code}</i>
+                                    </sup>
+                                </React.Fragment>
+                            );
                             const subText = 'Dictionary Names: ' + (entry.dictionaries.join(', ') || 'none found');
                             return (
                                 <ListItem key={'dict-' + index} onClick={() => handleSelect(entry)}>
