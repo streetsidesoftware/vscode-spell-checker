@@ -1,6 +1,5 @@
-import { DictionaryDefinitionCustom, DictionaryDefinitionPreferred } from 'cspell-lib';
-import * as Path from 'path';
-import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig';
+import type { DictionaryDefinitionCustom, DictionaryDefinitionPreferred } from 'cspell-lib';
+import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig';
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
     entries: CustomDictionaryEntry[] | undefined,
@@ -80,6 +79,14 @@ function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDic
         return def;
     }
     const { file, path, ...rest } = def;
-    const fsPath = Path.join(path || '.', file);
-    return { ...rest, path: fsPath };
+    const fsPath = [path || '', file || ''].filter((a) => !!a).join('/');
+    const nDef: NormalizedDictionaryDefinition = { ...rest, path: fsPath, file: undefined };
+    nDef.addWords = canAddWordsToDictionary(nDef);
+    return nDef;
+}
+
+const regExpBlockCustomAdd = /(^https?:|(\.gz|\.trie)$)/;
+
+export function canAddWordsToDictionary(def: NormalizedDictionaryDefinition): boolean {
+    return def.addWords ?? !regExpBlockCustomAdd.test(def.path);
 }

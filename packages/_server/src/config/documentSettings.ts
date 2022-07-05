@@ -2,6 +2,7 @@ import type {
     CSpellSettingsWithSourceTrace,
     DictionaryDefinition,
     DictionaryDefinitionCustom,
+    DictionaryDefinitionPreferred,
     FileSource,
     Glob,
     GlobDef,
@@ -34,6 +35,7 @@ import { VSCodeSettingsCspell } from '../api';
 import { CSpellUserSettings } from '../config/cspellConfig';
 import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';
+import { canAddWordsToDictionary } from './customDictionaries';
 import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
 
@@ -625,16 +627,29 @@ export function extractTargetDictionaries(settings: CSpellUserSettings): Diction
     const { dictionaries = [], dictionaryDefinitions = [] } = settings;
     const defs = new Map(dictionaryDefinitions.map((d) => [d.name, d]));
     const activeDicts = dictionaries.map((name) => defs.get(name)).filter(isDefined);
+
     const targetDicts = activeDicts
-        .filter(isDictionaryDefinitionCustom)
+        .filter(isDictionaryDefinitionPreferred)
+        .map(toDictionaryDefinitionCustom)
         .filter((d) => d.addWords)
-        .filter((d) => !regExIsOwnedByCspell.test(d.path))
-        .filter((d) => !regExIsOwnedByExtension.test(d.path));
+        .filter((d) => !regExIsOwnedByCspell.test(d.path) && !regExIsOwnedByExtension.test(d.path));
     return targetDicts;
 }
 
 function isDictionaryDefinitionCustom(d: DictionaryDefinition): d is DictionaryDefinitionCustom {
     return d.file === undefined && !!d.path && (<DictionaryDefinitionCustom>d).addWords !== undefined;
+}
+
+function isDictionaryDefinitionPreferred(d: DictionaryDefinition): d is DictionaryDefinitionPreferred {
+    return d.file === undefined && !!d.path;
+}
+
+function toDictionaryDefinitionCustom(d: DictionaryDefinitionPreferred): DictionaryDefinitionCustom {
+    if (isDictionaryDefinitionCustom(d)) return d;
+    return {
+        ...d,
+        addWords: canAddWordsToDictionary(d),
+    };
 }
 
 function isDefined<T>(t: T | undefined): t is T {
