@@ -444,7 +444,7 @@ export interface CustomDictionary {
     description?: string;
 
     /**
-     * @title Optional Path to Dictionary Text File
+     * @title Path to Dictionary Text File
      * @markdownDescription
      * Define the path to the dictionary text file.
      *
@@ -499,7 +499,7 @@ export interface CustomDictionary {
      * @title Add Words to Dictionary
      * @markdownDescription
      * Indicate if this custom dictionary should be used to store added words.
-     * @default false
+     * @default true
      */
     addWords?: boolean;
 
