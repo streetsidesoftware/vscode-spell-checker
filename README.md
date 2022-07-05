@@ -109,11 +109,11 @@ To _Enable_ or _Disable_ spell checking for a file type:
 
 1. Click on the Spell Checker status in the status bar:
 
-   <img width="57" alt="Spell Checker Status Bar" src="https://user-images.githubusercontent.com/3740137/177296936-54d5a88c-a596-4178-bd91-0be06161e1fc.png"> 
+    <img width="57" alt="Spell Checker Status Bar" src="https://user-images.githubusercontent.com/3740137/177296936-54d5a88c-a596-4178-bd91-0be06161e1fc.png">
 
 2. On the Info screen, click the checkbox.
 
-   <img width="710" alt="Spell Checker Information Window" src="https://user-images.githubusercontent.com/3740137/177297717-88da81d8-9a8c-4907-9424-66e013899318.png">
+    <img width="710" alt="Spell Checker Information Window" src="https://user-images.githubusercontent.com/3740137/177297717-88da81d8-9a8c-4907-9424-66e013899318.png">
 
 ## How it works with camelCase
 
