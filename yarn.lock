@@ -376,9 +376,9 @@
   integrity sha512-S1U+ZqvwDwiMYEFPKNxRmH0z7YlmOj93xadga4U0LMa3S4ORSf192uMB0w0AFBwXUPnXHM5uqIGP0LTt0b4Ygg==
 
 "@cspell/dict-cpp@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-cpp/-/dict-cpp-3.1.1.tgz#e17b6e1d35893c6684074ab3a94a9a88540e7bca"
-  integrity sha512-ZWK3xxv5HCXvfjxxm2kEqeiMzTtuG3xWquGGAds5655Dd3D0HONSRcIuxzbO0QQMz1PsgCZKQZQu1uGlXk7MUQ==
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-cpp/-/dict-cpp-3.2.0.tgz#31dc134f2adabad9373cce3f9393edaf70588796"
+  integrity sha512-xMHC00Ozq2zKKqgDMCe+E+z5oExlT7GP9PFM4XzUDwG7fmkU3WQnDtBGP2Zn6ed7mhz5DEmvT+SKrmCh6mh3Yg==
 
 "@cspell/dict-cryptocurrencies@^2.0.0":
   version "2.0.0"
@@ -426,14 +426,14 @@
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
 "@cspell/dict-en_us@^2.2.8":
-  version "2.2.9"
-  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.2.9.tgz#6acb90534a53349561159f986b8d80680fdee6da"
-  integrity sha512-hzI+Pr2LwhvnqVk0ZOIHx/+2EkgVmpDCLMSdCevCvBuiw35uW/++KJV/2DrglQxgE+QmwZYAebQzmaWToscz+Q==
+  version "2.2.10"
+  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.2.10.tgz#a3def574677b8ef0073707acbb9e55ec27967a9e"
+  integrity sha512-f9R4JpxwhA7kGITO95+NHP+RlURj6sFsRIdSx3uUsc66OXv4F77XWtkdMcTpRIvAr1r5ZpiK/m9ITWZ4wAeYMg==
 
 "@cspell/dict-filetypes@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@cspell/dict-filetypes/-/dict-filetypes-2.0.2.tgz#4b05efbbaeab86f4f69c995d52c4b76803ed2ec0"
-  integrity sha512-do7/Iwxjx+FHybe6UTocsWNRF1ar4cwhQoV2K2YzYTm73CoU5LMEwi2LY0Mwp/mn90TKbpPPQGCJ0sRpvaZ4AA==
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-filetypes/-/dict-filetypes-2.1.0.tgz#31a38e7ced057d97e4423c277f6a255cd543a5e5"
+  integrity sha512-YqdBw5sgZsEbXCbA7Dz01982sUrOyOQEJNwRrU2HlSgEswubapwJnATZ8WoPnE/NviVi0TvTqhReEQni55vtLA==
 
 "@cspell/dict-fonts@^2.0.1":
   version "2.0.1"
@@ -471,14 +471,14 @@
   integrity sha512-ugMVQHZTvpYA/w8/E2dbSx2hdfFU9y91Omx40VUC6cNyF7jx00VKueK6gcRF3QZoB1PUhjla2YzxqRxuXI908A==
 
 "@cspell/dict-java@^3.0.5":
-  version "3.0.6"
-  resolved "https://registry.npmjs.org/@cspell/dict-java/-/dict-java-3.0.6.tgz#ad14240a086c0ec6c0b77b42455e772e184ec16f"
-  integrity sha512-iLazWIQSovjknaHaiQFx/Q7ivXWalsKG9CN5TZokfCb9A/y3sfpdHlu4OyCAO7NJWhI4O/ChWPT1QGHeEDYPzQ==
+  version "3.0.7"
+  resolved "https://registry.npmjs.org/@cspell/dict-java/-/dict-java-3.0.7.tgz#609a640f6e6816de0e2ac1f1e2ef2c9939970601"
+  integrity sha512-IL7ubsRvKX6dZSx++TplJCfhiS7kkEGpbTPG0gMEP50DTNAVM4icZS8zmer2UBCU5PTwF85abJjdX7mRADWKVg==
 
 "@cspell/dict-latex@^2.0.7":
-  version "2.0.8"
-  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.8.tgz#c666b51a7fd2205665b388f2860d60e742b8a264"
-  integrity sha512-GApXddAh2J52nyvSwFpwPymN5zjzRhjO2iukeANs9u6y3xiQ0Kob+Btv9Z8ChmicP9QSXaHgG3g5T2KFpZjqbQ==
+  version "2.0.9"
+  resolved "https://registry.npmjs.org/@cspell/dict-latex/-/dict-latex-2.0.9.tgz#ba376b2ae8c4b9fad14e8ed293df027a8b08348f"
+  integrity sha512-d1kTK6dJb5z6UcfASQWjqQlsjZvnoVOvMWxYtLpGksYf6gM4IgqoPVNMLYYK6xBS4T/uAnLIj975A6YuAeyZpg==
 
 "@cspell/dict-lorem-ipsum@^2.0.0":
   version "2.0.0"
