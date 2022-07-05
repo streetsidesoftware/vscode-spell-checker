@@ -27,11 +27,19 @@ export class SectionLanguage extends React.Component<{ appState: AppState; targe
                         {langConfig.languages.map((entry, index) => {
                             const hasLocales = entry.dictionaries && entry.dictionaries.length > 0;
                             const icon = hasLocales ? <IconImportContacts /> : <IconBlock />;
-                            const subText = entry.dictionaries.join(', ') || 'no dictionaries found';
+                            const text = (
+                                <React.Fragment>
+                                    {entry.name}
+                                    <sup>
+                                        <i>{entry.code}</i>
+                                    </sup>
+                                </React.Fragment>
+                            );
+                            const subText = 'Dictionary Names: ' + (entry.dictionaries.join(', ') || 'none found');
                             return (
                                 <ListItem key={'dict-' + index} onClick={() => handleSelect(entry)}>
                                     <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText primary={entry.name} secondary={subText} />
+                                    <ListItemText primary={text} secondary={subText} />
                                     <ListItemSecondaryAction>
                                         <CsCheckBox checked={entry.enabled} onClick={() => handleSelect(entry)} />
                                     </ListItemSecondaryAction>

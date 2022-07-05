@@ -38,6 +38,14 @@ Object {
         "name": "English - United States",
       },
       Object {
+        "code": "lorem",
+        "dictionaries": Array [
+          "lorem-ipsum",
+        ],
+        "enabled": false,
+        "name": "Lorem-Ipsum",
+      },
+      Object {
         "code": "da",
         "dictionaries": Array [],
         "enabled": true,
@@ -80,6 +88,14 @@ Object {
         "enabled": false,
         "name": "English - United States",
       },
+      Object {
+        "code": "lorem",
+        "dictionaries": Array [
+          "lorem-ipsum",
+        ],
+        "enabled": false,
+        "name": "Lorem-Ipsum",
+      },
     ],
   },
   "workspace": Object {
@@ -116,6 +132,14 @@ Object {
         ],
         "enabled": false,
         "name": "English - United States",
+      },
+      Object {
+        "code": "lorem",
+        "dictionaries": Array [
+          "lorem-ipsum",
+        ],
+        "enabled": false,
+        "name": "Lorem-Ipsum",
       },
       Object {
         "code": "da",
