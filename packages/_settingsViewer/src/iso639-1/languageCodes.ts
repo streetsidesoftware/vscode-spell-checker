@@ -358,6 +358,7 @@ export const codes: string[][] = [
     ['ln-CG', 'Lingala', 'Congo'],
     ['lo', 'Lao'],
     ['lo-LA', 'Lao', 'Laos'],
+    ['lorem', 'Lorem-Ipsum'],
     ['lt', 'Lithuanian'],
     ['lt-LT', 'Lithuanian', 'Lithuania'],
     ['lu', 'Luba-Katanga'],
