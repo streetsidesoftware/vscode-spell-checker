@@ -80,6 +80,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 - [Portuguese - Brazilian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese-brazilian)
 - [Portuguese](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-portuguese)
 - [Russian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-russian)
+- [Slovenian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-slovenian)
 - [Spanish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-spanish)
 - [Swedish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-swedish)
 - [Turkish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-turkish)
