@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: The release TAG to publish. i.e. `v2.2.2`
+        description: The release TAG to publish. i.e. `v2.3.0`
         required: true
-        default: main
+        default: "v2.3.0"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
