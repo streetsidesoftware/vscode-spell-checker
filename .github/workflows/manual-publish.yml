@@ -28,7 +28,14 @@ jobs:
       - name: Build Extension .vsix
         run: yarn run package-extension
       - name: Publish VSCE
-        run: find ./build -name "*.vsix" | xargs npx vsce publish -p ${{ secrets.VSCE_TOKEN }} --packagePath || echo "::error title=VSCE::Failed to Publish to VS Code Marketplace."
+        run: >
+          find ./build -name "*.vsix" | xargs npx vsce publish -p ${{ secrets.VSCE_TOKEN }} --packagePath
+          || echo "PUB_FAIL=true" >> $GITHUB_ENV && echo "::error title=VSCE::Failed to Publish to VS Code Marketplace."
       - name: Publish OVSX
-        run: find ./build -name "*.vsix" | xargs npx ovsx publish -p ${{ secrets.OVSX_TOKEN }}  || echo "::error title=OVSX::Failed to Publish to Eclipse Open VSX."
+        run: >
+          find ./build -name "*.vsix" | xargs npx ovsx publish -p ${{ secrets.OVSX_TOKEN }}
+          || echo "PUB_FAIL=true" >> $GITHUB_ENV && echo "::error title=OVSX::Failed to Publish to Eclipse Open VSX."
+      - name: Check Build
+        if: ${{ env.PUB_FAIL }}
+        run: exit 1
 # cspell:ignore vsix xargs OVSX
