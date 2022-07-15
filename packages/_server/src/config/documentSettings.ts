@@ -80,7 +80,7 @@ const defaultExclude: Glob[] = [
 ];
 
 const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
-const schemeBlockList = ['git', 'output', 'debug', 'vscode'];
+const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
 
