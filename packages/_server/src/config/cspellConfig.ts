@@ -52,7 +52,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
      * - `vscode-userdata` - Needed to spell check `.code-snippets`
      * @scope window
-     * @default ["file", "gist", "sftp", "untitled", "vscode-notebook-cell", "vscode-userdata"]
+     * @default ["file", "gist", "sftp", "untitled", "vscode", "vscode-notebook-cell", "vscode-userdata"]
      */
     allowedSchemas?: string[];
 
@@ -618,6 +618,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      *       "restructuredtext",
      *       "rust",
      *       "scala",
+     *       "scminput",
      *       "scss",
      *       "swift",
      *       "text",

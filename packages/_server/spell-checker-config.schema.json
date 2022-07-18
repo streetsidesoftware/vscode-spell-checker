@@ -745,6 +745,7 @@
             "gist",
             "sftp",
             "untitled",
+            "vscode",
             "vscode-notebook-cell",
             "vscode-userdata"
           ],
@@ -1627,6 +1628,7 @@
             "restructuredtext",
             "rust",
             "scala",
+            "scminput",
             "scss",
             "swift",
             "text",
