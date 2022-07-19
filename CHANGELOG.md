@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.3.2 (2022-07-19)
+
+
+### Bug Fixes
+
+* Turn off `scminput` until VS Code is ready ([#2095](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2095)) ([c6d1d4b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c6d1d4bf33c0b06eee9b67d2a75be19707b17819)), closes [#155282](https://github.com/streetsidesoftware/vscode-spell-checker/issues/155282)
+
 ### 2.3.1 (2022-07-17)
 
 ## [2.3.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/v2.2.7...v2.3.0) (2022-07-05)
