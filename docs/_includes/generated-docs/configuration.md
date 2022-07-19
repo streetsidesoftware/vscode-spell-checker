@@ -1396,6 +1396,6 @@ Description
 : Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
 
 Default
-: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"elixir"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scminput"`_, _`"scss"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vue"`_, _`"yaml"`_, _`"yml"`_ ]
+: [ _`"asciidoc"`_, _`"c"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"elixir"`_, _`"git-commit"`_, _`"go"`_, _`"graphql"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"markdown"`_, _`"php"`_, _`"plaintext"`_, _`"python"`_, _`"pug"`_, _`"restructuredtext"`_, _`"rust"`_, _`"scala"`_, _`"scss"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vue"`_, _`"yaml"`_, _`"yml"`_ ]
 
 ---

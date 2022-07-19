@@ -618,7 +618,6 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      *       "restructuredtext",
      *       "rust",
      *       "scala",
-     *       "scminput",
      *       "scss",
      *       "swift",
      *       "text",
