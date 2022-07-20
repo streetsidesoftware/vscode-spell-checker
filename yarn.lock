@@ -298,14 +298,14 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^6.3.0":
-  version "6.3.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.3.0.tgz#42eec599d2a07723062492946680573738e42a9c"
-  integrity sha512-m4Woxfj9NIWpNrRvuhJM9usLyfPYZJyzjtwdm1/vmOcBX+8B+TTknxMlBiBwxKjkuSdCO2uuWVybFxypJ7fLCA==
+"@cspell/cspell-bundled-dicts@^6.3.0", "@cspell/cspell-bundled-dicts@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.4.0.tgz#be04f143df036898aa5f157f2ad47b7659f0724f"
+  integrity sha512-ImkqZPhq9ZTY8nWRxo8S1nUoQ274V/WenIwK7IYnBFpyj8VYRsRRrest07WTG0TriDf3RVS2wQgJ9ZKGOsKuLA==
   dependencies:
     "@cspell/dict-ada" "^2.0.0"
     "@cspell/dict-aws" "^2.0.0"
-    "@cspell/dict-bash" "^2.0.3"
+    "@cspell/dict-bash" "^2.0.4"
     "@cspell/dict-companies" "^2.0.7"
     "@cspell/dict-cpp" "^3.2.0"
     "@cspell/dict-cryptocurrencies" "^2.0.0"
@@ -317,7 +317,7 @@
     "@cspell/dict-dotnet" "^2.0.1"
     "@cspell/dict-elixir" "^2.0.1"
     "@cspell/dict-en-gb" "^1.1.33"
-    "@cspell/dict-en_us" "^2.2.10"
+    "@cspell/dict-en_us" "^2.3.0"
     "@cspell/dict-filetypes" "^2.1.0"
     "@cspell/dict-fonts" "^2.0.1"
     "@cspell/dict-fullstack" "^2.0.6"
@@ -340,9 +340,9 @@
     "@cspell/dict-ruby" "^2.0.1"
     "@cspell/dict-rust" "^2.0.1"
     "@cspell/dict-scala" "^2.0.0"
-    "@cspell/dict-software-terms" "^2.1.11"
+    "@cspell/dict-software-terms" "^2.1.12"
     "@cspell/dict-swift" "^1.0.3"
-    "@cspell/dict-typescript" "^2.0.0"
+    "@cspell/dict-typescript" "^2.0.1"
     "@cspell/dict-vue" "^2.0.2"
 
 "@cspell/cspell-pipe@^6.3.0":
@@ -365,7 +365,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-aws/-/dict-aws-2.0.0.tgz#9af72af4e59e96029dd4335271d87784843cb7dd"
   integrity sha512-NKz7pDZ7pwj/b33i3f4WLpC1rOOUMmENwYgftxU+giU2YBeKM2wZbMTSEIzsrel56r0UlQYmdIVlP/B4nnVaoQ==
 
-"@cspell/dict-bash@^2.0.3":
+"@cspell/dict-bash@^2.0.4":
   version "2.0.4"
   resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-2.0.4.tgz#93f0ff159d96b8823fed9282f803e4f3447af33d"
   integrity sha512-uK/ehmp5LYrmRH2Gv3nbvdPswpkybJUn34WYKLpeuYHQktmi+pOI1A9uPdBPnSbMDffSvwQlQohIyKawz+X8Ag==
@@ -425,7 +425,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-en-gb/-/dict-en-gb-1.1.33.tgz#7f1fd90fc364a5cb77111b5438fc9fcf9cc6da0e"
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
-"@cspell/dict-en_us@^2.2.10":
+"@cspell/dict-en_us@^2.3.0":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-2.3.0.tgz#d2c186676ab3a43f38d759324434127ee63f25da"
   integrity sha512-wEGqVZ4uXxq9/mTemgN9B2MIqlcaLGPnvCBdqT5vPWxqxJjkGJmCkRCx9DYHHp2Cfd+VHc9zW6Xad59kORBS9g==
@@ -540,7 +540,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-scala/-/dict-scala-2.0.0.tgz#b8098103bb03a13406c1c79f1769052353aafac4"
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
-"@cspell/dict-software-terms@^2.1.11":
+"@cspell/dict-software-terms@^2.1.12":
   version "2.1.12"
   resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.1.12.tgz#1670f013db905e742f66409646d7e041edee48b5"
   integrity sha512-l8AKy8x20axAYVmh2bVtj7QDUn+V8MPV8V9RWCLIBWyksNu/DmfA7Itz+/zxqAjhh7HwzZEOUmynQfUi3oo1VQ==
@@ -550,7 +550,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-swift/-/dict-swift-1.0.3.tgz#b819da0ca2c5dfecdd61bec55181636a06d23677"
   integrity sha512-yOBLSaRD0AnkkkndJ8PuB82Evp6lA2xItf2AWsnPfCCgxp5Ojk6uUBC/WQBSkzkCAOGbXyHsu9D97tsOx2c6cw==
 
-"@cspell/dict-typescript@^2.0.0":
+"@cspell/dict-typescript@^2.0.1":
   version "2.0.1"
   resolved "https://registry.npmjs.org/@cspell/dict-typescript/-/dict-typescript-2.0.1.tgz#f0bfae7c427a7cbdd6b56d103aca0a0a2f6ebb6b"
   integrity sha512-YXH6nEH4thcD7lNffdNsKgDDZA5JVX4aKCuNIGE7qWSS9kBVgIvSU9/WH64R59rEzAPe1VwXwXyoZ7y4fAufww==
