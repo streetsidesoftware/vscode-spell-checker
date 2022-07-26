@@ -52,7 +52,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
      * - `vscode-userdata` - Needed to spell check `.code-snippets`
      * @scope window
-     * @default ["file", "gist", "sftp", "untitled", "vscode", "vscode-notebook-cell", "vscode-userdata"]
+     * @default ["file", "gist", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"]
      */
     allowedSchemas?: string[];
 
@@ -589,44 +589,45 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
      * @uniqueItems true
      * @default [
-     *       "asciidoc",
-     *       "c",
-     *       "cpp",
-     *       "csharp",
-     *       "css",
-     *       "elixir",
-     *       "git-commit",
-     *       "go",
-     *       "graphql",
-     *       "handlebars",
-     *       "haskell",
-     *       "html",
-     *       "jade",
-     *       "java",
-     *       "javascript",
-     *       "javascriptreact",
-     *       "json",
-     *       "jsonc",
-     *       "jupyter",
-     *       "latex",
-     *       "less",
-     *       "markdown",
-     *       "php",
-     *       "plaintext",
-     *       "python",
-     *       "pug",
-     *       "restructuredtext",
-     *       "rust",
-     *       "scala",
-     *       "scss",
-     *       "swift",
-     *       "text",
-     *       "typescript",
-     *       "typescriptreact",
-     *       "vue",
-     *       "yaml",
-     *       "yml"
-     *     ]
+     *      "asciidoc",
+     *      "c",
+     *      "cpp",
+     *      "csharp",
+     *      "css",
+     *      "elixir",
+     *      "git-commit",
+     *      "go",
+     *      "graphql",
+     *      "handlebars",
+     *      "haskell",
+     *      "html",
+     *      "jade",
+     *      "java",
+     *      "javascript",
+     *      "javascriptreact",
+     *      "json",
+     *      "jsonc",
+     *      "jupyter",
+     *      "latex",
+     *      "less",
+     *      "markdown",
+     *      "php",
+     *      "plaintext",
+     *      "python",
+     *      "pug",
+     *      "restructuredtext",
+     *      "rust",
+     *      "scala",
+     *      "scss",
+     *      "scminput",
+     *      "swift",
+     *      "text",
+     *      "typescript",
+     *      "typescriptreact",
+     *      "vue",
+     *      "yaml",
+     *      "yml"
+     *  ]
      */
     enabledLanguageIds?: string[];
 

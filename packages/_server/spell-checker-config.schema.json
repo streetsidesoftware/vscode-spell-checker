@@ -745,8 +745,8 @@
             "gist",
             "sftp",
             "untitled",
-            "vscode",
             "vscode-notebook-cell",
+            "vscode-scm",
             "vscode-userdata"
           ],
           "items": {
@@ -1629,6 +1629,7 @@
             "rust",
             "scala",
             "scss",
+            "scminput",
             "swift",
             "text",
             "typescript",
