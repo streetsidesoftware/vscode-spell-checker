@@ -53,6 +53,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 ## Add-On Language Dictionaries
 
+-   [Arabic](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-arabic)
 -   [Catalan](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-catalan)
 -   [Czech](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-czech)
 -   [Danish](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-danish)
