@@ -1232,10 +1232,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@18", "@types/node@^18.6.2":
-  version "18.6.2"
-  resolved "https://registry.npmjs.org/@types/node/-/node-18.6.2.tgz#ffc5f0f099d27887c8d9067b54e55090fcd54126"
-  integrity sha512-KcfkBq9H4PI6Vpu5B/KoPeuVDAbmi+2mDBqGPGUgoL7yXQtcWGu2vJWmmRkneWK3Rh0nIAX192Aa87AqKHYChQ==
+"@types/node@*", "@types/node@18", "@types/node@^18.6.3":
+  version "18.6.3"
+  resolved "https://registry.npmjs.org/@types/node/-/node-18.6.3.tgz#4e4a95b6fe44014563ceb514b2598b3e623d1c98"
+  integrity sha512-6qKpDtoaYLM+5+AFChLhHermMQxc3TOEFIDzrZLPRGHPrLEwqFkkT5Kx3ju05g6X7uDPazz3jHbKPX0KzCjntg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -7063,9 +7063,9 @@ react-test-renderer@^17.0.2:
     scheduler "^0.20.2"
 
 react-transition-group@^4.4.0:
-  version "4.4.2"
-  resolved "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
-  integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
+  version "4.4.4"
+  resolved "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.4.tgz#9af1707487e39006658afc0150b2c5230fb75f0c"
+  integrity sha512-TKS7/dTpwBKEG9nrzVK3qNzvaJyKzEIFB5xVtnKdjEk5wTstklWnNJ/N3RM6uKG8wm36nlgHTT7+UZT3LIFHLA==
   dependencies:
     "@babel/runtime" "^7.5.5"
     dom-helpers "^5.0.1"
