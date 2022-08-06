@@ -16,6 +16,7 @@ export const languages: Languages = {
     registerCompletionItemProvider: jest.fn(),
     registerDeclarationProvider: jest.fn(),
     registerDefinitionProvider: jest.fn(),
+    registerDocumentDropEditProvider: jest.fn(),
     registerDocumentFormattingEditProvider: jest.fn(),
     registerDocumentHighlightProvider: jest.fn(),
     registerDocumentLinkProvider: jest.fn(),
