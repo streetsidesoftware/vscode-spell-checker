@@ -1775,6 +1775,12 @@
           "scope": "application",
           "type": "string"
         },
+        "cSpell.showSuggestionsLinkInEditorContextMenu": {
+          "default": true,
+          "description": "Show Spelling Suggestions link in the top level context menu.",
+          "scope": "application",
+          "type": "boolean"
+        },
         "cSpell.suggestionMenuType": {
           "default": "quickPick",
           "enum": [

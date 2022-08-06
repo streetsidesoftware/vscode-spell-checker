@@ -51,7 +51,19 @@
       "editor/context": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "editorTextFocus && cSpell.editorMenuContext.showSuggestions",
+          "when": "editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
+          "group": "A_cspell@000"
+        },
+        {
+          "submenu": "cSpell.spelling",
+          "group": "A_cspell@001",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu"
+        }
+      ],
+      "cSpell.spelling": [
+        {
+          "command": "cSpell.suggestSpellingCorrections",
+          "when": "editorTextFocus && !config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
           "group": "A_cspell@001"
         },
         {
@@ -100,19 +112,31 @@
           "group": "A_cspell@060"
         },
         {
-          "command": "cSpell.createCustomDictionary",
-          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
-          "group": "A_cspell@070"
+          "command": "cSpell.addIgnoreWord",
+          "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord",
+          "group": "A_cspell@090"
         },
         {
           "command": "cSpell.createCSpellConfig",
           "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
-          "group": "A_cspell@080"
+          "group": "B_cspell@010"
         },
         {
-          "command": "cSpell.addIgnoreWord",
-          "when": "editorTextFocus && cSpell.editorMenuContext.addIgnoreWord",
-          "group": "A_cspell@090"
+          "command": "cSpell.createCustomDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
+          "group": "B_cspell@020"
+        }
+      ],
+      "cSpell.configMenu": [
+        {
+          "command": "cSpell.createCSpellConfig",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCSpellConfig",
+          "group": "A_cspell@010"
+        },
+        {
+          "command": "cSpell.createCustomDictionary",
+          "when": "editorTextFocus && cSpell.editorMenuContext.createCustomDictionary",
+          "group": "A_cspell@070"
         }
       ],
       "commandPalette": [
@@ -133,6 +157,16 @@
         }
       ]
     },
+    "submenus": [
+      {
+        "id": "cSpell.spelling",
+        "label": "Spelling"
+      },
+      {
+        "id": "cSpell.configMenu",
+        "label": "Spell Checker Configuration"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -2151,6 +2185,12 @@
             ],
             "scope": "application",
             "type": "string"
+          },
+          "cSpell.showSuggestionsLinkInEditorContextMenu": {
+            "default": true,
+            "description": "Show Spelling Suggestions link in the top level context menu.",
+            "scope": "application",
+            "type": "boolean"
           },
           "cSpell.suggestionMenuType": {
             "default": "quickPick",

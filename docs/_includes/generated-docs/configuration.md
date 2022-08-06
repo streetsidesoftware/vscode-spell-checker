@@ -297,19 +297,20 @@ Default
 
 # Reporting and Display
 
-| Setting                                                                            | Scope                | Description                                                                     |
-| ---------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                 | resource             | Set Diagnostic Reporting Level                                                  |
-| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                       | resource             | The maximum number of times the same word can be flagged as an error in a file. |
-| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                         | resource             | Controls the maximum number of spelling errors per document.                    |
-| [`cSpell.minWordLength`](#cspellminwordlength)                                     | resource             | The minimum length of a word before checking it against a dictionary.           |
-| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                   | resource             | Controls the number of suggestions shown.                                       |
-| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)         | language-overridable | Show CSpell in-document directives as you type.                                 |
-| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu) | application          | Show Spell Checker actions in Editor Context Menu                               |
-| [`cSpell.showStatus`](#cspellshowstatus)                                           | application          | Display the spell checker status on the status bar.                             |
-| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                         | application          | The side of the status bar to display the spell checker status.                 |
-| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                           | resource             | The type of menu used to display spelling suggestions.                          |
-| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                       | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
+| Setting                                                                                     | Scope                | Description                                                                     |
+| ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
+| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                          | resource             | Set Diagnostic Reporting Level                                                  |
+| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                | resource             | The maximum number of times the same word can be flagged as an error in a file. |
+| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                  | resource             | Controls the maximum number of spelling errors per document.                    |
+| [`cSpell.minWordLength`](#cspellminwordlength)                                              | resource             | The minimum length of a word before checking it against a dictionary.           |
+| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                            | resource             | Controls the number of suggestions shown.                                       |
+| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                  | language-overridable | Show CSpell in-document directives as you type.                                 |
+| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)          | application          | Show Spell Checker actions in Editor Context Menu                               |
+| [`cSpell.showStatus`](#cspellshowstatus)                                                    | application          | Display the spell checker status on the status bar.                             |
+| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                  | application          | The side of the status bar to display the spell checker status.                 |
+| [`cSpell.showSuggestionsLinkInEditorConte…`](#cspellshowsuggestionslinkineditorcontextmenu) | application          | Show Spelling Suggestions link in the top level context menu.                   |
+| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                    | resource             | The type of menu used to display spelling suggestions.                          |
+| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
 
 ## Definitions
 
@@ -491,6 +492,25 @@ Description
 
 Default
 : _`"Right"`_
+
+---
+
+### `cSpell.showSuggestionsLinkInEditorContextMenu`
+
+Name
+: `cSpell.showSuggestionsLinkInEditorContextMenu`
+
+Type
+: boolean
+
+Scope
+: application
+
+Description
+: Show Spelling Suggestions link in the top level context menu.
+
+Default
+: _`true`_
 
 ---
 
