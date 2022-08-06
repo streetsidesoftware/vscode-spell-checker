@@ -33,6 +33,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',
     showStatus: 'showStatus',
     showStatusAlignment: 'showStatusAlignment',
+    showSuggestionsLinkInEditorContextMenu: 'showSuggestionsLinkInEditorContextMenu',
     spellCheckDelayMs: 'spellCheckDelayMs',
     spellCheckOnlyWorkspaceFiles: 'spellCheckOnlyWorkspaceFiles',
     suggestionMenuType: 'suggestionMenuType',

@@ -154,6 +154,13 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     showCommandsInEditorContextMenu?: boolean;
 
     /**
+     * Show Spelling Suggestions link in the top level context menu.
+     * @scope application
+     * @default true
+     */
+    showSuggestionsLinkInEditorContextMenu?: boolean;
+
+    /**
      * @title File Types to Check
      * @scope resource
      * @uniqueItems true
@@ -1004,6 +1011,7 @@ type _VSConfigReporting = Pick<
     | 'showCommandsInEditorContextMenu'
     | 'showStatus'
     | 'showStatusAlignment'
+    | 'showSuggestionsLinkInEditorContextMenu'
     | 'suggestionMenuType'
     | 'suggestionNumChanges'
 >;

@@ -204,7 +204,7 @@ async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocu
     context.editorMenuContext.createCSpellConfig = show && showCreateConfig;
     context.editorMenuContext.addIgnoreWord = show && hasIssues;
 
-    context.editorMenuContext.showSuggestions = show && hasIssues;
+    context.editorMenuContext.showSuggestions = (show || cfg.settings?.showSuggestionsLinkInEditorContextMenu || false) && hasIssues;
 
     await setContext(context);
     return;
