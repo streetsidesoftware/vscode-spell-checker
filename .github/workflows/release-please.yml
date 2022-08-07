@@ -1,0 +1,35 @@
+name: release-please
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          command: manifest
+      - name: Release Please Results
+        env:
+          RESULTS: ${{ toJSON(steps.release.outputs) }}
+        run: echo "$RESULTS"
+
+  # publish:
+  #   needs:
+  #     - release-please
+  #   uses: ./.github/workflows/publish.yml
+  #   secrets:
+  #     PUBLISH_NPM: ${{ secrets.PUBLISH_NPM }}
+  #   if: ${{ needs.release-please.outputs.release_created }}
+# cspell:ignore noreply
