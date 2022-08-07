@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.0...code-spell-checker-v2.5.1) (2022-08-07)
+
+
+### Continuous Integration
+
+* Bump jest-mock-vscode to 1.0 ([67ab7a4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/67ab7a45b237e5b78e70048cdb7fc13b71b4ba6c))
+* Create release-please.yml ([f3f7ca2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f3f7ca299eca2b26895560a78680f347f3e9166a))
+* disable Azure integration tests ([e49e4d2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e49e4d28269a94a52cf5e78ad34f9214d1b419cc))
+* setting up release-please ([8cb6a79](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8cb6a79e15cde01b361158fb5e1df32c7ebde38d))
+* use full tag name ([ed9f813](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ed9f813482a660087b4becd54252d45d50a99925))
+* Workflow Bot -- Update ALL Dependencies ([#2125](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2125)) ([ade3bfb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ade3bfbcb5fe6a13b41447ef7f7baa5269411cd6))
+
 ### 2.3.5 (2022-08-06)
 
 ### 2.3.4 (2022-07-30)

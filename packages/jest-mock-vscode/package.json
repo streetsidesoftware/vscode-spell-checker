@@ -1,6 +1,6 @@
 {
   "name": "jest-mock-vscode",
-  "version": "1.0.0",
+  "version": "0.1.7",
   "description": "VS Code Mock for jest",
   "main": "index.js",
   "types": "dist/index.d.ts",
