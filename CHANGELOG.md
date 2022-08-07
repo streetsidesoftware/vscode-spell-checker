@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.2-alpha.0...code-spell-checker-v2.5.2) (2022-08-07)
+
+
+### Continuous Integration
+
+* fix release-please ([42d0920](https://github.com/streetsidesoftware/vscode-spell-checker/commit/42d0920d6140b130f143f6856617a368f31fb6e6))
+* try removing "packages" ([56af411](https://github.com/streetsidesoftware/vscode-spell-checker/commit/56af411845ecb810b31f09ebf3b5f8540b06b664))
+* Workflow Bot -- Update ALL Dependencies ([#2126](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2126)) ([110818c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/110818cdac0fbd9a4e76bda6a6728d139fc96dcf))
+
+
+### Miscellaneous
+
+* release 2.5.2 ([7b68825](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7b688253775e66e23dbfaa2360b8518f49af6480))
+
+
+### Updates and Bug Fixes
+
+* Remove package jest-mock-vscode ([#2130](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2130)) ([494cf60](https://github.com/streetsidesoftware/vscode-spell-checker/commit/494cf606e461767ad0b57c9dde9438aacce2ce49))
+* Update README. ([369538f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/369538f26e60a7069660cb437970369ddf13d9c7))
+
 ## [2.5.2-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.1...code-spell-checker-v2.5.2-alpha.0) (2022-08-07)
 
 
