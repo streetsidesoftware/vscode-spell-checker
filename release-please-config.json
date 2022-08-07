@@ -67,5 +67,8 @@
             "section": "Changes",
             "hidden": false
         }
-    ]
+    ],
+    "packages": {
+        ".": {}
+    }
 }
