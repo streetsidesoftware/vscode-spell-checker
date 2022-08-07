@@ -1,6 +1,6 @@
 # Spelling Checker for Visual Studio Code
 
-A basic spell checker that works well with camelCase code.
+A basic spell checker that works well with code and documents.
 
 The goal of this spell checker is to help catch common spelling errors while keeping the number of false positives low.
 
