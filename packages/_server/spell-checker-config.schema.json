@@ -1605,6 +1605,7 @@
             "csharp",
             "css",
             "elixir",
+            "erlang",
             "git-commit",
             "go",
             "graphql",
