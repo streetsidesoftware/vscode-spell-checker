@@ -1,5 +1,6 @@
 {
     "bootstrap-sha": "569b42758f06ccd890eb4404b2176118e6f933ec",
+    "release-type": "node",
     "changelog-sections": [
         {
             "type": "feat",
@@ -66,10 +67,5 @@
             "section": "Changes",
             "hidden": false
         }
-    ],
-    "packages": {
-        ".": {
-            "releaseType": "node"
-        }
-    }
+    ]
 }
