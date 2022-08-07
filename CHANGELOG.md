@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.2-alpha.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.1...code-spell-checker-v2.5.2-alpha.0) (2022-08-07)
+
+
+### Continuous Integration
+
+* change tag style to `name@version` ([6241c78](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6241c787251009f69a56b3a28136c1edd1a59b9c))
+* remove jest-mock-vscode from release ([7c185c7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7c185c7c7b9b8b5ee64f0bf72ba2f5ec795a0be2))
+
+
+### Miscellaneous
+
+* release 2.5.2-alpha.0 ([865d8be](https://github.com/streetsidesoftware/vscode-spell-checker/commit/865d8bea4ff47c6bf14473810f373f870b876ff9))
+* release jest-mock-vscode 1.0.0 ([0b331f4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0b331f4fb1c8af6bff5d9c6b317a59d038f46294))
+
 ## [2.5.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.0...code-spell-checker-v2.5.1) (2022-08-07)
 
 
