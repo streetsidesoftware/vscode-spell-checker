@@ -69,7 +69,6 @@
     ],
     "packages": {
         ".": {
-            "component": "",
             "releaseType": "node"
         },
         "packages/jest-mock-vscode": {
