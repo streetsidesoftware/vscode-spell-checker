@@ -7,8 +7,14 @@ on:
       - main
 
 permissions:
+  actions: read
+  checks: write
   contents: write
+  issues: read
+  packages: write
   pull-requests: write
+  repository-projects: read
+  statuses: read
 
 jobs:
   release-please:

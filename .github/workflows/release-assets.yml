@@ -15,9 +15,9 @@ on:
         required: true
 
 permissions:
-  contents: write
   actions: read
   checks: write
+  contents: write
   issues: read
   packages: write
   pull-requests: read
