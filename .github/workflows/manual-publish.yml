@@ -11,6 +11,16 @@ on:
         description: The release TAG to publish. i.e. `v2.3.0`
         required: true
         default: "v2.3.0"
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+    secrets:
+      OVSX_TOKEN:
+        required: true
+      VSCE_TOKEN:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

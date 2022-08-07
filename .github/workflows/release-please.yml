@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release
@@ -25,14 +28,32 @@ jobs:
           RESULTS: ${{ toJSON(steps.release.outputs) }}
         run: echo "$RESULTS"
 
-  publish:
+      - name: tag versions
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/streetsidesoftware/vscode-spell-checker.git"
+          git tag -a v${{ steps.release.outputs.version }} -m "Release v${{ steps.release.outputs.version }}"
+          git push origin v${{ steps.release.outputs.version }}
+
+  result:
     runs-on: ubuntu-latest
     needs:
       - release-please
-    if: ${{ needs.release-please.outputs.release_created }}
+    env:
+      OUTPUTS: ${{ toJSON(needs.release-please.outputs) }}
     steps:
-      - run: echo "Publish"
-    # uses: ./.github/workflows/publish.yml
-    # secrets:
-    #   PUBLISH_NPM: ${{ secrets.PUBLISH_NPM }}
-# cspell:ignore noreply
+      - run: echo "Result"
+      - run: echo "$OUTPUTS"
+
+  publish:
+    needs:
+      - release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    uses: ./.github/workflows/manual-publish.yml
+    with:
+      ref: ${{ needs.release-please.outputs.tag_name }}
+    secrets:
+      OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
+      VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
