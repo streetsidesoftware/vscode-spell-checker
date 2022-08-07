@@ -5440,13 +5440,6 @@ jest-mock-vscode@0.1.2:
   dependencies:
     vscode-uri "^3.0.2"
 
-jest-mock-vscode@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/jest-mock-vscode/-/jest-mock-vscode-0.1.6.tgz#32507addd1821a0994d88ceea6712108498692bd"
-  integrity sha512-ArLEehH8tqD6P1Aqw3DQ/pIg0MPHX1Z5RBg8Y+dXfxl0SyUSXbw7liju/gBh5VbBG9j6PBtOgASkiLOlDS9s8Q==
-  dependencies:
-    vscode-uri "^3.0.3"
-
 jest-mock@^27.5.1:
   version "27.5.1"
   resolved "https://registry.npmjs.org/jest-mock/-/jest-mock-27.5.1.tgz#19948336d49ef4d9c52021d34ac7b5f36ff967d6"
