@@ -11,6 +11,7 @@ export const languageIds: string[] = [
     'diff',
     'dockerfile',
     'elixir',
+    'erlang',
     'fsharp',
     'git-commit',
     'git-rebase',
