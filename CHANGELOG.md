@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.2...code-spell-checker-v2.5.3) (2022-08-07)
+
+
+### Continuous Integration
+
+* support publishing via release-please ([cac7f81](https://github.com/streetsidesoftware/vscode-spell-checker/commit/cac7f811813edb3acce8686c2abe9aa9124cc509))
+
+
+### Updates and Bug Fixes
+
+* add `erlang` to default enabledLanguageIds ([#2133](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2133)) ([701fe3d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/701fe3dc38f850523b0e25838f4976bfe26e08df))
+
 ## [2.5.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.2-alpha.0...code-spell-checker-v2.5.2) (2022-08-07)
 
 
