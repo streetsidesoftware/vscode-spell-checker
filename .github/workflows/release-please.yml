@@ -28,6 +28,10 @@ jobs:
           RESULTS: ${{ toJSON(steps.release.outputs) }}
         run: echo "$RESULTS"
 
+      - name: Checkout code
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v3
+
       - name: tag versions
         if: ${{ steps.release.outputs.release_created }}
         run: |
