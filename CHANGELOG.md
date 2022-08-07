@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.3...code-spell-checker-v2.5.4) (2022-08-07)
+
+
+### Continuous Integration
+
+* fix permissions ([4bb92e1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4bb92e1b90a95536631123ead255cfa912a86ec8))
+* fix publish step ([32cb941](https://github.com/streetsidesoftware/vscode-spell-checker/commit/32cb941220734d3e317e781bf587dd679e315dcf))
+* Remove release-drafter ([ccf690d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ccf690d3f3d42461f27c39bda677f3a31146996b))
+* Update the publish workflow ([6698079](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6698079af60d423bed3938f080d889e0f819e4ca))
+
 ## [2.5.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.2...code-spell-checker-v2.5.3) (2022-08-07)
 
 
