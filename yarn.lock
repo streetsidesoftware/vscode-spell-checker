@@ -383,9 +383,9 @@
   integrity sha512-uK/ehmp5LYrmRH2Gv3nbvdPswpkybJUn34WYKLpeuYHQktmi+pOI1A9uPdBPnSbMDffSvwQlQohIyKawz+X8Ag==
 
 "@cspell/dict-companies@^2.0.9":
-  version "2.0.10"
-  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-2.0.10.tgz#997c58e90a0c75c3a591c76a861a83ebd1f59c38"
-  integrity sha512-OpxrvsU/yUqopmhy3b+JKtLDyJ32CksP+o1K+hZuN/wHm3JwlYWglxyNasXLx5Frh9FLxf4V2mr59WRcvmzgBA==
+  version "2.0.11"
+  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-2.0.11.tgz#d9f4604a07c8fe46d52cf3a4785968f1a5f765c6"
+  integrity sha512-8Fw+dviHh3nu9y0jI+7kpObY/C15s4bDzWi5ZJpkAT65z+yZiIr6rxyoCR4vHpT5/TofbaRXFKWHoc/sqUYY2g==
 
 "@cspell/dict-cpp@^3.2.1":
   version "3.2.1"
@@ -508,9 +508,9 @@
   integrity sha512-sK2cpuV0EAc43Amd5xeQXkI9MeRTECMw+yjap06gKSModbgI7BqJUHeKZed+0Hii+LpaJ4TYpLGiRVsO+qSk0w==
 
 "@cspell/dict-npm@^3.1.0":
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-npm/-/dict-npm-3.1.1.tgz#8249de2717a9fb42446b383b0fd2666b0f54df24"
-  integrity sha512-pUQeJ8sS4qxal0avM4Ta0EZy8DV5bF8y5o2UEYrgQMDOtsmSZg3ZRPTbtRs/4j2UTPkPwYrECzOm7yXuTwT4EA==
+  version "3.1.2"
+  resolved "https://registry.npmjs.org/@cspell/dict-npm/-/dict-npm-3.1.2.tgz#3577e3b5235800631447fb165db4be94471981b2"
+  integrity sha512-dg4M38nrCCeBOYKVqPG91JPJ67j9LygPeNnu5fa7E9Z1eho3fkYHvfKlF3t4EZyAOxEobp0ZB0iXaCuX2YknlA==
 
 "@cspell/dict-php@^2.0.0":
   version "2.0.0"
