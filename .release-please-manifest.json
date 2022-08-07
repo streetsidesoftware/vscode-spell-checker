@@ -1,4 +1,4 @@
 {
-    ".": "2.5.1",
-    "packages/jest-mock-vscode": "0.1.7"
+    ".": "1.0.0",
+    "packages/jest-mock-vscode": "1.0.0"
 }
