@@ -19,6 +19,13 @@
             }
         },
         {
+            "files": "**/*.schema.json",
+            "options": {
+                "tabWidth": 2,
+                "singleQuote": false
+            }
+        },
+        {
             "files": "**/package.json",
             "options": {
                 "tabWidth": 2,
