@@ -28,7 +28,7 @@
     "test-watch": "jest --watch"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^6.5.0",
+    "@cspell/cspell-types": "^6.6.0",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.5.2",
     "@types/jest-when": "^3.5.2",

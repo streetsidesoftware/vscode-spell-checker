@@ -410,11 +410,6 @@
   resolved "https://registry.yarnpkg.com/@cspell/cspell-service-bus/-/cspell-service-bus-6.6.0.tgz#d2f726f612ec8c0819750f4a5ca4a86539bbc6a8"
   integrity sha512-jD/yHZSFnWYdmmfSryPQAdFa0BK+BQ7JzXaqiVPKpVZ+QjlIaZwtsg1rn3aC958mDx6rUlH2wkGPFlNzhY705g==
 
-"@cspell/cspell-types@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.5.0.tgz#5836b4f1b0508dbea4caec23d9473f1b4f58c4e9"
-  integrity sha512-vm+HlY+prf9G4s926QS3rZlajtBBnV+lDsjf4v7+7vYmRzic8KATGsUR2zrfTP0H9rH9eeQqd2rPoHhn2iiAlQ==
-
 "@cspell/cspell-types@^6.6.0":
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-6.6.0.tgz#698f751b46e3a64364e6fc23cc736ba709d50666"
