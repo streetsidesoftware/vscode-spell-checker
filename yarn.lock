@@ -304,10 +304,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^6.6.0":
-  version "6.6.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.6.0.tgz#502211242976713c8a29c797dd1e243d5283e1a7"
-  integrity sha512-PF0xazNpIIeyVj6hISfgR/jdOirK8dLyEtILPKeFukQ2R//XJOgOJ0KiujkYMFfIRQAkh9P3Wn+0C8Ne82vcrA==
+"@cspell/cspell-bundled-dicts@^6.6.0", "@cspell/cspell-bundled-dicts@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.6.1.tgz#eb50810dde7deadbb30af26c3f546268b5232352"
+  integrity sha512-XSYxA6fpFepahOe2Cq6UEvPnoo8/wK7Py6x6yn6o+Y7op0pM5bXYKRrr8i2mlb5iC4m5kuwkc6whgtuUiPbo1Q==
   dependencies:
     "@cspell/dict-ada" "^2.0.1"
     "@cspell/dict-aws" "^2.0.0"
@@ -330,7 +330,7 @@
     "@cspell/dict-git" "^1.0.1"
     "@cspell/dict-golang" "^3.0.1"
     "@cspell/dict-haskell" "^2.0.1"
-    "@cspell/dict-html" "^3.0.2"
+    "@cspell/dict-html" "^3.0.3"
     "@cspell/dict-html-symbol-entities" "^3.0.0"
     "@cspell/dict-java" "^3.0.7"
     "@cspell/dict-latex" "^2.0.9"
@@ -477,10 +477,10 @@
   resolved "https://registry.npmjs.org/@cspell/dict-html-symbol-entities/-/dict-html-symbol-entities-3.0.0.tgz#55d5d96c37ecbde00492c4238e229908eea9cedb"
   integrity sha512-04K7cPTcbYXmHICfiob4gZA1yaj4hpfM+Nl5WIJ1EAZsSGHdqmGEF28GuCjyQ8ZeKiJAsPt/vXuLBbjxkHqZyQ==
 
-"@cspell/dict-html@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/@cspell/dict-html/-/dict-html-3.0.2.tgz#acd0a06a9adcbff85d1ed6044c0636fb5294b078"
-  integrity sha512-ugMVQHZTvpYA/w8/E2dbSx2hdfFU9y91Omx40VUC6cNyF7jx00VKueK6gcRF3QZoB1PUhjla2YzxqRxuXI908A==
+"@cspell/dict-html@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-html/-/dict-html-3.0.3.tgz#e7b4917bc557f27877e9cedca6cab6dfb2d41b0f"
+  integrity sha512-z+97/01HTy7ds+16pLaiIdglA1y0CxTw/agUFA/1EDB4GzAiWmtESBGAMfe9j6Lfwffm5ZuMOSTxeeXY04N2YA==
 
 "@cspell/dict-java@^3.0.7":
   version "3.0.7"
