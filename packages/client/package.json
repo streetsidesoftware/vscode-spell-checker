@@ -36,7 +36,7 @@
     "@types/node": "^18.7.3",
     "@types/source-map-support": "^0.5.4",
     "@types/vscode": "^1.70.0",
-    "comment-json": "^4.2.2",
+    "comment-json": "^4.2.3",
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
     "cspell-lib": "^6.6.1",
