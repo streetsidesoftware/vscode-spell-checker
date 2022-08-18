@@ -35,6 +35,8 @@ All notable changes to this project will be documented in this file. See [standa
 * Update jest to 28 ([#2161](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2161)) ([4a62498](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4a624986813db4033327bfbfe72bbacbbfefa37d))
 * Use VSCode FileSystem to read/write config. ([#2162](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2162)) ([00e5eea](https://github.com/streetsidesoftware/vscode-spell-checker/commit/00e5eea6de89e03e50caae5c9bd648b7260901b5))
 
+<!--- cspell:ignore runbook --->
+
 ## [2.5.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.5.3...code-spell-checker-v2.5.4) (2022-08-07)
 
 
