@@ -1,12 +1,12 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
+import { commands, ConfigurationTarget, TextDocument, TextEdit, Uri, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../client';
 import { ConfigFields } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { GetConfigurationScope } from './vsConfig';
+import { GetConfigurationScope, getSettingFromVSConfig } from './vsConfig';
 import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
 
 export type ConfigKeys = keyof CSpellUserSettings;
@@ -55,7 +55,8 @@ export abstract class ConfigRepositoryBase implements ConfigRepository {
 
 export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, name?: string): CSpellConfigRepository {
     const rw = isReaderWriter(src) ? src : createConfigFileReaderWriter(src);
-    return new CSpellConfigRepository(rw, name, true);
+    const autoFormat = !!getSettingFromVSConfig(ConfigFields.autoFormatConfigFile, rw.uri);
+    return new CSpellConfigRepository(rw, name, autoFormat);
 }
 
 export function createVSCodeConfigRepository(
@@ -99,13 +100,33 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         return this.configRW.read([key]);
     }
 
-    update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
-        return this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
+    async update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
+        const formatConfig = this.formatConfig;
+        const uri = this.configFileUri;
+        const configDoc = formatConfig ? findOpenDocument(uri) : undefined;
+        await configDoc?.save(); // This is necessary or the update might break things.
+        await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
+        if (formatConfig) {
+            const edits = await commands.executeCommand<TextEdit[] | undefined>('vscode.executeFormatDocumentProvider', uri);
+            if (!edits || !edits.length) return;
+            const wsEdit = new WorkspaceEdit();
+            wsEdit.set(uri, edits);
+            await workspace.applyEdit(wsEdit);
+            const doc = configDoc || findOpenDocument(uri);
+            if (doc) {
+                await doc.save();
+            }
+        }
     }
 
     static isCSpellConfigRepository(rep: ConfigRepository): rep is CSpellConfigRepository {
         return rep instanceof CSpellConfigRepository;
     }
+}
+
+function findOpenDocument(uri: Uri): TextDocument | undefined {
+    const uriStr = uri.toString(true);
+    return workspace.textDocuments.find((doc) => doc.uri.toString(true) === uriStr);
 }
 
 export class VSCodeRepository extends ConfigRepositoryBase {

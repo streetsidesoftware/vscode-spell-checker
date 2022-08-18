@@ -299,6 +299,7 @@ Default
 
 | Setting                                                                                     | Scope                | Description                                                                     |
 | ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
+| [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                | window               | Auto Format Configuration File                                                  |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                          | resource             | Set Diagnostic Reporting Level                                                  |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                  | resource             | Controls the maximum number of spelling errors per document.                    |
@@ -313,6 +314,27 @@ Default
 | [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
 
 ## Definitions
+
+### `cSpell.autoFormatConfigFile`
+
+Name
+: `cSpell.autoFormatConfigFile` -- Auto Format Configuration File
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: If a `cspell` configuration file is updated, format the configuration file
+using the VS Code Format Document Provider. This will cause the configuration
+file to be saved prior to being updated.
+
+Default
+: _`false`_
+
+---
 
 ### `cSpell.diagnosticLevel`
 
