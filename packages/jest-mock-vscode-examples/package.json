@@ -14,12 +14,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^27.5.2",
+    "@types/jest": "^28.1.7",
     "@types/jest-when": "^3.5.2",
     "@types/vscode": "^1.70.0",
-    "jest-mock-vscode": "^1.0.2",
+    "jest-mock-vscode": "^1.1.0",
     "jest-when": "^3.5.1",
-    "ts-jest": "^27.1.5",
+    "ts-jest": "^28.0.8",
     "typescript": "^4.7.4"
   }
 }
