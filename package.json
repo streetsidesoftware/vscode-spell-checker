@@ -2112,6 +2112,13 @@
         "additionalProperties": false,
         "order": 2,
         "properties": {
+          "cSpell.autoFormatConfigFile": {
+            "default": false,
+            "markdownDescription": "If a `cspell` configuration file is updated, format the configuration file\nusing the VS Code Format Document Provider. This will cause the configuration\nfile to be saved prior to being updated.",
+            "scope": "window",
+            "title": "Auto Format Configuration File",
+            "type": "boolean"
+          },
           "cSpell.diagnosticLevel": {
             "default": "Information",
             "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",

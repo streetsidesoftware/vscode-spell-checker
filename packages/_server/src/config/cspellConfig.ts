@@ -22,6 +22,16 @@ export type {
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**
+     * @title Auto Format Configuration File
+     * @markdownDescription
+     * If a `cspell` configuration file is updated, format the configuration file
+     * using the VS Code Format Document Provider. This will cause the configuration
+     * file to be saved prior to being updated.
+     * @scope window
+     * @default false
+     */
+    autoFormatConfigFile?: boolean;
+    /**
      * The limit in K-Characters to be checked in a file.
      * @scope resource
      * @default 500
@@ -1003,6 +1013,7 @@ type _VSConfigLanguageAndDictionaries = Pick<
 type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
 type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
+    | 'autoFormatConfigFile'
     | 'diagnosticLevel'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
