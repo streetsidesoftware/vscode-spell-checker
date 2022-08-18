@@ -110,6 +110,4 @@ export function isString(s: unknown): s is string {
     return typeof s === 'string';
 }
 
-export function oc<T>(t: Partial<T>): T {
-    return expect.objectContaining(t);
-}
+export const oc = expect.objectContaining;

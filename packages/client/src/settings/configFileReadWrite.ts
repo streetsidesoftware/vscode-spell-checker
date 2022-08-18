@@ -1,12 +1,12 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
 import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
 import { isErrnoException } from 'common-utils/index.js';
-import * as fs from 'fs-extra';
-import { Uri } from 'vscode';
+import { Uri, FileSystemError } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { CSpellUserSettings } from '../client';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
+import { vscodeFs as fs } from './fs';
 export type { ConfigUpdateFn } from './configReaderWriter';
 
 const SymbolFormat = Symbol('format');
@@ -42,7 +42,7 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
         const rw = createConfigFileReaderWriter(uri);
         return await rw._read();
     } catch (e) {
-        if (isErrnoException(e) && e.code === 'ENOENT') {
+        if ((e instanceof FileSystemError && e.code == 'EntryNotFound') || (isErrnoException(e) && e.code === 'ENOENT')) {
             return Promise.resolve(defaultValueIfNotFound);
         }
         return Promise.reject(e);
@@ -94,7 +94,7 @@ interface PackageWithCSpell {
 
 function orDefault<T>(p: Promise<T>, defaultValue: T): Promise<T> {
     return p.catch((e) => {
-        if (e.code !== 'ENOENT') throw e;
+        if (e.code !== 'ENOENT' && e.code !== 'EntryNotFound') throw e;
         return defaultValue;
     });
 }
@@ -190,8 +190,8 @@ abstract class AbstractConfigFileReaderWriter implements ConfigFileReaderWriter 
 
     abstract _update(fn: ConfigUpdateFn): Promise<void>;
 
-    mkdir(): Promise<void> {
-        return fs.mkdirp(Uri.joinPath(this.uri, '..').fsPath);
+    async mkdir(): Promise<void> {
+        return await fs.createDirectory(Uri.joinPath(this.uri, '..'));
     }
 }
 
@@ -206,12 +206,12 @@ class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
         await this.mkdir();
         const json = stringifyJson(cfg);
         const content = json[json.length - 1] !== '\n' ? json + '\n' : json;
-        return fs.writeFile(this.uri.fsPath, content);
+        return fs.writeFile(this.uri, content);
     }
 
     async _read(): Promise<CSpellSettings> {
         const uri = this.uri;
-        const content = await fs.readFile(uri.fsPath, 'utf8');
+        const content = await fs.readFile(uri, 'utf8');
         const s = parseJson(content) as CSpellSettings;
         return s;
     }
@@ -219,24 +219,22 @@ class ConfigFileReaderWriterJson extends AbstractConfigFileReaderWriter {
 
 class ConfigFileReaderWriterPackage extends AbstractConfigFileReaderWriter {
     async _update(updateFn: ConfigUpdateFn): Promise<void> {
-        const fsPath = this.uri.fsPath;
-        const content = await fs.readFile(fsPath, 'utf8');
+        const content = await fs.readFile(this.uri, 'utf8');
         const pkg = parseJson(content) as PackageWithCSpell;
         const cspell = pkg.cspell || { ...settingsFileTemplate };
         pkg.cspell = Object.assign(cspell, updateFn(cspell));
-        return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
+        return fs.writeFile(this.uri, stringifyJson(pkg, spacesPackage, false));
     }
 
     async write(cfg: CSpellSettings): Promise<void> {
-        const fsPath = this.uri.fsPath;
-        const content = await fs.readFile(fsPath, 'utf8');
+        const content = await fs.readFile(this.uri, 'utf8');
         const pkg = parseJson(content) as PackageWithCSpell;
         pkg.cspell = cfg;
-        return fs.writeFile(fsPath, stringifyJson(pkg, spacesPackage, false));
+        return fs.writeFile(this.uri, stringifyJson(pkg, spacesPackage, false));
     }
 
     async _read(): Promise<CSpellSettings> {
-        const content = await fs.readFile(this.uri.fsPath, 'utf8');
+        const content = await fs.readFile(this.uri, 'utf8');
         const pkg = parseJson(content) as { cspell?: CSpellPackageSettings };
         if (!pkg.cspell || typeof pkg.cspell !== 'object') {
             throw new SysLikeError('`cspell` section missing from package.json', 'ENOENT');
@@ -254,11 +252,11 @@ class ConfigFileReaderWriterYaml extends AbstractConfigFileReaderWriter {
 
     async write(cfg: CSpellSettings): Promise<void> {
         await this.mkdir();
-        return fs.writeFile(this.uri.fsPath, stringifyYaml(cfg));
+        return fs.writeFile(this.uri, stringifyYaml(cfg));
     }
 
     async _read(): Promise<CSpellSettings> {
-        const content = await fs.readFile(this.uri.fsPath, 'utf8');
+        const content = await fs.readFile(this.uri, 'utf8');
         return parseYaml(content) as CSpellSettings;
     }
 }
