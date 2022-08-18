@@ -55,7 +55,7 @@ export abstract class ConfigRepositoryBase implements ConfigRepository {
 
 export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, name?: string): CSpellConfigRepository {
     const rw = isReaderWriter(src) ? src : createConfigFileReaderWriter(src);
-    return new CSpellConfigRepository(rw, name);
+    return new CSpellConfigRepository(rw, name, true);
 }
 
 export function createVSCodeConfigRepository(
@@ -88,7 +88,7 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     readonly defaultDictionaryScope: undefined;
     readonly configFileUri: Uri;
 
-    constructor(readonly configRW: ConfigFileReaderWriter, name?: string | undefined) {
+    constructor(readonly configRW: ConfigFileReaderWriter, name: string | undefined, readonly formatConfig: boolean) {
         super();
         this.name = name || uriToName(configRW.uri);
         this.kind = 'cspell';

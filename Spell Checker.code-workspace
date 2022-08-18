@@ -1,90 +1,75 @@
 {
-	"folders": [
-		{
-			"name": "Spell Checker Root",
-			"path": "."
-		},
-		{
-			"name": "Client",
-			"path": "packages/client"
-		},
-		{
-			"name": "Server - Spell Checker",
-			"path": "packages/_server"
-		},
-		{
-			"name": "Server - Pattern Matcher",
-			"path": "packages/_serverPatternMatcher"
-		},
-		{
-			"name": "Settings Viewer",
-			"path": "packages/_settingsViewer"
-		},
-		{
-			"name": "Integration Tests",
-			"path": "packages/_integrationTests"
-		},
-		{
-			"name": "Utils",
-			"path": "packages/__utils"
-		},
-		{
-			"name": "Tools",
-			"path": "packages/___buildTools"
-		},
-		{
-			"name": "Docs",
-			"path": "docs"
-		}
-	],
-	"settings": {
-		"cSpell.import": [
-			"${workspaceFolder:Spell Checker Root}/cSpell.json"
-		],
-		"cSpell.customWorkspaceDictionaries": [
-			"cspell-words"
-		],
-		"typescript.tsdk": "node_modules/typescript/lib",
-		"svg.preview.background": "black",
-		"editor.formatOnSave": true,
-		"files.eol": "\n"
-	},
-	"launch": {
-		"configurations": [
-			{
-				"type": "node",
-				"request": "launch",
-				"name": "Test: Jest current-file",
-				"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
-				"cwd": "${fileDirname}",
-				"args": [
-					"--runInBand",
-					"${fileBasename}"
-				],
-				"console": "integratedTerminal",
-				"internalConsoleOptions": "neverOpen",
-				"disableOptimisticBPs": true,
-				"windows": {
-					"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
-				}
-			},
-			{
-				"type": "node",
-				"request": "launch",
-				"name": "Test: Jest Entire Folder",
-				"program": "${fileWorkspaceFolder}/node_modules/.bin/jest",
-				"cwd": "${fileWorkspaceFolder}",
-				"args": [
-					"--runInBand"
-				],
-				"console": "integratedTerminal",
-				"internalConsoleOptions": "neverOpen",
-				"disableOptimisticBPs": true,
-				"windows": {
-					"program": "${fileWorkspaceFolder}/node_modules/jest/bin/jest",
-				}
-			}
-		],
-		"compounds": []
-	}
+    "folders": [
+        {
+            "name": "Spell Checker Root",
+            "path": "."
+        },
+        {
+            "name": "Client",
+            "path": "packages/client"
+        },
+        {
+            "name": "Server - Spell Checker",
+            "path": "packages/_server"
+        },
+        {
+            "name": "Server - Pattern Matcher",
+            "path": "packages/_serverPatternMatcher"
+        },
+        {
+            "name": "Settings Viewer",
+            "path": "packages/_settingsViewer"
+        },
+        {
+            "name": "Integration Tests",
+            "path": "packages/_integrationTests"
+        },
+        {
+            "name": "Utils",
+            "path": "packages/__utils"
+        },
+        {
+            "name": "Tools",
+            "path": "packages/___buildTools"
+        },
+        {
+            "name": "Docs",
+            "path": "docs"
+        }
+    ],
+    "settings": {
+        "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cSpell.json"],
+        "cSpell.customWorkspaceDictionaries": ["cspell-words"],
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "svg.preview.background": "black",
+        "editor.formatOnSave": true,
+        "files.eol": "\n"
+    },
+    "launch": {
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Test: Jest current-file",
+                "program": "${fileWorkspaceFolder}/../../node_modules/jest/bin/jest",
+                "cwd": "${fileDirname}",
+                "args": ["--runInBand", "${fileBasename}"],
+                "console": "integratedTerminal",
+                "internalConsoleOptions": "neverOpen",
+                "disableOptimisticBPs": true
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Test: Jest Entire Folder",
+                "program": "${fileWorkspaceFolder}/../../node_modules/jest/bin/jest",
+                "cwd": "${fileWorkspaceFolder}",
+                "args": ["--runInBand"],
+                "console": "integratedTerminal",
+                "internalConsoleOptions": "neverOpen",
+                "disableOptimisticBPs": true
+            }
+        ],
+        "compounds": []
+    }
 }
