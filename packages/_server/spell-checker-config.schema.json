@@ -1654,6 +1654,11 @@
           "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
           "scope": "resource",
           "type": "number"
+        },
+        "cSpell.validateDirectives": {
+          "description": "Verify that the in-document directives are correct.",
+          "scope": "window",
+          "type": "boolean"
         }
       },
       "title": "Reporting and Display",

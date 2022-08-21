@@ -312,6 +312,7 @@ Default
 | [`cSpell.showSuggestionsLinkInEditorConte…`](#cspellshowsuggestionslinkineditorcontextmenu) | application          | Show Spelling Suggestions link in the top level context menu.                   |
 | [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                    | resource             | The type of menu used to display spelling suggestions.                          |
 | [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
+| [`cSpell.validateDirectives`](#cspellvalidatedirectives)                                    | window               | Verify that the in-document directives are correct.                             |
 
 ## Definitions
 
@@ -578,6 +579,25 @@ Description
 
 Default
 : _`3`_
+
+---
+
+### `cSpell.validateDirectives`
+
+Name
+: `cSpell.validateDirectives`
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: Verify that the in-document directives are correct.
+
+Default
+: _- none -_
 
 ---
 

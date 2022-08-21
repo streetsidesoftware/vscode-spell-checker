@@ -3,7 +3,7 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
 import * as Validator from './validator';
 import { CSpellUserSettings } from './config/cspellConfig';
-import { SpellingDictionary, constructSettingsForText, getDictionary, Text } from 'cspell-lib';
+import { SpellingDictionary, constructSettingsForText, getDictionary, Text, IssueType } from 'cspell-lib';
 import { isUriAllowed } from './config/documentSettings';
 import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
@@ -22,6 +22,7 @@ import {
     ConfigTargetVSCode,
 } from './config/configTargets';
 import { capitalize } from 'common-utils/util.js';
+import { DiagnosticData } from './models/DiagnosticData';
 
 const createCommand = LangServerCommand.create;
 
@@ -30,6 +31,12 @@ function extractText(textDocument: TextDocument, range: LangServerRange) {
 }
 
 const debugTargets = false;
+
+function extractDiagnosticData(diag: Diagnostic): DiagnosticData {
+    const { data } = diag;
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    return data as DiagnosticData;
+}
 
 export function onCodeActionHandler(
     documents: TextDocuments<TextDocument>,
@@ -93,15 +100,18 @@ export function onCodeActionHandler(
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
             log('CodeAction generate suggestions');
+            let isSpellingIssue: boolean | undefined;
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
+                const { issueType = IssueType.spelling, suggestions } = extractDiagnosticData(diag);
+                isSpellingIssue = isSpellingIssue || issueType === IssueType.spelling;
                 const word = extractText(textDocument, diag.range);
                 diagWord = diagWord || word;
-                const sugs: string[] = await getSuggestions(word);
+                const sugs: string[] = suggestions ?? (await getSuggestions(word));
                 sugs.map((sug) => (Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug))
                     .filter(uniqueFilter())
                     .forEach((sugWord) => {
-                        const cmd = createCommand(sugWord, 'cSpell.editText', uri, textDocument.version, [
+                        const cmd = createCommand(suggestionToTitle(sugWord, issueType), 'cSpell.editText', uri, textDocument.version, [
                             replaceText(diag.range, sugWord),
                         ]);
                         const action = createAction(cmd, [diag]);
@@ -115,9 +125,10 @@ export function onCodeActionHandler(
                         actions.push(action);
                     });
             }
+            isSpellingIssue = isSpellingIssue ?? true;
             const word = diagWord || extractText(textDocument, params.range);
             // Only suggest adding if it is our diagnostic and there is a word.
-            if (word && spellCheckerDiags.length) {
+            if (isSpellingIssue && word && spellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
                 const targets = calculateConfigTargets(docSetting, wConfig);
                 debugTargets && logTargets(targets);
@@ -131,6 +142,26 @@ export function onCodeActionHandler(
     };
 
     return handler;
+}
+
+const directiveToTitle: Record<string, string | undefined> = Object.assign(Object.create(null), {
+    dictionaries: 'dictionaries - CSpell Enable Dictionaries for the file',
+    disable: 'disable - CSpell Disable Spell Checking',
+    disableCaseSensitive: 'disableCaseSensitive - CSpell Disable for the file',
+    'disable-line': 'disable-line - Do not spell check this line.',
+    'disable-next': 'disable-next - Do not spell check the next line.',
+    'disable-next-line': 'disable-next-line - Do not spell check the next line.',
+    enable: 'enable - CSpell Enable Spell Checking',
+    enableCaseSensitive: 'enableCaseSensitive - CSpell Enable for file.',
+    ignore: 'ignore - CSpell ignore [word]',
+    locale: 'locale - CSpell set the locale.',
+    word: 'word - CSpell word [word]',
+    words: 'words - CSpell words [word]',
+});
+
+function suggestionToTitle(sug: string, issueType: IssueType): string {
+    if (issueType === IssueType.spelling) return sug;
+    return directiveToTitle[sug] || sug;
 }
 
 function logTargets(targets: ConfigTarget[]): void {

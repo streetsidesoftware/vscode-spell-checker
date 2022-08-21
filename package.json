@@ -2219,6 +2219,11 @@
             "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
             "scope": "resource",
             "type": "number"
+          },
+          "cSpell.validateDirectives": {
+            "description": "Verify that the in-document directives are correct.",
+            "scope": "window",
+            "type": "boolean"
           }
         },
         "title": "Reporting and Display",
@@ -2270,14 +2275,14 @@
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.4",
-    "vsce": "^2.10.0"
+    "vsce": "^2.10.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.7.0",
-    "@cspell/cspell-types": "^6.7.0",
+    "@cspell/cspell-bundled-dicts": "^6.8.0",
+    "@cspell/cspell-types": "^6.8.0",
     "@types/react": "^17.0.48",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^6.7.0",
+    "cspell": "^6.8.0",
     "regexp-worker": "^1.1.1"
   },
   "comment-resolutions": {

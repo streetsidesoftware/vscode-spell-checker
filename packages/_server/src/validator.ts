@@ -1,10 +1,11 @@
+import { createTextDocument, DocumentValidator } from 'cspell-lib';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { validateText } from 'cspell-lib';
+import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver-types';
 import type { CSpellUserSettings } from './config/cspellConfig';
-import { DiagnosticSeverity, Diagnostic } from 'vscode-languageserver-types';
 import { diagnosticSource } from './constants';
+import { DiagnosticData } from './models/DiagnosticData';
 
-export { validateText } from 'cspell-lib';
+export { createTextDocument, validateText } from 'cspell-lib';
 
 export const diagnosticCollectionName = diagnosticSource;
 export const diagSource = diagnosticCollectionName;
@@ -21,8 +22,17 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
     const { diagnosticLevel = DiagnosticSeverity.Information.toString() } = options;
     const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
-    const text = textDocument.getText().slice(0, limit);
-    const r = await validateText(text, options);
+    const content = textDocument.getText().slice(0, limit);
+    const docInfo = {
+        uri: textDocument.uri,
+        content,
+        languageId: textDocument.languageId,
+        version: textDocument.version,
+    };
+    const doc = createTextDocument(docInfo);
+    const docVal = new DocumentValidator(doc, { noConfigSearch: true }, options);
+    await docVal.prepare();
+    const r = await docVal.checkDocumentAsync(true);
     const diags = r
         // Convert the offset into a position
         .map((issue) => ({ ...issue, position: textDocument.positionAt(issue.offset) }))
@@ -35,11 +45,10 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             },
         }))
         // Convert it to a Diagnostic
-        .map(({ text, range, isFlagged }) => ({
-            severity,
-            range: range,
-            message: `"${text}": ${isFlagged ? 'Forbidden' : 'Unknown'} word.`,
-            source: diagSource,
-        }));
+        .map(({ text, range, isFlagged, message, issueType, suggestions }) => {
+            const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
+            const data: DiagnosticData = { issueType, suggestions };
+            return { severity, range, message: diagMessage, source: diagSource, data };
+        });
     return diags;
 }
