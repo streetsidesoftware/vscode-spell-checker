@@ -882,6 +882,11 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      */
     noSuggestDictionaries?: CSpellSettings['noSuggestDictionaries'];
+
+    /**
+     * @scope window
+     */
+    validateDirectives?: CSpellSettings['validateDirectives'];
 }
 
 /**
@@ -1026,6 +1031,7 @@ type _VSConfigReporting = Pick<
     | 'showSuggestionsLinkInEditorContextMenu'
     | 'suggestionMenuType'
     | 'suggestionNumChanges'
+    | 'validateDirectives'
 >;
 
 /**
