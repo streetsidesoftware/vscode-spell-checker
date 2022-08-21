@@ -312,6 +312,7 @@ Default
 | [`cSpell.showSuggestionsLinkInEditorConte…`](#cspellshowsuggestionslinkineditorcontextmenu) | application          | Show Spelling Suggestions link in the top level context menu.                   |
 | [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                    | resource             | The type of menu used to display spelling suggestions.                          |
 | [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
+| [`cSpell.validateDirectives`](#cspellvalidatedirectives)                                    | window               | Verify that the in-document directives are correct.                             |
 
 ## Definitions
 
@@ -578,6 +579,25 @@ Description
 
 Default
 : _`3`_
+
+---
+
+### `cSpell.validateDirectives`
+
+Name
+: `cSpell.validateDirectives`
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: Verify that the in-document directives are correct.
+
+Default
+: _- none -_
 
 ---
 
@@ -1041,13 +1061,12 @@ Default
 
 # CSpell
 
-| Setting                                                  | Scope    | Description                                                                                    |
-| -------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)     | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist)   | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
-| [`cSpell.overrides`](#cspelloverrides)                   | resource | Overrides are used to apply settings for specific files in your project.                       |
-| [`cSpell.patterns`](#cspellpatterns)                     | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
-| [`cSpell.validateDirectives`](#cspellvalidatedirectives) |          | Verify that the in-document directives are correct.                                            |
+| Setting                                                | Scope    | Description                                                                                    |
+| ------------------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------- |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
+| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                       |
+| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
 
 ## Definitions
 
@@ -1169,25 +1188,6 @@ Description
       }
     ]
     ```
-
-Default
-: _- none -_
-
----
-
-### `cSpell.validateDirectives`
-
-Name
-: `cSpell.validateDirectives`
-
-Type
-: boolean
-
-Scope
-:
-
-Description
-: Verify that the in-document directives are correct.
 
 Default
 : _- none -_
