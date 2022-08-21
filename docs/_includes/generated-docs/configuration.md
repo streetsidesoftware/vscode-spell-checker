@@ -1041,12 +1041,13 @@ Default
 
 # CSpell
 
-| Setting                                                | Scope    | Description                                                                                    |
-| ------------------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------- |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
-| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                       |
-| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
+| Setting                                                  | Scope    | Description                                                                                    |
+| -------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)     | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist)   | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
+| [`cSpell.overrides`](#cspelloverrides)                   | resource | Overrides are used to apply settings for specific files in your project.                       |
+| [`cSpell.patterns`](#cspellpatterns)                     | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
+| [`cSpell.validateDirectives`](#cspellvalidatedirectives) |          | Verify that the in-document directives are correct.                                            |
 
 ## Definitions
 
@@ -1168,6 +1169,25 @@ Description
       }
     ]
     ```
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.validateDirectives`
+
+Name
+: `cSpell.validateDirectives`
+
+Type
+: boolean
+
+Scope
+:
+
+Description
+: Verify that the in-document directives are correct.
 
 Default
 : _- none -_
