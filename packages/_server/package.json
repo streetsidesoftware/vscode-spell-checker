@@ -26,9 +26,9 @@
   "devDependencies": {
     "@cspell/cspell-types": "^6.8.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^28.1.7",
+    "@types/jest": "^28.1.8",
     "@types/micromatch": "^4.0.2",
-    "@types/node": "^18.7.8",
+    "@types/node": "^18.7.13",
     "common-utils": "1.0.0",
     "cspell-glob": "^6.8.0",
     "cspell-lib": "^6.8.0",
