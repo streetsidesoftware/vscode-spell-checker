@@ -43,7 +43,8 @@ describe('Validate Pipe', () => {
         expect(pipe(student2, extract('address'), extract('postcode'), defaultTo('90210'))).toBe('90211');
     });
     test('extract', () => {
-        expect(pipe(student2, extract('address', 'postcode'))).toBe('90211');
+        const postcode = pipe(student2, extract('address', 'postcode'));
+        expect(postcode).toBe('90211');
         expect(pipe(business2, extract('owner', 'address', 'postcode'))).toBe('90211');
         expect(pipe(business2, extract('owner', 'friends', 0, 'name'))).toBe(student1.name);
         expect(pipe(business2, extract('owner', 'friends', 1, 'name'))).toBeUndefined();
