@@ -1,17 +1,12 @@
-import { TextDocuments, CodeActionParams, Range as LangServerRange, Command as LangServerCommand } from 'vscode-languageserver/node';
+import { log, logDebug } from 'common-utils/log.js';
+import { capitalize } from 'common-utils/util.js';
+import { constructSettingsForText, getDictionary, IssueType, SpellingDictionary, Text } from 'cspell-lib';
+import { format } from 'util';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
-import * as Validator from './validator';
-import { CSpellUserSettings } from './config/cspellConfig';
-import { SpellingDictionary, constructSettingsForText, getDictionary, Text, IssueType } from 'cspell-lib';
-import { isUriAllowed } from './config/documentSettings';
-import { SuggestionGenerator, GetSettingsResult } from './SuggestionsGenerator';
-import { uniqueFilter } from './utils';
-import { log, logDebug } from 'common-utils/log.js';
+import { CodeActionParams, Command as LangServerCommand, Range as LangServerRange, TextDocuments } from 'vscode-languageserver/node';
 import { ClientApi } from './clientApi';
-import { format } from 'util';
 import { clientCommands as cc } from './commands';
-import { calculateConfigTargets } from './config/configTargetsHelper';
 import {
     ConfigKinds,
     ConfigScope,
@@ -21,8 +16,13 @@ import {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from './config/configTargets';
-import { capitalize } from 'common-utils/util.js';
+import { calculateConfigTargets } from './config/configTargetsHelper';
+import { CSpellUserSettings } from './config/cspellConfig';
+import { isUriAllowed } from './config/documentSettings';
 import { DiagnosticData } from './models/DiagnosticData';
+import { GetSettingsResult, SuggestionGenerator } from './SuggestionsGenerator';
+import { uniqueFilter } from './utils';
+import * as Validator from './validator';
 
 const createCommand = LangServerCommand.create;
 
@@ -111,9 +111,9 @@ export function onCodeActionHandler(
                 sugs.map((sug) => (Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug))
                     .filter(uniqueFilter())
                     .forEach((sugWord) => {
-                        const cmd = createCommand(suggestionToTitle(sugWord, issueType), 'cSpell.editText', uri, textDocument.version, [
-                            replaceText(diag.range, sugWord),
-                        ]);
+                        const title = suggestionToTitle(sugWord, issueType);
+                        if (!title) return;
+                        const cmd = createCommand(title, 'cSpell.editText', uri, textDocument.version, [replaceText(diag.range, sugWord)]);
                         const action = createAction(cmd, [diag]);
                         /**
                          * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
@@ -145,23 +145,29 @@ export function onCodeActionHandler(
 }
 
 const directiveToTitle: Record<string, string | undefined> = Object.assign(Object.create(null), {
-    dictionaries: 'dictionaries - CSpell Enable Dictionaries for the file',
-    disable: 'disable - CSpell Disable Spell Checking',
-    disableCaseSensitive: 'disableCaseSensitive - CSpell Disable for the file',
-    'disable-line': 'disable-line - Do not spell check this line.',
-    'disable-next': 'disable-next - Do not spell check the next line.',
-    'disable-next-line': 'disable-next-line - Do not spell check the next line.',
-    enable: 'enable - CSpell Enable Spell Checking',
-    enableCaseSensitive: 'enableCaseSensitive - CSpell Enable for file.',
-    ignore: 'ignore - CSpell ignore [word]',
-    locale: 'locale - CSpell set the locale.',
-    word: 'word - CSpell word [word]',
-    words: 'words - CSpell words [word]',
+    dictionary: 'cspell\x3adictionary - Enable Dictionaries for the file.',
+    dictionaries: 'cspell\x3adictionaries - Enable Dictionaries for the file.',
+    disable: 'cspell\x3adisable - Disable Spell Checking from this point.',
+    disableCaseSensitive: 'cspell\x3adisableCaseSensitive - Disable for the file.',
+    'disable-line': 'cspell\x3adisable-line - Do not spell check this line.',
+    'disable-next': 'cspell\x3adisable-next - Do not spell check the next line.',
+    'disable-next-line': 'cspell\x3adisable-next-line - Do not spell check the next line.',
+    enable: 'cspell\x3aenable - Enable Spell Checking from this point.',
+    enableCaseSensitive: 'cspell\x3aenableCaseSensitive - Enable for the file.',
+    ignore: 'cspell\x3aignore - Ignore [word].',
+    locale: 'cspell\x3alocale - Set the locale.',
+    word: 'cspell\x3aword - Allow word [word].',
+    words: 'cspell\x3awords - Allow words [word].',
 });
 
-function suggestionToTitle(sug: string, issueType: IssueType): string {
+const directivesToHide: Record<string, true | undefined> = {
+    local: true,
+};
+
+function suggestionToTitle(sug: string, issueType: IssueType): string | undefined {
     if (issueType === IssueType.spelling) return sug;
-    return directiveToTitle[sug] || sug;
+    if (sug in directivesToHide) return undefined;
+    return directiveToTitle[sug] || 'cspell\x3a' + sug;
 }
 
 function logTargets(targets: ConfigTarget[]): void {
