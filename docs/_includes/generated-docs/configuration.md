@@ -827,7 +827,7 @@ Description
 This same effect can be achieved using the `#cSpell.files#` setting.
 
     ```js
-    "cSpell.files": ["**"]
+    "cSpell.files": ["/**"]
     ```
 
 Default
