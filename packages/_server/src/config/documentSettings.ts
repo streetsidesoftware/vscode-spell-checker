@@ -322,7 +322,7 @@ export class DocumentSettings {
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
         if (!files.length && cSpellConfigSettings.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
-            folders.forEach((folder) => files.push({ glob: '**', root: Uri.parse(folder.uri).fsPath }));
+            folders.forEach((folder) => files.push({ glob: '/**', root: Uri.parse(folder.uri).fsPath }));
             fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
         }
         fileSettings.files = files;
@@ -333,9 +333,10 @@ export class DocumentSettings {
         setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
         const includeGlobMatcher = new GlobMatcher(files, includeOptions);
 
+        const cSpell = cSpellConfigSettings;
         const ext: ExtSettings = {
             uri: docUri,
-            vscodeSettings: { cSpell: cSpellConfigSettings },
+            vscodeSettings: { cSpell },
             settings: fileSettings,
             excludeGlobMatcher,
             includeGlobMatcher,
