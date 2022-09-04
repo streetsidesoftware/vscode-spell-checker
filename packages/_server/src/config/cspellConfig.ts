@@ -295,7 +295,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      *
      * ```js
-     * "cSpell.files": ["**"]
+     * "cSpell.files": ["/**"]
      * ```
      * @default false
      */

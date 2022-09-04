@@ -762,7 +762,7 @@
         },
         "cSpell.spellCheckOnlyWorkspaceFiles": {
           "default": false,
-          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `#cSpell.files#` setting.\n\n\n```js\n\"cSpell.files\": [\"**\"]\n```",
+          "markdownDescription": "Only spell check files that are in the currently open workspace.\nThis same effect can be achieved using the `#cSpell.files#` setting.\n\n\n```js\n\"cSpell.files\": [\"/**\"]\n```",
           "scope": "window",
           "title": "Spell Check Only Workspace Files",
           "type": "boolean"
