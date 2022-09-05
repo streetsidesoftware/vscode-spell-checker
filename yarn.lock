@@ -4117,7 +4117,7 @@ glob@7.2.0:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.6, glob@^7.1.3, glob@^7.1.4, glob@^7.2.0:
+glob@^7.0.6, glob@^7.1.3, glob@^7.1.4:
   version "7.2.3"
   resolved "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz#b8df0fb802bbfa8e89bd1d938b4e16578ed44f2b"
   integrity sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==
@@ -4129,7 +4129,7 @@ glob@^7.0.6, glob@^7.1.3, glob@^7.1.4, glob@^7.2.0:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^8.0.3:
+glob@^8.0.1, glob@^8.0.3:
   version "8.0.3"
   resolved "https://registry.npmjs.org/glob/-/glob-8.0.3.tgz#415c6eb2deed9e502c68fa44a272e6da6eeca42e"
   integrity sha512-ull455NHSHI/Y1FqGaaYFaLGkNMMJbavMrEGFXG/PGrg6y7sutWHUHrz6gy6WEBH6akM1M414dWKCNs+IhKdiQ==
@@ -7256,15 +7256,16 @@ ts-jest@^28.0.8:
     semver "7.x"
     yargs-parser "^21.0.1"
 
-ts-json-schema-generator@^1.0.1-next.1:
-  version "1.0.1-next.1"
-  resolved "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-1.0.1-next.1.tgz#3ba3961f20981e12abf889473e47dc19c92d6c6f"
-  integrity sha512-yhNdMLdFu+XIs675Zwk4RHizTZXj7nc2QbqQcMlEt5B9o4S7tFo9C9lycVN9vtq0/sZSp9OPkqQQ95iDAyLEtw==
+ts-json-schema-generator@^1.1.0-next.5:
+  version "1.1.0-next.5"
+  resolved "https://registry.npmjs.org/ts-json-schema-generator/-/ts-json-schema-generator-1.1.0-next.5.tgz#25562adfd0d4b914fce978190f91ba55abba0d09"
+  integrity sha512-XXJ3/vznoxnLRh8+je8RyDSQZLHoqhbYm8au0LEQL0ieM1XrieGy8sTCbAyLSZp+S39L6CA3qr1zjd12kJkNrA==
   dependencies:
     "@types/json-schema" "^7.0.9"
     commander "^9.0.0"
-    glob "^7.2.0"
+    glob "^8.0.1"
     json5 "^2.2.0"
+    normalize-path "^3.0.0"
     safe-stable-stringify "^2.3.1"
     typescript "~4.6.2"
 
