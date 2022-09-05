@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.7.1...code-spell-checker-v2.7.2) (2022-09-05)
+
+
+### Continuous Integration
+
+* Workflow Bot -- Update ALL Dependencies ([cb79434](https://github.com/streetsidesoftware/vscode-spell-checker/commit/cb794343be1d89493b62054d4ffc4a42a3c6502f))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2198](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2198)) ([cb79434](https://github.com/streetsidesoftware/vscode-spell-checker/commit/cb794343be1d89493b62054d4ffc4a42a3c6502f))
+
+
+### Updates and Bug Fixes
+
+* Enable `useGitignore` at folder level. ([#2200](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2200)) ([61fb943](https://github.com/streetsidesoftware/vscode-spell-checker/commit/61fb9433d4179bd3966bb9b6860183bd92760c4d))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump @types/glob from 7.2.0 to 8.0.0 ([#2191](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2191)) ([7fb3e4e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7fb3e4ef816c6609ac1613113be129e3ad709427))
+* update and remove packages ([#2202](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2202)) ([50133da](https://github.com/streetsidesoftware/vscode-spell-checker/commit/50133da629c1d5f8fbfb524ede18e010125e7e56))
+
 ## [2.7.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.7.0...code-spell-checker-v2.7.1) (2022-09-05)
 
 
