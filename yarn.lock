@@ -6475,10 +6475,10 @@ regex-parser@^2.2.11:
   resolved "https://registry.npmjs.org/regex-parser/-/regex-parser-2.2.11.tgz#3b37ec9049e19479806e878cabe7c1ca83ccfe58"
   integrity sha512-jbD/FT0+9MBU2XAZluI7w2OBs1RBi6p9M83nkoZayQXXU9e8Robt69FcZc7wU4eJD/YFTjn1JdCk3rbMJajz8Q==
 
-regexp-worker@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/regexp-worker/-/regexp-worker-1.1.1.tgz#01ceba166e26d7b436c001d7a9216823f32ac9fc"
-  integrity sha512-FpHJ2gdS6VI0LF+HkksqkugJqlPZwxXW8xRRCWBrx/wh2MQnYsST0WUHCe36WqGk/KpLo9DEaLVzjl3CvxPDEw==
+regexp-worker@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/regexp-worker/-/regexp-worker-2.0.1.tgz#257c5c1d8004b5da14c1935b3efea6a238ef6871"
+  integrity sha512-VtprUr44+P7Vw21J3Tiny2BiaUMapx9j0p0onieCua9zfU52wfAgpmltG0/0JY8Ct6okaZguoaDgvBzDlqV7fA==
 
 regexp.prototype.flags@^1.4.1, regexp.prototype.flags@^1.4.3:
   version "1.4.3"

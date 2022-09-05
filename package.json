@@ -2283,7 +2283,7 @@
     "@types/react": "^17.0.49",
     "cosmiconfig": "^7.0.1",
     "cspell": "^6.8.1",
-    "regexp-worker": "^1.1.1"
+    "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
     "@types/react": "Can be removed after moving to react 18."
