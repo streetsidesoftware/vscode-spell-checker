@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.7.0...code-spell-checker-v2.7.1) (2022-09-05)
+
+
+### Continuous Integration
+
+* Workflow Bot -- Update ALL Dependencies ([42901d2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/42901d2606b9a8a6c0a751224fb7fb84233d064b))
+* Workflow Bot -- Update ALL Dependencies ([23e22fc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/23e22fcf03349323200f7e815d8c6821089e3b27))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2188](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2188)) ([23e22fc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/23e22fcf03349323200f7e815d8c6821089e3b27))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2194](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2194)) ([42901d2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/42901d2606b9a8a6c0a751224fb7fb84233d064b))
+
+
+### Updates and Bug Fixes
+
+* Fix glob in description of `spellCheckOnlyWorkspaceFiles` ([#2193](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2193)) ([ad01d1e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ad01d1e92a65b64b93b40053a7ff636f46a3e754))
+* Update glob to match only files in workspace folders ([#2195](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2195)) ([9c89f2f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9c89f2f8fbf5864f58442c6b35da05aca00550e4)), closes [#2192](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2192)
+
+
+### Miscellaneous
+
+* **deps:** bump regexp-worker from 1.1.1 to 2.0.1 ([#2197](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2197)) ([c6397cb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c6397cb87363552230a4ce545734c0219c8bc607))
+
 ## [2.7.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.6.0...code-spell-checker-v2.7.0) (2022-08-28)
 
 
