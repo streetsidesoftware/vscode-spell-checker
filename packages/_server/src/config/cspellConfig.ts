@@ -851,7 +851,7 @@ interface CSpellSettingsPackageProperties extends CSpellSettings {
     noConfigSearch?: CSpellSettings['noConfigSearch'];
 
     /**
-     * @scope window
+     * @scope resource
      * @default true
      */
     useGitignore?: CSpellSettings['useGitignore'];
