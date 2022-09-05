@@ -614,7 +614,7 @@ Default
 | [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
 | [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
 | [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                               |
-| [`cSpell.useGitignore`](#cspellusegitignore)                                 | window   | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
+| [`cSpell.useGitignore`](#cspellusegitignore)                                 | resource | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
 | [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…   |
 | [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                     |
 
@@ -844,7 +844,7 @@ Type
 : boolean
 
 Scope
-: window
+: resource
 
 Description
 : Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.
