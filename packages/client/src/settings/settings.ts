@@ -4,8 +4,9 @@ import { Uri, workspace } from 'vscode';
 import { CSpellUserSettings } from '../client';
 import { unique } from '../util';
 import { ClientConfigTarget } from './clientConfigTarget';
-import { readConfigFile, writeConfigFile } from './configFileReadWrite';
+import { writeConfigFile } from './configFileReadWrite';
 import { normalizeWords, preferredConfigFiles } from './CSpellSettings';
+import { vscodeFs as fs } from './fs';
 import { setConfigFieldQuickPick } from './settings.base';
 
 export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable';
@@ -90,7 +91,7 @@ const settingsFileTemplate: CSpellSettings = {
 };
 
 export async function createConfigFile(fileUri: Uri, overwrite?: boolean): Promise<Uri | undefined> {
-    if (!overwrite && (await readConfigFile(fileUri, undefined))) {
+    if (!overwrite && (await fs.fileExists(fileUri))) {
         const overwrite = 'Overwrite';
         const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite);
         if (choice !== overwrite) {

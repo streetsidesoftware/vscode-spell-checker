@@ -15,6 +15,15 @@ const allowNumberOrUndefined: AllowedTypes = {
     undefined: true,
 };
 
+interface ErrorCodeException {
+    code: string;
+}
+
+export function isErrorCodeException(e: unknown): e is ErrorCodeException {
+    if (!e || typeof e !== 'object') return false;
+    return typeof (<ErrorCodeException>e).code === 'string';
+}
+
 export function isErrnoException(e: unknown): e is NodeJS.ErrnoException {
     if (!e || typeof e !== 'object') return false;
     const ex = <NodeJS.ErrnoException>e;

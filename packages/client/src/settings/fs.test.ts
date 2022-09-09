@@ -1,4 +1,4 @@
-import { Uri } from 'vscode';
+import { FileSystemError, Uri } from 'vscode';
 import { URI, Utils as UriUtils } from 'vscode-uri';
 import { fsRemove, getPathToTemp } from '../test/helpers';
 import { vscodeFs } from './fs';
@@ -37,6 +37,26 @@ describe('fs', () => {
         const uriDest = Uri.joinPath(getPathToTemp(), uri);
         await fsRemove(uriDest);
         expect(vscodeFs.createDirectory(uriDest)).resolves.toBeUndefined();
+    });
+
+    test.each`
+        uri                     | expected
+        ${'notFound.txt'}       | ${false}
+        ${Uri.file(__filename)} | ${true}
+    `('fileExists $uri', async ({ uri, expected }) => {
+        const uriDest = typeof uri === 'string' ? Uri.joinPath(getPathToTemp(), uri) : uri;
+        expect(await vscodeFs.fileExists(uriDest)).toBe(expected);
+    });
+
+    test.each`
+        error                             | expected
+        ${'testing'}                      | ${false}
+        ${{ code: 'FileNotFound' }}       | ${true}
+        ${{ code: 'ENOENT' }}             | ${true}
+        ${FileSystemError.FileExists()}   | ${false}
+        ${FileSystemError.FileNotFound()} | ${true}
+    `('isFileNotFoundError $error', async ({ error, expected }) => {
+        expect(vscodeFs.isFileNotFoundError(error)).toBe(expected);
     });
 });
 

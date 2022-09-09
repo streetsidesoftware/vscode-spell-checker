@@ -1,7 +1,6 @@
 import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
 import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
-import { isErrnoException } from 'common-utils/index.js';
-import { Uri, FileSystemError } from 'vscode';
+import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { CSpellUserSettings } from '../client';
@@ -42,7 +41,7 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
         const rw = createConfigFileReaderWriter(uri);
         return await rw._read();
     } catch (e) {
-        if ((e instanceof FileSystemError && e.code == 'EntryNotFound') || (isErrnoException(e) && e.code === 'ENOENT')) {
+        if (fs.isFileNotFoundError(e)) {
             return Promise.resolve(defaultValueIfNotFound);
         }
         return Promise.reject(e);
@@ -94,7 +93,7 @@ interface PackageWithCSpell {
 
 function orDefault<T>(p: Promise<T>, defaultValue: T): Promise<T> {
     return p.catch((e) => {
-        if (e.code !== 'ENOENT' && e.code !== 'EntryNotFound') throw e;
+        if (!fs.isFileNotFoundError(e)) throw e;
         return defaultValue;
     });
 }
