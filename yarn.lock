@@ -304,19 +304,19 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@^6.8.1":
-  version "6.8.1"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.8.1.tgz#e032b9f1fa01417bc19f4ee7de933d6360ff2869"
-  integrity sha512-hZCAtUeEsQ16f9SvruKYB9nFDjt+VXtZ/yJHONo6+dev9A6JpsUGWGL2oja6fD4j+mvFoMc/Dm1wzhtTYeSvhA==
+"@cspell/cspell-bundled-dicts@^6.8.1", "@cspell/cspell-bundled-dicts@^6.8.2":
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.8.2.tgz#0e55acfcd4f7fa8a1e1f0487f8c955096320c450"
+  integrity sha512-E4sNdcG23nj0ztiI69PeU+ALL6DgL3GoqVZuLhpRwgRL4RN7n7FuUJdJ91cgpNvx50+HhdyxFqEpKRigD3yeNQ==
   dependencies:
     "@cspell/dict-ada" "^2.0.1"
     "@cspell/dict-aws" "^2.0.0"
     "@cspell/dict-bash" "^2.0.4"
-    "@cspell/dict-companies" "^2.0.11"
+    "@cspell/dict-companies" "^2.0.13"
     "@cspell/dict-cpp" "^3.2.1"
     "@cspell/dict-cryptocurrencies" "^2.0.0"
     "@cspell/dict-csharp" "^3.0.1"
-    "@cspell/dict-css" "^2.0.1"
+    "@cspell/dict-css" "^2.1.0"
     "@cspell/dict-dart" "^1.1.1"
     "@cspell/dict-django" "^2.0.0"
     "@cspell/dict-docker" "^1.1.1"
@@ -330,7 +330,7 @@
     "@cspell/dict-git" "^1.0.1"
     "@cspell/dict-golang" "^3.0.1"
     "@cspell/dict-haskell" "^2.0.1"
-    "@cspell/dict-html" "^3.1.0"
+    "@cspell/dict-html" "^3.3.2"
     "@cspell/dict-html-symbol-entities" "^3.0.0"
     "@cspell/dict-java" "^3.0.7"
     "@cspell/dict-latex" "^2.0.9"
@@ -346,7 +346,7 @@
     "@cspell/dict-ruby" "^2.0.2"
     "@cspell/dict-rust" "^2.0.1"
     "@cspell/dict-scala" "^2.0.0"
-    "@cspell/dict-software-terms" "^2.2.3"
+    "@cspell/dict-software-terms" "^2.2.7"
     "@cspell/dict-sql" "^1.0.4"
     "@cspell/dict-swift" "^1.0.3"
     "@cspell/dict-typescript" "^2.0.1"
@@ -382,7 +382,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-2.0.4.tgz#93f0ff159d96b8823fed9282f803e4f3447af33d"
   integrity sha512-uK/ehmp5LYrmRH2Gv3nbvdPswpkybJUn34WYKLpeuYHQktmi+pOI1A9uPdBPnSbMDffSvwQlQohIyKawz+X8Ag==
 
-"@cspell/dict-companies@^2.0.11":
+"@cspell/dict-companies@^2.0.13":
   version "2.0.13"
   resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-2.0.13.tgz#5773f555d3e19c961dc276317a5a34c730f23c78"
   integrity sha512-EacGH6Yjd2u+sNRLd6+3jxbzWBSsmF4g52Xfxfv2T48qzRWJ1zqpX89ijihgYTwvZbf8H/6Lu+z1VU4e1gUp0g==
@@ -402,7 +402,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-csharp/-/dict-csharp-3.0.1.tgz#94a673e02bb7cc03c25bc699bc1b5bd786c2c5fd"
   integrity sha512-xkfQu03F388w4sdVQSSjrVMkxAxpTYB2yW7nw0XYtTjl3L/jBgvTr/j1BTjdFbQhdNf10Lg0Ak1kXOjmHodVqA==
 
-"@cspell/dict-css@^2.0.1":
+"@cspell/dict-css@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@cspell/dict-css/-/dict-css-2.1.0.tgz#799708a8e59cb58077b21b1f37aacdc75c240efb"
   integrity sha512-glASAELcGhh4Ru0rTQ4G9mTQxSyPwsZOON/5BYflB6Kks8YC8nUvKrtMCoo5W7CPKPfSEa8zUNctFQ1+IUYDHA==
@@ -477,7 +477,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-html-symbol-entities/-/dict-html-symbol-entities-3.0.0.tgz#55d5d96c37ecbde00492c4238e229908eea9cedb"
   integrity sha512-04K7cPTcbYXmHICfiob4gZA1yaj4hpfM+Nl5WIJ1EAZsSGHdqmGEF28GuCjyQ8ZeKiJAsPt/vXuLBbjxkHqZyQ==
 
-"@cspell/dict-html@^3.1.0":
+"@cspell/dict-html@^3.3.2":
   version "3.3.2"
   resolved "https://registry.npmjs.org/@cspell/dict-html/-/dict-html-3.3.2.tgz#5b5fa6b2b8a1d51f8f735dc3fd5310ff287c29bf"
   integrity sha512-cM5pQSEiqjrdk6cRFLrlLdWNT/J8399f/A6DjwjfYhHrGy0e/Rsjv76HZT0GlE1OqMoq9eG9jdQsfoYYgWTIpQ==
@@ -552,7 +552,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-scala/-/dict-scala-2.0.0.tgz#b8098103bb03a13406c1c79f1769052353aafac4"
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
-"@cspell/dict-software-terms@^2.2.3":
+"@cspell/dict-software-terms@^2.2.7":
   version "2.2.7"
   resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.2.7.tgz#3c4e0a04e12e3a8d08a8787d7fddc4469bc50487"
   integrity sha512-tNdgfijX4PGIzwWyRQHqEsKEWqNc92HDdURcXBZNw2po7jUh+/FgqBoUgnJXyLastJ9PGX9847j9uNBPfShTgA==
