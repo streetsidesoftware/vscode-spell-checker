@@ -2282,7 +2282,7 @@
     "@cspell/cspell-types": "^6.8.1",
     "@types/react": "^17.0.49",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^6.8.1",
+    "cspell": "^6.8.2",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
