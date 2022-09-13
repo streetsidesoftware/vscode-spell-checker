@@ -1316,7 +1316,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.49":
   version "17.0.49"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.49.tgz#df87ba4ca8b7942209c3dc655846724539dc1049"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.49.tgz#df87ba4ca8b7942209c3dc655846724539dc1049"
   integrity sha512-CCBPMZaPhcKkYUTqFs/hOWqKjPxhTEmnZWjlHHgIMop67DsXywf9B5Os9Hz8KSacjNOgIdnZVJamwl232uxoPg==
   dependencies:
     "@types/prop-types" "*"
@@ -3024,10 +3024,10 @@ cspell-gitignore@^6.8.1:
     cspell-glob "^6.8.1"
     find-up "^5.0.0"
 
-cspell-glob@^6.8.1:
-  version "6.8.1"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.8.1.tgz#811b0220dc6cd81021b32f1498f135a7998067df"
-  integrity sha512-LSiGN9ht4cJdr/zIuh6GlV0soYKPBNvQovhjYPFZZjvCbH7iIkTNxCuXBKylF1iorsH1jrTY88fmNBeYqkwuFA==
+cspell-glob@^6.8.1, cspell-glob@^6.8.2:
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-6.8.2.tgz#c8b01def75a2d8bab52c5d7c03a1923847669b92"
+  integrity sha512-FKy2EIdQKO9b/vP0r8yqxtGQNA8M48DkwMSjW2mN1Qku5wRT8SPByKg87BjK4oztlIiQJoJ6+8OTrWnJwdbpQw==
   dependencies:
     micromatch "^4.0.5"
 
