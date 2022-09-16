@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.7.3...code-spell-checker-v2.8.0) (2022-09-15)
+
+
+### Features
+
+* Update CSpell to 6.9.0 ([#2228](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2228)) ([5022568](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5022568c1aa5db1a0aa0e0a30130d0b11c735894))
+
+
+### Continuous Integration
+
+* Workflow Bot -- Update ALL Dependencies ([5022568](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5022568c1aa5db1a0aa0e0a30130d0b11c735894))
+* Workflow Bot -- Update ALL Dependencies ([1a4e143](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1a4e1436b38b29ef79c7e76da1637e2c0f18693a))
+* Workflow Bot -- Update ALL Dependencies ([7cbb735](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7cbb7359e160f5d8842b4279910e02f18e662d7d))
+* Workflow Bot -- Update ALL Dependencies ([a24cb5d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a24cb5dd4c8b8a4acb4f4f4e1826288ca40d8c14))
+* Workflow Bot -- Update ALL Dependencies ([832c028](https://github.com/streetsidesoftware/vscode-spell-checker/commit/832c0282c21ab72fd742ddba515fe730f0f9e016))
+* Workflow Bot -- Update ALL Dependencies ([fc7a85b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fc7a85b9e22fe899e61a351b0c192fd31546a176))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2215](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2215)) ([fc7a85b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fc7a85b9e22fe899e61a351b0c192fd31546a176))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2218](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2218)) ([832c028](https://github.com/streetsidesoftware/vscode-spell-checker/commit/832c0282c21ab72fd742ddba515fe730f0f9e016))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2219](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2219)) ([a24cb5d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a24cb5dd4c8b8a4acb4f4f4e1826288ca40d8c14))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2220](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2220)) ([7cbb735](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7cbb7359e160f5d8842b4279910e02f18e662d7d))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2224](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2224)) ([1a4e143](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1a4e1436b38b29ef79c7e76da1637e2c0f18693a))
+
 ## [2.7.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.7.2...code-spell-checker-v2.7.3) (2022-09-09)
 
 
