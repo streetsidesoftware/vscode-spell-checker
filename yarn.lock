@@ -1316,7 +1316,7 @@
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.50":
   version "17.0.50"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.50.tgz#39abb4f7098f546cfcd6b51207c90c4295ee81fc"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.50.tgz#39abb4f7098f546cfcd6b51207c90c4295ee81fc"
   integrity sha512-ZCBHzpDb5skMnc1zFXAXnL3l1FAdi+xZvwxK+PkglMmBrwjpp9nKaWuEvrGnSifCJmBFGxZOOFuwC6KH/s0NuA==
   dependencies:
     "@types/prop-types" "*"
@@ -3016,18 +3016,18 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-gitignore@^6.9.0:
-  version "6.9.0"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.9.0.tgz#886518397093e8f1c3fbedcb4dc48fb399c56cdf"
-  integrity sha512-RW2jaRzRzsB1etLIcop8hyZrVeVoACjhECxq0l3Xp7a1emgecArfWrYoX37Z6zk3B5xj+FGxSt/JHpScpNV5bA==
+cspell-gitignore@^6.9.0, cspell-gitignore@^6.9.1:
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-6.9.1.tgz#a6edb5091c1bdc5d03ced267d29484b87df23ef1"
+  integrity sha512-04CBVAbhcfD7Z/pocUjcieeMdpMwsCkGtjde59+HfCKLHQbqOuVgrcaJl/i5QOHta5ge9gEcF45MgK2ItwzkDg==
   dependencies:
-    cspell-glob "^6.9.0"
+    cspell-glob "^6.9.1"
     find-up "^5.0.0"
 
-cspell-glob@^6.9.0:
-  version "6.9.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.9.0.tgz#0be9afcf567ba106da51e85dce1f4466b44ce709"
-  integrity sha512-6pL8CvngR5wkZWh8IsTqgqC7Lw+bfTKy9A90D6h+b1xUf4omZZbELSPDF6859GSmjj7/v6jrRFizvz0uBF8Ybw==
+cspell-glob@^6.9.0, cspell-glob@^6.9.1:
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-6.9.1.tgz#cce07d643ac17605c882626abe5656e6c3e9d2d5"
+  integrity sha512-ORCeofH08nMKLLFiayS7Z0ZcFvRMr0vTe/SGM/zjbVlnqW6LLtfaRDSGzhbp/xmXxalGi/E92yiUP529q9FnnQ==
   dependencies:
     micromatch "^4.0.5"
 
