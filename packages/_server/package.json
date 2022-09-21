@@ -42,7 +42,7 @@
     "node-watch": "^0.7.3",
     "rxjs": "^7.5.6",
     "ts-jest": "^28.0.8",
-    "ts-json-schema-generator": "^1.1.0-next.5",
+    "ts-json-schema-generator": "^1.1.0",
     "ts-loader": "^9.4.0",
     "typescript": "^4.8.3",
     "vscode-languageserver": "^8.0.2",
