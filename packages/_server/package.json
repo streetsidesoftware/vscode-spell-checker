@@ -28,7 +28,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^28.1.8",
     "@types/micromatch": "^4.0.2",
-    "@types/node": "^18.7.21",
+    "@types/node": "^18.7.22",
     "common-utils": "1.0.0",
     "cspell-glob": "^6.10.1",
     "cspell-lib": "^6.10.1",
