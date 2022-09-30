@@ -2278,11 +2278,11 @@
     "vsce": "^2.11.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.11.1",
-    "@cspell/cspell-types": "^6.11.1",
+    "@cspell/cspell-bundled-dicts": "^6.12.0",
+    "@cspell/cspell-types": "^6.12.0",
     "@types/react": "^17.0.50",
     "cosmiconfig": "^7.0.1",
-    "cspell": "^6.11.1",
+    "cspell": "^6.12.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
