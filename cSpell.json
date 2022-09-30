@@ -12,6 +12,8 @@
         "*.vsix",
         "**/__snapshots__/**",
         "**/server.js",
+        "/samples",
+        "CHANGELOG.md",
         "cSpell.json",
         "fixtures/workspaces/**",
         "languageCodes.ts",
@@ -21,7 +23,6 @@
         "packages/client/samples/**",
         "packages/client/server/**",
         "packages/client/settingsViewer/**",
-        "/samples",
         "testFixtures"
     ],
     "ignoreWords": [],

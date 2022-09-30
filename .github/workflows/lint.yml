@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npx cspell "**" ".*/**"
+      - run: npx cspell "**" --dot --no-progress
 
   lint:
     runs-on: ubuntu-latest
