@@ -553,9 +553,9 @@
   integrity sha512-MUwA2YKpqaQOSR4V1/CVGRNk8Ii5kf6I8Ch+4/BhRZRQXuwWbi21rDRYWPqdQWps7VNzAbbMA+PQDWsD5YY38g==
 
 "@cspell/dict-software-terms@^2.2.9":
-  version "2.2.10"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.2.10.tgz#db465393d9ad9e94fecbaee4d728feae9b1004ef"
-  integrity sha512-9L4sOmPrXBePWpZSHVJbLI8ie3iedH4+Giw8Dj3CU2KYJTXUn9T4SHmCQYwZPRZqZoYHPhRJcIv1fsl5JU6dSg==
+  version "2.2.11"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-2.2.11.tgz#110e6804004c805e8e46d16d1782aa89fa97b795"
+  integrity sha512-PZ8EqFSCEoJzcH/bp/+c2ze6aCK/8u5b7Qt1+O2Cwzmr8VLVZIVcpHpELnh4IvT4MRvzfa2WCDoUSofPwAfrsg==
 
 "@cspell/dict-sql@^1.0.4":
   version "1.0.4"
