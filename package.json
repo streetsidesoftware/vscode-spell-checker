@@ -403,13 +403,16 @@
       }
     ],
     "configurationDefaults": {
-      "[php]": {
-        "cSpell.fixSpellingWithRenameProvider": false
-      },
       "[markdown]": {
         "cSpell.fixSpellingWithRenameProvider": true,
         "cSpell.advanced.feature.useReferenceProviderWithRename": true,
         "cSpell.advanced.feature.useReferenceProviderRemove": "/^#+\\s/"
+      },
+      "[scss]": {
+        "cSpell.fixSpellingWithRenameProvider": false
+      },
+      "[css]": {
+        "cSpell.fixSpellingWithRenameProvider": false
       }
     },
     "configuration": [
