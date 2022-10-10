@@ -42,7 +42,7 @@
     "cspell-lib": "^6.12.0",
     "fs-extra": "^10.1.0",
     "jest": "^28.1.3",
-    "jest-mock-vscode": "^1.1.2",
+    "jest-mock-vscode": "^1.2.0",
     "jest-when": "^3.5.1",
     "kefir": "^3.8.8",
     "lorem-ipsum": "^2.0.8",
