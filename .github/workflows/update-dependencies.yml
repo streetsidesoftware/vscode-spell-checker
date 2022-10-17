@@ -50,7 +50,7 @@ jobs:
           echo "DIFF" >> $GITHUB_ENV
       - name: Echo git_status
         run: echo ${{ env.git_status }}
-      - uses: tibdex/github-app-token@v1.6 # cspell:ignore tibdex
+      - uses: tibdex/github-app-token@v1.7 # cspell:ignore tibdex
         if: env.git_status == 'dirty'
         id: generate-token
         with:
