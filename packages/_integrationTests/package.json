@@ -30,7 +30,7 @@
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.11.2",
     "@types/vscode": "^1.72.0",
-    "@vscode/test-electron": "^2.1.5",
+    "@vscode/test-electron": "^2.2.0",
     "chai": "^4.3.6",
     "chalk": "^4.1.2",
     "cross-env": "^7.0.3",
