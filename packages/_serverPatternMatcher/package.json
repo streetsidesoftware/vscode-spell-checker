@@ -26,7 +26,7 @@
   "devDependencies": {
     "@cspell/cspell-types": "^6.12.0",
     "@types/jest": "^28.1.8",
-    "@types/node": "^18.11.2",
+    "@types/node": "^18.11.4",
     "common-utils": "1.0.0",
     "jest": "^28.1.3",
     "ts-jest": "^28.0.8",
