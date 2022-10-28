@@ -1315,9 +1315,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.50":
-  version "17.0.50"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.50.tgz#39abb4f7098f546cfcd6b51207c90c4295ee81fc"
-  integrity sha512-ZCBHzpDb5skMnc1zFXAXnL3l1FAdi+xZvwxK+PkglMmBrwjpp9nKaWuEvrGnSifCJmBFGxZOOFuwC6KH/s0NuA==
+  version "17.0.52"
+  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.52.tgz#10d8b907b5c563ac014a541f289ae8eaa9bf2e9b"
+  integrity sha512-vwk8QqVODi0VaZZpDXQCmEmiOuyjEFPY7Ttaw5vjM112LOq37yz1CDJGrRJwA1fYEq4Iitd5rnjd1yWAc/bT+A==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3029,18 +3029,18 @@ cspell-dictionary@^6.12.0:
     fast-equals "^4.0.3"
     gensequence "^4.0.2"
 
-cspell-gitignore@^6.12.0:
-  version "6.12.0"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.12.0.tgz#148215fb9251bc04fca9ad5a8f2cc11eaec75b71"
-  integrity sha512-gtsN2AAvqdE8CHVzpxsQcd/Wn5GAMTjzHpDXX71g/k8IJn743poGU06O0O1WSVAgK0fWTRsfg+V5OegA1TAo7A==
+cspell-gitignore@^6.12.0, cspell-gitignore@^6.13.1:
+  version "6.13.1"
+  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.13.1.tgz#43589db5354c717dcce6386cdfcd2d0285d082ab"
+  integrity sha512-/lhcBq8gfafepYeMbQsiExlTRyuqLGWFLI5TxGYrAp6mT34TzLY8075X4im+qum6dwAXlQZyh/SoUUv7/lpXPg==
   dependencies:
-    cspell-glob "^6.12.0"
+    cspell-glob "6.13.1"
     find-up "^5.0.0"
 
-cspell-glob@^6.12.0:
-  version "6.12.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.12.0.tgz#7ed9d672d429d48fb272d1f5a2c5c6001da05d40"
-  integrity sha512-Q0rMGTxDyFFPm1LmHYM0ziuxQt2aXgr8Oi1glA2s0dBs0hg1DexlAEoLwLiMDUwSTvibEKIidPzlrmZ1AUDWEg==
+cspell-glob@6.13.1, cspell-glob@^6.12.0:
+  version "6.13.1"
+  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.13.1.tgz#302db6d0976befe16bcbaebd2e20185115edddc6"
+  integrity sha512-bXCIBTdrMRILhcSMJhIT0jQ+L0rF/ZxLqyaAlCtDM7Mz/t9Z8KVFpYLKe9CwSO98QqwUdFOiT2GV14aUfEo0Tg==
   dependencies:
     micromatch "^4.0.5"
 
