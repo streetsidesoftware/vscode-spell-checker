@@ -51,9 +51,9 @@
     semver "^6.3.0"
 
 "@babel/generator@^7.20.1", "@babel/generator@^7.20.2", "@babel/generator@^7.7.2":
-  version "7.20.2"
-  resolved "https://registry.npmjs.org/@babel/generator/-/generator-7.20.2.tgz#c2e89e22613a039285c1e7b749e2cd0b30b9a481"
-  integrity sha512-SD75PMIK6i9H8G/tfGvB4KKl4Nw6Ssos9nGgYwxbgyTP0iX/Z55DveoH86rmUB/YHTQQ+ZC0F7xxaY8l2OF44Q==
+  version "7.20.3"
+  resolved "https://registry.npmjs.org/@babel/generator/-/generator-7.20.3.tgz#e58c9ae2f7bf7fdf4899160cf1e04400a82cd641"
+  integrity sha512-Wl5ilw2UD1+ZYprHVprxHZJCFeBWlzZYOovE4SDYLZnqCOD11j+0QzNeEWKLLTWM7nixrZEh7vNIyb76MyJg3A==
   dependencies:
     "@babel/types" "^7.20.2"
     "@jridgewell/gen-mapping" "^0.3.2"
@@ -163,9 +163,9 @@
     js-tokens "^4.0.0"
 
 "@babel/parser@^7.1.0", "@babel/parser@^7.14.7", "@babel/parser@^7.18.10", "@babel/parser@^7.20.1", "@babel/parser@^7.20.2":
-  version "7.20.2"
-  resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.20.2.tgz#9aeb9b92f64412b5f81064d46f6a1ac0881337f4"
-  integrity sha512-afk318kh2uKbo7BEj2QtEi8HVCGrwHUffrYDy7dgVcSa2j9lY3LDjPzcyGdpX7xgm35aWqvciZJ4WKmdF/SxYg==
+  version "7.20.3"
+  resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.20.3.tgz#5358cf62e380cf69efcb87a7bb922ff88bfac6e2"
+  integrity sha512-OP/s5a94frIPXwjzEcv5S/tpQfc6XhxYUnmWpgdqMWGgYCuErA3SzozaRAMQgSZWKeTJxht9aWAkUY+0UzvOFg==
 
 "@babel/plugin-syntax-async-generators@^7.8.4":
   version "7.8.4"
@@ -304,22 +304,22 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cspell/cspell-bundled-dicts@6.14.0", "@cspell/cspell-bundled-dicts@^6.14.0":
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.14.0.tgz#b9b2454ad1568268e023fcdf18637ea1699ca915"
-  integrity sha512-GItmbgKcqMUiNKy2Z3xPGEyS8Tu1DXrJCyj9uQD4J+MPQeirZfLb1wSNsZsVTTmRQm8eTZ/m73X95l8Ekfqm2A==
+"@cspell/cspell-bundled-dicts@6.14.1", "@cspell/cspell-bundled-dicts@^6.14.1":
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-6.14.1.tgz#3c581cb59bb28ad9f3f108c6e4ee5fa7a593ea20"
+  integrity sha512-GKEH53i0auzi0g75EKwKKe2NACVY/D7mVLeR9k0fY3j1qVdDcAq+XjGfHKBWXBbjEotPH/8aiL1MIqN3yWApRQ==
   dependencies:
     "@cspell/dict-ada" "^3.0.0"
     "@cspell/dict-aws" "^3.0.0"
     "@cspell/dict-bash" "^3.0.0"
-    "@cspell/dict-companies" "^3.0.2"
+    "@cspell/dict-companies" "^3.0.3"
     "@cspell/dict-cpp" "^4.0.0"
     "@cspell/dict-cryptocurrencies" "^3.0.1"
     "@cspell/dict-csharp" "^4.0.1"
     "@cspell/dict-css" "^3.0.0"
     "@cspell/dict-dart" "^2.0.0"
     "@cspell/dict-django" "^3.0.0"
-    "@cspell/dict-docker" "^1.1.1"
+    "@cspell/dict-docker" "^1.1.3"
     "@cspell/dict-dotnet" "^3.0.1"
     "@cspell/dict-elixir" "^3.0.0"
     "@cspell/dict-en-gb" "1.1.33"
@@ -338,7 +338,7 @@
     "@cspell/dict-lua" "^3.0.0"
     "@cspell/dict-node" "^4.0.1"
     "@cspell/dict-npm" "^4.0.1"
-    "@cspell/dict-php" "^3.0.2"
+    "@cspell/dict-php" "^3.0.3"
     "@cspell/dict-powershell" "^3.0.0"
     "@cspell/dict-public-licenses" "^2.0.0"
     "@cspell/dict-python" "^4.0.0"
@@ -346,26 +346,26 @@
     "@cspell/dict-ruby" "^3.0.0"
     "@cspell/dict-rust" "^3.0.0"
     "@cspell/dict-scala" "^3.0.0"
-    "@cspell/dict-software-terms" "^3.0.3"
+    "@cspell/dict-software-terms" "^3.0.5"
     "@cspell/dict-sql" "^2.0.0"
     "@cspell/dict-swift" "^2.0.0"
     "@cspell/dict-typescript" "^3.0.1"
     "@cspell/dict-vue" "^3.0.0"
 
-"@cspell/cspell-pipe@6.14.0":
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-pipe/-/cspell-pipe-6.14.0.tgz#2cc8f8faf644f1c632e65721e5ce4d8c6c94c7f7"
-  integrity sha512-8dZZst6jZ7ELrNV1JqHNb7EnlXZTjgRYl6C+3PrC30/XUkMubBUj9nncLQH+M1ZUVpSN1ErbnTPOpbCllZ8tvQ==
+"@cspell/cspell-pipe@6.14.1":
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-pipe/-/cspell-pipe-6.14.1.tgz#a967faa3d0e7139deea8862989c1751db63f042f"
+  integrity sha512-KCqJ/RLYNMk90x34t5etnHpjvpODD8QMJjYST5K0I1HZs/4XwrCdsCjKF+xSTCoHf8xy609NwlaWTrhYZmKQPA==
 
-"@cspell/cspell-service-bus@6.14.0":
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-service-bus/-/cspell-service-bus-6.14.0.tgz#b6ff37b313756ccf6d4ebf2f79c8f9e9c7502a14"
-  integrity sha512-p8sgtPfWm0UozKr4wPK/JK/IRqQZVJmA5O4YHaFYx3CHK4F7Lki0v6octds8ks9b3bP7KyVX+zix61y1LcCUQw==
+"@cspell/cspell-service-bus@6.14.1":
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-service-bus/-/cspell-service-bus-6.14.1.tgz#e2dc0cadc470b90a0f2145996be4a1c537a6d8a1"
+  integrity sha512-MsW9so3UNIQTDCH20D3BmKO6UyUJWBCuztv+9tfkKbGu0xR0Uv3VKWahAL4eI1mN+vaTSXxeuul9efjqi808Sw==
 
-"@cspell/cspell-types@6.14.0", "@cspell/cspell-types@^6.14.0":
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.14.0.tgz#92ac637073dfe950a7fc9bf82832f413e43d03f8"
-  integrity sha512-QHl/M02JeqvIvBJsH4U6OMV6B210QaHYfau8RapbZi1xqVdWuO9UQ44Z180AG41Y8a7T41pi5QWCQVB2s1WA+w==
+"@cspell/cspell-types@6.14.1", "@cspell/cspell-types@^6.14.1":
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.14.1.tgz#440c67da64218450e3e9350feed434b4d43bcdbf"
+  integrity sha512-AuEEz1MOALrXDYvei2O4NKhSHNvAFxdFUfPdLsm2XRGSqYpJLuy0ebxUSolRApN0J2ASoMlUkmWIRbHl1xXZcg==
 
 "@cspell/dict-ada@^3.0.0":
   version "3.0.0"
@@ -382,7 +382,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-3.0.0.tgz#5839372107246c16669b031ecea5fad144934e0b"
   integrity sha512-bQl6mk1SrcmrDL+F4XTeZtW2JnqgNJx5pNX6PIfWe5QA+J2blLlYbwDQOvjovpZEirwy8iqQmu//6bKjaDu1ow==
 
-"@cspell/dict-companies@^3.0.2":
+"@cspell/dict-companies@^3.0.3":
   version "3.0.3"
   resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-3.0.3.tgz#06231a0d21fa1b9137edd1b0702a5da79bc0cacc"
   integrity sha512-qBWdwA97HdnLbxPLOUTZ+/mg9eYhi14hM7PEUM1PZ004MEIxQHum0IQpypKAwP3teR1KEsyxEPHp8v24Dw45Zg==
@@ -417,7 +417,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-django/-/dict-django-3.0.0.tgz#fe16849fe96c3d7613cff89ef5abe7f910b56582"
   integrity sha512-Ag6ecPokb12RcAwD9eOvKl5G2l4h5aOQl36mipqINLc+NPtIGVN3qa2FBg3hHeS6OvIDwCZ/LQ/zz5xbBhakhg==
 
-"@cspell/dict-docker@^1.1.1":
+"@cspell/dict-docker@^1.1.3":
   version "1.1.3"
   resolved "https://registry.npmjs.org/@cspell/dict-docker/-/dict-docker-1.1.3.tgz#a9772c3ad163788525eb41fb6e25f9020e5ef00f"
   integrity sha512-Iz7EQGnLBgnnmzCC8iLQ7JssCCQlCjZLiCs0qhooETWLifob3nzsI9AVBh3gkYLhISLIIjBpfa4LTknskT7LzA==
@@ -512,7 +512,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-npm/-/dict-npm-4.0.1.tgz#b8e4943723ce9c5c578eb693d16ccc3e3c283521"
   integrity sha512-jNKImVG5ZX+Pp6PhbSR3TmC9+0ROx09dGhSgUsZyvXV5CGEr+OQGJtNL98TGwU3pP2Xjc++qnHA/XPwB5WvLfA==
 
-"@cspell/dict-php@^3.0.2":
+"@cspell/dict-php@^3.0.3":
   version "3.0.3"
   resolved "https://registry.npmjs.org/@cspell/dict-php/-/dict-php-3.0.3.tgz#5f29b924ddb69eb780ac75e8bbad21a3fd4dda00"
   integrity sha512-7dvXdPTfbIF2xEob9w94/eV5SU8BkYoN0R7EQghXi0fcF7T1unK+JwDgfoEs6wqApB5aCVYwguiaj8HGX2IRIQ==
@@ -552,7 +552,7 @@
   resolved "https://registry.npmjs.org/@cspell/dict-scala/-/dict-scala-3.0.0.tgz#4e74d4638208dd73beae718c3dc0eb8a171fa794"
   integrity sha512-sIiCQDIMMnNns/fzD61z5npbh5pypaKq07Orqe0+eRfdQpika8iRSGUGFHVbtdd1JzB1DyTCV2e8OwdaQiXqJQ==
 
-"@cspell/dict-software-terms@^3.0.3":
+"@cspell/dict-software-terms@^3.0.5":
   version "3.0.5"
   resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.0.5.tgz#59c34ad7c04f2b6f4e968348785921ff09fe5db2"
   integrity sha512-xZVcX1zsIUbLvUc/RX+YgJRvbHaGMcdkRR+Vw8UoLjmhnT0yXWLds5uwRwAVjlQIrIcHylfDWuG70Cq5nmJHfA==
@@ -576,6 +576,11 @@
   version "3.0.0"
   resolved "https://registry.npmjs.org/@cspell/dict-vue/-/dict-vue-3.0.0.tgz#68ccb432ad93fcb0fd665352d075ae9a64ea9250"
   integrity sha512-niiEMPWPV9IeRBRzZ0TBZmNnkK3olkOPYxC1Ny2AX4TGlYRajcW0WUtoSHmvvjZNfWLSg2L6ruiBeuPSbjnG6A==
+
+"@cspell/strong-weak-map@6.14.1":
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/@cspell/strong-weak-map/-/strong-weak-map-6.14.1.tgz#b9b54b2c49540290399f46dd98fa9346f7d53f40"
+  integrity sha512-LUTQx9JrxwEkBOfcCq1VEl0c8qZY8Ij5D+6cZF7LReGOmTfoWmtm5LFFx/3FJKtZCkVQPnrkrVMokcLooLCEEA==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
@@ -1002,9 +1007,9 @@
   integrity sha512-1P1OROm/rdubP5aFDSZQILU0vrLCJ4fvHt6EoqHEM+2D/G5MK3bIaymUKLit8Js9gbns5UyJnkP/TZROLw4tUA==
 
 "@sinonjs/commons@^1.7.0":
-  version "1.8.4"
-  resolved "https://registry.npmjs.org/@sinonjs/commons/-/commons-1.8.4.tgz#d1f2d80f1bd0f2520873f161588bd9b7f8567120"
-  integrity sha512-RpmQdHVo8hCEHDVpO39zToS9jOhR6nw+/lQAzRNq9ErrGV9IeHM71XCn68svVl/euFeVW6BWX4p35gkhbOcSIQ==
+  version "1.8.5"
+  resolved "https://registry.npmjs.org/@sinonjs/commons/-/commons-1.8.5.tgz#e280c94c95f206dcfd5aca00a43f2156b758c764"
+  integrity sha512-rTpCA0wG1wUxglBSFdMMY0oTrKYvgf4fNgv/sXbfCVAdf+FnPBdKJR/7XbpTCwbCrvCbdPYnlWaUUYz4V2fPDA==
   dependencies:
     type-detect "4.0.8"
 
@@ -1026,9 +1031,9 @@
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
 
 "@types/babel__core@^7.1.14":
-  version "7.1.19"
-  resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.1.19.tgz#7b497495b7d1b4812bdb9d02804d0576f43ee460"
-  integrity sha512-WEOTgRsbYkvA/KCsDwVEGkd7WAr1e3g31VHQ8zy5gul/V1qKullU/BU5I68X5v7V3GnB9eotmom4v5a5gjxorw==
+  version "7.1.20"
+  resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.1.20.tgz#e168cdd612c92a2d335029ed62ac94c95b362359"
+  integrity sha512-PVb6Bg2QuscZ30FvOU7z4guG6c926D9YRvOxEaelzndpMsvP+YM74Q/dAFASpg2l6+XLalxSGxcq/lrgYWZtyQ==
   dependencies:
     "@babel/parser" "^7.1.0"
     "@babel/types" "^7.0.0"
@@ -1078,10 +1083,10 @@
   resolved "https://registry.npmjs.org/@types/braces/-/braces-3.0.1.tgz#5a284d193cfc61abb2e5a50d36ebbc50d942a32b"
   integrity sha512-+euflG6ygo4bn0JHtn4pYqcXwRtLvElQ7/nnjDu7iYG56H0+OhCd7d6Ug0IE3WcFpZozBKW2+80FUbv5QGk5AQ==
 
-"@types/chai@^4.3.3":
-  version "4.3.3"
-  resolved "https://registry.npmjs.org/@types/chai/-/chai-4.3.3.tgz#3c90752792660c4b562ad73b3fbd68bf3bc7ae07"
-  integrity sha512-hC7OMnszpxhZPduX+m+nrx+uFoLkWOMiR4oa/AZF3MuSETYTZmFfJAHqZEM8MVlvfG7BEUcgvtwoCTxBp6hm3g==
+"@types/chai@^4.3.4":
+  version "4.3.4"
+  resolved "https://registry.npmjs.org/@types/chai/-/chai-4.3.4.tgz#e913e8175db8307d78b4e8fa690408ba6b65dee4"
+  integrity sha512-KnRanxnpfpjUTqTCXslZSEdLfXExwgNxYPdiO2WGUj8+HDjFi8R3k5RVKPeSCzLjCcshCAtVO2QBbVuAV4kTnw==
 
 "@types/clone-deep@^4.0.1":
   version "4.0.1"
@@ -1803,14 +1808,14 @@ array-flatten@^2.1.2:
   integrity sha512-hNfzcOV8W4NdualtqBFPyVO+54DSJuZGY9qT4pRroB6S9e3iiido2ISIC5h9R2sPJ8H3FHCIiEnsv1lPXO3KtQ==
 
 array-includes@^3.1.5:
-  version "3.1.5"
-  resolved "https://registry.npmjs.org/array-includes/-/array-includes-3.1.5.tgz#2c320010db8d31031fd2a5f6b3bbd4b1aad31bdb"
-  integrity sha512-iSDYZMMyTPkiFasVqfuAQnWAYcvO/SeBSCGKePoEthjp4LEMTe4uLc7b025o4jAZpHhihh8xPo99TNWUWWkGDQ==
+  version "3.1.6"
+  resolved "https://registry.npmjs.org/array-includes/-/array-includes-3.1.6.tgz#9e9e720e194f198266ba9e18c29e6a9b0e4b225f"
+  integrity sha512-sgTbLvL6cNnw24FnbaDyjmvddQ2ML8arZsgaJhoABMoplz/4QRhtrYS+alr1BUM1Bwp6dhx8vVCBSLG+StwOFw==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.4"
-    es-abstract "^1.19.5"
-    get-intrinsic "^1.1.1"
+    es-abstract "^1.20.4"
+    get-intrinsic "^1.1.3"
     is-string "^1.0.7"
 
 array-timsort@^1.0.3:
@@ -2663,18 +2668,18 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001400:
-  version "1.0.30001430"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001430.tgz#638a8ae00b5a8a97e66ff43733b2701f81b101fa"
-  integrity sha512-IB1BXTZKPDVPM7cnV4iaKaHxckvdr/3xtctB3f7Hmenx3qYBhGtTZ//7EllK66aKXW98Lx0+7Yr0kxBtIt3tzg==
+  version "1.0.30001431"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001431.tgz#e7c59bd1bc518fae03a4656be442ce6c4887a795"
+  integrity sha512-zBUoFU0ZcxpvSt9IU66dXVT/3ctO1cy4y9cscs1szkPlcWb6pasYM144GqrUygUbT+k7cmUCW61cvskjcv0enQ==
 
-chai@^4.3.6:
-  version "4.3.6"
-  resolved "https://registry.npmjs.org/chai/-/chai-4.3.6.tgz#ffe4ba2d9fa9d6680cc0b370adae709ec9011e9c"
-  integrity sha512-bbcp3YfHCUzMOvKqsztczerVgBKSsEijCySNlHHbX3VG1nskvqjz5Rfso1gGwD6w6oOV3eI60pKuMOV5MV7p3Q==
+chai@^4.3.7:
+  version "4.3.7"
+  resolved "https://registry.npmjs.org/chai/-/chai-4.3.7.tgz#ec63f6df01829088e8bf55fca839bcd464a8ec51"
+  integrity sha512-HLnAzZ2iupm25PlN0xFreAlBA5zaBSv3og0DdeGA4Ar6h6rJ3A0rolRUKJhSF2V10GZKDgWF/VmAEsNWjCRB+A==
   dependencies:
     assertion-error "^1.1.0"
     check-error "^1.0.2"
-    deep-eql "^3.0.1"
+    deep-eql "^4.1.2"
     get-func-name "^2.0.0"
     loupe "^2.3.1"
     pathval "^1.1.1"
@@ -3018,65 +3023,66 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-cspell-dictionary@6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-dictionary/-/cspell-dictionary-6.14.0.tgz#cb9cf47010f0f9871093d40e0bbcb302bd538320"
-  integrity sha512-BJ89Fv6wiXHrR1OHKq/pnuutImXKehvGI2Wb8lkxOja7GYAypXMfyJRTJ2orE5eqmRD4DI+j3s7Bhby116z+Lw==
+cspell-dictionary@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-dictionary/-/cspell-dictionary-6.14.1.tgz#1a3fadbcbde1eba75d740e0eb65d7e4347c712a5"
+  integrity sha512-TxpHuZ1xlWQnxYD/4g2EygOTBzL7jcaIPpQ1hy5p/DyymHBtfvaZ1TZUvKzfJtQsdH+N9yRvkfn7ilo3C7fhlA==
   dependencies:
-    "@cspell/cspell-pipe" "6.14.0"
-    "@cspell/cspell-types" "6.14.0"
-    cspell-trie-lib "6.14.0"
+    "@cspell/cspell-pipe" "6.14.1"
+    "@cspell/cspell-types" "6.14.1"
+    cspell-trie-lib "6.14.1"
     fast-equals "^4.0.3"
     gensequence "^4.0.2"
 
-cspell-gitignore@6.14.0, cspell-gitignore@^6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.14.0.tgz#c92758d54c53237aece8271e77e952cf11299083"
-  integrity sha512-WaA2bwQQ87YNzRGidi4IJpiTFJFzRJx1I97h2VWkZAiz7mxmIX+RHDsUxgVsIUy3S2SH5SF4bUmZwz8DWTGAAQ==
+cspell-gitignore@6.14.1, cspell-gitignore@^6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.14.1.tgz#299cd72217f0a6604fbf4c15c5f5e52edb458074"
+  integrity sha512-h4MU43D/NTMRY2k8C3OmY1lz1c6KUpfSel9godd4IuiF1mtVIuRO+uqdOzA3Do1Mo4ySEULzNAA0TsHcW8OM1A==
   dependencies:
-    cspell-glob "6.14.0"
+    cspell-glob "6.14.1"
     find-up "^5.0.0"
 
-cspell-glob@6.14.0, cspell-glob@^6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.14.0.tgz#75e247218d896fad78d43b07850a0c8754b6d1ea"
-  integrity sha512-0qdqwPJ+4tXk9HwB8IHlHy+P+8OM5sbVFTr5YaC5dGoy+Tfz56Y8V7gnitrmrxcLe3lpHVxi/mHNE3N/HWc+0Q==
+cspell-glob@6.14.1, cspell-glob@^6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.14.1.tgz#8070e2938fca9a1eef56532d4616ff9df3950805"
+  integrity sha512-qbAWpDShIata7Lac+YHAoSDQVBUv0BiPAseKWDpR/Fpm39oIO/VgBYufWRXNbYmKTVIivOh2ujKunq+eeSFEoA==
   dependencies:
     micromatch "^4.0.5"
 
-cspell-grammar@6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-grammar/-/cspell-grammar-6.14.0.tgz#91a3bc02ffe92a4a4108f3fc798e6008af117645"
-  integrity sha512-0+W6tuHRYsFvrdh3HBTsQlYRWwv+RAok+YZaTv8ypmkMAISU13ipxL9SkEc/r/AermPd5JpJAfPNw8ZNWRVsAg==
+cspell-grammar@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-grammar/-/cspell-grammar-6.14.1.tgz#267e594e895d837be2464a2921a1ae02b59aa389"
+  integrity sha512-tVo/6VBqeYr2w+qTKvntPZ//qB72sm46kBqLGg7MgRLWkYB72ZyCS6xg1tXiGf61DNns5oAel77g+mwyTLsnJA==
   dependencies:
-    "@cspell/cspell-pipe" "6.14.0"
-    "@cspell/cspell-types" "6.14.0"
+    "@cspell/cspell-pipe" "6.14.1"
+    "@cspell/cspell-types" "6.14.1"
 
-cspell-io@6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-io/-/cspell-io-6.14.0.tgz#c877147d38869fe5b476eb0a1f2c7198c8af2b1f"
-  integrity sha512-KmjUQ2JrmH3/5JZtYvvjtlB4FWHwE75DrudYfnyFUTzLvVlSagNagfy5wPWTkydnRMdI23I7BOqBA+wtBydXcA==
+cspell-io@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-io/-/cspell-io-6.14.1.tgz#21215feb8522ed8b0e3b45f6a990c6e273d0140b"
+  integrity sha512-y9voNilxJ//IPkyXNQg0hwFwErl3rZFK380HSbTft/GSY5fSKlAPmSock6aOflZmzGydEJN3zzh2qRyoDzBGVQ==
   dependencies:
-    "@cspell/cspell-service-bus" "6.14.0"
+    "@cspell/cspell-service-bus" "6.14.1"
     node-fetch "^2.6.7"
 
-cspell-lib@6.14.0, cspell-lib@^6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-lib/-/cspell-lib-6.14.0.tgz#97d4b7d0ed50c29080b714b0202b391d555c428a"
-  integrity sha512-EqC/zhG7JSiYIcbzyPngFFrj5ElK0EACILKeqO/5lMvX19TdzaLDtnhY8ZHFY5+EIuaPkj4ahAqferx1gbJaDA==
+cspell-lib@6.14.1, cspell-lib@^6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-lib/-/cspell-lib-6.14.1.tgz#e3095452445518dd00885bc4f2d6dc678838037c"
+  integrity sha512-EFD38b7W757DPlv4ecohPfgnzYtwk8oANsL1jFgEmtfzaF5WDnYE5VbTwSy0qc7SOSlibrYma8ZVB6IG6luB6g==
   dependencies:
-    "@cspell/cspell-bundled-dicts" "6.14.0"
-    "@cspell/cspell-pipe" "6.14.0"
-    "@cspell/cspell-types" "6.14.0"
+    "@cspell/cspell-bundled-dicts" "6.14.1"
+    "@cspell/cspell-pipe" "6.14.1"
+    "@cspell/cspell-types" "6.14.1"
+    "@cspell/strong-weak-map" "6.14.1"
     clear-module "^4.1.2"
     comment-json "^4.2.3"
     configstore "^5.0.1"
     cosmiconfig "^7.0.1"
-    cspell-dictionary "6.14.0"
-    cspell-glob "6.14.0"
-    cspell-grammar "6.14.0"
-    cspell-io "6.14.0"
-    cspell-trie-lib "6.14.0"
+    cspell-dictionary "6.14.1"
+    cspell-glob "6.14.1"
+    cspell-grammar "6.14.1"
+    cspell-io "6.14.1"
+    cspell-trie-lib "6.14.1"
     fast-equals "^4.0.3"
     find-up "^5.0.0"
     fs-extra "^10.1.0"
@@ -3087,27 +3093,27 @@ cspell-lib@6.14.0, cspell-lib@^6.14.0:
     vscode-languageserver-textdocument "^1.0.7"
     vscode-uri "^3.0.6"
 
-cspell-trie-lib@6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-6.14.0.tgz#bbfee968ac7f20ae4c1b6510539a95bf839ebab9"
-  integrity sha512-JY2iRwp/6/qQYmOw2B8uhYDxP7VzqSWIo8rD5lHSivQMjH7lhVnQ2LPumMTa9IEOEesCkwNM8N+krndo12Ptqg==
+cspell-trie-lib@6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell-trie-lib/-/cspell-trie-lib-6.14.1.tgz#95213d9a24e31ef708a3f861c8fe7a9723138f30"
+  integrity sha512-aNuyXEDy4nwOCP1riE4sGvk33aH7Ru4Ydh4vFDHcdWf+jY+zEWanwhNpz8EjHTtwKxkEwSWasG7mYfKQJXl0YQ==
   dependencies:
-    "@cspell/cspell-pipe" "6.14.0"
-    "@cspell/cspell-types" "6.14.0"
+    "@cspell/cspell-pipe" "6.14.1"
+    "@cspell/cspell-types" "6.14.1"
     fs-extra "^10.1.0"
     gensequence "^4.0.2"
 
-cspell@^6.14.0:
-  version "6.14.0"
-  resolved "https://registry.npmjs.org/cspell/-/cspell-6.14.0.tgz#01c63a6d930608cf3e16fe5628771520077217fe"
-  integrity sha512-5VZWAMcblumPfdqftTUmTioLc1oqd2l+hUOeeIIYSvj6S1gsjcrz7cezRQE4iL5vdD4op0ee/3O4nN5n/OEJVQ==
+cspell@^6.14.1:
+  version "6.14.1"
+  resolved "https://registry.npmjs.org/cspell/-/cspell-6.14.1.tgz#106cb81573f23d84a411a5004af27fa314735c8d"
+  integrity sha512-JWfKSV0tcJwQSjK+W1YMr0XbtE20ykWW+o9izzZt+VlHSNsItfIkaxwUr/fOBjEACjOIXw6GX6vlV+0luhp2cA==
   dependencies:
-    "@cspell/cspell-pipe" "6.14.0"
+    "@cspell/cspell-pipe" "6.14.1"
     chalk "^4.1.2"
     commander "^9.4.1"
-    cspell-gitignore "6.14.0"
-    cspell-glob "6.14.0"
-    cspell-lib "6.14.0"
+    cspell-gitignore "6.14.1"
+    cspell-glob "6.14.1"
+    cspell-lib "6.14.1"
     fast-json-stable-stringify "^2.1.0"
     file-entry-cache "^6.0.1"
     fs-extra "^10.1.0"
@@ -3194,10 +3200,10 @@ dedent@^0.7.0:
   resolved "https://registry.npmjs.org/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==
 
-deep-eql@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/deep-eql/-/deep-eql-3.0.1.tgz#dfc9404400ad1c8fe023e7da1df1c147c4b444df"
-  integrity sha512-+QeIQyN5ZuO+3Uk5DYh6/1eKO0m0YmJFGNmFHGACpf1ClL1nmlV/p4gNgbl2pJGxgXb4faqo6UE+M5ACEMyVcw==
+deep-eql@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/deep-eql/-/deep-eql-4.1.2.tgz#270ceb902f87724077e6f6449aed81463f42fc1c"
+  integrity sha512-gT18+YW4CcW/DBNTwAmqTtkJh7f9qqScu2qFVlx7kCoeY9tlBu9cUcr7+I+Z/noG8INehS3xQgLpTtd/QUTn4w==
   dependencies:
     type-detect "^4.0.0"
 
@@ -3497,7 +3503,7 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.19.0, es-abstract@^1.19.1, es-abstract@^1.19.5, es-abstract@^1.20.4:
+es-abstract@^1.19.0, es-abstract@^1.20.4:
   version "1.20.4"
   resolved "https://registry.npmjs.org/es-abstract/-/es-abstract-1.20.4.tgz#1d103f9f8d78d4cf0713edcd6d0ed1a46eed5861"
   integrity sha512-0UtvRN79eMe2L+UNEF1BwRe364sj/DXhQ/k5FmivgoSdpM90b8Jc0mDzKMGo7QS0BVbOP/bTwBKNnDc9rNzaPA==
@@ -3766,9 +3772,9 @@ expect@^28.0.0, expect@^28.1.3:
     jest-util "^28.1.3"
 
 expect@^29.0.0:
-  version "29.2.2"
-  resolved "https://registry.npmjs.org/expect/-/expect-29.2.2.tgz#ba2dd0d7e818727710324a6e7f13dd0e6d086106"
-  integrity sha512-hE09QerxZ5wXiOhqkXy5d2G9ar+EqOyifnCXCpMNu+vZ6DG9TJ6CO2c2kPDSLqERTTWrO7OZj8EkYHQqSd78Yw==
+  version "29.3.0"
+  resolved "https://registry.npmjs.org/expect/-/expect-29.3.0.tgz#2dad3a73ac837dd8074ff91d25cf1614c3e91504"
+  integrity sha512-bms139btnQNZh4uxCPmzbWz46YOjtEpYIZ847OfY9GCeSBEfzedHWH0CkdR20Sy+XBs8/FI2lFJPZiuH0NGv+w==
   dependencies:
     "@jest/expect-utils" "^29.2.2"
     jest-get-type "^29.2.0"
@@ -5449,9 +5455,9 @@ loader-utils@1.0.x:
     json5 "^0.5.0"
 
 loader-utils@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
-  integrity sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-1.4.1.tgz#278ad7006660bccc4d2c0c1578e17c5c78d5c0e0"
+  integrity sha512-1Qo97Y2oKaU+Ro2xnDMR26g1BwMT29jNbem1EvcujW2jqt+j5COXyscjM7bLQkM9HaxI7pkWeW7gnI072yMI9Q==
   dependencies:
     big.js "^5.2.2"
     emojis-list "^3.0.0"
@@ -5530,9 +5536,9 @@ lorem-ipsum@^2.0.8:
     commander "^9.3.0"
 
 loupe@^2.3.1:
-  version "2.3.5"
-  resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.5.tgz#b660be4f26b2be00834cf43bae4477aab160fd86"
-  integrity sha512-KNGVjhsXDxvY/cYE8GNi7SBaJSfJIT+/+/8GlprqBXpoU6cSR7/RT7OBJOsoYtyxq0L3q6oIcO8tX7dbEEXr3A==
+  version "2.3.6"
+  resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.6.tgz#76e4af498103c532d1ecc9be102036a21f787b53"
+  integrity sha512-RaPMZKiMy8/JruncMU5Bt6na1eftNoo++R4Y+N2FrxkDVTrGvcyzFTsaGif4QTeKESheMGegbhw6iUAq+5A8zA==
   dependencies:
     get-func-name "^2.0.0"
 
@@ -5903,30 +5909,30 @@ object.entries@^1.1.5:
     es-abstract "^1.20.4"
 
 object.fromentries@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.npmjs.org/object.fromentries/-/object.fromentries-2.0.5.tgz#7b37b205109c21e741e605727fe8b0ad5fa08251"
-  integrity sha512-CAyG5mWQRRiBU57Re4FKoTBjXfDoNwdFVH2Y1tS9PqCsfUTymAohOkEMSG3aRNKmv4lV3O7p1et7c187q6bynw==
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/object.fromentries/-/object.fromentries-2.0.6.tgz#cdb04da08c539cffa912dcd368b886e0904bfa73"
+  integrity sha512-VciD13dswC4j1Xt5394WR4MzmAQmlgN72phd/riNp9vtD7tp4QQWJ0R4wvclXcafgcYK8veHRed2W6XeGBvcfg==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.3"
-    es-abstract "^1.19.1"
+    define-properties "^1.1.4"
+    es-abstract "^1.20.4"
 
 object.hasown@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/object.hasown/-/object.hasown-1.1.1.tgz#ad1eecc60d03f49460600430d97f23882cf592a3"
-  integrity sha512-LYLe4tivNQzq4JdaWW6WO3HMZZJWzkkH8fnI6EebWl0VZth2wL2Lovm74ep2/gZzlaTdV62JZHEqHQ2yVn8Q/A==
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/object.hasown/-/object.hasown-1.1.2.tgz#f919e21fad4eb38a57bc6345b3afd496515c3f92"
+  integrity sha512-B5UIT3J1W+WuWIU55h0mjlwaqxiE5vYENJXIXZ4VFe05pNYrkKuK0U/6aFcb0pKywYJh7IhfoqUfKVmrJJHZHw==
   dependencies:
     define-properties "^1.1.4"
-    es-abstract "^1.19.5"
+    es-abstract "^1.20.4"
 
 object.values@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/object.values/-/object.values-1.1.5.tgz#959f63e3ce9ef108720333082131e4a459b716ac"
-  integrity sha512-QUZRW0ilQ3PnPpbNtgdNV1PDbEqLIiSFB3l+EnGtBQ/8SUTLj1PZwtQHABZtLgwpJZTSZhuGLOGk57Drx2IvYg==
+  version "1.1.6"
+  resolved "https://registry.npmjs.org/object.values/-/object.values-1.1.6.tgz#4abbaa71eba47d63589d402856f908243eea9b1d"
+  integrity sha512-FVVTkD1vENCsAcwNs9k6jea2uHC/X0+JcjG8YA60FN5CMaJmG95wT9jek/xX9nornqGRrBkKtzuAu2wuHpKqvw==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.3"
-    es-abstract "^1.19.1"
+    define-properties "^1.1.4"
+    es-abstract "^1.20.4"
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
@@ -6487,7 +6493,7 @@ regexp-worker@^2.0.1:
   resolved "https://registry.npmjs.org/regexp-worker/-/regexp-worker-2.0.1.tgz#257c5c1d8004b5da14c1935b3efea6a238ef6871"
   integrity sha512-VtprUr44+P7Vw21J3Tiny2BiaUMapx9j0p0onieCua9zfU52wfAgpmltG0/0JY8Ct6okaZguoaDgvBzDlqV7fA==
 
-regexp.prototype.flags@^1.4.1, regexp.prototype.flags@^1.4.3:
+regexp.prototype.flags@^1.4.3:
   version "1.4.3"
   resolved "https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.4.3.tgz#87cab30f80f66660181a3bb7bf5981a872b367ac"
   integrity sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==
@@ -7001,36 +7007,36 @@ string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
     strip-ansi "^6.0.1"
 
 string.prototype.matchall@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.npmjs.org/string.prototype.matchall/-/string.prototype.matchall-4.0.7.tgz#8e6ecb0d8a1fb1fda470d81acecb2dba057a481d"
-  integrity sha512-f48okCX7JiwVi1NXCVWcFnZgADDC/n2vePlQ/KUCNqCikLLilQvwjMO8+BHVKvgzH0JB0J9LEPgxOGT02RoETg==
+  version "4.0.8"
+  resolved "https://registry.npmjs.org/string.prototype.matchall/-/string.prototype.matchall-4.0.8.tgz#3bf85722021816dcd1bf38bb714915887ca79fd3"
+  integrity sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.3"
-    es-abstract "^1.19.1"
-    get-intrinsic "^1.1.1"
+    define-properties "^1.1.4"
+    es-abstract "^1.20.4"
+    get-intrinsic "^1.1.3"
     has-symbols "^1.0.3"
     internal-slot "^1.0.3"
-    regexp.prototype.flags "^1.4.1"
+    regexp.prototype.flags "^1.4.3"
     side-channel "^1.0.4"
 
 string.prototype.trimend@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/string.prototype.trimend/-/string.prototype.trimend-1.0.5.tgz#914a65baaab25fbdd4ee291ca7dde57e869cb8d0"
-  integrity sha512-I7RGvmjV4pJ7O3kdf+LXFpVfdNOxtCW/2C8f6jNiW4+PQchwxkCDzlk1/7p+Wl4bqFIZeF47qAHXLuHHWKAxog==
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/string.prototype.trimend/-/string.prototype.trimend-1.0.6.tgz#c4a27fa026d979d79c04f17397f250a462944533"
+  integrity sha512-JySq+4mrPf9EsDBEDYMOb/lM7XQLulwg5R/m1r0PXEFqrV0qHvl58sdTilSXtKOflCsK2E8jxf+GKC0T07RWwQ==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.4"
-    es-abstract "^1.19.5"
+    es-abstract "^1.20.4"
 
 string.prototype.trimstart@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/string.prototype.trimstart/-/string.prototype.trimstart-1.0.5.tgz#5466d93ba58cfa2134839f81d7f42437e8c01fef"
-  integrity sha512-THx16TJCGlsN0o6dl2o6ncWUsdgnLRSA23rRE5pyGBw/mLr3Ej/R2LaqCtgP8VNMGZsvMWnf9ooZPyY2bHvUFg==
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/string.prototype.trimstart/-/string.prototype.trimstart-1.0.6.tgz#e90ab66aa8e4007d92ef591bbf3cd422c56bdcf4"
+  integrity sha512-omqjMDaY92pbn5HOX7f9IccLA+U1tA9GvtU4JrodiXFfYB7jPzzHpRzpglLAjtUV6bB557zwClJezTqnAiYnQA==
   dependencies:
     call-bind "^1.0.2"
     define-properties "^1.1.4"
-    es-abstract "^1.19.5"
+    es-abstract "^1.20.4"
 
 string_decoder@^1.1.1:
   version "1.3.0"
@@ -7501,10 +7507,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vsce@^2.13.0:
-  version "2.13.0"
-  resolved "https://registry.npmjs.org/vsce/-/vsce-2.13.0.tgz#832adc2926a4ca9facf898fea011dd33515f7ace"
-  integrity sha512-t1otQ2lqyi5Y/G6qUl9BEc561nEIYrZbLT8k+R1SoZaKNa6gaehaLGQG5zvB524YPGZOVvbOBzAXoO7Mor1J5g==
+vsce@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.npmjs.org/vsce/-/vsce-2.14.0.tgz#f264c427f52cb6c1b1ba2e5f8a84063a034f2438"
+  integrity sha512-LH0j++sHjcFNT++SYcJ86Zyw49GvyoTRfzYJGmaCgfzTyL7MyMhZeVEnj9K9qKh/m1N3/sdWWNxP+PFS/AvWiA==
   dependencies:
     azure-devops-node-api "^11.0.1"
     chalk "^2.4.2"
@@ -7798,9 +7804,9 @@ write-file-atomic@^4.0.1:
     signal-exit "^3.0.7"
 
 ws@^8.4.2:
-  version "8.10.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.10.0.tgz#00a28c09dfb76eae4eb45c3b565f771d6951aa51"
-  integrity sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw==
+  version "8.11.0"
+  resolved "https://registry.npmjs.org/ws/-/ws-8.11.0.tgz#6a0d36b8edfd9f96d8b25683db2f8d7de6e8e143"
+  integrity sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==
 
 xdg-basedir@^4.0.0:
   version "4.0.0"
