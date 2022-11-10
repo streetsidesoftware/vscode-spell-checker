@@ -20,7 +20,7 @@ export const ReasonAverageWordsSize: MinifiedReason = {
 };
 export const ReasonMaxWordsSize: MinifiedReason = {
     code: 'Maximum_Word_Length_Exceeded',
-    message: 'Average Word Size is Too High.',
+    message: 'Maximum Word Length Exceeded.',
     documentationRefUri:
         'https://streetsidesoftware.github.io/vscode-spell-checker/docs/configuration/#cspellblockcheckingwhentextchunksizegreaterthan',
 };
