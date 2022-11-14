@@ -378,9 +378,9 @@
   integrity sha512-O1W6nd5y3Z00AMXQMzfiYrIJ1sTd9fB1oLr+xf/UD7b3xeHeMeYE2OtcWbt9uyeHim4tk+vkSTcmYEBKJgS5bQ==
 
 "@cspell/dict-bash@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-4.0.0.tgz#b27cc1c068587dcb5a0fa6ea024f0192f4369681"
-  integrity sha512-3jEHQ7s34AakowZwIV+HczpFK/HY5Ja4PGI1kZaELWnDSpHGongz7WB8cfApd4b1CLptS1L7AZrDC63awG73ow==
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-bash/-/dict-bash-4.1.0.tgz#b795fcd7cdbf5009cf28f01a76b9958d6c7f44ed"
+  integrity sha512-8pFL03ZKejynfbsa2UZ3iZ7BrT1TAGTD8ZlK822ioAb7aoDvQhYao2Bjz5cXU0uk7CyrlgsSnYX94sLfqDfTxQ==
 
 "@cspell/dict-companies@^3.0.3":
   version "3.0.3"
@@ -438,9 +438,9 @@
   integrity sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==
 
 "@cspell/dict-en_us@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-4.0.1.tgz#c8c2884c7b4808431a8913066be7e34d11c688e2"
-  integrity sha512-CD7I9Yr1ffNSkE3qX5vEP6N3btf1S8GDKRAChMbmqcDwvljwpdaFrNJB1CvAjNPDcDrLrJlrRqiqr0MvI6YilA==
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-en_us/-/dict-en_us-4.1.0.tgz#34823c87a6a9b21fc7aa198c060a82de804201a3"
+  integrity sha512-EnfxP/5U3kDhmTWcHV7Xs2Fxa9KAE5fbHm+4u8LGBOUZvSkZC5+ayjQ50CfEyTGuaI/946ITQYPRNxUZ7oqOiQ==
 
 "@cspell/dict-filetypes@^3.0.0":
   version "3.0.0"
@@ -1712,9 +1712,9 @@ ajv@^6.10.0, ajv@^6.12.4, ajv@^6.12.5:
     uri-js "^4.2.2"
 
 ajv@^8.0.0, ajv@^8.0.1, ajv@^8.8.0:
-  version "8.11.0"
-  resolved "https://registry.npmjs.org/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
-  integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
+  version "8.11.2"
+  resolved "https://registry.npmjs.org/ajv/-/ajv-8.11.2.tgz#aecb20b50607acf2569b6382167b65a96008bb78"
+  integrity sha512-E4bfmKAhGiSTvMfL1Myyycaub+cUEU2/IvpylXkUu7CHBkBj1f/ikdzbD7YQ6FKUbixDxeYvB/xY4fvyroDlQg==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -2781,9 +2781,9 @@ chrome-trace-event@^1.0.2:
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
 ci-info@^3.2.0:
-  version "3.5.0"
-  resolved "https://registry.npmjs.org/ci-info/-/ci-info-3.5.0.tgz#bfac2a29263de4c829d806b1ab478e35091e171f"
-  integrity sha512-yH4RezKOGlOhxkmhbeNuC4eYZKAUsEaGtBuBzDDP1eFUKiccDWzBABxBfOx31IDwDIXMTxWuwAxUGModvkbuVw==
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/ci-info/-/ci-info-3.6.1.tgz#7594f1c95cb7fdfddee7af95a13af7dbc67afdcf"
+  integrity sha512-up5ggbaDqOqJ4UqLKZ2naVkyqSJQgJi5lwD6b6mM748ysrghDBX0bx/qJTUHzw7zu6Mq4gycviSF5hJnwceD8w==
 
 cjs-module-lexer@^1.0.0:
   version "1.2.2"
@@ -5597,9 +5597,9 @@ media-typer@0.3.0:
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
 memfs@^3.4.3:
-  version "3.4.10"
-  resolved "https://registry.npmjs.org/memfs/-/memfs-3.4.10.tgz#4cdff7cfd21351a85e11b08aa276ebf100210a4d"
-  integrity sha512-0bCUP+L79P4am30yP1msPzApwuMQG23TjwlwdHeEV5MxioDR1a0AgB0T9FfggU52eJuDCq8WVwb5ekznFyWiTQ==
+  version "3.4.11"
+  resolved "https://registry.npmjs.org/memfs/-/memfs-3.4.11.tgz#3a34837ade675825d805a2c135e88cefe5e53aaf"
+  integrity sha512-GvsCITGAyDCxxsJ+X6prJexFQEhOCJaIlUbsAvjzSI5o5O7j2dle3jWvz5Z5aOdpOxW6ol3vI1+0ut+641F1+w==
   dependencies:
     fs-monkey "^1.0.3"
 
