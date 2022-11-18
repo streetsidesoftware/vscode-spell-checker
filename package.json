@@ -2285,7 +2285,7 @@
     "@cspell/cspell-types": "^6.14.2",
     "@types/react": "^17.0.52",
     "cosmiconfig": "^7.1.0",
-    "cspell": "^6.14.2",
+    "cspell": "^6.14.3",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
