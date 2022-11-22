@@ -5023,10 +5023,10 @@ jest-message-util@^29.3.1:
     slash "^3.0.0"
     stack-utils "^2.0.3"
 
-jest-mock-vscode@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/jest-mock-vscode/-/jest-mock-vscode-1.2.0.tgz#8ee4d3fd38bc37fb67729bd2cc54af6a240400e4"
-  integrity sha512-f1us+GLHrZ3we1ylQCvSi8Cq1ECl9k69QmyaANA67VIigAZwWfD/CPjPH0Kmusj+AmUtnwacnKR6P2NkvSbVoQ==
+jest-mock-vscode@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/jest-mock-vscode/-/jest-mock-vscode-1.2.1.tgz#67aff9533c19b91dab720ada773227518cc72b00"
+  integrity sha512-j5+Jzqru/QwsA+1YkVOParRAE4tXHKRvQQVhbZeg7TDxP6LXdxSlCAajMEG5KS5eWYSL9OxA7KaJ07h+4Wfcog==
   dependencies:
     vscode-uri "^3.0.6"
 
