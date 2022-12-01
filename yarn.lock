@@ -362,10 +362,15 @@
   resolved "https://registry.npmjs.org/@cspell/cspell-service-bus/-/cspell-service-bus-6.15.0.tgz#ff62eab49d561d4a36711e76493a5284aaef534c"
   integrity sha512-lFhKcVd2wGL67xT1SVTNmfovNP/Cu5uYVKbKbsTy72XqCpX23daVuFlCZsIY1nxSUh60yAq9mZy7K5BvwFrd9w==
 
-"@cspell/cspell-types@6.15.0", "@cspell/cspell-types@^6.15.0":
+"@cspell/cspell-types@6.15.0":
   version "6.15.0"
   resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.15.0.tgz#878553d2729e011359a0a8c12add36d9bbd580e3"
   integrity sha512-fS2kV+sV4sfUIy6uQX1H91tZNCWl3nOYfHv1+EI4JnCVnxcFO8EuLgybxUw3w4PbcchyAJaq0Nxa/WxJJnZUyw==
+
+"@cspell/cspell-types@^6.15.1":
+  version "6.15.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.15.1.tgz#16aa17298dddcbd74ec8df5fdd500baf32bb9a03"
+  integrity sha512-ub+eP1Iw4LIP0JrTlyGumHAD42VBfUZBbSIlzKccPuCzfkUxQIFIbyjKeczfBVEbsNEGfCxZb00JKB38ln+q+Q==
 
 "@cspell/dict-ada@^4.0.0":
   version "4.0.0"
