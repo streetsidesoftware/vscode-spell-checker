@@ -40,7 +40,7 @@
     "micromatch": "^4.0.5",
     "minimatch": "^5.1.1",
     "node-watch": "^0.7.3",
-    "rxjs": "^7.5.7",
+    "rxjs": "^7.6.0",
     "ts-jest": "^28.0.8",
     "ts-json-schema-generator": "^1.1.2",
     "ts-loader": "^9.4.2",
