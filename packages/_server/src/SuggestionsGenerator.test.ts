@@ -14,7 +14,8 @@ describe('Validate Suggestions', () => {
         const doc = { languageId: 'typescript', text: '' };
         const { settings } = await getSettings(doc);
         const result = await gen.genWordSuggestions(doc, 'code');
-        expect(result).toContain('code');
+        const resultWords = result.map((s) => s.word);
+        expect(resultWords).toContain('code');
         expect(result).toHaveLength(settings.numSuggestions || 0);
     });
 
@@ -23,7 +24,7 @@ describe('Validate Suggestions', () => {
         const doc = { languageId: 'typescript', text: '' };
         const result = await gen.genWordSuggestions(doc, 'Acknowledgements');
         expect(result).toHaveLength(maxNumberOfSuggestionsForLongWords);
-        expect(result).toContain('acknowledgements');
+        expect(result.map((s) => s.word)).toContain('acknowledgements');
     });
 
     async function getSettings(doc: DocInfo) {
