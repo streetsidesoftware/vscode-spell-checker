@@ -2,6 +2,7 @@ import { CSpellUserSettings } from './config/cspellConfig';
 import { SuggestionResult, CompoundWordsMethod } from 'cspell-lib';
 import { SpellingDictionaryCollection } from 'cspell-lib';
 import type { SuggestOptions } from 'cspell-lib/dist/SpellingDictionary';
+import { Suggestion } from './models/Suggestion';
 
 const defaultNumSuggestions = 10;
 
@@ -41,7 +42,7 @@ export class SuggestionGenerator<DocInfo> {
         return dictionary.suggest(word, options).map((s) => ({ ...s, word: s.word.replace(regexJoinedWords, '') }));
     }
 
-    async genWordSuggestions(doc: DocInfo, word: string): Promise<string[]> {
-        return (await this.genSuggestions(doc, word)).map((sr) => sr.word);
+    async genWordSuggestions(doc: DocInfo, word: string): Promise<Suggestion[]> {
+        return (await this.genSuggestions(doc, word)).map(({ word, isPreferred }) => ({ word, isPreferred }));
     }
 }
