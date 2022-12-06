@@ -20,6 +20,7 @@ import { calculateConfigTargets } from './config/configTargetsHelper';
 import { CSpellUserSettings } from './config/cspellConfig';
 import { isUriAllowed } from './config/documentSettings';
 import { DiagnosticData } from './models/DiagnosticData';
+import { Suggestion } from './models/Suggestion';
 import { GetSettingsResult, SuggestionGenerator } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
 import * as Validator from './validator';
@@ -105,23 +106,17 @@ export function onCodeActionHandler(
             for (const diag of spellCheckerDiags) {
                 const { issueType = IssueType.spelling, suggestions } = extractDiagnosticData(diag);
                 isSpellingIssue = isSpellingIssue || issueType === IssueType.spelling;
-                const word = extractText(textDocument, diag.range);
-                diagWord = diagWord || word;
-                const sugs: string[] = suggestions ?? (await getSuggestions(word));
-                sugs.map((sug) => (Text.isLowerCase(sug) ? Text.matchCase(word, sug) : sug))
+                const srcWord = extractText(textDocument, diag.range);
+                diagWord = diagWord || srcWord;
+                const sugs: Suggestion[] = suggestions ?? (await getSuggestions(srcWord));
+                sugs.map(({ word, isPreferred }) => ({ word: Text.isLowerCase(word) ? Text.matchCase(srcWord, word) : word, isPreferred }))
                     .filter(uniqueFilter())
-                    .forEach((sugWord) => {
-                        const title = suggestionToTitle(sugWord, issueType);
+                    .forEach((sug) => {
+                        const sugWord = sug.word;
+                        const title = suggestionToTitle(sug, issueType);
                         if (!title) return;
                         const cmd = createCommand(title, 'cSpell.editText', uri, textDocument.version, [replaceText(diag.range, sugWord)]);
-                        const action = createAction(cmd, [diag]);
-                        /**
-                         * Waiting on [Add isPreferred to the CodeAction protocol. Pull Request #489 · Microsoft/vscode-languageserver-node](https://github.com/Microsoft/vscode-languageserver-node/pull/489)
-                         * Note we might want this to be a config setting incase someone has `"editor.codeActionsOnSave": { "source.fixAll": true }`
-                         * if (!actions.length) {
-                         *     action.isPreferred = true;
-                         * }
-                         */
+                        const action = createAction(cmd, [diag], sug.isPreferred);
                         actions.push(action);
                     });
             }
@@ -164,19 +159,23 @@ const directivesToHide: Record<string, true | undefined> = {
     local: true,
 };
 
-function suggestionToTitle(sug: string, issueType: IssueType): string | undefined {
-    if (issueType === IssueType.spelling) return sug;
-    if (sug in directivesToHide) return undefined;
-    return directiveToTitle[sug] || 'cspell\x3a' + sug;
+function suggestionToTitle(sug: Suggestion, issueType: IssueType): string | undefined {
+    const sugWord = sug.word;
+    if (issueType === IssueType.spelling) return sugWord + (sug.isPreferred ? ' (Auto Fix)' : '');
+    if (sugWord in directivesToHide) return undefined;
+    return directiveToTitle[sugWord] || 'cspell\x3a' + sugWord;
 }
 
 function logTargets(targets: ConfigTarget[]): void {
     logDebug(format('Config Targets %o', targets));
 }
 
-function createAction(cmd: LangServerCommand, diags: Diagnostic[] | undefined): CodeAction {
+function createAction(cmd: LangServerCommand, diags: Diagnostic[] | undefined, isPreferred?: boolean): CodeAction {
     const action = CodeAction.create(cmd.title, cmd, CodeActionKind.QuickFix);
     action.diagnostics = diags;
+    if (isPreferred) {
+        action.isPreferred = true;
+    }
     return action;
 }
 

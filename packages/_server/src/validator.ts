@@ -45,9 +45,10 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             },
         }))
         // Convert it to a Diagnostic
-        .map(({ text, range, isFlagged, message, issueType, suggestions }) => {
+        .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx }) => {
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
-            const data: DiagnosticData = { issueType, suggestions };
+            const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
+            const data: DiagnosticData = { issueType, suggestions: sugs };
             return { severity, range, message: diagMessage, source: diagSource, data };
         });
     return diags;
