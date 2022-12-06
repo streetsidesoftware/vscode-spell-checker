@@ -22,7 +22,7 @@ const viewerConfig = {
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
+            template: 'src/viewer/index.html',
             inject: 'body',
         }),
     ],

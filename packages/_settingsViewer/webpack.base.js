@@ -23,10 +23,6 @@ const baseConfig = {
                 include: path.join(__dirname, 'src'),
             },
             {
-                test: /\.hbs$/,
-                use: 'handlebars-loader',
-            },
-            {
                 test: /\.(ttf|otf|eot|svg)$/,
                 exclude: /node_modules/,
                 type: 'asset/resource',
@@ -46,7 +42,7 @@ const baseConfig = {
         new HtmlWebpackPlugin({
             title: 'CSpell Settings Viewer',
             hash: true,
-            template: path.join('!!handlebars-loader!src', 'viewer', 'index.hbs'),
+            template: 'src/viewer/index.html',
             inject: 'body',
         }),
     ],
