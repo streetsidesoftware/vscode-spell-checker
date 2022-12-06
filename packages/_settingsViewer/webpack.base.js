@@ -10,6 +10,7 @@ const baseConfig = {
         path: dist,
         filename: '[name].bundle.js',
         publicPath: '/',
+        assetModuleFilename: '[path][name].[ext]',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -28,27 +29,16 @@ const baseConfig = {
             {
                 test: /\.(ttf|otf|eot|svg)$/,
                 exclude: /node_modules/,
-                loader: 'file-loader',
-                options: {
-                    name: '[path][name].[ext]',
-                },
+                type: 'asset/resource',
             },
             {
                 test: /\.(woff2?)$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                    },
-                ],
+                type: 'asset/inline',
             },
             {
                 test: /\.(pdf|jpg|png|gif|svg|ico)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                    },
-                ],
+                type: 'asset/inline',
             },
         ],
     },
