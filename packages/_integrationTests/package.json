@@ -28,7 +28,7 @@
     "@types/chai": "^4.3.4",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.11.13",
+    "@types/node": "^18.11.14",
     "@types/vscode": "^1.74.0",
     "@vscode/test-electron": "^2.2.1",
     "chai": "^4.3.7",
