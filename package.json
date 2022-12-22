@@ -2274,18 +2274,18 @@
     "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "@vscode/vsce": "^2.15.0",
+    "@vscode/vsce": "^2.16.0",
     "eslint": "^7.32.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.17.0",
-    "@cspell/cspell-types": "^6.17.0",
+    "@cspell/cspell-bundled-dicts": "^6.18.0",
+    "@cspell/cspell-types": "^6.18.0",
     "@types/react": "^17.0.52",
     "cosmiconfig": "^8.0.0",
-    "cspell": "^6.17.0",
+    "cspell": "^6.18.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
