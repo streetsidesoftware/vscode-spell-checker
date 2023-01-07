@@ -329,7 +329,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * @hidden
      */
-    addWordTo?: AddToTargets;
+    // addWordsTo?: AddToTargets;
 }
 
 type AutoOrBoolean = boolean | 'auto';
@@ -345,7 +345,7 @@ type Prefix<T, P extends string> = {
 };
 type AddToDictionaryTarget = Prefix<Record<DictionaryRef, AutoOrBoolean>, '#'>;
 
-interface AddToTargets extends AddToDictionaryTarget {
+export interface AddToTargets extends AddToDictionaryTarget {
     /**
      * Add words to folder settings.
      * - `true` - always enable add to folder settings

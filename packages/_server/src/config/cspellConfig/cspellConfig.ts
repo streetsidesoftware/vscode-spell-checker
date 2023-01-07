@@ -113,7 +113,7 @@ type _VSConfigRoot = Pick<SpellCheckerSettingsVSCodeBase, 'enabled'>;
 type VSConfigLanguageAndDictionaries = PrefixWithCspell<_VSConfigLanguageAndDictionaries>;
 type _VSConfigLanguageAndDictionaries = Pick<
     SpellCheckerSettingsVSCodeBase,
-    | 'addWordTo'
+    // | 'addWordsTo'
     | 'caseSensitive'
     | 'customDictionaries'
     | 'dictionaries'

@@ -67,12 +67,12 @@ describe('cspellConfig', () => {
                 },
             },
         }),
-        s({
-            addWordTo: {
-                cspell: true,
-                '#company-terms': true,
-            },
-        }),
+        // s({
+        //     addWordsTo: {
+        //         cspell: true,
+        //         '#company-terms': true,
+        //     },
+        // }),
     ];
 
     test('sampleSettings', () => {
