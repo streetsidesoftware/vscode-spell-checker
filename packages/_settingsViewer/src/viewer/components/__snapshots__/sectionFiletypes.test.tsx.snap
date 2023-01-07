@@ -6,7 +6,7 @@ exports[`SectionFileTypes Verification tests the snapshots: <SectionFiletypes> f
     File Types and Programming Languages 
     <span
       style={
-        Object {
+        {
           "fontSize": "0.65em",
           "opacity": 0.75,
         }

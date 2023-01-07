@@ -1,96 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Validate AppState languageConfig 1`] = `
-Object {
-  "folder": Object {
+{
+  "folder": {
     "inherited": "workspace",
-    "languages": Array [
-      Object {
+    "languages": [
+      {
         "code": "cs",
-        "dictionaries": Array [
+        "dictionaries": [
           "cs-cz",
         ],
         "enabled": false,
         "name": "Czech",
       },
-      Object {
+      {
         "code": "en",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": true,
         "name": "English",
       },
-      Object {
+      {
         "code": "en-GB",
-        "dictionaries": Array [
+        "dictionaries": [
           "en-gb",
         ],
         "enabled": false,
         "name": "English - United Kingdom",
       },
-      Object {
+      {
         "code": "en-US",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": false,
         "name": "English - United States",
       },
-      Object {
+      {
         "code": "lorem",
-        "dictionaries": Array [
+        "dictionaries": [
           "lorem-ipsum",
         ],
         "enabled": false,
         "name": "Lorem-Ipsum",
       },
-      Object {
+      {
         "code": "da",
-        "dictionaries": Array [],
+        "dictionaries": [],
         "enabled": true,
         "name": "Danish",
       },
     ],
   },
-  "user": Object {
+  "user": {
     "inherited": undefined,
-    "languages": Array [
-      Object {
+    "languages": [
+      {
         "code": "cs",
-        "dictionaries": Array [
+        "dictionaries": [
           "cs-cz",
         ],
         "enabled": false,
         "name": "Czech",
       },
-      Object {
+      {
         "code": "en",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": true,
         "name": "English",
       },
-      Object {
+      {
         "code": "en-GB",
-        "dictionaries": Array [
+        "dictionaries": [
           "en-gb",
         ],
         "enabled": false,
         "name": "English - United Kingdom",
       },
-      Object {
+      {
         "code": "en-US",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": false,
         "name": "English - United States",
       },
-      Object {
+      {
         "code": "lorem",
-        "dictionaries": Array [
+        "dictionaries": [
           "lorem-ipsum",
         ],
         "enabled": false,
@@ -98,52 +98,52 @@ Object {
       },
     ],
   },
-  "workspace": Object {
+  "workspace": {
     "inherited": undefined,
-    "languages": Array [
-      Object {
+    "languages": [
+      {
         "code": "cs",
-        "dictionaries": Array [
+        "dictionaries": [
           "cs-cz",
         ],
         "enabled": false,
         "name": "Czech",
       },
-      Object {
+      {
         "code": "en",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": true,
         "name": "English",
       },
-      Object {
+      {
         "code": "en-GB",
-        "dictionaries": Array [
+        "dictionaries": [
           "en-gb",
         ],
         "enabled": false,
         "name": "English - United Kingdom",
       },
-      Object {
+      {
         "code": "en-US",
-        "dictionaries": Array [
+        "dictionaries": [
           "en_us",
         ],
         "enabled": false,
         "name": "English - United States",
       },
-      Object {
+      {
         "code": "lorem",
-        "dictionaries": Array [
+        "dictionaries": [
           "lorem-ipsum",
         ],
         "enabled": false,
         "name": "Lorem-Ipsum",
       },
-      Object {
+      {
         "code": "da",
-        "dictionaries": Array [],
+        "dictionaries": [],
         "enabled": true,
         "name": "Danish",
       },
@@ -153,7 +153,7 @@ Object {
 `;
 
 exports[`Validate AppState workspaceFolderNames 1`] = `
-Array [
+[
   "ripgrep",
   "dutch",
   "vscode-cspell-dict-extensions",
