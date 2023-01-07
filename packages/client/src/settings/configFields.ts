@@ -24,6 +24,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     customWorkspaceDictionaries: 'customWorkspaceDictionaries',
     diagnosticLevel: 'diagnosticLevel',
     fixSpellingWithRenameProvider: 'fixSpellingWithRenameProvider',
+    hideAddToDictionaryCodeActions: 'hideAddToDictionaryCodeActions',
     logLevel: 'logLevel',
     logFile: 'logFile',
     mapOfEnabledFileTypes: 'mapOfEnabledFileTypes',

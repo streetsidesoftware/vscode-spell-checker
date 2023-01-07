@@ -2,7 +2,7 @@
   "name": "server-pattern-matcher",
   "private": true,
   "description": "Pattern Matcher Server",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "author": "Jason Dent",
   "license": "MIT",
   "repository": {
