@@ -8,7 +8,6 @@ export type {
 export type {
     AllSpellCheckerSettingsInVSCode,
     CSpellUserSettings,
-    CustomDictionaryWithScope,
     SpellCheckerSettingsProperties,
     SpellCheckerSettingsVSCode,
     SpellCheckerSettingsVSCodeBase,
@@ -20,5 +19,6 @@ export type {
     CustomDictionary,
     CustomDictionaryAugmentExistingDictionary,
     CustomDictionaryEntry,
+    CustomDictionaryWithScope,
 } from './CustomDictionary';
 export type { SpellCheckerSettings } from './SpellCheckerSettings';

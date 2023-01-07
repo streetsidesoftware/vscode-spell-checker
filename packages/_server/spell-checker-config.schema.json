@@ -68,6 +68,75 @@
       "additionalProperties": false,
       "order": 5,
       "properties": {
+        "cSpell.addWordTo": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "not": {}
+              },
+              {
+                "type": ["boolean", "string"]
+              }
+            ]
+          },
+          "markdownDescription": "Specify where words can be added.",
+          "properties": {
+            "cspell": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "const": "auto",
+                  "type": "string"
+                }
+              ],
+              "default": "auto",
+              "description": "Add words to user settings.\n- `true` - always enable add to cspell settings\n- `false` - never enable add to cspell settings\n- `auto` - autodetect"
+            },
+            "folder": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "const": "auto",
+                  "type": "string"
+                }
+              ],
+              "default": "auto",
+              "description": "Add words to folder settings.\n- `true` - always enable add to folder settings\n- `false` - never enable add to folder settings\n- `auto` - autodetect"
+            },
+            "user": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "const": "auto",
+                  "type": "string"
+                }
+              ],
+              "default": "auto",
+              "description": "Add words to user settings.\n- `true` - always enable add to user settings\n- `false` - never enable add to user settings\n- `auto` - autodetect"
+            },
+            "workspace": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "const": "auto",
+                  "type": "string"
+                }
+              ],
+              "default": "auto",
+              "description": "Add words to workspace settings.\n- `true` - always enable add to workspace settings\n- `false` - never enable add to workspace settings\n- `auto` - autodetect"
+            }
+          },
+          "scope": "resource",
+          "type": "object"
+        },
         "cSpell.hideAddToDictionaryCodeActions": {
           "default": false,
           "markdownDescription": "Hide the options to add words to dictionaries or settings.",

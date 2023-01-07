@@ -1,6 +1,17 @@
-import type { CustomDictionaryScope, DictionaryId, FsPath } from '@cspell/cspell-types';
+import type {
+    CustomDictionaryScope,
+    DictionaryDefinitionCustom,
+    DictionaryDefinitionPreferred,
+    DictionaryId,
+    FsPath,
+} from '@cspell/cspell-types';
 import type { EnableCustomDictionary } from './annotatedTypes';
-import type { DictionaryDefCustom } from './cspellConfig';
+
+type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;
+
+type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+
+export type DictionaryDef = DictionaryDefPreferred | DictionaryDefCustom;
 
 export type CustomDictionaries = {
     [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
@@ -124,3 +135,5 @@ export interface CustomDictionaryAugmentExistingDictionary extends CustomDiction
 export interface CustomDictionary extends CustomDictionaryBase, Omit<DictionaryDefCustom, keyof CustomDictionaryBase> {
     path: FsPath;
 }
+
+export interface CustomDictionaryWithScope extends CustomDictionary {}

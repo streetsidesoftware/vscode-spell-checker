@@ -308,4 +308,74 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default false
      */
     hideAddToDictionaryCodeActions?: boolean;
+
+    /**
+     * @scope resource
+     * @markdownDescription
+     * Specify where words can be added.
+     *
+     * **Note:** Dictionary names should be prefixed with `#`
+     *
+     * **Example:**
+     *
+     * ```js
+     * "cSpell.addWordTo": {
+     *   "cspell": true, // Add words to cspell configuration
+     *   "#company-terms": true // Add words to the company terms dictionary.
+     * }
+     * ```
+     *
+     * NOTE: This is NOT yest supported.
+     *
+     * @hidden
+     */
+    addWordTo?: AddToTargets;
+}
+
+type AutoOrBoolean = boolean | 'auto';
+
+/**
+ * Reference to a dictionary
+ * @pattern (^#[\s\w]+$)
+ */
+type DictionaryRef = string;
+
+type Prefix<T, P extends string> = {
+    [K in keyof T as K extends string ? `${P}${K}` : K]: T[K];
+};
+type AddToDictionaryTarget = Prefix<Record<DictionaryRef, AutoOrBoolean>, '#'>;
+
+interface AddToTargets extends AddToDictionaryTarget {
+    /**
+     * Add words to folder settings.
+     * - `true` - always enable add to folder settings
+     * - `false` - never enable add to folder settings
+     * - `auto` - autodetect
+     * @default "auto"
+     */
+    folder?: AutoOrBoolean;
+    /**
+     * Add words to workspace settings.
+     * - `true` - always enable add to workspace settings
+     * - `false` - never enable add to workspace settings
+     * - `auto` - autodetect
+     * @default "auto"
+     */
+    workspace?: AutoOrBoolean;
+    /**
+     * Add words to user settings.
+     * - `true` - always enable add to user settings
+     * - `false` - never enable add to user settings
+     * - `auto` - autodetect
+     * @default "auto"
+     */
+    user?: AutoOrBoolean;
+    /**
+     * Add words to user settings.
+     * - `true` - always enable add to cspell settings
+     * - `false` - never enable add to cspell settings
+     * - `auto` - autodetect
+     * @default "auto"
+     */
+    cspell?: AutoOrBoolean;
 }

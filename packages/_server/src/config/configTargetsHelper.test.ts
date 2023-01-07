@@ -1,13 +1,16 @@
-import { calculateConfigTargets, __testing__ } from './configTargetsHelper';
-import { WorkspaceConfigForDocument } from '../api';
-import { URI } from 'vscode-uri';
-import { searchForConfig } from 'cspell-lib';
-import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
 import { mustBeDefined } from 'common-utils/util.js';
-import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';
+import { CSpellUserSettings, searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
+import { URI } from 'vscode-uri';
+import { WorkspaceConfigForDocument } from '../api';
+import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';
+import { calculateConfigTargets, __testing__ } from './configTargetsHelper';
+import { DictionaryDef } from './cspellConfig/CustomDictionary';
+import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
 
 const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTargets } = __testing__;
+
+const col = new Intl.Collator();
 
 describe('Validate configTargetsHelper', () => {
     test('workspaceConfigToTargets in single root workspace', () => {
@@ -160,7 +163,7 @@ describe('Validate configTargetsHelper', () => {
         ]);
     });
 
-    test('calculateConfigTargets', async () => {
+    test('calculateConfigTargets user', async () => {
         const wConfig: WorkspaceConfigForDocument = {
             uri: URI.file(__filename).toString(),
             workspaceFile: undefined,
@@ -171,7 +174,8 @@ describe('Validate configTargetsHelper', () => {
             ignoreWords: {},
         };
         const cfg = mustBeDefined(await searchForConfig(__dirname));
-        const r = calculateConfigTargets(cfg, wConfig);
+        const settings = { ...cfg };
+        const r = calculateConfigTargets(settings, wConfig);
         expect(r).toEqual([
             oc<ConfigTargetDictionary>({
                 kind: 'dictionary',
@@ -209,7 +213,69 @@ describe('Validate configTargetsHelper', () => {
             }),
         ]);
     });
+
+    test('calculateConfigTargets workspace', async () => {
+        const wConfig: WorkspaceConfigForDocument = {
+            uri: URI.file(__filename).toString(),
+            workspaceFile: undefined,
+            workspaceFolder: URI.file(__dirname).toString(),
+            words: {
+                workspace: true,
+            },
+            ignoreWords: {},
+        };
+        const cfg = mustBeDefined(await searchForConfig(__dirname));
+        const defs: DictionaryDef[] = [cd('custom-words', 'path/to/custom-words.txt', false)];
+        const dictionaries: string[] = (cfg.dictionaries || []).concat('custom-words');
+        const settings: CSpellUserSettings = { ...cfg, dictionaryDefinitions: defs, dictionaries };
+        const r = calculateConfigTargets(settings, wConfig).sort((a, b) => col.compare(a.kind, b.kind) || col.compare(a.name, b.name));
+        expect(r).toEqual([
+            oc<ConfigTargetCSpell>({
+                kind: 'cspell',
+                name: '_server/cspell.json',
+                scope: 'unknown',
+                configUri: expect.stringContaining('_server/cspell.json'),
+                has: { words: undefined, ignoreWords: undefined },
+            }),
+            oc<ConfigTargetCSpell>({
+                kind: 'cspell',
+                name: expect.stringContaining('cSpell.json'),
+                scope: 'unknown',
+                configUri: expect.not.stringContaining('_server/cspell.json'),
+                has: { words: undefined, ignoreWords: true },
+            }),
+            // oc<ConfigTargetDictionary>({
+            //     kind: 'dictionary',
+            //     name: 'custom-words',
+            //     scope: 'unknown',
+            //     dictionaryUri: expect.stringContaining('custom-words.txt'),
+            // }),
+            oc<ConfigTargetVSCode>({
+                kind: 'vscode',
+                scope: 'user',
+                name: 'User',
+                docUri: expect.stringContaining('file:'),
+                has: { words: undefined, ignoreWords: undefined },
+            }),
+            oc<ConfigTargetVSCode>({
+                kind: 'vscode',
+                scope: 'workspace',
+                name: 'Workspace',
+                docUri: expect.stringContaining('file:'),
+                has: { words: true, ignoreWords: undefined },
+            }),
+        ]);
+    });
 });
+
+function cd(name: string, path: string, addWords?: boolean, noSuggest?: boolean): DictionaryDef {
+    return {
+        name,
+        path,
+        addWords,
+        noSuggest,
+    };
+}
 
 function oc<T>(v: Partial<T>): T {
     return expect.objectContaining(v);

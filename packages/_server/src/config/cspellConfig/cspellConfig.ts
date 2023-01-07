@@ -1,8 +1,8 @@
 // Export the cspell settings to the client.
 
-import type { DictionaryDefinitionCustom, DictionaryDefinitionPreferred, LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
-import { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties';
-import type { CustomDictionary } from './CustomDictionary';
+import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
+import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties';
+import type { DictionaryDef } from './CustomDictionary';
 import type { SpellCheckerSettings } from './SpellCheckerSettings';
 
 interface InternalSettings {
@@ -15,18 +15,10 @@ interface InternalSettings {
     mapOfEnabledFileTypes?: Map<string, boolean>;
 }
 
-export interface CustomDictionaryWithScope extends CustomDictionary {}
-
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
 
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
-
-type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;
-
-export type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
-
-type DictionaryDef = DictionaryDefPreferred | DictionaryDefCustom;
 
 interface DictionaryDefinitions {
     /**
@@ -121,6 +113,7 @@ type _VSConfigRoot = Pick<SpellCheckerSettingsVSCodeBase, 'enabled'>;
 type VSConfigLanguageAndDictionaries = PrefixWithCspell<_VSConfigLanguageAndDictionaries>;
 type _VSConfigLanguageAndDictionaries = Pick<
     SpellCheckerSettingsVSCodeBase,
+    | 'addWordTo'
     | 'caseSensitive'
     | 'customDictionaries'
     | 'dictionaries'
@@ -143,6 +136,7 @@ type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'autoFormatConfigFile'
     | 'diagnosticLevel'
+    | 'hideAddToDictionaryCodeActions'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
     | 'minWordLength'
