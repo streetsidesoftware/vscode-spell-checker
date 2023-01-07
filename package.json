@@ -488,6 +488,12 @@
         "additionalProperties": false,
         "order": 5,
         "properties": {
+          "cSpell.hideAddToDictionaryCodeActions": {
+            "default": false,
+            "markdownDescription": "Hide the options to add words to dictionaries or settings.",
+            "scope": "resource",
+            "type": "boolean"
+          },
           "cSpell.ignoreRegExpList": {
             "description": "",
             "items": {

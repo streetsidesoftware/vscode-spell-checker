@@ -8,15 +8,17 @@ export type {
 export type {
     AllSpellCheckerSettingsInVSCode,
     CSpellUserSettings,
-    CustomDictionaries,
-    CustomDictionariesDictionary,
-    CustomDictionary,
-    CustomDictionaryAugmentExistingDictionary,
-    CustomDictionaryEntry,
     CustomDictionaryWithScope,
-    SpellCheckerSettings,
     SpellCheckerSettingsProperties,
     SpellCheckerSettingsVSCode,
     SpellCheckerSettingsVSCodeBase,
     SpellCheckerSettingsVSCodePropertyKeys,
 } from './cspellConfig';
+export type {
+    CustomDictionaries,
+    CustomDictionariesDictionary,
+    CustomDictionary,
+    CustomDictionaryAugmentExistingDictionary,
+    CustomDictionaryEntry,
+} from './CustomDictionary';
+export type { SpellCheckerSettings } from './SpellCheckerSettings';
