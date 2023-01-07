@@ -32,7 +32,7 @@ import * as path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import { VSCodeSettingsCspell } from '../api';
-import { CSpellUserSettings } from '../config/cspellConfig';
+import { CSpellUserSettings } from './cspellConfig';
 import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';
 import { canAddWordsToDictionary } from './customDictionaries';

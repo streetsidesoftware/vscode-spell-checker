@@ -1307,6 +1307,10 @@
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
                     "path": {
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "title": "Path to Dictionary Text File",
@@ -1806,6 +1810,10 @@
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
@@ -1842,6 +1850,69 @@
                   },
                   "required": [
                     "name"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addWords": {
+                      "default": true,
+                      "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                      "title": "Add Words to Dictionary",
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "markdownDescription": "Optional: A human readable description.",
+                      "title": "Description of the Dictionary",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "title": "Name of Dictionary",
+                      "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "description": "Specifies the scope of a dictionary.",
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "items": {
+                            "description": "Specifies the scope of a dictionary.",
+                            "enum": [
+                              "user",
+                              "workspace",
+                              "folder"
+                            ],
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      ],
+                      "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                      "title": "Scope of dictionary"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "path"
                   ],
                   "type": "object"
                 },
@@ -1883,6 +1954,10 @@
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
@@ -1919,6 +1994,69 @@
                   },
                   "required": [
                     "name"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addWords": {
+                      "default": true,
+                      "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                      "title": "Add Words to Dictionary",
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "markdownDescription": "Optional: A human readable description.",
+                      "title": "Description of the Dictionary",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "title": "Name of Dictionary",
+                      "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "description": "Specifies the scope of a dictionary.",
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "items": {
+                            "description": "Specifies the scope of a dictionary.",
+                            "enum": [
+                              "user",
+                              "workspace",
+                              "folder"
+                            ],
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      ],
+                      "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                      "title": "Scope of dictionary"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "path"
                   ],
                   "type": "object"
                 },
@@ -1960,6 +2098,10 @@
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
                     "path": {
                       "description": "A File System Path. Relative paths are relative to the configuration file.",
                       "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
@@ -1996,6 +2138,69 @@
                   },
                   "required": [
                     "name"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addWords": {
+                      "default": true,
+                      "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                      "title": "Add Words to Dictionary",
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "markdownDescription": "Optional: A human readable description.",
+                      "title": "Description of the Dictionary",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "title": "Name of Dictionary",
+                      "type": "string"
+                    },
+                    "noSuggest": {
+                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "description": "Specifies the scope of a dictionary.",
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "items": {
+                            "description": "Specifies the scope of a dictionary.",
+                            "enum": [
+                              "user",
+                              "workspace",
+                              "folder"
+                            ],
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      ],
+                      "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                      "title": "Scope of dictionary"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "path"
                   ],
                   "type": "object"
                 },

@@ -4,7 +4,7 @@ import * as os from 'os';
 import * as Path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
-import { CSpellUserSettings } from '../config/cspellConfig';
+import { CSpellUserSettings } from './cspellConfig';
 import { escapeRegExp } from 'common-utils/util.js';
 import {
     correctBadSettings,

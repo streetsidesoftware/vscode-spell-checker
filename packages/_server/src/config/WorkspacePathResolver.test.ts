@@ -2,7 +2,7 @@ import { debugExports, createWorkspaceNamesResolver, resolveSettings } from './W
 import * as Path from 'path';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
-import { CSpellUserSettings, CustomDictionaries } from '../config/cspellConfig';
+import { CSpellUserSettings, CustomDictionaries } from './cspellConfig';
 import { logError } from 'common-utils/log.js';
 
 jest.mock('vscode-languageserver/node');
@@ -204,6 +204,10 @@ describe('Validate workspace substitution resolver', () => {
             path: '${root}/node_modules/@company/terms/company-terms.txt',
             addWords: false,
         },
+        'ignore-words': {
+            path: '${root}/node_modules/@company/terms/ignored-terms.txt',
+            noSuggest: true,
+        },
         'Project Dictionary': {
             addWords: true,
         },
@@ -365,6 +369,7 @@ describe('Validate workspace substitution resolver', () => {
                 'Root Dictionary',
                 'Workspace Dictionary 2',
                 'company-terms',
+                'ignore-words',
                 'python-terms',
                 'typescript',
             ])
@@ -381,6 +386,7 @@ describe('Validate workspace substitution resolver', () => {
                 'Workspace Dictionary 2',
                 'company-terms',
                 'python-terms',
+                'ignore-words',
                 'legacy-definition',
                 'legacy-definition-file',
             ])

@@ -12,13 +12,6 @@ import type {
     OverrideSettings,
     SimpleGlob,
 } from '@cspell/cspell-types';
-export type {
-    CustomDictionaryScope,
-    DictionaryDefinition,
-    DictionaryDefinitionCustom,
-    DictionaryFileTypes,
-    LanguageSetting,
-} from '@cspell/cspell-types';
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**
@@ -427,7 +420,7 @@ export type CustomDictionaries = {
     [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
 };
 
-export type CustomDictionaryEntry = CustomDictionary | DictionaryId;
+export type CustomDictionaryEntry = CustomDictionaryAugmentExistingDictionary | CustomDictionary | DictionaryId;
 
 type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
 
@@ -436,9 +429,9 @@ type OptionalField<T, K extends keyof T> = { [k in K]?: T[k] } & Omit<T, K>;
  * @markdownDescription
  * Define a custom dictionary to be included.
  */
-export interface CustomDictionariesDictionary extends OptionalField<CustomDictionary, 'name'> {}
+export type CustomDictionariesDictionary = OptionalField<CustomDictionaryAugmentExistingDictionary | CustomDictionary, 'name'>;
 
-export interface CustomDictionary {
+interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
     /**
      * @title Name of Dictionary
      * @markdownDescription
@@ -529,6 +522,20 @@ export interface CustomDictionary {
      * - `folder` - words that apply to only a workspace folder
      */
     scope?: CustomDictionaryScope | CustomDictionaryScope[];
+}
+export interface CustomDictionaryAugmentExistingDictionary extends CustomDictionaryBase {
+    /**
+     * @hidden
+     */
+    path?: FsPath;
+    /**
+     * @hidden
+     */
+    noSuggest?: undefined;
+}
+
+export interface CustomDictionary extends CustomDictionaryBase, Omit<DictionaryDefCustom, keyof CustomDictionaryBase> {
+    path: FsPath;
 }
 
 /**
@@ -901,9 +908,11 @@ export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettings
 export type SpellCheckerSettingsProperties = keyof SpellCheckerSettings;
 export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserSettings}`;
 
-type DictionaryDef =
-    | Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>
-    | Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;
+
+type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
+
+type DictionaryDef = DictionaryDefPreferred | DictionaryDefCustom;
 
 interface DictionaryDefinitions {
     /**
