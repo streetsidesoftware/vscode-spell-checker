@@ -8,7 +8,7 @@ const stub: any = {
 };
 const connection = stub as Connection;
 
-const mockConnection = jest.mocked(connection, true);
+const mockConnection = jest.mocked(connection);
 
 describe('Validate Client Api', () => {
     beforeEach(() => {

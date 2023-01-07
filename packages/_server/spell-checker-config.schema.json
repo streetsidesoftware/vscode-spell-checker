@@ -1754,6 +1754,12 @@
           "title": "Set Diagnostic Reporting Level",
           "type": "string"
         },
+        "cSpell.hideAddToDictionaryCodeActions": {
+          "default": false,
+          "markdownDescription": "Hide the options to add words to dictionaries or settings.",
+          "scope": "resource",
+          "type": "boolean"
+        },
         "cSpell.maxDuplicateProblems": {
           "default": 5,
           "description": "The maximum number of times the same word can be flagged as an error in a file.",

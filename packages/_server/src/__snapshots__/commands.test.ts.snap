@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Validate Commands clientCommands.addWordsToConfigFileFromServer 1`] = `
-Object {
-  "arguments": Array [
-    Array [
+{
+  "arguments": [
+    [
       "one",
       "two",
     ],
     "file:///document.ts",
-    Object {
+    {
       "name": "Workspace Config",
       "uri": "file:///cspell.json",
     },
@@ -19,14 +19,14 @@ Object {
 `;
 
 exports[`Validate Commands clientCommands.addWordsToDictionaryFileFromServer 1`] = `
-Object {
-  "arguments": Array [
-    Array [
+{
+  "arguments": [
+    [
       "one",
       "two",
     ],
     "file:///document.ts",
-    Object {
+    {
       "name": "Custom Terms",
       "uri": "file:///dictionary.txt",
     },
@@ -37,9 +37,9 @@ Object {
 `;
 
 exports[`Validate Commands clientCommands.addWordsToVSCodeSettingsFromServer 1`] = `
-Object {
-  "arguments": Array [
-    Array [
+{
+  "arguments": [
+    [
       "one",
       "two",
     ],

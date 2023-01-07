@@ -58,6 +58,21 @@ describe('cspellConfig', () => {
                 },
             ],
         }),
+        s({
+            customDictionaries: {
+                'no-suggest': {
+                    path: '${workspaceFolder}/no-sug.txt',
+                    description: 'Allowed, but not to be encouraged.',
+                    noSuggest: true,
+                },
+            },
+        }),
+        // s({
+        //     addWordsTo: {
+        //         cspell: true,
+        //         '#company-terms': true,
+        //     },
+        // }),
     ];
 
     test('sampleSettings', () => {

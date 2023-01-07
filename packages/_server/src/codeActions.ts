@@ -51,7 +51,6 @@ export function onCodeActionHandler(
         settingsVersion: number;
         settings: Promise<SettingsDictPair>;
     }
-
     const sugGen = new SuggestionGenerator(getSettings);
     const settingsCache = new Map<string, CacheEntry>();
 
@@ -128,7 +127,9 @@ export function onCodeActionHandler(
                 const targets = calculateConfigTargets(docSetting, wConfig);
                 debugTargets && logTargets(targets);
 
-                actions.push(...generateTargetActions(textDocument, spellCheckerDiags, word, targets));
+                if (!docSetting.hideAddToDictionaryCodeActions) {
+                    actions.push(...generateTargetActions(textDocument, spellCheckerDiags, word, targets));
+                }
             }
             return actions;
         }

@@ -466,7 +466,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
     Language 
     <span
       style={
-        Object {
+        {
           "fontSize": "0.65em",
           "opacity": 0.5,
         }

@@ -301,6 +301,7 @@ Default
 | ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                | window               | Auto Format Configuration File                                                  |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                          | resource             | Set Diagnostic Reporting Level                                                  |
+| [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)            | resource             | Hide the options to add words to dictionaries or settings.                      |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                  | resource             | Controls the maximum number of spelling errors per document.                    |
 | [`cSpell.minWordLength`](#cspellminwordlength)                                              | resource             | The minimum length of a word before checking it against a dictionary.           |
@@ -358,6 +359,25 @@ Description
 
 Default
 : _`"Information"`_
+
+---
+
+### `cSpell.hideAddToDictionaryCodeActions`
+
+Name
+: `cSpell.hideAddToDictionaryCodeActions`
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: Hide the options to add words to dictionaries or settings.
+
+Default
+: _`false`_
 
 ---
 

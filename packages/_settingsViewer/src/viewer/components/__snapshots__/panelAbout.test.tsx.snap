@@ -6,7 +6,7 @@ exports[`About Panel Verification tests the snapshot 1`] = `
     <img
       src="test-file-stub"
       style={
-        Object {
+        {
           "paddingBottom": "8px",
           "verticalAlign": "middle",
         }
