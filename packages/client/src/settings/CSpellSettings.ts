@@ -36,7 +36,7 @@ export const configFileLocations = [
 
 export const configFileLocationGlob = `**/{${configFileLocations.join(',')}}`;
 
-type ConfigFileNames = typeof configFileLocations[number];
+type ConfigFileNames = (typeof configFileLocations)[number];
 
 export const nestedConfigLocations = ['package.json'];
 
