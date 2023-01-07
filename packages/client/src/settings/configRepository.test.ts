@@ -20,7 +20,7 @@ const workspaceFolderWorkspace: WorkspaceFolder = {
     name: 'Workspace',
     index: 0,
 };
-const mockedWorkspace = jest.mocked(workspace, true);
+const mockedWorkspace = jest.mocked(workspace);
 
 describe('configRepository', () => {
     test('CSpellConfigRepository', async () => {

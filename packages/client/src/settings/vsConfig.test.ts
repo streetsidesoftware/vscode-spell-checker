@@ -25,7 +25,7 @@ const { mergeInspect } = __testing__;
 
 const uri = Uri.file(__filename);
 
-const mockedWorkspace = jest.mocked(workspace, true);
+const mockedWorkspace = jest.mocked(workspace);
 
 const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }> = {
     '[*]': {

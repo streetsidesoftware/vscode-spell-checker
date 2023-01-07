@@ -7,7 +7,7 @@ jest.mock('vscode-languageserver/node');
 describe('Validate vscode config', () => {
     test('getConfiguration', async () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection, true);
+        const mockedCreateConnection = jest.mocked(connection);
         const cfg = [{}, {}];
         mockedCreateConnection.workspace.getConfiguration.mockResolvedValue(cfg);
         const items = [{ scopeUri: Uri.file(__filename).toString(), section: 'cSpell' }, { section: 'search' }];
@@ -17,7 +17,7 @@ describe('Validate vscode config', () => {
 
     test('getWorkspaceFolders', () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection, true);
+        const mockedCreateConnection = jest.mocked(connection);
         const folders: WorkspaceFolder[] = [];
         mockedCreateConnection.workspace.getWorkspaceFolders.mockResolvedValue(folders);
         expect(getWorkspaceFolders(connection)).resolves.toBe(folders);
