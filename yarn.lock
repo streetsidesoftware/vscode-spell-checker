@@ -4563,7 +4563,7 @@ jest-worker@^29.3.1:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^29.2.5:
+jest@^29.3.1:
   version "29.3.1"
   resolved "https://registry.npmjs.org/jest/-/jest-29.3.1.tgz#c130c0d551ae6b5459b8963747fed392ddbde122"
   integrity sha512-6iWfL5DTT0Np6UYs/y5Niu7WIfNv/wRTtN5RSXt2DIEft3dx3zPuw/3WJQBCJfmEzvDiEKwoqMbGD9n49+qLSA==
