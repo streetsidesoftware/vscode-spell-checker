@@ -404,7 +404,7 @@ exports[`SectionLanguage Verification tests the handler: <SectionLanguage> for t
             <p
               className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
             >
-              Dictionary Names: lorem-ipsum
+              Dictionary Names: lorem-ipsum, lorem-ipsum
             </p>
           </div>
         </div>
@@ -862,7 +862,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             <p
               className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
             >
-              Dictionary Names: lorem-ipsum
+              Dictionary Names: lorem-ipsum, lorem-ipsum
             </p>
           </div>
         </div>
@@ -1393,7 +1393,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             <p
               className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
             >
-              Dictionary Names: lorem-ipsum
+              Dictionary Names: lorem-ipsum, lorem-ipsum
             </p>
           </div>
         </div>
@@ -1850,7 +1850,7 @@ exports[`SectionLanguage Verification tests the snapshots: <SectionLanguage> for
             <p
               className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
             >
-              Dictionary Names: lorem-ipsum
+              Dictionary Names: lorem-ipsum, lorem-ipsum
             </p>
           </div>
         </div>

@@ -394,7 +394,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
               <p
                 className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
               >
-                Dictionary Names: lorem-ipsum
+                Dictionary Names: lorem-ipsum, lorem-ipsum
               </p>
             </div>
           </div>
@@ -2088,7 +2088,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
               <p
                 className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
               >
-                Dictionary Names: lorem-ipsum
+                Dictionary Names: lorem-ipsum, lorem-ipsum
               </p>
             </div>
           </div>
@@ -3881,7 +3881,7 @@ exports[`Config Panel Verification tests the snapshot 3`] = `
               <p
                 className="MuiTypography-root MuiListItemText-secondary MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
               >
-                Dictionary Names: lorem-ipsum
+                Dictionary Names: lorem-ipsum, lorem-ipsum
               </p>
             </div>
           </div>
