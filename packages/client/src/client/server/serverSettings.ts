@@ -73,7 +73,7 @@ export function normalizeToLocales(locale: string = ''): string[] {
         .replace(/[|;\s]/g, ',')
         .replace(/[*]/g, '')
         .split(',')
-        .map(normalizeCode)
+        .map((s) => normalizeCode(s))
         .map((s) => s.trim())
         .filter((a) => !!a)
         .filter(util.uniqueFilter());

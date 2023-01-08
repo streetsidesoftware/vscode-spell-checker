@@ -1,5 +1,12 @@
-export const codes: string[][] = [
-    // ['code', 'language'[', ''locale']],
+type LangEntry = [
+    /** lang or lang-locale (ISO-639-1) + (ISO-3166-1 alpha 2) */
+    code: string,
+    /** Name of the Language */
+    language: string,
+    /** Optional Country */
+    country?: string
+];
+export const codes: LangEntry[] = [
     ['af', 'Afrikaans'],
     ['af-NA', 'Afrikaans', 'Namibia'],
     ['af-ZA', 'Afrikaans', 'South Africa'],
@@ -351,6 +358,7 @@ export const codes: string[][] = [
     ['lb-LU', 'Luxembourgish', 'Luxembourg'],
     ['lg', 'Ganda'],
     ['lg-UG', 'Ganda', 'Uganda'],
+    ['li', 'Limburgan'],
     ['ln', 'Lingala'],
     ['ln-AO', 'Lingala', 'Angola'],
     ['ln-CD', 'Lingala', 'Congo'],
@@ -358,7 +366,8 @@ export const codes: string[][] = [
     ['ln-CG', 'Lingala', 'Congo'],
     ['lo', 'Lao'],
     ['lo-LA', 'Lao', 'Laos'],
-    ['lorem', 'Lorem-Ipsum'],
+    ['lorem', 'Lorem-Ipsum'], // This is a special place holder code
+    ['lorem-ipsum', 'Lorem-Ipsum'], // This is a special place holder code
     ['lt', 'Lithuanian'],
     ['lt-LT', 'Lithuanian', 'Lithuania'],
     ['lu', 'Luba-Katanga'],

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { observable, computed, makeObservable, action } from 'mobx';
 import { Settings, ConfigTarget, LocaleId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
-import { normalizeCode, lookupCode } from 'locale-resolver';
+import { normalizeCode, lookupLocaleInfo } from 'locale-resolver';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
 import { Messenger } from '../api';
@@ -25,7 +25,11 @@ const tabs: Tab[] = [
 
 export interface LanguageInfo {
     code: string;
+    /** 2-letter iso code */
+    lang: string;
+    language: string;
     name: string;
+    script: string;
     dictionaries: string[];
     enabled: boolean;
 }
@@ -109,18 +113,21 @@ export class AppState implements State {
 
             const addLocalesToInfos = (locales: string[], dictionaryName: string | undefined) => {
                 locales
-                    .map(normalizeCode)
-                    .map(lookupCode)
-                    .filter(notUndefined)
-                    .forEach((lang) => {
-                        const { code, lang: language, country } = lang;
-                        const name = country ? `${language} - ${country}` : language;
+                    .map((code) => normalizeCode(code))
+                    .map(lookupLocaleInfo)
+                    .filter(isDefined)
+                    .forEach((localInfo) => {
+                        const { code, lang, language, script = '', country } = localInfo;
+                        const name = language + (country && ' - ' + country) + (script && ' - ' + script);
                         const found = this.isLocalEnabledEx(target, code);
                         const enabled = (found && found.value) || false;
                         const info: LanguageInfo = infos.get(name) || {
                             code,
+                            lang,
                             name,
+                            language,
                             enabled,
+                            script,
                             dictionaries: [],
                         };
                         if (dictionaryName) {
@@ -256,6 +263,6 @@ export class AppState implements State {
     }
 }
 
-function notUndefined<T>(a: T): a is Exclude<T, undefined> {
+function isDefined<T>(a: T | undefined): a is T {
     return a !== undefined;
 }

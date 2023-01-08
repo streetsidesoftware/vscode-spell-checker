@@ -2,8 +2,10 @@
 
 exports[`index index api 1`] = `
 [
+  "formatLocale",
   "isValidCode",
-  "lookupCode",
+  "lookupLocaleInfo",
   "normalizeCode",
+  "parseLocale",
 ]
 `;

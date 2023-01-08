@@ -1,39 +1,105 @@
-import { normalizeCode, isValidCode, lookupCode } from './index';
+import { normalizeCode, isValidCode, lookupLocaleInfo, getScriptInfo, parseLocale } from './index';
 
 describe('Validation', () => {
-    test('tests normalizeCode', () => {
-        expect(normalizeCode('en')).toBe('en');
-        expect(normalizeCode('en-US')).toBe('en-US');
-        expect(normalizeCode('en-gb')).toBe('en-GB');
-        expect(normalizeCode('en_US')).toBe('en-US');
-        expect(normalizeCode('EN_us')).toBe('en-US');
-        expect(normalizeCode('enUS')).toBe('en-US');
-        expect(normalizeCode('bad-code')).toBe('bad-code');
-        expect(normalizeCode('eses')).toBe('es-ES');
-        expect(normalizeCode('walk')).toBe('wa-LK');
-        expect(normalizeCode('four')).toBe('fo-UR');
+    test.each`
+        code             | expected
+        ${'en'}          | ${'en'}
+        ${'en-US'}       | ${'en-US'}
+        ${'en-gb'}       | ${'en-GB'}
+        ${'en_US'}       | ${'en-US'}
+        ${'EN_us'}       | ${'en-US'}
+        ${'enUS'}        | ${'en-US'}
+        ${'bad-code'}    | ${'bad-code'}
+        ${'lorem-ipsum'} | ${'lorem-ipsum'}
+        ${'lorem'}       | ${'lorem'}
+        ${'eses'}        | ${'es-ES'}
+        ${'walk'}        | ${'wa-LK'}
+        ${'four'}        | ${'fo-UR'}
+    `('normalizeCode $code', ({ code, expected }) => {
+        const r = normalizeCode(code);
+        expect(r).toBe(expected);
     });
 
-    test('tests isValidCode', () => {
-        // 'en'
-        expect(isValidCode('en')).toBe(true);
-        // 'en-UK'
-        expect(isValidCode('en-UK')).toBe(false);
-        // 'en-GB'
-        expect(isValidCode('en-GB')).toBe(true);
-        // 'walk'
-        expect(isValidCode('walk')).toBe(false);
+    test.each`
+        code             | expected
+        ${'en'}          | ${'en'}
+        ${'en-US'}       | ${'en-US'}
+        ${'en-gb'}       | ${'en-GB'}
+        ${'en_US'}       | ${'en-US'}
+        ${'EN_us'}       | ${'en-US'}
+        ${'enUS'}        | ${'en-US'}
+        ${'bad-code'}    | ${undefined}
+        ${'lorem-ipsum'} | ${'lorem-ipsum'}
+        ${'lorem'}       | ${'lorem'}
+        ${'eses'}        | ${'es-ES'}
+        ${'walk'}        | ${'wa-LK'}
+        ${'four'}        | ${'fo-UR'}
+    `('normalizeCode $code', ({ code, expected }) => {
+        const r = normalizeCode(code, true);
+        expect(r).toBe(expected);
     });
 
-    test('tests lookupCode', () => {
-        expect(lookupCode('')).toBeUndefined();
-        expect(lookupCode('en')).toBeDefined();
-        expect(lookupCode('en')!.lang).toBe('English');
-        expect(lookupCode('en')!.code).toBe('en');
-        expect(lookupCode('en')!.country).toBe('');
-        expect(lookupCode('es_ES')).toBeUndefined();
-        expect(lookupCode('es-ES')).toBeDefined();
-        expect(lookupCode('es-ES')!.lang).toBe('Spanish');
-        expect(lookupCode('es-ES')!.country).toBe('Spain');
+    test.each`
+        code       | expected
+        ${'en'}    | ${'en'}
+        ${'en-US'} | ${'en-US'}
+        ${'en-gb'} | ${'en-GB'}
+        ${'en_US'} | ${'en-US'}
+        ${'EN_us'} | ${'en-US'}
+        ${'enUS'}  | ${'en-US'}
+        ${'eses'}  | ${'es-ES'}
+        ${'walk'}  | ${'wa-LK'}
+        ${'four'}  | ${'fo-UR'}
+    `('normalizeCode $code', ({ code, expected }) => {
+        const r = normalizeCode(code);
+        expect(r).toBe(expected);
+        const locale = new Intl.Locale(r);
+        expect(r).toBe(locale.toString());
+    });
+
+    test.each`
+        code       | expected
+        ${'en'}    | ${true}
+        ${'en-UK'} | ${false}
+        ${'en-US'} | ${true}
+        ${'en-GB'} | ${true}
+        ${'walk'}  | ${false}
+    `('isValidCode $code', ({ code, expected }) => {
+        expect(isValidCode(code)).toBe(expected);
+    });
+
+    test.each`
+        code             | expected
+        ${''}            | ${undefined}
+        ${'en'}          | ${{ code: 'en', country: '', locale: '', lang: 'en', language: 'English' }}
+        ${'en-GB'}       | ${{ code: 'en-GB', country: 'United Kingdom', locale: 'GB', lang: 'en', language: 'English' }}
+        ${'es_ES'}       | ${{ code: 'es-ES', lang: 'es', locale: 'ES', country: 'Spain', language: 'Spanish' }}
+        ${'es-ES'}       | ${{ code: 'es-ES', lang: 'es', locale: 'ES', country: 'Spain', language: 'Spanish' }}
+        ${'lorem-ipsum'} | ${{ code: 'lorem-ipsum', lang: 'lorem-ipsum', locale: '', country: '', language: 'Lorem-Ipsum' }}
+        ${'lorem'}       | ${{ code: 'lorem', lang: 'lorem', locale: '', country: '', language: 'Lorem-Ipsum' }}
+    `('lookupCode $code', ({ code, expected }) => {
+        expect(lookupLocaleInfo(code)).toEqual(expected);
+    });
+
+    test.each`
+        code      | expected
+        ${'en'}   | ${undefined}
+        ${'LATN'} | ${{ script: 'Latn', scriptName: 'Latin' }}
+        ${'cyrl'} | ${{ script: 'Cyrl', scriptName: 'Cyrillic' }}
+    `('lookUpScriptCode $code', ({ code, expected }) => {
+        expect(getScriptInfo(code)).toEqual(expected);
+    });
+
+    test.each`
+        code            | expected
+        ${'en'}         | ${{ lang: 'en', locale: '', script: '' }}
+        ${'en-US'}      | ${{ lang: 'en', locale: 'US', script: '' }}
+        ${'en-GB'}      | ${{ lang: 'en', locale: 'GB', script: '' }}
+        ${'walk'}       | ${{ lang: 'wa', locale: 'LK', script: '' }}
+        ${'lorem'}      | ${{ lang: 'lorem', locale: '', script: '' }}
+        ${'loremIpsum'} | ${{ lang: 'lorem-ipsum', locale: '', script: '' }}
+        ${'sr-Cyrl-rs'} | ${{ lang: 'sr', locale: 'RS', script: 'Cyrl' }}
+    `('isValidCode $code', ({ code, expected }) => {
+        expect(parseLocale(code)).toEqual(expected);
     });
 });
