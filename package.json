@@ -2487,6 +2487,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "@vscode/vsce": "^2.16.0",
     "eslint": "^7.32.0",
+    "ovsx": "^0.8.0",
     "prettier": "^2.8.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
