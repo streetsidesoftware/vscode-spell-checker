@@ -15,7 +15,8 @@
     "clean": "rimraf out dist coverage",
     "lint": "eslint \"src/**/*.ts\" \"*.js\"",
     "test": "jest",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc -p . --watch",
+    "prepare": "yarn build"
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
