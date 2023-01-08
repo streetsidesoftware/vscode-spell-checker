@@ -1,5 +1,5 @@
 import { CSpellUserSettings, LanguageSetting } from './server';
-import { normalizeCode } from '../../iso639-1';
+import { normalizeCode } from 'locale-resolver';
 import * as util from '../../util';
 import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { isDefined } from '../../util';
@@ -73,7 +73,7 @@ export function normalizeToLocales(locale: string = ''): string[] {
         .replace(/[|;\s]/g, ',')
         .replace(/[*]/g, '')
         .split(',')
-        .map(normalizeCode)
+        .map((s) => normalizeCode(s))
         .map((s) => s.trim())
         .filter((a) => !!a)
         .filter(util.uniqueFilter());
