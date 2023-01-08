@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index index api 1`] = `
+[
+  "isValidCode",
+  "lookupCode",
+  "normalizeCode",
+]
+`;

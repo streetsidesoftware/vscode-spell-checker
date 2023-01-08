@@ -33,6 +33,7 @@
     "eslint-plugin-react": "^7.31.11",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29.3.1",
+    "locale-resolver": "*",
     "mobx": "^6.7.0",
     "mobx-react": "^7.6.0",
     "mobx-react-devtools": "^6.1.1",

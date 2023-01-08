@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { observable, computed, makeObservable, action } from 'mobx';
 import { Settings, ConfigTarget, LocaleId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
-import { normalizeCode, lookupCode } from '../iso639-1';
+import { normalizeCode, lookupCode } from 'locale-resolver';
 import { compareBy, compareEach } from '../api/utils/Comparable';
 import { uniqueFilter } from '../api/utils';
 import { Messenger } from '../api';

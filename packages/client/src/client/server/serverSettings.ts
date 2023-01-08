@@ -1,5 +1,5 @@
 import { CSpellUserSettings, LanguageSetting } from './server';
-import { normalizeCode } from '../../iso639-1';
+import { normalizeCode } from 'locale-resolver';
 import * as util from '../../util';
 import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { isDefined } from '../../util';
