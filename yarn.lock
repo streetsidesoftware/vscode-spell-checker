@@ -574,9 +574,9 @@
   integrity sha512-sIiCQDIMMnNns/fzD61z5npbh5pypaKq07Orqe0+eRfdQpika8iRSGUGFHVbtdd1JzB1DyTCV2e8OwdaQiXqJQ==
 
 "@cspell/dict-software-terms@^3.0.7":
-  version "3.0.9"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.0.9.tgz#ce6cdf697e052ac04bb7338e667ea7ed62a9ebad"
-  integrity sha512-NZ/bpYIrzKY3yHnVNT/HD4KGXIodu8qviB+Gqike96qe85khnx6zk1bYvMXe2sw5pLUyWzlEevaQunNtVYUXDw==
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.1.0.tgz#1928ef6c459fa89e71391a3c686c2812fef437a7"
+  integrity sha512-KQVpHmuGJprkriClbwTf1TfCjkCkS+GqLBO8ytltmYylCHZumJMfA3sM10e3zmsVIlungrtNLG9xz5opIdm/2A==
 
 "@cspell/dict-sql@^2.0.1":
   version "2.0.1"
@@ -1470,10 +1470,10 @@
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vscode/test-electron@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/@vscode/test-electron/-/test-electron-2.2.1.tgz#6d1ac128e27c18e1d20bcb299e830b50587f74ca"
-  integrity sha512-DUdwSYVc9p/PbGveaq20dbAAXHfvdq4zQ24ILp6PKizOBxrOfMsOq8Vts5nMzeIo0CxtA/RxZLFyDv001PiUSg==
+"@vscode/test-electron@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/@vscode/test-electron/-/test-electron-2.2.2.tgz#2ec559ad6b879bc4024ffc0c5e192e4c5d0ff704"
+  integrity sha512-s5d2VtMySvff0UgqkJ0BMCr1es+qREE194EAodGIefq518W53ifvv69e80l9e2MrYJEqUUKwukE/w3H9o15YEw==
   dependencies:
     http-proxy-agent "^4.0.1"
     https-proxy-agent "^5.0.0"
@@ -5135,9 +5135,9 @@ no-case@^3.0.4:
     tslib "^2.0.3"
 
 node-abi@^3.3.0:
-  version "3.30.0"
-  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.30.0.tgz#d84687ad5d24ca81cdfa912a36f2c5c19b137359"
-  integrity sha512-qWO5l3SCqbwQavymOmtTVuCWZE23++S+rxyoHjXqUmPyzRcaoI4lA2gO55/drddGnedAyjA7sk76SfQ5lfUMnw==
+  version "3.31.0"
+  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.31.0.tgz#dfb2ea3d01188eb80859f69bb4a4354090c1b355"
+  integrity sha512-eSKV6s+APenqVh8ubJyiu/YhZgxQpGP66ntzUb3lY1xB9ukSRaGnx0AIxI+IM+1+IVYC1oWobgG5L3Lt9ARykQ==
   dependencies:
     semver "^7.3.5"
 
