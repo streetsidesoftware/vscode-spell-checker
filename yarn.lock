@@ -394,9 +394,9 @@
   integrity sha512-8czAa/Mh96wu2xr0RXQEGMTBUGkTvYn/Pb0o+gqOO1YW+poXGQc3gx0YPqILDryP/KCERrNvkWUJz3iGbvwC2A==
 
 "@cspell/dict-companies@^3.0.5":
-  version "3.0.5"
-  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-3.0.5.tgz#b7de4341452837c2ec08056b13d81d5b604271e5"
-  integrity sha512-f5lVcL/dG2kUHh8QFLakU722lgMwqXSjZUdmW6QdOMmqcE8cgl+oN9qk/qYlCSBMsYA7uexwn3hIr4h0naoPlw==
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-3.0.6.tgz#59d016afcdb27a4a88749a56475bf790ec175dc0"
+  integrity sha512-6rWuwZxPisn/MP41DzBtChVgbz9b6HSjBH3X0s3k7zlBaxrw6xFAZGKH9KGFSPTiV+WD9j+IIn2/ITXERGjNLA==
 
 "@cspell/dict-cpp@^4.0.1":
   version "4.0.1"
@@ -574,9 +574,9 @@
   integrity sha512-sIiCQDIMMnNns/fzD61z5npbh5pypaKq07Orqe0+eRfdQpika8iRSGUGFHVbtdd1JzB1DyTCV2e8OwdaQiXqJQ==
 
 "@cspell/dict-software-terms@^3.0.7":
-  version "3.0.8"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.0.8.tgz#4de57d833e3c90264375a78e0cb3792089de2ad6"
-  integrity sha512-otq0yIcG19rNXkmE/EGWgUK7ClLrn/BE4n5Di3HKLw6XEp0sNBp1DKf88bg0LvbWh15uCAJ5xKAzF1sVPy2Y3w==
+  version "3.0.9"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.0.9.tgz#ce6cdf697e052ac04bb7338e667ea7ed62a9ebad"
+  integrity sha512-NZ/bpYIrzKY3yHnVNT/HD4KGXIodu8qviB+Gqike96qe85khnx6zk1bYvMXe2sw5pLUyWzlEevaQunNtVYUXDw==
 
 "@cspell/dict-sql@^2.0.1":
   version "2.0.1"
@@ -1174,9 +1174,9 @@
     "@types/node" "*"
 
 "@types/graceful-fs@^4.1.3":
-  version "4.1.5"
-  resolved "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
-  integrity sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==
+  version "4.1.6"
+  resolved "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.6.tgz#e14b2576a1c25026b7f02ede1de3b84c3a1efeae"
+  integrity sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==
   dependencies:
     "@types/node" "*"
 
