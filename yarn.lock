@@ -2495,7 +2495,7 @@ cspell-dictionary@6.18.1:
     fast-equals "^4.0.3"
     gensequence "^4.0.3"
 
-cspell-gitignore@6.18.1, cspell-gitignore@^6.18.1:
+cspell-gitignore@6.18.1:
   version "6.18.1"
   resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.18.1.tgz#64a35e7addd2c286c32ed50391b14e87b750b282"
   integrity sha512-btjWg8ibbOItQg0l43keBl0Tfg1gt3MaeNMPraZlEbprnG8oQjzcgB1VYYya6DOnJdaPwInjGbS1kfCL4j4LpA==
@@ -2503,10 +2503,25 @@ cspell-gitignore@6.18.1, cspell-gitignore@^6.18.1:
     cspell-glob "6.18.1"
     find-up "^5.0.0"
 
-cspell-glob@6.18.1, cspell-glob@^6.18.1:
+cspell-gitignore@^6.19.2:
+  version "6.19.2"
+  resolved "https://registry.npmjs.org/cspell-gitignore/-/cspell-gitignore-6.19.2.tgz#fc90615cb72c6d64d2cf9333ed284b755e251c45"
+  integrity sha512-dPxGxakkBs5dmD+nCom6t74ejWsd6RJJkgs0sccPDFKULXAInjeKMeTraskYTg4wXqybbiuXCB2sOIdeQmNq6w==
+  dependencies:
+    cspell-glob "6.19.2"
+    find-up "^5.0.0"
+
+cspell-glob@6.18.1:
   version "6.18.1"
   resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.18.1.tgz#9c9ccc3151f58678d3df104bac2c3f645eed5b63"
   integrity sha512-6dBBtQ1lRnVPoM13GOv7mJflkIvEr93TN96saQPWoaQqX8jwmklcMmDUndIkLcA7TnyxBbi3Z3X+s68zj/YGqw==
+  dependencies:
+    micromatch "^4.0.5"
+
+cspell-glob@6.19.2, cspell-glob@^6.18.1:
+  version "6.19.2"
+  resolved "https://registry.npmjs.org/cspell-glob/-/cspell-glob-6.19.2.tgz#787e06d0463019360668e72f2be28cf33d5d32f4"
+  integrity sha512-raco5vbd3Exb1uQaD5Bn6aS0KpRbNM7etmn/Q2T2KSwhvH+DRSEMTAkSG3rb0+y0ixkA/Qspjt68QnYxsbFPmw==
   dependencies:
     micromatch "^4.0.5"
 
