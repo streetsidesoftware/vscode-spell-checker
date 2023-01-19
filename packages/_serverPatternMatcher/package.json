@@ -24,7 +24,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^6.18.1",
+    "@cspell/cspell-types": "^6.19.2",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
     "common-utils": "1.0.0",

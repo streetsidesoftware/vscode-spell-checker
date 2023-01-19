@@ -2494,7 +2494,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.18.1",
-    "@cspell/cspell-types": "^6.18.1",
+    "@cspell/cspell-types": "^6.19.2",
     "@types/react": "^17.0.52",
     "cosmiconfig": "^8.0.0",
     "cspell": "^6.19.2",
