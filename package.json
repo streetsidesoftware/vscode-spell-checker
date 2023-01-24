@@ -2463,7 +2463,7 @@
     "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema && yarn prettier-fix-schema",
     "postinstall": "yarn run build",
     "build": "yarn workspaces run build && yarn run build-package-schema && yarn run gen-docs",
-    "clean": "yarn workspaces run clean && rimraf \"packages/*/node_modules\"",
+    "clean": "yarn workspaces run clean && shx rm -rf \"packages/*/node_modules\"",
     "build-production": "yarn workspaces run build-production",
     "build-release": "yarn run build && yarn run package-extension",
     "gen-docs": "yarn workspace @internal/docs gen-docs",
@@ -2472,7 +2472,7 @@
     "prettier-fix": "yarn run prettier -w",
     "prettier-fix-schema": "prettier -w \"**/*.schema.json\"",
     "test-vsce-build": "vsce package -o ./temp",
-    "remove-test-files": "rimraf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
+    "remove-test-files": "shx rm -rf \"packages/*/{out,dist,settingsViewer}/**/*.test.js\"",
     "vscode:prepublish": "yarn run build-production && yarn run remove-test-files",
     "lint": "yarn workspaces run lint && yarn run prettier",
     "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
@@ -2489,7 +2489,7 @@
     "eslint": "^7.32.0",
     "ovsx": "^0.8.0",
     "prettier": "^2.8.3",
-    "rimraf": "^3.0.2",
+    "shx": "^0.3.4",
     "typescript": "^4.9.4"
   },
   "dependencies": {

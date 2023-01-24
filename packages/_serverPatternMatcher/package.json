@@ -42,7 +42,7 @@
     "regexp-worker": "^2.0.1"
   },
   "scripts": {
-    "clean": "rimraf dist temp out coverage",
+    "clean": "shx rm -rf dist temp out coverage",
     "lint": "eslint \"src/**/*.ts\"",
     "build": "yarn run compile",
     "clean-build": "yarn run clean && yarn run build",
