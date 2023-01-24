@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.15.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.14.0...code-spell-checker-v2.15.0) (2023-01-24)
+
+
+### Features
+
+* bump cspell from 6.18.1 to 6.19.2 ([#2457](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2457)) ([8c09fe4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8c09fe41b14fea8efec3e457481d5aea7ee7e6cf))
+* Update CSpell to 6.19.2 ([#2454](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2454)) ([70b65a9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/70b65a99c44b964de53e5580cfa1d7655c0e23aa))
+
+
+### Tests
+
+* Update Jupyter Sample ([#2467](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2467)) ([eee65a8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/eee65a86b35107714407330cda403cfc15af237f))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump @types/fs-extra from 9.0.13 to 11.0.0 ([#2439](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2439)) ([a64771e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a64771e6fadc3a1cc36ee2f3a72f9bf3f0cc5d62))
+* **deps-dev:** bump jest-mock-vscode from 1.2.1 to 1.3.0 ([#2440](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2440)) ([7460ef2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/7460ef2bc22c6ec6cdda62b894909b242dc7fb26))
+* **deps-dev:** bump minimatch from 5.1.4 to 6.1.6 ([#2464](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2464)) ([4c99865](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4c99865d48b36e01a277aca7b1d23d04aea963b8))
+* **deps:** bump commander from 9.5.0 to 10.0.0 ([#2456](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2456)) ([30ee05f](https://github.com/streetsidesoftware/vscode-spell-checker/commit/30ee05f3aa98c93fb995ea9153248642012fdd7f))
+* remove dependency upon rimraf ([#2468](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2468)) ([1cc9583](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1cc9583c78c9b7b0f274cfef30e8aacbd2a5ba37))
+* Use skip-duplicate while publishing ([fa711f8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fa711f8f106aacbece8f8d3feaffd4faca660918))
+
+
+### Continuous Integration
+
+* Workflow Bot -- Update ALL Dependencies (main) ([#2441](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2441)) ([38d3a27](https://github.com/streetsidesoftware/vscode-spell-checker/commit/38d3a271e77a5902712f64b2b7390bc065fb23f4))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2443](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2443)) ([14afbb4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/14afbb476e19d3b487f5108a39aeca0567ed824c))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2444](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2444)) ([24da74c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/24da74c2552cfdce393cb1c0e2cc6695b70fd5e6))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2445](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2445)) ([5f20cbf](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5f20cbfcb3357e299540a3d4ee2de6e786efe19a))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2453](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2453)) ([c2c4e2b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c2c4e2bc2b19ac23cdbacb22e3f16e7e373b7de1))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2469](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2469)) ([354eddb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/354eddb1b547cd8314f735ed3222abd41ab92ff1))
+
 ## [2.14.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.13.0...code-spell-checker-v2.14.0) (2023-01-08)
 
 
