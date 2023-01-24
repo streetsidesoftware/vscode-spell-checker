@@ -7,7 +7,7 @@
   "scripts": {
     "build": "echo skipping build for integration-test",
     "build2": "tsc -p .",
-    "clean": "rimraf out temp",
+    "clean": "shx rm -rf out temp",
     "build-production": "yarn run build",
     "lint": "eslint \"src/**/*.ts\"",
     "test-integration-vscode-old": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_WORKSPACE=./testFixtures CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
@@ -37,7 +37,6 @@
     "glob": "^8.1.0",
     "kefir": "^3.8.8",
     "mocha": "^10.2.0",
-    "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
   },
   "peerDependenciesMeta": {},

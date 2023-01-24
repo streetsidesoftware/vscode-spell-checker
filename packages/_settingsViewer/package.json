@@ -7,7 +7,7 @@
   "main": "out",
   "scripts": {
     "build": "tsc -p . && yarn run webpack",
-    "clean": "rimraf ../client/settingsViewer ./out",
+    "clean": "shx rm -rf ../client/settingsViewer ./out",
     "build-production": "yarn run clean && yarn run build",
     "coverage": "jest --coverage src",
     "lint": "eslint 'src/**/*.ts'",

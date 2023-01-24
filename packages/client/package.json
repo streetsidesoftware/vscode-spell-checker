@@ -17,7 +17,7 @@
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
   "main": "./dist/extension.js",
   "scripts": {
-    "clean": "rimraf out dist coverage temp",
+    "clean": "shx rm -rf out dist coverage temp",
     "clean-build": "yarn run clean && yarn run build",
     "build": "webpack --mode none",
     "build-production": "yarn run clean && webpack --mode production",
@@ -48,7 +48,6 @@
     "locale-resolver": "*",
     "lorem-ipsum": "^2.0.8",
     "rfdc": "^1.3.0",
-    "rimraf": "^3.0.2",
     "server": "*",
     "settings-webview": "*",
     "source-map-support": "^0.5.21",

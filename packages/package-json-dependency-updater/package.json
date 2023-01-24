@@ -17,7 +17,7 @@
     "test": "echo Test",
     "lint": "echo Lint",
     "clean-build": "yarn run clean && yarn run build",
-    "clean": "rimraf out dist coverage",
+    "clean": "shx rm -rf out dist coverage",
     "prepare": "yarn run build",
     "build-production": "yarn run build",
     "build": "tsc -p .",
