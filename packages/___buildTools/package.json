@@ -22,7 +22,7 @@
     "build-production": "yarn run clean-build",
     "build": "tsc -p .",
     "clean-build": "yarn run clean && yarn run build",
-    "clean": "rimraf out dist coverage",
+    "clean": "shx rm -rf out dist coverage",
     "lint": "eslint \"src/**/*.ts\" \"*.js\"",
     "test": "echo No tests yet.",
     "watch": "tsc -p . --watch"
