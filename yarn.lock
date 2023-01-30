@@ -1480,10 +1480,10 @@
     rimraf "^3.0.2"
     unzipper "^0.10.11"
 
-"@vscode/vsce@^2.15.0", "@vscode/vsce@^2.16.0":
-  version "2.16.0"
-  resolved "https://registry.npmjs.org/@vscode/vsce/-/vsce-2.16.0.tgz#a3ddcf7e84914576f35d891e236bc496c568776f"
-  integrity sha512-BhJ0zO7UxShLFBZM6jwOLt1ZVoqQ4r5Lj/kHNeYp0ICPXhz/erqBSMQnHkRgkjn2L/bh+TYFGkZyguhu/SKsjw==
+"@vscode/vsce@^2.15.0", "@vscode/vsce@^2.17.0":
+  version "2.17.0"
+  resolved "https://registry.npmjs.org/@vscode/vsce/-/vsce-2.17.0.tgz#64093e1e083673081ea8bd7e69745ff2f632003e"
+  integrity sha512-W4HN5MtTVj/mroQU1d82bUEeWM3dUykMFnMYZPtZ6jrMiHN1PUoN3RGcS896N0r2rIq8KpWDtufcQHgK8VfgpA==
   dependencies:
     azure-devops-node-api "^11.0.1"
     chalk "^2.4.2"

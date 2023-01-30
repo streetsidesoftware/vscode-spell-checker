@@ -2485,7 +2485,7 @@
     "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "@vscode/vsce": "^2.16.0",
+    "@vscode/vsce": "^2.17.0",
     "eslint": "^7.32.0",
     "ovsx": "^0.8.0",
     "prettier": "^2.8.3",
