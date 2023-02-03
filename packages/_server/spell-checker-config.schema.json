@@ -533,7 +533,7 @@
                 "type": "number"
               },
               "maxNumberOfProblems": {
-                "default": 100,
+                "default": 10000,
                 "description": "The maximum number of problems to report in a file.",
                 "type": "number"
               },
