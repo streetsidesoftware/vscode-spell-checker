@@ -2493,7 +2493,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.21.0",
+    "@cspell/cspell-bundled-dicts": "^6.22.0",
     "@cspell/cspell-types": "^6.21.0",
     "@types/react": "^17.0.53",
     "cosmiconfig": "^8.0.0",
