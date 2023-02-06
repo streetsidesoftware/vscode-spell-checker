@@ -9,6 +9,7 @@ The goal of this spell checker is to help catch common spelling errors while kee
 -   Become a [![Patreon](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
 
 -   [Support through ![PayPal](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+
 -   [Open Collective](https://opencollective.com/code-spell-checker)
 
 ## Sponsors
@@ -110,11 +111,11 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 To _Enable_ or _Disable_ spell checking for a file type:
 
-1. Click on the Spell Checker status in the status bar:
+1.  Click on the Spell Checker status in the status bar:
 
  <img width="57" alt="Spell Checker Status Bar" src="https://user-images.githubusercontent.com/3740137/177296936-54d5a88c-a596-4178-bd91-0be06161e1fc.png">
 
-2. On the Info screen, click the checkbox.
+2.  On the Info screen, click the checkbox.
 
  <img width="710" alt="Spell Checker Information Window" src="https://user-images.githubusercontent.com/3740137/177297717-88da81d8-9a8c-4907-9424-66e013899318.png">
 
@@ -172,6 +173,7 @@ It is possible to disable / enable the spell checker by adding comments to your 
 -   `/* spellchecker: disable */`
 -   `/* cspell: disable-line */`
 -   `/* cspell: disable-next-line */`
+
 <!--- cSpell:enable -->
 
 #### Enable Checking
@@ -257,9 +259,9 @@ By default the flags `gim` are added if no flags are given.
 
 The spell checker works in the following way:
 
-1. Find all text matching `includeRegExp`
-2. Remove any text matching `excludeRegExp`
-3. Check the remaining text.
+1.  Find all text matching `includeRegExp`
+1.  Remove any text matching `excludeRegExp`
+1.  Check the remaining text.
 
 #### Exclude Example
 
@@ -305,8 +307,8 @@ def sum_it(self, seq):
 ### Exclude patterns
 
 -   `Urls`<sup>1</sup> -- Matches urls
--   `HexValues` -- Matches common hex format like #aaa, 0xfeef, \\u0134
--   `EscapeCharacters`<sup>1</sup> -- matches special characters: '\\n', '\\t' etc.
+-   `HexValues` -- Matches common hex format like `#aaa`, `0xfeef`, `\u0134`
+-   `EscapeCharacters`<sup>1</sup> -- matches special characters: `\n`, `\t` etc.
 -   `Base64`<sup>1</sup> -- matches base64 blocks of text longer than 40 characters.
 -   `Email` -- matches most email addresses.
 
@@ -325,9 +327,9 @@ The spell checker configuration can be controlled via VS Code preferences or `cs
 
 Order of precedence:
 
-1. Workspace Folder `cspell.json`
-1. Workspace Folder `.vscode/cspell.json`
-1. VS Code Preferences `cSpell` section.
+1.  Workspace Folder `cspell.json`
+1.  Workspace Folder `.vscode/cspell.json`
+1.  VS Code Preferences `cSpell` section.
 
 ### Adding words to the Workspace Dictionary
 
@@ -722,3 +724,17 @@ See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/
     cSpell:words Verdana
     cSpell:locale en
 -->
+
+<!--- @@inject: ./static/footer.md --->
+
+<br/>
+
+---
+
+<p align="center">
+Brought to you by <a href="https://streetsidesoftware.com" title="Street Side Software">
+<img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" /> Street Side Software
+</a>
+</p>
+
+<!--- @@inject-end: ./static/footer.md --->

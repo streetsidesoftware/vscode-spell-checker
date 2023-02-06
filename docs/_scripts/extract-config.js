@@ -19,7 +19,7 @@ ${sectionTOC(configSections)}
 
 ${formatSections(configSections)}
 
-`.replace(/\*\u200B/g, '*'); // remove zero width spaces
+`.replace(/\u200B/g, ''); // remove zero width spaces
 
 console.log(doc);
 
