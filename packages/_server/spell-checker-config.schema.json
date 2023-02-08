@@ -678,6 +678,12 @@
           "description": "Show Regular Expression Explorer",
           "scope": "application",
           "type": "boolean"
+        },
+        "cSpell.experimental.enableSettingsViewerV2": {
+          "default": false,
+          "description": "Enable the Settings Viewer V2 Extension",
+          "scope": "application",
+          "type": "boolean"
         }
       },
       "title": "Experimental",

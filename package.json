@@ -188,6 +188,18 @@
     },
     "commands": [
       {
+        "command": "cSpell.coding.start",
+        "title": "Start coding session",
+        "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
+        "category": "Spell"
+      },
+      {
+        "command": "cSpell.coding.doRefactor",
+        "title": "Do some refactoring",
+        "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
+        "category": "Spell"
+      },
+      {
         "command": "cSpell.addWordToWorkspaceDictionary",
         "category": "Spell",
         "title": "Add Words to Workspace Dictionary"
@@ -1142,6 +1154,12 @@
           "cSpell.experimental.enableRegexpView": {
             "default": false,
             "description": "Show Regular Expression Explorer",
+            "scope": "application",
+            "type": "boolean"
+          },
+          "cSpell.experimental.enableSettingsViewerV2": {
+            "default": false,
+            "description": "Enable the Settings Viewer V2 Extension",
             "scope": "application",
             "type": "boolean"
           }

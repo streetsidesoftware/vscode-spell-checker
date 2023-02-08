@@ -44,10 +44,14 @@
 !packages/_serverPatternMatcher/dist/main.js.LICENSE.txt
 !packages/_serverPatternMatcher/package.json
 
-!packages/client/dist/**/*.{js,LICENSE.txt}
+!packages/client/dist/**/*.js
 !packages/client/License.txt
 !packages/client/package.json
 !packages/client/settingsViewer/webapp/*.{js,html,LICENSE.txt}
 !resources/**
+
+!packages/_settingsViewerNext/out/extension.js
+!packages/_settingsViewerNext/media/**
+!packages/_settingsViewerNext/package.json
 
 # cspell:ignore callsites

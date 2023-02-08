@@ -233,7 +233,7 @@ type _VSConfigAdvanced = Pick<
  * @order 19
  */
 type VSConfigExperimental = PrefixWithCspell<_VSConfigExperimental>;
-type _VSConfigExperimental = Pick<SpellCheckerSettingsVSCodeBase, 'experimental.enableRegexpView'>;
+type _VSConfigExperimental = Pick<SpellCheckerSettingsVSCodeBase, 'experimental.enableRegexpView' | 'experimental.enableSettingsViewerV2'>;
 
 export type SpellCheckerSettingsVSCode = [
     VSConfigRoot,

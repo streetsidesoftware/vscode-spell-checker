@@ -21,6 +21,10 @@
             "path": "packages/_settingsViewer"
         },
         {
+            "name": "Settings Viewer Next",
+            "path": "packages/_settingsViewerNext"
+        },
+        {
             "name": "Integration Tests",
             "path": "packages/_integrationTests"
         },
@@ -39,7 +43,7 @@
     ],
     "settings": {
         "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cSpell.json"],
-        "cSpell.customWorkspaceDictionaries": ["cspell-words"],
+        "cSpell.customDictionaries": { "cspell-words": true },
         "typescript.tsdk": "Spell Checker Root/node_modules/typescript/lib",
         "svg.preview.background": "black",
         "editor.formatOnSave": true,
