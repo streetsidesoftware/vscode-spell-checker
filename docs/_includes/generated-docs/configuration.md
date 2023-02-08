@@ -1339,9 +1339,10 @@ Default
 
 # Experimental
 
-| Setting                                                                       | Scope       | Description                      |
-| ----------------------------------------------------------------------------- | ----------- | -------------------------------- |
-| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview) | application | Show Regular Expression Explorer |
+| Setting                                                                                 | Scope       | Description                             |
+| --------------------------------------------------------------------------------------- | ----------- | --------------------------------------- |
+| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)           | application | Show Regular Expression Explorer        |
+| [`cSpell.experimental.enableSettingsViewe…`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
 
 ## Definitions
 
@@ -1358,6 +1359,25 @@ Scope
 
 Description
 : Show Regular Expression Explorer
+
+Default
+: _`false`_
+
+---
+
+### `cSpell.experimental.enableSettingsViewerV2`
+
+Name
+: `cSpell.experimental.enableSettingsViewerV2`
+
+Type
+: boolean
+
+Scope
+: application
+
+Description
+: Enable the Settings Viewer V2 Extension
 
 Default
 : _`false`_
