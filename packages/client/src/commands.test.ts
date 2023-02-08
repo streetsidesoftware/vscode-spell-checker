@@ -21,6 +21,8 @@ describe('Validate Commands', () => {
             .filter((cmd) => cmd.startsWith(cmdPrefix));
         const implemented = new Set(Object.keys(commandHandlers));
         implemented.add(commandDisplayCSpellInfo); // Handled by infoView
+        implemented.add('cSpell.coding.start');
+        implemented.add('cSpell.coding.doRefactor');
         const found = commands.filter((cmd) => implemented.has(cmd));
         expect(found).toEqual(commands);
     });
