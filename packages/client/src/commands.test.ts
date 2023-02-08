@@ -22,7 +22,7 @@ describe('Validate Commands', () => {
             .filter((cmd) => cmd.startsWith(cmdPrefix));
         const implemented = new Set([
             ...Object.keys(commandHandlers),
-            ...Object.keys(viewerCommands),
+            ...Object.values(viewerCommands),
             commandDisplayCSpellInfo, // Handled by infoView
         ]);
         const found = commands.filter((cmd) => implemented.has(cmd));

@@ -7,8 +7,8 @@ const cats = {
 };
 
 export const commands = Object.freeze({
-    'cSpell.coding.start': 'start',
-    'cSpell.coding.doRefactor': 'refactor',
+    start: 'cSpell.coding.start',
+    refactor: 'cSpell.coding.doRefactor',
 });
 
 export function activate(context: vscode.ExtensionContext) {
@@ -17,13 +17,13 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('cSpell.coding.start', () => {
+        vscode.commands.registerCommand(commands.start, () => {
             CatCodingPanel.createOrShow(getExtensionUri());
         })
     );
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('cSpell.coding.doRefactor', () => {
+        vscode.commands.registerCommand(commands.refactor, () => {
             if (CatCodingPanel.currentPanel) {
                 CatCodingPanel.currentPanel.doRefactor();
             }
