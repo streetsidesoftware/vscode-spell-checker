@@ -36,7 +36,10 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
+    "clean": "shx rm -rf out dist coverage temp",
+    "clean-build": "yarn run clean && yarn run build",
     "build": "yarn compile",
+    "build-production": "yarn run clean-build",
     "compile": "tsc -p ./",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "echo test",
