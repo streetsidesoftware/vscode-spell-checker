@@ -6,6 +6,11 @@ const cats = {
     'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif',
 };
 
+export const commands = Object.freeze({
+    'cSpell.coding.start': 'start',
+    'cSpell.coding.doRefactor': 'refactor',
+});
+
 export function activate(context: vscode.ExtensionContext) {
     function getExtensionUri() {
         return vscode.Uri.joinPath(context.extensionUri, 'packages/_settingsViewerNext');
