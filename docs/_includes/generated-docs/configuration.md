@@ -297,23 +297,23 @@ Default
 
 # Reporting and Display
 
-| Setting                                                                                     | Scope                | Description                                                                     |
-| ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------- |
-| [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                | window               | Auto Format Configuration File                                                  |
-| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                          | resource             | Set Diagnostic Reporting Level                                                  |
-| [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)            | resource             | Hide the options to add words to dictionaries or settings.                      |
-| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                | resource             | The maximum number of times the same word can be flagged as an error in a file. |
-| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                  | resource             | Controls the maximum number of spelling errors per document.                    |
-| [`cSpell.minWordLength`](#cspellminwordlength)                                              | resource             | The minimum length of a word before checking it against a dictionary.           |
-| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                            | resource             | Controls the number of suggestions shown.                                       |
-| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                  | language-overridable | Show CSpell in-document directives as you type.                                 |
-| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)          | application          | Show Spell Checker actions in Editor Context Menu                               |
-| [`cSpell.showStatus`](#cspellshowstatus)                                                    | application          | Display the spell checker status on the status bar.                             |
-| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                  | application          | The side of the status bar to display the spell checker status.                 |
-| [`cSpell.showSuggestionsLinkInEditorConte…`](#cspellshowsuggestionslinkineditorcontextmenu) | application          | Show Spelling Suggestions link in the top level context menu.                   |
-| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                    | resource             | The type of menu used to display spelling suggestions.                          |
-| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
-| [`cSpell.validateDirectives`](#cspellvalidatedirectives)                                    | window               | Verify that the in-document directives are correct.                             |
+| Setting                                                                                          | Scope                | Description                                                                     |
+| ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------- |
+| [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                     | window               | Auto Format Configuration File                                                  |
+| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                               | resource             | Set Diagnostic Reporting Level                                                  |
+| [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
+| [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
+| [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
+| [`cSpell.minWordLength`](#cspellminwordlength)                                                   | resource             | The minimum length of a word before checking it against a dictionary.           |
+| [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                 | resource             | Controls the number of suggestions shown.                                       |
+| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                       | language-overridable | Show CSpell in-document directives as you type.                                 |
+| [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)               | application          | Show Spell Checker actions in Editor Context Menu                               |
+| [`cSpell.showStatus`](#cspellshowstatus)                                                         | application          | Display the spell checker status on the status bar.                             |
+| [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                       | application          | The side of the status bar to display the spell checker status.                 |
+| [`cSpell.showSuggestionsLinkInEditorContextMenu`](#cspellshowsuggestionslinkineditorcontextmenu) | application          | Show Spelling Suggestions link in the top level context menu.                   |
+| [`cSpell.suggestionMenuType`](#cspellsuggestionmenutype)                                         | resource             | The type of menu used to display spelling suggestions.                          |
+| [`cSpell.suggestionNumChanges`](#cspellsuggestionnumchanges)                                     | resource             | The maximum number of changes allowed on a word to be considered a suggestions. |
+| [`cSpell.validateDirectives`](#cspellvalidatedirectives)                                         | window               | Verify that the in-document directives are correct.                             |
 
 ## Definitions
 
@@ -925,14 +925,14 @@ Default
 
 # Performance
 
-| Setting                                                                                           | Scope                | Description                                                                      |
-| ------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------- |
-| [`cSpell.blockCheckingWhenAverageChunkSiz…`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks.                |
-| [`cSpell.blockCheckingWhenLineLengthGreat…`](#cspellblockcheckingwhenlinelengthgreaterthan)       | language-overridable | The maximum line length.                                                         |
-| [`cSpell.blockCheckingWhenTextChunkSizeGr…`](#cspellblockcheckingwhentextchunksizegreaterthan)    | language-overridable | The maximum length of a chunk of text without word breaks.                       |
-| [`cSpell.checkLimit`](#cspellchecklimit)                                                          | resource             | The limit in K-Characters to be checked in a file.                               |
-| [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                            | application          | Delay in ms after a document has changed before checking it for spelling errors. |
-| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                          | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.   |
+| Setting                                                                                                      | Scope                | Description                                                                      |
+| ------------------------------------------------------------------------------------------------------------ | -------------------- | -------------------------------------------------------------------------------- |
+| [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks.                |
+| [`cSpell.blockCheckingWhenLineLengthGreaterThan`](#cspellblockcheckingwhenlinelengthgreaterthan)             | language-overridable | The maximum line length.                                                         |
+| [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan)       | language-overridable | The maximum length of a chunk of text without word breaks.                       |
+| [`cSpell.checkLimit`](#cspellchecklimit)                                                                     | resource             | The limit in K-Characters to be checked in a file.                               |
+| [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                                       | application          | Delay in ms after a document has changed before checking it for spelling errors. |
+| [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                                     | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.   |
 
 ## Definitions
 
@@ -1216,13 +1216,13 @@ Default
 
 # Advanced
 
-| Setting                                                                                            | Scope                | Description                                      |
-| -------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------ |
-| [`cSpell.advanced.feature.useReferencePro…`](#cspelladvancedfeatureusereferenceproviderremove)     | language-overridable | Remove Matching Characters Before Rename         |
-| [`cSpell.advanced.feature.useReferencePro…`](#cspelladvancedfeatureusereferenceproviderwithrename) | language-overridable | Use Reference Provider During Rename             |
-| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                     | language-overridable | Use Rename Provider when fixing spelling issues. |
-| [`cSpell.logFile`](#cspelllogfile)                                                                 | window               | Write Logs to a File                             |
-| [`cSpell.logLevel`](#cspellloglevel)                                                               | window               | Set Logging Level                                |
+| Setting                                                                                                          | Scope                | Description                                      |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------ |
+| [`cSpell.advanced.feature.useReferenceProviderRemove`](#cspelladvancedfeatureusereferenceproviderremove)         | language-overridable | Remove Matching Characters Before Rename         |
+| [`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename) | language-overridable | Use Reference Provider During Rename             |
+| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                                   | language-overridable | Use Rename Provider when fixing spelling issues. |
+| [`cSpell.logFile`](#cspelllogfile)                                                                               | window               | Write Logs to a File                             |
+| [`cSpell.logLevel`](#cspellloglevel)                                                                             | window               | Set Logging Level                                |
 
 ## Definitions
 
@@ -1339,10 +1339,10 @@ Default
 
 # Experimental
 
-| Setting                                                                                 | Scope       | Description                             |
-| --------------------------------------------------------------------------------------- | ----------- | --------------------------------------- |
-| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)           | application | Show Regular Expression Explorer        |
-| [`cSpell.experimental.enableSettingsViewe…`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
+| Setting                                                                                   | Scope       | Description                             |
+| ----------------------------------------------------------------------------------------- | ----------- | --------------------------------------- |
+| [`cSpell.experimental.enableRegexpView`](#cspellexperimentalenableregexpview)             | application | Show Regular Expression Explorer        |
+| [`cSpell.experimental.enableSettingsViewerV2`](#cspellexperimentalenablesettingsviewerv2) | application | Enable the Settings Viewer V2 Extension |
 
 ## Definitions
 

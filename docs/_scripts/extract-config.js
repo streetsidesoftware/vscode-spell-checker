@@ -73,7 +73,7 @@ function configTable(entries) {
             value.markdownDescription?.replace(/\n[\s\S]*/g, ' ') ||
             '';
         const scope = value.scope || '';
-        return `| [\`${shorten(key, 40)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
+        return `| [\`${shorten(key, 60)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
             description,
             descriptionWidth
         )} |`;
