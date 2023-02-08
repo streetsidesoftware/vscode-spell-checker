@@ -8,8 +8,8 @@ const compare = new Intl.Collator().compare;
 
 const isCSpellCommand = /^cSpell\./;
 const entries = Object.values(commands)
-  .filter((cmd) => isCSpellCommand.test(cmd.command))
-  .sort((a, b) => compare(a.command, b.command));
+    .filter((cmd) => isCSpellCommand.test(cmd.command))
+    .sort((a, b) => compare(a.command, b.command));
 
 const doc = `
 <!--- AUTO-GENERATED ALL CHANGES WILL BE LOST --->
@@ -23,7 +23,7 @@ ${genCommands(entries)}
 console.log(doc);
 
 function genCommands(entries) {
-  return `
+    return `
 | Command | Title |
 | ------- | ----- |
 ${entries.map(commandEntry).join('\n')}
@@ -36,8 +36,8 @@ ${entries.map(commandEntry).join('\n')}
  * @returns
  */
 function commandEntry(command) {
-  const description = [command.title, command.enablement ? `**When:**<br>  \`${command.enablement}\`` : '']
-    .filter((a) => a)
-    .join('<br>');
-  return `| \`${command.command}\` |  ${description} |`;
+    const description = [command.title, command.enablement ? `**When:**<br>  \`${command.enablement}\`` : '']
+        .filter((a) => a)
+        .join('<br>');
+    return `| \`${command.command}\` |  ${description} |`;
 }

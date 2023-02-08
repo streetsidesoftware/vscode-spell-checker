@@ -1,24 +1,24 @@
 {
-  "dictionaries": ["custom-dictionary"],
-  "dictionaryDefinitions": [
-    {
-      "name": "custom-dictionary",
-      "path": "./.cspell/custom-dictionary.txt",
-      "addWords": true
-    }
-  ],
-  "languageSettings": [
-    {
-      "languageId": "markdown",
-      "patterns": [
+    "dictionaries": ["custom-dictionary"],
+    "dictionaryDefinitions": [
         {
-          "name": "Internal Link",
-          "pattern": "/(?<=\\])\\(#\\w+\\)/g"
+            "name": "custom-dictionary",
+            "path": "./.cspell/custom-dictionary.txt",
+            "addWords": true
         }
-      ],
-      "ignoreRegExpList": ["Internal Link"]
-    }
-  ],
-  "enableFiletypes": ["ruby"],
-  "ignorePaths": ["_site/**"]
+    ],
+    "languageSettings": [
+        {
+            "languageId": "markdown",
+            "patterns": [
+                {
+                    "name": "Internal Link",
+                    "pattern": "/(?<=\\])\\(#\\w+\\)/g"
+                }
+            ],
+            "ignoreRegExpList": ["Internal Link"]
+        }
+    ],
+    "enableFiletypes": ["ruby"],
+    "ignorePaths": ["_site/**"]
 }
