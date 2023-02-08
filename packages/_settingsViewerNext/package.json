@@ -39,6 +39,7 @@
     "build": "yarn compile",
     "compile": "tsc -p ./",
     "lint": "eslint \"src/**/*.ts\"",
+    "test": "echo test",
     "watch": "tsc -w -p ./"
   },
   "devDependencies": {
