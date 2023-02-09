@@ -2510,7 +2510,7 @@
     "eslint": "^7.32.0",
     "inject-markdown": "^1.5.0",
     "ovsx": "^0.8.0",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "shx": "^0.3.4",
     "typescript": "^4.9.5"
   },
