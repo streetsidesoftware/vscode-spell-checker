@@ -12,6 +12,8 @@ docs/_site
 node_modules
 packages/_integrationTests/out/
 packages/*/dist/
+packages/*/out/**
+.yarn
 packages/client/settingsViewer/
 samples/php/**/vendor
 tsconfig*.json

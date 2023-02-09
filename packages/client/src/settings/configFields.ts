@@ -1,7 +1,10 @@
 import type { CSpellUserSettings } from '../client';
 import { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
 
-export type ConfigKeys = Exclude<keyof CSpellUserSettings, '$schema' | 'version' | 'id' | 'experimental.enableRegexpView'>;
+export type ConfigKeys = Exclude<
+    keyof CSpellUserSettings,
+    '$schema' | 'version' | 'id' | 'experimental.enableRegexpView' | 'experimental.enableSettingsViewerV2'
+>;
 
 type CSpellUserSettingsFields = {
     [key in ConfigKeys]: key;

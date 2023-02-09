@@ -15,6 +15,7 @@ import { ConfigTargetLegacy, sectionCSpell } from './settings';
 import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
 import { performance } from './util/perf';
+import { activate as settingsViewerActivate } from 'settings-viewer-next';
 
 performance.mark('cspell_done_import');
 
@@ -22,6 +23,8 @@ modules.init();
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
+
+    await settingsViewerActivate(context);
 
     // Get the cSpell Client
     const client = await CSpellClient.create(context);

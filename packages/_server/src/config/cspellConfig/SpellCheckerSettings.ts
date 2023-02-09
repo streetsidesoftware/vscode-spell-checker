@@ -13,6 +13,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default false
      */
     autoFormatConfigFile?: boolean;
+
     /**
      * The limit in K-Characters to be checked in a file.
      * @scope resource
@@ -300,6 +301,13 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default false
      */
     'experimental.enableRegexpView'?: boolean;
+
+    /**
+     * Enable the Settings Viewer V2 Extension
+     * @scope application
+     * @default false
+     */
+    'experimental.enableSettingsViewerV2'?: boolean;
 
     /**
      * @scope resource

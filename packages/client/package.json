@@ -49,6 +49,7 @@
     "lorem-ipsum": "^2.0.8",
     "rfdc": "^1.3.0",
     "server": "*",
+    "settings-viewer-next": "*",
     "settings-webview": "*",
     "source-map-support": "^0.5.21",
     "ts-jest": "^29.0.5",

@@ -1319,6 +1319,11 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.19.tgz#35e26df9ec441ab99d73e99e9aca82935eea216d"
   integrity sha512-YUgMWAQBWLObABqrvx8qKO1enAvBUdjZOAWQ5grBAkp5LQv45jBvYKZ3oFS9iKRCQyFjqw6iuEa1vmFqtxYLZw==
 
+"@types/node@^16.11.7":
+  version "16.18.12"
+  resolved "https://registry.npmjs.org/@types/node/-/node-16.18.12.tgz#e3bfea80e31523fde4292a6118f19ffa24fd6f65"
+  integrity sha512-vzLe5NaNMjIE3mcddFVGlAXN1LEWueUsMsOJWaT6wWMJGyljHAWHznqfnKUQWGzu7TLPrGvWdNAsvQYW+C0xtw==
+
 "@types/prettier@^2.1.5":
   version "2.7.2"
   resolved "https://registry.npmjs.org/@types/prettier/-/prettier-2.7.2.tgz#6c2324641cc4ba050a8c710b2b251b377581fbf0"
@@ -1428,7 +1433,12 @@
   resolved "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"
   integrity sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==
 
-"@types/vscode@^1.75.0":
+"@types/vscode-webview@^1.57.0":
+  version "1.57.1"
+  resolved "https://registry.npmjs.org/@types/vscode-webview/-/vscode-webview-1.57.1.tgz#0bf2c9d57698b99be2bb2813272169f7f62eb714"
+  integrity sha512-ghW5SfuDmsGDS2A4xkvGsLwDRNc3Vj5rS6rPOyPm/IryZuf3wceZKxgYaUoW+k9f0f/CB7y2c1rRsdOWZWn0PQ==
+
+"@types/vscode@^1.73.0", "@types/vscode@^1.75.0":
   version "1.75.0"
   resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.75.0.tgz#f1892a727db9a0eb4997058a804170b8c0ba218e"
   integrity sha512-SAr0PoOhJS6FUq5LjNr8C/StBKALZwDVm3+U4pjF/3iYkt3GioJOPV/oB1Sf1l7lROe4TgrMyL5N1yaEgTWycw==
@@ -7513,7 +7523,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.9.5, typescript@~4.9.3:
+typescript@^4.9.4, typescript@^4.9.5, typescript@~4.9.3:
   version "4.9.5"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
