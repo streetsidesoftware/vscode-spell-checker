@@ -5809,10 +5809,10 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^6.1.6:
-  version "6.1.6"
-  resolved "https://registry.npmjs.org/minimatch/-/minimatch-6.1.6.tgz#5384bb324be5b5dae12a567c03d22908febd0ddd"
-  integrity sha512-6bR3UIeh/DF8+p6A9Spyuy67ShOq42rOkHWi7eUe3Ua99Zo5lZfGC6lJJWkeoK4k9jQFT3Pl7czhTXimG2XheA==
+minimatch@^6.1.9:
+  version "6.1.9"
+  resolved "https://registry.npmjs.org/minimatch/-/minimatch-6.1.9.tgz#b4035a25d7175e3801e1d75e1f3f4d65c9e537ec"
+  integrity sha512-6Vjiyqqav1xqJqQzMFOS/tHZi3vn0bGsKykLvK36uUj9FtZdq6XpIdHXBjoln/q+i3mTTGFeBGzhZ44wLtFQyw==
   dependencies:
     brace-expansion "^2.0.1"
 
