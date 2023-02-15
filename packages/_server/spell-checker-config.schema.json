@@ -235,7 +235,7 @@
                 "description": "Glob pattern or patterns to match against."
               },
               "flagWords": {
-                "description": "List of words to always be considered incorrect.",
+                "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                 "items": {
                   "type": "string"
                 },
@@ -386,7 +386,7 @@
                       "type": "boolean"
                     },
                     "flagWords": {
-                      "description": "List of words to always be considered incorrect.",
+                      "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                       "items": {
                         "type": "string"
                       },
@@ -508,8 +508,15 @@
                       },
                       "type": "array"
                     },
+                    "suggestWords": {
+                      "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
                     "words": {
-                      "description": "List of words to be always considered correct.",
+                      "description": "List of words to be considered correct.",
                       "items": {
                         "type": "string"
                       },
@@ -600,6 +607,13 @@
                 },
                 "type": "array"
               },
+              "suggestWords": {
+                "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "suggestionNumChanges": {
                 "default": 3,
                 "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
@@ -616,7 +630,7 @@
                 "type": "boolean"
               },
               "words": {
-                "description": "List of words to be always considered correct.",
+                "description": "List of words to be considered correct.",
                 "items": {
                   "type": "string"
                 },
@@ -663,6 +677,13 @@
           },
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
           "scope": "resource",
+          "type": "array"
+        },
+        "cSpell.suggestWords": {
+          "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
+          "items": {
+            "type": "string"
+          },
           "type": "array"
         }
       },
@@ -959,7 +980,7 @@
           "type": "array"
         },
         "cSpell.flagWords": {
-          "description": "List of words to always be considered incorrect.",
+          "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
           "items": {
             "type": "string"
           },
@@ -1090,7 +1111,7 @@
                 "type": "boolean"
               },
               "flagWords": {
-                "description": "List of words to always be considered incorrect.",
+                "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                 "items": {
                   "type": "string"
                 },
@@ -1212,8 +1233,15 @@
                 },
                 "type": "array"
               },
+              "suggestWords": {
+                "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "words": {
-                "description": "List of words to be always considered correct.",
+                "description": "List of words to be considered correct.",
                 "items": {
                   "type": "string"
                 },
@@ -1244,7 +1272,7 @@
           "type": "array"
         },
         "cSpell.words": {
-          "description": "List of words to be always considered correct.",
+          "description": "List of words to be considered correct.",
           "items": {
             "type": "string"
           },
