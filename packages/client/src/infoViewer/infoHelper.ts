@@ -243,10 +243,10 @@ function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): 
 }
 
 function mapDict(def: DictionaryDefinition): DictionaryEntry {
-    const dictUri = Uri.joinPath(toUri(def.path || ''), def.file || '');
-    const dictUriStr = dictUri.toString();
+    const dictUri = getDictUri(def);
+    const dictUriStr = dictUri?.toString();
     const isCustomDict =
-        (<DictionaryDefinitionCustom>def).addWords || (regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr));
+        dictUriStr && ((<DictionaryDefinitionCustom>def).addWords || (regIsTextFile.test(dictUriStr) && !regIsCspellDict.test(dictUriStr)));
 
     return {
         name: def.name,
@@ -254,8 +254,13 @@ function mapDict(def: DictionaryDefinition): DictionaryEntry {
         languageIds: [],
         description: def.description,
         uri: isCustomDict ? dictUriStr : undefined,
-        uriName: isCustomDict ? normalizeUriToFriendlyName(dictUri) : undefined,
+        uriName: isCustomDict && dictUri ? normalizeUriToFriendlyName(dictUri) : undefined,
     };
+}
+
+function getDictUri(def: DictionaryDefinition): vscode.Uri | undefined {
+    if (!def.path && !def.file) return undefined;
+    return Uri.joinPath(toUri(def.path || ''), def.file || '');
 }
 
 function normalizeLocales(locale: string | string[] | undefined): string[] {
