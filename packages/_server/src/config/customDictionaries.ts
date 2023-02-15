@@ -1,5 +1,5 @@
 import { isDefined } from 'common-utils/util';
-import type { DictionaryDefinitionCustom, DictionaryDefinitionPreferred } from 'cspell-lib';
+import type { DictionaryDefinitionCustom, DictionaryDefinitionInline, DictionaryDefinitionPreferred } from 'cspell-lib';
 import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig';
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
@@ -45,9 +45,6 @@ export function extractDictionaryDefinitions(settings: CSpellUserSettings): Norm
             }
             continue;
         }
-        if (!dict.path) {
-            continue;
-        }
         const dName = dict.name || name;
         const entry = dicts.get(dName);
         if (entry) {
@@ -85,7 +82,7 @@ interface NormalizedDictionaryDefinition extends Partial<DictionaryDefinitionPre
 
 function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDictionaryDefinition | undefined {
     if (def.file === undefined) {
-        return def.path ? def : undefined;
+        return isInlineDict(def) ? undefined : def;
     }
     const { file, path, ...rest } = def;
     const fsPath = [path || '', file || ''].filter((a) => !!a).join('/');
@@ -98,4 +95,9 @@ const regExpBlockCustomAdd = /(^https?:|(\.gz|\.trie)$)/;
 
 export function canAddWordsToDictionary(def: NormalizedDictionaryDefinition): boolean {
     return def.addWords ?? !regExpBlockCustomAdd.test(def.path);
+}
+
+function isInlineDict(def: DictionaryDefinition): def is DictionaryDefinitionInline {
+    const d = <DictionaryDefinitionInline>def;
+    return !!(d.flagWords || d.words || d.ignoreWords || d.suggestWords);
 }

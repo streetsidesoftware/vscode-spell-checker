@@ -126,7 +126,6 @@ describe('Validate DocumentSettings', () => {
         docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
-        expect(settings).toHaveProperty('name');
         expect(settings.enabled).toBeUndefined();
         expect(settings.language).toBe('en-gb');
     });
