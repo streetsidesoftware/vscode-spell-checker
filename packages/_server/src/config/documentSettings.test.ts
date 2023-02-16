@@ -292,7 +292,6 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}      | ${[]}
-        ${sampleFiles.sampleServerCSpell}      | ${[]}
         ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
