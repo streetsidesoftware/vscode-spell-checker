@@ -16,6 +16,7 @@
         "CHANGELOG.md",
         "cSpell.json",
         "cspell*.{json,yaml}",
+        ".cspell*.{json,yaml}",
         "fixtures/workspaces/**",
         "languageCodes.ts",
         "package-lock.json",
