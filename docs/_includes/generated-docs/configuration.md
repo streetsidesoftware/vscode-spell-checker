@@ -47,13 +47,13 @@ Default
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
 | [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use.                                                             |
 | [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
-| [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect.                                                  |
+| [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect. Words found in `flagWords` override `words`.     |
 | [`cSpell.ignoreWords`](#cspellignorewords)                     | resource | A list of words to be ignored by the spell checker.                                               |
 | [`cSpell.language`](#cspelllanguage)                           | resource | Current active spelling language.                                                                 |
 | [`cSpell.languageSettings`](#cspelllanguagesettings)           | resource | Additional settings for individual programming languages and locales.                             |
 | [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries) | resource | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries… |
 | [`cSpell.userWords`](#cspelluserwords)                         | resource | Words to add to global dictionary -- should only be in the user config file.                      |
-| [`cSpell.words`](#cspellwords)                                 | resource | List of words to be always considered correct.                                                    |
+| [`cSpell.words`](#cspellwords)                                 | resource | List of words to be considered correct.                                                           |
 
 ## Definitions
 
@@ -170,7 +170,13 @@ Scope
 : resource
 
 Description
-: List of words to always be considered incorrect.
+: List of words to always be considered incorrect. Words found in `flagWords` override `words`.
+
+    Format of `flagWords`
+    - single word entry - `word`
+    - with suggestions - `word:suggestion` or `word->suggestion, suggestions`
+
+    Example: ```ts "flagWords": [   "color: colour",   "incase: in case, encase",   "canot->cannot",   "cancelled->canceled" ] ```
 
 Default
 : _- none -_
@@ -288,7 +294,7 @@ Scope
 : resource
 
 Description
-: List of words to be always considered correct.
+: List of words to be considered correct.
 
 Default
 : _- none -_
@@ -1087,6 +1093,7 @@ Default
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
 | [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                       |
 | [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
+| [`cSpell.suggestWords`](#cspellsuggestwords)           |          | A list of suggested replacements for words. Suggested words provide a way to make preferred…   |
 
 ## Definitions
 
@@ -1208,6 +1215,29 @@ Description
       }
     ]
     ```
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.suggestWords`
+
+Name
+: `cSpell.suggestWords`
+
+Type
+: string[]
+
+Scope
+:
+
+Description
+: A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.
+
+    Format of `suggestWords`
+    - Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`
+    - Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`
 
 Default
 : _- none -_

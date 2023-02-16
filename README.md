@@ -239,7 +239,7 @@ const companyName = 'woorxs sweeetbeat';
 
 ### Enable / Disable compound words
 
-In some programing language it is common to glue words together.
+In some programming language it is common to glue words together.
 
 ```c
 // cSpell:enableCompoundWords

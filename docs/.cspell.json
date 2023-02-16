@@ -20,5 +20,11 @@
         }
     ],
     "enableFiletypes": ["ruby"],
-    "ignorePaths": ["_site/**"]
+    "ignorePaths": ["_site/**", "cspell*.{json,yaml}"],
+    "overrides": [
+        {
+            "filename": "**/generated-docs/configuration.md",
+            "ignoreWords": ["colour", "canot", "overridable", "userdata", "scminput"]
+        }
+    ]
 }

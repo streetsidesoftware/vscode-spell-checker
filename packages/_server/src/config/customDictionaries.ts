@@ -1,4 +1,5 @@
-import type { DictionaryDefinitionCustom, DictionaryDefinitionPreferred } from 'cspell-lib';
+import { isDefined } from 'common-utils/util';
+import type { DictionaryDefinitionCustom, DictionaryDefinitionInline, DictionaryDefinitionPreferred } from 'cspell-lib';
 import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig';
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
@@ -28,13 +29,18 @@ export function extractCustomDictionaries(settings: CSpellUserSettings): CustomD
 export function extractDictionaryDefinitions(settings: CSpellUserSettings): NormalizedDictionaryDefinition[] {
     const customDicts = extractCustomDictionaries(settings);
 
-    const dicts = new Map((settings.dictionaryDefinitions || []).map(normalizeDictionaryDefinition).map((d) => [d.name, d]));
+    const dicts = new Map(
+        (settings.dictionaryDefinitions || [])
+            .map(normalizeDictionaryDefinition)
+            .filter(isDefined)
+            .map((d) => [d.name, d])
+    );
 
     for (const [name, dict] of Object.entries(customDicts)) {
         if (typeof dict === 'boolean') {
             const entry = dicts.get(name);
             const addWords = dict;
-            if (entry && entry.addWords !== addWords) {
+            if (entry && entry.path && entry.addWords !== addWords) {
                 dicts.set(name, { ...entry, addWords });
             }
             continue;
@@ -74,9 +80,9 @@ interface NormalizedDictionaryDefinition extends Partial<DictionaryDefinitionPre
     path: string;
 }
 
-function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDictionaryDefinition {
+function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDictionaryDefinition | undefined {
     if (def.file === undefined) {
-        return def;
+        return isInlineDict(def) ? undefined : def;
     }
     const { file, path, ...rest } = def;
     const fsPath = [path || '', file || ''].filter((a) => !!a).join('/');
@@ -89,4 +95,9 @@ const regExpBlockCustomAdd = /(^https?:|(\.gz|\.trie)$)/;
 
 export function canAddWordsToDictionary(def: NormalizedDictionaryDefinition): boolean {
     return def.addWords ?? !regExpBlockCustomAdd.test(def.path);
+}
+
+function isInlineDict(def: DictionaryDefinition): def is DictionaryDefinitionInline {
+    const d = <DictionaryDefinitionInline>def;
+    return !!(d.flagWords || d.words || d.ignoreWords || d.suggestWords);
 }
