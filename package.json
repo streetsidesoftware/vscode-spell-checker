@@ -2543,11 +2543,11 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.25.1",
-    "@cspell/cspell-types": "^6.25.1",
+    "@cspell/cspell-bundled-dicts": "^6.26.1",
+    "@cspell/cspell-types": "^6.26.1",
     "@types/react": "^17.0.53",
     "cosmiconfig": "^8.0.0",
-    "cspell": "^6.25.1",
+    "cspell": "^6.26.1",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
