@@ -24,6 +24,7 @@
         "packages/client/samples/**",
         "packages/client/server/**",
         "packages/client/settingsViewer/**",
+        "spell-checker-config.schema.json",
         "testFixtures"
     ],
     "ignoreWords": [],
@@ -45,6 +46,12 @@
         {
             "languageId": "*",
             "allowCompoundWords": false
+        }
+    ],
+    "overrides": [
+        {
+            "filename": "package.json",
+            "ignoreWords": ["colour", "canot"]
         }
     ],
     "useGitignore": true
