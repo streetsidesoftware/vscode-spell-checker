@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.17.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.17.0...code-spell-checker-v2.17.1) (2023-02-20)
+
+
+### Miscellaneous
+
+* Use upload-release-asserts v2.0.2 ([b449738](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b4497384b9d4fe3592ca9a1be1da4f634fb39623))
+
+
+### Updates and Bug Fixes
+
+* Correctly format config files ([#2532](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2532)) ([fbcda3e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fbcda3e78f155071dbdc0a811b2682556f987e62))
+* extension crash ([#2533](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2533)) ([eaf7eea](https://github.com/streetsidesoftware/vscode-spell-checker/commit/eaf7eea282cfa10dfbac82134e4f739416879eb1))
+
 ## [2.17.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.16.0...code-spell-checker-v2.17.0) (2023-02-20)
 
 
