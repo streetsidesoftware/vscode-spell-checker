@@ -2543,8 +2543,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.26.1",
-    "@cspell/cspell-types": "^6.26.1",
+    "@cspell/cspell-bundled-dicts": "^6.26.3",
+    "@cspell/cspell-types": "^6.26.3",
     "@types/react": "^17.0.53",
     "cosmiconfig": "^8.0.0",
     "cspell": "^6.26.3",
