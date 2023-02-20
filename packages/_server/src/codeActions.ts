@@ -45,32 +45,49 @@ export function onCodeActionHandler(
     fnSettingsVersion: (doc: TextDocument) => number,
     clientApi: ClientApi
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
-    type SettingsDictPair = GetSettingsResult;
-    interface CacheEntry {
-        docVersion: number;
-        settingsVersion: number;
-        settings: Promise<SettingsDictPair>;
-    }
-    const sugGen = new SuggestionGenerator(getSettings);
-    const settingsCache = new Map<string, CacheEntry>();
+    const codeActionHandler = new CodeActionHandler(documents, fnSettings, fnSettingsVersion, clientApi);
 
-    async function getSettings(doc: TextDocument): Promise<GetSettingsResult> {
-        const cached = settingsCache.get(doc.uri);
-        const settingsVersion = fnSettingsVersion(doc);
+    return (params) => codeActionHandler.handler(params);
+}
+
+type SettingsDictPair = GetSettingsResult;
+interface CacheEntry {
+    docVersion: number;
+    settingsVersion: number;
+    settings: Promise<SettingsDictPair>;
+}
+
+class CodeActionHandler {
+    private sugGen: SuggestionGenerator<TextDocument>;
+    private settingsCache: Map<string, CacheEntry>;
+
+    constructor(
+        readonly documents: TextDocuments<TextDocument>,
+        readonly fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
+        readonly fnSettingsVersion: (doc: TextDocument) => number,
+        readonly clientApi: ClientApi
+    ) {
+        this.settingsCache = new Map<string, CacheEntry>();
+        this.sugGen = new SuggestionGenerator((doc) => this.getSettings(doc));
+    }
+
+    async getSettings(doc: TextDocument): Promise<GetSettingsResult> {
+        const cached = this.settingsCache.get(doc.uri);
+        const settingsVersion = this.fnSettingsVersion(doc);
         if (!cached || cached.docVersion !== doc.version || cached.settingsVersion !== settingsVersion) {
-            const settings = constructSettings(doc);
-            settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
+            const settings = this.constructSettings(doc);
+            this.settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
         }
-        return settingsCache.get(doc.uri)!.settings;
+        return this.settingsCache.get(doc.uri)!.settings;
     }
 
-    async function constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
-        const settings = constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
+    async constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
+        const settings = constructSettingsForText(await this.fnSettings(doc), doc.getText(), doc.languageId);
         const dictionary = await getDictionary(settings);
         return { settings, dictionary };
     }
 
-    const handler = async (params: CodeActionParams) => {
+    async handler(params: CodeActionParams) {
         const actions: CodeAction[] = [];
         const {
             context,
@@ -78,25 +95,30 @@ export function onCodeActionHandler(
         } = params;
         const { diagnostics } = context;
         const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
+        // const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker')
         if (!spellCheckerDiags.length) return [];
-        const optionalTextDocument = documents.get(uri);
+
+        // We do not want to clutter the actions when someone is trying to refactor code.
+        if (spellCheckerDiags.length > 1) return [];
+
+        const optionalTextDocument = this.documents.get(uri);
         if (!optionalTextDocument) return [];
         log(`CodeAction Only: ${context.only} Num: ${diagnostics.length}`, uri);
         const textDocument = optionalTextDocument;
-        const { settings: docSetting, dictionary } = await getSettings(textDocument);
+        const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
         if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
             log(`CodeAction Uri Not allowed: ${uri}`);
             return [];
         }
-        const pWorkspaceConfig = clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
+        const pWorkspaceConfig = this.clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
 
         function replaceText(range: LangServerRange, text?: string) {
             return TextEdit.replace(range, text || '');
         }
 
-        function getSuggestions(word: string) {
-            return sugGen.genWordSuggestions(textDocument, word);
-        }
+        const getSuggestions = (word: string) => {
+            return this.sugGen.genWordSuggestions(textDocument, word);
+        };
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
             log('CodeAction generate suggestions');
@@ -135,9 +157,7 @@ export function onCodeActionHandler(
         }
 
         return genCodeActionsForSuggestions(dictionary);
-    };
-
-    return handler;
+    }
 }
 
 const directiveToTitle: Record<string, string | undefined> = Object.assign(Object.create(null), {
