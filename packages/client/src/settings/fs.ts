@@ -1,5 +1,5 @@
 import { isErrorCodeException } from 'common-utils/index.js';
-import { FileSystemError, Uri, workspace } from 'vscode';
+import { FileSystemError, Range, TextDocument, Uri, workspace, WorkspaceEdit } from 'vscode';
 
 const fs = workspace.fs;
 
@@ -25,6 +25,21 @@ async function createDirectory(uri: Uri): Promise<void> {
 }
 
 async function writeFile(uri: Uri, content: string, encoding = 'utf8' as const): Promise<void> {
+    const doc = findOpenDocument(uri);
+    return doc ? _writeDoc(doc, content) : _writeFile(uri, content, encoding);
+}
+
+async function _writeDoc(doc: TextDocument, content: string): Promise<void> {
+    const currentText = doc.getText();
+    if (currentText === content) return;
+    const range = new Range(doc.positionAt(0), doc.positionAt(currentText.length));
+    const edit = new WorkspaceEdit();
+    edit.replace(doc.uri, range, content);
+    await workspace.applyEdit(edit);
+    await doc.save();
+}
+
+async function _writeFile(uri: Uri, content: string, encoding: 'utf8'): Promise<void> {
     return await fs.writeFile(uri, Buffer.from(content, encoding));
 }
 
@@ -45,6 +60,11 @@ async function fileExists(file: Uri): Promise<boolean> {
 function isFileNotFoundError(e: unknown): boolean {
     if (!isErrorCodeException(e)) return false;
     return e.code in FileNotFoundErrorCodes;
+}
+
+export function findOpenDocument(uri: Uri): TextDocument | undefined {
+    const uriStr = uri.toString(true);
+    return workspace.textDocuments.find((doc) => doc.uri.toString(true) === uriStr);
 }
 
 export const vscodeFs: VSCodeFs = {
