@@ -23,6 +23,7 @@ import { DiagnosticData } from './models/DiagnosticData';
 import { Suggestion } from './models/Suggestion';
 import { GetSettingsResult, SuggestionGenerator } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
+import * as range from './utils/range';
 import * as Validator from './validator';
 
 const createCommand = LangServerCommand.create;
@@ -45,58 +46,104 @@ export function onCodeActionHandler(
     fnSettingsVersion: (doc: TextDocument) => number,
     clientApi: ClientApi
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
-    type SettingsDictPair = GetSettingsResult;
-    interface CacheEntry {
-        docVersion: number;
-        settingsVersion: number;
-        settings: Promise<SettingsDictPair>;
-    }
-    const sugGen = new SuggestionGenerator(getSettings);
-    const settingsCache = new Map<string, CacheEntry>();
+    const codeActionHandler = new CodeActionHandler(documents, fnSettings, fnSettingsVersion, clientApi);
 
-    async function getSettings(doc: TextDocument): Promise<GetSettingsResult> {
-        const cached = settingsCache.get(doc.uri);
-        const settingsVersion = fnSettingsVersion(doc);
+    return (params) => codeActionHandler.handler(params);
+}
+
+type SettingsDictPair = GetSettingsResult;
+interface CacheEntry {
+    docVersion: number;
+    settingsVersion: number;
+    settings: Promise<SettingsDictPair>;
+}
+
+class CodeActionHandler {
+    private sugGen: SuggestionGenerator<TextDocument>;
+    private settingsCache: Map<string, CacheEntry>;
+
+    constructor(
+        readonly documents: TextDocuments<TextDocument>,
+        readonly fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
+        readonly fnSettingsVersion: (doc: TextDocument) => number,
+        readonly clientApi: ClientApi
+    ) {
+        this.settingsCache = new Map<string, CacheEntry>();
+        this.sugGen = new SuggestionGenerator((doc) => this.getSettings(doc));
+    }
+
+    async getSettings(doc: TextDocument): Promise<GetSettingsResult> {
+        const cached = this.settingsCache.get(doc.uri);
+        const settingsVersion = this.fnSettingsVersion(doc);
         if (!cached || cached.docVersion !== doc.version || cached.settingsVersion !== settingsVersion) {
-            const settings = constructSettings(doc);
-            settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
+            const settings = this.constructSettings(doc);
+            this.settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
         }
-        return settingsCache.get(doc.uri)!.settings;
+        return this.settingsCache.get(doc.uri)!.settings;
     }
 
-    async function constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
-        const settings = constructSettingsForText(await fnSettings(doc), doc.getText(), doc.languageId);
+    private async constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
+        const settings = constructSettingsForText(await this.fnSettings(doc), doc.getText(), doc.languageId);
         const dictionary = await getDictionary(settings);
         return { settings, dictionary };
     }
 
-    const handler = async (params: CodeActionParams) => {
-        const actions: CodeAction[] = [];
+    public async handler(params: CodeActionParams): Promise<CodeAction[]> {
         const {
             context,
             textDocument: { uri },
         } = params;
         const { diagnostics } = context;
         const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
+        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
+
+        if (!spellCheckerDiags.length && !eslintSpellCheckerDiags.length) return [];
+
+        const textDocument = this.documents.get(uri);
+        if (!textDocument) return [];
+
+        const rangeIntersectDiags = [...spellCheckerDiags, ...eslintSpellCheckerDiags]
+            .map((diag) => diag.range)
+            .reduce((a: LangServerRange | undefined, b) => a && range.intersect(a, b), params.range);
+
+        // Only provide suggestions if the selection is contained in the diagnostics.
+        if (!rangeIntersectDiags || !(range.equal(params.range, rangeIntersectDiags) || isWordLikeSelection(textDocument, params.range))) {
+            return [];
+        }
+
+        const ctx = {
+            params,
+            textDocument,
+        };
+
+        return eslintSpellCheckerDiags.length
+            ? this.handlerESLint({ ...ctx, diags: eslintSpellCheckerDiags })
+            : this.handlerCSpell({ ...ctx, diags: spellCheckerDiags });
+    }
+
+    private async handlerCSpell(handlerContext: CodeActionHandlerContext) {
+        const { params, textDocument, diags: spellCheckerDiags } = handlerContext;
+        const actions: CodeAction[] = [];
+        const uri = textDocument.uri;
         if (!spellCheckerDiags.length) return [];
-        const optionalTextDocument = documents.get(uri);
-        if (!optionalTextDocument) return [];
-        log(`CodeAction Only: ${context.only} Num: ${diagnostics.length}`, uri);
-        const textDocument = optionalTextDocument;
-        const { settings: docSetting, dictionary } = await getSettings(textDocument);
+
+        // We do not want to clutter the actions when someone is trying to refactor code
+        if (spellCheckerDiags.length > 1) return [];
+
+        const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
         if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
             log(`CodeAction Uri Not allowed: ${uri}`);
             return [];
         }
-        const pWorkspaceConfig = clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
+        const pWorkspaceConfig = this.clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
 
         function replaceText(range: LangServerRange, text?: string) {
             return TextEdit.replace(range, text || '');
         }
 
-        function getSuggestions(word: string) {
-            return sugGen.genWordSuggestions(textDocument, word);
-        }
+        const getSuggestions = (word: string) => {
+            return this.sugGen.genWordSuggestions(textDocument, word);
+        };
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
             log('CodeAction generate suggestions');
@@ -135,9 +182,44 @@ export function onCodeActionHandler(
         }
 
         return genCodeActionsForSuggestions(dictionary);
-    };
+    }
 
-    return handler;
+    private async handlerESLint(handlerContext: CodeActionHandlerContext): Promise<CodeAction[]> {
+        const { params, textDocument, diags: eslintSpellCheckerDiags } = handlerContext;
+        const uri = textDocument.uri;
+        const actions: CodeAction[] = [];
+        if (!eslintSpellCheckerDiags.length) return [];
+
+        // We do not want to clutter the actions when someone is trying to refactor code
+        // or if it is already handled by ESLint.
+        if (eslintSpellCheckerDiags.length > 1) return [];
+
+        const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
+        const pWorkspaceConfig = this.clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
+
+        async function genCodeActions(_dictionary: SpellingDictionary) {
+            const word = extractText(textDocument, params.range);
+            // Only suggest adding if it is our diagnostic and there is a word.
+            if (word && eslintSpellCheckerDiags.length) {
+                const wConfig = await pWorkspaceConfig;
+                const targets = calculateConfigTargets(docSetting, wConfig);
+                debugTargets && logTargets(targets);
+
+                if (!docSetting.hideAddToDictionaryCodeActions) {
+                    actions.push(...generateTargetActions(textDocument, eslintSpellCheckerDiags, word, targets));
+                }
+            }
+            return actions;
+        }
+
+        return genCodeActions(dictionary);
+    }
+}
+
+interface CodeActionHandlerContext {
+    params: CodeActionParams;
+    diags: Diagnostic[];
+    textDocument: TextDocument;
 }
 
 const directiveToTitle: Record<string, string | undefined> = Object.assign(Object.create(null), {
@@ -236,4 +318,12 @@ function generateTargetActions(doc: TextDocument, spellCheckerDiags: Diagnostic[
         }
     });
     return actions;
+}
+
+function isWordLikeSelection(doc: TextDocument, range: LangServerRange): boolean {
+    if (range.start.line !== range.end.line) return false;
+
+    const text = doc.getText(range);
+    const hasSpace = /\s/.test(text.trim());
+    return !hasSpace;
 }
