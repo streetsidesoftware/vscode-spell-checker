@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.17.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.16.0...code-spell-checker-v2.17.0) (2023-02-20)
+
+
+### Features
+
+* Update cspell to 6.21.0 ([#2498](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2498)) ([b5b8dbc](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b5b8dbcd30135d986090eb13b48bf809ec93c145))
+* Upgrade to CSpell 6.26.1 ([#2521](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2521)) ([9e6a5e1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9e6a5e1f1cf40a6b2bd397dc6b229f05f23b3196))
+
+
+### Documentation
+
+* Add footer ([#2503](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2503)) ([8b89b8a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8b89b8a6a4f58d41690cc16a02fddc35f7a94d58))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump @types/vscode from 1.74.0 to 1.74.1 ([#2497](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2497)) ([b56e649](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b56e64957a906b9bcde73c80b5c87d4a65ffc846))
+* **deps-dev:** bump cspell-lib from 6.21.0 to 6.22.0 ([#2501](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2501)) ([8d940cf](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8d940cf6164268a48565b9ddd25d4a7b70cae8b9))
+* **deps-dev:** bump github-pages from 227 to 228 in /docs ([#2494](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2494)) ([4944199](https://github.com/streetsidesoftware/vscode-spell-checker/commit/49441997aa661e45e18a95f2e17609f47526894d))
+* **deps:** bump cspell from 6.26.1 to 6.26.3 ([#2525](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2525)) ([02575e9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/02575e9480d6ba8621218dcb9f95f9acc4c7603e))
+
+
+### Continuous Integration
+
+* Workflow Bot -- Update ALL Dependencies (main) ([#2499](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2499)) ([c22b9d8](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c22b9d8e99d72c42076fb325fbd2d47e780039e5))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2504](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2504)) ([76817b1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/76817b1c4352a184b7380d3adccf6ecc68e95a2a))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2510](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2510)) ([fd0425b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fd0425b59f1aa2979f325266e1c046c0a1156814))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2511](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2511)) ([36bf10e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/36bf10e64ce3d25170d523dd070c5369723509c6))
+* Workflow Bot -- Update ALL Dependencies (main) ([#2524](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2524)) ([f56ede0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f56ede02a48e8cef7ceb12d585c490b5c8050996))
+
+
+### Updates and Bug Fixes
+
+* Do not show duplicate actions. ([#2528](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2528)) ([9a29344](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9a2934469a953e9bd5caf3cf3b544c2c12c38b06))
+* groundwork towards adding a new viewer ([#2509](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2509)) ([f8691ae](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f8691ae5a44ba75791d7b2021dd6b913c24ee620))
+
 ## [2.16.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.15.0...code-spell-checker-v2.16.0) (2023-02-01)
 
 
