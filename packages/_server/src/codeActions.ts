@@ -23,6 +23,7 @@ import { DiagnosticData } from './models/DiagnosticData';
 import { Suggestion } from './models/Suggestion';
 import { GetSettingsResult, SuggestionGenerator } from './SuggestionsGenerator';
 import { uniqueFilter } from './utils';
+import * as range from './utils/range';
 import * as Validator from './validator';
 
 const createCommand = LangServerCommand.create;
@@ -88,24 +89,35 @@ class CodeActionHandler {
     }
 
     public async handler(params: CodeActionParams): Promise<CodeAction[]> {
-        const actions = await Promise.all([this.handlerCSpell(params), this.handlerESLint(params)]);
-        return actions.flatMap((a) => a);
+        const { diagnostics } = params.context;
+        const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
+        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
+
+        const rangeIntersectDiags = [...spellCheckerDiags, ...eslintSpellCheckerDiags]
+            .map((diag) => diag.range)
+            .reduce((a: LangServerRange | undefined, b) => a && range.intersect(a, b), params.range);
+
+        // Only provide suggestions if the selection is contained in the diagnostics.
+        if (!rangeIntersectDiags || !range.equal(params.range, rangeIntersectDiags)) {
+            return [];
+        }
+
+        return eslintSpellCheckerDiags.length
+            ? this.handlerESLint(params, eslintSpellCheckerDiags)
+            : this.handlerCSpell(params, spellCheckerDiags);
     }
 
-    private async handlerCSpell(params: CodeActionParams) {
+    private async handlerCSpell(params: CodeActionParams, spellCheckerDiags: Diagnostic[]) {
         const actions: CodeAction[] = [];
         const {
             context,
             textDocument: { uri },
         } = params;
         const { diagnostics } = context;
-        const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
-        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
         if (!spellCheckerDiags.length) return [];
 
         // We do not want to clutter the actions when someone is trying to refactor code
-        // or if it is already handled by ESLint.
-        if (spellCheckerDiags.length > 1 || eslintSpellCheckerDiags.length > 0) return [];
+        if (spellCheckerDiags.length > 1) return [];
 
         const optionalTextDocument = this.documents.get(uri);
         if (!optionalTextDocument) return [];
@@ -165,14 +177,13 @@ class CodeActionHandler {
         return genCodeActionsForSuggestions(dictionary);
     }
 
-    private async handlerESLint(params: CodeActionParams): Promise<CodeAction[]> {
+    private async handlerESLint(params: CodeActionParams, eslintSpellCheckerDiags: Diagnostic[]): Promise<CodeAction[]> {
         const actions: CodeAction[] = [];
         const {
             context,
             textDocument: { uri },
         } = params;
         const { diagnostics } = context;
-        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
         if (!eslintSpellCheckerDiags.length) return [];
 
         // We do not want to clutter the actions when someone is trying to refactor code
