@@ -1,13 +1,15 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
-import { commands, ConfigurationTarget, TextDocument, TextEdit, Uri, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
+import { commands, ConfigurationTarget, TextEdit, Uri, window, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
 import { CSpellUserSettings, CustomDictionaryScope } from '../client';
 import { ConfigFields } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
 import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
+import { findOpenDocument } from './fs';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 import { GetConfigurationScope, getSettingFromVSConfig } from './vsConfig';
 import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
+import { posix } from 'path';
 
 export type ConfigKeys = keyof CSpellUserSettings;
 
@@ -103,20 +105,18 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     async update<K extends ConfigKeys>(updater: ConfigUpdater<K>): Promise<void> {
         const formatConfig = this.formatConfig;
         const uri = this.configFileUri;
-        const configDoc = formatConfig ? findOpenDocument(uri) : undefined;
-        await configDoc?.save(); // This is necessary or the update might break things.
-        await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
-        if (formatConfig) {
-            const edits = await commands.executeCommand<TextEdit[] | undefined>('vscode.executeFormatDocumentProvider', uri);
-            if (!edits || !edits.length) return;
-            const wsEdit = new WorkspaceEdit();
-            wsEdit.set(uri, edits);
-            await workspace.applyEdit(wsEdit);
-            const doc = configDoc || findOpenDocument(uri);
-            if (doc) {
-                await doc.save();
+        const doc = findOpenDocument(uri);
+        if (doc && doc.isDirty) {
+            const name = posix.basename(uri.path);
+            const answer = await window.showInformationMessage(`Overwrite "${name}"?`, 'Yes', 'No', 'Open');
+            if (answer === 'Open') {
+                await window.showTextDocument(doc);
+                return;
             }
+            if (answer !== 'Yes') return;
         }
+        await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
+        formatConfig && (await formatDocument(uri));
     }
 
     static isCSpellConfigRepository(rep: ConfigRepository): rep is CSpellConfigRepository {
@@ -124,9 +124,14 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     }
 }
 
-function findOpenDocument(uri: Uri): TextDocument | undefined {
-    const uriStr = uri.toString(true);
-    return workspace.textDocuments.find((doc) => doc.uri.toString(true) === uriStr);
+async function formatDocument(uri: Uri) {
+    const doc = await workspace.openTextDocument(uri);
+    const edits = await commands.executeCommand<TextEdit[] | undefined>('vscode.executeFormatDocumentProvider', uri);
+    if (!edits || !edits.length) return;
+    const wsEdit = new WorkspaceEdit();
+    wsEdit.set(uri, edits);
+    await workspace.applyEdit(wsEdit);
+    await doc.save();
 }
 
 export class VSCodeRepository extends ConfigRepositoryBase {
