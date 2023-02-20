@@ -81,13 +81,18 @@ class CodeActionHandler {
         return this.settingsCache.get(doc.uri)!.settings;
     }
 
-    async constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
+    private async constructSettings(doc: TextDocument): Promise<SettingsDictPair> {
         const settings = constructSettingsForText(await this.fnSettings(doc), doc.getText(), doc.languageId);
         const dictionary = await getDictionary(settings);
         return { settings, dictionary };
     }
 
-    async handler(params: CodeActionParams) {
+    public async handler(params: CodeActionParams): Promise<CodeAction[]> {
+        const actions = await Promise.all([this.handlerCSpell(params), this.handlerESLint(params)]);
+        return actions.flatMap((a) => a);
+    }
+
+    private async handlerCSpell(params: CodeActionParams) {
         const actions: CodeAction[] = [];
         const {
             context,
@@ -95,15 +100,16 @@ class CodeActionHandler {
         } = params;
         const { diagnostics } = context;
         const spellCheckerDiags = diagnostics.filter((diag) => diag.source === Validator.diagSource);
-        // const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker')
+        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
         if (!spellCheckerDiags.length) return [];
 
-        // We do not want to clutter the actions when someone is trying to refactor code.
-        if (spellCheckerDiags.length > 1) return [];
+        // We do not want to clutter the actions when someone is trying to refactor code
+        // or if it is already handled by ESLint.
+        if (spellCheckerDiags.length > 1 || eslintSpellCheckerDiags.length > 0) return [];
 
         const optionalTextDocument = this.documents.get(uri);
         if (!optionalTextDocument) return [];
-        log(`CodeAction Only: ${context.only} Num: ${diagnostics.length}`, uri);
+        log(`CodeAction Spell: ${context.only} Num: ${diagnostics.length}`, uri);
         const textDocument = optionalTextDocument;
         const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
         if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
@@ -157,6 +163,45 @@ class CodeActionHandler {
         }
 
         return genCodeActionsForSuggestions(dictionary);
+    }
+
+    private async handlerESLint(params: CodeActionParams): Promise<CodeAction[]> {
+        const actions: CodeAction[] = [];
+        const {
+            context,
+            textDocument: { uri },
+        } = params;
+        const { diagnostics } = context;
+        const eslintSpellCheckerDiags = diagnostics.filter((diag) => diag.source === 'eslint' && diag.code == '@cspell/spellchecker');
+        if (!eslintSpellCheckerDiags.length) return [];
+
+        // We do not want to clutter the actions when someone is trying to refactor code
+        // or if it is already handled by ESLint.
+        if (eslintSpellCheckerDiags.length > 1) return [];
+
+        const optionalTextDocument = this.documents.get(uri);
+        if (!optionalTextDocument) return [];
+        log(`CodeAction ESLint Spell Check: ${context.only} Num: ${diagnostics.length}`, uri);
+        const textDocument = optionalTextDocument;
+        const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
+        const pWorkspaceConfig = this.clientApi.sendOnWorkspaceConfigForDocumentRequest({ uri });
+
+        async function genCodeActions(_dictionary: SpellingDictionary) {
+            const word = extractText(textDocument, params.range);
+            // Only suggest adding if it is our diagnostic and there is a word.
+            if (word && eslintSpellCheckerDiags.length) {
+                const wConfig = await pWorkspaceConfig;
+                const targets = calculateConfigTargets(docSetting, wConfig);
+                debugTargets && logTargets(targets);
+
+                if (!docSetting.hideAddToDictionaryCodeActions) {
+                    actions.push(...generateTargetActions(textDocument, eslintSpellCheckerDiags, word, targets));
+                }
+            }
+            return actions;
+        }
+
+        return genCodeActions(dictionary);
     }
 }
 
