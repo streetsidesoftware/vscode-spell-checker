@@ -2,7 +2,7 @@ import { CSpellPackageSettings, CSpellSettings } from '@cspell/cspell-types';
 import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+// import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { CSpellUserSettings } from '../client';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
 import { vscodeFs as fs } from './fs';
@@ -249,14 +249,16 @@ class ConfigFileReaderWriterYaml extends AbstractConfigFileReaderWriter {
         return this.write(updated);
     }
 
-    async write(cfg: CSpellSettings): Promise<void> {
+    async write(_cfg: CSpellSettings): Promise<void> {
         await this.mkdir();
-        return fs.writeFile(this.uri, stringifyYaml(cfg));
+        // return fs.writeFile(this.uri, stringifyYaml(_cfg));
+        return;
     }
 
     async _read(): Promise<CSpellSettings> {
-        const content = await fs.readFile(this.uri, 'utf8');
-        return parseYaml(content) as CSpellSettings;
+        // const content = await fs.readFile(this.uri, 'utf8');
+        // return parseYaml(content) as CSpellSettings;
+        return {} as CSpellSettings;
     }
 }
 

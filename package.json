@@ -42,6 +42,7 @@
     "onStartupFinished"
   ],
   "main": "./packages/client/dist/extension.js",
+  "browser": "./packages/client/dist/browser.js",
   "contributes": {
     "virtualWorkspaces": false,
     "untrustedWorkspaces": {
@@ -2528,12 +2529,14 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
-    "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
+    "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn",
+    "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "@vscode/test-web": "*",
     "@vscode/vsce": "^2.17.0",
     "eslint": "^7.32.0",
     "inject-markdown": "^1.5.0",
