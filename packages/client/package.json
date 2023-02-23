@@ -39,6 +39,7 @@
     "@types/node": "^18.14.0",
     "@types/source-map-support": "^0.5.6",
     "@types/vscode": "^1.75.1",
+    "buffer": "^6.0.3",
     "comment-json": "^4.2.3",
     "common-utils": "1.0.0",
     "cross-env": "^7.0.3",
@@ -64,8 +65,5 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "yaml": "^2.2.1"
-  },
-  "dependencies": {
-    "buffer": "^6.0.3"
   }
 }
