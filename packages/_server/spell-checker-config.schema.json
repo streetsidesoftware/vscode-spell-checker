@@ -48,7 +48,13 @@
         "cSpell.logLevel": {
           "default": "Error",
           "description": "Set the Debug Level for logging messages.",
-          "enum": ["None", "Error", "Warning", "Information", "Debug"],
+          "enum": [
+            "None",
+            "Error",
+            "Warning",
+            "Information",
+            "Debug"
+          ],
           "enumDescriptions": [
             "Do not log",
             "Log only errors",
@@ -139,7 +145,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["path", "name"],
+                      "required": [
+                        "path",
+                        "name"
+                      ],
                       "type": "object"
                     },
                     {
@@ -169,13 +178,21 @@
                           "anyOf": [
                             {
                               "description": "Specifies the scope of a dictionary.",
-                              "enum": ["user", "workspace", "folder"],
+                              "enum": [
+                                "user",
+                                "workspace",
+                                "folder"
+                              ],
                               "type": "string"
                             },
                             {
                               "items": {
                                 "description": "Specifies the scope of a dictionary.",
-                                "enum": ["user", "workspace", "folder"],
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
                                 "type": "string"
                               },
                               "type": "array"
@@ -184,7 +201,11 @@
                           "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                         }
                       },
-                      "required": ["path", "addWords", "name"],
+                      "required": [
+                        "path",
+                        "addWords",
+                        "name"
+                      ],
                       "type": "object"
                     }
                   ]
@@ -327,7 +348,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["path", "name"],
+                            "required": [
+                              "path",
+                              "name"
+                            ],
                             "type": "object"
                           },
                           {
@@ -357,13 +381,21 @@
                                 "anyOf": [
                                   {
                                     "description": "Specifies the scope of a dictionary.",
-                                    "enum": ["user", "workspace", "folder"],
+                                    "enum": [
+                                      "user",
+                                      "workspace",
+                                      "folder"
+                                    ],
                                     "type": "string"
                                   },
                                   {
                                     "items": {
                                       "description": "Specifies the scope of a dictionary.",
-                                      "enum": ["user", "workspace", "folder"],
+                                      "enum": [
+                                        "user",
+                                        "workspace",
+                                        "folder"
+                                      ],
                                       "type": "string"
                                     },
                                     "type": "array"
@@ -372,7 +404,11 @@
                                 "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                               }
                             },
-                            "required": ["path", "addWords", "name"],
+                            "required": [
+                              "path",
+                              "addWords",
+                              "name"
+                            ],
                             "type": "object"
                           }
                         ]
@@ -503,7 +539,10 @@
                             "description": "RegExp pattern or array of RegExp patterns."
                           }
                         },
-                        "required": ["name", "pattern"],
+                        "required": [
+                          "name",
+                          "pattern"
+                        ],
                         "type": "object"
                       },
                       "type": "array"
@@ -523,7 +562,9 @@
                       "type": "array"
                     }
                   },
-                  "required": ["languageId"],
+                  "required": [
+                    "languageId"
+                  ],
                   "type": "object"
                 },
                 "scope": "resource",
@@ -594,13 +635,19 @@
                       "description": "RegExp pattern or array of RegExp patterns."
                     }
                   },
-                  "required": ["name", "pattern"],
+                  "required": [
+                    "name",
+                    "pattern"
+                  ],
                   "type": "object"
                 },
                 "type": "array"
               },
               "pnpFiles": {
-                "default": [".pnp.js", ".pnp.cjs"],
+                "default": [
+                  ".pnp.js",
+                  ".pnp.cjs"
+                ],
                 "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                 "items": {
                   "type": "string"
@@ -637,7 +684,9 @@
                 "type": "array"
               }
             },
-            "required": ["filename"],
+            "required": [
+              "filename"
+            ],
             "type": "object"
           },
           "markdownDescription": "Overrides are used to apply settings for specific files in your project.\n\n**Example:**\n\n```jsonc\n\"cSpell.overrides\": [\n  // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:\n  {\n    \"filename\": \"**​/{*.hrr,*.crr}\",\n    \"languageId\": \"cpp\"\n  },\n  // Force `dutch/**​/*.txt` to be treated as Dutch (dictionary needs to be installed separately):\n  {\n    \"filename\": \"**​/dutch/**​/*.txt\",\n    \"language\": \"nl\"\n  }\n]\n```",
@@ -672,7 +721,10 @@
                 "description": "RegExp pattern or array of RegExp patterns."
               }
             },
-            "required": ["name", "pattern"],
+            "required": [
+              "name",
+              "pattern"
+            ],
             "type": "object"
           },
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
@@ -715,7 +767,15 @@
       "order": 3,
       "properties": {
         "cSpell.allowedSchemas": {
-          "default": ["file", "gist", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"],
+          "default": [
+            "file",
+            "gist",
+            "sftp",
+            "untitled",
+            "vscode-notebook-cell",
+            "vscode-scm",
+            "vscode-userdata"
+          ],
           "items": {
             "type": "string"
           },
@@ -761,7 +821,14 @@
           "type": "string"
         },
         "cSpell.ignorePaths": {
-          "default": ["package-lock.json", "node_modules", "vscode-extension", ".git/objects", ".vscode", ".vscode-insiders"],
+          "default": [
+            "package-lock.json",
+            "node_modules",
+            "vscode-extension",
+            ".git/objects",
+            ".vscode",
+            ".vscode-insiders"
+          ],
           "description": "Glob patterns of files to be ignored.\n\nGlob patterns are relative to the `globRoot` of the configuration file that defines them.",
           "items": {
             "description": "Simple Glob string, the root will be globRoot.",
@@ -866,13 +933,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -926,7 +1001,10 @@
                     "type": "string"
                   }
                 },
-                "required": ["path", "name"],
+                "required": [
+                  "path",
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -956,13 +1034,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -971,7 +1057,11 @@
                     "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                   }
                 },
-                "required": ["path", "addWords", "name"],
+                "required": [
+                  "path",
+                  "addWords",
+                  "name"
+                ],
                 "type": "object"
               }
             ]
@@ -1052,7 +1142,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["path", "name"],
+                      "required": [
+                        "path",
+                        "name"
+                      ],
                       "type": "object"
                     },
                     {
@@ -1082,13 +1175,21 @@
                           "anyOf": [
                             {
                               "description": "Specifies the scope of a dictionary.",
-                              "enum": ["user", "workspace", "folder"],
+                              "enum": [
+                                "user",
+                                "workspace",
+                                "folder"
+                              ],
                               "type": "string"
                             },
                             {
                               "items": {
                                 "description": "Specifies the scope of a dictionary.",
-                                "enum": ["user", "workspace", "folder"],
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
                                 "type": "string"
                               },
                               "type": "array"
@@ -1097,7 +1198,11 @@
                           "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
                         }
                       },
-                      "required": ["path", "addWords", "name"],
+                      "required": [
+                        "path",
+                        "addWords",
+                        "name"
+                      ],
                       "type": "object"
                     }
                   ]
@@ -1228,7 +1333,10 @@
                       "description": "RegExp pattern or array of RegExp patterns."
                     }
                   },
-                  "required": ["name", "pattern"],
+                  "required": [
+                    "name",
+                    "pattern"
+                  ],
                   "type": "object"
                 },
                 "type": "array"
@@ -1248,7 +1356,9 @@
                 "type": "array"
               }
             },
-            "required": ["languageId"],
+            "required": [
+              "languageId"
+            ],
             "type": "object"
           },
           "scope": "resource",
@@ -1334,13 +1444,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1350,7 +1468,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1386,13 +1506,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1402,7 +1530,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -1457,13 +1588,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1473,7 +1612,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1509,13 +1650,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1525,7 +1674,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -1580,13 +1732,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1596,7 +1756,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1632,13 +1794,21 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "type": "string"
                         },
                         "type": "array"
@@ -1648,7 +1818,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -1777,7 +1950,12 @@
         "cSpell.diagnosticLevel": {
           "default": "Information",
           "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
-          "enum": ["Error", "Warning", "Information", "Hint"],
+          "enum": [
+            "Error",
+            "Warning",
+            "Information",
+            "Hint"
+          ],
           "enumDescriptions": [
             "Report Spelling Issues as Errors",
             "Report Spelling Issues as Warnings",
@@ -1839,8 +2017,14 @@
         "cSpell.showStatusAlignment": {
           "default": "Right",
           "description": "The side of the status bar to display the spell checker status.",
-          "enum": ["Left", "Right"],
-          "enumDescriptions": ["Left Side of Statusbar", "Right Side of Statusbar"],
+          "enum": [
+            "Left",
+            "Right"
+          ],
+          "enumDescriptions": [
+            "Left Side of Statusbar",
+            "Right Side of Statusbar"
+          ],
           "scope": "application",
           "type": "string"
         },
@@ -1852,7 +2036,10 @@
         },
         "cSpell.suggestionMenuType": {
           "default": "quickPick",
-          "enum": ["quickPick", "quickFix"],
+          "enum": [
+            "quickPick",
+            "quickFix"
+          ],
           "enumDescriptions": [
             "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
             "Suggestions will appear inline near the word, inside the text editor."
