@@ -2506,7 +2506,7 @@
   },
   "scripts": {
     "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
-    "postinstall": "yarn run build",
+    "postinstall": "echo postinstall",
     "build": "yarn build:workspaces && yarn build:schema && yarn build:docs && yarn build:readme",
     "build:docs": "yarn run gen-docs",
     "build:readme": "inject-markdown README.md && prettier -w README.md",
