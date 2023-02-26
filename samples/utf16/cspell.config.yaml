@@ -1,9 +1,9 @@
 dictionaryDefinitions:
   - name: words16le
-    path: ./words16le.txt
+    path: ./words16le.dic
     addWords: true
   - name: words16be
-    path: ./words/words16be.txt
+    path: ./words/words16be.dic
     addWords: true
 dictionaries:
   - words16be
