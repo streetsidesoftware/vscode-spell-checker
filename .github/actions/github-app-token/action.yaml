@@ -1,0 +1,24 @@
+name: github_app_token
+description: Create a token for making Pull Requests
+
+# Note: this just calls tibdex/github-app-token, but it allows us to keep it in one place.
+
+inputs:
+  app_id:
+    description: Application ID used to make the PR
+    required: true
+  app_private_key:
+    description: Application Private Key used to sign the PR
+    required: true
+outputs:
+  token:
+    description: A token for making Pull Requests
+    value: ${{ steps.generate-token.outputs.token }}
+runs:
+  using: "composite"
+  steps:
+    - uses: tibdex/github-app-token@021a2405c7f990db57f5eae5397423dcc554159c # v1.5 # cspell:ignore tibdex
+      id: generate-token
+      with:
+        app_id: ${{ inputs.app_id }}
+        private_key: ${{ inputs.app_private_key }}
