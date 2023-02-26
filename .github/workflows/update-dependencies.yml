@@ -29,10 +29,7 @@ jobs:
           yarn upgrade
           yarn package-json-dependency-updater --update
           yarn
-      - name: Has changes
-        run: |
-          git --no-pager diff --compact-summary  --exit-code && echo "git_status=clean" >> $GITHUB_ENV || echo "git_status=dirty" >> $GITHUB_ENV
-          git --no-pager diff --compact-summary
+
       - name: Gen Body
         run: |
           echo "git_body<<DIFF" >> $GITHUB_ENV
@@ -48,22 +45,14 @@ jobs:
           echo "" >> $GITHUB_ENV
           git --no-pager diff --stat  >> $GITHUB_ENV
           echo "DIFF" >> $GITHUB_ENV
-      - name: Echo git_status
-        run: echo ${{ env.git_status }}
-      - uses: tibdex/github-app-token@v1.8 # cspell:ignore tibdex
-        if: env.git_status == 'dirty'
-        id: generate-token
+
+      - name: PR
+        uses: ./.github/actions/pr
         with:
-          app_id: ${{ secrets.AUTOMATION_APP_ID }}
-          private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
-      - name: Create Pull Request
-        if: env.git_status == 'dirty'
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: "ci: Workflow Bot -- Update ALL Dependencies"
+          commit-message: "ci: Update ALL Dependencies -- Workflow Bot"
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
-          title: "ci: Workflow Bot -- Update ALL Dependencies (${{ env.REF_BRANCH }})"
-          token: ${{ steps.generate-token.outputs.token }}
+          title: "ci: Update ALL Dependencies (${{ env.REF_BRANCH }}) -- Workflow Bot"
           body: ${{ env.git_body }}
-          delete-branch: true
+          app_id: ${{ secrets.AUTOMATION_APP_ID }}
+          app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}
