@@ -1,0 +1,10 @@
+dictionaryDefinitions:
+  - name: words16le
+    path: ./words16le.txt
+    addWords: true
+  - name: words16be
+    path: ./words/words16be.txt
+    addWords: true
+dictionaries:
+  - words16be
+  - words16le

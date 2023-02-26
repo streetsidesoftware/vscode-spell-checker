@@ -1,11 +1,11 @@
 import { isErrnoException } from 'common-utils/index.js';
 import { uriToName } from 'common-utils/uriHelper.js';
-import * as fs from 'fs-extra';
-import * as path from 'path';
 import { format } from 'util';
-import { Uri } from 'vscode';
+import { Range, TextDocument, TextEdit, Uri, window, workspace, WorkspaceEdit } from 'vscode';
+import { Utils as UriUtils } from 'vscode-uri';
 import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
+import { vscodeFs as fs } from './fs';
 
 const regBlockUpdateDictionaryFormat = /(\.((gz|jsonc?|yaml|yml|c?js)$|trie\b)|^$|[/\\]$)/i;
 
@@ -80,17 +80,38 @@ async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef):
 }
 
 async function updateWordInCustomDictionary(updateFn: (words: string[]) => string[], dict: CustomDictDef): Promise<void> {
-    const fsPath = dict.uri.fsPath;
-    if (regBlockUpdateDictionaryFormat.test(fsPath)) {
+    if (regBlockUpdateDictionaryFormat.test(dict.uri.path)) {
         return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${dict.uri.fsPath}".`));
     }
     try {
-        const data = await fs.readFile(fsPath, 'utf8').catch(() => '');
+        await ensureFileExists(dict.uri);
+        const doc = await workspace.openTextDocument(dict.uri);
+        const data = doc.getText();
         const lines = updateFn(data.split(/\r?\n/g).filter((a) => !!a));
-        await fs.mkdirp(path.dirname(fsPath));
-        await fs.writeFile(fsPath, lines.join('\n').trim().concat('\n'));
+        const text = lines.join('\n').trim() + '\n';
+        const success = await replaceDocText(doc, text);
+        if (!success) {
+            await window.showInformationMessage(`Unable to add words to dictionary "${dict.name}"`);
+        }
     } catch (e) {
         const errMsg = isErrnoException(e) ? e.message : format(e);
         return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${errMsg}`));
     }
+}
+
+async function replaceDocText(doc: TextDocument, text: string): Promise<boolean> {
+    const wsEdit = new WorkspaceEdit();
+    const range = new Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
+    const teReplaceDoc = TextEdit.replace(range, text);
+    wsEdit.set(doc.uri, [teReplaceDoc]);
+    const success = await workspace.applyEdit(wsEdit);
+    success && (await doc.save());
+    return success;
+}
+
+async function ensureFileExists(uri: Uri): Promise<void> {
+    if (await fs.fileExists(uri)) return;
+
+    await fs.createDirectory(UriUtils.dirname(uri));
+    await fs.writeFile(uri, '');
 }
