@@ -54,5 +54,8 @@
     "webpack-dev": "webpack -c webpack.dev.js",
     "test-watch": "jest --watch",
     "test": "jest"
+  },
+  "engines": {
+    "node": ">16.0.0"
   }
 }

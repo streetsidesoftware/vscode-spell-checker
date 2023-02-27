@@ -1,5 +1,7 @@
+// eslint-disable-next-line node/no-extraneous-import
 import { getDefaultSettings } from 'cspell-lib';
-import { PatternMatcher, Range, isRegExpMatchTimeout, isRegExpMatch } from './PatternMatcher';
+
+import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher, Range } from './PatternMatcher';
 
 const settings = {
     patterns: [],
