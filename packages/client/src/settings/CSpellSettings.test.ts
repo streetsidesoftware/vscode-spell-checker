@@ -6,6 +6,18 @@ import * as CSS from './CSpellSettings';
 import { readSettings, writeSettings } from './CSpellSettings';
 import { createDictionaryTargetForFile } from './DictionaryTarget';
 
+import { replaceDocText } from './replaceDocText';
+import { vscodeFs } from './fs';
+
+jest.mock('./replaceDocText');
+
+const mock_replaceDocText = jest.mocked(replaceDocText);
+
+mock_replaceDocText.mockImplementation(async (doc, text) => {
+    await vscodeFs.writeFile(doc.uri, text);
+    return true;
+});
+
 describe('Validate CSpellSettings functions', () => {
     const filenameSampleCSpellFile = getUriToSample('cSpell.json');
 

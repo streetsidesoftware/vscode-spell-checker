@@ -1,11 +1,12 @@
 import { isErrnoException } from 'common-utils/index.js';
 import { uriToName } from 'common-utils/uriHelper.js';
 import { format } from 'util';
-import { Range, TextDocument, TextEdit, Uri, window, workspace, WorkspaceEdit } from 'vscode';
+import { Uri, window, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
 import { vscodeFs as fs } from './fs';
+import { replaceDocText } from './replaceDocText';
 
 const regBlockUpdateDictionaryFormat = /(\.((gz|jsonc?|yaml|yml|c?js)$|trie\b)|^$|[/\\]$)/i;
 
@@ -97,16 +98,6 @@ async function updateWordInCustomDictionary(updateFn: (words: string[]) => strin
         const errMsg = isErrnoException(e) ? e.message : format(e);
         return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", ${errMsg}`));
     }
-}
-
-async function replaceDocText(doc: TextDocument, text: string): Promise<boolean> {
-    const wsEdit = new WorkspaceEdit();
-    const range = new Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
-    const teReplaceDoc = TextEdit.replace(range, text);
-    wsEdit.set(doc.uri, [teReplaceDoc]);
-    const success = await workspace.applyEdit(wsEdit);
-    success && (await doc.save());
-    return success;
 }
 
 async function ensureFileExists(uri: Uri): Promise<void> {
