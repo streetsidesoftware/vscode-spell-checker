@@ -32,7 +32,10 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
       - name: Install
-        run: yarn install
+        run: |
+          yarn install
+          yarn build
+
       - name: Build Extension .vsix
         run: yarn run package-extension
       - name: Publish VSCE

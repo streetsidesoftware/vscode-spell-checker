@@ -2506,7 +2506,7 @@
   },
   "scripts": {
     "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
-    "postinstall": "yarn run build",
+    "postinstall": "echo postinstall",
     "build": "yarn build:workspaces && yarn build:schema && yarn build:docs && yarn build:readme",
     "build:docs": "yarn run gen-docs",
     "build:readme": "inject-markdown README.md && prettier -w README.md",
@@ -2534,7 +2534,7 @@
     "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "@vscode/vsce": "^2.17.0",
+    "@vscode/vsce": "^2.18.0",
     "eslint": "^7.32.0",
     "inject-markdown": "^1.5.0",
     "ovsx": "^0.8.0",
@@ -2543,11 +2543,11 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.26.3",
-    "@cspell/cspell-types": "^6.26.3",
+    "@cspell/cspell-bundled-dicts": "^6.27.0",
+    "@cspell/cspell-types": "^6.27.0",
     "@types/react": "^17.0.53",
-    "cosmiconfig": "^8.0.0",
-    "cspell": "^6.26.3",
+    "cosmiconfig": "^8.1.0",
+    "cspell": "^6.27.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
