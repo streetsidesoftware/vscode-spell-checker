@@ -1,14 +1,16 @@
-import { Command } from 'commander';
 import { readFile, writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
 import * as Path from 'node:path';
-import type { Dependencies, PackageJson } from './packageDef';
-import { findUp } from 'find-up';
-import YarnLockFile, { FirstLevelDependency, LockFileObject } from '@yarnpkg/lockfile';
-import semverSatisfies from 'semver/functions/satisfies.js';
-import chalk from 'chalk';
+import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+
+import YarnLockFile, { FirstLevelDependency, LockFileObject } from '@yarnpkg/lockfile';
+import chalk from 'chalk';
+import { Command } from 'commander';
+import { findUp } from 'find-up';
 import _glob from 'glob';
+import semverSatisfies from 'semver/functions/satisfies.js';
+
+import type { Dependencies, PackageJson } from './packageDef';
 
 const glob = promisify(_glob);
 

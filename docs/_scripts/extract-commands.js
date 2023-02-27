@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
+// eslint-disable-next-line node/no-unpublished-require
 const package = require('../../package.json');
 
 const commands = package.contributes.commands;

@@ -28,6 +28,7 @@ const config = {
         '**/node_modules/**',
         'packages/client/server/**',
         'packages/*/dist/**',
+        'packages/*/out/**',
         '**/temp/**',
         'packages/client/settingsViewer/**',
     ],

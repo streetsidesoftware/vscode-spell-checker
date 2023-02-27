@@ -1,5 +1,5 @@
 'use strict';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line node/no-missing-require, node/no-unpublished-require
 require('./.pnp.js').setup();
 
 /** @type { import("@cspell/cspell-types").CSpellUserSettings } */
