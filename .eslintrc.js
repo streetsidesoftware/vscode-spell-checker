@@ -1,18 +1,28 @@
 module.exports = {
+    root: true,
+    reportUnusedDisableDirectives: true,
     env: {
         node: true,
         jest: true,
-        es2017: true,
+        es2020: true,
     },
     parser: '@typescript-eslint/parser', // Specifies the ESLint parser
     extends: [
+        'eslint:recommended',
         'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+        'plugin:node/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:promise/recommended',
+        'plugin:prettier/recommended',
+        // 'plugin:unicorn/recommended',
     ],
     parserOptions: {
-        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
     },
     ignorePatterns: ['**/*.d.ts', '**/node_modules/**', 'packages/client/server/**', 'packages/*/dist/**'],
+    plugins: ['import', 'unicorn', 'simple-import-sort'],
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         quotes: ['warn', 'single', { avoidEscape: true }],
