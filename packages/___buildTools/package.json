@@ -34,6 +34,10 @@
     "ts-jest": "^29.0.5"
   },
   "dependencies": {
-    "commander": "^10.0.0"
+    "commander": "^10.0.0",
+    "json-schema": "0.4.0"
+  },
+  "engines": {
+    "node": ">16.0.0"
   }
 }
