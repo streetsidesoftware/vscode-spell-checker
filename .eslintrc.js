@@ -47,6 +47,7 @@ const config = {
             },
         ],
         'node/no-unpublished-import': 'off',
+        'promise/catch-or-return': ['error', { terminationMethod: ['catch', 'finally'] }],
     },
     overrides: [
         {
