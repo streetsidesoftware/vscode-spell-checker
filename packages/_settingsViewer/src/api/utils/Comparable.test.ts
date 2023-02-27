@@ -1,4 +1,4 @@
-import { compareBy, reverse, compareEach, compareByRev, compare } from './Comparable';
+import { compare, compareBy, compareByRev, compareEach, reverse } from './Comparable';
 
 describe('Validate Comparable', () => {
     test('compare', () => {

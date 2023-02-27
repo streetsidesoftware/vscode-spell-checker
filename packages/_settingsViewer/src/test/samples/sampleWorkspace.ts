@@ -1,4 +1,4 @@
-import { Workspace, TextDocument } from '../../api/settings';
+import { TextDocument, Workspace } from '../../api/settings';
 
 // cspell:ignore ripgrep
 

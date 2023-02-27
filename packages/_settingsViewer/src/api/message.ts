@@ -1,4 +1,4 @@
-import { Settings, ConfigTarget } from './settings';
+import { ConfigTarget, Settings } from './settings';
 
 /**
  * @private
@@ -27,7 +27,7 @@ interface IMessage {
 export type CommandMessage = DefinedCommands[Commands];
 
 function isIMessage(data: unknown): data is IMessage {
-    if (typeof data !== 'object' || !data || !data.hasOwnProperty('command')) return false;
+    if (typeof data !== 'object' || !data || !('command' in data)) return false;
     return typeof (<IMessage>data).command === 'string';
 }
 
@@ -37,7 +37,7 @@ export function isMessage(data: unknown): data is CommandMessage {
     return isMessageOf<CommandMessage>(msg);
 }
 
-function isA<T extends IMessage>(cmd: T['command'], fields: [keyof T, (v: any) => boolean][]): (msg: IMessage) => msg is T {
+function isA<T extends IMessage>(cmd: T['command'], fields: [keyof T, (v: unknown) => boolean][]): (msg: IMessage) => msg is T {
     return function (msg: IMessage): msg is T {
         const t = msg as T;
         return msg.command === cmd && fields.reduce((success: boolean, [key, fn]) => success && fn(t[key]), true);

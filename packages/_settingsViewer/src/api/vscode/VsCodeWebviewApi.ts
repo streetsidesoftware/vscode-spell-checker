@@ -1,4 +1,4 @@
-import { WebviewApi, MessageListener } from '../WebviewApi';
+import { MessageListener, WebviewApi } from '../WebviewApi';
 // interface VsCodeWebviewAPI extends BroadcastChannel { }
 
 interface VsCodeAPI {

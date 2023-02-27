@@ -1,8 +1,9 @@
-import { AppState } from '../../viewer/AppState';
-import { MessageBus, CommandMessage, isMessage } from '../../api';
-import { WebviewApi } from '../../api/WebviewApi';
-import { sampleSettings } from '../samples/sampleSettings';
 import dcopy from 'clone-deep';
+
+import { CommandMessage, isMessage, MessageBus } from '../../api';
+import { WebviewApi } from '../../api/WebviewApi';
+import { AppState } from '../../viewer/AppState';
+import { sampleSettings } from '../samples/sampleSettings';
 
 export class AppStateFixture extends AppState {
     _webviewApi: WebviewApi;

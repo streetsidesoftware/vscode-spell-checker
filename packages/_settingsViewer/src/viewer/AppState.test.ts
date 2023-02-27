@@ -1,9 +1,10 @@
-import { AppState } from './AppState';
-import { WebviewApi } from '../api/WebviewApi';
-import { MessageBus } from '../api';
-import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
-import { Settings } from '../api/settings';
 import { toJS } from 'mobx';
+
+import { MessageBus } from '../api';
+import { Settings } from '../api/settings';
+import { WebviewApi } from '../api/WebviewApi';
+import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
+import { AppState } from './AppState';
 
 // cspell:ignore ripgrep
 

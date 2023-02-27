@@ -1,6 +1,6 @@
-import { BaseMessageEvent, WebviewApi } from './WebviewApi';
-import { Commands, isMessage, CommandMessage } from './message';
 import { DefinedCommands, isMessageOf } from '.';
+import { CommandMessage, Commands, isMessage } from './message';
+import { BaseMessageEvent, WebviewApi } from './WebviewApi';
 
 export interface MsgListener<M extends CommandMessage> {
     cmd: M['command'];
@@ -57,7 +57,6 @@ export class MessageBus implements Messenger {
         return listener;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     postMessage<M extends CommandMessage>(msg: M) {
         this.vsCodeApi.postMessage(msg);
     }
