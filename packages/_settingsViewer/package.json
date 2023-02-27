@@ -10,7 +10,6 @@
     "clean": "shx rm -rf ../client/settingsViewer ./out",
     "build-production": "yarn run clean && yarn run build",
     "coverage": "jest --coverage src",
-    "lint": "eslint 'src/**/*.ts'",
     "start:dev": "webpack server --config webpack.dev.js",
     "webpack": "webpack --config webpack.prod.js",
     "watch": "yarn webpack --watch",

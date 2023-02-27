@@ -43,7 +43,6 @@
   },
   "scripts": {
     "clean": "shx rm -rf dist temp out coverage",
-    "lint": "eslint \"src/**/*.ts\"",
     "build": "yarn run compile",
     "clean-build": "yarn run clean && yarn run build",
     "clean-build-production": "yarn run clean && yarn run compile",
