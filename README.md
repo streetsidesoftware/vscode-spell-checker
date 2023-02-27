@@ -143,7 +143,7 @@ Trailing `s`, `ing`, `ies`, `es`, `ed` are kept with the previous word.
 -   The spellchecker uses a local word dictionary. It does not send anything outside your machine.
 -   The words in the dictionary can and do contain errors.
 -   There are missing words.
--   Only words longer than 3 characters are checked. "jsj" is ok, while "jsja" is not.
+-   Only words longer than 3 characters are checked. "jsj" is not checked, while "jsja" is checked and will be marked as incorrect because it does not exist in any of the dictionaries.
 -   All symbols and punctuation are ignored.
 
 ## In Document Settings
