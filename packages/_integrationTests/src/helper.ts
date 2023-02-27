@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import * as path from 'path';
-import * as vscode from 'vscode';
-import { ExtensionApi } from './ExtensionApi';
-import { format } from 'util';
 import * as Chalk from 'chalk';
+import * as path from 'path';
+import { format } from 'util';
+import * as vscode from 'vscode';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { ExtensionApi } from './ExtensionApi';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-unpublished-require
 const extensionPackage = require('../../../package.json');
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
 

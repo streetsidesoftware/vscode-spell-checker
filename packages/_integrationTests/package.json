@@ -40,5 +40,8 @@
     "typescript": "^4.9.5"
   },
   "peerDependenciesMeta": {},
-  "dependencies": {}
+  "dependencies": {},
+  "engines": {
+    "node": ">16.0.0"
+  }
 }

@@ -1,6 +1,3 @@
-#!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 /**
  * this is a modified copy of [vscode-extension-vscode/bin/test](https://github.com/microsoft/vscode-extension-vscode/blob/main/bin/test)
  */
@@ -9,6 +6,7 @@ const path = require('path');
 const cp = require('child_process');
 const fs = require('fs');
 
+// eslint-disable-next-line node/no-unpublished-require
 const downloadAndUnzipVSCode = require('@vscode/test-electron').downloadAndUnzipVSCode;
 
 var testsFolder;
@@ -64,6 +62,7 @@ function runTests(executablePath) {
 
         if (code !== 0) {
             console.log('Signal: ' + signal);
+            // eslint-disable-next-line no-process-exit
             process.exit(code); // propagate exit code to outer runner
         }
     });
@@ -77,10 +76,12 @@ function downloadExecutableAndRunTests() {
     downloadAndUnzipVSCode(process.env.CODE_VERSION)
         .then((executablePath) => {
             runTests(executablePath);
+            return;
         })
         .catch((err) => {
             console.error('Failed to run test with error:');
             console.log(err);
+            // eslint-disable-next-line no-process-exit
             process.exit(1);
         });
 }
