@@ -26,6 +26,8 @@ jobs:
       - name: Update
         run: |
           yarn
+          yarn build
+          yarn lint
           yarn upgrade
           yarn package-json-dependency-updater --update
           yarn
