@@ -1,3 +1,6 @@
+import * as FS from 'fs';
+import * as Path from 'path';
+
 import {
     isTextLikelyMinified,
     IsTextLikelyMinifiedOptions,
@@ -5,8 +8,6 @@ import {
     ReasonLineLength,
     ReasonMaxWordsSize,
 } from './analysis';
-import * as FS from 'fs';
-import * as Path from 'path';
 
 const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.js'), 'utf8');
 

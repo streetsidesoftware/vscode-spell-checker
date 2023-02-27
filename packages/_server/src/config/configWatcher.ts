@@ -1,7 +1,8 @@
-import { FileWatcher } from '../utils/fileWatcher';
 import type { CSpellUserSettings } from '@cspell/cspell-types';
-import { Disposable } from 'vscode-languageserver/node';
 import { getSources } from 'cspell-lib';
+import { Disposable } from 'vscode-languageserver/node';
+
+import { FileWatcher } from '../utils/fileWatcher';
 
 export class ConfigWatcher extends FileWatcher implements Disposable {
     constructor() {

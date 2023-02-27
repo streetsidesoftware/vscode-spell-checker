@@ -7,7 +7,6 @@ import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
 import { interval, ReplaySubject, Subscription } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
     CodeActionKind,
     createConnection,
@@ -22,6 +21,8 @@ import {
     TextDocuments,
     TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+
 import * as Api from './api';
 import { createClientApi } from './clientApi';
 import { onCodeActionHandler } from './codeActions';

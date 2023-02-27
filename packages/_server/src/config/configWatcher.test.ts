@@ -1,7 +1,8 @@
 import { loadConfig } from 'cspell-lib';
-import { ConfigWatcher } from './configWatcher';
-import * as path from 'path';
 import * as fs from 'fs-extra';
+import * as path from 'path';
+
+import { ConfigWatcher } from './configWatcher';
 
 const folderDir = path.resolve(__dirname, '../..');
 const sampleFilesDir = path.resolve(folderDir, 'sampleSourceFiles');

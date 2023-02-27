@@ -1,6 +1,7 @@
-import { createClientApi } from './clientApi';
 import { Connection } from 'vscode-languageserver';
+
 import { OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api';
+import { createClientApi } from './clientApi';
 
 const stub: any = {
     sendNotification: jest.fn(),

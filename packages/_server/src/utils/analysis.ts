@@ -1,4 +1,5 @@
 import { genSequence } from 'gensequence';
+
 import { BlockedFileReason } from '../api';
 
 export interface MinifiedReason extends BlockedFileReason {

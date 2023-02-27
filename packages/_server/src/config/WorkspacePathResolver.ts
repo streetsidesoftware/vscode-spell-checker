@@ -4,6 +4,7 @@ import * as os from 'os';
 import * as Path from 'path';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
+
 import { CSpellUserSettings } from './cspellConfig';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries';
 

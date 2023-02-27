@@ -1,19 +1,20 @@
 import { capitalize } from 'common-utils/util';
+
 import {
     ConfigKind,
     ConfigKinds,
     ConfigScope,
     ConfigScopes,
+    ConfigScopeVScode,
     ConfigTarget,
     ConfigTargetCSpell,
     ConfigTargetDictionary,
     ConfigTargetVSCode,
-    isConfigTargetOfKind,
     isConfigTargetCSpell,
     isConfigTargetDictionary,
+    isConfigTargetOfKind,
     isConfigTargetVSCode,
     weight,
-    ConfigScopeVScode,
 } from './configTargets';
 
 describe('Validate ConfigTarget', () => {

@@ -1,1 +1,1 @@
-export { uniqueFilter, isDefined, textToWords } from 'common-utils/util.js';
+export { isDefined, textToWords, uniqueFilter } from 'common-utils/util.js';

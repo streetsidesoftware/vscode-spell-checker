@@ -31,10 +31,11 @@ import * as os from 'os';
 import * as path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+
 import { VSCodeSettingsCspell } from '../api';
-import { CSpellUserSettings } from './cspellConfig';
 import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';
+import { CSpellUserSettings } from './cspellConfig';
 import { canAddWordsToDictionary } from './customDictionaries';
 import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver';
@@ -391,8 +392,9 @@ function exists(file: string): boolean {
     try {
         const s = fs.statSync(file);
         return s.isFile();
-    } catch (e) {}
-    return false;
+    } catch (e) {
+        return false;
+    }
 }
 
 function resolvePath(...parts: string[]): string {

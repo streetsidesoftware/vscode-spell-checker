@@ -1,5 +1,5 @@
-import nodeWatch from 'node-watch';
 import { FSWatcher } from 'fs';
+import nodeWatch from 'node-watch';
 
 type NodeWatch = typeof nodeWatch;
 

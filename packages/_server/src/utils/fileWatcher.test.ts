@@ -1,6 +1,7 @@
 import watch from 'node-watch';
-import { FileWatcher } from './fileWatcher';
+
 import { NodeWatchMock } from '../__mocks__/node-watch';
+import { FileWatcher } from './fileWatcher';
 
 const mockWatch = watch as unknown as NodeWatchMock;
 

@@ -1,5 +1,6 @@
 import * as cspell from 'cspell-lib';
-import { SuggestionGenerator, maxNumberOfSuggestionsForLongWords } from './SuggestionsGenerator';
+
+import { maxNumberOfSuggestionsForLongWords, SuggestionGenerator } from './SuggestionsGenerator';
 
 jest.setTimeout(30000);
 

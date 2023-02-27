@@ -5,6 +5,7 @@ import type {
     DictionaryId,
     FsPath,
 } from '@cspell/cspell-types';
+
 import type { EnableCustomDictionary } from './annotatedTypes';
 
 type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useCompounds' | 'repMap'>;

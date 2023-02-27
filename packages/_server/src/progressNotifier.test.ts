@@ -1,7 +1,8 @@
 import { Connection } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { createProgressNotifier } from './progressNotifier';
+
 import { createClientApi } from './clientApi';
+import { createProgressNotifier } from './progressNotifier';
 
 jest.mock('./clientApi');
 

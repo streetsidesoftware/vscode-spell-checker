@@ -1,5 +1,6 @@
 import { isDefined } from 'common-utils/util';
 import type { DictionaryDefinitionCustom, DictionaryDefinitionInline, DictionaryDefinitionPreferred } from 'cspell-lib';
+
 import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinition } from './cspellConfig';
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
