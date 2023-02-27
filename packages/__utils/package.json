@@ -42,5 +42,8 @@
   },
   "dependencies": {
     "vscode-uri": "^3.0.7"
+  },
+  "engines": {
+    "node": ">16"
   }
 }

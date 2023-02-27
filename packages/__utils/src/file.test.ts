@@ -1,5 +1,6 @@
-import { fileExists } from './file';
 import { URI as Uri } from 'vscode-uri';
+
+import { fileExists } from './file';
 
 describe('Validate file', () => {
     test('fileExists', async () => {

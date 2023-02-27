@@ -19,7 +19,8 @@ export class ConfigWatcher extends FileWatcher implements Disposable {
                 .filter(isDefined);
             const filenames = sources.map((s) => s.filename).filter(isDefined);
             filenames.forEach((file) => this.addFile(file));
-        } finally {
+        } catch (e) {
+            return;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { unique, uniqueFilter, freqCount, mustBeDefined, isDefined, textToWords, pick, setIfDefined } from './util';
+import { freqCount, isDefined, mustBeDefined, pick, setIfDefined, textToWords, unique, uniqueFilter } from './util';
 
 describe('Util', () => {
     test('unique', () => {

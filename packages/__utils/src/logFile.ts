@@ -1,5 +1,6 @@
-import { LoggerConnection } from './logger';
 import { promises as fs } from 'fs';
+
+import { LoggerConnection } from './logger';
 
 type Level = 'ERR' | 'INF' | 'WRN' | 'LOG';
 type Console = LoggerConnection['console'];

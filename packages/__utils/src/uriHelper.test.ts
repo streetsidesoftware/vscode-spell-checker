@@ -1,6 +1,7 @@
-import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper';
-import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import * as path from 'path';
+import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+
+import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper';
 
 const uri = Uri.file(__filename);
 

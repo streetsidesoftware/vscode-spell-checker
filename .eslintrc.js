@@ -23,7 +23,14 @@ const config = {
         ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
     },
-    ignorePatterns: ['**/*.d.ts', '**/node_modules/**', 'packages/client/server/**', 'packages/*/dist/**', '**/temp/**'],
+    ignorePatterns: [
+        '**/*.d.ts',
+        '**/node_modules/**',
+        'packages/client/server/**',
+        'packages/*/dist/**',
+        '**/temp/**',
+        'packages/client/settingsViewer/**',
+    ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
     rules: {
         'node/no-unsupported-features/es-syntax': 'off',

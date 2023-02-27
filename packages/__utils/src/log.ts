@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Logger } from './logger';
 
 export { LogLevel } from './logger';
@@ -62,6 +61,8 @@ function matchingUriLength(a: string, b: string): number {
     const bParts = b.split(sep);
     const limit = Math.min(aParts.length, bParts.length);
     let i = 0;
-    for (i = 0; i < limit && aParts[i] === bParts[i]; i += 1) {}
+    while (i < limit && aParts[i] === bParts[i]) {
+        ++i;
+    }
     return aParts.slice(0, i).join(sep).length;
 }

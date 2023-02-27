@@ -1,4 +1,4 @@
-import { logError, log, logDebug, logInfo, setWorkspaceFolders, logger } from './log';
+import { log, logDebug, logError, logger, logInfo, setWorkspaceFolders } from './log';
 
 describe('Validate Util Functions', () => {
     test('Logging', () => {

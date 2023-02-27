@@ -46,7 +46,9 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
     const fromSegments = splitUri(uriFrom);
     const toSegments = splitUri(uriTo);
     let i = 0;
-    for (i = 0; i < fromSegments.length && i < toSegments.length && fromSegments[i] === toSegments[i]; ++i) {}
+    for (i = 0; i < fromSegments.length && i < toSegments.length && fromSegments[i] === toSegments[i]; ++i) {
+        /* empty */
+    }
     const prefix = '../'.repeat(fromSegments.length - i);
     return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '');
 }
