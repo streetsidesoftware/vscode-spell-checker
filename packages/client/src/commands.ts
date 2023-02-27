@@ -164,7 +164,7 @@ const commandHandlers: CommandHandler = {
 };
 
 function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorResolver = ignoreError): Promise<void> {
-    const v = Promise.resolve(p).then(() => {});
+    const v = Promise.resolve(p).then(() => undefined);
     return handleErrors(v, context, onErrorHandler);
 }
 

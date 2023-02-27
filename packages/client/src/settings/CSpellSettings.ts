@@ -53,7 +53,7 @@ export const preferredConfigFiles: ConfigFileNames[] = ['cspell.json', 'cspell.c
  */
 export const configFilesToWatch = possibleConfigFiles as Set<string>;
 
-export interface CSpellSettings extends CSpellUserSettings {}
+export type CSpellSettings = CSpellUserSettings;
 
 const defaultSettings: CSpellSettings = Object.freeze({
     version: currentSettingsFileVersion,

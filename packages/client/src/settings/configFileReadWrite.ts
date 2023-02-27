@@ -21,6 +21,10 @@ const handlers: HandlerDef[] = [
 const spacesJson = 4;
 const spacesPackage = 2;
 
+interface ObjectWithFormatting {
+    [SymbolFormat]?: ContentFormat;
+}
+
 /**
  *
  * @param uri - uri of the configuration file.
@@ -134,15 +138,15 @@ export function stringifyJson(obj: unknown, spaces?: string | number | undefined
     return newlineAtEndOfFile ? json + '\n' : json;
 }
 
-function injectFormatting<T extends unknown>(s: T, format: ContentFormat): T {
+function injectFormatting<T>(s: T, format: ContentFormat): T {
     if (s === undefined || s === null || typeof s !== 'object') return s;
-    (<any>s)[SymbolFormat] = format;
+    (<ObjectWithFormatting>s)[SymbolFormat] = format;
     return s;
 }
 
-function retrieveFormatting<T extends unknown>(s: T): ContentFormat | undefined {
+function retrieveFormatting<T>(s: T): ContentFormat | undefined {
     if (s === undefined || s === null || typeof s !== 'object') return undefined;
-    return (<any>s)[SymbolFormat];
+    return (<ObjectWithFormatting>s)[SymbolFormat];
 }
 
 interface ContentFormat {

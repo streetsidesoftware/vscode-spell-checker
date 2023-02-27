@@ -31,6 +31,7 @@ export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undef
         // eslint-disable-next-line prefer-rest-params
         const args = [...arguments];
         return (t: T | undefined) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let v = t as any;
             for (const k of args) {
                 v = v === undefined ? undefined : v[k];
@@ -41,7 +42,7 @@ export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undef
     return (t: T | undefined) => (t === undefined ? undefined : t[key]);
 }
 
-export function map<T extends unknown, R>(fn: (t: T) => R): (t: T | undefined) => R | undefined {
+export function map<T, R>(fn: (t: T) => R): (t: T | undefined) => R | undefined {
     return (t: T | undefined) => (t === undefined ? undefined : fn(t));
 }
 
@@ -53,8 +54,9 @@ export function pipe<T, R, S, A, B>(t: T, fn: (t: T) => R, fn2: (t: R) => S, fn3
 export function pipe<T, R, S, A, B, C>(t: T, fn: (t: T) => R, fn2: (t: R) => S, fn3: (t: S) => A, fn4: (t: A) => B, fn5: (t: B) => C): C;
 export function pipe<T>(t: T): T {
     if (arguments.length > 1) {
-        // eslint-disable-next-line prefer-rest-params
+        // eslint-disable-next-line prefer-rest-params , @typescript-eslint/no-explicit-any
         const fns = [...arguments].slice(1) as ((v: any) => any)[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let v = t as any;
         for (const fn of fns) {
             v = fn(v);

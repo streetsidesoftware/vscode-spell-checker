@@ -1,8 +1,10 @@
+// eslint-disable-next-line node/no-missing-import
 import type { Req, Res, ServerMethods, ServerRequestApi } from 'server-pattern-matcher/api';
 import { CodeAction, CodeActionParams, CodeActionRequest, Command, LanguageClient, RequestType } from 'vscode-languageclient/node';
+// eslint-disable-next-line node/no-missing-import
 export type { MatchPatternsToDocumentResult, NamedPattern, PatternMatch, ServerMethods, PatternSettings } from 'server-pattern-matcher/api';
 
-export interface PatternMatcherServerApi extends ServerRequestApi {}
+export type PatternMatcherServerApi = ServerRequestApi;
 
 type RequestCodeActionResult = (Command | CodeAction)[] | null;
 

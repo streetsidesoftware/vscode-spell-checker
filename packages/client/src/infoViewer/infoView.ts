@@ -1,5 +1,5 @@
 import * as Kefir from 'kefir';
-import { format } from 'util';
+import { format, promisify } from 'util';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import {
@@ -21,7 +21,6 @@ import { toUri } from '../util/uriHelper';
 import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';
 import { calcSettings } from './infoHelper';
-import { promisify } from 'util';
 
 const viewerPath = 'packages/client/settingsViewer/webapp';
 const title = 'Spell Checker Preferences';

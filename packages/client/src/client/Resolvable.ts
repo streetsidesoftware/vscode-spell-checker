@@ -27,7 +27,6 @@ export class Resolvable<T> {
         this.resolutionState = ResolutionState.resolved;
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public reject(reject: any): void {
         assert(this.resolution === undefined, 'Already Resolved');
         this.resolution = { reject };

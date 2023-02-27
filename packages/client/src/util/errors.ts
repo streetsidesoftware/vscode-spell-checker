@@ -32,7 +32,7 @@ export const ErrorHandlers = {
 export function showError(reason: unknown, context: string): Promise<void> {
     if (!isPromiseCanceledError(reason) && isError(reason)) {
         console.error(formatLogMessage(reason, context));
-        return silenceErrors(window.showErrorMessage(reason.message), 'showError Resolver showErrorMessage').then(() => {});
+        return silenceErrors(window.showErrorMessage(reason.message), 'showError Resolver showErrorMessage').then(() => undefined);
     }
     return Promise.resolve();
 }

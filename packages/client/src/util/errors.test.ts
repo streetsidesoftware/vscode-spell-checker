@@ -1,9 +1,9 @@
 import { window } from 'vscode';
 import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors';
 
-const debug = jest.spyOn(console, 'debug').mockImplementation(() => {});
-const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+const debug = jest.spyOn(console, 'debug').mockImplementation(() => undefined);
+const log = jest.spyOn(console, 'log').mockImplementation(() => undefined);
+const error = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 const showErrorMessage = jest.spyOn(window, 'showErrorMessage').mockImplementation(() => Promise.resolve(undefined));
 
 describe('Validate errors', () => {

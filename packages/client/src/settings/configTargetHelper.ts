@@ -111,7 +111,7 @@ export function _buildQuickPickBestMatchTargetFn(...params: ConfigTargetMatchPat
     return buildQuickPickBestMatchTargetFn(match);
 }
 
-export function buildQuickPickBestMatchTargetFn(match: ConfigTargetMatchPattern, canPickMany: boolean = false): MatchTargetsFn {
+export function buildQuickPickBestMatchTargetFn(match: ConfigTargetMatchPattern, canPickMany = false): MatchTargetsFn {
     return async function (configTargets: ClientConfigTarget[]) {
         const foundTargets = findBestMatchingConfigTargets(match, configTargets);
         return quickPickTargets(foundTargets, canPickMany);
@@ -138,7 +138,7 @@ export async function quickPickBestMatchTarget(
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
     match: ConfigTargetMatchPattern,
-    canPickMany: boolean = false
+    canPickMany = false
 ): Promise<ClientConfigTarget[] | undefined> {
     const fn = buildQuickPickBestMatchTargetFn(match, canPickMany);
     return fn(targets);
@@ -153,10 +153,7 @@ export async function quickPickTargets(
     targets: ClientConfigTarget[],
     canPickMany: boolean | undefined
 ): Promise<ClientConfigTarget[] | undefined>;
-export async function quickPickTargets(
-    targets: ClientConfigTarget[],
-    canPickMany: boolean = false
-): Promise<ClientConfigTarget[] | undefined> {
+export async function quickPickTargets(targets: ClientConfigTarget[], canPickMany = false): Promise<ClientConfigTarget[] | undefined> {
     if (!targets.length) throw new UnableToFindTarget('No matching configuration found.');
     if (targets.length === 1) return targets;
 

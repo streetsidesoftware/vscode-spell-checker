@@ -6,8 +6,6 @@ export class RegexpOutlineProvider implements vscode.TreeDataProvider<OutlineIte
 
     private outline: OutlineItem | undefined;
 
-    constructor() {}
-
     refresh(data?: PatternMatchByCategory): void {
         this.outline = data ? createOutlineItems(data) : undefined;
         this._onDidChangeTreeData.fire(undefined);
