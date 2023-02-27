@@ -1,4 +1,4 @@
-import { normalizeCode, isValidCode, lookupLocaleInfo, getScriptInfo, parseLocale } from './index';
+import { getScriptInfo, isValidCode, lookupLocaleInfo, normalizeCode, parseLocale } from './index';
 
 describe('Validation', () => {
     test.each`
