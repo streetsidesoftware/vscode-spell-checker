@@ -3,7 +3,7 @@
  */
 
 import { CSpellUserSettings } from '../client';
-import { ClientConfigTarget, ClientConfigScope, orderScope } from './clientConfigTarget';
+import { ClientConfigScope, ClientConfigTarget, orderScope } from './clientConfigTarget';
 import { applyUpdateToConfigTargets, readFromConfigTargets } from './configRepositoryHelper';
 import {
     ConfigTargetMatchPattern,

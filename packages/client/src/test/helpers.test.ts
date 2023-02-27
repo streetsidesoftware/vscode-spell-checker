@@ -1,5 +1,6 @@
-import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace, StackItem } from './helpers';
 import * as path from 'path';
+
+import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace, StackItem } from './helpers';
 
 describe('Validate Helpers', () => {
     test('getCallStack', () => {

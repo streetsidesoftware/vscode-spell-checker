@@ -1,8 +1,8 @@
-import { CSpellUserSettings, LanguageSetting } from './server';
-import { normalizeCode } from 'locale-resolver';
-import * as util from '../../util';
 import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { isDefined } from '../../util';
+import { normalizeCode } from 'locale-resolver';
+
+import { isDefined, uniqueFilter } from '../../util';
+import { CSpellUserSettings, LanguageSetting } from './server';
 
 export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
     return (config && config.language && normalizeToLocales(config.language)) || undefined;
@@ -32,7 +32,7 @@ export function extractDictionariesByLocaleLanguageSettings(langSettings: Langua
         .filter((s) => s.dictionaries.length > 0)
         .forEach((s) => {
             s.locale.split(',').forEach((locale) => {
-                mapOfDict.set(locale, (mapOfDict.get(locale) || []).concat(s.dictionaries).filter(util.uniqueFilter()));
+                mapOfDict.set(locale, (mapOfDict.get(locale) || []).concat(s.dictionaries).filter(uniqueFilter()));
             });
         });
     return mapOfDict;
@@ -68,7 +68,7 @@ export function normalizeLocale(locale: string | string[] = ''): string {
     return normalizeToLocales(locale).join(',');
 }
 
-export function normalizeToLocales(locale: string = ''): string[] {
+export function normalizeToLocales(locale = ''): string[] {
     return locale
         .replace(/[|;\s]/g, ',')
         .replace(/[*]/g, '')
@@ -76,5 +76,5 @@ export function normalizeToLocales(locale: string = ''): string[] {
         .map((s) => normalizeCode(s))
         .map((s) => s.trim())
         .filter((a) => !!a)
-        .filter(util.uniqueFilter());
+        .filter(uniqueFilter());
 }

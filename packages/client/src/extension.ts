@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
+
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import * as commands from './commands';
@@ -44,10 +45,13 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function triggerGetSettingsNow() {
-        silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings').then(() => {
-            settingsViewer.update();
-            statusBar.refresh();
-        });
+        silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings')
+            .then(() => {
+                settingsViewer.update();
+                statusBar.refresh();
+                return;
+            })
+            .catch(() => undefined);
     }
 
     function triggerConfigChange() {
@@ -84,7 +88,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration)
     );
 
-    registerCspellInlineCompletionProviders(context.subscriptions).catch(() => {});
+    registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {

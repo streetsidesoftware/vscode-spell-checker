@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { getCSpellDiags } from './diags';
+
 import * as di from './di';
-import { inspectConfigByScopeAndKey, getSettingFromVSConfig } from './settings/vsConfig';
+import { getCSpellDiags } from './diags';
+import { getSettingFromVSConfig, inspectConfigByScopeAndKey } from './settings/vsConfig';
 
 // cspell:ignore bibtex doctex expl jlweave rsweave
 // See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)

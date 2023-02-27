@@ -1,6 +1,7 @@
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
-import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 import { URI as Uri } from 'vscode-uri';
+
+import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
 jest.mock('vscode-languageserver/node');
 

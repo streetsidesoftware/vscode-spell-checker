@@ -1,8 +1,10 @@
-import { createMockWorkspaceConfiguration, readTextDocument, MockWorkspaceConfigurationData } from 'jest-mock-vscode';
+import { createMockWorkspaceConfiguration, MockWorkspaceConfigurationData, readTextDocument } from 'jest-mock-vscode';
 import rfdc from 'rfdc';
 import { ConfigurationScope, Uri, workspace, WorkspaceConfiguration } from 'vscode';
+
 import { CSpellUserSettings } from '../client';
 import {
+    __testing__,
     ConfigurationTarget,
     createTargetForDocument,
     createTargetForUri,
@@ -17,7 +19,6 @@ import {
     isWorkspaceLevelTarget,
     Scopes,
     toScope,
-    __testing__,
 } from './vsConfig';
 
 const clone = rfdc();

@@ -1,6 +1,7 @@
 import { uriToName } from 'common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
+
 import {
     Config,
     ConfigFile,

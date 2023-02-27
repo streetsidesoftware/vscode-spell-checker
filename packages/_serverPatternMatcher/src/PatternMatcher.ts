@@ -3,6 +3,7 @@ import { isDefined } from 'common-utils/index.js';
 import { logError } from 'common-utils/log.js';
 import { RegExpWorker, TimeoutError } from 'regexp-worker';
 import { format } from 'util';
+
 import { PatternSettings } from './api';
 
 export type Range = [number, number];
@@ -38,7 +39,7 @@ type Patterns = (string | NamedPattern)[];
 
 export class PatternMatcher {
     private worker: RegExpWorker;
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
     public dispose = () => this.worker.dispose();
 
     constructor(timeoutMs: number = 2000) {
@@ -89,6 +90,7 @@ type ExecMatchRegExpResults = ExecMatchRegExpResult | ExecMatchRegExpResultTimeo
 function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
     return execMatchRegExpArray(worker, text, regexpArray).catch((e) => {
         if (!isTimeoutError(e)) {
+            // eslint-disable-next-line promise/no-return-wrap
             return Promise.reject(e);
         }
         return execMatchRegExpArrayOneByOne(worker, text, regexpArray);

@@ -1,4 +1,5 @@
 import { CSpellSettingsWithSourceTrace } from 'cspell-lib';
+
 import { configToJson } from './configToJson';
 
 describe('Validate configToJson', () => {

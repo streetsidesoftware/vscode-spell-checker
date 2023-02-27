@@ -13,7 +13,6 @@
     "build": "tsc -p .",
     "clean-build": "yarn run clean && yarn run build",
     "clean": "shx rm -rf out dist coverage",
-    "lint": "eslint \"src/**/*.ts\" \"*.js\"",
     "test": "jest",
     "watch": "tsc -p . --watch",
     "prepare": "yarn build"
@@ -25,5 +24,8 @@
   },
   "dependencies": {
     "vscode-uri": "^3.0.7"
+  },
+  "engines": {
+    "node": ">16.0.0"
   }
 }

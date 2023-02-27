@@ -5,13 +5,13 @@ import {
     Diagnostic,
     Disposable,
     FileType,
+    Location,
     Position,
     QuickPickItem,
     QuickPickOptions,
     Range,
     Selection,
     TextDocument,
-    Location,
     TextEditorRevealType,
     Uri,
     window,
@@ -19,6 +19,7 @@ import {
     WorkspaceEdit,
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
+
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
@@ -164,7 +165,7 @@ const commandHandlers: CommandHandler = {
 };
 
 function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorResolver = ignoreError): Promise<void> {
-    const v = Promise.resolve(p).then(() => {});
+    const v = Promise.resolve(p).then(() => undefined);
     return handleErrors(v, context, onErrorHandler);
 }
 

@@ -5,7 +5,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
-    ignorePatterns: ['media'],
+    ignorePatterns: ['media', 'out'],
     rules: {
         semi: [2, 'always'],
         '@typescript-eslint/no-unused-vars': 0,

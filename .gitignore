@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 
 .cspellcache
+.eslintcache
 
 # Runtime data
 pids

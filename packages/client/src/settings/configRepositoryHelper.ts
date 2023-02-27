@@ -51,7 +51,7 @@ export function configTargetToConfigRepo(target: ClientConfigTarget): ConfigRepo
 export function applyUpdateToConfigTargets<K extends ConfigKeys>(updater: ConfigUpdater<K>, targets: ClientConfigTarget[]): Promise<void> {
     const repos = targets.map(mapTargetToRepo);
     const results = repos.map((r) => r.update(updater));
-    return Promise.all(results).then(() => {});
+    return Promise.all(results).then(() => undefined);
 }
 
 /**

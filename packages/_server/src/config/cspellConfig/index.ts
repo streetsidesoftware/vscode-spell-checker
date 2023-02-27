@@ -1,11 +1,4 @@
 export type {
-    CustomDictionaryScope,
-    DictionaryDefinition,
-    DictionaryDefinitionCustom,
-    DictionaryFileTypes,
-    LanguageSetting,
-} from '@cspell/cspell-types';
-export type {
     AllSpellCheckerSettingsInVSCode,
     CSpellUserSettings,
     SpellCheckerSettingsProperties,
@@ -22,3 +15,10 @@ export type {
     CustomDictionaryWithScope,
 } from './CustomDictionary';
 export type { SpellCheckerSettings } from './SpellCheckerSettings';
+export type {
+    CustomDictionaryScope,
+    DictionaryDefinition,
+    DictionaryDefinitionCustom,
+    DictionaryFileTypes,
+    LanguageSetting,
+} from '@cspell/cspell-types';

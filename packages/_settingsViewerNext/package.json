@@ -10,7 +10,8 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.74.0",
+    "node": ">16.0.0"
   },
   "categories": [
     "Other"
@@ -41,7 +42,6 @@
     "build": "yarn compile",
     "build-production": "yarn run clean-build",
     "compile": "tsc -p ./",
-    "lint": "eslint \"src/**/*.ts\"",
     "test": "echo test",
     "watch": "tsc -w -p ./"
   },

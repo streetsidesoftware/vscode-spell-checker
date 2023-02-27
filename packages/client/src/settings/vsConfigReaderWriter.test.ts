@@ -1,5 +1,6 @@
 import { CSpellUserSettings } from '@cspell/cspell-types';
 import { ConfigurationTarget, Uri } from 'vscode';
+
 import { calculateConfigForTarget, updateConfig } from './vsConfig';
 import { createVSConfigReaderWriter } from './vsConfigReaderWriter';
 

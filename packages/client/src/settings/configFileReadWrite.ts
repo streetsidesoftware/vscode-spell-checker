@@ -3,6 +3,7 @@ import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc 
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+
 import { CSpellUserSettings } from '../client';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
 import { vscodeFs as fs } from './fs';
@@ -20,6 +21,10 @@ const handlers: HandlerDef[] = [
 
 const spacesJson = 4;
 const spacesPackage = 2;
+
+interface ObjectWithFormatting {
+    [SymbolFormat]?: ContentFormat;
+}
 
 /**
  *
@@ -134,15 +139,15 @@ export function stringifyJson(obj: unknown, spaces?: string | number | undefined
     return newlineAtEndOfFile ? json + '\n' : json;
 }
 
-function injectFormatting<T extends unknown>(s: T, format: ContentFormat): T {
+function injectFormatting<T>(s: T, format: ContentFormat): T {
     if (s === undefined || s === null || typeof s !== 'object') return s;
-    (<any>s)[SymbolFormat] = format;
+    (<ObjectWithFormatting>s)[SymbolFormat] = format;
     return s;
 }
 
-function retrieveFormatting<T extends unknown>(s: T): ContentFormat | undefined {
+function retrieveFormatting<T>(s: T): ContentFormat | undefined {
     if (s === undefined || s === null || typeof s !== 'object') return undefined;
-    return (<any>s)[SymbolFormat];
+    return (<ObjectWithFormatting>s)[SymbolFormat];
 }
 
 interface ContentFormat {

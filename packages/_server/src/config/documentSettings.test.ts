@@ -1,12 +1,14 @@
+import { escapeRegExp } from 'common-utils/util.js';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings, Pattern } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
+
 import { CSpellUserSettings } from './cspellConfig';
-import { escapeRegExp } from 'common-utils/util.js';
 import {
+    __testing__,
     correctBadSettings,
     debugExports,
     DocumentSettings,
@@ -14,7 +16,6 @@ import {
     isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,
-    __testing__,
 } from './documentSettings';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
@@ -53,6 +54,7 @@ const cspellConfigInVsCode: CSpellUserSettings = {
 const sampleFiles = {
     sampleClientEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
     sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
+    // eslint-disable-next-line node/no-unpublished-require
     sampleNodePackage: require.resolve('cspell-lib'),
     sampleSamplesReadme: Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
     sampleServerCSpell: Path.resolve(pathWorkspaceRoot, 'packages/_server/cspell.json'),

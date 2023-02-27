@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+
 import { commandUpdatePackageCSpellSchema } from './updatePackageCSpellSchema';
 
 const program = new Command();

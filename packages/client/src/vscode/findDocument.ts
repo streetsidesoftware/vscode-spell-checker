@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+
 import { Maybe } from '../util';
 
 export function findDocumentInVisibleTextEditors(uri: vscode.Uri): Maybe<vscode.TextDocument> {

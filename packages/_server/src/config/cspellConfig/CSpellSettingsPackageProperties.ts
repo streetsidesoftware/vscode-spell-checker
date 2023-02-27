@@ -1,4 +1,6 @@
+/* eslint-disable no-irregular-whitespace */
 import type { CSpellSettings, FsPath, GlobDef, SimpleGlob } from '@cspell/cspell-types';
+
 import type { HiddenFsPath } from './annotatedTypes';
 
 /**

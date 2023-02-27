@@ -1,13 +1,14 @@
 import { Connection, NotificationType, RequestType } from 'vscode-languageserver';
+
 import {
     ClientNotifications,
     OnSpellCheckDocumentStep,
     Req,
     RequestsToClient,
-    SendRequestsToClientApi,
     Res,
-    WorkspaceConfigForDocumentRequest,
     SendClientNotificationsApi,
+    SendRequestsToClientApi,
+    WorkspaceConfigForDocumentRequest,
 } from './api';
 
 export interface ClientApi extends SendClientNotificationsApi, SendRequestsToClientApi {}

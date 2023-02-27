@@ -41,7 +41,7 @@ export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undef
     return (t: T | undefined) => (t === undefined ? undefined : t[key]);
 }
 
-export function map<T extends unknown, R>(fn: (t: T) => R): (t: T | undefined) => R | undefined {
+export function map<T, R>(fn: (t: T) => R): (t: T | undefined) => R | undefined {
     return (t: T | undefined) => (t === undefined ? undefined : fn(t));
 }
 
@@ -55,6 +55,7 @@ export function pipe<T>(t: T): T {
     if (arguments.length > 1) {
         // eslint-disable-next-line prefer-rest-params
         const fns = [...arguments].slice(1) as ((v: any) => any)[];
+
         let v = t as any;
         for (const fn of fns) {
             v = fn(v);

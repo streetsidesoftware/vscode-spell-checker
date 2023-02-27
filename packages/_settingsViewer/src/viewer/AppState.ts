@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { observable, computed, makeObservable, action } from 'mobx';
-import { Settings, ConfigTarget, LocaleId, SettingByConfigTarget, WorkspaceFolder, TextDocument, ConfigSource } from '../api/settings/';
-import { normalizeCode, lookupLocaleInfo } from 'locale-resolver';
-import { compareBy, compareEach } from '../api/utils/Comparable';
-import { uniqueFilter } from '../api/utils';
+import { lookupLocaleInfo, normalizeCode } from 'locale-resolver';
+import { action, computed, makeObservable, observable } from 'mobx';
+
 import { Messenger } from '../api';
+import { ConfigSource, ConfigTarget, LocaleId, SettingByConfigTarget, Settings, TextDocument, WorkspaceFolder } from '../api/settings/';
 import { ConfigTargets, configTargets } from '../api/settings/settingsHelper';
+import { uniqueFilter } from '../api/utils';
+import { compareBy, compareEach } from '../api/utils/Comparable';
 
 type TabTargets = ConfigTarget | 'file' | 'dictionaries' | 'about';
 

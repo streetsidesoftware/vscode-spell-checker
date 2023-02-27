@@ -1,4 +1,5 @@
 import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
+// eslint-disable-next-line import/no-unresolved, node/no-missing-import
 import { WorkspaceConfigForDocument } from 'server/api';
 import {
     CodeAction,
@@ -18,6 +19,7 @@ import {
 } from 'vscode';
 import * as VSCodeLangClient from 'vscode-languageclient/node';
 import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+
 import { diagnosticSource } from '../constants';
 import * as Settings from '../settings';
 import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
@@ -44,7 +46,7 @@ const debugExecArgv = ['--nolazy', '--inspect=60048'];
 
 const diagnosticCollectionName = diagnosticSource;
 
-export interface ServerResponseIsSpellCheckEnabled extends Partial<IsSpellCheckEnabledResult> {}
+export type ServerResponseIsSpellCheckEnabled = Partial<IsSpellCheckEnabledResult>;
 
 export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponseIsSpellCheckEnabled {
     uri: Uri;

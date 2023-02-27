@@ -2,11 +2,12 @@ import { mustBeDefined } from 'common-utils/util';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
+
 import { isDefined } from '../util';
 import { PackageJson } from '../vscode/packageJson';
 
-export { mustBeDefined } from 'common-utils/util';
 export { isDefined } from '../util';
+export { mustBeDefined } from 'common-utils/util';
 
 const rootClient = path.join(__dirname, '../..');
 const root = path.join(rootClient, '../..');
@@ -36,7 +37,7 @@ export function testNameToDir(testName: string): string {
  * @param testFilename - optional full path to a test file.
  * @returns Uri to the requested temp file.
  */
-export function getPathToTemp(baseFilename: string = '.', testFilename?: string): Uri {
+export function getPathToTemp(baseFilename = '.', testFilename?: string): Uri {
     const testState = expect.getState();
     const callerFile = testFilename ?? testState.testPath ?? getCallStack()[1].file;
     const testFile = path.relative(rootClient, callerFile);
@@ -56,7 +57,6 @@ export async function writeFile(file: Uri, content: string): Promise<void> {
     return fs.writeFile(fsPath, content, 'utf-8');
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function writeJson(file: Uri, content: any): Promise<void> {
     return writeFile(file, JSON.stringify(content, null, 4) + '\n');
 }

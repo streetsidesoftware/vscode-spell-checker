@@ -21,4 +21,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: yarn
+      - run: yarn build
       - run: yarn lint

@@ -1,4 +1,5 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+
 import { ClientConfigTarget, ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from './clientConfigTarget';
 import { ConfigRepository } from './configRepository';
 import { configTargetToConfigRepo } from './configRepositoryHelper';

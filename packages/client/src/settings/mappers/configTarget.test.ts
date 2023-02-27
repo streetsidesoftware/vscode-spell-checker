@@ -1,8 +1,9 @@
-import { ConfigTarget, ConfigKind, ConfigScope, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
-import { oc } from '../../test/helpers';
-import { mapConfigTargetToClientConfigTarget } from './configTarget';
 import { Uri } from 'vscode';
+
+import { ConfigKind, ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
+import { oc } from '../../test/helpers';
 import { ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from '../clientConfigTarget';
+import { mapConfigTargetToClientConfigTarget } from './configTarget';
 
 const cspellUri = Uri.joinPath(Uri.file(__dirname), 'cspell.json');
 const dictUri = Uri.joinPath(Uri.file(__dirname), 'words.txt');

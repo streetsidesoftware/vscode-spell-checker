@@ -1,6 +1,6 @@
+import { EnableFileTypeId, RegExpString } from './annotatedTypes';
+import { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary';
 import { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings';
-import { CustomDictionaryEntry, CustomDictionaries } from './CustomDictionary';
-import { RegExpString, EnableFileTypeId } from './annotatedTypes';
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**

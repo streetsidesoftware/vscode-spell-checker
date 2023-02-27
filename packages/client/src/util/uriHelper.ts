@@ -1,5 +1,5 @@
-import { Uri } from 'vscode';
 import { toUri as cvtToUri } from 'common-utils/uriHelper';
+import { Uri } from 'vscode';
 
 export function toUri(uri: string | Uri): Uri;
 export function toUri(uri: string | Uri | undefined | null): Uri | undefined;

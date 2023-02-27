@@ -9,7 +9,6 @@
     "build2": "tsc -p .",
     "clean": "shx rm -rf out temp",
     "build-production": "yarn run build",
-    "lint": "eslint \"src/**/*.ts\"",
     "test-integration-vscode-old": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_WORKSPACE=./testFixtures CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
     "test-integration-vscode": "node ./out/runTests.js",
     "test-integration": "yarn run build2 && yarn test-integration-vscode",
@@ -40,5 +39,8 @@
     "typescript": "^4.9.5"
   },
   "peerDependenciesMeta": {},
-  "dependencies": {}
+  "dependencies": {},
+  "engines": {
+    "node": ">16.0.0"
+  }
 }

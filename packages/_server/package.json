@@ -57,7 +57,6 @@
   },
   "scripts": {
     "clean": "shx rm -rf dist temp out coverage",
-    "lint": "eslint \"src/**/*.ts\"",
     "build": "yarn run compile && yarn run build-schema",
     "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/config/cspellConfig/cspellConfig.ts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords patternErrorMessage --validation-keywords deprecationMessage --validation-keywords enumDescriptions --validation-keywords deprecated --validation-keywords order -o spell-checker-config.schema.json",
     "clean-build": "yarn run clean && yarn run build",

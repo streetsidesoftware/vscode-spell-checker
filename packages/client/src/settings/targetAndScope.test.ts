@@ -1,4 +1,5 @@
 import { ConfigurationTarget } from 'vscode';
+
 import {
     configurationTargetToClientConfigScopeInfluenceRange,
     configurationTargetToDictionaryScope,

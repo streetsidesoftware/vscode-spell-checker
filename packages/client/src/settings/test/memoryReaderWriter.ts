@@ -1,4 +1,5 @@
 import { ConfigurationTarget, Uri } from 'vscode';
+
 import { CSpellUserSettings } from '../../client';
 import { ConfigFileReaderWriter } from '../configFileReadWrite';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from '../configReaderWriter';

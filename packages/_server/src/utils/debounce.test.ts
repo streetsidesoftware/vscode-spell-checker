@@ -1,5 +1,6 @@
-import { debounce } from './debounce';
 import { promisify } from 'util';
+
+import { debounce } from './debounce';
 
 const sleep = promisify(setTimeout);
 

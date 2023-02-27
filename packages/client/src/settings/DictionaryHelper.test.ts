@@ -2,13 +2,14 @@
 import { homedir } from 'os';
 import { ConfigurationTarget, ExtensionContext, Uri, workspace, WorkspaceFolder } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
+
 import { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client';
 import { CSpellClient } from '../client/client';
 import { getPathToTemp } from '../test/helpers';
 import { createConfigFileReaderWriter } from './configFileReadWrite';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
 import { createClientConfigTargetCSpell } from './configTargetHelper';
-import { DictionaryHelper, __testing__ } from './DictionaryHelper';
+import { __testing__, DictionaryHelper } from './DictionaryHelper';
 import { createDictionaryTargetForConfigRep } from './DictionaryTarget';
 import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
 
@@ -59,7 +60,7 @@ const cfg_1_out: CSpellUserSettings = {
 };
 
 describe('Validate DictionaryHelper', () => {
-    beforeEach(() => {});
+    beforeEach(() => undefined);
 
     test('DictionaryHelper', () => {
         const client = new CSpellClient(fakeExtensionContext, []);
@@ -115,7 +116,7 @@ describe('Validate DictionaryHelper', () => {
 });
 
 describe('Validate DictionaryHelper methods', () => {
-    beforeEach(() => {});
+    beforeEach(() => undefined);
 
     test('isTextDocument', () => {
         const uri = Uri.file(__filename);

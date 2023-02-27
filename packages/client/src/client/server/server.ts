@@ -9,6 +9,7 @@ import type {
     ServerMethods,
     ServerNotifyApi,
     ServerRequestApi,
+    // eslint-disable-next-line node/no-missing-import
 } from 'server/api';
 import {
     CodeAction,
@@ -56,6 +57,7 @@ export type {
     SplitTextIntoWordsResult,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
+    // eslint-disable-next-line node/no-missing-import
 } from 'server/api';
 
 export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi {}

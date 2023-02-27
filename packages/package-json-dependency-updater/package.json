@@ -15,7 +15,6 @@
   },
   "scripts": {
     "test": "echo Test",
-    "lint": "echo Lint",
     "clean-build": "yarn run clean && yarn run build",
     "clean": "shx rm -rf out dist coverage",
     "prepare": "yarn run build",

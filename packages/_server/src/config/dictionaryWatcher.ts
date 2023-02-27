@@ -1,6 +1,7 @@
-import { FileWatcher } from '../utils/fileWatcher';
 import type { CSpellUserSettings } from '@cspell/cspell-types';
 import { Disposable } from 'vscode-languageserver/node';
+
+import { FileWatcher } from '../utils/fileWatcher';
 
 export type Listener = (eventType?: string, filename?: string) => void;
 

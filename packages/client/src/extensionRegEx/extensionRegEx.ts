@@ -1,4 +1,6 @@
+import { format } from 'util';
 import * as vscode from 'vscode';
+
 import { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
 import { catchErrors, logError, logErrors, showError } from '../util/errors';
@@ -6,10 +8,9 @@ import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 import { NamedPattern, PatternMatch, PatternSettings } from './server';
-import { format } from 'util';
 
 interface DisposableLike {
-    dispose(): any;
+    dispose(): unknown;
 }
 
 const MAX_HISTORY_LENGTH = 5;
@@ -79,11 +80,12 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
                 return;
             }
             const byCategory: Map<string, PatternMatch[]> | undefined = result && new Map();
-            result?.patternMatches.forEach((m, i) => {
+
+            result?.patternMatches.forEach((m: PatternMatch, i: number) => {
                 const category = extractedPatterns[i].category;
-                const matches = byCategory.get(category) || [];
+                const matches = byCategory?.get(category) || [];
                 matches.push(m);
-                byCategory.set(category, matches);
+                byCategory?.set(category, matches);
             });
 
             outline.refresh(byCategory);
@@ -100,6 +102,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
                 return decoration;
             });
             activeEditor.setDecorations(decorationTypeExclude, decorations);
+            return;
         });
     }
 
@@ -182,6 +185,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
                 pattern = value ? value : undefined;
                 updateHistory(pattern);
                 triggerUpdateDecorations();
+                return;
             });
         return logErrors(p, 'userTestRegExp');
     }

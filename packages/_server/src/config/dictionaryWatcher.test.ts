@@ -1,8 +1,9 @@
 import { CSpellSettings } from 'cspell-lib';
-import { join } from 'path';
-import { DictionaryWatcher } from './dictionaryWatcher';
 import watch from 'node-watch';
+import { join } from 'path';
+
 import { NodeWatchMock } from '../__mocks__/node-watch';
+import { DictionaryWatcher } from './dictionaryWatcher';
 
 const mockWatch = watch as unknown as NodeWatchMock;
 

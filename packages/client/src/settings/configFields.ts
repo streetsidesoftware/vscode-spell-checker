@@ -1,5 +1,6 @@
-import type { CSpellUserSettings } from '../client';
 import { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
+
+import type { CSpellUserSettings } from '../client';
 
 export type ConfigKeys = Exclude<
     keyof CSpellUserSettings,

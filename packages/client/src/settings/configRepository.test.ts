@@ -1,7 +1,8 @@
 import { when } from 'jest-when';
 import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
+
 import { getPathToTemp } from '../test/helpers';
-import { createCSpellConfigRepository, createVSCodeConfigRepository, __testing__ } from './configRepository';
+import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
 import { addWordsFn } from './configUpdaters';
 import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
 

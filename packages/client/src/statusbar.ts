@@ -1,12 +1,12 @@
+import { isSupportedDoc, isSupportedUri, uriToName } from 'common-utils/uriHelper.js';
 import * as path from 'path';
-import { CSpellUserSettings } from './client';
-import { workspace, ExtensionContext, window, TextEditor } from 'vscode';
+import { ExtensionContext, TextEditor, window, workspace } from 'vscode';
 import * as vscode from 'vscode';
-import { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client';
-import * as infoViewer from './infoViewer';
-import { isSupportedUri, isSupportedDoc, uriToName } from 'common-utils/uriHelper.js';
-import { sectionCSpell } from './settings';
+
+import { CSpellClient, CSpellUserSettings, ServerResponseIsSpellCheckEnabledForFile } from './client';
 import { getCSpellDiags } from './diags';
+import * as infoViewer from './infoViewer';
+import { sectionCSpell } from './settings';
 
 const statusBarId = 'spell checker status id';
 
@@ -51,14 +51,16 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         const entry = {
             document,
             showClock,
-            value: _updateStatusBarWithSpellCheckStatus(document, showClock).catch(),
+            value: _updateStatusBarWithSpellCheckStatus(document, showClock).catch(() => undefined),
             pending: true,
             stale: false,
         };
 
-        entry.value.finally(() => {
-            cleanEntry(entry, true);
-        });
+        entry.value
+            .catch(() => undefined)
+            .finally(() => {
+                cleanEntry(entry, true);
+            });
 
         function cleanEntry(entry: DebounceStatusBar, wait = false) {
             entry.pending = false;

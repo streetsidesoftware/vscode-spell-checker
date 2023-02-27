@@ -1,6 +1,8 @@
+/* eslint-disable no-irregular-whitespace */
 // Export the cspell settings to the client.
 
 import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
+
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties';
 import type { DictionaryDef } from './CustomDictionary';
 import type { SpellCheckerSettings } from './SpellCheckerSettings';

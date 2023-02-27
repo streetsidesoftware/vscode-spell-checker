@@ -1,6 +1,7 @@
+import { Uri } from 'vscode';
+
 import { CSpellUserSettings, DictionaryDefinitionCustom } from '../client';
 import { unique, uniqueFilter } from '../util';
-import { Uri } from 'vscode';
 import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
 import { CustomDictDef } from './DictionaryTarget';
 
@@ -53,7 +54,7 @@ export const preferredConfigFiles: ConfigFileNames[] = ['cspell.json', 'cspell.c
  */
 export const configFilesToWatch = possibleConfigFiles as Set<string>;
 
-export interface CSpellSettings extends CSpellUserSettings {}
+export type CSpellSettings = CSpellUserSettings;
 
 const defaultSettings: CSpellSettings = Object.freeze({
     version: currentSettingsFileVersion,

@@ -14,17 +14,13 @@ export function measureExecution<T>(fn: () => T): MeasureResult<T> {
 }
 
 export async function measurePromiseExecution<T>(fn: () => Promise<T>): Promise<MeasureResult<T>> {
-    try {
-        const start = process.hrtime();
-        const r = await fn();
-        const elapsedTimeMs = hrTimeToMs(process.hrtime(start));
-        return {
-            elapsedTimeMs,
-            r,
-        };
-    } catch (e) {
-        throw e;
-    }
+    const start = process.hrtime();
+    const r = await fn();
+    const elapsedTimeMs = hrTimeToMs(process.hrtime(start));
+    return {
+        elapsedTimeMs,
+        r,
+    };
 }
 
 export function elapsedTimeMsFrom(relativeTo: [number, number]): number {

@@ -1,6 +1,7 @@
 import { Disposable, ExtensionContext, TextDocument } from 'vscode';
 import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node';
+
 import { logErrors } from '../util/errors';
 import type { MatchPatternsToDocumentResult, NamedPattern, PatternMatcherServerApi, PatternSettings } from './server';
 import { createServerApi } from './server';

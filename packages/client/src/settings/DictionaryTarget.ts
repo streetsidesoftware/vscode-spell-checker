@@ -3,6 +3,7 @@ import { uriToName } from 'common-utils/uriHelper.js';
 import { format } from 'util';
 import { Uri, window, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
+
 import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
 import { vscodeFs as fs } from './fs';

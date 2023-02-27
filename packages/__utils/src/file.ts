@@ -1,5 +1,6 @@
 import { access } from 'fs/promises';
 import { URI as Uri } from 'vscode-uri';
+
 import { isErrnoException } from './errors';
 
 const FileNotFoundErrorCodes: Record<string, undefined | true> = {

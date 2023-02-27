@@ -4,10 +4,12 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { expect } from 'chai';
-import { stream, Stream } from 'kefir';
+import { Stream, stream } from 'kefir';
 import * as vscode from 'vscode';
-import { CSpellClient } from '../../client/dist/client';
+
 import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
+// eslint-disable-next-line import/no-unresolved
+import { CSpellClient } from '../../client/dist/client';
 import { ExtensionApi } from './ExtensionApi';
 import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';
 
@@ -38,10 +40,9 @@ describe('Launch code spell extension', function () {
     const spellCheckNotifications: OnSpellCheckDocumentStep[] = [];
     const disposables: { dispose: () => void }[] = [];
 
-    this.beforeAll(() => {
-        activateExtension().then((ext) => {
-            disposables.push(ext.extApi.cSpellClient().onSpellCheckDocumentNotification((n) => spellCheckNotifications.push(n)));
-        });
+    this.beforeAll(async () => {
+        const ext = await activateExtension();
+        disposables.push(ext.extApi.cSpellClient().onSpellCheckDocumentNotification((n) => spellCheckNotifications.push(n)));
     });
 
     this.afterEach(async () => {

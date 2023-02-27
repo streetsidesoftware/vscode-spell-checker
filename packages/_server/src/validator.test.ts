@@ -1,10 +1,10 @@
-import * as Validator from './validator';
-import { loremIpsum } from 'lorem-ipsum';
-import { CSpellSettings } from 'cspell-lib';
+import { CSpellSettings, getDefaultSettings } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
-import { URI } from 'vscode-uri';
-import { getDefaultSettings } from 'cspell-lib';
+import { loremIpsum } from 'lorem-ipsum';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import { URI } from 'vscode-uri';
+
+import * as Validator from './validator';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
 

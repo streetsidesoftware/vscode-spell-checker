@@ -1,6 +1,8 @@
 import { createTextDocument, DocumentValidator } from 'cspell-lib';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+// eslint-disable-next-line node/no-extraneous-import
 import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver-types';
+
 import type { CSpellUserSettings } from './config/cspellConfig';
 import { diagnosticSource } from './constants';
 import { DiagnosticData } from './models/DiagnosticData';

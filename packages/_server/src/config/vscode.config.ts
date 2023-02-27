@@ -1,5 +1,6 @@
-import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
 import { log } from 'common-utils/log.js';
+import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
+
 import { isDefined } from '../utils';
 
 export interface TextDocumentUri {
@@ -21,7 +22,7 @@ export function getConfiguration(connection: Connection, items: ConfigurationIte
  * Useful for mocking.
  * @param connection
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
 export function getWorkspaceFolders(connection: Connection) {
     return connection.workspace.getWorkspaceFolders();
 }

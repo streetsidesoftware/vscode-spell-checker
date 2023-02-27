@@ -1,5 +1,4 @@
 export * from './client';
-export { normalizeLocale } from './server';
 export type {
     ClientSideCommandHandlerApi,
     ConfigKind,
@@ -20,3 +19,4 @@ export type {
     PatternMatch,
     SpellCheckerSettingsProperties,
 } from './server';
+export { normalizeLocale } from './server';

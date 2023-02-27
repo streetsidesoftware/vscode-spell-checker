@@ -1,4 +1,5 @@
 import { Uri } from 'vscode';
+
 import {} from './infoView';
 
 // const { execCommandUri } = __testing__;

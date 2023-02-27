@@ -1,4 +1,5 @@
 import { TextDocument } from 'vscode-languageserver-textdocument';
+
 import { OnSpellCheckDocumentStep } from './api';
 import { ClientApi } from './clientApi';
 

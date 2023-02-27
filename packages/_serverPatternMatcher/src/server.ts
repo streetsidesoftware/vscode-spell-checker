@@ -1,5 +1,4 @@
 import { log, setWorkspaceBase } from 'common-utils/log.js';
-import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
     createConnection,
     Disposable,
@@ -10,6 +9,8 @@ import {
     TextDocuments,
     TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+
 import * as Api from './api';
 import { MatchResult, PatternMatcher, RegExpMatches } from './PatternMatcher';
 

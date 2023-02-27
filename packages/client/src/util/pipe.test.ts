@@ -1,4 +1,4 @@
-import { pipe, extract, defaultTo, map } from './pipe';
+import { defaultTo, extract, map, pipe } from './pipe';
 
 interface Address {
     street: string;

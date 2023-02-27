@@ -1,12 +1,13 @@
 import { Uri } from 'vscode';
+
 import {
     ClientConfigTargetCSpell,
     ClientConfigTargetDictionary,
     ClientConfigTargetVSCode,
     isClientConfigTargetCSpell,
     isClientConfigTargetDictionary,
-    isClientConfigTargetVSCode,
     isClientConfigTargetOfKind,
+    isClientConfigTargetVSCode,
 } from './clientConfigTarget';
 
 describe('clientConfigTarget', () => {

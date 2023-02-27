@@ -2,9 +2,10 @@ import { mustBeDefined } from 'common-utils/util.js';
 import { CSpellUserSettings, searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
 import { URI } from 'vscode-uri';
+
 import { WorkspaceConfigForDocument } from '../api';
 import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';
-import { calculateConfigTargets, __testing__ } from './configTargetsHelper';
+import { __testing__, calculateConfigTargets } from './configTargetsHelper';
 import { DictionaryDef } from './cspellConfig/CustomDictionary';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings';
 

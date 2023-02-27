@@ -1,4 +1,4 @@
-import type { Uri, ConfigurationScope } from 'vscode';
+import type { ConfigurationScope, Uri } from 'vscode';
 
 export type ClientConfigKind = 'cspell' | 'dictionary' | 'vscode';
 export type ClientConfigScopeVScode = 'user' | 'workspace' | 'folder';

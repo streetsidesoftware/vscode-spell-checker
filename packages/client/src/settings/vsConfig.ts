@@ -1,6 +1,7 @@
-import { workspace, Uri, ConfigurationTarget, TextDocument, WorkspaceConfiguration, ConfigurationScope } from 'vscode';
-import { extensionId } from '../constants';
+import { ConfigurationScope, ConfigurationTarget, TextDocument, Uri, workspace, WorkspaceConfiguration } from 'vscode';
+
 import { CSpellUserSettings } from '../client';
+import { extensionId } from '../constants';
 import { findConicalDocumentScope } from '../util/documentUri';
 
 export { CSpellUserSettings } from '../client';

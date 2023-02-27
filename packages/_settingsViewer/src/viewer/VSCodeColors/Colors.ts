@@ -476,7 +476,6 @@ export class Color {
     static readonly transparent = new Color(new RGBA(0, 0, 0, 0));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 const CharCode = {
     Hash: '#'.charCodeAt(0),
     Digit0: '0'.charCodeAt(0),
@@ -502,6 +501,61 @@ const CharCode = {
     f: 'f'.charCodeAt(0),
     F: 'F'.charCodeAt(0),
 };
+
+function _toTwoDigitHex(n: number): string {
+    const r = n.toString(16);
+    return ('0' + r).slice(-2);
+}
+
+function _parseHexDigit(charCode: number): number {
+    switch (charCode) {
+        case CharCode.Digit0:
+            return 0;
+        case CharCode.Digit1:
+            return 1;
+        case CharCode.Digit2:
+            return 2;
+        case CharCode.Digit3:
+            return 3;
+        case CharCode.Digit4:
+            return 4;
+        case CharCode.Digit5:
+            return 5;
+        case CharCode.Digit6:
+            return 6;
+        case CharCode.Digit7:
+            return 7;
+        case CharCode.Digit8:
+            return 8;
+        case CharCode.Digit9:
+            return 9;
+        case CharCode.a:
+            return 10;
+        case CharCode.A:
+            return 10;
+        case CharCode.b:
+            return 11;
+        case CharCode.B:
+            return 11;
+        case CharCode.c:
+            return 12;
+        case CharCode.C:
+            return 12;
+        case CharCode.d:
+            return 13;
+        case CharCode.D:
+            return 13;
+        case CharCode.e:
+            return 14;
+        case CharCode.E:
+            return 14;
+        case CharCode.f:
+            return 15;
+        case CharCode.F:
+            return 15;
+    }
+    return 0;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Color {
@@ -533,11 +587,6 @@ export namespace Color {
                 return `hsla(${color.hsla.h}, ${(color.hsla.s * 100).toFixed(2)}%, ${(color.hsla.l * 100).toFixed(
                     2
                 )}%, ${color.hsla.a.toFixed(2)})`;
-            }
-
-            function _toTwoDigitHex(n: number): string {
-                const r = n.toString(16);
-                return r.length !== 2 ? '0' + r : r;
             }
 
             /**
@@ -626,56 +675,6 @@ export namespace Color {
 
                 // Invalid color
                 return null;
-            }
-
-            function _parseHexDigit(charCode: number): number {
-                switch (charCode) {
-                    case CharCode.Digit0:
-                        return 0;
-                    case CharCode.Digit1:
-                        return 1;
-                    case CharCode.Digit2:
-                        return 2;
-                    case CharCode.Digit3:
-                        return 3;
-                    case CharCode.Digit4:
-                        return 4;
-                    case CharCode.Digit5:
-                        return 5;
-                    case CharCode.Digit6:
-                        return 6;
-                    case CharCode.Digit7:
-                        return 7;
-                    case CharCode.Digit8:
-                        return 8;
-                    case CharCode.Digit9:
-                        return 9;
-                    case CharCode.a:
-                        return 10;
-                    case CharCode.A:
-                        return 10;
-                    case CharCode.b:
-                        return 11;
-                    case CharCode.B:
-                        return 11;
-                    case CharCode.c:
-                        return 12;
-                    case CharCode.C:
-                        return 12;
-                    case CharCode.d:
-                        return 13;
-                    case CharCode.D:
-                        return 13;
-                    case CharCode.e:
-                        return 14;
-                    case CharCode.E:
-                        return 14;
-                    case CharCode.f:
-                        return 15;
-                    case CharCode.F:
-                        return 15;
-                }
-                return 0;
             }
         }
     }
