@@ -1,4 +1,5 @@
 import type { Uri } from 'vscode';
+
 import type { CSpellClient } from './client';
 import type { ConfigTargetLegacy } from './settings';
 

@@ -1,5 +1,6 @@
 import { FileSystemError, Uri } from 'vscode';
 import { URI, Utils as UriUtils } from 'vscode-uri';
+
 import { fsRemove, getPathToTemp } from '../test/helpers';
 import { vscodeFs } from './fs';
 

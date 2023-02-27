@@ -1,6 +1,7 @@
 import { CSpellSettings } from '@cspell/cspell-types';
 import * as vscode from 'vscode';
 import { Uri, workspace } from 'vscode';
+
 import { CSpellUserSettings } from '../client';
 import { unique } from '../util';
 import { ClientConfigTarget } from './clientConfigTarget';

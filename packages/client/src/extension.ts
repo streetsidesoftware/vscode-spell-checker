@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
+
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import * as commands from './commands';

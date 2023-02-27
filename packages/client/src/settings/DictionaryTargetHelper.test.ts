@@ -1,4 +1,5 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+
 import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../client';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { DictionaryTarget } from './DictionaryTarget';

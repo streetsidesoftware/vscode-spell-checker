@@ -2,6 +2,7 @@ import * as Kefir from 'kefir';
 import { format, promisify } from 'util';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
+
 import {
     EnableLanguageIdMessage,
     EnableLocaleMessage,

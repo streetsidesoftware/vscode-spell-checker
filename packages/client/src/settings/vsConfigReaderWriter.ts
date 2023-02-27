@@ -1,8 +1,9 @@
-import { ConfigReaderWriter, ConfigUpdateFn } from './configReaderWriter';
 import { ConfigurationTarget } from 'vscode';
-import { calculateConfigForTarget, GetConfigurationScope, updateConfig } from './vsConfig';
+
 import { CSpellUserSettings } from '../client';
+import { ConfigReaderWriter, ConfigUpdateFn } from './configReaderWriter';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
+import { calculateConfigForTarget, GetConfigurationScope, updateConfig } from './vsConfig';
 
 export interface VSConfigReaderWriter extends ConfigReaderWriter {
     readonly name: string;

@@ -1,4 +1,6 @@
+import { format } from 'util';
 import * as vscode from 'vscode';
+
 import { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
 import { catchErrors, logError, logErrors, showError } from '../util/errors';
@@ -6,7 +8,6 @@ import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
 import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
 import { NamedPattern, PatternMatch, PatternSettings } from './server';
-import { format } from 'util';
 
 interface DisposableLike {
     dispose(): unknown;

@@ -1,4 +1,4 @@
-import { toggleEnableSpellChecker, setEnableSpellChecking } from './settings.enable';
+import { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable';
 
 describe('settings.enable', () => {
     test('toggleEnableSpellChecker empty', async () => {

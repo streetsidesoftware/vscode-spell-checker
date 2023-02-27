@@ -2,11 +2,12 @@ import { mustBeDefined } from 'common-utils/util';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Uri } from 'vscode';
+
 import { isDefined } from '../util';
 import { PackageJson } from '../vscode/packageJson';
 
-export { mustBeDefined } from 'common-utils/util';
 export { isDefined } from '../util';
+export { mustBeDefined } from 'common-utils/util';
 
 const rootClient = path.join(__dirname, '../..');
 const root = path.join(rootClient, '../..');

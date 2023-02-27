@@ -4,6 +4,7 @@
 
 import { uriToName } from 'common-utils/uriHelper.js';
 import * as vscode from 'vscode';
+
 import { toUri } from '../util/uriHelper';
 import {
     ClientConfigKind,

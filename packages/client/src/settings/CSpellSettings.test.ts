@@ -1,13 +1,13 @@
 import { Uri } from 'vscode';
+
 import { CSpellUserSettings } from '../client';
 import { fsRemove, getPathToTemp, getUriToSample, mkdirp, oc, readFile, writeFile } from '../test/helpers';
 import { unique } from '../util';
 import * as CSS from './CSpellSettings';
 import { readSettings, writeSettings } from './CSpellSettings';
 import { createDictionaryTargetForFile } from './DictionaryTarget';
-
-import { replaceDocText } from './replaceDocText';
 import { vscodeFs } from './fs';
+import { replaceDocText } from './replaceDocText';
 
 jest.mock('./replaceDocText');
 

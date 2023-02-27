@@ -1,5 +1,6 @@
 import { ConfigurationTarget } from 'vscode';
-import { CustomDictionaryScope, ConfigTargetVSCode } from '../client';
+
+import { ConfigTargetVSCode, CustomDictionaryScope } from '../client';
 import { ClientConfigScope } from './clientConfigTarget';
 
 type ConfigScopeVScode = ConfigTargetVSCode['scope'];

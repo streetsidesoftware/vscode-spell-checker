@@ -1,6 +1,8 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
+import { posix } from 'path';
 import { commands, ConfigurationTarget, TextEdit, Uri, window, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
+
 import { CSpellUserSettings, CustomDictionaryScope } from '../client';
 import { ConfigFields } from './configFields';
 import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
@@ -9,7 +11,6 @@ import { findOpenDocument } from './fs';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 import { GetConfigurationScope, getSettingFromVSConfig } from './vsConfig';
 import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
-import { posix } from 'path';
 
 export type ConfigKeys = keyof CSpellUserSettings;
 

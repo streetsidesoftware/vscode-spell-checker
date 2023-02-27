@@ -1,7 +1,8 @@
-import { fsRemove, getPathToTemp, writeFile, readFile } from '../test/helpers';
-import { readConfigFile, updateConfigFile, writeConfigFile, __testing__ } from './configFileReadWrite';
+import { assign, parse as parseJsonc, stringify as stringifyJsonc } from 'comment-json';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { parse as parseJsonc, stringify as stringifyJsonc, assign } from 'comment-json';
+
+import { fsRemove, getPathToTemp, readFile, writeFile } from '../test/helpers';
+import { __testing__, readConfigFile, updateConfigFile, writeConfigFile } from './configFileReadWrite';
 
 const samplePackageJson = {
     name: 'sample-package',

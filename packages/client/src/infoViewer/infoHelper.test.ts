@@ -1,6 +1,7 @@
-import { __testing__ } from './infoHelper';
 import * as cspell from 'cspell-lib';
+
 import { isDefined } from '../util';
+import { __testing__ } from './infoHelper';
 
 const { applyEnableFiletypesToEnabledLanguageIds, calcEnableLang, extractDictionariesFromConfig, normalizeLocales, splitBangPrefix } =
     __testing__;

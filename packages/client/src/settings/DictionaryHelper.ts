@@ -4,8 +4,7 @@ import { homedir } from 'os';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
-import { CSpellClient } from '../client';
-import { getCSpellDiags } from '../diags';
+
 import type {
     CSpellUserSettings,
     CustomDictionaries,
@@ -14,6 +13,8 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
 } from '../client';
+import { CSpellClient } from '../client';
+import { getCSpellDiags } from '../diags';
 import { scrollToText } from '../util/textEditor';
 import { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigFields } from './configFields';

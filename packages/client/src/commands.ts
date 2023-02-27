@@ -5,13 +5,13 @@ import {
     Diagnostic,
     Disposable,
     FileType,
+    Location,
     Position,
     QuickPickItem,
     QuickPickOptions,
     Range,
     Selection,
     TextDocument,
-    Location,
     TextEditorRevealType,
     Uri,
     window,
@@ -19,6 +19,7 @@ import {
     WorkspaceEdit,
 } from 'vscode';
 import { TextEdit } from 'vscode-languageclient/node';
+
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';

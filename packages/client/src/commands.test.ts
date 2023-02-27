@@ -1,10 +1,11 @@
 import { readTextDocument } from 'jest-mock-vscode';
+import { commands as viewerCommands } from 'settings-viewer-next';
 import * as vscode from 'vscode';
+
 import { __testing__ } from './commands';
 import { extensionId } from './constants';
 import { commandDisplayCSpellInfo } from './infoViewer';
 import { mustBeDefined, readExtensionPackage } from './test/helpers';
-import { commands as viewerCommands } from 'settings-viewer-next';
 
 const { commandHandlers } = __testing__;
 

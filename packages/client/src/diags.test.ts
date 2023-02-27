@@ -1,7 +1,8 @@
 import { createTextDocument } from 'jest-mock-vscode';
 import * as vscode from 'vscode';
 import { Diagnostic, DiagnosticSeverity, languages, Position, Range, Uri } from 'vscode';
-import { extractMatchingDiagText, getCSpellDiags, __testing__ } from './diags';
+
+import { __testing__, extractMatchingDiagText, getCSpellDiags } from './diags';
 import { isDefined, mustBeDefined } from './util';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;

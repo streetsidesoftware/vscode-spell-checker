@@ -1,4 +1,5 @@
 import { window } from 'vscode';
+
 import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors';
 
 const debug = jest.spyOn(console, 'debug').mockImplementation(() => undefined);

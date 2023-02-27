@@ -1,4 +1,5 @@
 import { ExtensionContext } from 'vscode';
+
 import { CSpellClient } from './client';
 import { DictionaryHelper } from './settings/DictionaryHelper';
 

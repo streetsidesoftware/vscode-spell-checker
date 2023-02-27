@@ -1,5 +1,6 @@
-import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { languages } from 'vscode';
+
+import { registerCspellInlineCompletionProviders } from './autocomplete';
 
 const mockedRegisterCompletionItemProvider = jest.mocked(languages.registerCompletionItemProvider);
 

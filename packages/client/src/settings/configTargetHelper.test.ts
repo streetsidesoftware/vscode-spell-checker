@@ -1,7 +1,9 @@
 import { CancellationToken, ConfigurationTarget, QuickPickItem, QuickPickOptions, Uri, window } from 'vscode';
+
 import { ClientConfigTarget } from './clientConfigTarget';
 import {
     _buildQuickPickBestMatchTargetFn,
+    buildQuickPickMatchTargetFn,
     createClientConfigTargetCSpell,
     createClientConfigTargetDictionary,
     createClientConfigTargetVSCode,
@@ -13,9 +15,9 @@ import {
     findBestMatchingConfigTargets,
     matchKindAll,
     matchKindCSpell,
+    matchKindDictionary,
     matchKindNone,
     matchKindVSCode,
-    matchKindDictionary,
     matchScopeAll,
     matchScopeAllButUser,
     matchScopeFolder,
@@ -24,7 +26,6 @@ import {
     matchScopeWorkspace,
     negatePattern,
     quickPickBestMatchTarget,
-    buildQuickPickMatchTargetFn,
 } from './configTargetHelper';
 
 const dirUri = Uri.file(__dirname);

@@ -1,4 +1,4 @@
-import { toRegExp, isRegExp } from './evaluateRegExp';
+import { isRegExp, toRegExp } from './evaluateRegExp';
 
 describe('EvaluateRegExp', () => {
     test('isRegExp', () => {

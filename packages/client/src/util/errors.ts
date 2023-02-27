@@ -1,5 +1,5 @@
-import { window } from 'vscode';
 import { format } from 'util';
+import { window } from 'vscode';
 
 export function isError(e: unknown): e is Error {
     if (!e || typeof e !== 'object') return false;

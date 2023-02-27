@@ -3,6 +3,7 @@ import { assign as assignJson, parse as parseJsonc, stringify as stringifyJsonc 
 import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+
 import { CSpellUserSettings } from '../client';
 import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from './configReaderWriter';
 import { vscodeFs as fs } from './fs';
