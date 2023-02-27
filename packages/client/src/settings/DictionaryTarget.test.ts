@@ -7,6 +7,18 @@ import { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 import { createConfigFile } from './settings';
 
+import { vscodeFs } from './fs';
+import { replaceDocText } from './replaceDocText';
+
+jest.mock('./replaceDocText');
+
+const mock_replaceDocText = jest.mocked(replaceDocText);
+
+mock_replaceDocText.mockImplementation(async (doc, text) => {
+    await vscodeFs.writeFile(doc.uri, text);
+    return true;
+});
+
 describe('Validate DictionaryTarget', () => {
     interface TestUpdating {
         createFn: (tempDir: Uri) => Promise<TargetAndReader>;
