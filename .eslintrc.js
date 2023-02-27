@@ -31,14 +31,8 @@ const config = {
         quotes: ['warn', 'single', { avoidEscape: true }],
 
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-use-before-define': 'off',
-        '@typescript-eslint/no-empty-interface': 'off',
-        '@typescript-eslint/no-inferrable-types': 'off',
-        '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off',
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
+        'simple-import-sort/imports': 'error',
+        'simple-import-sort/exports': 'error',
         'node/no-missing-import': [
             'error',
             {
@@ -51,15 +45,35 @@ const config = {
     },
     overrides: [
         {
-            files: ['**/*.ts', '**/*.mts'],
+            files: ['**/*.ts', '**/*.mts', '**/*.cts'],
             extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
+            rules: {
+                '@typescript-eslint/explicit-function-return-type': 'off',
+                '@typescript-eslint/no-use-before-define': 'off',
+                '@typescript-eslint/no-empty-interface': 'off',
+                '@typescript-eslint/no-inferrable-types': 'off',
+                '@typescript-eslint/no-empty-function': 'off',
+                '@typescript-eslint/no-non-null-assertion': 'off',
+                '@typescript-eslint/no-explicit-any': 'off',
+                '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
+            },
         },
         {
             files: ['*.json'],
             rules: {
                 quotes: ['error', 'double'],
+            },
+        },
+        {
+            files: ['**/*.js', '**/*.mjs'],
+            parserOptions: {
+                ecmaVersion: 2020,
+                sourceType: 'module',
+            },
+            rules: {
+                'node/no-unsupported-features/es-syntax': 'off',
             },
         },
     ],
