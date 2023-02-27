@@ -68,7 +68,7 @@ export class DictionaryHelper {
      */
     public addWordToDictionaries(words: string | string[], dictTarget: DictionaryTarget[]): Promise<void> {
         const all = Promise.all(dictTarget.map((t) => this.addWordToDictionary(words, t)));
-        return all.then();
+        return all.then(() => undefined);
     }
 
     /**
