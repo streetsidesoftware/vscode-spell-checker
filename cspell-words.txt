@@ -80,6 +80,7 @@ subfolder
 subpath
 textdocument
 truetype
+tsbuildInfo
 tslib
 typechecking
 unelevated

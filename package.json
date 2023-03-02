@@ -2513,7 +2513,7 @@
     "build:readme": "inject-markdown README.md && prettier -w README.md",
     "build:schema": "yarn run build-package-schema",
     "build:workspaces": "yarn workspaces run build",
-    "clean": "yarn workspaces run clean && shx rm -rf \"packages/*/node_modules\"",
+    "clean": "yarn workspaces run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
     "build-production": "yarn workspaces run build-production",
     "build-release": "yarn run build && yarn run package-extension",
     "gen-docs": "yarn workspace @internal/docs gen-docs",

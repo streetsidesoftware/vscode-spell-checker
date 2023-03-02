@@ -1,0 +1,39 @@
+// cSpell Settings
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
+    // Version of the setting file.  Always 0.1 or 0.2
+    "version": "0.2",
+    // language - current active spelling language
+    "language": "en",
+    // words - list of words to be always considered correct
+    "words": ["languageserver", "xregexp", "ramda", "gimuy", "gensequence"],
+    "globRoot": "../../..",
+    "ignorePaths": ["samples", "package-lock.json", ".eslintrc.js"],
+    // flagWords - list of words to be always considered incorrect
+    // This is useful for offensive words and common spelling errors.
+    // For example "hte" should be "the"
+    "flagWords": ["hte"],
+    "dictionaryDefinitions": [
+        {
+            "name": "cpp2",
+            "path": "../dictionaries/cpp.txt"
+        }
+    ],
+    "languageSettings": [
+        {
+            "languageId": "c",
+            "dictionaries": ["cpp2"]
+        },
+        {
+            "languageId": "cpp",
+            "dictionaries": ["cpp2"]
+        }
+    ],
+    "overrides": [
+        {
+            "filename": "**/documentSettings.test.ts",
+            "language": "en-gb"
+        }
+    ],
+    "import": ["./cspell-ext.json"]
+}

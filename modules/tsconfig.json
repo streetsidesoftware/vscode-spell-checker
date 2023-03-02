@@ -4,5 +4,5 @@
         "esModuleInterop": true
     },
     "files": [],
-    "references": [{ "path": "__locale-resolver" }, { "path": "__utils" }]
+    "references": [{ "path": "__locale-resolver" }, { "path": "__utils" }, { "path": "_server" }]
 }

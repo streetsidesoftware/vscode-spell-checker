@@ -5,10 +5,11 @@
         "module": "CommonJS",
         "moduleResolution": "node16",
         "composite": true,
-        "outDir": "../dist/__locale_resolver",
+        "outDir": "../dist/_server",
         "rootDir": "src",
         "types": ["node", "jest"]
     },
     "include": ["src"],
-    "exclude": []
+    "exclude": [],
+    "references": [{ "path": "../__utils" }]
 }

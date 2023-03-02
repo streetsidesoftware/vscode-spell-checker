@@ -1,6 +1,7 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
+        "tsBuildInfoFile": "dist/compile.tsbuildInfo",
         "module": "CommonJS",
         "moduleResolution": "node16",
         "composite": true,

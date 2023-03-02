@@ -1,0 +1,31 @@
+{
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
+    "version": "0.2",
+    "language": "en",
+    "globRoot": "../../..",
+    "words": ["languageserver", "xregexp", "ramda", "gimuy", "gensequence"],
+    "ignorePaths": ["samples", "package-lock.json", ".eslintrc.js"],
+    "flagWords": ["hte"],
+    "dictionaryDefinitions": [
+        {
+            "name": "cpp2",
+            "path": "../dictionaries/cpp.txt"
+        }
+    ],
+    "languageSettings": [
+        {
+            "languageId": "c",
+            "dictionaries": ["cpp2"]
+        },
+        {
+            "languageId": "cpp",
+            "dictionaries": ["cpp2"]
+        }
+    ],
+    "overrides": [
+        {
+            "filename": "**/documentSettings.test.ts",
+            "language": "en-gb"
+        }
+    ]
+}
