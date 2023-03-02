@@ -2,10 +2,11 @@
   "name": "modules",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "echo ok",
-    "test": "echo no tests"
+    "build": "tsc -b tsconfig.json",
+    "test": "jest"
   },
   "author": "",
   "license": "MIT"

@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "node16",
+        "composite": true,
+        "outDir": "../dist/__locale_resolver",
+        "rootDir": "src",
+        "types": ["node", "jest"]
+    },
+    "include": ["src"],
+    "exclude": []
+}

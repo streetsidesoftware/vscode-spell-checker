@@ -40,7 +40,7 @@ node_modules
 .vscode-test
 
 /temp
-modules/*/dist/
+modules/dist/
 packages/*/dist/
 packages/*/out/
 packages/*/temp/

@@ -84,6 +84,12 @@ const config = {
                 'node/no-unsupported-features/es-syntax': 'off',
             },
         },
+        {
+            files: ['**/jest.config.js'],
+            rules: {
+                'node/no-unpublished-require': 'off',
+            },
+        },
     ],
     settings: {
         'import/core-modules': ['vscode'],
