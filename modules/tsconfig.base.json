@@ -1,8 +1,12 @@
 {
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
+        "tsBuildInfoFile": "dist/compile.base.tsbuildInfo",
+        "composite": true,
         "module": "CommonJS",
         "moduleResolution": "node16",
+        "types": ["node", "jest"],
+        "baseUrl": ".",
         "paths": {
             "$common-utils": ["__utils/src"],
             "$common-utils/*": ["__utils/src/*"]

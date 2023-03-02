@@ -5,7 +5,11 @@
         "composite": true,
         "outDir": "../dist/_server",
         "rootDir": "src",
-        "types": ["node", "jest"]
+        "baseUrl": "..",
+        "paths": {
+            "$common-utils": ["__utils/src"],
+            "$common-utils/*": ["__utils/src/*"]
+        }
     },
     "include": ["src"],
     "exclude": [],

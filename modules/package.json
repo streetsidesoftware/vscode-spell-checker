@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc -b tsconfig.json",
+    "clean": "shx rm -rf dist */dist",
     "test": "jest"
   },
   "author": "",
