@@ -14,7 +14,7 @@
         "**/server.js",
         "/samples",
         "CHANGELOG.md",
-        "cSpell.json",
+        "cspell.json",
         "cspell*.{json,yaml}",
         ".cspell*.{json,yaml}",
         "fixtures/workspaces/**",
