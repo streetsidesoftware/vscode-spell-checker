@@ -1,0 +1,12 @@
+{
+  "name": "modules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo ok",
+    "test": "echo no tests"
+  },
+  "author": "",
+  "license": "MIT"
+}
