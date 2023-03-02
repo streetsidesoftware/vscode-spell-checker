@@ -1,8 +1,5 @@
 // cSpell:ignore pycache
 
-import { LogFileConnection } from 'common-utils/index.js';
-import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import * as CSpell from 'cspell-lib';
 import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
 import { interval, ReplaySubject, Subscription } from 'rxjs';
@@ -22,6 +19,10 @@ import {
     TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
+
+import { LogFileConnection } from '$common-utils/index.js';
+import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '$common-utils/log.js';
+import { toFileUri, toUri } from '$common-utils/uriHelper.js';
 
 import * as Api from './api';
 import { createClientApi } from './clientApi';

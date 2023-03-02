@@ -1,7 +1,8 @@
-import { mustBeDefined } from 'common-utils/util.js';
 import { CSpellUserSettings, searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
 import { URI } from 'vscode-uri';
+
+import { mustBeDefined } from '$common-utils/util.js';
 
 import { WorkspaceConfigForDocument } from '../api';
 import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';

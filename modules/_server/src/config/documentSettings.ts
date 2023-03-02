@@ -9,10 +9,6 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
-import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
-import { setIfDefined } from 'common-utils/index.js';
-import { log } from 'common-utils/log.js';
-import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
 import { GlobMatcher, GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import {
@@ -31,6 +27,11 @@ import * as os from 'os';
 import * as path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+
+import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from '$common-utils/autoLoad.js';
+import { setIfDefined } from '$common-utils/index.js';
+import { log } from '$common-utils/log.js';
+import { toFileUri, toUri } from '$common-utils/uriHelper.js';
 
 import { VSCodeSettingsCspell } from '../api';
 import { extensionId } from '../constants';

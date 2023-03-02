@@ -1,11 +1,12 @@
-import { log, logDebug } from 'common-utils/log.js';
-import { capitalize } from 'common-utils/util.js';
 import { constructSettingsForText, getDictionary, IssueType, SpellingDictionary, Text } from 'cspell-lib';
 import { format } from 'util';
 import { CodeActionParams, Command as LangServerCommand, Range as LangServerRange, TextDocuments } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 // eslint-disable-next-line node/no-extraneous-import
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
+
+import { log, logDebug } from '$common-utils/log';
+import { capitalize } from '$common-utils/util';
 
 import { ClientApi } from './clientApi';
 import { clientCommands as cc } from './commands';

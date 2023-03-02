@@ -1,5 +1,6 @@
-import { log } from 'common-utils/log.js';
 import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
+
+import { log } from '$common-utils/log.js';
 
 import { isDefined } from '../utils';
 

@@ -1,9 +1,10 @@
-import { logError } from 'common-utils/log.js';
-import { toFileUri } from 'common-utils/uriHelper.js';
 import { FSWatcher } from 'fs';
 import nodeWatch from 'node-watch';
 import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node';
+
+import { logError } from '$common-utils/log.js';
+import { toFileUri } from '$common-utils/uriHelper.js';
 
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;

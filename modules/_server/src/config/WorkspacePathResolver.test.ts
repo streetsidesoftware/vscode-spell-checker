@@ -1,14 +1,15 @@
-import { logError } from 'common-utils/log.js';
 import * as Path from 'path';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
+
+import { logError } from '$common-utils/log.js';
 
 import { CSpellUserSettings, CustomDictionaries } from './cspellConfig';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver';
 
 jest.mock('vscode-languageserver/node');
 jest.mock('./vscode.config');
-jest.mock('common-utils/log.js');
+jest.mock('$common-utils/log.js');
 
 const mockLogError = logError as jest.Mock;
 

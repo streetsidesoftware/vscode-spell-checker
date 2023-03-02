@@ -30,6 +30,7 @@ const config = {
         'packages/*/dist/**',
         'packages/*/out/**',
         '**/temp/**',
+        '**/dist/**',
         'packages/client/settingsViewer/**',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
