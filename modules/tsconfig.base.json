@@ -5,7 +5,7 @@
         "composite": true,
         "module": "CommonJS",
         "moduleResolution": "node16",
-        "types": ["node", "jest"],
+        "types": ["node"],
         "baseUrl": ".",
         "paths": {
             "$common-utils": ["__utils/src"],

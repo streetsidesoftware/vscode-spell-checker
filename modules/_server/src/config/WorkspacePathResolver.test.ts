@@ -1,4 +1,5 @@
 import * as Path from 'path';
+import { describe, expect, Mock, test, vi } from 'vitest';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
@@ -7,11 +8,11 @@ import { logError } from '$common-utils/log.js';
 import { CSpellUserSettings, CustomDictionaries } from './cspellConfig';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver';
 
-jest.mock('vscode-languageserver/node');
-jest.mock('./vscode.config');
-jest.mock('$common-utils/log.js');
+vi.mock('vscode-languageserver/node');
+vi.mock('./vscode.config');
+vi.mock('$common-utils/log.js');
 
-const mockLogError = logError as jest.Mock;
+const mockLogError = logError as Mock;
 
 const cspellConfigInVsCode: CSpellUserSettings = {
     ignorePaths: ['${workspaceFolder:_server}/**/*.json'],

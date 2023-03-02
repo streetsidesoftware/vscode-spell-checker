@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { createAutoLoadCache, createLazyValue } from './autoLoad';
 
 describe('Validate AutoLoadCache', () => {

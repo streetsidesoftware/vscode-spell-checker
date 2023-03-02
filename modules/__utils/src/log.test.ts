@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { log, logDebug, logError, logger, logInfo, setWorkspaceFolders } from './log';
 
 describe('Validate Util Functions', () => {

@@ -1,18 +1,19 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Connection } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import { createClientApi } from './clientApi';
 import { createProgressNotifier } from './progressNotifier';
 
-jest.mock('./clientApi');
+vi.mock('./clientApi');
 
-const mockedCreateClientApi = jest.mocked(createClientApi);
+const mockedCreateClientApi = vi.mocked(createClientApi);
 // const mockedCreateConnection = jest.mocked(createConnection);
 
 mockedCreateClientApi.mockImplementation(() => {
     return {
-        sendOnSpellCheckDocument: jest.fn(),
-        sendOnWorkspaceConfigForDocumentRequest: jest.fn(),
+        sendOnSpellCheckDocument: vi.fn(),
+        sendOnWorkspaceConfigForDocumentRequest: vi.fn(),
     };
 });
 
@@ -23,7 +24,7 @@ describe('Validate Progress Notifier', () => {
     test('createProgressNotifier', async () => {
         const clientApi = createClientApi(connection);
         const notifier = createProgressNotifier(clientApi);
-        const mockSendOnSpellCheckDocument = jest.mocked(clientApi.sendOnSpellCheckDocument);
+        const mockSendOnSpellCheckDocument = vi.mocked(clientApi.sendOnSpellCheckDocument);
 
         expect(notifier.emitSpellCheckDocumentStep).toBeDefined();
 

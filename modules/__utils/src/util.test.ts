@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { freqCount, isDefined, mustBeDefined, pick, setIfDefined, textToWords, unique, uniqueFilter } from './util';
 
 describe('Util', () => {

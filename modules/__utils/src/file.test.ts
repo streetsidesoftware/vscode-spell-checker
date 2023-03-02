@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { URI as Uri } from 'vscode-uri';
 
 import { fileExists } from './file';

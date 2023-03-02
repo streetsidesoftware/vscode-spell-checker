@@ -1,6 +1,7 @@
 import { loadConfig } from 'cspell-lib';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 import { ConfigWatcher } from './configWatcher';
 

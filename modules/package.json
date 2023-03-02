@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "clean": "shx rm -rf dist */dist",
-    "test": "jest"
+    "test": "jest",
+    "watch": "tsc -b tsconfig.json --watch"
   },
   "author": "",
   "license": "MIT",

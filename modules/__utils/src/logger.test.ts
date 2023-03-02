@@ -1,3 +1,5 @@
+import { describe, expect, test, vi } from 'vitest';
+
 import { Logger, LogLevel } from './logger';
 
 describe('Validate Logger', () => {
@@ -130,10 +132,10 @@ function exit() {}
 function makeConnection() {
     const connection = {
         console: {
-            log: jest.fn(),
-            error: jest.fn(),
-            warn: jest.fn(),
-            info: jest.fn(),
+            log: vi.fn(),
+            error: vi.fn(),
+            warn: vi.fn(),
+            info: vi.fn(),
         },
         onExit: (fn: () => void) => (connection.exit = fn),
         exit,

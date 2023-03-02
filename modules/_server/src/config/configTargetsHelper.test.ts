@@ -1,5 +1,6 @@
 import { CSpellUserSettings, searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
+import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
 import { mustBeDefined } from '$common-utils/util.js';

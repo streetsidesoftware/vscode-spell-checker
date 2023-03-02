@@ -1,6 +1,7 @@
 import { CSpellSettings } from 'cspell-lib';
 import watch from 'node-watch';
 import { join } from 'path';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { NodeWatchMock } from '../__mocks__/node-watch';
 import { DictionaryWatcher } from './dictionaryWatcher';
@@ -28,7 +29,7 @@ describe('Validate Dictionary Watcher', () => {
     test('watching dictionaries', () => {
         const dw = new DictionaryWatcher();
 
-        const listener = jest.fn();
+        const listener = vi.fn();
 
         const d = dw.listen(listener);
         dw.processSettings(sampleConfig);

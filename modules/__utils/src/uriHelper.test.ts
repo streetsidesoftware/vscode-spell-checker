@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { describe, expect, test } from 'vitest';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper';

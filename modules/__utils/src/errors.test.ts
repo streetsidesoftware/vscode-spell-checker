@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { isErrnoException } from './errors';
 
 describe('errors', () => {

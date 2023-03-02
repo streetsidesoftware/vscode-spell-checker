@@ -1,15 +1,17 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Connection } from 'vscode-languageserver';
 
 import { OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api';
 import { createClientApi } from './clientApi';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const stub: any = {
-    sendNotification: jest.fn(),
-    sendRequest: jest.fn(),
+    sendNotification: vi.fn(),
+    sendRequest: vi.fn(),
 };
 const connection = stub as Connection;
 
-const mockConnection = jest.mocked(connection);
+const mockConnection = vi.mocked(connection);
 
 describe('Validate Client Api', () => {
     beforeEach(() => {

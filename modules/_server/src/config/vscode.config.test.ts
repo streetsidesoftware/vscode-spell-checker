@@ -1,16 +1,18 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
-jest.mock('vscode-languageserver/node');
+vi.mock('vscode-languageserver/node');
 
 describe('Validate vscode config', () => {
     test('getConfiguration', async () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection);
+        const mockedCreateConnection = vi.mocked(connection);
+        const mocked_getConfiguration = vi.mocked(mockedCreateConnection.workspace.getConfiguration);
         const cfg = [{}, {}];
-        mockedCreateConnection.workspace.getConfiguration.mockResolvedValue(cfg);
+        mocked_getConfiguration.mockResolvedValue(cfg);
         const items = [{ scopeUri: Uri.file(__filename).toString(), section: 'cSpell' }, { section: 'search' }];
         await expect(getConfiguration(connection, items)).resolves.toBe(cfg);
         expect(mockedCreateConnection.workspace.getConfiguration).toHaveBeenLastCalledWith(items);
@@ -18,17 +20,22 @@ describe('Validate vscode config', () => {
 
     test('getWorkspaceFolders', () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection);
+        const mocked_getWorkspaceFolders = vi.mocked(connection.workspace.getWorkspaceFolders);
         const folders: WorkspaceFolder[] = [];
-        mockedCreateConnection.workspace.getWorkspaceFolders.mockResolvedValue(folders);
+        mocked_getWorkspaceFolders.mockResolvedValue(folders);
         expect(getWorkspaceFolders(connection)).resolves.toBe(folders);
     });
 });
 
 const workspace: Connection['workspace'] = partialMocks<Connection['workspace']>({
-    getWorkspaceFolders: jest.fn(),
-    getConfiguration: jest.fn(),
+    getWorkspaceFolders: vi.fn(),
+    getConfiguration: vi.fn(mockFnP),
 });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mockFnP(): Promise<any> {
+    return Promise.resolve(undefined);
+}
 
 const connection: Partial<Connection> = {
     workspace,

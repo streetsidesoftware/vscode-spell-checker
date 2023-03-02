@@ -1,9 +1,10 @@
 import { FSWatcher } from 'fs';
 import nodeWatch from 'node-watch';
+import { Mock, vi } from 'vitest';
 
 type NodeWatch = typeof nodeWatch;
 
-export interface NodeWatchMock extends jest.Mock<NodeWatch> {
+export interface NodeWatchMock extends Mock<unknown[], NodeWatch> {
     __trigger(eventType: 'update' | 'remove' | undefined, filename: string): void;
     __getWatchers(filename?: string): Watcher[];
     __reset(): void;
@@ -77,28 +78,32 @@ function addCallback(pathName: string, options?: Options | WatcherCallback, call
 
     let isClosed = false;
     const watcher: Watcher = {
-        close: jest.fn(() => {
+        close: vi.fn(() => {
             isClosed = true;
         }),
         isClosed: () => isClosed,
         callback,
         getWatchedPaths,
-        addListener: jest.fn(),
-        on: jest.fn(),
-        once: jest.fn(),
-        prependListener: jest.fn(),
-        prependOnceListener: jest.fn(),
-        removeAllListeners: jest.fn(),
-        removeListener: jest.fn(),
-        setMaxListeners: jest.fn(),
-        off: jest.fn(),
-        getMaxListeners: jest.fn(),
-        listenerCount: jest.fn(),
-        listeners: jest.fn(),
-        emit: jest.fn(),
-        rawListeners: jest.fn(),
-        eventNames: jest.fn(),
+        addListener: vi.fn(defaultImpl),
+        on: vi.fn(defaultImpl),
+        once: vi.fn(defaultImpl),
+        prependListener: vi.fn(defaultImpl),
+        prependOnceListener: vi.fn(defaultImpl),
+        removeAllListeners: vi.fn(),
+        removeListener: vi.fn(),
+        setMaxListeners: vi.fn(),
+        off: vi.fn(),
+        getMaxListeners: vi.fn(),
+        listenerCount: vi.fn(),
+        listeners: vi.fn(),
+        emit: vi.fn(),
+        rawListeners: vi.fn(),
+        eventNames: vi.fn(),
     };
+
+    function defaultImpl(): Watcher {
+        return watcher;
+    }
 
     const cb = callbacks.get(pathName) || new Set<Watcher>();
     cb.add(watcher);
@@ -129,9 +134,7 @@ function reset() {
     callbacks.clear();
 }
 
-const mock = jest
-    .fn<Watcher, [string, Options | WatcherCallback | undefined, WatcherCallback | undefined]>()
-    .mockImplementation(addCallback);
+const mock = vi.fn<[string, Options | WatcherCallback | undefined, WatcherCallback | undefined], Watcher>().mockImplementation(addCallback);
 
 const mockWatcher: NodeWatchMock = mock as unknown as NodeWatchMock;
 mockWatcher.__trigger = trigger;
