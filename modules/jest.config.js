@@ -4,6 +4,7 @@ const rootConfig = require('../jest.config.js');
 const config = {
     ...rootConfig,
     roots: ['.'],
+    testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
 };
 
 module.exports = config;
