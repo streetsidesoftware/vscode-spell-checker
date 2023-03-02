@@ -3,8 +3,8 @@ import nodeWatch from 'node-watch';
 import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node';
 
-import { logError } from '$common-utils/log.js';
-import { toFileUri } from '$common-utils/uriHelper.js';
+import { logError } from '../../__utils/log';
+import { toFileUri } from '../../__utils/uriHelper';
 
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;

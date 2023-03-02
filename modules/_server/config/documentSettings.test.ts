@@ -6,8 +6,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
-import { escapeRegExp } from '$common-utils/util.js';
-
+import { escapeRegExp } from '../../__utils';
 import { CSpellUserSettings } from './cspellConfig';
 import {
     __testing__,
@@ -26,10 +25,11 @@ vi.mock('./vscode.config');
 
 const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
 const mockGetConfiguration = vi.mocked(getConfiguration);
-const pathWorkspaceServer = Path.resolve(Path.join(__dirname, '..', '..'));
-const pathWorkspaceRoot = Path.resolve(Path.join(pathWorkspaceServer, '..', '..'));
-const pathWorkspaceClient = Path.resolve(Path.join(pathWorkspaceServer, '..', 'client'));
-const pathSampleSourceFiles = Path.join(pathWorkspaceServer, 'sampleSourceFiles');
+const pathRepoRoot = Path.join(__dirname, '../../..');
+const pathWorkspaceServer = Path.join(pathRepoRoot, 'packages/_server');
+const pathWorkspaceRoot = pathRepoRoot;
+const pathWorkspaceClient = Path.join(pathRepoRoot, 'packages/client');
+const pathSampleSourceFiles = Path.join(pathRepoRoot, 'fixtures/_server/sampleSourceFiles');
 const workspaceFolderServer: WorkspaceFolder = {
     uri: Uri.file(pathWorkspaceServer).toString(),
     name: '_server',
@@ -45,31 +45,31 @@ const workspaceFolderClient: WorkspaceFolder = {
 
 const cspellConfigInVsCode: CSpellUserSettings = {
     name: 'Mock VS Code Config',
-    ignorePaths: ['${workspaceFolder:_server}/**/*.json'],
+    ignorePaths: ['${workspaceFolder:vscode-spell-checker}/**/*.json'],
     import: [
-        '${workspaceFolder:_server}/sampleSourceFiles/overrides/cspell.json',
-        '${workspaceFolder:_server}/sampleSourceFiles/cSpell.json',
+        '${workspaceFolder:vscode-spell-checker}/fixtures/_server/sampleSourceFiles/overrides/cspell.json',
+        '${workspaceFolder:vscode-spell-checker}/fixtures/_server/sampleSourceFiles/cSpell.json',
     ],
     enabledLanguageIds: ['typescript', 'javascript', 'php', 'json', 'jsonc'],
 };
 
 const sampleFiles = {
-    sampleClientEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
-    sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
+    sampleClientEsLint: Path.join(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
+    sampleClientReadme: Path.join(pathWorkspaceRoot, 'packages/client/README.md'),
 
     sampleNodePackage: require.resolve('cspell-lib'),
-    sampleSamplesReadme: Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
-    sampleServerCSpell: Path.resolve(pathWorkspaceRoot, 'packages/_server/cspell.json'),
-    sampleServerPackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
+    sampleSamplesReadme: Path.join(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
+    sampleServerCSpell: Path.join(pathWorkspaceRoot, 'packages/_server/cspell.json'),
+    sampleServerPackageLock: Path.join(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
 };
 
 const configFiles = {
-    rootConfig: Path.resolve(pathWorkspaceRoot, 'cSpell.json'),
-    clientConfig: Path.resolve(pathWorkspaceClient, 'cspell.json'),
-    serverConfig: Path.resolve(pathWorkspaceServer, 'cspell.json'),
-    rootConfigVSCode: Path.resolve(pathWorkspaceRoot, '.vscode/cSpell.json'),
-    clientConfigVSCode: Path.resolve(pathWorkspaceClient, '.vscode/cspell.json'),
-    serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
+    rootConfig: Path.join(pathWorkspaceRoot, 'cSpell.json'),
+    clientConfig: Path.join(pathWorkspaceClient, 'cspell.json'),
+    serverConfig: Path.join(pathWorkspaceServer, 'cspell.json'),
+    rootConfigVSCode: Path.join(pathWorkspaceRoot, '.vscode/cSpell.json'),
+    clientConfigVSCode: Path.join(pathWorkspaceClient, '.vscode/cspell.json'),
+    serverConfigVSCode: Path.join(pathWorkspaceServer, '.vscode/cspell.json'),
 };
 
 const ac = expect.arrayContaining;
@@ -241,7 +241,7 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const files = docSettings.extractCSpellConfigurationFiles(settings);
         expect(files.map((f) => f.toString())).toEqual(
-            expect.arrayContaining([Uri.file(Path.join(pathWorkspaceServer, 'cspell.json')).toString()])
+            expect.arrayContaining([Uri.file(Path.join(pathRepoRoot, 'cspell.json')).toString()])
         );
     });
 

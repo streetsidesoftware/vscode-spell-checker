@@ -28,11 +28,10 @@ import * as path from 'path';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from '$common-utils/autoLoad.js';
-import { setIfDefined } from '$common-utils/index.js';
-import { log } from '$common-utils/log.js';
-import { toFileUri, toUri } from '$common-utils/uriHelper.js';
-
+import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from '../../__utils/autoLoad';
+import { setIfDefined } from '../../__utils/index';
+import { log } from '../../__utils/log';
+import { toFileUri, toUri } from '../../__utils/uriHelper';
 import { VSCodeSettingsCspell } from '../api';
 import { extensionId } from '../constants';
 import { uniqueFilter } from '../utils';

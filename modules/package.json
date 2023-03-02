@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "clean": "shx rm -rf dist */dist",
-    "test": "jest",
+    "test": "vitest run",
     "watch": "tsc -b tsconfig.json --watch"
   },
   "author": "",

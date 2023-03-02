@@ -1,7 +1,6 @@
 import { ConfigurationItem, Connection } from 'vscode-languageserver/node';
 
-import { log } from '$common-utils/log.js';
-
+import { log } from '../../__utils/log';
 import { isDefined } from '../utils';
 
 export interface TextDocumentUri {

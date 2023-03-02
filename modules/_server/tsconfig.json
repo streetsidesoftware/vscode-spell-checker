@@ -4,14 +4,9 @@
         "tsBuildInfoFile": "dist/compile.tsbuildInfo",
         "composite": true,
         "outDir": "../dist/_server",
-        "rootDir": "src",
-        "baseUrl": "..",
-        "paths": {
-            "$common-utils": ["__utils/src"],
-            "$common-utils/*": ["__utils/src/*"]
-        }
+        "rootDir": "."
     },
-    "include": ["src"],
+    "include": ["."],
     "exclude": [],
     "references": [{ "path": "../__utils" }]
 }

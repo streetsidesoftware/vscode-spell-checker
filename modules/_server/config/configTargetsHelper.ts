@@ -2,9 +2,7 @@ import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { genSequence } from 'gensequence';
 import * as Path from 'path';
 
-import { toUri } from '$common-utils/uriHelper.js';
-import { capitalize } from '$common-utils/util.js';
-
+import { capitalize, toUri } from '../../__utils';
 import { WorkspaceConfigForDocument } from '../api';
 import {
     ConfigKinds,

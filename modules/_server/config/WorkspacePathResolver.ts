@@ -4,8 +4,7 @@ import * as Path from 'path';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
-import { logError } from '$common-utils/log.js';
-
+import { logError } from '../../__utils/log';
 import { CSpellUserSettings } from './cspellConfig';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries';
 

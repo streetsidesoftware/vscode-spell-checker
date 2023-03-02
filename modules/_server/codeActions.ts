@@ -5,9 +5,8 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 // eslint-disable-next-line node/no-extraneous-import
 import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
 
-import { log, logDebug } from '$common-utils/log';
-import { capitalize } from '$common-utils/util';
-
+import { log, logDebug } from '../__utils/log';
+import { capitalize } from '../__utils/util';
 import { ClientApi } from './clientApi';
 import { clientCommands as cc } from './commands';
 import {

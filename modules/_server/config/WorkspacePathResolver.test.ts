@@ -3,8 +3,7 @@ import { describe, expect, Mock, test, vi } from 'vitest';
 import { WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
-import { logError } from '$common-utils/log.js';
-
+import { logError } from '../../__utils/log';
 import { CSpellUserSettings, CustomDictionaries } from './cspellConfig';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver';
 

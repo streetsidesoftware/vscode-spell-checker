@@ -20,10 +20,9 @@ import {
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-import { LogFileConnection } from '$common-utils/index.js';
-import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '$common-utils/log.js';
-import { toFileUri, toUri } from '$common-utils/uriHelper.js';
-
+import { LogFileConnection } from '../__utils';
+import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '../__utils/log';
+import { toFileUri, toUri } from '../__utils/uriHelper';
 import * as Api from './api';
 import { createClientApi } from './clientApi';
 import { onCodeActionHandler } from './codeActions';

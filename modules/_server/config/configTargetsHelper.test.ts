@@ -3,8 +3,7 @@ import * as Path from 'path';
 import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
-import { mustBeDefined } from '$common-utils/util.js';
-
+import { mustBeDefined } from '../../__utils';
 import { WorkspaceConfigForDocument } from '../api';
 import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets';
 import { __testing__, calculateConfigTargets } from './configTargetsHelper';

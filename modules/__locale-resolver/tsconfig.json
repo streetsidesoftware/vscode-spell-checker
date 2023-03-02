@@ -4,8 +4,8 @@
         "tsBuildInfoFile": "dist/compile.tsbuildInfo",
         "composite": true,
         "outDir": "../dist/__locale_resolver",
-        "rootDir": "src"
+        "rootDir": "."
     },
-    "include": ["src"],
+    "include": ["."],
     "exclude": []
 }
