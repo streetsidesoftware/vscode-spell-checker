@@ -10,6 +10,7 @@
         "*.lock",
         "*.log",
         "*.vsix",
+        "*.tsv",
         "**/__snapshots__/**",
         "**/server.js",
         "/samples",

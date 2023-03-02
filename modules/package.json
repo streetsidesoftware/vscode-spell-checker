@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc -b tsconfig.json",
+    "build-production": "echo ok",
     "clean": "shx rm -rf dist */dist",
     "test": "echo in development",
     "test:vitest": "vitest run",
