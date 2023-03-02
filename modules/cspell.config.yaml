@@ -1,0 +1,3 @@
+ignorePaths:
+  - __locale-resolver/data
+  - __snapshots__

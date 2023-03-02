@@ -1,15 +1,12 @@
 {
-	"extends": "./tsconfig",
-	"compilerOptions": {
-		"target": "es2017",
-		"declaration": true,
-		"strictNullChecks": true,
-		"strict": true,
-		"strictFunctionTypes": true,
-		"sourceMap": true
-	},
-	"exclude": [
-		"src/test/**",
-		"**/*.test.ts"
-	]
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "target": "es2017",
+        "declaration": true,
+        "strictNullChecks": true,
+        "strict": true,
+        "strictFunctionTypes": true,
+        "sourceMap": true
+    },
+    "exclude": ["src/test/**", "**/*.test.ts"]
 }

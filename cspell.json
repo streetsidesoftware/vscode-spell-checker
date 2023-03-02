@@ -20,6 +20,7 @@
         "fixtures/workspaces/**",
         "languageCodes.ts",
         "package-lock.json",
+        "fixtures/_server/sampleSourceFiles/**",
         "packages/_server/sampleSourceFiles/**",
         "packages/client/resources/**",
         "packages/client/samples/**",

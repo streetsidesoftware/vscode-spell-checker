@@ -42,6 +42,7 @@ issuehunt
 Jupyter
 KotlinScript
 languageclient
+lcov
 lerna
 liga
 lightblue
