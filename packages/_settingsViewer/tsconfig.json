@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.base.json",
+    "extends": "../../tsconfig.packages.base.json",
     "compilerOptions": {
         "lib": ["DOM", "DOM.Iterable", "ES2020"],
         "esModuleInterop": true,
