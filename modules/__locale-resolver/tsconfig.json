@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "tsBuildInfoFile": "dist/compile.tsbuildInfo",
+        "composite": true,
+        "outDir": "../dist/__locale_resolver",
+        "rootDir": "."
+    },
+    "include": ["."],
+    "exclude": []
+}

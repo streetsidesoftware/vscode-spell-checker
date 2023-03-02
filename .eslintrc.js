@@ -30,6 +30,7 @@ const config = {
         'packages/*/dist/**',
         'packages/*/out/**',
         '**/temp/**',
+        '**/dist/**',
         'packages/client/settingsViewer/**',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
@@ -82,6 +83,18 @@ const config = {
             },
             rules: {
                 'node/no-unsupported-features/es-syntax': 'off',
+            },
+        },
+        {
+            files: ['**/*.test.*', '**/__mocks__/**'],
+            rules: {
+                'node/no-extraneous-import': 'off',
+            },
+        },
+        {
+            files: ['**/jest.config.js'],
+            rules: {
+                'node/no-unpublished-require': 'off',
             },
         },
     ],

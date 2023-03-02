@@ -42,6 +42,7 @@ issuehunt
 Jupyter
 KotlinScript
 languageclient
+lcov
 lerna
 liga
 lightblue
@@ -80,6 +81,7 @@ subfolder
 subpath
 textdocument
 truetype
+tsbuildInfo
 tslib
 typechecking
 unelevated

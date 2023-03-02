@@ -42,7 +42,7 @@
         }
     ],
     "settings": {
-        "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cSpell.json"],
+        "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cspell.json"],
         "cSpell.customDictionaries": { "cspell-words": true },
         "typescript.tsdk": "Spell Checker Root/node_modules/typescript/lib",
         "svg.preview.background": "black",

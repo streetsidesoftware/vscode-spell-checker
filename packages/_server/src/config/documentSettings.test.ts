@@ -252,7 +252,7 @@ describe('Validate DocumentSettings', () => {
         const configs = docSettings.extractCSpellFileConfigurations(settings);
         expect(configs.map((c) => c.name)).toEqual([
             shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
-            shortPathName(Path.join(pathWorkspaceRoot, 'cSpell.json')),
+            shortPathName(Path.join(pathWorkspaceRoot, 'cspell.json')),
             'sampleSourceFiles/cSpell.json',
             'sampleSourceFiles/cspell-ext.json',
             'overrides/cspell.json',

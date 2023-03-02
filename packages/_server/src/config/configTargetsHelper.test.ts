@@ -118,7 +118,7 @@ describe('Validate configTargetsHelper', () => {
             }),
             oc<ConfigTargetCSpell>({
                 kind: 'cspell',
-                name: expect.stringContaining('cSpell.json'),
+                name: expect.stringContaining('cspell.json'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: true },
@@ -193,7 +193,7 @@ describe('Validate configTargetsHelper', () => {
             }),
             oc<ConfigTargetCSpell>({
                 kind: 'cspell',
-                name: expect.stringContaining('cSpell.json'),
+                name: expect.stringContaining('cspell.json'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: true },
@@ -240,7 +240,7 @@ describe('Validate configTargetsHelper', () => {
             }),
             oc<ConfigTargetCSpell>({
                 kind: 'cspell',
-                name: expect.stringContaining('cSpell.json'),
+                name: expect.stringContaining('cspell.json'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
                 has: { words: undefined, ignoreWords: true },

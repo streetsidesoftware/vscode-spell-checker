@@ -1,24 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2020"
-    ],
-    "esModuleInterop": true,
-    "jsx": "react",
-    "outDir": "../client/settingsViewer",
-    "experimentalDecorators": true,
-    "useDefineForClassFields": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "coverage",
-    "node_modules",
-    "dist",
-    "out"
-  ]
+    "extends": "../../tsconfig.packages.base.json",
+    "compilerOptions": {
+        "lib": ["DOM", "DOM.Iterable", "ES2020"],
+        "esModuleInterop": true,
+        "jsx": "react",
+        "outDir": "../client/settingsViewer",
+        "experimentalDecorators": true,
+        "useDefineForClassFields": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["coverage", "node_modules", "dist", "out"]
 }

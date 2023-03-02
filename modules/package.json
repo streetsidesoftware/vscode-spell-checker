@@ -1,0 +1,42 @@
+{
+  "name": "modules",
+  "version": "1.0.0",
+  "description": "Source Modules for Extension",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "build-production": "echo ok",
+    "clean": "shx rm -rf dist */dist",
+    "test": "echo in development",
+    "test:vitest": "vitest run",
+    "watch": "tsc -b tsconfig.json --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/micromatch": "^4.0.2",
+    "iconv-lite": "^0.6.3",
+    "lorem-ipsum": "^2.0.8",
+    "micromatch": "^4.0.5",
+    "minimatch": "^7.3.0",
+    "ts-json-schema-generator": "^1.2.0"
+  },
+  "dependencies": {
+    "gensequence": "^4.0.3",
+    "@types/fs-extra": "^11.0.1",
+    "@cspell/cspell-types": "^6.27.0",
+    "cspell-glob": "^6.27.0",
+    "cspell-lib": "^6.27.0",
+    "fs-extra": "^11.1.0",
+    "node-watch": "^0.7.3",
+    "rxjs": "^7.8.0",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8",
+    "vscode-uri": "^3.0.7",
+    "@cspell/cspell-bundled-dicts": "^6.27.0",
+    "cspell-gitignore": "^6.27.0"
+  },
+  "engines": {
+    "node": ">16.0.0"
+  }
+}
