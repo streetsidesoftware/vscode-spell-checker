@@ -51,13 +51,13 @@
       "editor/context": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
           "group": "A_cspell@000"
         },
         {
           "submenu": "cSpell.spelling",
           "group": "A_cspell@001",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu"
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showCommandsInEditorContextMenu"
         }
       ],
       "cSpell.spelling": [
