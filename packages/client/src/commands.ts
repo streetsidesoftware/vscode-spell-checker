@@ -12,13 +12,14 @@ import {
     Range,
     Selection,
     TextDocument,
+    TextEdit,
     TextEditorRevealType,
     Uri,
     window,
     workspace,
     WorkspaceEdit,
 } from 'vscode';
-import { TextEdit } from 'vscode-languageclient/node';
+import { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
@@ -87,6 +88,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
 };
 
 type CommandHandler = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key in string]: (...params: any[]) => void | Promise<void>;
 };
 
@@ -178,41 +180,37 @@ const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = '
 const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
 
 function handlerApplyTextEdits() {
-    return async function applyTextEdits(uri: string, documentVersion: number, edits: TextEdit[]): Promise<void> {
+    return async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
         const client = di.get('client').client;
-        const textEditor = window.activeTextEditor;
-        if (!textEditor || textEditor.document.uri.toString() !== uri) return;
 
-        if (textEditor.document.version !== documentVersion) {
+        const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
+
+        if (!doc) return;
+
+        if (doc.version !== documentVersion) {
             return pVoid(
                 window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
                 'handlerApplyTextEdits'
             );
         }
 
-        const cfg = workspace.getConfiguration(Settings.sectionCSpell, textEditor.document);
-        if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
-            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-            const edit = edits[0];
-            const range = client.protocol2CodeConverter.asRange(edit.range);
-            if (await attemptRename(textEditor.document, range, edit.newText, { useReference, removeRegExp })) {
-                return;
+        if (edits.length === 1) {
+            const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
+            if (cfg.get(propertyFixSpellingWithRenameProvider)) {
+                const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
+                const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+                // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
+                const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
+                if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
+                    return;
+                }
             }
         }
 
-        return textEditor
-            .edit((mutator) => {
-                for (const edit of edits) {
-                    mutator.replace(client.protocol2CodeConverter.asRange(edit.range), edit.newText);
-                }
-            })
-            .then((success) =>
-                success
-                    ? undefined
-                    : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2')
-            );
+        const success = await applyTextEdits(doc.uri, edits);
+        return success
+            ? undefined
+            : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
     };
 }
 
@@ -221,7 +219,8 @@ interface UseRefInfo {
     removeRegExp: RegExp | undefined;
 }
 
-async function attemptRename(document: TextDocument, range: Range, text: string, refInfo: UseRefInfo): Promise<boolean> {
+async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
+    const { range, newText: text } = edit;
     if (range.start.line !== range.end.line) {
         return false;
     }
@@ -244,6 +243,22 @@ async function attemptRename(document: TextDocument, range: Range, text: string,
                 (reason) => (console.log(reason), false)
             );
         return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
+    } catch (e) {
+        return false;
+    }
+}
+
+async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
+    const client = di.get('client').client;
+    function toTextEdit(edit: LsTextEdit): TextEdit {
+        return client.protocol2CodeConverter.asTextEdit(edit);
+    }
+
+    const wsEdit = new WorkspaceEdit();
+    const textEdits: TextEdit[] = edits.map(toTextEdit);
+    wsEdit.set(uri, textEdits);
+    try {
+        return await workspace.applyEdit(wsEdit);
     } catch (e) {
         return false;
     }
@@ -288,7 +303,8 @@ function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarge
 //     return handleErrors(di.get('dictionaryHelper').removeWordFromDictionary(words, dictTarget));
 // }
 
-function registerCmd(cmd: string, fn: (...args: any[]) => any): Disposable {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function registerCmd(cmd: string, fn: (...args: any[]) => unknown): Disposable {
     return commands.registerCommand(cmd, catchErrors(fn, `Register command: ${cmd}`));
 }
 

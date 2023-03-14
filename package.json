@@ -425,6 +425,9 @@
       },
       "[css]": {
         "cSpell.fixSpellingWithRenameProvider": false
+      },
+      "[scminput]": {
+        "cSpell.fixSpellingWithRenameProvider": false
       }
     },
     "configuration": [
