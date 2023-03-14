@@ -1,5 +1,4 @@
-import { CompoundWordsMethod, SpellingDictionaryCollection, SuggestionResult } from 'cspell-lib';
-import type { SuggestOptions } from 'cspell-lib/dist/SpellingDictionary';
+import { CompoundWordsMethod, SpellingDictionaryCollection, SuggestionResult, SuggestOptions } from 'cspell-lib';
 
 import { CSpellUserSettings } from './config/cspellConfig';
 import { Suggestion } from './models/Suggestion';
