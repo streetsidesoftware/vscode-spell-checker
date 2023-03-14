@@ -77,6 +77,10 @@ const defaultEditorMenuContext: EditorMenuContext = Object.freeze({
     addIgnoreWord: false,
 });
 
+const allowContextMenuForScheme: Record<string, boolean | undefined> = {
+    output: false,
+};
+
 /**
  * Set context values
  * @param name - name of context to set
@@ -116,6 +120,10 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
 
     if (!doc) {
         await setContext(context);
+        return;
+    }
+
+    if (allowContextMenuForScheme[doc.uri.scheme] === false) {
         return;
     }
 
