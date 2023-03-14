@@ -196,7 +196,7 @@ function handlerApplyTextEdits() {
 
         if (edits.length === 1) {
             const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
-            if (cfg.get(propertyFixSpellingWithRenameProvider) && edits.length === 1) {
+            if (cfg.get(propertyFixSpellingWithRenameProvider)) {
                 const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
                 const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
                 // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
