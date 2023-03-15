@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.20.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.19.0...code-spell-checker-v2.20.0) (2023-03-14)
+
+
+### Features
+
+* Update CSpell to 6.29.0 ([#2578](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2578)) ([4e4adb4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4e4adb4952c1dc6b4a8f319e10f51ff1f7d88f59))
+
+
+### Miscellaneous
+
+* **deps-dev:** bump eslint-plugin-unicorn from 45.0.2 to 46.0.0 ([#2569](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2569)) ([698a2db](https://github.com/streetsidesoftware/vscode-spell-checker/commit/698a2db927b09a2bed07745f37aeb4f25d4d691e))
+
+
+### Continuous Integration
+
+* Update ALL Dependencies (main) -- Workflow Bot ([#2572](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2572)) ([0e5c5f1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0e5c5f15abd8dde6298cc428cea41b6b3c4f546c))
+* Update ALL Dependencies (main) -- Workflow Bot ([#2587](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2587)) ([2ca91ab](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2ca91ab3006ea65c9a3c1cac2e8a596f888c0359))
+
+
+### Updates and Bug Fixes
+
+* Do not show context menu if `editorReadonly` ([#2590](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2590)) ([86aeafd](https://github.com/streetsidesoftware/vscode-spell-checker/commit/86aeafdcb8f9b948a9e9973fed9fcfaebf4bcd2d))
+* Update sponsor link ([#2577](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2577)) ([bd033bb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bd033bb847ca378ff80330a46fdd467f62e26751))
+* Use Workspace edits for making fixes. ([#2589](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2589)) ([23a0df9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/23a0df9704e0897b921af9c3c32a6fdf01a23c6c))
+
 ## [2.19.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.18.0...code-spell-checker-v2.19.0) (2023-03-05)
 
 
