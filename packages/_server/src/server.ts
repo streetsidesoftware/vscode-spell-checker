@@ -522,6 +522,7 @@ export function run(): void {
 
         importErrors.forEach((err) => {
             const msg = err.error.toString();
+            console.error(err.error);
             const importedBy =
                 err.referencedBy
                     ?.map((s) => s.filename)
