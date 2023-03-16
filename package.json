@@ -2537,7 +2537,7 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
-    "@types/jest": "^29.4.1",
+    "@types/jest": "^29.4.4",
     "@types/jest-when": "^3.5.2",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
@@ -2562,15 +2562,15 @@
     "shx": "^0.3.4",
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.5",
-    "vite": "^4.1.4",
-    "vitest": "^0.29.2"
+    "vite": "^4.2.0",
+    "vitest": "^0.29.3"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.29.3",
-    "@cspell/cspell-types": "^6.29.3",
+    "@cspell/cspell-bundled-dicts": "^6.30.0",
+    "@cspell/cspell-types": "^6.30.0",
     "@types/react": "^17.0.53",
     "cosmiconfig": "^8.1.0",
-    "cspell": "^6.29.3",
+    "cspell": "^6.30.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
