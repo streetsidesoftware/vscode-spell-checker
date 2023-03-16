@@ -26,7 +26,7 @@
   "devDependencies": {
     "@cspell/cspell-types": "^6.30.0",
     "@types/fs-extra": "^11.0.1",
-    "@types/jest": "^29.4.4",
+    "@types/jest": "^29.5.0",
     "@types/micromatch": "^4.0.2",
     "@types/node": "^18.15.3",
     "common-utils": "1.0.0",

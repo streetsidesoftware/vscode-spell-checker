@@ -29,7 +29,7 @@
   "devDependencies": {
     "@cspell/cspell-types": "^6.30.0",
     "@types/fs-extra": "^11.0.1",
-    "@types/jest": "^29.4.4",
+    "@types/jest": "^29.5.0",
     "@types/jest-when": "^3.5.2",
     "@types/kefir": "^3.8.7",
     "@types/node": "^18.15.3",
