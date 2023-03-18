@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.20.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.20.1...code-spell-checker-v2.20.2) (2023-03-18)
+
+
+### Continuous Integration
+
+* Update ALL Dependencies (main) -- Workflow Bot ([#2597](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2597)) ([634ab7b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/634ab7b4e230c93f0370325210c4f453f5014f75))
+
+
+### Updates and Bug Fixes
+
+* Update cspell ([#2601](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2601)) ([f6d0ca4](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f6d0ca4ebe1899ae329a682a2cd5d7821603b7da))
+
 ## [2.20.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.20.0...code-spell-checker-v2.20.1) (2023-03-16)
 
 
