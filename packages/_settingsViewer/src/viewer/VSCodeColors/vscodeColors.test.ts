@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { getCssVar } from './vscodeColors';
 
 describe('Validate VS Code Colors', () => {

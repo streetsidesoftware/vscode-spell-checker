@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { SectionLanguage } from './sectionLanguage';
+import { describe, expect, it } from 'vitest';
+
 import { configTargets } from '../../api/settings/settingsHelper';
 import { sampleAppState } from '../../test/fixtures/AppState';
+import { AppState } from '../AppState';
+import { SectionLanguage } from './sectionLanguage';
 
 describe('SectionLanguage Verification', () => {
     it('tests the snapshots', () => {

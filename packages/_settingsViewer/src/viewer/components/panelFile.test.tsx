@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { create } from 'react-test-renderer';
+import { describe, expect, it } from 'vitest';
+
 import { sampleAppState } from '../../test/fixtures/AppState';
 import { PanelFile } from './panelFile';
 

@@ -1,4 +1,5 @@
 import { toJS } from 'mobx';
+import { describe, expect, test } from 'vitest';
 
 import { MessageBus } from '../api';
 import { Settings } from '../api/settings';

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validate AppState languageConfig 1`] = `
+exports[`Validate AppState > languageConfig 1`] = `
 {
   "folder": {
     "inherited": "workspace",
@@ -206,7 +206,7 @@ exports[`Validate AppState languageConfig 1`] = `
 }
 `;
 
-exports[`Validate AppState workspaceFolderNames 1`] = `
+exports[`Validate AppState > workspaceFolderNames 1`] = `
 [
   "ripgrep",
   "dutch",

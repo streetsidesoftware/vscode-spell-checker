@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Config Panel Verification tests the snapshot 1`] = `
+exports[`Config Panel Verification > tests the snapshot 1`] = `
 <div>
   
   <div>
@@ -1682,7 +1682,7 @@ exports[`Config Panel Verification tests the snapshot 1`] = `
 </div>
 `;
 
-exports[`Config Panel Verification tests the snapshot 2`] = `
+exports[`Config Panel Verification > tests the snapshot 2`] = `
 <div>
   
   <div>
@@ -3487,7 +3487,7 @@ exports[`Config Panel Verification tests the snapshot 2`] = `
 </div>
 `;
 
-exports[`Config Panel Verification tests the snapshot 3`] = `
+exports[`Config Panel Verification > tests the snapshot 3`] = `
 <div>
   
   <div>

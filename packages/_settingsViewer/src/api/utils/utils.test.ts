@@ -1,7 +1,9 @@
+import { describe, expect, test } from 'vitest';
+
 import { tf } from '.';
 
 describe('Utils', () => {
-    it('tf', () => {
+    test('tf', () => {
         const one: boolean | number = 1;
         const zero: boolean | number = 0;
         expect(tf(true)).toBe('true');

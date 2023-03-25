@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
+import { describe, expect, it } from 'vitest';
+
 import { configTargets } from '../../api/settings/settingsHelper';
 import { sampleAppState } from '../../test/fixtures/AppState';
+import { AppState } from '../AppState';
 import { SectionFiletypes } from './sectionFiletypes';
 
 describe('SectionFileTypes Verification', () => {

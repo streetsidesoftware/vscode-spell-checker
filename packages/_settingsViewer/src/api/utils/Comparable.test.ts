@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { compare, compareBy, compareByRev, compareEach, reverse } from './Comparable';
 
 describe('Validate Comparable', () => {

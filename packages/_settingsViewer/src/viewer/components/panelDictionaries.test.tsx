@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
-import { PanelDictionaries } from './panelDictionaries';
+import { describe, expect, it } from 'vitest';
+
 import { sampleAppState } from '../../test/fixtures/AppState';
+import { AppState } from '../AppState';
+import { PanelDictionaries } from './panelDictionaries';
 
 describe('Dictionary Panel Verification', () => {
     it('tests the snapshot', () => {

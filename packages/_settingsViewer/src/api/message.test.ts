@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { sampleSettings } from '../test/samples/sampleSettings';
 import {
     ConfigurationChangeMessage,
