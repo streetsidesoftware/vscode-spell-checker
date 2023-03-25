@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
+import { extendExpect } from '../test/test.matchers';
 import { CSpellUserSettings } from './cspellConfig';
 import {
     __testing__,
@@ -19,6 +20,8 @@ import {
     isUriBlocked,
 } from './documentSettings';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config';
+
+const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
 
 vi.mock('vscode-languageserver/node');
 vi.mock('./vscode.config');
@@ -276,7 +279,7 @@ describe('Validate DocumentSettings', () => {
     }
 
     function matchString(s: string) {
-        return expect.stringMatching(new RegExp(`^${escapeRegExp(s)}$`, 'i'));
+        return expectToEqualCaseInsensitive(s);
     }
 
     function ex(cfgFile: string, glob: string, root?: string) {
