@@ -92,6 +92,13 @@ const config = {
             },
         },
         {
+            files: ['vitest.config.*'],
+            rules: {
+                'node/no-extraneous-import': 'off',
+                'import/no-unresolved': 'off',
+            },
+        },
+        {
             files: ['**/jest.config.js'],
             rules: {
                 'node/no-unpublished-require': 'off',
