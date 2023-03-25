@@ -1,19 +1,21 @@
 import watch from 'node-watch';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { NodeWatchMock } from '../__mocks__/node-watch';
+import { addNodeWatchMockImplementation, asNodeWatchMock } from '../test/mock-node-watch';
 import { FileWatcher } from './fileWatcher';
 
-const mockWatch = watch as unknown as NodeWatchMock;
+vi.mock('node-watch');
 
 describe('Validate FileWatcher', () => {
-    beforeEach(() => {
-        mockWatch.__reset();
+    afterEach(() => {
+        asNodeWatchMock(watch).__reset();
     });
 
-    test('', () => {
+    test('watching files', () => {
+        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watch));
         const watcher = new FileWatcher();
-        const listener = jest.fn();
-        const listener2 = jest.fn();
+        const listener = vi.fn();
+        const listener2 = vi.fn();
         const dListener = watcher.listen(listener);
         watcher.addFile('file1');
         watcher.addFile('file2');

@@ -1,4 +1,5 @@
 import { CSpellSettingsWithSourceTrace } from 'cspell-lib';
+import { describe, expect, test } from 'vitest';
 
 import { configToJson } from './configToJson';
 

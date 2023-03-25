@@ -1,11 +1,12 @@
 import { CSpellSettings } from 'cspell-lib';
 import watch from 'node-watch';
 import { join } from 'path';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { NodeWatchMock } from '../__mocks__/node-watch';
+import { addNodeWatchMockImplementation, asNodeWatchMock } from '../test/mock-node-watch';
 import { DictionaryWatcher } from './dictionaryWatcher';
 
-const mockWatch = watch as unknown as NodeWatchMock;
+vi.mock('node-watch');
 
 const dictA = join(__dirname, 'dictA.txt');
 const dictB = join(__dirname, 'dictB.txt');
@@ -21,14 +22,15 @@ const sampleConfig: CSpellSettings = {
 };
 
 describe('Validate Dictionary Watcher', () => {
-    beforeEach(() => {
-        mockWatch.__reset();
+    afterEach(() => {
+        asNodeWatchMock(watch).__reset();
     });
 
     test('watching dictionaries', () => {
+        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watch));
         const dw = new DictionaryWatcher();
 
-        const listener = jest.fn();
+        const listener = vi.fn();
 
         const d = dw.listen(listener);
         dw.processSettings(sampleConfig);

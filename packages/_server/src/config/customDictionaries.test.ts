@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { CSpellUserSettings, CustomDictionaries, CustomDictionariesDictionary, DictionaryDefinition } from './cspellConfig';
 import { extractDictionaryDefinitions } from './customDictionaries';
 
