@@ -113,14 +113,14 @@ function calcInheritedDefault<K extends keyof CSpellUserSettings>(
     key: K,
     target: ClientConfigTarget,
     targetsWithValue: Iterable<[ClientConfigTarget, CSpellUserSettings]>
-): CSpellUserSettings[K] {
+): CSpellUserSettings[K] | undefined {
     const tv = [...targetsWithValue].reverse();
-    let value: CSpellUserSettings[K] = undefined;
+    let value: CSpellUserSettings[K] | undefined = undefined;
     for (const [t, v] of tv) {
-        value = v[key] ?? value;
+        value ??= v[key];
         if (t === target) break;
     }
-    return value;
+    return value as undefined /* TypeScript bug workaround */;
 }
 
 export const __testing__ = {

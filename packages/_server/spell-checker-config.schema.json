@@ -273,8 +273,30 @@
                 "type": "string"
               },
               "languageId": {
-                "description": "Sets the programming language id.",
-                "type": "string"
+                "anyOf": [
+                  {
+                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                    "type": "string"
+                  },
+                  {
+                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                    "type": "string"
+                  },
+                  {
+                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                ],
+                "description": "Sets the programming language id to match file type."
               },
               "languageSettings": {
                 "description": "Additional settings for individual programming languages and locales.",
@@ -438,8 +460,6 @@
                         },
                         {
                           "items": {
-                            "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                            "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                             "type": "string"
                           },
                           "type": "array"
@@ -1163,8 +1183,6 @@
                   },
                   {
                     "items": {
-                      "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                      "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                       "type": "string"
                     },
                     "type": "array"

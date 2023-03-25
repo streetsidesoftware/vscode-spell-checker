@@ -24,17 +24,17 @@
   "dependencies": {
     "gensequence": "^4.0.3",
     "@types/fs-extra": "^11.0.1",
-    "@cspell/cspell-types": "^6.30.2",
-    "cspell-glob": "^6.30.2",
-    "cspell-lib": "^6.30.2",
+    "@cspell/cspell-types": "^6.31.0",
+    "cspell-glob": "^6.31.0",
+    "cspell-lib": "^6.31.0",
     "fs-extra": "^11.1.0",
     "node-watch": "^0.7.3",
     "rxjs": "^7.8.0",
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8",
     "vscode-uri": "^3.0.7",
-    "@cspell/cspell-bundled-dicts": "^6.30.2",
-    "cspell-gitignore": "^6.30.2"
+    "@cspell/cspell-bundled-dicts": "^6.31.0",
+    "cspell-gitignore": "^6.31.0"
   },
   "engines": {
     "node": ">16.0.0"

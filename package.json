@@ -723,8 +723,30 @@
                   "type": "string"
                 },
                 "languageId": {
-                  "description": "Sets the programming language id.",
-                  "type": "string"
+                  "anyOf": [
+                    {
+                      "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                      "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  ],
+                  "description": "Sets the programming language id to match file type."
                 },
                 "languageSettings": {
                   "description": "Additional settings for individual programming languages and locales.",
@@ -903,8 +925,6 @@
                           },
                           {
                             "items": {
-                              "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                              "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                               "type": "string"
                             },
                             "type": "array"
@@ -1697,8 +1717,6 @@
                     },
                     {
                       "items": {
-                        "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                        "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                         "type": "string"
                       },
                       "type": "array"
@@ -2537,13 +2555,14 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
-    "@types/jest": "^29.5.0",
     "@types/jest-when": "^3.5.2",
+    "@types/jest": "^29.5.0",
     "@types/node": "^18.15.3",
+    "@types/vscode-webview": "^1.57.1",
+    "@types/vscode": "^1.76.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vscode/vsce": "^2.18.0",
-    "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
@@ -2553,24 +2572,25 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unicorn": "^46.0.0",
+    "eslint": "^8.36.0",
     "inject-markdown": "^1.5.0",
-    "jest": "^29.5.0",
     "jest-mock-vscode": "^1.3.0",
     "jest-when": "^3.5.2",
+    "jest": "^29.5.0",
     "ovsx": "^0.8.0",
     "prettier": "^2.8.4",
     "shx": "^0.3.4",
     "ts-jest": "^29.0.5",
-    "typescript": "^4.9.5",
+    "typescript": "^5.0.2",
     "vite": "^4.2.0",
     "vitest": "^0.29.3"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.30.2",
-    "@cspell/cspell-types": "^6.30.2",
+    "@cspell/cspell-bundled-dicts": "^6.31.0",
+    "@cspell/cspell-types": "^6.31.0",
     "@types/react": "^17.0.53",
     "cosmiconfig": "^8.1.2",
-    "cspell": "^6.30.2",
+    "cspell": "^6.31.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
