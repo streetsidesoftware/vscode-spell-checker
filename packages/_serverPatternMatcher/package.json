@@ -50,8 +50,8 @@
     "watch": "yarn run compile --watch",
     "webpack": "webpack -c webpack.prod.js",
     "webpack-dev": "webpack -c webpack.dev.js",
-    "test-watch": "jest --watch",
-    "test": "jest"
+    "test-watch": "vitest",
+    "test": "vitest run"
   },
   "engines": {
     "node": ">16.0.0"
