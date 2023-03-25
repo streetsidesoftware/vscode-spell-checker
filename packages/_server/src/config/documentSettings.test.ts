@@ -1,4 +1,3 @@
-import { escapeRegExp } from 'common-utils/util.js';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings, Pattern } from 'cspell-lib';
 import * as os from 'os';
