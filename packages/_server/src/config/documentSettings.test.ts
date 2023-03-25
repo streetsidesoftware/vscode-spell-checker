@@ -265,7 +265,7 @@ describe('Validate DocumentSettings', () => {
         expected: ExcludedByMatch[];
     }
 
-    const pathCspellExcludeTests = Path.resolve('sampleSourceFiles/cspell-exclude-tests.json');
+    const pathCspellExcludeTests = Path.resolve(pathWorkspaceServer, 'sampleSourceFiles/cspell-exclude-tests.json');
 
     function oc<T>(t: T): T {
         return expect.objectContaining(t);
