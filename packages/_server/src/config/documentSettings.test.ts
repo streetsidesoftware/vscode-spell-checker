@@ -297,7 +297,7 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}      | ${[]}
-        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cspell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
@@ -308,7 +308,12 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
-        expect(result).toEqual(expected);
+        const rSimplified = result
+            .map(({ glob, settings }) => ({ glob, source: settings.source }))
+            .map(({ glob, source }) => ({ glob, settings: { source: { name: source?.name, filename: source?.filename } } }));
+
+        console.log('%o', rSimplified);
+        expect(rSimplified).toEqual(expected);
     });
 
     test.each`
