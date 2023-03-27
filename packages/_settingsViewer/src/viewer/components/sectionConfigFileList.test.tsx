@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { AppState } from '../AppState';
 import { create } from 'react-test-renderer';
+import { describe, expect, it } from 'vitest';
+
 import { sampleAppState } from '../../test/fixtures/AppState';
+import { AppState } from '../AppState';
 import { SectionConfigFileList } from './sectionConfigFileList';
 
 describe('SectionConfigFileList Verification', () => {

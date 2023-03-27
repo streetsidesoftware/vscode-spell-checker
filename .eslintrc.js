@@ -86,9 +86,16 @@ const config = {
             },
         },
         {
-            files: ['**/*.test.*', '**/__mocks__/**'],
+            files: ['**/*.test.*', '**/__mocks__/**', '**/test/**', '**/test.*'],
             rules: {
                 'node/no-extraneous-import': 'off',
+            },
+        },
+        {
+            files: ['vitest.config.*'],
+            rules: {
+                'node/no-extraneous-import': 'off',
+                'import/no-unresolved': 'off',
             },
         },
         {

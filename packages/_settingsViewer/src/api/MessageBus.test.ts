@@ -1,3 +1,5 @@
+import { describe, expect, test, vi } from 'vitest';
+
 import { sampleSettings } from '../test/samples/sampleSettings';
 import { ConfigurationChangeMessage, RequestConfigurationMessage } from './message';
 import { Logger, MessageBus } from './MessageBus';
@@ -14,7 +16,7 @@ describe('Validate MessageBus', () => {
     });
 
     test('postMessage', () => {
-        const postMessageMock = jest.fn((msg: any) => loopBack(webviewApi, msg));
+        const postMessageMock = vi.fn((msg: any) => loopBack(webviewApi, msg));
         const webviewApi: WebviewApi = {
             postMessage: postMessageMock,
             onmessage: undefined,
@@ -32,8 +34,8 @@ describe('Validate MessageBus', () => {
             postMessage: (msg: any) => loopBack(webviewApi, msg),
             onmessage: undefined,
         };
-        const onRequestConfigurationMessage = jest.fn((_msg: RequestConfigurationMessage) => {});
-        const onConfigurationChangeMessage = jest.fn((_msg: ConfigurationChangeMessage) => {});
+        const onRequestConfigurationMessage = vi.fn((_msg: RequestConfigurationMessage) => {});
+        const onConfigurationChangeMessage = vi.fn((_msg: ConfigurationChangeMessage) => {});
         const logger = mockLogger();
         const bus = new MessageBus(webviewApi, logger);
         const listenerA = bus.listenFor('RequestConfigurationMessage', onRequestConfigurationMessage);
@@ -87,9 +89,9 @@ function loopBack(webviewApi: WebviewApi, msg: any): WebviewApi {
 
 function mockLogger(): Logger {
     return {
-        log: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-        debug: jest.fn(),
+        log: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+        debug: vi.fn(),
     };
 }

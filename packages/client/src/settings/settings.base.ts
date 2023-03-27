@@ -81,10 +81,11 @@ export function findInheritedTargetValue<K extends keyof CSpellUserSettings>(
 ): CSpellUserSettings[K] | undefined {
     let lastValue: CSpellUserSettings[K] | undefined = undefined;
     for (const [t, v] of [...mapTargetsToValue].reverse()) {
-        if (t === target) return lastValue;
-        lastValue = v[key] ?? lastValue;
+        if (t === target) break;
+        lastValue ??= v[key];
     }
-    return lastValue;
+
+    return lastValue as undefined; /* Work around a TypeScript bug */
 }
 
 interface RelevantTargetInfo {

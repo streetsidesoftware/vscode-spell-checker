@@ -23,7 +23,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cspell/cspell-types": "^6.30.2",
+    "@cspell/cspell-types": "^6.31.0",
     "@types/chai": "^4.3.4",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
@@ -35,8 +35,7 @@
     "cross-env": "^7.0.3",
     "glob": "^8.1.0",
     "kefir": "^3.8.8",
-    "mocha": "^10.2.0",
-    "typescript": "^4.9.5"
+    "mocha": "^10.2.0"
   },
   "peerDependenciesMeta": {},
   "dependencies": {},

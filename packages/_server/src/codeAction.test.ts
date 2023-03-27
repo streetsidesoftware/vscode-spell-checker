@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { onCodeActionHandler } from './codeActions';
 
 describe('Validate CodeAction', () => {

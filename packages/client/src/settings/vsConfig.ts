@@ -297,11 +297,11 @@ function normalizeResourceUri(uri: Uri | null | undefined): Uri | undefined {
 
 export interface FindBestConfigResult<K extends keyof CSpellUserSettings> {
     scope: Scope;
-    value: CSpellUserSettings[K];
+    value: CSpellUserSettings[K] | undefined;
 }
 
 function findBestConfig<K extends keyof CSpellUserSettings>(config: Inspect<CSpellUserSettings[K]>, scope: Scope): FindBestConfigResult<K> {
-    for (let p = scopeToOrderIndex.get(scope)!; p >= 0; p -= 1) {
+    for (let p = scopeToOrderIndex.get(scope); p !== undefined && p >= 0; p -= 1) {
         const k = scopeOrder[p];
         const v = config[k];
         if (v !== undefined) {
@@ -435,7 +435,7 @@ function mergeValues<T>(...v: T[]): T | undefined {
  * @param updateFn - A function that will return the fields to be updated.
  * @returns
  */
-export function updateConfig(
+export async function updateConfig(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
     keys: readonly ConfigKeys[],
@@ -446,8 +446,7 @@ export function updateConfig(
     const updated = updateFn(cfg);
     const config = getConfiguration(scope);
 
-    const p = Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
-    return Promise.all(p).then();
+    await Object.entries(updated).map(([key, value]) => config.update(`${extensionId}.${key}`, value, target));
 }
 
 interface UriLike {

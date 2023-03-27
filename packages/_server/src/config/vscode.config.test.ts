@@ -1,33 +1,34 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
 import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
-jest.mock('vscode-languageserver/node');
+vi.mock('vscode-languageserver/node');
 
 describe('Validate vscode config', () => {
     test('getConfiguration', async () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection);
+        const mockedWorkspace = vi.mocked(connection.workspace);
         const cfg = [{}, {}];
-        mockedCreateConnection.workspace.getConfiguration.mockResolvedValue(cfg);
+        mockedWorkspace.getConfiguration.mockResolvedValue(cfg);
         const items = [{ scopeUri: Uri.file(__filename).toString(), section: 'cSpell' }, { section: 'search' }];
         await expect(getConfiguration(connection, items)).resolves.toBe(cfg);
-        expect(mockedCreateConnection.workspace.getConfiguration).toHaveBeenLastCalledWith(items);
+        expect(mockedWorkspace.getConfiguration).toHaveBeenLastCalledWith(items);
     });
 
     test('getWorkspaceFolders', () => {
         const connection = sampleConnection();
-        const mockedCreateConnection = jest.mocked(connection);
+        const mockedWorkspace = vi.mocked(connection.workspace);
         const folders: WorkspaceFolder[] = [];
-        mockedCreateConnection.workspace.getWorkspaceFolders.mockResolvedValue(folders);
+        mockedWorkspace.getWorkspaceFolders.mockResolvedValue(folders);
         expect(getWorkspaceFolders(connection)).resolves.toBe(folders);
     });
 });
 
 const workspace: Connection['workspace'] = partialMocks<Connection['workspace']>({
-    getWorkspaceFolders: jest.fn(),
-    getConfiguration: jest.fn(),
+    getWorkspaceFolders: vi.fn(),
+    getConfiguration: vi.fn() as any,
 });
 
 const connection: Partial<Connection> = {

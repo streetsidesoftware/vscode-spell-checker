@@ -1,11 +1,12 @@
-import { escapeRegExp } from 'common-utils/util.js';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings, Pattern } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { Connection, WorkspaceFolder } from 'vscode-languageserver/node';
 import { URI as Uri } from 'vscode-uri';
 
+import { extendExpect } from '../test/test.matchers';
 import { CSpellUserSettings } from './cspellConfig';
 import {
     __testing__,
@@ -19,11 +20,13 @@ import {
 } from './documentSettings';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config';
 
-jest.mock('vscode-languageserver/node');
-jest.mock('./vscode.config');
+const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
 
-const mockGetWorkspaceFolders = jest.mocked(getWorkspaceFolders);
-const mockGetConfiguration = jest.mocked(getConfiguration);
+vi.mock('vscode-languageserver/node');
+vi.mock('./vscode.config');
+
+const mockGetWorkspaceFolders = vi.mocked(getWorkspaceFolders);
+const mockGetConfiguration = vi.mocked(getConfiguration);
 const pathWorkspaceServer = Path.resolve(Path.join(__dirname, '..', '..'));
 const pathWorkspaceRoot = Path.resolve(Path.join(pathWorkspaceServer, '..', '..'));
 const pathWorkspaceClient = Path.resolve(Path.join(pathWorkspaceServer, '..', 'client'));
@@ -264,7 +267,7 @@ describe('Validate DocumentSettings', () => {
         expected: ExcludedByMatch[];
     }
 
-    const pathCspellExcludeTests = Path.resolve('sampleSourceFiles/cspell-exclude-tests.json');
+    const pathCspellExcludeTests = Path.resolve(pathWorkspaceServer, 'sampleSourceFiles/cspell-exclude-tests.json');
 
     function oc<T>(t: T): T {
         return expect.objectContaining(t);
@@ -275,7 +278,7 @@ describe('Validate DocumentSettings', () => {
     }
 
     function matchString(s: string) {
-        return expect.stringMatching(new RegExp(`^${escapeRegExp(s)}$`, 'i'));
+        return expectToEqualCaseInsensitive(s);
     }
 
     function ex(cfgFile: string, glob: string, root?: string) {
@@ -294,7 +297,7 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}      | ${[]}
-        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cSpell.json', 'package-lock.json', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cspell.json', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
@@ -305,7 +308,12 @@ describe('Validate DocumentSettings', () => {
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
-        expect(result).toEqual(expected);
+        const rSimplified = result
+            .map(({ glob, settings }) => ({ glob, source: settings.source }))
+            .map(({ glob, source }) => ({ glob, settings: { source: { name: source?.name, filename: source?.filename } } }));
+
+        console.log('%o', rSimplified);
+        expect(rSimplified).toEqual(expected);
     });
 
     test.each`

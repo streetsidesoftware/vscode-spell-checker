@@ -1,5 +1,6 @@
 import * as FS from 'fs';
 import * as Path from 'path';
+import { describe, expect, test } from 'vitest';
 
 import {
     isTextLikelyMinified,

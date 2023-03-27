@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validate Commands clientCommands.addWordsToConfigFileFromServer 1`] = `
+exports[`Validate Commands > clientCommands.addWordsToConfigFileFromServer 1`] = `
 {
   "arguments": [
     [
@@ -18,7 +18,7 @@ exports[`Validate Commands clientCommands.addWordsToConfigFileFromServer 1`] = `
 }
 `;
 
-exports[`Validate Commands clientCommands.addWordsToDictionaryFileFromServer 1`] = `
+exports[`Validate Commands > clientCommands.addWordsToDictionaryFileFromServer 1`] = `
 {
   "arguments": [
     [
@@ -36,7 +36,7 @@ exports[`Validate Commands clientCommands.addWordsToDictionaryFileFromServer 1`]
 }
 `;
 
-exports[`Validate Commands clientCommands.addWordsToVSCodeSettingsFromServer 1`] = `
+exports[`Validate Commands > clientCommands.addWordsToVSCodeSettingsFromServer 1`] = `
 {
   "arguments": [
     [

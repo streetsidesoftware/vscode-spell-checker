@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig';
 
 describe('cspellConfig', () => {
@@ -97,7 +99,7 @@ describe('Verify all config items are accounted for in configuration.', () => {
     type FullConfig = Required<UnionToIntersection<ArrayEntry<SpellCheckerSettingsVSCode>>>;
     type FlatConfig = Required<PartialFlatConfig>;
 
-    it('Just make sure it compiles', () => {
+    test('Just make sure it compiles', () => {
         // If these functions do not compile, then there is a missing field.
         function toFull(c: FlatConfig): FullConfig {
             return c;
