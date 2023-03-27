@@ -18,23 +18,23 @@
     "iconv-lite": "^0.6.3",
     "lorem-ipsum": "^2.0.8",
     "micromatch": "^4.0.5",
-    "minimatch": "^7.4.2",
+    "minimatch": "^7.4.3",
     "ts-json-schema-generator": "^1.2.0"
   },
   "dependencies": {
     "gensequence": "^4.0.3",
     "@types/fs-extra": "^11.0.1",
-    "@cspell/cspell-types": "^6.31.0",
-    "cspell-glob": "^6.31.0",
-    "cspell-lib": "^6.31.0",
-    "fs-extra": "^11.1.0",
+    "@cspell/cspell-types": "^6.31.1",
+    "cspell-glob": "^6.31.1",
+    "cspell-lib": "^6.31.1",
+    "fs-extra": "^11.1.1",
     "node-watch": "^0.7.3",
     "rxjs": "^7.8.0",
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8",
     "vscode-uri": "^3.0.7",
-    "@cspell/cspell-bundled-dicts": "^6.31.0",
-    "cspell-gitignore": "^6.31.0"
+    "@cspell/cspell-bundled-dicts": "^6.31.1",
+    "cspell-gitignore": "^6.31.1"
   },
   "engines": {
     "node": ">16.0.0"
