@@ -577,7 +577,7 @@ function extractGlobDef(match: GlobMatchRule): GlobDef {
 function areGlobsEqual(globA: Glob, globB: Glob): boolean {
     globA = toGlobDef(globA);
     globB = toGlobDef(globB);
-    return globA.glob === globB.glob && globA.root === globB.root;
+    return globA.glob === globB.glob && globA.root?.toLowerCase() === globB.root?.toLowerCase();
 }
 
 function toGlobDef(g: Glob): GlobDef {
