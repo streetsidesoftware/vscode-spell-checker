@@ -312,7 +312,7 @@ describe('Validate DocumentSettings', () => {
             .map(({ glob, settings }) => ({ glob, source: settings.source }))
             .map(({ glob, source }) => ({ glob, settings: { source: { name: source?.name, filename: source?.filename } } }));
 
-        console.log('%o', rSimplified);
+        // console.log('%o', rSimplified);
         expect(rSimplified).toEqual(expected);
     });
 
