@@ -94,8 +94,7 @@ If anything shows up, then the port is still locked.
 
 Improvements to existing word lists and new word lists are welcome.
 
-All dictionaries are being migrated to [cspell-dicts](https://github.com/Jason3S/cspell-dicts).
-Some dictionaries are still located at [cspell](https://github.com/Jason3S/cspell)/[dictionaries](https://github.com/streetsidesoftware/cspell/tree/master/packages/cspell-lib/dictionaries).
+All dictionaries have been migrated to [cspell-dicts](https://github.com/streetsidesoftware/cspell-dicts).
 
 ### Format for Dictionary Word lists
 
