@@ -1522,9 +1522,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.53":
-  version "17.0.53"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.53.tgz#10d4d5999b8af3d6bc6a9369d7eb953da82442ab"
-  integrity sha512-1yIpQR2zdYu1Z/dc1OxC+MA6GR240u3gcnP4l6mvj/PJiVaqHsQPmWttsvHsfnhfPbU2FuGmo0wSITPygjBmsw==
+  version "17.0.54"
+  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.54.tgz#3ce9ab14e10e6bd1b02e3953b0c9d41e8161e0d7"
+  integrity sha512-yBon9aJ+pVyP0dzfs4sR2DOseDi6fDnZQHqFaprzDzFgxDLkUhL/Frjf2egvpdlVtssWH8k3YAgvaGQXFu+4Kw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6311,10 +6311,17 @@ mobx-react-devtools@^6.1.1:
   resolved "https://registry.npmjs.org/mobx-react-devtools/-/mobx-react-devtools-6.1.1.tgz#a462b944085cf11ff96fc937d12bf31dab4c8984"
   integrity sha512-nc5IXLdEUFLn3wZal65KF3/JFEFd+mbH4KTz/IG5BOPyw7jo8z29w/8qm7+wiCyqVfUIgJ1gL4+HVKmcXIOgqA==
 
-mobx-react-lite@^3.4.0, mobx-react-lite@^3.4.3:
+mobx-react-lite@^3.4.0:
   version "3.4.3"
   resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.4.3.tgz#3a4c22c30bfaa8b1b2aa48d12b2ba811c0947ab7"
   integrity sha512-NkJREyFTSUXR772Qaai51BnE1voWx56LOL80xG7qkZr6vo8vEaLF3sz1JNUVh+rxmUzxYaqOhfuxTfqUh0FXUg==
+
+mobx-react-lite@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-4.0.2.tgz#bf4df238d17491cddb1021a49f79f8af50ed4260"
+  integrity sha512-5o7for7/5QLpgzKvA3ZjrO8TmfkZgVcSjwYalGlW6OkK/fCxmVlwbFeoWJQzWbkWSxlcaatTO0j4riAUvWoqMg==
+  dependencies:
+    use-sync-external-store "^1.2.0"
 
 mobx-react@^7.6.0:
   version "7.6.0"
@@ -8362,6 +8369,11 @@ url-join@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/url-join/-/url-join-4.0.1.tgz#b642e21a2646808ffa178c4c5fda39844e12cde7"
   integrity sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==
+
+use-sync-external-store@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
