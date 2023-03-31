@@ -55,6 +55,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 ## Add-On Dictionaries
 
 <!--- cspell:disable --->
+
 <!--- @@inject: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->
 
 ### Language Dictionaries
