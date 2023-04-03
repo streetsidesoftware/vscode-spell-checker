@@ -10,7 +10,7 @@ on:
       - "docs/**"
 
 jobs:
-  build:
+  run-integration-tests:
     strategy:
       fail-fast: false
       matrix:
