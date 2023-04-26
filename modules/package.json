@@ -18,7 +18,7 @@
     "iconv-lite": "^0.6.3",
     "lorem-ipsum": "^2.0.8",
     "micromatch": "^4.0.5",
-    "minimatch": "^7.4.4",
+    "minimatch": "^7.4.6",
     "ts-json-schema-generator": "^1.2.0"
   },
   "dependencies": {

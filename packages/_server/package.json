@@ -35,7 +35,7 @@
     "iconv-lite": "^0.6.3",
     "lorem-ipsum": "^2.0.8",
     "micromatch": "^4.0.5",
-    "minimatch": "^7.4.4",
+    "minimatch": "^7.4.6",
     "node-watch": "^0.7.3",
     "rxjs": "^7.8.0",
     "ts-json-schema-generator": "^1.2.0",
@@ -43,8 +43,8 @@
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8",
     "vscode-uri": "^3.0.7",
-    "webpack": "^5.77.0",
-    "webpack-cli": "^5.0.1"
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.31.1",
