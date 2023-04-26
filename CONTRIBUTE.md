@@ -18,10 +18,11 @@ For the readme on the plugin: [README](./packages/client/README.md).
 
 1. `npm install -g yarn`
 2. `yarn install`
-3. Launch vscode: `code Spell Checker.code-workspace`
-4. Run the extension from vscode:
+3. `yarn build`
+4. Launch vscode: `code Spell Checker.code-workspace`
+5. Run the extension from vscode:
     1. `Debug Tab`
-    1. Choose `Launch Extension` configuration.
+    1. Choose `Client: Launch Extension (Spell Checker Root)` configuration.
     1. `F5`
 
 <sup>\*</sup> Requires Node >= 14
