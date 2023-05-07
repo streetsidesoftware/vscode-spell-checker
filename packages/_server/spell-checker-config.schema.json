@@ -735,7 +735,7 @@
       "order": 3,
       "properties": {
         "cSpell.allowedSchemas": {
-          "default": ["file", "gist", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"],
+          "default": ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"],
           "items": {
             "type": "string"
           },

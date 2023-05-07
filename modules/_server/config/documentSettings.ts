@@ -80,7 +80,7 @@ const defaultExclude: Glob[] = [
     '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
-const defaultAllowedSchemes = ['gist', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
+const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
 const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();

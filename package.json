@@ -1219,6 +1219,7 @@
             "default": [
               "file",
               "gist",
+              "repo",
               "sftp",
               "untitled",
               "vscode-notebook-cell",
