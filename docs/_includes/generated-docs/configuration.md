@@ -666,7 +666,7 @@ Description
     - `vscode-userdata` - Needed to spell check `.code-snippets`
 
 Default
-: [ _`"file"`_, _`"gist"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_ ]
+: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_ ]
 
 ---
 

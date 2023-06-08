@@ -1,6 +1,6 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-export const supportedSchemes = ['gist', 'file', 'sftp', 'untitled'];
+export const supportedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled'];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
 
 export function isSupportedUri(uri?: Uri): boolean {
