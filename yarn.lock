@@ -389,9 +389,9 @@
   integrity sha512-8czAa/Mh96wu2xr0RXQEGMTBUGkTvYn/Pb0o+gqOO1YW+poXGQc3gx0YPqILDryP/KCERrNvkWUJz3iGbvwC2A==
 
 "@cspell/dict-companies@^3.0.9":
-  version "3.0.14"
-  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-3.0.14.tgz#414ef72fecbd4572912ce8ab14ef8963dc62dc1d"
-  integrity sha512-mVNJqi6CAAeD8osGqxbozGAkmG9mZ8rMvUnmR1z2LmS4jxGBEDjYcHj7ii5buoP3G5gWnLBtYP+2ehp+5zuwDw==
+  version "3.0.15"
+  resolved "https://registry.npmjs.org/@cspell/dict-companies/-/dict-companies-3.0.15.tgz#ff1d8b712a38cabc4535b4bb99338f81efe3c0a1"
+  integrity sha512-SbSy8/YjRHNqAx8H+r5C2FxYbmW5bTDa1acqWIJxUkwACJIzwwOrtK9WWQVhiTtOGo7BVYXydXDgCBFf2H8+9A==
 
 "@cspell/dict-cpp@^5.0.2":
   version "5.0.3"
@@ -417,6 +417,11 @@
   version "2.0.2"
   resolved "https://registry.npmjs.org/@cspell/dict-dart/-/dict-dart-2.0.2.tgz#714285f4f8bd304c1c477779ccbbfae5949819d7"
   integrity sha512-jigcODm7Z4IFZ4vParwwP3IT0fIgRq/9VoxkXfrxBMsLBGGM2QltHBj7pl+joX+c4cOHxfyZktGJK1B1wFtR4Q==
+
+"@cspell/dict-data-science@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@cspell/dict-data-science/-/dict-data-science-1.0.1.tgz#ba32e3222086b3474f7677dc90881623a5891583"
+  integrity sha512-ZKO27PsalCVpOOwOe6FjoXKXk+qOnmk0aJyMugSVk/1Azu2GmoAJOiZfIV+b3BSB5/58twiABM/K/+JFXep0dA==
 
 "@cspell/dict-django@^4.0.2":
   version "4.0.2"
@@ -479,9 +484,9 @@
   integrity sha512-n1AxyX5Kgxij/sZFkxFJlzn3K9y/sCcgVPg/vz4WNJ4K9YeTsUmyGLA2OQI7d10GJeiuAo2AP1iZf2A8j9aj2w==
 
 "@cspell/dict-golang@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@cspell/dict-golang/-/dict-golang-6.0.1.tgz#86496bac8566fa97015f62cc81e6ec96bd98500f"
-  integrity sha512-Z19FN6wgg2M/A+3i1O8qhrGaxUUGOW8S2ySN0g7vp4HTHeFmockEPwYx7gArfssNIruw60JorZv+iLJ6ilTeow==
+  version "6.0.2"
+  resolved "https://registry.npmjs.org/@cspell/dict-golang/-/dict-golang-6.0.2.tgz#dcba58b9e658c1cc713c19965a358185d15d1987"
+  integrity sha512-5pyZn4AAiYukAW+gVMIMVmUSkIERFrDX2vtPDjg8PLQUhAHWiVeQSDjuOhq9/C5GCCEZU/zWSONkGiwLBBvV9A==
 
 "@cspell/dict-haskell@^4.0.1":
   version "4.0.1"
@@ -549,9 +554,11 @@
   integrity sha512-baKkbs/WGEV2lCWZoL0KBPh3uiPcul5GSDwmXEBAsR5McEW52LF94/b7xWM0EmSAc/y8ODc5LnPYC7RDRLi6LQ==
 
 "@cspell/dict-python@^4.0.2":
-  version "4.0.8"
-  resolved "https://registry.npmjs.org/@cspell/dict-python/-/dict-python-4.0.8.tgz#867a11c7eafa166290f31607de1a65f98af2000c"
-  integrity sha512-KyQZaZRHlaoPxufuyDXvFLuSGGf19BWbfMSWRihWxm330Upz/YCLtm2qY6nW2KSdV5IbUzUwTm3tGqPp7hXgoQ==
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/@cspell/dict-python/-/dict-python-4.1.0.tgz#f9102d847dd7c5c35360ea00a889b5a13324d86a"
+  integrity sha512-H4g3c25axmm0rvcZ/Dy+r+nKbhIeVdhe0OxlOGH8rolDiiP12ulh4Asnz07kKvYZ55sGCtXqzJ3YTzExwIR6Tw==
+  dependencies:
+    "@cspell/dict-data-science" "^1.0.0"
 
 "@cspell/dict-r@^2.0.1":
   version "2.0.1"
@@ -574,9 +581,9 @@
   integrity sha512-ph0twaRoV+ylui022clEO1dZ35QbeEQaKTaV2sPOsdwIokABPIiK09oWwGK9qg7jRGQwVaRPEq0Vp+IG1GpqSQ==
 
 "@cspell/dict-software-terms@^3.1.6":
-  version "3.1.13"
-  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.1.13.tgz#1269f832efd24725b1bb114a42be3ffaab5952e2"
-  integrity sha512-JmqYIZS9DtTPE+/+xMyy7ukDmywFpahDspGkAMQpwtKztUHRBCNOhU7pNfZrWD7qAUcl3uTQSqoHRPFlMELi3g==
+  version "3.1.14"
+  resolved "https://registry.npmjs.org/@cspell/dict-software-terms/-/dict-software-terms-3.1.14.tgz#c80068b9e8a8e90ad00b54743835dc0cb502b20e"
+  integrity sha512-KLSCodpBkCNPkFNp3eg7cEQCHSEqZnEqwt+obIM2o0zR4InrQpmtdIH7vYhUBojGe4r/LqKzPujXODeNvO/9aw==
 
 "@cspell/dict-sql@^2.1.0":
   version "2.1.0"
