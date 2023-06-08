@@ -1605,10 +1605,10 @@
   resolved "https://registry.npmjs.org/@types/vscode-webview/-/vscode-webview-1.57.1.tgz#0bf2c9d57698b99be2bb2813272169f7f62eb714"
   integrity sha512-ghW5SfuDmsGDS2A4xkvGsLwDRNc3Vj5rS6rPOyPm/IryZuf3wceZKxgYaUoW+k9f0f/CB7y2c1rRsdOWZWn0PQ==
 
-"@types/vscode@1.76.0":
-  version "1.76.0"
-  resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.76.0.tgz#967c0fbe09921818bbf201f1cbcb81b981c6249c"
-  integrity sha512-CQcY3+Fe5hNewHnOEAVYj4dd1do/QHliXaknAEYSXx2KEHUzFibDZSKptCon+HPgK55xx20pR+PBJjf0MomnBA==
+"@types/vscode@1.78.1":
+  version "1.78.1"
+  resolved "https://registry.npmjs.org/@types/vscode/-/vscode-1.78.1.tgz#027dba038c9e4c3f8e83570e1494aab679030485"
+  integrity sha512-wEA+54axejHu7DhcUfnFBan1IqFD1gBDxAFz8LoX06NbNDMRJv/T6OGthOs52yZccasKfN588EyffHWABkR0fg==
 
 "@types/ws@^8.5.1":
   version "8.5.4"
