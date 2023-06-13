@@ -1532,9 +1532,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^17", "@types/react@^17.0.44", "@types/react@^17.0.60":
-  version "17.0.60"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.60.tgz#a4a97dcdbebad76612c188fc06440e4995fd8ad2"
-  integrity sha512-pCH7bqWIfzHs3D+PDs3O/COCQJka+Kcw3RnO9rFA2zalqoXg7cNjJDh6mZ7oRtY1wmY4LVwDdAbA1F7Z8tv3BQ==
+  version "17.0.61"
+  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.61.tgz#e9c790bd9000bb6c16c293ea70daebc36bb15b1d"
+  integrity sha512-bAb4j3LH2FLMCmZWow7XIKTt51+duiDjjfzR6gjhqT3ZJn9A20G9BuXELkhmM6dI6ahNpDqyL4eUAJVmR0b4JA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -4414,10 +4414,10 @@ html-minifier-terser@^6.0.2:
     relateurl "^0.2.7"
     terser "^5.10.0"
 
-html-webpack-plugin@^5.5.1:
-  version "5.5.1"
-  resolved "https://registry.npmjs.org/html-webpack-plugin/-/html-webpack-plugin-5.5.1.tgz#826838e31b427f5f7f30971f8d8fa2422dfa6763"
-  integrity sha512-cTUzZ1+NqjGEKjmVgZKLMdiFg3m9MdRXkZW2OEe69WYVi5ONLMmlnSZdXzGGMOq0C8jGDrL6EWyEDDUioHO/pA==
+html-webpack-plugin@^5.5.3:
+  version "5.5.3"
+  resolved "https://registry.npmjs.org/html-webpack-plugin/-/html-webpack-plugin-5.5.3.tgz#72270f4a78e222b5825b296e5e3e1328ad525a3e"
+  integrity sha512-6YrDKTuqaP/TquFH7h4srYWsZx+x6k6+FbsTm0ziCwGHDP78Unr1r9F/H4+sGmMbX08GQcJ+K64x55b+7VM/jg==
   dependencies:
     "@types/html-minifier-terser" "^6.0.0"
     html-minifier-terser "^6.0.2"

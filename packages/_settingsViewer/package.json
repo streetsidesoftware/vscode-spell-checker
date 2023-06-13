@@ -28,7 +28,7 @@
     "browser-resolve": "^2.0.0",
     "clone-deep": "^4.0.1",
     "eslint-plugin-react": "^7.32.2",
-    "html-webpack-plugin": "^5.5.1",
+    "html-webpack-plugin": "^5.5.3",
     "locale-resolver": "*",
     "mobx": "^6.9.0",
     "mobx-react": "^7.6.0",
