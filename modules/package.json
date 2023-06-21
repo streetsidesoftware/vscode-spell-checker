@@ -22,7 +22,7 @@
     "ts-json-schema-generator": "^1.2.0"
   },
   "dependencies": {
-    "gensequence": "^4.0.3",
+    "gensequence": "^5.0.2",
     "@types/fs-extra": "^11.0.1",
     "@cspell/cspell-types": "^6.31.1",
     "cspell-glob": "^6.31.1",
