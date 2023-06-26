@@ -25,7 +25,7 @@
   "dependencies": {
     "@yarnpkg/lockfile": "^1.1.0",
     "chalk": "^4.1.2",
-    "commander": "^10.0.1",
+    "commander": "^11.0.0",
     "find-up": "^6.3.0",
     "glob": "^8.1.0",
     "semver": "^7.5.3"
