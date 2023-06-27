@@ -2558,7 +2558,7 @@
     "@tsconfig/node16": "^1.0.4",
     "@types/jest": "^29.5.2",
     "@types/jest-when": "^3.5.2",
-    "@types/node": "^18.16.18",
+    "@types/node": "^20.3.2",
     "@types/vscode": "1.76.0",
     "@types/vscode-webview": "^1.57.1",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
