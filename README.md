@@ -132,6 +132,7 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 -   Text
 -   TypeScript
 -   YAML
+-   SQL
 
 ### Enable / Disable File Types
 
@@ -424,7 +425,8 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
         "plaintext",
         "typescript",
         "typescriptreact",
-        "yml"
+        "yml",
+        "sql"
     ],
 
     // Enable / Disable the spell checker.
