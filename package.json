@@ -2584,7 +2584,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6",
     "vite": "^4.4.7",
-    "vitest": "^0.32.4"
+    "vitest": "^0.33.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.31.2",
