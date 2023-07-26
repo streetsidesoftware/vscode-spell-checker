@@ -31,7 +31,7 @@
     "html-webpack-plugin": "^5.5.3",
     "locale-resolver": "*",
     "mobx": "^6.10.0",
-    "mobx-react": "^7.6.0",
+    "mobx-react": "^9.0.0",
     "mobx-react-devtools": "^6.1.1",
     "mobx-react-lite": "^3.4.3",
     "path-browserify": "^1.0.1",
