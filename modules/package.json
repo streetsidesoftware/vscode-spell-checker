@@ -28,7 +28,7 @@
     "cspell-glob": "^6.31.2",
     "cspell-lib": "^6.31.2",
     "fs-extra": "^11.1.1",
-    "node-watch": "^0.7.3",
+    "node-watch": "^0.7.4",
     "rxjs": "^7.8.1",
     "vscode-languageserver": "^8.1.0",
     "vscode-languageserver-textdocument": "^1.0.8",
