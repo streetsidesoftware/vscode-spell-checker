@@ -21,7 +21,7 @@ import {
     readSettingsFiles as cspellReadSettingsFiles,
     searchForConfig,
 } from 'cspell-lib';
-import * as fs from 'fs-extra';
+import * as fs from 'fs';
 import { genSequence, Sequence } from 'gensequence';
 import * as os from 'os';
 import * as path from 'path';

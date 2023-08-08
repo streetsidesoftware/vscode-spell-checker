@@ -1,5 +1,5 @@
 import { loadConfig } from 'cspell-lib';
-import * as fs from 'fs-extra';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import { beforeAll, describe, expect, test } from 'vitest';
 
@@ -10,8 +10,8 @@ const sampleFilesDir = path.resolve(folderDir, 'sampleSourceFiles');
 const tempDir = path.resolve(folderDir, 'temp');
 
 describe('Validate Config Watcher', () => {
-    beforeAll(() => {
-        return fs.mkdirp(tempDir);
+    beforeAll(async () => {
+        await fs.mkdir(tempDir, { recursive: true });
     });
 
     test('Collect sources from sample config', async () => {

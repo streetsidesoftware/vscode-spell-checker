@@ -1,7 +1,7 @@
 import { Uri } from 'vscode';
 
 import { CSpellUserSettings } from '../client';
-import { fsRemove, getPathToTemp, getUriToSample, mkdirp, oc, readFile, writeFile } from '../test/helpers';
+import { fsRemove, getPathToTemp, getUriToSample, mkdirUri, oc, readFile, writeFile } from '../test/helpers';
 import { unique } from '../util';
 import * as CSS from './CSpellSettings';
 import { readSettings, writeSettings } from './CSpellSettings';
@@ -147,7 +147,7 @@ describe('Validate CSpellSettings functions', () => {
         ${'cspell.json'}  | ${'json'}  | ${e(sm(/"json".*unsupported format:.*cspell.json/))}
     `('addWordsToCustomDictionary_failures "$name" $file', async ({ file, name, error }) => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_failures');
-        await mkdirp(pathUri);
+        await mkdirUri(pathUri);
         const dict = { name, uri: Uri.joinPath(pathUri, file) };
         const words = ['one', 'two', 'three'];
         const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
@@ -161,7 +161,7 @@ describe('Validate CSpellSettings functions', () => {
         const pathUri = getPathToTemp('addWordsToCustomDictionary_cannot_write');
         const dict = { name, uri: Uri.joinPath(pathUri, file) };
         // Make the file into a directory to force the error.
-        await mkdirp(dict.uri);
+        await mkdirUri(dict.uri);
         const words = ['one', 'two', 'three'];
         const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
         await expect(dictTarget.addWords(words)).rejects.toEqual(error);
