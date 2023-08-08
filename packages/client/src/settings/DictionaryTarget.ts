@@ -25,7 +25,10 @@ export interface DictionaryTargetFile extends DictionaryTarget {
 
 class DictionaryTargetFileInstance implements DictionaryTargetFile {
     readonly name: string;
-    constructor(readonly uri: Uri, name?: string) {
+    constructor(
+        readonly uri: Uri,
+        name?: string,
+    ) {
         this.name = name ?? uriToName(uri);
     }
 

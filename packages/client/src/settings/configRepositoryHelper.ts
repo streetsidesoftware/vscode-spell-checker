@@ -34,7 +34,7 @@ export function configTargetToConfigRepo(target: ClientConfigTarget): ConfigRepo
             return createVSCodeConfigRepository(
                 dictionaryScopeToConfigurationTarget(target.scope),
                 target.configScope || target.docUri,
-                !!target.useMerge
+                !!target.useMerge,
             );
     }
 }
@@ -65,7 +65,7 @@ export function applyUpdateToConfigTargets<K extends ConfigKeys>(updater: Config
  */
 export function readFromConfigTargets<K extends ConfigKeys>(
     key: K,
-    targets: ClientConfigTarget[]
+    targets: ClientConfigTarget[],
 ): Promise<[ClientConfigTarget, Pick<CSpellUserSettings, K>][]> {
     type ReadFromConfigTargetsResultItem = [ClientConfigTarget, Pick<CSpellUserSettings, K>];
 

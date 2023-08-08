@@ -74,7 +74,7 @@ describe('infoHelper', () => {
                     uri: expect.stringContaining('cspell-words.txt'),
                     uriName: expect.stringContaining('cspell-words.txt'),
                 },
-            ])
+            ]),
         );
     });
 

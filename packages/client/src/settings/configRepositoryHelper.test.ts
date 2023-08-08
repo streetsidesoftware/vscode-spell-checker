@@ -18,7 +18,7 @@ describe('Validate configRepositoryHelper', () => {
         ({ target, expected }: { target: ClientConfigTarget; expected: ConfigRepository | undefined }) => {
             const r = configTargetToConfigRepo(target);
             expect(r).toEqual(expected);
-        }
+        },
     );
 
     test('configTargetToConfigRepo Unknown config', () => {

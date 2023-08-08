@@ -138,7 +138,7 @@ describe('Validate DocumentSettings', () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         mockGetConfiguration.mockReturnValue(
-            Promise.resolve([{ ...cspellConfigInVsCode, workspaceRootPath: '${workspaceFolder:client}' }, {}])
+            Promise.resolve([{ ...cspellConfigInVsCode, workspaceRootPath: '${workspaceFolder:client}' }, {}]),
         );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
@@ -164,7 +164,7 @@ describe('Validate DocumentSettings', () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         mockGetConfiguration.mockReturnValue(
-            Promise.resolve([{ ...cspellConfigInVsCode, enableFiletypes: ['!typescript', '!javascript', 'pug'] }, {}])
+            Promise.resolve([{ ...cspellConfigInVsCode, enableFiletypes: ['!typescript', '!javascript', 'pug'] }, {}]),
         );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
@@ -241,7 +241,7 @@ describe('Validate DocumentSettings', () => {
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         const files = docSettings.extractCSpellConfigurationFiles(settings);
         expect(files.map((f) => f.toString())).toEqual(
-            expect.arrayContaining([Uri.file(Path.join(pathRepoRoot, 'cspell.json')).toString()])
+            expect.arrayContaining([Uri.file(Path.join(pathRepoRoot, 'cspell.json')).toString()]),
         );
     });
 
@@ -374,7 +374,7 @@ describe('Validate DocumentSettings', () => {
             const configUris = configs.map((u) => Uri.parse(u));
             const result = debugExports.filterConfigFilesToMatchInheritedPathOfFile(configUris, Uri.parse(filename));
             expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => u.toLowerCase()));
-        }
+        },
     );
 
     interface FindCSpellConfigurationFilesForUriTest {
@@ -433,7 +433,7 @@ describe('Validate RegExp corrections', () => {
         const defaultSettings = cspell.getDefaultSettings();
         // Make sure it doesn't change the defaults.
         expect(defaultSettings.patterns?.map((p) => p.pattern).map(debugExports.fixRegEx)).toEqual(
-            defaultSettings.patterns?.map((p) => p.pattern)
+            defaultSettings.patterns?.map((p) => p.pattern),
         );
         const sampleRegEx: Pattern[] = ['/#.*/', '/"""(.*?\\n?)+?"""/g', "/'''(.*?\\n?)+?'''/g", 'strings'];
         const expectedRegEx: Pattern[] = ['/#.*/', '/(""")[^\\1]*?\\1/g', "/(''')[^\\1]*?\\1/g", 'strings'];

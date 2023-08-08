@@ -207,7 +207,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         workspace.onDidChangeConfiguration(onDidChangeConfiguration),
         workspace.onDidCloseTextDocument(updateStatusBar),
         vscode.languages.onDidChangeDiagnostics(onDidChangeDiag),
-        sbCheck
+        sbCheck,
     );
 
     if (window.activeTextEditor) {

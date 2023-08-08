@@ -19,7 +19,7 @@ export { CSpellUserSettings, normalizeLocale } from '../client';
 
 export function readConfigTargetValues<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
-    key: K
+    key: K,
 ): Promise<[ClientConfigTarget, Pick<CSpellUserSettings, K>][]> {
     return readFromConfigTargets(key, targets);
 }
@@ -32,7 +32,7 @@ export function applyToConfig<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
     key: K,
     value: ApplyValueOrFn<K>,
-    filter?: ConfigTargetMatchPattern
+    filter?: ConfigTargetMatchPattern,
 ): Promise<void> {
     targets = filter ? filterClientConfigTargets(targets, filter) : targets;
     const updater = configUpdaterForKey<K>(key, value);
@@ -50,7 +50,7 @@ export function orderTargetsLocalToGlobal(targets: ClientConfigTarget[]): Client
 export async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
     key: K,
-    value: ApplyValueOrFn<K>
+    value: ApplyValueOrFn<K>,
 ): Promise<void> {
     const t = await quickPickBestMatchTarget(targets, patternMatchNoDictionaries);
     if (!t || !t.length) return;
@@ -60,7 +60,7 @@ export async function setConfigFieldQuickPickBestTarget<K extends keyof CSpellUs
 export async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings>(
     targets: ClientConfigTarget[],
     key: K,
-    value: ApplyValueOrFn<K>
+    value: ApplyValueOrFn<K>,
 ): Promise<void> {
     const t = await quickPickTargets(targets);
     if (!t || !t.length) return;
@@ -77,7 +77,7 @@ export async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings
 export function findInheritedTargetValue<K extends keyof CSpellUserSettings>(
     mapTargetsToValue: Map<ClientConfigTarget, CSpellUserSettings>,
     target: ClientConfigTarget,
-    key: K
+    key: K,
 ): CSpellUserSettings[K] | undefined {
     let lastValue: CSpellUserSettings[K] | undefined = undefined;
     for (const [t, v] of [...mapTargetsToValue].reverse()) {

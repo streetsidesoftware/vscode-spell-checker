@@ -145,8 +145,8 @@ export class AppState implements State {
                 languages: [...infos.values()].sort(
                     compareEach(
                         compareBy((info) => !info.dictionaries.length),
-                        compareBy('name')
-                    )
+                        compareBy('name'),
+                    ),
                 ),
                 inherited,
             };

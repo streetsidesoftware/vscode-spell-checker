@@ -18,7 +18,7 @@ export function getCSpellDiags(docUri: Uri | undefined): Diagnostic[] {
 export function extractMatchingDiagText(
     doc: TextDocument | undefined,
     selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
+    diags: Diagnostic[] | undefined,
 ): string | undefined {
     if (!doc || !selection || !diags) return undefined;
     return extractMatchingDiagTexts(doc, selection, diags)?.filter(uniqueFilter()).join(' ');
@@ -27,7 +27,7 @@ export function extractMatchingDiagText(
 export function extractMatchingDiagTexts(
     doc: TextDocument | undefined,
     selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
+    diags: Diagnostic[] | undefined,
 ): string[] | undefined {
     if (!doc || !diags) return undefined;
     const ranges = extractMatchingDiagRanges(doc, selection, diags);
@@ -37,7 +37,7 @@ export function extractMatchingDiagTexts(
 export function extractMatchingDiagRanges(
     doc: TextDocument | undefined,
     selection: Selection | undefined,
-    diags: Diagnostic[] | undefined
+    diags: Diagnostic[] | undefined,
 ): Range[] | undefined {
     if (!doc || !diags) return undefined;
     const selText = selection && doc.getText(selection);
@@ -56,7 +56,7 @@ export function extractMatchingDiagRanges(
 function determineWordRangeToAddToDictionaryFromSelection(
     selectedText: string | undefined,
     selection: Selection | undefined,
-    diagRange: Range
+    diagRange: Range,
 ): Range | undefined {
     if (!selection || selectedText === undefined || diagRange.contains(selection)) return diagRange;
 

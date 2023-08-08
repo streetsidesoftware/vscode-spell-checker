@@ -7,7 +7,7 @@ describe('settings.enable', () => {
 
     test('setEnableSpellChecking empty', async () => {
         await expect(setEnableSpellChecking({ targets: [], scopes: [] }, true)).rejects.toEqual(
-            new Error('No matching configuration found.')
+            new Error('No matching configuration found.'),
         );
     });
 });

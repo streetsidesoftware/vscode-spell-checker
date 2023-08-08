@@ -67,17 +67,17 @@ const langCodesMap = new Map<string, LangCountryPair>(
             lang: code.replace(/-.*/, ''),
         };
         return [code, lcp] as const;
-    })
+    }),
 );
 
 const languageInfoMap = new Map<string, LangInfo>(
-    [...langCodesMap.values()].map(({ lang, language }) => [lang, { lang, language }] as const)
+    [...langCodesMap.values()].map(({ lang, language }) => [lang, { lang, language }] as const),
 );
 languageInfoMap.set('lorem', { lang: 'lorem', language: 'Lorem-Ipsum' });
 languageInfoMap.set('lorem-ipsum', { lang: 'lorem-ipsum', language: 'Lorem-Ipsum' });
 
 const countryInfoMap = new Map<string, CountryInfo>(
-    [...langCodesMap.values()].map(({ locale, country }) => [locale, { locale, country }] as const)
+    [...langCodesMap.values()].map(({ locale, country }) => [locale, { locale, country }] as const),
 );
 
 const langScriptsMap = new Map<string, ScriptInfo>(scriptCodes.map(([script, scriptName]) => [script, { script, scriptName }]));

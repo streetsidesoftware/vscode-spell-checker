@@ -125,7 +125,7 @@ function execMatch(worker: RegExpWorker, text: string, regexp: RegExp): Promise<
 
 function toExecMatchRegExpResultTimeout(
     regexp: RegExp,
-    error: any | TimeoutError
+    error: any | TimeoutError,
 ): ExecMatchRegExpResultTimeout | Promise<ExecMatchRegExpResultTimeout> {
     if (!isTimeoutError(error)) return Promise.reject(error);
     return {

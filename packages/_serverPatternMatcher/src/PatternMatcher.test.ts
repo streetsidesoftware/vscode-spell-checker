@@ -31,7 +31,7 @@ describe('Validate PatternMatcher', () => {
         const result = await matcher.matchPatternsInText(
             [{ name: 'email', pattern: /(?<![\w.+\-_])[\w.+\-_]+@[\w.+\-_]+/g.toString() }],
             sampleText,
-            settings
+            settings,
         );
         const r = mapResults(result);
         expect(r.get('email')).toBeDefined();
@@ -74,7 +74,7 @@ describe('Validate PatternMatcher', () => {
             expect(isRegExpMatchTimeout(matches)).toBe(true);
             expect(isRegExpMatch(matches)).toBe(false);
         },
-        1000
+        1000,
     );
 });
 

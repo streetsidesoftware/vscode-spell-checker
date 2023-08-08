@@ -212,7 +212,7 @@ export function run(): void {
     const _handleIsSpellCheckEnabled = simpleDebounce(
         __handleIsSpellCheckEnabled,
         50,
-        ({ uri, languageId }) => `(${uri})::(${languageId})`
+        ({ uri, languageId }) => `(${uri})::(${languageId})`,
     );
 
     async function __handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
@@ -222,7 +222,7 @@ export function run(): void {
     }
 
     async function handleGetConfigurationForDocument(
-        params: Api.GetConfigurationForDocumentRequest
+        params: Api.GetConfigurationForDocumentRequest,
     ): Promise<Api.GetConfigurationForDocumentResult> {
         return _handleGetConfigurationForDocument(params);
     }
@@ -230,7 +230,7 @@ export function run(): void {
     const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 100, (params) => JSON.stringify(params));
 
     async function __handleGetConfigurationForDocument(
-        params: Api.GetConfigurationForDocumentRequest
+        params: Api.GetConfigurationForDocumentRequest,
     ): Promise<Api.GetConfigurationForDocumentResult> {
         log('handleGetConfigurationForDocument', params.uri);
         const { uri, workspaceConfig } = params;
@@ -306,9 +306,9 @@ export function run(): void {
                         filter((doc) => uri === doc.uri),
                         take(1),
                         tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
-                        tap((doc) => log('Ignoring:', doc.uri))
+                        tap((doc) => log('Ignoring:', doc.uri)),
                     )
-                    .subscribe()
+                    .subscribe(),
             );
         } else {
             validationByDoc.set(
@@ -317,19 +317,19 @@ export function run(): void {
                     .pipe(
                         filter((doc) => uri === doc.uri),
                         tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri))
+                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
                     )
                     .pipe(
                         debounceTime(defaultDebounceMs),
-                        mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) } as DocSettingPair)),
+                        mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
                         tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
                         debounce((dsp) =>
-                            interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy))
+                            interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
                         ),
                         filter((dsp) => !blockValidation.has(dsp.doc.uri)),
-                        mergeMap(validateTextDocument)
+                        mergeMap(validateTextDocument),
                     )
-                    .subscribe(sendDiagnostics)
+                    .subscribe(sendDiagnostics),
             );
         }
     });
@@ -348,7 +348,7 @@ export function run(): void {
         .pipe(
             tap(() => log('Trigger Update Config')),
             debounceTime(100),
-            tap(() => log('Update Config Triggered'))
+            tap(() => log('Update Config Triggered')),
         )
         .subscribe(() => {
             updateActiveSettings();
@@ -397,7 +397,7 @@ export function run(): void {
 
     async function calcIncludeExcludeInfo(
         settings: Api.CSpellUserSettings,
-        params: TextDocumentInfo
+        params: TextDocumentInfo,
     ): Promise<Api.IsSpellCheckEnabledResult> {
         log('calcIncludeExcludeInfo', params.uri);
         const { uri, languageId } = params;
@@ -574,7 +574,7 @@ export function run(): void {
             }
             // A text document was closed we clear the diagnostics
             connection.sendDiagnostics({ uri, diagnostics: [] });
-        })
+        }),
     );
 
     async function updateLogLevel() {

@@ -74,7 +74,7 @@ function configTable(entries) {
         const scope = value.scope || '';
         return `| [\`${shorten(key, 60)}\`](#${key.toLowerCase().replace(/\W/g, '')}) | ${scope} | ${shortenLine(
             description,
-            descriptionWidth
+            descriptionWidth,
         )} |`;
     }
 

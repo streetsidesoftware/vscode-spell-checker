@@ -46,7 +46,7 @@ export function onCodeActionHandler(
     documents: TextDocuments<TextDocument>,
     fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
     fnSettingsVersion: (doc: TextDocument) => number,
-    clientApi: ClientApi
+    clientApi: ClientApi,
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
     const codeActionHandler = new CodeActionHandler(documents, fnSettings, fnSettingsVersion, clientApi);
 
@@ -68,7 +68,7 @@ class CodeActionHandler {
         readonly documents: TextDocuments<TextDocument>,
         readonly fnSettings: (doc: TextDocument) => Promise<CSpellUserSettings>,
         readonly fnSettingsVersion: (doc: TextDocument) => number,
-        readonly clientApi: ClientApi
+        readonly clientApi: ClientApi,
     ) {
         this.settingsCache = new Map<string, CacheEntry>();
         this.sugGen = new SuggestionGenerator((doc) => this.getSettings(doc));
@@ -288,7 +288,7 @@ function generateTargetActions(doc: TextDocument, spellCheckerDiags: Diagnostic[
                 name,
                 uri,
             }),
-            spellCheckerDiags
+            spellCheckerDiags,
         );
     }
 
@@ -298,14 +298,14 @@ function generateTargetActions(doc: TextDocument, spellCheckerDiags: Diagnostic[
                 name: t.name,
                 uri: t.configUri,
             }),
-            spellCheckerDiags
+            spellCheckerDiags,
         );
     }
 
     function vscode(t: ConfigTargetVSCode): CodeAction {
         return createAction(
             cc.addWordsToVSCodeSettingsFromServer(`Add: "${word}" to ${t.scope} settings`, [word], doc.uri, t.scope),
-            spellCheckerDiags
+            spellCheckerDiags,
         );
     }
 

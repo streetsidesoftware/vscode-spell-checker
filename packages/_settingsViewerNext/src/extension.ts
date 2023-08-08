@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand(commands.start, () => {
             CatCodingPanel.createOrShow(getExtensionUri());
-        })
+        }),
     );
 
     context.subscriptions.push(
@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (CatCodingPanel.currentPanel) {
                 CatCodingPanel.currentPanel.doRefactor();
             }
-        })
+        }),
     );
 
     if (vscode.window.registerWebviewPanelSerializer) {
@@ -82,7 +82,7 @@ class CatCodingPanel {
             CatCodingPanel.viewType,
             'Cat Coding',
             column || vscode.ViewColumn.One,
-            getWebviewOptions(extensionUri)
+            getWebviewOptions(extensionUri),
         );
 
         CatCodingPanel.currentPanel = new CatCodingPanel(panel, extensionUri);
@@ -111,7 +111,7 @@ class CatCodingPanel {
                 }
             },
             null,
-            this._disposables
+            this._disposables,
         );
 
         // Handle messages from the webview
@@ -125,7 +125,7 @@ class CatCodingPanel {
                 }
             },
             null,
-            this._disposables
+            this._disposables,
         );
     }
 

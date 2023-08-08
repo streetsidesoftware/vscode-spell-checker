@@ -31,7 +31,10 @@ export type Logger = {
 export class MessageBus implements Messenger {
     protected listeners = new Map<Commands, Set<Listener>>();
 
-    constructor(readonly vsCodeApi: WebviewApi, public logger: Logger = console) {
+    constructor(
+        readonly vsCodeApi: WebviewApi,
+        public logger: Logger = console,
+    ) {
         this.vsCodeApi.onmessage = (msg: BaseMessageEvent) => this.respondToMessage(msg);
     }
 

@@ -13,7 +13,7 @@ describe('Validate Commands', () => {
             clientCommands.addWordsToConfigFileFromServer('Add to CSpell', ['one', 'two'], 'file:///document.ts', {
                 uri: 'file:///cspell.json',
                 name: 'Workspace Config',
-            })
+            }),
         ).toMatchSnapshot();
     });
 
@@ -22,13 +22,13 @@ describe('Validate Commands', () => {
             clientCommands.addWordsToDictionaryFileFromServer('Add to dictionary', ['one', 'two'], 'file:///document.ts', {
                 uri: 'file:///dictionary.txt',
                 name: 'Custom Terms',
-            })
+            }),
         ).toMatchSnapshot();
     });
 
     test('clientCommands.addWordsToVSCodeSettingsFromServer', () => {
         expect(
-            clientCommands.addWordsToVSCodeSettingsFromServer('Add to VS Code', ['one', 'two'], 'file:///document.ts', 'workspace')
+            clientCommands.addWordsToVSCodeSettingsFromServer('Add to VS Code', ['one', 'two'], 'file:///document.ts', 'workspace'),
         ).toMatchSnapshot();
     });
 });

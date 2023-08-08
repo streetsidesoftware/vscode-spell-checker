@@ -107,11 +107,11 @@ const actionRemoveWordFromUserDictionary = prompt('Remove Words from Global Dict
 const actionAddIgnoreWord = prompt('Ignore Words', fnWTarget(addIgnoreWordsToTarget, undefined));
 const actionAddIgnoreWordToFolder = prompt(
     'Ignore Words in Folder Settings',
-    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.WorkspaceFolder)
+    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.WorkspaceFolder),
 );
 const actionAddIgnoreWordToWorkspace = prompt(
     'Ignore Words in Workspace Settings',
-    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.Workspace)
+    fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.Workspace),
 );
 const actionAddIgnoreWordToUser = prompt('Ignore Words in User Settings', fnWTarget(addIgnoreWordsToTarget, ConfigurationTarget.Global));
 const actionAddWordToCSpell = prompt('Add Words to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
@@ -190,7 +190,7 @@ function handlerApplyTextEdits() {
         if (doc.version !== documentVersion) {
             return pVoid(
                 window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
-                'handlerApplyTextEdits'
+                'handlerApplyTextEdits',
             );
         }
 
@@ -240,7 +240,7 @@ async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: Us
             .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
             .then(
                 (a) => a as WorkspaceEdit | undefined,
-                (reason) => (console.log(reason), false)
+                (reason) => (console.log(reason), false),
             );
         return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
     } catch (e) {
@@ -344,7 +344,7 @@ function addAllIssuesFromDocument(): Promise<void> {
 function addIgnoreWordsToTarget(
     word: string,
     target: ConfigurationTarget | undefined,
-    uri: string | null | Uri | undefined
+    uri: string | null | Uri | undefined,
 ): Promise<void> {
     return handleErrors(_addIgnoreWordsToTarget(word, target, uri), ctx('addIgnoreWordsToTarget', undefined, uri));
 }
@@ -352,7 +352,7 @@ function addIgnoreWordsToTarget(
 async function _addIgnoreWordsToTarget(
     word: string,
     target: ConfigurationTarget | undefined,
-    uri: string | null | Uri | undefined
+    uri: string | null | Uri | undefined,
 ): Promise<void> {
     uri = toUri(uri);
     const targets = await targetsForUri(uri);
@@ -394,12 +394,15 @@ export function enableDisableLanguageId(
     languageId: string,
     uri: Uri | undefined,
     configTarget: ConfigurationTarget | undefined,
-    enable: boolean
+    enable: boolean,
 ): Promise<void> {
-    return handleErrors(async () => {
-        const t = await (configTarget ? targetsFromConfigurationTarget(configTarget, uri) : targetsForUri(uri));
-        return Settings.enableLanguageIdForTarget(languageId, enable, t);
-    }, ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri));
+    return handleErrors(
+        async () => {
+            const t = await (configTarget ? targetsFromConfigurationTarget(configTarget, uri) : targetsForUri(uri));
+            return Settings.enableLanguageIdForTarget(languageId, enable, t);
+        },
+        ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri),
+    );
 }
 
 export function enableDisableLocale(
@@ -407,16 +410,19 @@ export function enableDisableLocale(
     uri: Uri | undefined,
     configTarget: ConfigurationTarget | undefined,
     configScope: ConfigurationScope | undefined,
-    enable: boolean
+    enable: boolean,
 ): Promise<void> {
-    return handleErrors(async () => {
-        const { targets, scopes } = await targetsAndScopeFromConfigurationTarget(
-            configTarget || ConfigurationTarget.Global,
-            uri,
-            configScope
-        );
-        return Settings.enableLocaleForTarget(locale, enable, targets, scopes);
-    }, ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri));
+    return handleErrors(
+        async () => {
+            const { targets, scopes } = await targetsAndScopeFromConfigurationTarget(
+                configTarget || ConfigurationTarget.Global,
+                uri,
+                configScope,
+            );
+            return Settings.enableLocaleForTarget(locale, enable, targets, scopes);
+        },
+        ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri),
+    );
 }
 
 export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, locale: string, enable: boolean): Promise<void> {
@@ -447,7 +453,7 @@ async function targetsAndScopeFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
     docUri?: string | null | Uri | undefined,
     configScope?: ConfigurationScope,
-    cfgTargetIsExact?: boolean
+    cfgTargetIsExact?: boolean,
 ): Promise<TargetsAndScopes> {
     const scopes = cfgTargetIsExact
         ? [configurationTargetToClientConfigScope(cfgTarget)]
@@ -465,7 +471,7 @@ async function targetsAndScopeFromConfigurationTarget(
 async function targetsFromConfigurationTarget(
     cfgTarget: ConfigurationTarget,
     docUri?: string | null | Uri | undefined,
-    configScope?: ConfigurationScope
+    configScope?: ConfigurationScope,
 ): Promise<ClientConfigTarget[]> {
     const r = await targetsAndScopeFromConfigurationTarget(cfgTarget, docUri, configScope);
     const { targets, scopes } = r;
@@ -475,7 +481,7 @@ async function targetsFromConfigurationTarget(
 
 async function targetsForTextDocument(
     document: TextDocument | { uri: Uri; languageId?: string } | undefined,
-    patternMatch = patternMatchNoDictionaries
+    patternMatch = patternMatchNoDictionaries,
 ) {
     const { uri, languageId } = document || {};
     const config = await di.get('client').getConfigurationForDocument({ uri, languageId });
@@ -501,7 +507,7 @@ const compareStrings = new Intl.Collator().compare;
 
 function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
-    fnAction: (text: string, uri: Uri | undefined) => Promise<void>
+    fnAction: (text: string, uri: Uri | undefined) => Promise<void>,
 ): () => Promise<void> {
     return async function () {
         const document = window.activeTextEditor?.document;
@@ -606,7 +612,7 @@ function dumpPerfTimeline(): void {
 
 function fnWTarget<TT>(
     fn: (word: string, t: TT, uri: Uri | undefined) => Promise<void>,
-    t: TT
+    t: TT,
 ): (word: string, uri: Uri | undefined) => Promise<void> {
     return (word, uri) => fn(word, t, uri);
 }

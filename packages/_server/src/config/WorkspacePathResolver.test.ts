@@ -374,7 +374,7 @@ describe('Validate workspace substitution resolver', () => {
                 'ignore-words',
                 'python-terms',
                 'typescript',
-            ])
+            ]),
         );
         expect(new Set(dictDefs.keys())).toEqual(
             new Set([
@@ -391,7 +391,7 @@ describe('Validate workspace substitution resolver', () => {
                 'ignore-words',
                 'legacy-definition',
                 'legacy-definition-file',
-            ])
+            ]),
         );
         expect(normalizePath(result.dictionaryDefinitions)).toEqual(
             expect.arrayContaining([
@@ -407,7 +407,7 @@ describe('Validate workspace substitution resolver', () => {
                     name: 'Workspace Dictionary 2',
                     path: p(`${clientUri.fsPath}/words3.txt`),
                 }),
-            ])
+            ]),
         );
         expect(dictDefs.get('legacy-definition-file')?.path).toEqual(expect.stringMatching(/legacy-words-2\.txt$/));
     });
@@ -430,14 +430,14 @@ describe('Validate workspace substitution resolver', () => {
                     name: 'Project Dictionary',
                     path: p('/path to root/root/terms/terms.txt'),
                 }),
-            ])
+            ]),
         );
         expect(result.dictionaryDefinitions).not.toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
                     name: 'Folder Dictionary',
                 }),
-            ])
+            ]),
         );
     });
 
@@ -457,7 +457,7 @@ describe('Validate workspace substitution resolver', () => {
                 expect.objectContaining({
                     name: 'Unknown Dictionary',
                 }),
-            ])
+            ]),
         );
         expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
     });

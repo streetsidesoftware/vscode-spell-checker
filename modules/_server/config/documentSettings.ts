@@ -110,7 +110,10 @@ export class DocumentSettings {
     private _version = 0;
     private gitIgnore = new GitIgnore();
 
-    constructor(readonly connection: Connection, readonly defaultSettings: CSpellUserSettings = _defaultSettings) {}
+    constructor(
+        readonly connection: Connection,
+        readonly defaultSettings: CSpellUserSettings = _defaultSettings,
+    ) {}
 
     async getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
         return this.getUriSettings(document.uri);
@@ -439,7 +442,7 @@ function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
 
 function calcMapOfEnabledFileTypes(
     enableFiletypes: string[],
-    settings: CSpellUserSettings
+    settings: CSpellUserSettings,
 ): Required<CSpellUserSettings>['mapOfEnabledFileTypes'] {
     const { enabledLanguageIds = [] } = settings;
     const enabled = new Map<string, boolean>();

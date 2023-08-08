@@ -11,7 +11,7 @@ const messageBus = new MessageBus(new VsCodeWebviewApi());
 const appState = new AppState(messageBus);
 reaction(
     () => toJS(appState.settings),
-    () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } })
+    () => messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { settings: toJS(appState.settings) } }),
 );
 messageBus.listenFor('ConfigurationChangeMessage', (msg: ConfigurationChangeMessage) => {
     const { settings, activeTab } = msg.value;

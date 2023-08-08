@@ -181,27 +181,27 @@ class QuickPickImpl {
     showQuickPick(
         items: readonly string[] | Thenable<readonly string[]>,
         options: QuickPickOptions & { canPickMany: true },
-        token?: CancellationToken
+        token?: CancellationToken,
     ): Thenable<string[] | undefined>;
     showQuickPick(
         items: readonly string[] | Thenable<readonly string[]>,
         options?: QuickPickOptions,
-        token?: CancellationToken
+        token?: CancellationToken,
     ): Thenable<string | undefined>;
     showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options: QuickPickOptions & { canPickMany: true },
-        token?: CancellationToken
+        token?: CancellationToken,
     ): Thenable<T[] | undefined>;
     showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options?: QuickPickOptions,
-        token?: CancellationToken
+        token?: CancellationToken,
     ): Thenable<T | undefined>;
     async showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options?: QuickPickOptions,
-        _token?: CancellationToken
+        _token?: CancellationToken,
     ): Promise<T | T[] | undefined> {
         const { canPickMany = false } = options || {};
         const list = await items;

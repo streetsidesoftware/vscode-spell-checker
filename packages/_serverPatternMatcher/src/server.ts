@@ -96,7 +96,7 @@ export function run(): void {
 
     disposables.push(
         // Remove subscriptions when a document closes.
-        patternMatcher
+        patternMatcher,
     );
 
     // Free up the validation streams on shutdown.

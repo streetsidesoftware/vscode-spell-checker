@@ -161,7 +161,7 @@ export async function readSettingsFileAndApplyUpdate(cspellConfigUri: Uri, actio
         await updateConfigFile(cspellConfigUri, action);
     } catch (e) {
         return Promise.reject(
-            e instanceof UnhandledFileType ? new FailedToUpdateConfigFile(`Update for config file format not supported.\n${e.message}`) : e
+            e instanceof UnhandledFileType ? new FailedToUpdateConfigFile(`Update for config file format not supported.\n${e.message}`) : e,
         );
     }
 }

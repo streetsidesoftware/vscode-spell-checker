@@ -85,7 +85,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          * if the section didn't already exist. This leads to a poor user experience in situations like
          * adding a word to be ignored for the first time.
          */
-        vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration)
+        vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
     );
 
     registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);

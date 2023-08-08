@@ -5,7 +5,7 @@ import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, Dic
 
 export function mapCustomDictionaryEntryToCustomDictionaries(
     entries: CustomDictionaryEntry[] | undefined,
-    scope: 'user' | 'workspace' | 'folder'
+    scope: 'user' | 'workspace' | 'folder',
 ): CustomDictionaries {
     if (!entries) return {};
 
@@ -22,7 +22,7 @@ export function extractCustomDictionaries(settings: CSpellUserSettings): CustomD
         mapCustomDictionaryEntryToCustomDictionaries(settings.customUserDictionaries, 'user'),
         mapCustomDictionaryEntryToCustomDictionaries(settings.customWorkspaceDictionaries, 'workspace'),
         mapCustomDictionaryEntryToCustomDictionaries(settings.customFolderDictionaries, 'folder'),
-        settings.customDictionaries || {}
+        settings.customDictionaries || {},
     );
     return dicts;
 }
@@ -34,7 +34,7 @@ export function extractDictionaryDefinitions(settings: CSpellUserSettings): Norm
         (settings.dictionaryDefinitions || [])
             .map(normalizeDictionaryDefinition)
             .filter(isDefined)
-            .map((d) => [d.name, d])
+            .map((d) => [d.name, d]),
     );
 
     for (const [name, dict] of Object.entries(customDicts)) {

@@ -12,19 +12,19 @@ export type NestedKey<T, K extends keyof T> = keyof Nested<T, K>;
 export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undefined) => T[K] | undefined;
 export function extract<T extends Obj, K extends keyof T, K2 extends NestedKey<T, K>>(
     key: K,
-    k2: K2
+    k2: K2,
 ): (t: T | undefined) => Nested<T, K>[K2] | undefined;
 export function extract<T extends Obj, K extends keyof T, K2 extends NestedKey<T, K>, K3 extends NestedKey<Nested<T, K>, K2>>(
     key: K,
     k2: K2,
-    k3: K3
+    k3: K3,
 ): (t: T | undefined) => Nested<Nested<T, K>, K2>[K3] | undefined;
 export function extract<
     T extends Obj,
     K extends keyof T,
     K2 extends NestedKey<T, K>,
     K3 extends NestedKey<Nested<T, K>, K2>,
-    K4 extends NestedKey<Nested<Nested<T, K>, K2>, K3>
+    K4 extends NestedKey<Nested<Nested<T, K>, K2>, K3>,
 >(key: K, k2: K2, k3: K3, k4: K4): (t: T | undefined) => Nested<Nested<Nested<T, K>, K2>, K3>[K4] | undefined;
 export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undefined) => T[K] | undefined {
     if (arguments.length > 1) {
