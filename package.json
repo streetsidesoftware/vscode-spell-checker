@@ -2577,20 +2577,20 @@
     "inject-markdown": "^1.5.0",
     "jest": "^29.6.2",
     "jest-mock-vscode": "^1.4.0",
-    "jest-when": "^3.5.2",
+    "jest-when": "^3.6.0",
     "ovsx": "^0.8.2",
     "prettier": "^2.8.8",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6",
-    "vite": "^4.4.8",
+    "vite": "^4.4.9",
     "vitest": "^0.34.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^6.31.2",
-    "@cspell/cspell-types": "^6.31.1",
-    "@types/react": "^17.0.62",
-    "cspell": "^6.31.2",
+    "@cspell/cspell-bundled-dicts": "^6.31.3",
+    "@cspell/cspell-types": "^6.31.3",
+    "@types/react": "^17.0.63",
+    "cspell": "^6.31.3",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
