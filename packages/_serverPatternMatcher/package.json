@@ -24,7 +24,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^6.31.1",
+    "@cspell/cspell-types": "^6.31.3",
     "common-utils": "1.0.0",
     "ts-loader": "^9.4.4",
     "vscode-languageserver": "^8.1.0",
