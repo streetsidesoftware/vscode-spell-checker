@@ -34,7 +34,7 @@ export async function calcSettings(
     document: Maybe<vscode.TextDocument>,
     folderUri: Maybe<Uri>,
     client: CSpellClient,
-    log: Logger
+    log: Logger,
 ): Promise<Settings> {
     const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri();
     const config = inspectConfig(activeFolderUri);
@@ -75,7 +75,7 @@ function extractViewerConfigFromConfig(
     config: Inspect<CSpellUserSettings>,
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
-    log: Logger
+    log: Logger,
 ): Configs {
     return {
         user: extractNearestConfig(1, config),
@@ -96,7 +96,7 @@ function mergeSource(a: InspectKeys, b: InspectKeys): InspectKeys {
 function findNearestConfigField<K extends keyof CSpellUserSettings>(
     orderPos: keyof ConfigOrder,
     key: K,
-    config: Inspect<CSpellUserSettings>
+    config: Inspect<CSpellUserSettings>,
 ): InspectKeys {
     for (let i = orderPos; i > 0; --i) {
         const inspectKey = configOrder[i];
@@ -114,7 +114,7 @@ function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpel
     const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes', config);
     const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
         config[languageIdsEnabledSource]?.enabledLanguageIds,
-        config[enableFiletypesSource]?.enableFiletypes
+        config[enableFiletypesSource]?.enableFiletypes,
     );
     const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
 
@@ -138,7 +138,7 @@ function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): F
 function extractFileConfig(
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
-    log: Logger
+    log: Logger,
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
@@ -277,9 +277,9 @@ function normalizeId(locale: string | string[] | undefined): string[] {
                 .replace(/\*/g, '')
                 .split(/[,;]/)
                 .map((a) => a.trim())
-                .filter((a) => !!a)
+                .filter((a) => !!a),
         ),
-        defaultTo([] as string[])
+        defaultTo([] as string[]),
     );
 }
 
@@ -325,7 +325,7 @@ function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace)
 
 function applyEnableFiletypesToEnabledLanguageIds(
     languageIds: string[] | undefined = [],
-    enableFiletypes: string[] | undefined = []
+    enableFiletypes: string[] | undefined = [],
 ): string[] {
     const ids = new Set<string>();
     normalizeEnableFiletypes(languageIds.concat(enableFiletypes))

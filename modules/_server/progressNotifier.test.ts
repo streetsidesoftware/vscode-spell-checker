@@ -39,7 +39,7 @@ describe('Validate Progress Notifier', () => {
                 // ts: 1626082854948,
                 uri: 'file:///doc.txt',
                 version: 1,
-            })
+            }),
         );
     });
 });

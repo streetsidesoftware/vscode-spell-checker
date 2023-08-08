@@ -110,7 +110,11 @@ export class UnhandledFileType extends Error {
 }
 
 export class SysLikeError extends Error {
-    constructor(msg?: string, readonly code?: string, readonly errno?: number) {
+    constructor(
+        msg?: string,
+        readonly code?: string,
+        readonly errno?: number,
+    ) {
         super(msg);
     }
 }

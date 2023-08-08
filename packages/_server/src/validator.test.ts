@@ -24,7 +24,7 @@ describe('Validator', () => {
             const words = results.map(({ text }) => text);
             expect(words).toEqual(['brouwn', 'jumpped', 'lazzy']);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -37,7 +37,7 @@ describe('Validator', () => {
             const words = results.map(({ text }) => text);
             expect(words).toEqual([]);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -49,7 +49,7 @@ describe('Validator', () => {
             const results = await Validator.validateText(text, settings);
             expect(results).toHaveLength(10);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -61,7 +61,7 @@ describe('Validator', () => {
             const results = await Validator.validateText(text, settings);
             expect(results).toHaveLength(0);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -80,7 +80,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['FFEE']));
             expect(words).toEqual(expect.not.arrayContaining(['nmove']));
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -99,7 +99,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -113,7 +113,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -125,7 +125,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining(['mispelled']));
             expect(words).toEqual(expect.arrayContaining(['mischecked']));
         },
-        timeout
+        timeout,
     );
 
     // cspell:ignore legacyy codez badcoffee
@@ -146,7 +146,7 @@ describe('Validator', () => {
             const results = await Validator.validateText(text, settings, {});
             expect(results).toEqual(expected);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -166,7 +166,7 @@ describe('Validator', () => {
             expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('FFEE')]));
             expect(words).toEqual(expect.not.arrayContaining([expect.stringContaining('nmove')]));
         },
-        timeout
+        timeout,
     );
 });
 

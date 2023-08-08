@@ -40,7 +40,10 @@ class MemoryReaderWriter implements ConfigReaderWriter {
 }
 
 export class MemoryConfigFileReaderWriter extends MemoryReaderWriter implements ConfigFileReaderWriter {
-    constructor(readonly uri: Uri, data: CSpellUserSettings) {
+    constructor(
+        readonly uri: Uri,
+        data: CSpellUserSettings,
+    ) {
         super(data);
     }
 }
@@ -48,7 +51,11 @@ export class MemoryConfigFileReaderWriter extends MemoryReaderWriter implements 
 export class MemoryConfigVSReaderWriter extends MemoryReaderWriter implements VSConfigReaderWriter {
     readonly name: string;
 
-    constructor(readonly target: ConfigurationTarget, readonly scope: GetConfigurationScope, data: CSpellUserSettings) {
+    constructor(
+        readonly target: ConfigurationTarget,
+        readonly scope: GetConfigurationScope,
+        data: CSpellUserSettings,
+    ) {
         super(data);
         this.name = configurationTargetToDictionaryScope(this.target);
     }

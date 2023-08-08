@@ -54,15 +54,15 @@ describe('Validate Pipe', () => {
             pipe(
                 student2,
                 extract('name'),
-                map((s) => s.toUpperCase())
-            )
+                map((s) => s.toUpperCase()),
+            ),
         ).toBe(student2.name.toUpperCase());
         expect(
             pipe(
                 student1,
                 extract('dob'),
-                map((s) => s.toUpperCase())
-            )
+                map((s) => s.toUpperCase()),
+            ),
         ).toBeUndefined();
     });
 });

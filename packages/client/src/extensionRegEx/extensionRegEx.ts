@@ -112,7 +112,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             .map((d) =>
                 d.matches
                     .map((range) => ({ range, elapsedTime: d.elapsedTime }))
-                    .map(({ range, elapsedTime }) => ({ range, message: createHoverMessage(name, elapsedTime) }))
+                    .map(({ range, elapsedTime }) => ({ range, message: createHoverMessage(name, elapsedTime) })),
             )
             .reduce((a, m) => a.concat(m), []);
     }
@@ -148,7 +148,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             }
         },
         null,
-        context.subscriptions
+        context.subscriptions,
     );
 
     vscode.workspace.onDidChangeTextDocument(
@@ -158,7 +158,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             }
         },
         null,
-        context.subscriptions
+        context.subscriptions,
     );
 
     function disposeCurrent() {
@@ -253,7 +253,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
         vscode.commands.registerCommand('cSpellRegExpTester.testRegExp', catchErrors(userTestRegExp, 'testRegExp', logError)),
         vscode.commands.registerCommand('cSpellRegExpTester.selectRegExp', userSelectRegExp),
         vscode.commands.registerCommand('cSpellRegExpTester.editRegExp', editRegExp),
-        vscode.workspace.onDidChangeConfiguration(updateIsActive)
+        vscode.workspace.onDidChangeConfiguration(updateIsActive),
     );
 }
 

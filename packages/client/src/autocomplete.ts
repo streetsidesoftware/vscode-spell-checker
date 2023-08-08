@@ -14,7 +14,7 @@ export async function registerCspellInlineCompletionProviders(subscriptions: { d
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ' '),
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineDictionaryNameCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineIssuesCompletionProvider, ' ')
+        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineIssuesCompletionProvider, ' '),
     );
 }
 
@@ -218,7 +218,7 @@ function getShowSuggestionsSettings(): ShowSuggestionsSettings {
 
     const value = getSettingFromVSConfig(key, undefined) ?? false;
     const byLangOverrides = byLangOverrideIds.map(
-        (languageId) => [languageId, getSettingFromVSConfig(key, { languageId })] as [string, boolean]
+        (languageId) => [languageId, getSettingFromVSConfig(key, { languageId })] as [string, boolean],
     );
     const byLangId = new Map(byLangOverrides);
     return { value, byLangId };

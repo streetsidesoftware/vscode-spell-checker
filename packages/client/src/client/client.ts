@@ -79,7 +79,7 @@ export class CSpellClient implements Disposable {
 
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
         this.allowedSchemas = new Set(
-            Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes
+            Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes,
         );
         setOfSupportedSchemes.clear();
         this.allowedSchemas.forEach((schema) => setOfSupportedSchemes.add(schema));
@@ -144,7 +144,7 @@ export class CSpellClient implements Disposable {
     readonly getConfigurationForDocument = this.factoryGetConfigurationForDocument();
 
     private async _getConfigurationForDocument(
-        document: TextDocument | TextDocumentInfo | undefined
+        document: TextDocument | TextDocumentInfo | undefined,
     ): Promise<GetConfigurationForDocumentResult> {
         const { uri, languageId } = document || {};
 
@@ -158,7 +158,7 @@ export class CSpellClient implements Disposable {
     private cacheGetConfigurationForDocument = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
 
     private factoryGetConfigurationForDocument(): (
-        document: TextDocument | TextDocumentInfo | undefined
+        document: TextDocument | TextDocumentInfo | undefined,
     ) => Promise<GetConfigurationForDocumentResult> {
         return (document: TextDocument | TextDocumentInfo | undefined) => {
             const key = document?.uri?.toString();
@@ -176,14 +176,14 @@ export class CSpellClient implements Disposable {
         setTimeout(() => this.cacheGetConfigurationForDocument.clear(), 250);
         return silenceErrors(
             this.whenReady(() => this.serverApi.notifyConfigChange()),
-            'notifySettingsChanged'
+            'notifySettingsChanged',
         );
     }
 
     public registerConfiguration(path: string): Promise<void> {
         return logErrors(
             this.whenReady(() => this.serverApi.registerConfigurationFile(path)),
-            'registerConfiguration'
+            'registerConfiguration',
         );
     }
 
@@ -333,7 +333,7 @@ function mapDiagnosticToLangClient(d: Diagnostic): VSCodeLangClient.Diagnostic {
         d.message,
         diagSeverityMap[d.severity],
         undefined,
-        d.source
+        d.source,
     );
     return diag;
 }

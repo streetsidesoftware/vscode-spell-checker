@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext, client: CSpellClient)
                     p.dispose();
                 }
             },
-        }
+        },
     );
 }
 
@@ -124,7 +124,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 const { activeTabName: activeTab, settings } = state;
                 log(`notifyView: tab ${activeTab}`);
                 messageBus.postMessage({ command: 'ConfigurationChangeMessage', value: { activeTab, settings } });
-            })
+            }),
     );
 
     async function refreshStateAndNotify() {
@@ -148,7 +148,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             vscode.workspace.onDidChangeConfiguration(() => emitter.value({}), null, context.subscriptions);
         })
             .throttle(1000)
-            .observe(() => refreshStateAndNotify())
+            .observe(() => refreshStateAndNotify()),
     );
 
     vscode.window.onDidChangeActiveTextEditor(
@@ -159,7 +159,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
             }
         },
         null,
-        context.subscriptions
+        context.subscriptions,
     );
 
     messageBus.listenFor('RequestConfigurationMessage', () => refreshStateAndNotify);
@@ -206,7 +206,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 return enableDisableLanguageId(languageId, uriFolder, target ? targetToConfigurationTarget[target] : undefined, enable);
             })
             .flatMap(resolvePromise(refreshDelay))
-            .observe(refreshStateAndNotify)
+            .observe(refreshStateAndNotify),
     );
 
     subscriptions.push(
@@ -222,7 +222,7 @@ async function createView(context: vscode.ExtensionContext, column: vscode.ViewC
                 return enableDisableLocale(locale, toUri(uri), configTarget, uriFolder, enable);
             })
             .flatMap(resolvePromise(refreshDelay))
-            .observe(refreshStateAndNotify)
+            .observe(refreshStateAndNotify),
     );
 
     panel.onDidDispose(dispose, null, context.subscriptions);

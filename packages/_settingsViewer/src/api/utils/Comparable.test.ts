@@ -27,23 +27,23 @@ describe('Validate Comparable', () => {
         expect(
             samples()
                 .sort(compareBy('name', 'value'))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([0, 1, 3, 2, 4]);
         expect(
             samples()
                 .sort(compareBy('value', 'name'))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([3, 4, 2, 0, 1]);
         expect(
             samples()
                 .sort(compareBy('name', 'maybe'))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([0, 1, 2, 3, 4]);
         // Expect undefined to be at the end.
         expect(
             samples()
                 .sort(compareBy('maybe', 'name', 'value'))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([0, 3, 2, 1, 4]);
     });
 
@@ -58,12 +58,12 @@ describe('Validate Comparable', () => {
         expect(
             samples()
                 .sort(compareEach(compareBy('name'), compareBy('value')))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([0, 1, 3, 2, 4]);
         expect(
             samples()
                 .sort(compareEach(compareByRev('name'), compareBy('value')))
-                .map((a) => a.id)
+                .map((a) => a.id),
         ).toEqual([4, 3, 2, 0, 1]);
     });
 });

@@ -417,8 +417,8 @@ export class Color {
                 opaqueBackground.rgba.r - a * (opaqueBackground.rgba.r - r),
                 opaqueBackground.rgba.g - a * (opaqueBackground.rgba.g - g),
                 opaqueBackground.rgba.b - a * (opaqueBackground.rgba.b - b),
-                1
-            )
+                1,
+            ),
         );
     }
 
@@ -435,8 +435,8 @@ export class Color {
             new RGBA(
                 backgroundAlpha * background.rgba.r + foreground.rgba.a * foreground.rgba.r,
                 backgroundAlpha * background.rgba.g + foreground.rgba.a * foreground.rgba.g,
-                backgroundAlpha * background.rgba.b + foreground.rgba.a * foreground.rgba.b
-            )
+                backgroundAlpha * background.rgba.b + foreground.rgba.a * foreground.rgba.b,
+            ),
         );
     }
 
@@ -585,7 +585,7 @@ export namespace Color {
 
             export function formatHSLA(color: Color): string {
                 return `hsla(${color.hsla.h}, ${(color.hsla.s * 100).toFixed(2)}%, ${(color.hsla.l * 100).toFixed(
-                    2
+                    2,
                 )}%, ${color.hsla.a.toFixed(2)})`;
             }
 
@@ -606,7 +606,7 @@ export namespace Color {
                 }
 
                 return `#${_toTwoDigitHex(color.rgba.r)}${_toTwoDigitHex(color.rgba.g)}${_toTwoDigitHex(color.rgba.b)}${_toTwoDigitHex(
-                    Math.round(color.rgba.a * 255)
+                    Math.round(color.rgba.a * 255),
                 )}`;
             }
 

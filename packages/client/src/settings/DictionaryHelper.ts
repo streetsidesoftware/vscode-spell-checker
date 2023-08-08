@@ -43,7 +43,7 @@ export class DictionaryHelper {
     public async addWordsToTargets(
         words: string | string[],
         target: ClientConfigTarget[] | MatchTargetsFn,
-        docUri: Uri | undefined
+        docUri: Uri | undefined,
     ): Promise<void> {
         const cfgTarget = await this.resolveTargets(target, docUri);
         if (!cfgTarget) return;
@@ -95,7 +95,7 @@ export class DictionaryHelper {
     public async removeWordsFromTargets(
         words: string | string[],
         target: ClientConfigTarget[] | MatchTargetsFn,
-        docUri: Uri | undefined
+        docUri: Uri | undefined,
     ): Promise<void> {
         words = normalizeWords(words);
         const dictTarget = await this.resolveTargets(target, docUri);
@@ -176,7 +176,7 @@ export class DictionaryHelper {
         cfgRep: ConfigRepository,
         relativePathToDictionary: string,
         name: string,
-        scope?: CustomDictionaryScope
+        scope?: CustomDictionaryScope,
     ): Promise<void> {
         const def: DictionaryDefinitionCustom = {
             name,
@@ -197,7 +197,7 @@ export class DictionaryHelper {
 
     private async resolveTargets(
         target: ClientConfigTarget[] | MatchTargetsFn,
-        docUri: Uri | undefined
+        docUri: Uri | undefined,
     ): Promise<DictionaryTarget[] | undefined> {
         if (typeof target !== 'function') return configTargetsToDictionaryTargets(target);
 
@@ -326,7 +326,7 @@ function updaterForCustomDictionaryToConfigVSCode(def: DictionaryDefinitionCusto
                 ...rest,
                 customDictionaries,
             };
-        }
+        },
     );
 }
 
@@ -376,13 +376,22 @@ function combineDictionaryEntry(c: CustomDictionaries, entry: CustomDictionaryEn
 }
 
 export class DictionaryTargetError extends Error {
-    constructor(msg: string, readonly dictTarget: DictionaryTarget, readonly cause: Error | unknown) {
+    constructor(
+        msg: string,
+        readonly dictTarget: DictionaryTarget,
+        readonly cause: Error | unknown,
+    ) {
         super(msg);
     }
 }
 
 export class UnableToAddWordError extends DictionaryTargetError {
-    constructor(msg: string, dictTarget: DictionaryTarget, readonly words: string | string[], readonly cause: Error | unknown) {
+    constructor(
+        msg: string,
+        dictTarget: DictionaryTarget,
+        readonly words: string | string[],
+        readonly cause: Error | unknown,
+    ) {
         super(msg, dictTarget, cause);
     }
 }

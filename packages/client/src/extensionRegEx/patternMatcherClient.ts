@@ -47,7 +47,7 @@ export class PatternMatcherClient implements Disposable {
         this.client = new LanguageClient(
             'cspell-pattern-matcher',
             serverOptions,
-            clientOptions
+            clientOptions,
             // true
         );
         this.client.registerProposedFeatures();
@@ -58,7 +58,7 @@ export class PatternMatcherClient implements Disposable {
     public async matchPatternsInDocument(
         document: TextDocument,
         patterns: (string | NamedPattern)[],
-        settings: PatternSettings
+        settings: PatternSettings,
     ): Promise<MatchPatternsToDocumentResult> {
         return this.serverApi.matchPatternsInDocument({ uri: document.uri.toString(), patterns, settings });
     }

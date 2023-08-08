@@ -60,7 +60,7 @@ describe('Validate uriHelper', () => {
         const rel = relativeTo(uriA, uriB);
         expect(rel).toBe(expected);
         expect(UriUtils.joinPath(uriA, rel).toString()).toBe(
-            UriUtils.joinPath(cleanUri(uriB), '.').with({ fragment: uriA.fragment, query: uriA.query }).toString()
+            UriUtils.joinPath(cleanUri(uriB), '.').with({ fragment: uriA.fragment, query: uriA.query }).toString(),
         );
     });
 

@@ -19,13 +19,13 @@ describe('Validate DictionaryTargetHelper', () => {
         ({ target, expected }: { target: ClientConfigTarget; expected: DictionaryTarget | undefined }) => {
             const r = configTargetToDictionaryTarget(target);
             expect(r).toEqual(expected);
-        }
+        },
     );
 
     test('configTargetToDictionaryTarget Unknown config', () => {
         const badTarget = { kind: 'new kind' };
         expect(() => configTargetToDictionaryTarget(badTarget as unknown as ClientConfigTarget)).toThrowError(
-            `Unknown target ${badTarget.kind}`
+            `Unknown target ${badTarget.kind}`,
         );
     });
 });

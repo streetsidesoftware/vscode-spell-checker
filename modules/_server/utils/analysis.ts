@@ -56,7 +56,7 @@ export function isTextLikelyMinified(text: string, options: IsTextLikelyMinified
         genSequence(text.matchAll(/\n/g))
             .map((a) => a.index || 0)
             .take(100)
-            .toArray()
+            .toArray(),
     );
     if (lineBreaks.length < 100) lineBreaks.push(text.length);
 

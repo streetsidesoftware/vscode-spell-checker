@@ -246,5 +246,5 @@ export type SpellCheckerSettingsVSCode = [
     VSConfigLanguageAndDictionaries,
     VSConfigLegacy,
     VSConfigPerf,
-    VSConfigReporting
+    VSConfigReporting,
 ];

@@ -54,7 +54,10 @@ export class Logger {
         [LogLevel.DEBUG]: stub,
     };
 
-    constructor(private logLevel = LogLevel.DEBUG, connection?: LoggerConnection) {
+    constructor(
+        private logLevel = LogLevel.DEBUG,
+        connection?: LoggerConnection,
+    ) {
         if (connection) {
             this.setConnection(connection);
         }

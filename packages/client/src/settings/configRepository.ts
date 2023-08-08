@@ -65,13 +65,13 @@ export function createCSpellConfigRepository(src: Uri | ConfigFileReaderWriter, 
 export function createVSCodeConfigRepository(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
-    useMerge: boolean
+    useMerge: boolean,
 ): VSCodeRepository;
 export function createVSCodeConfigRepository(src: VSConfigReaderWriter): VSCodeRepository;
 export function createVSCodeConfigRepository(
     src: ConfigurationTarget | VSConfigReaderWriter,
     scope?: GetConfigurationScope,
-    useMerge?: boolean
+    useMerge?: boolean,
 ): VSCodeRepository {
     const rw = isVSReaderWriter(src) ? src : createVSConfigReaderWriter(src, scope, !!useMerge);
     return new VSCodeRepository(rw);
@@ -92,7 +92,11 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
     readonly defaultDictionaryScope: undefined;
     readonly configFileUri: Uri;
 
-    constructor(readonly configRW: ConfigFileReaderWriter, name: string | undefined, readonly formatConfig: boolean) {
+    constructor(
+        readonly configRW: ConfigFileReaderWriter,
+        name: string | undefined,
+        readonly formatConfig: boolean,
+    ) {
         super();
         this.name = name || uriToName(configRW.uri);
         this.kind = 'cspell';
@@ -183,7 +187,7 @@ export class VSCodeRepository extends ConfigRepositoryBase {
      */
     private mappers(
         neededKeys: readonly ConfigKeys[],
-        fn: ConfigUpdateFn
+        fn: ConfigUpdateFn,
     ): {
         fn: ConfigUpdateFn;
         keys: readonly ConfigKeys[];

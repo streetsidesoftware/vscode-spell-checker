@@ -90,7 +90,7 @@ function isA<T extends ClientConfigTarget>(kind: T['kind']) {
 
 export function isClientConfigTargetOfKind<K extends ClientConfigKind>(
     t: ConfigKindToTarget[K] | ClientConfigTarget,
-    kind: K
+    kind: K,
 ): t is ConfigKindToTarget[K] {
     return typeof t === 'object' && t.kind === kind;
 }

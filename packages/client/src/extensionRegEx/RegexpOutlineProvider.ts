@@ -91,7 +91,7 @@ export class RegexpOutlineItem extends vscode.TreeItem {
     constructor(public pattern: PatternMatch) {
         super(
             trimName(pattern.name),
-            pattern.defs.length > 1 ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None
+            pattern.defs.length > 1 ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None,
         );
         this.pattern = pattern;
         const { timeMs, errorMsg, toolTip, count } = extractInfo(pattern);

@@ -34,7 +34,7 @@ export const CsCheckBox = withStyles(
         },
         disabled: {},
         checked: {},
-    })
+    }),
 )(Checkbox);
 
 export const CsButton = withStyles(
@@ -48,7 +48,7 @@ export const CsButton = withStyles(
             color: colors.colorOnSecondary,
             background: colors.colorSecondary,
         },
-    })
+    }),
 )(Button);
 
 export const CsTab = withStyles(
@@ -61,14 +61,14 @@ export const CsTab = withStyles(
             color: colors.tabActiveForeground,
             background: colors.tabActiveBackground,
         },
-    })
+    }),
 )(Tab);
 export const CsTabs = withStyles(
     createStyles({
         indicator: {
             background: colors.colorSecondary,
         },
-    })
+    }),
 )(Tabs);
 
 export const CsAppBar = withStyles(
@@ -76,7 +76,7 @@ export const CsAppBar = withStyles(
         colorPrimary: {
             background: colors.tabBackground,
         },
-    })
+    }),
 )(AppBar);
 
 const _listStyles = createStyles({
@@ -108,7 +108,7 @@ export const CsChip = withStyles((_theme) =>
         icon: {
             color: colors.colorOnSecondary,
         },
-    })
+    }),
 )(Chip);
 
 export const chipContainerStyles = makeStyles((theme) =>
@@ -122,7 +122,7 @@ export const chipContainerStyles = makeStyles((theme) =>
                 margin: theme.spacing(0.5),
             },
         },
-    })
+    }),
 );
 
 export function Chips(props: React.PropsWithChildren<Record<string, unknown>>): JSX.Element {
@@ -137,7 +137,7 @@ export const CsFormControl = withStyles(
             width: '100%',
             maxWidth,
         },
-    })
+    }),
 )(FormControl);
 
 export const themeDefault = createTheme({

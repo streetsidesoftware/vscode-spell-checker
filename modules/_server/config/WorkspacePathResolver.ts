@@ -60,7 +60,7 @@ export function resolveSettings<T extends CSpellUserSettings>(settings: T, resol
 export function createWorkspaceNamesResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
-    root: string | undefined
+    root: string | undefined,
 ): WorkspacePathResolver {
     return {
         resolveFile: createWorkspaceNamesFilePathResolver(folder, folders, root),
@@ -80,7 +80,7 @@ function toFolderPath(w: WorkspaceFolder): FolderPath {
 function createWorkspaceNamesFilePathResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
-    root: string | undefined
+    root: string | undefined,
 ): WorkspacePathResolverFn {
     return createWorkspaceNameToPathResolver(toFolderPath(folder), folders.map(toFolderPath), root);
 }
@@ -88,7 +88,7 @@ function createWorkspaceNamesFilePathResolver(
 function createWorkspaceNamesGlobPathResolver(
     folder: WorkspaceFolder,
     folders: WorkspaceFolder[],
-    root: string | undefined
+    root: string | undefined,
 ): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
     const rootFolder = toFolderPath(folder);
 
@@ -98,13 +98,13 @@ function createWorkspaceNamesGlobPathResolver(
 function createWorkspaceNameToGlobResolver(
     folder: FolderPath,
     folders: FolderPath[],
-    workspaceRoot: string | undefined
+    workspaceRoot: string | undefined,
 ): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
     const _folder = { ...folder };
     const _folders = [...folders];
     return (globRoot: string | undefined) => {
         const folderPairs = [['${workspaceFolder}', _folder.path] as [string, string]].concat(
-            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path])
+            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path]),
         );
         workspaceRoot = workspaceRoot || _folder.path;
         const map = new Map(folderPairs);
@@ -162,7 +162,7 @@ function createWorkspaceNameToGlobResolver(
 function createWorkspaceNameToPathResolver(
     currentFolder: FolderPath,
     folders: FolderPath[],
-    root: string | undefined
+    root: string | undefined,
 ): WorkspacePathResolverFn {
     const folderPairs = ([] as [string, string][])
         .concat([
@@ -234,7 +234,7 @@ function resolveDictionaryPathReferences<T extends PathRef>(dictDefs: T[] | unde
 }
 function resolveLanguageSettings(
     langSettings: CSpellUserSettings['languageSettings'],
-    resolver: WorkspacePathResolver
+    resolver: WorkspacePathResolver,
 ): CSpellUserSettings['languageSettings'] {
     if (!langSettings) return langSettings;
 

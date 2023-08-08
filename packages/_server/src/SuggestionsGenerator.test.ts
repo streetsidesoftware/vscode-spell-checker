@@ -22,7 +22,7 @@ describe('Validate Suggestions', () => {
             expect(resultWords).toContain('code');
             expect(result).toHaveLength(settings.numSuggestions || 0);
         },
-        timeout
+        timeout,
     );
 
     test(
@@ -34,7 +34,7 @@ describe('Validate Suggestions', () => {
             expect(result).toHaveLength(maxNumberOfSuggestionsForLongWords);
             expect(result.map((s) => s.word)).toContain('acknowledgements');
         },
-        timeout
+        timeout,
     );
 
     async function getSettings(doc: DocInfo) {

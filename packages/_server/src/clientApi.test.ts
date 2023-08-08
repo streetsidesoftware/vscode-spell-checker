@@ -33,7 +33,7 @@ describe('Validate Client Api', () => {
                 method: 'onSpellCheckDocument',
                 numberOfParams: 1,
             }),
-            p
+            p,
         );
     });
 
@@ -48,7 +48,7 @@ describe('Validate Client Api', () => {
                 method: 'onWorkspaceConfigForDocumentRequest',
                 numberOfParams: 1,
             }),
-            req
+            req,
         );
     });
 });

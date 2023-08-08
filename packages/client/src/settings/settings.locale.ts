@@ -17,7 +17,7 @@ export async function enableLocaleForTarget(
     locale: string,
     enable: boolean,
     targets: ClientConfigTarget[],
-    possibleScopes: ClientConfigScope[]
+    possibleScopes: ClientConfigScope[],
 ): Promise<void> {
     // Have targets inherit values.
     targets = targets.map((t) => ({ ...t, useMerge: t.useMerge ?? t.kind === 'vscode' }));
@@ -112,7 +112,7 @@ function isLocaleSubsetOf(localeA: string, localeB: string | undefined): boolean
 function calcInheritedDefault<K extends keyof CSpellUserSettings>(
     key: K,
     target: ClientConfigTarget,
-    targetsWithValue: Iterable<[ClientConfigTarget, CSpellUserSettings]>
+    targetsWithValue: Iterable<[ClientConfigTarget, CSpellUserSettings]>,
 ): CSpellUserSettings[K] | undefined {
     const tv = [...targetsWithValue].reverse();
     let value: CSpellUserSettings[K] | undefined = undefined;

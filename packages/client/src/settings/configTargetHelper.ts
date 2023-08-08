@@ -63,13 +63,13 @@ export const matchScopeUnknown: ConfigScopeMask = { unknown: true };
 export type MatchTargetsSyncFn = (configTargets: ClientConfigTarget[]) => ClientConfigTarget[] | undefined;
 
 export type MatchTargetsAsyncFn = (
-    configTargets: ClientConfigTarget[]
+    configTargets: ClientConfigTarget[],
 ) => Promise<ClientConfigTarget[] | undefined> | ClientConfigTarget[] | undefined;
 
 export type MatchTargetsSingleSyncFn = (configTargets: ClientConfigTarget[]) => [ClientConfigTarget] | undefined;
 
 export type MatchTargetsSingleAsyncFn = (
-    configTargets: ClientConfigTarget[]
+    configTargets: ClientConfigTarget[],
 ) => Promise<ClientConfigTarget[] | undefined> | [ClientConfigTarget] | undefined;
 
 export type MatchTargetsFn = MatchTargetsSyncFn | MatchTargetsSingleSyncFn | MatchTargetsAsyncFn | MatchTargetsSingleAsyncFn;
@@ -94,7 +94,7 @@ export const patternMatchAll = createConfigTargetMatchPattern(matchKindAll, matc
 
 export function findBestMatchingConfigTargets(
     pattern: ConfigTargetMatchPattern,
-    configTargets: ClientConfigTarget[]
+    configTargets: ClientConfigTarget[],
 ): ClientConfigTarget[] {
     const matches: ClientConfigTarget[] = [];
 
@@ -129,17 +129,17 @@ export function buildQuickPickMatchTargetFn(match: ConfigTargetMatchPattern): Ma
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
     match: ConfigTargetMatchPattern,
-    canPickMany?: false | undefined
+    canPickMany?: false | undefined,
 ): Promise<[ClientConfigTarget] | undefined>;
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
     match: ConfigTargetMatchPattern,
-    canPickMany: true
+    canPickMany: true,
 ): Promise<ClientConfigTarget[] | undefined>;
 export async function quickPickBestMatchTarget(
     targets: ClientConfigTarget[],
     match: ConfigTargetMatchPattern,
-    canPickMany = false
+    canPickMany = false,
 ): Promise<ClientConfigTarget[] | undefined> {
     const fn = buildQuickPickBestMatchTargetFn(match, canPickMany);
     return fn(targets);
@@ -147,12 +147,12 @@ export async function quickPickBestMatchTarget(
 
 export async function quickPickTargets(
     targets: ClientConfigTarget[],
-    canPickMany?: undefined | false
+    canPickMany?: undefined | false,
 ): Promise<[ClientConfigTarget] | undefined>;
 export async function quickPickTargets(targets: ClientConfigTarget[], canPickMany: true): Promise<ClientConfigTarget[] | undefined>;
 export async function quickPickTargets(
     targets: ClientConfigTarget[],
-    canPickMany: boolean | undefined
+    canPickMany: boolean | undefined,
 ): Promise<ClientConfigTarget[] | undefined>;
 export async function quickPickTargets(targets: ClientConfigTarget[], canPickMany = false): Promise<ClientConfigTarget[] | undefined> {
     if (!targets.length) throw new UnableToFindTarget('No matching configuration found.');
@@ -178,7 +178,7 @@ export async function quickPickTarget(targets: ClientConfigTarget[]): Promise<Cl
 
 export function filterClientConfigTargets(
     targets: ClientConfigTarget[],
-    filterBy: ConfigTargetMatchPattern | TargetMatchFn
+    filterBy: ConfigTargetMatchPattern | TargetMatchFn,
 ): ClientConfigTarget[] {
     const fn: TargetMatchFn = typeof filterBy === 'function' ? filterBy : filterClientConfigTarget(filterBy);
     return targets.filter(fn);
@@ -217,7 +217,7 @@ export function andPattern(a: ConfigTargetMatchPattern, b: ConfigTargetMatchPatt
 function andKeys<K extends keyof ConfigTargetMatchPattern>(
     a: ConfigTargetMatchPattern,
     b: ConfigTargetMatchPattern,
-    keys: readonly K[]
+    keys: readonly K[],
 ): ConfigTargetMatchPattern {
     const r: ConfigTargetMatchPattern = {};
     for (const k of keys) {
@@ -239,7 +239,7 @@ function andKeys<K extends keyof ConfigTargetMatchPattern>(
 function mergeKeys<K extends keyof ConfigTargetMatchPattern>(
     a: ConfigTargetMatchPattern,
     b: ConfigTargetMatchPattern,
-    keys: readonly K[]
+    keys: readonly K[],
 ): ConfigTargetMatchPattern {
     const r: ConfigTargetMatchPattern = Object.assign({}, a);
     for (const k of keys) {
@@ -283,7 +283,7 @@ export function createClientConfigTargetCSpell(configUri: vscode.Uri, scope: Cli
 export function createClientConfigTargetDictionary(
     dictionaryUri: vscode.Uri,
     scope: ClientConfigScope,
-    name?: string
+    name?: string,
 ): ClientConfigTargetDictionary {
     return {
         kind: 'dictionary',
@@ -296,7 +296,7 @@ export function createClientConfigTargetDictionary(
 export function createClientConfigTargetVSCode(
     target: vscode.ConfigurationTarget,
     docUri: string | null | vscode.Uri | undefined,
-    configScope: vscode.ConfigurationScope | undefined
+    configScope: vscode.ConfigurationScope | undefined,
 ): ClientConfigTargetVSCode {
     const scope = configurationTargetToDictionaryScope(target);
     const ct: ClientConfigTargetVSCode = {

@@ -4,7 +4,7 @@ type LangEntry = [
     /** Name of the Language */
     language: string,
     /** Optional Country */
-    country?: string
+    country?: string,
 ];
 export const codes: LangEntry[] = [
     ['af', 'Afrikaans'],

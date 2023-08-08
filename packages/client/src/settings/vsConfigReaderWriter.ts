@@ -14,14 +14,18 @@ export interface VSConfigReaderWriter extends ConfigReaderWriter {
 export function createVSConfigReaderWriter(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
-    useMerge: boolean
+    useMerge: boolean,
 ): VSConfigReaderWriter {
     return new _VSConfigReaderWriter(target, scope, useMerge);
 }
 
 class _VSConfigReaderWriter implements VSConfigReaderWriter {
     readonly name: string;
-    constructor(readonly target: ConfigurationTarget, readonly scope: GetConfigurationScope, readonly useMerge: boolean) {
+    constructor(
+        readonly target: ConfigurationTarget,
+        readonly scope: GetConfigurationScope,
+        readonly useMerge: boolean,
+    ) {
         this.name = configurationTargetToDictionaryScope(target);
     }
 

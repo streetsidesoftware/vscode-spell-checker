@@ -66,7 +66,7 @@ export function ignoreError(reason: unknown, context: string): Promise<void> {
 export function handleErrors<T>(
     promiseOrFn: Promise<T> | (() => T | Promise<T>),
     context: string,
-    onErrorResolver: OnErrorResolver = showError
+    onErrorResolver: OnErrorResolver = showError,
 ): Promise<T | void> {
     const q = typeof promiseOrFn === 'function' ? (async () => promiseOrFn())() : promiseOrFn;
     return q.catch(withContextOnError(context, onErrorResolver));
@@ -86,7 +86,7 @@ type _OnErrorResolver = (reason: unknown) => Promise<void>;
 export function catchErrors<P extends Array<any>, R>(
     fn: (...p: P) => Promise<R> | R,
     context: string,
-    onErrorResolver: OnErrorResolver = showError
+    onErrorResolver: OnErrorResolver = showError,
 ): (...p: P) => Promise<R | void> {
     return (...p) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }

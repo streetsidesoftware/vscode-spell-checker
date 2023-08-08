@@ -46,5 +46,5 @@ export const configTargetToIndex = Object.freeze<SettingByConfigTarget<number>>(
 export const configTargetOrder = Object.freeze(
     Object.entries(configTargetToIndex)
         .sort((a, b) => a[1] - b[1])
-        .map((a) => a[0]) as ConfigTarget[]
+        .map((a) => a[0]) as ConfigTarget[],
 );

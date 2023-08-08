@@ -90,7 +90,7 @@ export function getSettingsFromVSConfig(scope: GetConfigurationScope): CSpellUse
 
 export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    resource: GetConfigurationScope
+    resource: GetConfigurationScope,
 ): CSpellUserSettings[K] | undefined {
     const config = getConfiguration(resource);
     const settings = config.get<CSpellUserSettings>(sectionCSpell, {});
@@ -104,7 +104,7 @@ export function getSettingFromVSConfig<K extends keyof CSpellUserSettings>(
  */
 export function inspectScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope
+    scope: InspectScope,
 ): CSpellUserSettings[K] | undefined {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
@@ -118,7 +118,7 @@ export function inspectScopedSettingFromVSConfig<K extends keyof CSpellUserSetti
  */
 export function getScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope
+    scope: InspectScope,
 ): CSpellUserSettings[K] | undefined {
     return findScopedSettingFromVSConfig(subSection, scope).value;
 }
@@ -130,7 +130,7 @@ export function getScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>
  */
 export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: InspectScope
+    scope: InspectScope,
 ): FindBestConfigResult<K> {
     scope = normalizeScope(scope);
     const ins = inspectSettingFromVSConfig(subSection, scope.resource);
@@ -139,7 +139,7 @@ export function findScopedSettingFromVSConfig<K extends keyof CSpellUserSettings
 
 export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
-    scope: GetConfigurationScope
+    scope: GetConfigurationScope,
 ): Inspect<CSpellUserSettings[K]> {
     return inspectConfigByScopeAndKey(scope, subSection);
 }
@@ -147,7 +147,7 @@ export function inspectSettingFromVSConfig<K extends keyof CSpellUserSettings>(
 export function setSettingInVSConfig<K extends keyof CSpellUserSettings>(
     subSection: K,
     value: CSpellUserSettings[K],
-    configTarget: ConfigTargetLegacy
+    configTarget: ConfigTargetLegacy,
 ): Promise<void> {
     const nTarget = normalizeTarget(configTarget);
     const target = extractTarget(nTarget);
@@ -169,7 +169,7 @@ export function inspectConfig(scope: GetConfigurationScope): Inspect<CSpellUserS
 
 export function inspectConfigByScopeAndKey<K extends keyof CSpellUserSettings>(
     scope: GetConfigurationScope,
-    key: K
+    key: K,
 ): Inspect<CSpellUserSettings[K]> {
     const config = getConfiguration(scope);
     const sectionKey = [sectionCSpell, key].join('.');
@@ -354,7 +354,7 @@ export function calculateConfigForTarget(
     target: ConfigurationTarget,
     scope: GetConfigurationScope,
     keys: readonly ConfigKeys[],
-    useMergeInspect: boolean
+    useMergeInspect: boolean,
 ): CSpellUserSettings {
     const s: CSpellUserSettings = {};
     const inspectResult = inspectConfigKeys(scope, keys);
@@ -369,7 +369,7 @@ function assignExtractAndMerge<K extends keyof InspectCSpellSettings>(
     dest: CSpellUserSettings,
     target: ConfigurationTarget,
     k: K,
-    s: InspectCSpellSettings
+    s: InspectCSpellSettings,
 ) {
     const v = s[k] as FullInspectValues<CSpellUserSettings[K]>;
     const m = mergeInspect<CSpellUserSettings[K]>(target, v);
@@ -382,7 +382,7 @@ function assignExtract<K extends keyof InspectCSpellSettings>(
     dest: CSpellUserSettings,
     target: ConfigurationTarget,
     k: K,
-    s: InspectCSpellSettings
+    s: InspectCSpellSettings,
 ) {
     const v = s[k] as FullInspectValues<CSpellUserSettings[K]>;
     const m = extractInspect<CSpellUserSettings[K]>(target, v);
@@ -440,7 +440,7 @@ export async function updateConfig(
     scope: GetConfigurationScope,
     keys: readonly ConfigKeys[],
     updateFn: (c: Partial<CSpellUserSettings>) => Partial<CSpellUserSettings>,
-    useMerge: boolean
+    useMerge: boolean,
 ): Promise<void> {
     const cfg = calculateConfigForTarget(target, scope, keys, useMerge);
     const updated = updateFn(cfg);
