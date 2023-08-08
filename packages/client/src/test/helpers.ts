@@ -1,5 +1,5 @@
 import { mustBeDefined } from 'common-utils/util';
-import * as fs from 'fs-extra';
+import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Uri } from 'vscode';
 
@@ -23,7 +23,7 @@ export async function readExtensionPackage(): Promise<PackageJson> {
 }
 
 export function fsRemove(uri: Uri): Promise<void> {
-    return fs.remove(uri.fsPath);
+    return fs.rm(uri.fsPath, { force: true, recursive: true });
 }
 
 export function testNameToDir(testName: string): string {
@@ -47,13 +47,13 @@ export function getPathToTemp(baseFilename = '.', testFilename?: string): Uri {
     return Uri.file(path.join(tempClient, testFile, testDirName, baseFilename));
 }
 
-export function mkdirp(uri: Uri): Promise<void> {
-    return fs.mkdirp(uri.fsPath);
+export async function mkdirUri(uri: Uri): Promise<void> {
+    await fs.mkdir(uri.fsPath, { recursive: true });
 }
 
 export async function writeFile(file: Uri, content: string): Promise<void> {
     const fsPath = file.fsPath;
-    await fs.mkdirp(path.dirname(fsPath));
+    await fs.mkdir(path.dirname(fsPath), { recursive: true });
     return fs.writeFile(fsPath, content, 'utf-8');
 }
 

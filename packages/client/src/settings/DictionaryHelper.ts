@@ -1,5 +1,5 @@
 import { fileExists } from 'common-utils/file.js';
-import * as fs from 'fs-extra';
+import * as fs from 'fs/promises';
 import { homedir } from 'os';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
@@ -279,7 +279,7 @@ async function createCustomDictionaryFile(dictUri: Uri, overwrite = false): Prom
     overwrite = overwrite || !(await fileExists(dictUri));
     if (!overwrite) return;
 
-    await fs.mkdirp(UriUtils.dirname(dictUri).fsPath);
+    await fs.mkdir(UriUtils.dirname(dictUri).fsPath, { recursive: true });
     await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
 }
 
