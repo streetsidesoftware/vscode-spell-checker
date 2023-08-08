@@ -2579,7 +2579,7 @@
     "jest-mock-vscode": "^1.4.0",
     "jest-when": "^3.6.0",
     "ovsx": "^0.8.2",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.1",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6",
