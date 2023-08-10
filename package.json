@@ -1266,7 +1266,7 @@
           },
           "cSpell.globRoot": {
             "description": "",
-            "markdownDescription": "The root to use for glop patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
+            "markdownDescription": "The root to use for glob patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
             "scope": "resource",
             "type": "string"
           },
