@@ -635,7 +635,7 @@ Default
 | [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                  |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
-| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glop patterns found in this configuration.                                 |
+| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration.                                 |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
 | [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
 | [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
@@ -763,7 +763,7 @@ Scope
 : resource
 
 Description
-: The root to use for glop patterns found in this configuration.
+: The root to use for glob patterns found in this configuration.
 Default: The current workspace folder.
 Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
 Defining globRoot, does not impact imported configurations.

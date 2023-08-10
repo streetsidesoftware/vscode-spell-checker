@@ -161,7 +161,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
      * @description
      * @markdownDescription
-     * The root to use for glop patterns found in this configuration.
+     * The root to use for glob patterns found in this configuration.
      * Default: The current workspace folder.
      * Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
      * Defining globRoot, does not impact imported configurations.
