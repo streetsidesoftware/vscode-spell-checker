@@ -32,7 +32,7 @@
     "vscode-languageserver-textdocument": "^1.0.8",
     "vscode-uri": "^3.0.7",
     "@cspell/cspell-bundled-dicts": "^6.31.3",
-    "cspell-gitignore": "^6.31.3"
+    "cspell-gitignore": "^7.0.0"
   },
   "engines": {
     "node": ">16.0.0"
