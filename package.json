@@ -2590,7 +2590,7 @@
     "@cspell/cspell-bundled-dicts": "^6.31.3",
     "@cspell/cspell-types": "^6.31.3",
     "@types/react": "^17.0.64",
-    "cspell": "^6.31.3",
+    "cspell": "^7.0.0",
     "regexp-worker": "^2.0.1"
   },
   "comment-resolutions": {
