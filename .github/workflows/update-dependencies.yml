@@ -27,6 +27,7 @@ jobs:
         run: |
           yarn
           yarn build
+          yarn build:readme
           yarn lint
           yarn upgrade
           yarn package-json-dependency-updater --update
