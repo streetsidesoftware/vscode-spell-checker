@@ -2554,7 +2554,7 @@
     "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.4",
+    "@tsconfig/node16": "^16.1.1",
     "@types/jest": "^29.5.3",
     "@types/jest-when": "^3.5.2",
     "@types/node": "^18.17.5",
