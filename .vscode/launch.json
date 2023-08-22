@@ -7,6 +7,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}"
             ],
             "stopOnEntry": false,
@@ -25,6 +26,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "${workspaceRoot}/fixtures/workspaces/multi-git-ignore/multi-git-ignore.code-workspace"
             ],
@@ -43,6 +45,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "${workspaceRoot}/fixtures/workspaces/multi-root/multi-root.code-workspace"
             ],
@@ -62,6 +65,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "${workspaceRoot}/fixtures/workspaces/single-root/single-root.code-workspace"
             ],
@@ -81,6 +85,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "${workspaceRoot}/fixtures/workspaces/single/single.code-workspace"
             ],
@@ -100,6 +105,7 @@
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
+                "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceRoot}",
                 "${workspaceRoot}/fixtures/workspaces/no-workspace"
             ],
