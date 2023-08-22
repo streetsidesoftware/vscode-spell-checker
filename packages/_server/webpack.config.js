@@ -1,8 +1,7 @@
 const path = require('path');
 
-module.exports = {
+const config = {
     entry: {
-        main: './src/main.ts',
         api: './src/api.ts',
     },
     target: 'node',
@@ -34,6 +33,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
-        libraryTarget: 'commonjs2',
+        library: {
+            type: 'commonjs-static',
+        },
     },
 };
+
+module.exports = config;

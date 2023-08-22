@@ -58,6 +58,7 @@ nohoist
 noreply
 nospace
 onfinally
+outfile
 overridable
 OVSX
 paginator

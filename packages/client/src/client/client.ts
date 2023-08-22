@@ -75,7 +75,7 @@ export class CSpellClient implements Disposable {
      */
     constructor(context: ExtensionContext, languageIds: string[]) {
         // The server is implemented in node
-        const module = context.asAbsolutePath('packages/_server/dist/main.js');
+        const module = context.asAbsolutePath('packages/_server/dist/main.cjs');
 
         const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
         this.allowedSchemas = new Set(
