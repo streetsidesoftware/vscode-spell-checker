@@ -34,7 +34,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "regexp-worker": "^2.0.1"
+    "regexp-worker": "^2.0.2"
   },
   "scripts": {
     "clean": "shx rm -rf dist temp out coverage",
