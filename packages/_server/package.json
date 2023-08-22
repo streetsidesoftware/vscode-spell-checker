@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^6.31.3",
-    "cspell-gitignore": "^6.31.3"
+    "cspell-gitignore": "^7.0.1"
   },
   "scripts": {
     "build": "yarn run build:esbuild && yarn run build:api && yarn run build-schema",
