@@ -2516,7 +2516,6 @@
   "workspaces": {
     "packages": [
       "docs",
-      "modules",
       "packages/*"
     ],
     "nohoist": [
