@@ -16,12 +16,12 @@ describe('Validate PatternMatcher', () => {
         const result = await matcher.matchPatternsInText(['email'], sampleText, settings);
         const r = mapResults(result);
         expect(r.get('Email')).toBeDefined();
-        const matchedEmails = r.get('Email')!;
-        expect(matchedEmails.matches).toHaveLength(1);
-        const m = matchedEmails.matches[0];
-        expect(isRegExpMatchTimeout(m)).toBe(false);
-        expect(isRegExpMatch(m)).toBe(true);
-        if (isRegExpMatch(m)) {
+        const matchedEmails = r.get('Email');
+        expect(matchedEmails?.matches).toHaveLength(1);
+        const m = matchedEmails?.matches[0];
+        expect(m && isRegExpMatchTimeout(m)).toBe(false);
+        expect(m && isRegExpMatch(m)).toBe(true);
+        if (m && isRegExpMatch(m)) {
             const emails = m.ranges.map((r) => extract(sampleText, r));
             expect(emails).toEqual(['<info@example.com>']);
         }

@@ -246,7 +246,7 @@
                 "type": "string"
               },
               "ignoreRegExpList": {
-                "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"
@@ -261,7 +261,7 @@
                 "type": "array"
               },
               "includeRegExpList": {
-                "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"
@@ -419,7 +419,7 @@
                       "type": "string"
                     },
                     "ignoreRegExpList": {
-                      "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                      "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "items": {
                         "description": "A PatternRef is a Pattern or PatternId.",
                         "type": "string"
@@ -434,7 +434,7 @@
                       "type": "array"
                     },
                     "includeRegExpList": {
-                      "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                      "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "items": {
                         "description": "A PatternRef is a Pattern or PatternId.",
                         "type": "string"
@@ -1142,7 +1142,7 @@
                 "type": "string"
               },
               "ignoreRegExpList": {
-                "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: [\"href\"] - to exclude html href.\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/#cspelljson-sections) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"
@@ -1157,7 +1157,7 @@
                 "type": "array"
               },
               "includeRegExpList": {
-                "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://github.com/streetsidesoftware/cspell/blob/main/packages/cspell-lib/src/Settings/DefaultSettings.ts#L22).",
+                "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
                   "description": "A PatternRef is a Pattern or PatternId.",
                   "type": "string"

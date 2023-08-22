@@ -1,7 +1,7 @@
-import { RegExpPatternDefinition } from '@cspell/cspell-types';
+import type { RegExpPatternDefinition } from '@cspell/cspell-types';
 import { isDefined } from 'common-utils/index.js';
 import { logError } from 'common-utils/log.js';
-import { RegExpWorker, TimeoutError } from 'regexp-worker';
+import { RegExpWorker, type TimeoutError } from 'regexp-worker';
 import { format } from 'util';
 
 import { PatternSettings } from './api';
