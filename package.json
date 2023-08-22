@@ -2516,7 +2516,6 @@
   "workspaces": {
     "packages": [
       "docs",
-      "modules",
       "packages/*"
     ],
     "nohoist": [
@@ -2555,7 +2554,7 @@
     "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.4",
+    "@tsconfig/node16": "^16.1.1",
     "@types/jest": "^29.5.3",
     "@types/jest-when": "^3.5.2",
     "@types/node": "^18.17.5",
@@ -2564,6 +2563,8 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vscode/vsce": "^2.20.1",
+    "concurrently": "^8.2.1",
+    "esbuild": "^0.19.2",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-import-resolver-typescript": "^3.6.0",
