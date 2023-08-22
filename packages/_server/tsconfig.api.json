@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig.packages.base.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "types": ["node"],
+        "emitDeclarationOnly": true
+    },
+    "files": ["src/api.ts"]
+}

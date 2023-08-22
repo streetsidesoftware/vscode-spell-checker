@@ -28,20 +28,18 @@
 
 # Do not WebPack import-fresh and dependencies
 # This is needed to support cosmiconfig
-!node_modules/import-fresh/**
-!node_modules/resolve-from/**
-!node_modules/parent-module/**
-!node_modules/callsites/**
+# !node_modules/import-fresh/**
+# !node_modules/resolve-from/**
+# !node_modules/parent-module/**
+# !node_modules/callsites/**
 
 # All Other Client and Server files.
 !packages/_server/dist/api.js
 !packages/_server/dist/main.cjs
-!packages/_server/dist/main.js.LICENSE.txt
 !packages/_server/package.json
 
 !packages/_serverPatternMatcher/dist/api.js
 !packages/_serverPatternMatcher/dist/main.js
-!packages/_serverPatternMatcher/dist/main.js.LICENSE.txt
 !packages/_serverPatternMatcher/package.json
 
 !packages/client/dist/**/*.js

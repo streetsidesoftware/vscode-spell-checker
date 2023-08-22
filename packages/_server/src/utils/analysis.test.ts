@@ -10,7 +10,7 @@ import {
     ReasonMaxWordsSize,
 } from './analysis';
 
-const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.js'), 'utf8');
+const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.cjs'), 'utf8').replace(/\n/g, ' ');
 
 const defaultOptions: IsTextLikelyMinifiedOptions = {
     blockCheckingWhenLineLengthGreaterThan: 1000,
