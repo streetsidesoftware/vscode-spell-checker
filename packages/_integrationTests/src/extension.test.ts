@@ -8,7 +8,6 @@ import { Stream, stream } from 'kefir';
 import * as vscode from 'vscode';
 
 import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
-// eslint-disable-next-line import/no-unresolved
 import { CSpellClient } from '../../client/dist/client';
 import { ExtensionApi } from './ExtensionApi';
 import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';

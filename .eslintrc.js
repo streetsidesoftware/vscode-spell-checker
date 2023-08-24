@@ -101,7 +101,7 @@ const config = {
             },
         },
         {
-            files: ['**/jest.config.js'],
+            files: ['**/jest.config.js', '**/*.test.*'],
             rules: {
                 'node/no-unpublished-require': 'off',
             },
