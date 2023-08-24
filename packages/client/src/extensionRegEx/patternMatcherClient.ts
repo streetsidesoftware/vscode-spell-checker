@@ -19,7 +19,7 @@ export class PatternMatcherClient implements Disposable {
     }
 
     constructor(context: ExtensionContext) {
-        const module = context.asAbsolutePath('packages/_serverPatternMatcher/dist/main.js');
+        const module = context.asAbsolutePath('packages/_serverPatternMatcher/dist/main.cjs');
 
         // Create the language client and start the client.
         // Options to control the language client

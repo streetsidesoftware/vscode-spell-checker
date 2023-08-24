@@ -49,12 +49,12 @@ async function buildAll() {
         {
             ...optionsBase,
             entryPoints: ['src/main.ts'],
-            outfile: 'dist/main.js',
+            outfile: 'dist/main.cjs',
         },
         {
             ...optionsBase,
             entryPoints: ['src/api.ts'],
-            outfile: 'dist/api.js',
+            outfile: 'dist/api.cjs',
         },
     ];
 

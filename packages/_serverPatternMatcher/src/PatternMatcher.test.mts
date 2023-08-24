@@ -1,7 +1,7 @@
 import { getDefaultSettings } from 'cspell-lib';
 import { describe, expect, test } from 'vitest';
 
-import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher, Range } from './PatternMatcher';
+import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher, Range } from './PatternMatcher.js';
 
 const settings = {
     patterns: [],
