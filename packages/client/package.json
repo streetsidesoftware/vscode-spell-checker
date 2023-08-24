@@ -16,18 +16,26 @@
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
   "type": "commonjs",
+  "bin": {
+    "build": "./build.mjs"
+  },
   "main": "./dist/extension.js",
   "scripts": {
-    "clean": "shx rm -rf out dist coverage temp",
-    "clean-build": "yarn run clean && yarn run build",
-    "build": "yarn build:webpack",
-    "build:webpack": "webpack --mode none",
+    "build": "yarn run build:esbuild && yarn run build:tsc",
+    "build-production": "yarn run clean-build-production",
+    "build:production": "yarn run build:esbuild --production",
+    "build:esbuild": "node ./build.mjs",
     "build:tsc": "tsc -p tsconfig.test.json",
-    "build-production": "yarn run clean && webpack --mode production",
+    "clean-build-production": "yarn run clean && yarn run build:production",
+    "clean-build": "yarn run clean && yarn run build",
+    "clean": "shx rm -rf dist temp out coverage",
     "version": "yarn run package-extension",
-    "watch": "yarn run build --watch",
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "watch": "concurrently yarn:watch:esbuild yarn:watch:api yarn:watch:tsc",
+    "watch:esbuild": "yarn build:esbuild --watch",
+    "watch:api": "yarn build:api.d.ts --watch",
+    "watch:tsc": "yarn build:tsc --watch"
   },
   "devDependencies": {
     "@cspell/cspell-types": "^7.0.1",
