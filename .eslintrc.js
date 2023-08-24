@@ -88,7 +88,7 @@ const config = {
             },
         },
         {
-            files: ['**/*.test.*', '**/__mocks__/**', '**/test/**', '**/test.*'],
+            files: ['**/*.test.*', '**/__mocks__/**', '**/test/**', '**/test.*', '**/rollup.config.mjs'],
             rules: {
                 'node/no-extraneous-import': 'off',
             },

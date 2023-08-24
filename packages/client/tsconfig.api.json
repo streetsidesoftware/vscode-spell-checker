@@ -1,8 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "./dist",
         "emitDeclarationOnly": true
     },
-    "files": ["src/api.ts"]
+    "files": ["src/extensionApi.ts"]
 }

@@ -27,9 +27,17 @@
   },
   "typesVersions": {
     "*": {
+      "*.d.cts": [
+        "dist/*.d.cts"
+      ],
+      "api": [
+        "dist/api.d.cts"
+      ],
+      "dist/api.d.cts": [
+        "dist/api.d.cts"
+      ],
       "*": [
-        "dist/*",
-        "*"
+        "dist/*.d.cts"
       ]
     }
   },
@@ -52,7 +60,9 @@
     "build-production": "yarn run clean-build-production",
     "build:production": "yarn run build:esbuild --production && yarn run build:api",
     "build:esbuild": "node ./build.mjs",
-    "build:api": "tsc -p tsconfig.api.json",
+    "build:api": "yarn build:api.d.ts && yarn build:api.d.cts",
+    "build:api.d.ts": "tsc -p tsconfig.api.json",
+    "build:api.d.cts": "rollup -c rollup.config.mjs",
     "build:tsc": "tsc -p tsconfig.test.json",
     "clean-build-production": "yarn run clean && yarn run build:production",
     "clean-build": "yarn run clean && yarn run build",

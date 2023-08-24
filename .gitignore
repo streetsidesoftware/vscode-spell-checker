@@ -27,6 +27,7 @@ coverage
 build/Release
 *.zip
 *.vsix
+*.tgz
 
 # Dependency directory
 node_modules
