@@ -1,7 +1,4 @@
 {
     "display": "Spell Checker Base Config for Packages",
-    "extends": "./tsconfig.base.json",
-    "compilerOptions": {
-        "types": ["node", "jest"]
-    }
+    "extends": "./tsconfig.base.json"
 }

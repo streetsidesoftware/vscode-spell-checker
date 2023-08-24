@@ -38,8 +38,8 @@
 !packages/_server/dist/main.cjs
 !packages/_server/package.json
 
-!packages/_serverPatternMatcher/dist/api.js
-!packages/_serverPatternMatcher/dist/main.js
+!packages/_serverPatternMatcher/dist/api.cjs
+!packages/_serverPatternMatcher/dist/main.cjs
 !packages/_serverPatternMatcher/package.json
 
 !packages/client/dist/**/*.js

@@ -20,7 +20,7 @@ const config = {
         // 'plugin:unicorn/recommended',
     ],
     parserOptions: {
-        ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
+        ecmaVersion: 2021, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
     },
     ignorePatterns: [
@@ -67,6 +67,8 @@ const config = {
                 // '@typescript-eslint/no-non-null-assertion': 'off',
                 // '@typescript-eslint/no-explicit-any': 'off',
                 '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
+                'node/no-missing-import': 'off',
+                'import/no-unresolved': 'off',
             },
         },
         {
@@ -99,7 +101,7 @@ const config = {
             },
         },
         {
-            files: ['**/jest.config.js'],
+            files: ['**/jest.config.js', '**/*.test.*'],
             rules: {
                 'node/no-unpublished-require': 'off',
             },

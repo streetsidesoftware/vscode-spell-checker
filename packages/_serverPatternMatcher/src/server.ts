@@ -11,7 +11,7 @@ import {
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-import * as Api from './api';
+import type * as Api from './api';
 import { MatchResult, PatternMatcher, RegExpMatches } from './PatternMatcher';
 
 log('Starting Pattern Matcher Server');

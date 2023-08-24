@@ -31,7 +31,7 @@
     ],
     "overrides": [
         {
-            "filename": "**/documentSettings.test.ts",
+            "filename": "**/documentSettings.test.*",
             "language": "en-gb"
         }
     ],

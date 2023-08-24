@@ -36,7 +36,7 @@ async function buildAll() {
     const configs = [
         {
             absWorkingDir: __dirname,
-            entryPoints: ['src/main.ts'],
+            entryPoints: ['src/main.mts'],
             bundle: true,
             minify,
             platform: 'node',
@@ -49,7 +49,7 @@ async function buildAll() {
             bundle: true,
             minify,
             platform: 'node',
-            outfile: 'dist/api.js',
+            outfile: 'dist/api.cjs',
             sourcemap: true,
         },
     ];
