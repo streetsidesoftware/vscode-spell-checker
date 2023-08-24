@@ -2551,7 +2551,8 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "yarn workspace integration-tests test-integration",
     "test": "yarn workspaces run test",
-    "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn"
+    "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn",
+    "preinstall": "npx only-allow yarn"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.1",
