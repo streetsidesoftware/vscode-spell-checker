@@ -49,7 +49,7 @@ async function buildAll() {
             bundle: true,
             minify,
             platform: 'node',
-            outfile: 'dist/api.js',
+            outfile: 'dist/api.cjs',
             sourcemap: true,
         },
     ];
