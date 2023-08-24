@@ -1,6 +1,7 @@
 {
     "extends": "../../tsconfig.packages.base.json",
     "compilerOptions": {
+        "moduleResolution": "Node16",
         "outDir": "./dist"
     },
     "include": ["src"]

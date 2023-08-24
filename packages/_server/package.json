@@ -12,14 +12,15 @@
   "bin": {
     "build": "./build.mjs"
   },
+  "type": "module",
   "main": "dist/main.cjs",
   "typings": "dist/main.d.ts",
   "exports": {
     ".": "./dist/main.cjs",
-    "./api": "./dist/api.js"
+    "./api": "./dist/api.cjs"
   },
   "typesVersions": {
-    ">=4.0": {
+    "*": {
       "*": [
         "dist/*",
         "*"
@@ -31,8 +32,6 @@
     "@types/micromatch": "^4.0.2",
     "@types/yargs": "17.0.24",
     "common-utils": "1.0.0",
-    "cspell-glob": "^7.0.1",
-    "cspell-lib": "^7.0.1",
     "gensequence": "^5.0.2",
     "iconv-lite": "^0.6.3",
     "lorem-ipsum": "^2.0.8",
@@ -51,23 +50,27 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.0.1",
-    "cspell-gitignore": "^7.0.1"
+    "cspell-gitignore": "^7.0.1",
+    "cspell-glob": "^7.0.1",
+    "cspell-lib": "^7.0.1"
   },
   "scripts": {
-    "build": "yarn run build:esbuild && yarn run build:api && yarn run build-schema",
+    "build": "yarn run build:esbuild && yarn run build:api && yarn run build:tsc && yarn run build-schema",
     "build-production": "yarn run clean-build-production",
-    "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/config/cspellConfig/cspellConfig.ts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords patternErrorMessage --validation-keywords deprecationMessage --validation-keywords enumDescriptions --validation-keywords deprecated --validation-keywords order -o spell-checker-config.schema.json",
+    "build-schema": "ts-json-schema-generator --no-top-ref --expose none --path src/config/cspellConfig/cspellConfig.mts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords patternErrorMessage --validation-keywords deprecationMessage --validation-keywords enumDescriptions --validation-keywords deprecated --validation-keywords order -o spell-checker-config.schema.json",
     "build:production": "yarn run build:esbuild --production && yarn run build:api && yarn run build-schema",
     "build:esbuild": "node ./build.mjs",
     "build:api": "tsc -p tsconfig.api.json",
+    "build:tsc": "tsc -p tsconfig.test.json",
     "clean-build-production": "yarn run clean && yarn run build:production",
     "clean-build": "yarn run clean && yarn run build",
     "clean": "shx rm -rf dist temp out coverage",
     "test-watch": "vitest",
     "test": "vitest run",
-    "watch": "concurrently \"yarn:watch:esbuild\" \"yarn:watch:api\"",
+    "watch": "concurrently yarn:watch:esbuild yarn:watch:api yarn:watch:tsc",
     "watch:esbuild": "yarn build:esbuild --watch",
-    "watch:api": "yarn build:api --watch"
+    "watch:api": "yarn build:api --watch",
+    "watch:tsc": "yarn build:tsc --watch"
   },
   "engines": {
     "node": ">=16"

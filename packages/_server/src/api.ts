@@ -1,5 +1,5 @@
-import type { ConfigScopeVScode, ConfigTarget } from './config/configTargets';
-import type * as config from './config/cspellConfig';
+import type { ConfigScopeVScode, ConfigTarget } from './config/configTargets.mjs';
+import type * as config from './config/cspellConfig/index.mjs';
 
 export type {
     ConfigKind,
@@ -8,7 +8,7 @@ export type {
     ConfigTargetCSpell,
     ConfigTargetDictionary,
     ConfigTargetVSCode,
-} from './config/configTargets';
+} from './config/configTargets.mjs';
 export type {
     CSpellUserSettings,
     CustomDictionaries,
@@ -22,7 +22,7 @@ export type {
     LanguageSetting,
     SpellCheckerSettings,
     SpellCheckerSettingsProperties,
-} from './config/cspellConfig';
+} from './config/cspellConfig/index.mjs';
 
 export type ExtensionId = 'cSpell';
 
