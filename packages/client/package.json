@@ -15,11 +15,14 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker/issues"
   },
   "homepage": "https://github.com/streetsidesoftware/vscode-spell-checker/README.md",
+  "type": "commonjs",
   "main": "./dist/extension.js",
   "scripts": {
     "clean": "shx rm -rf out dist coverage temp",
     "clean-build": "yarn run clean && yarn run build",
-    "build": "webpack --mode none",
+    "build": "yarn build:webpack",
+    "build:webpack": "webpack --mode none",
+    "build:tsc": "tsc -p tsconfig.test.json",
     "build-production": "yarn run clean && webpack --mode production",
     "version": "yarn run package-extension",
     "watch": "yarn run build --watch",
