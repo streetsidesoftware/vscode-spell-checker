@@ -2582,6 +2582,8 @@
     "jest-when": "^3.6.0",
     "ovsx": "^0.8.3",
     "prettier": "^3.0.2",
+    "rollup": "^3.28.1",
+    "rollup-plugin-dts": "^5.3.1",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.1",
     "typescript": "^5.1.6",
