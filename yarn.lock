@@ -448,7 +448,7 @@
   resolved "https://registry.npmjs.org/@cspell/cspell-service-bus/-/cspell-service-bus-7.0.1.tgz"
   integrity sha512-rtN4HyW8eHnrTNSji1DEM0v810sqhIIh6Tuo8aNNVoEuUMVdE+L17PoVnMc2dAp6VMv2nvTnh4Lpfsj5l5NsZw==
 
-"@cspell/cspell-types@6.31.3", "@cspell/cspell-types@^6.31.3":
+"@cspell/cspell-types@6.31.3":
   version "6.31.3"
   resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.31.3.tgz"
   integrity sha512-wZ+t+lUsQJB65M31btZM4fH3K1CkRgE8pSeTiCwxYcnCL19pi4TMcEEMKdO8yFZMdocW4B7VRwzxNoQMw2ewBg==
