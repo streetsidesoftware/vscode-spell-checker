@@ -42,7 +42,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^7.0.1",
+    "@cspell/cspell-types": "^7.1.1",
     "cspell-lib": "^7.0.1",
     "common-utils": "1.0.0",
     "ts-loader": "^9.4.4",

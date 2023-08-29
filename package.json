@@ -2592,7 +2592,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.0.1",
-    "@cspell/cspell-types": "^7.0.1",
+    "@cspell/cspell-types": "^7.1.1",
     "@types/react": "^17.0.65",
     "cspell": "^7.0.1",
     "regexp-worker": "^2.0.2"

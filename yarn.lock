@@ -448,15 +448,20 @@
   resolved "https://registry.npmjs.org/@cspell/cspell-service-bus/-/cspell-service-bus-7.0.1.tgz"
   integrity sha512-rtN4HyW8eHnrTNSji1DEM0v810sqhIIh6Tuo8aNNVoEuUMVdE+L17PoVnMc2dAp6VMv2nvTnh4Lpfsj5l5NsZw==
 
-"@cspell/cspell-types@6.31.3", "@cspell/cspell-types@^6.31.3":
+"@cspell/cspell-types@6.31.3":
   version "6.31.3"
   resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-6.31.3.tgz"
   integrity sha512-wZ+t+lUsQJB65M31btZM4fH3K1CkRgE8pSeTiCwxYcnCL19pi4TMcEEMKdO8yFZMdocW4B7VRwzxNoQMw2ewBg==
 
-"@cspell/cspell-types@7.0.1", "@cspell/cspell-types@^7.0.1":
+"@cspell/cspell-types@7.0.1":
   version "7.0.1"
   resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-7.0.1.tgz"
   integrity sha512-nPQGIwVUxNqAhBmSsnvRSJtHUo3cSQiCRpppNaXY8s1IrJ2kskS+LEF+d4SGTjQbCQH39sf3NoFWSCTfjl1jFg==
+
+"@cspell/cspell-types@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.npmjs.org/@cspell/cspell-types/-/cspell-types-7.1.1.tgz#ab084c889e1d7f1051945d00b35a3029b3798e32"
+  integrity sha512-gu3VjhZt+v+VnbbZ69CxRVz73NLVTqKsOAeYLJB01dBqlFqSrsbaYXUIh54iI+eKlJhcCh5kAtvHOFLPGDHvYQ==
 
 "@cspell/dict-ada@^4.0.1", "@cspell/dict-ada@^4.0.2":
   version "4.0.2"
