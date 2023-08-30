@@ -36,7 +36,7 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^7.0.1",
+    "@cspell/cspell-types": "^7.2.0",
     "@types/micromatch": "^4.0.2",
     "@types/yargs": "17.0.24",
     "common-utils": "1.0.0",

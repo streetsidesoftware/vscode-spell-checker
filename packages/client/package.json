@@ -39,7 +39,7 @@
     "watch:tsc": "yarn build:tsc --watch"
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^7.0.1",
+    "@cspell/cspell-types": "^7.2.0",
     "@types/jest": "^29.5.4",
     "@types/jest-when": "^3.5.2",
     "@types/kefir": "^3.8.7",
