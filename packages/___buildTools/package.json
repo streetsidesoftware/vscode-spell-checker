@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Build tools",
   "private": true,
+  "type": "commonjs",
   "main": "dist/index.js",
   "bin": "./bin.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    "build-tools": "./dist/index.js"
   },
   "typesVersions": {
     "*": {
