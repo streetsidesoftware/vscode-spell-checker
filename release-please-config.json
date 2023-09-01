@@ -9,7 +9,8 @@
         },
         {
             "type": "feature",
-            "section": "Features"
+            "section": "Features",
+            "hidden": false
         },
         {
             "type": "fix",
@@ -22,11 +23,13 @@
         },
         {
             "type": "ci",
-            "section": "Continuous Integration"
+            "section": "Continuous Integration",
+            "hidden": true
         },
         {
             "type": "chore",
-            "section": "Miscellaneous"
+            "section": "Miscellaneous",
+            "hidden": true
         },
         {
             "type": "revert",
@@ -34,15 +37,18 @@
         },
         {
             "type": "docs",
-            "section": "Documentation"
+            "section": "Documentation",
+            "hidden": true
         },
         {
             "type": "dev",
-            "section": "Development In Progress"
+            "section": "Development In Progress",
+            "hidden": true
         },
         {
             "type": "style",
-            "section": "Styles"
+            "section": "Styles",
+            "hidden": true
         },
         {
             "type": "refactor",
@@ -51,11 +57,13 @@
         },
         {
             "type": "test",
-            "section": "Tests"
+            "section": "Tests",
+            "hidden": true
         },
         {
             "type": "build",
-            "section": "Build System"
+            "section": "Build System",
+            "hidden": true
         },
         {
             "type": "",
