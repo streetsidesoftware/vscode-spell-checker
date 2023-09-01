@@ -22,13 +22,11 @@
         },
         {
             "type": "ci",
-            "section": "Continuous Integration",
-            "hidden": false
+            "section": "Continuous Integration"
         },
         {
             "type": "chore",
-            "section": "Miscellaneous",
-            "hidden": false
+            "section": "Miscellaneous"
         },
         {
             "type": "revert",
@@ -44,8 +42,7 @@
         },
         {
             "type": "style",
-            "section": "Styles",
-            "hidden": false
+            "section": "Styles"
         },
         {
             "type": "refactor",
@@ -54,18 +51,16 @@
         },
         {
             "type": "test",
-            "section": "Tests",
-            "hidden": false
+            "section": "Tests"
         },
         {
             "type": "build",
-            "section": "Build System",
-            "hidden": false
+            "section": "Build System"
         },
         {
             "type": "",
             "section": "Changes",
-            "hidden": false
+            "hidden": true
         }
     ],
     "packages": {
