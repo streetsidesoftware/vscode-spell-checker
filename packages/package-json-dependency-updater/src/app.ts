@@ -10,7 +10,7 @@ import { findUp } from 'find-up';
 import _glob from 'glob';
 import semverSatisfies from 'semver/functions/satisfies.js';
 
-import type { Dependencies, PackageJson } from './packageDef';
+import type { Dependencies, PackageJson } from './packageDef.js';
 
 const glob = promisify(_glob);
 
