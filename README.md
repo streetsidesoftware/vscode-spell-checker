@@ -6,9 +6,10 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   [![GitHub Sponsors](https://img.shields.io/badge/Street_Side_Software-black?style=social&logo=githubsponsors&label=Sponsor%3A)](https://github.com/sponsors/streetsidesoftware)
+-   [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
+-   [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
 -   Become a [![Patreon](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
--   [Support through ![PayPal](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+-   [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
 -   [Open Collective](https://opencollective.com/code-spell-checker)
 
 ## Functionality
