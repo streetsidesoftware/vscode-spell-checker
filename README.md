@@ -6,20 +6,10 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 ## Support Further Development
 
--   Become a [![Patreon](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
-
--   [Support through ![PayPal](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/PayPal/paypal-logo-wide-18.png)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
-
--   [Open Collective](https://opencollective.com/code-spell-checker)
-
-## Sponsors
-
-[![CodeStream Logo](https://alt-images.codestream.com/codestream_logo_codespellchecker.png)](https://sponsorlink.codestream.com/?utm_source=vscmarket&utm_campaign=codespellchecker&utm_medium=banner 'Try CodeStream')
-
-Manage pull requests and conduct code reviews in your IDE with full source-tree context.
-Comment on any line, not just the diffs. Use jump-to-definition, your favorite keybindings,
-and code intelligence with more of your workflow.<br>
-[Learn More](https://sponsorlink.codestream.com/?utm_source=vscmarket&utm_campaign=codespellchecker&utm_medium=banner 'Try CodeStream')
+-   [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=GitHub%20Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
+-   [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
+-   [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=PayPal%20Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
+-   [![Open Colective](https://img.shields.io/badge/-black?style=social&logo=opencollective&label=Open%20Collective%3A%20Code%20Spell%20Checker)](https://opencollective.com/code-spell-checker)
 
 ## Functionality
 
