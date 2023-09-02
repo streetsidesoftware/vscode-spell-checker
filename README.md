@@ -8,9 +8,8 @@ The goal of this spell checker is to help catch common spelling errors while kee
 
 -   [![GitHub Sponsors](https://img.shields.io/badge/-black?style=social&logo=githubsponsors&label=Sponsor%3A%20Street%20Side%20Software)](https://github.com/sponsors/streetsidesoftware)
 -   [![Patreon](https://img.shields.io/badge/-black?style=social&logo=patreon&label=Patreon%3A%20Street%20Side%20Software)](https://patreon.com/streetsidesoftware)
--   Become a [![Patreon](https://raw.githubusercontent.com/streetsidesoftware/vscode-spell-checker/main/images/patreon/Digital-Patreon-Logo_FieryCoral_16x16.png) Patreon!](https://patreon.com/streetsidesoftware)
 -   [![PayPal](https://img.shields.io/badge/-black?style=social&logo=paypal&label=Donate%3A%20Street%20Side%20Software)](https://www.paypal.com/donate/?hosted_button_id=26LNBP2Q6MKCY)
--   [Open Collective](https://opencollective.com/code-spell-checker)
+-   [![Open Colective](https://img.shields.io/badge/-black?style=social&logo=opencollective&label=Support%3A%20Code%20Spell%20Checker)](https://opencollective.com/code-spell-checker)
 
 ## Functionality
 
