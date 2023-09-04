@@ -211,6 +211,6 @@ async function applySampleConfig(config: WorkspaceConfiguration) {
 }
 
 function sampleConfig(key?: string, scope?: ConfigurationScope | null) {
-    const config = createMockWorkspaceConfiguration(clone(baseConfig), key, scope);
+    const config = createMockWorkspaceConfiguration(jest, clone(baseConfig), key, scope);
     return config;
 }
