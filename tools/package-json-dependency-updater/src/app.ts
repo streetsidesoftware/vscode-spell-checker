@@ -1,18 +1,15 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import * as Path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
 
 import YarnLockFile, { FirstLevelDependency, LockFileObject } from '@yarnpkg/lockfile';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { findUp } from 'find-up';
-import _glob from 'glob';
+import { glob } from 'glob';
 import semverSatisfies from 'semver/functions/satisfies.js';
 
 import type { Dependencies, PackageJson } from './packageDef.js';
-
-const glob = promisify(_glob);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = Path.dirname(__filename);
