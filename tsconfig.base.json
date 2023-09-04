@@ -9,7 +9,6 @@
         "declaration": true,
         "declarationMap": true,
         "esModuleInterop": true,
-        "moduleResolution": "Node16",
         "newLine": "LF",
         "noImplicitAny": true,
         "noImplicitThis": true,
