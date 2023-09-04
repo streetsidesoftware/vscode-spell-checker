@@ -46,6 +46,8 @@ modules/*/dist/
 packages/*/dist/
 packages/*/out/
 packages/*/temp/
+tools/*/dist/
+tools/*/temp/
 
 !**/server/.vscode
 !**/client/.vscode

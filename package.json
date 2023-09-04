@@ -2517,7 +2517,8 @@
   "workspaces": {
     "packages": [
       "docs",
-      "packages/*"
+      "packages/*",
+      "tools/*"
     ],
     "nohoist": [
       "@internal/docs",
