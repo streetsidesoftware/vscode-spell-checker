@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@cspell/cspell-types": "^7.3.2",
-    "@types/chai": "^4.3.5",
+    "@types/chai": "^4.3.6",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.17.14",
