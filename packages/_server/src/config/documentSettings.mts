@@ -37,6 +37,7 @@ import { uniqueFilter } from '../utils/index.mjs';
 import { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
+import { handleSpecialUri } from './docUriHelper.mjs';
 import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
 
@@ -53,6 +54,7 @@ export interface SettingsVSCode {
 }
 
 interface VsCodeSettings {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 
@@ -64,14 +66,23 @@ interface ExtSettings {
     includeGlobMatcher: GlobMatcher;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PromiseType<T extends Promise<any>> = T extends Promise<infer R> ? R : never;
 type GitignoreResultP = ReturnType<GitIgnore['isIgnoredEx']>;
 type GitignoreResultInfo = PromiseType<GitignoreResultP>;
 
 export interface ExcludeIncludeIgnoreInfo {
+    /** The requested uri */
+    uri: string;
+    /** The uri used to calculate the response */
+    uriUsed: string;
+    /** Is included */
     include: boolean;
+    /** Is explicitly excluded */
     exclude: boolean;
+    /** Ignored by .gitignore */
     ignored: boolean | undefined;
+    /** Information related to .gitignore */
     gitignoreInfo: GitignoreResultInfo | undefined;
 }
 
@@ -87,15 +98,10 @@ const defaultRootUri = toFileUri(process.cwd()).toString();
 
 const _defaultSettings: CSpellUserSettings = Object.freeze({});
 
-const _schemaMapToFile = {
-    'vscode-notebook-cell': true,
-} as const;
-
-const schemeMapToFile: Record<string, true> = Object.freeze(_schemaMapToFile);
-
 const defaultCheckOnlyEnabledFileTypes = true;
 
 interface Clearable {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clear: () => any;
 }
 export class DocumentSettings {
@@ -124,13 +130,16 @@ export class DocumentSettings {
     }
 
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
-        const settings = await this.fetchSettingsForUri(uri.toString());
-        const ie = calcIncludeExclude(settings, uri);
-        const ignoredEx = await this._isGitIgnoredEx(settings, uri);
+        const _uri = handleSpecialUri(uri);
+        const settings = await this.fetchSettingsForUri(_uri.toString());
+        const ie = calcIncludeExclude(settings, _uri);
+        const ignoredEx = await this._isGitIgnoredEx(settings, _uri);
         return {
             ...ie,
             ignored: ignoredEx?.matched,
             gitignoreInfo: ignoredEx,
+            uri: uri.toString(),
+            uriUsed: _uri.toString(),
         };
     }
 
@@ -293,8 +302,9 @@ export class DocumentSettings {
     private async _fetchSettingsForUri(docUri: string): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${docUri}`);
         const uri = Uri.parse(docUri);
-        if (uri.scheme in schemeMapToFile) {
-            return this.fetchSettingsForUri(mapToFileUri(uri).toString());
+        const uriSpecial = handleSpecialUri(uri);
+        if (uri !== uriSpecial) {
+            return this.fetchSettingsForUri(uriSpecial.toString());
         }
         const fsPath = path.normalize(uri.fsPath);
         const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
@@ -676,14 +686,6 @@ export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uri.fsPath);
-}
-
-function mapToFileUri(uri: Uri): Uri {
-    return uri.with({
-        scheme: 'file',
-        query: '',
-        fragment: '',
-    });
 }
 
 export const __testing__ = {

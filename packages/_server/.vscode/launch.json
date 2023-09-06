@@ -11,7 +11,7 @@
             "port": 60048,
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/dist/**/*.js"
+                "${workspaceFolder}/dist/**/*.js"
             ],
             "protocol": "inspector",
             "smartStep": false,
