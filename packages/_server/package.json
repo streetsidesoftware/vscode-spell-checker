@@ -77,7 +77,7 @@
     "clean": "shx rm -rf dist temp out coverage",
     "test-watch": "vitest",
     "test": "vitest run",
-    "watch": "concurrently yarn:watch:esbuild yarn:watch:api yarn:watch:tsc",
+    "watch": "yarn concurrently yarn:watch:esbuild yarn:watch:api yarn:watch:tsc",
     "watch:esbuild": "yarn build:esbuild --watch",
     "watch:api": "yarn build:api.d.ts --watch",
     "watch:tsc": "yarn build:tsc --watch"
