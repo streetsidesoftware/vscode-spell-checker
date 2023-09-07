@@ -1,5 +1,5 @@
+import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
-import { ExtensionContext } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
 import { registerCspellInlineCompletionProviders } from './autocomplete';
@@ -7,12 +7,13 @@ import { CSpellClient } from './client';
 import * as commands from './commands';
 import { updateDocumentRelatedContext } from './context';
 import * as di from './di';
-import { ExtensionApi } from './extensionApi';
+import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
 import * as settingsViewer from './infoViewer/infoView';
 import * as modules from './modules';
+import type { ConfigTargetLegacy } from './settings';
 import * as settings from './settings';
-import { ConfigTargetLegacy, sectionCSpell } from './settings';
+import { sectionCSpell } from './settings';
 import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
 import { performance } from './util/perf';

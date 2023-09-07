@@ -40,7 +40,7 @@ const logLevels: [string, LogLevel][] = [
 
 const levelMap = new Map<string, LogLevel>(logLevels);
 
-const stub = () => {};
+const stub = () => undefined;
 
 export class Logger {
     private _connection: LoggerConnection | undefined;

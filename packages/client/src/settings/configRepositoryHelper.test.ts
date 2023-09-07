@@ -1,7 +1,12 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import { ClientConfigTarget, ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from './clientConfigTarget';
-import { ConfigRepository } from './configRepository';
+import type {
+    ClientConfigTarget,
+    ClientConfigTargetCSpell,
+    ClientConfigTargetDictionary,
+    ClientConfigTargetVSCode,
+} from './clientConfigTarget';
+import type { ConfigRepository } from './configRepository';
 import { configTargetToConfigRepo } from './configRepositoryHelper';
 
 const fileUri = Uri.file(__filename);
@@ -23,7 +28,7 @@ describe('Validate configRepositoryHelper', () => {
 
     test('configTargetToConfigRepo Unknown config', () => {
         const badTarget = { kind: 'new kind' };
-        expect(() => configTargetToConfigRepo(badTarget as unknown as ClientConfigTarget)).toThrowError(`Unknown target ${badTarget.kind}`);
+        expect(() => configTargetToConfigRepo(badTarget as unknown as ClientConfigTarget)).toThrow(`Unknown target ${badTarget.kind}`);
     });
 });
 

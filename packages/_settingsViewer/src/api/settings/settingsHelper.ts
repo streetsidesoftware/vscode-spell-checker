@@ -1,4 +1,4 @@
-import { Config, Configs, ConfigTarget, SettingByConfigTarget } from './settings';
+import type { Config, Configs, ConfigTarget, SettingByConfigTarget } from './settings';
 
 export interface ExtractConfigResult<T> {
     target: ConfigTarget;
@@ -8,10 +8,10 @@ export interface ExtractConfigResult<T> {
 export function extractConfig<K extends keyof Config>(configs: Configs, key: K): ExtractConfigResult<Config[K]> {
     for (let i = configTargets.length - 1; i >= 0; i--) {
         const target = configTargets[i];
-        if (configs[target] && configs[target]![key]) {
+        if (configs[target]?.[key]) {
             return {
                 target,
-                config: configs[target]![key],
+                config: configs[target][key],
             };
         }
     }

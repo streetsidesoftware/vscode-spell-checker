@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '@cspell/cspell-types';
+import type { CSpellUserSettings } from '@cspell/cspell-types';
 import { ConfigurationTarget, Uri } from 'vscode';
 
 import { calculateConfigForTarget, updateConfig } from './vsConfig';
@@ -27,7 +27,7 @@ describe('vsConfigReaderWriter', () => {
         const keys = ['words', 'dictionaries'] as const;
         const r = await rw.read(keys);
         expect(r).toEqual({ words: ['one'] });
-        expect(mockedCalculateConfigForTarget).lastCalledWith(rw.target, rw.scope, keys, useMerge);
+        expect(mockedCalculateConfigForTarget).toHaveBeenLastCalledWith(rw.target, rw.scope, keys, useMerge);
     });
 
     test('createVSConfigReaderWriter.update', async () => {
@@ -40,7 +40,7 @@ describe('vsConfigReaderWriter', () => {
         const fn = (cfg: CSpellUserSettings) => ({ words: ['two'].concat(cfg.words || []) });
         const keys = ['words', 'dictionaries'] as const;
         await rw.update(fn, keys);
-        expect(mockedUpdateConfig).lastCalledWith(rw.target, rw.scope, keys, fn, false);
+        expect(mockedUpdateConfig).toHaveBeenLastCalledWith(rw.target, rw.scope, keys, fn, false);
         expect(cfgData).toEqual({ words: ['two'] });
     });
 

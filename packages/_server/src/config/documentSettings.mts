@@ -9,16 +9,18 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
-import { AutoLoadCache, createAutoLoadCache, createLazyValue, LazyValue } from 'common-utils/autoLoad.js';
+import type { AutoLoadCache, LazyValue } from 'common-utils/autoLoad.js';
+import { createAutoLoadCache, createLazyValue } from 'common-utils/autoLoad.js';
 import { setIfDefined } from 'common-utils/index.js';
 import { log } from 'common-utils/log.js';
 import { toFileUri, toUri } from 'common-utils/uriHelper.js';
 import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
-import { GlobMatcher, GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
+import type { GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
+import { GlobMatcher } from 'cspell-glob';
+import type { ExcludeFilesGlobMap } from 'cspell-lib';
 import {
     calcOverrideSettings,
     clearCachedFiles,
-    ExcludeFilesGlobMap,
     ExclusionHelper,
     getSources,
     mergeSettings,
@@ -26,23 +28,25 @@ import {
     searchForConfig,
 } from 'cspell-lib';
 import * as fs from 'fs';
-import { genSequence, Sequence } from 'gensequence';
+import type { Sequence } from 'gensequence';
+import { genSequence } from 'gensequence';
 import * as os from 'os';
 import * as path from 'path';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import { VSCodeSettingsCspell } from '../api.js';
+import type { VSCodeSettingsCspell } from '../api.js';
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
-import { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
-import { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
+import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
-import { getConfiguration, getWorkspaceFolders, TextDocumentUri } from './vscode.config.mjs';
+import type { TextDocumentUri } from './vscode.config.mjs';
+import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
 
 // The settings interface describe the server relevant settings part
-export interface SettingsCspell extends VSCodeSettingsCspell {}
+export type SettingsCspell = VSCodeSettingsCspell;
 
 const cSpellSection: keyof SettingsCspell = extensionId;
 

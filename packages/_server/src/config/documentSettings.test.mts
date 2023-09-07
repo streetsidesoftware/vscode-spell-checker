@@ -1,19 +1,20 @@
+import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
-import { getDefaultSettings, Pattern } from 'cspell-lib';
+import { getDefaultSettings } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { URI as Uri } from 'vscode-uri';
 
 import { extendExpect } from '../test/test.matchers.js';
-import { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
-import { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
+import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { ExcludedByMatch } from './documentSettings.mjs';
 import {
     __testing__,
     correctBadSettings,
     debugExports,
     DocumentSettings,
-    ExcludedByMatch,
     isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,

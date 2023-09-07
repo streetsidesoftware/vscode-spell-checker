@@ -2,7 +2,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import * as Path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import YarnLockFile, { FirstLevelDependency, LockFileObject } from '@yarnpkg/lockfile';
+import type { FirstLevelDependency, LockFileObject } from '@yarnpkg/lockfile';
+import YarnLockFile from '@yarnpkg/lockfile';
 import chalk from 'chalk';
 import { Command } from 'commander';
 import { findUp } from 'find-up';

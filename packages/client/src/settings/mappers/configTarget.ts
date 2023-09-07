@@ -1,6 +1,6 @@
-import { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
+import type { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
 import { toUri } from '../../util/uriHelper';
-import {
+import type {
     ClientConfigTarget,
     ClientConfigTargetCSpell,
     ClientConfigTargetDictionary,

@@ -1,7 +1,9 @@
+import assert from 'assert';
 import { getDefaultSettings } from 'cspell-lib';
 import { describe, expect, test } from 'vitest';
 
-import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher, Range } from './PatternMatcher.js';
+import type { Range } from './PatternMatcher.js';
+import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher } from './PatternMatcher.js';
 
 const settings = {
     patterns: [],
@@ -35,9 +37,10 @@ describe('Validate PatternMatcher', () => {
         );
         const r = mapResults(result);
         expect(r.get('email')).toBeDefined();
-        const matchedEmailsResult = r.get('email')!;
-        expect(matchedEmailsResult.matches).toHaveLength(1);
-        const matchedEmails = matchedEmailsResult.matches[0];
+        const matchedEmailsResult = r.get('email');
+        expect(matchedEmailsResult?.matches).toHaveLength(1);
+        const matchedEmails = matchedEmailsResult?.matches[0];
+        assert(matchedEmails);
         expect(isRegExpMatchTimeout(matchedEmails)).toBe(false);
         expect(isRegExpMatch(matchedEmails)).toBe(true);
         if (isRegExpMatch(matchedEmails)) {
@@ -50,7 +53,8 @@ describe('Validate PatternMatcher', () => {
         const result = await matcher.matchPatternsInText([/.*/.toString()], sampleText, settings);
         const r = mapResults(result);
         expect(r.get('Everything')).toBeDefined();
-        const matchedResults = r.get('Everything')!;
+        const matchedResults = r.get('Everything');
+        assert(matchedResults);
         expect(matchedResults.matches).toHaveLength(1);
         const matches = matchedResults.matches[0];
         expect(isRegExpMatchTimeout(matches)).toBe(false);
@@ -68,7 +72,8 @@ describe('Validate PatternMatcher', () => {
             const result = await matcher.matchPatternsInText([slowRegexp], sampleText, settings);
             const r = mapResults(result);
             expect(r.get(slowRegexp)).toBeDefined();
-            const matchedResults = r.get(slowRegexp)!;
+            const matchedResults = r.get(slowRegexp);
+            assert(matchedResults);
             expect(matchedResults.matches).toHaveLength(1);
             const matches = matchedResults.matches[0];
             expect(isRegExpMatchTimeout(matches)).toBe(true);

@@ -1,7 +1,8 @@
 import dcopy from 'clone-deep';
 
-import { CommandMessage, isMessage, MessageBus } from '../../api';
-import { WebviewApi } from '../../api/WebviewApi';
+import type { CommandMessage } from '../../api';
+import { isMessage, MessageBus } from '../../api';
+import type { WebviewApi } from '../../api/WebviewApi';
 import { AppState } from '../../viewer/AppState';
 import { sampleSettings } from '../samples/sampleSettings';
 
@@ -11,6 +12,7 @@ export class AppStateFixture extends AppState {
 
     constructor() {
         const webviewApi: WebviewApi = {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             postMessage: (msg: any) => {
                 isMessage(msg) && this._postedMessages.push(msg);
                 return webviewApi;

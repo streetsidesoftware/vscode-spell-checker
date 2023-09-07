@@ -1,14 +1,18 @@
 import { describe, expect, test, vi } from 'vitest';
 
 import { sampleSettings } from '../test/samples/sampleSettings';
-import { ConfigurationChangeMessage, RequestConfigurationMessage } from './message';
-import { Logger, MessageBus } from './MessageBus';
-import { WebviewApi } from './WebviewApi';
+import type { ConfigurationChangeMessage, RequestConfigurationMessage } from './message';
+import type { Logger } from './MessageBus';
+import { MessageBus } from './MessageBus';
+import type { WebviewApi } from './WebviewApi';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ANY = any;
 
 describe('Validate MessageBus', () => {
     test('constructor', () => {
         const webviewApi: WebviewApi = {
-            postMessage: (_msg: any) => webviewApi,
+            postMessage: (_msg: ANY) => webviewApi,
             onmessage: undefined,
         };
 
@@ -16,7 +20,7 @@ describe('Validate MessageBus', () => {
     });
 
     test('postMessage', () => {
-        const postMessageMock = vi.fn((msg: any) => loopBack(webviewApi, msg));
+        const postMessageMock = vi.fn((msg: ANY) => loopBack(webviewApi, msg));
         const webviewApi: WebviewApi = {
             postMessage: postMessageMock,
             onmessage: undefined,
@@ -31,11 +35,11 @@ describe('Validate MessageBus', () => {
 
     test('listener', () => {
         const webviewApi: WebviewApi = {
-            postMessage: (msg: any) => loopBack(webviewApi, msg),
+            postMessage: (msg: ANY) => loopBack(webviewApi, msg),
             onmessage: undefined,
         };
-        const onRequestConfigurationMessage = vi.fn((_msg: RequestConfigurationMessage) => {});
-        const onConfigurationChangeMessage = vi.fn((_msg: ConfigurationChangeMessage) => {});
+        const onRequestConfigurationMessage = vi.fn((_msg: RequestConfigurationMessage) => undefined);
+        const onConfigurationChangeMessage = vi.fn((_msg: ConfigurationChangeMessage) => undefined);
         const logger = mockLogger();
         const bus = new MessageBus(webviewApi, logger);
         const listenerA = bus.listenFor('RequestConfigurationMessage', onRequestConfigurationMessage);
@@ -70,17 +74,17 @@ describe('Validate MessageBus', () => {
 
     test('receiving non-message path', () => {
         const webviewApi: WebviewApi = {
-            postMessage: (msg: any) => loopBack(webviewApi, msg),
+            postMessage: (msg: ANY) => loopBack(webviewApi, msg),
             onmessage: undefined,
         };
         const logger = mockLogger();
         new MessageBus(webviewApi, logger);
-        expect(() => webviewApi.onmessage!({ data: {} })).not.toThrow();
+        expect(() => webviewApi.onmessage?.({ data: {} })).not.toThrow();
         expect(logger.error).toBeCalledTimes(1);
     });
 });
 
-function loopBack(webviewApi: WebviewApi, msg: any): WebviewApi {
+function loopBack(webviewApi: WebviewApi, msg: ANY): WebviewApi {
     if (webviewApi.onmessage) {
         webviewApi.onmessage({ data: msg });
     }

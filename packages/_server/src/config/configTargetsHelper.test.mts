@@ -1,13 +1,14 @@
 import { mustBeDefined } from 'common-utils/util.js';
-import { CSpellUserSettings, searchForConfig } from 'cspell-lib';
+import type { CSpellUserSettings } from 'cspell-lib';
+import { searchForConfig } from 'cspell-lib';
 import * as Path from 'path';
 import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
-import { WorkspaceConfigForDocument } from '../api.js';
-import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets.mjs';
+import type { WorkspaceConfigForDocument } from '../api.js';
+import type { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './configTargets.mjs';
 import { __testing__, calculateConfigTargets } from './configTargetsHelper.mjs';
-import { DictionaryDef } from './cspellConfig/CustomDictionary.mjs';
+import type { DictionaryDef } from './cspellConfig/CustomDictionary.mjs';
 import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
 
 const { workspaceConfigToTargets, cspellToTargets, dictionariesToTargets, sortTargets } = __testing__;

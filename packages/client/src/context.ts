@@ -1,6 +1,7 @@
-import { commands, TextDocument, workspace } from 'vscode';
+import type { TextDocument } from 'vscode';
+import { commands, workspace } from 'vscode';
 
-import { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from './client';
+import type { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from './client';
 import { extensionId } from './constants';
 import { getCSpellDiags } from './diags';
 import { toUri } from './util/uriHelper';

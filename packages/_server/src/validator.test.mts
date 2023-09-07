@@ -1,5 +1,6 @@
+import type { CSpellSettings } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
-import { CSpellSettings, getDefaultSettings } from 'cspell-lib';
+import { getDefaultSettings } from 'cspell-lib';
 import { loremIpsum } from 'lorem-ipsum';
 import { describe, expect, test } from 'vitest';
 import { TextDocument } from 'vscode-languageserver-textdocument';

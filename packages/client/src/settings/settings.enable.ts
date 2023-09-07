@@ -6,7 +6,7 @@ import {
     readConfigTargetValues,
     setConfigFieldQuickPick,
 } from './settings.base';
-import { TargetsAndScopes } from './settings.types';
+import type { TargetsAndScopes } from './settings.types';
 
 const enableKey: keyof CSpellUserSettings = 'enabled';
 

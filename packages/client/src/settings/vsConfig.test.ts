@@ -1,8 +1,10 @@
-import { createMockWorkspaceConfiguration, MockWorkspaceConfigurationData, readTextDocument } from 'jest-mock-vscode';
+import type { MockWorkspaceConfigurationData } from 'jest-mock-vscode';
+import { createMockWorkspaceConfiguration, readTextDocument } from 'jest-mock-vscode';
 import rfdc from 'rfdc';
-import { ConfigurationScope, Uri, workspace, WorkspaceConfiguration } from 'vscode';
+import type { ConfigurationScope, WorkspaceConfiguration } from 'vscode';
+import { Uri, workspace } from 'vscode';
 
-import { CSpellUserSettings } from '../client';
+import type { CSpellUserSettings } from '../client';
 import {
     __testing__,
     ConfigurationTarget,

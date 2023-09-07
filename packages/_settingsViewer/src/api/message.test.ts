@@ -1,17 +1,8 @@
 import { describe, expect, test } from 'vitest';
 
 import { sampleSettings } from '../test/samples/sampleSettings';
-import {
-    ConfigurationChangeMessage,
-    EnableLocaleMessage,
-    isConfigurationChangeMessage,
-    isEnableLocaleMessage,
-    isMessage,
-    isSelectFileMessage,
-    isSelectFolderMessage,
-    SelectFileMessage,
-    SelectFolderMessage,
-} from './message';
+import type { ConfigurationChangeMessage, EnableLocaleMessage, SelectFileMessage, SelectFolderMessage } from './message';
+import { isConfigurationChangeMessage, isEnableLocaleMessage, isMessage, isSelectFileMessage, isSelectFolderMessage } from './message';
 
 describe('Validate Messages', () => {
     const msgSelectFolder: SelectFolderMessage = {

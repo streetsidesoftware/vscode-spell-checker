@@ -1,9 +1,7 @@
 import { Uri } from 'vscode';
 
+import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from './clientConfigTarget';
 import {
-    ClientConfigTargetCSpell,
-    ClientConfigTargetDictionary,
-    ClientConfigTargetVSCode,
     isClientConfigTargetCSpell,
     isClientConfigTargetDictionary,
     isClientConfigTargetOfKind,

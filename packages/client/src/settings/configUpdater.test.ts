@@ -1,5 +1,6 @@
-import { CSpellUserSettings } from '../client';
-import { ConfigKeys, configUpdaterForKey, UpdateConfigFieldFn } from './configUpdater';
+import type { CSpellUserSettings } from '../client';
+import type { ConfigKeys, UpdateConfigFieldFn } from './configUpdater';
+import { configUpdaterForKey } from './configUpdater';
 
 describe('Validate configUpdater', () => {
     interface TestConfigUpdaterForKey<K extends ConfigKeys> {

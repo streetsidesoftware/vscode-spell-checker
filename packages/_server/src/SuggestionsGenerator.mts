@@ -1,7 +1,7 @@
 import { CompoundWordsMethod, type SpellingDictionaryCollection, type SuggestionResult, type SuggestOptions } from 'cspell-lib';
 
-import { CSpellUserSettings } from './config/cspellConfig/index.mjs';
-import { Suggestion } from './models/Suggestion.mjs';
+import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { Suggestion } from './models/Suggestion.mjs';
 
 const defaultNumSuggestions = 10;
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable node/no-extraneous-import */
+
 import * as esbuild from 'esbuild';
 import { fileURLToPath } from 'url';
 import yargs from 'yargs';

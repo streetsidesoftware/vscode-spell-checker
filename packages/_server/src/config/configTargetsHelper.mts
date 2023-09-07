@@ -4,20 +4,19 @@ import { capitalize } from 'common-utils/util.js';
 import { genSequence } from 'gensequence';
 import * as Path from 'path';
 
-import { WorkspaceConfigForDocument } from '../api.js';
-import {
-    ConfigKinds,
+import type { WorkspaceConfigForDocument } from '../api.js';
+import type {
     ConfigScope,
-    ConfigScopes,
     ConfigScopeVScode,
     ConfigTarget,
     ConfigTargetCSpell,
     ConfigTargetDictionary,
     ConfigTargetVSCode,
-    weight,
 } from './configTargets.mjs';
-import { CSpellUserSettings } from './cspellConfig/index.mjs';
-import { CSpellSettingsWithFileSource, extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
+import { ConfigKinds, ConfigScopes, weight } from './configTargets.mjs';
+import type { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
+import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
 
 export function calculateConfigTargets(settings: CSpellUserSettings, workspaceConfig: WorkspaceConfigForDocument): ConfigTarget[] {
     const targets: ConfigTarget[] = [];

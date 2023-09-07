@@ -1,13 +1,14 @@
 import { format } from 'util';
 import * as vscode from 'vscode';
 
-import { CSpellClient, CSpellUserSettings } from '../client';
+import type { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
 import { catchErrors, logError, logErrors, showError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
-import { RegexpOutlineItem, RegexpOutlineProvider } from './RegexpOutlineProvider';
-import { NamedPattern, PatternMatch, PatternSettings } from './server';
+import type { RegexpOutlineItem } from './RegexpOutlineProvider';
+import { RegexpOutlineProvider } from './RegexpOutlineProvider';
+import type { NamedPattern, PatternMatch, PatternSettings } from './server';
 
 interface DisposableLike {
     dispose(): unknown;

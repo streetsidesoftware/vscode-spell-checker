@@ -1,7 +1,7 @@
-import { TextDocument } from 'vscode-languageserver-textdocument';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
 
-import { OnSpellCheckDocumentStep } from './api.js';
-import { ClientApi } from './clientApi.mjs';
+import type { OnSpellCheckDocumentStep } from './api.js';
+import type { ClientApi } from './clientApi.mjs';
 
 let seq = 0;
 

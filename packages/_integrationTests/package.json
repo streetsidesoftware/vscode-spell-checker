@@ -28,16 +28,17 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.17.14",
-    "@vscode/test-electron": "^2.3.4",
     "chai": "^4.3.8",
-    "chalk": "^4.1.2",
     "cross-env": "^7.0.3",
-    "glob": "^8.1.0",
-    "kefir": "^3.8.8",
-    "mocha": "^10.2.0"
+    "kefir": "^3.8.8"
   },
   "peerDependenciesMeta": {},
-  "dependencies": {},
+  "dependencies": {
+    "@vscode/test-electron": "^2.3.4",
+    "chalk": "^4.1.2",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0"
+  },
   "engines": {
     "node": ">16.0.0"
   }

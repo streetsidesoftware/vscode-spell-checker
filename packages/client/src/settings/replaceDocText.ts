@@ -1,4 +1,5 @@
-import { Range, TextDocument, TextEdit, workspace, WorkspaceEdit } from 'vscode';
+import type { TextDocument } from 'vscode';
+import { Range, TextEdit, workspace, WorkspaceEdit } from 'vscode';
 
 export async function replaceDocText(doc: TextDocument, text: string): Promise<boolean> {
     const wsEdit = new WorkspaceEdit();

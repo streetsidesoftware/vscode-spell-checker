@@ -2,7 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { describe, expect, test } from 'vitest';
 
-import { getCssVar, Theme } from '../VSCodeColors/vscodeColors';
+import type { Theme } from '../VSCodeColors/vscodeColors';
+import { getCssVar } from '../VSCodeColors/vscodeColors';
 import * as colors from './colors';
 import * as colorsStatic from './colorsStatic';
 

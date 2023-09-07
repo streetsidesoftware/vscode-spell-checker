@@ -1,4 +1,5 @@
-import { Diagnostic, languages, Range, Selection, TextDocument, Uri } from 'vscode';
+import type { Diagnostic, Range, Selection, TextDocument, Uri } from 'vscode';
+import { languages } from 'vscode';
 
 import { diagnosticSource } from './constants';
 import { isWordLike } from './settings/CSpellSettings';

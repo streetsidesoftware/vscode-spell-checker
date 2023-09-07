@@ -39,15 +39,15 @@ describe('ResolvablePromise', () => {
         const r = new Resolvable<string>();
         r.resolve('one');
         await expect(r.promise).resolves.toBe('one');
-        expect(() => r.resolve('two')).toThrowError('Already Resolved');
-        expect(() => r.reject('three')).toThrowError('Already Resolved');
+        expect(() => r.resolve('two')).toThrow('Already Resolved');
+        expect(() => r.reject('three')).toThrow('Already Resolved');
     });
 
     test('Double reject', async () => {
         const r = new Resolvable<string>();
         r.reject('one');
         await expect(r.promise).rejects.toBe('one');
-        expect(() => r.reject('two')).toThrowError('Already Resolved');
-        expect(() => r.resolve('three')).toThrowError('Already Resolved');
+        expect(() => r.reject('two')).toThrow('Already Resolved');
+        expect(() => r.resolve('three')).toThrow('Already Resolved');
     });
 });

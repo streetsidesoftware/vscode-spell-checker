@@ -1,5 +1,5 @@
 import { access } from 'fs/promises';
-import { URI as Uri } from 'vscode-uri';
+import type { URI as Uri } from 'vscode-uri';
 
 import { isErrnoException } from './errors';
 

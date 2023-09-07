@@ -10,15 +10,8 @@ import type {
     ServerNotifyApi,
     ServerRequestApi,
 } from 'server/api';
-import {
-    CodeAction,
-    CodeActionParams,
-    CodeActionRequest,
-    Command,
-    LanguageClient,
-    NotificationType,
-    RequestType,
-} from 'vscode-languageclient/node';
+import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
+import { CodeActionRequest, NotificationType, RequestType } from 'vscode-languageclient/node';
 export type {
     ClientNotifications,
     ClientNotificationsApi,

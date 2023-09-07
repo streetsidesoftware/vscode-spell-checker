@@ -6,15 +6,15 @@ import { uriToName } from 'common-utils/uriHelper.js';
 import * as vscode from 'vscode';
 
 import { toUri } from '../util/uriHelper';
-import {
+import type {
     ClientConfigKind,
     ClientConfigScope,
     ClientConfigTarget,
     ClientConfigTargetCSpell,
     ClientConfigTargetDictionary,
     ClientConfigTargetVSCode,
-    ConfigKinds,
 } from './clientConfigTarget';
+import { ConfigKinds } from './clientConfigTarget';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
 
 type ConfigKindMask = {

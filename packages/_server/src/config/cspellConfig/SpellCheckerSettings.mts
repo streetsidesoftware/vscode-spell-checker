@@ -1,6 +1,6 @@
-import { EnableFileTypeId, RegExpString } from './annotatedTypes.mjs';
-import { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
-import { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
+import type { EnableFileTypeId, RegExpString } from './annotatedTypes.mjs';
+import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
+import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**

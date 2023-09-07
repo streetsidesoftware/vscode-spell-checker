@@ -1,16 +1,21 @@
 import { uriToName } from 'common-utils/uriHelper.js';
 import { pick } from 'common-utils/util.js';
 import { posix } from 'path';
-import { commands, ConfigurationTarget, TextEdit, Uri, window, workspace, WorkspaceEdit, WorkspaceFolder } from 'vscode';
+import type { TextEdit, WorkspaceFolder } from 'vscode';
+import { commands, ConfigurationTarget, Uri, window, workspace, WorkspaceEdit } from 'vscode';
 
-import { CSpellUserSettings, CustomDictionaryScope } from '../client';
+import type { CSpellUserSettings, CustomDictionaryScope } from '../client';
 import { ConfigFields } from './configFields';
-import { ConfigFileReaderWriter, createConfigFileReaderWriter } from './configFileReadWrite';
-import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
+import type { ConfigFileReaderWriter } from './configFileReadWrite';
+import { createConfigFileReaderWriter } from './configFileReadWrite';
+import type { ConfigUpdater } from './configUpdater';
+import { configUpdaterForKey } from './configUpdater';
 import { findOpenDocument } from './fs';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { GetConfigurationScope, getSettingFromVSConfig } from './vsConfig';
-import { createVSConfigReaderWriter, VSConfigReaderWriter } from './vsConfigReaderWriter';
+import type { GetConfigurationScope } from './vsConfig';
+import { getSettingFromVSConfig } from './vsConfig';
+import type { VSConfigReaderWriter } from './vsConfigReaderWriter';
+import { createVSConfigReaderWriter } from './vsConfigReaderWriter';
 
 export type ConfigKeys = keyof CSpellUserSettings;
 

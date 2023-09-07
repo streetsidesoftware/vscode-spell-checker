@@ -1,16 +1,18 @@
 import { capitalize } from 'common-utils/util';
 import { describe, expect, test } from 'vitest';
 
-import {
+import type {
     ConfigKind,
-    ConfigKinds,
     ConfigScope,
-    ConfigScopes,
     ConfigScopeVScode,
     ConfigTarget,
     ConfigTargetCSpell,
     ConfigTargetDictionary,
     ConfigTargetVSCode,
+} from './configTargets.mjs';
+import {
+    ConfigKinds,
+    ConfigScopes,
     isConfigTargetCSpell,
     isConfigTargetDictionary,
     isConfigTargetOfKind,
@@ -130,7 +132,7 @@ function tDict(scope: ConfigScope): ConfigTargetDictionary {
     };
 }
 
-function tCspell(scope: ConfigScope, words = true, ignoreWords = false, index: number = 0): ConfigTargetCSpell {
+function tCspell(scope: ConfigScope, words = true, ignoreWords = false, index = 0): ConfigTargetCSpell {
     return {
         kind: 'cspell',
         scope,

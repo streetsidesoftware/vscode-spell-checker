@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { CSpellUserSettings, CustomDictionaries, CustomDictionariesDictionary, DictionaryDefinition } from './cspellConfig/index.mjs';
+import type { CSpellUserSettings, CustomDictionaries, CustomDictionariesDictionary, DictionaryDefinition } from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions } from './customDictionaries.mjs';
 
 describe('customDictionaries', () => {

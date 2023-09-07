@@ -1,6 +1,7 @@
-import { ClientConfigTarget } from '../clientConfigTarget';
+import type { ClientConfigTarget } from '../clientConfigTarget';
 import { createClientConfigTargetVSCode } from '../configTargetHelper';
-import { ConfigTargetLegacy, normalizeTarget } from '../vsConfig';
+import type { ConfigTargetLegacy } from '../vsConfig';
+import { normalizeTarget } from '../vsConfig';
 
 export function mapConfigTargetLegacyToClientConfigTarget(t: ConfigTargetLegacy): ClientConfigTarget {
     const target = normalizeTarget(t);

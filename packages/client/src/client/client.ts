@@ -1,44 +1,31 @@
 import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
-import { WorkspaceConfigForDocument } from 'server/api';
-import {
-    CodeAction,
-    CodeActionKind,
-    Command,
-    Diagnostic,
-    DiagnosticCollection,
-    DiagnosticSeverity,
-    Disposable,
-    ExtensionContext,
-    languages as vsCodeSupportedLanguages,
-    Position,
-    Range,
-    TextDocument,
-    Uri,
-    workspace,
-} from 'vscode';
+import type { WorkspaceConfigForDocument } from 'server/api';
+import type { Command, Diagnostic, DiagnosticCollection, ExtensionContext, Position, Range, TextDocument } from 'vscode';
+import { CodeAction, CodeActionKind, DiagnosticSeverity, Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
+import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import * as VSCodeLangClient from 'vscode-languageclient/node';
-import { ForkOptions, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { LanguageClient, TransportKind } from 'vscode-languageclient/node';
 
 import { diagnosticSource } from '../constants';
+import type { Inspect } from '../settings';
 import * as Settings from '../settings';
-import { Inspect, inspectConfigKeys, sectionCSpell } from '../settings';
+import { inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
-import { Maybe } from '../util';
+import type { Maybe } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
 import { findConicalDocumentScope } from '../util/documentUri';
 import { logErrors, silenceErrors } from '../util/errors';
 import { Resolvable } from './Resolvable';
-import {
-    createServerApi,
+import type {
     FieldExistsInTarget,
     GetConfigurationForDocumentResult,
     IsSpellCheckEnabledResult,
     OnSpellCheckDocumentStep,
-    requestCodeAction,
     ServerApi,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from './server';
+import { createServerApi, requestCodeAction } from './server';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];

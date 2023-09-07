@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { Connection } from 'vscode-languageserver';
+import type { Connection } from 'vscode-languageserver';
 
-import { OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api.js';
+import type { OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api.js';
 import { createClientApi } from './clientApi.mjs';
 
 const stub: any = {

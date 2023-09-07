@@ -2,7 +2,7 @@ import type { CSpellUserSettings } from '@cspell/cspell-types';
 import { getSources } from 'cspell-lib';
 
 import { FileWatcher } from '../utils/fileWatcher.mjs';
-import { Disposable } from '../vscodeLanguageServer/index.cjs';
+import type { Disposable } from '../vscodeLanguageServer/index.cjs';
 
 export class ConfigWatcher extends FileWatcher implements Disposable {
     constructor() {

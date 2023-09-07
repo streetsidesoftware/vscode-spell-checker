@@ -1,9 +1,10 @@
-import { ConfigurationTarget } from 'vscode';
+import type { ConfigurationTarget } from 'vscode';
 
-import { CSpellUserSettings } from '../client';
-import { ConfigReaderWriter, ConfigUpdateFn } from './configReaderWriter';
+import type { CSpellUserSettings } from '../client';
+import type { ConfigReaderWriter, ConfigUpdateFn } from './configReaderWriter';
 import { configurationTargetToDictionaryScope } from './targetAndScope';
-import { calculateConfigForTarget, GetConfigurationScope, updateConfig } from './vsConfig';
+import type { GetConfigurationScope } from './vsConfig';
+import { calculateConfigForTarget, updateConfig } from './vsConfig';
 
 export interface VSConfigReaderWriter extends ConfigReaderWriter {
     readonly name: string;

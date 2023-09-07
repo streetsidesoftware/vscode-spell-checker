@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig/index.mjs';
+import type { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig/index.mjs';
 
 describe('cspellConfig', () => {
     const sampleSettings: AllSpellCheckerSettingsInVSCode[] = [
@@ -93,6 +93,7 @@ describe('cspellConfig', () => {
 
 describe('Verify all config items are accounted for in configuration.', () => {
     type ArrayEntry<T extends unknown[]> = T extends (infer R)[] ? R : never;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer R) => any ? R : never;
 
     type PartialFlatConfig = { [K in keyof AllSpellCheckerSettingsInVSCode as `cSpell.${K}`]: AllSpellCheckerSettingsInVSCode[K] };

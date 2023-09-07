@@ -3,8 +3,8 @@ import * as Path from 'path';
 import { describe, expect, type Mock, test, vi } from 'vitest';
 import { URI as Uri } from 'vscode-uri';
 
-import { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
-import { CSpellUserSettings, CustomDictionaries } from './cspellConfig/index.mjs';
+import type { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
+import type { CSpellUserSettings, CustomDictionaries } from './cspellConfig/index.mjs';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver.mjs';
 
 vi.mock('vscode-languageserver/node');

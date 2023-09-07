@@ -1,10 +1,12 @@
 import { isErrnoException } from 'common-utils/index.js';
 import { uriToName } from 'common-utils/uriHelper.js';
 import { format } from 'util';
-import { Uri, window, workspace } from 'vscode';
+import type { Uri } from 'vscode';
+import { window, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
-import { ConfigRepository, createCSpellConfigRepository } from './configRepository';
+import type { ConfigRepository } from './configRepository';
+import { createCSpellConfigRepository } from './configRepository';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters';
 import { vscodeFs as fs } from './fs';
 import { replaceDocText } from './replaceDocText';

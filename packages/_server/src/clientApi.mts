@@ -1,6 +1,7 @@
-import { Connection, NotificationType, RequestType } from 'vscode-languageserver';
+import type { Connection } from 'vscode-languageserver';
+import { NotificationType, RequestType } from 'vscode-languageserver';
 
-import {
+import type {
     ClientNotifications,
     OnSpellCheckDocumentStep,
     Req,

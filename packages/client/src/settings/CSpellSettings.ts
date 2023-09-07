@@ -1,9 +1,10 @@
 import { Uri } from 'vscode';
 
-import { CSpellUserSettings, DictionaryDefinitionCustom } from '../client';
+import type { CSpellUserSettings, DictionaryDefinitionCustom } from '../client';
 import { unique, uniqueFilter } from '../util';
-import { ConfigUpdateFn, isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
-import { CustomDictDef } from './DictionaryTarget';
+import type { ConfigUpdateFn } from './configFileReadWrite';
+import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite';
+import type { CustomDictDef } from './DictionaryTarget';
 
 const currentSettingsFileVersion = '0.2';
 

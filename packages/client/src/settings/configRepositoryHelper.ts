@@ -1,20 +1,15 @@
-import { CSpellUserSettings } from '../client';
+import type { CSpellUserSettings } from '../client';
 import { toUri } from '../util/uriHelper';
-import {
+import type {
     ClientConfigKind,
     ClientConfigTarget,
     ClientConfigTargetCSpell,
     ClientConfigTargetDictionary,
     ClientConfigTargetVSCode,
 } from './clientConfigTarget';
-import {
-    ConfigRepository,
-    createCSpellConfigRepository,
-    createVSCodeConfigRepository,
-    CSpellConfigRepository,
-    VSCodeRepository,
-} from './configRepository';
-import { ConfigKeys, ConfigUpdater } from './configUpdater';
+import type { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
+import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
+import type { ConfigKeys, ConfigUpdater } from './configUpdater';
 import { dictionaryScopeToConfigurationTarget } from './targetAndScope';
 
 const KnownTargetKinds = new Set<ClientConfigKind>(['dictionary', 'cspell', 'vscode']);

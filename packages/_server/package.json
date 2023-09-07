@@ -36,31 +36,27 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^7.3.2",
-    "@types/micromatch": "^4.0.2",
     "@types/yargs": "17.0.24",
-    "common-utils": "1.0.0",
-    "gensequence": "^6.0.0",
-    "iconv-lite": "^0.6.3",
-    "lorem-ipsum": "^2.0.8",
-    "micromatch": "^4.0.5",
-    "minimatch": "^9.0.3",
-    "node-watch": "^0.7.4",
-    "rxjs": "^7.8.1",
     "ts-json-schema-generator": "^1.3.0",
     "ts-loader": "^9.4.4",
-    "vscode-languageserver": "^8.1.0",
-    "vscode-languageserver-textdocument": "^1.0.8",
-    "vscode-uri": "^3.0.7",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "yargs": "^17.7.2"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.2",
+    "@cspell/cspell-types": "^7.3.2",
+    "common-utils": "*",
     "cspell-gitignore": "^7.3.2",
     "cspell-glob": "^7.3.2",
-    "cspell-lib": "^7.3.2"
+    "cspell-lib": "^7.3.2",
+    "gensequence": "^6.0.0",
+    "node-watch": "^0.7.4",
+    "rxjs": "^7.8.1",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8",
+    "vscode-languageserver-types": "^3.17.3",
+    "vscode-uri": "^3.0.7"
   },
   "scripts": {
     "build": "yarn run build:esbuild && yarn run build:api && yarn run build:tsc && yarn run build-schema",

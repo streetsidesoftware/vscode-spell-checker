@@ -1,6 +1,7 @@
-import { ClientConfigTarget } from './clientConfigTarget';
+import type { ClientConfigTarget } from './clientConfigTarget';
 import { configTargetToConfigRepo } from './configRepositoryHelper';
-import { createDictionaryTargetForConfigRep, createDictionaryTargetForFile, DictionaryTarget } from './DictionaryTarget';
+import type { DictionaryTarget } from './DictionaryTarget';
+import { createDictionaryTargetForConfigRep, createDictionaryTargetForFile } from './DictionaryTarget';
 
 export function configTargetsToDictionaryTargets(configTargets: ClientConfigTarget[]): DictionaryTarget[] {
     return configTargets.map(configTargetToDictionaryTarget);

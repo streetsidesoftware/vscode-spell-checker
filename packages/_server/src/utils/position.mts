@@ -1,4 +1,4 @@
-import { Position } from 'vscode-languageserver';
+import type { Position } from 'vscode-languageserver';
 
 /**
  * Compares two positions

@@ -1,11 +1,11 @@
 import { createTextDocument, DocumentValidator } from 'cspell-lib';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-// eslint-disable-next-line node/no-extraneous-import
-import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver-types';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
+import type { Diagnostic } from 'vscode-languageserver-types';
+import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { diagnosticSource } from './constants.mjs';
-import { DiagnosticData } from './models/DiagnosticData.mjs';
+import type { DiagnosticData } from './models/DiagnosticData.mjs';
 
 export { createTextDocument, validateText } from 'cspell-lib';
 

@@ -1,5 +1,6 @@
 import { isErrorCodeException } from 'common-utils/index.js';
-import { FileSystemError, Range, TextDocument, Uri, workspace, WorkspaceEdit } from 'vscode';
+import type { TextDocument, Uri } from 'vscode';
+import { FileSystemError, Range, workspace, WorkspaceEdit } from 'vscode';
 
 const fs = workspace.fs;
 

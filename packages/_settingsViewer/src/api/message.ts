@@ -1,4 +1,4 @@
-import { ConfigTarget, Settings } from './settings';
+import type { ConfigTarget, Settings } from './settings';
 
 /**
  * @private

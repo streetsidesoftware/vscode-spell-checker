@@ -1,4 +1,4 @@
-import { ClientConfigScope, ClientConfigTarget } from './clientConfigTarget';
+import type { ClientConfigScope, ClientConfigTarget } from './clientConfigTarget';
 
 export interface TargetsAndScopes {
     /** all targets that have an influence on changing a setting */

@@ -42,18 +42,18 @@
     }
   },
   "devDependencies": {
-    "@cspell/cspell-types": "^7.3.2",
-    "cspell-lib": "^7.3.2",
-    "common-utils": "1.0.0",
     "ts-loader": "^9.4.4",
-    "vscode-languageserver": "^8.1.0",
-    "vscode-languageserver-textdocument": "^1.0.8",
-    "vscode-uri": "^3.0.7",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "regexp-worker": "^2.0.2"
+    "@cspell/cspell-types": "^7.3.2",
+    "common-utils": "*",
+    "cspell-lib": "^7.3.2",
+    "regexp-worker": "^2.0.2",
+    "vscode-languageserver-textdocument": "^1.0.8",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-uri": "^3.0.7"
   },
   "scripts": {
     "build": "yarn run build:esbuild && yarn run build:api && yarn run build:tsc",

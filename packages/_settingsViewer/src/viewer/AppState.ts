@@ -1,8 +1,16 @@
 import { lookupLocaleInfo, normalizeCode } from 'locale-resolver';
 import { action, computed, makeObservable, observable } from 'mobx';
 
-import { Messenger } from '../api';
-import { ConfigSource, ConfigTarget, LocaleId, SettingByConfigTarget, Settings, TextDocument, WorkspaceFolder } from '../api/settings/';
+import type { Messenger } from '../api';
+import type {
+    ConfigSource,
+    ConfigTarget,
+    LocaleId,
+    SettingByConfigTarget,
+    Settings,
+    TextDocument,
+    WorkspaceFolder,
+} from '../api/settings/';
 import { ConfigTargets, configTargets } from '../api/settings/settingsHelper';
 import { uniqueFilter } from '../api/utils';
 import { compareBy, compareEach } from '../api/utils/Comparable';
@@ -71,7 +79,7 @@ export class AppState implements State {
             file: undefined,
         },
     };
-    @observable debugMode: boolean = false;
+    @observable debugMode = false;
 
     constructor(private messageBus: Messenger) {
         makeObservable(this);
