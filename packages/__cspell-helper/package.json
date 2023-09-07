@@ -12,7 +12,7 @@
   "types": "dist/index.d.cts",
   "scripts": {
     "build-production": "yarn run clean-build",
-    "build": "./build.mjs && tsc -p . && ts2mjs --cjs dist/index.d.ts",
+    "build": "node ./build.mjs && tsc -p . && ts2mjs --cjs dist/index.d.ts",
     "clean-build": "yarn run clean && yarn run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "echo OK"
