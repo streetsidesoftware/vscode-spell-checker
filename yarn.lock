@@ -2287,13 +2287,13 @@ array.prototype.flat@^1.3.1:
     es-shim-unscopables "^1.0.0"
 
 array.prototype.flatmap@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.npmjs.org/array.prototype.flatmap/-/array.prototype.flatmap-1.3.1.tgz#1aae7903c2100433cb8261cd4ed310aab5c4a183"
-  integrity sha512-8UGn9O1FDVvMNB0UlLv4voxRMze7+FpHyF5mSMRjWHUMlpoDViniy05870VlxhfgTnLbpuwTzvD76MTtWxB/mQ==
+  version "1.3.2"
+  resolved "https://registry.npmjs.org/array.prototype.flatmap/-/array.prototype.flatmap-1.3.2.tgz#c9a7c6831db8e719d6ce639190146c24bbd3e527"
+  integrity sha512-Ewyx0c9PmpcsByhSW4r+9zDU7sGjFc86qf/kKtuSCRdhfbk0SNLLkaT5qvcHnRGgc5NP/ly/y+qkXkqONX54CQ==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.4"
-    es-abstract "^1.20.4"
+    define-properties "^1.2.0"
+    es-abstract "^1.22.1"
     es-shim-unscopables "^1.0.0"
 
 array.prototype.tosorted@^1.1.1:
@@ -2619,9 +2619,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001517:
-  version "1.0.30001527"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001527.tgz#813826554828245ccee776c850566dce12bdeaba"
-  integrity sha512-YkJi7RwPgWtXVSgK4lG9AHH57nSzvvOp9MesgXmw4Q7n0C3H04L0foHqfxcmSAm5AcWb8dW9AYj2tR7/5GnddQ==
+  version "1.0.30001528"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001528.tgz#479972fc705b996f1114336c0032418a215fd0aa"
+  integrity sha512-0Db4yyjR9QMNlsxh+kKWzQtkyflkG/snYheSzkjmvdEtEXB1+jt7A2HmSEiO6XIJPIbo92lHNGNySvE5pZcs5Q==
 
 ccount@^2.0.0:
   version "2.0.1"
@@ -2898,11 +2898,6 @@ comment-json@^4.2.3:
     esprima "^4.0.1"
     has-own-prop "^2.0.0"
     repeat-string "^1.6.1"
-
-common-utils@*:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/common-utils/-/common-utils-0.0.2.tgz#0012a3a48eb6497390cddfe0b106a92e93ff9d39"
-  integrity sha512-BiG8kWs9H3zsuizX30kuBTnR0yqk+ALVffUOeFxETnIWo3GQTzQtyITQfkC3ZDsAc+BW54OxB1T3Tk0S6kJG3A==
 
 compressible@~2.0.16:
   version "2.0.18"
@@ -3479,9 +3474,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.477:
-  version "1.4.508"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.508.tgz#5641ff2f5ba11df4bd960fe6a2f9f70aa8b9af96"
-  integrity sha512-FFa8QKjQK/A5QuFr2167myhMesGrhlOBD+3cYNxO9/S4XzHEXesyTD/1/xF644gC8buFPz3ca6G1LOQD0tZrrg==
+  version "1.4.510"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.510.tgz#446c50d7533c1e71a84b00a3b37ab06dd601d890"
+  integrity sha512-xPfLIPFcN/WLXBpQ/K4UgE98oUBO5Tia6BD4rkSR0wE7ep/PwBVlgvPJQrIBpmJGVAmUzwPKuDbVt9XV6+uC2g==
 
 emittery@^0.13.1:
   version "0.13.1"
