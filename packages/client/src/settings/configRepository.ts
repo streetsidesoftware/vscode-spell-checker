@@ -1,5 +1,5 @@
-import { uriToName } from 'common-utils/uriHelper.js';
-import { pick } from 'common-utils/util.js';
+import { uriToName } from '@internal/common-utils/uriHelper.js';
+import { pick } from '@internal/common-utils/util.js';
 import { posix } from 'path';
 import type { TextEdit, WorkspaceFolder } from 'vscode';
 import { commands, ConfigurationTarget, Uri, window, workspace, WorkspaceEdit } from 'vscode';

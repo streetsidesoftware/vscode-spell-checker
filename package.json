@@ -2529,7 +2529,7 @@
     ]
   },
   "scripts": {
-    "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
+    "build-package-schema": "yarn workspace code-spell-checker-server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
     "postinstall": "echo postinstall",
     "build": "yarn build:workspaces && yarn build:schema && yarn build:docs",
     "build:docs": "yarn run gen-docs",
@@ -2551,7 +2551,7 @@
     "lint:eslint": "eslint . --fix --cache",
     "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
-    "test-client-integration": "yarn workspace integration-tests test-integration",
+    "test-client-integration": "yarn workspace @internal/integration-tests test-integration",
     "test": "yarn workspaces run test",
     "update-packages": "yarn upgrade && yarn run package-json-dependency-updater -u && yarn",
     "preinstall": "npx only-allow yarn"

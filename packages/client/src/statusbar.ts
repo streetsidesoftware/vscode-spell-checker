@@ -1,4 +1,4 @@
-import { isSupportedDoc, isSupportedUri, uriToName } from 'common-utils/uriHelper.js';
+import { isSupportedDoc, isSupportedUri, uriToName } from '@internal/common-utils/uriHelper.js';
 import * as path from 'path';
 import type { ExtensionContext, TextEditor } from 'vscode';
 import { window, workspace } from 'vscode';

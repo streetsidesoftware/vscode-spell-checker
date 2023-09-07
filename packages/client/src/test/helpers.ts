@@ -1,4 +1,4 @@
-import { mustBeDefined } from 'common-utils/util';
+import { mustBeDefined } from '@internal/common-utils/util';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Uri } from 'vscode';
@@ -7,7 +7,7 @@ import { isDefined } from '../util';
 import type { PackageJson } from '../vscode/packageJson';
 
 export { isDefined } from '../util';
-export { mustBeDefined } from 'common-utils/util';
+export { mustBeDefined } from '@internal/common-utils/util';
 
 const rootClient = path.join(__dirname, '../..');
 const root = path.join(rootClient, '../..');

@@ -1,5 +1,5 @@
 {
-  "name": "integration-tests",
+  "name": "@internal/integration-tests",
   "version": "2.0.0",
   "description": "Integration tests for the spell checker extension",
   "private": true,

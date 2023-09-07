@@ -9,7 +9,7 @@ import type {
     ServerMethods,
     ServerNotifyApi,
     ServerRequestApi,
-} from 'server/api';
+} from 'code-spell-checker-server/api';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
 import { CodeActionRequest, NotificationType, RequestType } from 'vscode-languageclient/node';
 export type {
@@ -49,7 +49,7 @@ export type {
     SplitTextIntoWordsResult,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
-} from 'server/api';
+} from 'code-spell-checker-server/api';
 
 export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi {}
 

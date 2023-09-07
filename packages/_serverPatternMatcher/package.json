@@ -1,5 +1,5 @@
 {
-  "name": "server-pattern-matcher",
+  "name": "@internal/server-pattern-matcher",
   "private": true,
   "description": "Pattern Matcher Server",
   "version": "2.0.0",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@cspell/cspell-types": "^7.3.2",
-    "common-utils": "*",
+    "@internal/common-utils": "*",
     "cspell-lib": "^7.3.2",
     "regexp-worker": "^2.0.2",
     "vscode-languageserver-textdocument": "^1.0.8",

@@ -5,7 +5,9 @@
   "private": true,
   "type": "commonjs",
   "main": "dist/index.js",
-  "bin": "./bin.js",
+  "bin": {
+    "build-tools": "./bin.js"
+  },
   "types": "dist/index.d.ts",
   "exports": {
     "build-tools": "./dist/index.js"

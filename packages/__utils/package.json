@@ -1,5 +1,5 @@
 {
-  "name": "common-utils",
+  "name": "@internal/common-utils",
   "version": "1.0.0",
   "description": "Shared Utils between server and client",
   "private": true,

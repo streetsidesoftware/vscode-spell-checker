@@ -2,7 +2,7 @@
  * This helper is to help with matching possible configuration targets to configuration fields.
  */
 
-import { uriToName } from 'common-utils/uriHelper.js';
+import { uriToName } from '@internal/common-utils/uriHelper.js';
 import * as vscode from 'vscode';
 
 import { toUri } from '../util/uriHelper';
