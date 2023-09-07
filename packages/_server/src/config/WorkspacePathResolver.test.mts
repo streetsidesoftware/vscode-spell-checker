@@ -1,4 +1,4 @@
-import { logError } from 'common-utils/log.js';
+import { logError } from '@internal/common-utils/log.js';
 import * as Path from 'path';
 import { describe, expect, type Mock, test, vi } from 'vitest';
 import { URI as Uri } from 'vscode-uri';
@@ -9,7 +9,7 @@ import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './W
 
 vi.mock('vscode-languageserver/node');
 vi.mock('./vscode.config');
-vi.mock('common-utils/log.js');
+vi.mock('@internal/common-utils/log.js');
 
 const mockLogError = logError as Mock;
 

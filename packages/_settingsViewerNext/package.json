@@ -1,5 +1,5 @@
 {
-  "name": "settings-viewer-next",
+  "name": "@internal/settings-viewer-next",
   "description": "Settings Viewer for Code Spell Checker",
   "version": "0.0.1",
   "publisher": "streetsidesoftware",

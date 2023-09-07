@@ -1,8 +1,8 @@
 // cSpell:ignore pycache
 
-import { LogFileConnection } from 'common-utils/index.js';
-import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
-import { toFileUri, toUri } from 'common-utils/uriHelper.js';
+import { LogFileConnection } from '@internal/common-utils/index.js';
+import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log.js';
+import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
 import type { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
 import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';

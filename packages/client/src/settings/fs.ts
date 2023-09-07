@@ -1,4 +1,4 @@
-import { isErrorCodeException } from 'common-utils/index.js';
+import { isErrorCodeException } from '@internal/common-utils/index.js';
 import type { TextDocument, Uri } from 'vscode';
 import { FileSystemError, Range, workspace, WorkspaceEdit } from 'vscode';
 

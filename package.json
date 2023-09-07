@@ -2529,7 +2529,7 @@
     ]
   },
   "scripts": {
-    "build-package-schema": "yarn workspace server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
+    "build-package-schema": "yarn workspace code-spell-checker-server build-schema && build-tools update-package-schema && yarn prettier:fix-schema",
     "postinstall": "echo postinstall",
     "build": "yarn build:workspaces && yarn build:schema && yarn build:docs",
     "build:docs": "yarn run gen-docs",

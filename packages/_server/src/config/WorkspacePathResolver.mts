@@ -1,4 +1,4 @@
-import { logError } from 'common-utils/log.js';
+import { logError } from '@internal/common-utils/log.js';
 import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';

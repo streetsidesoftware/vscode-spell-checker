@@ -1,6 +1,6 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { toUri } from 'common-utils/uriHelper.js';
-import { capitalize } from 'common-utils/util.js';
+import { toUri } from '@internal/common-utils/uriHelper.js';
+import { capitalize } from '@internal/common-utils/util.js';
 import { genSequence } from 'gensequence';
 import * as Path from 'path';
 

@@ -1,8 +1,14 @@
-import type { Req, Res, ServerMethods, ServerRequestApi } from 'server-pattern-matcher/api';
+import type { Req, Res, ServerMethods, ServerRequestApi } from '@internal/server-pattern-matcher/api';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
 import { CodeActionRequest, RequestType } from 'vscode-languageclient/node';
 
-export type { MatchPatternsToDocumentResult, NamedPattern, PatternMatch, PatternSettings, ServerMethods } from 'server-pattern-matcher/api';
+export type {
+    MatchPatternsToDocumentResult,
+    NamedPattern,
+    PatternMatch,
+    PatternSettings,
+    ServerMethods,
+} from '@internal/server-pattern-matcher/api';
 
 export type PatternMatcherServerApi = ServerRequestApi;
 

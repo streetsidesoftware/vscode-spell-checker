@@ -1,5 +1,5 @@
 import type { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { normalizeCode } from 'locale-resolver';
+import { normalizeCode } from '@internal/locale-resolver';
 
 import { isDefined, uniqueFilter } from '../../util';
 import type { CSpellUserSettings, LanguageSetting } from './server';

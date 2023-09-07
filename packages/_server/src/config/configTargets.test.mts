@@ -1,4 +1,4 @@
-import { capitalize } from 'common-utils/util';
+import { capitalize } from '@internal/common-utils/util';
 import { describe, expect, test } from 'vitest';
 
 import type {

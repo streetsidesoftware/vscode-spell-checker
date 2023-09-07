@@ -1,4 +1,4 @@
-import { uriToName } from 'common-utils/uriHelper';
+import { uriToName } from '@internal/common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 

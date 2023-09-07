@@ -1,4 +1,4 @@
-import { lookupLocaleInfo, normalizeCode } from 'locale-resolver';
+import { lookupLocaleInfo, normalizeCode } from '@internal/locale-resolver';
 import { action, computed, makeObservable, observable } from 'mobx';
 
 import type { Messenger } from '../api';

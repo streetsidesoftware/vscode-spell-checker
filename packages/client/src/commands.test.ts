@@ -1,5 +1,5 @@
+import { commands as viewerCommands } from '@internal/settings-viewer-next';
 import { readTextDocument } from 'jest-mock-vscode';
-import { commands as viewerCommands } from 'settings-viewer-next';
 import * as vscode from 'vscode';
 
 import { __testing__ } from './commands';

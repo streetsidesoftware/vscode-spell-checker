@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "code-spell-checker-server",
   "private": true,
   "description": "Spell Checker Server",
   "version": "2.0.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.2",
     "@cspell/cspell-types": "^7.3.2",
-    "common-utils": "*",
+    "@internal/common-utils": "*",
     "cspell-gitignore": "^7.3.2",
     "cspell-glob": "^7.3.2",
     "cspell-lib": "^7.3.2",
