@@ -62,7 +62,7 @@
   "dependencies": {
     "@cspell/cspell-types": "^7.3.2",
     "comment-json": "^4.2.3",
-    "common-utils": "*",
+    "@internal/common-utils": "*",
     "kefir": "^3.8.8",
     "code-spell-checker-server": "*",
     "vscode-languageclient": "^8.1.0",
