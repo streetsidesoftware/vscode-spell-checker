@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig/index.mjs';
+import type { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig/index.mjs';
 
 describe('cspellConfig', () => {
     const sampleSettings: AllSpellCheckerSettingsInVSCode[] = [

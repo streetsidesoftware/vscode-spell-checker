@@ -1,11 +1,11 @@
 import { logError } from 'common-utils/log.js';
-import { BaseSetting, Glob, GlobDef } from 'cspell-lib';
+import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
 import { URI as Uri } from 'vscode-uri';
 
-import { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
-import { CSpellUserSettings } from './cspellConfig/index.mjs';
+import type { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
+import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries.mjs';
 
 export type WorkspaceGlobResolverFn = (glob: Glob) => GlobDef;

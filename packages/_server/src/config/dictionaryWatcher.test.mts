@@ -1,4 +1,4 @@
-import { CSpellSettings } from 'cspell-lib';
+import type { CSpellSettings } from 'cspell-lib';
 import { join } from 'path';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 

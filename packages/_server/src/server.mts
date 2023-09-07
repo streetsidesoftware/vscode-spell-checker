@@ -3,48 +3,46 @@
 import { LogFileConnection } from 'common-utils/index.js';
 import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from 'common-utils/log.js';
 import { toFileUri, toUri } from 'common-utils/uriHelper.js';
+import type { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
 import * as CSpell from 'cspell-lib';
-import { CSpellSettingsWithSourceTrace, extractImportErrors, getDefaultSettings, Glob, refreshDictionaryCache } from 'cspell-lib';
-import { interval, ReplaySubject, Subscription } from 'rxjs';
+import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
+import type { Subscription } from 'rxjs';
+import { interval, ReplaySubject } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-import * as Api from './api.js';
+import type * as Api from './api.js';
 import { createClientApi } from './clientApi.mjs';
 import { onCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
-import { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { DictionaryWatcher } from './config/dictionaryWatcher.mjs';
+import type { SettingsCspell } from './config/documentSettings.mjs';
 import {
     correctBadSettings,
     DocumentSettings,
     isLanguageEnabled,
     isUriAllowed,
     isUriBlocked,
-    SettingsCspell,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
-import { TextDocumentUri } from './config/vscode.config.mjs';
+import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
 import * as Validator from './validator.mjs';
-import {
-    CodeActionKind,
-    createConnection,
+import type {
     Diagnostic,
     DidChangeConfigurationParams,
     Disposable,
     InitializeParams,
     InitializeResult,
-    ProposedFeatures,
     PublishDiagnosticsParams,
     ServerCapabilities,
-    TextDocuments,
-    TextDocumentSyncKind,
 } from './vscodeLanguageServer/index.cjs';
+import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from './vscodeLanguageServer/index.cjs';
 
 log('Starting Spell Checker Server');
 

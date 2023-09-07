@@ -1,6 +1,6 @@
 import { genSequence } from 'gensequence';
 
-import { BlockedFileReason } from '../api.js';
+import type { BlockedFileReason } from '../api.js';
 
 export interface MinifiedReason extends BlockedFileReason {
     documentationRefUri: string;

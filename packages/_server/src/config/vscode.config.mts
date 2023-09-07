@@ -1,7 +1,7 @@
 import { log } from 'common-utils/log.js';
 
 import { isDefined } from '../utils/index.mjs';
-import { ConfigurationItem, Connection } from '../vscodeLanguageServer/index.cjs';
+import type { ConfigurationItem, Connection } from '../vscodeLanguageServer/index.cjs';
 
 export interface TextDocumentUri {
     uri: string;

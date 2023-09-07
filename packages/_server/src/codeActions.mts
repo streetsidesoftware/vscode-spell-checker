@@ -1,32 +1,28 @@
 import { log, logDebug } from 'common-utils/log.js';
 import { capitalize } from 'common-utils/util.js';
-import { constructSettingsForText, getDictionary, IssueType, SpellingDictionary, Text } from 'cspell-lib';
+import type { SpellingDictionary } from 'cspell-lib';
+import { constructSettingsForText, getDictionary, IssueType, Text } from 'cspell-lib';
 import { format } from 'util';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-// eslint-disable-next-line node/no-extraneous-import
-import { CodeAction, CodeActionKind, Diagnostic, TextEdit } from 'vscode-languageserver-types';
+import type { TextDocument } from 'vscode-languageserver-textdocument';
+import type { Diagnostic } from 'vscode-languageserver-types';
+import { CodeAction, CodeActionKind, TextEdit } from 'vscode-languageserver-types';
 
-import { ClientApi } from './clientApi.mjs';
+import type { ClientApi } from './clientApi.mjs';
 import { clientCommands as cc } from './commands.mjs';
-import {
-    ConfigKinds,
-    ConfigScope,
-    ConfigScopes,
-    ConfigTarget,
-    ConfigTargetCSpell,
-    ConfigTargetDictionary,
-    ConfigTargetVSCode,
-} from './config/configTargets.mjs';
+import type { ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './config/configTargets.mjs';
+import { ConfigKinds, ConfigScopes } from './config/configTargets.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
-import { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { isUriAllowed } from './config/documentSettings.mjs';
-import { DiagnosticData } from './models/DiagnosticData.mjs';
-import { Suggestion } from './models/Suggestion.mjs';
-import { GetSettingsResult, SuggestionGenerator } from './SuggestionsGenerator.mjs';
+import type { DiagnosticData } from './models/DiagnosticData.mjs';
+import type { Suggestion } from './models/Suggestion.mjs';
+import type { GetSettingsResult } from './SuggestionsGenerator.mjs';
+import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
 import { uniqueFilter } from './utils/index.mjs';
 import * as range from './utils/range.mjs';
 import * as Validator from './validator.mjs';
-import { CodeActionParams, Command as LangServerCommand, Range as LangServerRange, TextDocuments } from './vscodeLanguageServer/index.cjs';
+import type { CodeActionParams, Range as LangServerRange, TextDocuments } from './vscodeLanguageServer/index.cjs';
+import { Command as LangServerCommand } from './vscodeLanguageServer/index.cjs';
 
 const createCommand = LangServerCommand.create;
 
@@ -77,11 +73,12 @@ class CodeActionHandler {
     async getSettings(doc: TextDocument): Promise<GetSettingsResult> {
         const cached = this.settingsCache.get(doc.uri);
         const settingsVersion = this.fnSettingsVersion(doc);
-        if (!cached || cached.docVersion !== doc.version || cached.settingsVersion !== settingsVersion) {
-            const settings = this.constructSettings(doc);
-            this.settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
+        if (cached?.docVersion === doc.version && cached.settingsVersion === settingsVersion) {
+            return cached.settings;
         }
-        return this.settingsCache.get(doc.uri)!.settings;
+        const settings = this.constructSettings(doc);
+        this.settingsCache.set(doc.uri, { docVersion: doc.version, settings, settingsVersion });
+        return settings;
     }
 
     private async constructSettings(doc: TextDocument): Promise<SettingsDictPair> {

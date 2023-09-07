@@ -2,13 +2,8 @@ import * as FS from 'fs';
 import * as Path from 'path';
 import { describe, expect, test } from 'vitest';
 
-import {
-    isTextLikelyMinified,
-    IsTextLikelyMinifiedOptions,
-    ReasonAverageWordsSize,
-    ReasonLineLength,
-    ReasonMaxWordsSize,
-} from './analysis.mjs';
+import type { IsTextLikelyMinifiedOptions } from './analysis.mjs';
+import { isTextLikelyMinified, ReasonAverageWordsSize, ReasonLineLength, ReasonMaxWordsSize } from './analysis.mjs';
 
 const sampleWebpack = FS.readFileSync(Path.join(__dirname, '../../dist/main.cjs'), 'utf8').replace(/\n/g, ' ');
 

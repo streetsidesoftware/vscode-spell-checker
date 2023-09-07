@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { Connection } from 'vscode-languageserver';
+import type { Connection } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import { createClientApi } from './clientApi.mjs';

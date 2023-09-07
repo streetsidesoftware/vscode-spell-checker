@@ -1,6 +1,6 @@
 import { logError } from 'common-utils/log.js';
 import { toFileUri } from 'common-utils/uriHelper.js';
-import { FSWatcher } from 'fs';
+import type { FSWatcher } from 'fs';
 import { format } from 'util';
 
 import type { Disposable } from '../vscodeLanguageServer/index.cjs';

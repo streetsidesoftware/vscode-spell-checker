@@ -1,5 +1,5 @@
 import { setOfSupportedSchemes, supportedSchemes } from 'common-utils/uriHelper.js';
-import { WorkspaceConfigForDocument } from 'server/api';
+import type { WorkspaceConfigForDocument } from 'server/api';
 import {
     CodeAction,
     CodeActionKind,

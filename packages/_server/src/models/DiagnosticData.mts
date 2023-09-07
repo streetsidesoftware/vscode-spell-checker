@@ -1,4 +1,4 @@
-import { IssueType } from 'cspell-lib';
+import type { IssueType } from 'cspell-lib';
 
 import type { Suggestion } from './Suggestion.mjs';
 

@@ -1,4 +1,4 @@
-import { CommandsToClient } from './api.js';
+import type { CommandsToClient } from './api.js';
 import { Command } from './vscodeLanguageServer/index.cjs';
 
 const prefix = 'cSpell.';
