@@ -10,7 +10,7 @@
     "url": "https://github.com/streetsidesoftware/vscode-spell-checker"
   },
   "engines": {
-    "vscode": "^1.76.0",
+    "vscode": "^1.80.0",
     "node": ">16.0.0"
   },
   "categories": [

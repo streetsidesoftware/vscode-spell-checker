@@ -18,7 +18,7 @@
   "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
   "engines": {
     "node": ">16.0.0",
-    "vscode": "^1.76.0"
+    "vscode": "^1.80.0"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/streetsidesoftware"
@@ -2561,7 +2561,7 @@
     "@types/jest": "^29.5.4",
     "@types/jest-when": "^3.5.2",
     "@types/node": "^18.17.14",
-    "@types/vscode": "1.76.0",
+    "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
