@@ -1,4 +1,6 @@
-import * as cspell from 'cspell-lib';
+import type { CSpellSettings } from '@cspell/cspell-types';
+import { importCSpellLib } from '@internal/cspell-helper';
+import assert from 'assert';
 
 import { isDefined } from '../util';
 import { __testing__ } from './infoHelper';
@@ -83,8 +85,13 @@ describe('infoHelper', () => {
     });
 });
 
+let sampleSettings: CSpellSettings | undefined;
+
 async function sampleCSpellSettings() {
+    if (sampleSettings) return sampleSettings;
+    const cspell = await importCSpellLib();
+    assert(isDefined(cspell));
     const localCfg = await cspell.searchForConfig(__filename);
-    const settings = [cspell.getDefaultSettings(), cspell.getGlobalSettings(), localCfg].filter(isDefined);
-    return cspell.mergeSettings(settings[0], ...settings.slice(1));
+    sampleSettings = cspell.mergeSettings(cspell.getDefaultSettings(), /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined));
+    return sampleSettings;
 }
