@@ -43,13 +43,14 @@ const config = {
         'simple-import-sort/imports': 'error',
         'simple-import-sort/exports': 'error',
         'node/no-missing-import': [
+            // Note: this doesn't really work with pure ESM modules
             'error',
             {
                 allowModules: ['vscode'],
-                tryExtensions: ['.js', '.d.ts', '.ts'],
+                tryExtensions: ['.js', '.d.ts', '.ts', '.cts', '.mts', '.cjs', '.mjs'],
             },
         ],
-        'node/no-unpublished-import': 'off',
+        // 'node/no-unpublished-import': 'off',
         'promise/catch-or-return': ['error', { terminationMethod: ['catch', 'finally'] }],
     },
     overrides: [
@@ -59,16 +60,22 @@ const config = {
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
             rules: {
-                '@typescript-eslint/explicit-function-return-type': 'off',
-                // '@typescript-eslint/no-use-before-define': 'off',
-                '@typescript-eslint/no-empty-interface': 'off',
-                '@typescript-eslint/no-inferrable-types': 'off',
-                '@typescript-eslint/no-empty-function': 'off',
-                // '@typescript-eslint/no-non-null-assertion': 'off',
-                // '@typescript-eslint/no-explicit-any': 'off',
-                '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
-                'node/no-missing-import': 'off',
+                'no-restricted-modules': 'error',
+                '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+                // This is caught by 'import/no-unresolved'
+                'node/no-missing-import': [
+                    'off',
+                    {
+                        tryExtensions: ['.js', '.d.ts', '.ts'],
+                    },
+                ],
+                'node/no-unsupported-features/es-syntax': 'off',
                 'import/no-unresolved': 'off',
+                '@typescript-eslint/consistent-type-imports': 'error',
+                '@typescript-eslint/no-empty-interface': 'off',
+                // 'import/order': 'error',
+                'simple-import-sort/imports': 'error',
+                'simple-import-sort/exports': 'error',
             },
         },
         {
@@ -94,16 +101,23 @@ const config = {
             },
         },
         {
-            files: ['vitest.config.*'],
+            files: ['packages/client/**/*.test.ts', 'packages/client/**/*.spec.ts'],
+            excludedFiles: [],
+            extends: 'plugin:jest/recommended',
+            env: {
+                jest: true,
+            },
             rules: {
-                'node/no-extraneous-import': 'off',
-                'import/no-unresolved': 'off',
+                'jest/valid-title': 'warn',
             },
         },
         {
-            files: ['**/jest.config.js', '**/*.test.*'],
+            files: ['vitest.config.*', '**/jest.config.js', '**/*.test.*', '**/build.*'],
             rules: {
+                'node/no-extraneous-import': 'off',
+                'import/no-unresolved': 'off',
                 'node/no-unpublished-require': 'off',
+                'node/no-unpublished-import': 'off',
             },
         },
     ],
