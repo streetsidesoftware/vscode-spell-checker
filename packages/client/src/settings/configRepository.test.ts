@@ -1,5 +1,6 @@
 import { when } from 'jest-when';
-import { ConfigurationTarget, Uri, workspace, WorkspaceFolder } from 'vscode';
+import type { WorkspaceFolder } from 'vscode';
+import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
 import { getPathToTemp } from '../test/helpers';
 import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';

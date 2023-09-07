@@ -1,8 +1,8 @@
-import { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
+import type { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { normalizeCode } from 'locale-resolver';
 
 import { isDefined, uniqueFilter } from '../../util';
-import { CSpellUserSettings, LanguageSetting } from './server';
+import type { CSpellUserSettings, LanguageSetting } from './server';
 
 export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
     return (config && config.language && normalizeToLocales(config.language)) || undefined;

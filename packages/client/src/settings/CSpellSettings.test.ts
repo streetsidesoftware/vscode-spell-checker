@@ -1,6 +1,6 @@
 import { Uri } from 'vscode';
 
-import { CSpellUserSettings } from '../client';
+import type { CSpellUserSettings } from '../client';
 import { fsRemove, getPathToTemp, getUriToSample, mkdirUri, oc, readFile, writeFile } from '../test/helpers';
 import { unique } from '../util';
 import * as CSS from './CSpellSettings';
@@ -78,7 +78,7 @@ describe('Validate CSpellSettings functions', () => {
         expect(s1.enabledLanguageIds).toBeUndefined();
         const s2 = CSS.addLanguageIdsToSettings(defaultSettings, ids, false);
         expect(s2.enabledLanguageIds).not.toHaveLength(0);
-        expect(s2.enabledLanguageIds!.sort()).toEqual(unique(ids).sort());
+        expect(s2.enabledLanguageIds?.sort()).toEqual(unique(ids).sort());
     });
 
     test('tests removing languageIds', () => {
@@ -90,10 +90,10 @@ describe('Validate CSpellSettings functions', () => {
         const s2 = CSS.addLanguageIdsToSettings(defaultSettings, ids, false);
         Object.freeze(s2);
         expect(s2.enabledLanguageIds).not.toHaveLength(0);
-        expect(s2.enabledLanguageIds!.sort()).toEqual(unique(ids).sort());
+        expect(s2.enabledLanguageIds?.sort()).toEqual(unique(ids).sort());
         const s3 = CSS.removeLanguageIdsFromSettings(s2, toRemove);
         expect(s3.enabledLanguageIds).not.toHaveLength(0);
-        expect(s3.enabledLanguageIds!.sort()).toEqual(expected);
+        expect(s3.enabledLanguageIds?.sort()).toEqual(expected);
         const s4 = CSS.removeLanguageIdsFromSettings(defaultSettings, toRemove);
         expect(s4.enabledLanguageIds).toBeUndefined();
         const s5 = CSS.removeLanguageIdsFromSettings(s2, ids);
@@ -135,9 +135,9 @@ describe('Validate CSpellSettings functions', () => {
         const expected = [...['alpha', 'beta', 'delta', 'zeta', 'one', 'two', 'three'].sort(), ''].join('\n');
         const dictTarget = createDictionaryTargetForFile(dict.uri, dict.name);
         await expect(dictTarget.addWords(words1)).resolves.toBeUndefined();
-        expect(readFile(dict.uri)).resolves.toBe([...words1].sort().join('\n') + '\n');
+        await expect(readFile(dict.uri)).resolves.toBe([...words1].sort().join('\n') + '\n');
         await expect(dictTarget.addWords(words2)).resolves.toBeUndefined();
-        expect(readFile(dict.uri)).resolves.toBe(expected);
+        await expect(readFile(dict.uri)).resolves.toBe(expected);
     });
 
     test.each`

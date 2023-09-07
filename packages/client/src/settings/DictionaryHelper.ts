@@ -6,6 +6,7 @@ import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
 import type {
+    CSpellClient,
     CSpellUserSettings,
     CustomDictionaries,
     CustomDictionary,
@@ -13,16 +14,18 @@ import type {
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
 } from '../client';
-import { CSpellClient } from '../client';
 import { getCSpellDiags } from '../diags';
 import { scrollToText } from '../util/textEditor';
-import { ClientConfigTarget } from './clientConfigTarget';
+import type { ClientConfigTarget } from './clientConfigTarget';
 import { ConfigFields } from './configFields';
-import { ConfigRepository, CSpellConfigRepository, VSCodeRepository } from './configRepository';
-import { dictionaryTargetBestMatches, MatchTargetsFn } from './configTargetHelper';
+import type { ConfigRepository } from './configRepository';
+import { CSpellConfigRepository, VSCodeRepository } from './configRepository';
+import type { MatchTargetsFn } from './configTargetHelper';
+import { dictionaryTargetBestMatches } from './configTargetHelper';
 import { configUpdaterForKeys } from './configUpdater';
 import { cspellConfigDirectory, normalizeWords } from './CSpellSettings';
-import { createDictionaryTargetForConfigRep, DictionaryTarget } from './DictionaryTarget';
+import type { DictionaryTarget } from './DictionaryTarget';
+import { createDictionaryTargetForConfigRep } from './DictionaryTarget';
 import { configTargetsToDictionaryTargets } from './DictionaryTargetHelper';
 import { mapConfigTargetToClientConfigTarget } from './mappers/configTarget';
 import { configurationTargetToDictionaryScope } from './targetAndScope';

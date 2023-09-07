@@ -2,7 +2,7 @@ import { uriToName } from 'common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 
-import {
+import type {
     Config,
     ConfigFile,
     Configs,
@@ -17,14 +17,16 @@ import {
 import type {
     ConfigTarget,
     ConfigTargetCSpell,
+    CSpellClient,
     CSpellUserSettings,
     DictionaryDefinition,
     DictionaryDefinitionCustom,
     GetConfigurationForDocumentResult,
 } from '../client';
-import { CSpellClient } from '../client';
-import { Inspect, inspectConfig, InspectValues } from '../settings';
-import { Maybe, uniqueFilter } from '../util';
+import type { Inspect, InspectValues } from '../settings';
+import { inspectConfig } from '../settings';
+import type { Maybe } from '../util';
+import { uniqueFilter } from '../util';
 import { defaultTo, map, pipe } from '../util/pipe';
 import { toUri } from '../util/uriHelper';
 

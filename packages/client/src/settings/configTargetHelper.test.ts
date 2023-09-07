@@ -1,6 +1,7 @@
-import { CancellationToken, ConfigurationTarget, QuickPickItem, QuickPickOptions, Uri, window } from 'vscode';
+import type { CancellationToken, QuickPickItem, QuickPickOptions } from 'vscode';
+import { ConfigurationTarget, Uri, window } from 'vscode';
 
-import { ClientConfigTarget } from './clientConfigTarget';
+import type { ClientConfigTarget } from './clientConfigTarget';
 import {
     _buildQuickPickBestMatchTargetFn,
     buildQuickPickMatchTargetFn,
@@ -79,14 +80,14 @@ describe('configTargetHelper', () => {
         expect(r).toEqual([targets[4]]);
     });
 
-    test('buildMatchTargetFn best dictionary', async () => {
+    test('dictionaryTargetBestMatches best dictionary', async () => {
         setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
         const r = await dictionaryTargetBestMatches(targets);
         expect(r).toEqual([targets[1]]);
     });
 
-    test('buildMatchTargetFn best dictionary', async () => {
+    test('dictionaryTargetBestMatchesCSpell best dictionary', async () => {
         setQuickPickSelection(mockedShowQuickPick, 1);
         const targets = sampleTargets();
         const r = await dictionaryTargetBestMatchesCSpell(targets);

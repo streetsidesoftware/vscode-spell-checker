@@ -1,4 +1,5 @@
-import { ConfigUpdater, configUpdaterForKey } from './configUpdater';
+import type { ConfigUpdater } from './configUpdater';
+import { configUpdaterForKey } from './configUpdater';
 
 export function updaterAddWords(words: string[]): ConfigUpdater<'words'> {
     return configUpdaterForKey('words', addWordsFn(words));

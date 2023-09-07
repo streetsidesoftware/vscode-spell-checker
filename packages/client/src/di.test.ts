@@ -6,8 +6,8 @@ describe('Validate di', () => {
     beforeEach(di.__testing__.init);
 
     test('Access before initialization', () => {
-        expect(() => dependencies.client).toThrowError('client');
-        expect(() => dependencies.dictionaryHelper).toThrowError('dictionaryHelper');
+        expect(() => dependencies.client).toThrow('client');
+        expect(() => dependencies.dictionaryHelper).toThrow('dictionaryHelper');
         const p = Object.getOwnPropertyDescriptor(dependencies, 'name');
         expect(p?.configurable).toBe(true);
         expect(p?.writable).toBe(undefined);
@@ -40,7 +40,7 @@ describe('Validate di', () => {
     });
 
     test('get unknown', () => {
-        expect(() => di.get(toKey('unknown'))).toThrowError("Missing Dependency Resolver: 'unknown'");
+        expect(() => di.get(toKey('unknown'))).toThrow("Missing Dependency Resolver: 'unknown'");
     });
 });
 

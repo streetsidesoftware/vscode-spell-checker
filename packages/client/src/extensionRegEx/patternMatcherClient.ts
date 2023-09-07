@@ -1,4 +1,4 @@
-import { Disposable, ExtensionContext, TextDocument } from 'vscode';
+import type { Disposable, ExtensionContext, TextDocument } from 'vscode';
 import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node';
 

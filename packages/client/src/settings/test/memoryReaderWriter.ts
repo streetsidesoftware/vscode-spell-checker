@@ -1,11 +1,12 @@
-import { ConfigurationTarget, Uri } from 'vscode';
+import type { ConfigurationTarget, Uri } from 'vscode';
 
-import { CSpellUserSettings } from '../../client';
-import { ConfigFileReaderWriter } from '../configFileReadWrite';
-import { ConfigReaderWriter, ConfigUpdateFn, extractKeys } from '../configReaderWriter';
+import type { CSpellUserSettings } from '../../client';
+import type { ConfigFileReaderWriter } from '../configFileReadWrite';
+import type { ConfigReaderWriter, ConfigUpdateFn } from '../configReaderWriter';
+import { extractKeys } from '../configReaderWriter';
 import { configurationTargetToDictionaryScope } from '../targetAndScope';
-import { GetConfigurationScope } from '../vsConfig';
-import { VSConfigReaderWriter } from '../vsConfigReaderWriter';
+import type { GetConfigurationScope } from '../vsConfig';
+import type { VSConfigReaderWriter } from '../vsConfigReaderWriter';
 
 class MemoryReaderWriter implements ConfigReaderWriter {
     private _data: CSpellUserSettings;

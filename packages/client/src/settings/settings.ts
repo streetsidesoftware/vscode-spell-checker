@@ -1,10 +1,10 @@
-import { CSpellSettings } from '@cspell/cspell-types';
+import type { CSpellSettings } from '@cspell/cspell-types';
 import * as vscode from 'vscode';
 import { Uri, workspace } from 'vscode';
 
-import { CSpellUserSettings } from '../client';
+import type { CSpellUserSettings } from '../client';
 import { unique } from '../util';
-import { ClientConfigTarget } from './clientConfigTarget';
+import type { ClientConfigTarget } from './clientConfigTarget';
 import { writeConfigFile } from './configFileReadWrite';
 import { normalizeWords, preferredConfigFiles } from './CSpellSettings';
 import { vscodeFs as fs } from './fs';

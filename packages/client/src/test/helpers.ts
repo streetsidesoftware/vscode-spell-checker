@@ -4,7 +4,7 @@ import * as path from 'path';
 import { Uri } from 'vscode';
 
 import { isDefined } from '../util';
-import { PackageJson } from '../vscode/packageJson';
+import type { PackageJson } from '../vscode/packageJson';
 
 export { isDefined } from '../util';
 export { mustBeDefined } from 'common-utils/util';

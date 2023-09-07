@@ -1,9 +1,10 @@
 import { isSupportedDoc, isSupportedUri, uriToName } from 'common-utils/uriHelper.js';
 import * as path from 'path';
-import { ExtensionContext, TextEditor, window, workspace } from 'vscode';
+import type { ExtensionContext, TextEditor } from 'vscode';
+import { window, workspace } from 'vscode';
 import * as vscode from 'vscode';
 
-import { CSpellClient, CSpellUserSettings, ServerResponseIsSpellCheckEnabledForFile } from './client';
+import type { CSpellClient, CSpellUserSettings, ServerResponseIsSpellCheckEnabledForFile } from './client';
 import { getCSpellDiags } from './diags';
 import * as infoViewer from './infoViewer';
 import { sectionCSpell } from './settings';

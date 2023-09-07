@@ -1,4 +1,5 @@
-import { ClientConfigScope, ClientConfigTarget, orderScope } from './clientConfigTarget';
+import type { ClientConfigScope, ClientConfigTarget } from './clientConfigTarget';
+import { orderScope } from './clientConfigTarget';
 import { quickPickTarget } from './configTargetHelper';
 import type { CSpellUserSettings } from './settings.base';
 import { applyToConfig, normalizeLocale, orderTargetsLocalToGlobal, readConfigTargetValues } from './settings.base';

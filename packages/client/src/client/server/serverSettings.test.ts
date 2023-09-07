@@ -1,4 +1,4 @@
-import * as server from './server';
+import type * as server from './server';
 import * as serverSettings from './serverSettings';
 
 describe('Validate Server Settings', () => {

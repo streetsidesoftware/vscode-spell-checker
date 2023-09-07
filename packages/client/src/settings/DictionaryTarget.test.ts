@@ -1,10 +1,11 @@
-import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
+import type { URI as Uri } from 'vscode-uri';
+import { Utils as UriUtils } from 'vscode-uri';
 
 import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers';
-import { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget';
+import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget';
 import { readConfigFile } from './configFileReadWrite';
 import { __testing__ as DictionaryHelperTesting } from './DictionaryHelper';
-import { DictionaryTarget } from './DictionaryTarget';
+import type { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 import { vscodeFs } from './fs';
 import { replaceDocText } from './replaceDocText';

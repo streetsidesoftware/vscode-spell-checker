@@ -1,45 +1,38 @@
-import {
+import type {
     CodeAction,
-    commands,
     ConfigurationScope,
     Diagnostic,
     Disposable,
-    FileType,
     Location,
-    Position,
     QuickPickItem,
     QuickPickOptions,
-    Range,
-    Selection,
     TextDocument,
     TextEdit,
-    TextEditorRevealType,
     Uri,
-    window,
-    workspace,
-    WorkspaceEdit,
 } from 'vscode';
-import { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
+import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
+import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
+import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
+import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
     ConfigFields,
-    ConfigTargetLegacy,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
     getSettingFromVSConfig,
     normalizeTarget,
     setEnableSpellChecking,
-    TargetsAndScopes,
     toggleEnableSpellChecker,
 } from './settings';
-import { ClientConfigTarget } from './settings/clientConfigTarget';
-import { ConfigRepository, createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
+import type { ClientConfigTarget } from './settings/clientConfigTarget';
+import type { ConfigRepository } from './settings/configRepository';
+import { createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
+import type { MatchTargetsFn } from './settings/configTargetHelper';
 import {
     createClientConfigTargetVSCode,
     createConfigTargetMatchPattern,
@@ -54,12 +47,12 @@ import {
     filterClientConfigTargets,
     matchKindAll,
     matchScopeAll,
-    MatchTargetsFn,
     patternMatchNoDictionaries,
     quickPickTarget,
 } from './settings/configTargetHelper';
 import { normalizeWords } from './settings/CSpellSettings';
-import { createDictionaryTargetForFile, DictionaryTarget } from './settings/DictionaryTarget';
+import type { DictionaryTarget } from './settings/DictionaryTarget';
+import { createDictionaryTargetForFile } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
 import {
     configurationTargetToClientConfigScope,
@@ -67,7 +60,8 @@ import {
     configurationTargetToDictionaryScope,
     dictionaryScopeToConfigurationTarget,
 } from './settings/targetAndScope';
-import { catchErrors, handleErrors, ignoreError, OnErrorResolver } from './util/errors';
+import type { OnErrorResolver } from './util/errors';
+import { catchErrors, handleErrors, ignoreError } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { scrollToText } from './util/textEditor';
 import { toUri } from './util/uriHelper';

@@ -3,21 +3,21 @@ import { format, promisify } from 'util';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 
-import {
+import type {
     EnableLanguageIdMessage,
     EnableLocaleMessage,
-    MessageBus,
     OpenLinkMessage,
     SelectFileMessage,
     SelectFolderMessage,
     SelectTabMessage,
 } from '../../settingsViewer';
-import { ConfigTarget, Settings } from '../../settingsViewer/api/settings';
-import { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
-import { CSpellClient } from '../client';
+import { MessageBus } from '../../settingsViewer';
+import type { ConfigTarget, Settings } from '../../settingsViewer/api/settings';
+import type { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
+import type { CSpellClient } from '../client';
 import { enableDisableLanguageId, enableDisableLocale } from '../commands';
 import { getSettingFromVSConfig } from '../settings';
-import { Maybe } from '../util';
+import type { Maybe } from '../util';
 import { toUri } from '../util/uriHelper';
 import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';

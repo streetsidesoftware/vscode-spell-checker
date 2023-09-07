@@ -1,4 +1,4 @@
-import { CSpellUserSettings } from '../client';
+import type { CSpellUserSettings } from '../client';
 
 /**
  * An update function returns the fields to be updated. To remove a field, make it undefined: `{ description: undefined }`

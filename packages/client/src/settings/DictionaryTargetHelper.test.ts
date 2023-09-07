@@ -1,8 +1,8 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../client';
-import { ClientConfigTarget } from './clientConfigTarget';
-import { DictionaryTarget } from './DictionaryTarget';
+import type { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../client';
+import type { ClientConfigTarget } from './clientConfigTarget';
+import type { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
 
 const fileUri = Uri.file(__filename);
@@ -24,7 +24,7 @@ describe('Validate DictionaryTargetHelper', () => {
 
     test('configTargetToDictionaryTarget Unknown config', () => {
         const badTarget = { kind: 'new kind' };
-        expect(() => configTargetToDictionaryTarget(badTarget as unknown as ClientConfigTarget)).toThrowError(
+        expect(() => configTargetToDictionaryTarget(badTarget as unknown as ClientConfigTarget)).toThrow(
             `Unknown target ${badTarget.kind}`,
         );
     });

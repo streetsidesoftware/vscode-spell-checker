@@ -37,7 +37,7 @@ describe('fs', () => {
     `('createDirectory $uri', async ({ uri }) => {
         const uriDest = Uri.joinPath(getPathToTemp(), uri);
         await fsRemove(uriDest);
-        expect(vscodeFs.createDirectory(uriDest)).resolves.toBeUndefined();
+        await expect(vscodeFs.createDirectory(uriDest)).resolves.toBeUndefined();
     });
 
     test.each`

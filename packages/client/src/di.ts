@@ -1,7 +1,7 @@
-import { ExtensionContext } from 'vscode';
+import type { ExtensionContext } from 'vscode';
 
-import { CSpellClient } from './client';
-import { DictionaryHelper } from './settings/DictionaryHelper';
+import type { CSpellClient } from './client';
+import type { DictionaryHelper } from './settings/DictionaryHelper';
 
 export interface GlobalDependencies {
     name: string;

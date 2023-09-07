@@ -1,6 +1,7 @@
 import * as path from 'path';
 
-import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace, StackItem } from './helpers';
+import type { StackItem } from './helpers';
+import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace } from './helpers';
 
 describe('Validate Helpers', () => {
     test('getCallStack', () => {
@@ -10,7 +11,7 @@ describe('Validate Helpers', () => {
 
     test('mustBeDefined', () => {
         expect(mustBeDefined('hello')).toBe('hello');
-        expect(() => mustBeDefined(undefined)).toThrowError('Value must be defined.');
+        expect(() => mustBeDefined(undefined)).toThrow('Value must be defined.');
     });
 
     test('getPathToTemp', () => {

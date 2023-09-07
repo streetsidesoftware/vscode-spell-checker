@@ -2,18 +2,14 @@
  * This file contains settings related functions, but are not exported out of the folder.
  */
 
-import { CSpellUserSettings } from '../client';
-import { ClientConfigScope, ClientConfigTarget, orderScope } from './clientConfigTarget';
+import type { CSpellUserSettings } from '../client';
+import type { ClientConfigScope, ClientConfigTarget } from './clientConfigTarget';
+import { orderScope } from './clientConfigTarget';
 import { applyUpdateToConfigTargets, readFromConfigTargets } from './configRepositoryHelper';
-import {
-    ConfigTargetMatchPattern,
-    filterClientConfigTargets,
-    patternMatchNoDictionaries,
-    quickPickBestMatchTarget,
-    quickPickTargets,
-} from './configTargetHelper';
+import type { ConfigTargetMatchPattern } from './configTargetHelper';
+import { filterClientConfigTargets, patternMatchNoDictionaries, quickPickBestMatchTarget, quickPickTargets } from './configTargetHelper';
 import { configUpdaterForKey } from './configUpdater';
-import { TargetsAndScopes } from './settings.types';
+import type { TargetsAndScopes } from './settings.types';
 
 export { CSpellUserSettings, normalizeLocale } from '../client';
 

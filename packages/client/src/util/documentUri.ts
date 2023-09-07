@@ -1,4 +1,5 @@
-import { Uri, workspace } from 'vscode';
+import type { Uri } from 'vscode';
+import { workspace } from 'vscode';
 
 const _schemaFile = {
     file: true,
