@@ -1,7 +1,7 @@
 import type * as pkg from './packageJson';
 
 describe('Validate Package Types', () => {
-    test('', () => {
+    test('api', () => {
         const pkgJson: pkg.PackageJson = {
             ...sample,
         };

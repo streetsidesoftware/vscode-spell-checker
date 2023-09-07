@@ -3,7 +3,8 @@ import * as path from 'path';
 import { format } from 'util';
 import * as vscode from 'vscode';
 
-import { ExtensionApi } from './ExtensionApi';
+import type { ExtensionApi } from './ExtensionApi';
+import assert = require('assert');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-unpublished-require
 const extensionPackage = require('../../../package.json');
@@ -28,10 +29,11 @@ export interface ExtensionActivation {
 export async function activateExtension(): Promise<ExtensionActivation> {
     const extensionId = getExtensionId();
     log(`Activate: ${extensionId}`);
-    const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId)!;
+    const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId);
     try {
+        assert(ext);
         const extActivate = await ext.activate();
-        const extApi = vscode.extensions.getExtension(extensionId)!.exports;
+        const extApi = vscode.extensions.getExtension(extensionId)?.exports;
         return {
             ext,
             extActivate,

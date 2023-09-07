@@ -6,7 +6,6 @@ const path = require('path');
 const cp = require('child_process');
 const fs = require('fs');
 
-// eslint-disable-next-line node/no-unpublished-require
 const downloadAndUnzipVSCode = require('@vscode/test-electron').downloadAndUnzipVSCode;
 
 var testsFolder;

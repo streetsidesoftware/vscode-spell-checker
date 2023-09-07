@@ -125,7 +125,9 @@ describe('Validate Logger', () => {
     });
 });
 
-function exit() {}
+function exit() {
+    return;
+}
 
 function makeConnection() {
     const connection = {

@@ -14,19 +14,21 @@ const moduleStartTime: HTime = process.hrtime();
 export class PerformanceTimeline {
     private timeLine: TimeLineEvent[] = [];
     private timeLineEvents = new Map<string, TimeLineEvent>();
+    private startEvent: TimeLineEvent;
 
     constructor() {
-        this.mark(EVENT_TIMELINE_START);
+        this.startEvent = this.createEvent(EVENT_TIMELINE_START);
+        this.addEvent(this.startEvent);
     }
 
     public mark(name: string): void {
-        const event = { name, startTime: process.hrtime(moduleStartTime), duration: 0 };
+        const event = this.createEvent(name);
         this.addEvent(event);
     }
 
     public measure(name: string, nameStart: string, nameEnd: string): void {
-        const eventStart = this.timeLineEvents.get(nameStart) || this.timeLineEvents.get(EVENT_TIMELINE_START)!;
-        const eventEnd = this.timeLineEvents.get(nameEnd) || this.timeLineEvents.get(EVENT_TIMELINE_START)!;
+        const eventStart = this.timeLineEvents.get(nameStart) || this.startEvent;
+        const eventEnd = this.timeLineEvents.get(nameEnd) || this.startEvent;
         const duration = calcDuration(eventStart.startTime, eventEnd.startTime);
         const event = { name, startTime: process.hrtime(moduleStartTime), duration };
         this.addEvent(event);
@@ -47,6 +49,10 @@ export class PerformanceTimeline {
 
     public getEntriesByName(name: string): TimeLineEvent[] {
         return this.timeLine.filter((e) => e.name === name);
+    }
+
+    private createEvent(name: string): TimeLineEvent {
+        return { name, startTime: process.hrtime(moduleStartTime), duration: 0 };
     }
 }
 

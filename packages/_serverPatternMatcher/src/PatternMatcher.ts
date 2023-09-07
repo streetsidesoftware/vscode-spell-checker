@@ -4,7 +4,7 @@ import { logError } from 'common-utils/log.js';
 import { RegExpWorker, type TimeoutError } from 'regexp-worker';
 import { format } from 'util';
 
-import { PatternSettings } from './api';
+import type { PatternSettings } from './api';
 
 export type Range = [number, number];
 
@@ -42,7 +42,7 @@ export class PatternMatcher {
 
     public dispose = () => this.worker.dispose();
 
-    constructor(timeoutMs: number = 2000) {
+    constructor(timeoutMs = 2000) {
         this.worker = new RegExpWorker(timeoutMs);
     }
 
@@ -125,7 +125,7 @@ function execMatch(worker: RegExpWorker, text: string, regexp: RegExp): Promise<
 
 function toExecMatchRegExpResultTimeout(
     regexp: RegExp,
-    error: any | TimeoutError,
+    error: unknown | TimeoutError,
 ): ExecMatchRegExpResultTimeout | Promise<ExecMatchRegExpResultTimeout> {
     if (!isTimeoutError(error)) return Promise.reject(error);
     return {
@@ -134,8 +134,15 @@ function toExecMatchRegExpResultTimeout(
     };
 }
 
-function isTimeoutError(e: any | TimeoutError): e is TimeoutError {
-    return typeof e === 'object' && typeof e.message === 'string' && typeof e.elapsedTimeMs === 'number';
+function isTimeoutError(e: unknown | TimeoutError): e is TimeoutError {
+    return (
+        !!e &&
+        typeof e === 'object' &&
+        'message' in e &&
+        typeof e.message === 'string' &&
+        'elapsedTimeMs' in e &&
+        typeof e.elapsedTimeMs === 'number'
+    );
 }
 
 interface MatchRegExpResult {
@@ -195,7 +202,7 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp | un
     return undefined;
 }
 
-export function isRegExp(r: RegExp | any): r is RegExp {
+export function isRegExp(r: RegExp | unknown): r is RegExp {
     return r instanceof RegExp;
 }
 

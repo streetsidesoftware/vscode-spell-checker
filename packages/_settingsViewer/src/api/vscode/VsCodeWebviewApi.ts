@@ -1,4 +1,4 @@
-import { MessageListener, WebviewApi } from '../WebviewApi';
+import type { MessageListener, WebviewApi } from '../WebviewApi';
 // interface VsCodeWebviewAPI extends BroadcastChannel { }
 
 interface VsCodeAPI {
@@ -58,6 +58,7 @@ function acquireAPI(): VsCodeAPI {
     if (vsCodeApi) {
         window.addEventListener('message', onMessage);
         return {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             postMessage(msg: any) {
                 vsCodeApi.postMessage(msg);
             },
@@ -66,7 +67,7 @@ function acquireAPI(): VsCodeAPI {
 
     if (typeof BroadcastChannel !== 'function') {
         return {
-            postMessage() {},
+            postMessage: () => undefined,
         };
     }
 

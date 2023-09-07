@@ -2,8 +2,8 @@ import { toJS } from 'mobx';
 import { describe, expect, test } from 'vitest';
 
 import { MessageBus } from '../api';
-import { Settings } from '../api/settings';
-import { WebviewApi } from '../api/WebviewApi';
+import type { Settings } from '../api/settings';
+import type { WebviewApi } from '../api/WebviewApi';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { AppState } from './AppState';
 
@@ -77,7 +77,7 @@ describe('Validate AppState', () => {
 
     function getSampleAppState(settings: Settings): AppState {
         const webviewApi: WebviewApi = {
-            postMessage: (_msg: any) => webviewApi,
+            postMessage: () => webviewApi,
             onmessage: undefined,
         };
         const msgBus = new MessageBus(webviewApi);

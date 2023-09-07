@@ -1,5 +1,8 @@
-import { OpenLinkMessage } from '../api';
-import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
+import type { OpenLinkMessage } from '../api';
+import type { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
+import type { EXPLICIT_ANY } from '../types';
+
+type ANY = EXPLICIT_ANY;
 
 export function clickLink(vsCodeApi: VsCodeWebviewApi, event: React.MouseEvent<HTMLAnchorElement>): void {
     event.preventDefault();
@@ -42,6 +45,6 @@ export function parseFileUri(uri: string): UriComponents {
     };
 }
 
-export function commandUri(command: string, params: any[]): string {
+export function commandUri(command: string, params: ANY[]): string {
     return `command:${command}?${encodeURIComponent(JSON.stringify(params))}`;
 }

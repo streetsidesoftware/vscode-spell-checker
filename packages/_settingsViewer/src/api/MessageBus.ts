@@ -1,6 +1,8 @@
-import { DefinedCommands, isMessageOf } from '.';
-import { CommandMessage, Commands, isMessage } from './message';
-import { BaseMessageEvent, WebviewApi } from './WebviewApi';
+import type { DefinedCommands } from '.';
+import { isMessageOf } from '.';
+import type { CommandMessage, Commands } from './message';
+import { isMessage } from './message';
+import type { BaseMessageEvent, WebviewApi } from './WebviewApi';
 
 export interface MsgListener<M extends CommandMessage> {
     cmd: M['command'];
@@ -49,13 +51,13 @@ export class MessageBus implements Messenger {
             fn: handler,
             cmd,
             dispose: () => {
-                this.listeners.has(cmd) && this.listeners.get(cmd)!.delete(listener);
+                this.listeners.get(cmd)?.delete(listener);
             },
         };
 
         this.listeners.set(cmd, this.listeners.get(cmd) || new Set());
-        const cmdListeners = this.listeners.get(cmd)!;
-        cmdListeners.add(listener);
+        const cmdListeners = this.listeners.get(cmd);
+        cmdListeners?.add(listener);
 
         return listener;
     }

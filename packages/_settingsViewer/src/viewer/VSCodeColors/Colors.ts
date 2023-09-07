@@ -33,7 +33,7 @@ export class RGBA {
      */
     readonly a: number;
 
-    constructor(r: number, g: number, b: number, a: number = 1) {
+    constructor(r: number, g: number, b: number, a = 1) {
         this.r = Math.min(255, Math.max(0, r)) | 0;
         this.g = Math.min(255, Math.max(0, g)) | 0;
         this.b = Math.min(255, Math.max(0, b)) | 0;

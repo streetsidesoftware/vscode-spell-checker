@@ -4,12 +4,13 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { expect } from 'chai';
-import { Stream, stream } from 'kefir';
+import type { Stream } from 'kefir';
+import { stream } from 'kefir';
 import * as vscode from 'vscode';
 
-import { OnSpellCheckDocumentStep } from '../../_server/dist/api';
-import { CSpellClient } from '../../client/dist/client';
-import { ExtensionApi } from './ExtensionApi';
+import type { OnSpellCheckDocumentStep } from '../../_server/dist/api';
+import type { CSpellClient } from '../../client/dist/client';
+import type { ExtensionApi } from './ExtensionApi';
 import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';
 
 type Api = {
@@ -56,7 +57,7 @@ describe('Launch code spell extension', function () {
         const docContext = await loadDocument(docUri);
         expect(extContext).to.not.be.undefined;
         expect(docContext).to.not.be.undefined;
-        const extApi = extContext!.extApi;
+        const extApi = extContext.extApi;
         expect(extApi).to.not.be.undefined;
         expect(extApi).to.equal(extContext?.extActivate);
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);

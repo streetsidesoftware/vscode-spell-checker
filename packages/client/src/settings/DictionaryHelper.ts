@@ -125,7 +125,7 @@ export class DictionaryHelper {
      */
     public removeWordFromDictionaries(words: string | string[], dictTargets: DictionaryTarget[]): Promise<void> {
         const all = Promise.all(dictTargets.map((t) => this.removeWordFromDictionary(words, t)));
-        return all.then();
+        return all.then(() => undefined);
     }
 
     /**

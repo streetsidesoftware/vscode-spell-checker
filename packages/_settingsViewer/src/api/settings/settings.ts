@@ -1,4 +1,4 @@
-import { TextDocument, Workspace } from './workspace';
+import type { TextDocument, Workspace } from './workspace';
 
 export interface Settings {
     dictionaries: DictionaryEntry[];
