@@ -1,4 +1,4 @@
-name: release-please
+name: " 🚀 Generate Release Please"
 
 on:
   workflow_dispatch:
@@ -28,6 +28,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         id: release
         with:
+          release-type: node
           command: manifest
       - name: Release Please Results
         env:

@@ -1,4 +1,4 @@
-name: Upload Release Assets
+name: " 📦 Upload Release Assets"
 
 on:
   workflow_dispatch:

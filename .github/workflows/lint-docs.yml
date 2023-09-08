@@ -1,5 +1,6 @@
-name: lint docs
+name: " 🧽 Lint Docs"
 on: # rebuild any PRs and main branch changes
+  workflow_dispatch:
   pull_request:
   push:
     branches:

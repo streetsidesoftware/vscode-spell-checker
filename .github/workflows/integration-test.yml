@@ -1,4 +1,4 @@
-name: "Integration Tests"
+name: " 🧪 Integration Tests"
 on:
   pull_request:
     paths-ignore:
