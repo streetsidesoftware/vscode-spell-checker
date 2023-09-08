@@ -8,7 +8,7 @@ See: [FAQ Issues](https://github.com/streetsidesoftware/vscode-spell-checker/iss
 
 ### _Is the spell checker case sensitive?_
 
-> The spell checker is NOT case sensitive.
+> Yes, the spell checker is case sensitive. It is possible to turn it on/off based upon the file type. See: [Turning on Case Sensitive Spell Checking](https://streetsidesoftware.com/vscode-spell-checker/release-notes/releasenotes_v2/#turning-on-case-sensitive-spell-checking)
 
 ### _What files are excluded by the spell checker?_
 
