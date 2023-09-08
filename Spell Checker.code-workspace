@@ -47,7 +47,8 @@
         "typescript.tsdk": "Spell Checker Root/node_modules/typescript/lib",
         "svg.preview.background": "black",
         "editor.formatOnSave": true,
-        "files.eol": "\n"
+        "files.eol": "\n",
+        "cSpell.enableFiletypes": ["github-actions-workflow"]
     },
     "launch": {
         "configurations": [

@@ -2533,7 +2533,7 @@
     "postinstall": "echo postinstall",
     "build": "yarn build:workspaces && yarn build:schema && yarn build:docs",
     "build:docs": "yarn run gen-docs",
-    "build:readme": "inject-markdown README.md && prettier -w README.md",
+    "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown docs && prettier -w docs",
     "build:schema": "yarn run build-package-schema",
     "build:workspaces": "yarn workspaces run build",
     "clean": "yarn workspaces run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
