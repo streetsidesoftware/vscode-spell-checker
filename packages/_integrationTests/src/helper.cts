@@ -5,7 +5,7 @@ import type { ExtensionApi } from './ExtensionApi.cjs';
 import assert = require('assert');
 import { esmMethods } from './esmHelper.cjs';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-unpublished-require
 const extensionPackage = require('../../../package.json');
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
 
