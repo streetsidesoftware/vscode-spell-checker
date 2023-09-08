@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.20.5...code-spell-checker-v3.0.0) (2023-09-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade to CSpell 7 ([#2745](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2745))
+
+### Features
+
+* Update VSCode required version to 1.80.0 ([#2776](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2776)) ([e822d6e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e822d6eaef137f659feac743b19fdd39bd980224))
+* Upgrade to CSpell 7 ([#2745](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2745)) ([5a60904](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5a609043da987f4a1c55641ec7e2c8501655c0ea))
+
+
+### Updates and Bug Fixes
+
+* fix typo ([#2730](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2730)) ([8f39e66](https://github.com/streetsidesoftware/vscode-spell-checker/commit/8f39e665644ee10a1ad4094ec8dfae8ede100e9e))
+* Issue with spell checking SCM message ([#2774](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2774)) ([1766a28](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1766a28f6c4c6b380b81899619f221930f50f5c9))
+
 ## [2.20.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v2.20.4...code-spell-checker-v2.20.5) (2023-06-08)
 
 
