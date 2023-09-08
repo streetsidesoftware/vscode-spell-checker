@@ -39,7 +39,7 @@ jobs:
         with:
           cache: yarn
       - name: Install
-        run: yarn --frozen-lockfile
+        run: yarn
       - name: Build Extension .vsix
         run: yarn run package-extension
       - run: zip code-spell-checker build/*
