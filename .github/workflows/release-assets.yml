@@ -1,6 +1,12 @@
 name: Upload Release Assets
 
 on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag of the release to be updated.
+        type: string
+        required: true
   release:
     types:
       - published
