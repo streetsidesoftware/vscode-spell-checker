@@ -2590,7 +2590,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.4"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.2",
