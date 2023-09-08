@@ -1,16 +1,13 @@
-import * as Chalk from 'chalk';
 import * as path from 'path';
-import { format } from 'util';
 import * as vscode from 'vscode';
 
-import type { ExtensionApi } from './ExtensionApi';
+import type { ExtensionApi } from './ExtensionApi.cjs';
 import assert = require('assert');
+import { esmMethods } from './esmHelper.cjs';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-unpublished-require
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const extensionPackage = require('../../../package.json');
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
-
-export const chalk = new Chalk.Instance({ level: 1 });
 
 export interface DocumentContext {
     doc: vscode.TextDocument;
@@ -28,7 +25,7 @@ export interface ExtensionActivation {
  */
 export async function activateExtension(): Promise<ExtensionActivation> {
     const extensionId = getExtensionId();
-    log(`Activate: ${extensionId}`);
+    await log(`Activate: ${extensionId}`);
     const ext = vscode.extensions.getExtension<ExtensionApi>(extensionId);
     try {
         assert(ext);
@@ -84,13 +81,19 @@ function getExtensionId() {
     return `${publisher}.${name}`;
 }
 
-export function log(...params: Parameters<typeof console.log>): void {
-    const dt = new Date();
-    console.log(`${chalk.cyan(dt.toISOString())} ${format(...params)}`);
-}
-
 export const sampleWorkspaceRoot = vscode.Uri.file(path.resolve(__dirname, '../sampleWorkspaces'));
 
 export function sampleWorkspaceUri(...pathSegments: string[]): vscode.Uri {
     return vscode.Uri.joinPath(sampleWorkspaceRoot, ...pathSegments);
+}
+
+export async function log(...params: Parameters<typeof console.log>): Promise<void> {
+    return (await esmMethods()).log(...params);
+}
+
+export async function logYellow(...params: Parameters<typeof console.log>): Promise<void> {
+    const { log, chalk } = await esmMethods();
+    const [message, ...rest] = params;
+    if (!message) return log('');
+    return log(chalk.yellow(message), ...rest);
 }
