@@ -4,12 +4,11 @@
  * ------------------------------------------------------------------------------------------ */
 
 import { expect } from 'chai';
-import type { OnSpellCheckDocumentStep } from 'code-spell-checker-server/api';
 import type { Stream } from 'kefir';
 import { stream } from 'kefir';
 import * as vscode from 'vscode';
 
-import type { CSpellClient, ExtensionApi } from './ExtensionApi.cjs';
+import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.cjs';
 import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.cjs';
 
 type Api = {
