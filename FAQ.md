@@ -29,7 +29,7 @@ See: [FAQ Issues](https://github.com/streetsidesoftware/vscode-spell-checker/iss
 
 ### Can I use the spell checker as a linter or part of the build process?
 
-> Yes you can: [Spell Checker as Npm package #137](https://github.com/streetsidesoftware/vscode-spell-checker/issues/137)
+> Yes you can: [Spell Checker as Npm package #137](https://github.com/streetsidesoftware/vscode-spell-checker/issues/137) and [Spell Checker as Docker image](https://github.com/streetsidesoftware/cspell-cli#docker)
 
 ### Can I remove a word from the dictionary?
 
