@@ -2595,6 +2595,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.2",
     "@cspell/cspell-types": "^7.3.2",
+    "@tsconfig/node18": "^18.2.1",
     "@types/react": "^17.0.65",
     "cspell": "^7.3.2",
     "regexp-worker": "^2.0.2"

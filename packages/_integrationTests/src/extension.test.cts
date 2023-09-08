@@ -8,10 +8,8 @@ import type { Stream } from 'kefir';
 import { stream } from 'kefir';
 import * as vscode from 'vscode';
 
-import type { OnSpellCheckDocumentStep } from '../../_server/dist/api';
-import type { CSpellClient } from '../../client/dist/client';
-import type { ExtensionApi } from './ExtensionApi';
-import { activateExtension, chalk, getDocUri, loadDocument, log, sampleWorkspaceUri, sleep } from './helper';
+import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.cjs';
+import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.cjs';
 
 type Api = {
     [K in keyof ExtensionApi]: K;
@@ -52,7 +50,7 @@ describe('Launch code spell extension', function () {
     });
 
     it('Verify the extension starts', async () => {
-        log(chalk.yellow('Verify the extension starts'));
+        await logYellow('Verify the extension starts');
         const extContext = await activateExtension();
         const docContext = await loadDocument(docUri);
         expect(extContext).to.not.be.undefined;
@@ -62,7 +60,7 @@ describe('Launch code spell extension', function () {
         expect(extApi).to.equal(extContext?.extActivate);
         expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
         expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
-        log(chalk.yellow('Done: Verify the extension starts'));
+        await logYellow('Done: Verify the extension starts');
     });
 
     [
@@ -70,7 +68,7 @@ describe('Launch code spell extension', function () {
         [sampleWorkspaceUri('workspace1/README.md'), sampleWorkspaceUri('cspell.json')],
     ].forEach(([docUri, expectedConfigUri]) => {
         it(`Verifies that the right config was found for ${docUri.toString()}`, async () => {
-            log(chalk.yellow('Verifies that the right config was found'));
+            await logYellow('Verifies that the right config was found');
             const ext = isDefined(await activateExtension());
             const uri = docUri;
             const docContextMaybe = await loadDocument(uri);
@@ -80,16 +78,16 @@ describe('Launch code spell extension', function () {
             const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
 
             const { excludedBy, fileEnabled, configFiles } = config;
-            log('config: %o', { excludedBy, fileEnabled, configFiles });
+            await log('config: %o', { excludedBy, fileEnabled, configFiles });
 
             const configUri = vscode.Uri.parse(config.configFiles[0] || '');
             expect(configUri.toString()).to.equal(expectedConfigUri.toString());
-            log(chalk.yellow('Done: Verifies that the right config was found'));
+            await logYellow('Done: Verifies that the right config was found');
         });
     });
 
     it('Verifies that some spelling errors were found', async () => {
-        log(chalk.yellow('Verifies that some spelling errors were found'));
+        await logYellow('Verifies that some spelling errors were found');
         const uri = getDocUri('example.md');
         const docContextMaybe = await loadDocument(uri);
         await sleep(500);
@@ -100,12 +98,12 @@ describe('Launch code spell extension', function () {
         await r;
 
         const found = await wait;
-        log('found %o', found);
+        await log('found %o', found);
 
         const diags = await getDiagsFromVsCode(uri, 2000);
 
         if (!diags.length) {
-            log('all diags: %o', vscode.languages.getDiagnostics());
+            await log('all diags: %o', vscode.languages.getDiagnostics());
         }
 
         // await sleep(5 * 1000);
@@ -113,12 +111,12 @@ describe('Launch code spell extension', function () {
         expect(found).to.not.be.undefined;
 
         const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
-        log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
-        log('diags: %o', diags);
+        await log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
+        await log('diags: %o', diags);
 
         // cspell:ignore spellling
         expect(msgs).contains('spellling');
-        log(chalk.yellow('Done: Verifies that some spelling errors were found'));
+        await logYellow('Done: Verifies that some spelling errors were found');
     });
 
     it('Wait a bit', async () => {

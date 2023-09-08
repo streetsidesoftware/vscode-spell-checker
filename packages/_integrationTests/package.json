@@ -3,14 +3,14 @@
   "version": "2.0.0",
   "description": "Integration tests for the spell checker extension",
   "private": true,
+  "type": "module",
   "main": "out/index.js",
   "scripts": {
     "build": "echo skipping build for integration-test",
     "build2": "tsc -p .",
     "clean": "shx rm -rf out temp",
     "build-production": "yarn run build",
-    "test-integration-vscode-old": "cross-env CODE_DISABLE_EXTENSIONS=true CODE_TESTS_PATH=./../_integrationTests/out CODE_TESTS_WORKSPACE=./testFixtures CODE_EXTENSIONS_PATH=../.. CODE_TESTS_DATA_DIR=./temp node ../_integrationTests/integrationTestRunner",
-    "test-integration-vscode": "node ./out/runTests.js",
+    "test-integration-vscode": "node ./out/runTests.mjs",
     "test-integration": "yarn run build2 && yarn test-integration-vscode",
     "test": "echo Run test-integration"
   },
@@ -35,8 +35,8 @@
   "peerDependenciesMeta": {},
   "dependencies": {
     "@vscode/test-electron": "^2.3.4",
-    "chalk": "^4.1.2",
-    "glob": "^8.1.0",
+    "chalk": "^5.3.0",
+    "glob": "^10.3.4",
     "mocha": "^10.2.0"
   },
   "engines": {
