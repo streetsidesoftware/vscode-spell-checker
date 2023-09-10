@@ -12,6 +12,9 @@
                 "name": "alt-terms",
                 "path": "${workspaceFolder}/alt-words.txt"
             }
+        ],
+        "cSpell.flagWords": [
+            "flagthisword"
         ]
     }
 }

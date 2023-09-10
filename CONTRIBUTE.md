@@ -64,8 +64,8 @@ If anything shows up, then the port is still locked.
 1. Edit `SpellCheckerSettings` in [server/src/config/cspellConfig.ts](./packages/_server/src/config/cspellConfig.ts) to add your configuration field, e.g.
     ```typescript
     /**
+      * Configuration description.
       * @scope resource
-      * @description Configuration description.
       * @default "option2"
       * @enumDescriptions [
       *  "Option 1 Description",

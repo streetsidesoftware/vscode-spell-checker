@@ -10,14 +10,10 @@
             "address": "localhost",
             "port": 60048,
             "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ],
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "protocol": "inspector",
             "smartStep": false,
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }

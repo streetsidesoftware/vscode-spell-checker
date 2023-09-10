@@ -22,17 +22,15 @@ export type CustomDictionaryEntry = CustomDictionaryAugmentExistingDictionary | 
 type OptionalField<T, K extends keyof T> = {
     [k in K]?: T[k];
 } & Omit<T, K>;
-/**
- * @title Custom Dictionary Entry
- * @markdownDescription
- * Define a custom dictionary to be included.
- */
 
+/**
+ * Define a custom dictionary to be included.
+ * @title Custom Dictionary Entry
+ */
 export type CustomDictionariesDictionary = OptionalField<CustomDictionaryAugmentExistingDictionary | CustomDictionary, 'name'>;
+
 interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
     /**
-     * @title Name of Dictionary
-     * @markdownDescription
      * The reference name of the dictionary.
      *
      *
@@ -41,34 +39,27 @@ interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
      *
      * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
      * If you use: `typescript` it will replace the built-in TypeScript dictionary.
+     * @title Name of Dictionary
      */
     name: DictionaryId;
 
     /**
-     * @title Description of the Dictionary
-     * @markdownDescription
      * Optional: A human readable description.
+     * @title Description of the Dictionary
      */
     description?: string;
 
     /**
-     * @title Path to Dictionary Text File
-     * @markdownDescription
      * Define the path to the dictionary text file.
-     *
      *
      * **Note:** if path is `undefined` the `name`d dictionary is expected to be found
      * in the `dictionaryDefinitions`.
      *
-     *
      * File Format: Each line in the file is considered a dictionary entry.
-     *
      *
      * Case is preserved while leading and trailing space is removed.
      *
-     *
      * The path should be absolute, or relative to the workspace.
-     *
      *
      * **Example:** relative to User's folder
      *
@@ -76,13 +67,11 @@ interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
      * ~/dictionaries/custom_dictionary.txt
      * ```
      *
-     *
      * **Example:** relative to the `client` folder in a multi-root workspace
      *
      * ```
      * ${workspaceFolder:client}/build/custom_dictionary.txt
      * ```
-     *
      *
      * **Example:** relative to the current workspace folder in a single-root workspace
      *
@@ -93,31 +82,29 @@ interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
      * ${workspaceFolder}/build/custom_dictionary.txt
      * ```
      *
-     *
      * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
      * a multi-root workspace
      *
      * ```
      * ./build/custom_dictionary.txt
      * ```
+     * @title Path to Dictionary Text File
      */
     path?: FsPath;
 
     /**
-     * @title Add Words to Dictionary
-     * @markdownDescription
      * Indicate if this custom dictionary should be used to store added words.
+     * @title Add Words to Dictionary
      * @default true
      */
     addWords?: boolean;
 
     /**
-     * @title Scope of dictionary
-     * @markdownDescription
      * Options are
      * - `user` - words that apply to all projects and workspaces
      * - `workspace` - words that apply to the entire workspace
      * - `folder` - words that apply to only a workspace folder
+     * @title Scope of dictionary
      */
     scope?: CustomDictionaryScope | CustomDictionaryScope[];
 }

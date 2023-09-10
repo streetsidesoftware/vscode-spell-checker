@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 
-import { commandUpdatePackageCSpellSchema } from './updatePackageCSpellSchema';
+import { commandUpdatePackageCSpellSchema } from './updatePackageCSpellSchema.js';
 
 const program = new Command();
 

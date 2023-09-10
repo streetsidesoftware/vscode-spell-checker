@@ -1,6 +1,7 @@
 {
   "name": "@internal/docs",
   "description": "Documentation",
+  "type": "commonjs",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -9,9 +10,12 @@
     "build-production": "echo Skip Docs",
     "test": "echo Skip Docs",
     "gen-docs": "yarn gen-config-docs && yarn gen-command-docs && yarn run lint",
-    "gen-config-docs": "node _scripts/extract-config.js > _includes/generated-docs/configuration.md",
+    "gen-config-docs": "node _scripts/extract-config.mjs > _includes/generated-docs/configuration.md",
     "gen-command-docs": "node _scripts/extract-commands.js > _includes/generated-docs/commands.md",
     "lint": "prettier -w \"**/*.{md,markdown,yaml,yml,json,html,htm,js}\"",
     "serve": "bundle exec jekyll serve"
+  },
+  "engines": {
+    "node": ">16.0.0"
   }
 }

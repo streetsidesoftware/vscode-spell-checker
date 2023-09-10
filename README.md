@@ -527,7 +527,6 @@ interface Settings {
 interface CustomDictionary {
     /**
      * @title Name of Dictionary
-     * @markdownDescription
      * The reference name of the dictionary.
      *
      *
@@ -541,14 +540,12 @@ interface CustomDictionary {
 
     /**
      * @title Description of the Dictionary
-     * @markdownDescription
      * Optional: A human readable description.
      */
     description?: string;
 
     /**
      * @title Path to Dictionary Text File
-     * @markdownDescription
      * Define the path to the dictionary text file.
      *
      *
@@ -592,7 +589,6 @@ interface CustomDictionary {
 
     /**
      * @title Add Words to Dictionary
-     * @markdownDescription
      * Indicate if this custom dictionary should be used to store added words.
      * @default true
      */
@@ -600,7 +596,6 @@ interface CustomDictionary {
 
     /**
      * @title Scope of dictionary
-     * @markdownDescription
      * Options are
      * - `user` - words that apply to all projects and workspaces
      * - `workspace` - words that apply to the entire workspace

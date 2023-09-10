@@ -29,7 +29,7 @@ export function hasWorkspaceLocation(): boolean {
 }
 
 /**
- * @description Enable a programming language
+ * Enable a programming language
  * @param target - which level of setting to set
  * @param languageId - the language id, e.g. 'typescript'
  */

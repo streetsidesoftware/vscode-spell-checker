@@ -16,27 +16,26 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     enabled?: boolean;
 
     /**
-     * @scope resource
-     * @description
      * Current active spelling language.
+     *
      * Example: "en-GB" for British English
+     *
      * Example: "en,nl" to enable both English and Dutch
+     * @scope resource
      * @default "en"
      */
     language?: string;
 
     /**
-     * @scope resource
-     * @description
      * Controls the maximum number of spelling errors per document.
+     * @scope resource
      * @default 100
      */
     maxNumberOfProblems?: number;
 
     /**
-     * @scope resource
-     * @description
      * Controls the number of suggestions shown.
+     * @scope resource
      * @default 8
      */
     numSuggestions?: number;
@@ -66,11 +65,9 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     maxDuplicateProblems?: number;
 
     /**
+     * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
      * @title Enabled Language Ids
      * @scope resource
-     * @description
-     * @markdownDescription
-     * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
      * @uniqueItems true
      * @default [
      *      "asciidoc",
@@ -114,11 +111,9 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *      "yml"
      *  ]
      */
-    enabledLanguageIds?: string[];
+    enabledLanguageIds?: CSpellSettings['enabledLanguageIds'];
 
     /**
-     * @description
-     * @markdownDescription
      * Allows this configuration to inherit configuration for one or more other files.
      *
      * See [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.
@@ -143,7 +138,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignoreWords?: string[];
 
     /**
-     * @markdownDescription
      * Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @title Glob patterns of files to be ignored
      * @scope resource
@@ -159,8 +153,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     ignorePaths?: (SimpleGlob | GlobDefX)[];
 
     /**
-     * @description
-     * @markdownDescription
      * The root to use for glob patterns found in this configuration.
      * Default: The current workspace folder.
      * Use `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.
@@ -176,8 +168,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     globRoot?: CSpellSettings['globRoot'];
 
     /**
-     * @description
-     * @markdownDescription
      * Glob patterns of files to be checked.
      * Glob patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @scope resource
@@ -190,8 +180,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     flagWords?: string[];
 
     /**
-     * @description
-     * @markdownDescription
      * Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and
      * `#cSpell.includeRegExpList#` options.
      *
@@ -215,8 +203,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     patterns?: CSpellSettings['patterns'];
 
     /**
-     * @description
-     * @markdownDescription
      * List of regular expression patterns or defined pattern names to match for spell checking.
      *
      * If this property is defined, only text matching the included patterns will be checked.
@@ -227,9 +213,6 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     // cspell:ignore mapsto venv
     /**
-     * @scope resource
-     * @description
-     * @markdownDescription
      * List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.
      *
      * - When using the VS Code Preferences UI, it is not necessary to escape the `\`, VS Code takes care of that.
@@ -244,19 +227,20 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      * | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
      * | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
      * | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |
+     *
+     * @scope resource
      */
     ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
 
     /**
-     * @scope resource
-     * @default false
-     * @description
-     * @markdownDescription
      * Enable / Disable allowing word compounds.
      * - `true` means `arraylength` would be ok
      * - `false` means it would not pass.
      *
      * Note: this can also cause many misspelled words to seem correct.
+     *
+     * @scope resource
+     * @default false
      */
     allowCompoundWords?: CSpellSettings['allowCompoundWords'];
 
@@ -266,37 +250,21 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     languageSettings?: CSpellSettings['languageSettings'];
 
     /**
-     * @scope resource
-     * @description
-     * @markdownDescription
      * Optional list of dictionaries to use.
      * Each entry should match the name of the dictionary.
      * To remove a dictionary from the list add `!` before the name.
      * i.e. `!typescript` will turn off the dictionary with the name `typescript`.
+     *
+     * @scope resource
      */
     dictionaries?: CSpellSettings['dictionaries'];
 
     /**
-     * @description
-     * @markdownDescription
-     * Define additional available dictionaries.
-     *
-     * For example, you can use the following to add a custom dictionary:
-     *
-     * ```json
-     * "cSpell.dictionaryDefinitions": [
-     *   { "name": "custom-words", "path": "./custom-words.txt"}
-     * ],
-     * "cSpell.dictionaries": ["custom-words"]
-     * ```
      * @scope resource
      */
     dictionaryDefinitions?: CSpellSettings['dictionaryDefinitions'];
 
     /**
-     * @scope resource
-     * @description
-     * @markdownDescription
      * Determines if words must match case and accent rules.
      *
      * - `false` - Case is ignored and accents can be missing on the entire word.
@@ -304,6 +272,8 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *   Note: Some languages like Portuguese have case sensitivity turned on by default.
      *   You must use `#cSpell.languageSettings#` to turn it off.
      * - `true` - Case and accents are enforced by default.
+     *
+     * @scope resource
      */
     caseSensitive?: CSpellSettings['caseSensitive'];
 
