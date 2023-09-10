@@ -13,6 +13,7 @@
         "*.tsv",
         "**/__snapshots__/**",
         "**/server.js",
+        "**/scripts/ts-json-schema-generator.cjs",
         "/samples",
         "CHANGELOG.md",
         "cspell.json",
