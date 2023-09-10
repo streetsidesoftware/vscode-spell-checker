@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Build tools",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.js",
   "bin": {
     "build-tools": "./bin.js"
