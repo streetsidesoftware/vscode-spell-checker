@@ -43,8 +43,6 @@ interface LanguageSettings {
 type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> & DictionaryDefinitions & LanguageSettings;
 interface Overrides {
     /**
-     * @description
-     * @markdownDescription
      * Overrides are used to apply settings for specific files in your project.
      *
      * **Example:**

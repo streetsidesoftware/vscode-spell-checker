@@ -1,6 +1,5 @@
 export interface SpellCheckerShouldCheckDocSettings {
     /**
-     * @markdownDescription
      * The maximum line length.
      *
      *
@@ -17,7 +16,6 @@ export interface SpellCheckerShouldCheckDocSettings {
     blockCheckingWhenLineLengthGreaterThan?: number;
 
     /**
-     * @markdownDescription
      * The maximum length of a chunk of text without word breaks.
      *
      *
@@ -40,7 +38,6 @@ export interface SpellCheckerShouldCheckDocSettings {
     blockCheckingWhenTextChunkSizeGreaterThan?: number;
 
     /**
-     * @markdownDescription
      * The maximum average length of chunks of text without word breaks.
      *
      *

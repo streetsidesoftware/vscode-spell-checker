@@ -48,6 +48,7 @@
         "svg.preview.background": "black",
         "editor.formatOnSave": true,
         "files.eol": "\n",
+        "cSpell.flagWords": [],
         "cSpell.enableFiletypes": ["github-actions-workflow"]
     },
     "launch": {

@@ -45,7 +45,7 @@ Default
 | -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
 | [`cSpell.caseSensitive`](#cspellcasesensitive)                 | resource | Determines if words must match case and accent rules.                                             |
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
-| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use.                                                             |
+| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…     |
 | [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
 | [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect. Words found in `flagWords` override `words`.     |
 | [`cSpell.ignoreWords`](#cspellignorewords)                     | resource | A list of words to be ignored by the spell checker.                                               |
@@ -176,7 +176,15 @@ Description
     - single word entry - `word`
     - with suggestions - `word:suggestion` or `word->suggestion, suggestions`
 
-    Example: ```ts "flagWords": [   "color: colour",   "incase: in case, encase",   "canot->cannot",   "cancelled->canceled" ] ```
+    Example:
+    ```ts
+    "flagWords": [
+      "color: colour",
+      "incase: in case, encase",
+      "canot->cannot",
+      "cancelled->canceled"
+    ]
+    ```
 
 Default
 : _- none -_
@@ -215,8 +223,10 @@ Scope
 
 Description
 : Current active spelling language.
-Example: "en-GB" for British English
-Example: "en,nl" to enable both English and Dutch
+
+    Example: "en-GB" for British English
+
+    Example: "en,nl" to enable both English and Dutch
 
 Default
 : _`"en"`_
@@ -254,9 +264,13 @@ Scope
 : resource
 
 Description
-: Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.
+: Optional list of dictionaries that will not be used for suggestions.
+Words in these dictionaries are considered correct, but will not be
+used when making spell correction suggestions.
 
-    Note: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.
+    Note: if a word is suggested by another dictionary, but found in
+    one of these dictionaries, it will be removed from the set of
+    possible suggestions.
 
 Default
 : _- none -_
@@ -634,8 +648,8 @@ Default
 | [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Define Allowed Schemas                                                                         |
 | [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                  |
 | [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
-| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked.                                                          |
-| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration.                                 |
+| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`…   |
+| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration. Default: The current workspace… |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
 | [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
 | [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
@@ -892,9 +906,11 @@ Scope
 : resource
 
 Description
-: Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.
+: Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading
+packages stored in the repository.
 
-    When true, the spell checker will search up the directory structure for the existence of a PnP file and load it.
+    When true, the spell checker will search up the directory structure for the existence
+    of a PnP file and load it.
 
 Default
 : _- none -_
@@ -1087,13 +1103,13 @@ Default
 
 # CSpell
 
-| Setting                                                | Scope    | Description                                                                                    |
-| ------------------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------- |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from… |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.      |
-| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                       |
-| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and           |
-| [`cSpell.suggestWords`](#cspellsuggestwords)           |          | A list of suggested replacements for words. Suggested words provide a way to make preferred…   |
+| Setting                                                | Scope    | Description                                                                                                        |
+| ------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from…                     |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.                          |
+| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                                           |
+| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
+| [`cSpell.suggestWords`](#cspellsuggestwords)           |          | A list of suggested replacements for words. Suggested words provide a way to make preferred…                       |
 
 ## Definitions
 
@@ -1233,11 +1249,17 @@ Scope
 :
 
 Description
-: A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.
+: A list of suggested replacements for words.
+Suggested words provide a way to make preferred suggestions on word replacements.
+To hint at a preferred change, but not to require it.
 
     Format of `suggestWords`
-    - Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`
-    - Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`
+    - Single suggestion (possible auto fix)
+        - `word: suggestion`
+        - `word->suggestion`
+    - Multiple suggestions (not auto fixable)
+       - `word: first, second, third`
+       - `word->first, second, third`
 
 Default
 : _- none -_

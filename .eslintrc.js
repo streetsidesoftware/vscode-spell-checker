@@ -32,6 +32,7 @@ const config = {
         '**/temp/**',
         '**/dist/**',
         'packages/client/settingsViewer/**',
+        '**/scripts/ts-json-schema-generator.cjs',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
     rules: {

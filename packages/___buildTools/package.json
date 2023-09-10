@@ -27,6 +27,7 @@
     "clean-build": "yarn run clean && yarn run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "echo No tests yet.",
+    "smoke-test": "yarn build && node ./bin.js update-package-schema -r ../..",
     "watch": "tsc -p . --watch"
   },
   "devDependencies": {
@@ -37,7 +38,8 @@
   },
   "dependencies": {
     "commander": "^11.0.0",
-    "json-schema": "0.4.0"
+    "json-schema": "0.4.0",
+    "json-schema-traverse": "1.0.0"
   },
   "engines": {
     "node": ">16.0.0"

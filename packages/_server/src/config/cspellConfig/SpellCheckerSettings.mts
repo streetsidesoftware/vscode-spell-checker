@@ -4,11 +4,10 @@ import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldChe
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
     /**
-     * @title Auto Format Configuration File
-     * @markdownDescription
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
      * file to be saved prior to being updated.
+     * @title Auto Format Configuration File
      * @scope window
      * @default false
      */
@@ -22,9 +21,9 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     checkLimit?: number;
 
     /**
+     * Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
      * @title Set Diagnostic Reporting Level
      * @scope resource
-     * @description Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
      * @default "Information"
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
@@ -35,8 +34,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
 
     /**
-     * @title Define Allowed Schemas
-     * @markdownDescription
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      *
      *
@@ -44,6 +41,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - `untitled` - Used for new documents that have not yet been saved
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
      * - `vscode-userdata` - Needed to spell check `.code-snippets`
+     * @title Define Allowed Schemas
      * @scope window
      * @default ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"]
      */
@@ -88,7 +86,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     showStatusAlignment?: 'Left' | 'Right';
 
     /**
-     * @markdownDescription
      * Show CSpell in-document directives as you type.
      *
      * **Note:** VS Code must be restarted for this setting to take effect.
@@ -105,7 +102,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     spellCheckDelayMs?: number;
 
     /**
-     * @markdownDescription
      * Use Rename Provider when fixing spelling issues.
      * @scope language-overridable
      * @default true
@@ -113,18 +109,15 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     fixSpellingWithRenameProvider?: boolean;
 
     /**
-     * @title Use Reference Provider During Rename
-     * @markdownDescription
      * Use the Reference Provider when fixing spelling issues with the Rename Provider.
      * This feature is used in connection with `#cSpell.fixSpellingWithRenameProvider#`
+     * @title Use Reference Provider During Rename
      * @scope language-overridable
      * @default false
      */
     'advanced.feature.useReferenceProviderWithRename'?: boolean;
 
     /**
-     * @title Remove Matching Characters Before Rename
-     * @markdownDescription
      * Used to work around bugs in Reference Providers and Rename Providers.
      * Anything matching the provided Regular Expression will be removed from the text
      * before sending it to the Rename Provider.
@@ -135,6 +128,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * [Spell Checker Issues](https://github.com/streetsidesoftware/vscode-spell-checker/issues)
      *
      * This feature is used in connection with `#cSpell.advanced.feature.useReferenceProviderWithRename#`
+     * @title Remove Matching Characters Before Rename
      * @scope language-overridable
      */
     'advanced.feature.useReferenceProviderRemove'?: RegExpString;
@@ -154,10 +148,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     showSuggestionsLinkInEditorContextMenu?: boolean;
 
     /**
-     * @title File Types to Check
-     * @scope resource
-     * @uniqueItems true
-     * @markdownDescription
      * Enable / Disable checking file types (languageIds).
      *
      * These are in additional to the file types specified by `#cSpell.enabledLanguageIds#`.
@@ -178,26 +168,25 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * *           // enable checking for all file types
      * !json       // except for json
      * ```
+     * @title File Types to Check
+     * @scope resource
+     * @uniqueItems true
      */
     enableFiletypes?: EnableFileTypeId[];
 
     /**
-     * @title Check Only Enabled File Types
-     * @scope resource
-     * @default true
-     * @markdownDescription
      * By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
      * to turn on / off various file types.
      *
      * When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enableFiletypes#`.
      * See `#cSpell.enableFiletypes#` on how to disable a file type.
+     * @title Check Only Enabled File Types
+     * @scope resource
+     * @default true
      */
     checkOnlyEnabledFileTypes?: boolean;
 
     /**
-     * @title Workspace Root Folder Path
-     * @scope resource
-     * @markdownDescription
      * Define the path to the workspace root folder in a multi-root workspace.
      * By default it is the first folder.
      *
@@ -208,46 +197,42 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * ```
      * ${workspaceFolder:client}
      * ```
+     * @title Workspace Root Folder Path
+     * @scope resource
      */
     workspaceRootPath?: string;
 
     /**
-     * @title Custom User Dictionaries
-     * @scope application
-     * @markdownDescription
      * Define custom dictionaries to be included by default for the user.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @title Custom User Dictionaries
+     * @scope application
      * @deprecated true
      * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customUserDictionaries?: CustomDictionaryEntry[];
 
     /**
-     * @title Custom Workspace Dictionaries
-     * @scope resource
-     * @markdownDescription
      * Define custom dictionaries to be included by default for the workspace.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @title Custom Workspace Dictionaries
+     * @scope resource
      * @deprecated true
      * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customWorkspaceDictionaries?: CustomDictionaryEntry[];
 
     /**
-     * @title Custom Folder Dictionaries
-     * @scope resource
-     * @markdownDescription
      * Define custom dictionaries to be included by default for the folder.
      * If `addWords` is `true` words will be added to this dictionary.
+     * @title Custom Folder Dictionaries
+     * @scope resource
      * @deprecated true
      * @deprecationMessage - Use `#cSpell.customDictionaries#` instead.
      */
     customFolderDictionaries?: CustomDictionaryEntry[];
 
     /**
-     * @title Custom Dictionaries
-     * @scope resource
-     * @markdownDescription
      * Define custom dictionaries to be included by default.
      * If `addWords` is `true` words will be added to this dictionary.
      *
@@ -266,13 +251,12 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *   "internal-terms": false // Disable the `internal-terms` dictionary
      * }
      * ```
+     * @title Custom Dictionaries
+     * @scope resource
      */
     customDictionaries?: CustomDictionaries;
 
     /**
-     * @title Spell Check Only Workspace Files
-     * @scope window
-     * @markdownDescription
      * Only spell check files that are in the currently open workspace.
      * This same effect can be achieved using the `#cSpell.files#` setting.
      *
@@ -280,14 +264,15 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * ```js
      * "cSpell.files": ["/**"]
      * ```
+     * @title Spell Check Only Workspace Files
+     * @scope window
      * @default false
      */
     spellCheckOnlyWorkspaceFiles?: boolean;
 
     /**
-     * @scope resource
-     * @markdownDescription
      * The type of menu used to display spelling suggestions.
+     * @scope resource
      * @default "quickPick"
      * @enumDescriptions [
      *  "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
@@ -310,16 +295,13 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     'experimental.enableSettingsViewerV2'?: boolean;
 
     /**
-     * @scope resource
-     * @markdownDescription
      * Hide the options to add words to dictionaries or settings.
+     * @scope resource
      * @default false
      */
     hideAddToDictionaryCodeActions?: boolean;
 
     /**
-     * @scope resource
-     * @markdownDescription
      * Specify where words can be added.
      *
      * **Note:** Dictionary names should be prefixed with `#`
@@ -335,6 +317,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * NOTE: This is NOT yest supported.
      *
+     * @scope resource
      * @hidden
      */
     // addWordsTo?: AddToTargets;

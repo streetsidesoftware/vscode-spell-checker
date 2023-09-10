@@ -1,15 +1,15 @@
-// eslint-disable-next-line node/no-unpublished-require
-const package = require('../../package.json');
+import { promises as fs } from 'node:fs';
 
-const configSections = package.contributes.configuration;
-
+const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
+const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
 
-configSections.sort((a, b) => a.order - b.order || compare(a.title, b.title));
+async function run() {
+    const configSections = await loadSchema();
 
-const descriptionWidth = 90;
+    configSections.sort((a, b) => a.order - b.order || compare(a.title, b.title));
 
-const doc = `
+    const doc = `
 <!--- AUTO-GENERATED ALL CHANGES WILL BE LOST --->
 
 # Configuration Settings
@@ -20,22 +20,23 @@ ${formatSections(configSections)}
 
 `.replace(/\u200B/g, ''); // remove zero width spaces
 
-console.log(doc);
+    console.log(doc);
 
-function sectionTOC(sections) {
-    /**
-     *
-     * @param {[string, any]} param0
-     * @returns
-     */
-    function tocEntry(value) {
-        const title = value.title;
-        return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
-    }
+    function sectionTOC(sections) {
+        /**
+         *
+         * @param {[string, any]} param0
+         * @returns
+         */
+        function tocEntry(value) {
+            const title = value.title;
+            return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
+        }
 
-    return `
+        return `
 ${sections.map(tocEntry).join('\n')}
 `;
+    }
 }
 
 function formatSections(sections) {
@@ -204,3 +205,14 @@ function formatType(def) {
 function shorten(text, len) {
     return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }
+
+async function loadSchema() {
+    const schema = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
+
+    if (schema.items) return schema.items;
+    return {
+        properties: schema.properties,
+    };
+}
+
+run();

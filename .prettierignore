@@ -16,3 +16,4 @@ packages/*/out/**
 .yarn
 packages/client/settingsViewer/
 samples/php/**/vendor
+**/scripts/ts-json-schema-generator.cjs

@@ -438,7 +438,7 @@
         "properties": {
           "cSpell.enabled": {
             "default": true,
-            "description": "Enable / Disable the spell checker.",
+            "markdownDescription": "Enable / Disable the spell checker.",
             "scope": "resource",
             "type": "boolean"
           }
@@ -470,14 +470,13 @@
             "type": "boolean"
           },
           "cSpell.logFile": {
-            "description": "Have the logs written to a file instead of to VS Code.",
+            "markdownDescription": "Have the logs written to a file instead of to VS Code.",
             "scope": "window",
             "title": "Write Logs to a File",
             "type": "string"
           },
           "cSpell.logLevel": {
             "default": "Error",
-            "description": "Set the Debug Level for logging messages.",
             "enum": [
               "None",
               "Error",
@@ -492,6 +491,7 @@
               "Log errors, warnings, and info",
               "Log everything (noisy)"
             ],
+            "markdownDescription": "Set the Debug Level for logging messages.",
             "scope": "window",
             "title": "Set Logging Level",
             "type": "string"
@@ -505,9 +505,8 @@
         "order": 5,
         "properties": {
           "cSpell.ignoreRegExpList": {
-            "description": "",
             "items": {
-              "description": "A PatternRef is a Pattern or PatternId.",
+              "markdownDescription": "A PatternRef is a Pattern or PatternId.",
               "type": "string"
             },
             "markdownDescription": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,\n  it is necessary to escape `\\`.\n  Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | JSON                  | Description                                  |\n| :------------------ | :-------------------- | :------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
@@ -515,9 +514,8 @@
             "type": "array"
           },
           "cSpell.includeRegExpList": {
-            "description": "",
             "items": {
-              "description": "A PatternRef is a Pattern or PatternId.",
+              "markdownDescription": "A PatternRef is a Pattern or PatternId.",
               "type": "string"
             },
             "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
@@ -525,53 +523,51 @@
             "type": "array"
           },
           "cSpell.overrides": {
-            "description": "",
             "items": {
               "additionalProperties": false,
               "properties": {
                 "allowCompoundWords": {
                   "default": false,
-                  "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                  "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                   "type": "boolean"
                 },
                 "caseSensitive": {
                   "default": false,
-                  "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                  "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                   "type": "boolean"
                 },
                 "description": {
-                  "description": "Optional description of configuration.",
+                  "markdownDescription": "Optional description of configuration.",
                   "type": "string"
                 },
                 "dictionaries": {
-                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "items": {
-                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
                   },
+                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "type": "array"
                 },
                 "dictionaryDefinitions": {
-                  "description": "Define additional available dictionaries.",
                   "items": {
                     "anyOf": [
                       {
                         "additionalProperties": false,
                         "properties": {
                           "description": {
-                            "description": "Optional description.",
+                            "markdownDescription": "Optional description.",
                             "type": "string"
                           },
                           "name": {
-                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                            "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                             "type": "string"
                           },
                           "noSuggest": {
-                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                             "type": "boolean"
                           },
                           "path": {
-                            "description": "Path to the file.",
+                            "markdownDescription": "Path to the file.",
                             "type": "string"
                           }
                         },
@@ -585,50 +581,50 @@
                         "additionalProperties": false,
                         "properties": {
                           "addWords": {
-                            "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                            "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                             "type": "boolean"
                           },
                           "description": {
-                            "description": "Optional description.",
+                            "markdownDescription": "Optional description.",
                             "type": "string"
                           },
                           "name": {
-                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                            "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                             "type": "string"
                           },
                           "noSuggest": {
-                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                             "type": "boolean"
                           },
                           "path": {
-                            "description": "Path to custom dictionary text file.",
+                            "markdownDescription": "Path to custom dictionary text file.",
                             "type": "string"
                           },
                           "scope": {
                             "anyOf": [
                               {
-                                "description": "Specifies the scope of a dictionary.",
                                 "enum": [
                                   "user",
                                   "workspace",
                                   "folder"
                                 ],
+                                "markdownDescription": "Specifies the scope of a dictionary.",
                                 "type": "string"
                               },
                               {
                                 "items": {
-                                  "description": "Specifies the scope of a dictionary.",
                                   "enum": [
                                     "user",
                                     "workspace",
                                     "folder"
                                   ],
+                                  "markdownDescription": "Specifies the scope of a dictionary.",
                                   "type": "string"
                                 },
                                 "type": "array"
                               }
                             ],
-                            "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
+                            "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                           }
                         },
                         "required": [
@@ -640,16 +636,17 @@
                       }
                     ]
                   },
+                  "markdownDescription": "Define additional available dictionaries.",
                   "scope": "resource",
                   "type": "array"
                 },
                 "enableFiletypes": {
                   "items": {
-                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                     "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                     "type": "string"
                   },
-                  "markdownDescription": "Enable / Disable checking file types (languageIds).\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+                  "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\n\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
                   "scope": "resource",
                   "title": "File Types to Check",
                   "type": "array",
@@ -657,86 +654,86 @@
                 },
                 "enabled": {
                   "default": true,
-                  "description": "Is the spell checker enabled.",
+                  "markdownDescription": "Is the spell checker enabled.",
                   "type": "boolean"
                 },
                 "enabledLanguageIds": {
-                  "description": "languageIds for the files to spell check.",
                   "items": {
-                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                     "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                     "type": "string"
                   },
+                  "markdownDescription": "languageIds for the files to spell check.",
                   "type": "array"
                 },
                 "filename": {
                   "anyOf": [
                     {
-                      "description": "These are glob expressions.",
+                      "markdownDescription": "These are glob expressions.",
                       "type": "string"
                     },
                     {
                       "items": {
-                        "description": "These are glob expressions.",
+                        "markdownDescription": "These are glob expressions.",
                         "type": "string"
                       },
                       "type": "array"
                     }
                   ],
-                  "description": "Glob pattern or patterns to match against."
+                  "markdownDescription": "Glob pattern or patterns to match against."
                 },
                 "flagWords": {
-                  "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
                   "type": "array"
                 },
                 "id": {
-                  "description": "Optional identifier.",
+                  "markdownDescription": "Optional identifier.",
                   "type": "string"
                 },
                 "ignoreRegExpList": {
-                  "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "items": {
-                    "description": "A PatternRef is a Pattern or PatternId.",
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
                   },
+                  "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
                 },
                 "ignoreWords": {
-                  "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to be ignored. An ignored word will not show up as an error, even if it is\nalso in the `flagWords`.",
                   "type": "array"
                 },
                 "includeRegExpList": {
-                  "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "items": {
-                    "description": "A PatternRef is a Pattern or PatternId.",
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
                   },
+                  "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
                 },
                 "language": {
-                  "description": "Sets the locale.",
+                  "markdownDescription": "Sets the locale.",
                   "type": "string"
                 },
                 "languageId": {
                   "anyOf": [
                     {
-                      "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                      "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                       "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                       "type": "string"
                     },
                     {
-                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                       "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                       "type": "string"
                     },
                     {
-                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                       "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
                       "type": "string"
                     },
@@ -747,56 +744,54 @@
                       "type": "array"
                     }
                   ],
-                  "description": "Sets the programming language id to match file type."
+                  "markdownDescription": "Sets the programming language id to match file type."
                 },
                 "languageSettings": {
-                  "description": "Additional settings for individual programming languages and locales.",
                   "items": {
                     "additionalProperties": false,
                     "properties": {
                       "allowCompoundWords": {
                         "default": false,
-                        "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                        "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                         "type": "boolean"
                       },
                       "caseSensitive": {
                         "default": false,
-                        "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                        "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                         "type": "boolean"
                       },
                       "description": {
-                        "description": "Optional description of configuration.",
+                        "markdownDescription": "Optional description of configuration.",
                         "type": "string"
                       },
                       "dictionaries": {
-                        "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                         "items": {
-                          "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                           "type": "string"
                         },
+                        "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                         "type": "array"
                       },
                       "dictionaryDefinitions": {
-                        "description": "Define additional available dictionaries.",
                         "items": {
                           "anyOf": [
                             {
                               "additionalProperties": false,
                               "properties": {
                                 "description": {
-                                  "description": "Optional description.",
+                                  "markdownDescription": "Optional description.",
                                   "type": "string"
                                 },
                                 "name": {
-                                  "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                                  "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                   "type": "string"
                                 },
                                 "noSuggest": {
-                                  "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                                  "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                                   "type": "boolean"
                                 },
                                 "path": {
-                                  "description": "Path to the file.",
+                                  "markdownDescription": "Path to the file.",
                                   "type": "string"
                                 }
                               },
@@ -810,50 +805,50 @@
                               "additionalProperties": false,
                               "properties": {
                                 "addWords": {
-                                  "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                                  "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                                   "type": "boolean"
                                 },
                                 "description": {
-                                  "description": "Optional description.",
+                                  "markdownDescription": "Optional description.",
                                   "type": "string"
                                 },
                                 "name": {
-                                  "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                                  "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                                   "type": "string"
                                 },
                                 "noSuggest": {
-                                  "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                                  "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                                   "type": "boolean"
                                 },
                                 "path": {
-                                  "description": "Path to custom dictionary text file.",
+                                  "markdownDescription": "Path to custom dictionary text file.",
                                   "type": "string"
                                 },
                                 "scope": {
                                   "anyOf": [
                                     {
-                                      "description": "Specifies the scope of a dictionary.",
                                       "enum": [
                                         "user",
                                         "workspace",
                                         "folder"
                                       ],
+                                      "markdownDescription": "Specifies the scope of a dictionary.",
                                       "type": "string"
                                     },
                                     {
                                       "items": {
-                                        "description": "Specifies the scope of a dictionary.",
                                         "enum": [
                                           "user",
                                           "workspace",
                                           "folder"
                                         ],
+                                        "markdownDescription": "Specifies the scope of a dictionary.",
                                         "type": "string"
                                       },
                                       "type": "array"
                                     }
                                   ],
-                                  "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
+                                  "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                                 }
                               },
                               "required": [
@@ -865,62 +860,63 @@
                             }
                           ]
                         },
+                        "markdownDescription": "Define additional available dictionaries.",
                         "scope": "resource",
                         "type": "array"
                       },
                       "enabled": {
                         "default": true,
-                        "description": "Is the spell checker enabled.",
+                        "markdownDescription": "Is the spell checker enabled.",
                         "type": "boolean"
                       },
                       "flagWords": {
-                        "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                         "items": {
                           "type": "string"
                         },
+                        "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
                         "type": "array"
                       },
                       "id": {
-                        "description": "Optional identifier.",
+                        "markdownDescription": "Optional identifier.",
                         "type": "string"
                       },
                       "ignoreRegExpList": {
-                        "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "items": {
-                          "description": "A PatternRef is a Pattern or PatternId.",
+                          "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                           "type": "string"
                         },
+                        "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "type": "array"
                       },
                       "ignoreWords": {
-                        "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                         "items": {
                           "type": "string"
                         },
+                        "markdownDescription": "List of words to be ignored. An ignored word will not show up as an error, even if it is\nalso in the `flagWords`.",
                         "type": "array"
                       },
                       "includeRegExpList": {
-                        "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "items": {
-                          "description": "A PatternRef is a Pattern or PatternId.",
+                          "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                           "type": "string"
                         },
+                        "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "type": "array"
                       },
                       "languageId": {
                         "anyOf": [
                           {
-                            "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                            "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                             "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                             "type": "string"
                           },
                           {
-                            "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                             "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                             "type": "string"
                           },
                           {
-                            "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                             "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
                             "type": "string"
                           },
@@ -931,47 +927,46 @@
                             "type": "array"
                           }
                         ],
-                        "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
+                        "markdownDescription": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
                       },
                       "locale": {
                         "anyOf": [
                           {
-                            "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                            "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
                             "type": "string"
                           },
                           {
                             "items": {
-                              "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                              "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
                               "type": "string"
                             },
                             "type": "array"
                           }
                         ],
-                        "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
+                        "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                       },
                       "name": {
-                        "description": "Optional name of configuration.",
+                        "markdownDescription": "Optional name of configuration.",
                         "type": "string"
                       },
                       "noSuggestDictionaries": {
-                        "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                         "items": {
-                          "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                           "type": "string"
                         },
+                        "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                         "type": "array"
                       },
                       "patterns": {
-                        "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                         "items": {
                           "additionalProperties": false,
                           "properties": {
                             "description": {
-                              "description": "Description of the pattern.",
+                              "markdownDescription": "Description of the pattern.",
                               "type": "string"
                             },
                             "name": {
-                              "description": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList. It is possible to redefine one of the predefined patterns to override its value.",
+                              "markdownDescription": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.\nIt is possible to redefine one of the predefined patterns to override its value.",
                               "type": "string"
                             },
                             "pattern": {
@@ -986,7 +981,7 @@
                                   "type": "array"
                                 }
                               ],
-                              "description": "RegExp pattern or array of RegExp patterns."
+                              "markdownDescription": "RegExp pattern or array of RegExp patterns."
                             }
                           },
                           "required": [
@@ -995,20 +990,21 @@
                           ],
                           "type": "object"
                         },
+                        "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
                         "type": "array"
                       },
                       "suggestWords": {
-                        "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
                         "items": {
                           "type": "string"
                         },
+                        "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
                         "type": "array"
                       },
                       "words": {
-                        "description": "List of words to be considered correct.",
                         "items": {
                           "type": "string"
                         },
+                        "markdownDescription": "List of words to be considered correct.",
                         "type": "array"
                       }
                     },
@@ -1017,57 +1013,57 @@
                     ],
                     "type": "object"
                   },
+                  "markdownDescription": "Additional settings for individual programming languages and locales.",
                   "scope": "resource",
                   "type": "array"
                 },
                 "loadDefaultConfiguration": {
                   "default": true,
-                  "description": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false` will prevent ALL default configuration from being loaded.",
+                  "markdownDescription": "By default, the bundled dictionary configurations are loaded. Explicitly setting this to `false`\nwill prevent ALL default configuration from being loaded.",
                   "type": "boolean"
                 },
                 "maxDuplicateProblems": {
                   "default": 5,
-                  "description": "The maximum number of times the same word can be flagged as an error in a file.",
+                  "markdownDescription": "The maximum number of times the same word can be flagged as an error in a file.",
                   "type": "number"
                 },
                 "maxNumberOfProblems": {
                   "default": 10000,
-                  "description": "The maximum number of problems to report in a file.",
+                  "markdownDescription": "The maximum number of problems to report in a file.",
                   "type": "number"
                 },
                 "minWordLength": {
                   "default": 4,
-                  "description": "The minimum length of a word before checking it against a dictionary.",
+                  "markdownDescription": "The minimum length of a word before checking it against a dictionary.",
                   "type": "number"
                 },
                 "name": {
-                  "description": "Optional name of configuration.",
+                  "markdownDescription": "Optional name of configuration.",
                   "type": "string"
                 },
                 "noSuggestDictionaries": {
-                  "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                   "items": {
-                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
                   },
+                  "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                   "type": "array"
                 },
                 "numSuggestions": {
                   "default": 10,
-                  "description": "Number of suggestions to make.",
+                  "markdownDescription": "Number of suggestions to make.",
                   "type": "number"
                 },
                 "patterns": {
-                  "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                   "items": {
                     "additionalProperties": false,
                     "properties": {
                       "description": {
-                        "description": "Description of the pattern.",
+                        "markdownDescription": "Description of the pattern.",
                         "type": "string"
                       },
                       "name": {
-                        "description": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList. It is possible to redefine one of the predefined patterns to override its value.",
+                        "markdownDescription": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.\nIt is possible to redefine one of the predefined patterns to override its value.",
                         "type": "string"
                       },
                       "pattern": {
@@ -1082,7 +1078,7 @@
                             "type": "array"
                           }
                         ],
-                        "description": "RegExp pattern or array of RegExp patterns."
+                        "markdownDescription": "RegExp pattern or array of RegExp patterns."
                       }
                     },
                     "required": [
@@ -1091,6 +1087,7 @@
                     ],
                     "type": "object"
                   },
+                  "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
                   "type": "array"
                 },
                 "pnpFiles": {
@@ -1098,39 +1095,39 @@
                     ".pnp.js",
                     ".pnp.cjs"
                   ],
-                  "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                   "type": "array"
                 },
                 "suggestWords": {
-                  "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
                   "type": "array"
                 },
                 "suggestionNumChanges": {
                   "default": 3,
-                  "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
+                  "markdownDescription": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
                   "type": "number"
                 },
                 "suggestionsTimeout": {
                   "default": 500,
-                  "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
+                  "markdownDescription": "The maximum amount of time in milliseconds to generate suggestions for a word.",
                   "type": "number"
                 },
                 "usePnP": {
                   "default": false,
-                  "description": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence of a PnP file and load it.",
+                  "markdownDescription": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading\npackages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence\nof a PnP file and load it.",
                   "type": "boolean"
                 },
                 "words": {
-                  "description": "List of words to be considered correct.",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to be considered correct.",
                   "type": "array"
                 }
               },
@@ -1144,16 +1141,15 @@
             "type": "array"
           },
           "cSpell.patterns": {
-            "description": "",
             "items": {
               "additionalProperties": false,
               "properties": {
                 "description": {
-                  "description": "Description of the pattern.",
+                  "markdownDescription": "Description of the pattern.",
                   "type": "string"
                 },
                 "name": {
-                  "description": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList. It is possible to redefine one of the predefined patterns to override its value.",
+                  "markdownDescription": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.\nIt is possible to redefine one of the predefined patterns to override its value.",
                   "type": "string"
                 },
                 "pattern": {
@@ -1168,7 +1164,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "RegExp pattern or array of RegExp patterns."
+                  "markdownDescription": "RegExp pattern or array of RegExp patterns."
                 }
               },
               "required": [
@@ -1182,10 +1178,10 @@
             "type": "array"
           },
           "cSpell.suggestWords": {
-            "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
             "items": {
               "type": "string"
             },
+            "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
             "type": "array"
           }
         },
@@ -1198,13 +1194,13 @@
         "properties": {
           "cSpell.experimental.enableRegexpView": {
             "default": false,
-            "description": "Show Regular Expression Explorer",
+            "markdownDescription": "Show Regular Expression Explorer",
             "scope": "application",
             "type": "boolean"
           },
           "cSpell.experimental.enableSettingsViewerV2": {
             "default": false,
-            "description": "Enable the Settings Viewer V2 Extension",
+            "markdownDescription": "Enable the Settings Viewer V2 Extension",
             "scope": "application",
             "type": "boolean"
           }
@@ -1256,9 +1252,8 @@
             "uniqueItems": true
           },
           "cSpell.files": {
-            "description": "",
             "items": {
-              "description": "These are glob expressions.",
+              "markdownDescription": "These are glob expressions.",
               "type": "string"
             },
             "markdownDescription": "Glob patterns of files to be checked.\nGlob patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.",
@@ -1266,7 +1261,6 @@
             "type": "array"
           },
           "cSpell.globRoot": {
-            "description": "",
             "markdownDescription": "The root to use for glob patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
             "scope": "resource",
             "type": "string"
@@ -1280,9 +1274,8 @@
               ".vscode",
               ".vscode-insiders"
             ],
-            "description": "Glob patterns of files to be ignored.\n\nGlob patterns are relative to the `globRoot` of the configuration file that defines them.",
             "items": {
-              "description": "Simple Glob string, the root will be globRoot.",
+              "markdownDescription": "Simple Glob string, the root will be globRoot.",
               "type": "string"
             },
             "markdownDescription": "Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.",
@@ -1291,9 +1284,8 @@
             "type": "array"
           },
           "cSpell.import": {
-            "description": "",
             "items": {
-              "description": "A File System Path. Relative paths are relative to the configuration file.",
+              "markdownDescription": "A File System Path. Relative paths are relative to the configuration file.",
               "type": "string"
             },
             "markdownDescription": "Allows this configuration to inherit configuration for one or more other files.\n\nSee [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.",
@@ -1301,7 +1293,7 @@
             "type": "array"
           },
           "cSpell.noConfigSearch": {
-            "description": "Prevents searching for local configuration when checking individual documents.",
+            "markdownDescription": "Prevents searching for local configuration when checking individual documents.",
             "scope": "resource",
             "type": "boolean"
           },
@@ -1314,12 +1306,12 @@
           },
           "cSpell.useGitignore": {
             "default": true,
-            "description": "Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.",
+            "markdownDescription": "Tells the spell checker to load `.gitignore` files and skip files that match the globs in the `.gitignore` files found.",
             "scope": "resource",
             "type": "boolean"
           },
           "cSpell.usePnP": {
-            "description": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence of a PnP file and load it.",
+            "markdownDescription": "Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading\npackages stored in the repository.\n\nWhen true, the spell checker will search up the directory structure for the existence\nof a PnP file and load it.",
             "scope": "resource",
             "type": "boolean"
           },
@@ -1338,7 +1330,6 @@
         "order": 1,
         "properties": {
           "cSpell.caseSensitive": {
-            "description": "",
             "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n  Note: Some languages like Portuguese have case sensitivity turned on by default.\n  You must use `#cSpell.languageSettings#` to turn it off.\n- `true` - Case and accents are enforced by default.",
             "scope": "resource",
             "type": "boolean"
@@ -1347,8 +1338,7 @@
             "additionalProperties": {
               "anyOf": [
                 {
-                  "markdownDescription": "- `true` - turn on the named dictionary\n- `false` - turn off the named dictionary",
-                  "title": "Named dictionary to be enabled / disabled",
+                  "title": "Named dictionary to be enabled / disabled\n- `true` - turn on the named dictionary\n- `false` - turn off the named dictionary",
                   "type": "boolean"
                 },
                 {
@@ -1372,33 +1362,33 @@
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -1419,9 +1409,8 @@
             "type": "object"
           },
           "cSpell.dictionaries": {
-            "description": "",
             "items": {
-              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
               "type": "string"
             },
             "markdownDescription": "Optional list of dictionaries to use.\nEach entry should match the name of the dictionary.\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.",
@@ -1429,26 +1418,25 @@
             "type": "array"
           },
           "cSpell.dictionaryDefinitions": {
-            "description": "Define additional available dictionaries.",
             "items": {
               "anyOf": [
                 {
                   "additionalProperties": false,
                   "properties": {
                     "description": {
-                      "description": "Optional description.",
+                      "markdownDescription": "Optional description.",
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "Path to the file.",
+                      "markdownDescription": "Path to the file.",
                       "type": "string"
                     }
                   },
@@ -1462,50 +1450,50 @@
                   "additionalProperties": false,
                   "properties": {
                     "addWords": {
-                      "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                      "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                       "type": "boolean"
                     },
                     "description": {
-                      "description": "Optional description.",
+                      "markdownDescription": "Optional description.",
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                      "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "Path to custom dictionary text file.",
+                      "markdownDescription": "Path to custom dictionary text file.",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
                         }
                       ],
-                      "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
+                      "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                     }
                   },
                   "required": [
@@ -1517,79 +1505,78 @@
                 }
               ]
             },
+            "markdownDescription": "Define additional available dictionaries.",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.flagWords": {
-            "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
             "items": {
               "type": "string"
             },
+            "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.ignoreWords": {
-            "description": "A list of words to be ignored by the spell checker.",
             "items": {
               "type": "string"
             },
+            "markdownDescription": "A list of words to be ignored by the spell checker.",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.language": {
             "default": "en",
-            "description": "Current active spelling language.\nExample: \"en-GB\" for British English\nExample: \"en,nl\" to enable both English and Dutch",
+            "markdownDescription": "Current active spelling language.\n\nExample: \"en-GB\" for British English\n\nExample: \"en,nl\" to enable both English and Dutch",
             "scope": "resource",
             "type": "string"
           },
           "cSpell.languageSettings": {
-            "description": "Additional settings for individual programming languages and locales.",
             "items": {
               "additionalProperties": false,
               "properties": {
                 "allowCompoundWords": {
                   "default": false,
-                  "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                  "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
                   "type": "boolean"
                 },
                 "caseSensitive": {
                   "default": false,
-                  "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                  "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                   "type": "boolean"
                 },
                 "description": {
-                  "description": "Optional description of configuration.",
+                  "markdownDescription": "Optional description of configuration.",
                   "type": "string"
                 },
                 "dictionaries": {
-                  "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "items": {
-                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
                   },
+                  "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "type": "array"
                 },
                 "dictionaryDefinitions": {
-                  "description": "Define additional available dictionaries.",
                   "items": {
                     "anyOf": [
                       {
                         "additionalProperties": false,
                         "properties": {
                           "description": {
-                            "description": "Optional description.",
+                            "markdownDescription": "Optional description.",
                             "type": "string"
                           },
                           "name": {
-                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                            "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                             "type": "string"
                           },
                           "noSuggest": {
-                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                             "type": "boolean"
                           },
                           "path": {
-                            "description": "Path to the file.",
+                            "markdownDescription": "Path to the file.",
                             "type": "string"
                           }
                         },
@@ -1603,50 +1590,50 @@
                         "additionalProperties": false,
                         "properties": {
                           "addWords": {
-                            "description": "When `true`, let's the spell checker know that words can be added to this dictionary.",
+                            "markdownDescription": "When `true`, let's the spell checker know that words can be added to this dictionary.",
                             "type": "boolean"
                           },
                           "description": {
-                            "description": "Optional description.",
+                            "markdownDescription": "Optional description.",
                             "type": "string"
                           },
                           "name": {
-                            "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                            "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                             "type": "string"
                           },
                           "noSuggest": {
-                            "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                             "type": "boolean"
                           },
                           "path": {
-                            "description": "Path to custom dictionary text file.",
+                            "markdownDescription": "Path to custom dictionary text file.",
                             "type": "string"
                           },
                           "scope": {
                             "anyOf": [
                               {
-                                "description": "Specifies the scope of a dictionary.",
                                 "enum": [
                                   "user",
                                   "workspace",
                                   "folder"
                                 ],
+                                "markdownDescription": "Specifies the scope of a dictionary.",
                                 "type": "string"
                               },
                               {
                                 "items": {
-                                  "description": "Specifies the scope of a dictionary.",
                                   "enum": [
                                     "user",
                                     "workspace",
                                     "folder"
                                   ],
+                                  "markdownDescription": "Specifies the scope of a dictionary.",
                                   "type": "string"
                                 },
                                 "type": "array"
                               }
                             ],
-                            "description": "Defines the scope for when words will be added to the dictionary. Scope values: `user`, `workspace`, `folder`."
+                            "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                           }
                         },
                         "required": [
@@ -1658,62 +1645,63 @@
                       }
                     ]
                   },
+                  "markdownDescription": "Define additional available dictionaries.",
                   "scope": "resource",
                   "type": "array"
                 },
                 "enabled": {
                   "default": true,
-                  "description": "Is the spell checker enabled.",
+                  "markdownDescription": "Is the spell checker enabled.",
                   "type": "boolean"
                 },
                 "flagWords": {
-                  "description": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample: ```ts \"flagWords\": [   \"color: colour\",   \"incase: in case, encase\",   \"canot->cannot\",   \"cancelled->canceled\" ] ```",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to always be considered incorrect. Words found in `flagWords` override `words`.\n\nFormat of `flagWords`\n- single word entry - `word`\n- with suggestions - `word:suggestion` or `word->suggestion, suggestions`\n\nExample:\n```ts\n\"flagWords\": [\n  \"color: colour\",\n  \"incase: in case, encase\",\n  \"canot->cannot\",\n  \"cancelled->canceled\"\n]\n```",
                   "type": "array"
                 },
                 "id": {
-                  "description": "Optional identifier.",
+                  "markdownDescription": "Optional identifier.",
                   "type": "string"
                 },
                 "ignoreRegExpList": {
-                  "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "items": {
-                    "description": "A PatternRef is a Pattern or PatternId.",
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
                   },
+                  "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
                 },
                 "ignoreWords": {
-                  "description": "List of words to be ignored. An ignored word will not show up as an error, even if it is also in the `flagWords`.",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to be ignored. An ignored word will not show up as an error, even if it is\nalso in the `flagWords`.",
                   "type": "array"
                 },
                 "includeRegExpList": {
-                  "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "items": {
-                    "description": "A PatternRef is a Pattern or PatternId.",
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
                     "type": "string"
                   },
+                  "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
                 },
                 "languageId": {
                   "anyOf": [
                     {
-                      "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                      "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                       "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                       "type": "string"
                     },
                     {
-                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                       "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                       "type": "string"
                     },
                     {
-                      "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                      "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
                       "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
                       "type": "string"
                     },
@@ -1724,47 +1712,46 @@
                       "type": "array"
                     }
                   ],
-                  "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
+                  "markdownDescription": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
                 },
                 "locale": {
                   "anyOf": [
                     {
-                      "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                      "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
                       "type": "string"
                     },
                     {
                       "items": {
-                        "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                        "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
                         "type": "string"
                       },
                       "type": "array"
                     }
                   ],
-                  "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
+                  "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
                 },
                 "name": {
-                  "description": "Optional name of configuration.",
+                  "markdownDescription": "Optional name of configuration.",
                   "type": "string"
                 },
                 "noSuggestDictionaries": {
-                  "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                   "items": {
-                    "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
                     "type": "string"
                   },
+                  "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                   "type": "array"
                 },
                 "patterns": {
-                  "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*​/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                   "items": {
                     "additionalProperties": false,
                     "properties": {
                       "description": {
-                        "description": "Description of the pattern.",
+                        "markdownDescription": "Description of the pattern.",
                         "type": "string"
                       },
                       "name": {
-                        "description": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList. It is possible to redefine one of the predefined patterns to override its value.",
+                        "markdownDescription": "Pattern name, used as an identifier in ignoreRegExpList and includeRegExpList.\nIt is possible to redefine one of the predefined patterns to override its value.",
                         "type": "string"
                       },
                       "pattern": {
@@ -1779,7 +1766,7 @@
                             "type": "array"
                           }
                         ],
-                        "description": "RegExp pattern or array of RegExp patterns."
+                        "markdownDescription": "RegExp pattern or array of RegExp patterns."
                       }
                     },
                     "required": [
@@ -1788,20 +1775,21 @@
                     ],
                     "type": "object"
                   },
+                  "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
                   "type": "array"
                 },
                 "suggestWords": {
-                  "description": "A list of suggested replacements for words. Suggested words provide a way to make preferred suggestions on word replacements. To hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)     - `word: suggestion`     - `word->suggestion`\n- Multiple suggestions (not auto fixable)    - `word: first, second, third`    - `word->first, second, third`",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
                   "type": "array"
                 },
                 "words": {
-                  "description": "List of words to be considered correct.",
                   "items": {
                     "type": "string"
                   },
+                  "markdownDescription": "List of words to be considered correct.",
                   "type": "array"
                 }
               },
@@ -1810,31 +1798,32 @@
               ],
               "type": "object"
             },
+            "markdownDescription": "Additional settings for individual programming languages and locales.",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.noSuggestDictionaries": {
-            "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
             "items": {
-              "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
+              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
               "type": "string"
             },
+            "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.userWords": {
-            "description": "Words to add to global dictionary -- should only be in the user config file.",
             "items": {
               "type": "string"
             },
+            "markdownDescription": "Words to add to global dictionary -- should only be in the user config file.",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.words": {
-            "description": "List of words to be considered correct.",
             "items": {
               "type": "string"
             },
+            "markdownDescription": "List of words to be considered correct.",
             "scope": "resource",
             "type": "array"
           }
@@ -1848,7 +1837,6 @@
         "properties": {
           "cSpell.allowCompoundWords": {
             "default": false,
-            "description": "",
             "markdownDescription": "Enable / Disable allowing word compounds.\n- `true` means `arraylength` would be ok\n- `false` means it would not pass.\n\nNote: this can also cause many misspelled words to seem correct.",
             "scope": "resource",
             "type": "boolean"
@@ -1873,41 +1861,39 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -1937,39 +1923,38 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -1986,7 +1971,7 @@
                   "type": "object"
                 },
                 {
-                  "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                  "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                   "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                   "type": "string"
                 }
@@ -2017,41 +2002,39 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -2081,39 +2064,38 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -2130,7 +2112,7 @@
                   "type": "object"
                 },
                 {
-                  "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                  "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                   "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                   "type": "string"
                 }
@@ -2161,41 +2143,39 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\n\nFile Format: Each line in the file is considered a dictionary entry.\n\n\nCase is preserved while leading and trailing space is removed.\n\n\nThe path should be absolute, or relative to the workspace.\n\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -2225,39 +2205,38 @@
                       "type": "string"
                     },
                     "name": {
-                      "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                       "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
                     "noSuggest": {
-                      "description": "Indicate that suggestions should not come from this dictionary. Words in this dictionary are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in this dictionary, it will be removed from the set of possible suggestions.",
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
                       "type": "boolean"
                     },
                     "path": {
-                      "description": "A File System Path. Relative paths are relative to the configuration file.",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
                       "type": "string"
                     },
                     "scope": {
                       "anyOf": [
                         {
-                          "description": "Specifies the scope of a dictionary.",
                           "enum": [
                             "user",
                             "workspace",
                             "folder"
                           ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "Specifies the scope of a dictionary.",
                             "enum": [
                               "user",
                               "workspace",
                               "folder"
                             ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
                             "type": "string"
                           },
                           "type": "array"
@@ -2274,7 +2253,7 @@
                   "type": "object"
                 },
                 {
-                  "description": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
+                  "markdownDescription": "This is the name of a dictionary.\n\nName Format:\n- Must contain at least 1 number or letter.\n- Spaces are allowed.\n- Leading and trailing space will be removed.\n- Names ARE case-sensitive.\n- Must not contain `*`, `!`, `;`, `,`, `{`, `}`, `[`, `]`, `~`.",
                   "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                   "type": "string"
                 }
@@ -2327,8 +2306,9 @@
               "yaml",
               "yml"
             ],
-            "description": "",
             "items": {
+              "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+              "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
               "type": "string"
             },
             "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.",
@@ -2365,19 +2345,19 @@
           },
           "cSpell.checkLimit": {
             "default": 500,
-            "description": "The limit in K-Characters to be checked in a file.",
+            "markdownDescription": "The limit in K-Characters to be checked in a file.",
             "scope": "resource",
             "type": "number"
           },
           "cSpell.spellCheckDelayMs": {
             "default": 50,
-            "description": "Delay in ms after a document has changed before checking it for spelling errors.",
+            "markdownDescription": "Delay in ms after a document has changed before checking it for spelling errors.",
             "scope": "application",
             "type": "number"
           },
           "cSpell.suggestionsTimeout": {
             "default": 400,
-            "description": "The maximum amount of time in milliseconds to generate suggestions for a word.",
+            "markdownDescription": "The maximum amount of time in milliseconds to generate suggestions for a word.",
             "scope": "resource",
             "type": "number"
           }
@@ -2398,7 +2378,6 @@
           },
           "cSpell.diagnosticLevel": {
             "default": "Information",
-            "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
             "enum": [
               "Error",
               "Warning",
@@ -2411,6 +2390,7 @@
               "Report Spelling Issues as Information",
               "Report Spelling Issues as Hints, will not show up in Problems"
             ],
+            "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
             "scope": "resource",
             "title": "Set Diagnostic Reporting Level",
             "type": "string"
@@ -2423,25 +2403,25 @@
           },
           "cSpell.maxDuplicateProblems": {
             "default": 5,
-            "description": "The maximum number of times the same word can be flagged as an error in a file.",
+            "markdownDescription": "The maximum number of times the same word can be flagged as an error in a file.",
             "scope": "resource",
             "type": "number"
           },
           "cSpell.maxNumberOfProblems": {
             "default": 100,
-            "description": "Controls the maximum number of spelling errors per document.",
+            "markdownDescription": "Controls the maximum number of spelling errors per document.",
             "scope": "resource",
             "type": "number"
           },
           "cSpell.minWordLength": {
             "default": 4,
-            "description": "The minimum length of a word before checking it against a dictionary.",
+            "markdownDescription": "The minimum length of a word before checking it against a dictionary.",
             "scope": "resource",
             "type": "number"
           },
           "cSpell.numSuggestions": {
             "default": 8,
-            "description": "Controls the number of suggestions shown.",
+            "markdownDescription": "Controls the number of suggestions shown.",
             "scope": "resource",
             "type": "number"
           },
@@ -2453,19 +2433,18 @@
           },
           "cSpell.showCommandsInEditorContextMenu": {
             "default": true,
-            "description": "Show Spell Checker actions in Editor Context Menu",
+            "markdownDescription": "Show Spell Checker actions in Editor Context Menu",
             "scope": "application",
             "type": "boolean"
           },
           "cSpell.showStatus": {
             "default": true,
-            "description": "Display the spell checker status on the status bar.",
+            "markdownDescription": "Display the spell checker status on the status bar.",
             "scope": "application",
             "type": "boolean"
           },
           "cSpell.showStatusAlignment": {
             "default": "Right",
-            "description": "The side of the status bar to display the spell checker status.",
             "enum": [
               "Left",
               "Right"
@@ -2474,12 +2453,13 @@
               "Left Side of Statusbar",
               "Right Side of Statusbar"
             ],
+            "markdownDescription": "The side of the status bar to display the spell checker status.",
             "scope": "application",
             "type": "string"
           },
           "cSpell.showSuggestionsLinkInEditorContextMenu": {
             "default": true,
-            "description": "Show Spelling Suggestions link in the top level context menu.",
+            "markdownDescription": "Show Spelling Suggestions link in the top level context menu.",
             "scope": "application",
             "type": "boolean"
           },
@@ -2499,12 +2479,12 @@
           },
           "cSpell.suggestionNumChanges": {
             "default": 3,
-            "description": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
+            "markdownDescription": "The maximum number of changes allowed on a word to be considered a suggestions.\n\nFor example, appending an `s` onto `example` -> `examples` is considered 1 change.\n\nRange: between 1 and 5.",
             "scope": "resource",
             "type": "number"
           },
           "cSpell.validateDirectives": {
-            "description": "Verify that the in-document directives are correct.",
+            "markdownDescription": "Verify that the in-document directives are correct.",
             "scope": "window",
             "type": "boolean"
           }
@@ -2593,11 +2573,11 @@
     "vitest": "^0.34.4"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^7.3.2",
-    "@cspell/cspell-types": "^7.3.2",
+    "@cspell/cspell-bundled-dicts": "^7.3.5",
+    "@cspell/cspell-types": "^7.3.5",
     "@tsconfig/node18": "^18.2.1",
     "@types/react": "^17.0.65",
-    "cspell": "^7.3.2",
+    "cspell": "^7.3.5",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
