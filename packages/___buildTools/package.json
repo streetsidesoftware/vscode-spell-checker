@@ -4,7 +4,6 @@
   "description": "Build tools",
   "private": true,
   "type": "module",
-  "main": "dist/index.js",
   "bin": {
     "build-tools": "./bin.js"
   },
