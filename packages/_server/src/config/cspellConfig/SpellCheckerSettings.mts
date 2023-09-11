@@ -41,6 +41,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - `untitled` - Used for new documents that have not yet been saved
      * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
      * - `vscode-userdata` - Needed to spell check `.code-snippets`
+     * - `vscode-scm` - Needed to spell check Source Control commit messages.
      * @title Define Allowed Schemas
      * @scope window
      * @default ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"]
