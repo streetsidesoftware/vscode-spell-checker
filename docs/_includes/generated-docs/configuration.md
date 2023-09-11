@@ -678,6 +678,7 @@ Description
     - `untitled` - Used for new documents that have not yet been saved
     - `vscode-notebook-cell` - Used for validating segments of a Notebook.
     - `vscode-userdata` - Needed to spell check `.code-snippets`
+    - `vscode-scm` - Needed to spell check Source Control commit messages.
 
 Default
 : [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_ ]
