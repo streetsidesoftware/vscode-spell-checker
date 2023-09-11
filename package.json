@@ -2564,7 +2564,7 @@
     "jest-when": "^3.6.0",
     "ovsx": "^0.8.3",
     "prettier": "^3.0.3",
-    "rollup": "^3.29.0",
+    "rollup": "^3.29.1",
     "rollup-plugin-dts": "^6.0.1",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.1",
