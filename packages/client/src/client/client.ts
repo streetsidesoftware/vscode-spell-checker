@@ -70,7 +70,7 @@ export class CSpellClient implements Disposable {
         setOfSupportedSchemes.clear();
         this.allowedSchemas.forEach((schema) => setOfSupportedSchemes.add(schema));
 
-        this.languageIds = new Set(languageIds.concat(enabledLanguageIds || []).concat(LanguageIds.languageIds));
+        this.languageIds = new Set([...languageIds, ...(enabledLanguageIds || []), ...LanguageIds.languageIds]);
         const uniqueLangIds = [...this.languageIds];
         const documentSelector = [...this.allowedSchemas]
             .map((scheme) => uniqueLangIds.map((language) => ({ language, scheme })))
