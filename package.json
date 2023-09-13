@@ -2602,7 +2602,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.5",
     "@cspell/cspell-types": "^7.3.5",
-    "@tsconfig/node18": "^18.2.1",
+    "@tsconfig/node18": "^18.2.2",
     "@types/react": "^17.0.65",
     "cspell": "^7.3.5",
     "regexp-worker": "^2.0.2"
