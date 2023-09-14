@@ -45,7 +45,7 @@
     "@internal/settings-webview": "*",
     "@types/jest-when": "^3.5.2",
     "@types/jest": "^29.5.4",
-    "@types/kefir": "^3.8.7",
+    "@types/kefir": "^3.8.8",
     "@types/source-map-support": "^0.5.7",
     "cross-env": "^7.0.3",
     "cspell-lib": "^7.3.5",

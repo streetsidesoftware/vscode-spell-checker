@@ -1564,10 +1564,10 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/kefir@^3.8.7":
-  version "3.8.7"
-  resolved "https://registry.npmjs.org/@types/kefir/-/kefir-3.8.7.tgz#2ab378e6b9c8a3f0e69fc7f5bc4be5cb2c845b03"
-  integrity sha512-2flvlUgAgLmMUje9dGmvQ2jNzNCc3aKm912z1qrjxrRWQT6iglAq28f7m9xcScHjV1QPH6LosRvR4bTUAgAO2w==
+"@types/kefir@^3.8.8":
+  version "3.8.8"
+  resolved "https://registry.npmjs.org/@types/kefir/-/kefir-3.8.8.tgz#b5ebdec7f3b59eb2d5a528e3cae2abdaf5c18601"
+  integrity sha512-mgPa9GJ9UJ/9Pj5ElqjFtWA3TnonB1bjZmnVOoiKZJQVmygGTFwKsvxaNp2zCmLrQhGmQyjtabmpMJjb8EEk1A==
   dependencies:
     "@types/node" "*"
 
