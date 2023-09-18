@@ -1,6 +1,6 @@
-import { describe, expect, test, jest } from '@jest/globals';
+import { describe, expect, jest, test } from '@jest/globals';
 
-import { createDisposable, injectDisposable, createDisposableFromList } from './disposable.js';
+import { createDisposable, createDisposableFromList, injectDisposable } from './disposable.js';
 
 describe('disposable', () => {
     test('createDisposable', () => {
@@ -8,7 +8,7 @@ describe('disposable', () => {
         const myDisposable = createDisposable(dispose);
 
         function use() {
-            using obj = myDisposable;
+            using _obj = myDisposable;
         }
         use();
         expect(dispose).toHaveBeenCalledTimes(1);
@@ -22,7 +22,7 @@ describe('disposable', () => {
         const myDisposable = createDisposable(dispose, myObj);
 
         function use() {
-            using obj = myDisposable;
+            using _obj = myDisposable;
         }
         use();
         expect(dispose).toHaveBeenCalledTimes(1);
@@ -37,7 +37,7 @@ describe('disposable', () => {
         const myDisposable = injectDisposable(myObj, dispose);
 
         function use() {
-            using obj = myDisposable;
+            using _obj = myDisposable;
         }
         use();
         expect(dispose).toHaveBeenCalledTimes(1);
@@ -49,7 +49,7 @@ describe('disposable', () => {
         const myDisposable = createDisposable(dispose);
 
         function use() {
-            using obj = myDisposable;
+            using _obj = myDisposable;
         }
         use();
         use();
@@ -64,7 +64,7 @@ describe('disposable', () => {
             createDisposable(() => (count += 100)),
         ];
         function use() {
-            using obj = createDisposableFromList(disposables);
+            using _obj = createDisposableFromList(disposables);
         }
         use();
         expect(count).toBe(111);
@@ -83,7 +83,7 @@ describe('disposable', () => {
             createDisposable(() => (count += 10000)),
         ];
         function use() {
-            using obj = createDisposableFromList(disposables);
+            using _obj = createDisposableFromList(disposables);
         }
         expect(use).toThrow(err);
         expect(count).toBe(11101);
