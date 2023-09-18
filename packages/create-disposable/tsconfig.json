@@ -1,0 +1,18 @@
+{
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {
+        "outDir": "./dist/esm",
+        "target": "es2022",
+        "lib": ["es2022", "esnext.disposable", "dom"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": "./src",
+        "strict": true
+    },
+    "include": ["./src"]
+}
