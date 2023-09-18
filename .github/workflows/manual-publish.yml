@@ -33,11 +33,11 @@ jobs:
           ref: ${{ inputs.ref }}
       - name: Install
         run: |
-          yarn install
-          yarn build
+          npm install
+          npm run build
 
       - name: Build Extension .vsix
-        run: yarn run package-extension
+        run: npm run package-extension
       - name: Publish VSCE
         run: >
           find ./build -name "*.vsix" | xargs npx vsce publish --skip-duplicate -p ${{ secrets.VSCE_TOKEN }} --packagePath

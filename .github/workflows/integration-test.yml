@@ -25,11 +25,11 @@ jobs:
         uses: actions/setup-node@v3.8.1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
-      - run: yarn --frozen-lockfile
-      - run: yarn build
-      - run: xvfb-run -a yarn run test-client-integration
+          cache: npm
+      - run: npm i
+      - run: npm run build
+      - run: xvfb-run -a npm run test-client-integration
         if: runner.os == 'Linux'
-      - run: yarn run test-client-integration
+      - run: npm run test-client-integration
         if: runner.os != 'Linux'
 # cspell:ignore xvfb

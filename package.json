@@ -2569,7 +2569,7 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "npm --workspace=@internal/integration-tests test-integration",
     "test": "npm --workspaces run test",
-    "update-packages": "npm upgrade && npm i",
+    "update-packages": "npm upgrade && npm i && npx npm-check-updates --root -ws --target minor",
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {

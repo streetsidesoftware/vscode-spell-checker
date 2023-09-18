@@ -43,11 +43,11 @@ jobs:
           ref: ${{ env.REF }}
       - uses: actions/setup-node@v3.8.1
         with:
-          cache: yarn
+          cache: npm
       - name: Install
-        run: yarn
+        run: npm i
       - name: Build Extension .vsix
-        run: yarn run package-extension
+        run: npm run package-extension
       - run: zip code-spell-checker build/*
 
       - name: Upload Assets
