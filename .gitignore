@@ -57,3 +57,7 @@ tools/*/temp/
 
 # mac temp file
 .DS_Store
+
+# Do not add accidental yarn.lock or pnpm-lock.yaml
+yarn.lock
+pnpm-lock.yaml
