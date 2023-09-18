@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-// import DevTools from 'mobx-react-devtools';
 import { AppState, Tab as AppTab } from '../AppState';
 import { PanelConfig } from './panelConfig';
 import { isConfigTarget } from '../../api/settings/settingsHelper';
