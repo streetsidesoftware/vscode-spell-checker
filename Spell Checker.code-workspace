@@ -34,7 +34,7 @@
         },
         {
             "name": "Tools",
-            "path": "packages/___buildTools"
+            "path": "tools/build-tools"
         },
         {
             "name": "Docs",

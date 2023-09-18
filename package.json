@@ -2524,7 +2524,7 @@
   "workspaces": {
     "packages": [
       "docs",
-      "packages/___buildTools",
+      "tools/build-tools",
       "packages/__cspell-helper",
       "packages/__locale-resolver",
       "packages/__utils",
@@ -2533,8 +2533,7 @@
       "packages/_serverPatternMatcher",
       "packages/_settingsViewer",
       "packages/_settingsViewerNext",
-      "packages/client",
-      "tools/package-json-dependency-updater"
+      "packages/client"
     ],
     "nohoist": [
       "@internal/docs",
