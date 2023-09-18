@@ -41,6 +41,7 @@ node_modules
 .vscode-test
 
 /temp
+/build
 modules/dist/
 modules/*/dist/
 packages/*/dist/

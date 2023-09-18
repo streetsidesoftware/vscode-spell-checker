@@ -36,11 +36,11 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
+    "vscode:prepublish": "npm run compile",
     "clean": "shx rm -rf out dist coverage temp",
-    "clean-build": "yarn run clean && yarn run build",
-    "build": "yarn compile",
-    "build-production": "yarn run clean-build",
+    "clean-build": "npm run clean && npm run build",
+    "build": "npm run compile",
+    "build-production": "npm run clean-build",
     "compile": "tsc -p ./",
     "test": "echo test",
     "watch": "tsc -w -p ./"

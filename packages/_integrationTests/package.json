@@ -9,9 +9,9 @@
     "build": "echo skipping build for integration-test",
     "build2": "tsc -p .",
     "clean": "shx rm -rf out temp",
-    "build-production": "yarn run build",
+    "build-production": "npm run build",
     "test-integration-vscode": "node ./out/runTests.mjs",
-    "test-integration": "yarn run build2 && yarn test-integration-vscode",
+    "test-integration": "npm run build2 && npm run test-integration-vscode",
     "test": "echo Run test-integration"
   },
   "workspaces": {

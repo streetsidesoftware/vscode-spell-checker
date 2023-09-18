@@ -11,9 +11,9 @@
   "module": "dist/index.js",
   "types": "dist/index.d.cts",
   "scripts": {
-    "build-production": "yarn run clean-build",
+    "build-production": "npm run clean-build",
     "build": "node ./build.mjs && tsc -p . && ts2mjs --cjs dist/index.d.ts",
-    "clean-build": "yarn run clean && yarn run build",
+    "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "echo OK"
   },

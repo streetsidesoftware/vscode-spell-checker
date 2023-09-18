@@ -6,13 +6,13 @@
   "typings": "out",
   "main": "out",
   "scripts": {
-    "build": "tsc -p . && yarn run webpack",
+    "build": "tsc -p . && npm run webpack",
     "clean": "shx rm -rf ../client/settingsViewer ./out",
-    "build-production": "yarn run clean && yarn run build",
+    "build-production": "npm run clean && npm run build",
     "coverage": "jest --coverage src",
     "start:dev": "webpack server --config webpack.dev.js",
     "webpack": "webpack --config webpack.prod.js",
-    "watch": "yarn webpack --watch",
+    "watch": "npm webpack --watch",
     "test": "vitest run"
   },
   "keywords": [],

@@ -60,26 +60,26 @@
     "vscode-uri": "^3.0.7"
   },
   "scripts": {
-    "build": "yarn run build:esbuild && yarn run build:api && yarn run build:tsc && yarn run build-schema",
-    "build-production": "yarn run clean-build-production",
+    "build": "npm run build:esbuild && npm run build:api && npm run build:tsc && npm run build-schema",
+    "build-production": "npm run clean-build-production",
     "build-schema": "node ./scripts/ts-json-schema-generator.cjs --markdown-description --no-top-ref --expose none --path src/config/cspellConfig/cspellConfig.mts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords patternErrorMessage --validation-keywords deprecationMessage --validation-keywords enumDescriptions --validation-keywords deprecated --validation-keywords order -o spell-checker-config.schema.json",
     "build-schema-new": "ts-json-schema-generator/bin/ts-json-schema-generator --markdown-description --no-top-ref --expose none --path src/config/cspellConfig/cspellConfig.mts --type SpellCheckerSettingsVSCode --validation-keywords markdownDescription  --validation-keywords scope --validation-keywords patternErrorMessage --validation-keywords deprecationMessage --validation-keywords enumDescriptions --validation-keywords deprecated --validation-keywords order -o spell-checker-config.schema.json",
-    "build:production": "yarn run build:esbuild --production && yarn run build:api && yarn run build-schema",
+    "build:production": "npm run build:esbuild -- --production && npm run build:api && npm run build-schema",
     "build:esbuild": "node ./build.mjs",
-    "build:api": "yarn build:api.d.ts && yarn build:api.d.cts",
+    "build:api": "npm run build:api.d.ts && npm run build:api.d.cts",
     "build:api.d.ts": "tsc -p tsconfig.api.json",
     "build:api.d.cts": "rollup -c rollup.config.mjs",
     "build:tsc": "tsc -p tsconfig.test.json",
     "build:ts-json-schema-generator": "esbuild --bundle ../../../../code/clones/ts-json-schema-generator/dist/ts-json-schema-generator.js --outfile=scripts/ts-json-schema-generator.cjs  --platform=node --external:typescript",
-    "clean-build-production": "yarn run clean && yarn run build:production",
-    "clean-build": "yarn run clean && yarn run build",
+    "clean-build-production": "npm run clean && npm run build:production",
+    "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf dist temp out coverage",
     "test-watch": "vitest",
     "test": "vitest run",
-    "watch": "yarn concurrently yarn:watch:esbuild yarn:watch:api yarn:watch:tsc",
-    "watch:esbuild": "yarn build:esbuild --watch",
-    "watch:api": "yarn build:api.d.ts --watch",
-    "watch:tsc": "yarn build:tsc --watch"
+    "watch": "npm run concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
+    "watch:esbuild": "npm run build:esbuild -- --watch",
+    "watch:api": "npm run build:api.d.ts -- --watch",
+    "watch:tsc": "npm run build:tsc -- --watch"
   },
   "engines": {
     "node": ">=16"
