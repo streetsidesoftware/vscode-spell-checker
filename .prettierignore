@@ -17,3 +17,4 @@ packages/*/out/**
 packages/client/settingsViewer/
 samples/php/**/vendor
 **/scripts/ts-json-schema-generator.cjs
+package-lock.json
