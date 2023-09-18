@@ -47,7 +47,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.6",
     "@cspell/cspell-types": "^7.3.6",
-    "@internal/common-utils": "*",
+    "@internal/common-utils": "file:../__utils",
     "cspell-gitignore": "^7.3.6",
     "cspell-glob": "^7.3.6",
     "cspell-lib": "^7.3.6",

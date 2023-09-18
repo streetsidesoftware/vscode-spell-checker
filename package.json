@@ -2534,7 +2534,7 @@
       "packages/_settingsViewer",
       "packages/_settingsViewerNext",
       "packages/client",
-      "tools/*"
+      "tools/package-json-dependency-updater"
     ],
     "nohoist": [
       "@internal/docs",
@@ -2569,7 +2569,7 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
     "test": "npm --workspaces run test",
-    "update-packages": "npm upgrade && npm i && npx npm-check-updates --root -ws --target minor",
+    "update-packages": "npm up -ws --include-workspace-root && npm i && npx npm-check-updates --root -ws --target minor",
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
