@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "build-tools": "./bin.js"
+    "build-tools": "bin.js"
   },
   "types": "dist/index.d.ts",
   "exports": {
@@ -21,12 +21,12 @@
   },
   "scripts": {
     "update-package-schema": "node ./bin.js",
-    "build-production": "yarn run clean-build",
+    "build-production": "npm run clean-build",
     "build": "tsc -p .",
-    "clean-build": "yarn run clean && yarn run build",
+    "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "echo No tests yet.",
-    "smoke-test": "yarn build && node ./bin.js update-package-schema -r ../..",
+    "smoke-test": "npm run build && node ./bin.js update-package-schema -r ../..",
     "watch": "tsc -p . --watch"
   },
   "devDependencies": {

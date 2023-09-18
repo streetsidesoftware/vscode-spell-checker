@@ -27,9 +27,9 @@
     }
   },
   "scripts": {
-    "build-production": "yarn run clean-build",
+    "build-production": "npm run clean-build",
     "build": "tsc -p .",
-    "clean-build": "yarn run clean && yarn run build",
+    "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "jest",
     "watch": "tsc -p . --watch"

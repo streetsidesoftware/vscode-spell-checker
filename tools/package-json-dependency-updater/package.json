@@ -15,12 +15,12 @@
   },
   "scripts": {
     "test": "echo Test",
-    "clean-build": "yarn run clean && yarn run build",
+    "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
-    "prepare": "yarn run build",
-    "build-production": "yarn run build",
+    "prepare": "npm run build",
+    "build-production": "npm run build",
     "build": "tsc -p .",
-    "watch": "yarn run build --watch"
+    "watch": "npm run build -- --watch"
   },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.1.0",

@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "**/package.json"
-      - "**/yarn.lock"
+      - "**/package-lock.json"
   workflow_dispatch:
   schedule:
     - cron: "0 12 * * 0"
@@ -23,15 +23,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ env.REF_BRANCH }}
+      - name: Info
+        run: |
+          npm -v
+          node -v
       - name: Update
         run: |
-          yarn
-          yarn build
-          yarn build:readme
-          yarn lint
-          yarn upgrade
-          yarn package-json-dependency-updater --update
-          yarn
+          npm i
+          npm run build
+          npm run build:readme
+          npm run lint
+          npm run update-packages
+          npm i
 
       - name: Gen Body
         run: |
