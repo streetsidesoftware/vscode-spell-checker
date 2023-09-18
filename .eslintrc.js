@@ -31,6 +31,7 @@ const config = {
         'packages/*/out/**',
         '**/temp/**',
         '**/dist/**',
+        '**/build/**',
         'packages/client/settingsViewer/**',
         '**/scripts/ts-json-schema-generator.cjs',
     ],
