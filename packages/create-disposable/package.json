@@ -1,5 +1,6 @@
 {
   "name": "create-disposable",
+  "private": true,
   "version": "1.0.0",
   "description": "Helper methods for creating Disposables.",
   "main": "index.cjs",

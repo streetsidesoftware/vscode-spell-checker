@@ -5,7 +5,7 @@
 Symbol.dispose ??= Symbol('Symbol.dispose');
 // Symbol.asyncDispose ??= Symbol('Symbol.asyncDispose');
 
-export interface Disposable {
+export interface DisposableCompatible {
     /**
      * Dispose this object.
      */
@@ -13,7 +13,16 @@ export interface Disposable {
     [Symbol.dispose](): void;
 }
 
-export type DisposableLike = Disposable | Omit<Disposable, 'dispose'> | Omit<Disposable, typeof Symbol.dispose>;
+interface DisposableClassic {
+    /**
+     * Dispose this object.
+     */
+    dispose(): void;
+}
+
+type DisposableProposed = Disposable;
+
+export type DisposableLike = DisposableCompatible | DisposableClassic | DisposableProposed;
 
 // export interface AsyncDisposable {
 //   asyncDispose(): void;
@@ -26,7 +35,7 @@ export type DisposableLike = Disposable | Omit<Disposable, 'dispose'> | Omit<Dis
  * @param thisArg - optional this value
  * @returns A Disposable
  */
-export function createDisposable<T extends object>(disposeFn: () => void, thisArg?: T): Disposable {
+export function createDisposable<T extends object>(disposeFn: () => void, thisArg?: T): DisposableCompatible {
     // We want to prevent double disposal calls.
     // This can happen if there are multiple systems calling dispose.
     let isDisposed = false;
@@ -49,7 +58,7 @@ export function createDisposable<T extends object>(disposeFn: () => void, thisAr
  * @param dispose - the dispose function.
  * @returns the same object.
  */
-export function injectDisposable<T extends object>(obj: T, dispose: () => void): T & Disposable {
+export function injectDisposable<T extends object>(obj: T, dispose: () => void): T & DisposableCompatible {
     return Object.assign(obj, createDisposable(dispose, obj));
 }
 
@@ -71,7 +80,7 @@ export function createDisposeMethodFromList(disposables: DisposableLike[]): () =
     function dispose() {
         let error: unknown | undefined = undefined;
 
-        let disposable: Partial<Disposable> | undefined;
+        let disposable: Partial<DisposableCompatible> | undefined;
 
         // Note disposables are disposed in reverse order by default.
         while ((disposable = disposables.pop())) {

@@ -2524,6 +2524,7 @@
   "workspaces": [
     "docs",
     "tools/build-tools",
+    "packages/create-disposable",
     "packages/webview-rpc",
     "packages/__cspell-helper",
     "packages/__locale-resolver",
@@ -2533,8 +2534,7 @@
     "packages/_serverPatternMatcher",
     "packages/_settingsViewer",
     "packages/_settingsViewerNext",
-    "packages/client",
-    "packages/create-disposable"
+    "packages/client"
   ],
   "scripts": {
     "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
