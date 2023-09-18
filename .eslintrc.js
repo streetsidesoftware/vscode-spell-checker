@@ -124,6 +124,13 @@ const config = {
                 'node/no-unpublished-import': 'off',
             },
         },
+        {
+            files: ['**/disposable.test.ts'],
+            rules: {
+                // Must turn it off to prevent parsing error.
+                'no-var': 'off',
+            },
+        },
     ],
     settings: {
         'import/core-modules': ['vscode'],

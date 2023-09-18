@@ -1,0 +1,41 @@
+{
+  "name": "vscode-webview-rpc",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Make JSON-RPC calls to VSCode Webviews",
+  "main": "dist/cjs/index.cjs",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -b tsconfig.json && ts2mjs dist/esm",
+    "clean": "shx rm -rf dist",
+    "coverage": "jest --coverage",
+    "test": "echo ok"
+  },
+  "exports": {},
+  "keywords": [
+    "json-rpc",
+    "webviews",
+    "vscode"
+  ],
+  "author": "Street Side Software",
+  "license": "MIT",
+  "dependencies": {
+    "create-disposable": "file:../create-disposable",
+    "vscode-jsonrpc": "^8.1.0"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.test.*",
+    "!dist/**/test/**",
+    "!dist/esm/**/*.js",
+    "!dist/esm/**/*.ts"
+  ],
+  "engines": {
+    "node": ">16.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/svelte": "^5.0.2",
+    "@types/vscode": "^1.82.0"
+  }
+}

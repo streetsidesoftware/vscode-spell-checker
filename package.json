@@ -2521,28 +2521,21 @@
       }
     ]
   },
-  "workspaces": {
-    "packages": [
-      "docs",
-      "tools/build-tools",
-      "packages/__cspell-helper",
-      "packages/__locale-resolver",
-      "packages/__utils",
-      "packages/_integrationTests",
-      "packages/_server",
-      "packages/_serverPatternMatcher",
-      "packages/_settingsViewer",
-      "packages/_settingsViewerNext",
-      "packages/client"
-    ],
-    "nohoist": [
-      "@internal/docs",
-      "integration-tests",
-      "integration-tests/**",
-      "**/@types/jest-when",
-      "**/@types/jest"
-    ]
-  },
+  "workspaces": [
+    "docs",
+    "tools/build-tools",
+    "packages/create-disposable",
+    "packages/webview-rpc",
+    "packages/__cspell-helper",
+    "packages/__locale-resolver",
+    "packages/__utils",
+    "packages/_integrationTests",
+    "packages/_server",
+    "packages/_serverPatternMatcher",
+    "packages/_settingsViewer",
+    "packages/_settingsViewerNext",
+    "packages/client"
+  ],
   "scripts": {
     "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
     "postinstall": "echo postinstall",

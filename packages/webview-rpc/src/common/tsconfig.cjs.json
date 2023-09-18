@@ -1,0 +1,19 @@
+{
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "../../dist/cjs/common",
+        "target": "es2022",
+        "lib": ["es2022", "esnext.disposable", "dom"],
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": ".",
+        "strict": true
+    },
+    "include": ["."]
+}

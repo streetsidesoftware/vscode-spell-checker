@@ -1,0 +1,14 @@
+{
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {
+        "verbatimModuleSyntax": true
+    },
+    "files": [],
+    "references": [
+        { "path": "./src/tsconfig.cjs.json" },
+        { "path": "./src/tsconfig.esm.json" },
+        { "path": "./src/common/tsconfig.json" },
+        { "path": "./src/extension/tsconfig.json" },
+        { "path": "./src/webview/tsconfig.json" }
+    ]
+}
