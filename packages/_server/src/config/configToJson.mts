@@ -8,7 +8,7 @@ export function configToJson(config: CSpellSettings, exclude: string[] = []): st
         return value;
     }
 
-    const obj: Record<string, any> = { ...config };
+    const obj: Record<string, unknown> = { ...config };
     exclude.forEach((key) => delete obj[key]);
 
     return JSON.stringify(obj, replacer, 2);

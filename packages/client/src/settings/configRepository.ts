@@ -252,13 +252,13 @@ interface HasUri {
     uri: Uri;
 }
 
-function hasUri(u: HasUri | any | undefined): u is HasUri {
+function hasUri(u: HasUri | unknown | undefined): u is HasUri {
     if (typeof u !== 'object') return false;
     const p = <Partial<HasUri>>u;
     return isUri(p.uri);
 }
 
-function isUri(u: Uri | any | undefined): u is Uri {
+function isUri(u: Uri | unknown | undefined): u is Uri {
     if (typeof u !== 'object') return false;
     if (u instanceof Uri) return true;
     const pUri = <Partial<Uri>>u;

@@ -6,7 +6,6 @@ import type { Logger } from './MessageBus';
 import { MessageBus } from './MessageBus';
 import type { WebviewApi } from './WebviewApi';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ANY = any;
 
 describe('Validate MessageBus', () => {

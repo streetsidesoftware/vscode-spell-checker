@@ -76,6 +76,9 @@ export type ErrorHandler<T> = (p: Promise<T>) => Promise<T | void>;
 export type OnErrorResolver = (reason: unknown, context: string) => Promise<void>;
 type _OnErrorResolver = (reason: unknown) => Promise<void>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Func = (...p: any) => any;
+
 /**
  * This is a wrapper function. It is designed to wrap another and catch any exceptions thrown by that function turning them in Promise<void>
  * @param fn - function to be wrapped
@@ -83,12 +86,13 @@ type _OnErrorResolver = (reason: unknown) => Promise<void>;
  * @param onErrorResolver - Used to resolve the rejected promise (it can write to a log or pop up a message)
  * @returns - a function with the same signature as `fn`
  */
-export function catchErrors<P extends Array<any>, R>(
-    fn: (...p: P) => Promise<R> | R,
+export function catchErrors<Fn extends Func, R = ReturnType<Fn>>(
+    fn: Fn,
     context: string,
     onErrorResolver: OnErrorResolver = showError,
-): (...p: P) => Promise<R | void> {
-    return (...p) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
+): (...p: Parameters<Fn>) => Promise<R | void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (...p: any) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }
 
 export function logErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | void> {
@@ -123,6 +127,6 @@ const canceledName = 'Canceled';
  * Checks if the given error is a promise in canceled state
  * See: [vscode/errors.ts · microsoft/vscode](https://github.com/microsoft/vscode/blob/c15cb13a383dc9ff2dc0828152e374a6b9ecc2b3/src/vs/base/common/errors.ts#L143)
  */
-function isPromiseCanceledError(error: any): boolean {
+function isPromiseCanceledError(error: unknown): boolean {
     return error instanceof Error && error.name === canceledName && error.message === canceledName;
 }

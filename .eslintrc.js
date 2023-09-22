@@ -116,12 +116,13 @@ const config = {
             },
         },
         {
-            files: ['vitest.config.*', '**/jest.config.js', '**/*.test.*', '**/build.*'],
+            files: ['vitest.config.*', '**/jest.config.js', '**/*.test.*', '**/build.*', '**/test/**'],
             rules: {
-                'node/no-extraneous-import': 'off',
+                '@typescript-eslint/no-explicit-any': 'off',
                 'import/no-unresolved': 'off',
-                'node/no-unpublished-require': 'off',
+                'node/no-extraneous-import': 'off',
                 'node/no-unpublished-import': 'off',
+                'node/no-unpublished-require': 'off',
             },
         },
         {

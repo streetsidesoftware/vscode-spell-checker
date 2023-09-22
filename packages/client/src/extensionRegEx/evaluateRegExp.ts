@@ -8,6 +8,6 @@ export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp {
     return new RegExp(r, defaultFlags);
 }
 
-export function isRegExp(r: RegExp | any): r is RegExp {
+export function isRegExp(r: RegExp | unknown): r is RegExp {
     return r instanceof RegExp;
 }

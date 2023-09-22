@@ -263,7 +263,7 @@ function resolveOverrides(settings: CSpellUserSettings, resolver: WorkspacePathR
 
 function shallowCleanObject<T>(obj: T): T {
     if (typeof obj !== 'object') return obj;
-    const objMap = obj as { [key: string]: any };
+    const objMap = obj as Record<string, unknown>;
     for (const key of Object.keys(objMap)) {
         if (objMap[key] === undefined) {
             delete objMap[key];

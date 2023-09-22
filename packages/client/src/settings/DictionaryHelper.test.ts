@@ -33,7 +33,6 @@ jest.mock('../client/client', () => {
     };
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const fakeExtensionContext: ExtensionContext = {} as any;
 
 const defByName = {

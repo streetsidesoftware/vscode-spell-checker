@@ -11,7 +11,7 @@ export interface TextDocumentUriLangId extends TextDocumentUri {
     languageId: string;
 }
 
-export function getConfiguration(connection: Connection, items: ConfigurationItem[]): Promise<any[]> {
+export function getConfiguration(connection: Connection, items: ConfigurationItem[]): Promise<unknown[]> {
     const uris = items.map((p) => p.scopeUri).filter(isDefined);
     log('getConfiguration', uris);
     return connection.workspace.getConfiguration(items);
