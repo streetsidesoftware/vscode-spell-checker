@@ -15,5 +15,8 @@
     "create-disposable": "file:../create-disposable",
     "vscode-jsonrpc": "^8.1.0",
     "vscode-webview-rpc": "file:../webview-rpc"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }

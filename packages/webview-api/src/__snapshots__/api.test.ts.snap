@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`api > Creating a Server API 1`] = `
+[
+  "clientNotification.onChangeAppState",
+  "serverNotification.showInformationMessage",
+  "serverRequest.getAppState",
+  "serverRequest.resetTodos",
+  "serverRequest.updateAppState",
+  "serverRequest.whatTimeIsIt",
+]
+`;
+
+exports[`api > Creating a Server API 2`] = `
+[
+  "function",
+  "function",
+  "function",
+  "function",
+  "function",
+  "object",
+]
+`;
+
+exports[`api > api 1`] = `
+[
+  "createClientSideHelloWorldApi",
+  "createServerSideHelloWorldApi",
+]
+`;
