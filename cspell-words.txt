@@ -82,6 +82,7 @@ stylesheets
 subfolder
 subpath
 textdocument
+todos
 truetype
 tsbuildInfo
 tslib

@@ -4,7 +4,7 @@
         "composite": true,
         "outDir": "../../dist/cjs/common",
         "target": "es2022",
-        "lib": ["es2022", "esnext.disposable", "dom"],
+        "lib": ["es2022", "dom"],
         "module": "CommonJS",
         "moduleResolution": "Node",
         "esModuleInterop": true,

@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "description": "Make JSON-RPC calls to VSCode Webviews",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "type": "commonjs",
   "scripts": {
     "build": "tsc -b tsconfig.json && ts2mjs dist/esm",
@@ -11,7 +12,16 @@
     "coverage": "jest --coverage",
     "test": "echo ok"
   },
-  "exports": {},
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./webview": {
+      "import": "./dist/esm/webview/index.mjs"
+    },
+    "./extension": "./dist/cjs/extension/index.js"
+  },
   "keywords": [
     "json-rpc",
     "webviews",

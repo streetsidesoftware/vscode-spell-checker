@@ -2526,6 +2526,7 @@
     "tools/build-tools",
     "packages/create-disposable",
     "packages/webview-rpc",
+    "packages/webview-api",
     "packages/__cspell-helper",
     "packages/__locale-resolver",
     "packages/__utils",
