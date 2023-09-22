@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { createDisposable, createDisposeMethodFromList, type Disposable, injectDisposable } from 'create-disposable';
 import { type MessageConnection, NotificationType, RequestType } from 'vscode-jsonrpc/lib/common/api';
 
 import { log } from './logger';
+import type { AsyncFunc, AsyncFuncVoid, Func, FuncVoid, KeepFieldsOfType, MakeMethodsAsync, ReturnPromise } from './types';
 
 export const apiPrefix = {
     serverRequest: 'sr_',
@@ -12,19 +12,11 @@ export const apiPrefix = {
     clientNotification: 'cn_',
 } as const;
 
-type CallBack = (...p: any) => any;
+type CallBack = Func;
 
-type RequestCallBack = (...p: any) => Promise<any>;
+export type Requests<T = object> = KeepFieldsOfType<T, Func | AsyncFunc>;
 
-export interface Requests {
-    [name: string]: RequestCallBack;
-}
-
-type NotificationCallBack = (...p: any) => Promise<void>;
-
-export interface Notifications {
-    [name: string]: NotificationCallBack;
-}
+export type Notifications<T = object> = KeepFieldsOfType<T, FuncVoid | AsyncFuncVoid>;
 
 export type ApplyRequestAPI<T> = T & Requests;
 export type ApplyNotificationAPI<T> = T & Notifications;
@@ -38,7 +30,7 @@ export interface ServerSideAPI {
 
 export interface ClientSideAPI {
     /** Requests sent to the Client */
-    clientRequests: Requests;
+    clientRequests: object;
     /** Notifications sent to the Client */
     clientNotifications: Notifications;
 }
@@ -57,10 +49,10 @@ export interface RpcAPI extends ClientSideAPI, ServerSideAPI {}
 //   [P in keyof T]-?: Exclude<T[P], undefined>;
 // };
 
-type ClientRequests<A extends ClientSideAPI> = A['clientRequests'];
-type ClientNotifications<A extends ClientSideAPI> = A['clientNotifications'];
-type ServerRequests<A extends ServerSideAPI> = A['serverRequests'];
-type ServerNotifications<A extends ServerSideAPI> = A['serverNotifications'];
+type ClientRequests<A extends ClientSideAPI> = KeepFieldsOfType<A['clientRequests'], Func>;
+type ClientNotifications<A extends ClientSideAPI> = KeepFieldsOfType<A['clientNotifications'], Func>;
+type ServerRequests<A extends ServerSideAPI> = KeepFieldsOfType<A['serverRequests'], Func>;
+type ServerNotifications<A extends ServerSideAPI> = KeepFieldsOfType<A['serverNotifications'], Func>;
 
 type WrapInSubscribable<A> = {
     [P in keyof A]: A[P] extends CallBack ? Subscribable<A[P]> : never;
@@ -71,8 +63,8 @@ type WrapInPubSub<A> = {
 };
 
 export type ServerSideMethods<T extends RpcAPI> = {
-    clientRequest: ClientRequests<T>;
-    clientNotification: ClientNotifications<T>;
+    clientRequest: MakeMethodsAsync<ClientRequests<T>>;
+    clientNotification: MakeMethodsAsync<ClientNotifications<T>>;
     serverRequest: WrapInSubscribable<ServerRequests<T>>;
     serverNotification: WrapInSubscribable<ServerNotifications<T>>;
 } & Disposable;
@@ -80,8 +72,8 @@ export type ServerSideMethods<T extends RpcAPI> = {
 export type ClientSideMethods<T extends RpcAPI> = {
     clientRequest: WrapInSubscribable<ClientRequests<T>>;
     clientNotification: WrapInSubscribable<ClientNotifications<T>>;
-    serverRequest: ServerRequests<T>;
-    serverNotification: ServerNotifications<T>;
+    serverRequest: MakeMethodsAsync<ServerRequests<T>>;
+    serverNotification: MakeMethodsAsync<ServerNotifications<T>>;
 } & Disposable;
 
 type DefUseAPI<T> = {
@@ -89,7 +81,7 @@ type DefUseAPI<T> = {
 };
 
 type DefUsePubSubAPI<T> = {
-    [P in keyof T]: boolean | T[P];
+    [P in keyof T]: boolean | T[P] | ReturnPromise<T[P]>;
 };
 
 export type ServerAPIDef<T extends RpcAPI> = {
@@ -170,12 +162,13 @@ export function createClientApi<API extends RpcAPI>(connection: MessageConnectio
     );
 }
 
-function bindRequests(connection: MessageConnection, prefix: string, requests: WrapInPubSub<Requests>, disposables: Disposable[]) {
-    for (const [name, fn] of Object.entries(requests)) {
-        log('bindRequest %o', { name, fn: typeof fn });
-        if (!fn) continue;
+function bindRequests<T>(connection: MessageConnection, prefix: string, requests: WrapInPubSub<Requests<T>>, disposables: Disposable[]) {
+    for (const [name, pubSub] of Object.entries(requests)) {
+        log('bindRequest %o', { name, fn: typeof pubSub });
+        if (!pubSub) continue;
+        const pub = pubSub as { publish: Func };
         const tReq = new RequestType<any[], Promise<any>, unknown>(prefix + name);
-        disposables.push(connection.onRequest(tReq, (p: any[]) => (log(`handle request "${name}" %o`, p), fn.publish(...p))));
+        disposables.push(connection.onRequest(tReq, (p: any[]) => (log(`handle request "${name}" %o`, p), pub.publish(...p))));
     }
 }
 
@@ -185,33 +178,38 @@ function bindNotifications(
     requests: WrapInPubSub<Notifications>,
     disposables: Disposable[],
 ) {
-    for (const [name, fn] of Object.entries(requests)) {
-        log('bindNotifications %o', { name, fn: typeof fn });
-        if (!fn) continue;
+    for (const [name, pubSub] of Object.entries(requests)) {
+        log('bindNotifications %o', { name, fn: typeof pubSub });
+        if (!pubSub) continue;
         const tNote = new NotificationType<any[]>(prefix + name);
+        const pub = pubSub as { publish: Func };
 
-        disposables.push(connection.onNotification(tNote, (p: any[]) => (log(`handle notification "${name}" %o`, p), fn.publish(...p))));
+        disposables.push(connection.onNotification(tNote, (p: any[]) => (log(`handle notification "${name}" %o`, p), pub.publish(...p))));
     }
 }
 
-function mapRequestsToFn<T extends Requests>(connection: MessageConnection, prefix: string, requests: DefUseAPI<T>): T {
+function mapRequestsToFn<T extends Requests>(connection: MessageConnection, prefix: string, requests: DefUseAPI<T>): MakeMethodsAsync<T> {
     return Object.fromEntries(
         Object.entries(requests).map(([name]) => {
             const tReq = new RequestType(prefix + name);
             const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendRequest(tReq, params));
             return [name, fn];
         }),
-    ) as T;
+    ) as MakeMethodsAsync<T>;
 }
 
-function mapNotificationsToFn<T extends Notifications>(connection: MessageConnection, prefix: string, notifications: DefUseAPI<T>): T {
+function mapNotificationsToFn<T extends Notifications>(
+    connection: MessageConnection,
+    prefix: string,
+    notifications: DefUseAPI<T>,
+): MakeMethodsAsync<T> {
     return Object.fromEntries(
         Object.entries(notifications).map(([name]) => {
             const tNote = new NotificationType(prefix + name);
             const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendNotification(tNote, params));
             return [name, fn];
         }),
-    ) as T;
+    ) as MakeMethodsAsync<T>;
 }
 
 function mapRequestsToPubSub<T extends Requests>(requests: DefUsePubSubAPI<T>): WrapInPubSub<T> {
@@ -245,7 +243,7 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
 ): PubSub<Subscriber> {
     const subscribers = new Set<Subscriber>();
 
-    async function publish(..._: Parameters<Subscriber>) {
+    async function publish(..._p: Parameters<Subscriber>) {
         for (const s of subscribers) {
             log(`notify ${name} %o`, s);
             // eslint-disable-next-line prefer-rest-params
@@ -265,7 +263,7 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
 function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(name: string): PubSub<Subscriber> {
     let subscriber: Subscriber | undefined = undefined;
 
-    async function listener(..._: Parameters<Subscriber>) {
+    async function listener(..._p: Parameters<Subscriber>) {
         log(`notify ${name} %o`, subscriber);
         // eslint-disable-next-line prefer-rest-params
         return await subscriber?.(...arguments);
