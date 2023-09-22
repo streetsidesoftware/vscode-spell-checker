@@ -27,15 +27,12 @@ jobs:
         with:
           ref: ${{ env.REF_BRANCH }}
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2.4.0
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           registry-url: "https://registry.npmjs.org"
           node-version: 20.x
-          cache: "pnpm"
+          cache: "npm"
 
       - name: Run Action
         id: dependabot
