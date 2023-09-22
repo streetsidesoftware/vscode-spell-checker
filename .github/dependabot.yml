@@ -5,20 +5,36 @@
 
 version: 2
 updates:
-    - package-ecosystem: 'npm' # See documentation for possible values
-      directory: '/' # Location of package manifests
-      schedule:
-          interval: 'daily'
+  - package-ecosystem: 'npm' # See documentation for possible values
+    directory: '/' # Location of package manifests
+    schedule:
+      interval: 'daily'
 
-    - package-ecosystem: "bundler"
-      # The Gemfile used in for the Jekyll doc site
-      directory: "/docs"
-      schedule:
-          interval: "daily"
+  - package-ecosystem: "bundler"
+    # The Gemfile used in for the Jekyll doc site
+    directory: "/docs"
+    schedule:
+      interval: "daily"
 
-    - package-ecosystem: 'github-actions'
-      # Workflow files stored in the
-      # default location of `.github/workflows`
-      directory: '/'
-      schedule:
-          interval: 'daily'
+  - package-ecosystem: 'github-actions'
+    # Workflow files stored in the
+    # default location of `.github/workflows`
+    directory: '/'
+    schedule:
+      interval: 'daily'
+
+  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
+  - package-ecosystem: github-actions
+    directory: /.github/actions/pr
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
+
+  # Automatically added by streetsidesoftware/public/update-dependabot-github-actions
+  - package-ecosystem: github-actions
+    directory: /.github/actions/github-app-token
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: chore
