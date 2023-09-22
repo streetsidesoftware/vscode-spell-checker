@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Func = (...p: any) => any;
 
 export type FuncVoid = (...p: any) => void;

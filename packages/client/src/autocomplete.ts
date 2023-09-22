@@ -2,13 +2,14 @@ import * as vscode from 'vscode';
 
 import * as di from './di';
 import { getCSpellDiags } from './diags';
+import type { Disposable } from './disposable';
 import { getSettingFromVSConfig, inspectConfigByScopeAndKey } from './settings/vsConfig';
 
 // cspell:ignore bibtex doctex expl jlweave rsweave
 // See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
 const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
 
-export async function registerCspellInlineCompletionProviders(subscriptions: { dispose(): any }[]): Promise<void> {
+export async function registerCspellInlineCompletionProviders(subscriptions: Disposable[]): Promise<void> {
     const inlineCompletionLangIds = await calcInlineCompletionIds();
     subscriptions.push(
         vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),

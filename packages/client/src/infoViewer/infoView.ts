@@ -16,6 +16,7 @@ import type { ConfigTarget, Settings } from '../../settingsViewer/api/settings';
 import type { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
 import type { CSpellClient } from '../client';
 import { enableDisableLanguageId, enableDisableLocale } from '../commands';
+import type { Disposable } from '../disposable';
 import { getSettingFromVSConfig } from '../settings';
 import type { Maybe } from '../util';
 import { toUri } from '../util/uriHelper';
@@ -30,11 +31,10 @@ const wait = promisify(setTimeout);
 
 type RefreshEmitter = Kefir.Emitter<void, Error> | undefined;
 
-interface InfoView {
+interface InfoView extends Disposable {
     panel: vscode.WebviewPanel;
     updateView(): Promise<void>;
     reveal(column: vscode.ViewColumn): void;
-    dispose: () => any;
 }
 
 let currentPanel: InfoView | undefined = undefined;
@@ -77,7 +77,7 @@ interface State {
 }
 
 interface Subscription {
-    unsubscribe: () => any;
+    unsubscribe: () => unknown;
 }
 
 const refreshDelay = 500;

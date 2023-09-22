@@ -57,7 +57,7 @@ export async function writeFile(file: Uri, content: string): Promise<void> {
     return fs.writeFile(fsPath, content, 'utf-8');
 }
 
-export async function writeJson(file: Uri, content: any): Promise<void> {
+export async function writeJson(file: Uri, content: unknown): Promise<void> {
     return writeFile(file, JSON.stringify(content, null, 4) + '\n');
 }
 

@@ -112,7 +112,7 @@ export class CSpellClient implements Disposable {
 
     public start(): Promise<void> {
         if (this.ready.isPending()) {
-            this.ready.resolve(this.client.start());
+            this.ready.attach(this.client.start());
         }
         return this.ready.promise;
     }
