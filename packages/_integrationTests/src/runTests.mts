@@ -28,11 +28,19 @@ async function run(version: undefined | 'stable' | 'insiders' | string) {
     await runTests(options);
 }
 
+async function getVSCodeVersionFromPackage(): Promise<string> {
+    const extPkg = JSON.parse(await fs.readFile(path.join(extensionDevelopmentPath, 'package.json'), 'utf8'));
+    return extPkg.engines['vscode'].replace('^', '');
+}
+
 async function main() {
     try {
-        const extPkg = JSON.parse(await fs.readFile(path.join(extensionDevelopmentPath, 'package.json'), 'utf8'));
-        await run('stable');
-        await run(extPkg.engines['vscode'].replace('^', ''));
+        const versions = process.env['VSCODE_VERSION'] ? [process.env['VSCODE_VERSION']] : ['stable', 'package.json'];
+        for (const version of versions) {
+            const vscVersion = version === 'package.json' ? await getVSCodeVersionFromPackage() : version;
+            console.log('Versions: %o', { version, vscVersion });
+            await run(vscVersion);
+        }
     } catch (err) {
         console.error(err);
         console.error('Failed to run tests');
