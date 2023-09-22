@@ -4,14 +4,13 @@ import type {
     ApplyRequestAPI,
     ClientAPIDef,
     ClientSideMethods,
-    LogLevel,
     RpcAPI,
     ServerAPIDef,
     ServerSideMethods,
 } from 'vscode-webview-rpc';
 import { createClientApi, createServerApi } from 'vscode-webview-rpc';
 
-import type { Todos } from './apiModels';
+import type { AppState } from './apiModels';
 
 export interface UpdateResult<T> {
     success: boolean;
@@ -19,22 +18,20 @@ export interface UpdateResult<T> {
 }
 
 export interface ServerRequestsAPI {
-    whatTimeIsIt(): Promise<string>;
-    getTodos(): Promise<Todos>;
-    updateTodos(todos: Todos): Promise<UpdateResult<Todos>>;
-    resetTodos(): Promise<void>;
-    getLogLevel(): Promise<LogLevel>;
-    setLogLevel(level: LogLevel): Promise<LogLevel>;
+    whatTimeIsIt(): string;
+    getAppState(): AppState;
+    updateAppState(state: AppState): UpdateResult<AppState>;
+    resetTodos(): void;
 }
 
 export interface ServerNotificationsAPI {
-    showInformationMessage(message: string): Promise<void>;
+    showInformationMessage(message: string): void;
 }
 
 export interface ClientRequestsAPI {}
 
 export interface ClientNotificationsAPI {
-    onChangeTodos: (todos: Todos) => void;
+    onChangeAppState: (state: AppState) => void;
 }
 
 export interface HelloWorldAPI extends RpcAPI {
