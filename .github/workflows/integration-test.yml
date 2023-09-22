@@ -15,21 +15,42 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: [16.x]
+        node-version:
+          - ${{ vars.DEFAULT_NODE_VERSION }}
+        vscode-version: [stable]
+        include:
+          - os: ubuntu-latest
+            node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+            vscode-version: package.json
+          - os: ubuntu-latest
+            node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+            vscode-version: insiders
 
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install Node.js
         uses: actions/setup-node@v3.8.1
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: npm i
-      - run: npm run build
-      - run: xvfb-run -a npm run test-client-integration
+
+      - name: Install and Build
+        run: |
+          npm i
+          npm run build
+
+      - name: Run Linux
         if: runner.os == 'Linux'
-      - run: npm run test-client-integration
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}
+        run: xvfb-run -a npm run test-client-integration
+
+      - name: Run Windows and MacOS
         if: runner.os != 'Linux'
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}
+        run: npm run test-client-integration
 # cspell:ignore xvfb
