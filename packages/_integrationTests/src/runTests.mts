@@ -3,14 +3,15 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { downloadAndUnzipVSCode, runTests } from '@vscode/test-electron';
+import decompress from 'decompress';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const extensionDevelopmentPath = path.resolve(__dirname, '../../../');
+const root = path.resolve(__dirname, '../../../');
 
 const cacheDirName = '.vscode-test';
 
-async function run(version: undefined | 'stable' | 'insiders' | string) {
+async function run(version: undefined | 'stable' | 'insiders' | string, extensionDevelopmentPath: string) {
     // Delete `.vscode-test` to prevent socket issues
     await fs.rm(cacheDirName, { recursive: true, force: true });
 
@@ -22,24 +23,59 @@ async function run(version: undefined | 'stable' | 'insiders' | string) {
     const launchArgs: string[] = ['--disable-extensions', fileToOpen];
 
     // try and have a short path to prevent socket errors.
-    const cachePath = path.join(extensionDevelopmentPath, cacheDirName);
+    const cachePath = path.join(root, cacheDirName);
     const vscodeExecutablePath = await downloadAndUnzipVSCode({ cachePath, version });
     const options = { vscodeExecutablePath, extensionDevelopmentPath, extensionTestsPath, launchArgs };
     await runTests(options);
 }
 
+interface PackageJson {
+    name: string;
+    version: string;
+    engines: { vscode: string };
+}
+
+let extPkg: PackageJson | undefined = undefined;
+
+async function getPackageJson(): Promise<PackageJson> {
+    if (extPkg) return extPkg;
+    return (extPkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8')));
+}
+
 async function getVSCodeVersionFromPackage(): Promise<string> {
-    const extPkg = JSON.parse(await fs.readFile(path.join(extensionDevelopmentPath, 'package.json'), 'utf8'));
+    const extPkg = await getPackageJson();
     return extPkg.engines['vscode'].replace('^', '');
+}
+
+async function getVsixName(location = ''): Promise<string> {
+    const pkg = await getPackageJson();
+    return path.join(location, `${pkg.name}-${pkg.version}.vsix`);
+}
+
+async function resolveExtension(vsixLocation: string | undefined): Promise<string> {
+    if (!vsixLocation) return root;
+
+    const vsixFile = vsixLocation.endsWith('.vsix') ? vsixLocation : await getVsixName(vsixLocation);
+
+    const file = path.resolve(root, vsixFile);
+    const extDir = file.replace(/\.vsix$/, '');
+
+    await fs.rm(extDir, { recursive: true, force: true });
+    console.warn('Decompressing: %s', file);
+    await decompress(file, extDir);
+
+    return path.join(extDir, 'extension');
 }
 
 async function main() {
     try {
-        const versions = process.env['VSCODE_VERSION'] ? [process.env['VSCODE_VERSION']] : ['stable', 'package.json'];
+        const ENV_VSCODE_VERSION = process.env['VSCODE_VERSION'];
+        const versions = ENV_VSCODE_VERSION ? [ENV_VSCODE_VERSION] : ['stable', 'package.json'];
+        const extensionDevelopmentPath = await resolveExtension(process.env['VSIX_LOCATION']);
         for (const version of versions) {
             const vscVersion = version === 'package.json' ? await getVSCodeVersionFromPackage() : version;
-            console.log('Versions: %o', { version, vscVersion });
-            await run(vscVersion);
+            console.log('Versions: %o', { version, vscVersion, extensionDevelopmentPath });
+            await run(vscVersion, extensionDevelopmentPath);
         }
     } catch (err) {
         console.error(err);

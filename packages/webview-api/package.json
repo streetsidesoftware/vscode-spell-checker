@@ -7,6 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
+    "build-production": "npm run clean && npm run build",
+    "clean": "shx rm -rf dist",
     "test": "vitest run"
   },
   "author": "Street Side Software",
