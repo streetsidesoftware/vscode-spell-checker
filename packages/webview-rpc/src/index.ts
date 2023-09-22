@@ -1,4 +1,4 @@
-import { debug, error, getLogLevel, info, log, LogLevel, setLogLevel, warn } from './common/logger.js';
+import { debug, error, getLogLevel, info, log, setLogLevel, warn } from './common/logger.js';
 
 export {
     type ApplyNotificationAPI,
@@ -11,6 +11,7 @@ export {
     type ServerAPIDef,
     type ServerSideMethods,
 } from './common/json-rpc-api.js';
+export { LogLevel } from './common/logger.js';
 
 export const logger = {
     debug,
@@ -20,5 +21,4 @@ export const logger = {
     log,
     setLogLevel,
     warn,
-    LogLevel,
 };

@@ -1,20 +1,17 @@
 import { type MessageConnection } from 'vscode-jsonrpc/lib/common/connection';
-import {
-    type ApplyNotificationAPI,
-    type ApplyRequestAPI,
-    type ClientAPIDef,
-    type ClientSideMethods,
-    createClientApi,
-    createServerApi,
-    logger,
-    type RpcAPI,
-    type ServerAPIDef,
-    type ServerSideMethods,
+import type {
+    ApplyNotificationAPI,
+    ApplyRequestAPI,
+    ClientAPIDef,
+    ClientSideMethods,
+    LogLevel,
+    RpcAPI,
+    ServerAPIDef,
+    ServerSideMethods,
 } from 'vscode-webview-rpc';
+import { createClientApi, createServerApi } from 'vscode-webview-rpc';
 
 import type { Todos } from './apiModels';
-
-const { LogLevel } = logger;
 
 export interface UpdateResult<T> {
     success: boolean;
