@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "create-disposable": "file:../create-disposable",
-    "vscode-jsonrpc": "^8.1.0"
+    "vscode-jsonrpc": "^8.2.0"
   },
   "files": [
     "dist",

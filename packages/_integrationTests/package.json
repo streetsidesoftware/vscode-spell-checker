@@ -27,7 +27,7 @@
     "@types/chai": "^4.3.6",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.17.17",
+    "@types/node": "^18.17.18",
     "chai": "^4.3.8",
     "cross-env": "^7.0.3",
     "kefir": "^3.8.8"
@@ -36,7 +36,7 @@
   "dependencies": {
     "@vscode/test-electron": "^2.3.4",
     "chalk": "^5.3.0",
-    "glob": "^10.3.4",
+    "glob": "^10.3.5",
     "mocha": "^10.2.0"
   },
   "engines": {

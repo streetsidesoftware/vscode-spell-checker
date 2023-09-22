@@ -2569,7 +2569,7 @@
     "@tsconfig/node16": "^16.1.1",
     "@types/jest": "^29.5.5",
     "@types/jest-when": "^3.5.3",
-    "@types/node": "^18.17.17",
+    "@types/node": "^18.17.18",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
@@ -2579,7 +2579,7 @@
     "esbuild": "^0.19.3",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jest": "^27.4.0",
     "eslint-plugin-node": "^11.1.0",
@@ -2599,7 +2599,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
-    "vitest": "^0.34.4"
+    "vitest": "^0.34.5"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.6",
