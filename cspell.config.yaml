@@ -28,7 +28,7 @@ ignorePaths:
   - packages/client/samples/**
   - packages/client/server/**
   - packages/client/settingsViewer/**
-  - packages/webview-ui/public/asset/**
+  - packages/webview-ui/public/assets/**
   - spell-checker-config.schema.json
   - testFixtures
 ignoreWords: []
