@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createDisposable, createDisposeMethodFromList, type Disposable, injectDisposable } from 'utils-disposables';
+import type { DisposableHybrid, DisposableLike } from 'utils-disposables';
+import { createDisposable, createDisposeMethodFromList, injectDisposable } from 'utils-disposables';
 import { type MessageConnection, NotificationType, RequestType } from 'vscode-jsonrpc/lib/common/api';
 
 import { log } from './logger';
@@ -36,7 +37,7 @@ export interface ClientSideAPI {
 }
 
 export interface Subscribable<T extends CallBack> {
-    subscribe(fn: T): Disposable;
+    subscribe(fn: T): DisposableHybrid;
 }
 
 export interface PubSub<T extends CallBack> extends Subscribable<T> {
@@ -67,14 +68,14 @@ export type ServerSideMethods<T extends RpcAPI> = {
     clientNotification: MakeMethodsAsync<ClientNotifications<T>>;
     serverRequest: WrapInSubscribable<ServerRequests<T>>;
     serverNotification: WrapInSubscribable<ServerNotifications<T>>;
-} & Disposable;
+} & DisposableHybrid;
 
 export type ClientSideMethods<T extends RpcAPI> = {
     clientRequest: WrapInSubscribable<ClientRequests<T>>;
     clientNotification: WrapInSubscribable<ClientNotifications<T>>;
     serverRequest: MakeMethodsAsync<ServerRequests<T>>;
     serverNotification: MakeMethodsAsync<ServerNotifications<T>>;
-} & Disposable;
+} & DisposableHybrid;
 
 type DefUseAPI<T> = {
     [P in keyof T]: true;
@@ -105,7 +106,7 @@ export type ClientAPIDef<T extends RpcAPI> = {
  * @returns
  */
 export function createServerApi<API extends RpcAPI>(connection: MessageConnection, api: ServerAPIDef<API>): ServerSideMethods<API> {
-    const _disposables: Disposable[] = [];
+    const _disposables: DisposableLike[] = [];
 
     const serverRequest = mapRequestsToPubSub<ServerRequests<API>>(api.serverRequests);
     const serverNotification = mapNotificationsToPubSub<ServerNotifications<API>>(api.serverNotifications);
@@ -137,7 +138,7 @@ export function createServerApi<API extends RpcAPI>(connection: MessageConnectio
  * @returns
  */
 export function createClientApi<API extends RpcAPI>(connection: MessageConnection, api: ClientAPIDef<API>): ClientSideMethods<API> {
-    const _disposables: Disposable[] = [];
+    const _disposables: DisposableLike[] = [];
 
     const clientRequest = mapRequestsToPubSub<ClientRequests<API>>(api.clientRequests);
     const clientNotification = mapNotificationsToPubSub<ClientNotifications<API>>(api.clientNotifications);
@@ -162,7 +163,12 @@ export function createClientApi<API extends RpcAPI>(connection: MessageConnectio
     );
 }
 
-function bindRequests<T>(connection: MessageConnection, prefix: string, requests: WrapInPubSub<Requests<T>>, disposables: Disposable[]) {
+function bindRequests<T>(
+    connection: MessageConnection,
+    prefix: string,
+    requests: WrapInPubSub<Requests<T>>,
+    disposables: DisposableLike[],
+) {
     for (const [name, pubSub] of Object.entries(requests)) {
         log('bindRequest %o', { name, fn: typeof pubSub });
         if (!pubSub) continue;
@@ -176,7 +182,7 @@ function bindNotifications(
     connection: MessageConnection,
     prefix: string,
     requests: WrapInPubSub<Notifications>,
-    disposables: Disposable[],
+    disposables: DisposableLike[],
 ) {
     for (const [name, pubSub] of Object.entries(requests)) {
         log('bindNotifications %o', { name, fn: typeof pubSub });
@@ -251,7 +257,7 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
         }
     }
 
-    function subscribe(s: Subscriber): Disposable {
+    function subscribe(s: Subscriber): DisposableHybrid {
         log(`subscribe to ${name} %o`, s);
         subscribers.add(s);
         return createDisposable(() => subscribers.delete(s));
@@ -269,7 +275,7 @@ function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(nam
         return await subscriber?.(...arguments);
     }
 
-    function subscribe(s: Subscriber): Disposable {
+    function subscribe(s: Subscriber): DisposableHybrid {
         subscriber = s;
         log(`subscribe to ${name} %o`, s);
         return createDisposable(() => {

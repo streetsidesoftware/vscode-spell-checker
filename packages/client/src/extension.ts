@@ -17,6 +17,7 @@ import { sectionCSpell } from './settings';
 import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
 import { performance } from './util/perf';
+import { activate as activateWebview } from './webview/extension';
 // import { activate as settingsViewerActivate } from 'settings-viewer-next';
 
 performance.mark('cspell_done_import');
@@ -179,6 +180,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         enableLocal: methods.enableLocale,
         disableLocal: methods.disableLocale,
     };
+
+    activateWebview(context);
 
     performance.mark('cspell_activate_end');
     performance.measure('cspell_activation', 'cspell_activate_start', 'cspell_activate_end');

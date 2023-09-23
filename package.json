@@ -175,6 +175,11 @@
           "title": "Spell Checker Info",
           "icon": "resources/dark/check_circle.svg",
           "when": "config.cSpell.experimental.enableRegexpView"
+        },
+        {
+          "id": "hello-world-todo-explorer",
+          "title": "Todo Example",
+          "icon": "resources/todo-list.svg"
         }
       ]
     },
@@ -185,18 +190,19 @@
           "name": "Regular Expressions",
           "when": "config.cSpell.experimental.enableRegexpView"
         }
+      ],
+      "hello-world-todo-explorer": [
+        {
+          "type": "webview",
+          "id": "hello-world-svelte.todoView",
+          "name": "Todo Webview"
+        }
       ]
     },
     "commands": [
       {
-        "command": "cSpell.coding.start",
-        "title": "Start coding session",
-        "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
-        "category": "Spell"
-      },
-      {
-        "command": "cSpell.coding.doRefactor",
-        "title": "Do some refactoring",
+        "command": "hello-world-svelte.showHelloWorld",
+        "title": "Hello World (Svelte): Show",
         "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
         "category": "Spell"
       },
