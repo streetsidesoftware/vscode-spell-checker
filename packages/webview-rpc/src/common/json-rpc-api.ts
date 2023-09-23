@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createDisposable, createDisposeMethodFromList, type Disposable, injectDisposable } from 'create-disposable';
+import { createDisposable, createDisposeMethodFromList, type Disposable, injectDisposable } from 'utils-disposables';
 import { type MessageConnection, NotificationType, RequestType } from 'vscode-jsonrpc/lib/common/api';
 
 import { log } from './logger';

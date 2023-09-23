@@ -5,7 +5,11 @@
 Symbol.dispose ??= Symbol('Symbol.dispose');
 // Symbol.asyncDispose ??= Symbol('Symbol.asyncDispose');
 
-export interface DisposableCompatible {
+interface Disposable {
+    [Symbol.dispose](): void;
+}
+
+export interface DisposableHybrid {
     /**
      * Dispose this object.
      */
@@ -13,16 +17,16 @@ export interface DisposableCompatible {
     [Symbol.dispose](): void;
 }
 
-interface DisposableClassic {
+export interface DisposableClassic {
     /**
      * Dispose this object.
      */
     dispose(): void;
 }
 
-type DisposableProposed = Disposable;
+export type DisposableProposed = Disposable;
 
-export type DisposableLike = DisposableCompatible | DisposableClassic | DisposableProposed;
+export type DisposableLike = DisposableHybrid | DisposableClassic | DisposableProposed;
 
 // export interface AsyncDisposable {
 //   asyncDispose(): void;
@@ -35,7 +39,7 @@ export type DisposableLike = DisposableCompatible | DisposableClassic | Disposab
  * @param thisArg - optional this value
  * @returns A Disposable
  */
-export function createDisposable<T extends object>(disposeFn: () => void, thisArg?: T): DisposableCompatible {
+export function createDisposable<T extends object>(disposeFn: () => void, thisArg?: T): DisposableHybrid {
     // We want to prevent double disposal calls.
     // This can happen if there are multiple systems calling dispose.
     let isDisposed = false;
@@ -58,7 +62,7 @@ export function createDisposable<T extends object>(disposeFn: () => void, thisAr
  * @param dispose - the dispose function.
  * @returns the same object.
  */
-export function injectDisposable<T extends object>(obj: T, dispose: () => void): T & DisposableCompatible {
+export function injectDisposable<T extends object>(obj: T, dispose: () => void): T & DisposableHybrid {
     return Object.assign(obj, createDisposable(dispose, obj));
 }
 
@@ -67,7 +71,7 @@ export function injectDisposable<T extends object>(obj: T, dispose: () => void):
  * @param disposables - list of Disposables
  * @returns A Disposable
  */
-export function createDisposableFromList(disposables: DisposableLike[]) {
+export function createDisposableFromList(disposables: DisposableLike[]): DisposableHybrid {
     return createDisposable(createDisposeMethodFromList(disposables));
 }
 
@@ -80,7 +84,7 @@ export function createDisposeMethodFromList(disposables: DisposableLike[]): () =
     function dispose() {
         let error: unknown | undefined = undefined;
 
-        let disposable: Partial<DisposableCompatible> | undefined;
+        let disposable: Partial<DisposableHybrid> | undefined;
 
         // Note disposables are disposed in reverse order by default.
         while ((disposable = disposables.pop())) {

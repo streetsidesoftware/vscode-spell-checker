@@ -10,6 +10,7 @@ autocrlf
 Bing
 cfml
 codeblock
+codicons
 colorscheme
 cosmiconfig
 darkblue
@@ -37,6 +38,7 @@ HSLA
 HSVA
 htaccess
 IANA
+iife
 Interop
 issuehunt
 Jupyter
@@ -75,6 +77,7 @@ scminput
 scrollbar
 shortname
 shrinkwrap
+sirv
 sourcemap
 squigglies
 streetsidesoftware

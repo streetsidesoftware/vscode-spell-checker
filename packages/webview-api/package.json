@@ -14,7 +14,7 @@
   "author": "Street Side Software",
   "license": "MIT",
   "dependencies": {
-    "create-disposable": "file:../create-disposable",
+    "utils-disposables": "file:../utils-disposables",
     "vscode-jsonrpc": "^8.2.0",
     "vscode-webview-rpc": "file:../webview-rpc"
   },

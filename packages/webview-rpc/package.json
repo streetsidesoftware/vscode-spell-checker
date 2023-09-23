@@ -22,7 +22,12 @@
     "./webview": {
       "import": "./dist/esm/webview/index.mjs"
     },
-    "./extension": "./dist/cjs/extension/index.js"
+    "./extension": "./dist/cjs/extension/index.js",
+    "./logger": {
+      "types": "./dist/cjs/common/logger.d.ts",
+      "import": "./dist/esm/common/logger.mjs",
+      "require": "./dist/cjs/common/logger.js"
+    }
   },
   "keywords": [
     "json-rpc",
@@ -32,7 +37,7 @@
   "author": "Street Side Software",
   "license": "MIT",
   "dependencies": {
-    "create-disposable": "file:../create-disposable",
+    "utils-disposables": "file:../utils-disposables",
     "vscode-jsonrpc": "^8.2.0"
   },
   "files": [

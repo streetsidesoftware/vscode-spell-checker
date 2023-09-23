@@ -2524,9 +2524,10 @@
   "workspaces": [
     "docs",
     "tools/build-tools",
-    "packages/create-disposable",
+    "packages/utils-disposables",
     "packages/webview-rpc",
     "packages/webview-api",
+    "packages/webview-ui",
     "packages/__cspell-helper",
     "packages/__locale-resolver",
     "packages/__utils",

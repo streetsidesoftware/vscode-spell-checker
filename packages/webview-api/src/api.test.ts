@@ -1,4 +1,4 @@
-import { createDisposable } from 'create-disposable';
+import { createDisposable } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
 import type { MessageConnection } from 'vscode-jsonrpc';
 
@@ -29,6 +29,9 @@ describe('api', () => {
         };
         const client = api.createClientSideHelloWorldApi(connection, clientInterface);
         expect(client).toBeDefined();
+        expect(client.serverRequest.getAppState).toBeTypeOf('function');
+        const fn: (...p: any) => any = client.serverRequest.updateAppState;
+        expect(fn).toBeTypeOf('function');
         const methods = Object.entries(client).flatMap(([key, value]) =>
             Object.entries(value).map(([k, v]) => [key + '.' + k, v] as const),
         );
