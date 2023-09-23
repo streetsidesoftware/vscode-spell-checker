@@ -27,6 +27,8 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p tsconfig.json",
     "build:cjs": "tsc -p tsconfig.cjs.json && ts2mjs --cjs dist/cjs",
+    "build-production": "npm run clean && npm run build",
+    "clean": "shx rm -rf dist",
     "coverage": "jest --coverage",
     "test": "jest"
   },

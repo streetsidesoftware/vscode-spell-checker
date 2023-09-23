@@ -8,6 +8,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc -b tsconfig.json && ts2mjs dist/esm",
+    "build-production": "npm run clean && npm run build",
     "clean": "shx rm -rf dist",
     "coverage": "jest --coverage",
     "test": "echo ok"
