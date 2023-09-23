@@ -1,0 +1,7 @@
+ignorePaths:
+  - out
+  - public/assets
+  - public/build
+words:
+  - codicons
+  - sirv

@@ -7,7 +7,8 @@
     "compile": "tsc -p .",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "npm run check"
   },
   "type": "module",
   "dependencies": {
