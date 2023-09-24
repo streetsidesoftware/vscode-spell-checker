@@ -198,7 +198,10 @@ function mapRequestsToFn<T extends Requests>(connection: MessageConnection, pref
     return Object.fromEntries(
         Object.entries(requests).map(([name]) => {
             const tReq = new RequestType(prefix + name);
-            const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendRequest(tReq, params));
+            const fn = (...params: any) => {
+                log(`send request "${name}" %o`, params);
+                return connection.sendRequest(tReq, params);
+            };
             return [name, fn];
         }),
     ) as MakeMethodsAsync<T>;

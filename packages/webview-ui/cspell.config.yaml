@@ -4,4 +4,6 @@ ignorePaths:
   - public/build
 words:
   - codicons
+  - iife
   - sirv
+  - todos
