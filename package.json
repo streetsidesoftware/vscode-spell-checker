@@ -2572,7 +2572,7 @@
     "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
-    "test": "npm --workspaces run test && echo OK || echo Failed && exit 1",
+    "test": "npm --workspaces run test && echo OK",
     "update-packages": "npx npm-check-updates --root -ws --target semver -u && npm i",
     "preinstall": "npx only-allow npm"
   },
