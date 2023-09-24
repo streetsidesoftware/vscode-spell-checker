@@ -4,11 +4,18 @@ import { type MessageConnection } from 'vscode-jsonrpc/node';
 import { setLogLevel } from 'vscode-webview-rpc/logger';
 import { createServerSideHelloWorldApi } from 'webview-api';
 
-import type { AppState, ServerSideApi, ServerSideApiDef, UpdateResult } from './apiTypes';
-import { log } from './logger';
-import { sampleList, store } from './store';
+import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
+import { updateAppState } from '../AppState';
+import type { Storage } from '../AppState/store';
+import { store } from '../AppState/store';
+import { log } from '../logger';
+import { sampleList } from './staticData';
 
-export function createApi(connection: MessageConnection): ServerSideApi {
+export function createApi(connection: MessageConnection) {
+    return bindApiAndStore(connection, store);
+}
+
+export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     const disposables: DisposableLike[] = [];
     const dispose = createDisposeMethodFromList(disposables);
 
@@ -47,28 +54,9 @@ export function createApi(connection: MessageConnection): ServerSideApi {
     }
 
     /**
-     * Update the todo list
-     */
-    async function updateAppState(todos: AppState): Promise<UpdateResult<AppState>> {
-        let success = false;
-
-        function update(current: AppState): AppState {
-            if (current.seq !== todos.seq) return current;
-            const next = { ...todos };
-            ++next.seq;
-            success = true;
-            return next;
-        }
-
-        log('Update Todos: %o', todos);
-        store.state.update(update);
-        return { success, value: store.state.value };
-    }
-
-    /**
      * Fetch the todo list
      */
-    async function getAppState() {
+    function getAppState() {
         const v = store.state.value;
         log('getAppState, found: %o', v);
         return v;
@@ -77,7 +65,7 @@ export function createApi(connection: MessageConnection): ServerSideApi {
     /**
      * Reset the Todo list
      */
-    async function resetTodos() {
+    function resetTodos() {
         const current = store.state.value;
         updateAppState({ ...current, todos: sampleList.map((todo) => ({ ...todo })) });
     }
