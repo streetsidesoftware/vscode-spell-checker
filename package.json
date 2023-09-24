@@ -2582,6 +2582,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "@vscode/vsce": "^2.21.0",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.1",
     "esbuild": "^0.19.3",
     "eslint": "^8.49.0",

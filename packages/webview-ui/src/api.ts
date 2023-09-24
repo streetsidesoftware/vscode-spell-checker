@@ -1,6 +1,7 @@
+import { getRpcConnection, getVsCodeApi as rpcGetVsCodeApi } from 'vscode-webview-rpc/webview';
 import { type ClientSideApi, createClientSideHelloWorldApi } from 'webview-api';
 
-import { getRpcConnection } from './utilities/json-rpc';
+import type { WebViewState } from './types';
 
 export type { AppState, Todo } from 'webview-api';
 
@@ -12,6 +13,18 @@ export function getClientApi(): API {
     if (_api) return _api;
     _api = createApi();
     return _api;
+}
+
+export function getVsCodeApi() {
+    return rpcGetVsCodeApi<WebViewState>();
+}
+
+export function getLocalState(): WebViewState | undefined {
+    return getVsCodeApi().getState();
+}
+
+export function setLocalState(state: WebViewState) {
+    return getVsCodeApi().setState(state);
 }
 
 function createApi(): API {

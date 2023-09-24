@@ -11,8 +11,9 @@ import {
 } from 'vscode-jsonrpc/browser';
 
 import { log } from '../common/logger.js';
-import { getVsCodeApi, type VSCodeMessageAPI } from './vscode.js';
+import { getVsCodeApi, type VSCodeAPI, type VSCodeMessageAPI } from './vscode.js';
 
+export type { MessageConnection } from 'vscode-jsonrpc/lib/common/api';
 export { NotificationType } from 'vscode-jsonrpc/lib/common/api.js';
 
 export class WebViewMessageReader extends AbstractMessageReader {
@@ -63,8 +64,8 @@ function createConnectionToVSCode(api: VSCodeMessageAPI): MessageConnection {
 
 let connection: MessageConnection | undefined = undefined;
 
-export function getRpcConnection(): MessageConnection {
+export function getRpcConnection<T>(api?: VSCodeAPI<T>): MessageConnection {
     if (connection) return connection;
-    connection = createConnectionToVSCode(getVsCodeApi());
+    connection = createConnectionToVSCode(api || getVsCodeApi());
     return connection;
 }

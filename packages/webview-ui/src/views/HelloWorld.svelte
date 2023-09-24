@@ -1,14 +1,13 @@
 <script lang="ts">
     import { LogLevel } from 'vscode-webview-rpc/logger';
-    import { getClientApi } from '../api';
+    import { getClientApi, getLocalState, setLocalState } from '../api';
     import VscodeButton from '../components/VscodeButton.svelte';
     import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
     import { appState, todos } from '../state/appState';
     import { derivativeRWPassThrough } from '../state/store';
-    import { vscode } from '../utilities/vscode';
     import VsCodeComponents from './VSCodeComponents.svelte';
 
-    export let showVsCodeComponents = vscode.getState()?.showVsCodeComponents || false;
+    export let showVsCodeComponents = getLocalState()?.showVsCodeComponents || false;
     export let name: string;
 
     const api = getClientApi();
@@ -47,11 +46,11 @@
     }
 
     function updateState(showVsCodeComponents: boolean) {
-        const state = vscode.getState();
+        const state = getLocalState();
         if (state?.showVsCodeComponents !== showVsCodeComponents) {
             const newState = state || {};
             newState.showVsCodeComponents = showVsCodeComponents;
-            vscode.setState(newState);
+            setLocalState(newState);
         }
     }
 </script>
