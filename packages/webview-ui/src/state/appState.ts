@@ -4,8 +4,6 @@ import type { AppState } from '../api';
 import { getClientApi } from '../api';
 import { createClientServerStore, shadowStore } from './store';
 
-setLogLevel(LogLevel.debug);
-
 const csAppState = createClientServerStore<AppState>({ seq: -1, todos: [], logLevel: LogLevel.none });
 
 export const appState = csAppState.client;

@@ -82,6 +82,7 @@
     {/if}
 
     <p>{remaining} remaining</p>
+    <p>Log Level: {$appState.logLevel}</p>
 
     <div class="todo-actions">
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->

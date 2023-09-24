@@ -1,8 +1,8 @@
-import { LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
+// import { LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
 
 import App from './App.svelte';
 
-setLogLevel(LogLevel.debug);
+// setLogLevel(LogLevel.debug);
 
 function getView() {
     const node = document.querySelector('meta[property="view-name"]');

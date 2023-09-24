@@ -14,13 +14,13 @@
 
   let logDebug = derivativeRWPassThrough(
     appState,
-    ($appState) => ($appState.logLevel && $appState.logLevel >= LogLevel.debug) || false,
+    ($appState) => ($appState.logLevel && $appState.logLevel <= LogLevel.debug) || false,
     ($logDebug, $appState) => {
       $appState.logLevel = $logDebug
-        ? $appState.logLevel < LogLevel.debug
+        ? !$appState.logLevel || $appState.logLevel > LogLevel.debug
           ? LogLevel.debug
           : $appState.logLevel
-        : $appState.logLevel >= LogLevel.debug
+        : $appState.logLevel <= LogLevel.debug
         ? LogLevel.none
         : $appState.logLevel;
       return $appState;

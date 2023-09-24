@@ -10,6 +10,8 @@ import {
     type MessageWriter,
 } from 'vscode-jsonrpc/node';
 
+import { debug } from '../common/logger';
+
 export type { MessageConnection } from '../common/types';
 
 export class WebViewMessageReader extends AbstractMessageReader {
@@ -18,9 +20,9 @@ export class WebViewMessageReader extends AbstractMessageReader {
     }
 
     listen(callback: DataCallback): Disposable {
-        console.log('start listening');
+        debug('start listening');
         return this.webview.onDidReceiveMessage((data) => {
-            console.log('listen: %o', data);
+            debug('listen: %o', data);
             callback(data);
         });
     }

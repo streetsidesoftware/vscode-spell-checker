@@ -70,7 +70,7 @@ export function createApi(connection: MessageConnection): ServerSideApi {
      */
     async function getAppState() {
         const v = store.state.value;
-        log('getTodos, found: %o', v);
+        log('getAppState, found: %o', v);
         return v;
     }
 

@@ -5,7 +5,8 @@
 <section>
   <h1>Spell Checker</h1>
 
-  Seq: {$appState.seq}
+  Seq: {$appState.seq}<br />
+  LogLevel: {$appState.logLevel}
 </section>
 
 <style>

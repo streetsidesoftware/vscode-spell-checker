@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export enum LogLevel {
-    none,
-    error,
-    warn,
-    info,
-    debug,
+    none = 0,
+    debug = 1,
+    info = 2,
+    warn = 3,
+    error = 4,
 }
 
 // let logLevel = LogLevel.error;
@@ -27,7 +27,7 @@ export function getLogLevel(): LogLevel {
 
 function makeLogger(logFn: (...p: any[]) => void, level: LogLevel) {
     return function (...params: any[]) {
-        if (logLevel < level) return;
+        if (!logLevel || level < logLevel) return;
         logFn(...params);
     };
 }
