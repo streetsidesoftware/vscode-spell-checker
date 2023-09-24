@@ -18,3 +18,4 @@ packages/client/settingsViewer/
 samples/php/**/vendor
 **/scripts/ts-json-schema-generator.cjs
 package-lock.json
+packages/webview-ui/public/build

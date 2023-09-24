@@ -7,8 +7,13 @@
   "types": "dist/cjs/index.d.ts",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc -b tsconfig.json && ts2mjs dist/esm",
+    "build": "npm run build:tsc && npm run build:ts2mjs",
+    "build:tsc": "tsc -b tsconfig.json",
+    "build:ts2mjs": "ts2mjs dist/esm",
     "build-production": "npm run clean && npm run build",
+    "watch": "concurrently npm:watch:*",
+    "watch:tsc": "tsc -b tsconfig.json --watch",
+    "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
     "clean": "shx rm -rf dist",
     "coverage": "jest --coverage",
     "test": "echo ok"
@@ -22,7 +27,12 @@
     "./webview": {
       "import": "./dist/esm/webview/index.mjs"
     },
-    "./extension": "./dist/cjs/extension/index.js"
+    "./extension": "./dist/cjs/extension/index.js",
+    "./logger": {
+      "types": "./dist/cjs/common/logger.d.ts",
+      "import": "./dist/esm/common/logger.mjs",
+      "require": "./dist/cjs/common/logger.js"
+    }
   },
   "keywords": [
     "json-rpc",
@@ -32,7 +42,7 @@
   "author": "Street Side Software",
   "license": "MIT",
   "dependencies": {
-    "create-disposable": "file:../create-disposable",
+    "utils-disposables": "file:../utils-disposables",
     "vscode-jsonrpc": "^8.2.0"
   },
   "files": [

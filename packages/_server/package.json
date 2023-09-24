@@ -76,7 +76,7 @@
     "clean": "shx rm -rf dist temp out coverage",
     "test-watch": "vitest",
     "test": "vitest run",
-    "watch": "npm run concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
+    "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
     "watch:esbuild": "npm run build:esbuild -- --watch",
     "watch:api": "npm run build:api.d.ts -- --watch",
     "watch:tsc": "npm run build:tsc -- --watch"

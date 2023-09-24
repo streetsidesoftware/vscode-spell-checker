@@ -65,7 +65,7 @@ const sampleFiles = {
 };
 
 const configFiles = {
-    rootConfig: Path.resolve(pathWorkspaceRoot, 'cSpell.json'),
+    rootConfig: Path.resolve(pathWorkspaceRoot, 'cSpell.config.yaml'),
     clientConfig: Path.resolve(pathWorkspaceClient, 'cspell.json'),
     serverConfig: Path.resolve(pathWorkspaceServer, 'cspell.json'),
     rootConfigVSCode: Path.resolve(pathWorkspaceRoot, '.vscode/cSpell.json'),
@@ -255,7 +255,7 @@ describe('Validate DocumentSettings', () => {
         const configs = docSettings.extractCSpellFileConfigurations(settings);
         expect(configs.map((c) => c.name)).toEqual([
             shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
-            shortPathName(Path.join(pathWorkspaceRoot, 'cspell.json')),
+            shortPathName(Path.join(pathWorkspaceRoot, 'cspell.config.yaml')),
             'sampleSourceFiles/cSpell.json',
             'sampleSourceFiles/cspell-ext.json',
             'overrides/cspell.json',
@@ -297,7 +297,7 @@ describe('Validate DocumentSettings', () => {
         ${sampleFiles.sampleSamplesReadme}     | ${[ex(pathCspellExcludeTests, 'samples', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientEsLint}      | ${[ex(pathCspellExcludeTests, '.eslintrc.js', pathWorkspaceRoot)]}
         ${sampleFiles.sampleClientReadme}      | ${[]}
-        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cspell.json', 'package-lock.json', pathWorkspaceRoot)]}
+        ${sampleFiles.sampleServerPackageLock} | ${[ex(pathCspellExcludeTests, 'package-lock.json', pathWorkspaceRoot), ex('cspell.config.yaml', 'package-lock.json', pathWorkspaceRoot)]}
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));

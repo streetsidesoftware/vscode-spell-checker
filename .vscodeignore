@@ -48,8 +48,6 @@
 !packages/client/settingsViewer/webapp/*.{js,html,LICENSE.txt}
 !resources/**
 
-!packages/_settingsViewerNext/out/extension.js
-!packages/_settingsViewerNext/media/**
-!packages/_settingsViewerNext/package.json
+!packages/webview-ui/public/**
 
 # cspell:ignore callsites

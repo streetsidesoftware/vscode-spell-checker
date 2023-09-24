@@ -41,7 +41,6 @@
   "devDependencies": {
     "@internal/cspell-helper": "file:../__cspell-helper",
     "@internal/locale-resolver": "file:../__locale-resolver",
-    "@internal/settings-viewer-next": "file:../_settingsViewerNext",
     "@internal/settings-webview": "file:../_settingsViewer",
     "@types/jest": "^29.5.5",
     "@types/jest-when": "^3.5.3",
@@ -64,9 +63,14 @@
     "@internal/common-utils": "file:../__utils",
     "code-spell-checker-server": "file:../_server",
     "comment-json": "^4.2.3",
+    "fast-deep-equal": "^3.1.3",
     "kefir": "^3.8.8",
+    "utils-disposables": "file:../utils-disposables",
+    "vscode-jsonrpc": "^8.2.0",
     "vscode-languageclient": "^8.1.0",
     "vscode-uri": "^3.0.7",
+    "vscode-webview-rpc": "file:../webview-rpc",
+    "webview-api": "file:../webview-api",
     "yaml": "^2.3.2"
   },
   "engines": {

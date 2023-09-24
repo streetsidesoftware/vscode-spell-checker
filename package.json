@@ -175,6 +175,11 @@
           "title": "Spell Checker Info",
           "icon": "resources/dark/check_circle.svg",
           "when": "config.cSpell.experimental.enableRegexpView"
+        },
+        {
+          "id": "hello-world-todo-explorer",
+          "title": "Todo Example",
+          "icon": "resources/todo-list.svg"
         }
       ]
     },
@@ -185,18 +190,19 @@
           "name": "Regular Expressions",
           "when": "config.cSpell.experimental.enableRegexpView"
         }
+      ],
+      "hello-world-todo-explorer": [
+        {
+          "type": "webview",
+          "id": "hello-world-svelte.todoView",
+          "name": "Todo Webview"
+        }
       ]
     },
     "commands": [
       {
-        "command": "cSpell.coding.start",
-        "title": "Start coding session",
-        "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
-        "category": "Spell"
-      },
-      {
-        "command": "cSpell.coding.doRefactor",
-        "title": "Do some refactoring",
+        "command": "hello-world-svelte.showHelloWorld",
+        "title": "Hello World (Svelte): Show",
         "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
         "category": "Spell"
       },
@@ -2524,16 +2530,16 @@
   "workspaces": [
     "docs",
     "tools/build-tools",
-    "packages/create-disposable",
+    "packages/utils-disposables",
     "packages/webview-rpc",
     "packages/webview-api",
+    "packages/webview-ui",
     "packages/__cspell-helper",
     "packages/__locale-resolver",
     "packages/__utils",
     "packages/_server",
     "packages/_serverPatternMatcher",
     "packages/_settingsViewer",
-    "packages/_settingsViewerNext",
     "packages/client",
     "packages/_integrationTests"
   ],
@@ -2575,6 +2581,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "@vscode/vsce": "^2.21.0",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.1",
     "esbuild": "^0.19.3",
     "eslint": "^8.49.0",

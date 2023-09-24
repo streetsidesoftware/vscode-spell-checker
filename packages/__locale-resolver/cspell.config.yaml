@@ -1,6 +1,6 @@
 $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
 version: "0.2"
-import: ["../../cspell.json"]
+import: ["../../cspell.config.yaml"]
 ignorePaths:
   - data/*.tsv
 enableFiletypes: []

@@ -11,6 +11,7 @@ export interface VSCodeMessageAPI {
 }
 
 export interface VSCodeAPI<T> extends VSCodeMessageAPI {
+    readonly vsCodeApi: WebviewApi<T> | undefined;
     getState(): T | undefined;
     setState(state: T): T;
 }
@@ -25,12 +26,14 @@ export interface VSCodeAPI<T> extends VSCodeMessageAPI {
  * enabled by acquireVsCodeApi.
  */
 class VSCodeAPIWrapper<T> implements VSCodeAPI<T> {
-    private readonly vsCodeApi: WebviewApi<T> | undefined;
+    readonly vsCodeApi: WebviewApi<T> | undefined;
 
-    constructor() {
+    constructor(acquiredVsCodeApi?: WebviewApi<T>) {
         // Check if the acquireVsCodeApi function exists in the current development
         // context (i.e. VS Code development window or web browser)
-        if (typeof acquireVsCodeApi === 'function') {
+        if (acquiredVsCodeApi) {
+            this.vsCodeApi = acquiredVsCodeApi;
+        } else if (typeof acquireVsCodeApi === 'function') {
             this.vsCodeApi = acquireVsCodeApi();
         }
     }
@@ -97,9 +100,24 @@ class VSCodeAPIWrapper<T> implements VSCodeAPI<T> {
 // class singleton to prevent multiple invocations of acquireVsCodeApi.
 let vscode: VSCodeAPIWrapper<any> | undefined;
 
-export function getVsCodeApi<T>(): VSCodeAPIWrapper<T> {
+/**
+ * Initialize the WebviewApi singleton.
+ * @param acquiredVsCodeApi - optional WebviewApi returned by acquireVsCodeApi, if not specified, `acquireVsCodeApi` will be called.
+ * @returns VSCodeAPIWrapper
+ */
+export function initVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWrapper<T> {
+    return getVsCodeApi(acquiredVsCodeApi);
+}
+
+/**
+ * Get the api singleton.
+ * @param acquiredVsCodeApi - optional WebviewApi returned by acquireVsCodeApi, not needed if `initVsCodeApi`
+ *    has been called or `acquireVsCodeApi` has not been called.
+ * @returns a VSCodeAPIWrapper
+ */
+export function getVsCodeApi<T>(acquiredVsCodeApi?: WebviewApi<T>): VSCodeAPIWrapper<T> {
     if (vscode) return vscode;
-    const api = new VSCodeAPIWrapper<T>();
+    const api = new VSCodeAPIWrapper<T>(acquiredVsCodeApi);
     vscode = api;
     return api;
 }

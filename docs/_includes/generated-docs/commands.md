@@ -17,8 +17,6 @@
 | `cSpell.addWordToUserSettings`               | Add Words to User Settings                                                                             |
 | `cSpell.addWordToWorkspaceDictionary`        | Add Words to Workspace Dictionary                                                                      |
 | `cSpell.addWordToWorkspaceSettings`          | Add Words to Workspace Settings                                                                        |
-| `cSpell.coding.doRefactor`                   | Do some refactoring<br>**When:**<br> `config.cSpell.experimental.enableSettingsViewerV2`               |
-| `cSpell.coding.start`                        | Start coding session<br>**When:**<br> `config.cSpell.experimental.enableSettingsViewerV2`              |
 | `cSpell.createCSpellConfig`                  | Create a CSpell Configuration File.                                                                    |
 | `cSpell.createCustomDictionary`              | Create a Custom Dictionary File.                                                                       |
 | `cSpell.disableCurrentLanguage`              | Disable Spell Checking Document Language                                                               |
