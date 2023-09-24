@@ -17,7 +17,7 @@ import { sectionCSpell } from './settings';
 import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
 import { performance } from './util/perf';
-import { activate as activateWebview } from './webview/extension';
+import { activate as activateWebview } from './webview';
 // import { activate as settingsViewerActivate } from 'settings-viewer-next';
 
 performance.mark('cspell_done_import');

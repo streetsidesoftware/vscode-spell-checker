@@ -1,4 +1,3 @@
-import { commands as viewerCommands } from '@internal/settings-viewer-next';
 import { readTextDocument } from 'jest-mock-vscode';
 import * as vscode from 'vscode';
 
@@ -6,6 +5,7 @@ import { __testing__ } from './commands';
 import { extensionId } from './constants';
 import { commandDisplayCSpellInfo } from './infoViewer';
 import { mustBeDefined, readExtensionPackage } from './test/helpers';
+import { registeredCommands as webviewCommands } from './webview';
 
 const { commandHandlers } = __testing__;
 
@@ -23,7 +23,7 @@ describe('Validate Commands', () => {
             .filter((cmd) => cmd.startsWith(cmdPrefix));
         const implemented = new Set([
             ...Object.keys(commandHandlers),
-            ...Object.values(viewerCommands),
+            ...webviewCommands,
             commandDisplayCSpellInfo, // Handled by infoView
         ]);
         const found = commands.filter((cmd) => implemented.has(cmd));
