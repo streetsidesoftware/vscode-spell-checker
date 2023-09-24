@@ -1,7 +1,9 @@
 <script lang="ts">
   import { provideVSCodeDesignSystem, allComponents } from '@vscode/webview-ui-toolkit';
   import Todo from './views/Todo.svelte';
+  import CSpellInfo from './views/CSpellInfo.svelte';
   import HelloWorld from './views/HelloWorld.svelte';
+  import { supportedViewsByName } from './api';
 
   // In order to use the Webview UI Toolkit web components they
   // must be registered with the browser (i.e. webview) using the
@@ -28,10 +30,12 @@
 
 <main>
   <div class="main-container">
-    {#if view == 'hello-world'}
+    {#if view == supportedViewsByName['hello-world']}
       <HelloWorld {name} />
-    {:else if view == 'todo'}
+    {:else if view == supportedViewsByName.todo}
       <Todo />
+    {:else if view == supportedViewsByName['cspell-info']}
+      <CSpellInfo />
     {:else}
       <h1>Unknown View {view}</h1>
     {/if}

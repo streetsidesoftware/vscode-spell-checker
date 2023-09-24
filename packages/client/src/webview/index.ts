@@ -1,10 +1,12 @@
 import type { ExtensionContext } from 'vscode';
 import { commands, window } from 'vscode';
+import { supportedViewsByName } from 'webview-api';
 
 import { HelloWorldPanel } from './panels/HelloWorldPanel';
 import { TodoViewProvider } from './providers/TodoViewProvider';
+import { WebviewApiViewProvider } from './providers/viewProviders';
 
-export const registeredCommands = ['hello-world-svelte.showHelloWorld'] as const;
+export const registeredCommands = ['cspell-info.showHelloWorld'] as const;
 
 type CommandNames = (typeof registeredCommands)[number];
 
@@ -15,13 +17,19 @@ type RegisteredCommandNames = {
 const rCommands = Object.fromEntries(registeredCommands.map((name) => [name, name] as const)) as RegisteredCommandNames;
 
 export function activate(context: ExtensionContext) {
-    const todoViewProvider = new TodoViewProvider(context.extensionUri);
-    const subscriptions = context.subscriptions;
+    const { subscriptions, extensionUri } = context;
 
-    subscriptions.push(window.registerWebviewViewProvider(TodoViewProvider.viewType, todoViewProvider));
+    const views = [
+        new TodoViewProvider(extensionUri),
+        new WebviewApiViewProvider(extensionUri, supportedViewsByName['cspell-info'], 'cspell-info.infoView'),
+    ];
+
+    for (const view of views) {
+        subscriptions.push(window.registerWebviewViewProvider(view.viewType, view));
+    }
 
     // Create the show hello world command
-    const showHelloWorldCommand = commands.registerCommand(rCommands['hello-world-svelte.showHelloWorld'], () => {
+    const showHelloWorldCommand = commands.registerCommand(rCommands['cspell-info.showHelloWorld'], () => {
         HelloWorldPanel.render(context.extensionUri);
     });
 

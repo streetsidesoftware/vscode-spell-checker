@@ -4,6 +4,7 @@ import { type ClientSideApi, createClientSideHelloWorldApi } from 'webview-api';
 import type { WebViewState } from './types';
 
 export type { AppState, Todo } from 'webview-api';
+export { supportedViewsByName } from 'webview-api';
 
 export interface API extends ClientSideApi {}
 

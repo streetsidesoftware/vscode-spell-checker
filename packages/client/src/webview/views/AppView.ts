@@ -1,6 +1,7 @@
 import type { Disposable, Webview, WebviewOptions } from 'vscode';
 import { Uri } from 'vscode';
 import { createConnectionToWebview } from 'vscode-webview-rpc/extension';
+import type { SupportedViews } from 'webview-api';
 
 import { createApi } from '../api';
 import { getNonce } from '../utilities/getNonce';
@@ -114,5 +115,9 @@ export class AppView {
         </body>
       </html>
     `;
+    }
+
+    public static bindView(webview: Webview, extensionUri: Uri, viewName: SupportedViews): AppView {
+        return new AppView(webview, extensionUri, viewName);
     }
 }

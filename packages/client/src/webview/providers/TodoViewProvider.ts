@@ -3,7 +3,7 @@ import type { CancellationToken, Uri, WebviewView, WebviewViewProvider, WebviewV
 import { TodoView } from '../views/TodoView';
 
 export class TodoViewProvider implements WebviewViewProvider {
-    public static readonly viewType = 'hello-world-svelte.todoView';
+    public readonly viewType: string = 'cspell-info.todoView';
 
     private _view?: WebviewView;
 

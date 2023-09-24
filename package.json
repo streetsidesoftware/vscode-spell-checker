@@ -171,37 +171,42 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "cspell-explorer",
+          "id": "cspell-regexp-explorer",
           "title": "Spell Checker Info",
           "icon": "resources/dark/check_circle.svg",
           "when": "config.cSpell.experimental.enableRegexpView"
         },
         {
-          "id": "hello-world-todo-explorer",
+          "id": "cspell-info-explorer",
           "title": "Todo Example",
           "icon": "resources/todo-list.svg"
         }
       ]
     },
     "views": {
-      "cspell-explorer": [
+      "cspell-regexp-explorer": [
         {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
           "when": "config.cSpell.experimental.enableRegexpView"
         }
       ],
-      "hello-world-todo-explorer": [
+      "cspell-info-explorer": [
         {
           "type": "webview",
-          "id": "hello-world-svelte.todoView",
+          "id": "cspell-info.infoView",
+          "name": "Spell Checker"
+        },
+        {
+          "type": "webview",
+          "id": "cspell-info.todoView",
           "name": "Todo Webview"
         }
       ]
     },
     "commands": [
       {
-        "command": "hello-world-svelte.showHelloWorld",
+        "command": "cspell-info.showHelloWorld",
         "title": "Hello World (Svelte): Show",
         "enablement": "config.cSpell.experimental.enableSettingsViewerV2",
         "category": "Spell"
@@ -2556,7 +2561,7 @@
     "build-release": "npm run build && npm run package-extension",
     "gen-docs": "npm --workspace=@internal/docs run gen-docs",
     "package-extension": "vsce package -o ./build",
-    "prettier:check": "prettier \"**/*.{ts,tsx,js,json,md}\" -c",
+    "prettier:check": "prettier \"**/*.{ts,tsx,js,json,md,svelte}\" -c",
     "prettier:fix": "npm run prettier:check -- -w",
     "prettier:fix-schema": "prettier -w \"**/*.schema.json\"",
     "test-vsce-build": "shx mkdir -p temp && vsce package -o ./temp/code-spell-checker.vsix",
@@ -2600,6 +2605,7 @@
     "jest-when": "^3.6.0",
     "ovsx": "^0.8.3",
     "prettier": "^3.0.3",
+    "prettier-plugin-svelte": "^3.0.3",
     "rollup": "^3.29.3",
     "rollup-plugin-dts": "^6.0.2",
     "shx": "^0.3.4",
