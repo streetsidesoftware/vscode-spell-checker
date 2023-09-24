@@ -10,7 +10,7 @@ import {
     type MessageWriter,
 } from 'vscode-jsonrpc/node';
 
-export type { MessageConnection } from 'vscode-jsonrpc/node';
+export type { MessageConnection } from '../common/types';
 
 export class WebViewMessageReader extends AbstractMessageReader {
     constructor(readonly webview: Webview) {

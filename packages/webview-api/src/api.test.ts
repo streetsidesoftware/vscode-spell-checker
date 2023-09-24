@@ -1,6 +1,6 @@
 import { createDisposable } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
-import type { MessageConnection } from 'vscode-jsonrpc';
+import type { MessageConnection } from 'vscode-webview-rpc';
 
 import type { ClientSideApiDef } from './api';
 import * as api from './api';
@@ -43,23 +43,10 @@ describe('api', () => {
 
 function getConnection(): MessageConnection {
     const c: MessageConnection = {
-        hasPendingResponse: vi.fn(() => false),
-        onClose: vi.fn(() => createDisposable(vi.fn())),
-        onDispose: vi.fn(() => createDisposable(vi.fn())),
-        onError: vi.fn(() => createDisposable(vi.fn())),
         onNotification: vi.fn(() => createDisposable(vi.fn())),
-        onProgress: vi.fn(() => createDisposable(vi.fn())),
         onRequest: vi.fn(() => createDisposable(vi.fn())),
-        onUnhandledNotification: vi.fn(() => createDisposable(vi.fn())),
-        onUnhandledProgress: vi.fn(() => createDisposable(vi.fn())),
         sendNotification: vi.fn(() => Promise.resolve()),
-        sendRequest: vi.fn(() => Promise.resolve()),
-        sendProgress: vi.fn(() => Promise.resolve()),
-        trace: vi.fn(() => Promise.resolve()),
-        listen: vi.fn(),
-        end: vi.fn(),
-        inspect: vi.fn(),
-        dispose: vi.fn(),
+        sendRequest: vi.fn((() => Promise.resolve()) as () => Promise<any>),
     };
     return c;
 }

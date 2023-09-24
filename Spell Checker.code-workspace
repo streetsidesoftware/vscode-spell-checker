@@ -21,10 +21,6 @@
             "path": "packages/_settingsViewer"
         },
         {
-            "name": "Settings Viewer Next",
-            "path": "packages/_settingsViewerNext"
-        },
-        {
             "name": "Integration Tests",
             "path": "packages/_integrationTests"
         },

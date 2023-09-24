@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "utils-disposables": "file:../utils-disposables",
-    "vscode-jsonrpc": "^8.2.0",
     "vscode-webview-rpc": "file:../webview-rpc"
   },
   "engines": {

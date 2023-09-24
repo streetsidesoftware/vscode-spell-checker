@@ -12,6 +12,7 @@ export {
     type ServerSideMethods,
 } from './common/json-rpc-api.js';
 export { LogLevel } from './common/logger.js';
+export type { MessageConnection } from './common/types.js';
 
 export const logger = {
     debug,

@@ -16,3 +16,22 @@ export type ReturnPromise<T> = T extends Func ? (T extends AsyncFunc ? T : (...p
 export type MakeMethodsAsync<T> = {
     [K in keyof T]: ReturnPromise<T[K]>;
 };
+
+export interface GenericRequestHandler<R> {
+    (params: any): R | Promise<R>;
+}
+
+export interface GenericNotificationHandler {
+    (params: any): void;
+}
+
+export interface Disposable {
+    dispose(): void;
+}
+
+export interface MessageConnection {
+    sendRequest<R>(method: string, params: any): Promise<R>;
+    onRequest<R>(method: string, handler: GenericRequestHandler<R>): Disposable;
+    sendNotification(method: string, params: any): Promise<void>;
+    onNotification(method: string, handler: GenericNotificationHandler): Disposable;
+}

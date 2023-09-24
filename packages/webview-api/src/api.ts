@@ -1,9 +1,9 @@
-import { type MessageConnection } from 'vscode-jsonrpc/lib/common/connection';
 import type {
     ApplyNotificationAPI,
     ApplyRequestAPI,
     ClientAPIDef,
     ClientSideMethods,
+    MessageConnection,
     RpcAPI,
     ServerAPIDef,
     ServerSideMethods,

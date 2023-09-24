@@ -13,7 +13,7 @@ import {
 import { log } from '../common/logger.js';
 import { getVsCodeApi, type VSCodeAPI, type VSCodeMessageAPI } from './vscode.js';
 
-export type { MessageConnection } from 'vscode-jsonrpc/lib/common/api';
+export type { MessageConnection } from '../common/types.js';
 export { NotificationType } from 'vscode-jsonrpc/lib/common/api.js';
 
 export class WebViewMessageReader extends AbstractMessageReader {

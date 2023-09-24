@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { DisposableHybrid, DisposableLike } from 'utils-disposables';
 import { createDisposable, createDisposeMethodFromList, injectDisposable } from 'utils-disposables';
-import { type MessageConnection, NotificationType, RequestType } from 'vscode-jsonrpc/lib/common/api';
 
 import { log } from './logger';
-import type { AsyncFunc, AsyncFuncVoid, Func, FuncVoid, KeepFieldsOfType, MakeMethodsAsync, ReturnPromise } from './types';
+import type {
+    AsyncFunc,
+    AsyncFuncVoid,
+    Func,
+    FuncVoid,
+    KeepFieldsOfType,
+    MakeMethodsAsync,
+    MessageConnection,
+    ReturnPromise,
+} from './types';
 
 export const apiPrefix = {
     serverRequest: 'sr_',
@@ -173,8 +181,8 @@ function bindRequests<T>(
         log('bindRequest %o', { name, fn: typeof pubSub });
         if (!pubSub) continue;
         const pub = pubSub as { publish: Func };
-        const tReq = new RequestType<any[], Promise<any>, unknown>(prefix + name);
-        disposables.push(connection.onRequest(tReq, (p: any[]) => (log(`handle request "${name}" %o`, p), pub.publish(...p))));
+        const methodName = prefix + name;
+        disposables.push(connection.onRequest(methodName, (p: any[]) => (log(`handle request "${name}" %o`, p), pub.publish(...p))));
     }
 }
 
@@ -187,20 +195,22 @@ function bindNotifications(
     for (const [name, pubSub] of Object.entries(requests)) {
         log('bindNotifications %o', { name, fn: typeof pubSub });
         if (!pubSub) continue;
-        const tNote = new NotificationType<any[]>(prefix + name);
+        const methodName = prefix + name;
         const pub = pubSub as { publish: Func };
 
-        disposables.push(connection.onNotification(tNote, (p: any[]) => (log(`handle notification "${name}" %o`, p), pub.publish(...p))));
+        disposables.push(
+            connection.onNotification(methodName, (p: any[]) => (log(`handle notification "${name}" %o`, p), pub.publish(...p))),
+        );
     }
 }
 
 function mapRequestsToFn<T extends Requests>(connection: MessageConnection, prefix: string, requests: DefUseAPI<T>): MakeMethodsAsync<T> {
     return Object.fromEntries(
         Object.entries(requests).map(([name]) => {
-            const tReq = new RequestType(prefix + name);
+            const methodName = prefix + name;
             const fn = (...params: any) => {
                 log(`send request "${name}" %o`, params);
-                return connection.sendRequest(tReq, params);
+                return connection.sendRequest(methodName, params);
             };
             return [name, fn];
         }),
@@ -214,8 +224,8 @@ function mapNotificationsToFn<T extends Notifications>(
 ): MakeMethodsAsync<T> {
     return Object.fromEntries(
         Object.entries(notifications).map(([name]) => {
-            const tNote = new NotificationType(prefix + name);
-            const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendNotification(tNote, params));
+            const methodName = prefix + name;
+            const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendNotification(methodName, params));
             return [name, fn];
         }),
     ) as MakeMethodsAsync<T>;
