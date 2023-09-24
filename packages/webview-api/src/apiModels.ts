@@ -8,8 +8,14 @@ export interface Todo {
 
 export type TodoList = Todo[];
 
+export interface TextDocumentRef {
+    url: string;
+    version: number;
+}
+
 export interface AppState {
     seq: number;
     todos: TodoList;
     logLevel: LogLevel;
+    currentDocument?: TextDocumentRef;
 }

@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -p .",
     "build-production": "npm run clean && npm run build",
+    "watch": "tsc -p . --watch",
     "clean": "shx rm -rf dist",
     "test": "vitest run"
   },
@@ -15,7 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "utils-disposables": "file:../utils-disposables",
-    "vscode-jsonrpc": "^8.2.0",
     "vscode-webview-rpc": "file:../webview-rpc"
   },
   "engines": {

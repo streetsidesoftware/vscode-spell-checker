@@ -1,0 +1,32 @@
+printWidth: 140
+plugins:
+  - prettier-plugin-svelte
+singleQuote: true
+tabWidth: 4
+endOfLine: lf
+overrides:
+  - files: "**/*.{yaml,yml}"
+    options:
+      tabWidth: 2
+      singleQuote: false
+  - files: "**/*.svelte"
+    options:
+      tabWidth: 2
+  - files: "**/*.json"
+    options:
+      tabWidth: 4
+      singleQuote: false
+  - files: "**/*.schema.json"
+    options:
+      tabWidth: 2
+      singleQuote: false
+  - files: "**/package.json"
+    options:
+      tabWidth: 2
+      singleQuote: false
+  - files: packages/_settingsViewer/src/test/**
+    options:
+      printWidth: 280
+  - files: packages/client/src/**/configUpdater.ts
+    options:
+      printWidth: 200

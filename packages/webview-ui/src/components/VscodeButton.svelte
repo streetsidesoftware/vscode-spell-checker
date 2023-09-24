@@ -43,7 +43,7 @@
     autofocus,
     disabled,
     name,
-    'type': inputType,
+    type: inputType,
     'aria-label': ariaLabel,
     form,
     formaction,

@@ -2,9 +2,24 @@ import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/
 import type { WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
 import type { Command, Diagnostic, DiagnosticCollection, ExtensionContext, Position, Range, TextDocument } from 'vscode';
 import { CodeAction, CodeActionKind, DiagnosticSeverity, Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
-import type { ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
-import * as VSCodeLangClient from 'vscode-languageclient/node';
-import { LanguageClient, TransportKind } from 'vscode-languageclient/node';
+import type {
+    CodeActionParams,
+    Command as LanguageClientCommand,
+    ForkOptions,
+    LanguageClientOptions,
+    ServerOptions,
+} from 'vscode-languageclient/node';
+import {
+    CodeAction as VSCodeLangClientCodeAction,
+    CodeActionContext as VSCodeLangClientCodeActionContext,
+    Diagnostic as VSCodeLangClientDiagnostic,
+    DiagnosticSeverity as VSCodeLangClientDiagnosticSeverity,
+    LanguageClient,
+    Position as VSCodeLangClientPosition,
+    Range as VSCodeLangClientRange,
+    TextDocumentIdentifier as VSCodeLangClientTextDocumentIdentifier,
+    TransportKind as VSCodeLangClientTransportKind,
+} from 'vscode-languageclient/node';
 
 import { diagnosticSource } from '../constants';
 import type { Inspect } from '../settings';
@@ -99,8 +114,8 @@ export class CSpellClient implements Disposable {
         // If the extension is launched in debug mode the debug server options are use
         // Otherwise the run options are used
         const serverOptions: ServerOptions = {
-            run: { module, transport: TransportKind.ipc, options },
-            debug: { module, transport: TransportKind.ipc, options: debugOptions },
+            run: { module, transport: VSCodeLangClientTransportKind.ipc, options },
+            debug: { module, transport: VSCodeLangClientTransportKind.ipc, options: debugOptions },
         };
 
         // Create the language client and start the client.
@@ -217,10 +232,10 @@ export class CSpellClient implements Disposable {
     }
 
     public async requestSpellingSuggestions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
-        const params: VSCodeLangClient.CodeActionParams = {
-            textDocument: VSCodeLangClient.TextDocumentIdentifier.create(doc.uri.toString()),
+        const params: CodeActionParams = {
+            textDocument: VSCodeLangClientTextDocumentIdentifier.create(doc.uri.toString()),
             range: mapRangeToLangClient(range),
-            context: VSCodeLangClient.CodeActionContext.create(diagnostics.map(mapDiagnosticToLangClient)),
+            context: VSCodeLangClientCodeActionContext.create(diagnostics.map(mapDiagnosticToLangClient)),
         };
         const r = await requestCodeAction(this.client, params);
         if (!r) return [];
@@ -287,34 +302,34 @@ function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): F
     };
 }
 
-function isCodeAction(c: VSCodeLangClient.Command | VSCodeLangClient.CodeAction): c is VSCodeLangClient.CodeAction {
-    return VSCodeLangClient.CodeAction.is(c);
+function isCodeAction(c: LanguageClientCommand | VSCodeLangClientCodeAction): c is VSCodeLangClientCodeAction {
+    return VSCodeLangClientCodeAction.is(c);
 }
 
-function mapCodeAction(c: VSCodeLangClient.CodeAction): CodeAction {
+function mapCodeAction(c: VSCodeLangClientCodeAction): CodeAction {
     const kind = (c.kind !== undefined && CodeActionKind.Empty.append(c.kind)) || undefined;
     const action = new CodeAction(c.title, kind);
     action.command = c.command && mapCommand(c.command);
     return action;
 }
 
-function mapCommand(c: VSCodeLangClient.Command): Command {
+function mapCommand(c: LanguageClientCommand): Command {
     return c;
 }
 
 type MapDiagnosticSeverity = {
-    [key in DiagnosticSeverity]: VSCodeLangClient.DiagnosticSeverity;
+    [key in DiagnosticSeverity]: VSCodeLangClientDiagnosticSeverity;
 };
 
 const diagSeverityMap: MapDiagnosticSeverity = {
-    [DiagnosticSeverity.Error]: VSCodeLangClient.DiagnosticSeverity.Error,
-    [DiagnosticSeverity.Warning]: VSCodeLangClient.DiagnosticSeverity.Warning,
-    [DiagnosticSeverity.Information]: VSCodeLangClient.DiagnosticSeverity.Information,
-    [DiagnosticSeverity.Hint]: VSCodeLangClient.DiagnosticSeverity.Hint,
+    [DiagnosticSeverity.Error]: VSCodeLangClientDiagnosticSeverity.Error,
+    [DiagnosticSeverity.Warning]: VSCodeLangClientDiagnosticSeverity.Warning,
+    [DiagnosticSeverity.Information]: VSCodeLangClientDiagnosticSeverity.Information,
+    [DiagnosticSeverity.Hint]: VSCodeLangClientDiagnosticSeverity.Hint,
 };
 
-function mapDiagnosticToLangClient(d: Diagnostic): VSCodeLangClient.Diagnostic {
-    const diag = VSCodeLangClient.Diagnostic.create(
+function mapDiagnosticToLangClient(d: Diagnostic): VSCodeLangClientDiagnostic {
+    const diag = VSCodeLangClientDiagnostic.create(
         mapRangeToLangClient(d.range),
         d.message,
         diagSeverityMap[d.severity],
@@ -324,12 +339,12 @@ function mapDiagnosticToLangClient(d: Diagnostic): VSCodeLangClient.Diagnostic {
     return diag;
 }
 
-function mapRangeToLangClient(r: Range): VSCodeLangClient.Range {
+function mapRangeToLangClient(r: Range): VSCodeLangClientRange {
     const { start, end } = r;
-    return VSCodeLangClient.Range.create(mapPositionToLangClient(start), mapPositionToLangClient(end));
+    return VSCodeLangClientRange.create(mapPositionToLangClient(start), mapPositionToLangClient(end));
 }
 
-function mapPositionToLangClient(p: Position): VSCodeLangClient.Position {
+function mapPositionToLangClient(p: Position): VSCodeLangClientPosition {
     const { line, character } = p;
-    return VSCodeLangClient.Position.create(line, character);
+    return VSCodeLangClientPosition.create(line, character);
 }
