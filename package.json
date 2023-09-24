@@ -2540,7 +2540,6 @@
     "packages/_server",
     "packages/_serverPatternMatcher",
     "packages/_settingsViewer",
-    "packages/_settingsViewerNext",
     "packages/client",
     "packages/_integrationTests"
   ],
