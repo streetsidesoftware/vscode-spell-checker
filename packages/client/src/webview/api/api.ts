@@ -1,7 +1,9 @@
-import { createDisposeMethodFromList, type DisposableLike, injectDisposable } from 'utils-disposables';
+import { stream as kefirStream } from 'kefir';
+import { createDisposable, createDisposeMethodFromList, type DisposableLike, injectDisposable } from 'utils-disposables';
 import { window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
 import { setLogLevel } from 'vscode-webview-rpc/logger';
+import type { AppState } from 'webview-api';
 import { createServerSideHelloWorldApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
@@ -37,12 +39,19 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
 
     const serverSideApi = createServerSideHelloWorldApi(connection, api);
     disposables.push(serverSideApi);
-    disposables.push(
-        store.state.subscribe((v) => {
-            setLogLevel(v.logLevel);
-            serverSideApi.clientNotification.onChangeAppState(v);
-        }),
-    );
+    {
+        const sub = kefirStream<AppState, Error>((emitter) => {
+            const disposable = store.state.subscribe((v) => emitter.value(v));
+            return disposable.dispose;
+        })
+            .debounce(10)
+            .observe((v) => {
+                setLogLevel(v.logLevel);
+                serverSideApi.clientNotification.onChangeAppState(v);
+            });
+
+        disposables.push(createDisposable(() => sub.unsubscribe()));
+    }
 
     return injectDisposable({ ...serverSideApi }, dispose);
 
