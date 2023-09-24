@@ -11,6 +11,7 @@ ignorePaths:
   - "*.log"
   - "*.vsix"
   - "*.tsv"
+  - "*.svg"
   - "**/__snapshots__/**"
   - "**/server.js"
   - "**/scripts/ts-json-schema-generator.cjs"

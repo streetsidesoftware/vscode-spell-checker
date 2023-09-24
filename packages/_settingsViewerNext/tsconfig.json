@@ -1,9 +1,0 @@
-{
-    "extends": "../../tsconfig.packages.base.json",
-    "compilerOptions": {
-        "outDir": "out",
-        "rootDir": "src"
-    },
-    "exclude": ["node_modules", ".vscode-test"],
-    "include": ["src"]
-}
