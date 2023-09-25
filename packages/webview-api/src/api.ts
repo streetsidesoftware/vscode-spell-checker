@@ -10,47 +10,59 @@ import type {
 } from 'vscode-webview-rpc';
 import { createClientApi, createServerApi } from 'vscode-webview-rpc';
 
-import type { AppState } from './apiModels';
+import type { LogLevel, RequestResult, SetValueRequest, SetValueResult, TextDocumentRef, TodoList, WatchFieldList } from './apiModels';
 
-export interface UpdateResult<T> {
-    success: boolean;
-    value: T;
-}
-
+/** Requests that can be made to the extension */
 export interface ServerRequestsAPI {
     whatTimeIsIt(): string;
-    getAppState(): AppState;
-    updateAppState(state: AppState): UpdateResult<AppState>;
-    resetTodos(): void;
+    getLogLevel(): RequestResult<LogLevel>;
+    getTodos(): RequestResult<TodoList>;
+    getCurrentDocument(): RequestResult<TextDocumentRef | null>;
+    resetTodos(): SetValueResult<TodoList>;
+    setLogLevel(req: SetValueRequest<LogLevel>): SetValueResult<LogLevel>;
+    setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;
+    watchState(req: WatchFieldList): void;
 }
 
+/** Notifications that can be sent to the extension */
 export interface ServerNotificationsAPI {
     showInformationMessage(message: string): void;
 }
 
+/**
+ * Requests that can be made from the extension to the webview or webviews
+ * Note: RPC requests to the client/webview is rare.
+ */
 export interface ClientRequestsAPI {}
 
+/** Notifications from the extension to the webview. */
 export interface ClientNotificationsAPI {
-    onChangeAppState: (state: AppState) => void;
+    onStateChange(change: WatchFieldList): void;
 }
 
-export interface HelloWorldAPI extends RpcAPI {
+export interface SpellInfoWebviewAPI extends RpcAPI {
     serverRequests: ApplyRequestAPI<ServerRequestsAPI>;
     serverNotifications: ApplyNotificationAPI<ServerNotificationsAPI>;
     clientRequests: ApplyRequestAPI<ClientRequestsAPI>;
     clientNotifications: ApplyNotificationAPI<ClientNotificationsAPI>;
 }
 
-export interface ServerSideApi extends ServerSideMethods<HelloWorldAPI> {}
-export interface ClientSideApi extends ClientSideMethods<HelloWorldAPI> {}
+/**
+ * Used on the server side (in the extension) to communicate with the webviews.
+ */
+export interface ServerSideApi extends ServerSideMethods<SpellInfoWebviewAPI> {}
+/**
+ * Used in the webviews to communicate with the extension.
+ */
+export interface ClientSideApi extends ClientSideMethods<SpellInfoWebviewAPI> {}
 
-export type ServerSideApiDef = ServerAPIDef<HelloWorldAPI>;
-export type ClientSideApiDef = ClientAPIDef<HelloWorldAPI>;
+export type ServerSideApiDef = ServerAPIDef<SpellInfoWebviewAPI>;
+export type ClientSideApiDef = ClientAPIDef<SpellInfoWebviewAPI>;
 
-export function createServerSideHelloWorldApi(connection: MessageConnection, api: ServerAPIDef<HelloWorldAPI>): ServerSideApi {
+export function createServerSideSpellInfoWebviewApi(connection: MessageConnection, api: ServerAPIDef<SpellInfoWebviewAPI>): ServerSideApi {
     return createServerApi(connection, api);
 }
 
-export function createClientSideHelloWorldApi(connection: MessageConnection, api: ClientAPIDef<HelloWorldAPI>): ClientSideApi {
+export function createClientSideSpellInfoWebviewApi(connection: MessageConnection, api: ClientAPIDef<SpellInfoWebviewAPI>): ClientSideApi {
     return createClientApi(connection, api);
 }

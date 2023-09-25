@@ -1,15 +1,27 @@
 import deepEqual from 'fast-deep-equal';
-import { createDisposable, type DisposableHybrid as Disposable } from 'utils-disposables';
+import type { DisposableHybrid as Disposable, DisposableLike, DisposeFn } from 'utils-disposables';
+import { createDisposable, disposeOf } from 'utils-disposables';
 
-export interface ObservableValue<T> {
+export type MakeSubscribable<T, RO extends keyof T | never = never> = {
+    [K in keyof T]: K extends RO ? SubscribableValue<T[K]> : ObservableValue<T[K]>;
+};
+
+export type SubscriberFn<T> = (v: T) => void;
+
+export interface SubscribableValue<T> {
+    value: T | undefined;
+    subscribe(s: SubscriberFn<T>): Disposable;
+}
+
+export interface ObservableValue<T> extends SubscribableValue<T> {
     value: T;
     set(v: T): void;
     update(u: (v: T) => T): void;
-    subscribe(s: (v: T) => unknown): Disposable;
 }
+
 class Observable<T> implements ObservableValue<T> {
     private _value: T;
-    private _subscriptions = new Set<(v: T) => unknown>();
+    private _subscriptions = new Set<SubscriberFn<T>>();
     private _busy = false;
     constructor(value: T) {
         this._value = value;
@@ -53,6 +65,88 @@ class Observable<T> implements ObservableValue<T> {
         }
     }
 }
+
 export function createStoreValue<T>(v: T): ObservableValue<T> {
     return new Observable(v);
+}
+
+export type SubscribeFn<T> = (emitter: (v: T) => void) => DisposableLike | DisposeFn | undefined;
+
+const symbolNotSet = Symbol('A values that has not been set.');
+
+interface CreateSubscribableValueOptions {
+    timeout?: number;
+}
+
+export function createSubscribableValue<T>(
+    subscribe: SubscribeFn<T>,
+    initialValue?: T,
+    options?: CreateSubscribableValueOptions,
+): SubscribableValue<T> {
+    const timeout = options?.timeout ?? 5000;
+    const _subscriptions = new Set<SubscriberFn<T>>();
+    let started = false;
+    let value: T | typeof symbolNotSet = initialValue !== undefined ? initialValue : symbolNotSet;
+    let dispose: DisposableLike | DisposeFn | undefined;
+    let _busy = false;
+
+    function stop() {
+        if (_subscriptions.size) return;
+
+        started = false;
+        dispose && disposeOf(dispose);
+    }
+
+    function unSub(s: SubscriberFn<T>) {
+        _subscriptions.delete(s);
+        setTimeout(stop, timeout);
+    }
+
+    function sub(s: SubscriberFn<T>): Disposable {
+        _subscriptions.add(s);
+        if (value !== symbolNotSet) {
+            s(value);
+        }
+        start();
+        return createDisposable(() => unSub(s));
+    }
+
+    function start() {
+        if (started) return;
+
+        dispose = subscribe(notify);
+    }
+
+    function notify(v: T) {
+        value = v;
+        if (_busy) return;
+        try {
+            _busy = true;
+            for (const s of _subscriptions) {
+                s(v);
+            }
+        } finally {
+            _busy = false;
+        }
+    }
+
+    return {
+        get value() {
+            return value === symbolNotSet ? undefined : value;
+        },
+        subscribe: sub,
+    };
+}
+
+export function awaitForSubscribable<T>(sub: SubscribableValue<T>): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        let disposable: DisposableLike | undefined;
+        try {
+            disposable = sub.subscribe(resolve);
+        } catch (e) {
+            reject(e);
+        } finally {
+            disposable && disposeOf(disposable);
+        }
+    });
 }

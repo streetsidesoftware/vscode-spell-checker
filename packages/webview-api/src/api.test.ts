@@ -14,23 +14,27 @@ describe('api', () => {
         const connection = getConnection();
         const clientInterface: ClientSideApiDef = {
             clientNotifications: {
-                onChangeAppState: true,
+                onStateChange: true,
             },
             clientRequests: {},
             serverNotifications: {
                 showInformationMessage: true,
             },
             serverRequests: {
-                getAppState: true,
-                whatTimeIsIt: true,
-                updateAppState: true,
+                getCurrentDocument: true,
+                getLogLevel: true,
+                getTodos: true,
                 resetTodos: true,
+                setLogLevel: true,
+                setTodos: true,
+                watchState: true,
+                whatTimeIsIt: true,
             },
         };
-        const client = api.createClientSideHelloWorldApi(connection, clientInterface);
+        const client = api.createClientSideSpellInfoWebviewApi(connection, clientInterface);
         expect(client).toBeDefined();
-        expect(client.serverRequest.getAppState).toBeTypeOf('function');
-        const fn: (...p: any) => any = client.serverRequest.updateAppState;
+        expect(client.serverRequest.getTodos).toBeTypeOf('function');
+        const fn: (...p: any) => any = client.serverRequest.setTodos;
         expect(fn).toBeTypeOf('function');
         const methods = Object.entries(client).flatMap(([key, value]) =>
             Object.entries(value).map(([k, v]) => [key + '.' + k, v] as const),

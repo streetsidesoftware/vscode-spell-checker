@@ -1,5 +1,7 @@
 import type { LogLevel } from 'vscode-webview-rpc';
 
+export type { LogLevel } from 'vscode-webview-rpc';
+
 export interface Todo {
     uuid: number;
     done: boolean;
@@ -13,9 +15,31 @@ export interface TextDocumentRef {
     version: number;
 }
 
-export interface AppState {
-    seq: number;
+export interface AppStateData {
     todos: TodoList;
     logLevel: LogLevel;
-    currentDocument?: TextDocumentRef;
+    readonly currentDocument: TextDocumentRef | null;
+}
+
+export type WatchFields = keyof AppStateData;
+export type WatchFieldList = WatchFields[];
+
+export interface RequestResult<T> {
+    /** sequence number to use for future set requests. */
+    seq: number;
+    /** the current value */
+    value: T;
+}
+
+export interface SetValueRequest<T> {
+    /** Use the sequence number to ensure it is the right version to update. */
+    seq: number | undefined;
+    value: T;
+}
+
+export interface SetValueResult<T> extends RequestResult<T> {
+    /** sequence number to use for future set requests. */
+    seq: number;
+    /** was it successful? */
+    success: boolean;
 }
