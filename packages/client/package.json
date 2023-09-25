@@ -67,7 +67,7 @@
     "kefir": "^3.8.8",
     "utils-disposables": "file:../utils-disposables",
     "vscode-jsonrpc": "^8.2.0",
-    "vscode-languageclient": "^8.1.0",
+    "vscode-languageclient": "^9.0.0",
     "vscode-uri": "^3.0.7",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api",
