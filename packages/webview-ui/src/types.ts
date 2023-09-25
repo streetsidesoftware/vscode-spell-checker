@@ -1,6 +1,4 @@
-import type { AppState } from 'webview-api';
 export interface WebViewState {
-    todos?: AppState;
     showVsCodeComponents?: boolean;
 }
 

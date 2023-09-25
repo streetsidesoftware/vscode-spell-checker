@@ -33,13 +33,11 @@ export interface RequestResult<T> {
 
 export interface SetValueRequest<T> {
     /** Use the sequence number to ensure it is the right version to update. */
-    seq: number | undefined;
+    seq?: number | undefined;
     value: T;
 }
 
 export interface SetValueResult<T> extends RequestResult<T> {
-    /** sequence number to use for future set requests. */
-    seq: number;
     /** was it successful? */
     success: boolean;
 }

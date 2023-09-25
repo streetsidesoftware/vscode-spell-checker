@@ -1,36 +1,41 @@
 <script lang="ts">
+  import { useMutation } from '@sveltestack/svelte-query';
   import type { Todo } from '../api';
   import { getClientApi } from '../api';
   import VscodeButton from '../components/VscodeButton.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
   import VscodeTextField from '../components/VscodeTextField.svelte';
-  import { appState, todos } from '../state/appState';
+  import { queryLogLevel, queryTodos } from '../state/query';
   import type { TextInputEvent } from '../types';
+  import type { TodoList } from 'webview-api';
 
   const api = getClientApi();
+  const qTodos = queryTodos();
+  const qLogLevel = queryLogLevel();
+  const mutateTodos = useMutation<unknown, unknown, TodoList>('todos');
 
-  $: remaining = $todos.filter((t) => !t.done).length || 0;
+  $: todos = $qTodos.data;
+  $: remaining = todos?.filter((t) => !t.done).length || 0;
 
   let focusTodo: Todo | undefined;
 
   let currTodo: Todo | undefined = undefined;
 
   async function add() {
-    todos.update((todos) => {
-      const todo = {
-        uuid: Math.random() * 100000 + Date.now(),
-        done: false,
-        text: '',
-      };
-      focusTodo = todo;
-      currTodo = todo;
-      todos.push(todo);
-      return todos;
-    });
+    const nextTodos = todos || [];
+    const todo = {
+      uuid: Math.random() * 100000 + Date.now(),
+      done: false,
+      text: '',
+    };
+    nextTodos.push(todo);
+    focusTodo = todo;
+    currTodo = todo;
   }
 
   function clear() {
-    todos.update((todos) => todos.filter((t) => !t.done));
+    const nextTodos = (todos || []).filter((t) => !t.done);
+    $mutateTodos.mutate(nextTodos);
   }
 
   function reset() {
@@ -38,7 +43,7 @@
   }
 
   function changed(index: number) {
-    if (index + 1 === $todos.length) {
+    if (index + 1 === todos?.length) {
       add();
     }
   }
@@ -54,9 +59,9 @@
   <h1>todos</h1>
 
   <form on:submit|preventDefault>
-    {#if $todos}
+    {#if todos}
       <ul class="todos">
-        {#each $todos as todo, index (todo.uuid)}
+        {#each todos as todo, index (todo.uuid)}
           <li class="todo-item" class:done={todo.done}>
             <VscodeTextField
               inputType="text"
@@ -82,7 +87,7 @@
     {/if}
 
     <p>{remaining} remaining</p>
-    <p>Log Level: {$appState.logLevel}</p>
+    <p>Log Level: {$qLogLevel.data}</p>
 
     <div class="todo-actions">
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->

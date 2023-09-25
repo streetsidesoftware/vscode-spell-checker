@@ -107,7 +107,8 @@ export function createDisposeMethodFromList(disposables: DisposableLike[]): () =
  * @param disposable - Disposable or function to call.
  * @returns void
  */
-export function disposeOf(disposable: DisposableLike | DisposeFn): void {
+export function disposeOf(disposable: DisposableLike | DisposeFn | undefined): void {
+    if (!disposable) return;
     if (typeof disposable === 'function') {
         disposable();
         return;

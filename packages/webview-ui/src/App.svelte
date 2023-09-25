@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { provideVSCodeDesignSystem, allComponents } from '@vscode/webview-ui-toolkit';
-  import Todo from './views/Todo.svelte';
+  import { onDestroy } from 'svelte';
+  import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+  import { allComponents, provideVSCodeDesignSystem } from '@vscode/webview-ui-toolkit';
+  import { supportedViewsByName } from './api';
+  import { bindQueryClientToApi } from './state/query';
   import CSpellInfo from './views/CSpellInfo.svelte';
   import HelloWorld from './views/HelloWorld.svelte';
-  import { supportedViewsByName } from './api';
+  import Todo from './views/Todo.svelte';
 
   // In order to use the Webview UI Toolkit web components they
   // must be registered with the browser (i.e. webview) using the
@@ -26,20 +29,28 @@
 
   export let name: string;
   export let view: string | undefined | null;
+
+  const queryClient = new QueryClient();
+  onDestroy(() => {
+    bindQueryClientToApi(queryClient).dispose;
+    queryClient.clear();
+  });
 </script>
 
 <main>
-  <div class="main-container">
-    {#if view == supportedViewsByName['hello-world']}
-      <HelloWorld {name} />
-    {:else if view == supportedViewsByName.todo}
-      <Todo />
-    {:else if view == supportedViewsByName['cspell-info']}
-      <CSpellInfo />
-    {:else}
-      <h1>Unknown View {view}</h1>
-    {/if}
-  </div>
+  <QueryClientProvider client={queryClient}>
+    <div class="main-container">
+      {#if view == supportedViewsByName['hello-world']}
+        <HelloWorld {name} />
+      {:else if view == supportedViewsByName.todo}
+        <Todo />
+      {:else if view == supportedViewsByName['cspell-info']}
+        <CSpellInfo />
+      {:else}
+        <h1>Unknown View {view}</h1>
+      {/if}
+    </div>
+  </QueryClientProvider>
 </main>
 
 <style>

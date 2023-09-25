@@ -1,2 +1,2 @@
-export { store, updateAppStateData } from './store';
 export { awaitForSubscribable } from './ObservableValue';
+export { store } from './store';

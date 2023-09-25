@@ -1,9 +1,9 @@
 import { getRpcConnection, getVsCodeApi as rpcGetVsCodeApi } from 'vscode-webview-rpc/webview';
-import { type ClientSideApi, createClientSideHelloWorldApi } from 'webview-api';
+import { type ClientSideApi, createClientSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { WebViewState } from './types';
 
-export type { AppState, Todo } from 'webview-api';
+export type { Todo } from 'webview-api';
 export { supportedViewsByName } from 'webview-api';
 
 export interface API extends ClientSideApi {}
@@ -30,18 +30,22 @@ export function setLocalState(state: WebViewState) {
 
 function createApi(): API {
     const connection = getRpcConnection();
-    const clientSide = createClientSideHelloWorldApi(connection, {
+    const clientSide = createClientSideSpellInfoWebviewApi(connection, {
         serverNotifications: {
             showInformationMessage: true,
         },
         serverRequests: {
             whatTimeIsIt: true,
-            updateAppState: true,
-            getAppState: true,
+            getCurrentDocument: true,
+            getLogLevel: true,
+            getTodos: true,
             resetTodos: true,
+            setLogLevel: true,
+            setTodos: true,
+            watchState: true,
         },
         clientNotifications: {
-            onChangeAppState: true,
+            onStateChange: true,
         },
         clientRequests: {},
     });

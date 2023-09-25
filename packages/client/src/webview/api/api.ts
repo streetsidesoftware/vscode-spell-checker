@@ -1,13 +1,13 @@
-import { createDisposeMethodFromList, type DisposableLike, injectDisposable } from 'utils-disposables';
+import { createDisposeMethodFromList, type DisposableLike, disposeOf, injectDisposable } from 'utils-disposables';
 import { window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
-import type { RequestResult, SetValueRequest, SetValueResult } from 'webview-api';
+import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList } from 'webview-api';
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
 import { awaitForSubscribable, store } from '../AppState';
 import type { ObservableValue, SubscribableValue } from '../AppState/ObservableValue';
-import { type Storage, updateState } from '../AppState/store';
+import { type Storage, updateState, watchFieldList } from '../AppState/store';
 import { sampleList } from './staticData';
 
 export function createApi(connection: MessageConnection) {
@@ -15,7 +15,8 @@ export function createApi(connection: MessageConnection) {
 }
 
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
-    const disposables: DisposableLike[] = [];
+    let watcher: DisposableLike | undefined = undefined;
+    const disposables: DisposableLike[] = [() => disposeOf(watcher)];
     const dispose = createDisposeMethodFromList(disposables);
 
     const api: ServerSideApiDef = {
@@ -26,7 +27,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
             setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
-            watchState(_req) {},
+            watchState,
             resetTodos,
         },
         serverNotifications: {
@@ -42,6 +43,11 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
     disposables.push(serverSideApi);
 
     return injectDisposable({ ...serverSideApi }, dispose);
+
+    function watchState(req: WatchFieldList) {
+        disposeOf(watcher);
+        watcher = watchFieldList(req, (fields) => serverSideApi.clientNotification.onStateChange(fields));
+    }
 
     /**
      * Get the time

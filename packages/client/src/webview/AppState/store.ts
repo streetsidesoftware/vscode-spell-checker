@@ -3,6 +3,7 @@ import { createDisposableFromList } from 'utils-disposables';
 import type { TextEditor } from 'vscode';
 import { window } from 'vscode';
 import { getLogLevel } from 'vscode-webview-rpc/logger';
+import type { WatchFieldList } from 'webview-api';
 
 import type { AppStateData } from '../apiTypes';
 import type { MakeSubscribable, ObservableValue, SubscriberFn } from './ObservableValue';
@@ -68,4 +69,14 @@ export function updateState<T>(seq: number | undefined, value: T, s: ObservableV
     store.seq++;
     s.set(value);
     return { seq: store.seq, value: s.value, success: true };
+}
+
+export function watchFieldList(list: WatchFieldList, onChange: (changedFields: WatchFieldList) => void): DisposableHybrid {
+    const disposables = list
+        .map((field) => ({ field, sub: store.state[field] }))
+        .map((ss) => {
+            return ss.sub.subscribe(() => onChange([ss.field]));
+        });
+
+    return createDisposableFromList(disposables);
 }
