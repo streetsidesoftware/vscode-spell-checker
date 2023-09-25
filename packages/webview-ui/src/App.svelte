@@ -31,8 +31,9 @@
   export let view: string | undefined | null;
 
   const queryClient = new QueryClient();
+  const disposable = bindQueryClientToApi(queryClient);
   onDestroy(() => {
-    bindQueryClientToApi(queryClient).dispose;
+    disposable.dispose;
     queryClient.clear();
   });
 </script>

@@ -12,7 +12,7 @@
   const api = getClientApi();
   const qTodos = queryTodos();
   const qLogLevel = queryLogLevel();
-  const mutateTodos = useMutation<unknown, unknown, TodoList>('todos');
+  const mutateTodos = useMutation<unknown, unknown, TodoList>('setTodos');
 
   $: todos = $qTodos.data;
   $: remaining = todos?.filter((t) => !t.done).length || 0;
