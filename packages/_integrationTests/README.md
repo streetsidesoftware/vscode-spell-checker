@@ -12,3 +12,8 @@ Could not identify extension for 'vscode' require call from ...
 ```
 
 These are cause because we are running the test runner from a different copy of vscode than the one use by the extension. It can be safely ignored.
+
+## Environment Variables
+
+-   `VSIX_LOCATION` - tell the test runner to use a pre-made .vsix file.
+-   `VSCODE_VERSION` - tell the test runner which version of vscode to download.

@@ -53,4 +53,48 @@ jobs:
         env:
           VSCODE_VERSION: ${{ matrix.vscode-version }}
         run: npm run test-client-integration
+
+  run-integration-tests-vsix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version:
+          - ${{ vars.DEFAULT_NODE_VERSION }}
+        vscode-version: [stable]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install
+        run: |
+          npm i
+
+      - name: Build .vsix file
+        run: npm run test-vsce-build
+
+      - name: Build files for testing
+        run: npm run build
+
+      - name: Run Linux
+        if: runner.os == 'Linux'
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}
+          VSIX_LOCATION: ./temp/code-spell-checker.vsix
+        run: xvfb-run -a npm run test-client-integration
+
+      - name: Run Windows and MacOS
+        if: runner.os != 'Linux'
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}
+          VSIX_LOCATION: ./temp/code-spell-checker.vsix
+        run: npm run test-client-integration
 # cspell:ignore xvfb
