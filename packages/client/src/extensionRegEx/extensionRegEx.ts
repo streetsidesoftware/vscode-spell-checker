@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
 
     vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
 
-    let timeout: NodeJS.Timer | undefined = undefined;
+    let timeout: NodeJS.Timeout | undefined = undefined;
 
     // create a decorator type that we use to decorate small numbers
     const decorationTypeExclude = vscode.window.createTextEditorDecorationType({
