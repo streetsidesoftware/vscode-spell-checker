@@ -1,6 +1,6 @@
 import type { LogLevel } from 'vscode-webview-rpc';
 
-export type { LogLevel } from 'vscode-webview-rpc';
+export { LogLevel } from 'vscode-webview-rpc';
 
 export interface Todo {
     uuid: number;

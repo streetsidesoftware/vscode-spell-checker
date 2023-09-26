@@ -28,7 +28,7 @@ export interface DisposableClassic {
 
 export type DisposableProposed = Disposable;
 
-export type DisposableLike = DisposableHybrid | DisposableClassic | DisposableProposed;
+export type DisposableLike = DisposableHybrid | DisposableClassic | DisposableProposed | DisposeFn;
 
 // export interface AsyncDisposable {
 //   asyncDispose(): void;
@@ -119,4 +119,19 @@ export function disposeOf(disposable: DisposableLike | DisposeFn | undefined): v
         return;
     }
     _disposable.dispose.call(disposable);
+}
+
+/** This is a class that can be inherited to provide Disposable support. */
+export class InheritableDisposable implements DisposableHybrid {
+    public dispose: () => void;
+    public [Symbol.dispose]: () => void = () => undefined;
+
+    /** the inherited class can safely add disposables to _disposables */
+    protected readonly _disposables: DisposableLike[];
+    constructor(disposables?: DisposableLike[]) {
+        this._disposables = disposables ?? [];
+        const dispose = createDisposeMethodFromList(this._disposables);
+        this.dispose = dispose;
+        this[Symbol.dispose] = dispose;
+    }
 }

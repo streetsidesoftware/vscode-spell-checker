@@ -1,13 +1,13 @@
 import { createDisposeMethodFromList, type DisposableLike, disposeOf, injectDisposable } from 'utils-disposables';
 import { window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
-import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList } from 'webview-api';
+import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
 import { awaitForSubscribable, store } from '../AppState';
-import type { ObservableValue, SubscribableValue } from '../AppState/ObservableValue';
 import { type Storage, updateState, watchFieldList } from '../AppState/store';
+import type { ObservableValue, SubscribableValue } from '../AppState/Subscribables';
 import { sampleList } from './staticData';
 
 export function createApi(connection: MessageConnection) {
@@ -16,6 +16,7 @@ export function createApi(connection: MessageConnection) {
 
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     let watcher: DisposableLike | undefined = undefined;
+    const fieldsToWatch = new Set<WatchFields>();
     const disposables: DisposableLike[] = [() => disposeOf(watcher)];
     const dispose = createDisposeMethodFromList(disposables);
 
@@ -27,7 +28,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
             setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
-            watchState,
+            watchFields,
             resetTodos,
         },
         serverNotifications: {
@@ -44,9 +45,14 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
 
     return injectDisposable({ ...serverSideApi }, dispose);
 
-    function watchState(req: WatchFieldList) {
+    /** Add fields to be watched. */
+    function watchFields(req: WatchFieldList) {
         disposeOf(watcher);
-        watcher = watchFieldList(req, (fields) => serverSideApi.clientNotification.onStateChange(fields));
+        req.forEach((field) => fieldsToWatch.add(field));
+        watcher = watchFieldList(fieldsToWatch, (fields) => {
+            // console.warn('Notify fields: %o', fields);
+            serverSideApi.clientNotification.onStateChange(fields);
+        });
     }
 
     /**
@@ -77,10 +83,12 @@ function resolveRequest<T>(s: SubscribableValue<T>): Promise<RequestResult<T>> {
 }
 
 async function asyncToResultP<T>(value: Promise<T>): Promise<RequestResult<T>> {
-    return toResult(await value);
+    const resolved = await value;
+    return toResult(resolved);
 }
 
 function toResult<T>(value: T): RequestResult<T> {
+    // console.warn('toResult: %o', value);
     return {
         seq: store.seq,
         value,

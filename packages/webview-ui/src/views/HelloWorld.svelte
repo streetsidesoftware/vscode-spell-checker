@@ -5,21 +5,19 @@
   import { getClientApi, getLocalState } from '../api';
   import VscodeButton from '../components/VscodeButton.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
-  import { queryLogLevel, queryTodos } from '../state/query';
   import VsCodeComponents from './VSCodeComponents.svelte';
-  import { useMutation } from '@sveltestack/svelte-query';
+  import { appState } from '../state/appState';
 
   export let showVsCodeComponents = getLocalState()?.showVsCodeComponents || false;
   export let name: string;
 
   const api = getClientApi();
 
-  const qLogLevel = queryLogLevel();
-  const qTodos = queryTodos();
-  const mutateLogLevel = useMutation<unknown, unknown, LogLevel>('setLogLevel');
-  $: logLevel = $qLogLevel.data;
+  const sLogLevel = appState.logLevel();
+  const sTodos = appState.todos();
+  $: logLevel = $sLogLevel;
   $: logDebug = (logLevel && logLevel <= LogLevel.debug) || false;
-  $: todos = $qTodos.data;
+  $: todos = $sTodos;
 
   let messages: string[] = [];
 
@@ -38,15 +36,14 @@
   function setLogDebug(checked: boolean) {
     if (checked === undefined) return;
     if (checked === logDebug) return;
-    const nextLogLevel = logDebug && (!logLevel || logLevel > LogLevel.debug) ? LogLevel.debug : LogLevel.none;
+    const nextLogLevel = checked && (!logLevel || logLevel > LogLevel.debug) ? LogLevel.debug : LogLevel.none;
     if (nextLogLevel === logLevel) return;
-    $mutateLogLevel.mutate(nextLogLevel);
+    sLogLevel.set(nextLogLevel);
   }
 
-  function changeLogDebug(e: Event) {
-    const ce = e as ChangeEvent<Checkbox>;
-    ce.preventDefault();
-    setLogDebug(ce.currentTarget.checked);
+  function changeLogDebug(e: CustomEvent<ChangeEvent<Checkbox>>) {
+    e.preventDefault();
+    setLogDebug(e.detail.currentTarget.checked);
   }
 </script>
 

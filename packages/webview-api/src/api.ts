@@ -12,6 +12,8 @@ import { createClientApi, createServerApi } from 'vscode-webview-rpc';
 
 import type { LogLevel, RequestResult, SetValueRequest, SetValueResult, TextDocumentRef, TodoList, WatchFieldList } from './apiModels';
 
+export { setLogLevel } from 'vscode-webview-rpc/logger';
+
 /** Requests that can be made to the extension */
 export interface ServerRequestsAPI {
     whatTimeIsIt(): string;
@@ -21,7 +23,7 @@ export interface ServerRequestsAPI {
     resetTodos(): SetValueResult<TodoList>;
     setLogLevel(req: SetValueRequest<LogLevel>): SetValueResult<LogLevel>;
     setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;
-    watchState(req: WatchFieldList): void;
+    watchFields(req: WatchFieldList): void;
 }
 
 /** Notifications that can be sent to the extension */

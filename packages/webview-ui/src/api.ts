@@ -42,7 +42,7 @@ function createApi(): API {
             resetTodos: true,
             setLogLevel: true,
             setTodos: true,
-            watchState: true,
+            watchFields: true,
         },
         clientNotifications: {
             onStateChange: true,

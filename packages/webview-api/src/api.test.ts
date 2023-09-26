@@ -27,7 +27,7 @@ describe('api', () => {
                 resetTodos: true,
                 setLogLevel: true,
                 setTodos: true,
-                watchState: true,
+                watchFields: true,
                 whatTimeIsIt: true,
             },
         };

@@ -1,16 +1,10 @@
 <script lang="ts">
-  import { useQuery } from '@sveltestack/svelte-query';
-  import { getClientApi } from '../api';
-  import { queryCurrentDocument, queryLogLevel } from '../state/query';
+  import { appState } from '../state/appState';
 
-  const api = getClientApi();
-
-  const qDoc = queryCurrentDocument();
-  const qLogLevel = queryLogLevel();
-
-  $: currentDoc = $qDoc.data;
-  $: docUrl = currentDoc ? new URL(currentDoc.url) : undefined;
+  $: currentDoc = appState.currentDocument();
+  $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
   $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
+  $: logLevel = appState.logLevel();
 </script>
 
 <section>
@@ -19,8 +13,8 @@
   <ul>
     <li>name: {name}</li>
     <li>file: {docUrl ?? 'none'}</li>
-    <li>version: {currentDoc?.version ?? 'n/a'}</li>
-    <li>LogLevel: {$qLogLevel.data}</li>
+    <li>version: {$currentDoc?.version ?? 'n/a'}</li>
+    <li>State LogLevel: {$logLevel}</li>
   </ul>
 </section>
 
