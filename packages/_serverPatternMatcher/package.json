@@ -52,7 +52,7 @@
     "cspell-lib": "^7.3.6",
     "regexp-worker": "^2.0.2",
     "vscode-languageserver-textdocument": "^1.0.11",
-    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver": "^9.0.1",
     "vscode-uri": "^3.0.7"
   },
   "scripts": {
@@ -75,6 +75,6 @@
     "watch:tsc": "npm run build:tsc -- --watch"
   },
   "engines": {
-    "node": ">16.0.0"
+    "node": ">18.0.0"
   }
 }

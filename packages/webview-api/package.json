@@ -19,7 +19,7 @@
     "vscode-webview-rpc": "file:../webview-rpc"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">18.0.0"
   },
   "devDependencies": {
     "vitest": "^0.34.5"

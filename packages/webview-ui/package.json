@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
+    "clean": "shx rm -rf out",
     "compile": "tsc -p .",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
@@ -38,6 +39,6 @@
     "typescript": "^5.2.2"
   },
   "engines": {
-    "node": ">16.0"
+    "node": ">18.0"
   }
 }

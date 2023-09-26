@@ -17,8 +17,8 @@
   },
   "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
   "engines": {
-    "node": ">16.0.0",
-    "vscode": "^1.80.0"
+    "node": ">18.0.0",
+    "vscode": "^1.82.0"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/streetsidesoftware"
