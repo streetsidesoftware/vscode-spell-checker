@@ -85,6 +85,7 @@ streetsidesoftware
 stylesheets
 subfolder
 subpath
+sveltestack
 textdocument
 todos
 truetype

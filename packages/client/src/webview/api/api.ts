@@ -1,16 +1,13 @@
-import { stream as kefirStream } from 'kefir';
-import { createDisposable, createDisposeMethodFromList, type DisposableLike, injectDisposable } from 'utils-disposables';
+import { createDisposeMethodFromList, type DisposableLike, disposeOf, injectDisposable } from 'utils-disposables';
 import { window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
-import { setLogLevel } from 'vscode-webview-rpc/logger';
-import type { AppState } from 'webview-api';
-import { createServerSideHelloWorldApi } from 'webview-api';
+import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
+import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
-import { updateAppState } from '../AppState';
-import type { Storage } from '../AppState/store';
-import { store } from '../AppState/store';
-import { log } from '../logger';
+import { awaitForSubscribable, store } from '../AppState';
+import { type Storage, updateState, watchFieldList } from '../AppState/store';
+import type { ObservableValue, SubscribableValue } from '../AppState/Subscribables';
 import { sampleList } from './staticData';
 
 export function createApi(connection: MessageConnection) {
@@ -18,14 +15,20 @@ export function createApi(connection: MessageConnection) {
 }
 
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
-    const disposables: DisposableLike[] = [];
+    let watcher: DisposableLike | undefined = undefined;
+    const fieldsToWatch = new Set<WatchFields>();
+    const disposables: DisposableLike[] = [() => disposeOf(watcher)];
     const dispose = createDisposeMethodFromList(disposables);
 
     const api: ServerSideApiDef = {
         serverRequests: {
             whatTimeIsIt,
-            updateAppState,
-            getAppState,
+            getLogLevel: () => resolveRequest(store.state.logLevel),
+            getTodos: () => resolveRequest(store.state.todos),
+            getCurrentDocument: () => resolveRequest(store.state.currentDocument),
+            setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
+            setTodos: (r) => updateStateRequest(r, store.state.todos),
+            watchFields,
             resetTodos,
         },
         serverNotifications: {
@@ -34,48 +37,60 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             },
         },
         clientRequests: {},
-        clientNotifications: { onChangeAppState: true },
+        clientNotifications: { onStateChange: true },
     };
 
-    const serverSideApi = createServerSideHelloWorldApi(connection, api);
+    const serverSideApi = createServerSideSpellInfoWebviewApi(connection, api);
     disposables.push(serverSideApi);
-    {
-        const sub = kefirStream<AppState, Error>((emitter) => {
-            const disposable = store.state.subscribe((v) => emitter.value(v));
-            return disposable.dispose;
-        })
-            .debounce(10)
-            .observe((v) => {
-                setLogLevel(v.logLevel);
-                serverSideApi.clientNotification.onChangeAppState(v);
-            });
-
-        disposables.push(createDisposable(() => sub.unsubscribe()));
-    }
 
     return injectDisposable({ ...serverSideApi }, dispose);
+
+    /** Add fields to be watched. */
+    function watchFields(req: WatchFieldList) {
+        disposeOf(watcher);
+        req.forEach((field) => fieldsToWatch.add(field));
+        watcher = watchFieldList(fieldsToWatch, (fields) => {
+            // console.warn('Notify fields: %o', fields);
+            serverSideApi.clientNotification.onStateChange(fields);
+        });
+    }
 
     /**
      * Get the time
      */
-    async function whatTimeIsIt() {
+    function whatTimeIsIt() {
         return new Date().toString();
-    }
-
-    /**
-     * Fetch the todo list
-     */
-    function getAppState() {
-        const v = store.state.value;
-        log('getAppState, found: %o', v);
-        return v;
     }
 
     /**
      * Reset the Todo list
      */
     function resetTodos() {
-        const current = store.state.value;
-        updateAppState({ ...current, todos: sampleList.map((todo) => ({ ...todo })) });
+        return updateState(
+            undefined,
+            sampleList.map((todo) => ({ ...todo })),
+            store.state.todos,
+        );
     }
+}
+
+function updateStateRequest<T>(r: SetValueRequest<T>, s: ObservableValue<T>): SetValueResult<T> {
+    return updateState(r.seq, r.value, s);
+}
+
+function resolveRequest<T>(s: SubscribableValue<T>): Promise<RequestResult<T>> {
+    return asyncToResultP(awaitForSubscribable(s));
+}
+
+async function asyncToResultP<T>(value: Promise<T>): Promise<RequestResult<T>> {
+    const resolved = await value;
+    return toResult(resolved);
+}
+
+function toResult<T>(value: T): RequestResult<T> {
+    // console.warn('toResult: %o', value);
+    return {
+        seq: store.seq,
+        value,
+    };
 }

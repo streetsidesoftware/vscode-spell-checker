@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Checkbox } from '@vscode/webview-ui-toolkit';
-  import type { ChangeEvent } from '../types';
   import { createEventDispatcher } from 'svelte';
+  import type { ChangeEvent } from '../types';
+  import type { Checkbox } from '@vscode/webview-ui-toolkit';
 
   /** Determines if the element should receive document focus on page load. */
   export let autofocus: boolean | undefined = undefined;
@@ -28,4 +28,4 @@
 </script>
 
 <!-- svelte-ignore a11y-autofocus -->
-<vscode-checkbox {checked} {...props} on:change={handleChecked} on:focus on:blur on:input><slot /></vscode-checkbox>
+<vscode-checkbox on:change={handleChecked} on:focus on:blur on:input {checked} {...props}><slot /></vscode-checkbox>

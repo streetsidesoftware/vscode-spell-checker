@@ -1,35 +1,97 @@
-import { log, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
+import type { AppStateData, WatchFieldList, WatchFields } from 'webview-api';
+import { LogLevel, setLogLevel } from 'webview-api';
 
-import type { AppState } from '../api';
 import { getClientApi } from '../api';
-import { createClientServerStore, shadowStore } from './store';
-
-const csAppState = createClientServerStore<AppState>({ seq: -1, todos: [], logLevel: LogLevel.none });
-
-export const appState = csAppState.client;
-export const todos = shadowStore(appState, 'todos');
+import {
+    type ClientServerStore,
+    createClientServerStore,
+    createReadonlyClientServerStore,
+    type ReadonlyClientServerStore,
+    type Subscribable,
+} from './store';
 
 const api = getClientApi();
 
-// Watch for changes to send to the server
-csAppState.server.subscribe(async (v) => {
-    if (!v) return;
-    const result = await api.serverRequest.updateAppState(v);
-    csAppState.server.set(result.value);
-});
+class AppState {
+    private csLogLevel: ClientServerStore<AppStateData['logLevel'], 'logLevel'> | undefined;
+    private csTodos: ClientServerStore<AppStateData['todos'], 'todos'> | undefined;
+    private csCurrentDocument: ReadonlyClientServerStore<AppStateData['currentDocument'], 'currentDocument'> | undefined;
 
-// Watch for changes from the server
-api.clientNotification.onChangeAppState.subscribe((updated) => {
-    csAppState.server.set(updated);
-    setLogLevel(updated.logLevel);
-});
+    logLevel() {
+        if (this.csLogLevel) {
+            return this.csLogLevel.client;
+        }
+        const cs = createClientServerStore<AppStateData['logLevel'], 'logLevel'>({
+            name: 'logLevel',
+            initialValue: LogLevel.none,
+            query: async () => {
+                const value = (await api.serverRequest.getLogLevel()).value;
+                setLogLevel(value);
+                return value;
+            },
+            watch: watchFields('logLevel'),
+            mutate: async (value, set) => set((await api.serverRequest.setLogLevel({ value })).value),
+        });
+        this.csLogLevel = cs;
+        return cs.client;
+    }
 
-async function initAppState() {
-    const state = await api.serverRequest.getAppState();
-    log('initAppState %o', state);
-    if (state) {
-        csAppState.server.set(state);
+    todos() {
+        if (this.csTodos) {
+            return this.csTodos.client;
+        }
+        const cs = createClientServerStore<AppStateData['todos'], 'todos'>({
+            name: 'todos',
+            initialValue: [],
+            query: async () => (await api.serverRequest.getTodos()).value,
+            watch: watchFields('todos'),
+            mutate: async (value, set) => set((await api.serverRequest.setTodos({ value })).value),
+        });
+        this.csTodos = cs;
+        return cs.client;
+    }
+
+    currentDocument() {
+        if (this.csCurrentDocument) {
+            return this.csCurrentDocument.client;
+        }
+        const cs = createReadonlyClientServerStore<AppStateData['currentDocument'], 'currentDocument'>({
+            name: 'currentDocument',
+            initialValue: null,
+            query: async () => (await api.serverRequest.getCurrentDocument()).value,
+            watch: watchFields('currentDocument'),
+        });
+        this.csCurrentDocument = cs;
+        return cs.client;
     }
 }
 
-initAppState();
+export const appState = new AppState();
+
+function watchFields(fields: WatchFieldList | WatchFields): Subscribable<void> {
+    const fieldsToWatch = new Set(typeof fields === 'string' ? [fields] : fields);
+
+    function isWatched(fields: WatchFieldList): boolean {
+        for (const field of fields) {
+            if (fieldsToWatch.has(field)) return true;
+        }
+        return false;
+    }
+
+    function subscribe(s: () => void) {
+        const disposable = api.clientNotification.onStateChange.subscribe((fields) => isWatched(fields) && s());
+        return disposable.dispose;
+    }
+
+    logErrors(api.serverRequest.watchFields([...fieldsToWatch]));
+
+    return { subscribe };
+}
+
+async function logErrors<T>(p: Promise<T>) {
+    try {
+        await p;
+    } catch (e) {
+        console.error(e);
+    }
+}

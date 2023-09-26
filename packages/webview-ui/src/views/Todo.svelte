@@ -4,33 +4,38 @@
   import VscodeButton from '../components/VscodeButton.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
   import VscodeTextField from '../components/VscodeTextField.svelte';
-  import { appState, todos } from '../state/appState';
-  import type { TextInputEvent } from '../types';
+  import { appState } from '../state/appState';
 
   const api = getClientApi();
+  const sTodos = appState.todos();
+  let updates = 0;
 
-  $: remaining = $todos.filter((t) => !t.done).length || 0;
+  $: todos = $sTodos;
+  $: remaining = todos.filter((t) => !t.done).length || 0;
+  $: logLevel = appState.logLevel();
 
   let focusTodo: Todo | undefined;
 
   let currTodo: Todo | undefined = undefined;
 
+  sTodos.subscribe(() => (console.log('subscribe todos.'), (updates = updates + 1)));
+
   async function add() {
-    todos.update((todos) => {
-      const todo = {
-        uuid: Math.random() * 100000 + Date.now(),
-        done: false,
-        text: '',
-      };
-      focusTodo = todo;
-      currTodo = todo;
-      todos.push(todo);
-      return todos;
-    });
+    const nextTodos = todos;
+    const todo = {
+      uuid: Math.random() * 100000 + Date.now(),
+      done: false,
+      text: '',
+    };
+    nextTodos.push(todo);
+    sTodos.set(nextTodos);
+    focusTodo = todo;
+    currTodo = todo;
   }
 
   function clear() {
-    todos.update((todos) => todos.filter((t) => !t.done));
+    const nextTodos = todos.filter((t) => !t.done);
+    sTodos.set(nextTodos);
   }
 
   function reset() {
@@ -38,7 +43,7 @@
   }
 
   function changed(index: number) {
-    if (index + 1 === $todos.length) {
+    if (index + 1 === todos.length) {
       add();
     }
   }
@@ -47,16 +52,21 @@
     currTodo = active ? todo : currTodo === todo ? undefined : currTodo;
   }
 
-  function onInput(_e: CustomEvent<TextInputEvent>) {}
+  function onInput() {
+    // Set todos to write to the server.
+    sTodos.set(todos);
+  }
 </script>
 
 <div>
   <h1>todos</h1>
 
+  <p>Updates: {updates}</p>
+
   <form on:submit|preventDefault>
-    {#if $todos}
+    {#if todos.length}
       <ul class="todos">
-        {#each $todos as todo, index (todo.uuid)}
+        {#each todos as todo, index (todo.uuid)}
           <li class="todo-item" class:done={todo.done}>
             <VscodeTextField
               inputType="text"
@@ -65,10 +75,15 @@
               on:change={() => changed(index)}
               on:blur={() => selectTodo(todo, false)}
               on:focus={() => selectTodo(todo, true)}
-              on:input={(e) => onInput(e)}
+              on:input={onInput}
               focus={todo === focusTodo}
               ><section class="slot" slot="start">
-                <VscodeCheckbox bind:checked={todo.done} on:blur={() => selectTodo(todo, false)} on:focus={() => selectTodo(todo, true)} />
+                <VscodeCheckbox
+                  bind:checked={todo.done}
+                  on:blur={() => selectTodo(todo, false)}
+                  on:focus={() => selectTodo(todo, true)}
+                  on:change={onInput}
+                />
               </section></VscodeTextField
             >
             {#if todo === currTodo}
@@ -82,7 +97,7 @@
     {/if}
 
     <p>{remaining} remaining</p>
-    <p>Log Level: {$appState.logLevel}</p>
+    <p>Log Level: {$logLevel}</p>
 
     <div class="todo-actions">
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->

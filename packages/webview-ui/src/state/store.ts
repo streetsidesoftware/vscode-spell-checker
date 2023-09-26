@@ -1,38 +1,48 @@
+import { createDisposeMethodFromList, type DisposableLike } from 'utils-disposables';
+import type { WatchFields } from 'webview-api';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type DisposableFn = () => void;
 
 export type Subscriber<T> = (v: T) => any;
 
 type SetMethod<T> = (v: T) => void;
-export type UpdateFn<T> = (v: T) => T;
+export type UpdateFn<T> = (v: T | undefined) => T;
 type UpdateMethod<T> = (u: UpdateFn<T>) => void;
 export type SubscribeFn<T> = (s: Subscriber<T>) => DisposableFn;
 
-export interface Store<T> {
+export interface ReadonlyStore<T> extends Subscribable<T> {}
+
+export interface Store<T> extends ReadonlyStore<T> {
     set: SetMethod<T>;
     update: UpdateMethod<T>;
-    subscribe: SubscribeFn<T>;
 }
 
 export interface ValueStore<T> extends Store<T> {
-    readonly value: T;
+    readonly value: Promise<T>;
 }
 
 /**
  * A ClientServerStore is used to avoid feedback loops.
  */
-export interface ClientServerStore<T> {
-    readonly value: T;
-    readonly client: ValueStore<T>;
-    /** Notify the */
-    readonly server: ValueStore<T>;
+export interface ClientServerStore<T, N> {
+    /** Name of the store */
+    readonly name: N;
+    readonly client: Store<T>;
+    readonly server: Store<T>;
+
+    /** Dispose of any resources */
+    dispose(): void;
 }
 
+const symbolNotSet = Symbol('no set');
+type SymbolNotSet = typeof symbolNotSet;
+
 class StoreObservable<T> implements Store<T> {
-    protected _value: T;
+    protected _value: T | SymbolNotSet;
     private pubSub = createPubSub<T>();
-    constructor(value: T) {
-        this._value = value;
+    constructor(value?: T) {
+        this._value = value === undefined ? symbolNotSet : value;
     }
 
     set(value: T) {
@@ -43,14 +53,14 @@ class StoreObservable<T> implements Store<T> {
         return;
     }
 
-    subscribe(s: (v: T) => any): DisposableFn {
+    subscribe(s: Subscriber<T>): DisposableFn {
         const disposableFn = this.pubSub.subscribe(s);
-        s(this._value);
+        this._value !== symbolNotSet && s(this._value);
         return disposableFn;
     }
 
-    update(u: (v: T) => T) {
-        return this.set(u(this._value));
+    update(u: UpdateFn<T>) {
+        return this.set(u(this._value !== symbolNotSet ? this._value : undefined));
     }
 }
 
@@ -60,46 +70,66 @@ class ValueStoreObservable<T> extends StoreObservable<T> implements ValueStore<T
     }
 
     get value() {
-        return this._value;
+        return this._value !== symbolNotSet ? Promise.resolve(this._value) : awaitForSubscribable(this);
     }
 }
 
-class ClientServerStoreImpl<T> implements ClientServerStore<T> {
-    private _value: T;
+export interface ReadonlyClientServerStoreOptions<T, N> {
+    /** Name of this store */
+    name: N;
+    initialValue: T;
+    query?: () => Promise<T>;
+    watch?: Subscribable<void>;
+}
+
+export interface ClientServerStoreOptions<T, N> extends ReadonlyClientServerStoreOptions<T, N> {
+    mutate?: (value: T, set: SetMethod<T>, update: UpdateMethod<T>) => Promise<void>;
+}
+
+class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
+    readonly name: N;
+    private _value: T | SymbolNotSet;
     private _busy = false;
     private subServer = new Set<Subscriber<T>>();
     private subClient = new Set<Subscriber<T>>();
+    private disposables: DisposableLike[] = [];
+    private mutate: (value: T, set: SetMethod<T>, update: UpdateMethod<T>) => Promise<void> = () => Promise.resolve();
+    readonly dispose: () => void;
 
-    readonly client: ValueStore<T>;
-    readonly server: ValueStore<T>;
+    readonly client: Store<T>;
+    readonly server: Store<T>;
 
     get value() {
         return this._value;
     }
 
-    constructor(value: T) {
-        this._value = value;
+    constructor(readonly options: ClientServerStoreOptions<T, N>) {
+        this.name = options.name;
+        this._value = options.initialValue;
 
-        const getValue = () => this._value;
+        const getValue = () => (this._value === symbolNotSet ? undefined : this._value);
 
         // We need to notify the sever of any changes made by any client.
         this.client = {
-            get value() {
-                return getValue();
-            },
             set: (v: T) => this.setValue(v, true),
-            update: (uFn) => this.setValue(uFn(this._value), true),
+            update: (uFn) => this.setValue(uFn(getValue()), true),
             subscribe: (s) => this.subscribe(this.subClient, s, true),
         };
         // We do not want to notify the server of changes made by the server.
         this.server = {
-            get value() {
-                return getValue();
-            },
             set: (v: T) => this.setValue(v, false),
-            update: (uFn) => this.setValue(uFn(this._value), false),
+            update: (uFn) => this.setValue(uFn(getValue()), false),
             subscribe: (s) => this.subscribe(this.subServer, s, false),
         };
+
+        this.mutate = options.mutate || this.mutate;
+
+        this.disposables.push(this.server.subscribe((v) => this._mutate(v)));
+
+        options.watch && this.disposables.push(options.watch.subscribe(() => this._query()));
+
+        this.dispose = createDisposeMethodFromList(this.disposables);
+        this._query();
     }
 
     private setValue(value: T, notifyServer: boolean) {
@@ -112,6 +142,7 @@ class ClientServerStoreImpl<T> implements ClientServerStore<T> {
 
     private notify(subscriptions: Set<Subscriber<T>>) {
         if (this._busy) return;
+        if (this._value === symbolNotSet) return;
         try {
             this._busy = true;
             for (const s of subscriptions) {
@@ -124,8 +155,135 @@ class ClientServerStoreImpl<T> implements ClientServerStore<T> {
 
     private subscribe(subscriptions: Set<Subscriber<T>>, subscriber: Subscriber<T>, notify: boolean): DisposableFn {
         subscriptions.add(subscriber);
-        notify && subscriber(this._value);
+        notify && this._value !== symbolNotSet && subscriber(this._value);
         return () => subscriptions.delete(subscriber);
+    }
+
+    /**
+     * A client has made a change to the value, send the mutation to the server.
+     * @param v - the changed value.
+     */
+    private _mutate(v: T) {
+        const handle = async () => {
+            try {
+                await this.mutate(v, this.server.set, this.server.update);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        handle();
+    }
+
+    /**
+     * Query the server for the value.
+     * @returns void
+     */
+    private _query() {
+        console.log('query for %s', this.name);
+        const query = this.options.query;
+        if (!query) return;
+        const handle = async () => {
+            try {
+                const value = await query();
+                console.log('query got %o', value);
+                this.server.set(value);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        handle();
+    }
+}
+
+/**
+ * A ReadonlyClientServerStore is used to avoid feedback loops.
+ */
+export interface ReadonlyClientServerStore<T, N> {
+    /** Name of the store */
+    readonly name: N;
+    readonly client: ReadonlyStore<T>;
+    readonly server: Store<T>;
+
+    /** Dispose of any resources */
+    dispose(): void;
+}
+
+class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T, N> {
+    readonly name: N;
+    private _value: T | SymbolNotSet;
+    private _busy = false;
+    private subServer = new Set<Subscriber<T>>();
+    private subClient = new Set<Subscriber<T>>();
+    private disposables: DisposableLike[] = [];
+    readonly dispose: () => void;
+
+    readonly client: ReadonlyStore<T>;
+    readonly server: Store<T>;
+
+    constructor(readonly options: ReadonlyClientServerStoreOptions<T, N>) {
+        this.name = options.name;
+        this._value = options.initialValue;
+
+        // We need to notify the sever of any changes made by any client.
+        this.client = {
+            subscribe: (s) => this.subscribe(this.subClient, s, true),
+        };
+        // We do not want to notify the server of changes made by the server.
+        this.server = {
+            set: (v: T) => this.setValue(v, false),
+            update: (uFn) => this.setValue(uFn(this._value === symbolNotSet ? undefined : this._value), false),
+            subscribe: (s) => this.subscribe(this.subServer, s, false),
+        };
+
+        options.watch && this.disposables.push(options.watch.subscribe(() => this._query()));
+
+        this.dispose = createDisposeMethodFromList(this.disposables);
+        this._query();
+    }
+
+    private setValue(value: T, notifyServer: boolean) {
+        if (!isNotEqual(this._value, value)) return;
+
+        this._value = value;
+        if (notifyServer) this.notify(this.subServer);
+        this.notify(this.subClient);
+    }
+
+    private notify(subscriptions: Set<Subscriber<T>>) {
+        if (this._busy) return;
+        if (this._value === symbolNotSet) return;
+        try {
+            this._busy = true;
+            for (const s of subscriptions) {
+                s(this._value);
+            }
+        } finally {
+            this._busy = false;
+        }
+    }
+
+    private subscribe(subscriptions: Set<Subscriber<T>>, subscriber: Subscriber<T>, notify: boolean): DisposableFn {
+        subscriptions.add(subscriber);
+        notify && this._value !== symbolNotSet && subscriber(this._value);
+        return () => subscriptions.delete(subscriber);
+    }
+
+    /**
+     * Query the server for the value.
+     * @returns void
+     */
+    private _query() {
+        const query = this.options.query;
+        if (!query) return;
+        const handle = async () => {
+            try {
+                const value = await query();
+                this.server.set(value);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        handle();
     }
 }
 
@@ -138,13 +296,17 @@ export function writable<T>(v?: T | undefined): ValueStore<T | undefined>;
 export function writable<T>(v: T): ValueStore<T> {
     return new ValueStoreObservable(v);
 }
-export function createClientServerStore<T>(initialValue: T): ClientServerStore<T>;
-export function createClientServerStore<T>(initialValue?: T | undefined): ClientServerStore<T | undefined>;
-export function createClientServerStore<T>(initialValue: T): ClientServerStore<T> {
-    return new ClientServerStoreImpl(initialValue);
+export function createClientServerStore<T, N extends WatchFields>(options: ClientServerStoreOptions<T, N>): ClientServerStore<T, N> {
+    return new ClientServerStoreImpl(options);
 }
 
-interface Subscribable<T> {
+export function createReadonlyClientServerStore<T, N extends WatchFields>(
+    options: ClientServerStoreOptions<T, N>,
+): ReadonlyClientServerStore<T, N> {
+    return new ReadonlyClientServerStoreImpl<T, N>(options);
+}
+
+export interface Subscribable<T> {
     subscribe(s: Subscriber<T>): DisposableFn;
 }
 
@@ -179,42 +341,23 @@ function createPubSub<T>(): PubSub<T> {
     };
 }
 
-/**
- * Create a store based upon a field in another store.
- * @param store - the store containing the field.
- * @param field - the field to monitor
- * @returns A writeable store, that will update and be updated by store[field]
- */
-export function shadowStore<T, K extends keyof T>(store: Store<T>, field: K): Store<T[K]> {
-    type U = T[K];
+export function mapSubscribable<T, U>(subscribable: Subscribable<T>, mapFn: (v: T, subscriber: Subscriber<U>) => U): Subscribable<U> {
+    function subscribe(s: (v: U) => any): DisposableFn {
+        return subscribable.subscribe((t) => mapFn(t, s));
+    }
 
-    return derivativeRWPassThrough<T, U>(
-        store,
-        ($t) => $t[field],
-        ($u, $t) => (($t[field] = $u), $t),
-    );
+    return { subscribe };
 }
 
-/**
- * Create a writeable store that will transform a value from another store.
- * This store does not keep any values, it just transforms it for each subscriber.
- * @param store - store to base the value on
- * @param reader - method to covert the sorted value to the derivative value.
- * @param writer - method to write back the value.
- * @returns a writeable store
- */
-export function derivativeRWPassThrough<T, U>(store: Store<T>, reader: ($t: T) => U, writer: ($u: U, $t: T) => T): Store<U> {
-    function set(u: U) {
-        store.update((t) => writer(u, t));
-    }
-
-    function subscribe(s: (v: U) => any): DisposableFn {
-        return store.subscribe((t) => s(reader(t)));
-    }
-
-    function update(fn: (u: U) => U) {
-        store.update((t) => writer(fn(reader(t)), t));
-    }
-
-    return { set, subscribe, update };
+export function awaitForSubscribable<T>(sub: Subscribable<T>): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        let disposable: DisposableFn | undefined;
+        try {
+            disposable = sub.subscribe(resolve);
+        } catch (e) {
+            reject(e);
+        } finally {
+            disposable?.();
+        }
+    });
 }

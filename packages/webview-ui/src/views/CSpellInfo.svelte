@@ -1,8 +1,10 @@
 <script lang="ts">
   import { appState } from '../state/appState';
 
-  $: docUrl = $appState.currentDocument ? new URL($appState.currentDocument.url) : undefined;
+  $: currentDoc = appState.currentDocument();
+  $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
   $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
+  $: logLevel = appState.logLevel();
 </script>
 
 <section>
@@ -10,10 +12,9 @@
 
   <ul>
     <li>name: {name}</li>
-    <li>file: {$appState.currentDocument?.url ?? 'none'}</li>
-    <li>version: {$appState.currentDocument?.version ?? 'n/a'}</li>
-    <li>Seq: {$appState.seq}</li>
-    <li>LogLevel: {$appState.logLevel}</li>
+    <li>file: {docUrl ?? 'none'}</li>
+    <li>version: {$currentDoc?.version ?? 'n/a'}</li>
+    <li>State LogLevel: {$logLevel}</li>
   </ul>
 </section>
 

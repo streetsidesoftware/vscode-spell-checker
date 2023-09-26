@@ -2,11 +2,15 @@
 
 exports[`api > Creating a Server API 1`] = `
 [
-  "clientNotification.onChangeAppState",
+  "clientNotification.onStateChange",
   "serverNotification.showInformationMessage",
-  "serverRequest.getAppState",
+  "serverRequest.getCurrentDocument",
+  "serverRequest.getLogLevel",
+  "serverRequest.getTodos",
   "serverRequest.resetTodos",
-  "serverRequest.updateAppState",
+  "serverRequest.setLogLevel",
+  "serverRequest.setTodos",
+  "serverRequest.watchFields",
   "serverRequest.whatTimeIsIt",
 ]
 `;
@@ -18,13 +22,18 @@ exports[`api > Creating a Server API 2`] = `
   "function",
   "function",
   "function",
+  "function",
+  "function",
+  "function",
+  "function",
   "object",
 ]
 `;
 
 exports[`api > api 1`] = `
 [
-  "createClientSideHelloWorldApi",
-  "createServerSideHelloWorldApi",
+  "createClientSideSpellInfoWebviewApi",
+  "createServerSideSpellInfoWebviewApi",
+  "setLogLevel",
 ]
 `;

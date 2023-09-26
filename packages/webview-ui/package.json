@@ -15,6 +15,7 @@
     "@vscode/webview-ui-toolkit": "^1.2.2",
     "fast-equals": "^5.0.1",
     "sirv-cli": "^2.0.2",
+    "utils-disposables": "file:../utils-disposables",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api"
   },

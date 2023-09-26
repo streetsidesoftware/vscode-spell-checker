@@ -9,6 +9,8 @@ interface Disposable {
     [Symbol.dispose](): void;
 }
 
+export type DisposeFn = () => void;
+
 export interface DisposableHybrid {
     /**
      * Dispose this object.
@@ -26,7 +28,7 @@ export interface DisposableClassic {
 
 export type DisposableProposed = Disposable;
 
-export type DisposableLike = DisposableHybrid | DisposableClassic | DisposableProposed;
+export type DisposableLike = DisposableHybrid | DisposableClassic | DisposableProposed | DisposeFn;
 
 // export interface AsyncDisposable {
 //   asyncDispose(): void;
@@ -39,7 +41,7 @@ export type DisposableLike = DisposableHybrid | DisposableClassic | DisposablePr
  * @param thisArg - optional this value
  * @returns A Disposable
  */
-export function createDisposable<T extends object>(disposeFn: () => void, thisArg?: T): DisposableHybrid {
+export function createDisposable<T extends object>(disposeFn: DisposeFn, thisArg?: T): DisposableHybrid {
     // We want to prevent double disposal calls.
     // This can happen if there are multiple systems calling dispose.
     let isDisposed = false;
@@ -84,16 +86,12 @@ export function createDisposeMethodFromList(disposables: DisposableLike[]): () =
     function dispose() {
         let error: unknown | undefined = undefined;
 
-        let disposable: Partial<DisposableHybrid> | undefined;
+        let disposable: DisposableLike | undefined;
 
         // Note disposables are disposed in reverse order by default.
         while ((disposable = disposables.pop())) {
             try {
-                if (disposable[Symbol.dispose]) {
-                    disposable[Symbol.dispose]?.call(disposable);
-                    continue;
-                }
-                disposable.dispose?.call(disposable);
+                disposeOf(disposable);
             } catch (e) {
                 error ??= e;
             }
@@ -102,4 +100,38 @@ export function createDisposeMethodFromList(disposables: DisposableLike[]): () =
         if (error) throw error;
     }
     return dispose;
+}
+
+/**
+ * Dispose of a disposable.
+ * @param disposable - Disposable or function to call.
+ * @returns void
+ */
+export function disposeOf(disposable: DisposableLike | DisposeFn | undefined): void {
+    if (!disposable) return;
+    if (typeof disposable === 'function') {
+        disposable();
+        return;
+    }
+    const _disposable = disposable as DisposableHybrid;
+    if (typeof _disposable[Symbol.dispose] === 'function') {
+        _disposable[Symbol.dispose].call(disposable);
+        return;
+    }
+    _disposable.dispose.call(disposable);
+}
+
+/** This is a class that can be inherited to provide Disposable support. */
+export class InheritableDisposable implements DisposableHybrid {
+    public dispose: () => void;
+    public [Symbol.dispose]: () => void = () => undefined;
+
+    /** the inherited class can safely add disposables to _disposables */
+    protected readonly _disposables: DisposableLike[];
+    constructor(disposables?: DisposableLike[]) {
+        this._disposables = disposables ?? [];
+        const dispose = createDisposeMethodFromList(this._disposables);
+        this.dispose = dispose;
+        this[Symbol.dispose] = dispose;
+    }
 }

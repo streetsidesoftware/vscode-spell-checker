@@ -2,8 +2,10 @@
 
 exports[`api > api 1`] = `
 [
-  "createClientSideHelloWorldApi",
-  "createServerSideHelloWorldApi",
+  "LogLevel",
+  "createClientSideSpellInfoWebviewApi",
+  "createServerSideSpellInfoWebviewApi",
+  "setLogLevel",
   "supportedViewsByName",
 ]
 `;
