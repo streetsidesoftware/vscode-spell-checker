@@ -10,7 +10,7 @@ exports[`api > Creating a Server API 1`] = `
   "serverRequest.resetTodos",
   "serverRequest.setLogLevel",
   "serverRequest.setTodos",
-  "serverRequest.watchState",
+  "serverRequest.watchFields",
   "serverRequest.whatTimeIsIt",
 ]
 `;
@@ -34,5 +34,6 @@ exports[`api > api 1`] = `
 [
   "createClientSideSpellInfoWebviewApi",
   "createServerSideSpellInfoWebviewApi",
+  "setLogLevel",
 ]
 `;
