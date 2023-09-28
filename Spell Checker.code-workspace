@@ -42,10 +42,9 @@
         }
     ],
     "settings": {
-        "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cspell.json"],
+        "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cspell.config.yaml"],
         "cSpell.customDictionaries": { "cspell-words": true },
         "typescript.tsdk": "Spell Checker Root/node_modules/typescript/lib",
-        "svg.preview.background": "black",
         "editor.formatOnSave": true,
         "files.eol": "\n",
         "cSpell.flagWords": [],
@@ -61,8 +60,7 @@
                 "cwd": "${fileDirname}",
                 "args": ["--runInBand", "${fileBasename}"],
                 "console": "integratedTerminal",
-                "internalConsoleOptions": "neverOpen",
-                "disableOptimisticBPs": true
+                "internalConsoleOptions": "neverOpen"
             },
             {
                 "type": "node",
@@ -72,10 +70,18 @@
                 "cwd": "${fileWorkspaceFolder}",
                 "args": ["--runInBand"],
                 "console": "integratedTerminal",
-                "internalConsoleOptions": "neverOpen",
-                "disableOptimisticBPs": true
+                "internalConsoleOptions": "neverOpen"
             }
         ],
+
         "compounds": []
+    },
+    "extensions": {
+        "recommendations": [
+            "streetsidesoftware.code-spell-checker",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "svelte.svelte-vscode"
+        ]
     }
 }
