@@ -41,7 +41,6 @@ describe('ResolvablePromise', () => {
             r.attach(pOne);
             await expect(r.promise).resolves.toBe('one');
             await expect(() => r.attach(Promise.resolve('two'))).toThrow('Already Resolved');
-            console.error('6');
         } catch (e) {
             console.error(e);
         }
