@@ -71,6 +71,26 @@
                 "args": ["--runInBand"],
                 "console": "integratedTerminal",
                 "internalConsoleOptions": "neverOpen"
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Test: Vitest current-file",
+                "autoAttachChildProcesses": true,
+                "program": "${fileWorkspaceFolder}/../../node_modules/vitest/vitest.mjs",
+                "cwd": "${fileWorkspaceFolder}",
+                "args": ["run", "${relativeFile}"],
+                "console": "integratedTerminal"
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Test: Vitest Entire Folder",
+                "autoAttachChildProcesses": true,
+                "program": "${fileWorkspaceFolder}/../../node_modules/vitest/vitest.mjs",
+                "cwd": "${fileWorkspaceFolder}",
+                "args": ["run"],
+                "console": "integratedTerminal"
             }
         ],
 

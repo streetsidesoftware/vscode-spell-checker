@@ -123,7 +123,7 @@ describe('Validate configTargetsHelper', () => {
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
-                has: { words: undefined, ignoreWords: true },
+                has: { words: true, ignoreWords: true },
             }),
         ]);
     });
@@ -198,7 +198,7 @@ describe('Validate configTargetsHelper', () => {
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
-                has: { words: undefined, ignoreWords: true },
+                has: { words: true, ignoreWords: true },
             }),
             oc<ConfigTargetVSCode>({
                 kind: 'vscode',
@@ -245,7 +245,7 @@ describe('Validate configTargetsHelper', () => {
                 name: expect.stringContaining('cspell.config.yaml'),
                 scope: 'unknown',
                 configUri: expect.not.stringContaining('_server/cspell.json'),
-                has: { words: undefined, ignoreWords: true },
+                has: { words: true, ignoreWords: true },
             }),
             // oc<ConfigTargetDictionary>({
             //     kind: 'dictionary',
