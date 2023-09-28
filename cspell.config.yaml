@@ -54,3 +54,6 @@ overrides:
       - colour
       - canot
 useGitignore: true
+words:
+  - dbaeumer
+  - esbenp
