@@ -29,7 +29,7 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.18.0",
-    "chai": "^4.3.8",
+    "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "kefir": "^3.8.8"
   },
