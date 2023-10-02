@@ -1,4 +1,5 @@
-import { awaitForSubscribable, createEmitter, createSubscribable } from './functions';
+import { createEmitter, createSubscribable } from './createFunctions';
+import { awaitSubscribable } from './helpers/awaitSubscribable';
 import { delayUnsubscribe } from './operators/delayUnsubscribe';
 
 describe('Subscribables', () => {
@@ -27,7 +28,7 @@ describe('Subscribables', () => {
 
     test('awaitForSubscribable', async () => {
         const emitter = createEmitter<number>();
-        const pValue = awaitForSubscribable(emitter);
+        const pValue = awaitSubscribable(emitter);
         emitter.notify(42);
         await expect(pValue).resolves.toBe(42);
     });
@@ -35,7 +36,7 @@ describe('Subscribables', () => {
     test('createSubscribableValue', async () => {
         const source = createEmitter<number>();
         const sub = delayUnsubscribe<number>(5000)(source);
-        const pValue = awaitForSubscribable(sub);
+        const pValue = awaitSubscribable(sub);
         source.notify(6);
         await expect(pValue).resolves.toBe(6);
         sub.dispose?.();
@@ -43,8 +44,8 @@ describe('Subscribables', () => {
 
     test('createSubscribable', async () => {
         const source = createEmitter<number>();
-        const sub = createSubscribable((s) => source.subscribe(s));
-        const pValue = awaitForSubscribable(sub);
+        const sub = createSubscribable<number>((s) => source.subscribe(s));
+        const pValue = awaitSubscribable(sub);
         source.notify(6);
         await expect(pValue).resolves.toBe(6);
         sub.dispose();

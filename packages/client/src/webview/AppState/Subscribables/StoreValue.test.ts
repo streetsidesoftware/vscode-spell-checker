@@ -1,4 +1,5 @@
-import { awaitForSubscribable, createEmitter, createSubscribable } from './functions';
+import { createEmitter, createSubscribable } from './createFunctions';
+import { awaitSubscribable } from './helpers/awaitSubscribable';
 import { createStoreValue } from './StoreValue';
 
 describe('StoreValue', () => {
@@ -16,7 +17,7 @@ describe('StoreValue', () => {
     test('createSubscribableValue', async () => {
         const source = createEmitter<number>();
         const sub = createSubscribable((s) => source.subscribe(s));
-        const pValue = awaitForSubscribable(sub);
+        const pValue = awaitSubscribable(sub);
         source.notify(6);
         await expect(pValue).resolves.toBe(6);
         sub.dispose();

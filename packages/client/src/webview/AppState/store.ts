@@ -6,10 +6,11 @@ import { getLogLevel, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
 import type { WatchFieldList, WatchFields } from 'webview-api';
 
 import type { AppStateData } from '../apiTypes';
-import { createSubscribable } from './Subscribables/functions';
+import { createSubscribable } from './Subscribables/createFunctions';
+import { toSubscriberFn } from './Subscribables/helpers/toSubscriber';
 import type { MakeSubscribable, StoreValue } from './Subscribables/StoreValue';
 import { createStoreValue } from './Subscribables/StoreValue';
-import type { SubscriberFn } from './Subscribables/Subscribables';
+import type { SubscriberLike } from './Subscribables/Subscribables';
 
 export interface Storage {
     seq: number;
@@ -34,7 +35,8 @@ export const store: Storage = {
     },
 };
 
-function subscribeToCurrentDocument(emitter: SubscriberFn<AppStateData['currentDocument']>): DisposableHybrid {
+function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['currentDocument']>): DisposableHybrid {
+    const emitter = toSubscriberFn(subscriber);
     const disposables: DisposableClassic[] = [];
     const disposable = createDisposableFromList(disposables);
 
@@ -64,7 +66,7 @@ function subscribeToCurrentDocument(emitter: SubscriberFn<AppStateData['currentD
     }
 }
 
-function subscribeToDocSettings(_emitter: SubscriberFn<AppStateData['docSettings']>): DisposableHybrid {
+function subscribeToDocSettings(_emitter: SubscriberLike<AppStateData['docSettings']>): DisposableHybrid {
     const disposables: DisposableClassic[] = [];
     const disposable = createDisposableFromList(disposables);
 

@@ -1,6 +1,20 @@
 import type { DisposableHybrid as Disposable, DisposableLike, DisposeFn } from 'utils-disposables';
 
+export type SubscriberLike<T> = SubscriberFn<T> | Subscriber<T>;
+
 export type SubscriberFn<T> = (v: T) => void;
+
+export type SubscribeFn<T> = (notify: SubscriberLike<T>) => DisposableLike | DisposeFn | undefined;
+
+export type SubscribableLike<T> = SubscribeFn<T> | Subscribable<T>;
+
+export type EventType = 'onStart' | 'onStop' | 'onDone' | 'onNotify';
+
+export interface SubscribableEvent {
+    name: EventType;
+}
+
+export type EventListener = (event: SubscribableEvent) => void;
 
 export interface Subscriber<T> {
     /** Push a value to the subscriber */
@@ -11,12 +25,15 @@ export interface Subscriber<T> {
     done?(): void;
 }
 
-export type SubscriberLike<T> = SubscriberFn<T> | Subscriber<T>;
-
 export interface Subscribable<T> {
-    subscribe(s: SubscriberFn<T>): Disposable;
-    /** Called to Dispose of the Subscribable */
+    subscribe(s: SubscriberLike<T>): Disposable;
+    /** Called to Dispose of this Subscribable */
     dispose: () => void;
+
+    /**
+     * Listen to Subscribable Events
+     */
+    onEvent(listener: EventListener): Disposable;
 }
 
 export interface SubscribableSubscriber<T> extends Subscribable<T>, Subscriber<T> {
@@ -30,12 +47,8 @@ export interface SubscribableSubscriber<T> extends Subscribable<T>, Subscriber<T
      * It will first call {@link SubscribableSubscriber.done|done()} before
      * disposing.
      */
-    dispose: () => void;
+    dispose(): void;
 }
-
-export type SubscribeFn<T> = (notify: SubscriberFn<T>) => DisposableLike | DisposeFn | undefined;
-
-export type SubscribableLike<T> = SubscribeFn<T> | Subscribable<T>;
 
 export interface SubscribableValue<T> extends Subscribable<T> {
     value: T | undefined;

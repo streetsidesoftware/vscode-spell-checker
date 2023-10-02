@@ -5,10 +5,10 @@ import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, Wa
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
-import { awaitForSubscribable, store } from '../AppState';
+import { awaitSubscribable, store } from '../AppState';
 import { type Storage, updateState, watchFieldList } from '../AppState/store';
 import type { StoreValue } from '../AppState/Subscribables/StoreValue';
-import type { SubscribableValue } from '../AppState/Subscribables/Subscribables';
+import type { Subscribable } from '../AppState/Subscribables/Subscribables';
 import { sampleList } from './staticTestData';
 
 export function createApi(connection: MessageConnection) {
@@ -79,8 +79,8 @@ function updateStateRequest<T>(r: SetValueRequest<T>, s: StoreValue<T>): SetValu
     return updateState(r.seq, r.value, s);
 }
 
-function resolveRequest<T>(s: SubscribableValue<T>): Promise<RequestResult<T>> {
-    return asyncToResultP(awaitForSubscribable(s));
+function resolveRequest<T>(s: Subscribable<T>): Promise<RequestResult<T>> {
+    return asyncToResultP(awaitSubscribable(s));
 }
 
 async function asyncToResultP<T>(value: Promise<T>): Promise<RequestResult<T>> {

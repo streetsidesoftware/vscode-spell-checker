@@ -1,7 +1,9 @@
 import { createDisposable, disposeOf } from 'utils-disposables';
 
-import type { SubscribeFn, SubscriberFn } from '..';
-import { createSubscribable, delayUnsubscribe } from '..';
+import { createSubscribable } from '../createFunctions';
+import { toSubscriberFn } from '../helpers/toSubscriber';
+import type { SubscribeFn, SubscriberFn, SubscriberLike } from '../Subscribables';
+import { delayUnsubscribe } from './delayUnsubscribe';
 
 describe('delayUnsubscribe', () => {
     test('delayUnsubscribe', () => {
@@ -10,8 +12,8 @@ describe('delayUnsubscribe', () => {
         let emitter: SubscriberFn<number> = defaultEmitter;
         const resetEmitter = jest.fn(() => (emitter = defaultEmitter));
         expect(emitter).toBe(defaultEmitter);
-        const source: SubscribeFn<number> = (subscriber: SubscriberFn<number>) => {
-            emitter = subscriber;
+        const source: SubscribeFn<number> = (subscriber: SubscriberLike<number>) => {
+            emitter = toSubscriberFn(subscriber);
             return createDisposable(resetEmitter);
         };
         const sub = createSubscribable<number>(source);
