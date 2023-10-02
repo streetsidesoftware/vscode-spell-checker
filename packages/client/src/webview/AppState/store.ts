@@ -6,12 +6,14 @@ import { getLogLevel, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
 import type { WatchFieldList, WatchFields } from 'webview-api';
 
 import type { AppStateData } from '../apiTypes';
-import type { MakeSubscribable, ObservableValue, SubscriberFn } from './Subscribables';
-import { createStoreValue, createSubscribableValue } from './Subscribables';
+import { createSubscribable } from './Subscribables/functions';
+import type { MakeSubscribable, StoreValue } from './Subscribables/StoreValue';
+import { createStoreValue } from './Subscribables/StoreValue';
+import type { SubscriberFn } from './Subscribables/Subscribables';
 
 export interface Storage {
     seq: number;
-    state: MakeSubscribable<AppStateData, 'currentDocument'>;
+    state: MakeSubscribable<AppStateData, 'currentDocument' | 'docSettings'>;
 }
 
 const debug = false;
@@ -27,7 +29,8 @@ export const store: Storage = {
     seq: 1,
     state: {
         ...writableState,
-        currentDocument: createSubscribableValue(subscribeToCurrentDocument),
+        currentDocument: createSubscribable(subscribeToCurrentDocument),
+        docSettings: createSubscribable(subscribeToDocSettings),
     },
 };
 
@@ -61,13 +64,20 @@ function subscribeToCurrentDocument(emitter: SubscriberFn<AppStateData['currentD
     }
 }
 
+function subscribeToDocSettings(_emitter: SubscriberFn<AppStateData['docSettings']>): DisposableHybrid {
+    const disposables: DisposableClassic[] = [];
+    const disposable = createDisposableFromList(disposables);
+
+    return disposable;
+}
+
 export interface StateUpdate<T> {
     seq: number;
     success: boolean;
     value: T;
 }
 
-export function updateState<T>(seq: number | undefined, value: T, s: ObservableValue<T>): StateUpdate<T> {
+export function updateState<T>(seq: number | undefined, value: T, s: StoreValue<T>): StateUpdate<T> {
     if (seq && seq !== store.seq) return { seq: store.seq, value: s.value, success: false };
 
     store.seq++;

@@ -1,4 +1,5 @@
-import { awaitForSubscribable, createEmitter, createStoreValue, createSubscribableValue } from './Subscribables';
+import { awaitForSubscribable, createEmitter, createSubscribable } from './functions';
+import { delayUnsubscribe } from './operators/delayUnsubscribe';
 
 describe('Subscribables', () => {
     test('createEmitter', () => {
@@ -6,20 +7,20 @@ describe('Subscribables', () => {
         const sub = jest.fn();
         emitter.subscribe(sub);
         expect(sub).not.toHaveBeenCalled();
-        emitter.emit(7);
+        emitter.notify(7);
         expect(sub).toHaveBeenLastCalledWith(7);
         const sub2 = jest.fn();
         const d2 = emitter.subscribe(sub2);
         expect(sub2).not.toHaveBeenCalled();
-        emitter.emit(49);
+        emitter.notify(49);
         expect(sub).toHaveBeenLastCalledWith(49);
         expect(sub2).toHaveBeenLastCalledWith(49);
         d2.dispose();
-        emitter.emit(42);
+        emitter.notify(42);
         expect(sub).toHaveBeenLastCalledWith(42);
         expect(sub2).toHaveBeenLastCalledWith(49);
-        emitter.dispose();
-        emitter.emit(99);
+        emitter.done();
+        emitter.notify(99);
         expect(sub).toHaveBeenLastCalledWith(42);
         expect(sub2).toHaveBeenLastCalledWith(49);
     });
@@ -27,26 +28,24 @@ describe('Subscribables', () => {
     test('awaitForSubscribable', async () => {
         const emitter = createEmitter<number>();
         const pValue = awaitForSubscribable(emitter);
-        emitter.emit(42);
+        emitter.notify(42);
         await expect(pValue).resolves.toBe(42);
-    });
-
-    test('createStoreValue', async () => {
-        const store = createStoreValue(5);
-        expect(store.value).toBe(5);
-        store.set(7);
-        expect(store.value).toBe(7);
-        const cb = jest.fn();
-        store.subscribe(cb);
-        expect(cb).toHaveBeenLastCalledWith(7);
-        store.dispose();
     });
 
     test('createSubscribableValue', async () => {
         const source = createEmitter<number>();
-        const sub = createSubscribableValue((s) => source.subscribe(s));
+        const sub = delayUnsubscribe<number>(5000)(source);
         const pValue = awaitForSubscribable(sub);
-        source.emit(6);
+        source.notify(6);
+        await expect(pValue).resolves.toBe(6);
+        sub.dispose?.();
+    });
+
+    test('createSubscribable', async () => {
+        const source = createEmitter<number>();
+        const sub = createSubscribable((s) => source.subscribe(s));
+        const pValue = awaitForSubscribable(sub);
+        source.notify(6);
         await expect(pValue).resolves.toBe(6);
         sub.dispose();
     });

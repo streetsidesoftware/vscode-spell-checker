@@ -7,8 +7,9 @@ import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
 import { awaitForSubscribable, store } from '../AppState';
 import { type Storage, updateState, watchFieldList } from '../AppState/store';
-import type { ObservableValue, SubscribableValue } from '../AppState/Subscribables';
-import { sampleList } from './staticData';
+import type { StoreValue } from '../AppState/Subscribables/StoreValue';
+import type { SubscribableValue } from '../AppState/Subscribables/Subscribables';
+import { sampleList } from './staticTestData';
 
 export function createApi(connection: MessageConnection) {
     return bindApiAndStore(connection, store);
@@ -74,7 +75,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
     }
 }
 
-function updateStateRequest<T>(r: SetValueRequest<T>, s: ObservableValue<T>): SetValueResult<T> {
+function updateStateRequest<T>(r: SetValueRequest<T>, s: StoreValue<T>): SetValueResult<T> {
     return updateState(r.seq, r.value, s);
 }
 

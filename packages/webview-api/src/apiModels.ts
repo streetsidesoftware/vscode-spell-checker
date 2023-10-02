@@ -1,5 +1,8 @@
 import type { LogLevel } from 'vscode-webview-rpc';
 
+import type { Settings } from './models/settings';
+
+export { Settings } from './models/settings';
 export { LogLevel } from 'vscode-webview-rpc';
 
 export interface Todo {
@@ -19,6 +22,7 @@ export interface AppStateData {
     todos: TodoList;
     logLevel: LogLevel;
     readonly currentDocument: TextDocumentRef | null;
+    readonly docSettings: Settings | null;
 }
 
 export type WatchFields = keyof AppStateData;

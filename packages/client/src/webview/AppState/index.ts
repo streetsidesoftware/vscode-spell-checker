@@ -1,2 +1,2 @@
 export { store } from './store';
-export { awaitForSubscribable } from './Subscribables';
+export { awaitForSubscribable } from './Subscribables/Subscribables';
