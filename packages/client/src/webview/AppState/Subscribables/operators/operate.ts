@@ -8,8 +8,11 @@ export function operate<T, U>(subscribable: Subscribable<T>, next: OperateFn<T, 
     function subscribe(target: SubscriberLike<U>) {
         const subscriber = toSubscriber(target);
         const emit = (value: U) => subscriber.notify(value);
-        return subscribable.subscribe((value: T) => {
-            next(value, emit);
+        return subscribable.subscribe({
+            notify: (value: T) => {
+                next(value, emit);
+            },
+            done: () => subscriber.done?.(),
         });
     }
 

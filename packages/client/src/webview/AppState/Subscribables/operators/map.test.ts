@@ -9,6 +9,7 @@ describe('map', () => {
             data,
             map((v) => v * 6),
         );
+        // s.onEvent((event) => console.log('%o Event: %o', new Date(), event));
         const result = await awaitSubscribableAll(s);
         expect(result).toEqual(data.map((v) => v * 6));
     });

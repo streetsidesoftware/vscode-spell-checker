@@ -75,7 +75,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     }
 
     protected notify(value: T): void {
-        this.sendEvents({ name: 'onNotify' });
+        this.sendEvents({ name: 'onNotify', value });
         this._notify(value);
     }
 

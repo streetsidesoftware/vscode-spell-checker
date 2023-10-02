@@ -12,6 +12,7 @@ export type EventType = 'onStart' | 'onStop' | 'onDone' | 'onNotify';
 
 export interface SubscribableEvent {
     name: EventType;
+    value?: unknown;
 }
 
 export type EventListener = (event: SubscribableEvent) => void;
