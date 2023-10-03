@@ -1,7 +1,8 @@
 import deepEqual from 'fast-deep-equal';
 
+import { toSubscriberFn } from './helpers/toSubscriber';
 import { AbstractSubscribable } from './internal/AbstractSubscribable';
-import type { Subscribable, SubscribableValue, SubscriberFn } from './Subscribables';
+import type { Subscribable, SubscribableValue, SubscriberLike } from './Subscribables';
 
 export interface StoreValue<T> extends SubscribableValue<T> {
     value: T;
@@ -36,9 +37,10 @@ class StoreValueImpl<T> extends AbstractSubscribable<T> implements StoreValue<T>
         return;
     }
 
-    subscribe(s: SubscriberFn<T>) {
+    subscribe(s: SubscriberLike<T>) {
         const dispose = super.subscribe(s);
-        s(this._value);
+        const sFn = toSubscriberFn(s);
+        sFn(this._value);
         return dispose;
     }
 

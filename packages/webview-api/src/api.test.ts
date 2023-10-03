@@ -22,6 +22,7 @@ describe('api', () => {
             },
             serverRequests: {
                 getCurrentDocument: true,
+                getDocSettings: true,
                 getLogLevel: true,
                 getTodos: true,
                 resetTodos: true,

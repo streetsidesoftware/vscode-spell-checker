@@ -8,7 +8,7 @@ import type { WatchFieldList, WatchFields } from 'webview-api';
 import { getDependencies } from '../../di';
 import { calcSettings } from '../../infoViewer/infoHelper';
 import type { AppStateData } from '../apiTypes';
-import { awaitPromise, delayUnsubscribe, map, pipe, rx, throttle } from './Subscribables';
+import { awaitPromise, createSubscribableView, delayUnsubscribe, map, pipe, rx, throttle } from './Subscribables';
 import { toSubscriberFn } from './Subscribables/helpers/toSubscriber';
 import type { MakeSubscribable, StoreValue } from './Subscribables/StoreValue';
 import { createStoreValue } from './Subscribables/StoreValue';
@@ -34,7 +34,8 @@ let store: Storage | undefined = undefined;
 export function getWebviewGlobalStore(): Storage {
     if (store) return store;
 
-    const currentDocument = rx(subscribeToCurrentDocument, delayUnsubscribe(5000));
+    const currentDocument = rx(subscribeToCurrentDocument, createSubscribableView, delayUnsubscribe(5000), throttle(500));
+    currentDocument.onEvent('onNotify', (event) => console.log('current document update: %o', event));
 
     function dispose() {
         const _store = store;
@@ -48,7 +49,7 @@ export function getWebviewGlobalStore(): Storage {
         state: {
             ...writableState,
             currentDocument,
-            docSettings: subscribeToDocSettings(currentDocument),
+            docSettings: rx(currentDocument, subscribeToDocSettings, createSubscribableView, delayUnsubscribe(5000), throttle(500)),
         },
         dispose,
     };
@@ -73,7 +74,7 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
 
     function setCurrentDocument(textEditor: TextEditor | undefined) {
         if (!textEditor) {
-            emitter(null);
+            // emitter(null);
             return;
         }
 

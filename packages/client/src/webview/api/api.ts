@@ -27,6 +27,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             getLogLevel: () => resolveRequest(store.state.logLevel),
             getTodos: () => resolveRequest(store.state.todos),
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
+            getDocSettings: () => resolveRequest(store.state.docSettings),
             setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
             watchFields,

@@ -35,14 +35,15 @@ function createApi(): API {
             showInformationMessage: true,
         },
         serverRequests: {
-            whatTimeIsIt: true,
             getCurrentDocument: true,
+            getDocSettings: true,
             getLogLevel: true,
             getTodos: true,
             resetTodos: true,
             setLogLevel: true,
             setTodos: true,
             watchFields: true,
+            whatTimeIsIt: true,
         },
         clientNotifications: {
             onStateChange: true,
