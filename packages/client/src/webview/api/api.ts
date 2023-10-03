@@ -5,14 +5,14 @@ import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, Wa
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
-import { awaitSubscribable, store } from '../AppState';
+import { awaitSubscribable, getWebviewGlobalStore } from '../AppState';
 import { type Storage, updateState, watchFieldList } from '../AppState/store';
 import type { StoreValue } from '../AppState/Subscribables/StoreValue';
 import type { Subscribable } from '../AppState/Subscribables/Subscribables';
 import { sampleList } from './staticTestData';
 
 export function createApi(connection: MessageConnection) {
-    return bindApiAndStore(connection, store);
+    return bindApiAndStore(connection, getWebviewGlobalStore());
 }
 
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
@@ -91,7 +91,7 @@ async function asyncToResultP<T>(value: Promise<T>): Promise<RequestResult<T>> {
 function toResult<T>(value: T): RequestResult<T> {
     // console.warn('toResult: %o', value);
     return {
-        seq: store.seq,
+        seq: getWebviewGlobalStore().seq,
         value,
     };
 }

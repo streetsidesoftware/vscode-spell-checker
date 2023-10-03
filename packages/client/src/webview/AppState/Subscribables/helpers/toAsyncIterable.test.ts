@@ -1,3 +1,4 @@
+import { awaitAsyncIterable } from './awaitAsyncIterable';
 import { fromIterable } from './fromIterable';
 import { toAsyncIterable } from './toAsyncIterable';
 
@@ -10,13 +11,3 @@ describe('toAsyncIterable', () => {
         expect(result).toEqual(example);
     });
 });
-
-async function awaitAsyncIterable<T>(i: AsyncIterable<T> | AsyncIterableIterator<T>): Promise<T[]> {
-    const buffer: T[] = [];
-
-    for await (const v of i) {
-        buffer.push(v);
-    }
-
-    return buffer;
-}

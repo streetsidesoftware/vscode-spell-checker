@@ -2,6 +2,7 @@ import type { ExtensionContext } from 'vscode';
 import { commands, window } from 'vscode';
 import { supportedViewsByName } from 'webview-api';
 
+import { getWebviewGlobalStore } from './AppState/store';
 import { HelloWorldPanel } from './panels/HelloWorldPanel';
 import { TodoViewProvider } from './providers/TodoViewProvider';
 import { WebviewApiViewProvider } from './providers/viewProviders';
@@ -35,4 +36,7 @@ export function activate(context: ExtensionContext) {
 
     // Add command to the extension context
     subscriptions.push(showHelloWorldCommand, { dispose: () => HelloWorldPanel.currentPanel?.dispose() });
+
+    // Add state clean up.
+    subscriptions.push(getWebviewGlobalStore());
 }
