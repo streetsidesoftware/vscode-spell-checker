@@ -1,7 +1,7 @@
 import type { DisposableHybrid as Disposable } from 'utils-disposables';
 import { createDisposable, InheritableDisposable } from 'utils-disposables';
 
-import type { EventListener, Subscribable, SubscribableEvent, SubscriberLike } from '../Subscribables';
+import type { EventListener, EventType, Subscribable, SubscribableEvent, SubscriberLike } from '../Subscribables';
 
 export abstract class AbstractSubscribable<T> extends InheritableDisposable implements Subscribable<T> {
     private _subscriptions = new Set<SubscriberLike<T>>();
@@ -92,8 +92,20 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
         }
     }
 
-    public onEvent(listener: EventListener): Disposable {
-        this._eventListeners.add(listener);
-        return createDisposable(() => this._eventListeners.delete(listener));
+    public onEvent(listener: EventListener): Disposable;
+    public onEvent(eventType: EventType, listener: EventListener): Disposable;
+    public onEvent(etOrL: EventType | EventListener, listener?: EventListener): Disposable {
+        if (typeof etOrL === 'function') {
+            this._eventListeners.add(etOrL);
+            return createDisposable(() => this._eventListeners.delete(etOrL));
+        }
+
+        const eventType = etOrL;
+        const eventlistener: EventListener = (e) => {
+            if (e.name !== eventType) return;
+            listener?.(e);
+        };
+        this._eventListeners.add(eventlistener);
+        return createDisposable(() => this._eventListeners.delete(eventlistener));
     }
 }

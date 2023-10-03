@@ -35,6 +35,7 @@ export interface Subscribable<T> {
      * Listen to Subscribable Events
      */
     onEvent(listener: EventListener): Disposable;
+    onEvent(eventType: EventType, listener: EventListener): Disposable;
 }
 
 export interface SubscribableSubscriber<T> extends Subscribable<T>, Subscriber<T> {
