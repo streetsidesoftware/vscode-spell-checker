@@ -4,6 +4,8 @@ export {
     createDisposableFromList,
     createDisposeMethodFromList,
     disposeOf,
-    InheritableDisposable,
     injectDisposable,
+    makeDisposable,
+    getDisposableTs,
 } from './disposable.js';
+export { createDisposableList, DisposableList, InheritableDisposable } from './DisposableList.js';
