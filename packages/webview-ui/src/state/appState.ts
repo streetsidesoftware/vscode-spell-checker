@@ -16,7 +16,6 @@ class AppState {
     private csLogLevel: ClientServerStore<AppStateData['logLevel'], 'logLevel'> | undefined;
     private csTodos: ClientServerStore<AppStateData['todos'], 'todos'> | undefined;
     private csCurrentDocument: ReadonlyClientServerStore<AppStateData['currentDocument'], 'currentDocument'> | undefined;
-    private csDocSettings: ReadonlyClientServerStore<AppStateData['docSettings'], 'docSettings'> | undefined;
 
     logLevel() {
         if (this.csLogLevel) {
@@ -66,19 +65,19 @@ class AppState {
         return cs.client;
     }
 
-    docSettings() {
-        if (this.csDocSettings) {
-            return this.csDocSettings.client;
-        }
-        const cs = createReadonlyClientServerStore<AppStateData['docSettings'], 'docSettings'>({
-            name: 'docSettings',
-            initialValue: null,
-            query: async () => (await api.serverRequest.getDocSettings()).value,
-            watch: watchFields('docSettings'),
-        });
-        this.csDocSettings = cs;
-        return cs.client;
-    }
+    // docSettings() {
+    //     if (this.csDocSettings) {
+    //         return this.csDocSettings.client;
+    //     }
+    //     const cs = createReadonlyClientServerStore<AppStateData['docSettings'], 'docSettings'>({
+    //         name: 'docSettings',
+    //         initialValue: null,
+    //         query: async () => (await api.serverRequest.getDocSettings()).value,
+    //         watch: watchFields('docSettings'),
+    //     });
+    //     this.csDocSettings = cs;
+    //     return cs.client;
+    // }
 }
 
 export const appState = new AppState();

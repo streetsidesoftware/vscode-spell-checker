@@ -1,4 +1,4 @@
-import { createDisposeMethodFromList, type DisposableLike, disposeOf, injectDisposable } from 'utils-disposables';
+import { createDisposableList, type DisposableLike, disposeOf, injectDisposable, makeDisposable } from 'utils-disposables';
 import { window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
 import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
@@ -6,7 +6,7 @@ import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
 import { awaitSubscribable, getWebviewGlobalStore } from '../AppState';
-import { type Storage, updateState, watchFieldList } from '../AppState/store';
+import { calcDocSettings, type Storage, updateState, watchFieldList } from '../AppState/store';
 import type { StoreValue } from '../AppState/Subscribables/StoreValue';
 import type { Subscribable } from '../AppState/Subscribables/Subscribables';
 import { sampleList } from './staticTestData';
@@ -18,8 +18,8 @@ export function createApi(connection: MessageConnection) {
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     let watcher: DisposableLike | undefined = undefined;
     const fieldsToWatch = new Set<WatchFields>();
-    const disposables: DisposableLike[] = [() => disposeOf(watcher)];
-    const dispose = createDisposeMethodFromList(disposables);
+    const disposables = createDisposableList([() => disposeOf(watcher)], 'bindApiAndStore');
+    const dispose = disposables.dispose;
 
     const api: ServerSideApiDef = {
         serverRequests: {
@@ -27,7 +27,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             getLogLevel: () => resolveRequest(store.state.logLevel),
             getTodos: () => resolveRequest(store.state.todos),
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
-            getDocSettings: () => resolveRequest(store.state.docSettings),
+            getDocSettings: calcDocSettings,
             setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
             watchFields,
@@ -43,9 +43,9 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
     };
 
     const serverSideApi = createServerSideSpellInfoWebviewApi(connection, api);
-    disposables.push(serverSideApi);
+    disposables.push(makeDisposable(serverSideApi));
 
-    return injectDisposable({ ...serverSideApi }, dispose);
+    return injectDisposable({ ...serverSideApi }, dispose, 'bindApiAndStore');
 
     /** Add fields to be watched. */
     function watchFields(req: WatchFieldList) {

@@ -22,7 +22,6 @@ export interface AppStateData {
     todos: TodoList;
     logLevel: LogLevel;
     readonly currentDocument: TextDocumentRef | null;
-    readonly docSettings: Settings | null;
 }
 
 export type WatchFields = keyof AppStateData;

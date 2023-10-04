@@ -29,7 +29,7 @@ export interface ServerRequestsAPI {
     getLogLevel(): RequestResult<LogLevel>;
     getTodos(): RequestResult<TodoList>;
     getCurrentDocument(): RequestResult<TextDocumentRef | null>;
-    getDocSettings(): RequestResult<Settings | null>;
+    getDocSettings(docUrl?: string): Settings | null;
     resetTodos(): SetValueResult<TodoList>;
     setLogLevel(req: SetValueRequest<LogLevel>): SetValueResult<LogLevel>;
     setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;

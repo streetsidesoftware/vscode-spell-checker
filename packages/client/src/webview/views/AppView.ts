@@ -1,4 +1,5 @@
-import type { Disposable, Webview, WebviewOptions } from 'vscode';
+import { createDisposableList, makeDisposable } from 'utils-disposables';
+import type { Webview, WebviewOptions } from 'vscode';
 import { Uri } from 'vscode';
 import { createConnectionToWebview } from 'vscode-webview-rpc/extension';
 import type { SupportedViews } from 'webview-api';
@@ -8,17 +9,18 @@ import { getNonce } from '../utilities/getNonce';
 import { getUri } from '../utilities/getUri';
 
 /**
- * This class manages the state and behavior of HelloWorld webview panels.
+ * This class manages the state and behavior of the webview panels.
  *
  * It contains all the data and methods for:
  *
- * - Creating and rendering HelloWorld webview panels
+ * - Creating and rendering webview panels
  * - Properly cleaning up and disposing of webview resources when the panel is closed
  * - Setting the HTML (and by proxy CSS/JavaScript) content of the webview panel
  * - Setting message listeners so data can be passed between the webview and extension
  */
 export class AppView {
-    private _disposables: Disposable[] = [];
+    private _disposables = createDisposableList(undefined, 'AppView');
+    public readonly dispose = this._disposables.dispose;
 
     /**
      * The HelloWorldPanel class private constructor (called only from the render method).
@@ -38,9 +40,9 @@ export class AppView {
 
         // Set an event listener to listen for messages passed from the webview context
         const rpc = createConnectionToWebview(webview);
-        this._disposables.push(createApi(rpc));
+        this._disposables.push(makeDisposable(createApi(rpc), 'createApi'));
         rpc.listen();
-        this._disposables.push(rpc);
+        this._disposables.push(makeDisposable(rpc, 'rpc'));
     }
 
     public calcOptions(): WebviewOptions {
@@ -51,22 +53,6 @@ export class AppView {
             // Restrict the webview to only load resources from the `out` and `webview-ui/public/build` directories
             localResourceRoots: [Uri.joinPath(extensionUri, 'out'), Uri.joinPath(extensionUri, 'packages/webview-ui/public')],
         };
-    }
-
-    /**
-     * Cleans up and disposes of webview resources when the webview panel is closed.
-     */
-    public dispose() {
-        // Dispose of the current webview panel
-        // this._panel.dispose() is the first element on the list.;
-
-        // Dispose of all disposables (i.e. commands) for the current webview panel
-        while (this._disposables.length) {
-            const disposable = this._disposables.pop();
-            if (disposable) {
-                disposable.dispose();
-            }
-        }
     }
 
     /**

@@ -1,5 +1,5 @@
-import type { DisposableClassic, DisposableHybrid } from 'utils-disposables';
-import { createDisposableFromList, disposeOf } from 'utils-disposables';
+import type { DisposableClassic, DisposableHybrid, DisposableLike } from 'utils-disposables';
+import { createDisposable, createDisposableFromList, disposeOf, injectDisposable } from 'utils-disposables';
 import type { TextDocument, TextEditor, Uri } from 'vscode';
 import { window } from 'vscode';
 import { getLogLevel, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
@@ -8,15 +8,15 @@ import type { WatchFieldList, WatchFields } from 'webview-api';
 import { getDependencies } from '../../di';
 import { calcSettings } from '../../infoViewer/infoHelper';
 import type { AppStateData } from '../apiTypes';
-import { awaitPromise, createSubscribableView, delayUnsubscribe, map, pipe, rx, throttle } from './Subscribables';
+import { createSubscribableView, pipe, rx, throttle } from './Subscribables';
 import { toSubscriberFn } from './Subscribables/helpers/toSubscriber';
 import type { MakeSubscribable, StoreValue } from './Subscribables/StoreValue';
 import { createStoreValue } from './Subscribables/StoreValue';
-import type { Subscribable, SubscriberLike } from './Subscribables/Subscribables';
+import type { SubscriberLike } from './Subscribables/Subscribables';
 
 export interface Storage {
     seq: number;
-    state: MakeSubscribable<AppStateData, 'currentDocument' | 'docSettings'>;
+    state: MakeSubscribable<AppStateData, 'currentDocument'>;
     dispose(): void;
 }
 
@@ -24,51 +24,60 @@ const debug = false;
 
 debug && setLogLevel(LogLevel.debug);
 
-const writableState = {
-    logLevel: createStoreValue(getLogLevel()),
-    todos: createStoreValue<AppStateData['todos']>([]),
-} as const;
-
 let store: Storage | undefined = undefined;
 
 export function getWebviewGlobalStore(): Storage {
     if (store) return store;
 
-    const currentDocument = rx(subscribeToCurrentDocument, createSubscribableView, delayUnsubscribe(5000), throttle(500));
+    const currentDocumentSub = rx(subscribeToCurrentDocument);
+    const currentDocument = pipe(currentDocumentSub, throttle(500), /* delayUnsubscribe(5000), */ createSubscribableView);
     currentDocument.onEvent('onNotify', (event) => console.log('current document update: %o', event));
 
     function dispose() {
+        disposeOf(currentDocumentSub);
         const _store = store;
         store = undefined;
         if (!_store) return;
         Object.values(_store.state).forEach((s) => disposeOf(s));
     }
 
-    const _store: Storage = {
-        seq: 1,
-        state: {
-            ...writableState,
-            currentDocument,
-            docSettings: rx(currentDocument, subscribeToDocSettings, createSubscribableView, delayUnsubscribe(5000), throttle(500)),
+    const writableState = {
+        logLevel: createStoreValue(getLogLevel()),
+        todos: createStoreValue<AppStateData['todos']>([]),
+    } as const;
+
+    const _store: Storage = injectDisposable(
+        {
+            seq: 1,
+            state: {
+                ...writableState,
+                currentDocument,
+            },
         },
         dispose,
-    };
+        'getWebviewGlobalStore',
+    );
 
     return (store = _store);
 }
 
 function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['currentDocument']>): DisposableHybrid {
     const emitter = toSubscriberFn(subscriber);
-    const disposables: DisposableClassic[] = [];
+    const disposables: DisposableLike[] = [createDisposable(() => console.error('Dispose Last'), undefined, 'Dispose Last')];
     const disposable = createDisposableFromList(disposables);
 
     setCurrentDocument(window.activeTextEditor);
-    window.onDidChangeActiveTextEditor(setCurrentDocument, undefined, disposables);
-    window.onDidChangeTextEditorSelection(
-        (event) => event.textEditor === window.activeTextEditor && setCurrentDocument(event.textEditor),
-        undefined,
-        disposables,
+    disposables.push(disposeClassic(window.onDidChangeActiveTextEditor(setCurrentDocument, undefined)));
+    disposables.push(
+        disposeClassic(
+            window.onDidChangeTextEditorSelection(
+                (event) => event.textEditor === window.activeTextEditor && setCurrentDocument(event.textEditor),
+                undefined,
+            ),
+        ),
     );
+
+    disposables.push(createDisposable(() => console.error('Dispose First'), undefined, 'Dispose First'));
 
     return disposable;
 
@@ -88,19 +97,10 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
     }
 }
 
-function subscribeToDocSettings(src: Subscribable<AppStateData['currentDocument']>): Subscribable<AppStateData['docSettings']> {
-    async function calcDocSettings(doc: AppStateData['currentDocument']): Promise<AppStateData['docSettings']> {
-        const textDoc = (doc && findMatchTextDocument(doc?.url)) || undefined;
-        const di = getDependencies();
-        return calcSettings(textDoc, undefined, di.client, console.log);
-    }
-
-    return pipe(
-        src,
-        throttle(1000),
-        map(calcDocSettings),
-        awaitPromise((err, emitter) => (console.error(err), emitter(null))),
-    );
+export async function calcDocSettings(doc?: string) {
+    const textDoc = (doc && findMatchTextDocument(doc)) || undefined;
+    const di = getDependencies();
+    return calcSettings(textDoc, undefined, di.client, console.log);
 }
 
 export interface StateUpdate<T> {
@@ -153,4 +153,8 @@ function compareUrl(a: UrlLike, b: UrlLike): number {
 function normalizeUrlToString(url: UrlLike): string {
     const decoded = decodeURIComponent(decodeURIComponent(url.toString())).normalize('NFC');
     return decoded.replace(/^file:\/\/\/[a-z]:/i, (fileUrl) => fileUrl.toLowerCase());
+}
+
+function disposeClassic(disposable: DisposableClassic): DisposableHybrid {
+    return createDisposable(() => disposable.dispose(), undefined, 'disposeClassic');
 }

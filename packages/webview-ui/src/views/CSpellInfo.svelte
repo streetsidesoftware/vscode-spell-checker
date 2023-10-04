@@ -1,14 +1,21 @@
 <script lang="ts">
+  import type { Settings } from 'webview-api/dist/apiModels';
   import CheckboxLogDebug from '../components/CheckboxLogDebug.svelte';
   import { appState } from '../state/appState';
+  import { writable } from 'svelte/store';
+  import { useQuery, useQueryClient } from '@sveltestack/svelte-query';
+  import { getClientApi } from '../api';
+
+  const getDocSettings = (url: string | undefined) => getClientApi().serverRequest.getDocSettings(url);
 
   $: currentDoc = appState.currentDocument();
-  $: settings = appState.docSettings();
-  $: dictionaries = $settings?.configs.file?.dictionaries;
   $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
+  $: queryResult = useQuery(['docSettings', docUrl?.toString()], (ctx) => getDocSettings(ctx.queryKey[1]));
+  $: settings = $queryResult.data;
+  $: dictionaries = settings?.configs.file?.dictionaries;
   $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
   $: logLevel = appState.logLevel();
-  $: fileUrl = $settings?.configs.file?.uri ? new URL($settings.configs.file.uri) : undefined;
+  $: fileUrl = settings?.configs.file?.uri ? new URL(settings.configs.file.uri) : undefined;
 </script>
 
 <section>
@@ -27,16 +34,19 @@
 
   {#if dictionaries && dictionaries.length}
     <h2>Dictionaries</h2>
-    {#each dictionaries as dictionary}
-      <ul>
+    <ul>
+      {#each dictionaries as dictionary}
         <li>
           <dl>
-            <dt>{dictionary.name}</dt>
+            <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
             <dd>{dictionary.description || ''}</dd>
+            {#if dictionary.uriName}
+              <dd><a href={dictionary.uri}>{dictionary.uriName}</a></dd>
+            {/if}
           </dl>
         </li>
-      </ul>
-    {/each}
+      {/each}
+    </ul>
   {/if}
 </section>
 
@@ -44,5 +54,11 @@
   dd {
     opacity: 90%;
     font-size: smaller;
+    margin-inline-start: 0;
+  }
+
+  dl {
+    margin-block-start: 0;
+    margin-block-end: 0.5em;
   }
 </style>

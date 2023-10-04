@@ -11,7 +11,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     protected _isNotifyBusy = false;
 
     constructor() {
-        super([() => this.done(), () => this._eventListeners.clear()]);
+        super([() => this.done(), () => this._eventListeners.clear()], 'AbstractSubscribable');
     }
 
     protected _hasSubscribers() {
@@ -42,7 +42,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
 
     private _unSub(s: SubscriberLike<T>) {
         this._subscriptions.delete(s);
-        this._markAsDone(s);
+        // this._markAsDone(s);
         this._tryToStop();
     }
 
@@ -71,7 +71,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     public subscribe(s: SubscriberLike<T>): Disposable {
         this._subscriptions.add(s);
         this._start();
-        return createDisposable(() => this._unSub(s));
+        return createDisposable(() => this._unSub(s), undefined, 'subscribe');
     }
 
     protected notify(value: T): void {
@@ -97,7 +97,7 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
     public onEvent(etOrL: EventType | EventListener, listener?: EventListener): Disposable {
         if (typeof etOrL === 'function') {
             this._eventListeners.add(etOrL);
-            return createDisposable(() => this._eventListeners.delete(etOrL));
+            return createDisposable(() => this._eventListeners.delete(etOrL), undefined, 'onEvent');
         }
 
         const eventType = etOrL;
@@ -106,6 +106,6 @@ export abstract class AbstractSubscribable<T> extends InheritableDisposable impl
             listener?.(e);
         };
         this._eventListeners.add(eventlistener);
-        return createDisposable(() => this._eventListeners.delete(eventlistener));
+        return createDisposable(() => this._eventListeners.delete(eventlistener), undefined, `onEvent ${eventType}`);
     }
 }
