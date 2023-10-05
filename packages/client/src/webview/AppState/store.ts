@@ -63,7 +63,7 @@ export function getWebviewGlobalStore(): Storage {
 
 function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['currentDocument']>): DisposableHybrid {
     const emitter = toSubscriberFn(subscriber);
-    const disposables: DisposableLike[] = [createDisposable(() => console.error('Dispose Last'), undefined, 'Dispose Last')];
+    const disposables: DisposableLike[] = [];
     const disposable = createDisposableFromList(disposables);
 
     setCurrentDocument(window.activeTextEditor);
@@ -76,8 +76,6 @@ function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['cur
             ),
         ),
     );
-
-    disposables.push(createDisposable(() => console.error('Dispose First'), undefined, 'Dispose First'));
 
     return disposable;
 

@@ -1,8 +1,8 @@
 import { disposeOf } from 'utils-disposables';
 
+import { map, rx } from '.';
 import { createEmitter } from './createFunctions';
 import { createSubscribableView } from './SubscribableView';
-import { map, rx } from '.';
 
 describe('SubscribableView', () => {
     test('SubscribableView auto', () => {

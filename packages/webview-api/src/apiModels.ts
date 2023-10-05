@@ -1,7 +1,5 @@
 import type { LogLevel } from 'vscode-webview-rpc';
 
-import type { Settings } from './models/settings';
-
 export { Settings } from './models/settings';
 export { LogLevel } from 'vscode-webview-rpc';
 
