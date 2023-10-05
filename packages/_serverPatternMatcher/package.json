@@ -47,9 +47,9 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^7.3.6",
+    "@cspell/cspell-types": "^7.3.7",
     "@internal/common-utils": "file:../__utils",
-    "cspell-lib": "^7.3.6",
+    "cspell-lib": "^7.3.7",
     "regexp-worker": "^2.0.2",
     "vscode-languageserver-textdocument": "^1.0.11",
     "vscode-languageserver": "^9.0.1",
