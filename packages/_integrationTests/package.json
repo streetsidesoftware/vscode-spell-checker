@@ -23,22 +23,22 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cspell/cspell-types": "^7.3.6",
+    "@cspell/cspell-types": "^7.3.7",
     "@types/chai": "^4.3.6",
     "@types/decompress": "^4.2.5",
     "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^18.18.0",
-    "chai": "^4.3.8",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "^18.18.3",
+    "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "kefir": "^3.8.8"
   },
   "peerDependenciesMeta": {},
   "dependencies": {
-    "@vscode/test-electron": "^2.3.4",
+    "@vscode/test-electron": "^2.3.5",
     "chalk": "^5.3.0",
     "decompress": "^4.2.1",
-    "glob": "^10.3.9",
+    "glob": "^10.3.10",
     "mocha": "^10.2.0"
   },
   "engines": {
