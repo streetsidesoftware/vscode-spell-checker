@@ -38,7 +38,7 @@ export async function calcSettings(
     client: CSpellClient,
     log: Logger,
 ): Promise<Settings> {
-    const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri();
+    const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri(document?.uri);
     const config = inspectConfig(activeFolderUri);
     const docConfig = await client.getConfigurationForDocument(document);
     const settings: Settings = {
@@ -46,7 +46,7 @@ export async function calcSettings(
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
         configs: extractViewerConfigFromConfig(config, docConfig, document, log),
         workspace: mapWorkspace(client.allowedSchemas, vscode.workspace),
-        activeFileUri: document && document.uri.toString(),
+        activeFileUri: document?.uri.toString(),
         activeFolderUri: activeFolderUri?.toString(),
     };
     return settings;
@@ -187,8 +187,9 @@ function getDefaultWorkspaceFolder() {
     return vscode.workspace.workspaceFolders?.[0];
 }
 
-function getDefaultWorkspaceFolderUri() {
-    return getDefaultWorkspaceFolder()?.uri;
+function getDefaultWorkspaceFolderUri(docUri?: Uri) {
+    const docFolder = docUri && vscode.workspace.getWorkspaceFolder(docUri);
+    return docFolder || getDefaultWorkspaceFolder()?.uri;
 }
 
 function normalizeFilenameToFriendlyName(filename: string | Uri): string {

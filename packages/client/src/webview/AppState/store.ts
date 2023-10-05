@@ -1,53 +1,87 @@
-import type { DisposableClassic, DisposableHybrid } from 'utils-disposables';
-import { createDisposableFromList } from 'utils-disposables';
-import type { TextEditor } from 'vscode';
+import type { DisposableClassic, DisposableHybrid, DisposableLike } from 'utils-disposables';
+import { createDisposable, createDisposableFromList, disposeOf, injectDisposable } from 'utils-disposables';
+import type { TextDocument, TextEditor, Uri } from 'vscode';
 import { window } from 'vscode';
 import { getLogLevel, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
 import type { WatchFieldList, WatchFields } from 'webview-api';
 
+import { getDependencies } from '../../di';
+import { calcSettings } from '../../infoViewer/infoHelper';
 import type { AppStateData } from '../apiTypes';
-import type { MakeSubscribable, ObservableValue, SubscriberFn } from './Subscribables';
-import { createStoreValue, createSubscribableValue } from './Subscribables';
+import { createSubscribableView, pipe, rx, throttle } from './Subscribables';
+import { toSubscriberFn } from './Subscribables/helpers/toSubscriber';
+import type { MakeSubscribable, StoreValue } from './Subscribables/StoreValue';
+import { createStoreValue } from './Subscribables/StoreValue';
+import type { SubscriberLike } from './Subscribables/Subscribables';
 
 export interface Storage {
     seq: number;
     state: MakeSubscribable<AppStateData, 'currentDocument'>;
+    dispose(): void;
 }
 
 const debug = false;
 
 debug && setLogLevel(LogLevel.debug);
 
-const writableState = {
-    logLevel: createStoreValue(getLogLevel()),
-    todos: createStoreValue<AppStateData['todos']>([]),
-} as const;
+let store: Storage | undefined = undefined;
 
-export const store: Storage = {
-    seq: 1,
-    state: {
-        ...writableState,
-        currentDocument: createSubscribableValue(subscribeToCurrentDocument),
-    },
-};
+export function getWebviewGlobalStore(): Storage {
+    if (store) return store;
 
-function subscribeToCurrentDocument(emitter: SubscriberFn<AppStateData['currentDocument']>): DisposableHybrid {
-    const disposables: DisposableClassic[] = [];
+    const currentDocumentSub = rx(subscribeToCurrentDocument);
+    const currentDocument = pipe(currentDocumentSub, throttle(500), /* delayUnsubscribe(5000), */ createSubscribableView);
+    currentDocument.onEvent('onNotify', (event) => console.log('current document update: %o', event));
+
+    function dispose() {
+        disposeOf(currentDocumentSub);
+        const _store = store;
+        store = undefined;
+        if (!_store) return;
+        Object.values(_store.state).forEach((s) => disposeOf(s));
+    }
+
+    const writableState = {
+        logLevel: createStoreValue(getLogLevel()),
+        todos: createStoreValue<AppStateData['todos']>([]),
+    } as const;
+
+    const _store: Storage = injectDisposable(
+        {
+            seq: 1,
+            state: {
+                ...writableState,
+                currentDocument,
+            },
+        },
+        dispose,
+        'getWebviewGlobalStore',
+    );
+
+    return (store = _store);
+}
+
+function subscribeToCurrentDocument(subscriber: SubscriberLike<AppStateData['currentDocument']>): DisposableHybrid {
+    const emitter = toSubscriberFn(subscriber);
+    const disposables: DisposableLike[] = [];
     const disposable = createDisposableFromList(disposables);
 
     setCurrentDocument(window.activeTextEditor);
-    window.onDidChangeActiveTextEditor(setCurrentDocument, undefined, disposables);
-    window.onDidChangeTextEditorSelection(
-        (event) => event.textEditor === window.activeTextEditor && setCurrentDocument(event.textEditor),
-        undefined,
-        disposables,
+    disposables.push(disposeClassic(window.onDidChangeActiveTextEditor(setCurrentDocument, undefined)));
+    disposables.push(
+        disposeClassic(
+            window.onDidChangeTextEditorSelection(
+                (event) => event.textEditor === window.activeTextEditor && setCurrentDocument(event.textEditor),
+                undefined,
+            ),
+        ),
     );
 
     return disposable;
 
     function setCurrentDocument(textEditor: TextEditor | undefined) {
         if (!textEditor) {
-            emitter(null);
+            // emitter(null);
             return;
         }
 
@@ -61,13 +95,20 @@ function subscribeToCurrentDocument(emitter: SubscriberFn<AppStateData['currentD
     }
 }
 
+export async function calcDocSettings(doc?: string) {
+    const textDoc = (doc && findMatchTextDocument(doc)) || undefined;
+    const di = getDependencies();
+    return calcSettings(textDoc, undefined, di.client, console.log);
+}
+
 export interface StateUpdate<T> {
     seq: number;
     success: boolean;
     value: T;
 }
 
-export function updateState<T>(seq: number | undefined, value: T, s: ObservableValue<T>): StateUpdate<T> {
+export function updateState<T>(seq: number | undefined, value: T, s: StoreValue<T>): StateUpdate<T> {
+    const store = getWebviewGlobalStore();
     if (seq && seq !== store.seq) return { seq: store.seq, value: s.value, success: false };
 
     store.seq++;
@@ -76,6 +117,7 @@ export function updateState<T>(seq: number | undefined, value: T, s: ObservableV
 }
 
 export function watchFieldList(fieldsToWatch: Set<WatchFields>, onChange: (changedFields: WatchFieldList) => void): DisposableHybrid {
+    const store = getWebviewGlobalStore();
     const list = [...fieldsToWatch];
     const disposables = list
         .map((field) => ({ field, sub: store.state[field] }))
@@ -84,4 +126,33 @@ export function watchFieldList(fieldsToWatch: Set<WatchFields>, onChange: (chang
         });
 
     return createDisposableFromList(disposables);
+}
+
+function findMatchTextDocument(url: UrlLike): TextDocument | undefined {
+    return findMatchingEditor(url)?.document;
+}
+
+function findMatchingEditor(url: UrlLike): TextEditor | undefined {
+    for (const editor of window.visibleTextEditors) {
+        if (!compareUrl(editor.document.uri, url)) return editor;
+    }
+    return undefined;
+}
+
+type UrlLike = URL | Uri | string;
+
+function compareUrl(a: UrlLike, b: UrlLike): number {
+    const aa = normalizeUrlToString(a);
+    const bb = normalizeUrlToString(b);
+    if (aa === bb) return 0;
+    return aa < bb ? -1 : 1;
+}
+
+function normalizeUrlToString(url: UrlLike): string {
+    const decoded = decodeURIComponent(decodeURIComponent(url.toString())).normalize('NFC');
+    return decoded.replace(/^file:\/\/\/[a-z]:/i, (fileUrl) => fileUrl.toLowerCase());
+}
+
+function disposeClassic(disposable: DisposableClassic): DisposableHybrid {
+    return createDisposable(() => disposable.dispose(), undefined, 'disposeClassic');
 }

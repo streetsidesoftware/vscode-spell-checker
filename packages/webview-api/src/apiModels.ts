@@ -1,5 +1,6 @@
 import type { LogLevel } from 'vscode-webview-rpc';
 
+export { Settings } from './models/settings';
 export { LogLevel } from 'vscode-webview-rpc';
 
 export interface Todo {

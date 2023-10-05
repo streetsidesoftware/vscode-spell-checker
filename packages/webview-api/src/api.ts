@@ -10,7 +10,16 @@ import type {
 } from 'vscode-webview-rpc';
 import { createClientApi, createServerApi } from 'vscode-webview-rpc';
 
-import type { LogLevel, RequestResult, SetValueRequest, SetValueResult, TextDocumentRef, TodoList, WatchFieldList } from './apiModels';
+import type {
+    LogLevel,
+    RequestResult,
+    Settings,
+    SetValueRequest,
+    SetValueResult,
+    TextDocumentRef,
+    TodoList,
+    WatchFieldList,
+} from './apiModels';
 
 export { setLogLevel } from 'vscode-webview-rpc/logger';
 
@@ -20,6 +29,7 @@ export interface ServerRequestsAPI {
     getLogLevel(): RequestResult<LogLevel>;
     getTodos(): RequestResult<TodoList>;
     getCurrentDocument(): RequestResult<TextDocumentRef | null>;
+    getDocSettings(docUrl?: string): Settings | null;
     resetTodos(): SetValueResult<TodoList>;
     setLogLevel(req: SetValueRequest<LogLevel>): SetValueResult<LogLevel>;
     setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;

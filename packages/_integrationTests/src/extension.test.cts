@@ -35,18 +35,9 @@ const apiSignature: Api = {
 describe('Launch code spell extension', function () {
     this.timeout(120000);
     const docUri = getDocUri('diagnostics.txt');
-    const spellCheckNotifications: OnSpellCheckDocumentStep[] = [];
-    const disposables: { dispose: () => void }[] = [];
 
     this.beforeAll(async () => {
-        const ext = await activateExtension();
-        disposables.push(ext.extApi.cSpellClient().onSpellCheckDocumentNotification((n) => spellCheckNotifications.push(n)));
-    });
-
-    this.afterEach(async () => {
-        disposables.forEach((d) => d.dispose());
-        disposables.length = 0;
-        await sleep(1000);
+        await activateExtension();
     });
 
     it('Verify the extension starts', async () => {

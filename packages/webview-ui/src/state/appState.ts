@@ -64,6 +64,20 @@ class AppState {
         this.csCurrentDocument = cs;
         return cs.client;
     }
+
+    // docSettings() {
+    //     if (this.csDocSettings) {
+    //         return this.csDocSettings.client;
+    //     }
+    //     const cs = createReadonlyClientServerStore<AppStateData['docSettings'], 'docSettings'>({
+    //         name: 'docSettings',
+    //         initialValue: null,
+    //         query: async () => (await api.serverRequest.getDocSettings()).value,
+    //         watch: watchFields('docSettings'),
+    //     });
+    //     this.csDocSettings = cs;
+    //     return cs.client;
+    // }
 }
 
 export const appState = new AppState();

@@ -205,12 +205,16 @@ function bindNotifications(
 }
 
 function mapRequestsToFn<T extends Requests>(connection: MessageConnection, prefix: string, requests: DefUseAPI<T>): MakeMethodsAsync<T> {
+    let reqSeqNum = 1;
     return Object.fromEntries(
         Object.entries(requests).map(([name]) => {
             const methodName = prefix + name;
             const fn = (...params: any) => {
-                log(`send request "${name}" %o`, params);
-                return connection.sendRequest(methodName, params);
+                const seq = ++reqSeqNum;
+                log(`send request "${name}" %o: Params: %o`, seq, params);
+                return connection
+                    .sendRequest(methodName, params)
+                    .then((value) => (log(`send request "${name}" %o: Response: %o`, seq, value), value));
             };
             return [name, fn];
         }),
@@ -225,7 +229,7 @@ function mapNotificationsToFn<T extends Notifications>(
     return Object.fromEntries(
         Object.entries(notifications).map(([name]) => {
             const methodName = prefix + name;
-            const fn = (...params: any) => (log(`send request "${name}" %o`, params), connection.sendNotification(methodName, params));
+            const fn = (...params: any) => (log(`send notification "${name}" %o`, params), connection.sendNotification(methodName, params));
             return [name, fn];
         }),
     ) as MakeMethodsAsync<T>;

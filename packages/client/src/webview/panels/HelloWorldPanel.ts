@@ -1,4 +1,5 @@
-import type { Disposable, Uri, WebviewPanel } from 'vscode';
+import { createDisposableList } from 'utils-disposables';
+import type { Uri, WebviewPanel } from 'vscode';
 import { ViewColumn, window } from 'vscode';
 
 import { HelloWorldView } from '../views/HelloWorldView';
@@ -16,7 +17,7 @@ import { HelloWorldView } from '../views/HelloWorldView';
 export class HelloWorldPanel {
     public static currentPanel: HelloWorldPanel | undefined;
     private readonly _panel: WebviewPanel;
-    private _disposables: Disposable[] = [];
+    private _disposables = createDisposableList(undefined, 'HelloWorldPanel');
 
     /**
      * The HelloWorldPanel class private constructor (called only from the render method).
@@ -30,8 +31,7 @@ export class HelloWorldPanel {
 
         // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
         // the panel or when the panel is closed programmatically)
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-
+        this._disposables.push(this._panel.onDidDispose(() => this.dispose()));
         this._disposables.push(HelloWorldView.bindView(this._panel.webview, extensionUri));
     }
 
@@ -75,11 +75,6 @@ export class HelloWorldPanel {
         // this._panel.dispose() is the first element on the list.;
 
         // Dispose of all disposables (i.e. commands) for the current webview panel
-        while (this._disposables.length) {
-            const disposable = this._disposables.pop();
-            if (disposable) {
-                disposable.dispose();
-            }
-        }
+        this._disposables.dispose();
     }
 }

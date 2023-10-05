@@ -8,6 +8,7 @@
   import { createDisposableFromList } from 'utils-disposables';
   import { appState } from './state/appState';
   import { LogLevel, setLogLevel } from 'webview-api';
+  import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 
   // In order to use the Webview UI Toolkit web components they
   // must be registered with the browser (i.e. webview) using the
@@ -37,24 +38,28 @@
   const disposables = [logLevel.subscribe((level) => setLogLevel(level))];
   const disposable = createDisposableFromList(disposables);
 
+  const queryClient = new QueryClient();
+
   onDestroy(() => {
     disposable.dispose();
   });
 </script>
 
-<main>
-  <div class="main-container">
-    {#if view == supportedViewsByName['hello-world']}
-      <HelloWorld {name} />
-    {:else if view == supportedViewsByName.todo}
-      <Todo />
-    {:else if view == supportedViewsByName['cspell-info']}
-      <CSpellInfo />
-    {:else}
-      <h1>Unknown View {view}</h1>
-    {/if}
-  </div>
-</main>
+<QueryClientProvider client={queryClient}>
+  <main>
+    <div class="main-container">
+      {#if view == supportedViewsByName['hello-world']}
+        <HelloWorld {name} />
+      {:else if view == supportedViewsByName.todo}
+        <Todo />
+      {:else if view == supportedViewsByName['cspell-info']}
+        <CSpellInfo />
+      {:else}
+        <h1>Unknown View {view}</h1>
+      {/if}
+    </div>
+  </main>
+</QueryClientProvider>
 
 <style>
   main {
