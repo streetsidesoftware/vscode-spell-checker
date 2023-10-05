@@ -5,6 +5,7 @@ exports[`api > Creating a Server API 1`] = `
   "clientNotification.onStateChange",
   "serverNotification.showInformationMessage",
   "serverRequest.getCurrentDocument",
+  "serverRequest.getDocSettings",
   "serverRequest.getLogLevel",
   "serverRequest.getTodos",
   "serverRequest.resetTodos",
@@ -17,6 +18,7 @@ exports[`api > Creating a Server API 1`] = `
 
 exports[`api > Creating a Server API 2`] = `
 [
+  "function",
   "function",
   "function",
   "function",
