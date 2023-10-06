@@ -11,8 +11,8 @@ import {
     isDisposableHybrid,
     isDisposed,
     makeDisposable,
-    setDebugMode,
     setDisposableName,
+    setLogger,
 } from './disposable.js';
 import { InheritableDisposable } from './DisposableList.js';
 
@@ -184,15 +184,19 @@ describe('disposable', () => {
 });
 
 describe('disposable debug', () => {
+    const logger = {
+        debug: jest.fn(),
+        warn: jest.fn(),
+    };
+
     beforeEach(() => {
-        setDebugMode(true);
-        jest.spyOn(console, 'log').mockImplementation(() => undefined);
-        jest.spyOn(console, 'error').mockImplementation(() => undefined);
+        setLogger(logger);
     });
 
     afterEach(() => {
-        setDebugMode(false);
-        jest.resetAllMocks();
+        setLogger(undefined);
+        logger.debug.mockReset();
+        logger.warn.mockReset();
     });
 
     test('createDisposableFromList', () => {

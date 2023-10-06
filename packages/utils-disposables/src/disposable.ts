@@ -9,6 +9,11 @@ interface Disposable {
     [Symbol.dispose](): void;
 }
 
+export interface Logger {
+    debug: typeof console.debug;
+    warn: typeof console.warn;
+}
+
 export const symbolDisposableName = Symbol('Disposable Name');
 export type SymbolDisposableName = typeof symbolDisposableName;
 
@@ -18,17 +23,10 @@ export type SymbolDisposableTs = typeof symbolDisposableTs;
 export const symbolIsDisposed = Symbol('Disposable Is Disposed');
 export type SymbolIsDisposed = typeof symbolIsDisposed;
 
-let debugMode = false;
+let _logger: Logger | undefined = undefined;
 
 let debugDepth = 0;
 let activeDisposables = 0;
-
-function logDebug(...params: Parameters<typeof console.debug>): void {
-    if (!debugMode) return;
-    const [msg, ...rest] = params;
-
-    console.log(' '.repeat(debugDepth) + msg, ...rest);
-}
 
 export type DisposeFn = () => void;
 
@@ -92,18 +90,18 @@ export function createDisposable<T extends object>(disposeFn: DisposeFn, thisArg
     };
 
     ++activeDisposables;
-    debugMode && logDebug('Created: %s, active: %i', debugId(disposable), activeDisposables);
+    _logger?.debug(dbgPad() + 'Created: %s, active: %i', debugId(disposable), activeDisposables);
 
     return disposable;
 
     function dispose() {
         try {
-            debugMode && logDebug('Dispose Start -> %s Active %i', debugId(disposable), activeDisposables);
+            _logger?.debug(dbgPad() + 'Dispose Start -> %s Active %i', debugId(disposable), activeDisposables);
             ++debugDepth;
             // isDisposed is the source of truth, not `disposable[symbolIsDisposed]`
             if (isDisposed) {
                 disposable[symbolIsDisposed] = true;
-                debugMode && console.error('Already disposed %s', debugId(disposable));
+                _logger?.warn('Already disposed %s', debugId(disposable));
                 return;
             }
             --activeDisposables;
@@ -114,8 +112,12 @@ export function createDisposable<T extends object>(disposeFn: DisposeFn, thisArg
             throw err;
         } finally {
             --debugDepth;
-            debugMode &&
-                logDebug('Dispose End   -> %s Active %i%s', debugId(disposable), activeDisposables, errors ? ' ** with errors ** ' : '');
+            _logger?.debug(
+                dbgPad() + 'Dispose End   -> %s Active %i%s',
+                debugId(disposable),
+                activeDisposables,
+                errors ? ' ** with errors ** ' : '',
+            );
         }
     }
 }
@@ -157,19 +159,19 @@ export function createDisposeMethodFromList(disposables: DisposableLike[], name 
     let disposed = false;
     const tsId = performance.now().toFixed(4);
 
-    debugMode && (name = 'createDisposeMethodFromList ' + (name || '<anonymous>'));
+    _logger && (name = 'createDisposeMethodFromList ' + (name || '<anonymous>'));
 
-    debugMode && logDebug('Create: %s %s', name, tsId);
+    _logger?.debug(dbgPad() + 'Create: %s %s', name, tsId);
 
     let errors = 0;
 
     function dispose() {
         try {
-            debugMode && logDebug('Dispose Start -> %s %s', name, tsId);
+            _logger?.debug(dbgPad() + 'Dispose Start -> %s %s', name, tsId);
             ++debugDepth;
             let error: unknown | undefined = undefined;
             if (disposed) {
-                debugMode && console.error('Already disposed %s with %o open.', name, disposables.length);
+                _logger?.warn('Already disposed %s with %o open.', name, disposables.length);
                 if (!disposables.length) return;
                 // keep going, try to clean up the list if possible.
             }
@@ -188,12 +190,12 @@ export function createDisposeMethodFromList(disposables: DisposableLike[], name 
             }
 
             if (error) {
-                debugMode && console.error(error);
+                _logger && console.error(error);
                 throw error;
             }
         } finally {
             --debugDepth;
-            debugMode && logDebug('Dispose End   -> %s %s%s', name, tsId, errors ? ` *** with ${errors} errors ***` : '');
+            _logger?.debug(dbgPad() + 'Dispose End   -> %s %s%s', name, tsId, errors ? ` *** with ${errors} errors ***` : '');
         }
     }
     return dispose;
@@ -248,11 +250,20 @@ export function isDisposed(disposable: DisposableHybrid): boolean | undefined {
     return disposable[symbolIsDisposed];
 }
 
-export function setDebugMode(enable: boolean) {
-    debugMode = enable;
+/**
+ * Setup logging functions to log creation and disposal events
+ * This is primarily used just for debugging.
+ * @param logger - logging functions
+ */
+export function setLogger(logger: Logger | undefined) {
+    _logger = logger;
 }
 
 export function isDisposableHybrid(disposable: unknown): disposable is DisposableHybrid {
     if (!disposable || typeof disposable !== 'object') return false;
     return symbolIsDisposed in disposable;
+}
+
+function dbgPad(): string {
+    return ' '.repeat(debugDepth);
 }
