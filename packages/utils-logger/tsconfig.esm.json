@@ -1,0 +1,19 @@
+{
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "./dist/esm",
+        "target": "es2022",
+        "lib": ["es2022"],
+        "module": "ES2022",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": "./src",
+        "strict": true
+    },
+    "include": ["src"]
+}

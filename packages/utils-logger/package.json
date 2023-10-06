@@ -1,0 +1,49 @@
+{
+  "name": "utils-logger",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A logger interface.",
+  "sideEffects": false,
+  "main": "dist/cjs/logger.js",
+  "types": "dist/cjs/logger.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "npm run build:tsc && npm run build:ts2mjs",
+    "build:tsc": "tsc -b tsconfig.json",
+    "build:ts2mjs": "ts2mjs dist/esm",
+    "build-production": "npm run clean && npm run build",
+    "watch": "concurrently npm:watch:*",
+    "watch:tsc": "tsc -b tsconfig.json --watch",
+    "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
+    "clean": "shx rm -rf dist",
+    "coverage": "vitest run --coverage",
+    "test": "vitest run"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/cjs/logger.d.ts",
+      "import": "./dist/esm/logger.mjs",
+      "require": "./dist/cjs/logger.js"
+    }
+  },
+  "keywords": [
+    "json-rpc",
+    "webviews",
+    "vscode"
+  ],
+  "author": "Street Side Software",
+  "license": "MIT",
+  "dependencies": {},
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "!dist/**/*.test.*",
+    "!dist/**/test/**",
+    "!dist/esm/**/*.js",
+    "!dist/esm/**/*.ts"
+  ],
+  "engines": {
+    "node": ">18.0.0"
+  },
+  "devDependencies": {}
+}
