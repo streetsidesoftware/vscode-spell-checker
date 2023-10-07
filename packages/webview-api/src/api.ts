@@ -29,6 +29,7 @@ export interface ServerRequestsAPI {
 /** Notifications that can be sent to the extension */
 export interface ServerNotificationsAPI {
     showInformationMessage(message: string): void;
+    openTextDocument(url: string): void;
 }
 
 /**

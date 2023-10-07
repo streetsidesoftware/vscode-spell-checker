@@ -19,6 +19,7 @@ describe('api', () => {
             clientRequests: {},
             serverNotifications: {
                 showInformationMessage: true,
+                openTextDocument: true,
             },
             serverRequests: {
                 getCurrentDocument: true,

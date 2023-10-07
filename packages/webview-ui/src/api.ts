@@ -43,6 +43,7 @@ function createApi(): API {
         {
             serverNotifications: {
                 showInformationMessage: true,
+                openTextDocument: true,
             },
             serverRequests: {
                 getCurrentDocument: true,

@@ -3,6 +3,7 @@
 exports[`api > Creating a Server API 1`] = `
 [
   "clientNotification.onStateChange",
+  "serverNotification.openTextDocument",
   "serverNotification.showInformationMessage",
   "serverRequest.getCurrentDocument",
   "serverRequest.getDocSettings",
@@ -18,6 +19,7 @@ exports[`api > Creating a Server API 1`] = `
 
 exports[`api > Creating a Server API 2`] = `
 [
+  "function",
   "function",
   "function",
   "function",

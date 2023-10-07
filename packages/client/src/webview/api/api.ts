@@ -1,6 +1,6 @@
 import { createDisposableList, type DisposableLike, disposeOf, injectDisposable, makeDisposable } from 'utils-disposables';
 import { createLogger, LogLevel } from 'utils-logger';
-import { window } from 'vscode';
+import { Uri, window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
 import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
@@ -48,6 +48,12 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
         serverNotifications: {
             async showInformationMessage(message) {
                 await window.showInformationMessage('Show Message: ' + message);
+            },
+            async openTextDocument(url) {
+                if (!url) return;
+                const uri = Uri.parse(url);
+                // console.error('Open %o, %o', url, uri.toJSON());
+                await window.showTextDocument(uri);
             },
         },
         clientRequests: {},

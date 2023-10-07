@@ -41,7 +41,17 @@
             <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
             <dd>{dictionary.description || ''}</dd>
             {#if dictionary.uriName}
-              <dd><a href={dictionary.uri}>{dictionary.uriName}</a></dd>
+              <dd>
+                {#if dictionary.uri}
+                  <a
+                    href={dictionary.uri}
+                    on:click={() => dictionary.uri && getClientApi().serverNotification.openTextDocument(dictionary.uri)}
+                    >{dictionary.uriName}</a
+                  >
+                {:else}
+                  {dictionary.uriName}
+                {/if}
+              </dd>
             {/if}
           </dl>
         </li>
