@@ -14,7 +14,7 @@
   $: settings = $queryResult.data;
   $: dictionaries = settings?.configs.file?.dictionaries;
   $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
-  $: logLevel = appState.logLevel();
+  $: logDebug = appState.logDebug();
   $: fileUrl = settings?.configs.file?.uri ? new URL(settings.configs.file.uri) : undefined;
 </script>
 
@@ -26,7 +26,7 @@
     <li>name: {name}</li>
     <li>file: {docUrl ?? 'none'}</li>
     <li>version: {$currentDoc?.version ?? 'n/a'}</li>
-    <li>State LogLevel: {$logLevel}</li>
+    <li>State LogLevel: {$logDebug}</li>
     <li>filename from settings: {fileUrl ? fileUrl.pathname.split('/').at(-1) : '<unknown>'}</li>
   </ul>
 

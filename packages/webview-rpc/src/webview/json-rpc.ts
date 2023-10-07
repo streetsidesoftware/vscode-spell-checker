@@ -10,21 +10,31 @@ import {
     type MessageWriter,
 } from 'vscode-jsonrpc/browser';
 
-import { debug } from '../common/logger.js';
 import { getVsCodeApi, type VSCodeAPI, type VSCodeMessageAPI } from './vscode.js';
 
-export type { MessageConnection } from '../common/types.js';
+export type { MessageConnection } from 'json-rpc-api';
 export { NotificationType } from 'vscode-jsonrpc/lib/common/api.js';
 
+export interface Logger {
+    debug: typeof console.debug;
+    error: typeof console.error;
+    info: typeof console.info;
+    log: typeof console.log;
+    warn: typeof console.warn;
+}
+
 export class WebViewMessageReader extends AbstractMessageReader {
-    constructor(readonly api: VSCodeMessageAPI) {
+    constructor(
+        readonly api: VSCodeMessageAPI,
+        readonly logger: Logger | undefined,
+    ) {
         super();
     }
 
     listen(callback: DataCallback): Disposable {
         return this.api.onDidReceiveMessage((data) => {
             if (!data || !data.data) return;
-            debug('client listen: %o', data.data);
+            this.logger?.debug('client listen: %o', data.data);
             callback(data.data);
         });
     }
@@ -33,7 +43,10 @@ export class WebViewMessageReader extends AbstractMessageReader {
 export class WebViewMessageWriter extends AbstractMessageWriter implements MessageWriter {
     private errorCount: number;
 
-    constructor(readonly api: VSCodeMessageAPI) {
+    constructor(
+        readonly api: VSCodeMessageAPI,
+        readonly logger: Logger | undefined,
+    ) {
         super();
         this.errorCount = 0;
     }
@@ -58,14 +71,14 @@ export class WebViewMessageWriter extends AbstractMessageWriter implements Messa
     }
 }
 
-function createConnectionToVSCode(api: VSCodeMessageAPI): MessageConnection {
-    return createMessageConnection(new WebViewMessageReader(api), new WebViewMessageWriter(api));
+function createConnectionToVSCode(api: VSCodeMessageAPI, logger: Logger | undefined): MessageConnection {
+    return createMessageConnection(new WebViewMessageReader(api, logger), new WebViewMessageWriter(api, logger), logger);
 }
 
 let connection: MessageConnection | undefined = undefined;
 
-export function getRpcConnection<T>(api?: VSCodeAPI<T>): MessageConnection {
+export function getRpcConnection<T>(api?: VSCodeAPI<T>, logger?: Logger): MessageConnection {
     if (connection) return connection;
-    connection = createConnectionToVSCode(api || getVsCodeApi());
+    connection = createConnectionToVSCode(api || getVsCodeApi(), logger);
     return connection;
 }

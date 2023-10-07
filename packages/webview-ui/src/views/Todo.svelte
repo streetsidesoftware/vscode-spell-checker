@@ -12,7 +12,7 @@
 
   $: todos = $sTodos;
   $: remaining = todos.filter((t) => !t.done).length || 0;
-  $: logLevel = appState.logLevel();
+  $: logDebug = appState.logDebug();
 
   let focusTodo: Todo | undefined;
 
@@ -97,7 +97,7 @@
     {/if}
 
     <p>{remaining} remaining</p>
-    <p>Log Level: {$logLevel}</p>
+    <p>Log Debug: {$logDebug}</p>
 
     <div class="todo-actions">
       <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->

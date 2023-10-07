@@ -4,7 +4,7 @@ import { Uri } from 'vscode';
 import { createConnectionToWebview } from 'vscode-webview-rpc/extension';
 import type { SupportedViews } from 'webview-api';
 
-import { createApi } from '../api';
+import { createApi, getLogger } from '../api';
 import { getNonce } from '../utilities/getNonce';
 import { getUri } from '../utilities/getUri';
 
@@ -39,7 +39,7 @@ export class AppView {
         webview.html = this._getWebviewContent();
 
         // Set an event listener to listen for messages passed from the webview context
-        const rpc = createConnectionToWebview(webview);
+        const rpc = createConnectionToWebview(webview, getLogger());
         this._disposables.push(makeDisposable(createApi(rpc), 'createApi'));
         rpc.listen();
         this._disposables.push(makeDisposable(rpc, 'rpc'));

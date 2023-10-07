@@ -1,7 +1,4 @@
-import type { LogLevel } from 'vscode-webview-rpc';
-
 export { Settings } from './models/settings';
-export { LogLevel } from 'vscode-webview-rpc';
 
 export interface Todo {
     uuid: number;
@@ -18,7 +15,7 @@ export interface TextDocumentRef {
 
 export interface AppStateData {
     todos: TodoList;
-    logLevel: LogLevel;
+    logDebug: boolean;
     readonly currentDocument: TextDocumentRef | null;
 }
 

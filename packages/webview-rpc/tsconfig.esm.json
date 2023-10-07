@@ -2,19 +2,18 @@
     "extends": "@tsconfig/node18",
     "compilerOptions": {
         "composite": true,
-        "outDir": "../../dist/cjs/extension",
+        "outDir": "dist/esm",
         "target": "es2022",
         "lib": ["es2022", "dom"],
-        "module": "CommonJS",
+        "module": "ES2022",
         "moduleResolution": "Node",
         "esModuleInterop": true,
         "importHelpers": true,
         "sourceMap": true,
         "declaration": true,
         "declarationMap": true,
-        "rootDir": ".",
+        "rootDir": "./src",
         "strict": true
     },
-    "include": ["."],
-    "references": [{ "path": "../common/tsconfig.cjs.json" }]
+    "include": ["src"]
 }

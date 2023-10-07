@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { allComponents, provideVSCodeDesignSystem } from '@vscode/webview-ui-toolkit';
-  import { supportedViewsByName } from './api';
+  import { supportedViewsByName, getLogger } from './api';
   import CSpellInfo from './views/CSpellInfo.svelte';
   import HelloWorld from './views/HelloWorld.svelte';
   import Todo from './views/Todo.svelte';
-  import { createDisposableFromList } from 'utils-disposables';
+  import { createDisposableList } from 'utils-disposables';
   import { appState } from './state/appState';
-  import { LogLevel, setLogLevel } from 'webview-api';
   import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+  import { LogLevel } from 'utils-logger';
 
   // In order to use the Webview UI Toolkit web components they
   // must be registered with the browser (i.e. webview) using the
@@ -32,11 +32,7 @@
   export let name: string;
   export let view: string | undefined | null;
 
-  setLogLevel(LogLevel.debug);
-  const logLevel = appState.logLevel();
-
-  const disposables = [logLevel.subscribe((level) => setLogLevel(level))];
-  const disposable = createDisposableFromList(disposables);
+  const disposable = createDisposableList();
 
   const queryClient = new QueryClient();
 

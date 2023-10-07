@@ -33,6 +33,8 @@
             "path": "tools/build-tools"
         },
         { "path": "packages/utils-disposables" },
+        { "path": "packages/utils-logger" },
+        { "path": "packages/json-rpc-api" },
         { "path": "packages/webview-api" },
         { "path": "packages/webview-rpc" },
         { "path": "packages/webview-ui" },
