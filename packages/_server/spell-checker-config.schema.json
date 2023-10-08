@@ -53,7 +53,13 @@
         "cSpell.logLevel": {
           "default": "Error",
           "description": "Set the Debug Level for logging messages.",
-          "enum": ["None", "Error", "Warning", "Information", "Debug"],
+          "enum": [
+            "None",
+            "Error",
+            "Warning",
+            "Information",
+            "Debug"
+          ],
           "enumDescriptions": [
             "Do not log",
             "Log only errors",
@@ -156,7 +162,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["path", "name"],
+                      "required": [
+                        "path",
+                        "name"
+                      ],
                       "type": "object"
                     },
                     {
@@ -191,14 +200,22 @@
                           "anyOf": [
                             {
                               "description": "Specifies the scope of a dictionary.",
-                              "enum": ["user", "workspace", "folder"],
+                              "enum": [
+                                "user",
+                                "workspace",
+                                "folder"
+                              ],
                               "markdownDescription": "Specifies the scope of a dictionary.",
                               "type": "string"
                             },
                             {
                               "items": {
                                 "description": "Specifies the scope of a dictionary.",
-                                "enum": ["user", "workspace", "folder"],
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
                                 "markdownDescription": "Specifies the scope of a dictionary.",
                                 "type": "string"
                               },
@@ -209,7 +226,11 @@
                           "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                         }
                       },
-                      "required": ["path", "addWords", "name"],
+                      "required": [
+                        "path",
+                        "addWords",
+                        "name"
+                      ],
                       "type": "object"
                     }
                   ]
@@ -404,7 +425,10 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["path", "name"],
+                            "required": [
+                              "path",
+                              "name"
+                            ],
                             "type": "object"
                           },
                           {
@@ -439,14 +463,22 @@
                                 "anyOf": [
                                   {
                                     "description": "Specifies the scope of a dictionary.",
-                                    "enum": ["user", "workspace", "folder"],
+                                    "enum": [
+                                      "user",
+                                      "workspace",
+                                      "folder"
+                                    ],
                                     "markdownDescription": "Specifies the scope of a dictionary.",
                                     "type": "string"
                                   },
                                   {
                                     "items": {
                                       "description": "Specifies the scope of a dictionary.",
-                                      "enum": ["user", "workspace", "folder"],
+                                      "enum": [
+                                        "user",
+                                        "workspace",
+                                        "folder"
+                                      ],
                                       "markdownDescription": "Specifies the scope of a dictionary.",
                                       "type": "string"
                                     },
@@ -457,7 +489,11 @@
                                 "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                               }
                             },
-                            "required": ["path", "addWords", "name"],
+                            "required": [
+                              "path",
+                              "addWords",
+                              "name"
+                            ],
                             "type": "object"
                           }
                         ]
@@ -608,7 +644,10 @@
                             "markdownDescription": "RegExp pattern or array of RegExp patterns."
                           }
                         },
-                        "required": ["name", "pattern"],
+                        "required": [
+                          "name",
+                          "pattern"
+                        ],
                         "type": "object"
                       },
                       "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
@@ -631,7 +670,9 @@
                       "type": "array"
                     }
                   },
-                  "required": ["languageId"],
+                  "required": [
+                    "languageId"
+                  ],
                   "type": "object"
                 },
                 "markdownDescription": "Additional settings for individual programming languages and locales.",
@@ -714,14 +755,20 @@
                       "markdownDescription": "RegExp pattern or array of RegExp patterns."
                     }
                   },
-                  "required": ["name", "pattern"],
+                  "required": [
+                    "name",
+                    "pattern"
+                  ],
                   "type": "object"
                 },
                 "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
                 "type": "array"
               },
               "pnpFiles": {
-                "default": [".pnp.js", ".pnp.cjs"],
+                "default": [
+                  ".pnp.js",
+                  ".pnp.cjs"
+                ],
                 "description": "The PnP files to search for. Note: `.mjs` files are not currently supported.",
                 "items": {
                   "type": "string"
@@ -764,7 +811,9 @@
                 "type": "array"
               }
             },
-            "required": ["filename"],
+            "required": [
+              "filename"
+            ],
             "type": "object"
           },
           "markdownDescription": "Overrides are used to apply settings for specific files in your project.\n\n**Example:**\n\n```jsonc\n\"cSpell.overrides\": [\n  // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:\n  {\n    \"filename\": \"**​/{*.hrr,*.crr}\",\n    \"languageId\": \"cpp\"\n  },\n  // Force `dutch/**​/*.txt` to be treated as Dutch (dictionary needs to be installed separately):\n  {\n    \"filename\": \"**​/dutch/**​/*.txt\",\n    \"language\": \"nl\"\n  }\n]\n```",
@@ -802,7 +851,10 @@
                 "markdownDescription": "RegExp pattern or array of RegExp patterns."
               }
             },
-            "required": ["name", "pattern"],
+            "required": [
+              "name",
+              "pattern"
+            ],
             "type": "object"
           },
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
@@ -848,7 +900,16 @@
       "order": 3,
       "properties": {
         "cSpell.allowedSchemas": {
-          "default": ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"],
+          "default": [
+            "file",
+            "gist",
+            "repo",
+            "sftp",
+            "untitled",
+            "vscode-notebook-cell",
+            "vscode-scm",
+            "vscode-userdata"
+          ],
           "description": "Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemas have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.",
           "items": {
             "type": "string"
@@ -899,7 +960,14 @@
           "type": "string"
         },
         "cSpell.ignorePaths": {
-          "default": ["package-lock.json", "node_modules", "vscode-extension", ".git/objects", ".vscode", ".vscode-insiders"],
+          "default": [
+            "package-lock.json",
+            "node_modules",
+            "vscode-extension",
+            ".git/objects",
+            ".vscode",
+            ".vscode-insiders"
+          ],
           "description": "Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.",
           "items": {
             "description": "Simple Glob string, the root will be globRoot.",
@@ -1016,14 +1084,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1085,7 +1161,10 @@
                     "type": "string"
                   }
                 },
-                "required": ["path", "name"],
+                "required": [
+                  "path",
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1120,14 +1199,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1138,7 +1225,11 @@
                     "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                   }
                 },
-                "required": ["path", "addWords", "name"],
+                "required": [
+                  "path",
+                  "addWords",
+                  "name"
+                ],
                 "type": "object"
               }
             ]
@@ -1232,7 +1323,10 @@
                           "type": "string"
                         }
                       },
-                      "required": ["path", "name"],
+                      "required": [
+                        "path",
+                        "name"
+                      ],
                       "type": "object"
                     },
                     {
@@ -1267,14 +1361,22 @@
                           "anyOf": [
                             {
                               "description": "Specifies the scope of a dictionary.",
-                              "enum": ["user", "workspace", "folder"],
+                              "enum": [
+                                "user",
+                                "workspace",
+                                "folder"
+                              ],
                               "markdownDescription": "Specifies the scope of a dictionary.",
                               "type": "string"
                             },
                             {
                               "items": {
                                 "description": "Specifies the scope of a dictionary.",
-                                "enum": ["user", "workspace", "folder"],
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
                                 "markdownDescription": "Specifies the scope of a dictionary.",
                                 "type": "string"
                               },
@@ -1285,7 +1387,11 @@
                           "markdownDescription": "Defines the scope for when words will be added to the dictionary.\n\nScope values: `user`, `workspace`, `folder`."
                         }
                       },
-                      "required": ["path", "addWords", "name"],
+                      "required": [
+                        "path",
+                        "addWords",
+                        "name"
+                      ],
                       "type": "object"
                     }
                   ]
@@ -1436,7 +1542,10 @@
                       "markdownDescription": "RegExp pattern or array of RegExp patterns."
                     }
                   },
-                  "required": ["name", "pattern"],
+                  "required": [
+                    "name",
+                    "pattern"
+                  ],
                   "type": "object"
                 },
                 "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
@@ -1459,7 +1568,9 @@
                 "type": "array"
               }
             },
-            "required": ["languageId"],
+            "required": [
+              "languageId"
+            ],
             "type": "object"
           },
           "markdownDescription": "Additional settings for individual programming languages and locales.",
@@ -1554,14 +1665,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1573,7 +1692,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1613,14 +1734,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1632,7 +1761,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -1692,14 +1824,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1711,7 +1851,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1751,14 +1893,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1770,7 +1920,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -1830,14 +1983,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1849,7 +2010,9 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "type": "object"
               },
               {
@@ -1889,14 +2052,22 @@
                     "anyOf": [
                       {
                         "description": "Specifies the scope of a dictionary.",
-                        "enum": ["user", "workspace", "folder"],
+                        "enum": [
+                          "user",
+                          "workspace",
+                          "folder"
+                        ],
                         "markdownDescription": "Specifies the scope of a dictionary.",
                         "type": "string"
                       },
                       {
                         "items": {
                           "description": "Specifies the scope of a dictionary.",
-                          "enum": ["user", "workspace", "folder"],
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
                           "markdownDescription": "Specifies the scope of a dictionary.",
                           "type": "string"
                         },
@@ -1908,7 +2079,10 @@
                     "title": "Scope of dictionary"
                   }
                 },
-                "required": ["name", "path"],
+                "required": [
+                  "name",
+                  "path"
+                ],
                 "type": "object"
               },
               {
@@ -2075,7 +2249,12 @@
         "cSpell.diagnosticLevel": {
           "default": "Information",
           "description": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
-          "enum": ["Error", "Warning", "Information", "Hint"],
+          "enum": [
+            "Error",
+            "Warning",
+            "Information",
+            "Hint"
+          ],
           "enumDescriptions": [
             "Report Spelling Issues as Errors",
             "Report Spelling Issues as Warnings",
@@ -2146,8 +2325,14 @@
         "cSpell.showStatusAlignment": {
           "default": "Right",
           "description": "The side of the status bar to display the spell checker status.",
-          "enum": ["Left", "Right"],
-          "enumDescriptions": ["Left Side of Statusbar", "Right Side of Statusbar"],
+          "enum": [
+            "Left",
+            "Right"
+          ],
+          "enumDescriptions": [
+            "Left Side of Statusbar",
+            "Right Side of Statusbar"
+          ],
           "markdownDescription": "The side of the status bar to display the spell checker status.",
           "scope": "application",
           "type": "string"
@@ -2162,7 +2347,10 @@
         "cSpell.suggestionMenuType": {
           "default": "quickPick",
           "description": "The type of menu used to display spelling suggestions.",
-          "enum": ["quickPick", "quickFix"],
+          "enum": [
+            "quickPick",
+            "quickFix"
+          ],
           "enumDescriptions": [
             "Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings)",
             "Suggestions will appear inline near the word, inside the text editor."
