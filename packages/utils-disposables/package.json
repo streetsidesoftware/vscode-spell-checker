@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "Helper methods for creating Disposables.",
+  "sideEffects": false,
   "main": "index.cjs",
   "types": "dist/cjs/index.d.cts",
   "type": "module",

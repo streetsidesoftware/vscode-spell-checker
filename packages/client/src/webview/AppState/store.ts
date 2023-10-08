@@ -1,12 +1,13 @@
 import type { DisposableClassic, DisposableHybrid, DisposableLike } from 'utils-disposables';
 import { createDisposable, createDisposableFromList, disposeOf, injectDisposable } from 'utils-disposables';
+import { LogLevelMasks } from 'utils-logger';
 import type { TextDocument, TextEditor, Uri } from 'vscode';
 import { window } from 'vscode';
-import { getLogLevel, LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
 import type { WatchFieldList, WatchFields } from 'webview-api';
 
 import { getDependencies } from '../../di';
 import { calcSettings } from '../../infoViewer/infoHelper';
+import { getLogger } from '../api/api';
 import type { AppStateData } from '../apiTypes';
 import { createSubscribableView, pipe, rx, throttle } from './Subscribables';
 import { toSubscriberFn } from './Subscribables/helpers/toSubscriber';
@@ -22,7 +23,7 @@ export interface Storage {
 
 const debug = false;
 
-debug && setLogLevel(LogLevel.debug);
+debug && getLogger().setLogLevelMask(LogLevelMasks.everything);
 
 let store: Storage | undefined = undefined;
 
@@ -42,7 +43,7 @@ export function getWebviewGlobalStore(): Storage {
     }
 
     const writableState = {
-        logLevel: createStoreValue(getLogLevel()),
+        logDebug: createStoreValue(getLogger().isMethodEnabled('debug')),
         todos: createStoreValue<AppStateData['todos']>([]),
     } as const;
 

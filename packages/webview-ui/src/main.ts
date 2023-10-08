@@ -1,5 +1,3 @@
-// import { LogLevel, setLogLevel } from 'vscode-webview-rpc/logger';
-
 import App from './App.svelte';
 
 // setLogLevel(LogLevel.debug);

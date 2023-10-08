@@ -1,5 +1,6 @@
 import { createDisposableList, type DisposableLike, disposeOf, injectDisposable, makeDisposable } from 'utils-disposables';
-import { window } from 'vscode';
+import { createLogger, LogLevel } from 'utils-logger';
+import { Uri, window } from 'vscode';
 import { type MessageConnection } from 'vscode-jsonrpc/node';
 import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
@@ -15,6 +16,17 @@ export function createApi(connection: MessageConnection) {
     return bindApiAndStore(connection, getWebviewGlobalStore());
 }
 
+const logging = {
+    ...console,
+    // debug: console.log,
+};
+
+const logger = createLogger(logging, LogLevel.none);
+
+export function getLogger() {
+    return logger;
+}
+
 export function bindApiAndStore(connection: MessageConnection, store: Storage): ServerSideApi {
     let watcher: DisposableLike | undefined = undefined;
     const fieldsToWatch = new Set<WatchFields>();
@@ -24,11 +36,11 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
     const api: ServerSideApiDef = {
         serverRequests: {
             whatTimeIsIt,
-            getLogLevel: () => resolveRequest(store.state.logLevel),
+            getLogDebug: () => store.state.logDebug.value,
             getTodos: () => resolveRequest(store.state.todos),
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
             getDocSettings: calcDocSettings,
-            setLogLevel: (r) => updateStateRequest(r, store.state.logLevel),
+            setLogDebug: (r) => (store.state.logDebug.value = r),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
             watchFields,
             resetTodos,
@@ -37,12 +49,18 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             async showInformationMessage(message) {
                 await window.showInformationMessage('Show Message: ' + message);
             },
+            async openTextDocument(url) {
+                if (!url) return;
+                const uri = Uri.parse(url);
+                // console.error('Open %o, %o', url, uri.toJSON());
+                await window.showTextDocument(uri);
+            },
         },
         clientRequests: {},
         clientNotifications: { onStateChange: true },
     };
 
-    const serverSideApi = createServerSideSpellInfoWebviewApi(connection, api);
+    const serverSideApi = createServerSideSpellInfoWebviewApi(connection, api, logger);
     disposables.push(makeDisposable(serverSideApi));
 
     return injectDisposable({ ...serverSideApi }, dispose, 'bindApiAndStore');

@@ -54,10 +54,12 @@
     "gensequence": "^6.0.0",
     "node-watch": "^0.7.4",
     "rxjs": "^7.8.1",
+    "utils-disposables": "file:../utils-disposables",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.11",
     "vscode-languageserver-types": "^3.17.5",
-    "vscode-uri": "^3.0.7"
+    "vscode-uri": "^3.0.7",
+    "vscode-webview-rpc": "file:../webview-rpc"
   },
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc && npm run build-schema",

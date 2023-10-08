@@ -3,13 +3,14 @@
 exports[`api > Creating a Server API 1`] = `
 [
   "clientNotification.onStateChange",
+  "serverNotification.openTextDocument",
   "serverNotification.showInformationMessage",
   "serverRequest.getCurrentDocument",
   "serverRequest.getDocSettings",
-  "serverRequest.getLogLevel",
+  "serverRequest.getLogDebug",
   "serverRequest.getTodos",
   "serverRequest.resetTodos",
-  "serverRequest.setLogLevel",
+  "serverRequest.setLogDebug",
   "serverRequest.setTodos",
   "serverRequest.watchFields",
   "serverRequest.whatTimeIsIt",
@@ -28,6 +29,7 @@ exports[`api > Creating a Server API 2`] = `
   "function",
   "function",
   "function",
+  "function",
   "object",
 ]
 `;
@@ -36,6 +38,5 @@ exports[`api > api 1`] = `
 [
   "createClientSideSpellInfoWebviewApi",
   "createServerSideSpellInfoWebviewApi",
-  "setLogLevel",
 ]
 `;

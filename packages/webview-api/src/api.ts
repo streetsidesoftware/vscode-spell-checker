@@ -3,35 +3,25 @@ import type {
     ApplyRequestAPI,
     ClientAPIDef,
     ClientSideMethods,
+    Logger,
     MessageConnection,
     RpcAPI,
     ServerAPIDef,
     ServerSideMethods,
-} from 'vscode-webview-rpc';
-import { createClientApi, createServerApi } from 'vscode-webview-rpc';
+} from 'json-rpc-api';
+import { createClientApi, createServerApi } from 'json-rpc-api';
 
-import type {
-    LogLevel,
-    RequestResult,
-    Settings,
-    SetValueRequest,
-    SetValueResult,
-    TextDocumentRef,
-    TodoList,
-    WatchFieldList,
-} from './apiModels';
-
-export { setLogLevel } from 'vscode-webview-rpc/logger';
+import type { RequestResult, Settings, SetValueRequest, SetValueResult, TextDocumentRef, TodoList, WatchFieldList } from './apiModels';
 
 /** Requests that can be made to the extension */
 export interface ServerRequestsAPI {
     whatTimeIsIt(): string;
-    getLogLevel(): RequestResult<LogLevel>;
+    setLogDebug(enable: boolean): boolean;
+    getLogDebug(): boolean;
     getTodos(): RequestResult<TodoList>;
     getCurrentDocument(): RequestResult<TextDocumentRef | null>;
     getDocSettings(docUrl?: string): Settings | null;
     resetTodos(): SetValueResult<TodoList>;
-    setLogLevel(req: SetValueRequest<LogLevel>): SetValueResult<LogLevel>;
     setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;
     watchFields(req: WatchFieldList): void;
 }
@@ -39,6 +29,7 @@ export interface ServerRequestsAPI {
 /** Notifications that can be sent to the extension */
 export interface ServerNotificationsAPI {
     showInformationMessage(message: string): void;
+    openTextDocument(url: string): void;
 }
 
 /**
@@ -71,10 +62,18 @@ export interface ClientSideApi extends ClientSideMethods<SpellInfoWebviewAPI> {}
 export type ServerSideApiDef = ServerAPIDef<SpellInfoWebviewAPI>;
 export type ClientSideApiDef = ClientAPIDef<SpellInfoWebviewAPI>;
 
-export function createServerSideSpellInfoWebviewApi(connection: MessageConnection, api: ServerAPIDef<SpellInfoWebviewAPI>): ServerSideApi {
-    return createServerApi(connection, api);
+export function createServerSideSpellInfoWebviewApi(
+    connection: MessageConnection,
+    api: ServerAPIDef<SpellInfoWebviewAPI>,
+    logger: Logger | undefined,
+): ServerSideApi {
+    return createServerApi(connection, api, logger);
 }
 
-export function createClientSideSpellInfoWebviewApi(connection: MessageConnection, api: ClientAPIDef<SpellInfoWebviewAPI>): ClientSideApi {
-    return createClientApi(connection, api);
+export function createClientSideSpellInfoWebviewApi(
+    connection: MessageConnection,
+    api: ClientAPIDef<SpellInfoWebviewAPI>,
+    logger: Logger | undefined,
+): ClientSideApi {
+    return createClientApi(connection, api, logger);
 }

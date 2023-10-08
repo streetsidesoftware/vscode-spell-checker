@@ -1,7 +1,6 @@
 import type { AppStateData, WatchFieldList, WatchFields } from 'webview-api';
-import { LogLevel, setLogLevel } from 'webview-api';
 
-import { getClientApi } from '../api';
+import { getClientApi, getLogger } from '../api';
 import {
     type ClientServerStore,
     createClientServerStore,
@@ -13,26 +12,27 @@ import {
 const api = getClientApi();
 
 class AppState {
-    private csLogLevel: ClientServerStore<AppStateData['logLevel'], 'logLevel'> | undefined;
+    private csLogDebug: ClientServerStore<AppStateData['logDebug'], 'logDebug'> | undefined;
     private csTodos: ClientServerStore<AppStateData['todos'], 'todos'> | undefined;
     private csCurrentDocument: ReadonlyClientServerStore<AppStateData['currentDocument'], 'currentDocument'> | undefined;
 
-    logLevel() {
-        if (this.csLogLevel) {
-            return this.csLogLevel.client;
+    logDebug() {
+        if (this.csLogDebug) {
+            return this.csLogDebug.client;
         }
-        const cs = createClientServerStore<AppStateData['logLevel'], 'logLevel'>({
-            name: 'logLevel',
-            initialValue: LogLevel.none,
+        const cs = createClientServerStore<AppStateData['logDebug'], 'logDebug'>({
+            name: 'logDebug',
+            initialValue: false,
             query: async () => {
-                const value = (await api.serverRequest.getLogLevel()).value;
-                setLogLevel(value);
+                const value = await api.serverRequest.getLogDebug();
+                const logger = getLogger();
+                logger.setLogLevelMask(value ? -1 : 0);
                 return value;
             },
-            watch: watchFields('logLevel'),
-            mutate: async (value, set) => set((await api.serverRequest.setLogLevel({ value })).value),
+            watch: watchFields('logDebug'),
+            mutate: async (value, set) => set(await api.serverRequest.setLogDebug(value)),
         });
-        this.csLogLevel = cs;
+        this.csLogDebug = cs;
         return cs.client;
     }
 

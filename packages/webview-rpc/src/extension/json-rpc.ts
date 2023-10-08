@@ -10,19 +10,28 @@ import {
     type MessageWriter,
 } from 'vscode-jsonrpc/node';
 
-import { debug } from '../common/logger';
+export type { MessageConnection } from 'json-rpc-api';
 
-export type { MessageConnection } from '../common/types';
+export interface Logger {
+    debug: typeof console.debug;
+    error: typeof console.error;
+    info: typeof console.info;
+    log: typeof console.log;
+    warn: typeof console.warn;
+}
 
 export class WebViewMessageReader extends AbstractMessageReader {
-    constructor(readonly webview: Webview) {
+    constructor(
+        readonly webview: Webview,
+        readonly logger: Logger | undefined,
+    ) {
         super();
     }
 
     listen(callback: DataCallback): Disposable {
-        debug('start listening');
+        this.logger?.debug('start listening');
         return this.webview.onDidReceiveMessage((data) => {
-            debug('listen: %o', data);
+            this.logger?.debug('listen: %o', data);
             callback(data);
         });
     }
@@ -31,7 +40,10 @@ export class WebViewMessageReader extends AbstractMessageReader {
 export class WebViewMessageWriter extends AbstractMessageWriter implements MessageWriter {
     private errorCount: number;
 
-    constructor(readonly webview: Webview) {
+    constructor(
+        readonly webview: Webview,
+        readonly logger: Logger | undefined,
+    ) {
         super();
         this.errorCount = 0;
     }
@@ -57,6 +69,6 @@ export class WebViewMessageWriter extends AbstractMessageWriter implements Messa
     }
 }
 
-export function createConnectionToWebview(webview: Webview): MessageConnection {
-    return createMessageConnection(new WebViewMessageReader(webview), new WebViewMessageWriter(webview));
+export function createConnectionToWebview(webview: Webview, logger: Logger | undefined): MessageConnection {
+    return createMessageConnection(new WebViewMessageReader(webview, logger), new WebViewMessageWriter(webview, logger), logger);
 }

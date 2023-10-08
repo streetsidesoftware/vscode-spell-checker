@@ -19,20 +19,21 @@ describe('api', () => {
             clientRequests: {},
             serverNotifications: {
                 showInformationMessage: true,
+                openTextDocument: true,
             },
             serverRequests: {
                 getCurrentDocument: true,
                 getDocSettings: true,
-                getLogLevel: true,
+                getLogDebug: true,
                 getTodos: true,
                 resetTodos: true,
-                setLogLevel: true,
+                setLogDebug: true,
                 setTodos: true,
                 watchFields: true,
                 whatTimeIsIt: true,
             },
         };
-        const client = api.createClientSideSpellInfoWebviewApi(connection, clientInterface);
+        const client = api.createClientSideSpellInfoWebviewApi(connection, clientInterface, undefined);
         expect(client).toBeDefined();
         expect(client.serverRequest.getTodos).toBeTypeOf('function');
         const fn: (...p: any) => any = client.serverRequest.setTodos;

@@ -14,7 +14,7 @@
   $: settings = $queryResult.data;
   $: dictionaries = settings?.configs.file?.dictionaries;
   $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
-  $: logLevel = appState.logLevel();
+  $: logDebug = appState.logDebug();
   $: fileUrl = settings?.configs.file?.uri ? new URL(settings.configs.file.uri) : undefined;
 </script>
 
@@ -26,7 +26,7 @@
     <li>name: {name}</li>
     <li>file: {docUrl ?? 'none'}</li>
     <li>version: {$currentDoc?.version ?? 'n/a'}</li>
-    <li>State LogLevel: {$logLevel}</li>
+    <li>State LogLevel: {$logDebug}</li>
     <li>filename from settings: {fileUrl ? fileUrl.pathname.split('/').at(-1) : '<unknown>'}</li>
   </ul>
 
@@ -41,7 +41,17 @@
             <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
             <dd>{dictionary.description || ''}</dd>
             {#if dictionary.uriName}
-              <dd><a href={dictionary.uri}>{dictionary.uriName}</a></dd>
+              <dd>
+                {#if dictionary.uri}
+                  <a
+                    href={dictionary.uri}
+                    on:click={() => dictionary.uri && getClientApi().serverNotification.openTextDocument(dictionary.uri)}
+                    >{dictionary.uriName}</a
+                  >
+                {:else}
+                  {dictionary.uriName}
+                {/if}
+              </dd>
             {/if}
           </dl>
         </li>

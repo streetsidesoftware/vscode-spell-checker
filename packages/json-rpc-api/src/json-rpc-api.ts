@@ -2,7 +2,6 @@
 import type { DisposableHybrid, DisposableLike } from 'utils-disposables';
 import { createDisposable, createDisposeMethodFromList, injectDisposable } from 'utils-disposables';
 
-import { log } from './logger';
 import type {
     AsyncFunc,
     AsyncFuncVoid,
@@ -22,6 +21,10 @@ export const apiPrefix = {
 } as const;
 
 type CallBack = Func;
+
+export interface Logger {
+    log: typeof console.log;
+}
 
 export type Requests<T = object> = KeepFieldsOfType<T, Func | AsyncFunc>;
 
@@ -113,20 +116,24 @@ export type ClientAPIDef<T extends RpcAPI> = {
  * @param api - the api structure. Provide functions to handle server requests.
  * @returns
  */
-export function createServerApi<API extends RpcAPI>(connection: MessageConnection, api: ServerAPIDef<API>): ServerSideMethods<API> {
+export function createServerApi<API extends RpcAPI>(
+    connection: MessageConnection,
+    api: ServerAPIDef<API>,
+    logger?: Logger,
+): ServerSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
-    const serverRequest = mapRequestsToPubSub<ServerRequests<API>>(api.serverRequests);
-    const serverNotification = mapNotificationsToPubSub<ServerNotifications<API>>(api.serverNotifications);
+    const serverRequest = mapRequestsToPubSub<ServerRequests<API>>(api.serverRequests, logger);
+    const serverNotification = mapNotificationsToPubSub<ServerNotifications<API>>(api.serverNotifications, logger);
 
-    bindRequests(connection, apiPrefix.serverRequest, serverRequest, _disposables);
-    bindNotifications(connection, apiPrefix.serverNotification, serverNotification, _disposables);
+    bindRequests(connection, apiPrefix.serverRequest, serverRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.serverNotification, serverNotification, _disposables, logger);
 
     type CR = ClientRequests<API>;
     type CN = ClientNotifications<API>;
 
-    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequest, api.clientRequests);
-    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotification, api.clientNotifications);
+    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequest, api.clientRequests, logger);
+    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotification, api.clientNotifications, logger);
 
     return injectDisposable(
         {
@@ -145,20 +152,24 @@ export function createServerApi<API extends RpcAPI>(connection: MessageConnectio
  * @param api - the api structure. Provide functions to handle client requests.
  * @returns
  */
-export function createClientApi<API extends RpcAPI>(connection: MessageConnection, api: ClientAPIDef<API>): ClientSideMethods<API> {
+export function createClientApi<API extends RpcAPI>(
+    connection: MessageConnection,
+    api: ClientAPIDef<API>,
+    logger?: Logger,
+): ClientSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
-    const clientRequest = mapRequestsToPubSub<ClientRequests<API>>(api.clientRequests);
-    const clientNotification = mapNotificationsToPubSub<ClientNotifications<API>>(api.clientNotifications);
+    const clientRequest = mapRequestsToPubSub<ClientRequests<API>>(api.clientRequests, logger);
+    const clientNotification = mapNotificationsToPubSub<ClientNotifications<API>>(api.clientNotifications, logger);
 
-    bindRequests(connection, apiPrefix.clientRequest, clientRequest, _disposables);
-    bindNotifications(connection, apiPrefix.clientNotification, clientNotification, _disposables);
+    bindRequests(connection, apiPrefix.clientRequest, clientRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.clientNotification, clientNotification, _disposables, logger);
 
     type SR = ServerRequests<API>;
     type SN = ServerNotifications<API>;
 
-    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequest, api.serverRequests);
-    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotification, api.serverNotifications);
+    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequest, api.serverRequests, logger);
+    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotification, api.serverNotifications, logger);
 
     return injectDisposable(
         {
@@ -176,13 +187,16 @@ function bindRequests<T>(
     prefix: string,
     requests: WrapInPubSub<Requests<T>>,
     disposables: DisposableLike[],
+    logger: Logger | undefined,
 ) {
     for (const [name, pubSub] of Object.entries(requests)) {
-        log('bindRequest %o', { name, fn: typeof pubSub });
+        logger?.log('bindRequest %o', { name, fn: typeof pubSub });
         if (!pubSub) continue;
         const pub = pubSub as { publish: Func };
         const methodName = prefix + name;
-        disposables.push(connection.onRequest(methodName, (p: any[]) => (log(`handle request "${name}" %o`, p), pub.publish(...p))));
+        disposables.push(
+            connection.onRequest(methodName, (p: any[]) => (logger?.log(`handle request "${name}" %o`, p), pub.publish(...p))),
+        );
     }
 }
 
@@ -191,30 +205,36 @@ function bindNotifications(
     prefix: string,
     requests: WrapInPubSub<Notifications>,
     disposables: DisposableLike[],
+    logger: Logger | undefined,
 ) {
     for (const [name, pubSub] of Object.entries(requests)) {
-        log('bindNotifications %o', { name, fn: typeof pubSub });
+        logger?.log('bindNotifications %o', { name, fn: typeof pubSub });
         if (!pubSub) continue;
         const methodName = prefix + name;
         const pub = pubSub as { publish: Func };
 
         disposables.push(
-            connection.onNotification(methodName, (p: any[]) => (log(`handle notification "${name}" %o`, p), pub.publish(...p))),
+            connection.onNotification(methodName, (p: any[]) => (logger?.log(`handle notification "${name}" %o`, p), pub.publish(...p))),
         );
     }
 }
 
-function mapRequestsToFn<T extends Requests>(connection: MessageConnection, prefix: string, requests: DefUseAPI<T>): MakeMethodsAsync<T> {
+function mapRequestsToFn<T extends Requests>(
+    connection: MessageConnection,
+    prefix: string,
+    requests: DefUseAPI<T>,
+    logger: Logger | undefined,
+): MakeMethodsAsync<T> {
     let reqSeqNum = 1;
     return Object.fromEntries(
         Object.entries(requests).map(([name]) => {
             const methodName = prefix + name;
             const fn = (...params: any) => {
                 const seq = ++reqSeqNum;
-                log(`send request "${name}" %o: Params: %o`, seq, params);
+                logger?.log(`send request "${name}" %o: Params: %o`, seq, params);
                 return connection
                     .sendRequest(methodName, params)
-                    .then((value) => (log(`send request "${name}" %o: Response: %o`, seq, value), value));
+                    .then((value) => (logger?.log(`send request "${name}" %o: Response: %o`, seq, value), value));
             };
             return [name, fn];
         }),
@@ -225,20 +245,23 @@ function mapNotificationsToFn<T extends Notifications>(
     connection: MessageConnection,
     prefix: string,
     notifications: DefUseAPI<T>,
+    logger: Logger | undefined,
 ): MakeMethodsAsync<T> {
     return Object.fromEntries(
         Object.entries(notifications).map(([name]) => {
             const methodName = prefix + name;
-            const fn = (...params: any) => (log(`send notification "${name}" %o`, params), connection.sendNotification(methodName, params));
+            const fn = (...params: any) => (
+                logger?.log(`send notification "${name}" %o`, params), connection.sendNotification(methodName, params)
+            );
             return [name, fn];
         }),
     ) as MakeMethodsAsync<T>;
 }
 
-function mapRequestsToPubSub<T extends Requests>(requests: DefUsePubSubAPI<T>): WrapInPubSub<T> {
+function mapRequestsToPubSub<T extends Requests>(requests: DefUsePubSubAPI<T>, logger: Logger | undefined): WrapInPubSub<T> {
     function mapPubSub([name, fn]: [string, any]): [string, PubSub<CallBack>] | undefined {
         if (!fn) return undefined;
-        const pubSub = createPubSingleSubscriber(name);
+        const pubSub = createPubSingleSubscriber(name, logger);
         if (typeof fn === 'function') {
             pubSub.subscribe(fn);
         }
@@ -248,10 +271,10 @@ function mapRequestsToPubSub<T extends Requests>(requests: DefUsePubSubAPI<T>): 
     return Object.fromEntries(Object.entries(requests).map(mapPubSub).filter(isDefined)) as WrapInPubSub<T>;
 }
 
-function mapNotificationsToPubSub<T extends Notifications>(notifications: DefUsePubSubAPI<T>): WrapInPubSub<T> {
+function mapNotificationsToPubSub<T extends Notifications>(notifications: DefUsePubSubAPI<T>, logger: Logger | undefined): WrapInPubSub<T> {
     function mapPubSub([name, fn]: [string, any]): [string, PubSub<CallBack>] | undefined {
         if (!fn) return undefined;
-        const pubSub = createPubMultipleSubscribers(name);
+        const pubSub = createPubMultipleSubscribers(name, logger);
         if (typeof fn === 'function') {
             pubSub.subscribe(fn);
         }
@@ -263,19 +286,20 @@ function mapNotificationsToPubSub<T extends Notifications>(notifications: DefUse
 
 function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void) | ((...args: any) => Promise<void>)>(
     name: string,
+    logger: Logger | undefined,
 ): PubSub<Subscriber> {
     const subscribers = new Set<Subscriber>();
 
     async function publish(..._p: Parameters<Subscriber>) {
         for (const s of subscribers) {
-            log(`notify ${name} %o`, s);
+            logger?.log(`notify ${name} %o`, s);
             // eslint-disable-next-line prefer-rest-params
             await s(...arguments);
         }
     }
 
     function subscribe(s: Subscriber): DisposableHybrid {
-        log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %o`, s);
         subscribers.add(s);
         return createDisposable(() => subscribers.delete(s));
     }
@@ -283,18 +307,18 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
     return { publish, subscribe };
 }
 
-function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(name: string): PubSub<Subscriber> {
+function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(name: string, logger: Logger | undefined): PubSub<Subscriber> {
     let subscriber: Subscriber | undefined = undefined;
 
     async function listener(..._p: Parameters<Subscriber>) {
-        log(`notify ${name} %o`, subscriber);
+        logger?.log(`notify ${name} %o`, subscriber);
         // eslint-disable-next-line prefer-rest-params
         return await subscriber?.(...arguments);
     }
 
     function subscribe(s: Subscriber): DisposableHybrid {
         subscriber = s;
-        log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %o`, s);
         return createDisposable(() => {
             if (subscriber === s) {
                 subscriber = undefined;

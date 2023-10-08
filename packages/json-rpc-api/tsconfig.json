@@ -1,7 +1,7 @@
 {
     "extends": "@tsconfig/node18",
     "compilerOptions": {
-        "composite": true
+        "verbatimModuleSyntax": true
     },
     "files": [],
     "references": [{ "path": "./tsconfig.cjs.json" }, { "path": "./tsconfig.esm.json" }]

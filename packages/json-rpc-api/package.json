@@ -1,8 +1,8 @@
 {
-  "name": "vscode-webview-rpc",
+  "name": "json-rpc-api",
   "private": true,
   "version": "1.0.0",
-  "description": "Make JSON-RPC calls to VSCode Webviews",
+  "description": "Make JSON-RPC calls ",
   "sideEffects": false,
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
@@ -16,24 +16,14 @@
     "watch:tsc": "tsc -b tsconfig.json --watch",
     "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
     "clean": "shx rm -rf dist",
-    "coverage": "jest --coverage",
-    "test": "echo ok"
+    "coverage": "vitest run --coverage",
+    "test": "vitest run"
   },
   "exports": {
     ".": {
       "types": "./dist/cjs/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js"
-    },
-    "./webview": {
-      "types": "./dist/cjs/webview/index.d.ts",
-      "import": "./dist/esm/webview/index.mjs",
-      "require": "./dist/cjs/webview/index.js"
-    },
-    "./extension": {
-      "types": "./dist/cjs/extension/index.d.ts",
-      "import": "./dist/esm/extension/index.mjs",
-      "require": "./dist/cjs/extension/index.js"
     }
   },
   "keywords": [
@@ -44,8 +34,8 @@
   "author": "Street Side Software",
   "license": "MIT",
   "dependencies": {
-    "json-rpc-api": "file:../json-rpc-api",
     "utils-disposables": "file:../utils-disposables",
+    "utils-logger": "file:../utils-logger",
     "vscode-jsonrpc": "^8.2.0"
   },
   "files": [
