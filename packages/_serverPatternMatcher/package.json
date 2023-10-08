@@ -42,7 +42,7 @@
     }
   },
   "devDependencies": {
-    "ts-loader": "^9.4.4",
+    "ts-loader": "^9.5.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
@@ -53,7 +53,7 @@
     "regexp-worker": "^2.0.2",
     "vscode-languageserver-textdocument": "^1.0.11",
     "vscode-languageserver": "^9.0.1",
-    "vscode-uri": "^3.0.7"
+    "vscode-uri": "^3.0.8"
   },
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
