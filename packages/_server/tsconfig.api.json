@@ -2,7 +2,9 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./dist",
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "skipLibCheck": true,
+        "types": ["node"]
     },
     "files": ["src/api.ts"]
 }
