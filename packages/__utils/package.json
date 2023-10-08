@@ -36,7 +36,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "vscode-uri": "^3.0.7"
+    "vscode-uri": "^3.0.8"
   },
   "engines": {
     "node": ">18.0.0"
