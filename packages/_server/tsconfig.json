@@ -2,7 +2,8 @@
     "extends": "../../tsconfig.packages.base.json",
     "compilerOptions": {
         "moduleResolution": "Node16",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "types": ["node"]
     },
     "include": ["src"]
 }

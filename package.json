@@ -2580,7 +2580,6 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.1",
-    "@types/jest": "^29.5.5",
     "@types/jest-when": "^3.5.3",
     "@types/node": "^18.18.3",
     "@types/vscode": "1.80.0",
