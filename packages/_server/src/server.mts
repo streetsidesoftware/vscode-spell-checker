@@ -88,13 +88,6 @@ export function run(): void {
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
 
-    const requestMethodApi: Api.ServerRequestApiHandlers = {
-        isSpellCheckEnabled: handleIsSpellCheckEnabled,
-        getConfigurationForDocument: handleGetConfigurationForDocument,
-        splitTextIntoWords: handleSplitTextIntoWords,
-        spellingSuggestions: handleSpellingSuggestions,
-    };
-
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
     const connection = createConnection(ProposedFeatures.all);
@@ -297,11 +290,6 @@ export function run(): void {
     async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
     }
-
-    // Register API Handlers
-    Object.entries(requestMethodApi).forEach(([name, fn]) => {
-        connection.onRequest(name, fn);
-    });
 
     interface DocSettingPair {
         doc: TextDocument;

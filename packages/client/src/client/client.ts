@@ -122,6 +122,7 @@ export class CSpellClient implements Disposable {
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
+        context.subscriptions.push(this.serverApi);
         this.initWhenReady();
     }
 

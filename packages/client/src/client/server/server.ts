@@ -1,15 +1,16 @@
 import type {
     ClientNotifications,
     ClientNotificationsApi,
+    ClientSideApi,
+    ClientSideApiDef,
     Fn,
     Req,
     RequestResponseFn,
     RequestsToClient,
     Res,
-    ServerMethods,
     ServerNotifyApi,
-    ServerRequestApi,
 } from 'code-spell-checker-server/api';
+import { createClientSideApi } from 'code-spell-checker-server/api';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
 import { CodeActionRequest, NotificationType, RequestType } from 'vscode-languageclient/node';
 export type {
@@ -51,7 +52,11 @@ export type {
     WorkspaceConfigForDocumentResponse,
 } from 'code-spell-checker-server/api';
 
-export interface ServerApi extends ServerRequestApi, ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi {}
+export interface ServerApi extends ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi, Disposable {
+    isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
+    getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
+    spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
+}
 
 type Disposable = {
     dispose: () => void;
@@ -78,12 +83,6 @@ export async function requestCodeAction(client: LanguageClient, params: CodeActi
 }
 
 export function createServerApi(client: LanguageClient): ServerApi {
-    async function sendRequest<M extends keyof ServerMethods>(method: M, param: Req<ServerMethods[M]>): Promise<Res<ServerMethods[M]>> {
-        const r = new RequestType<Req<ServerMethods[M]>, Res<ServerMethods[M]>, void>(method);
-        const result = await client.sendRequest(r, param);
-        return result;
-    }
-
     function onNotify<M extends keyof ServerEventApi>(method: M, fn: ClientNotificationsApi[M]) {
         const n = new NotificationType<ClientNotifications[M]>(method);
         return client.onNotification(n, fn);
@@ -98,16 +97,47 @@ export function createServerApi(client: LanguageClient): ServerApi {
         client.sendNotification(method, params);
     }
 
+    const def: ClientSideApiDef = {
+        serverRequests: {
+            isSpellCheckEnabled: true,
+            getConfigurationForDocument: true,
+            spellingSuggestions: true,
+            splitTextIntoWords: true,
+        },
+        serverNotifications: {
+            notifyConfigChange: true,
+            registerConfigurationFile: true,
+        },
+        clientNotifications: {
+            onSpellCheckDocument: true,
+        },
+        clientRequests: {
+            addWordsToConfigFileFromServer: true,
+            addWordsToDictionaryFileFromServer: true,
+            addWordsToVSCodeSettingsFromServer: true,
+        },
+    };
+
+    const rpcApi = createClientSideApi(client, def, { log: () => undefined });
+
     const api: ServerApi = {
-        isSpellCheckEnabled: (param) => sendRequest('isSpellCheckEnabled', param),
-        getConfigurationForDocument: (param) => sendRequest('getConfigurationForDocument', param),
-        splitTextIntoWords: (param) => sendRequest('splitTextIntoWords', param),
-        spellingSuggestions: (param) => sendRequest('spellingSuggestions', param),
+        isSpellCheckEnabled: (param) => logReq(rpcApi.serverRequest.isSpellCheckEnabled(param), 'isSpellCheckEnabled'),
+        getConfigurationForDocument: (param) =>
+            logReq(rpcApi.serverRequest.getConfigurationForDocument(param), 'getConfigurationForDocument'),
+        spellingSuggestions: (param) => logReq(rpcApi.serverRequest.spellingSuggestions(param), 'spellingSuggestions'),
         notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
         registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
         onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),
         onWorkspaceConfigForDocumentRequest: (fn) => onRequest('onWorkspaceConfigForDocumentRequest', fn),
+        dispose: rpcApi.dispose,
     };
 
     return api;
+}
+
+async function logReq<T>(value: Promise<T>, reqName: string): Promise<T> {
+    console.log('%s Start Request: %s', new Date().toISOString(), reqName);
+    const r = await value;
+    console.log('%s End request: %s, %o', new Date().toISOString(), reqName, r);
+    return r;
 }

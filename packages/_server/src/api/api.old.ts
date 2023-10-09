@@ -1,12 +1,6 @@
 import type {
     ConfigurationTarget,
-    GetConfigurationForDocumentRequest,
-    GetConfigurationForDocumentResult,
-    IsSpellCheckEnabledResult,
     OnSpellCheckDocumentStep,
-    SpellingSuggestionsResult,
-    SplitTextIntoWordsResult,
-    TextDocumentInfo,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from './apiModels.js';
@@ -26,12 +20,7 @@ export type ServerRequestApiHandlers = ApiHandlers<ServerMethods>;
 /**
  * Server RPC Request and Result types
  */
-export type ServerMethods = {
-    getConfigurationForDocument: ReqRes<GetConfigurationForDocumentRequest, GetConfigurationForDocumentResult>;
-    isSpellCheckEnabled: ReqRes<TextDocumentInfo, IsSpellCheckEnabledResult>;
-    splitTextIntoWords: ReqRes<string, SplitTextIntoWordsResult>;
-    spellingSuggestions: ReqRes<TextDocumentInfo, SpellingSuggestionsResult>;
-};
+export interface ServerMethods {}
 
 /**
  * One way RPC calls to the server
