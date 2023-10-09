@@ -1,5 +1,3 @@
-// cSpell:ignore pycache
-
 import { LogFileConnection } from '@internal/common-utils/index.js';
 import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log.js';
 import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
@@ -29,9 +27,11 @@ import {
 } from './config/documentSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
+import { createServerApi } from './serverApi.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
+import { logger as _logger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
 import type {
     Diagnostic,
@@ -198,6 +198,25 @@ export function run(): void {
         languageId?: string;
         text?: string;
     }
+
+    const _api = createServerApi(
+        connection,
+        {
+            serverNotifications: {
+                notifyConfigChange: onConfigChange,
+                registerConfigurationFile: (path) => registerConfigurationFile([path]),
+            },
+            serverRequests: {
+                getConfigurationForDocument: handleGetConfigurationForDocument,
+                isSpellCheckEnabled: handleIsSpellCheckEnabled,
+                splitTextIntoWords: handleSplitTextIntoWords,
+                spellingSuggestions: handleSpellingSuggestions,
+            },
+        },
+        _logger,
+    );
+
+    disposables.push(_api);
 
     // Listen for event messages from the client.
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));

@@ -22,6 +22,8 @@ import type {
     TextDocumentInfo,
 } from './apiModels.js';
 
+export type { Logger, MessageConnection } from 'json-rpc-api';
+
 /** Requests that can be made to the server */
 export interface ServerRequestsAPI {
     getConfigurationForDocument(req: GetConfigurationForDocumentRequest): GetConfigurationForDocumentResult;
@@ -51,7 +53,7 @@ export interface ClientNotificationsAPI {
     onSpellCheckDocument(step: OnSpellCheckDocumentStep): void;
 }
 
-export interface SpellInfoWebviewAPI extends RpcAPI {
+export interface SpellCheckerServerAPI extends RpcAPI {
     serverRequests: ApplyRequestAPI<ServerRequestsAPI>;
     serverNotifications: ApplyNotificationAPI<ServerNotificationsAPI>;
     clientRequests: ApplyRequestAPI<ClientRequestsAPI>;
@@ -61,27 +63,36 @@ export interface SpellInfoWebviewAPI extends RpcAPI {
 /**
  * Used on the server side  to communicate with the client(extension).
  */
-export interface ServerSideApi extends ServerSideMethods<SpellInfoWebviewAPI> {}
+export interface ServerSideApi extends ServerSideMethods<SpellCheckerServerAPI> {}
 /**
  * Used in the client(extension) to communicate with the server.
  */
-export interface ClientSideApi extends ClientSideMethods<SpellInfoWebviewAPI> {}
+export interface ClientSideApi extends ClientSideMethods<SpellCheckerServerAPI> {}
 
-export type ServerSideApiDef = ServerAPIDef<SpellInfoWebviewAPI>;
-export type ClientSideApiDef = ClientAPIDef<SpellInfoWebviewAPI>;
+export type ServerSideApiDef = ServerAPIDef<SpellCheckerServerAPI>;
+export type ClientSideApiDef = ClientAPIDef<SpellCheckerServerAPI>;
 
-export function createServerSideSpellInfoWebviewApi(
+export interface ServerSideHandlers {
+    serverRequests: DefineHandlers<ServerSideApiDef['serverRequests']>;
+    serverNotifications: DefineHandlers<ServerSideApiDef['serverNotifications']>;
+}
+
+export function createServerSideApi(
     connection: MessageConnection,
-    api: ServerAPIDef<SpellInfoWebviewAPI>,
+    api: ServerAPIDef<SpellCheckerServerAPI>,
     logger: Logger | undefined,
 ): ServerSideApi {
     return createServerApi(connection, api, logger);
 }
 
-export function createClientSideSpellInfoWebviewApi(
+export function createClientSideApi(
     connection: MessageConnection,
-    api: ClientAPIDef<SpellInfoWebviewAPI>,
+    api: ClientAPIDef<SpellCheckerServerAPI>,
     logger: Logger | undefined,
 ): ClientSideApi {
     return createClientApi(connection, api, logger);
 }
+
+type DefineHandlers<T> = {
+    [P in keyof T]: Exclude<T[P], boolean>;
+};
