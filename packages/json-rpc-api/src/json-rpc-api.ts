@@ -292,14 +292,14 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
 
     async function publish(..._p: Parameters<Subscriber>) {
         for (const s of subscribers) {
-            logger?.log(`notify ${name} %o`, s);
+            logger?.log(`notify ${name} %s`, typeof s);
             // eslint-disable-next-line prefer-rest-params
             await s(...arguments);
         }
     }
 
     function subscribe(s: Subscriber): DisposableHybrid {
-        logger?.log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %s`, typeof s);
         subscribers.add(s);
         return createDisposable(() => subscribers.delete(s));
     }
