@@ -197,9 +197,9 @@ export class CSpellClient implements Disposable {
         return this.notifySettingsChanged();
     }
 
-    public async whenReady<R>(fn: () => R): Promise<R> {
+    public async whenReady<R>(fn: () => R): Promise<Awaited<R>> {
         await this.onReady();
-        return fn();
+        return await fn();
     }
 
     private onReady(): Promise<void> {

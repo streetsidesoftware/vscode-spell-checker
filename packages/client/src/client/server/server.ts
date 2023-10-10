@@ -1,22 +1,8 @@
-import type {
-    ClientNotifications,
-    ClientNotificationsApi,
-    ClientSideApi,
-    ClientSideApiDef,
-    Fn,
-    Req,
-    RequestResponseFn,
-    RequestsToClient,
-    Res,
-    ServerNotifyApi,
-} from 'code-spell-checker-server/api';
+import type { ClientSideApi, ClientSideApiDef } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
-import { createDisposableList } from 'utils-disposables';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
-import { CodeActionRequest, NotificationType, RequestType } from 'vscode-languageclient/node';
+import { CodeActionRequest } from 'vscode-languageclient/node';
 export type {
-    ClientNotifications,
-    ClientNotificationsApi,
     ClientSideCommandHandlerApi,
     ConfigKind,
     ConfigScope,
@@ -32,7 +18,6 @@ export type {
     DictionaryDefinition,
     DictionaryDefinitionCustom,
     FieldExistsInTarget,
-    Fn,
     GetConfigurationForDocumentResult,
     IsSpellCheckEnabledResult,
     LanguageSetting,
@@ -40,36 +25,28 @@ export type {
     NamedPattern,
     OnSpellCheckDocumentStep,
     PatternMatch,
-    Req,
-    RequestResponseFn,
-    RequestsToClient,
-    Res,
-    ServerMethods,
-    ServerNotifyApi,
-    ServerRequestApi,
     SpellCheckerSettingsProperties,
     SplitTextIntoWordsResult,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from 'code-spell-checker-server/api';
 
-export interface ServerApi extends ServerNotifyApi, ServerEventApi, Disposable {
-    isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
+interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
+    isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
+    notifyConfigChange: ClientSideApi['serverNotification']['notifyConfigChange'];
+    registerConfigurationFile: ClientSideApi['serverNotification']['registerConfigurationFile'];
     spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
+}
+
+interface ExtensionSide {
+    onSpellCheckDocument: ClientSideApi['clientNotification']['onSpellCheckDocument']['subscribe'];
     onWorkspaceConfigForDocumentRequest: ClientSideApi['clientRequest']['onWorkspaceConfigForDocumentRequest']['subscribe'];
 }
+export interface ServerApi extends ServerSide, ExtensionSide, Disposable {}
 
 type Disposable = {
     dispose: () => void;
-};
-
-type ServerEventApi = {
-    [K in keyof ClientNotifications]: (handler: ClientNotificationsApi[K]) => Disposable;
-};
-
-type RequestsFromServer = {
-    [K in keyof RequestsToClient]: RequestResponseFn<RequestsToClient[K]>;
 };
 
 // type RequestsFromServerHandlerApi = {
@@ -85,20 +62,6 @@ export async function requestCodeAction(client: LanguageClient, params: CodeActi
 }
 
 export function createServerApi(client: LanguageClient): ServerApi {
-    function onNotify<M extends keyof ServerEventApi>(method: M, fn: ClientNotificationsApi[M]) {
-        const n = new NotificationType<ClientNotifications[M]>(method);
-        return client.onNotification(n, fn);
-    }
-
-    function onRequest<M extends keyof RequestsFromServer>(method: M, fn: Fn<RequestsFromServer[M]>) {
-        const n = new RequestType<Req<RequestsFromServer[M]>, Res<RequestsFromServer[M]>, void>(method);
-        return client.onRequest(n, fn);
-    }
-
-    // function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): Promise<void> {
-    //     return client.sendNotification(method, params);
-    // }
-
     const def: ClientSideApiDef = {
         serverRequests: {
             isSpellCheckEnabled: true,
@@ -114,9 +77,9 @@ export function createServerApi(client: LanguageClient): ServerApi {
             onSpellCheckDocument: true,
         },
         clientRequests: {
-            addWordsToConfigFileFromServer: true,
-            addWordsToDictionaryFileFromServer: true,
-            addWordsToVSCodeSettingsFromServer: true,
+            // addWordsToConfigFileFromServer: true,
+            // addWordsToDictionaryFileFromServer: true,
+            // addWordsToVSCodeSettingsFromServer: true,
             onWorkspaceConfigForDocumentRequest: true,
         },
     };
@@ -129,16 +92,10 @@ export function createServerApi(client: LanguageClient): ServerApi {
         spellingSuggestions: log2Sfn(rpcApi.serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(rpcApi.serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(rpcApi.serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
-        onSpellCheckDocument: (fn) =>
-            createDisposableList([
-                onNotify('onSpellCheckDocument', log2Cfn(fn, 'onSpellCheckDocument')),
-                rpcApi.clientNotification.onSpellCheckDocument.subscribe(fn),
-            ]),
+        onSpellCheckDocument: (fn) => rpcApi.clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
-            createDisposableList([
-                onRequest('onWorkspaceConfigForDocumentRequest', log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
-                rpcApi.clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(fn),
-            ]),
+            rpcApi.clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
+
         dispose: rpcApi.dispose,
     };
 
@@ -164,13 +121,13 @@ function log2Cfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: s
     return (...params: P) => log2C<P, T>(params, fn(...params), reqName);
 }
 
-function log2C<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise<T> {
+function log2C<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise<Awaited<T>> {
     return logCommunication<P, T>('Client R/N', params, value, reqName, debugClientComms);
 }
 
-async function logCommunication<P, T>(kind: string, params: P, value: Promise<T> | T, name: string, log: boolean): Promise<T> {
+async function logCommunication<P, T>(kind: string, params: P, value: Promise<T> | T, name: string, log: boolean): Promise<Awaited<T>> {
     const id = ++reqNum;
-    let result: T | undefined = undefined;
+    let result: Awaited<T> | undefined = undefined;
     log && debugCommunication && console.log('%s %i Start %s: %s(%o)', new Date().toISOString(), id, kind, name, params);
     try {
         result = await value;

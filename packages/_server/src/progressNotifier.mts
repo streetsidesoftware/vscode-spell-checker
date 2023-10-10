@@ -1,7 +1,6 @@
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
-import type { OnSpellCheckDocumentStep } from './api.js';
-import type { ClientApi } from './clientApi.mjs';
+import type { OnSpellCheckDocumentStep, ServerSideApi } from './api.js';
 
 let seq = 0;
 
@@ -9,10 +8,10 @@ export interface ProgressNotifier {
     emitSpellCheckDocumentStep: (doc: TextDocument, step: string, numIssues?: number) => void;
 }
 
-export function createProgressNotifier(clientApi: ClientApi): ProgressNotifier {
+export function createProgressNotifier(clientApi: ServerSideApi): ProgressNotifier {
     return {
         emitSpellCheckDocumentStep: (doc, step, numIssues) =>
-            clientApi.sendOnSpellCheckDocument(toOnSpellCheckDocumentStep(doc, step, numIssues)),
+            clientApi.clientNotification.onSpellCheckDocument(toOnSpellCheckDocumentStep(doc, step, numIssues)),
     };
 }
 

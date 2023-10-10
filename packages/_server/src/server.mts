@@ -10,7 +10,6 @@ import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operat
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
-import { createClientApi } from './clientApi.mjs';
 import { onCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
@@ -31,7 +30,7 @@ import { createServerApi } from './serverApi.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
-import { logger as _logger } from './utils/logging.mjs';
+import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
 import type {
     Diagnostic,
@@ -43,6 +42,7 @@ import type {
     ServerCapabilities,
 } from './vscodeLanguageServer/index.cjs';
 import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from './vscodeLanguageServer/index.cjs';
+import { LogLevelMasks } from 'utils-logger';
 
 log('Starting Spell Checker Server');
 
@@ -94,8 +94,28 @@ export function run(): void {
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
-    const clientApi = createClientApi(connection);
-    const progressNotifier = createProgressNotifier(clientApi);
+    const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
+
+    const clientServerApi = createServerApi(
+        connection,
+        {
+            serverNotifications: {
+                notifyConfigChange: onConfigChange,
+                registerConfigurationFile,
+            },
+            serverRequests: {
+                getConfigurationForDocument: handleGetConfigurationForDocument,
+                isSpellCheckEnabled: handleIsSpellCheckEnabled,
+                splitTextIntoWords: handleSplitTextIntoWords,
+                spellingSuggestions: handleSpellingSuggestions,
+            },
+        },
+        _logger,
+    );
+
+    disposables.push(clientServerApi);
+
+    const progressNotifier = createProgressNotifier(clientServerApi);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
@@ -177,39 +197,11 @@ export function run(): void {
         triggerUpdateConfig.next(undefined);
     }
 
-    // const serverNotificationApiHandlers: ServerNotificationApiHandlers = {
-    //     notifyConfigChange: () => onConfigChange(),
-    //     registerConfigurationFile: registerConfigurationFile,
-    // };
-
-    // Object.entries(serverNotificationApiHandlers).forEach(([method, fn]) => {
-    //     connection.onNotification(method, fn);
-    // });
-
     interface TextDocumentInfo {
         uri?: string;
         languageId?: string;
         text?: string;
     }
-
-    const _api = createServerApi(
-        connection,
-        {
-            serverNotifications: {
-                notifyConfigChange: onConfigChange,
-                registerConfigurationFile,
-            },
-            serverRequests: {
-                getConfigurationForDocument: handleGetConfigurationForDocument,
-                isSpellCheckEnabled: handleIsSpellCheckEnabled,
-                splitTextIntoWords: handleSplitTextIntoWords,
-                spellingSuggestions: handleSpellingSuggestions,
-            },
-        },
-        _logger,
-    );
-
-    disposables.push(_api);
 
     // Listen for event messages from the client.
     disposables.push(dictionaryWatcher.listen(onDictionaryChange));
@@ -626,7 +618,7 @@ export function run(): void {
         return folders || undefined;
     }
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientApi));
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientServerApi));
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
