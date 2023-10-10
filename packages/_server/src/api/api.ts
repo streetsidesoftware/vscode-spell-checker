@@ -1,4 +1,5 @@
 import type {
+    ApiPrefix,
     ApplyNotificationAPI,
     ApplyRequestAPI,
     ClientAPIDef,
@@ -79,12 +80,22 @@ export interface ServerSideHandlers {
     serverNotifications: DefineHandlers<ServerSideApiDef['serverNotifications']>;
 }
 
+// todo: make '' when all old apis are removed.
+const pfx = '_';
+
+const apiPrefix: ApiPrefix = {
+    serverNotifications: pfx,
+    serverRequests: pfx,
+    clientNotifications: pfx,
+    clientRequests: pfx,
+};
+
 export function createServerSideApi(
     connection: MessageConnection,
     api: ServerAPIDef<SpellCheckerServerAPI>,
     logger: Logger | undefined,
 ): ServerSideApi {
-    return createServerApi(connection, api, logger);
+    return createServerApi(connection, api, logger, apiPrefix);
 }
 
 export function createClientSideApi(
@@ -92,7 +103,7 @@ export function createClientSideApi(
     api: ClientAPIDef<SpellCheckerServerAPI>,
     logger: Logger | undefined,
 ): ClientSideApi {
-    return createClientApi(connection, api, logger);
+    return createClientApi(connection, api, logger, apiPrefix);
 }
 
 type DefineHandlers<T> = {

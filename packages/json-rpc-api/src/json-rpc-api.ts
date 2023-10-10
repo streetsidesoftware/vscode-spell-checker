@@ -13,11 +13,13 @@ import type {
     ReturnPromise,
 } from './types';
 
-export const apiPrefix = {
-    serverRequest: 'sr_',
-    serverNotification: 'sn_',
-    clientRequest: 'cr_',
-    clientNotification: 'cn_',
+export type ApiPrefix = Record<keyof (ServerSideAPI & ClientSideAPI), string>;
+
+export const defaultApiPrefix: ApiPrefix = {
+    serverRequests: 'sr_',
+    serverNotifications: 'sn_',
+    clientRequests: 'cr_',
+    clientNotifications: 'cn_',
 } as const;
 
 type CallBack = Func;
@@ -128,20 +130,21 @@ export function createServerApi<API extends RpcAPI>(
     connection: MessageConnection,
     api: ServerAPIDef<API>,
     logger?: Logger,
+    apiPrefix: ApiPrefix = defaultApiPrefix,
 ): ServerSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
     const serverRequest = mapRequestsToPubSub<ServerRequests<API>>(api.serverRequests, logger);
     const serverNotification = mapNotificationsToPubSub<ServerNotifications<API>>(api.serverNotifications, logger);
 
-    bindRequests(connection, apiPrefix.serverRequest, serverRequest, _disposables, logger);
-    bindNotifications(connection, apiPrefix.serverNotification, serverNotification, _disposables, logger);
+    bindRequests(connection, apiPrefix.serverRequests, serverRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.serverNotifications, serverNotification, _disposables, logger);
 
     type CR = ClientRequests<API>;
     type CN = ClientNotifications<API>;
 
-    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequest, api.clientRequests, logger);
-    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotification, api.clientNotifications, logger);
+    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequests, api.clientRequests, logger);
+    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotifications, api.clientNotifications, logger);
 
     return injectDisposable(
         {
@@ -164,20 +167,21 @@ export function createClientApi<API extends RpcAPI>(
     connection: MessageConnection,
     api: ClientAPIDef<API>,
     logger?: Logger,
+    apiPrefix: ApiPrefix = defaultApiPrefix,
 ): ClientSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
     const clientRequest = mapRequestsToPubSub<ClientRequests<API>>(api.clientRequests, logger);
     const clientNotification = mapNotificationsToPubSub<ClientNotifications<API>>(api.clientNotifications, logger);
 
-    bindRequests(connection, apiPrefix.clientRequest, clientRequest, _disposables, logger);
-    bindNotifications(connection, apiPrefix.clientNotification, clientNotification, _disposables, logger);
+    bindRequests(connection, apiPrefix.clientRequests, clientRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.clientNotifications, clientNotification, _disposables, logger);
 
     type SR = ServerRequests<API>;
     type SN = ServerNotifications<API>;
 
-    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequest, api.serverRequests, logger);
-    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotification, api.serverNotifications, logger);
+    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequests, api.serverRequests, logger);
+    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotifications, api.serverNotifications, logger);
 
     return injectDisposable(
         {

@@ -7,6 +7,7 @@ import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 
 import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
+import { LogLevelMasks } from 'utils-logger';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
@@ -42,7 +43,6 @@ import type {
     ServerCapabilities,
 } from './vscodeLanguageServer/index.cjs';
 import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from './vscodeLanguageServer/index.cjs';
-import { LogLevelMasks } from 'utils-logger';
 
 log('Starting Spell Checker Server');
 
