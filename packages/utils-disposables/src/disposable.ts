@@ -267,3 +267,5 @@ export function isDisposableHybrid(disposable: unknown): disposable is Disposabl
 function dbgPad(): string {
     return ' '.repeat(debugDepth);
 }
+
+export type ExcludeDisposableHybrid<T> = Omit<T, keyof DisposableHybrid>;
