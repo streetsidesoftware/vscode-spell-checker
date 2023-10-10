@@ -51,6 +51,10 @@ export interface Subscribable<T extends CallBack> {
     subscribe(fn: T): DisposableHybrid;
 }
 
+export interface SingleSubscriber<T extends CallBack> {
+    subscribe(fn: T | ReturnPromise<T>): DisposableHybrid;
+}
+
 export interface PubSub<T extends CallBack> extends Subscribable<T> {
     publish: (...args: Parameters<T>) => Promise<void>;
 }
@@ -70,6 +74,10 @@ type WrapInSubscribable<A> = {
     [P in keyof A]: A[P] extends CallBack ? Subscribable<A[P]> : never;
 };
 
+type WrapInSingleSubscriber<A> = {
+    [P in keyof A]: A[P] extends CallBack ? SingleSubscriber<A[P]> : never;
+};
+
 type WrapInPubSub<A> = {
     [P in keyof A]: A[P] extends CallBack ? PubSub<A[P]> : never;
 };
@@ -77,12 +85,12 @@ type WrapInPubSub<A> = {
 export type ServerSideMethods<T extends RpcAPI> = {
     clientRequest: MakeMethodsAsync<ClientRequests<T>>;
     clientNotification: MakeMethodsAsync<ClientNotifications<T>>;
-    serverRequest: WrapInSubscribable<ServerRequests<T>>;
+    serverRequest: WrapInSingleSubscriber<ServerRequests<T>>;
     serverNotification: WrapInSubscribable<ServerNotifications<T>>;
 } & DisposableHybrid;
 
 export type ClientSideMethods<T extends RpcAPI> = {
-    clientRequest: WrapInSubscribable<ClientRequests<T>>;
+    clientRequest: WrapInSingleSubscriber<ClientRequests<T>>;
     clientNotification: WrapInSubscribable<ClientNotifications<T>>;
     serverRequest: MakeMethodsAsync<ServerRequests<T>>;
     serverNotification: MakeMethodsAsync<ServerNotifications<T>>;
@@ -318,7 +326,7 @@ function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(nam
 
     function subscribe(s: Subscriber): DisposableHybrid {
         subscriber = s;
-        logger?.log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %s`, typeof s);
         return createDisposable(() => {
             if (subscriber === s) {
                 subscriber = undefined;
