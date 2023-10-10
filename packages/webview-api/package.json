@@ -17,8 +17,7 @@
   "dependencies": {
     "json-rpc-api": "file:../json-rpc-api",
     "utils-disposables": "file:../utils-disposables",
-    "utils-logger": "file:../utils-logger",
-    "vscode-webview-rpc": "file:../webview-rpc"
+    "utils-logger": "file:../utils-logger"
   },
   "engines": {
     "node": ">18.0.0"

@@ -21,6 +21,24 @@
             ]
         },
         {
+            "name": "Client: Launch Extension -- All extensions",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
             "name": "Client: Launch Extension - .gitignore",
             "type": "extensionHost",
             "request": "launch",

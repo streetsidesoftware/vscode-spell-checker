@@ -4,6 +4,7 @@ export type {
     DisposableHybrid,
     DisposableLike,
     DisposeFn,
+    ExcludeDisposableHybrid,
     Logger,
 } from './disposable.js';
 export {

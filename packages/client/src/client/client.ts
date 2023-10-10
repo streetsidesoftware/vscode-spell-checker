@@ -122,6 +122,7 @@ export class CSpellClient implements Disposable {
         this.client = new LanguageClient('cspell', 'Code Spell Checker', serverOptions, clientOptions);
         this.client.registerProposedFeatures();
         this.serverApi = createServerApi(this.client);
+        context.subscriptions.push(this.serverApi);
         this.initWhenReady();
     }
 
@@ -196,9 +197,9 @@ export class CSpellClient implements Disposable {
         return this.notifySettingsChanged();
     }
 
-    public async whenReady<R>(fn: () => R): Promise<R> {
+    public async whenReady<R>(fn: () => R): Promise<Awaited<R>> {
         await this.onReady();
-        return fn();
+        return await fn();
     }
 
     private onReady(): Promise<void> {

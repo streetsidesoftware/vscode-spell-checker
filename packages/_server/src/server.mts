@@ -1,5 +1,3 @@
-// cSpell:ignore pycache
-
 import { LogFileConnection } from '@internal/common-utils/index.js';
 import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log.js';
 import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
@@ -9,10 +7,10 @@ import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 
 import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
+import { LogLevelMasks } from 'utils-logger';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
-import { createClientApi } from './clientApi.mjs';
 import { onCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
@@ -29,9 +27,11 @@ import {
 } from './config/documentSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
+import { createServerApi } from './serverApi.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
+import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
 import type {
     Diagnostic,
@@ -46,9 +46,9 @@ import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, Text
 
 log('Starting Spell Checker Server');
 
-type ServerNotificationApiHandlers = {
-    [key in keyof Api.ServerNotifyApi]: (p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
-};
+// type ServerNotificationApiHandlers = {
+//     [key in keyof Api.ServerNotifyApi]: (...p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
+// };
 
 const tds = CSpell;
 
@@ -88,21 +88,34 @@ export function run(): void {
     const configWatcher = new ConfigWatcher();
     disposables.push(configWatcher);
 
-    const requestMethodApi: Api.ServerRequestApiHandlers = {
-        isSpellCheckEnabled: handleIsSpellCheckEnabled,
-        getConfigurationForDocument: handleGetConfigurationForDocument,
-        splitTextIntoWords: handleSplitTextIntoWords,
-        spellingSuggestions: handleSpellingSuggestions,
-    };
-
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
     const connection = createConnection(ProposedFeatures.all);
 
     const documentSettings = new DocumentSettings(connection, defaultSettings);
 
-    const clientApi = createClientApi(connection);
-    const progressNotifier = createProgressNotifier(clientApi);
+    const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
+
+    const clientServerApi = createServerApi(
+        connection,
+        {
+            serverNotifications: {
+                notifyConfigChange: onConfigChange,
+                registerConfigurationFile,
+            },
+            serverRequests: {
+                getConfigurationForDocument: handleGetConfigurationForDocument,
+                isSpellCheckEnabled: handleIsSpellCheckEnabled,
+                splitTextIntoWords: handleSplitTextIntoWords,
+                spellingSuggestions: handleSpellingSuggestions,
+            },
+        },
+        _logger,
+    );
+
+    disposables.push(clientServerApi);
+
+    const progressNotifier = createProgressNotifier(clientServerApi);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
@@ -178,20 +191,11 @@ export function run(): void {
         return documentSettings.getUriSettings(uri || '');
     }
 
-    function registerConfigurationFile([path]: [string]) {
+    function registerConfigurationFile(path: string) {
         documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
         triggerUpdateConfig.next(undefined);
     }
-
-    const serverNotificationApiHandlers: ServerNotificationApiHandlers = {
-        notifyConfigChange: () => onConfigChange(),
-        registerConfigurationFile: registerConfigurationFile,
-    };
-
-    Object.entries(serverNotificationApiHandlers).forEach(([method, fn]) => {
-        connection.onNotification(method, fn);
-    });
 
     interface TextDocumentInfo {
         uri?: string;
@@ -278,11 +282,6 @@ export function run(): void {
     async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
         return {};
     }
-
-    // Register API Handlers
-    Object.entries(requestMethodApi).forEach(([name, fn]) => {
-        connection.onRequest(name, fn);
-    });
 
     interface DocSettingPair {
         doc: TextDocument;
@@ -619,7 +618,7 @@ export function run(): void {
         return folders || undefined;
     }
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientApi));
+    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientServerApi));
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {

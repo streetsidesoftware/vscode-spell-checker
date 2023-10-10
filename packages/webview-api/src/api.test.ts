@@ -1,6 +1,6 @@
+import type { MessageConnection } from 'json-rpc-api';
 import { createDisposable } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
-import type { MessageConnection } from 'vscode-webview-rpc';
 
 import type { ClientSideApiDef } from './api';
 import * as api from './api';

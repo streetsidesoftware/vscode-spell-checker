@@ -13,11 +13,13 @@ import type {
     ReturnPromise,
 } from './types';
 
-export const apiPrefix = {
-    serverRequest: 'sr_',
-    serverNotification: 'sn_',
-    clientRequest: 'cr_',
-    clientNotification: 'cn_',
+export type ApiPrefix = Record<keyof (ServerSideAPI & ClientSideAPI), string>;
+
+export const defaultApiPrefix: ApiPrefix = {
+    serverRequests: 'sr_',
+    serverNotifications: 'sn_',
+    clientRequests: 'cr_',
+    clientNotifications: 'cn_',
 } as const;
 
 type CallBack = Func;
@@ -51,6 +53,10 @@ export interface Subscribable<T extends CallBack> {
     subscribe(fn: T): DisposableHybrid;
 }
 
+export interface SingleSubscriber<T extends CallBack> {
+    subscribe(fn: T | ReturnPromise<T>): DisposableHybrid;
+}
+
 export interface PubSub<T extends CallBack> extends Subscribable<T> {
     publish: (...args: Parameters<T>) => Promise<void>;
 }
@@ -70,6 +76,10 @@ type WrapInSubscribable<A> = {
     [P in keyof A]: A[P] extends CallBack ? Subscribable<A[P]> : never;
 };
 
+type WrapInSingleSubscriber<A> = {
+    [P in keyof A]: A[P] extends CallBack ? SingleSubscriber<A[P]> : never;
+};
+
 type WrapInPubSub<A> = {
     [P in keyof A]: A[P] extends CallBack ? PubSub<A[P]> : never;
 };
@@ -77,12 +87,12 @@ type WrapInPubSub<A> = {
 export type ServerSideMethods<T extends RpcAPI> = {
     clientRequest: MakeMethodsAsync<ClientRequests<T>>;
     clientNotification: MakeMethodsAsync<ClientNotifications<T>>;
-    serverRequest: WrapInSubscribable<ServerRequests<T>>;
+    serverRequest: WrapInSingleSubscriber<ServerRequests<T>>;
     serverNotification: WrapInSubscribable<ServerNotifications<T>>;
 } & DisposableHybrid;
 
 export type ClientSideMethods<T extends RpcAPI> = {
-    clientRequest: WrapInSubscribable<ClientRequests<T>>;
+    clientRequest: WrapInSingleSubscriber<ClientRequests<T>>;
     clientNotification: WrapInSubscribable<ClientNotifications<T>>;
     serverRequest: MakeMethodsAsync<ServerRequests<T>>;
     serverNotification: MakeMethodsAsync<ServerNotifications<T>>;
@@ -120,20 +130,21 @@ export function createServerApi<API extends RpcAPI>(
     connection: MessageConnection,
     api: ServerAPIDef<API>,
     logger?: Logger,
+    apiPrefix: ApiPrefix = defaultApiPrefix,
 ): ServerSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
     const serverRequest = mapRequestsToPubSub<ServerRequests<API>>(api.serverRequests, logger);
     const serverNotification = mapNotificationsToPubSub<ServerNotifications<API>>(api.serverNotifications, logger);
 
-    bindRequests(connection, apiPrefix.serverRequest, serverRequest, _disposables, logger);
-    bindNotifications(connection, apiPrefix.serverNotification, serverNotification, _disposables, logger);
+    bindRequests(connection, apiPrefix.serverRequests, serverRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.serverNotifications, serverNotification, _disposables, logger);
 
     type CR = ClientRequests<API>;
     type CN = ClientNotifications<API>;
 
-    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequest, api.clientRequests, logger);
-    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotification, api.clientNotifications, logger);
+    const clientRequest = mapRequestsToFn<CR>(connection, apiPrefix.clientRequests, api.clientRequests, logger);
+    const clientNotification = mapNotificationsToFn<CN>(connection, apiPrefix.clientNotifications, api.clientNotifications, logger);
 
     return injectDisposable(
         {
@@ -156,20 +167,21 @@ export function createClientApi<API extends RpcAPI>(
     connection: MessageConnection,
     api: ClientAPIDef<API>,
     logger?: Logger,
+    apiPrefix: ApiPrefix = defaultApiPrefix,
 ): ClientSideMethods<API> {
     const _disposables: DisposableLike[] = [];
 
     const clientRequest = mapRequestsToPubSub<ClientRequests<API>>(api.clientRequests, logger);
     const clientNotification = mapNotificationsToPubSub<ClientNotifications<API>>(api.clientNotifications, logger);
 
-    bindRequests(connection, apiPrefix.clientRequest, clientRequest, _disposables, logger);
-    bindNotifications(connection, apiPrefix.clientNotification, clientNotification, _disposables, logger);
+    bindRequests(connection, apiPrefix.clientRequests, clientRequest, _disposables, logger);
+    bindNotifications(connection, apiPrefix.clientNotifications, clientNotification, _disposables, logger);
 
     type SR = ServerRequests<API>;
     type SN = ServerNotifications<API>;
 
-    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequest, api.serverRequests, logger);
-    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotification, api.serverNotifications, logger);
+    const serverRequest = mapRequestsToFn<SR>(connection, apiPrefix.serverRequests, api.serverRequests, logger);
+    const serverNotification = mapNotificationsToFn<SN>(connection, apiPrefix.serverNotifications, api.serverNotifications, logger);
 
     return injectDisposable(
         {
@@ -292,14 +304,14 @@ function createPubMultipleSubscribers<Subscriber extends ((...args: any) => void
 
     async function publish(..._p: Parameters<Subscriber>) {
         for (const s of subscribers) {
-            logger?.log(`notify ${name} %o`, s);
+            logger?.log(`notify ${name} %s`, typeof s);
             // eslint-disable-next-line prefer-rest-params
             await s(...arguments);
         }
     }
 
     function subscribe(s: Subscriber): DisposableHybrid {
-        logger?.log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %s`, typeof s);
         subscribers.add(s);
         return createDisposable(() => subscribers.delete(s));
     }
@@ -318,7 +330,7 @@ function createPubSingleSubscriber<Subscriber extends (...args: any) => any>(nam
 
     function subscribe(s: Subscriber): DisposableHybrid {
         subscriber = s;
-        logger?.log(`subscribe to ${name} %o`, s);
+        logger?.log(`subscribe to ${name} %s`, typeof s);
         return createDisposable(() => {
             if (subscriber === s) {
                 subscriber = undefined;

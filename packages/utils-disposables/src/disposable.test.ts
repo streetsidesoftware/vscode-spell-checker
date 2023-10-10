@@ -1,6 +1,6 @@
 import { describe, expect, jest, test } from '@jest/globals';
 
-import type { DisposableLike, DisposeFn } from './disposable.js';
+import type { DisposableHybrid, DisposableLike, DisposeFn, ExcludeDisposableHybrid } from './disposable.js';
 import {
     createDisposable,
     createDisposableFromList,
@@ -63,6 +63,22 @@ describe('disposable', () => {
         };
         const dispose = jest.fn(myObj.callMe);
         const myDisposable = injectDisposable(myObj, dispose);
+
+        function use() {
+            using _obj = myDisposable;
+        }
+        use();
+        expect(dispose).toHaveBeenCalledTimes(1);
+        expect(myObj.callMe).toHaveBeenCalledTimes(1);
+    });
+
+    test('injectDisposable into Disposable type', () => {
+        const myObj = {
+            callMe: jest.fn(),
+        };
+        type MyObj = typeof myObj & DisposableHybrid;
+        const dispose = jest.fn(myObj.callMe);
+        const myDisposable: MyObj = injectDisposable<ExcludeDisposableHybrid<MyObj>>(myObj, dispose);
 
         function use() {
             using _obj = myDisposable;

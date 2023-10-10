@@ -13,6 +13,7 @@ codeblock
 codicon
 codicons
 colorscheme
+comms
 cosmiconfig
 darkblue
 dcopy
