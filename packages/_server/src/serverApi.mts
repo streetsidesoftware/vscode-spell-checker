@@ -10,6 +10,7 @@ export function createServerApi(connection: MessageConnection, handlers: ServerS
             addWordsToConfigFileFromServer: true,
             addWordsToDictionaryFileFromServer: true,
             addWordsToVSCodeSettingsFromServer: true,
+            onWorkspaceConfigForDocumentRequest: true,
         },
         clientNotifications: {
             onSpellCheckDocument: true,

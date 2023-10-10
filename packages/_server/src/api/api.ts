@@ -20,6 +20,8 @@ import type {
     SpellingSuggestionsResult,
     SplitTextIntoWordsResult,
     TextDocumentInfo,
+    WorkspaceConfigForDocumentRequest,
+    WorkspaceConfigForDocumentResponse,
 } from './apiModels.js';
 
 export type { Logger, MessageConnection } from 'json-rpc-api';
@@ -46,6 +48,7 @@ export interface ClientRequestsAPI {
     addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: ConfigurationTarget) => void;
     addWordsToDictionaryFileFromServer: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
     addWordsToConfigFileFromServer: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
+    onWorkspaceConfigForDocumentRequest: (req: WorkspaceConfigForDocumentRequest) => WorkspaceConfigForDocumentResponse;
 }
 
 /** Notifications from the server to the client(vscode extension) */

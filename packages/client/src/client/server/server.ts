@@ -11,6 +11,7 @@ import type {
     ServerNotifyApi,
 } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
+import { createDisposableList } from 'utils-disposables';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
 import { CodeActionRequest, NotificationType, RequestType } from 'vscode-languageclient/node';
 export type {
@@ -52,10 +53,11 @@ export type {
     WorkspaceConfigForDocumentResponse,
 } from 'code-spell-checker-server/api';
 
-export interface ServerApi extends ServerNotifyApi, ServerEventApi, RequestsFromServerHandlerApi, Disposable {
+export interface ServerApi extends ServerNotifyApi, ServerEventApi, Disposable {
     isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
     spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
+    onWorkspaceConfigForDocumentRequest: ClientSideApi['clientRequest']['onWorkspaceConfigForDocumentRequest']['subscribe'];
 }
 
 type Disposable = {
@@ -70,9 +72,9 @@ type RequestsFromServer = {
     [K in keyof RequestsToClient]: RequestResponseFn<RequestsToClient[K]>;
 };
 
-type RequestsFromServerHandlerApi = {
-    [M in keyof RequestsFromServer]: (handler: Fn<RequestsFromServer[M]>) => Disposable;
-};
+// type RequestsFromServerHandlerApi = {
+//     [M in keyof RequestsFromServer]: (handler: Fn<RequestsFromServer[M]>) => Disposable;
+// };
 
 type RequestCodeActionResult = (Command | CodeAction)[] | null;
 
@@ -115,6 +117,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
             addWordsToConfigFileFromServer: true,
             addWordsToDictionaryFileFromServer: true,
             addWordsToVSCodeSettingsFromServer: true,
+            onWorkspaceConfigForDocumentRequest: true,
         },
     };
 
@@ -126,9 +129,16 @@ export function createServerApi(client: LanguageClient): ServerApi {
         spellingSuggestions: log2Sfn(rpcApi.serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(rpcApi.serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(rpcApi.serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
-        onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', log2Cfn(fn, 'onSpellCheckDocument')),
+        onSpellCheckDocument: (fn) =>
+            createDisposableList([
+                onNotify('onSpellCheckDocument', log2Cfn(fn, 'onSpellCheckDocument')),
+                rpcApi.clientNotification.onSpellCheckDocument.subscribe(fn),
+            ]),
         onWorkspaceConfigForDocumentRequest: (fn) =>
-            onRequest('onWorkspaceConfigForDocumentRequest', log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
+            createDisposableList([
+                onRequest('onWorkspaceConfigForDocumentRequest', log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
+                rpcApi.clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(fn),
+            ]),
         dispose: rpcApi.dispose,
     };
 
@@ -166,6 +176,6 @@ async function logCommunication<P, T>(kind: string, params: P, value: Promise<T>
         result = await value;
         return result;
     } finally {
-        log && debugCommunication && console.log('%s %i End %s: %s, %o', new Date().toISOString(), id, kind, name, result);
+        log && debugCommunication && console.log('%s %i End   %s: %s, %o', new Date().toISOString(), id, kind, name, result);
     }
 }
