@@ -46,9 +46,9 @@ import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, Text
 
 log('Starting Spell Checker Server');
 
-type ServerNotificationApiHandlers = {
-    [key in keyof Api.ServerNotifyApi]: (p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
-};
+// type ServerNotificationApiHandlers = {
+//     [key in keyof Api.ServerNotifyApi]: (...p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
+// };
 
 const tds = CSpell;
 
@@ -171,20 +171,20 @@ export function run(): void {
         return documentSettings.getUriSettings(uri || '');
     }
 
-    function registerConfigurationFile([path]: [string]) {
+    function registerConfigurationFile(path: string) {
         documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
         triggerUpdateConfig.next(undefined);
     }
 
-    const serverNotificationApiHandlers: ServerNotificationApiHandlers = {
-        notifyConfigChange: () => onConfigChange(),
-        registerConfigurationFile: registerConfigurationFile,
-    };
+    // const serverNotificationApiHandlers: ServerNotificationApiHandlers = {
+    //     notifyConfigChange: () => onConfigChange(),
+    //     registerConfigurationFile: registerConfigurationFile,
+    // };
 
-    Object.entries(serverNotificationApiHandlers).forEach(([method, fn]) => {
-        connection.onNotification(method, fn);
-    });
+    // Object.entries(serverNotificationApiHandlers).forEach(([method, fn]) => {
+    //     connection.onNotification(method, fn);
+    // });
 
     interface TextDocumentInfo {
         uri?: string;
@@ -197,7 +197,7 @@ export function run(): void {
         {
             serverNotifications: {
                 notifyConfigChange: onConfigChange,
-                registerConfigurationFile: (path) => registerConfigurationFile([path]),
+                registerConfigurationFile,
             },
             serverRequests: {
                 getConfigurationForDocument: handleGetConfigurationForDocument,

@@ -93,9 +93,9 @@ export function createServerApi(client: LanguageClient): ServerApi {
         return client.onRequest(n, fn);
     }
 
-    function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): void {
-        client.sendNotification(method, params);
-    }
+    // function sendNotification<K extends keyof ServerNotifyApi>(method: K, ...params: Parameters<ServerNotifyApi[K]>): Promise<void> {
+    //     return client.sendNotification(method, params);
+    // }
 
     const def: ClientSideApiDef = {
         serverRequests: {
@@ -121,23 +121,51 @@ export function createServerApi(client: LanguageClient): ServerApi {
     const rpcApi = createClientSideApi(client, def, { log: () => undefined });
 
     const api: ServerApi = {
-        isSpellCheckEnabled: (param) => logReq(rpcApi.serverRequest.isSpellCheckEnabled(param), 'isSpellCheckEnabled'),
-        getConfigurationForDocument: (param) =>
-            logReq(rpcApi.serverRequest.getConfigurationForDocument(param), 'getConfigurationForDocument'),
-        spellingSuggestions: (param) => logReq(rpcApi.serverRequest.spellingSuggestions(param), 'spellingSuggestions'),
-        notifyConfigChange: (...params) => sendNotification('notifyConfigChange', ...params),
-        registerConfigurationFile: (...params) => sendNotification('registerConfigurationFile', ...params),
-        onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', fn),
-        onWorkspaceConfigForDocumentRequest: (fn) => onRequest('onWorkspaceConfigForDocumentRequest', fn),
+        isSpellCheckEnabled: log2Sfn(rpcApi.serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
+        getConfigurationForDocument: log2Sfn(rpcApi.serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
+        spellingSuggestions: log2Sfn(rpcApi.serverRequest.spellingSuggestions, 'spellingSuggestions'),
+        notifyConfigChange: log2Sfn(rpcApi.serverNotification.notifyConfigChange, 'notifyConfigChange'),
+        registerConfigurationFile: log2Sfn(rpcApi.serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
+        onSpellCheckDocument: (fn) => onNotify('onSpellCheckDocument', log2Cfn(fn, 'onSpellCheckDocument')),
+        onWorkspaceConfigForDocumentRequest: (fn) =>
+            onRequest('onWorkspaceConfigForDocumentRequest', log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
         dispose: rpcApi.dispose,
     };
 
     return api;
 }
 
-async function logReq<T>(value: Promise<T>, reqName: string): Promise<T> {
-    console.log('%s Start Request: %s', new Date().toISOString(), reqName);
-    const r = await value;
-    console.log('%s End request: %s, %o', new Date().toISOString(), reqName, r);
-    return r;
+let reqNum = 0;
+const debugCommunication = true;
+const debugServerComms = true;
+const debugClientComms = true;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function log2Sfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: string): (...p: P) => Promise<T> {
+    return (...params: P) => log2S<P, T>(params, fn(...params), reqName);
+}
+
+function log2S<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise<T> {
+    return logCommunication<P, T>('Server R/N', params, value, reqName, debugServerComms);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function log2Cfn<P extends any[], T>(fn: (...p: P) => T | Promise<T>, reqName: string): (...p: P) => Promise<T> {
+    return (...params: P) => log2C<P, T>(params, fn(...params), reqName);
+}
+
+function log2C<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise<T> {
+    return logCommunication<P, T>('Client R/N', params, value, reqName, debugClientComms);
+}
+
+async function logCommunication<P, T>(kind: string, params: P, value: Promise<T> | T, name: string, log: boolean): Promise<T> {
+    const id = ++reqNum;
+    let result: T | undefined = undefined;
+    log && debugCommunication && console.log('%s %i Start %s: %s(%o)', new Date().toISOString(), id, kind, name, params);
+    try {
+        result = await value;
+        return result;
+    } finally {
+        log && debugCommunication && console.log('%s %i End %s: %s, %o', new Date().toISOString(), id, kind, name, result);
+    }
 }
