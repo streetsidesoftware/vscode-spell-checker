@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
-import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 
 vi.mock('vscode-languageserver/node');

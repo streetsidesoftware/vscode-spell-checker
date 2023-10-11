@@ -2,9 +2,9 @@ import { logError } from '@internal/common-utils/log.js';
 import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
+import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
-import type { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries.mjs';
 

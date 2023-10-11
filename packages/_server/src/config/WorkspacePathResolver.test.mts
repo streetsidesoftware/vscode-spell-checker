@@ -1,9 +1,9 @@
 import { logError } from '@internal/common-utils/log.js';
 import * as Path from 'path';
 import { describe, expect, type Mock, test, vi } from 'vitest';
+import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
-import type { WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import type { CSpellUserSettings, CustomDictionaries } from './cspellConfig/index.mjs';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver.mjs';
 

@@ -3,6 +3,8 @@ import { capitalize } from '@internal/common-utils/util.js';
 import type { SpellingDictionary } from 'cspell-lib';
 import { constructSettingsForText, getDictionary, IssueType, Text } from 'cspell-lib';
 import { format } from 'util';
+import type { CodeActionParams, Range as LangServerRange, TextDocuments } from 'vscode-languageserver/node.js';
+import { Command as LangServerCommand } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { CodeAction, CodeActionKind, TextEdit } from 'vscode-languageserver-types';
@@ -21,8 +23,6 @@ import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
 import { uniqueFilter } from './utils/index.mjs';
 import * as range from './utils/range.mjs';
 import * as Validator from './validator.mjs';
-import type { CodeActionParams, Range as LangServerRange, TextDocuments } from './vscodeLanguageServer/index.cjs';
-import { Command as LangServerCommand } from './vscodeLanguageServer/index.cjs';
 
 const createCommand = LangServerCommand.create;
 

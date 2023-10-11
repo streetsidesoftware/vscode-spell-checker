@@ -32,12 +32,12 @@ import type { Sequence } from 'gensequence';
 import { genSequence } from 'gensequence';
 import * as os from 'os';
 import * as path from 'path';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import type { VSCodeSettingsCspell } from '../api.js';
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
-import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';

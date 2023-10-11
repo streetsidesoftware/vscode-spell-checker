@@ -4,10 +4,10 @@ import { getDefaultSettings } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
 import { extendExpect } from '../test/test.matchers.js';
-import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import type { ExcludedByMatch } from './documentSettings.mjs';
 import {

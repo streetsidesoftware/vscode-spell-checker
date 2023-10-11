@@ -8,6 +8,16 @@ import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
 import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
 import { LogLevelMasks } from 'utils-logger';
+import type {
+    Diagnostic,
+    DidChangeConfigurationParams,
+    Disposable,
+    InitializeParams,
+    InitializeResult,
+    PublishDiagnosticsParams,
+    ServerCapabilities,
+} from 'vscode-languageserver/node.js';
+import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
@@ -33,16 +43,6 @@ import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
 import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
-import type {
-    Diagnostic,
-    DidChangeConfigurationParams,
-    Disposable,
-    InitializeParams,
-    InitializeResult,
-    PublishDiagnosticsParams,
-    ServerCapabilities,
-} from './vscodeLanguageServer/index.cjs';
-import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from './vscodeLanguageServer/index.cjs';
 
 log('Starting Spell Checker Server');
 

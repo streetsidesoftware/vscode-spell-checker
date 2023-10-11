@@ -49,10 +49,6 @@ type Disposable = {
     dispose: () => void;
 };
 
-// type RequestsFromServerHandlerApi = {
-//     [M in keyof RequestsFromServer]: (handler: Fn<RequestsFromServer[M]>) => Disposable;
-// };
-
 type RequestCodeActionResult = (Command | CodeAction)[] | null;
 
 export async function requestCodeAction(client: LanguageClient, params: CodeActionParams): Promise<RequestCodeActionResult> {
@@ -77,24 +73,23 @@ export function createServerApi(client: LanguageClient): ServerApi {
             onSpellCheckDocument: true,
         },
         clientRequests: {
-            // addWordsToConfigFileFromServer: true,
-            // addWordsToDictionaryFileFromServer: true,
-            // addWordsToVSCodeSettingsFromServer: true,
             onWorkspaceConfigForDocumentRequest: true,
         },
     };
 
     const rpcApi = createClientSideApi(client, def, { log: () => undefined });
 
+    const { serverNotification, serverRequest, clientNotification, clientRequest } = rpcApi;
+
     const api: ServerApi = {
-        isSpellCheckEnabled: log2Sfn(rpcApi.serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
-        getConfigurationForDocument: log2Sfn(rpcApi.serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
-        spellingSuggestions: log2Sfn(rpcApi.serverRequest.spellingSuggestions, 'spellingSuggestions'),
-        notifyConfigChange: log2Sfn(rpcApi.serverNotification.notifyConfigChange, 'notifyConfigChange'),
-        registerConfigurationFile: log2Sfn(rpcApi.serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
-        onSpellCheckDocument: (fn) => rpcApi.clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
+        isSpellCheckEnabled: log2Sfn(serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
+        getConfigurationForDocument: log2Sfn(serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
+        spellingSuggestions: log2Sfn(serverRequest.spellingSuggestions, 'spellingSuggestions'),
+        notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),
+        registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
+        onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
-            rpcApi.clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
+            clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
 
         dispose: rpcApi.dispose,
     };
@@ -103,7 +98,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
 }
 
 let reqNum = 0;
-const debugCommunication = true;
+const debugCommunication = false;
 const debugServerComms = true;
 const debugClientComms = true;
 
