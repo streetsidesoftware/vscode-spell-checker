@@ -2597,7 +2597,7 @@
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unicorn": "^48.0.1",
@@ -2620,7 +2620,7 @@
     "@cspell/cspell-bundled-dicts": "^7.3.7",
     "@cspell/cspell-types": "^7.3.7",
     "@tsconfig/node18": "^18.2.2",
-    "@types/react": "^17.0.67",
+    "@types/react": "^17.0.68",
     "cspell": "^7.3.7",
     "regexp-worker": "^2.0.2"
   },
