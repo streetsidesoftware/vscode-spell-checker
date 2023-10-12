@@ -20,9 +20,6 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
             ...handlers.serverNotifications,
         },
         clientRequests: {
-            // addWordsToConfigFileFromServer: true,
-            // addWordsToDictionaryFileFromServer: true,
-            // addWordsToVSCodeSettingsFromServer: true,
             onWorkspaceConfigForDocumentRequest: true,
         },
         clientNotifications: {

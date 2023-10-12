@@ -24,7 +24,7 @@ import {
     ExclusionHelper,
     getSources,
     mergeSettings,
-    readSettingsFiles as cspellReadSettingsFiles,
+    readSettings as cspellReadSettingsFile,
     searchForConfig,
 } from 'cspell-lib';
 import * as fs from 'fs';
@@ -32,12 +32,12 @@ import type { Sequence } from 'gensequence';
 import { genSequence } from 'gensequence';
 import * as os from 'os';
 import * as path from 'path';
+import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-import type { VSCodeSettingsCspell } from '../api.js';
+import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigForDocument } from '../api.js';
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
-import type { Connection, WorkspaceFolder } from '../vscodeLanguageServer/index.cjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
@@ -100,20 +100,21 @@ const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
 
-const _defaultSettings: CSpellUserSettings = Object.freeze({});
+const _defaultSettings: CSpellUserSettings = Object.freeze(Object.create(null));
 
 const defaultCheckOnlyEnabledFileTypes = true;
 
 interface Clearable {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    clear: () => any;
+    clear: () => void;
 }
+
 export class DocumentSettings {
     // Cache per folder settings
     private cachedValues: Clearable[] = [];
-    private readonly fetchSettingsForUri = this.createCache((key: string) => this._fetchSettingsForUri(key));
-    private readonly fetchVSCodeConfiguration = this.createCache((key: string) => this._fetchVSCodeConfiguration(key));
+    private readonly fetchSettingsForUri = this.createCache((docUri: string) => this._fetchSettingsForUri(docUri));
+    private readonly fetchVSCodeConfiguration = this.createCache((uri: string) => this._fetchVSCodeConfiguration(uri));
     private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
+    public readonly fetchWorkspaceConfiguration = this.createCache((docUri: DocumentUri) => this._fetchWorkspaceConfiguration(docUri));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
     readonly configsToImport = new Set<string>();
     private readonly importedSettings = this.createLazy(() => this._importSettings());
@@ -122,6 +123,7 @@ export class DocumentSettings {
 
     constructor(
         readonly connection: Connection,
+        readonly api: ServerSideApi,
         readonly defaultSettings: CSpellUserSettings = _defaultSettings,
     ) {}
 
@@ -197,12 +199,13 @@ export class DocumentSettings {
         return calcExcludedBy(uri, extSettings);
     }
 
-    resetSettings(): void {
+    async resetSettings(): Promise<void> {
         log('resetSettings');
-        clearCachedFiles();
+        const waitFor = clearCachedFiles();
         this.cachedValues.forEach((cache) => cache.clear());
         this._version += 1;
         this.gitIgnore = new GitIgnore();
+        await waitFor;
     }
 
     get folders(): Promise<WorkspaceFolder[]> {
@@ -212,18 +215,22 @@ export class DocumentSettings {
     private _importSettings() {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
-        return readSettingsFiles(importPaths);
+        return mergeSettings({}, ...readSettingsFiles(importPaths));
+    }
+
+    private async _fetchWorkspaceConfiguration(uri: DocumentUri): Promise<WorkspaceConfigForDocument> {
+        return this.api.clientRequest.onWorkspaceConfigForDocumentRequest({ uri });
     }
 
     get version(): number {
         return this._version;
     }
 
-    registerConfigurationFile(path: string): void {
+    async registerConfigurationFile(path: string): Promise<void> {
         log('registerConfigurationFile:', path);
         this.configsToImport.add(path);
         this.importedSettings.clear();
-        this.resetSettings();
+        await this.resetSettings();
     }
 
     private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
@@ -394,7 +401,9 @@ function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CS
     const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
     log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
     log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
-    const { import: _import, ...result } = importAbsPath.length ? mergeSettings(readSettingsFiles([...importAbsPath]), config) : config;
+    const { import: _import, ...result } = importAbsPath.length
+        ? mergeSettings({}, ...readSettingsFiles([...importAbsPath]), config)
+        : config;
     return result;
 }
 
@@ -402,7 +411,7 @@ function readSettingsFiles(paths: string[]) {
     // log('readSettingsFiles:', paths);
     const existingPaths = paths.filter((filename) => exists(filename));
     log('readSettingsFiles:', existingPaths);
-    return existingPaths.length ? cspellReadSettingsFiles(existingPaths) : {};
+    return existingPaths.map((file) => cspellReadSettingsFile(file));
 }
 
 function exists(file: string): boolean {

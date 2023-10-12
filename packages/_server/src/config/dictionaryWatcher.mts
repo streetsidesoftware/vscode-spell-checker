@@ -1,7 +1,7 @@
 import type { CSpellUserSettings } from '@cspell/cspell-types';
+import type { Disposable } from 'vscode-languageserver/node.js';
 
 import { FileWatcher } from '../utils/fileWatcher.mjs';
-import type { Disposable } from '../vscodeLanguageServer/index.cjs';
 
 export type Listener = (eventType?: string, filename?: string) => void;
 

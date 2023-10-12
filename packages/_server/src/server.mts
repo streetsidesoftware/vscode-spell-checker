@@ -1,4 +1,4 @@
-import { LogFileConnection } from '@internal/common-utils/index.js';
+import { isDefined, LogFileConnection } from '@internal/common-utils/index.js';
 import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log.js';
 import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
 import type { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
@@ -6,8 +6,19 @@ import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
-import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, take, tap, throttle, throttleTime } from 'rxjs/operators';
+import type { DisposableLike } from 'utils-disposables';
+import { createDisposableList } from 'utils-disposables';
 import { LogLevelMasks } from 'utils-logger';
+import type {
+    Diagnostic,
+    DidChangeConfigurationParams,
+    InitializeParams,
+    InitializeResult,
+    PublishDiagnosticsParams,
+    ServerCapabilities,
+} from 'vscode-languageserver/node.js';
+import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
@@ -29,20 +40,11 @@ import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
+import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
 import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
-import type {
-    Diagnostic,
-    DidChangeConfigurationParams,
-    Disposable,
-    InitializeParams,
-    InitializeResult,
-    PublishDiagnosticsParams,
-    ServerCapabilities,
-} from './vscodeLanguageServer/index.cjs';
-import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from './vscodeLanguageServer/index.cjs';
 
 log('Starting Spell Checker Server');
 
@@ -73,78 +75,217 @@ const dictionaryRefreshRateMs = 1000;
 
 export function run(): void {
     // debounce buffer
+    const disposables = createDisposableList();
     const validationRequestStream = new ReplaySubject<TextDocument>(1);
     const triggerUpdateConfig = new ReplaySubject<void>(1);
     const triggerValidateAll = new ReplaySubject<void>(1);
     const validationByDoc = new Map<string, Subscription>();
     const blockValidation = new Map<string, number>();
     let isValidationBusy = false;
-    const disposables: Disposable[] = [];
-    const dictionaryWatcher = new DictionaryWatcher();
-    disposables.push(dictionaryWatcher);
+    const dictionaryWatcher = dd(new DictionaryWatcher());
+    dd(disposeValidationByDoc);
 
     const blockedFiles = new Map<string, Api.BlockedFileReason>();
 
-    const configWatcher = new ConfigWatcher();
-    disposables.push(configWatcher);
+    const configWatcher = dd(new ConfigWatcher());
 
     // Create a connection for the server. The connection uses Node's IPC as a transport
     log('Create Connection');
     const connection = createConnection(ProposedFeatures.all);
 
-    const documentSettings = new DocumentSettings(connection, defaultSettings);
-
     const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
 
-    const clientServerApi = createServerApi(
-        connection,
-        {
-            serverNotifications: {
-                notifyConfigChange: onConfigChange,
-                registerConfigurationFile,
+    const clientServerApi = dd(
+        createServerApi(
+            connection,
+            {
+                serverNotifications: {
+                    notifyConfigChange: onConfigChange,
+                    registerConfigurationFile,
+                },
+                serverRequests: {
+                    getConfigurationForDocument: handleGetConfigurationForDocument,
+                    isSpellCheckEnabled: handleIsSpellCheckEnabled,
+                    splitTextIntoWords: handleSplitTextIntoWords,
+                    spellingSuggestions: handleSpellingSuggestions,
+                },
             },
-            serverRequests: {
-                getConfigurationForDocument: handleGetConfigurationForDocument,
-                isSpellCheckEnabled: handleIsSpellCheckEnabled,
-                splitTextIntoWords: handleSplitTextIntoWords,
-                spellingSuggestions: handleSpellingSuggestions,
-            },
-        },
-        _logger,
+            _logger,
+        ),
     );
 
-    disposables.push(clientServerApi);
+    const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 
     const progressNotifier = createProgressNotifier(clientServerApi);
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
 
-    connection.onInitialize((params: InitializeParams): InitializeResult => {
-        // Hook up the logger to the connection.
-        log('onInitialize');
-        setWorkspaceBase(params.rootUri ? params.rootUri : '');
-        const capabilities: ServerCapabilities = {
-            // Tell the client that the server works in FULL text document sync mode
-            textDocumentSync: {
-                openClose: true,
-                change: TextDocumentSyncKind.Incremental,
-                willSave: true,
-                save: { includeText: true },
-            },
-            codeActionProvider: {
-                codeActionKinds: [CodeActionKind.QuickFix],
-            },
-        };
-        return { capabilities };
-    });
+    dd(
+        connection.onInitialize((params: InitializeParams): InitializeResult => {
+            // Hook up the logger to the connection.
+            log('onInitialize');
+            setWorkspaceBase(params.rootUri ? params.rootUri : '');
+            const capabilities: ServerCapabilities = {
+                // Tell the client that the server works in FULL text document sync mode
+                textDocumentSync: {
+                    openClose: true,
+                    change: TextDocumentSyncKind.Incremental,
+                    willSave: true,
+                    save: { includeText: true },
+                },
+                codeActionProvider: {
+                    codeActionKinds: [CodeActionKind.QuickFix],
+                },
+            };
+            return { capabilities };
+        }),
+    );
 
     // The settings have changed. Is sent on server activation as well.
-    connection.onDidChangeConfiguration(onConfigChange);
+    dd(connection.onDidChangeConfiguration(onConfigChange));
 
-    interface OnChangeParam extends DidChangeConfigurationParams {
-        settings: SettingsCspell;
-    }
+    const _getActiveUriSettings = simpleDebounce(__getActiveUriSettings, 50);
+
+    // Listen for event messages from the client.
+    dd(dictionaryWatcher.listen(onDictionaryChange));
+    dd(configWatcher.listen(onConfigFileChange));
+
+    const _handleIsSpellCheckEnabled = simpleDebounce(
+        __handleIsSpellCheckEnabled,
+        50,
+        ({ uri, languageId }) => `(${uri})::(${languageId})`,
+    );
+
+    const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 100, (params) => JSON.stringify(params));
+
+    // validate documents
+    ds(
+        validationRequestStream.pipe(filter((doc) => !validationByDoc.has(doc.uri))).subscribe((doc) => {
+            if (validationByDoc.has(doc.uri)) return;
+            const uri = doc.uri;
+
+            log('Register Document Handler:', uri);
+
+            if (isUriBlocked(uri)) {
+                validationByDoc.set(
+                    doc.uri,
+                    validationRequestStream
+                        .pipe(
+                            filter((doc) => uri === doc.uri),
+                            take(1),
+                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
+                            tap((doc) => log('Ignoring:', doc.uri)),
+                        )
+                        .subscribe(),
+                );
+            } else {
+                validationByDoc.set(
+                    doc.uri,
+                    validationRequestStream
+                        .pipe(
+                            filter((doc) => uri === doc.uri),
+                            tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
+                            tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
+                        )
+                        .pipe(
+                            throttleTime(defaultDebounceMs, undefined, { leading: true, trailing: true }),
+                            mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
+                            tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
+                            throttle(
+                                (dsp) =>
+                                    interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
+                                { leading: true, trailing: true },
+                            ),
+                            filter((dsp) => !blockValidation.has(dsp.doc.uri)),
+                            mergeMap(validateTextDocument),
+                        )
+                        .subscribe(sendDiagnostics),
+                );
+            }
+        }),
+    );
+
+    ds(
+        triggerUpdateConfig
+            .pipe(
+                tap(() => log('Trigger Update Config')),
+                throttleTime(1000, undefined, { leading: true, trailing: true }),
+                tap(() => log('Update Config Triggered')),
+                mergeMap(updateActiveSettings),
+            )
+            .subscribe(() => {}),
+    );
+
+    ds(
+        triggerValidateAll.pipe(debounceTime(250)).subscribe(() => {
+            log('Validate all documents');
+            documents.all().forEach((doc) => validationRequestStream.next(doc));
+        }),
+    );
+
+    const knownErrors = new Set<string>();
+
+    // Make the text document manager listen on the connection
+    // for open, change and close text document events
+    dd(documents.listen(connection));
+
+    disposables.push(
+        // The content of a text document has changed. This event is emitted
+        // when the text document first opened or when its content has changed.
+        documents.onDidChangeContent((event) => {
+            validationRequestStream.next(event.document);
+        }),
+
+        // We want to block validation during saving.
+        documents.onWillSave((event) => {
+            const { uri, version } = event.document;
+            log(`onWillSave: v${version}`, uri);
+            blockValidation.set(uri, version);
+        }),
+
+        // Enable validation once it is saved.
+        documents.onDidSave((event) => {
+            const { uri, version } = event.document;
+            log(`onDidSave: v${version}`, uri);
+            blockValidation.delete(uri);
+            validationRequestStream.next(event.document);
+        }),
+
+        // Remove subscriptions when a document closes.
+        documents.onDidClose((event) => {
+            const uri = event.document.uri;
+            const sub = validationByDoc.get(uri);
+            if (sub) {
+                validationByDoc.delete(uri);
+                sub.unsubscribe();
+            }
+            // A text document was closed we clear the diagnostics
+            catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }), 'onDidClose');
+        }),
+    );
+
+    dd(
+        connection.onCodeAction(
+            onCodeActionHandler(documents, {
+                fetchSettings: getBaseSettings,
+                getSettingsVersion: () => documentSettings.version,
+                fetchWorkspaceConfigForDocument: (uri) => documentSettings.fetchWorkspaceConfiguration(uri),
+            }),
+        ),
+    );
+
+    // Free up the validation streams on shutdown.
+    connection.onShutdown(() => {
+        disposables.dispose();
+    });
+
+    // Listen on the connection
+    connection.listen();
+
+    return;
+
+    /******************************************************************* */
 
     function onDictionaryChange(eventType?: string, filename?: string) {
         logInfo(`Dictionary Change ${eventType}`, filename);
@@ -163,12 +304,12 @@ export function run(): void {
 
     function handleConfigChange() {
         triggerUpdateConfig.next(undefined);
-        updateLogLevel();
+        catchPromise(updateLogLevel(), 'handleConfigChange');
     }
 
-    function updateActiveSettings() {
+    async function updateActiveSettings() {
         log('updateActiveSettings');
-        documentSettings.resetSettings();
+        await documentSettings.resetSettings();
         dictionaryWatcher.clear();
         blockedFiles.clear();
         triggerValidateAll.next(undefined);
@@ -182,40 +323,23 @@ export function run(): void {
         return _getActiveUriSettings(uri);
     }
 
-    const _getActiveUriSettings = simpleDebounce(__getActiveUriSettings, 50);
-
     function __getActiveUriSettings(uri?: string) {
         // Give the dictionaries a chance to refresh if they need to.
         log('getActiveUriSettings', uri);
-        refreshDictionaryCache(dictionaryRefreshRateMs);
+        catchPromise(refreshDictionaryCache(dictionaryRefreshRateMs), '__getActiveUriSettings');
         return documentSettings.getUriSettings(uri || '');
     }
 
-    function registerConfigurationFile(path: string) {
-        documentSettings.registerConfigurationFile(path);
+    async function registerConfigurationFile(path: string) {
+        const waitFor = documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
+        await waitFor;
         triggerUpdateConfig.next(undefined);
     }
-
-    interface TextDocumentInfo {
-        uri?: string;
-        languageId?: string;
-        text?: string;
-    }
-
-    // Listen for event messages from the client.
-    disposables.push(dictionaryWatcher.listen(onDictionaryChange));
-    disposables.push(configWatcher.listen(onConfigFileChange));
 
     async function handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         return _handleIsSpellCheckEnabled(params);
     }
-
-    const _handleIsSpellCheckEnabled = simpleDebounce(
-        __handleIsSpellCheckEnabled,
-        50,
-        ({ uri, languageId }) => `(${uri})::(${languageId})`,
-    );
 
     async function __handleIsSpellCheckEnabled(params: TextDocumentInfo): Promise<Api.IsSpellCheckEnabledResult> {
         log('handleIsSpellCheckEnabled', params.uri);
@@ -228,8 +352,6 @@ export function run(): void {
     ): Promise<Api.GetConfigurationForDocumentResult> {
         return _handleGetConfigurationForDocument(params);
     }
-
-    const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 100, (params) => JSON.stringify(params));
 
     async function __handleGetConfigurationForDocument(
         params: Api.GetConfigurationForDocumentRequest,
@@ -283,54 +405,6 @@ export function run(): void {
         return {};
     }
 
-    interface DocSettingPair {
-        doc: TextDocument;
-        settings: CSpellUserSettings;
-    }
-
-    // validate documents
-    const disposableValidate = validationRequestStream.pipe(filter((doc) => !validationByDoc.has(doc.uri))).subscribe((doc) => {
-        if (validationByDoc.has(doc.uri)) return;
-        const uri = doc.uri;
-
-        log('Register Document Handler:', uri);
-
-        if (isUriBlocked(uri)) {
-            validationByDoc.set(
-                doc.uri,
-                validationRequestStream
-                    .pipe(
-                        filter((doc) => uri === doc.uri),
-                        take(1),
-                        tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'ignore')),
-                        tap((doc) => log('Ignoring:', doc.uri)),
-                    )
-                    .subscribe(),
-            );
-        } else {
-            validationByDoc.set(
-                doc.uri,
-                validationRequestStream
-                    .pipe(
-                        filter((doc) => uri === doc.uri),
-                        tap((doc) => progressNotifier.emitSpellCheckDocumentStep(doc, 'start')),
-                        tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
-                    )
-                    .pipe(
-                        debounceTime(defaultDebounceMs),
-                        mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
-                        tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
-                        debounce((dsp) =>
-                            interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
-                        ),
-                        filter((dsp) => !blockValidation.has(dsp.doc.uri)),
-                        mergeMap(validateTextDocument),
-                    )
-                    .subscribe(sendDiagnostics),
-            );
-        }
-    });
-
     function sendDiagnostics(result: ValidationResult) {
         log(`Send Diagnostics v${result.version}`, result.uri);
         const diags: Required<PublishDiagnosticsParams> = {
@@ -338,23 +412,8 @@ export function run(): void {
             version: result.version,
             diagnostics: result.diagnostics,
         };
-        connection.sendDiagnostics(diags);
+        catchPromise(connection.sendDiagnostics(diags), 'sendDiagnostics');
     }
-
-    const disposableTriggerUpdateConfigStream = triggerUpdateConfig
-        .pipe(
-            tap(() => log('Trigger Update Config')),
-            debounceTime(100),
-            tap(() => log('Update Config Triggered')),
-        )
-        .subscribe(() => {
-            updateActiveSettings();
-        });
-
-    const disposableTriggerValidateAll = triggerValidateAll.pipe(debounceTime(250)).subscribe(() => {
-        log('Validate all documents');
-        documents.all().forEach((doc) => validationRequestStream.next(doc));
-    });
 
     async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
         const { uri, languageId } = textDocument;
@@ -421,7 +480,6 @@ export function run(): void {
             blockedReason: uri ? blockedFiles.get(uri) : undefined,
         };
     }
-
     async function isUriExcluded(uri: string): Promise<boolean> {
         const ie = await calcFileIncludeExclude(uri);
         return !ie.include || ie.exclude || !!ie.ignored;
@@ -438,10 +496,6 @@ export function run(): void {
 
     async function getSettingsToUseForDocument(doc: TextDocument) {
         return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
-    }
-
-    interface ValidationResult extends PublishDiagnosticsParams {
-        version: number;
     }
 
     function isStale(doc: TextDocument, writeLog = true): boolean {
@@ -504,12 +558,6 @@ export function run(): void {
         return r;
     }
 
-    const knownErrors = new Set<string>();
-
-    function isString(s: string | undefined): s is string {
-        return !!s;
-    }
-
     function logProblemsWithSettings(settings: CSpellUserSettings) {
         function join(...s: (string | undefined)[]): string {
             return s.filter((s) => !!s).join(' ');
@@ -522,7 +570,8 @@ export function run(): void {
             const importedBy =
                 err.referencedBy
                     ?.map((s) => s.filename)
-                    .filter(isString)
+                    .filter(isDefined)
+                    .filter((a) => !!a)
                     .map((s) => '"' + s + '"') || [];
             const fullImportBy = importedBy.length ? join(' imported by \n', ...importedBy) : '';
             // const firstImportedBy = importedBy.length ? join('imported by', importedBy[0]) : '';
@@ -534,45 +583,6 @@ export function run(): void {
             connection.window.showWarningMessage(join(msg, fullImportBy));
         });
     }
-
-    // Make the text document manager listen on the connection
-    // for open, change and close text document events
-    documents.listen(connection);
-
-    disposables.push(
-        // The content of a text document has changed. This event is emitted
-        // when the text document first opened or when its content has changed.
-        documents.onDidChangeContent((event) => {
-            validationRequestStream.next(event.document);
-        }),
-
-        // We want to block validation during saving.
-        documents.onWillSave((event) => {
-            const { uri, version } = event.document;
-            log(`onWillSave: v${version}`, uri);
-            blockValidation.set(uri, version);
-        }),
-
-        // Enable validation once it is saved.
-        documents.onDidSave((event) => {
-            const { uri, version } = event.document;
-            log(`onDidSave: v${version}`, uri);
-            blockValidation.delete(uri);
-            validationRequestStream.next(event.document);
-        }),
-
-        // Remove subscriptions when a document closes.
-        documents.onDidClose((event) => {
-            const uri = event.document.uri;
-            const sub = validationByDoc.get(uri);
-            if (sub) {
-                validationByDoc.delete(uri);
-                sub.unsubscribe();
-            }
-            // A text document was closed we clear the diagnostics
-            connection.sendDiagnostics({ uri, diagnostics: [] });
-        }),
-    );
 
     async function updateLogLevel() {
         try {
@@ -618,20 +628,49 @@ export function run(): void {
         return folders || undefined;
     }
 
-    connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientServerApi));
-
-    // Free up the validation streams on shutdown.
-    connection.onShutdown(() => {
-        disposables.forEach((d) => d.dispose());
-        disposables.length = 0;
-        disposableValidate.unsubscribe();
-        disposableTriggerUpdateConfigStream.unsubscribe();
-        disposableTriggerValidateAll.unsubscribe();
-        const toDispose = [...validationByDoc.values()];
+    function disposeValidationByDoc() {
+        const sub = [...validationByDoc.values()];
         validationByDoc.clear();
-        toDispose.forEach((sub) => sub.unsubscribe());
-    });
+        for (const s of sub) {
+            try {
+                s.unsubscribe();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }
 
-    // Listen on the connection
-    connection.listen();
+    /**
+     * Record disposable to be disposed.
+     * @param disposable - a disposable
+     * @returns the disposable
+     */
+    function dd<T extends DisposableLike>(disposable: T): T {
+        disposables.push(disposable);
+        return disposable;
+    }
+
+    function ds<T extends { unsubscribe: () => void }>(v: T): T {
+        disposables.push(() => v.unsubscribe());
+        return v;
+    }
+}
+
+interface TextDocumentInfo {
+    uri?: string;
+    languageId?: string;
+    text?: string;
+}
+
+interface ValidationResult extends PublishDiagnosticsParams {
+    version: number;
+}
+
+interface OnChangeParam extends DidChangeConfigurationParams {
+    settings: SettingsCspell;
+}
+
+interface DocSettingPair {
+    doc: TextDocument;
+    settings: CSpellUserSettings;
 }

@@ -45,9 +45,6 @@ export interface ServerNotificationsAPI {
  * Note: RPC requests to the client/extension is rare.
  */
 export interface ClientRequestsAPI {
-    // addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: ConfigurationTarget) => void;
-    // addWordsToDictionaryFileFromServer: (words: string[], documentUri: string, dict: { uri: string; name: string }) => void;
-    // addWordsToConfigFileFromServer: (words: string[], documentUri: string, config: { uri: string; name: string }) => void;
     onWorkspaceConfigForDocumentRequest: (req: WorkspaceConfigForDocumentRequest) => WorkspaceConfigForDocumentResponse;
 }
 

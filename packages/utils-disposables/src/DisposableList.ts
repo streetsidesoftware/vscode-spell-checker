@@ -39,11 +39,11 @@ export class DisposableList extends InheritableDisposable {
         super(disposables);
     }
 
-    public push(disposable: DisposableLike) {
+    public push(...disposables: DisposableLike[]) {
         if (this.isDisposed()) {
             throw new Error('Already disposed, cannot add items.');
         }
-        this.disposables.push(disposable);
+        this.disposables.push(...disposables);
     }
 
     get length() {
