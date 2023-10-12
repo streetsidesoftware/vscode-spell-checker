@@ -32,7 +32,7 @@ export function getWebviewGlobalStore(): Storage {
 
     const currentDocumentSub = rx(subscribeToCurrentDocument);
     const currentDocument = pipe(currentDocumentSub, throttle(500), /* delayUnsubscribe(5000), */ createSubscribableView);
-    currentDocument.onEvent('onNotify', (event) => console.log('current document update: %o', event));
+    // currentDocument.onEvent('onNotify', (event) => console.log('current document update: %o', event));
 
     function dispose() {
         disposeOf(currentDocumentSub);

@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
+import { createMockServerSideApi } from '../test/test.api.js';
 import { extendExpect } from '../test/test.matchers.js';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import type { ExcludedByMatch } from './documentSettings.mjs';
@@ -82,10 +83,10 @@ describe('Validate DocumentSettings', () => {
         mockGetWorkspaceFolders.mockClear();
     });
 
-    test('version', () => {
+    test('version', async () => {
         const docSettings = newDocumentSettings();
         expect(docSettings.version).toEqual(0);
-        docSettings.resetSettings();
+        await docSettings.resetSettings();
         expect(docSettings.version).toEqual(1);
     });
 
@@ -111,14 +112,14 @@ describe('Validate DocumentSettings', () => {
         expect(folders).toBe(mockFolders);
     });
 
-    test('tests register config path', () => {
+    test('tests register config path', async () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
 
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
         expect(docSettings.version).toEqual(0);
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
         expect(docSettings.version).toEqual(1);
         expect(docSettings.configsToImport).toContain(configFile);
     });
@@ -129,7 +130,7 @@ describe('Validate DocumentSettings', () => {
         mockGetConfiguration.mockReturnValue(Promise.resolve([cspellConfigInVsCode, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         expect(settings.enabled).toBeUndefined();
@@ -144,7 +145,7 @@ describe('Validate DocumentSettings', () => {
         );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-ext.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         expect(settings.workspaceRootPath?.toLowerCase()).toBe(pathWorkspaceClient.toLowerCase());
@@ -156,7 +157,7 @@ describe('Validate DocumentSettings', () => {
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const result = await docSettings.isExcluded(Uri.file(__filename).toString());
         expect(result).toBe(false);
@@ -170,7 +171,7 @@ describe('Validate DocumentSettings', () => {
         );
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.file(__filename).toString() });
         expect(settings.enabledLanguageIds).not.toContain('typescript');
@@ -214,7 +215,7 @@ describe('Validate DocumentSettings', () => {
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cSpell.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const result = await docSettings.calcExcludedBy(Uri.file(__filename).toString());
         expect(result).toHaveLength(0);
@@ -305,7 +306,7 @@ describe('Validate DocumentSettings', () => {
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
-        docSettings.registerConfigurationFile(configFile);
+        await docSettings.registerConfigurationFile(configFile);
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.calcExcludedBy(uri);
@@ -328,7 +329,7 @@ describe('Validate DocumentSettings', () => {
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
         const docSettings = newDocumentSettings();
-        docSettings.registerConfigurationFile(Path.join(pathWorkspaceRoot, 'cSpell.json'));
+        await docSettings.registerConfigurationFile(Path.join(pathWorkspaceRoot, 'cSpell.json'));
 
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename));
         const result = await docSettings.isGitIgnored(uri);
@@ -431,7 +432,7 @@ describe('Validate DocumentSettings', () => {
     });
 
     function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
-        return new DocumentSettings({} as Connection, defaultSettings);
+        return new DocumentSettings({} as Connection, createMockServerSideApi(), defaultSettings);
     }
 });
 

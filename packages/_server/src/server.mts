@@ -6,7 +6,7 @@ import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';
 import type { Subscription } from 'rxjs';
 import { interval, ReplaySubject } from 'rxjs';
-import { debounce, debounceTime, filter, mergeMap, take, tap } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, take, tap, throttle, throttleTime } from 'rxjs/operators';
 import type { DisposableLike } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';
 import { LogLevelMasks } from 'utils-logger';
@@ -93,8 +93,6 @@ export function run(): void {
     log('Create Connection');
     const connection = createConnection(ProposedFeatures.all);
 
-    const documentSettings = new DocumentSettings(connection, defaultSettings);
-
     const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
 
     const clientServerApi = dd(
@@ -115,6 +113,8 @@ export function run(): void {
             _logger,
         ),
     );
+
+    const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 
     const progressNotifier = createProgressNotifier(clientServerApi);
 
@@ -189,11 +189,13 @@ export function run(): void {
                             tap((doc) => log(`Request Validate: v${doc.version}`, doc.uri)),
                         )
                         .pipe(
-                            debounceTime(defaultDebounceMs),
+                            throttleTime(defaultDebounceMs, undefined, { leading: true, trailing: true }),
                             mergeMap(async (doc) => ({ doc, settings: await getActiveSettings(doc) }) as DocSettingPair),
                             tap((dsp) => progressNotifier.emitSpellCheckDocumentStep(dsp.doc, 'settings determined')),
-                            debounce((dsp) =>
-                                interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
+                            throttle(
+                                (dsp) =>
+                                    interval(dsp.settings.spellCheckDelayMs || defaultDebounceMs).pipe(filter(() => !isValidationBusy)),
+                                { leading: true, trailing: true },
                             ),
                             filter((dsp) => !blockValidation.has(dsp.doc.uri)),
                             mergeMap(validateTextDocument),
@@ -208,12 +210,11 @@ export function run(): void {
         triggerUpdateConfig
             .pipe(
                 tap(() => log('Trigger Update Config')),
-                debounceTime(100),
+                throttleTime(1000, undefined, { leading: true, trailing: true }),
                 tap(() => log('Update Config Triggered')),
+                mergeMap(updateActiveSettings),
             )
-            .subscribe(() => {
-                updateActiveSettings();
-            }),
+            .subscribe(() => {}),
     );
 
     ds(
@@ -260,11 +261,19 @@ export function run(): void {
                 sub.unsubscribe();
             }
             // A text document was closed we clear the diagnostics
-            catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }));
+            catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }), 'onDidClose');
         }),
     );
 
-    dd(connection.onCodeAction(onCodeActionHandler(documents, getBaseSettings, () => documentSettings.version, clientServerApi)));
+    dd(
+        connection.onCodeAction(
+            onCodeActionHandler(documents, {
+                fetchSettings: getBaseSettings,
+                getSettingsVersion: () => documentSettings.version,
+                fetchWorkspaceConfigForDocument: (uri) => documentSettings.fetchWorkspaceConfiguration(uri),
+            }),
+        ),
+    );
 
     // Free up the validation streams on shutdown.
     connection.onShutdown(() => {
@@ -295,12 +304,12 @@ export function run(): void {
 
     function handleConfigChange() {
         triggerUpdateConfig.next(undefined);
-        updateLogLevel();
+        catchPromise(updateLogLevel(), 'handleConfigChange');
     }
 
-    function updateActiveSettings() {
+    async function updateActiveSettings() {
         log('updateActiveSettings');
-        documentSettings.resetSettings();
+        await documentSettings.resetSettings();
         dictionaryWatcher.clear();
         blockedFiles.clear();
         triggerValidateAll.next(undefined);
@@ -317,13 +326,14 @@ export function run(): void {
     function __getActiveUriSettings(uri?: string) {
         // Give the dictionaries a chance to refresh if they need to.
         log('getActiveUriSettings', uri);
-        refreshDictionaryCache(dictionaryRefreshRateMs);
+        catchPromise(refreshDictionaryCache(dictionaryRefreshRateMs), '__getActiveUriSettings');
         return documentSettings.getUriSettings(uri || '');
     }
 
-    function registerConfigurationFile(path: string) {
-        documentSettings.registerConfigurationFile(path);
+    async function registerConfigurationFile(path: string) {
+        const waitFor = documentSettings.registerConfigurationFile(path);
         logInfo('Register Configuration File', path);
+        await waitFor;
         triggerUpdateConfig.next(undefined);
     }
 
@@ -402,7 +412,7 @@ export function run(): void {
             version: result.version,
             diagnostics: result.diagnostics,
         };
-        connection.sendDiagnostics(diags);
+        catchPromise(connection.sendDiagnostics(diags), 'sendDiagnostics');
     }
 
     async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
