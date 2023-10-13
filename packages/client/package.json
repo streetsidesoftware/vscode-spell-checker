@@ -60,6 +60,7 @@
   "dependencies": {
     "@cspell/cspell-types": "^7.3.7",
     "@internal/common-utils": "file:../__utils",
+    "@internal/settings-webview": "file:../_settingsViewer",
     "code-spell-checker-server": "file:../_server",
     "comment-json": "^4.2.3",
     "fast-deep-equal": "^3.1.3",

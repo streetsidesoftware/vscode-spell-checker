@@ -1,12 +1,11 @@
 {
     "extends": "../../tsconfig.packages.base.json",
     "compilerOptions": {
-        "lib": ["DOM", "DOM.Iterable", "ES2021"],
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
         "esModuleInterop": true,
         "jsx": "react",
-        "outDir": "../client/settingsViewer",
+        "outDir": "dist",
         "experimentalDecorators": true,
-        "useDefineForClassFields": true,
         "types": ["node"]
     },
     "include": ["src/**/*"],

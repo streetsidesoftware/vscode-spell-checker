@@ -20,7 +20,7 @@ const baseDevConfig = {
 const viewerConfig = {
     ...baseDevConfig,
     entry: {
-        viewer: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
+        viewer: path.join(__dirname, 'src/viewer/viewer.tsx'),
         testWebView: path.join(__dirname, 'src', 'viewer', 'vsCodeTestWrapper.tsx'),
     },
     plugins: [

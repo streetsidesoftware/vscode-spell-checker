@@ -1,19 +1,20 @@
-import * as Kefir from 'kefir';
-import { format, promisify } from 'util';
-import * as vscode from 'vscode';
-import { Uri } from 'vscode';
-
 import type {
     EnableLanguageIdMessage,
     EnableLocaleMessage,
+    MessageListener,
     OpenLinkMessage,
     SelectFileMessage,
     SelectFolderMessage,
     SelectTabMessage,
-} from '../../settingsViewer';
-import { MessageBus } from '../../settingsViewer';
-import type { ConfigTarget, Settings } from '../../settingsViewer/api/settings';
-import type { MessageListener, WebviewApi } from '../../settingsViewer/api/WebviewApi';
+    WebviewApi,
+} from '@internal/settings-webview';
+import { MessageBus } from '@internal/settings-webview';
+import * as Kefir from 'kefir';
+import { format, promisify } from 'util';
+import * as vscode from 'vscode';
+import { Uri } from 'vscode';
+import type { ConfigTarget, Settings } from 'webview-api';
+
 import type { CSpellClient } from '../client';
 import { enableDisableLanguageId, enableDisableLocale } from '../commands';
 import type { Disposable } from '../disposable';
@@ -24,7 +25,7 @@ import { findMatchingDocument } from '../vscode/findDocument';
 import { commandDisplayCSpellInfo } from './commands';
 import { calcSettings } from './infoHelper';
 
-const viewerPath = 'packages/client/settingsViewer/webapp';
+const viewerPath = 'packages/_settingsViewer/dist/webapp';
 const title = 'Spell Checker Preferences';
 
 const wait = promisify(setTimeout);

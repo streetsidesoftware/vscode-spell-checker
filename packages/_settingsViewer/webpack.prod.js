@@ -10,7 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const viewerConfig = {
     ...baseConfig,
     entry: {
-        index: path.join(__dirname, 'src', 'viewer', 'viewer.tsx'),
+        index: path.join(__dirname, 'src/viewer/viewer.tsx'),
     },
     output: {
         path: dist,

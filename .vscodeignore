@@ -26,13 +26,6 @@
 !node_modules/regexp-worker/*
 !node_modules/regexp-worker/lib/**/*.js
 
-# Do not WebPack import-fresh and dependencies
-# This is needed to support cosmiconfig
-# !node_modules/import-fresh/**
-# !node_modules/resolve-from/**
-# !node_modules/parent-module/**
-# !node_modules/callsites/**
-
 # All Other Client and Server files.
 !packages/_server/dist/api.js
 !packages/_server/dist/main.cjs
@@ -42,10 +35,12 @@
 !packages/_serverPatternMatcher/dist/main.cjs
 !packages/_serverPatternMatcher/package.json
 
+# Old settings viewer, to be removed
+!packages/_settingsViewer/dist/webapp/*.{js,html,LICENSE.txt}
+
 !packages/client/dist/**/*.js
 !packages/client/License.txt
 !packages/client/package.json
-!packages/client/settingsViewer/webapp/*.{js,html,LICENSE.txt}
 !resources/**
 
 !packages/webview-ui/public/**
