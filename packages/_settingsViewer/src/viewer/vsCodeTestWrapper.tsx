@@ -12,7 +12,7 @@ import * as ReactDOM from 'react-dom';
 import type { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from 'webview-api';
 
 import { MessageBus } from '../api';
-import {
+import type {
     ConfigurationChangeMessage,
     EnableLanguageIdMessage,
     SelectFileMessage,

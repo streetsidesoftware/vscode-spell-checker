@@ -11,9 +11,9 @@ import IconDescription from '@material-ui/icons/Description';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { FileConfig } from 'webview-api';
+import type { FileConfig } from 'webview-api';
 
-import { AppState } from '../AppState';
+import type { AppState } from '../AppState';
 import { LinkOpenFile } from './link';
 import { CsCheckBox as Checkbox, CsFormControl as FormControl, CsList as List } from './primitives';
 import { SectionConfigFileList } from './sectionConfigFileList';

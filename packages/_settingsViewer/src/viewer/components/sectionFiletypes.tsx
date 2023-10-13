@@ -3,7 +3,7 @@ import IconCheck from '@material-ui/icons/Check';
 import * as React from 'react';
 import type { ConfigTarget } from 'webview-api';
 
-import { AppState } from '../AppState';
+import type { AppState } from '../AppState';
 import { Chips, CsChip as Chip } from './primitives';
 
 interface Props {

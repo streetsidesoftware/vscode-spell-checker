@@ -8,7 +8,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import type { ConfigTarget } from 'webview-api';
 
-import { AppState, LanguageInfo } from '../AppState';
+import type { AppState, LanguageInfo } from '../AppState';
 import { CsCheckBox, CsList as List } from './primitives';
 
 @observer

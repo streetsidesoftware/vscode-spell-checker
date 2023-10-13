@@ -2,7 +2,7 @@ import * as React from 'react';
 import { describe, expect, it } from 'vitest';
 
 import { sampleAppState } from '../../test/fixtures/AppState';
-import { AppState } from '../AppState';
+import type { AppState } from '../AppState';
 import { SettingsViewer } from './SettingsViewer';
 // import { create } from 'react-test-renderer';
 

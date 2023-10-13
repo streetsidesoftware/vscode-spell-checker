@@ -6,7 +6,7 @@ import * as React from 'react';
 import type { ConfigTarget } from 'webview-api';
 
 import { ConfigTargets } from '../../api/settings/settingsHelper';
-import { AppState } from '../AppState';
+import type { AppState } from '../AppState';
 import { CsFormControl as FormControl } from './primitives';
 import { SectionFiletypes } from './sectionFiletypes';
 import { SectionLanguage } from './sectionLanguage';
