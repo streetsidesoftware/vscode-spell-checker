@@ -36,7 +36,7 @@
     "ts-jest": "^29.1.1"
   },
   "dependencies": {
-    "commander": "^11.0.0",
+    "commander": "^11.1.0",
     "json-schema": "0.4.0",
     "json-schema-traverse": "1.0.0"
   },
