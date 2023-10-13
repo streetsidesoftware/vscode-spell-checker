@@ -41,7 +41,6 @@
   "devDependencies": {
     "@internal/cspell-helper": "file:../__cspell-helper",
     "@internal/locale-resolver": "file:../__locale-resolver",
-    "@internal/settings-webview": "file:../_settingsViewer",
     "@types/jest": "^29.5.5",
     "@types/jest-when": "^3.5.3",
     "@types/kefir": "^3.8.8",

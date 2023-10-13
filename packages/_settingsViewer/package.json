@@ -23,27 +23,27 @@
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@types/clone-deep": "^4.0.2",
+    "@types/react": "^17.0.68",
     "@types/react-dom": "^17.0.21",
     "@types/react-test-renderer": "^17.0.5",
-    "@types/react": "^17.0.68",
     "browser-resolve": "^2.0.0",
     "clone-deep": "^4.0.1",
     "eslint-plugin-react": "^7.33.2",
     "html-webpack-plugin": "^5.5.3",
-    "mobx-react-lite": "^3.4.3",
-    "mobx-react": "^7.6.0",
     "mobx": "^6.10.2",
+    "mobx-react": "^7.6.0",
+    "mobx-react-lite": "^3.4.3",
     "path-browserify": "^1.0.1",
+    "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-test-renderer": "^17.0.2",
-    "react": "^17.0.2",
-    "terser-webpack-plugin": "^5.3.9",
     "terser": "^5.21.0",
+    "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.5.0",
     "vscode-uri": "^3.0.8",
+    "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1",
-    "webpack": "^5.88.2"
+    "webpack-dev-server": "^4.15.1"
   },
   "files": [
     "out/api/**",
@@ -55,5 +55,8 @@
   ],
   "engines": {
     "node": ">18.0.0"
+  },
+  "dependencies": {
+    "webview-api": "file:../webview-api"
   }
 }

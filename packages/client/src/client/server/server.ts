@@ -98,7 +98,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
 }
 
 let reqNum = 0;
-const debugCommunication = false;
+const debugCommunication = true;
 const debugServerComms = true;
 const debugClientComms = true;
 

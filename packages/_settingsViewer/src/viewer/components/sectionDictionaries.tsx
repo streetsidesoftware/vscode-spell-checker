@@ -1,6 +1,3 @@
-import * as React from 'react';
-import { observer } from 'mobx-react-lite';
-import { DictionaryEntry } from '../../api/settings';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,11 +5,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconCode from '@material-ui/icons/Code';
-import IconSelectAll from '@material-ui/icons/SelectAll';
 import IconImportContacts from '@material-ui/icons/ImportContacts';
-import { listStyles } from './primitives';
-import { clickLink } from '../../helpers/link';
+import IconSelectAll from '@material-ui/icons/SelectAll';
+import { observer } from 'mobx-react-lite';
+import * as React from 'react';
+import type { DictionaryEntry } from 'webview-api';
+
 import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
+import { clickLink } from '../../helpers/link';
+import { listStyles } from './primitives';
 
 const vsCodeApi = new VsCodeWebviewApi();
 

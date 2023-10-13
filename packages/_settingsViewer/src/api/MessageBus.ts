@@ -1,7 +1,5 @@
-import type { DefinedCommands } from '.';
-import { isMessageOf } from '.';
-import type { CommandMessage, Commands } from './message';
-import { isMessage } from './message';
+import type { CommandMessage, Commands, DefinedCommands } from './message';
+import { isMessage, isMessageOf } from './message';
 import type { BaseMessageEvent, WebviewApi } from './WebviewApi';
 
 export interface MsgListener<M extends CommandMessage> {

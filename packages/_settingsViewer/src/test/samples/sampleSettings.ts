@@ -1,4 +1,5 @@
-import type { ConfigFile, DictionaryEntry, Settings } from '../../api/settings';
+import type { ConfigFile, DictionaryEntry, Settings } from 'webview-api';
+
 import { uniqueFilter } from '../../api/utils';
 import { sampleWorkspace, sampleWorkspaceSingleFolder } from './sampleWorkspace';
 

@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { AppState } from '../AppState';
-import { ConfigTarget } from '../../api/settings';
-import { ConfigTargets } from '../../api/settings/settingsHelper';
-import { SectionLanguage } from './sectionLanguage';
-import { SectionFiletypes } from './sectionFiletypes';
-import { CsFormControl as FormControl } from './primitives';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+import type { ConfigTarget } from 'webview-api';
+
+import { ConfigTargets } from '../../api/settings/settingsHelper';
+import { AppState } from '../AppState';
+import { CsFormControl as FormControl } from './primitives';
+import { SectionFiletypes } from './sectionFiletypes';
+import { SectionLanguage } from './sectionLanguage';
 
 @observer
 export class PanelConfig extends React.Component<{ appState: AppState; target: ConfigTarget }> {

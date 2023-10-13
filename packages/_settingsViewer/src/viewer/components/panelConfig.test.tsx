@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { create } from 'react-test-renderer';
 import { describe, expect, it } from 'vitest';
+import { ConfigTarget } from 'webview-api';
 
-import { ConfigTarget } from '../../api/settings';
 import { sampleAppState } from '../../test/fixtures/AppState';
 import { AppState } from '../AppState';
 import { PanelConfig } from './panelConfig';

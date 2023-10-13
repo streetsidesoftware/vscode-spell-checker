@@ -358,7 +358,11 @@ export function run(): void {
     ): Promise<Api.GetConfigurationForDocumentResult> {
         log('handleGetConfigurationForDocument', params.uri);
         const { uri, workspaceConfig } = params;
-        const doc = uri && documents.get(uri);
+        const doc = (uri && documents.get(uri)) || undefined;
+        // console.warn('__handleGetConfigurationForDocument: %o', {
+        //     params,
+        //     doc: { uri: doc?.uri, languageId: doc?.languageId, version: doc?.version },
+        // });
         const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
         const activeSettings = await getActiveUriSettings(uri);
         const settings = stringifyPatterns(activeSettings);
@@ -464,17 +468,22 @@ export function run(): void {
             exclude: fileIsExcluded = false,
             ignored: gitignored = undefined,
             gitignoreInfo = undefined,
+            uriUsed = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
         const blockedReason = uri ? blockedFiles.get(uri) : undefined;
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored && !blockedReason;
         const excludedBy = fileIsExcluded && uri ? await getExcludedBy(uri) : undefined;
+        const workspaceFolder = (uriUsed && (await documentSettings.matchingFoldersForUri(uriUsed))[0]) || undefined;
         log('calcIncludeExcludeInfo done', params.uri);
         return {
+            uriUsed,
+            workspaceFolderUri: workspaceFolder?.uri,
             excludedBy,
             fileEnabled,
             fileIsExcluded,
             fileIsIncluded,
             languageEnabled,
+            languageId,
             gitignored,
             gitignoreInfo,
             blockedReason: uri ? blockedFiles.get(uri) : undefined,

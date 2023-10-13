@@ -11,5 +11,7 @@ export type {
     WatchFieldList,
     WatchFields,
 } from './apiModels';
+export type * from './models/settings';
+export type * from './models/workspace';
 export type { SupportedViews } from './views';
 export { supportedViewsByName } from './views';

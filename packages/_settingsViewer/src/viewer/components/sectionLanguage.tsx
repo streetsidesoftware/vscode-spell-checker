@@ -1,13 +1,14 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { AppState, LanguageInfo } from '../AppState';
-import { ConfigTarget } from '../../api/settings';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconBlock from '@material-ui/icons/Block';
 import IconImportContacts from '@material-ui/icons/ImportContacts';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+import type { ConfigTarget } from 'webview-api';
+
+import { AppState, LanguageInfo } from '../AppState';
 import { CsCheckBox, CsList as List } from './primitives';
 
 @observer

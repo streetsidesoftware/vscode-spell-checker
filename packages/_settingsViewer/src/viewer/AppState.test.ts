@@ -1,8 +1,8 @@
 import { toJS } from 'mobx';
 import { describe, expect, test } from 'vitest';
+import type { Settings } from 'webview-api';
 
 import { MessageBus } from '../api';
-import type { Settings } from '../api/settings';
 import type { WebviewApi } from '../api/WebviewApi';
 import { sampleSettings, sampleSettingsSingleFolder } from '../test/samples/sampleSettings';
 import { AppState } from './AppState';

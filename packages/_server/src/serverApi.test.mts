@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import type { MessageConnection, OnSpellCheckDocumentStep, ServerSideHandlers, WorkspaceConfigForDocumentRequest } from './api.js';
+import type { MessageConnection, OnSpellCheckDocumentStep, WorkspaceConfigForDocumentRequest } from './api.js';
 import { createServerApi } from './serverApi.mjs';
+import { mockHandlers } from './test/test.api.js';
 
 const connection: MessageConnection = {
     onNotification: vi.fn(),
@@ -46,40 +47,3 @@ describe('Validate Client Api', () => {
         expect(mockConnection.sendRequest).toHaveBeenLastCalledWith(expect.stringContaining('onWorkspaceConfigForDocumentRequest'), [req]);
     });
 });
-
-function mockHandlers(): ServerSideHandlers {
-    return {
-        serverNotifications: {
-            notifyConfigChange: vi.fn(),
-            registerConfigurationFile: vi.fn(),
-        },
-        serverRequests: {
-            getConfigurationForDocument: vi.fn(() => ({
-                languageEnabled: undefined,
-                fileEnabled: true,
-                fileIsIncluded: true,
-                fileIsExcluded: false,
-                excludedBy: undefined,
-                gitignored: undefined,
-                gitignoreInfo: undefined,
-                blockedReason: undefined,
-                settings: undefined,
-                docSettings: undefined,
-                configFiles: [],
-                configTargets: [],
-            })),
-            isSpellCheckEnabled: vi.fn(() => ({
-                languageEnabled: undefined,
-                fileEnabled: true,
-                fileIsIncluded: true,
-                fileIsExcluded: false,
-                excludedBy: undefined,
-                gitignored: undefined,
-                gitignoreInfo: undefined,
-                blockedReason: undefined,
-            })),
-            splitTextIntoWords: vi.fn(() => ({ words: [] })),
-            spellingSuggestions: vi.fn(),
-        },
-    };
-}

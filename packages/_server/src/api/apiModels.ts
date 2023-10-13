@@ -40,7 +40,11 @@ export interface GitignoreInfo {
 }
 
 export interface IsSpellCheckEnabledResult {
+    /** The Uri used to determine the settings. */
+    uriUsed: string | undefined;
+    workspaceFolderUri: string | undefined;
     languageEnabled: boolean | undefined;
+    languageId: string | undefined;
     fileEnabled: boolean;
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;

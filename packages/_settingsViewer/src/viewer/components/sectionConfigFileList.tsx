@@ -6,9 +6,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconSettings from '@material-ui/icons/Settings';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { clickLink } from '../../helpers/link';
-import { ConfigFile } from '../../api/settings';
+import type { ConfigFile } from 'webview-api';
+
 import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
+import { clickLink } from '../../helpers/link';
 import { listStyles } from './primitives';
 
 const vsCodeApi = new VsCodeWebviewApi();
