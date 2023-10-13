@@ -9,7 +9,7 @@
             "request": "attach",
             "name": "Viewer: Attach to Chrome",
             "port": 9222,
-            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+            "webRoot": "${workspaceFolder}/dist/webapp"
         },
         {
             "type": "chrome",
@@ -17,7 +17,7 @@
             "name": "Viewer: Launch Viewer Chrome",
             "url": "http://localhost:3000",
             "preLaunchTask": "Client Build",
-            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+            "webRoot": "${workspaceFolder}/dist/webapp"
         },
         {
             "type": "chrome",
@@ -25,7 +25,7 @@
             "name": "Viewer: Launch Tester Chrome",
             "url": "http://localhost:3000/test.html",
             "preLaunchTask": "Client Build",
-            "webRoot": "${workspaceFolder}/../client/settingsViewer/webapp"
+            "webRoot": "${workspaceFolder}/dist/webapp"
         }
     ]
 }

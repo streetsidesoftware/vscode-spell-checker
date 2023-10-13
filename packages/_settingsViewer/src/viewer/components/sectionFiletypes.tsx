@@ -1,9 +1,10 @@
-import * as React from 'react';
-import { AppState } from '../AppState';
-import { ConfigTarget } from '../../api/settings';
-import { CsChip as Chip, Chips } from './primitives';
-import IconCheck from '@material-ui/icons/Check';
 import IconBlock from '@material-ui/icons/Block';
+import IconCheck from '@material-ui/icons/Check';
+import * as React from 'react';
+import type { ConfigTarget } from 'webview-api';
+
+import type { AppState } from '../AppState';
+import { Chips, CsChip as Chip } from './primitives';
 
 interface Props {
     appState: AppState;

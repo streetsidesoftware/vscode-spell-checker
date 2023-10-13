@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import type { ConfigTarget } from 'webview-api';
 
-import type { ConfigTarget } from './settings';
 import { configTargetOrder, configTargetToIndex, isConfigTarget } from './settingsHelper';
 
 describe('Validate settings', () => {

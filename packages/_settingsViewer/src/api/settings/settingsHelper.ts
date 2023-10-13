@@ -1,4 +1,4 @@
-import type { Config, Configs, ConfigTarget, SettingByConfigTarget } from './settings';
+import type { Config, Configs, ConfigTarget, SettingByConfigTarget } from 'webview-api';
 
 export interface ExtractConfigResult<T> {
     target: ConfigTarget;

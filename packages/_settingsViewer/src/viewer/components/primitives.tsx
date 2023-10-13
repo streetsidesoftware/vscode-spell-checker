@@ -1,13 +1,14 @@
-import { withStyles, createStyles, createTheme, makeStyles } from '@material-ui/core/styles';
-import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import FormControl from '@material-ui/core/FormControl';
 import List from '@material-ui/core/List';
+import { createStyles, createTheme, makeStyles, withStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import * as React from 'react';
+
 import * as colors from './colors';
 
 const maxWidth = '50em';

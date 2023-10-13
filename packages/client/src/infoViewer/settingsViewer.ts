@@ -1,1 +1,1 @@
-export * from '../../settingsViewer';
+export * from '@internal/settings-webview';

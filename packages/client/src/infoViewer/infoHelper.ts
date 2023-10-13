@@ -1,7 +1,6 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
-
 import type {
     Config,
     ConfigFile,
@@ -13,7 +12,8 @@ import type {
     TextDocument,
     Workspace,
     WorkspaceFolder,
-} from '../../settingsViewer/api/settings';
+} from 'webview-api';
+
 import type {
     ConfigTarget,
     ConfigTargetCSpell,

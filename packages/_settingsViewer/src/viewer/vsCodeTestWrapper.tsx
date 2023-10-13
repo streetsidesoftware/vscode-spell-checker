@@ -9,24 +9,25 @@ import { observer } from 'mobx-react';
 import { posix as Path } from 'path';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import type { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from 'webview-api';
+
 import { MessageBus } from '../api';
-import {
+import type {
     ConfigurationChangeMessage,
     EnableLanguageIdMessage,
     SelectFileMessage,
     SelectFolderMessage,
     SelectTabMessage,
 } from '../api/message';
-import { Config, ConfigFile, Configs, ConfigTarget, FileConfig, Settings, TextDocument, WorkspaceFolder } from '../api/settings';
 import { extractConfig } from '../api/settings/settingsHelper';
 import { VsCodeWebviewApi } from '../api/vscode/VsCodeWebviewApi';
 import {
     sampleSettings,
-    sampleSettingsSingleFolder,
+    sampleSettingsBlocked,
     sampleSettingsExcluded,
     sampleSettingsExcludedNotInWorkspace,
     sampleSettingsGitignore,
-    sampleSettingsBlocked,
+    sampleSettingsSingleFolder,
 } from '../test/samples/sampleSettings';
 import { ErrorBoundary } from './components/ErrorBoundary';
 

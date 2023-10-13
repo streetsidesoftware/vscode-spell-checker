@@ -1,5 +1,6 @@
 import Link from '@material-ui/core/Link';
 import * as React from 'react';
+
 import { commandUri } from '../../helpers/link';
 
 export function LinkOpenFile({ uri, text, line }: { uri: string; text: string | JSX.Element; line?: number }): JSX.Element {
@@ -7,6 +8,7 @@ export function LinkOpenFile({ uri, text, line }: { uri: string; text: string | 
     return LinkCommand({ command: 'cSpell.openFileAtLine', args, text });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function LinkCommand({ command, args, text }: { command: string; args: any[]; text: string | JSX.Element }): JSX.Element {
     const href = commandUri(command, args);
     return <Link href={href}>{text}</Link>;

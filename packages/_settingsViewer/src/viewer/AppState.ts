@@ -1,16 +1,8 @@
 import { lookupLocaleInfo, normalizeCode } from '@internal/locale-resolver';
 import { action, computed, makeObservable, observable } from 'mobx';
+import type { ConfigSource, ConfigTarget, LocaleId, SettingByConfigTarget, Settings, TextDocument, WorkspaceFolder } from 'webview-api';
 
 import type { Messenger } from '../api';
-import type {
-    ConfigSource,
-    ConfigTarget,
-    LocaleId,
-    SettingByConfigTarget,
-    Settings,
-    TextDocument,
-    WorkspaceFolder,
-} from '../api/settings/';
 import { ConfigTargets, configTargets } from '../api/settings/settingsHelper';
 import { uniqueFilter } from '../api/utils';
 import { compareBy, compareEach } from '../api/utils/Comparable';

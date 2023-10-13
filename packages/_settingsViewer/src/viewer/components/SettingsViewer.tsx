@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { AppState, Tab as AppTab } from '../AppState';
-import { PanelConfig } from './panelConfig';
-import { isConfigTarget } from '../../api/settings/settingsHelper';
-import { PanelDictionaries } from './panelDictionaries';
-import { PanelAbout } from './panelAbout';
-import { PanelFile } from './panelFile';
-import { CsTabs as Tabs, CsTab as Tab, CsAppBar as AppBar, themeDefault } from './primitives';
-import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+
+import { isConfigTarget } from '../../api/settings/settingsHelper';
+import type { AppState, Tab as AppTab } from '../AppState';
 import { Panel } from './Panel';
+import { PanelAbout } from './panelAbout';
+import { PanelConfig } from './panelConfig';
+import { PanelDictionaries } from './panelDictionaries';
+import { PanelFile } from './panelFile';
+import { CsAppBar as AppBar, CsTab as Tab, CsTabs as Tabs, themeDefault } from './primitives';
 
 @observer
 export class SettingsViewer extends React.Component<{ appState: AppState }> {
@@ -32,6 +33,7 @@ export class SettingsViewer extends React.Component<{ appState: AppState }> {
             </Panel>
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const handleChange = (_event: React.ChangeEvent<any>, newValue: any) => {
             if (typeof newValue !== 'number') return;
             this.activateTab(newValue);

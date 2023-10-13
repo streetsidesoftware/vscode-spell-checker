@@ -1,9 +1,9 @@
 import InputLabel from '@material-ui/core/InputLabel';
+import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Link from '@material-ui/core/Link';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import IconCode from '@material-ui/icons/Code';
@@ -11,8 +11,9 @@ import IconDescription from '@material-ui/icons/Description';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { FileConfig } from '../../api/settings';
-import { AppState } from '../AppState';
+import type { FileConfig } from 'webview-api';
+
+import type { AppState } from '../AppState';
 import { LinkOpenFile } from './link';
 import { CsCheckBox as Checkbox, CsFormControl as FormControl, CsList as List } from './primitives';
 import { SectionConfigFileList } from './sectionConfigFileList';

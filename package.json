@@ -178,8 +178,9 @@
         },
         {
           "id": "cspell-info-explorer",
-          "title": "Todo Example",
-          "icon": "resources/todo-list.svg"
+          "title": "Spell Checker",
+          "icon": "resources/todo-list.svg",
+          "when": "config.cSpell.experimental.enableSettingsViewerV2"
         }
       ]
     },
@@ -200,7 +201,7 @@
         {
           "type": "webview",
           "id": "cspell-info.todoView",
-          "name": "Todo Webview"
+          "name": "Spell Checker Todos"
         }
       ]
     },

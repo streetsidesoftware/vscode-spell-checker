@@ -20,6 +20,7 @@ ignorePaths:
   - cspell.json
   - cspell*.{json,yaml}
   - .cspell*.{json,yaml}
+  - dist
   - fixtures/workspaces/**
   - languageCodes.ts
   - package-lock.json
@@ -28,7 +29,6 @@ ignorePaths:
   - packages/client/resources/**
   - packages/client/samples/**
   - packages/client/server/**
-  - packages/client/settingsViewer/**
   - packages/webview-ui/public/assets/**
   - spell-checker-config.schema.json
   - testFixtures

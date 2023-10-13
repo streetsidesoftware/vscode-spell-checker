@@ -42,8 +42,7 @@ node_modules
 
 /temp
 /build
-modules/dist/
-modules/*/dist/
+/dist
 packages/*/dist/
 packages/*/out/
 packages/*/temp/

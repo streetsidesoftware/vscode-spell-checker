@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { AppState } from '../AppState';
-import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import IconSettings from '@material-ui/icons/Settings';
-import { CsCheckBox, CsButton, CsList as List } from './primitives';
+import { observer } from 'mobx-react';
+import * as React from 'react';
 
+import { VsCodeWebviewApi } from '../../api/vscode/VsCodeWebviewApi';
+import type { AppState } from '../AppState';
 // resources
 import spellCheckIcon from '../images/SpellCheck.xs.png';
+import { CsButton, CsCheckBox, CsList as List } from './primitives';
 
 const vsCodeApi = new VsCodeWebviewApi();
 

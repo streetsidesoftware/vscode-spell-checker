@@ -1,4 +1,4 @@
-import type { TextDocument, Workspace } from '../../api/settings';
+import type { TextDocument, Workspace } from 'webview-api';
 
 // cspell:ignore ripgrep
 

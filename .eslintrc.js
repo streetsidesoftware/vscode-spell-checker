@@ -33,7 +33,6 @@ const config = {
         '**/dist/**',
         '**/build/**',
         'package-lock.json',
-        'packages/client/settingsViewer/**',
         '**/scripts/ts-json-schema-generator.cjs',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
@@ -58,7 +57,7 @@ const config = {
     },
     overrides: [
         {
-            files: ['**/*.ts', '**/*.mts', '**/*.cts'],
+            files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx'],
             extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
