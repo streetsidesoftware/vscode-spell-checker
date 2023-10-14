@@ -34,6 +34,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     mapOfEnabledFileTypes: 'mapOfEnabledFileTypes',
     maxDuplicateProblems: 'maxDuplicateProblems',
     maxNumberOfProblems: 'maxNumberOfProblems',
+    mergeCSpellSettings: 'mergeCSpellSettings',
     noSuggestDictionaries: 'noSuggestDictionaries',
     showAutocompleteSuggestions: 'showAutocompleteSuggestions',
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',

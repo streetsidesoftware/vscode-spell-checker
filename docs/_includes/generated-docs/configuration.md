@@ -52,6 +52,7 @@ Default
 | [`cSpell.language`](#cspelllanguage)                           | resource | Current active spelling language.                                                                 |
 | [`cSpell.languageSettings`](#cspelllanguagesettings)           | resource | Additional settings for individual programming languages and locales.                             |
 | [`cSpell.noSuggestDictionaries`](#cspellnosuggestdictionaries) | resource | Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries… |
+| [`cSpell.suggestWords`](#cspellsuggestwords)                   |          | A list of suggested replacements for words. Suggested words provide a way to make preferred…      |
 | [`cSpell.userWords`](#cspelluserwords)                         | resource | Words to add to global dictionary -- should only be in the user config file.                      |
 | [`cSpell.words`](#cspellwords)                                 | resource | List of words to be considered correct.                                                           |
 
@@ -271,6 +272,35 @@ used when making spell correction suggestions.
     Note: if a word is suggested by another dictionary, but found in
     one of these dictionaries, it will be removed from the set of
     possible suggestions.
+
+Default
+: _- none -_
+
+---
+
+### `cSpell.suggestWords`
+
+Name
+: `cSpell.suggestWords`
+
+Type
+: string[]
+
+Scope
+:
+
+Description
+: A list of suggested replacements for words.
+Suggested words provide a way to make preferred suggestions on word replacements.
+To hint at a preferred change, but not to require it.
+
+    Format of `suggestWords`
+    - Single suggestion (possible auto fix)
+        - `word: suggestion`
+        - `word->suggestion`
+    - Multiple suggestions (not auto fixable)
+       - `word: first, second, third`
+       - `word->first, second, third`
 
 Default
 : _- none -_
@@ -652,6 +682,7 @@ Default
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration. Default: The current workspace… |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
 | [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
+| [`cSpell.mergeCSpellSettings`](#cspellmergecspellsettings)                   | resource | Specify which fields from `.vscode/settings.json` are passed to the spell checker. This only…  |
 | [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
 | [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                               |
 | [`cSpell.useGitignore`](#cspellusegitignore)                                 | resource | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
@@ -830,6 +861,43 @@ Description
 
 Default
 : _- none -_
+
+---
+
+### `cSpell.mergeCSpellSettings`
+
+Name
+: `cSpell.mergeCSpellSettings`
+
+Type
+:
+
+Scope
+: resource
+
+Description
+: Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+This only applies when there is a CSpell configuration file in the workspace.
+
+    The purpose of this setting to help provide a consistent result compared to the
+    CSpell spell checker command line tool.
+
+    Values:
+    - `true` - all settings will be merged
+    - `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
+    - `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.
+
+    Note:
+
+    If specific fields are specified, they provide the ability to block settings even if a CSpell configuration
+    is not found. The following example could be used to block "cSpell.userWords" from a workspace.
+
+    ```jsonc
+    "cSpell.mergeCSpellSettings": { "userWords": false },
+    ```
+
+Default
+: _`false`_
 
 ---
 
@@ -1110,7 +1178,6 @@ Default
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.                          |
 | [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                                           |
 | [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
-| [`cSpell.suggestWords`](#cspellsuggestwords)           |          | A list of suggested replacements for words. Suggested words provide a way to make preferred…                       |
 
 ## Definitions
 
@@ -1232,35 +1299,6 @@ Description
       }
     ]
     ```
-
-Default
-: _- none -_
-
----
-
-### `cSpell.suggestWords`
-
-Name
-: `cSpell.suggestWords`
-
-Type
-: string[]
-
-Scope
-:
-
-Description
-: A list of suggested replacements for words.
-Suggested words provide a way to make preferred suggestions on word replacements.
-To hint at a preferred change, but not to require it.
-
-    Format of `suggestWords`
-    - Single suggestion (possible auto fix)
-        - `word: suggestion`
-        - `word->suggestion`
-    - Multiple suggestions (not auto fixable)
-       - `word: first, second, third`
-       - `word->first, second, third`
 
 Default
 : _- none -_
