@@ -353,6 +353,26 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     validateDirectives?: CSpellSettings['validateDirectives'];
 }
 
+export type CSpellFields = keyof CSpellSettingsPackageProperties;
+
+export type CSpellMergeFields = Exclude<
+    CSpellFields,
+    | '$schema'
+    | 'cache'
+    | 'description'
+    | 'failFast'
+    | 'id'
+    | 'maxDuplicateProblems'
+    | 'maxNumberOfProblems'
+    | 'name'
+    | 'readonly'
+    | 'showStatus'
+    | 'spellCheckDelayMs'
+    | 'suggestionNumChanges'
+    | 'suggestionsTimeout'
+    | 'version'
+>;
+
 /**
  * @hidden
  */

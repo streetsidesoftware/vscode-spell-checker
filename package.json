@@ -1188,13 +1188,6 @@
             "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*​/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
             "scope": "resource",
             "type": "array"
-          },
-          "cSpell.suggestWords": {
-            "items": {
-              "type": "string"
-            },
-            "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
-            "type": "array"
           }
         },
         "title": "CSpell",
@@ -1303,6 +1296,130 @@
             "markdownDescription": "Allows this configuration to inherit configuration for one or more other files.\n\nSee [Importing / Extending Configuration](https://cspell.org/configuration/imports/) for more details.",
             "scope": "resource",
             "type": "array"
+          },
+          "cSpell.mergeCSpellSettings": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "allowCompoundWords": {
+                    "type": "boolean"
+                  },
+                  "caseSensitive": {
+                    "type": "boolean"
+                  },
+                  "dictionaries": {
+                    "type": "boolean"
+                  },
+                  "dictionaryDefinitions": {
+                    "type": "boolean"
+                  },
+                  "enableFiletypes": {
+                    "type": "boolean"
+                  },
+                  "enableGlobDot": {
+                    "type": "boolean"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "enabledLanguageIds": {
+                    "type": "boolean"
+                  },
+                  "features": {
+                    "type": "boolean"
+                  },
+                  "files": {
+                    "type": "boolean"
+                  },
+                  "flagWords": {
+                    "type": "boolean"
+                  },
+                  "gitignoreRoot": {
+                    "type": "boolean"
+                  },
+                  "globRoot": {
+                    "type": "boolean"
+                  },
+                  "ignorePaths": {
+                    "type": "boolean"
+                  },
+                  "ignoreRegExpList": {
+                    "type": "boolean"
+                  },
+                  "ignoreWords": {
+                    "type": "boolean"
+                  },
+                  "import": {
+                    "type": "boolean"
+                  },
+                  "includeRegExpList": {
+                    "type": "boolean"
+                  },
+                  "language": {
+                    "type": "boolean"
+                  },
+                  "languageId": {
+                    "type": "boolean"
+                  },
+                  "languageSettings": {
+                    "type": "boolean"
+                  },
+                  "loadDefaultConfiguration": {
+                    "type": "boolean"
+                  },
+                  "minWordLength": {
+                    "type": "boolean"
+                  },
+                  "noConfigSearch": {
+                    "type": "boolean"
+                  },
+                  "noSuggestDictionaries": {
+                    "type": "boolean"
+                  },
+                  "numSuggestions": {
+                    "type": "boolean"
+                  },
+                  "overrides": {
+                    "type": "boolean"
+                  },
+                  "patterns": {
+                    "type": "boolean"
+                  },
+                  "pnpFiles": {
+                    "type": "boolean"
+                  },
+                  "reporters": {
+                    "type": "boolean"
+                  },
+                  "suggestWords": {
+                    "type": "boolean"
+                  },
+                  "useGitignore": {
+                    "type": "boolean"
+                  },
+                  "usePnP": {
+                    "type": "boolean"
+                  },
+                  "userWords": {
+                    "type": "boolean"
+                  },
+                  "validateDirectives": {
+                    "type": "boolean"
+                  },
+                  "words": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            ],
+            "default": false,
+            "markdownDescription": "Specify which fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n- `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.\n\nNote:\n\nIf specific fields are specified, they provide the ability to block settings even if a CSpell configuration\nis not found. The following example could be used to block \"cSpell.userWords\" from a workspace.\n\n```jsonc\n\"cSpell.mergeCSpellSettings\": { \"userWords\": false },\n```",
+            "scope": "resource"
           },
           "cSpell.noConfigSearch": {
             "markdownDescription": "Prevents searching for local configuration when checking individual documents.",
@@ -1821,6 +1938,13 @@
             },
             "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
             "scope": "resource",
+            "type": "array"
+          },
+          "cSpell.suggestWords": {
+            "items": {
+              "type": "string"
+            },
+            "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
             "type": "array"
           },
           "cSpell.userWords": {

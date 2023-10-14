@@ -38,6 +38,7 @@ import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigForDocument } from '../api.js';
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
+import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
@@ -307,6 +308,7 @@ export class DocumentSettings {
             id: 'VSCode-Config',
             ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
         };
+
         return cSpellConfigSettings;
     }
 
@@ -318,26 +320,21 @@ export class DocumentSettings {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }
         const fsPath = path.normalize(uri.fsPath);
-        const cSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
-        const cSpellConfigSettings = await this.resolveWorkspacePaths(cSpellConfigSettingsRel, docUri);
-        const settings = await searchForConfig(fsPath);
+        const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
+        const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, docUri);
+        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(fsPath);
         const rootFolder = this.rootFolderForUri(docUri);
         const folders = await this.folders;
         const folder = await this.findMatchingFolder(docUri, rootFolder);
-        const cSpellFolderSettings = resolveConfigImports(cSpellConfigSettings, folder.uri);
+        const vscodeCSpellSettings = resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
-        const settingsToMerge: CSpellUserSettings[] = [];
-        if (this.defaultSettings !== _defaultSettings) {
-            settingsToMerge.push(this.defaultSettings);
-        }
-        settingsToMerge.push(this.importedSettings());
-        settingsToMerge.push(cSpellFolderSettings);
-        if (settings) {
-            settingsToMerge.push(settings);
-        }
-
-        const mergedSettings = mergeSettings(settingsToMerge[0], ...settingsToMerge.slice(1));
+        const mergedSettingsFromVSCode = mergeSettings(this.importedSettings(), vscodeCSpellSettings);
+        const mergedSettings = mergeSettings(
+            this.defaultSettings,
+            filterMergeFields(mergedSettingsFromVSCode, !settings || vscodeCSpellSettings['mergeCSpellSettings']),
+            settings,
+        );
 
         const enabledFiletypes = extractEnableFiletypes(mergedSettings);
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
@@ -345,7 +342,7 @@ export class DocumentSettings {
         const { ignorePaths = [], files = [] } = fileSettings;
 
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
-        if (!files.length && cSpellConfigSettings.spellCheckOnlyWorkspaceFiles !== false) {
+        if (!files.length && vscodeCSpellConfigSettingsForDocument.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
             folders.forEach((folder) => files.push({ glob: '/**', root: Uri.parse(folder.uri).fsPath }));
             fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
@@ -358,7 +355,7 @@ export class DocumentSettings {
         setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
         const includeGlobMatcher = new GlobMatcher(files, includeOptions);
 
-        const cSpell = cSpellConfigSettings;
+        const cSpell = vscodeCSpellConfigSettingsForDocument;
         const ext: ExtSettings = {
             uri: docUri,
             vscodeSettings: { cSpell },
@@ -411,6 +408,7 @@ function readSettingsFiles(paths: string[]) {
     // log('readSettingsFiles:', paths);
     const existingPaths = paths.filter((filename) => exists(filename));
     log('readSettingsFiles:', existingPaths);
+    console.error('readSettingsFiles: %o', existingPaths);
     return existingPaths.map((file) => cspellReadSettingsFile(file));
 }
 

@@ -67,7 +67,7 @@ const overRideDefaults: CSpellUserSettings = {
 const defaultSettings: CSpellUserSettings = {
     ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
     checkLimit: defaultCheckLimit,
-    enabled: false,
+    // enabled: false,
 };
 const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.

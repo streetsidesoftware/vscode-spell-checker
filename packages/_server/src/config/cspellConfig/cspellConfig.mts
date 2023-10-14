@@ -123,6 +123,7 @@ type _VSConfigLanguageAndDictionaries = Pick<
     | 'language'
     | 'languageSettings'
     | 'noSuggestDictionaries'
+    | 'suggestWords'
     | 'userWords'
     | 'words'
 >;
@@ -197,6 +198,7 @@ type _VSConfigFilesAndFolders = Pick<
     | 'globRoot'
     | 'ignorePaths'
     | 'import'
+    | 'mergeCSpellSettings'
     | 'noConfigSearch'
     | 'spellCheckOnlyWorkspaceFiles'
     | 'useGitignore'

@@ -54,6 +54,7 @@ const cspellConfigInVsCode: CSpellUserSettings = {
         '${workspaceFolder:_server}/sampleSourceFiles/cSpell.json',
     ],
     enabledLanguageIds: ['typescript', 'javascript', 'php', 'json', 'jsonc'],
+    mergeCSpellSettings: true,
 };
 
 const sampleFiles = {
@@ -303,7 +304,7 @@ describe('Validate DocumentSettings', () => {
     `('isExcludedBy $filename', async ({ filename, expected }: IsExcludeByTest) => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
-        mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
+        mockGetConfiguration.mockReturnValue(Promise.resolve([{ mergeCSpellSettings: true }, {}]));
         const docSettings = newDocumentSettings();
         const configFile = Path.join(pathSampleSourceFiles, 'cspell-exclude-tests.json');
         await docSettings.registerConfigurationFile(configFile);

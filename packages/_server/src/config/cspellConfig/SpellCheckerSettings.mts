@@ -1,4 +1,5 @@
 import type { EnableFileTypeId, RegExpString } from './annotatedTypes.mjs';
+import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
 import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
@@ -322,6 +323,32 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @hidden
      */
     // addWordsTo?: AddToTargets;
+
+    /**
+     * Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+     * This only applies when there is a CSpell configuration file in the workspace.
+     *
+     * The purpose of this setting to help provide a consistent result compared to the
+     * CSpell spell checker command line tool.
+     *
+     * Values:
+     * - `true` - all settings will be merged
+     * - `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
+     * - `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.
+     *
+     * Note:
+     *
+     * If specific fields are specified, they provide the ability to block settings even if a CSpell configuration
+     * is not found. The following example could be used to block "cSpell.userWords" from a workspace.
+     *
+     * ```jsonc
+     * "cSpell.mergeCSpellSettings": { "userWords": false },
+     * ```
+     *
+     * @scope resource
+     * @default false
+     */
+    mergeCSpellSettings?: boolean | Partial<Record<CSpellMergeFields, boolean>>;
 }
 
 type AutoOrBoolean = boolean | 'auto';
