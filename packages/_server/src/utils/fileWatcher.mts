@@ -1,5 +1,5 @@
-import { logError } from '@internal/common-utils/log.js';
-import { toFileUri } from '@internal/common-utils/uriHelper.js';
+import { logError } from '@internal/common-utils/log';
+import { toFileUri } from '@internal/common-utils/uriHelper';
 import type { FSWatcher } from 'fs';
 import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node.js';

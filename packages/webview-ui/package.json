@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
+    "build-production": "npm run clean && npm run build",
     "clean": "shx rm -rf out",
     "compile": "tsc -p .",
     "dev": "rollup -c -w",

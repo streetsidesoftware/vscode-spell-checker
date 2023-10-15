@@ -9,11 +9,11 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
-import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad.js';
-import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad.js';
-import { setIfDefined } from '@internal/common-utils/index.js';
-import { log } from '@internal/common-utils/log.js';
-import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
+import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
+import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
+import { setIfDefined } from '@internal/common-utils';
+import { log } from '@internal/common-utils/log';
+import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
 import type { GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import { GlobMatcher } from 'cspell-glob';

@@ -64,14 +64,16 @@ describe('Validate uriHelper', () => {
     });
 
     test.each`
-        a                               | b                           | expected
-        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/c/file.txt'} | ${'file.txt'}
-        ${'file:///a/b/'}               | ${'file:///a/b/c/file.txt'} | ${'b/c/file.txt'}
-        ${'file:///a/b'}                | ${'file:///a/b/c/file.txt'} | ${'b/c/file.txt'}
-        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/'}           | ${'..'}
-        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b'}            | ${'..'}
-        ${'file:///a/b/c/file.txt#156'} | ${'file:///a/b?x=1;b=2'}    | ${'..'}
-        ${'file:///a/b/c/file.txt?x=1'} | ${'file:///a/b/c#55'}       | ${''}
+        a                               | b                                 | expected
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/c/file.txt'}       | ${'file.txt'}
+        ${'file:///a/b/'}               | ${'file:///a/b/c/file.txt'}       | ${'b/c/file.txt'}
+        ${'file:///a/b'}                | ${'file:///a/b/c/file.txt'}       | ${'b/c/file.txt'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b/'}                 | ${'..'}
+        ${'file:///a/b/c/file.txt'}     | ${'file:///a/b'}                  | ${'..'}
+        ${'file:///a/b/c/file.txt'}     | ${'scm-input:///a/b/c/file.txt'}  | ${'scm-input:/a/b/c/file.txt'}
+        ${'file:///a/b/c/file.txt'}     | ${'scm-input:///file.txt#header'} | ${'scm-input:/file.txt'}
+        ${'file:///a/b/c/file.txt#156'} | ${'file:///a/b?x=1;b=2'}          | ${'..'}
+        ${'file:///a/b/c/file.txt?x=1'} | ${'file:///a/b/c#55'}             | ${''}
     `('relativeToFile "$a" "$b"', ({ a, b, expected }) => {
         const uriA = toUri(a);
         const uriB = toUri(b);

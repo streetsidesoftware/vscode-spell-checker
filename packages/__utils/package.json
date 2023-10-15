@@ -3,39 +3,69 @@
   "version": "1.0.0",
   "description": "Shared Utils between server and client",
   "private": true,
+  "sideEffects": false,
   "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js",
-    "./autoLoad.js": "./dist/autoLoad.js",
-    "./errors.js": "./dist/errors.js",
-    "./file.js": "./dist/file.js",
-    "./index.js": "./dist/index.js",
-    "./log.js": "./dist/log.js",
-    "./logger.js": "./dist/logger.js",
-    "./timer.js": "./dist/timer.js",
-    "./uriHelper.js": "./dist/uriHelper.js",
-    "./util.js": "./dist/util.js"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/*",
-        "dist/*.d.ts"
-      ]
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
+    },
+    "./autoLoad": {
+      "types": "./dist/cjs/autoLoad.d.ts",
+      "import": "./dist/esm/autoLoad.mjs",
+      "require": "./dist/cjs/autoLoad.js"
+    },
+    "./errors": {
+      "types": "./dist/cjs/errors.d.ts",
+      "import": "./dist/esm/errors.mjs",
+      "require": "./dist/cjs/errors.js"
+    },
+    "./file": {
+      "types": "./dist/cjs/file.d.ts",
+      "import": "./dist/esm/file.mjs",
+      "require": "./dist/cjs/file.js"
+    },
+    "./log": {
+      "types": "./dist/cjs/log.d.ts",
+      "import": "./dist/esm/log.mjs",
+      "require": "./dist/cjs/log.js"
+    },
+    "./logger": {
+      "types": "./dist/cjs/logger.d.ts",
+      "import": "./dist/esm/logger.mjs",
+      "require": "./dist/cjs/logger.js"
+    },
+    "./timer": {
+      "types": "./dist/cjs/timer.d.ts",
+      "import": "./dist/esm/timer.mjs",
+      "require": "./dist/cjs/timer.js"
+    },
+    "./uriHelper": {
+      "types": "./dist/cjs/uriHelper.d.ts",
+      "import": "./dist/esm/uriHelper.mjs",
+      "require": "./dist/cjs/uriHelper.js"
+    },
+    "./util": {
+      "types": "./dist/cjs/util.d.ts",
+      "import": "./dist/esm/util.mjs",
+      "require": "./dist/cjs/util.js"
     }
   },
   "scripts": {
     "build-production": "npm run clean-build",
-    "build": "tsc -p .",
+    "build": "tsc -b . && ts2mjs ./dist/esm",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "jest",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc -b . --watch"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1"
+  },
   "dependencies": {
     "vscode-uri": "^3.0.8"
   },

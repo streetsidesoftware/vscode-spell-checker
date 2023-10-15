@@ -1,1 +1,1 @@
-export * from '@internal/common-utils/util.js';
+export * from '@internal/common-utils/util';

@@ -34,6 +34,7 @@ export function forceToFileUri(uri: Uri): Uri {
 }
 
 export function extractUriFromQueryParam(uri: Uri | string, param: string): Uri | undefined {
+    uri = typeof uri === 'string' ? Uri.parse(uri) : uri;
     const url = new URL(uri.toString(true));
     const newUrl = decodeURIComponent(url.searchParams.get(param) || '');
     if (!newUrl) return undefined;

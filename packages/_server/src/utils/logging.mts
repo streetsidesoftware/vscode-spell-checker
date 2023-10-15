@@ -1,6 +1,6 @@
 import { format } from 'node:util';
 
-import { logger as internalLogger } from '@internal/common-utils/log.js';
+import { logger as internalLogger } from '@internal/common-utils/log';
 import { createLogger } from 'utils-logger';
 
 export function createPrecisionLogger() {

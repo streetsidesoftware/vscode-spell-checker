@@ -1,6 +1,6 @@
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
-export const supportedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled'];
+export const supportedSchemes = ['file', 'gist', 'repo', 'sftp', 'untitled', 'vscode-notebook-cell', 'vscode-scm', 'vscode-userdata'];
 export const setOfSupportedSchemes = new Set(supportedSchemes);
 
 export function isSupportedUri(uri?: Uri): boolean {
@@ -16,7 +16,7 @@ export function isSupportedDoc(doc?: TextDocumentLike): boolean {
     return !!doc && !doc.isClosed && isSupportedUri(doc.uri);
 }
 
-const regExpIsUri = /^[\w.-]{2,}:/;
+const regExpIsUri = /^[\w._-]{2,}:/;
 
 export function toUri(uri: string | Uri): Uri;
 export function toUri(uri: undefined | null): undefined;
@@ -43,11 +43,19 @@ export function toFileUri(uri: string | Uri | undefined): Uri | undefined {
  * @param uriTo
  */
 export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
+    if (uriFrom.scheme !== uriTo.scheme) return cleanUri(uriTo).toString();
     const fromSegments = splitUri(uriFrom);
     const toSegments = splitUri(uriTo);
     let i = 0;
-    for (i = 0; i < fromSegments.length && i < toSegments.length && fromSegments[i] === toSegments[i]; ++i) {
-        /* empty */
+    for (i = 0; i < fromSegments.length && i < toSegments.length; ++i) {
+        const a = fromSegments[i];
+        const b = toSegments[i];
+        if (a === b) continue;
+        const a1 = decodeURIComponent(a).toLowerCase();
+        const b1 = decodeURIComponent(b).toLowerCase();
+
+        if (a1.endsWith(':') && a1 == b1 && a1.length == 2) continue;
+        break;
     }
     const prefix = '../'.repeat(fromSegments.length - i);
     return (prefix + toSegments.slice(i).join('/')).replace(/\/$/, '');

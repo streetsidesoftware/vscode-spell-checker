@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-import type { LoggerConnection } from './logger';
+import type { LoggerConnection } from './logger.js';
 
 type Level = 'ERR' | 'INF' | 'WRN' | 'LOG';
 type Console = LoggerConnection['console'];

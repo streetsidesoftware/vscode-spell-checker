@@ -1,4 +1,4 @@
-import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper.js';
+import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
 import type { WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
 import type { Command, Diagnostic, DiagnosticCollection, ExtensionContext, Position, Range, TextDocument } from 'vscode';
 import { CodeAction, CodeActionKind, DiagnosticSeverity, Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';

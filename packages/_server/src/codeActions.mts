@@ -1,5 +1,5 @@
-import { log, logDebug } from '@internal/common-utils/log.js';
-import { capitalize } from '@internal/common-utils/util.js';
+import { log, logDebug } from '@internal/common-utils/log';
+import { capitalize } from '@internal/common-utils/util';
 import type { SpellingDictionary } from 'cspell-lib';
 import { constructSettingsForText, getDictionary, IssueType, Text } from 'cspell-lib';
 import { format } from 'util';

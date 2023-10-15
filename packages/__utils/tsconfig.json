@@ -1,10 +1,6 @@
 {
-    "extends": "../../tsconfig.packages.base.json",
-    "compilerOptions": {
-        "types": ["node", "jest"],
-        "outDir": "dist",
-        "rootDir": "src"
-    },
-    "include": ["src"],
-    "exclude": []
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {},
+    "files": [],
+    "references": [{ "path": "./tsconfig.cjs.json" }, { "path": "./tsconfig.esm.json" }]
 }

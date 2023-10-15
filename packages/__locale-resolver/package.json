@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Language Code Resolver",
   "private": true,
+  "sideEffects": false,
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

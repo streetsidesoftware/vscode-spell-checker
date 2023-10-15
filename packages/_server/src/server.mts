@@ -1,6 +1,6 @@
-import { isDefined, LogFileConnection } from '@internal/common-utils/index.js';
-import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log.js';
-import { toFileUri, toUri } from '@internal/common-utils/uriHelper.js';
+import { isDefined, LogFileConnection } from '@internal/common-utils';
+import { log, logError, logger, logInfo, setWorkspaceBase, setWorkspaceFolders } from '@internal/common-utils/log';
+import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import type { CSpellSettingsWithSourceTrace, Glob } from 'cspell-lib';
 import * as CSpell from 'cspell-lib';
 import { extractImportErrors, getDefaultSettings, refreshDictionaryCache } from 'cspell-lib';

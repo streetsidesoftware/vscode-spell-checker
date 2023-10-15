@@ -27,7 +27,8 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
         const config = settings.configs.file;
         const languageId = config?.languageId || 'unknown';
         const languageEnabled = config?.languageEnabled;
-        const name = decodeURIComponent(config?.uri.replace(/.*\//, '') || 'File');
+        const url = config?.uri ? new URL(config.uri) : undefined;
+        const name = decodeURIComponent(url?.pathname.split('/').pop() || 'File');
         const dictionaries = config?.dictionaries || [];
         const configFiles = config?.configFiles || [];
         const select = (elem: HTMLSelectElement) => elem && this.props.appState.actionSelectDocument(elem.value);
