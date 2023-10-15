@@ -42,7 +42,7 @@
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.5.0",
     "vscode-uri": "^3.0.8",
-    "webpack": "^5.88.2",
+    "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
