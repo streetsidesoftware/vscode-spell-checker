@@ -9,6 +9,7 @@ export interface TextDocument {
     readonly fileName: string;
     readonly isUntitled: boolean;
     readonly languageId: string;
+    readonly name?: string | undefined;
 }
 
 export interface Workspace {

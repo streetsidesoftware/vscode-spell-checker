@@ -68,18 +68,30 @@ export function relativeTo(uriFrom: Uri, uriTo: Uri): string {
  * @returns
  */
 export function relativeToFile(uriFromFile: Uri, uriTo: Uri): string {
-    return relativeTo(UriUtils.dirname(uriFromFile), uriTo);
+    return relativeTo(uriFromFile.path.endsWith('/') ? uriFromFile : UriUtils.dirname(uriFromFile), uriTo);
 }
 
 export function cleanUri(uri: Uri): Uri {
     return uri.with({ fragment: '', query: '' });
 }
 
+export interface UriToNameOptions {
+    segments?: number;
+    relativeTo?: Uri | string;
+}
+
 /**
  * Try to make a friendly name out of a Uri
  * @param uri - uri of file
  */
-export function uriToName(uri: Uri, segments = 2): string {
+export function uriToName(uri: Uri, options: UriToNameOptions = {}): string {
+    const { segments = 2, relativeTo: relTo } = options;
+    if (relTo) {
+        const rel = relativeTo(toUri(relTo), uri);
+        if (!regExpIsUri.test(rel)) {
+            return rel.split('/').slice(-segments).join('/');
+        }
+    }
     const parts = splitUri(uri).slice(-segments);
     return parts.join('/');
 }

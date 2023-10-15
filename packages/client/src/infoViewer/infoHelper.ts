@@ -144,11 +144,25 @@ function extractFileConfig(
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
-    const { languageEnabled, docSettings, fileEnabled, fileIsExcluded, fileIsIncluded, gitignoreInfo, excludedBy, uriUsed } = docConfig;
+    const {
+        languageEnabled,
+        docSettings,
+        fileEnabled,
+        fileIsExcluded,
+        fileIsIncluded,
+        gitignoreInfo,
+        excludedBy,
+        uriUsed,
+        workspaceFolderUri,
+    } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
     log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
-    const folder = vscode.workspace.getWorkspaceFolder(uriUsed ? Uri.parse(uriUsed) : uri);
+
+    const uriToUse = uriUsed ? Uri.parse(uriUsed) : uri;
+    const folder =
+        (workspaceFolderUri && vscode.workspace.getWorkspaceFolder(Uri.parse(workspaceFolderUri))) ||
+        vscode.workspace.getWorkspaceFolder(uriToUse);
 
     function extractGitignoreInfo(): FileConfig['gitignoreInfo'] {
         if (!gitignoreInfo) return undefined;
@@ -166,7 +180,9 @@ function extractFileConfig(
 
     const cfg: FileConfig = {
         uri: uri.toString(),
+        uriActual: uriToUse.toString(),
         fileName,
+        name: uriToName(uriToUse, { relativeTo: folder?.uri }),
         isUntitled,
         languageId,
         dictionaries,
@@ -175,12 +191,23 @@ function extractFileConfig(
         configFiles: extractConfigFiles(docConfig),
         fileIsExcluded,
         fileIsIncluded,
-        fileIsInWorkspace: !!folder || isUntitled,
+        fileIsInWorkspace: !!folder || !!workspaceFolderUri || isUntitled,
         excludedBy: mapExcludedBy(excludedBy),
         gitignoreInfo: extractGitignoreInfo(),
         blockedReason: docConfig.blockedReason,
+        workspaceFolder: folderInfo(folder),
     };
     return cfg;
+}
+
+function folderInfo(folder: vscode.WorkspaceFolder | undefined): WorkspaceFolder | undefined {
+    if (!folder) return undefined;
+
+    return {
+        uri: folder.uri.toString(),
+        name: folder.name,
+        index: folder.index,
+    };
 }
 
 function getDefaultWorkspaceFolder() {
