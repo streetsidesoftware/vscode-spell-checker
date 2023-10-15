@@ -342,10 +342,11 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * is not found. The following example could be used to block "cSpell.userWords" from a workspace.
      *
      * ```jsonc
-     * "cSpell.mergeCSpellSettings": { "userWords": false },
+     * "cSpell.mergeCSpellSettings": { "userWords": false }
      * ```
      *
      * @scope resource
+     * @version 4.0.0
      * @default false
      */
     mergeCSpellSettings?: boolean | Partial<Record<CSpellMergeFields, boolean>>;
