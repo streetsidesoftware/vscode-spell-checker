@@ -118,6 +118,7 @@ function configDefinitions(entries) {
 function definition(entry) {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
+    const version = value.version || '';
     const defaultValue = formatDefaultValue(value.default);
 
     const title = value.title ? `-- ${value.title}` : '';
@@ -127,34 +128,32 @@ function definition(entry) {
     }
 
     const deprecationMessage = value.deprecationMessage
-        ? `
-Deprecation Message
-: ${value.deprecationMessage.replace(/\n/g, '\n    ')}
-`
+        ? singleDef('Deprecation Message', value.deprecationMessage)
         : '';
 
     return `
 ### ${name}
 
-Name
-: ${name} ${title.replace(/\n/g, '\n    ')}
+${singleDef('Name', `${name} ${title}`)}
 
-Type
-: ${formatType(value).replace(/\n/g, '\n    ')}
+${singleDef('Type', formatType(value))}
 
-Scope
-: ${value.scope || ''}
+${singleDef('Scope', value.scope || '')}
 
-Description
-: ${description.replace(/\n/g, '\n    ')}
+${singleDef('Description', description)}
 
 ${deprecationMessage}
 
-Default
-: ${defaultValue.replace(/\n/g, '\n    ')}
+${singleDef('Default', defaultValue)}
+
+${version ? singleDef('Version', version) : ''}
 
 ---
 `;
+}
+
+function singleDef(term, def) {
+    return `${term}\n: ${def.replace(/\n/g, '\n    ')}`;
 }
 
 function formatDefaultValue(value) {

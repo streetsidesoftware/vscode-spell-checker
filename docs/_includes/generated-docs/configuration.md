@@ -816,7 +816,7 @@ Defining globRoot, does not impact imported configurations.
 
     Special Values:
 
-    - `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\n
+    - `${workspaceFolder}` - Default - globs will be relative to the current workspace folder
     - `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.
 
 Default
@@ -893,11 +893,14 @@ This only applies when there is a CSpell configuration file in the workspace.
     is not found. The following example could be used to block "cSpell.userWords" from a workspace.
 
     ```jsonc
-    "cSpell.mergeCSpellSettings": { "userWords": false },
+    "cSpell.mergeCSpellSettings": { "userWords": false }
     ```
 
 Default
 : _`false`_
+
+Version
+: 4.0.0
 
 ---
 

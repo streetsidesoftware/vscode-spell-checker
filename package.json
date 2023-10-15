@@ -1266,7 +1266,7 @@
             "type": "array"
           },
           "cSpell.globRoot": {
-            "markdownDescription": "The root to use for glob patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\\n\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
+            "markdownDescription": "The root to use for glob patterns found in this configuration.\nDefault: The current workspace folder.\nUse `globRoot` to define a different location. `globRoot` can be relative to the location of this configuration file.\nDefining globRoot, does not impact imported configurations.\n\nSpecial Values:\n\n- `${workspaceFolder}` - Default - globs will be relative to the current workspace folder\n- `${workspaceFolder:<name>}` - Where `<name>` is the name of the workspace folder.",
             "scope": "resource",
             "type": "string"
           },
@@ -1418,8 +1418,9 @@
               }
             ],
             "default": false,
-            "markdownDescription": "Specify which fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n- `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.\n\nNote:\n\nIf specific fields are specified, they provide the ability to block settings even if a CSpell configuration\nis not found. The following example could be used to block \"cSpell.userWords\" from a workspace.\n\n```jsonc\n\"cSpell.mergeCSpellSettings\": { \"userWords\": false },\n```",
-            "scope": "resource"
+            "markdownDescription": "Specify which fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n- `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.\n\nNote:\n\nIf specific fields are specified, they provide the ability to block settings even if a CSpell configuration\nis not found. The following example could be used to block \"cSpell.userWords\" from a workspace.\n\n```jsonc\n\"cSpell.mergeCSpellSettings\": { \"userWords\": false }\n```",
+            "scope": "resource",
+            "version": "4.0.0"
           },
           "cSpell.noConfigSearch": {
             "markdownDescription": "Prevents searching for local configuration when checking individual documents.",
