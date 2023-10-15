@@ -332,7 +332,7 @@ export class DocumentSettings {
         const mergedSettingsFromVSCode = mergeSettings(this.importedSettings(), vscodeCSpellSettings);
         const mergedSettings = mergeSettings(
             this.defaultSettings,
-            filterMergeFields(mergedSettingsFromVSCode, !settings || vscodeCSpellSettings['mergeCSpellSettings']),
+            filterMergeFields(mergedSettingsFromVSCode, vscodeCSpellSettings['mergeCSpellSettings'] || !settings),
             settings,
         );
 
