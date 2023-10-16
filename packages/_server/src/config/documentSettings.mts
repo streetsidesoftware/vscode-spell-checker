@@ -9,9 +9,9 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
+import { setIfDefined } from '@internal/common-utils';
 import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
 import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
-import { setIfDefined } from '@internal/common-utils';
 import { log } from '@internal/common-utils/log';
 import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { findRepoRoot, GitIgnore } from 'cspell-gitignore';

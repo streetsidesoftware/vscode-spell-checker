@@ -51,7 +51,8 @@ export interface FileConfig extends TextDocument, IsSpellCheckEnabledResult {
     dictionaries: DictionaryEntry[];
     configFiles: ConfigFile[];
     workspaceFolder?: WorkspaceFolder | undefined;
-    uriActual: FileUri;
+    /** Uri used to calculate the settings. Might be different from the document uri. */
+    uriActual?: FileUri;
 }
 
 export interface ExcludeRef {

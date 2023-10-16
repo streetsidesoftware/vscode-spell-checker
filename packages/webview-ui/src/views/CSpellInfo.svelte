@@ -15,7 +15,8 @@
   $: fileConfig = settings?.configs.file;
   $: dictionaries = fileConfig?.dictionaries;
   $: name = fileConfig?.name || (docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>');
-  $: fileUrl = fileConfig?.uriActual ? new URL(fileConfig.uriActual) : undefined;
+  $: uriActual = fileConfig?.uriActual || fileConfig?.uri;
+  $: fileUrl = uriActual ? new URL(uriActual) : undefined;
   $: fileInfo = [
     { key: 'Name', value: name },
     { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
