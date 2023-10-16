@@ -26,7 +26,7 @@
     }
   },
   "devDependencies": {
-    "@types/yargs": "17.0.24",
+    "@types/yargs": "17.0.28",
     "esbuild": "^0.19.4",
     "ts-json-schema-generator": "^1.4.0",
     "ts-loader": "^9.5.0",
