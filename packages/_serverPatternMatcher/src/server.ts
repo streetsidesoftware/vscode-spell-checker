@@ -1,4 +1,4 @@
-import { log, setWorkspaceBase } from '@internal/common-utils/log.js';
+import { log, setWorkspaceBase } from '@internal/common-utils/log';
 import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node';
 import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';

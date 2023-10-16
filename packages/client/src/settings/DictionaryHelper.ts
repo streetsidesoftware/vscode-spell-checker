@@ -1,4 +1,4 @@
-import { fileExists } from '@internal/common-utils/file.js';
+import { fileExists } from '@internal/common-utils/file';
 import * as fs from 'fs/promises';
 import { homedir } from 'os';
 import * as vscode from 'vscode';

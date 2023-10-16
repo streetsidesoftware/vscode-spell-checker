@@ -1,4 +1,4 @@
-import { mustBeDefined } from '@internal/common-utils/util.js';
+import { mustBeDefined } from '@internal/common-utils/util';
 import type { CSpellUserSettings } from 'cspell-lib';
 import { searchForConfig } from 'cspell-lib';
 import * as Path from 'path';

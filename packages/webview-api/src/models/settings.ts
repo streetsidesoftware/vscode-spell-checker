@@ -1,4 +1,4 @@
-import type { TextDocument, Workspace } from './workspace';
+import type { TextDocument, Workspace, WorkspaceFolder } from './workspace';
 
 export interface Settings {
     dictionaries: DictionaryEntry[];
@@ -50,6 +50,9 @@ export interface Config {
 export interface FileConfig extends TextDocument, IsSpellCheckEnabledResult {
     dictionaries: DictionaryEntry[];
     configFiles: ConfigFile[];
+    workspaceFolder?: WorkspaceFolder | undefined;
+    /** Uri used to calculate the settings. Might be different from the document uri. */
+    uriActual?: FileUri;
 }
 
 export interface ExcludeRef {

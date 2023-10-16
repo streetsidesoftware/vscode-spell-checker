@@ -12,23 +12,44 @@
   $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
   $: queryResult = useQuery(['docSettings', docUrl?.toString()], (ctx) => getDocSettings(ctx.queryKey[1]));
   $: settings = $queryResult.data;
-  $: dictionaries = settings?.configs.file?.dictionaries;
-  $: name = docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>';
-  $: logDebug = appState.logDebug();
-  $: fileUrl = settings?.configs.file?.uri ? new URL(settings.configs.file.uri) : undefined;
+  $: fileConfig = settings?.configs.file;
+  $: dictionaries = fileConfig?.dictionaries;
+  $: name = fileConfig?.name || (docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>');
+  $: uriActual = fileConfig?.uriActual || fileConfig?.uri;
+  $: fileUrl = uriActual ? new URL(uriActual) : undefined;
+  $: fileInfo = [
+    { key: 'Name', value: name },
+    { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
+    { key: 'Filename from settings', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
+    { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
+    { key: 'File type', value: fileConfig?.languageId ?? 'n/a' },
+  ];
 </script>
 
 <section>
   <h1>Spell Checker</h1>
 
   <h2>File</h2>
-  <ul>
-    <li>name: {name}</li>
-    <li>file: {docUrl ?? 'none'}</li>
-    <li>version: {$currentDoc?.version ?? 'n/a'}</li>
-    <li>State LogLevel: {$logDebug}</li>
-    <li>filename from settings: {fileUrl ? fileUrl.pathname.split('/').at(-1) : '<unknown>'}</li>
-  </ul>
+  <dl>
+    {#each fileInfo as entry}
+      <dt>{entry.key}:</dt>
+      <dd>{entry.value}</dd>
+    {/each}
+    {#if fileConfig?.configFiles.length}
+      <dt>Config Files:</dt>
+      <dd>
+        <ul>
+          {#each fileConfig.configFiles as configFile}
+            <li>
+              <a href={configFile.uri} on:click={() => getClientApi().serverNotification.openTextDocument(configFile.uri)}
+                >{configFile.name}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </dd>
+    {/if}
+  </dl>
 
   <CheckboxLogDebug />
 
@@ -37,7 +58,7 @@
     <ul>
       {#each dictionaries as dictionary}
         <li>
-          <dl>
+          <dl class="dictionary-entry">
             <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
             <dd>{dictionary.description || ''}</dd>
             {#if dictionary.uriName}
@@ -64,11 +85,19 @@
   dd {
     opacity: 90%;
     font-size: smaller;
+    margin-inline-start: 1em;
+  }
+
+  .dictionary-entry dd {
     margin-inline-start: 0;
   }
 
   dl {
     margin-block-start: 0;
     margin-block-end: 0.5em;
+  }
+
+  ul {
+    padding-inline-start: 1.5em;
   }
 </style>

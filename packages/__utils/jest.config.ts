@@ -11,4 +11,6 @@ const config: JestConfigWithTsJest = {
     verbose: true,
 };
 
+// cspell:ignore webm
+
 export default config;

@@ -1,5 +1,5 @@
-import { isErrnoException } from '@internal/common-utils/index.js';
-import { uriToName } from '@internal/common-utils/uriHelper.js';
+import { isErrnoException } from '@internal/common-utils';
+import { uriToName } from '@internal/common-utils/uriHelper';
 import { format } from 'util';
 import type { Uri } from 'vscode';
 import { window, workspace } from 'vscode';

@@ -115,7 +115,15 @@ const config = {
             },
         },
         {
-            files: ['vitest.config.*', '**/jest.config.js', '**/*.test.*', '**/build.*', '**/test/**', '**/rollup.config.js'],
+            files: [
+                'vitest.config.*',
+                '**/jest.config.js',
+                '**/jest.config.ts',
+                '**/*.test.*',
+                '**/build.*',
+                '**/test/**',
+                '**/rollup.config.js',
+            ],
             rules: {
                 '@typescript-eslint/no-explicit-any': 'off',
                 'import/no-unresolved': 'off',

@@ -1,0 +1,20 @@
+{
+    "extends": "@tsconfig/node18",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "./dist/cjs",
+        "target": "es2022",
+        "lib": ["es2022"],
+        "types": ["node", "jest"],
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": "./src",
+        "strict": true
+    },
+    "include": ["src"]
+}

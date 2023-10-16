@@ -43,6 +43,8 @@
 !packages/client/package.json
 !resources/**
 
-!packages/webview-ui/public/**
+!packages/webview-ui/public/build/*.js
+!packages/webview-ui/public/build/*.css
+!packages/webview-ui/public/resources/**
 
 # cspell:ignore callsites

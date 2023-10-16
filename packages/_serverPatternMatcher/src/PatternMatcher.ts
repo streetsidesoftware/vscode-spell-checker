@@ -1,6 +1,6 @@
 import type { RegExpPatternDefinition } from '@cspell/cspell-types';
-import { isDefined } from '@internal/common-utils/index.js';
-import { logError } from '@internal/common-utils/log.js';
+import { isDefined } from '@internal/common-utils';
+import { logError } from '@internal/common-utils/log';
 import { RegExpWorker, type TimeoutError } from 'regexp-worker';
 import { format } from 'util';
 

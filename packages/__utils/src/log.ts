@@ -1,6 +1,6 @@
-import { Logger } from './logger';
+import { Logger } from './logger.js';
 
-export { LogLevel } from './logger';
+export { LogLevel } from './logger.js';
 
 let workspaceBase = '';
 let workspaceFolders: string[] = [];

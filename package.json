@@ -1317,16 +1317,7 @@
                   "dictionaryDefinitions": {
                     "type": "boolean"
                   },
-                  "enableFiletypes": {
-                    "type": "boolean"
-                  },
                   "enableGlobDot": {
-                    "type": "boolean"
-                  },
-                  "enabled": {
-                    "type": "boolean"
-                  },
-                  "enabledLanguageIds": {
                     "type": "boolean"
                   },
                   "features": {
