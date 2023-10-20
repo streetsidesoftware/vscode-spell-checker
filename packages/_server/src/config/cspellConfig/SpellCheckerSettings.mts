@@ -3,7 +3,7 @@ import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
 import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
-export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings {
+export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, AppearanceSettings {
     /**
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
@@ -398,4 +398,51 @@ export interface AddToTargets extends AddToDictionaryTarget {
      * @default "auto"
      */
     cspell?: AutoOrBoolean;
+}
+
+export interface AppearanceSettings {
+    /**
+     * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
+     *
+     * @scope application
+     * @version 4.0.0
+     * @default false
+     */
+    decorateIssues?: boolean;
+
+    /**
+     * The CSS color used to show issues in the ruler.
+     *
+     * - Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)
+     * - Hex colors
+     * - Use `` (empty string) to disable.
+     *
+     * Examples:
+     * - `green`
+     * - `DarkYellow`
+     * - `#ffff0080` - semi-transparent yellow.
+     *
+     * @scope application
+     * @version 4.0.0
+     * @default "#00800080"
+     */
+    overviewRulerColor?: string;
+
+    /**
+     * The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+     *
+     * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+     *
+     * - Use `` (empty string) to disable text decoration.
+     *
+     * Examples:
+     * - `blue`
+     * - `yellow`
+     * - `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.
+     *
+     * @scope application
+     * @version 4.0.0
+     * @default "underline wavy #00800080"
+     */
+    textDecoration?: string;
 }

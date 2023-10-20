@@ -47,6 +47,9 @@ export const ConfigFields: CSpellUserSettingsFields = {
     suggestionNumChanges: 'suggestionNumChanges',
     suggestionsTimeout: 'suggestionsTimeout',
     workspaceRootPath: 'workspaceRootPath',
+    decorateIssues: 'decorateIssues',
+    textDecoration: 'textDecoration',
+    overviewRulerColor: 'overviewRulerColor',
 };
 
 // export const ConfigKeysNames = Object.values(ConfigKeysByField);

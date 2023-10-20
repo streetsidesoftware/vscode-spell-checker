@@ -8,6 +8,7 @@
 - [Files, Folders, and Workspaces](#files-folders-and-workspaces)
 - [Performance](#performance)
 - [CSpell](#cspell)
+- [Appearance](#appearance)
 - [Advanced](#advanced)
 - [Experimental](#experimental)
 - [Legacy](#legacy)
@@ -1305,6 +1306,100 @@ Description
 
 Default
 : _- none -_
+
+---
+
+# Appearance
+
+| Setting                                                  | Scope       | Description                                                                               |
+| -------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.decorateIssues`](#cspelldecorateissues)         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler.                                           |
+| [`cSpell.textDecoration`](#cspelltextdecoration)         | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
+
+## Definitions
+
+### `cSpell.decorateIssues`
+
+Name
+: `cSpell.decorateIssues`
+
+Type
+: boolean
+
+Scope
+: application
+
+Description
+: Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
+
+Default
+: _`false`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.overviewRulerColor`
+
+Name
+: `cSpell.overviewRulerColor`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The CSS color used to show issues in the ruler.
+
+    - Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)
+    - Hex colors
+    - Use `` (empty string) to disable.
+
+    Examples:
+    - `green`
+    - `DarkYellow`
+    - `#ffff0080` - semi-transparent yellow.
+
+Default
+: _`"#00800080"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecoration`
+
+Name
+: `cSpell.textDecoration`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+
+    - Use `` (empty string) to disable text decoration.
+
+    Examples:
+    - `blue`
+    - `yellow`
+    - `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.
+
+Default
+: _`"underline wavy #00800080"`_
+
+Version
+: 4.0.0
 
 ---
 

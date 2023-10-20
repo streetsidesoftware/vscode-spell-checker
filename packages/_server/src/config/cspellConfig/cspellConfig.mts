@@ -5,7 +5,7 @@ import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
 
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
 import type { DictionaryDef } from './CustomDictionary.mjs';
-import type { SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+import type { AppearanceSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
 
 interface InternalSettings {
     /**
@@ -175,6 +175,7 @@ type VSConfigCSpell = PrefixWithCspell<_VSConfigCSpell>;
 type _VSConfigCSpell = Omit<
     SpellCheckerSettingsVSCodeBase,
     | keyof _VSConfigAdvanced
+    | keyof _VSConfigAppearance
     | keyof _VSConfigExperimental
     | keyof _VSConfigLanguageAndDictionaries
     | keyof _VSConfigLegacy
@@ -205,6 +206,13 @@ type _VSConfigFilesAndFolders = Pick<
     | 'usePnP'
     | 'workspaceRootPath'
 >;
+
+/**
+ * @title Appearance
+ * @order 6
+ */
+type VSConfigAppearance = PrefixWithCspell<_VSConfigAppearance>;
+type _VSConfigAppearance = Pick<SpellCheckerSettingsVSCodeBase, keyof AppearanceSettings>;
 
 /**
  * @title Legacy
@@ -244,6 +252,7 @@ export type SpellCheckerSettingsVSCode = [
     VSConfigExperimental,
     VSConfigFilesAndFolders,
     VSConfigLanguageAndDictionaries,
+    VSConfigAppearance,
     VSConfigLegacy,
     VSConfigPerf,
     VSConfigReporting,

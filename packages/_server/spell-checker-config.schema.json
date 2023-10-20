@@ -1618,6 +1618,38 @@
     },
     {
       "additionalProperties": false,
+      "order": 6,
+      "properties": {
+        "cSpell.decorateIssues": {
+          "default": false,
+          "description": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
+          "markdownDescription": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
+          "scope": "application",
+          "type": "boolean",
+          "version": "4.0.0"
+        },
+        "cSpell.overviewRulerColor": {
+          "default": "#00800080",
+          "description": "The CSS color used to show issues in the ruler.\n\n- Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use `` (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.",
+          "markdownDescription": "The CSS color used to show issues in the ruler.\n\n- Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use `` (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.",
+          "scope": "application",
+          "type": "string",
+          "version": "4.0.0"
+        },
+        "cSpell.textDecoration": {
+          "default": "underline wavy #00800080",
+          "description": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use `` (empty string) to disable text decoration.\n\nExamples:\n- `blue`\n- `yellow`\n- `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.",
+          "markdownDescription": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use `` (empty string) to disable text decoration.\n\nExamples:\n- `blue`\n- `yellow`\n- `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.",
+          "scope": "application",
+          "type": "string",
+          "version": "4.0.0"
+        }
+      },
+      "title": "Appearance",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
       "order": 20,
       "properties": {
         "cSpell.allowCompoundWords": {
@@ -2306,7 +2338,7 @@
       "type": "object"
     }
   ],
-  "maxItems": 9,
-  "minItems": 9,
+  "maxItems": 10,
+  "minItems": 10,
   "type": "array"
 }
