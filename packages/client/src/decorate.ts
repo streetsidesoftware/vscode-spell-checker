@@ -1,6 +1,6 @@
 import { createDisposableList } from 'utils-disposables';
 import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
-import vscode, { MarkdownString } from 'vscode';
+import vscode, { DiagnosticSeverity, MarkdownString } from 'vscode';
 
 import { getCSpellDiags } from './diags';
 import type { Disposable } from './disposable';
@@ -32,7 +32,9 @@ export class SpellingIssueDecorator implements Disposable {
         if (!this.decorationType) return;
         const diags = getCSpellDiags(editor.document.uri);
 
-        const decorations: DecorationOptions[] = diags.map(diagToDecorationOptions);
+        const decorations: DecorationOptions[] = diags
+            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
+            .map(diagToDecorationOptions);
         editor.setDecorations(this.decorationType, decorations);
     }
 

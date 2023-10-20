@@ -136,7 +136,6 @@ type VSConfigReporting = PrefixWithCspell<_VSConfigReporting>;
 type _VSConfigReporting = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'autoFormatConfigFile'
-    | 'diagnosticLevel'
     | 'hideAddToDictionaryCodeActions'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
@@ -212,7 +211,10 @@ type _VSConfigFilesAndFolders = Pick<
  * @order 6
  */
 type VSConfigAppearance = PrefixWithCspell<_VSConfigAppearance>;
-type _VSConfigAppearance = Pick<SpellCheckerSettingsVSCodeBase, keyof AppearanceSettings>;
+type _VSConfigAppearance = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    keyof AppearanceSettings | 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'
+>;
 
 /**
  * @title Legacy

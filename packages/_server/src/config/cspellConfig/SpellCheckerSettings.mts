@@ -35,6 +35,20 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
 
     /**
+     * Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+     * By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+     * @title Set Diagnostic Reporting Level for Flagged Words
+     * @scope resource
+     * @version 4.0.0
+     * @enumDescriptions [
+     *  "Report Spelling Issues as Errors",
+     *  "Report Spelling Issues as Warnings",
+     *  "Report Spelling Issues as Information",
+     *  "Report Spelling Issues as Hints, will not show up in Problems"]
+     */
+    diagnosticLevelFlaggedWords?: 'Error' | 'Warning' | 'Information' | 'Hint';
+
+    /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
      *
      *
