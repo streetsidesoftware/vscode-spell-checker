@@ -22,7 +22,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
     const outline = new RegexpOutlineProvider();
     let patternMatcherClient: PatternMatcherClient | undefined;
 
-    vscode.window.registerTreeDataProvider('cSpellRegExpView', outline);
+    disposables.add(vscode.window.registerTreeDataProvider('cSpellRegExpView', outline));
 
     let timeout: NodeJS.Timeout | undefined = undefined;
 

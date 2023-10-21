@@ -6,6 +6,7 @@ import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import * as commands from './commands';
 import { updateDocumentRelatedContext } from './context';
+import { SpellingIssueDecorator } from './decorate';
 import * as di from './di';
 import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
@@ -60,6 +61,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
+    const decorator = new SpellingIssueDecorator();
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
@@ -76,6 +78,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
+        decorator,
 
         ...commands.registerCommands(),
 
@@ -89,7 +92,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
     );
 
-    registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
+    await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);
 
     function handleOnDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
         if (event.affectsConfiguration(sectionCSpell)) {
@@ -128,6 +131,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
+        decorator.handleOnDidChangeDiagnostics(e);
         const activeTextEditor = vscode.window.activeTextEditor;
         if (!activeTextEditor) return;
 

@@ -8,6 +8,7 @@
 - [Files, Folders, and Workspaces](#files-folders-and-workspaces)
 - [Performance](#performance)
 - [CSpell](#cspell)
+- [Appearance](#appearance)
 - [Advanced](#advanced)
 - [Experimental](#experimental)
 - [Legacy](#legacy)
@@ -350,7 +351,6 @@ Default
 | Setting                                                                                          | Scope                | Description                                                                     |
 | ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------- |
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                     | window               | Auto Format Configuration File                                                  |
-| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                               | resource             | Set Diagnostic Reporting Level                                                  |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
@@ -385,30 +385,6 @@ file to be saved prior to being updated.
 
 Default
 : _`false`_
-
----
-
-### `cSpell.diagnosticLevel`
-
-Name
-: `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
-
-Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
-
-    | `Error` | Report Spelling Issues as Errors |
-    | `Warning` | Report Spelling Issues as Warnings |
-    | `Information` | Report Spelling Issues as Information |
-    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-
-Scope
-: resource
-
-Description
-: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
-
-Default
-: _`"Information"`_
 
 ---
 
@@ -1305,6 +1281,154 @@ Description
 
 Default
 : _- none -_
+
+---
+
+# Appearance
+
+| Setting                                                                    | Scope       | Description                                                                               |
+| -------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.decorateIssues`](#cspelldecorateissues)                           | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                         | resource    | Set Diagnostic Reporting Level                                                            |
+| [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource    | Set Diagnostic Reporting Level for Flagged Words                                          |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                   | application | The CSS color used to show issues in the ruler.                                           |
+| [`cSpell.textDecoration`](#cspelltextdecoration)                           | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
+
+## Definitions
+
+### `cSpell.decorateIssues`
+
+Name
+: `cSpell.decorateIssues`
+
+Type
+: boolean
+
+Scope
+: application
+
+Description
+: Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
+
+Default
+: _`false`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.diagnosticLevel`
+
+Name
+: `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+Scope
+: resource
+
+Description
+: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+
+Default
+: _`"Information"`_
+
+---
+
+### `cSpell.diagnosticLevelFlaggedWords`
+
+Name
+: `cSpell.diagnosticLevelFlaggedWords` -- Set Diagnostic Reporting Level for Flagged Words
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+Scope
+: resource
+
+Description
+: Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+
+Default
+: _- none -_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.overviewRulerColor`
+
+Name
+: `cSpell.overviewRulerColor`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The CSS color used to show issues in the ruler.
+
+    - Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)
+    - Hex colors
+    - Use `` (empty string) to disable.
+
+    Examples:
+    - `green`
+    - `DarkYellow`
+    - `#ffff0080` - semi-transparent yellow.
+
+Default
+: _`"#00800080"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecoration`
+
+Name
+: `cSpell.textDecoration`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+
+    - Use `` (empty string) to disable text decoration.
+
+    Examples:
+    - `blue`
+    - `yellow`
+    - `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.
+
+Default
+: _`"underline wavy #00800080"`_
+
+Version
+: 4.0.0
 
 ---
 

@@ -21,8 +21,10 @@ const diagSeverityMap = new Map<string, DiagnosticSeverity>([
 ]);
 
 export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
-    const { diagnosticLevel = DiagnosticSeverity.Information.toString() } = options;
+    const { diagnosticLevel = DiagnosticSeverity.Information.toString(), diagnosticLevelFlaggedWords } = options;
     const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
+    const severityFlaggedWords =
+        (diagnosticLevelFlaggedWords && diagSeverityMap.get(diagnosticLevelFlaggedWords.toLowerCase())) || severity;
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const content = textDocument.getText().slice(0, limit);
     const docInfo = {
@@ -45,9 +47,10 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
                 start: issue.position,
                 end: { ...issue.position, character: issue.position.character + (issue.length ?? issue.text.length) },
             },
+            severity: issue.isFlagged ? severityFlaggedWords : severity,
         }))
         // Convert it to a Diagnostic
-        .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx }) => {
+        .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
             const data: DiagnosticData = { issueType, suggestions: sugs };
