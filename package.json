@@ -2744,7 +2744,7 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^16.1.1",
+    "@tsconfig/node18": "^18.2.2",
     "@types/jest-when": "^3.5.3",
     "@types/node": "^18.18.5",
     "@types/vscode": "1.80.0",
@@ -2784,7 +2784,6 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.8",
     "@cspell/cspell-types": "^7.3.8",
-    "@tsconfig/node18": "^18.2.2",
     "@types/react": "^17.0.68",
     "cspell": "^7.3.8",
     "regexp-worker": "^2.0.2"

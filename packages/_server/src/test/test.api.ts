@@ -57,7 +57,7 @@ export function mockHandlers(): ServerSideHandlers {
             })),
             isSpellCheckEnabled: vi.fn(() => ({ ...sampleIsSpellCheckEnabledResult })),
             splitTextIntoWords: vi.fn(() => ({ words: [] })),
-            spellingSuggestions: vi.fn(),
+            spellingSuggestions: vi.fn(() => ({ suggestions: [] })),
         },
     };
 }

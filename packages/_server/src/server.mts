@@ -405,8 +405,8 @@ export function run(): void {
         };
     }
 
-    async function handleSpellingSuggestions(_params: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
-        return {};
+    async function handleSpellingSuggestions(_text: string, _docRef?: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
+        return { suggestions: [] };
     }
 
     function sendDiagnostics(result: ValidationResult) {

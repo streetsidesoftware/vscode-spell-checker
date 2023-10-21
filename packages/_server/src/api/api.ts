@@ -31,7 +31,7 @@ export interface ServerRequestsAPI {
     getConfigurationForDocument(req: GetConfigurationForDocumentRequest): GetConfigurationForDocumentResult;
     isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult;
     splitTextIntoWords(req: string): SplitTextIntoWordsResult;
-    spellingSuggestions(req: TextDocumentInfo): SpellingSuggestionsResult;
+    spellingSuggestions(word: string, doc: TextDocumentInfo): SpellingSuggestionsResult;
 }
 
 /** Notifications that can be sent to the server */

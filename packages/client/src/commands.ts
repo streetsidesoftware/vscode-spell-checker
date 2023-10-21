@@ -18,6 +18,8 @@ import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from
 import * as di from './di';
 import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
+import { toRange } from './languageServer/clientHelpers';
+import type { RangeLike } from './languageServer/models';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
@@ -575,11 +577,12 @@ interface SuggestionQuickPickItem extends QuickPickItem {
     _action: CodeAction;
 }
 
-async function actionSuggestSpellingCorrections(...args: unknown[]): Promise<void> {
-    console.log('Args: %o', args);
-    const document = window.activeTextEditor?.document;
-    const selection = window.activeTextEditor?.selection;
-    const range = selection && document?.getWordRangeAtPosition(selection.active);
+async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?: RangeLike, text?: string): Promise<void> {
+    console.log('Args: %o', { docUri, range: rangeLike, text });
+    const editor = findEditor(docUri);
+    const document = editor?.document;
+    const selection = editor?.selection;
+    const range = (rangeLike && toRange(rangeLike)) || (selection && document?.getWordRangeAtPosition(selection.active));
     const diags = document ? getCSpellDiags(document.uri) : undefined;
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
     const r = matchingRanges?.[0] || range;

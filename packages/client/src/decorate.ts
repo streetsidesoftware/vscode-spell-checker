@@ -1,5 +1,5 @@
 import { createDisposableList } from 'utils-disposables';
-import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
+import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
 import vscode, { DiagnosticSeverity, MarkdownString } from 'vscode';
 
 import { getCSpellDiags } from './diags';
@@ -35,7 +35,7 @@ export class SpellingIssueDecorator implements Disposable {
 
         const decorations: DecorationOptions[] = diags
             .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
-            .map((diag) => diagToDecorationOptions(diag, doc.getText(diag.range)));
+            .map((diag) => diagToDecorationOptions(diag, doc));
         editor.setDecorations(this.decorationType, decorations);
     }
 
@@ -68,9 +68,10 @@ export class SpellingIssueDecorator implements Disposable {
     }
 }
 
-function diagToDecorationOptions(diag: Diagnostic, text: string): DecorationOptions {
+function diagToDecorationOptions(diag: Diagnostic, doc: TextDocument): DecorationOptions {
     const { range } = diag;
-    const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', { text, range });
+    const text = doc.getText(range);
+    const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', doc.uri, range, text);
     const commandAdd = commandUri('cSpell.addWordToDictionary', text);
     const hoverMessage = new MarkdownString(diag.message)
         .appendText(' ')
