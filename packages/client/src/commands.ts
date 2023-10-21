@@ -8,6 +8,7 @@ import type {
     QuickPickOptions,
     TextDocument,
     TextEdit,
+    TextEditor,
     Uri,
 } from 'vscode';
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
@@ -502,37 +503,54 @@ const compareStrings = new Intl.Collator().compare;
 function onCommandUseDiagsSelectionOrPrompt(
     prompt: string,
     fnAction: (text: string, uri: Uri | undefined) => Promise<void>,
-): () => Promise<void> {
-    return async function () {
-        const document = window.activeTextEditor?.document;
-        const selection = window.activeTextEditor?.selection;
-        const range = selection && document?.getWordRangeAtPosition(selection.active);
-        const diags = document ? getCSpellDiags(document.uri) : undefined;
-        const matchingDiagWords = normalizeWords(extractMatchingDiagTexts(document, selection, diags) || []);
-        if (matchingDiagWords.length) {
-            const picked =
-                selection?.anchor.isEqual(selection.active) && matchingDiagWords.length === 1
-                    ? matchingDiagWords
-                    : await chooseWords(matchingDiagWords.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' });
-            if (!picked) return;
-            return fnAction(picked.join(' '), document?.uri);
-        }
+): (text?: string, uri?: Uri | string) => Promise<void> {
+    return async function (text?: string, uri?: Uri | string) {
+        const selected = await determineTextSelection(prompt, text, uri);
+        if (!selected) return;
 
-        if (!range || !selection || !document || !document.getText(range)) {
-            const word = await window.showInputBox({ title: prompt, prompt });
-            if (!word) return;
-            return fnAction(word, document?.uri);
-        }
-
-        const text = selection.contains(range) ? document.getText(selection) : document.getText(range);
-        const words = normalizeWords(text);
-        const picked =
-            words.length > 1
-                ? await chooseWords(words.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' })
-                : [await window.showInputBox({ title: prompt, prompt, value: words[0] })];
-        if (!picked) return;
-        return fnAction(picked.join(' '), document?.uri);
+        const editor = window.activeTextEditor;
+        await fnAction(selected.text, selected.uri);
+        await (editor?.document && window.showTextDocument(editor.document));
     };
+}
+
+async function determineTextSelection(prompt: string, text?: string, uri?: Uri | string): Promise<{ text: string; uri?: Uri } | undefined> {
+    uri = toUri(uri);
+    if (text) {
+        return { text, uri: uri || window.activeTextEditor?.document.uri };
+    }
+
+    const editor = findEditor(uri);
+
+    const document = editor?.document;
+    const selection = editor?.selection;
+    const range = selection && document?.getWordRangeAtPosition(selection.active);
+    const diags = document ? getCSpellDiags(document.uri) : undefined;
+    const matchingDiagWords = normalizeWords(extractMatchingDiagTexts(document, selection, diags) || []);
+    if (matchingDiagWords.length) {
+        const picked =
+            selection?.anchor.isEqual(selection.active) && matchingDiagWords.length === 1
+                ? matchingDiagWords
+                : await chooseWords(matchingDiagWords.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' });
+        if (!picked) return;
+        return { text: picked.join(' '), uri: document?.uri };
+    }
+
+    if (!range || !selection || !document || !document.getText(range)) {
+        const word = await window.showInputBox({ title: prompt, prompt });
+        if (!word) return;
+        return { text: word, uri: document?.uri };
+    }
+
+    text = selection.contains(range) ? document.getText(selection) : document.getText(range);
+
+    const words = normalizeWords(text);
+    const picked =
+        words.length > 1
+            ? await chooseWords(words.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' })
+            : [await window.showInputBox({ title: prompt, prompt, value: words[0] })];
+    if (!picked) return;
+    return { text: picked.join(' '), uri: document.uri };
 }
 
 async function chooseWords(words: string[], options: QuickPickOptions): Promise<string[] | undefined> {
@@ -557,7 +575,8 @@ interface SuggestionQuickPickItem extends QuickPickItem {
     _action: CodeAction;
 }
 
-async function actionSuggestSpellingCorrections(): Promise<void> {
+async function actionSuggestSpellingCorrections(...args: unknown[]): Promise<void> {
+    console.log('Args: %o', args);
     const document = window.activeTextEditor?.document;
     const selection = window.activeTextEditor?.selection;
     const range = selection && document?.getWordRangeAtPosition(selection.active);
@@ -682,5 +701,19 @@ function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | u
     } catch (e) {
         console.log('Invalid Regular Expression: %s', regExStr);
     }
+    return undefined;
+}
+
+function findEditor(uri?: Uri): TextEditor | undefined {
+    if (!uri) return window.activeTextEditor;
+
+    const uriStr = uri.toString();
+
+    for (const editor of window.visibleTextEditors) {
+        if (editor.document.uri.toString() === uriStr) {
+            return editor;
+        }
+    }
+
     return undefined;
 }
