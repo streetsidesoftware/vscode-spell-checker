@@ -1,6 +1,6 @@
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
-import { Suggestion } from '../models/Suggestion.mjs';
+import type { Suggestion } from '../models/Suggestion.mjs';
 
 export type {
     ConfigKind,

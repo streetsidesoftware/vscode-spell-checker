@@ -1,14 +1,5 @@
 {
-    "flagWords": [
-        "forbidd->forbid"
-    ],
+    "flagWords": ["forbidd->forbid"],
     "suggestWords": ["againn->again"],
-    "ignorePaths": [
-        "package-lock.json",
-        "node_modules",
-        "vscode-extension",
-        ".git/objects",
-        ".vscode",
-        ".vscode-insiders"
-    ]
+    "ignorePaths": ["package-lock.json", "node_modules", "vscode-extension", ".git/objects", ".vscode", ".vscode-insiders"]
 }
