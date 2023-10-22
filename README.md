@@ -130,11 +130,11 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 
 To _Enable_ or _Disable_ spell checking for a file type:
 
-1.  Click on the Spell Checker status in the status bar:
+1. Click on the Spell Checker status in the status bar:
 
  <img width="57" alt="Spell Checker Status Bar" src="https://user-images.githubusercontent.com/3740137/177296936-54d5a88c-a596-4178-bd91-0be06161e1fc.png">
 
-2.  On the Info screen, click the checkbox.
+2. On the Info screen, click the checkbox.
 
  <img width="710" alt="Spell Checker Information Window" src="https://user-images.githubusercontent.com/3740137/177297717-88da81d8-9a8c-4907-9424-66e013899318.png">
 
@@ -278,9 +278,9 @@ By default the flags `gim` are added if no flags are given.
 
 The spell checker works in the following way:
 
-1.  Find all text matching `includeRegExp`
-1.  Remove any text matching `excludeRegExp`
-1.  Check the remaining text.
+1. Find all text matching `includeRegExp`
+1. Remove any text matching `excludeRegExp`
+1. Check the remaining text.
 
 #### Exclude Example
 
@@ -346,9 +346,9 @@ The spell checker configuration can be controlled via VS Code preferences or `cs
 
 Order of precedence:
 
-1.  Workspace Folder `cspell.json`
-1.  Workspace Folder `.vscode/cspell.json`
-1.  VS Code Preferences `cSpell` section.
+1. Workspace Folder `cspell.json`
+1. Workspace Folder `.vscode/cspell.json`
+1. VS Code Preferences `cSpell` section.
 
 ### Adding words to the Workspace Dictionary
 
