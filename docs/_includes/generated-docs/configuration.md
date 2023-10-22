@@ -351,6 +351,8 @@ Default
 | Setting                                                                                          | Scope                | Description                                                                     |
 | ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------- |
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                     | window               | Auto Format Configuration File                                                  |
+| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                               | resource             | Set Diagnostic Reporting Level                                                  |
+| [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords)                       | resource             | Set Diagnostic Reporting Level for Flagged Words                                |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
@@ -385,6 +387,58 @@ file to be saved prior to being updated.
 
 Default
 : _`false`_
+
+---
+
+### `cSpell.diagnosticLevel`
+
+Name
+: `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+Scope
+: resource
+
+Description
+: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+
+Default
+: _`"Information"`_
+
+---
+
+### `cSpell.diagnosticLevelFlaggedWords`
+
+Name
+: `cSpell.diagnosticLevelFlaggedWords` -- Set Diagnostic Reporting Level for Flagged Words
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+Scope
+: resource
+
+Description
+: Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+
+Default
+: _- none -_
+
+Version
+: 4.0.0
 
 ---
 
@@ -1286,13 +1340,11 @@ Default
 
 # Appearance
 
-| Setting                                                                    | Scope       | Description                                                                               |
-| -------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
-| [`cSpell.decorateIssues`](#cspelldecorateissues)                           | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
-| [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                         | resource    | Set Diagnostic Reporting Level                                                            |
-| [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords) | resource    | Set Diagnostic Reporting Level for Flagged Words                                          |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                   | application | The CSS color used to show issues in the ruler.                                           |
-| [`cSpell.textDecoration`](#cspelltextdecoration)                           | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
+| Setting                                                  | Scope       | Description                                                                               |
+| -------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.decorateIssues`](#cspelldecorateissues)         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler.                                           |
+| [`cSpell.textDecoration`](#cspelltextdecoration)         | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
 
 ## Definitions
 
@@ -1312,58 +1364,6 @@ Description
 
 Default
 : _`false`_
-
-Version
-: 4.0.0
-
----
-
-### `cSpell.diagnosticLevel`
-
-Name
-: `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
-
-Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
-
-    | `Error` | Report Spelling Issues as Errors |
-    | `Warning` | Report Spelling Issues as Warnings |
-    | `Information` | Report Spelling Issues as Information |
-    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-
-Scope
-: resource
-
-Description
-: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
-
-Default
-: _`"Information"`_
-
----
-
-### `cSpell.diagnosticLevelFlaggedWords`
-
-Name
-: `cSpell.diagnosticLevelFlaggedWords` -- Set Diagnostic Reporting Level for Flagged Words
-
-Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
-
-    | `Error` | Report Spelling Issues as Errors |
-    | `Warning` | Report Spelling Issues as Warnings |
-    | `Information` | Report Spelling Issues as Information |
-    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-
-Scope
-: resource
-
-Description
-: Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
-By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
-
-Default
-: _- none -_
 
 Version
 : 4.0.0

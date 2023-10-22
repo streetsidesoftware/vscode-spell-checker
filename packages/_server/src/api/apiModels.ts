@@ -1,5 +1,6 @@
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
+import { Suggestion } from '../models/Suggestion.mjs';
 
 export type {
     ConfigKind,
@@ -58,7 +59,9 @@ export interface SplitTextIntoWordsResult {
     words: string[];
 }
 
-export interface SpellingSuggestionsResult {}
+export interface SpellingSuggestionsResult {
+    suggestions: Suggestion[];
+}
 
 export interface TextDocumentInfo {
     uri?: UriString;

@@ -1970,44 +1970,6 @@
             "type": "boolean",
             "version": "4.0.0"
           },
-          "cSpell.diagnosticLevel": {
-            "default": "Information",
-            "enum": [
-              "Error",
-              "Warning",
-              "Information",
-              "Hint"
-            ],
-            "enumDescriptions": [
-              "Report Spelling Issues as Errors",
-              "Report Spelling Issues as Warnings",
-              "Report Spelling Issues as Information",
-              "Report Spelling Issues as Hints, will not show up in Problems"
-            ],
-            "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
-            "scope": "resource",
-            "title": "Set Diagnostic Reporting Level",
-            "type": "string"
-          },
-          "cSpell.diagnosticLevelFlaggedWords": {
-            "enum": [
-              "Error",
-              "Warning",
-              "Information",
-              "Hint"
-            ],
-            "enumDescriptions": [
-              "Report Spelling Issues as Errors",
-              "Report Spelling Issues as Warnings",
-              "Report Spelling Issues as Information",
-              "Report Spelling Issues as Hints, will not show up in Problems"
-            ],
-            "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
-            "scope": "resource",
-            "title": "Set Diagnostic Reporting Level for Flagged Words",
-            "type": "string",
-            "version": "4.0.0"
-          },
           "cSpell.overviewRulerColor": {
             "default": "#00800080",
             "markdownDescription": "The CSS color used to show issues in the ruler.\n\n- Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use `` (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.",
@@ -2598,6 +2560,44 @@
             "title": "Auto Format Configuration File",
             "type": "boolean"
           },
+          "cSpell.diagnosticLevel": {
+            "default": "Information",
+            "enum": [
+              "Error",
+              "Warning",
+              "Information",
+              "Hint"
+            ],
+            "enumDescriptions": [
+              "Report Spelling Issues as Errors",
+              "Report Spelling Issues as Warnings",
+              "Report Spelling Issues as Information",
+              "Report Spelling Issues as Hints, will not show up in Problems"
+            ],
+            "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
+            "scope": "resource",
+            "title": "Set Diagnostic Reporting Level",
+            "type": "string"
+          },
+          "cSpell.diagnosticLevelFlaggedWords": {
+            "enum": [
+              "Error",
+              "Warning",
+              "Information",
+              "Hint"
+            ],
+            "enumDescriptions": [
+              "Report Spelling Issues as Errors",
+              "Report Spelling Issues as Warnings",
+              "Report Spelling Issues as Information",
+              "Report Spelling Issues as Hints, will not show up in Problems"
+            ],
+            "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
+            "scope": "resource",
+            "title": "Set Diagnostic Reporting Level for Flagged Words",
+            "type": "string",
+            "version": "4.0.0"
+          },
           "cSpell.hideAddToDictionaryCodeActions": {
             "default": false,
             "markdownDescription": "Hide the options to add words to dictionaries or settings.",
@@ -2744,7 +2744,7 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^16.1.1",
+    "@tsconfig/node18": "^18.2.2",
     "@types/jest-when": "^3.5.3",
     "@types/node": "^18.18.5",
     "@types/vscode": "1.80.0",
@@ -2784,7 +2784,6 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^7.3.8",
     "@cspell/cspell-types": "^7.3.8",
-    "@tsconfig/node18": "^18.2.2",
     "@types/react": "^17.0.68",
     "cspell": "^7.3.8",
     "regexp-worker": "^2.0.2"
