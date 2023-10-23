@@ -1620,6 +1620,31 @@
       "additionalProperties": false,
       "order": 6,
       "properties": {
+        "cSpell.dark": {
+          "additionalProperties": false,
+          "description": "Decoration for dark themes.\n\nSee:\n- `#cSpell.overviewRulerColor#`\n- `#cSpell.textDecoration#`",
+          "markdownDescription": "Decoration for dark themes.\n\nSee:\n- `#cSpell.overviewRulerColor#`\n- `#cSpell.textDecoration#`",
+          "properties": {
+            "overviewRulerColor": {
+              "default": "#fc4c",
+              "description": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "scope": "application",
+              "type": "string",
+              "version": "4.0.0"
+            },
+            "textDecoration": {
+              "default": "underline wavy #fc4",
+              "description": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
+              "markdownDescription": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
+              "scope": "application",
+              "type": "string",
+              "version": "4.0.0"
+            }
+          },
+          "scope": "application",
+          "type": "object"
+        },
         "cSpell.decorateIssues": {
           "default": false,
           "description": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
@@ -1628,18 +1653,43 @@
           "type": "boolean",
           "version": "4.0.0"
         },
+        "cSpell.light": {
+          "additionalProperties": false,
+          "description": "Decoration for light themes.\n\nSee:\n- `#cSpell.overviewRulerColor#`\n- `#cSpell.textDecoration#`",
+          "markdownDescription": "Decoration for light themes.\n\nSee:\n- `#cSpell.overviewRulerColor#`\n- `#cSpell.textDecoration#`",
+          "properties": {
+            "overviewRulerColor": {
+              "default": "#fc4c",
+              "description": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+              "scope": "application",
+              "type": "string",
+              "version": "4.0.0"
+            },
+            "textDecoration": {
+              "default": "underline wavy #fc4",
+              "description": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
+              "markdownDescription": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
+              "scope": "application",
+              "type": "string",
+              "version": "4.0.0"
+            }
+          },
+          "scope": "application",
+          "type": "object"
+        },
         "cSpell.overviewRulerColor": {
-          "default": "#00800080",
-          "description": "The CSS color used to show issues in the ruler.\n\n- Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use `` (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.",
-          "markdownDescription": "The CSS color used to show issues in the ruler.\n\n- Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use `` (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.",
+          "default": "#fc4c",
+          "description": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
+          "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
           "scope": "application",
           "type": "string",
           "version": "4.0.0"
         },
         "cSpell.textDecoration": {
-          "default": "underline wavy #00800080",
-          "description": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use `` (empty string) to disable text decoration.\n\nExamples:\n- `blue`\n- `yellow`\n- `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.",
-          "markdownDescription": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use `` (empty string) to disable text decoration.\n\nExamples:\n- `blue`\n- `yellow`\n- `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.",
+          "default": "underline wavy #fc4",
+          "description": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
+          "markdownDescription": "The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\n- Use \"\" (empty string) to disable text decoration.\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
           "scope": "application",
           "type": "string",
           "version": "4.0.0"
@@ -2250,6 +2300,21 @@
           "title": "Set Diagnostic Reporting Level for Flagged Words",
           "type": "string",
           "version": "4.0.0"
+        },
+        "cSpell.diagnosticLevelSCM": {
+          "description": "Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\n\nBy default, this setting will match `#cSpell.diagnosticLevel#`.",
+          "enum": ["Error", "Warning", "Information", "Hint", "Off"],
+          "enumDescriptions": [
+            "Report Spelling Issues as Errors",
+            "Report Spelling Issues as Warnings",
+            "Report Spelling Issues as Information",
+            "Report Spelling Issues as Hints, will not show up in Problems",
+            "Do not Report Spelling Issues"
+          ],
+          "markdownDescription": "Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.\nThis affects the color of the squiggle.\n\nBy default, this setting will match `#cSpell.diagnosticLevel#`.",
+          "scope": "resource",
+          "title": "Set Diagnostic Reporting Level in SCM Commit Message",
+          "type": "string"
         },
         "cSpell.hideAddToDictionaryCodeActions": {
           "default": false,

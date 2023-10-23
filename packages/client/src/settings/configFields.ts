@@ -28,6 +28,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     customWorkspaceDictionaries: 'customWorkspaceDictionaries',
     diagnosticLevel: 'diagnosticLevel',
     diagnosticLevelFlaggedWords: 'diagnosticLevelFlaggedWords',
+    diagnosticLevelSCM: 'diagnosticLevelSCM',
     fixSpellingWithRenameProvider: 'fixSpellingWithRenameProvider',
     hideAddToDictionaryCodeActions: 'hideAddToDictionaryCodeActions',
     logLevel: 'logLevel',
@@ -51,6 +52,8 @@ export const ConfigFields: CSpellUserSettingsFields = {
     decorateIssues: 'decorateIssues',
     textDecoration: 'textDecoration',
     overviewRulerColor: 'overviewRulerColor',
+    dark: 'dark',
+    light: 'light',
 };
 
 // export const ConfigKeysNames = Object.values(ConfigKeysByField);
