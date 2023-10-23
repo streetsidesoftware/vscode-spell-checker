@@ -8,8 +8,8 @@ import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes';
 import { awaitSubscribable, getWebviewGlobalStore } from '../AppState';
 import { calcDocSettings, type Storage, updateState, watchFieldList } from '../AppState/store';
-import type { StoreValue } from '../AppState/Subscribables/StoreValue';
-import type { Subscribable } from '../AppState/Subscribables/Subscribables';
+import type { StoreValue } from '../../Subscribables/StoreValue';
+import type { Subscribable } from '../../Subscribables/Subscribables';
 import { sampleList } from './staticTestData';
 
 export function createApi(connection: MessageConnection) {
