@@ -577,8 +577,8 @@ interface SuggestionQuickPickItem extends QuickPickItem {
     _action: CodeAction;
 }
 
-async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?: RangeLike, text?: string): Promise<void> {
-    console.log('Args: %o', { docUri, range: rangeLike, text });
+async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?: RangeLike, _text?: string): Promise<void> {
+    // console.log('Args: %o', { docUri, range: rangeLike, _text });
     const editor = findEditor(docUri);
     const document = editor?.document;
     const selection = editor?.selection;

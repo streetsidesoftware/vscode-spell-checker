@@ -1,7 +1,7 @@
 import type { Diagnostic, Range, Selection, TextDocument, Uri } from 'vscode';
-import { languages } from 'vscode';
 
 import { diagnosticSource } from './constants';
+import { getDependencies } from './di';
 import { isWordLike } from './settings/CSpellSettings';
 import { isDefined, uniqueFilter } from './util';
 
@@ -11,7 +11,8 @@ import { isDefined, uniqueFilter } from './util';
  * @returns any cspell diags found matching the uri.
  */
 export function getCSpellDiags(docUri: Uri | undefined): Diagnostic[] {
-    const diags = (docUri && languages.getDiagnostics(docUri)) || [];
+    const issueTracker = getDependencies().issueTracker;
+    const diags = (docUri && issueTracker.getDiagnostics(docUri)) || [];
     const cSpellDiags = diags.filter((d) => d.source === diagnosticSource);
     return cSpellDiags;
 }

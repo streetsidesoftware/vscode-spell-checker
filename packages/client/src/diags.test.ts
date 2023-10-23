@@ -1,31 +1,52 @@
 import { createTextDocument } from 'jest-mock-vscode';
 import * as vscode from 'vscode';
-import { Diagnostic, DiagnosticSeverity, languages, Position, Range, Uri } from 'vscode';
+import { Diagnostic, DiagnosticSeverity, Position, Range, Uri } from 'vscode';
 
+import { getDependencies } from './di';
 import { __testing__, extractMatchingDiagText, getCSpellDiags } from './diags';
 import { isDefined, mustBeDefined } from './util';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;
 
-const mockGetDiagnostics = jest.mocked(languages.getDiagnostics);
+jest.mock('./di');
+
+const mockGetDependencies = jest.mocked(getDependencies);
 
 describe('Validate diags', () => {
+    beforeEach(() => {
+        mockGetDependencies.mockImplementation(
+            () =>
+                ({
+                    issueTracker: { getDiagnostics: jest.fn(implGetDiagnostics) },
+                }) as any,
+        );
+    });
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
     test('getCSpellDiags empty', () => {
+        const mockGetDependencies = jest.mocked(getDependencies);
+        mockGetDependencies.mockImplementation(
+            () =>
+                ({
+                    issueTracker: { getDiagnostics: jest.fn(() => []) },
+                }) as any,
+        );
         const uri = Uri.file(__filename);
-        mockGetDiagnostics.mockReturnValue([]);
         const r = getCSpellDiags(uri);
         expect(r).toEqual([]);
+        expect(jest.mocked(getDependencies)).toHaveBeenCalledTimes(1);
     });
 
     test('getCSpellDiags', () => {
         const uri = Uri.file(__filename);
-        mockGetDiagnostics.mockImplementation(implGetDiagnostics);
         const r = getCSpellDiags(uri);
+        expect(jest.mocked(getDependencies)).toHaveBeenCalledTimes(1);
         expect(r).toHaveLength(2);
     });
 
     test('getCSpellDiags undefined', () => {
-        mockGetDiagnostics.mockImplementation(implGetDiagnostics);
         const r = getCSpellDiags(undefined);
         expect(r).toHaveLength(0);
     });
@@ -92,6 +113,7 @@ describe('Validate text extractors', () => {
 function implGetDiagnostics(): [Uri, Diagnostic[]][];
 function implGetDiagnostics(uri: Uri): Diagnostic[];
 function implGetDiagnostics(uri?: Uri): [Uri, Diagnostic[]][] | Diagnostic[] {
+    console.error('implGetDiagnostics %s', uri);
     if (!uri) return sampleDiags();
     return sampleDiags()[0][1];
 }

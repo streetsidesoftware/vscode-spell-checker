@@ -17,6 +17,7 @@ import type {
     GetConfigurationForDocumentResult,
     IsSpellCheckEnabledResult,
     OnSpellCheckDocumentStep,
+    PublishDiagnostics,
     SpellingSuggestionsResult,
     SplitTextIntoWordsResult,
     TextDocumentInfo,
@@ -51,6 +52,7 @@ export interface ClientRequestsAPI {
 /** Notifications from the server to the client(vscode extension) */
 export interface ClientNotificationsAPI {
     onSpellCheckDocument(step: OnSpellCheckDocumentStep): void;
+    onDiagnostics(pub: PublishDiagnostics): void;
 }
 
 export interface SpellCheckerServerAPI extends RpcAPI {

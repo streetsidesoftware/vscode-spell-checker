@@ -3,25 +3,33 @@ import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextDocument
 import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString } from 'vscode';
 
 import type { CSpellUserSettings } from './client';
-import { getCSpellDiags } from './diags';
 import type { Disposable } from './disposable';
+import type { IssueTracker } from './issueTracker';
 
 export class SpellingIssueDecorator implements Disposable {
     private decorationType: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
     public dispose = this.disposables.dispose;
 
-    constructor() {
+    constructor(readonly issueTracker: IssueTracker) {
         this.decorationType = this.createDecorator();
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
             vscode.window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
+            issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
+            vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
         );
     }
 
-    handleOnDidChangeDiagnostics(event: DiagnosticChangeEvent) {
+    private handleOnDidChangeDiagnostics(event: DiagnosticChangeEvent) {
         this.refreshDiagnostics(event.uris);
+    }
+
+    refreshEditor(e: vscode.TextEditor | undefined) {
+        e ??= vscode.window.activeTextEditor;
+        if (!e) return;
+        return this.refreshDiagnostics([e.document.uri]);
     }
 
     refreshDiagnostics(docUris?: readonly Uri[]) {
@@ -34,7 +42,7 @@ export class SpellingIssueDecorator implements Disposable {
     refreshDiagnosticsInEditor(editor: TextEditor) {
         if (!this.decorationType) return;
         const doc = editor.document;
-        const diags = getCSpellDiags(doc.uri);
+        const diags = this.issueTracker.getDiagnostics(doc.uri) || [];
 
         const decorations: DecorationOptions[] = diags
             .filter((diag) => diag.severity === DiagnosticSeverity.Hint)

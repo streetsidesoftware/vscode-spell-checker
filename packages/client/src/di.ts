@@ -1,12 +1,14 @@
 import type { ExtensionContext } from 'vscode';
 
 import type { CSpellClient } from './client';
+import type { IssueTracker } from './issueTracker';
 import type { DictionaryHelper } from './settings/DictionaryHelper';
 
 export interface GlobalDependencies {
     name: string;
     extensionContext: ExtensionContext;
     client: CSpellClient;
+    issueTracker: IssueTracker;
     dictionaryHelper: DictionaryHelper;
 }
 
@@ -19,6 +21,7 @@ const definedDependencyKeys: KeysForGlobalDependencies = {
     extensionContext: undefined,
     client: undefined,
     dictionaryHelper: undefined,
+    issueTracker: undefined,
 };
 
 type GlobalDependenciesKeys = keyof GlobalDependencies;
