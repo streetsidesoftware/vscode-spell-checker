@@ -235,6 +235,19 @@ export class CSpellClient implements Disposable {
         return actions;
     }
 
+    public onDiagnostics(fn: (diags: DiagnosticsFromServer) => void) {
+        return this.serverApi.onDiagnostics((pub) => {
+            const cvt = this.client.protocol2CodeConverter;
+            const uri = cvt.asUri(pub.uri);
+            const diags: DiagnosticsFromServer = {
+                uri,
+                version: pub.version,
+                diagnostics: pub.diagnostics.map((diag) => cvt.asDiagnostic(diag)),
+            };
+            return fn(diags);
+        });
+    }
+
     private async initWhenReady() {
         await this.onReady();
         this.registerHandleNotificationsFromServer();
@@ -291,4 +304,21 @@ function toConfigTarget<T>(ins: Inspect<T> | undefined, allowFolder: boolean): F
         workspace: workspaceValue !== undefined || undefined,
         folder: allowFolder && (workspaceFolderValue !== undefined || undefined),
     };
+}
+
+export interface DiagnosticsFromServer {
+    /**
+     * The URI for which diagnostic information is reported.
+     */
+    uri: Uri;
+    /**
+     * Optional the version number of the document the diagnostics are published for.
+     *
+     * @since 3.15.0
+     */
+    version?: number;
+    /**
+     * An array of diagnostic information items.
+     */
+    diagnostics: Diagnostic[];
 }

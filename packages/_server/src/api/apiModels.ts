@@ -1,3 +1,5 @@
+import type { PublishDiagnosticsParams } from 'vscode-languageserver';
+
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
 import type { Suggestion } from '../models/Suggestion.mjs';
@@ -199,3 +201,5 @@ export type DiagnosticSource = ExtensionId;
 export type VSCodeSettingsCspell = {
     [key in ExtensionId]?: config.CSpellUserSettings;
 };
+
+export type PublishDiagnostics = Required<PublishDiagnosticsParams>;

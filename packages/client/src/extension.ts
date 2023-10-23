@@ -11,6 +11,7 @@ import * as di from './di';
 import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
 import * as settingsViewer from './infoViewer/infoView';
+import { IssueTracker } from './issueTracker';
 import * as modules from './modules';
 import type { ConfigTargetLegacy } from './settings';
 import * as settings from './settings';
@@ -42,6 +43,9 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     await client.start();
     const statusBar = initStatusBar(context, client);
 
+    const issueTracker = new IssueTracker(client);
+    di.set('issueTracker', issueTracker);
+
     function triggerGetSettings(delayInMs = 0) {
         setTimeout(triggerGetSettingsNow, delayInMs);
     }
@@ -61,11 +65,12 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
-    const decorator = new SpellingIssueDecorator();
+    const decorator = new SpellingIssueDecorator(issueTracker);
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
     context.subscriptions.push(
+        issueTracker,
         configWatcher,
         configWatcher.onDidChange(triggerConfigChange),
         configWatcher.onDidCreate(triggerConfigChange),
@@ -131,7 +136,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     function handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
-        decorator.handleOnDidChangeDiagnostics(e);
         const activeTextEditor = vscode.window.activeTextEditor;
         if (!activeTextEditor) return;
 

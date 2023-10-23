@@ -20,6 +20,7 @@ mockedCreateClientApi.mockImplementation(() => {
             },
             clientNotification: {
                 onSpellCheckDocument: vi.fn(),
+                onDiagnostics: vi.fn(),
             },
             serverRequest: {
                 getConfigurationForDocument: { subscribe: vi.fn() },

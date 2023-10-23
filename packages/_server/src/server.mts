@@ -416,6 +416,7 @@ export function run(): void {
             version: result.version,
             diagnostics: result.diagnostics,
         };
+        catchPromise(clientServerApi.clientNotification.onDiagnostics(diags));
         catchPromise(connection.sendDiagnostics(diags), 'sendDiagnostics');
     }
 

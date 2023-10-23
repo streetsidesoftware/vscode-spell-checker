@@ -18,6 +18,7 @@ export function createMockServerSideApi() {
         },
         clientNotification: {
             onSpellCheckDocument: vi.fn(),
+            onDiagnostics: vi.fn(),
         },
         clientRequest: {
             onWorkspaceConfigForDocumentRequest: vi.fn(),
