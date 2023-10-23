@@ -1,7 +1,8 @@
 import { createDisposableList } from 'utils-disposables';
 import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
-import vscode, { DiagnosticSeverity, MarkdownString } from 'vscode';
+import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString } from 'vscode';
 
+import type { CSpellUserSettings } from './client';
 import { getCSpellDiags } from './diags';
 import type { Disposable } from './disposable';
 
@@ -15,6 +16,7 @@ export class SpellingIssueDecorator implements Disposable {
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
+            vscode.window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
         );
     }
 
@@ -22,8 +24,9 @@ export class SpellingIssueDecorator implements Disposable {
         this.refreshDiagnostics(event.uris);
     }
 
-    refreshDiagnostics(uris: readonly Uri[]) {
-        const updated = new Set(uris.map((uri) => uri.toString()));
+    refreshDiagnostics(docUris?: readonly Uri[]) {
+        docUris ??= vscode.window.visibleTextEditors.map((e) => e.document.uri);
+        const updated = new Set(docUris.map((uri) => uri.toString()));
         const editors = vscode.window.visibleTextEditors.filter((editor) => updated.has(editor.document.uri.toString()));
         editors.forEach((editor) => this.refreshDiagnosticsInEditor(editor));
     }
@@ -46,16 +49,19 @@ export class SpellingIssueDecorator implements Disposable {
 
     private resetDecorator() {
         this.decorationType = this.createDecorator();
+        this.refreshDiagnostics();
     }
 
     private createDecorator(): TextEditorDecorationType | undefined {
         this.clearDecoration();
-        const diagLevel = vscode.workspace.getConfiguration('cSpell').get('diagnosticLevel');
         const decorateIssues = vscode.workspace.getConfiguration('cSpell').get('decorateIssues');
-        if (diagLevel !== 'Hint' || !decorateIssues) return undefined;
+        if (!decorateIssues) return undefined;
 
-        const overviewRulerColor: string | undefined = vscode.workspace.getConfiguration('cSpell').get('overviewRulerColor') || undefined;
-        const textDecoration: string | undefined = vscode.workspace.getConfiguration('cSpell').get('textDecoration') || undefined;
+        const mode = calcMode(vscode.window.activeColorTheme.kind);
+        const cfg = vscode.workspace.getConfiguration('cSpell') as CSpellUserSettings;
+
+        const overviewRulerColor: string | undefined = cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor || undefined;
+        const textDecoration: string | undefined = cfg[mode]?.textDecoration || cfg.textDecoration || undefined;
 
         const decorator = vscode.window.createTextEditorDecorationType({
             isWholeLine: false,
@@ -89,4 +95,17 @@ function commandUri(command: string, ...params: unknown[]): string {
 function markdownLink(text: string, uri: string, hover?: string) {
     const hoverText = hover ? ` "${hover}"` : '';
     return `[${text}](${uri}${hoverText})`;
+}
+
+type ColorMode = 'dark' | 'light';
+
+function calcMode(kind: ColorThemeKind): ColorMode {
+    switch (kind) {
+        case ColorThemeKind.Dark:
+        case ColorThemeKind.HighContrast:
+            return 'dark';
+        case ColorThemeKind.HighContrastLight:
+        case ColorThemeKind.Light:
+            return 'light';
+    }
 }

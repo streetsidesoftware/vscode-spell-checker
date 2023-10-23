@@ -4,6 +4,7 @@ import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
+import { isScmUri } from './config/docUriHelper.mjs';
 import { diagnosticSource } from './constants.mjs';
 import type { DiagnosticData } from './models/DiagnosticData.mjs';
 
@@ -13,18 +14,16 @@ export const diagnosticCollectionName = diagnosticSource;
 export const diagSource = diagnosticCollectionName;
 export const defaultCheckLimit = 500;
 
-const diagSeverityMap = new Map<string, DiagnosticSeverity>([
+const diagSeverityMap = new Map<string, DiagnosticSeverity | undefined>([
     ['error', DiagnosticSeverity.Error],
     ['warning', DiagnosticSeverity.Warning],
     ['information', DiagnosticSeverity.Information],
     ['hint', DiagnosticSeverity.Hint],
+    ['off', undefined],
 ]);
 
 export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
-    const { diagnosticLevel = DiagnosticSeverity.Information.toString(), diagnosticLevelFlaggedWords } = options;
-    const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase()) || DiagnosticSeverity.Information;
-    const severityFlaggedWords =
-        (diagnosticLevelFlaggedWords && diagSeverityMap.get(diagnosticLevelFlaggedWords.toLowerCase())) || severity;
+    const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
     const limit = (options.checkLimit || defaultCheckLimit) * 1024;
     const content = textDocument.getText().slice(0, limit);
     const docInfo = {
@@ -55,6 +54,22 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
             const data: DiagnosticData = { issueType, suggestions: sugs };
             return { severity, range, message: diagMessage, source: diagSource, data };
-        });
+        })
+        .filter((diag) => !!diag.severity);
     return diags;
+}
+
+type SeverityOptions = Pick<CSpellUserSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords' | 'diagnosticLevelSCM'>;
+
+interface Severity {
+    severity: DiagnosticSeverity | undefined;
+    severityFlaggedWords: DiagnosticSeverity | undefined;
+}
+
+function calcSeverity(docUri: string, options: SeverityOptions): Severity {
+    const { diagnosticLevel = 'Information', diagnosticLevelFlaggedWords, diagnosticLevelSCM } = options;
+    const scmLevel = isScmUri(docUri) ? diagnosticLevelSCM : undefined;
+    const severity = diagSeverityMap.get((scmLevel || diagnosticLevel).toLowerCase());
+    const severityFlaggedWords = diagSeverityMap.get((scmLevel || diagnosticLevelFlaggedWords || diagnosticLevel).toLowerCase());
+    return { severity, severityFlaggedWords };
 }

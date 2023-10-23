@@ -3,6 +3,9 @@ import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
 import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
+export type DiagnosticLevel = 'Error' | 'Warning' | 'Information' | 'Hint';
+export type DiagnosticLevelExt = DiagnosticLevel | 'Off';
+
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, AppearanceSettings {
     /**
      * If a `cspell` configuration file is updated, format the configuration file
@@ -32,7 +35,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Information",
      *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
-    diagnosticLevel?: 'Error' | 'Warning' | 'Information' | 'Hint';
+    diagnosticLevel?: DiagnosticLevel;
 
     /**
      * Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
@@ -46,7 +49,24 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Information",
      *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
-    diagnosticLevelFlaggedWords?: 'Error' | 'Warning' | 'Information' | 'Hint';
+    diagnosticLevelFlaggedWords?: DiagnosticLevel;
+
+    /**
+     * Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
+     * This affects the color of the squiggle.
+     *
+     * By default, this setting will match `#cSpell.diagnosticLevel#`.
+     *
+     * @title Set Diagnostic Reporting Level in SCM Commit Message
+     * @scope resource
+     * @enumDescriptions [
+     *  "Report Spelling Issues as Errors",
+     *  "Report Spelling Issues as Warnings",
+     *  "Report Spelling Issues as Information",
+     *  "Report Spelling Issues as Hints, will not show up in Problems",
+     *  "Do not Report Spelling Issues"]
+     */
+    diagnosticLevelSCM?: DiagnosticLevelExt;
 
     /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
@@ -414,31 +434,25 @@ export interface AddToTargets extends AddToDictionaryTarget {
     cspell?: AutoOrBoolean;
 }
 
-export interface AppearanceSettings {
-    /**
-     * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
-     *
-     * @scope application
-     * @version 4.0.0
-     * @default false
-     */
-    decorateIssues?: boolean;
-
+export interface Decoration {
     /**
      * The CSS color used to show issues in the ruler.
      *
-     * - Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)
+     * See:
+     * - [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+     * - [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
      * - Hex colors
-     * - Use `` (empty string) to disable.
+     * - Use "" (empty string) to disable.
      *
      * Examples:
      * - `green`
      * - `DarkYellow`
      * - `#ffff0080` - semi-transparent yellow.
+     * - `rgb(255 153 0 / 80%)`
      *
      * @scope application
+     * @default "#fc4c"
      * @version 4.0.0
-     * @default "#00800080"
      */
     overviewRulerColor?: string;
 
@@ -447,16 +461,56 @@ export interface AppearanceSettings {
      *
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      *
-     * - Use `` (empty string) to disable text decoration.
+     * - Use "" (empty string) to disable text decoration.
+     *
+     * Format:  `<line> [style] <color> [thickness]`
+     *
+     * - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+     * - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+     * - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+     * - thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
      *
      * Examples:
-     * - `blue`
-     * - `yellow`
-     * - `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.
+     * - `underline green`
+     * - `underline dotted yellow 0.2rem`
+     * - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
+     *
+     * @scope application
+     * @default "underline wavy #fc4"
+     * @version 4.0.0
+     */
+    textDecoration?: string;
+}
+
+interface Appearance extends Decoration {
+    /**
+     * Decoration for light themes.
+     *
+     * See:
+     * - `#cSpell.overviewRulerColor#`
+     * - `#cSpell.textDecoration#`
+     * @scope application
+     */
+    light?: Decoration;
+
+    /**
+     * Decoration for dark themes.
+     *
+     * See:
+     * - `#cSpell.overviewRulerColor#`
+     * - `#cSpell.textDecoration#`
+     * @scope application
+     */
+    dark?: Decoration;
+}
+
+export interface AppearanceSettings extends Appearance {
+    /**
+     * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
      *
      * @scope application
      * @version 4.0.0
-     * @default "underline wavy #00800080"
+     * @default false
      */
-    textDecoration?: string;
+    decorateIssues?: boolean;
 }

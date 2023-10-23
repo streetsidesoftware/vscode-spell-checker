@@ -71,3 +71,10 @@ function handleExtractUriFromQuery(param: string, appendFile?: string): (uri: Ur
 function getHandler(uri: Uri): SpecialHandlingFunction {
     return schemaMapToHandler[uri.scheme];
 }
+
+export function isScmUri(uri: Uri | string): boolean {
+    if (typeof uri === 'string') {
+        return uri.startsWith(schemasWithSpecialHandling.vscodeScm + ':');
+    }
+    return uri.scheme === schemasWithSpecialHandling.vscodeScm;
+}

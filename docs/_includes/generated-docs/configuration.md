@@ -353,6 +353,7 @@ Default
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                     | window               | Auto Format Configuration File                                                  |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                               | resource             | Set Diagnostic Reporting Level                                                  |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords)                       | resource             | Set Diagnostic Reporting Level for Flagged Words                                |
+| [`cSpell.diagnosticLevelSCM`](#cspelldiagnosticlevelscm)                                         | resource             | Set Diagnostic Reporting Level in SCM Commit Message                            |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
@@ -439,6 +440,34 @@ Default
 
 Version
 : 4.0.0
+
+---
+
+### `cSpell.diagnosticLevelSCM`
+
+Name
+: `cSpell.diagnosticLevelSCM` -- Set Diagnostic Reporting Level in SCM Commit Message
+
+Type
+: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` \| `"Off"` )
+
+    | `Error` | Report Spelling Issues as Errors |
+    | `Warning` | Report Spelling Issues as Warnings |
+    | `Information` | Report Spelling Issues as Information |
+    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+    | `Off` | Do not Report Spelling Issues |
+
+Scope
+: resource
+
+Description
+: Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
+This affects the color of the squiggle.
+
+    By default, this setting will match `#cSpell.diagnosticLevel#`.
+
+Default
+: _- none -_
 
 ---
 
@@ -1342,11 +1371,36 @@ Default
 
 | Setting                                                  | Scope       | Description                                                                               |
 | -------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.dark`](#cspelldark)                             | application | Decoration for dark themes.                                                               |
 | [`cSpell.decorateIssues`](#cspelldecorateissues)         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.light`](#cspelllight)                           | application | Decoration for light themes.                                                              |
 | [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler.                                           |
 | [`cSpell.textDecoration`](#cspelltextdecoration)         | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
 
 ## Definitions
+
+### `cSpell.dark`
+
+Name
+: `cSpell.dark`
+
+Type
+: object
+
+Scope
+: application
+
+Description
+: Decoration for dark themes.
+
+    See:
+    - `#cSpell.overviewRulerColor#`
+    - `#cSpell.textDecoration#`
+
+Default
+: _- none -_
+
+---
 
 ### `cSpell.decorateIssues`
 
@@ -1370,6 +1424,29 @@ Version
 
 ---
 
+### `cSpell.light`
+
+Name
+: `cSpell.light`
+
+Type
+: object
+
+Scope
+: application
+
+Description
+: Decoration for light themes.
+
+    See:
+    - `#cSpell.overviewRulerColor#`
+    - `#cSpell.textDecoration#`
+
+Default
+: _- none -_
+
+---
+
 ### `cSpell.overviewRulerColor`
 
 Name
@@ -1384,17 +1461,20 @@ Scope
 Description
 : The CSS color used to show issues in the ruler.
 
-    - Supports named colors: [CSS Colors](https://www.w3schools.com/cssref/css_colors.php)
+    See:
+    - [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)
+    - [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)
     - Hex colors
-    - Use `` (empty string) to disable.
+    - Use "" (empty string) to disable.
 
     Examples:
     - `green`
     - `DarkYellow`
     - `#ffff0080` - semi-transparent yellow.
+    - `rgb(255 153 0 / 80%)`
 
 Default
-: _`"#00800080"`_
+: _`"#fc4c"`_
 
 Version
 : 4.0.0
@@ -1417,15 +1497,22 @@ Description
 
     See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
 
-    - Use `` (empty string) to disable text decoration.
+    - Use "" (empty string) to disable text decoration.
+
+    Format:  `<line> [style] <color> [thickness]`
+
+    - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+    - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+    - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+    - thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
 
     Examples:
-    - `blue`
-    - `yellow`
-    - `underline wavy #ffff0080 1.5px` - Wavy underline with 1.5px line width in semi-transparent yellow.
+    - `underline green`
+    - `underline dotted yellow 0.2rem`
+    - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
 
 Default
-: _`"underline wavy #00800080"`_
+: _`"underline wavy #fc4"`_
 
 Version
 : 4.0.0

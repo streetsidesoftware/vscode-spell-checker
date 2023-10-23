@@ -138,6 +138,7 @@ type _VSConfigReporting = Pick<
     | 'autoFormatConfigFile'
     | 'diagnosticLevel'
     | 'diagnosticLevelFlaggedWords'
+    | 'diagnosticLevelSCM'
     | 'hideAddToDictionaryCodeActions'
     | 'maxDuplicateProblems'
     | 'maxNumberOfProblems'
