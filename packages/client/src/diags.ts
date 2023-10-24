@@ -13,8 +13,12 @@ import { isDefined, uniqueFilter } from './util';
 export function getCSpellDiags(docUri: Uri | undefined): Diagnostic[] {
     const issueTracker = getDependencies().issueTracker;
     const diags = (docUri && issueTracker.getDiagnostics(docUri)) || [];
-    const cSpellDiags = diags.filter((d) => d.source === diagnosticSource);
+    const cSpellDiags = filterDiags(diags);
     return cSpellDiags;
+}
+
+export function filterDiags(diags: readonly Diagnostic[], source = diagnosticSource): Diagnostic[] {
+    return diags.filter((d) => d.source === source);
 }
 
 export function extractMatchingDiagText(

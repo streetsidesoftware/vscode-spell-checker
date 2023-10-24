@@ -1,4 +1,4 @@
-import * as client from './client';
+import * as client from './index';
 
 describe('vscode-languageclient', () => {
     test('client', () => {

@@ -4,6 +4,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
+import { registerSpellCheckerCodeActionProvider } from './codeAction';
 import * as commands from './commands';
 import { updateDocumentRelatedContext } from './context';
 import { SpellingIssueDecorator } from './decorate';
@@ -84,6 +85,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
         decorator,
+        registerSpellCheckerCodeActionProvider(issueTracker),
 
         ...commands.registerCommands(),
 
