@@ -1,33 +1,17 @@
-import type {
-    CodeAction,
-    Command,
-    ConfigurationScope,
-    Diagnostic,
-    Disposable,
-    Location,
-    QuickPickItem,
-    QuickPickOptions,
-    TextDocument,
-    TextEdit,
-    TextEditor,
-    Uri,
-} from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, Location, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
+import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
-import { extractMatchingDiagRanges, extractMatchingDiagTexts, getCSpellDiags } from './diags';
+import { extractMatchingDiagTexts, getCSpellDiags } from './diags';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
-import { toRange } from './languageServer/clientHelpers';
-import type { RangeLike } from './languageServer/models';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
-    ConfigFields,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
-    getSettingFromVSConfig,
     normalizeTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
@@ -64,9 +48,10 @@ import {
     configurationTargetToDictionaryScope,
     dictionaryScopeToConfigurationTarget,
 } from './settings/targetAndScope';
-import type { OnErrorResolver } from './util/errors';
-import { catchErrors, handleErrors, ignoreError } from './util/errors';
+import { catchErrors, handleErrors } from './util/errors';
+import { findEditor } from './util/findEditor';
 import { performance, toMilliseconds } from './util/perf';
+import { pVoid } from './util/pVoid';
 import { scrollToText } from './util/textEditor';
 import { toUri } from './util/uriHelper';
 import { findMatchingDocument } from './vscode/findDocument';
@@ -163,15 +148,6 @@ const commandHandlers: CommandHandler = {
 
     'cSpell.openFileAtLine': openFileAtLine,
 };
-
-function pVoid<T>(p: Promise<T> | Thenable<T>, context: string, onErrorHandler: OnErrorResolver = ignoreError): Promise<void> {
-    const v = Promise.resolve(p).then(() => undefined);
-    return handleErrors(v, context, onErrorHandler);
-}
-
-// function notImplemented(cmd: string) {
-//     return () => pVoid(window.showErrorMessage(`Not yet implemented "${cmd}"`));
-// }
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
 const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
@@ -576,43 +552,6 @@ function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri |
     return scope ? `${method} ${scope} ${toUri(uri)}` : `${method} ${toUri(uri)}`;
 }
 
-interface SuggestionQuickPickItem extends QuickPickItem {
-    _action: CodeAction;
-}
-
-async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?: RangeLike, _text?: string): Promise<void> {
-    // console.log('Args: %o', { docUri, range: rangeLike, _text });
-    const editor = findEditor(docUri);
-    const document = editor?.document;
-    const selection = editor?.selection;
-    const range = (rangeLike && toRange(rangeLike)) || (selection && document?.getWordRangeAtPosition(selection.active));
-    const diags = document ? getCSpellDiags(document.uri) : undefined;
-    const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
-    const r = matchingRanges?.[0] || range;
-    const matchingDiags = r && diags?.filter((d) => !!d.range.intersection(r));
-
-    if (!document || !selection || !r || !matchingDiags) {
-        return pVoid(window.showInformationMessage('Nothing to suggest.'), 'actionSuggestSpellingCorrections');
-    }
-
-    const menu = getSettingFromVSConfig(ConfigFields.suggestionMenuType, document);
-    if (menu === 'quickFix') {
-        return await commands.executeCommand('editor.action.quickFix');
-    }
-
-    const actions = await di.get('client').requestSpellingSuggestions(document, r, matchingDiags);
-    if (!actions || !actions.length) {
-        return pVoid(window.showInformationMessage(`No Suggestions Found for ${document.getText(r)}`), 'actionSuggestSpellingCorrections');
-    }
-
-    const items: SuggestionQuickPickItem[] = actions.map((a) => ({ label: a.title, _action: a }));
-    const picked = await window.showQuickPick(items);
-    if (picked && picked._action.command) {
-        const { command: cmd, arguments: args = [] } = picked._action.command;
-        commands.executeCommand(cmd, ...args);
-    }
-}
-
 async function createCustomDictionary(): Promise<void> {
     const targets = await targetsForTextDocument(window.activeTextEditor?.document);
 
@@ -707,20 +646,6 @@ function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | u
     } catch (e) {
         console.log('Invalid Regular Expression: %s', regExStr);
     }
-    return undefined;
-}
-
-function findEditor(uri?: Uri): TextEditor | undefined {
-    if (!uri) return window.activeTextEditor;
-
-    const uriStr = uri.toString();
-
-    for (const editor of window.visibleTextEditors) {
-        if (editor.document.uri.toString() === uriStr) {
-            return editor;
-        }
-    }
-
     return undefined;
 }
 

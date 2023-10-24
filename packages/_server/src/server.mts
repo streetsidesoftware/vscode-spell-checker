@@ -56,10 +56,6 @@ import * as Validator from './validator.mjs';
 
 log('Starting Spell Checker Server');
 
-// type ServerNotificationApiHandlers = {
-//     [key in keyof Api.ServerNotifyApi]: (...p: Parameters<Api.ServerNotifyApi[key]>) => void | Promise<void>;
-// };
-
 const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
