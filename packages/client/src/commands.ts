@@ -1,5 +1,6 @@
 import type {
     CodeAction,
+    Command,
     ConfigurationScope,
     Diagnostic,
     Disposable,
@@ -12,7 +13,7 @@ import type {
     Uri,
 } from 'vscode';
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
-import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
+import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import * as di from './di';
@@ -179,6 +180,8 @@ const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'adva
 function handlerApplyTextEdits() {
     return async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
         const client = di.get('client').client;
+
+        console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
 
         const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
 
@@ -719,4 +722,50 @@ function findEditor(uri?: Uri): TextEditor | undefined {
     }
 
     return undefined;
+}
+
+export function createTextEditCommand(
+    title: string,
+    uri: string | Uri,
+    documentVersion: number,
+    edits: LsTextEdit[] | TextEdit[],
+): Command {
+    const normalizedEdits: LsTextEdit[] = edits.map(toLsTextEdit);
+    return {
+        title,
+        command: 'cSpell.editText',
+        arguments: [uri.toString(), documentVersion, normalizedEdits],
+    };
+}
+
+/**
+ * Create a href URL that will execute a command.
+ */
+export function commandUri(command: Command): string;
+export function commandUri(command: string, ...params: unknown[]): string;
+export function commandUri(command: string | Command, ...params: unknown[]): string {
+    if (typeof command === 'string') {
+        return `command:${command}?${encodeURIComponent(JSON.stringify(params))}`;
+    }
+    return `command:${command.command}?${command.arguments ? encodeURIComponent(JSON.stringify(command.arguments)) : ''}`;
+}
+
+function toLsPosition(p: LsPosition | Position): LsPosition {
+    const { line, character } = p;
+    return { line, character };
+}
+
+function toLsRange(range: LsRange | Range): LsRange {
+    return {
+        start: toLsPosition(range.start),
+        end: toLsPosition(range.end),
+    };
+}
+
+function toLsTextEdit(edit: LsTextEdit | TextEdit): LsTextEdit {
+    const { range, newText } = edit;
+    return {
+        range: toLsRange(range),
+        newText,
+    };
 }

@@ -18,7 +18,14 @@ import type {
     PublishDiagnosticsParams,
     ServerCapabilities,
 } from 'vscode-languageserver/node.js';
-import { CodeActionKind, createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
+import {
+    CodeActionKind,
+    createConnection,
+    DiagnosticSeverity,
+    ProposedFeatures,
+    TextDocuments,
+    TextDocumentSyncKind,
+} from 'vscode-languageserver/node.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
@@ -36,6 +43,7 @@ import {
     isUriBlocked,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
+import { isScmUri } from './config/docUriHelper.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import { createServerApi } from './serverApi.mjs';
@@ -411,13 +419,16 @@ export function run(): void {
 
     function sendDiagnostics(result: ValidationResult) {
         log(`Send Diagnostics v${result.version}`, result.uri);
-        const diags: Required<PublishDiagnosticsParams> = {
-            uri: result.uri,
-            version: result.version,
-            diagnostics: result.diagnostics,
-        };
+
+        const { uri, version, diagnostics } = result;
+
+        const diags: Required<PublishDiagnosticsParams> = { uri, version, diagnostics };
+
+        const diagsForVSCode = result.hideHints
+            ? { ...diags, diagnostics: diags.diagnostics.filter((d) => d.severity !== DiagnosticSeverity.Hint) }
+            : diags;
         catchPromise(clientServerApi.clientNotification.onDiagnostics(diags));
-        catchPromise(connection.sendDiagnostics(diags), 'sendDiagnostics');
+        catchPromise(connection.sendDiagnostics(diagsForVSCode), 'sendDiagnostics');
     }
 
     async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
@@ -522,19 +533,22 @@ export function run(): void {
             const { doc, settings } = dsp;
             const { uri, version } = doc;
 
+            const hideHints = !isScmUri(uri) && !!settings.decorateIssues;
+            const result: ValidationResult = { uri, version, hideHints, diagnostics: [] };
+
             try {
                 if (!isUriAllowed(uri, settings.allowedSchemas)) {
                     const schema = uri.split(':')[0];
                     log(`Schema not allowed (${schema}), skipping:`, uri);
-                    return { uri, version, diagnostics: [] };
+                    return result;
                 }
                 if (isStale(doc)) {
-                    return { uri, version, diagnostics: [] };
+                    return result;
                 }
                 const shouldCheck = await shouldValidateDocument(doc, settings);
                 if (!shouldCheck) {
                     log('validateTextDocument skip:', uri);
-                    return { uri, version, diagnostics: [] };
+                    return result;
                 }
                 log(`getSettingsToUseForDocument start ${doc.version}`, uri);
                 const settingsToUse = await getSettingsToUseForDocument(doc);
@@ -542,7 +556,7 @@ export function run(): void {
                 configWatcher.processSettings(settingsToUse);
                 log(`getSettingsToUseForDocument done ${doc.version}`, uri);
                 if (isStale(doc)) {
-                    return { uri, version, diagnostics: [] };
+                    return result;
                 }
                 if (settingsToUse.enabled) {
                     logInfo(`Validate File: v${doc.version}`, uri);
@@ -552,12 +566,12 @@ export function run(): void {
                     dictionaryWatcher.processSettings(settings);
                     const diagnostics: Diagnostic[] = await Validator.validateTextDocument(doc, settings);
                     log(`validateTextDocument done: v${doc.version}`, uri);
-                    return { uri, version, diagnostics };
+                    return { ...result, diagnostics };
                 }
             } catch (e) {
                 logError(`validateTextDocument: ${JSON.stringify(e)}`);
             }
-            return { uri, version, diagnostics: [] };
+            return result;
         }
 
         isValidationBusy = true;
@@ -674,6 +688,7 @@ interface TextDocumentInfo {
 
 interface ValidationResult extends PublishDiagnosticsParams {
     version: number;
+    hideHints: boolean;
 }
 
 interface OnChangeParam extends DidChangeConfigurationParams {

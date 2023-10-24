@@ -17,6 +17,7 @@ export type {
     GetConfigurationForDocumentResult,
     NamedPattern,
     PatternMatch,
+    SpellCheckerDiagnosticData,
     SpellCheckerSettingsProperties,
 } from './server';
 export { normalizeLocale } from './server';
