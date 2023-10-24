@@ -9,15 +9,13 @@ import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { CodeAction, CodeActionKind, TextEdit } from 'vscode-languageserver-types';
 
-import type { UriString, WorkspaceConfigForDocument } from './api.js';
+import type { SpellCheckerDiagnosticData, Suggestion, UriString, WorkspaceConfigForDocument } from './api.js';
 import { clientCommands as cc } from './commands.mjs';
 import type { ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from './config/configTargets.mjs';
 import { ConfigKinds, ConfigScopes } from './config/configTargets.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { isUriAllowed } from './config/documentSettings.mjs';
-import type { DiagnosticData } from './models/DiagnosticData.mjs';
-import type { Suggestion } from './models/Suggestion.mjs';
 import type { GetSettingsResult } from './SuggestionsGenerator.mjs';
 import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
 import { uniqueFilter } from './utils/index.mjs';
@@ -32,10 +30,10 @@ function extractText(textDocument: TextDocument, range: LangServerRange) {
 
 const debugTargets = false;
 
-function extractDiagnosticData(diag: Diagnostic): DiagnosticData {
+function extractDiagnosticData(diag: Diagnostic): SpellCheckerDiagnosticData {
     const { data } = diag;
     if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
-    return data as DiagnosticData;
+    return data as SpellCheckerDiagnosticData;
 }
 
 export interface CodeActionHandlerDependencies {

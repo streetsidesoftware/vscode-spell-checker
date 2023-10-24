@@ -3,10 +3,10 @@ import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
+import type { SpellCheckerDiagnosticData } from './api.js';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { isScmUri } from './config/docUriHelper.mjs';
 import { diagnosticSource } from './constants.mjs';
-import type { DiagnosticData } from './models/DiagnosticData.mjs';
 
 export { createTextDocument, validateText } from 'cspell-lib';
 
@@ -52,7 +52,7 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
         .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
-            const data: DiagnosticData = { issueType, suggestions: sugs };
+            const data: SpellCheckerDiagnosticData = { issueType, suggestions: sugs };
             return { severity, range, message: diagMessage, source: diagSource, data };
         })
         .filter((diag) => !!diag.severity);

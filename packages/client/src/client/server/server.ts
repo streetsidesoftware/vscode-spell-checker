@@ -25,6 +25,7 @@ export type {
     NamedPattern,
     OnSpellCheckDocumentStep,
     PatternMatch,
+    SpellCheckerDiagnosticData,
     SpellCheckerSettingsProperties,
     SplitTextIntoWordsResult,
     WorkspaceConfigForDocumentRequest,

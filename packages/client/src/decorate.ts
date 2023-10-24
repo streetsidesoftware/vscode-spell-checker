@@ -1,10 +1,11 @@
 import { createDisposableList } from 'utils-disposables';
-import type { DecorationOptions, Diagnostic, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
+import type { DecorationOptions, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
 import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString } from 'vscode';
 
 import type { CSpellUserSettings } from './client';
+import { commandUri, createTextEditCommand } from './commands';
 import type { Disposable } from './disposable';
-import type { IssueTracker } from './issueTracker';
+import type { IssueTracker, SpellingDiagnostic } from './issueTracker';
 
 export class SpellingIssueDecorator implements Disposable {
     private decorationType: TextEditorDecorationType | undefined;
@@ -82,22 +83,31 @@ export class SpellingIssueDecorator implements Disposable {
     }
 }
 
-function diagToDecorationOptions(diag: Diagnostic, doc: TextDocument): DecorationOptions {
+function diagToDecorationOptions(diag: SpellingDiagnostic, doc: TextDocument): DecorationOptions {
     const { range } = diag;
+    const suggestions = diag.data?.suggestions;
     const text = doc.getText(range);
+
     const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', doc.uri, range, text);
     const commandAdd = commandUri('cSpell.addWordToDictionary', text);
-    const hoverMessage = new MarkdownString(diag.message)
+    const hoverMessage = new MarkdownString(diag.message);
+
+    hoverMessage
         .appendText(' ')
         .appendMarkdown(markdownLink('Suggest', commandSuggest, 'Show suggestions.'))
         .appendText(', ')
         .appendMarkdown(markdownLink('Add', commandAdd, 'Add word to dictionary.'));
+
+    if (suggestions?.length) {
+        for (const suggestion of suggestions) {
+            const { word } = suggestion;
+            const cmd = createTextEditCommand('fix', doc.uri, doc.version, [{ range, newText: word }]);
+            hoverMessage.appendMarkdown('\n- ' + markdownLink(word, commandUri(cmd), `Fix with ${word}`) + '\n');
+        }
+    }
+
     hoverMessage.isTrusted = true;
     return { range, hoverMessage };
-}
-
-function commandUri(command: string, ...params: unknown[]): string {
-    return `command:${command}?${encodeURIComponent(JSON.stringify(params))}`;
 }
 
 function markdownLink(text: string, uri: string, hover?: string) {
