@@ -552,6 +552,44 @@
                   "markdownDescription": "Optional description of configuration.",
                   "type": "string"
                 },
+                "diagnosticLevel": {
+                  "default": "Information",
+                  "enum": [
+                    "Error",
+                    "Warning",
+                    "Information",
+                    "Hint"
+                  ],
+                  "enumDescriptions": [
+                    "Report Spelling Issues as Errors",
+                    "Report Spelling Issues as Warnings",
+                    "Report Spelling Issues as Information",
+                    "Report Spelling Issues as Hints, will not show up in Problems"
+                  ],
+                  "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
+                  "scope": "resource",
+                  "title": "Set Diagnostic Reporting Level",
+                  "type": "string"
+                },
+                "diagnosticLevelFlaggedWords": {
+                  "enum": [
+                    "Error",
+                    "Warning",
+                    "Information",
+                    "Hint"
+                  ],
+                  "enumDescriptions": [
+                    "Report Spelling Issues as Errors",
+                    "Report Spelling Issues as Warnings",
+                    "Report Spelling Issues as Information",
+                    "Report Spelling Issues as Hints, will not show up in Problems"
+                  ],
+                  "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
+                  "scope": "resource",
+                  "title": "Set Diagnostic Reporting Level for Flagged Words",
+                  "type": "string",
+                  "version": "4.0.0"
+                },
                 "dictionaries": {
                   "items": {
                     "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
@@ -1298,119 +1336,153 @@
             "type": "array"
           },
           "cSpell.mergeCSpellSettings": {
-            "anyOf": [
-              {
+            "default": false,
+            "markdownDescription": "Specify if fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged based upon `#cSpell.mergeCSpellSettingsFields#`.\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n\nNote: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.",
+            "scope": "resource",
+            "type": "boolean",
+            "version": "4.0.0"
+          },
+          "cSpell.mergeCSpellSettingsFields": {
+            "additionalProperties": false,
+            "default": {
+              "allowCompoundWords": true,
+              "caseSensitive": true,
+              "dictionaries": true,
+              "dictionaryDefinitions": true,
+              "enableGlobDot": true,
+              "features": true,
+              "files": true,
+              "flagWords": true,
+              "gitignoreRoot": true,
+              "globRoot": true,
+              "ignorePaths": true,
+              "ignoreRegExpList": true,
+              "ignoreWords": true,
+              "import": true,
+              "includeRegExpList": true,
+              "language": true,
+              "languageId": true,
+              "languageSettings": true,
+              "loadDefaultConfiguration": true,
+              "minWordLength": true,
+              "noConfigSearch": true,
+              "noSuggestDictionaries": true,
+              "numSuggestions": true,
+              "overrides": true,
+              "patterns": true,
+              "pnpFiles": true,
+              "reporters": true,
+              "suggestWords": true,
+              "useGitignore": true,
+              "usePnP": true,
+              "userWords": true,
+              "validateDirectives": true,
+              "words": true
+            },
+            "markdownDescription": "Specify which fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace and\n`#cSpell.mergeCSpellSettings#` is `true`.\n\nValues:\n- `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.\n\nExample:\n```jsonc\n\"cSpell.mergeCSpellSettingsFields\": { \"userWords\": false }\n```",
+            "properties": {
+              "allowCompoundWords": {
                 "type": "boolean"
               },
-              {
-                "additionalProperties": false,
-                "properties": {
-                  "allowCompoundWords": {
-                    "type": "boolean"
-                  },
-                  "caseSensitive": {
-                    "type": "boolean"
-                  },
-                  "dictionaries": {
-                    "type": "boolean"
-                  },
-                  "dictionaryDefinitions": {
-                    "type": "boolean"
-                  },
-                  "enableGlobDot": {
-                    "type": "boolean"
-                  },
-                  "features": {
-                    "type": "boolean"
-                  },
-                  "files": {
-                    "type": "boolean"
-                  },
-                  "flagWords": {
-                    "type": "boolean"
-                  },
-                  "gitignoreRoot": {
-                    "type": "boolean"
-                  },
-                  "globRoot": {
-                    "type": "boolean"
-                  },
-                  "ignorePaths": {
-                    "type": "boolean"
-                  },
-                  "ignoreRegExpList": {
-                    "type": "boolean"
-                  },
-                  "ignoreWords": {
-                    "type": "boolean"
-                  },
-                  "import": {
-                    "type": "boolean"
-                  },
-                  "includeRegExpList": {
-                    "type": "boolean"
-                  },
-                  "language": {
-                    "type": "boolean"
-                  },
-                  "languageId": {
-                    "type": "boolean"
-                  },
-                  "languageSettings": {
-                    "type": "boolean"
-                  },
-                  "loadDefaultConfiguration": {
-                    "type": "boolean"
-                  },
-                  "minWordLength": {
-                    "type": "boolean"
-                  },
-                  "noConfigSearch": {
-                    "type": "boolean"
-                  },
-                  "noSuggestDictionaries": {
-                    "type": "boolean"
-                  },
-                  "numSuggestions": {
-                    "type": "boolean"
-                  },
-                  "overrides": {
-                    "type": "boolean"
-                  },
-                  "patterns": {
-                    "type": "boolean"
-                  },
-                  "pnpFiles": {
-                    "type": "boolean"
-                  },
-                  "reporters": {
-                    "type": "boolean"
-                  },
-                  "suggestWords": {
-                    "type": "boolean"
-                  },
-                  "useGitignore": {
-                    "type": "boolean"
-                  },
-                  "usePnP": {
-                    "type": "boolean"
-                  },
-                  "userWords": {
-                    "type": "boolean"
-                  },
-                  "validateDirectives": {
-                    "type": "boolean"
-                  },
-                  "words": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
+              "caseSensitive": {
+                "type": "boolean"
+              },
+              "dictionaries": {
+                "type": "boolean"
+              },
+              "dictionaryDefinitions": {
+                "type": "boolean"
+              },
+              "enableGlobDot": {
+                "type": "boolean"
+              },
+              "features": {
+                "type": "boolean"
+              },
+              "files": {
+                "type": "boolean"
+              },
+              "flagWords": {
+                "type": "boolean"
+              },
+              "gitignoreRoot": {
+                "type": "boolean"
+              },
+              "globRoot": {
+                "type": "boolean"
+              },
+              "ignorePaths": {
+                "type": "boolean"
+              },
+              "ignoreRegExpList": {
+                "type": "boolean"
+              },
+              "ignoreWords": {
+                "type": "boolean"
+              },
+              "import": {
+                "type": "boolean"
+              },
+              "includeRegExpList": {
+                "type": "boolean"
+              },
+              "language": {
+                "type": "boolean"
+              },
+              "languageId": {
+                "type": "boolean"
+              },
+              "languageSettings": {
+                "type": "boolean"
+              },
+              "loadDefaultConfiguration": {
+                "type": "boolean"
+              },
+              "minWordLength": {
+                "type": "boolean"
+              },
+              "noConfigSearch": {
+                "type": "boolean"
+              },
+              "noSuggestDictionaries": {
+                "type": "boolean"
+              },
+              "numSuggestions": {
+                "type": "boolean"
+              },
+              "overrides": {
+                "type": "boolean"
+              },
+              "patterns": {
+                "type": "boolean"
+              },
+              "pnpFiles": {
+                "type": "boolean"
+              },
+              "reporters": {
+                "type": "boolean"
+              },
+              "suggestWords": {
+                "type": "boolean"
+              },
+              "useGitignore": {
+                "type": "boolean"
+              },
+              "usePnP": {
+                "type": "boolean"
+              },
+              "userWords": {
+                "type": "boolean"
+              },
+              "validateDirectives": {
+                "type": "boolean"
+              },
+              "words": {
+                "type": "boolean"
               }
-            ],
-            "default": false,
-            "markdownDescription": "Specify which fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n- `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.\n\nNote:\n\nIf specific fields are specified, they provide the ability to block settings even if a CSpell configuration\nis not found. The following example could be used to block \"cSpell.userWords\" from a workspace.\n\n```jsonc\n\"cSpell.mergeCSpellSettings\": { \"userWords\": false }\n```",
+            },
             "scope": "resource",
+            "type": "object",
             "version": "4.0.0"
           },
           "cSpell.noConfigSearch": {

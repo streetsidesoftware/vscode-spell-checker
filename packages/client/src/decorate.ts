@@ -85,18 +85,33 @@ export class SpellingIssueDecorator implements Disposable {
 
 function diagToDecorationOptions(diag: SpellingDiagnostic, doc: TextDocument): DecorationOptions {
     const { range } = diag;
-    const suggestions = diag.data?.suggestions;
+    const { suggestions, isFlagged, isSuggestion } = diag.data || {};
     const text = doc.getText(range);
 
     const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', doc.uri, range, text);
-    const commandAdd = commandUri('cSpell.addWordToDictionary', text);
-    const hoverMessage = new MarkdownString(diag.message);
+    // const commandAdd = commandUri('cSpell.addWordToDictionary', text);
 
-    hoverMessage
-        .appendText(' ')
-        .appendMarkdown(markdownLink('Suggest', commandSuggest, 'Show suggestions.'))
-        .appendText(', ')
-        .appendMarkdown(markdownLink('Add', commandAdd, 'Add word to dictionary.'));
+    const mdShowSuggestions = markdownLink('Suggestions $(chevron-right)', commandSuggest, 'Show suggestions.');
+
+    const icon = isFlagged ? '$(error)' : isSuggestion ? '$(info)' : '$(warning)';
+
+    const hoverMessage = new MarkdownString(icon + ' ', true);
+
+    hoverMessage.appendMarkdown('***').appendText(text).appendMarkdown('***: ');
+
+    if (isSuggestion) {
+        hoverMessage.appendText('Has Suggestions.');
+        if (!suggestions?.length) {
+            hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
+        }
+    } else {
+        if (isFlagged) {
+            hoverMessage.appendText('Forbidden word.');
+        } else {
+            hoverMessage.appendText('Unknown word.');
+        }
+        hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
+    }
 
     if (suggestions?.length) {
         for (const suggestion of suggestions) {

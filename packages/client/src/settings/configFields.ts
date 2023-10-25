@@ -37,6 +37,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     maxDuplicateProblems: 'maxDuplicateProblems',
     maxNumberOfProblems: 'maxNumberOfProblems',
     mergeCSpellSettings: 'mergeCSpellSettings',
+    mergeCSpellSettingsFields: 'mergeCSpellSettingsFields',
     noSuggestDictionaries: 'noSuggestDictionaries',
     showAutocompleteSuggestions: 'showAutocompleteSuggestions',
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',

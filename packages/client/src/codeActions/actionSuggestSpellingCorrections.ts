@@ -1,5 +1,5 @@
 import type { CodeAction, Diagnostic, QuickPickItem, Range, TextDocument, Uri } from 'vscode';
-import { commands, window } from 'vscode';
+import { commands, Selection, window } from 'vscode';
 
 import * as di from '../di';
 import { extractMatchingDiagRanges, getCSpellDiags } from '../diags';
@@ -18,7 +18,8 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
     const editor = findEditor(docUri);
     const document = editor?.document;
     const selection = editor?.selection;
-    const range = (rangeLike && toRange(rangeLike)) || (selection && document?.getWordRangeAtPosition(selection.active));
+    const rangeParam = rangeLike && toRange(rangeLike);
+    const range = rangeParam || (selection && document?.getWordRangeAtPosition(selection.active));
     const diags = document ? getCSpellDiags(document.uri) : undefined;
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
     const r = matchingRanges?.[0] || range;
@@ -29,7 +30,10 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
     }
 
     const menu = getSettingFromVSConfig(ConfigFields.suggestionMenuType, document);
-    if (menu === 'quickFix') {
+    if (menu === 'quickFix' && editor) {
+        if (rangeParam) {
+            editor.selection = new Selection(rangeParam.start, rangeParam.end);
+        }
         return await commands.executeCommand('editor.action.quickFix');
     }
 

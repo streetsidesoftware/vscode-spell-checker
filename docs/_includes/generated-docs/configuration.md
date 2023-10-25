@@ -732,21 +732,22 @@ Default
 
 # Files, Folders, and Workspaces
 
-| Setting                                                                      | Scope    | Description                                                                                    |
-| ---------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Define Allowed Schemas                                                                         |
-| [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                  |
-| [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                            |
-| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`…   |
-| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration. Default: The current workspace… |
-| [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                           |
-| [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                |
-| [`cSpell.mergeCSpellSettings`](#cspellmergecspellsettings)                   | resource | Specify which fields from `.vscode/settings.json` are passed to the spell checker. This only…  |
-| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                 |
-| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                               |
-| [`cSpell.useGitignore`](#cspellusegitignore)                                 | resource | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the… |
-| [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…   |
-| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                     |
+| Setting                                                                      | Scope    | Description                                                                                        |
+| ---------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Define Allowed Schemas                                                                             |
+| [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                      |
+| [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                                |
+| [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`…       |
+| [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration. Default: The current workspace…     |
+| [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                               |
+| [`cSpell.import`](#cspellimport)                                             | resource | Allows this configuration to inherit configuration for one or more other files.                    |
+| [`cSpell.mergeCSpellSettings`](#cspellmergecspellsettings)                   | resource | Specify if fields from `.vscode/settings.json` are passed to the spell checker. This only applies… |
+| [`cSpell.mergeCSpellSettingsFields`](#cspellmergecspellsettingsfields)       | resource | Specify which fields from `.vscode/settings.json` are passed to the spell checker. This only…      |
+| [`cSpell.noConfigSearch`](#cspellnoconfigsearch)                             | resource | Prevents searching for local configuration when checking individual documents.                     |
+| [`cSpell.spellCheckOnlyWorkspaceFiles`](#cspellspellcheckonlyworkspacefiles) | window   | Spell Check Only Workspace Files                                                                   |
+| [`cSpell.useGitignore`](#cspellusegitignore)                                 | resource | Tells the spell checker to load `.gitignore` files and skip files that match the globs in the…     |
+| [`cSpell.usePnP`](#cspellusepnp)                                             | resource | Packages managers like Yarn 2 use a `.pnp.cjs` file to assist in loading packages stored in…       |
+| [`cSpell.workspaceRootPath`](#cspellworkspacerootpath)                       | resource | Workspace Root Folder Path                                                                         |
 
 ## Definitions
 
@@ -929,34 +930,58 @@ Name
 : `cSpell.mergeCSpellSettings`
 
 Type
-:
+: boolean
 
 Scope
 : resource
 
 Description
-: Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+: Specify if fields from `.vscode/settings.json` are passed to the spell checker.
 This only applies when there is a CSpell configuration file in the workspace.
 
     The purpose of this setting to help provide a consistent result compared to the
     CSpell spell checker command line tool.
 
     Values:
-    - `true` - all settings will be merged
+    - `true` - all settings will be merged based upon `#cSpell.mergeCSpellSettingsFields#`.
     - `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
-    - `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.
 
-    Note:
-
-    If specific fields are specified, they provide the ability to block settings even if a CSpell configuration
-    is not found. The following example could be used to block "cSpell.userWords" from a workspace.
-
-    ```jsonc
-    "cSpell.mergeCSpellSettings": { "userWords": false }
-    ```
+    Note: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.
 
 Default
 : _`false`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.mergeCSpellSettingsFields`
+
+Name
+: `cSpell.mergeCSpellSettingsFields`
+
+Type
+: object
+
+Scope
+: resource
+
+Description
+: Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+This only applies when there is a CSpell configuration file in the workspace and
+`#cSpell.mergeCSpellSettings#` is `true`.
+
+    Values:
+    - `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.
+
+    Example:
+    ```jsonc
+    "cSpell.mergeCSpellSettingsFields": { "userWords": false }
+    ```
+
+Default
+: _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
 
 Version
 : 4.0.0

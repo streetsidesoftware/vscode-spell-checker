@@ -52,7 +52,12 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
         .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
             const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
-            const data: SpellCheckerDiagnosticData = { issueType, suggestions: haveSuggestionsMatchCase(text, sugs) };
+            const data: SpellCheckerDiagnosticData = {
+                issueType,
+                isFlagged,
+                isSuggestion: undefined, // This is a future enhancement to CSpell.
+                suggestions: haveSuggestionsMatchCase(text, sugs),
+            };
             return { severity, range, message: diagMessage, source: diagSource, data };
         })
         .filter((diag) => !!diag.severity);
