@@ -40,7 +40,10 @@ interface LanguageSettings {
     languageSettings?: LanguageSettingsReduced[];
 }
 
-type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> & DictionaryDefinitions & LanguageSettings;
+type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'languageSettings'> &
+    DictionaryDefinitions &
+    LanguageSettings &
+    Pick<SpellCheckerSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
 interface Overrides {
     /**
      * Overrides are used to apply settings for specific files in your project.
