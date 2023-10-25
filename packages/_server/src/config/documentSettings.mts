@@ -332,7 +332,11 @@ export class DocumentSettings {
         const mergedSettingsFromVSCode = mergeSettings(this.importedSettings(), vscodeCSpellSettings);
         const mergedSettings = mergeSettings(
             this.defaultSettings,
-            filterMergeFields(mergedSettingsFromVSCode, vscodeCSpellSettings['mergeCSpellSettings'] || !settings),
+            filterMergeFields(
+                mergedSettingsFromVSCode,
+                vscodeCSpellSettings['mergeCSpellSettings'] || !settings,
+                vscodeCSpellSettings['mergeCSpellSettingsFields'],
+            ),
             settings,
         );
 
@@ -408,7 +412,7 @@ function readSettingsFiles(paths: string[]) {
     // log('readSettingsFiles:', paths);
     const existingPaths = paths.filter((filename) => exists(filename));
     log('readSettingsFiles:', existingPaths);
-    console.error('readSettingsFiles: %o', existingPaths);
+    // console.error('readSettingsFiles: %o', existingPaths);
     return existingPaths.map((file) => cspellReadSettingsFile(file));
 }
 

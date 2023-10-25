@@ -1,7 +1,7 @@
 import type { CSpellUserSettings } from './cspellConfig.mjs';
-import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
+import type { CSpellMergeFields, CSpellMergeFieldsKeys } from './CSpellSettingsPackageProperties.mjs';
 
-export const cspellMergeFields: Record<CSpellMergeFields, true> = {
+export const cspellMergeFields: Required<CSpellMergeFields> = {
     allowCompoundWords: true,
     caseSensitive: true,
     dictionaries: true,
@@ -26,7 +26,6 @@ export const cspellMergeFields: Record<CSpellMergeFields, true> = {
     noSuggestDictionaries: true,
     numSuggestions: true,
     overrides: true,
-    parser: true,
     patterns: true,
     pnpFiles: true,
     reporters: true,
@@ -38,7 +37,7 @@ export const cspellMergeFields: Record<CSpellMergeFields, true> = {
     words: true,
 };
 
-const fields = Object.keys(cspellMergeFields) as CSpellMergeFields[];
+const fields = Object.keys(cspellMergeFields) as CSpellMergeFieldsKeys[];
 
 /**
  * Filter fields to be passed to cspell.
@@ -49,12 +48,16 @@ const fields = Object.keys(cspellMergeFields) as CSpellMergeFields[];
 export function filterMergeFields(
     settings: Readonly<CSpellUserSettings>,
     mergeCSpellSettings: CSpellUserSettings['mergeCSpellSettings'],
+    mergeCSpellSettingsFields: CSpellUserSettings['mergeCSpellSettingsFields'],
 ): CSpellUserSettings {
-    if (mergeCSpellSettings === true) return settings;
+    mergeCSpellSettings ??= false;
+    if (mergeCSpellSettings === true && !mergeCSpellSettingsFields) return settings;
     const copy = { ...settings };
-    mergeCSpellSettings = mergeCSpellSettings || {};
+    mergeCSpellSettingsFields = mergeCSpellSettingsFields || {};
+
     for (const field of fields) {
-        if (mergeCSpellSettings[field]) continue;
+        const keep = mergeCSpellSettings && (mergeCSpellSettingsFields[field] ?? cspellMergeFields[field]);
+        if (keep) continue;
         delete copy[field];
     }
     return copy;

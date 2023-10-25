@@ -359,31 +359,50 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     // addWordsTo?: AddToTargets;
 
     /**
-     * Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+     * Specify if fields from `.vscode/settings.json` are passed to the spell checker.
      * This only applies when there is a CSpell configuration file in the workspace.
      *
      * The purpose of this setting to help provide a consistent result compared to the
      * CSpell spell checker command line tool.
      *
      * Values:
-     * - `true` - all settings will be merged
+     * - `true` - all settings will be merged based upon `#cSpell.mergeCSpellSettingsFields#`.
      * - `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.
-     * - `{ words: true, userWords: false }` - specify which fields to pass through to the spell checker.
      *
-     * Note:
-     *
-     * If specific fields are specified, they provide the ability to block settings even if a CSpell configuration
-     * is not found. The following example could be used to block "cSpell.userWords" from a workspace.
-     *
-     * ```jsonc
-     * "cSpell.mergeCSpellSettings": { "userWords": false }
-     * ```
+     * Note: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.
      *
      * @scope resource
      * @version 4.0.0
      * @default false
      */
-    mergeCSpellSettings?: boolean | Partial<Record<CSpellMergeFields, boolean>>;
+    mergeCSpellSettings?: boolean;
+
+    /**
+     * Specify which fields from `.vscode/settings.json` are passed to the spell checker.
+     * This only applies when there is a CSpell configuration file in the workspace and
+     * `#cSpell.mergeCSpellSettings#` is `true`.
+     *
+     * Values:
+     * - `{ flagWords: true, userWords: false }` - Always allow `flagWords`, but never allow `userWords`.
+     *
+     * Example:
+     * ```jsonc
+     * "cSpell.mergeCSpellSettingsFields": { "userWords": false }
+     * ```
+     *
+     * @scope resource
+     * @version 4.0.0
+     * @default {
+     * "allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,
+     * "enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,
+     * "ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,
+     * "language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,
+     * "noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"parser":true,
+     * "patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,
+     * "userWords":true,"validateDirectives":true,"words":true
+     * }
+     */
+    mergeCSpellSettingsFields?: CSpellMergeFields;
 }
 
 type AutoOrBoolean = boolean | 'auto';

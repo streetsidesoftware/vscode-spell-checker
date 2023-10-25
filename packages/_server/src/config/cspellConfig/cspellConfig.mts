@@ -202,6 +202,7 @@ type _VSConfigFilesAndFolders = Pick<
     | 'ignorePaths'
     | 'import'
     | 'mergeCSpellSettings'
+    | 'mergeCSpellSettingsFields'
     | 'noConfigSearch'
     | 'spellCheckOnlyWorkspaceFiles'
     | 'useGitignore'

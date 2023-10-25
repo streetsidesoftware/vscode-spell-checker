@@ -243,7 +243,7 @@ const directivesToHide: Record<string, true | undefined> = {
 
 function suggestionToTitle(sug: Suggestion, issueType: IssueType): string | undefined {
     const sugWord = sug.word;
-    if (issueType === IssueType.spelling) return sugWord + (sug.isPreferred ? ' (Auto Fix)' : '');
+    if (issueType === IssueType.spelling) return sugWord + (sug.isPreferred ? ' (preferred)' : '');
     if (sugWord in directivesToHide) return undefined;
     return directiveToTitle[sugWord] || 'cspell\x3a' + sugWord;
 }
