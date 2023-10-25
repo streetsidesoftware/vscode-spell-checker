@@ -981,7 +981,7 @@ This only applies when there is a CSpell configuration file in the workspace and
     ```
 
 Default
-: _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"parser":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
+: _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
 
 Version
 : 4.0.0
