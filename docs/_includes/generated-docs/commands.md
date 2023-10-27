@@ -17,6 +17,7 @@
 | `cSpell.addWordToUserSettings`               | Add Words to User Settings                                                                             |
 | `cSpell.addWordToWorkspaceDictionary`        | Add Words to Workspace Dictionary                                                                      |
 | `cSpell.addWordToWorkspaceSettings`          | Add Words to Workspace Settings                                                                        |
+| `cSpell.autoFixSpellingIssues`               | Fix all issues with a preferred suggestion in the current document.                                    |
 | `cSpell.createCSpellConfig`                  | Create a CSpell Configuration File.                                                                    |
 | `cSpell.createCustomDictionary`              | Create a Custom Dictionary File.                                                                       |
 | `cSpell.disableCurrentLanguage`              | Disable Spell Checking Document Language                                                               |
@@ -31,6 +32,7 @@
 | `cSpell.goToPreviousSpellingIssue`           | Go to Previous Spelling Issue                                                                          |
 | `cSpell.goToPreviousSpellingIssueAndSuggest` | Go to Previous Spelling Issue and Suggest                                                              |
 | `cSpell.logPerfTimeline`                     | Log CSpell performance times to console                                                                |
+| `cSpell.openSuggestionsForIssue`             | Show Suggestions<br>**When:**<br> `view == cspell-info.issuesView`                                     |
 | `cSpell.removeWordFromFolderDictionary`      | Remove Words from the Folder Dictionary                                                                |
 | `cSpell.removeWordFromUserDictionary`        | Remove Words from the Global Dictionary                                                                |
 | `cSpell.removeWordFromWorkspaceDictionary`   | Remove Words from the Workspace Dictionaries                                                           |
