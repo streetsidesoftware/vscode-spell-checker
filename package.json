@@ -150,10 +150,22 @@
           "when": "view == cSpellRegExpView"
         }
       ],
+      "view/title": [
+        {
+          "command": "cSpell.autoFixSpellingIssues",
+          "when": "view == cspell-info.issuesView",
+          "group": "navigation"
+        }
+      ],
       "view/item/context": [
         {
           "command": "cSpellRegExpTester.editRegExp",
           "when": "view == cSpellRegExpView && viewItem == regexp",
+          "group": "inline"
+        },
+        {
+          "command": "cSpell.openSuggestionsForIssue",
+          "when": "view == cspell-info.issuesView",
           "group": "inline"
         }
       ]
@@ -171,28 +183,26 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "cspell-regexp-explorer",
-          "title": "Spell Checker Info",
-          "icon": "resources/dark/check_circle.svg",
-          "when": "config.cSpell.experimental.enableRegexpView"
-        },
-        {
           "id": "cspell-info-explorer",
           "title": "Spell Checker",
-          "icon": "resources/todo-list.svg",
+          "icon": "resources/dark/check_circle.svg",
           "when": "config.cSpell.experimental.enableSettingsViewerV2"
+        },
+        {
+          "id": "cspell-regexp-explorer",
+          "title": "Spell Checker Regular Expression Viewer",
+          "icon": "resources/dark/check_circle.svg",
+          "when": "config.cSpell.experimental.enableRegexpView"
         }
       ]
     },
     "views": {
-      "cspell-regexp-explorer": [
-        {
-          "id": "cSpellRegExpView",
-          "name": "Regular Expressions",
-          "when": "config.cSpell.experimental.enableRegexpView"
-        }
-      ],
       "cspell-info-explorer": [
+        {
+          "type": "tree",
+          "id": "cspell-info.issuesView",
+          "name": "Issues"
+        },
         {
           "type": "webview",
           "id": "cspell-info.infoView",
@@ -202,6 +212,13 @@
           "type": "webview",
           "id": "cspell-info.todoView",
           "name": "Spell Checker Todos"
+        }
+      ],
+      "cspell-regexp-explorer": [
+        {
+          "id": "cSpellRegExpView",
+          "name": "Regular Expressions",
+          "when": "config.cSpell.experimental.enableRegexpView"
         }
       ]
     },
@@ -391,6 +408,17 @@
         "command": "cSpellRegExpTester.editRegExp",
         "title": "Edit",
         "icon": "$(edit)"
+      },
+      {
+        "command": "cSpell.openSuggestionsForIssue",
+        "title": "Show Suggestions",
+        "icon": "$(list-unordered)",
+        "enablement": "view == cspell-info.issuesView"
+      },
+      {
+        "command": "cSpell.autoFixSpellingIssues",
+        "title": "Fix all issues with a preferred suggestion in the current document.",
+        "icon": "$(lightbulb-autofix)"
       }
     ],
     "languages": [

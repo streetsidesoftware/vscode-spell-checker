@@ -222,7 +222,7 @@ export class CSpellClient implements Disposable {
         return this.broadcasterOnSpellCheckDocument.listen(fn);
     }
 
-    public async requestSpellingSuggestions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
+    public async requestSpellingSuggestionsCodeActions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
         const params: CodeActionParams = {
             textDocument: VSCodeLangClientTextDocumentIdentifier.create(doc.uri.toString()),
             range: mapRangeToLc(range),
