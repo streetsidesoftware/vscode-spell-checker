@@ -22,7 +22,7 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
     const range = rangeParam || (selection && document?.getWordRangeAtPosition(selection.active));
     const diags = document ? getCSpellDiags(document.uri) : undefined;
     const matchingRanges = extractMatchingDiagRanges(document, selection, diags);
-    const r = matchingRanges?.[0] || range;
+    const r = rangeParam || matchingRanges?.[0] || range;
     const matchingDiags = r && diags?.filter((d) => !!d.range.intersection(r));
 
     if (!document || !selection || !r || !matchingDiags) {
@@ -51,5 +51,5 @@ export async function actionSuggestSpellingCorrections(docUri?: Uri, rangeLike?:
 }
 
 export function requestSpellingSuggestions(document: TextDocument, range: Range, diags: Diagnostic[]) {
-    return di.get('client').requestSpellingSuggestions(document, range, diags);
+    return di.get('client').requestSpellingSuggestionsCodeActions(document, range, diags);
 }

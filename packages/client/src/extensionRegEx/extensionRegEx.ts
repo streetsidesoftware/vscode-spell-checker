@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 import type { CSpellClient, CSpellUserSettings } from '../client';
 import { extensionId } from '../constants';
-import { catchErrors, logError, logErrors, showError } from '../util/errors';
+import { catchErrors, isError, logError, logErrors, showError } from '../util/errors';
 import { toRegExp } from './evaluateRegExp';
 import { PatternMatcherClient } from './patternMatcherClient';
 import type { RegexpOutlineItem } from './RegexpOutlineProvider';
@@ -171,6 +171,7 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
             try {
                 toRegExp(input, 'g');
             } catch (e) {
+                if (isError(e)) return e.message;
                 return format(e);
             }
         }

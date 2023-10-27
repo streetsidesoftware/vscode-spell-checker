@@ -13,6 +13,7 @@ import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
 import * as settingsViewer from './infoViewer/infoView';
 import { IssueTracker } from './issueTracker';
+import { activateIssueViewer } from './issueViewer';
 import * as modules from './modules';
 import type { ConfigTargetLegacy } from './settings';
 import * as settings from './settings';
@@ -67,6 +68,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
+    activateIssueViewer(context, issueTracker);
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation

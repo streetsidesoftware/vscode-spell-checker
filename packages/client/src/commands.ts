@@ -100,7 +100,7 @@ const actionAddIgnoreWordToUser = prompt('Ignore Words in User Settings', fnWTar
 const actionAddWordToCSpell = prompt('Add Words to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
 const actionAddWordToDictionary = prompt('Add Words to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
 
-const commandHandlers: CommandHandler = {
+const commandHandlers = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
@@ -120,6 +120,7 @@ const commandHandlers: CommandHandler = {
     'cSpell.addIgnoreWordsToUser': actionAddIgnoreWordToUser,
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
+    'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
 
     'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
     'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
@@ -147,11 +148,29 @@ const commandHandlers: CommandHandler = {
     'cSpell.createCSpellConfig': createCSpellConfig,
 
     'cSpell.openFileAtLine': openFileAtLine,
-};
+
+    'cSpell.selectRange': handleSelectRange,
+    'cSpell.openSuggestionsForIssue': handlerResolvedLater,
+} as const satisfies CommandHandler;
+
+type ImplementedCommandHandlers = typeof commandHandlers;
+type ImplementedCommandNames = keyof ImplementedCommandHandlers;
+
+export const knownCommands = Object.fromEntries(
+    Object.keys(commandHandlers).map((key) => [key, key] as [ImplementedCommandNames, ImplementedCommandNames]),
+) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
 const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
 const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
 const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
+
+export function registerCommands(): Disposable[] {
+    const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
+    const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
+    return [...registeredHandlers, ...registeredFromServer];
+}
+
+function handlerResolvedLater() {}
 
 function handlerApplyTextEdits() {
     return async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
@@ -279,15 +298,14 @@ function addWordsToDictionaryTarget(words: string[], dictTarget: DictionaryTarge
 //     return handleErrors(di.get('dictionaryHelper').removeWordFromDictionary(words, dictTarget));
 // }
 
+function dispose() {}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function registerCmd(cmd: string, fn: (...args: any[]) => unknown): Disposable {
+    if (fn === handlerResolvedLater) {
+        return { dispose };
+    }
     return commands.registerCommand(cmd, catchErrors(fn, `Register command: ${cmd}`));
-}
-
-export function registerCommands(): Disposable[] {
-    const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
-    const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
-    return [...registeredHandlers, ...registeredFromServer];
 }
 
 function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
@@ -693,4 +711,16 @@ function toLsTextEdit(edit: LsTextEdit | TextEdit): LsTextEdit {
         range: toLsRange(range),
         newText,
     };
+}
+
+function handleSelectRange(uri?: Uri, range?: Range) {
+    if (!uri || !range) return;
+    const editor = findEditor(uri);
+    if (!editor) return;
+    editor.revealRange(range);
+    editor.selection = new Selection(range.start, range.end);
+}
+
+function actionAutoFixSpellingIssues(...params: unknown[]) {
+    console.error('actionAutoFixSpellingIssues %o', params);
 }
