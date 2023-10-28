@@ -1,7 +1,8 @@
-import type { Command, ConfigurationScope, Diagnostic, Disposable, Location, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
+import { findEditBounds } from './applyCorrections';
 import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
@@ -256,29 +257,6 @@ async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
     } catch (e) {
         return false;
     }
-}
-
-async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
-    try {
-        const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
-        if (!Array.isArray(locations)) return undefined;
-        return locations.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
-    } catch (e) {
-        return undefined;
-    }
-}
-
-async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
-    if (useReference) {
-        const refLocation = await findLocalReference(document.uri, range);
-        return refLocation?.range;
-    }
-
-    const wordRange = document.getWordRangeAtPosition(range.start);
-    if (!wordRange || !wordRange.contains(range)) {
-        return undefined;
-    }
-    return wordRange;
 }
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
