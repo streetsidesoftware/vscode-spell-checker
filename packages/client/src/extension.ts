@@ -68,7 +68,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
-    activateIssueViewer(context, issueTracker);
+    activateIssueViewer(context, issueTracker, client);
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation

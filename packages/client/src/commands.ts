@@ -139,7 +139,7 @@ const commandHandlers = {
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
 
-    'cSpell.editText': handlerApplyTextEdits(),
+    'cSpell.editText': handleApplyTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
@@ -151,6 +151,7 @@ const commandHandlers = {
 
     'cSpell.selectRange': handleSelectRange,
     'cSpell.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.fixSpellingIssue': handleFixSpellingIssue,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -172,41 +173,39 @@ export function registerCommands(): Disposable[] {
 
 function handlerResolvedLater() {}
 
-function handlerApplyTextEdits() {
-    return async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
-        const client = di.get('client').client;
+async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
+    const client = di.get('client').client;
 
-        console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
+    console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
 
-        const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
+    const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
 
-        if (!doc) return;
+    if (!doc) return;
 
-        if (doc.version !== documentVersion) {
-            return pVoid(
-                window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
-                'handlerApplyTextEdits',
-            );
-        }
+    if (doc.version !== documentVersion) {
+        return pVoid(
+            window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
+            'handlerApplyTextEdits',
+        );
+    }
 
-        if (edits.length === 1) {
-            const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
-            if (cfg.get(propertyFixSpellingWithRenameProvider)) {
-                const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-                const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-                // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-                const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
-                if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
-                    return;
-                }
+    if (edits.length === 1) {
+        const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
+        if (cfg.get(propertyFixSpellingWithRenameProvider)) {
+            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
+            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
+            const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
+            if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
+                return;
             }
         }
+    }
 
-        const success = await applyTextEdits(doc.uri, edits);
-        return success
-            ? undefined
-            : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
-    };
+    const success = await applyTextEdits(doc.uri, edits);
+    return success
+        ? undefined
+        : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
 }
 
 interface UseRefInfo {
@@ -723,4 +722,8 @@ function handleSelectRange(uri?: Uri, range?: Range) {
 
 function actionAutoFixSpellingIssues(...params: unknown[]) {
     console.error('actionAutoFixSpellingIssues %o', params);
+}
+
+function handleFixSpellingIssue(docUri: Uri, text: string, withText: string, ranges: Range[]) {
+    console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
 }
