@@ -1,9 +1,12 @@
-import type { Location, Range, TextDocument, TextEdit, Uri } from 'vscode';
-import { commands, window, workspace, WorkspaceEdit } from 'vscode';
-import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
+import type { Location, Range, TextDocument, Uri } from 'vscode';
+import { commands, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
+import type { Converter } from 'vscode-languageclient/lib/common/protocolConverter';
+import type { LanguageClient, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import * as di from './di';
+import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
+import { findTextDocument } from './util/findEditor';
 import { pVoid } from './util/pVoid';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
@@ -23,7 +26,7 @@ async function findLocalReference(uri: Uri, range: Range): Promise<Location | un
 async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
     if (useReference) {
         const refLocation = await findLocalReference(document.uri, range);
-        return refLocation?.range;
+        if (refLocation !== undefined) return refLocation.range;
     }
 
     const wordRange = document.getWordRangeAtPosition(range.start);
@@ -33,8 +36,7 @@ async function findEditBounds(document: TextDocument, range: Range, useReference
     return wordRange;
 }
 
-export async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
-    const client = di.get('client').client;
+async function applyTextEdits(client: LanguageClient, uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
     function toTextEdit(edit: LsTextEdit): TextEdit {
         return client.protocol2CodeConverter.asTextEdit(edit);
     }
@@ -49,7 +51,7 @@ export async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boo
     }
 }
 
-export async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
+async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
     const { range, newText: text } = edit;
     if (range.start.line !== range.end.line) {
         return false;
@@ -82,6 +84,7 @@ interface UseRefInfo {
     useReference: boolean;
     removeRegExp: RegExp | undefined;
 }
+
 export async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
     const client = di.get('client').client;
 
@@ -102,17 +105,55 @@ export async function handleApplyTextEdits(uri: string, documentVersion: number,
         const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
         if (cfg.get(propertyFixSpellingWithRenameProvider)) {
             const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+            const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
             // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-            const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
+            const edit = toTextEdit(client.protocol2CodeConverter, edits[0]);
             if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
                 return;
             }
         }
     }
 
-    const success = await applyTextEdits(doc.uri, edits);
+    const success = await applyTextEdits(client, doc.uri, edits);
     return success
         ? undefined
         : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
+}
+
+function toTextEdit(converter: Converter, edit: LsTextEdit): TextEdit {
+    return converter.asTextEdit(edit);
+}
+
+function stringToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
+    if (!regExStr) return undefined;
+    try {
+        return toRegExp(regExStr, flags);
+    } catch (e) {
+        console.log('Invalid Regular Expression: %s', regExStr);
+    }
+    return undefined;
+}
+
+export async function handleFixSpellingIssue(docUri: Uri, text: string, withText: string, ranges: Range[]): Promise<void> {
+    console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
+
+    const document = findTextDocument(docUri);
+
+    // check that the ranges match
+    for (const range of ranges) {
+        if (document?.getText(range) !== text) {
+            return failed();
+        }
+    }
+
+    const wsEdit = new WorkspaceEdit();
+    const edits = ranges.map((range) => new TextEdit(range, withText));
+    wsEdit.set(docUri, edits);
+    const success = await workspace.applyEdit(wsEdit);
+
+    return success ? undefined : failed();
+
+    function failed() {
+        return pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handleFixSpellingIssue');
+    }
 }

@@ -2,12 +2,11 @@ import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOpti
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import { handleApplyTextEdits } from './applyCorrections';
-import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
+import { handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
+import type { ClientSideCommandHandlerApi } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
 import { extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
@@ -545,16 +544,6 @@ function lineToRange(line: number | string | undefined) {
     return range;
 }
 
-export function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
-    if (!regExStr) return undefined;
-    try {
-        return toRegExp(regExStr, flags);
-    } catch (e) {
-        console.log('Invalid Regular Expression: %s', regExStr);
-    }
-    return undefined;
-}
-
 export function createTextEditCommand(
     title: string,
     uri: string | Uri,
@@ -611,8 +600,4 @@ function handleSelectRange(uri?: Uri, range?: Range) {
 
 function actionAutoFixSpellingIssues(...params: unknown[]) {
     console.error('actionAutoFixSpellingIssues %o', params);
-}
-
-function handleFixSpellingIssue(docUri: Uri, text: string, withText: string, ranges: Range[]) {
-    console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
 }
