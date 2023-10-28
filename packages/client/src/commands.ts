@@ -2,7 +2,7 @@ import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOpti
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import { applyTextEdits } from './applyCorrections';
+import { handleApplyTextEdits } from './applyCorrections';
 import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
@@ -56,7 +56,6 @@ import { pVoid } from './util/pVoid';
 import { scrollToText } from './util/textEditor';
 import { toUri } from './util/uriHelper';
 import { findMatchingDocument } from './vscode/findDocument';
-import { attemptRename } from './applyCorrections';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -163,10 +162,6 @@ export const knownCommands = Object.fromEntries(
     Object.keys(commandHandlers).map((key) => [key, key] as [ImplementedCommandNames, ImplementedCommandNames]),
 ) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
-const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
-const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
-const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
-
 export function registerCommands(): Disposable[] {
     const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
     const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
@@ -174,41 +169,6 @@ export function registerCommands(): Disposable[] {
 }
 
 function handlerResolvedLater() {}
-
-async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
-    const client = di.get('client').client;
-
-    console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
-
-    const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
-
-    if (!doc) return;
-
-    if (doc.version !== documentVersion) {
-        return pVoid(
-            window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
-            'handlerApplyTextEdits',
-        );
-    }
-
-    if (edits.length === 1) {
-        const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
-        if (cfg.get(propertyFixSpellingWithRenameProvider)) {
-            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-            const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-            const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
-            if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
-                return;
-            }
-        }
-    }
-
-    const success = await applyTextEdits(doc.uri, edits);
-    return success
-        ? undefined
-        : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
-}
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
     return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg), 'addWordsToConfig');
@@ -585,7 +545,7 @@ function lineToRange(line: number | string | undefined) {
     return range;
 }
 
-function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
+export function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
     if (!regExStr) return undefined;
     try {
         return toRegExp(regExStr, flags);
