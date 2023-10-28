@@ -135,7 +135,7 @@ function stringToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | und
 }
 
 export async function handleFixSpellingIssue(docUri: Uri, text: string, withText: string, ranges: Range[]): Promise<void> {
-    console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
+    // console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
 
     const document = findTextDocument(docUri);
 

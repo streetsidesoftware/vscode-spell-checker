@@ -120,7 +120,6 @@ const commandHandlers = {
     'cSpell.addIgnoreWordsToUser': actionAddIgnoreWordToUser,
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
-    'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
 
     'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
     'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
@@ -150,8 +149,10 @@ const commandHandlers = {
     'cSpell.openFileAtLine': openFileAtLine,
 
     'cSpell.selectRange': handleSelectRange,
-    'cSpell.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
     'cSpell.fixSpellingIssue': handleFixSpellingIssue,
+    'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;

@@ -164,8 +164,8 @@
           "group": "inline"
         },
         {
-          "command": "cSpell.openSuggestionsForIssue",
-          "when": "view == cspell-info.issuesView",
+          "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
+          "when": "view == cspell-info.issuesView && viewItem == issue.hasPreferred",
           "group": "inline"
         }
       ]
@@ -185,14 +185,7 @@
         {
           "id": "cspell-info-explorer",
           "title": "Spell Checker",
-          "icon": "resources/dark/check_circle.svg",
-          "when": "config.cSpell.experimental.enableSettingsViewerV2"
-        },
-        {
-          "id": "cspell-regexp-explorer",
-          "title": "Spell Checker Regular Expression Viewer",
-          "icon": "resources/dark/check_circle.svg",
-          "when": "config.cSpell.experimental.enableRegexpView"
+          "icon": "resources/dark/check_circle.svg"
         }
       ]
     },
@@ -206,15 +199,15 @@
         {
           "type": "webview",
           "id": "cspell-info.infoView",
-          "name": "Spell Checker"
+          "name": "Spell Checker",
+          "when": "config.cSpell.experimental.enableSettingsViewerV2"
         },
         {
           "type": "webview",
           "id": "cspell-info.todoView",
-          "name": "Spell Checker Todos"
-        }
-      ],
-      "cspell-regexp-explorer": [
+          "name": "Spell Checker Todos",
+          "when": "config.cSpell.experimental.enableSettingsViewerV2"
+        },
         {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
@@ -222,6 +215,7 @@
         }
       ]
     },
+    "viewsWelcome": [],
     "commands": [
       {
         "command": "cspell-info.showHelloWorld",
@@ -410,7 +404,7 @@
         "icon": "$(edit)"
       },
       {
-        "command": "cSpell.openSuggestionsForIssue",
+        "command": "cSpell.issueViewer.item.openSuggestionsForIssue",
         "title": "Show Suggestions",
         "icon": "$(list-unordered)",
         "enablement": "view == cspell-info.issuesView"
@@ -419,6 +413,12 @@
         "command": "cSpell.autoFixSpellingIssues",
         "title": "Fix all issues with a preferred suggestion in the current document.",
         "icon": "$(lightbulb-autofix)"
+      },
+      {
+        "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
+        "title": "Fix issue with preferred suggestion in the current document.",
+        "icon": "$(lightbulb-autofix)",
+        "enablement": "view == cspell-info.issuesView"
       }
     ],
     "languages": [
