@@ -1,8 +1,8 @@
 import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
-import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
+import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import { findEditBounds } from './applyCorrections';
+import { applyTextEdits } from './applyCorrections';
 import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
@@ -56,6 +56,7 @@ import { pVoid } from './util/pVoid';
 import { scrollToText } from './util/textEditor';
 import { toUri } from './util/uriHelper';
 import { findMatchingDocument } from './vscode/findDocument';
+import { attemptRename } from './applyCorrections';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -207,56 +208,6 @@ async function handleApplyTextEdits(uri: string, documentVersion: number, edits:
     return success
         ? undefined
         : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
-}
-
-interface UseRefInfo {
-    useReference: boolean;
-    removeRegExp: RegExp | undefined;
-}
-
-async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
-    const { range, newText: text } = edit;
-    if (range.start.line !== range.end.line) {
-        return false;
-    }
-    const { useReference, removeRegExp } = refInfo;
-    const wordRange = await findEditBounds(document, range, useReference);
-    if (!wordRange || !wordRange.contains(range)) {
-        return false;
-    }
-    const orig = wordRange.start.character;
-    const a = range.start.character - orig;
-    const b = range.end.character - orig;
-    const docText = document.getText(wordRange);
-    const fullNewText = [docText.slice(0, a), text, docText.slice(b)].join('');
-    const newText = removeRegExp ? fullNewText.replace(removeRegExp, '') : fullNewText;
-    try {
-        const workspaceEdit = await commands
-            .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
-            .then(
-                (a) => a as WorkspaceEdit | undefined,
-                (reason) => (console.log(reason), false),
-            );
-        return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
-    } catch (e) {
-        return false;
-    }
-}
-
-async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
-    const client = di.get('client').client;
-    function toTextEdit(edit: LsTextEdit): TextEdit {
-        return client.protocol2CodeConverter.asTextEdit(edit);
-    }
-
-    const wsEdit = new WorkspaceEdit();
-    const textEdits: TextEdit[] = edits.map(toTextEdit);
-    wsEdit.set(uri, textEdits);
-    try {
-        return await workspace.applyEdit(wsEdit);
-    } catch (e) {
-        return false;
-    }
 }
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
