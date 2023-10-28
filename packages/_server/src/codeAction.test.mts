@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest';
 
-import { onCodeActionHandler } from './codeActions.mjs';
+import { createOnCodeActionHandler } from './codeActions.mjs';
 
 describe('Validate CodeAction', () => {
     test('onCodeActionHandler', () => {
         // Place holder test.
-        expect(typeof onCodeActionHandler).toBe('function');
+        expect(typeof createOnCodeActionHandler).toBe('function');
     });
 });

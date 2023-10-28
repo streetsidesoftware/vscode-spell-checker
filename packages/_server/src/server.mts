@@ -29,7 +29,7 @@ import {
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
-import { onCodeActionHandler } from './codeActions.mjs';
+import { createOnCodeActionHandler } from './codeActions.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import { ConfigWatcher } from './config/configWatcher.mjs';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
@@ -47,6 +47,7 @@ import { isScmUri } from './config/docUriHelper.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import { createServerApi } from './serverApi.mjs';
+import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
@@ -99,7 +100,10 @@ export function run(): void {
 
     const _logger = createPrecisionLogger().setLogLevelMask(LogLevelMasks.none);
 
-    const clientServerApi = dd(
+    // Create a simple text document manager.
+    const documents = new TextDocuments(TextDocument);
+
+    const clientServerApi: Api.ServerSideApi = dd(
         createServerApi(
             connection,
             {
@@ -111,7 +115,10 @@ export function run(): void {
                     getConfigurationForDocument: handleGetConfigurationForDocument,
                     isSpellCheckEnabled: handleIsSpellCheckEnabled,
                     splitTextIntoWords: handleSplitTextIntoWords,
-                    spellingSuggestions: handleSpellingSuggestions,
+                    spellingSuggestions: createOnSuggestionsHandler(documents, {
+                        fetchSettings: getBaseSettings,
+                        getSettingsVersion: () => documentSettings.version,
+                    }),
                 },
             },
             _logger,
@@ -121,9 +128,6 @@ export function run(): void {
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 
     const progressNotifier = createProgressNotifier(clientServerApi);
-
-    // Create a simple text document manager.
-    const documents = new TextDocuments(TextDocument);
 
     dd(
         connection.onInitialize((params: InitializeParams): InitializeResult => {
@@ -271,7 +275,7 @@ export function run(): void {
 
     dd(
         connection.onCodeAction(
-            onCodeActionHandler(documents, {
+            createOnCodeActionHandler(documents, {
                 fetchSettings: getBaseSettings,
                 getSettingsVersion: () => documentSettings.version,
                 fetchWorkspaceConfigForDocument: (uri) => documentSettings.fetchWorkspaceConfiguration(uri),
@@ -319,8 +323,8 @@ export function run(): void {
         triggerValidateAll.next(undefined);
     }
 
-    function getActiveSettings(doc: TextDocumentUri) {
-        return getActiveUriSettings(doc.uri);
+    function getActiveSettings(doc: TextDocumentUri | undefined) {
+        return getActiveUriSettings(doc?.uri);
     }
 
     function getActiveUriSettings(uri?: string) {
@@ -331,7 +335,7 @@ export function run(): void {
         // Give the dictionaries a chance to refresh if they need to.
         log('getActiveUriSettings', uri);
         catchPromise(refreshDictionaryCache(dictionaryRefreshRateMs), '__getActiveUriSettings');
-        return documentSettings.getUriSettings(uri || '');
+        return documentSettings.getUriSettings(uri);
     }
 
     async function registerConfigurationFile(path: string) {
@@ -407,10 +411,6 @@ export function run(): void {
         return {
             words: textToWords(text),
         };
-    }
-
-    async function handleSpellingSuggestions(_text: string, _docRef?: TextDocumentInfo): Promise<Api.SpellingSuggestionsResult> {
-        return { suggestions: [] };
     }
 
     function sendDiagnostics(result: ValidationResult) {
@@ -506,7 +506,7 @@ export function run(): void {
         return documentSettings.calcIncludeExclude(toUri(uri));
     }
 
-    async function getBaseSettings(doc: TextDocument) {
+    async function getBaseSettings(doc: TextDocumentUri | undefined) {
         const settings = await getActiveSettings(doc);
         return { ...CSpell.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds };
     }
@@ -665,8 +665,16 @@ export function run(): void {
      * @param disposable - a disposable
      * @returns the disposable
      */
-    function dd<T extends DisposableLike>(disposable: T): T {
-        disposables.push(disposable);
+    function dd<T extends DisposableLike>(disposable: T): T;
+    /**
+     * Record disposable to be disposed.
+     * @param disposable - a disposable
+     * @param moreDisposables - more disposables.
+     * @returns the disposable
+     */
+    function dd<T extends DisposableLike>(disposable: T, ...moreDisposables: T[]): T;
+    function dd<T extends DisposableLike>(disposable: T, ...moreDisposables: DisposableLike[]): T {
+        disposables.push(disposable, ...moreDisposables);
         return disposable;
     }
 

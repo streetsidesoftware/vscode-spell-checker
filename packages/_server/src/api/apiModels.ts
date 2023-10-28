@@ -12,6 +12,7 @@ export type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from '../config/configTargets.mjs';
+export type { Position, Range } from 'vscode-languageserver-types';
 
 export interface BlockedFileReason {
     code: string;
@@ -65,13 +66,7 @@ export interface SpellingSuggestionsResult {
     suggestions: Suggestion[];
 }
 
-export interface TextDocumentInfo {
-    uri?: UriString;
-    languageId?: string;
-    text?: string;
-}
-
-export interface GetConfigurationForDocumentRequest extends TextDocumentInfo {
+export interface GetConfigurationForDocumentRequest extends Partial<TextDocumentInfo> {
     /** used to calculate configTargets, configTargets will be empty if undefined. */
     workspaceConfig?: WorkspaceConfigForDocument;
 }
@@ -84,7 +79,17 @@ export interface GetConfigurationForDocumentResult extends IsSpellCheckEnabledRe
 }
 
 export interface TextDocumentRef {
-    uri: UriString;
+    readonly uri: DocumentUri;
+}
+
+export interface TextDocumentInfo extends TextDocumentRef {
+    readonly languageId?: string;
+    readonly text?: string;
+    readonly version?: number;
+}
+
+export interface TextDocumentInfoWithText extends TextDocumentInfo {
+    readonly text: string;
 }
 
 export interface NamedPattern {
@@ -93,7 +98,7 @@ export interface NamedPattern {
 }
 
 export interface MatchPatternsToDocumentRequest extends TextDocumentRef {
-    patterns: (string | NamedPattern)[];
+    readonly patterns: (string | NamedPattern)[];
 }
 
 export interface RegExpMatch {

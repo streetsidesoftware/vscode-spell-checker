@@ -42,7 +42,7 @@ export interface CodeActionHandlerDependencies {
     fetchWorkspaceConfigForDocument: (uri: UriString) => Promise<WorkspaceConfigForDocument>;
 }
 
-export function onCodeActionHandler(
+export function createOnCodeActionHandler(
     documents: TextDocuments<TextDocument>,
     dependencies: CodeActionHandlerDependencies,
 ): (params: CodeActionParams) => Promise<CodeAction[]> {
