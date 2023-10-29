@@ -2769,7 +2769,7 @@
             "type": "boolean"
           },
           "cSpell.maxDuplicateProblems": {
-            "default": 5,
+            "default": 20,
             "markdownDescription": "The maximum number of times the same word can be flagged as an error in a file.",
             "scope": "resource",
             "type": "number"

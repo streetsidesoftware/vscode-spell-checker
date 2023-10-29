@@ -60,7 +60,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * @scope resource
-     * @default 5
+     * @default 20
      */
     maxDuplicateProblems?: number;
 

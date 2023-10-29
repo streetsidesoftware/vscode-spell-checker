@@ -3,6 +3,7 @@ import type { PublishDiagnosticsParams } from 'vscode-languageserver';
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
 import type { Suggestion } from './models/Suggestion.mjs';
+import type { ExtensionId } from './models/types.mjs';
 
 export type {
     ConfigKind,
@@ -198,10 +199,6 @@ export type {
     SpellCheckerSettings,
     SpellCheckerSettingsProperties,
 } from '../config/cspellConfig/index.mjs';
-
-export type ExtensionId = 'cSpell';
-
-export type DiagnosticSource = ExtensionId;
 
 export type VSCodeSettingsCspell = {
     [key in ExtensionId]?: config.CSpellUserSettings;

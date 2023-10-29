@@ -505,7 +505,7 @@ Description
 : The maximum number of times the same word can be flagged as an error in a file.
 
 Default
-: _`5`_
+: _`20`_
 
 ---
 
