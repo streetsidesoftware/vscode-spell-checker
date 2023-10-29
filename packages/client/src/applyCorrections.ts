@@ -1,3 +1,4 @@
+import { uriToName } from '@internal/common-utils';
 import type { Location, Range, TextDocument, Uri } from 'vscode';
 import { commands, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
 import type { Converter } from 'vscode-languageclient/lib/common/protocolConverter';
@@ -6,7 +7,7 @@ import type { LanguageClient, TextEdit as LsTextEdit } from 'vscode-languageclie
 import * as di from './di';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
-import { findTextDocument } from './util/findEditor';
+import { findEditor, findTextDocument } from './util/findEditor';
 import { pVoid } from './util/pVoid';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
@@ -36,14 +37,17 @@ async function findEditBounds(document: TextDocument, range: Range, useReference
     return wordRange;
 }
 
-async function applyTextEdits(client: LanguageClient, uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
+async function applyLsTextEdits(client: LanguageClient, uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
     function toTextEdit(edit: LsTextEdit): TextEdit {
         return client.protocol2CodeConverter.asTextEdit(edit);
     }
 
+    return applyTextEdits(uri, edits.map(toTextEdit));
+}
+
+async function applyTextEdits(uri: Uri, edits: TextEdit[]): Promise<boolean> {
     const wsEdit = new WorkspaceEdit();
-    const textEdits: TextEdit[] = edits.map(toTextEdit);
-    wsEdit.set(uri, textEdits);
+    wsEdit.set(uri, edits);
     try {
         return await workspace.applyEdit(wsEdit);
     } catch (e) {
@@ -114,7 +118,7 @@ export async function handleApplyTextEdits(uri: string, documentVersion: number,
         }
     }
 
-    const success = await applyTextEdits(client, doc.uri, edits);
+    const success = await applyLsTextEdits(client, doc.uri, edits);
     return success
         ? undefined
         : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
@@ -155,5 +159,49 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
 
     function failed() {
         return pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handleFixSpellingIssue');
+    }
+}
+
+export async function actionAutoFixSpellingIssues(uri?: Uri) {
+    // console.error('actionAutoFixSpellingIssues %o', { uri });
+    uri ??= window.activeTextEditor?.document.uri;
+    const doc = findEditor(uri)?.document || findTextDocument(uri);
+    if (!uri || !doc) {
+        return pVoid(
+            window.showInformationMessage('Unable to fix spelling issues in current document, document not found.'),
+            'actionAutoFixSpellingIssues',
+        );
+    }
+
+    const issueTracker = di.get('issueTracker');
+
+    const autoFixes = issueTracker
+        .getDiagnostics(uri)
+        .map((diag) => ({ range: diag.range, ...diag.data }))
+        .filter(
+            (fix) =>
+                fix.suggestions?.[0]?.isPreferred && !fix.suggestions?.[1]?.isPreferred && fix.text && !fix.issueType && !fix.isSuggestion,
+        )
+        .filter((fix) => doc.getText(fix.range) === fix.text)
+        .map((fix) => {
+            const sug = fix.suggestions?.[0].word;
+            assert(sug !== undefined);
+            return new TextEdit(fix.range, sug);
+        });
+
+    if (!autoFixes.length) {
+        const name = uriToName(uri);
+        return pVoid(window.showInformationMessage(`No auto fixable spelling issues found in ${name}.`), 'actionAutoFixSpellingIssues');
+    }
+
+    const success = applyTextEdits(uri, autoFixes);
+    if (!success) {
+        return pVoid(window.showInformationMessage('Unable to apply fixes.'), 'actionAutoFixSpellingIssues');
+    }
+}
+
+function assert(x: unknown, msg = 'A truthy value is expected.'): asserts x {
+    if (!x) {
+        throw Error(msg);
     }
 }

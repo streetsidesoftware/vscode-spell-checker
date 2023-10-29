@@ -2,7 +2,7 @@ import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOpti
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import { handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
+import { actionAutoFixSpellingIssues, handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
 import type { ClientSideCommandHandlerApi } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
@@ -597,8 +597,4 @@ function handleSelectRange(uri?: Uri, range?: Range) {
     if (!editor) return;
     editor.revealRange(range);
     editor.selection = new Selection(range.start, range.end);
-}
-
-function actionAutoFixSpellingIssues(...params: unknown[]) {
-    console.error('actionAutoFixSpellingIssues %o', params);
 }
