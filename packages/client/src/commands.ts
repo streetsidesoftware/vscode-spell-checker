@@ -591,11 +591,11 @@ function toLsTextEdit(edit: LsTextEdit | TextEdit): LsTextEdit {
     };
 }
 
-function handleSelectRange(uri?: Uri, range?: Range) {
+async function handleSelectRange(uri?: Uri, range?: Range): Promise<void> {
     if (!uri || !range) return;
     // const editor = findEditor(uri);
     // if (!editor) return;
     // editor.revealRange(range);
     // editor.selection = new Selection(range.start, range.end);
-    return window.showTextDocument(uri, { selection: range });
+    await window.showTextDocument(uri, { selection: range });
 }
