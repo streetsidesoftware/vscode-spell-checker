@@ -1,12 +1,12 @@
-import type { Command, ConfigurationScope, Diagnostic, Disposable, Location, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
-import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace, WorkspaceEdit } from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
+import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
-import type { ClientSideCommandHandlerApi, SpellCheckerSettingsProperties } from './client';
+import { handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
+import type { ClientSideCommandHandlerApi } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
 import { extractMatchingDiagTexts, getCSpellDiags } from './diags';
-import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
@@ -120,7 +120,6 @@ const commandHandlers = {
     'cSpell.addIgnoreWordsToUser': actionAddIgnoreWordToUser,
 
     'cSpell.suggestSpellingCorrections': actionSuggestSpellingCorrections,
-    'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
 
     'cSpell.goToNextSpellingIssue': () => actionJumpToSpellingError('next', false),
     'cSpell.goToPreviousSpellingIssue': () => actionJumpToSpellingError('previous', false),
@@ -139,7 +138,7 @@ const commandHandlers = {
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
 
-    'cSpell.editText': handlerApplyTextEdits(),
+    'cSpell.editText': handleApplyTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,
@@ -150,7 +149,10 @@ const commandHandlers = {
     'cSpell.openFileAtLine': openFileAtLine,
 
     'cSpell.selectRange': handleSelectRange,
-    'cSpell.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
+    'cSpell.fixSpellingIssue': handleFixSpellingIssue,
+    'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -160,10 +162,6 @@ export const knownCommands = Object.fromEntries(
     Object.keys(commandHandlers).map((key) => [key, key] as [ImplementedCommandNames, ImplementedCommandNames]),
 ) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
-const propertyFixSpellingWithRenameProvider: SpellCheckerSettingsProperties = 'fixSpellingWithRenameProvider';
-const propertyUseReferenceProviderWithRename: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderWithRename';
-const propertyUseReferenceProviderRemove: SpellCheckerSettingsProperties = 'advanced.feature.useReferenceProviderRemove';
-
 export function registerCommands(): Disposable[] {
     const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
     const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
@@ -171,116 +169,6 @@ export function registerCommands(): Disposable[] {
 }
 
 function handlerResolvedLater() {}
-
-function handlerApplyTextEdits() {
-    return async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
-        const client = di.get('client').client;
-
-        console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
-
-        const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
-
-        if (!doc) return;
-
-        if (doc.version !== documentVersion) {
-            return pVoid(
-                window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
-                'handlerApplyTextEdits',
-            );
-        }
-
-        if (edits.length === 1) {
-            const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
-            if (cfg.get(propertyFixSpellingWithRenameProvider)) {
-                const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-                const removeRegExp = toConfigToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-                // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-                const edit = client.protocol2CodeConverter.asTextEdit(edits[0]);
-                if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
-                    return;
-                }
-            }
-        }
-
-        const success = await applyTextEdits(doc.uri, edits);
-        return success
-            ? undefined
-            : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
-    };
-}
-
-interface UseRefInfo {
-    useReference: boolean;
-    removeRegExp: RegExp | undefined;
-}
-
-async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
-    const { range, newText: text } = edit;
-    if (range.start.line !== range.end.line) {
-        return false;
-    }
-    const { useReference, removeRegExp } = refInfo;
-    const wordRange = await findEditBounds(document, range, useReference);
-    if (!wordRange || !wordRange.contains(range)) {
-        return false;
-    }
-    const orig = wordRange.start.character;
-    const a = range.start.character - orig;
-    const b = range.end.character - orig;
-    const docText = document.getText(wordRange);
-    const fullNewText = [docText.slice(0, a), text, docText.slice(b)].join('');
-    const newText = removeRegExp ? fullNewText.replace(removeRegExp, '') : fullNewText;
-    try {
-        const workspaceEdit = await commands
-            .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
-            .then(
-                (a) => a as WorkspaceEdit | undefined,
-                (reason) => (console.log(reason), false),
-            );
-        return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
-    } catch (e) {
-        return false;
-    }
-}
-
-async function applyTextEdits(uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
-    const client = di.get('client').client;
-    function toTextEdit(edit: LsTextEdit): TextEdit {
-        return client.protocol2CodeConverter.asTextEdit(edit);
-    }
-
-    const wsEdit = new WorkspaceEdit();
-    const textEdits: TextEdit[] = edits.map(toTextEdit);
-    wsEdit.set(uri, textEdits);
-    try {
-        return await workspace.applyEdit(wsEdit);
-    } catch (e) {
-        return false;
-    }
-}
-
-async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
-    try {
-        const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
-        if (!Array.isArray(locations)) return undefined;
-        return locations.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
-    } catch (e) {
-        return undefined;
-    }
-}
-
-async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
-    if (useReference) {
-        const refLocation = await findLocalReference(document.uri, range);
-        return refLocation?.range;
-    }
-
-    const wordRange = document.getWordRangeAtPosition(range.start);
-    if (!wordRange || !wordRange.contains(range)) {
-        return undefined;
-    }
-    return wordRange;
-}
 
 function addWordsToConfig(words: string[], cfg: ConfigRepository) {
     return handleErrors(di.get('dictionaryHelper').addWordsToConfigRep(words, cfg), 'addWordsToConfig');
@@ -655,16 +543,6 @@ function lineToRange(line: number | string | undefined) {
     const pos = new Position(line - 1, 0);
     const range = new Range(pos, pos);
     return range;
-}
-
-function toConfigToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
-    if (!regExStr) return undefined;
-    try {
-        return toRegExp(regExStr, flags);
-    } catch (e) {
-        console.log('Invalid Regular Expression: %s', regExStr);
-    }
-    return undefined;
 }
 
 export function createTextEditCommand(

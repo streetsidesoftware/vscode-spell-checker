@@ -1,5 +1,5 @@
 import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
-import type { WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
+import type { SpellingSuggestionsResult, WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
 import type { CodeAction, Diagnostic, DiagnosticCollection, ExtensionContext, Range, TextDocument } from 'vscode';
 import { Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
 import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
@@ -233,6 +233,11 @@ export class CSpellClient implements Disposable {
 
         const actions = r.filter(isLcCodeAction).map(mapLcCodeAction);
         return actions;
+    }
+
+    public async requestSpellingSuggestions(word: string, document: TextDocument): Promise<SpellingSuggestionsResult> {
+        const doc = { uri: document.uri.toString() };
+        return this.serverApi.spellingSuggestions(word, doc);
     }
 
     public onDiagnostics(fn: (diags: DiagnosticsFromServer) => void) {

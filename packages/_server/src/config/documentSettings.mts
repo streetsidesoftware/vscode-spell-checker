@@ -105,15 +105,13 @@ const _defaultSettings: CSpellUserSettings = Object.freeze(Object.create(null));
 
 const defaultCheckOnlyEnabledFileTypes = true;
 
-interface Clearable {
-    clear: () => void;
-}
+type ClearFn = () => void;
 
 export class DocumentSettings {
     // Cache per folder settings
-    private cachedValues: Clearable[] = [];
-    private readonly fetchSettingsForUri = this.createCache((docUri: string) => this._fetchSettingsForUri(docUri));
-    private readonly fetchVSCodeConfiguration = this.createCache((uri: string) => this._fetchVSCodeConfiguration(uri));
+    private valuesToClearOnReset: ClearFn[] = [];
+    private readonly fetchSettingsForUri = this.createCache((docUri: string | undefined) => this._fetchSettingsForUri(docUri));
+    private readonly fetchVSCodeConfiguration = this.createCache((uri?: string) => this._fetchVSCodeConfiguration(uri));
     private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
     public readonly fetchWorkspaceConfiguration = this.createCache((docUri: DocumentUri) => this._fetchWorkspaceConfiguration(docUri));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
@@ -132,7 +130,7 @@ export class DocumentSettings {
         return this.getUriSettings(document.uri);
     }
 
-    getUriSettings(uri: string): Promise<CSpellUserSettings> {
+    getUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
         return this.fetchUriSettings(uri);
     }
 
@@ -203,7 +201,7 @@ export class DocumentSettings {
     async resetSettings(): Promise<void> {
         log('resetSettings');
         const waitFor = clearCachedFiles();
-        this.cachedValues.forEach((cache) => cache.clear());
+        this.valuesToClearOnReset.forEach((fn) => fn());
         this._version += 1;
         this.gitIgnore = new GitIgnore();
         await waitFor;
@@ -234,35 +232,48 @@ export class DocumentSettings {
         await this.resetSettings();
     }
 
-    private async fetchUriSettings(uri: string): Promise<CSpellUserSettings> {
+    private async fetchUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
         const exSettings = await this.fetchUriSettingsEx(uri);
         return exSettings.settings;
     }
 
-    private fetchUriSettingsEx(uri: string): Promise<ExtSettings> {
+    private fetchUriSettingsEx(uri: string | undefined): Promise<ExtSettings> {
         return this.fetchSettingsForUri(uri);
     }
 
-    private async findMatchingFolder(docUri: string, defaultTo: WorkspaceFolder): Promise<WorkspaceFolder>;
-    private async findMatchingFolder(docUri: string, defaultTo?: WorkspaceFolder | undefined): Promise<WorkspaceFolder | undefined>;
-    private async findMatchingFolder(docUri: string, defaultTo: WorkspaceFolder | undefined): Promise<WorkspaceFolder | undefined> {
-        return (await this.matchingFoldersForUri(docUri))[0] || defaultTo;
+    private async findMatchingFolder(docUri: string | undefined, defaultTo: WorkspaceFolder): Promise<WorkspaceFolder>;
+    private async findMatchingFolder(
+        docUri: string | undefined,
+        defaultTo?: WorkspaceFolder | undefined,
+    ): Promise<WorkspaceFolder | undefined>;
+    private async findMatchingFolder(
+        docUri: string | undefined,
+        defaultTo: WorkspaceFolder | undefined,
+    ): Promise<WorkspaceFolder | undefined> {
+        return (docUri && (await this.matchingFoldersForUri(docUri))[0]) || defaultTo;
     }
 
-    private rootForUri(docUri: string | undefined) {
-        return Uri.parse(docUri || defaultRootUri).with({ path: '' });
+    /**
+     * Calculate the schema and domain for the uri;
+     * @param docUri
+     * @returns
+     */
+    private rootSchemaAndDomainForUri(docUri: string | Uri | undefined) {
+        const uri = Uri.isUri(docUri) ? docUri : Uri.parse(docUri || defaultRootUri);
+        return uri.with({ path: '', query: null, fragment: null });
     }
 
-    private rootFolderForUri(docUri: string | undefined) {
-        const root = this.rootForUri(docUri);
+    private rootSchemaAndDomainFolderForUri(docUri: string | Uri | undefined): WorkspaceFolder {
+        const root = this.rootSchemaAndDomainForUri(docUri);
         return { uri: root.toString(), name: 'root' };
     }
 
     private async fetchFolders() {
-        return (await getWorkspaceFolders(this.connection)) || [];
+        const folders = (await getWorkspaceFolders(this.connection)) || [];
+        return folders;
     }
 
-    private async _fetchVSCodeConfiguration(uri: string) {
+    private async _fetchVSCodeConfiguration(uri?: string) {
         const [cSpell, search] = (
             await getConfiguration(this.connection, [{ scopeUri: uri || undefined, section: cSpellSection }, { section: 'search' }])
         ).map((v) => v || {}) as [CSpellUserSettings, VsCodeSettings];
@@ -312,20 +323,22 @@ export class DocumentSettings {
         return cSpellConfigSettings;
     }
 
-    private async _fetchSettingsForUri(docUri: string): Promise<ExtSettings> {
+    private async _fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${docUri}`);
-        const uri = Uri.parse(docUri);
-        const uriSpecial = handleSpecialUri(uri);
-        if (uri !== uriSpecial) {
+        const uri = (docUri && Uri.parse(docUri)) || undefined;
+        const uriSpecial = uri && handleSpecialUri(uri);
+        if (uriSpecial && uri !== uriSpecial) {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }
-        const fsPath = path.normalize(uri.fsPath);
-        const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
-        const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, docUri);
-        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(fsPath);
-        const rootFolder = this.rootFolderForUri(docUri);
         const folders = await this.folders;
-        const folder = await this.findMatchingFolder(docUri, rootFolder);
+        const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
+        const searchForUri = Uri.parse(useUriForConfig);
+        const searchForFsPath = path.normalize(searchForUri.fsPath);
+        const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
+        const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
+        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
+        const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
+        const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const vscodeCSpellSettings = resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
@@ -342,7 +355,7 @@ export class DocumentSettings {
 
         const enabledFiletypes = extractEnableFiletypes(mergedSettings);
         const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
-        const fileSettings = calcOverrideSettings(spellSettings, fsPath);
+        const fileSettings = calcOverrideSettings(spellSettings, searchForFsPath);
         const { ignorePaths = [], files = [] } = fileSettings;
 
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
@@ -361,7 +374,7 @@ export class DocumentSettings {
 
         const cSpell = vscodeCSpellConfigSettingsForDocument;
         const ext: ExtSettings = {
-            uri: docUri,
+            uri: useUriForConfig,
             vscodeSettings: { cSpell },
             settings: fileSettings,
             excludeGlobMatcher,
@@ -370,9 +383,9 @@ export class DocumentSettings {
         return ext;
     }
 
-    private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string): Promise<CSpellUserSettings> {
+    private async resolveWorkspacePaths(settings: CSpellUserSettings, docUri: string | undefined): Promise<CSpellUserSettings> {
         const folders = await this.folders;
-        const folder = (await this.findMatchingFolder(docUri)) || folders[0] || this.rootFolderForUri(docUri);
+        const folder = (docUri && (await this.findMatchingFolder(docUri))) || folders[0] || this.rootSchemaAndDomainFolderForUri(docUri);
         const resolver = createWorkspaceNamesResolver(folder, folders, settings.workspaceRootPath);
         return resolveSettings(settings, resolver);
     }
@@ -384,13 +397,13 @@ export class DocumentSettings {
 
     private createCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
         const cache = createAutoLoadCache(loader);
-        this.cachedValues.push(cache);
+        this.valuesToClearOnReset.push(() => cache.clear());
         return cache;
     }
 
     private createLazy<T>(loader: () => T): LazyValue<T> {
         const lazy = createLazyValue(loader);
-        this.cachedValues.push(lazy);
+        this.valuesToClearOnReset.push(() => lazy.clear());
         return lazy;
     }
 }

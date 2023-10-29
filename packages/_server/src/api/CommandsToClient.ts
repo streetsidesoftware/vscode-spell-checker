@@ -1,5 +1,5 @@
 import type { ConfigurationTarget } from './apiModels.js';
-import type { OrPromise } from './types.js';
+import type { OrPromise } from './generics.js';
 
 export interface CommandsToClient {
     addWordsToVSCodeSettingsFromServer: (words: string[], documentUri: string, target: ConfigurationTarget) => void;
