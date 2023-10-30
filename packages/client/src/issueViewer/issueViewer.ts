@@ -18,6 +18,7 @@ export function activate(context: ExtensionContext, issueTracker: IssueTracker, 
     context.subscriptions.push(
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.openSuggestionsForIssue'], handleOpenSuggestionsForIssue),
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
+        vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.addWordToDictionary'], handleAddWordToDictionary),
     );
 }
 
@@ -216,6 +217,8 @@ class IssueTreeItem extends IssueTreeItemBase {
         return handleFixSpellingIssue(this.context.document.uri, pref.text, pref.newText, pref.ranges);
     }
 
+    async addToDictionary() {}
+
     private onUpdate(suggestions: Suggestion[]) {
         this.suggestions = suggestions;
         this.context.invalidate(this);
@@ -390,6 +393,11 @@ function handleOpenSuggestionsForIssue(item?: IssueTreeItem) {
 function handleAutoFixSpellingIssues(item?: IssueTreeItem) {
     if (!(item instanceof IssueTreeItem)) return;
     return item.autoFix();
+}
+
+function handleAddWordToDictionary(item?: IssueTreeItem) {
+    if (!(item instanceof IssueTreeItem)) return;
+    return item.addToDictionary();
 }
 
 interface PreferredFix {

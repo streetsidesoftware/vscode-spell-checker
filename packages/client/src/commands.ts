@@ -149,10 +149,12 @@ const commandHandlers = {
     'cSpell.openFileAtLine': openFileAtLine,
 
     'cSpell.selectRange': handleSelectRange,
-    'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
-    'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
     'cSpell.fixSpellingIssue': handleFixSpellingIssue,
     'cSpell.autoFixSpellingIssues': actionAutoFixSpellingIssues,
+
+    'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
+    'cSpell.issueViewer.item.addWordToDictionary': handlerResolvedLater,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
