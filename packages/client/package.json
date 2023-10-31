@@ -41,7 +41,7 @@
   "devDependencies": {
     "@internal/cspell-helper": "file:../__cspell-helper",
     "@internal/locale-resolver": "file:../__locale-resolver",
-    "@types/jest": "^29.5.6",
+    "@types/jest": "^29.5.7",
     "@types/jest-when": "^3.5.4",
     "@types/kefir": "^3.8.9",
     "@types/source-map-support": "^0.5.9",
