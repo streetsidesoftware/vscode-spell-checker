@@ -46,8 +46,8 @@ Default
 | -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
 | [`cSpell.caseSensitive`](#cspellcasesensitive)                 | resource | Determines if words must match case and accent rules.                                             |
 | [`cSpell.customDictionaries`](#cspellcustomdictionaries)       | resource | Custom Dictionaries                                                                               |
-| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use. Each entry should match the name of the dictionary. To…     |
-| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Define additional available dictionaries.                                                         |
+| [`cSpell.dictionaries`](#cspelldictionaries)                   | resource | Optional list of dictionaries to use.                                                             |
+| [`cSpell.dictionaryDefinitions`](#cspelldictionarydefinitions) | resource | Dictionary Definitions                                                                            |
 | [`cSpell.flagWords`](#cspellflagwords)                         | resource | List of words to always be considered incorrect. Words found in `flagWords` override `words`.     |
 | [`cSpell.ignoreWords`](#cspellignorewords)                     | resource | A list of words to be ignored by the spell checker.                                               |
 | [`cSpell.language`](#cspelllanguage)                           | resource | Current active spelling language.                                                                 |
@@ -132,9 +132,19 @@ Scope
 
 Description
 : Optional list of dictionaries to use.
-Each entry should match the name of the dictionary.
-To remove a dictionary from the list add `!` before the name.
-i.e. `!typescript` will turn off the dictionary with the name `typescript`.
+
+    Each entry should match the name of the dictionary.
+
+    To remove a dictionary from the list add `!` before the name.
+    i.e. `!typescript` will turn off the dictionary with the name `typescript`.
+
+
+    Example:
+
+    ```jsonc
+    // Enable `lorem-ipsum` and disable `typescript`
+    "cSpell.dictionaries": ["lorem-ipsum", "!typescript"]
+    ```
 
 Default
 : _- none -_
@@ -144,7 +154,7 @@ Default
 ### `cSpell.dictionaryDefinitions`
 
 Name
-: `cSpell.dictionaryDefinitions`
+: `cSpell.dictionaryDefinitions` -- Dictionary Definitions
 
 Type
 : []
@@ -153,7 +163,25 @@ Scope
 : resource
 
 Description
-: Define additional available dictionaries.
+: Define custom dictionaries..
+If `addWords` is `true` words will be added to this dictionary.
+
+    This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
+
+    It is better to use `#cSpell.customDictionaries#`
+
+    **Example:**
+
+    ```js
+    "cSpell.dictionaryDefinitions": [
+      {
+        "name": "project-words",
+        "path": "${workspaceRoot}/project-words.txt",
+        "description": "Words used in this project",
+        "addWords": true
+      }
+    ]
+    ```
 
 Default
 : _- none -_
@@ -1289,7 +1317,7 @@ Description
 
     The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
 
-    | VS Code UI          | JSON                  | Description                                  |
+    | VS Code UI          | settings.json         | Description                                  |
     | :------------------ | :-------------------- | :------------------------------------------- |
     | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
     | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |

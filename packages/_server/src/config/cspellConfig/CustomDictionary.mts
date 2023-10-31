@@ -12,7 +12,7 @@ type DictionaryDefPreferred = Omit<DictionaryDefinitionPreferred, 'type' | 'useC
 
 type DictionaryDefCustom = Omit<DictionaryDefinitionCustom, 'type' | 'useCompounds' | 'repMap'>;
 
-export type DictionaryDef = DictionaryDefPreferred | DictionaryDefCustom;
+export type DictionaryDef = CustomDictionary | DictionaryDefPreferred | DictionaryDefCustom;
 
 export type CustomDictionaries = {
     [Name in DictionaryId]: EnableCustomDictionary | CustomDictionariesDictionary;
@@ -37,7 +37,7 @@ interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
      * Example: `My Words` or `custom`
      *
      *
-     * If they name matches a pre-defined dictionary, it will override the pre-defined dictionary.
+     * If the name matches a pre-defined dictionary, it will override the pre-defined dictionary.
      * If you use: `typescript` it will replace the built-in TypeScript dictionary.
      * @title Name of Dictionary
      */
@@ -63,30 +63,30 @@ interface CustomDictionaryBase extends Pick<DictionaryDefCustom, 'noSuggest'> {
      *
      * **Example:** relative to User's folder
      *
-     * ```
-     * ~/dictionaries/custom_dictionary.txt
+     * ```json
+     * "path": "~/dictionaries/custom_dictionary.txt"
      * ```
      *
      * **Example:** relative to the `client` folder in a multi-root workspace
      *
-     * ```
-     * ${workspaceFolder:client}/build/custom_dictionary.txt
+     * ```json
+     * "path": "${workspaceFolder:client}/build/custom_dictionary.txt"
      * ```
      *
      * **Example:** relative to the current workspace folder in a single-root workspace
      *
-     * **Note:** this might no as expected in a multi-root workspace since it is based upon the relative
+     * **Note:** this might not work as expected in a multi-root workspace since it is based upon the relative
      * workspace for the currently open file.
      *
-     * ```
-     * ${workspaceFolder}/build/custom_dictionary.txt
+     * ```json
+     * "path": "${workspaceFolder}/build/custom_dictionary.txt"
      * ```
      *
      * **Example:** relative to the workspace folder in a single-root workspace or the first folder in
      * a multi-root workspace
      *
-     * ```
-     * ./build/custom_dictionary.txt
+     * ```json
+     * "path": "./build/custom_dictionary.txt"
      * ```
      * @title Path to Dictionary Text File
      */

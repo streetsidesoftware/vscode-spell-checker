@@ -167,6 +167,11 @@
           "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
           "when": "view == cspell-info.issuesView && viewItem == issue.hasPreferred",
           "group": "inline"
+        },
+        {
+          "command": "cSpell.issueViewer.item.addWordToDictionary",
+          "when": "view == cspell-info.issuesView && viewItem == issue",
+          "group": "inline"
         }
       ]
     },
@@ -346,7 +351,8 @@
       {
         "command": "cSpell.addWordToDictionary",
         "category": "Spell",
-        "title": "Add Words to Dictionary"
+        "title": "Add Words to Dictionary",
+        "icon": "$(book)"
       },
       {
         "command": "cSpell.addWordToCSpellConfig",
@@ -396,12 +402,19 @@
       },
       {
         "command": "cSpellRegExpTester.testRegExp",
-        "title": "Test a Regular Expression on the current document."
+        "title": "Test a Regular Expression on the current document.",
+        "enablement": "config.cSpell.experimental.enableRegexpView"
       },
       {
         "command": "cSpellRegExpTester.editRegExp",
         "title": "Edit",
-        "icon": "$(edit)"
+        "icon": "$(edit)",
+        "enablement": "config.cSpell.experimental.enableRegexpView"
+      },
+      {
+        "command": "cSpell.autoFixSpellingIssues",
+        "title": "Fix all issues with a preferred suggestion in the current document.",
+        "icon": "$(lightbulb-autofix)"
       },
       {
         "command": "cSpell.issueViewer.item.openSuggestionsForIssue",
@@ -410,14 +423,16 @@
         "enablement": "view == cspell-info.issuesView"
       },
       {
-        "command": "cSpell.autoFixSpellingIssues",
-        "title": "Fix all issues with a preferred suggestion in the current document.",
-        "icon": "$(lightbulb-autofix)"
-      },
-      {
         "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
         "title": "Fix issue with preferred suggestion in the current document.",
         "icon": "$(lightbulb-autofix)",
+        "enablement": "view == cspell-info.issuesView"
+      },
+      {
+        "command": "cSpell.issueViewer.item.addWordToDictionary",
+        "category": "Spell",
+        "title": "Add Word to Dictionary",
+        "icon": "$(book)",
         "enablement": "view == cspell-info.issuesView"
       }
     ],
@@ -549,7 +564,7 @@
               "markdownDescription": "A PatternRef is a Pattern or PatternId.",
               "type": "string"
             },
-            "markdownDescription": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,\n  it is necessary to escape `\\`.\n  Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | JSON                  | Description                                  |\n| :------------------ | :-------------------- | :------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
+            "markdownDescription": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,\n  it is necessary to escape `\\`.\n  Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  |\n| :------------------ | :-------------------- | :------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
             "scope": "resource",
             "type": "array"
           },
@@ -629,6 +644,68 @@
                 "dictionaryDefinitions": {
                   "items": {
                     "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "addWords": {
+                            "default": true,
+                            "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                            "title": "Add Words to Dictionary",
+                            "type": "boolean"
+                          },
+                          "description": {
+                            "markdownDescription": "Optional: A human readable description.",
+                            "title": "Description of the Dictionary",
+                            "type": "string"
+                          },
+                          "name": {
+                            "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "title": "Name of Dictionary",
+                            "type": "string"
+                          },
+                          "noSuggest": {
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+                            "type": "boolean"
+                          },
+                          "path": {
+                            "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                            "type": "string"
+                          },
+                          "scope": {
+                            "anyOf": [
+                              {
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
+                                "markdownDescription": "Specifies the scope of a dictionary.",
+                                "type": "string"
+                              },
+                              {
+                                "items": {
+                                  "enum": [
+                                    "user",
+                                    "workspace",
+                                    "folder"
+                                  ],
+                                  "markdownDescription": "Specifies the scope of a dictionary.",
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              }
+                            ],
+                            "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                            "title": "Scope of dictionary"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
                       {
                         "additionalProperties": false,
                         "properties": {
@@ -714,8 +791,9 @@
                       }
                     ]
                   },
-                  "markdownDescription": "Define additional available dictionaries.",
+                  "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                   "scope": "resource",
+                  "title": "Dictionary Definitions",
                   "type": "array"
                 },
                 "enableFiletypes": {
@@ -856,6 +934,68 @@
                             {
                               "additionalProperties": false,
                               "properties": {
+                                "addWords": {
+                                  "default": true,
+                                  "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                                  "title": "Add Words to Dictionary",
+                                  "type": "boolean"
+                                },
+                                "description": {
+                                  "markdownDescription": "Optional: A human readable description.",
+                                  "title": "Description of the Dictionary",
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                                  "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                                  "title": "Name of Dictionary",
+                                  "type": "string"
+                                },
+                                "noSuggest": {
+                                  "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+                                  "type": "boolean"
+                                },
+                                "path": {
+                                  "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                                  "type": "string"
+                                },
+                                "scope": {
+                                  "anyOf": [
+                                    {
+                                      "enum": [
+                                        "user",
+                                        "workspace",
+                                        "folder"
+                                      ],
+                                      "markdownDescription": "Specifies the scope of a dictionary.",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "items": {
+                                        "enum": [
+                                          "user",
+                                          "workspace",
+                                          "folder"
+                                        ],
+                                        "markdownDescription": "Specifies the scope of a dictionary.",
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    }
+                                  ],
+                                  "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                                  "title": "Scope of dictionary"
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "path"
+                              ],
+                              "type": "object"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
                                 "description": {
                                   "markdownDescription": "Optional description.",
                                   "type": "string"
@@ -938,8 +1078,9 @@
                             }
                           ]
                         },
-                        "markdownDescription": "Define additional available dictionaries.",
+                        "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                         "scope": "resource",
+                        "title": "Dictionary Definitions",
                         "type": "array"
                       },
                       "enabled": {
@@ -1578,7 +1719,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "title": "Name of Dictionary",
                       "type": "string"
                     },
@@ -1587,7 +1728,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
@@ -1634,13 +1775,75 @@
               "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
               "type": "string"
             },
-            "markdownDescription": "Optional list of dictionaries to use.\nEach entry should match the name of the dictionary.\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.",
+            "markdownDescription": "Optional list of dictionaries to use.\n\nEach entry should match the name of the dictionary.\n\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.\n\n\nExample:\n\n```jsonc\n// Enable `lorem-ipsum` and disable `typescript`\n\"cSpell.dictionaries\": [\"lorem-ipsum\", \"!typescript\"]\n```",
             "scope": "resource",
             "type": "array"
           },
           "cSpell.dictionaryDefinitions": {
             "items": {
               "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "addWords": {
+                      "default": true,
+                      "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                      "title": "Add Words to Dictionary",
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "markdownDescription": "Optional: A human readable description.",
+                      "title": "Description of the Dictionary",
+                      "type": "string"
+                    },
+                    "name": {
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "title": "Name of Dictionary",
+                      "type": "string"
+                    },
+                    "noSuggest": {
+                      "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+                      "type": "boolean"
+                    },
+                    "path": {
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "user",
+                            "workspace",
+                            "folder"
+                          ],
+                          "markdownDescription": "Specifies the scope of a dictionary.",
+                          "type": "string"
+                        },
+                        {
+                          "items": {
+                            "enum": [
+                              "user",
+                              "workspace",
+                              "folder"
+                            ],
+                            "markdownDescription": "Specifies the scope of a dictionary.",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      ],
+                      "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                      "title": "Scope of dictionary"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "path"
+                  ],
+                  "type": "object"
+                },
                 {
                   "additionalProperties": false,
                   "properties": {
@@ -1726,8 +1929,9 @@
                 }
               ]
             },
-            "markdownDescription": "Define additional available dictionaries.",
+            "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
             "scope": "resource",
+            "title": "Dictionary Definitions",
             "type": "array"
           },
           "cSpell.flagWords": {
@@ -1781,6 +1985,68 @@
                 "dictionaryDefinitions": {
                   "items": {
                     "anyOf": [
+                      {
+                        "additionalProperties": false,
+                        "properties": {
+                          "addWords": {
+                            "default": true,
+                            "markdownDescription": "Indicate if this custom dictionary should be used to store added words.",
+                            "title": "Add Words to Dictionary",
+                            "type": "boolean"
+                          },
+                          "description": {
+                            "markdownDescription": "Optional: A human readable description.",
+                            "title": "Description of the Dictionary",
+                            "type": "string"
+                          },
+                          "name": {
+                            "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "title": "Name of Dictionary",
+                            "type": "string"
+                          },
+                          "noSuggest": {
+                            "markdownDescription": "Indicate that suggestions should not come from this dictionary.\nWords in this dictionary are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\nthis dictionary, it will be removed from the set of\npossible suggestions.",
+                            "type": "boolean"
+                          },
+                          "path": {
+                            "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                            "type": "string"
+                          },
+                          "scope": {
+                            "anyOf": [
+                              {
+                                "enum": [
+                                  "user",
+                                  "workspace",
+                                  "folder"
+                                ],
+                                "markdownDescription": "Specifies the scope of a dictionary.",
+                                "type": "string"
+                              },
+                              {
+                                "items": {
+                                  "enum": [
+                                    "user",
+                                    "workspace",
+                                    "folder"
+                                  ],
+                                  "markdownDescription": "Specifies the scope of a dictionary.",
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              }
+                            ],
+                            "markdownDescription": "Options are\n- `user` - words that apply to all projects and workspaces\n- `workspace` - words that apply to the entire workspace\n- `folder` - words that apply to only a workspace folder",
+                            "title": "Scope of dictionary"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
                       {
                         "additionalProperties": false,
                         "properties": {
@@ -1866,8 +2132,9 @@
                       }
                     ]
                   },
-                  "markdownDescription": "Define additional available dictionaries.",
+                  "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                   "scope": "resource",
+                  "title": "Dictionary Definitions",
                   "type": "array"
                 },
                 "enabled": {
@@ -2162,7 +2429,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2172,7 +2439,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
@@ -2224,7 +2491,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2234,7 +2501,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "type": "string"
                     },
                     "scope": {
@@ -2303,7 +2570,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2313,7 +2580,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
@@ -2365,7 +2632,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2375,7 +2642,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "type": "string"
                     },
                     "scope": {
@@ -2444,7 +2711,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2454,7 +2721,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "title": "Path to Dictionary Text File",
                       "type": "string"
                     },
@@ -2506,7 +2773,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf they name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
+                      "markdownDescription": "The reference name of the dictionary.\n\n\nExample: `My Words` or `custom`\n\n\nIf the name matches a pre-defined dictionary, it will override the pre-defined dictionary.\nIf you use: `typescript` it will replace the built-in TypeScript dictionary.",
                       "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
                       "title": "Name of Dictionary",
                       "type": "string"
@@ -2516,7 +2783,7 @@
                       "type": "boolean"
                     },
                     "path": {
-                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```\n~/dictionaries/custom_dictionary.txt\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```\n${workspaceFolder:client}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might no as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```\n${workspaceFolder}/build/custom_dictionary.txt\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```\n./build/custom_dictionary.txt\n```",
+                      "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
                       "type": "string"
                     },
                     "scope": {
