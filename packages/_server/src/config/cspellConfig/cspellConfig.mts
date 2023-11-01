@@ -24,7 +24,26 @@ export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserS
 
 interface DictionaryDefinitions {
     /**
-     * Define additional available dictionaries.
+     * Define custom dictionaries..
+     * If `addWords` is `true` words will be added to this dictionary.
+     *
+     * This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).
+     *
+     * It is better to use `#cSpell.customDictionaries#`
+     *
+     * **Example:**
+     *
+     * ```js
+     * "cSpell.dictionaryDefinitions": [
+     *   {
+     *     "name": "project-words",
+     *     "path": "${workspaceRoot}/project-words.txt",
+     *     "description": "Words used in this project",
+     *     "addWords": true
+     *   }
+     * ]
+     * ```
+     * @title Dictionary Definitions
      * @scope resource
      */
     dictionaryDefinitions?: DictionaryDef[];
@@ -89,7 +108,7 @@ type CSpellOmitFieldsFromExtensionContributesInPackageJson =
 export interface SpellCheckerSettingsVSCodeBase
     extends Omit<
             CSpellUserSettings,
-            CSpellOmitFieldsFromExtensionContributesInPackageJson | 'dictionaryDefinitions' | 'languageSettings' | 'overrides'
+            CSpellOmitFieldsFromExtensionContributesInPackageJson | keyof DictionaryDefinitions | keyof LanguageSettings | keyof Overrides
         >,
         DictionaryDefinitions,
         LanguageSettings,

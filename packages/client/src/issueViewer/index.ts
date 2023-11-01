@@ -1,1 +1,1 @@
-export { activate as activateIssueViewer } from './viewer';
+export { activate as activateIssueViewer } from './issueViewer';

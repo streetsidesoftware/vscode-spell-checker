@@ -6,6 +6,7 @@ import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import { registerSpellCheckerCodeActionProvider } from './codeAction';
 import * as commands from './commands';
+import * as addWords from './addWords';
 import { updateDocumentRelatedContext } from './context';
 import { SpellingIssueDecorator } from './decorate';
 import * as di from './di';
@@ -179,8 +180,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableLanguageId: commands.disableLanguageIdCmd,
         enableCurrentLanguage: commands.enableCurrentLanguage,
         disableCurrentLanguage: commands.disableCurrentLanguage,
-        addWordToUserDictionary: commands.addWordToUserDictionary,
-        addWordToWorkspaceDictionary: commands.addWordToWorkspaceDictionary,
+        addWordToUserDictionary: addWords.addWordToUserDictionary,
+        addWordToWorkspaceDictionary: addWords.addWordToWorkspaceDictionary,
         enableLocale: methods.enableLocale,
         disableLocale: methods.disableLocale,
         updateSettings: () => false,

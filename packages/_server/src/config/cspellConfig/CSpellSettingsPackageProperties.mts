@@ -70,72 +70,11 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      * @scope resource
      * @uniqueItems true
      * @default [
-     *      "asciidoc",
-     *      "bat",
-     *      "c",
-     *      "clojure",
-     *      "coffeescript",
-     *      "cpp",
-     *      "csharp",
-     *      "css",
-     *      "dart",
-     *      "diff",
-     *      "dockerfile",
-     *      "elixir",
-     *      "erlang",
-     *      "fsharp",
-     *      "git-commit",
-     *      "git-rebase",
-     *      "github-actions-workflow",
-     *      "go",
-     *      "graphql",
-     *      "groovy",
-     *      "handlebars",
-     *      "haskell",
-     *      "html",
-     *      "ini",
-     *      "jade",
-     *      "java",
-     *      "javascript",
-     *      "javascriptreact",
-     *      "json",
-     *      "jsonc",
-     *      "julia",
-     *      "jupyter",
-     *      "latex",
-     *      "less",
-     *      "lua",
-     *      "makefile",
-     *      "markdown",
-     *      "objective-c",
-     *      "perl",
-     *      "perl6",
-     *      "php",
-     *      "plaintext",
-     *      "powershell",
-     *      "properties",
-     *      "pug",
-     *      "python",
-     *      "r",
-     *      "razor",
-     *      "restructuredtext",
-     *      "ruby",
-     *      "rust",
-     *      "scala",
-     *      "scminput",
-     *      "scss",
-     *      "shaderlab",
-     *      "shellscript",
-     *      "sql",
-     *      "swift",
-     *      "text",
-     *      "typescript",
-     *      "typescriptreact",
-     *      "vb",
-     *      "vue",
-     *      "xml",
-     *      "xsl",
-     *      "yaml"
+     *      "asciidoc","bat","c","clojure","coffeescript","cpp","csharp","css","dart","diff","dockerfile","elixir","erlang","fsharp","git-commit",
+     *      "git-rebase","github-actions-workflow","go","graphql","groovy","handlebars","haskell","html","ini","jade","java","javascript","javascriptreact",
+     *      "json","jsonc","julia","jupyter","latex","less","lua","makefile","markdown","objective-c","perl","perl6","php","plaintext","powershell",
+     *      "properties","pug","python","r","razor","restructuredtext","ruby","rust","scala","scminput","scss","shaderlab","shellscript","sql","swift",
+     *      "text","typescript","typescriptreact","vb","vue","xml","xsl","yaml"
      *  ]
      */
     enabledLanguageIds?: CSpellSettings['enabledLanguageIds'];
@@ -168,14 +107,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      * Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @title Glob patterns of files to be ignored
      * @scope resource
-     * @default [
-     *      "package-lock.json",
-     *      "node_modules",
-     *      "vscode-extension",
-     *      ".git/objects",
-     *      ".vscode",
-     *      ".vscode-insiders"
-     *    ]
+     * @default ["package-lock.json","node_modules","vscode-extension",".git/objects",".vscode",".vscode-insiders"]
      */
     ignorePaths?: (SimpleGlob | GlobDefX)[];
 
@@ -249,7 +181,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *
      * The default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.
      *
-     * | VS Code UI          | JSON                  | Description                                  |
+     * | VS Code UI          | settings.json         | Description                                  |
      * | :------------------ | :-------------------- | :------------------------------------------- |
      * | `/\\[a-z]+/gi`      | `/\\\\[a-z]+/gi`      | Exclude LaTeX command like `\mapsto`         |
      * | `/\b[A-Z]{3,5}\b/g` | `/\\b[A-Z]{3,5}\\b/g` | Exclude full-caps acronyms of 3-5 length.    |
@@ -278,9 +210,19 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
 
     /**
      * Optional list of dictionaries to use.
+     *
      * Each entry should match the name of the dictionary.
+     *
      * To remove a dictionary from the list add `!` before the name.
      * i.e. `!typescript` will turn off the dictionary with the name `typescript`.
+     *
+     *
+     * Example:
+     *
+     * ```jsonc
+     * // Enable `lorem-ipsum` and disable `typescript`
+     * "cSpell.dictionaries": ["lorem-ipsum", "!typescript"]
+     * ```
      *
      * @scope resource
      */
