@@ -1,12 +1,14 @@
-import type { Command, ConfigurationScope, Diagnostic, Disposable, QuickPickOptions, TextDocument, TextEdit, Uri } from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, Uri } from 'vscode';
 import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
+import { addWordToFolderDictionary, addWordToTarget, addWordToUserDictionary, addWordToWorkspaceDictionary, fnWTarget } from './addWords';
 import { actionAutoFixSpellingIssues, handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
 import type { ClientSideCommandHandlerApi } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
-import { extractMatchingDiagTexts, getCSpellDiags } from './diags';
+import { getCSpellDiags } from './diags';
+import { onCommandUseDiagsSelectionOrPrompt } from './promptUser';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings';
 import * as Settings from './settings';
 import {
@@ -20,25 +22,20 @@ import type { ClientConfigTarget } from './settings/clientConfigTarget';
 import type { ConfigRepository } from './settings/configRepository';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper';
-import type { MatchTargetsFn } from './settings/configTargetHelper';
 import {
     createClientConfigTargetVSCode,
     createConfigTargetMatchPattern,
     dictionaryTargetBestMatches,
     dictionaryTargetBestMatchesCSpell,
-    dictionaryTargetBestMatchesFolder,
-    dictionaryTargetBestMatchesUser,
     dictionaryTargetBestMatchesVSCodeFolder as dtVSCodeFolder,
     dictionaryTargetBestMatchesVSCodeUser as dtVSCodeUser,
     dictionaryTargetBestMatchesVSCodeWorkspace as dtVSCodeWorkspace,
-    dictionaryTargetBestMatchesWorkspace,
     filterClientConfigTargets,
     matchKindAll,
     matchScopeAll,
     patternMatchNoDictionaries,
     quickPickTarget,
 } from './settings/configTargetHelper';
-import { normalizeWords } from './settings/CSpellSettings';
 import type { DictionaryTarget } from './settings/DictionaryTarget';
 import { createDictionaryTargetForFile } from './settings/DictionaryTarget';
 import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget';
@@ -49,7 +46,6 @@ import {
     dictionaryScopeToConfigurationTarget,
 } from './settings/targetAndScope';
 import { catchErrors, handleErrors } from './util/errors';
-import { findEditor } from './util/findEditor';
 import { performance, toMilliseconds } from './util/perf';
 import { pVoid } from './util/pVoid';
 import { scrollToText } from './util/textEditor';
@@ -100,7 +96,7 @@ const actionAddIgnoreWordToUser = prompt('Ignore Words in User Settings', fnWTar
 const actionAddWordToCSpell = prompt('Add Words to cSpell Configuration', fnWTarget(addWordToTarget, dictionaryTargetBestMatchesCSpell));
 const actionAddWordToDictionary = prompt('Add Words to Dictionary', fnWTarget(addWordToTarget, dictionaryTargetBestMatches));
 
-const commandHandlers = {
+export const commandHandlers = {
     'cSpell.addWordToDictionary': actionAddWordToDictionary,
     'cSpell.addWordToFolderDictionary': actionAddWordToFolder,
     'cSpell.addWordToWorkspaceDictionary': actionAddWordToWorkspace,
@@ -196,29 +192,6 @@ function registerCmd(cmd: string, fn: (...args: any[]) => unknown): Disposable {
         return { dispose };
     }
     return commands.registerCommand(cmd, catchErrors(fn, `Register command: ${cmd}`));
-}
-
-function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    return addWordToTarget(word, dictionaryTargetBestMatchesFolder, docUri);
-}
-
-export function addWordToWorkspaceDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
-    // eslint-disable-next-line prefer-rest-params
-    console.log('addWordToWorkspaceDictionary %o', arguments);
-    return addWordToTarget(word, dictionaryTargetBestMatchesWorkspace, docUri);
-}
-
-export function addWordToUserDictionary(word: string): Promise<void> {
-    return addWordToTarget(word, dictionaryTargetBestMatchesUser, undefined);
-}
-
-function addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined) {
-    return handleErrors(_addWordToTarget(word, target, docUri), 'addWordToTarget');
-}
-
-function _addWordToTarget(word: string, target: MatchTargetsFn, docUri: string | null | Uri | undefined) {
-    docUri = toUri(docUri);
-    return di.get('dictionaryHelper').addWordsToTargets(word, target, docUri);
 }
 
 function addAllIssuesFromDocument(): Promise<void> {
@@ -387,74 +360,6 @@ async function uriToTextDocInfo(uri: Uri): Promise<{ uri: Uri; languageId?: stri
     return await workspace.openTextDocument(uri);
 }
 
-const compareStrings = new Intl.Collator().compare;
-
-function onCommandUseDiagsSelectionOrPrompt(
-    prompt: string,
-    fnAction: (text: string, uri: Uri | undefined) => Promise<void>,
-): (text?: string, uri?: Uri | string) => Promise<void> {
-    return async function (text?: string, uri?: Uri | string) {
-        const selected = await determineTextSelection(prompt, text, uri);
-        if (!selected) return;
-
-        const editor = window.activeTextEditor;
-        await fnAction(selected.text, selected.uri);
-        await (editor?.document && window.showTextDocument(editor.document));
-    };
-}
-
-async function determineTextSelection(prompt: string, text?: string, uri?: Uri | string): Promise<{ text: string; uri?: Uri } | undefined> {
-    uri = toUri(uri);
-    if (text) {
-        return { text, uri: uri || window.activeTextEditor?.document.uri };
-    }
-
-    const editor = findEditor(uri);
-
-    const document = editor?.document;
-    const selection = editor?.selection;
-    const range = selection && document?.getWordRangeAtPosition(selection.active);
-    const diags = document ? getCSpellDiags(document.uri) : undefined;
-    const matchingDiagWords = normalizeWords(extractMatchingDiagTexts(document, selection, diags) || []);
-    if (matchingDiagWords.length) {
-        const picked =
-            selection?.anchor.isEqual(selection.active) && matchingDiagWords.length === 1
-                ? matchingDiagWords
-                : await chooseWords(matchingDiagWords.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' });
-        if (!picked) return;
-        return { text: picked.join(' '), uri: document?.uri };
-    }
-
-    if (!range || !selection || !document || !document.getText(range)) {
-        const word = await window.showInputBox({ title: prompt, prompt });
-        if (!word) return;
-        return { text: word, uri: document?.uri };
-    }
-
-    text = selection.contains(range) ? document.getText(selection) : document.getText(range);
-
-    const words = normalizeWords(text);
-    const picked =
-        words.length > 1
-            ? await chooseWords(words.sort(compareStrings), { title: prompt, placeHolder: 'Choose words' })
-            : [await window.showInputBox({ title: prompt, prompt, value: words[0] })];
-    if (!picked) return;
-    return { text: picked.join(' '), uri: document.uri };
-}
-
-async function chooseWords(words: string[], options: QuickPickOptions): Promise<string[] | undefined> {
-    if (words.length <= 1) {
-        const picked = await window.showInputBox({ ...options, value: words[0] });
-        if (!picked) return;
-        return [picked];
-    }
-
-    const items = words.map((label) => ({ label, picked: true }));
-
-    const picked = await window.showQuickPick(items, { ...options, canPickMany: true });
-    return picked?.map((p) => p.label);
-}
-
 function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri | string | null | undefined): string {
     const scope = target ? configurationTargetToDictionaryScope(target) : '';
     return scope ? `${method} ${scope} ${toUri(uri)}` : `${method} ${toUri(uri)}`;
@@ -474,13 +379,6 @@ function dumpPerfTimeline(): void {
     performance.getEntries().forEach((entry) => {
         console.log(entry.name, toMilliseconds(entry.startTime), entry.duration);
     });
-}
-
-function fnWTarget<TT>(
-    fn: (word: string, t: TT, uri: Uri | undefined) => Promise<void>,
-    t: TT,
-): (word: string, uri: Uri | undefined) => Promise<void> {
-    return (word, uri) => fn(word, t, uri);
 }
 
 async function createCSpellConfig(): Promise<void> {

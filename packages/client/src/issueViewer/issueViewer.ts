@@ -1,20 +1,21 @@
+import { uriToName } from '@internal/common-utils';
 import type { Suggestion } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
-import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider } from 'vscode';
+import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
 import { handleFixSpellingIssue } from '../applyCorrections';
 import type { CSpellClient } from '../client';
 import { actionSuggestSpellingCorrections } from '../codeActions/actionSuggestSpellingCorrections';
-import { knownCommands } from '../commands';
+import { commandHandlers, knownCommands } from '../commands';
 import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
 import { createEmitter } from '../Subscribables';
 import { logErrors } from '../util/errors';
-import { findEditor } from '../util/findEditor';
+import { findEditor, findTextDocument } from '../util/findEditor';
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker, client: CSpellClient) {
-    context.subscriptions.push(IssuesTreeDataProvider.register(issueTracker, client));
+    context.subscriptions.push(IssueExplorer.register(issueTracker, client));
     context.subscriptions.push(
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.openSuggestionsForIssue'], handleOpenSuggestionsForIssue),
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
@@ -30,49 +31,67 @@ interface RequestSuggestionsParam {
     readonly onUpdate: (suggestions: Suggestion[]) => void;
 }
 
+class IssueExplorer {
+    private disposeList = createDisposableList();
+    private treeView: vscode.TreeView<IssueTreeItemBase>;
+
+    constructor(issueTracker: IssueTracker, client: CSpellClient) {
+        const treeDataProvider = new IssuesTreeDataProvider({
+            issueTracker,
+            client,
+            setDescription: (des) => {
+                this.treeView.description = des;
+            },
+            setMessage: (msg) => {
+                this.treeView.message = msg;
+            },
+        });
+        this.treeView = vscode.window.createTreeView(IssueExplorer.viewID, { treeDataProvider, showCollapseAll: true });
+        this.disposeList.push(this.treeView);
+        this.treeView.title = 'Spelling Issues';
+        this.treeView.message = 'No open documents.';
+    }
+
+    readonly dispose = this.disposeList.dispose;
+
+    static viewID = 'cspell-info.issuesView';
+
+    static register(issueTracker: IssueTracker, client: CSpellClient) {
+        return new IssueExplorer(issueTracker, client);
+    }
+}
+
 interface Context {
     client: CSpellClient;
     issueTracker: IssueTracker;
     document: TextDocument;
-    currentEditor: vscode.TextEditor | undefined;
     invalidate: (item: OnDidChangeEventType) => void;
     requestSuggestions: (item: RequestSuggestionsParam) => Suggestion[] | undefined;
+}
+
+interface ProviderOptions {
+    issueTracker: IssueTracker;
+    client: CSpellClient;
+    setMessage(msg: string | undefined): void;
+    setDescription(des: string | undefined): void;
 }
 
 class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     private emitOnDidChange = createEmitter<OnDidChangeEventType>();
     private disposeList = createDisposableList();
     private currentEditor: vscode.TextEditor | undefined = undefined;
+    private currentDocUri: Uri | undefined = undefined;
     private suggestions = new Map<string, Suggestion[]>();
+    private issueTracker: IssueTracker;
+    private client: CSpellClient;
 
-    constructor(
-        private issueTracker: IssueTracker,
-        private client: CSpellClient,
-    ) {
+    constructor(private options: ProviderOptions) {
+        this.issueTracker = options.issueTracker;
+        this.client = options.client;
         this.disposeList.push(
             this.emitOnDidChange,
-            vscode.window.onDidChangeActiveTextEditor((editor) => {
-                if (editor === this.currentEditor) return;
-                if (editor) {
-                    this.currentEditor = editor;
-                    this.emitOnDidChange.notify(undefined);
-                }
-                this.currentEditor = this.currentEditor && findEditor(this.currentEditor.document.uri);
-            }),
-            issueTracker.onDidChangeDiagnostics((e) => {
-                const activeTextEditor = vscode.window.activeTextEditor;
-                if (activeTextEditor && activeTextEditor !== this.currentEditor) {
-                    this.currentEditor = activeTextEditor;
-                    this.emitOnDidChange.notify(undefined);
-                    return;
-                }
-                const current = this.currentEditor?.document.uri.toString();
-                if (!current) return;
-                const matching = e.uris.filter((u) => u.toString() === current);
-                if (matching.length) {
-                    this.emitOnDidChange.notify(undefined);
-                }
-            }),
+            vscode.window.onDidChangeActiveTextEditor((editor) => this.updateEditor(editor)),
+            this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
         );
     }
 
@@ -81,14 +100,16 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     }
 
     getChildren(element?: IssueTreeItemBase | undefined): ProviderResult<IssueTreeItemBase[]> {
-        if (element) return element.getChildren();
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return [new NoIssuesTreeItem()];
+        if (element) {
+            return element.getChildren();
+        }
+        const editor = this.currentEditor;
+        const document = editor?.document || findTextDocument(this.currentDocUri);
+        if (!document) return this.updateMessage('No open documents.');
         const context: Context = {
             issueTracker: this.issueTracker,
             client: this.client,
-            document: editor.document,
-            currentEditor: editor,
+            document: document,
             invalidate: (item) => this.emitOnDidChange.notify(item),
             requestSuggestions: (item) => {
                 logErrors(this.fetchSuggestions(item), 'IssuesTreeDataProvider requestSuggestions');
@@ -96,7 +117,8 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
             },
         };
         const issues = collectIssues(context);
-        return issues.length ? issues : [new NoIssuesTreeItem()];
+        this.updateMessage(issues.length ? undefined : 'No issues found...');
+        return issues;
     }
 
     onDidChangeTreeData(listener: (e: OnDidChangeEventType) => void, thisArg?: unknown, disposables?: Disposable[]): Disposable {
@@ -108,6 +130,15 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         return d;
     }
 
+    private handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
+        const current = this.currentEditor?.document.uri.toString();
+        if (!current) return;
+        const matching = e.uris.filter((u) => u.toString() === current);
+        if (matching.length) {
+            this.emitOnDidChange.notify(undefined);
+        }
+    }
+
     private async fetchSuggestions(item: RequestSuggestionsParam) {
         const { word, document } = item;
         const result = await this.client.requestSpellingSuggestions(word, document);
@@ -115,6 +146,27 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         this.suggestions.set(word, suggestions);
         // this.updateVSCodeContext();
         item.onUpdate(suggestions);
+    }
+
+    private updateEditor(editor: vscode.TextEditor | undefined) {
+        if (editor === this.currentEditor) return;
+        if (editor) {
+            this.currentEditor = editor;
+            this.currentDocUri = editor.document.uri;
+            this.emitOnDidChange.notify(undefined);
+            return;
+        }
+        this.currentEditor = this.currentDocUri && findEditor(this.currentDocUri);
+        this.emitOnDidChange.notify(undefined);
+    }
+
+    private updateMessage(msg: string | undefined) {
+        const doc = findTextDocument(this.currentDocUri);
+        const uri = doc?.uri;
+        const name = uri && uriToName(uri);
+        this.options.setDescription(name);
+        this.options.setMessage(msg);
+        return undefined;
     }
 
     // private hasPreferred(): boolean {
@@ -130,15 +182,6 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     // }
 
     readonly dispose = this.disposeList.dispose;
-
-    static register(issueTracker: IssueTracker, client: CSpellClient, name = 'cspell-info.issuesView') {
-        const provider = new IssuesTreeDataProvider(issueTracker, client);
-        const disposeList = createDisposableList(
-            [provider, vscode.window.registerTreeDataProvider(name, provider)],
-            'IssuesTreeDataProvider.register',
-        );
-        return disposeList;
-    }
 }
 
 const icons = {
@@ -172,15 +215,18 @@ class IssueTreeItem extends IssueTreeItemBase {
     getTreeItem(): TreeItem {
         const item = new TreeItem(this.word);
         const hasPreferred = this.hasPreferred();
-        item.iconPath = this.diags[0]?.data?.isFlagged ? icons.error : icons.warning;
+        const isFlagged = this.diags[0]?.data?.isFlagged;
+        item.iconPath = isFlagged ? icons.error : icons.warning;
         item.description = this.diags.length + (hasPreferred ? ' (auto fix)' : '');
-        if (this.diags.length === 1) {
-            item.command = {
-                title: 'Goto Issue',
-                command: knownCommands['cSpell.selectRange'],
-                arguments: [this.context.document.uri, this.diags[0].range],
-            };
-        }
+        const cWord = cleanWord(this.word);
+        item.tooltip = new vscode.MarkdownString().appendMarkdown((isFlagged ? 'Flagged' : 'Unknown') + ' word: `' + cWord + '`');
+        // if (this.diags.length === 1) {
+        //     item.command = {
+        //         title: 'Goto Issue',
+        //         command: knownCommands['cSpell.selectRange'],
+        //         arguments: [this.context.document.uri, this.diags[0].range],
+        //     };
+        // }
         item.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
         item.contextValue = hasPreferred ? 'issue.hasPreferred' : 'issue';
         return item;
@@ -217,7 +263,9 @@ class IssueTreeItem extends IssueTreeItemBase {
         return handleFixSpellingIssue(this.context.document.uri, pref.text, pref.newText, pref.ranges);
     }
 
-    async addToDictionary() {}
+    async addToDictionary() {
+        return commandHandlers['cSpell.addWordToDictionary'](this.word, this.context.document.uri);
+    }
 
     private onUpdate(suggestions: Suggestion[]) {
         this.suggestions = suggestions;
@@ -313,7 +361,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
         const item = new TreeItem(word);
         item.iconPath = isPreferred ? icons.suggestionPreferred : icons.suggestion;
         item.description = isPreferred && '(preferred)';
-        const fixMessage = 'Fix Issue with ' + word;
+        const fixMessage = 'Fix Issue with: ' + word;
         item.command = {
             title: fixMessage,
             command: knownCommands['cSpell.fixSpellingIssue'],
@@ -335,20 +383,6 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 
     isPreferred(): boolean {
         return this.suggestion.isPreferred || false;
-    }
-}
-
-class NoIssuesTreeItem extends IssueTreeItemBase {
-    constructor() {
-        super();
-    }
-
-    getTreeItem(): TreeItem {
-        return new TreeItem('No Issues Found...');
-    }
-
-    getChildren() {
-        return undefined;
     }
 }
 
@@ -410,3 +444,11 @@ interface PreferredFix {
 //     const issues = issueTracker.getDiagnostics(uri);
 //     if (!issues.length) return undefined;
 // }
+
+/**
+ * Clean a word for markdown.
+ * @param word
+ */
+function cleanWord(word: string): string {
+    return word.replace(/\s/g, ' ').replace(/`/g, "'");
+}
