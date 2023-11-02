@@ -3,7 +3,7 @@ import { commands, FileType, Position, Range, Selection, TextEditorRevealType, w
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import { addWordToFolderDictionary, addWordToTarget, addWordToUserDictionary, addWordToWorkspaceDictionary, fnWTarget } from './addWords';
-import { actionAutoFixSpellingIssues, handleApplyTextEdits, handleFixSpellingIssue } from './applyCorrections';
+import { actionAutoFixSpellingIssues, handleApplyLsTextEdits, handleFixSpellingIssue } from './applyCorrections';
 import type { ClientSideCommandHandlerApi } from './client';
 import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpellingCorrections';
 import * as di from './di';
@@ -134,7 +134,7 @@ export const commandHandlers = {
     'cSpell.enableCurrentLanguage': enableCurrentLanguage,
     'cSpell.disableCurrentLanguage': disableCurrentLanguage,
 
-    'cSpell.editText': handleApplyTextEdits,
+    'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
 
     'cSpell.addWordToCSpellConfig': actionAddWordToCSpell,

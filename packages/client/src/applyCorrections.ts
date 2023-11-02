@@ -2,47 +2,64 @@ import { uriToName } from '@internal/common-utils';
 import type { Location, Range, TextDocument, Uri } from 'vscode';
 import { commands, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
 import type { Converter } from 'vscode-languageclient/lib/common/protocolConverter';
-import type { LanguageClient, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
+import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import * as di from './di';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
 import { findEditor, findTextDocument } from './util/findEditor';
-import { pVoid } from './util/pVoid';
+import { rangeToString } from './util/toString';
+import { pvShowErrorMessage, pvShowInformationMessage as showInformationMessage } from './util/vscodeHelpers';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];
 const propertyUseReferenceProviderRemove = Settings.ConfigFields['advanced.feature.useReferenceProviderRemove'];
 
+type ToVscodeConverter = Converter;
+
 async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
+    const locations = await findReferences(uri, range);
+    return locations?.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
+}
+
+async function findReferences(uri: Uri, range: Range): Promise<Location[] | undefined> {
     try {
         const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
         if (!Array.isArray(locations)) return undefined;
-        return locations.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
+        console.log(
+            'findReferences: %o',
+            locations.map((loc) => ({ uri: loc.uri.toString(), range: rangeToString(loc.range) })),
+        );
+        return locations;
     } catch (e) {
         return undefined;
     }
 }
 
-async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<Range | undefined> {
+interface EditBound {
+    range: Range;
+    referenced: boolean;
+}
+
+async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<EditBound | undefined> {
     if (useReference) {
         const refLocation = await findLocalReference(document.uri, range);
-        if (refLocation !== undefined) return refLocation.range;
+        if (refLocation !== undefined) return { range: refLocation.range, referenced: true };
     }
 
     const wordRange = document.getWordRangeAtPosition(range.start);
     if (!wordRange || !wordRange.contains(range)) {
         return undefined;
     }
-    return wordRange;
+    return { range: wordRange, referenced: false };
 }
 
-async function applyLsTextEdits(client: LanguageClient, uri: Uri, edits: LsTextEdit[]): Promise<boolean> {
+function cvtLsTextEdits(cvt: ToVscodeConverter, edits: LsTextEdit[]): TextEdit[] {
     function toTextEdit(edit: LsTextEdit): TextEdit {
-        return client.protocol2CodeConverter.asTextEdit(edit);
+        return cvt.asTextEdit(edit);
     }
 
-    return applyTextEdits(uri, edits.map(toTextEdit));
+    return edits.map(toTextEdit);
 }
 
 async function applyTextEdits(uri: Uri, edits: TextEdit[]): Promise<boolean> {
@@ -61,10 +78,11 @@ async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: Us
         return false;
     }
     const { useReference, removeRegExp } = refInfo;
-    const wordRange = await findEditBounds(document, range, useReference);
-    if (!wordRange || !wordRange.contains(range)) {
+    const bounds = await findEditBounds(document, range, useReference);
+    if (!bounds || !bounds.range.contains(range) || !bounds.referenced) {
         return false;
     }
+    const wordRange = bounds.range;
     const orig = wordRange.start.character;
     const a = range.start.character - orig;
     const b = range.end.character - orig;
@@ -89,20 +107,21 @@ interface UseRefInfo {
     removeRegExp: RegExp | undefined;
 }
 
-export async function handleApplyTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
-    const client = di.get('client').client;
+export async function handleApplyLsTextEdits(uri: string, documentVersion: number, edits: LsTextEdit[]): Promise<void> {
+    const converter = di.get('client').client.protocol2CodeConverter;
 
     console.warn('handleApplyTextEdits %o', { uri, documentVersion, edits });
 
-    const doc = workspace.textDocuments.find((doc) => doc.uri.toString() === uri);
+    return applyTextEditsWithRename(uri, cvtLsTextEdits(converter, edits), documentVersion);
+}
 
-    if (!doc) return;
+async function applyTextEditsWithRename(uri: Uri | string, edits: TextEdit[], documentVersion?: number): Promise<void> {
+    const doc = findTextDocument(uri);
 
-    if (doc.version !== documentVersion) {
-        return pVoid(
-            window.showInformationMessage('Spelling changes are outdated and cannot be applied to the document.'),
-            'handlerApplyTextEdits',
-        );
+    if (!doc) return pvShowErrorMessage(`Unable to find document: ${uri}`);
+
+    if (documentVersion && doc.version !== documentVersion) {
+        return pvShowErrorMessage('Spelling changes are outdated and cannot be applied to the document.');
     }
 
     if (edits.length === 1) {
@@ -111,21 +130,15 @@ export async function handleApplyTextEdits(uri: string, documentVersion: number,
             const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
             const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
             // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-            const edit = toTextEdit(client.protocol2CodeConverter, edits[0]);
+            const edit = edits[0];
             if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
                 return;
             }
         }
     }
 
-    const success = await applyLsTextEdits(client, doc.uri, edits);
-    return success
-        ? undefined
-        : pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handlerApplyTextEdits2');
-}
-
-function toTextEdit(converter: Converter, edit: LsTextEdit): TextEdit {
-    return converter.asTextEdit(edit);
+    const success = await applyTextEdits(doc.uri, edits);
+    return success ? undefined : pvShowErrorMessage('Failed to apply spelling changes to the document.');
 }
 
 function stringToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
@@ -158,7 +171,7 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
     return success ? undefined : failed();
 
     function failed() {
-        return pVoid(window.showErrorMessage('Failed to apply spelling changes to the document.'), 'handleFixSpellingIssue');
+        return pvShowErrorMessage('Failed to apply spelling changes to the document.');
     }
 }
 
@@ -167,10 +180,7 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
     uri ??= window.activeTextEditor?.document.uri;
     const doc = findEditor(uri)?.document || findTextDocument(uri);
     if (!uri || !doc) {
-        return pVoid(
-            window.showInformationMessage('Unable to fix spelling issues in current document, document not found.'),
-            'actionAutoFixSpellingIssues',
-        );
+        return showInformationMessage('Unable to fix spelling issues in current document, document not found.');
     }
 
     const issueTracker = di.get('issueTracker');
@@ -191,12 +201,12 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
 
     if (!autoFixes.length) {
         const name = uriToName(uri);
-        return pVoid(window.showInformationMessage(`No auto fixable spelling issues found in ${name}.`), 'actionAutoFixSpellingIssues');
+        return showInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
     const success = applyTextEdits(uri, autoFixes);
     if (!success) {
-        return pVoid(window.showInformationMessage('Unable to apply fixes.'), 'actionAutoFixSpellingIssues');
+        return showInformationMessage('Unable to apply fixes.');
     }
 }
 
