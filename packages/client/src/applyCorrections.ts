@@ -217,7 +217,8 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
         return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
-    return applyTextEditsToDocumentWithRename(doc, autoFixes, calcUseRefInfo(doc));
+    const success = await applyTextEditsToDocumentWithRename(doc, autoFixes, calcUseRefInfo(doc));
+    await showUnsuccessfulMessage(success, 'Failed to apply spelling changes to the document.');
 }
 
 function assert(x: unknown, msg = 'A truthy value is expected.'): asserts x {
