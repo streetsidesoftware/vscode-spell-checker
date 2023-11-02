@@ -29,12 +29,12 @@ export const ErrorHandlers = {
  * @param context - the create context of the promise - used to trace the origin of the promise
  * @returns Promise - resolves to `undefined` if an error has occurred.
  */
-export function showError(reason: unknown, context: string): Promise<void> {
+export function showError(reason: unknown, context: string): Promise<undefined> {
     if (!isPromiseCanceledError(reason) && isError(reason)) {
         console.error(formatLogMessage(reason, context));
         return silenceErrors(window.showErrorMessage(reason.message), 'showError Resolver showErrorMessage').then(() => undefined);
     }
-    return Promise.resolve();
+    return Promise.resolve(undefined);
 }
 
 /**
@@ -43,11 +43,11 @@ export function showError(reason: unknown, context: string): Promise<void> {
  * @param context - the create context of the promise - used to trace the origin of the promise
  * @returns Promise - resolves to `undefined` if an error has occurred.
  */
-export function logError(reason: unknown, context: string): Promise<void> {
+export function logError(reason: unknown, context: string): Promise<undefined> {
     if (!isPromiseCanceledError(reason) && isError(reason)) {
         console.log(formatLogMessage(reason, context));
     }
-    return Promise.resolve();
+    return Promise.resolve(undefined);
 }
 
 /**
@@ -56,7 +56,7 @@ export function logError(reason: unknown, context: string): Promise<void> {
  * @param context - the create context of the promise - used to trace the origin of the promise
  * @returns Promise - resolves to `undefined` if an error has occurred.
  */
-export function ignoreError(reason: unknown, context: string): Promise<void> {
+export function ignoreError(reason: unknown, context: string): Promise<undefined> {
     // The msg is generated for debugging purposes, it is not used.
     const msg = formatLogMessage(reason, context);
     // bogus logic so the compiler doesn't drop msg
@@ -67,14 +67,14 @@ export function handleErrors<T>(
     promiseOrFn: Promise<T> | (() => T | Promise<T>),
     context: string,
     onErrorResolver: OnErrorResolver = showError,
-): Promise<T | void> {
+): Promise<T | undefined> {
     const q = typeof promiseOrFn === 'function' ? (async () => promiseOrFn())() : promiseOrFn;
     return q.catch(withContextOnError(context, onErrorResolver));
 }
 
-export type ErrorHandler<T> = (p: Promise<T>) => Promise<T | void>;
-export type OnErrorResolver = (reason: unknown, context: string) => Promise<void>;
-type _OnErrorResolver = (reason: unknown) => Promise<void>;
+export type ErrorHandler<T> = (p: Promise<T>) => Promise<T | undefined>;
+export type OnErrorResolver = (reason: unknown, context: string) => Promise<undefined>;
+type _OnErrorResolver = (reason: unknown) => Promise<undefined>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Func = (...p: any) => any;
@@ -95,15 +95,15 @@ export function catchErrors<Fn extends Func, R = ReturnType<Fn>>(
     return (...p: any) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }
 
-export function logErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | void> {
+export function logErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | undefined> {
     return handleErrors(Promise.resolve(promise), context, logError);
 }
 
-export function silenceErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | void> {
+export function silenceErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | undefined> {
     return handleErrors(Promise.resolve(promise), context, ignoreError);
 }
 
-export function showErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | void> {
+export function showErrors<T>(promise: Promise<T> | Thenable<T>, context: string): Promise<T | undefined> {
     return handleErrors(Promise.resolve(promise), context, showError);
 }
 

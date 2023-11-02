@@ -1,15 +1,14 @@
 import { uriToName } from '@internal/common-utils';
-import type { Location, Range, TextDocument, Uri } from 'vscode';
-import { commands, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
+import type { Range, TextDocument, Uri } from 'vscode';
+import { commands, Location, TextEdit, window, workspace, WorkspaceEdit } from 'vscode';
 import type { Converter } from 'vscode-languageclient/lib/common/protocolConverter';
 import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import * as di from './di';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
-import { logErrors } from './util/errors';
+import { logErrors, showErrors } from './util/errors';
 import { findEditor, findTextDocument } from './util/findEditor';
-import { rangeToString } from './util/toString';
 import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
@@ -18,19 +17,19 @@ const propertyUseReferenceProviderRemove = Settings.ConfigFields['advanced.featu
 
 type ToVscodeConverter = Converter;
 
-async function findLocalReference(uri: Uri, range: Range): Promise<Location | undefined> {
-    const locations = await findReferences(uri, range);
-    return locations?.find((loc) => loc.range.contains(range) && loc.uri.toString() === uri.toString());
+function filterLocations(locations: Location[], uri: Uri, range?: Range): Location[] {
+    const sUri = uri.toString();
+    return locations.filter((loc) => (!range || loc.range.contains(range)) && loc.uri.toString() === sUri);
 }
 
 async function findReferences(uri: Uri, range: Range): Promise<Location[] | undefined> {
     try {
         const locations = (await commands.executeCommand('vscode.executeReferenceProvider', uri, range.start)) as Location[];
-        if (!Array.isArray(locations)) return undefined;
-        console.log(
-            'findReferences: %o',
-            locations.map((loc) => ({ uri: loc.uri.toString(), range: rangeToString(loc.range) })),
-        );
+        if (!Array.isArray(locations) || !locations.length) return undefined;
+        // console.log(
+        //     'findReferences: %o',
+        //     locations.map((loc) => ({ uri: loc.uri.toString(), range: rangeToString(loc.range) })),
+        // );
         return locations;
     } catch (e) {
         return undefined;
@@ -42,17 +41,33 @@ interface EditBound {
     referenced: boolean;
 }
 
-async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<EditBound | undefined> {
+interface References {
+    locations: Location[];
+    refUsed: boolean;
+}
+
+async function findEditReferenceBounds(document: TextDocument, range: Range, useReference: boolean): Promise<References | undefined> {
     if (useReference) {
-        const refLocation = await findLocalReference(document.uri, range);
-        if (refLocation !== undefined) return { range: refLocation.range, referenced: true };
+        const refLocations = await findReferences(document.uri, range);
+        if (refLocations !== undefined) return { locations: refLocations, refUsed: true };
     }
 
     const wordRange = document.getWordRangeAtPosition(range.start);
     if (!wordRange || !wordRange.contains(range)) {
         return undefined;
     }
-    return { range: wordRange, referenced: false };
+    return { locations: [new Location(document.uri, wordRange)], refUsed: false };
+}
+
+async function findEditBounds(document: TextDocument, range: Range, useReference: boolean): Promise<EditBound | undefined> {
+    const refs = await findEditReferenceBounds(document, range, useReference);
+    if (!refs) return undefined;
+
+    const location = filterLocations(refs.locations, document.uri, range)[0];
+
+    if (!location) return undefined;
+
+    return { range: location.range, referenced: refs.refUsed };
 }
 
 function cvtLsTextEdits(cvt: ToVscodeConverter, edits: LsTextEdit[]): TextEdit[] {
@@ -63,25 +78,21 @@ function cvtLsTextEdits(cvt: ToVscodeConverter, edits: LsTextEdit[]): TextEdit[]
     return edits.map(toTextEdit);
 }
 
-async function applyTextEdits(uri: Uri, edits: TextEdit[]): Promise<boolean> {
+function calcWorkspaceEdit(uri: Uri, edits: TextEdit[]): WorkspaceEdit {
     const wsEdit = new WorkspaceEdit();
     wsEdit.set(uri, edits);
-    try {
-        return await workspace.applyEdit(wsEdit);
-    } catch (e) {
-        return false;
-    }
+    return wsEdit;
 }
 
-async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<boolean> {
+async function calcRename(document: TextDocument, edit: TextEdit, refInfo: UseRefInfo): Promise<WorkspaceEdit | undefined> {
     const { range, newText: text } = edit;
     if (range.start.line !== range.end.line) {
-        return false;
+        return undefined;
     }
     const { useReference, removeRegExp } = refInfo;
     const bounds = await findEditBounds(document, range, useReference);
     if (!bounds || !bounds.range.contains(range) || !bounds.referenced) {
-        return false;
+        return undefined;
     }
     const wordRange = bounds.range;
     const orig = wordRange.start.character;
@@ -94,10 +105,11 @@ async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: Us
         commands.executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText),
         'attemptRename',
     );
-    return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
+    return (workspaceEdit?.size && workspaceEdit) || undefined;
 }
 
 interface UseRefInfo {
+    useRename: boolean;
     useReference: boolean;
     removeRegExp: RegExp | undefined;
 }
@@ -110,6 +122,24 @@ export async function handleApplyLsTextEdits(uri: string, documentVersion: numbe
     return applyTextEditsWithRename(uri, cvtLsTextEdits(converter, edits), documentVersion);
 }
 
+function calcUseRefInfo(doc: TextDocument) {
+    const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
+    const useRename = !!cfg.get(propertyFixSpellingWithRenameProvider);
+    const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
+    const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
+    return { useRename, useReference, removeRegExp };
+}
+
+async function calcWorkspaceEditWithRename(doc: TextDocument, edits: TextEdit[], refInfo: UseRefInfo): Promise<WorkspaceEdit> {
+    if (edits.length === 1 && refInfo.useRename) {
+        const edit = edits[0];
+        const ws = await calcRename(doc, edit, refInfo);
+        if (ws) return ws;
+    }
+
+    return calcWorkspaceEdit(doc.uri, edits);
+}
+
 async function applyTextEditsWithRename(uri: Uri | string, edits: TextEdit[], documentVersion?: number): Promise<void> {
     const doc = findTextDocument(uri);
 
@@ -119,21 +149,13 @@ async function applyTextEditsWithRename(uri: Uri | string, edits: TextEdit[], do
         return pvShowErrorMessage('Spelling changes are outdated and cannot be applied to the document.');
     }
 
-    if (edits.length === 1) {
-        const cfg = workspace.getConfiguration(Settings.sectionCSpell, doc);
-        if (cfg.get(propertyFixSpellingWithRenameProvider)) {
-            const useReference = !!cfg.get(propertyUseReferenceProviderWithRename);
-            const removeRegExp = stringToRegExp(cfg.get(propertyUseReferenceProviderRemove) as string | undefined);
-            // console.log(`${propertyFixSpellingWithRenameProvider} Enabled`);
-            const edit = edits[0];
-            if (await attemptRename(doc, edit, { useReference, removeRegExp })) {
-                return;
-            }
-        }
-    }
+    const refInfo = calcUseRefInfo(doc);
+    const success = await applyTextEditsToDocumentWithRename(doc, edits, refInfo);
+    await showUnsuccessfulMessage(success, 'Failed to apply spelling changes to the document.');
+}
 
-    const success = await applyTextEdits(doc.uri, edits);
-    return success ? undefined : pvShowErrorMessage('Failed to apply spelling changes to the document.');
+async function applyWorkspaceEdit(wsEdit: WorkspaceEdit, context: string): Promise<boolean | undefined> {
+    return await showErrors(workspace.applyEdit(wsEdit), context);
 }
 
 function stringToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | undefined {
@@ -150,24 +172,20 @@ export async function handleFixSpellingIssue(docUri: Uri, text: string, withText
     // console.log('handleFixSpellingIssue %o', { docUri, text, withText, ranges });
 
     const document = findTextDocument(docUri);
+    if (!document) return failed('Unable to find document.');
 
     // check that the ranges match
     for (const range of ranges) {
-        if (document?.getText(range) !== text) {
+        if (document.getText(range) !== text) {
             return failed();
         }
     }
 
-    const wsEdit = new WorkspaceEdit();
     const edits = ranges.map((range) => new TextEdit(range, withText));
-    wsEdit.set(docUri, edits);
-    const success = await workspace.applyEdit(wsEdit);
+
+    const success = await applyTextEditsToDocumentWithRename(document, edits, calcUseRefInfo(document));
 
     return success ? undefined : failed();
-
-    function failed() {
-        return pvShowErrorMessage('Failed to apply spelling changes to the document.');
-    }
 }
 
 export async function actionAutoFixSpellingIssues(uri?: Uri) {
@@ -199,14 +217,89 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
         return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
-    const success = applyTextEdits(uri, autoFixes);
-    if (!success) {
-        return pvShowInformationMessage('Unable to apply fixes.');
-    }
+    return applyTextEditsToDocumentWithRename(doc, autoFixes, calcUseRefInfo(doc));
 }
 
 function assert(x: unknown, msg = 'A truthy value is expected.'): asserts x {
     if (!x) {
         throw Error(msg);
     }
+}
+
+function sortTextEdits(edits: TextEdit[]): TextEdit[] {
+    return edits.sort((a, b) => {
+        const d = a.range.start.line - b.range.start.line;
+        return d || a.range.start.character - b.range.start.character;
+    });
+}
+
+function findIntersections(range: Range, sortedEdits: Iterable<TextEdit>): TextEdit[] {
+    const intersections: TextEdit[] = [];
+    for (const edit of sortedEdits) {
+        if (edit.range.intersection(range)) {
+            intersections.push(edit);
+        }
+    }
+    return intersections;
+}
+
+function filterEditsMatchingWorkspaceEdit(workspaceEdit: WorkspaceEdit, doc: TextDocument, sortedEdits: TextEdit[]): TextEdit[] {
+    const wsEdits = workspaceEdit.get(doc.uri);
+    if (!wsEdits) return [];
+
+    const uncoveredEdits = new Set(sortedEdits);
+    const coveredEdits = new Set<TextEdit>();
+
+    // todo: this should be a linear algorithm instead of a nested loop.
+    for (const wsEdit of wsEdits) {
+        const intersections = findIntersections(wsEdit.range, uncoveredEdits);
+        for (const intersection of intersections) {
+            coveredEdits.add(intersection);
+            uncoveredEdits.delete(intersection);
+        }
+    }
+
+    return [...coveredEdits];
+}
+
+function injectEditsIntoWorkspaceEdit(workspaceEdit: WorkspaceEdit, edits: [Uri, TextEdit[]][]): void {
+    for (const [uri, textEdits] of edits) {
+        workspaceEdit.set(uri, textEdits);
+    }
+}
+
+async function calcWorkspaceEditsForDocument(doc: TextDocument, edits: TextEdit[], refInfo: UseRefInfo): Promise<WorkspaceEdit> {
+    const editsToProcess = new Set(sortTextEdits(edits));
+
+    const wsEdit = new WorkspaceEdit();
+
+    while (editsToProcess.size) {
+        const startSize = editsToProcess.size;
+        const edit = editsToProcess.values().next().value;
+        const ws = await calcWorkspaceEditWithRename(doc, [edit], refInfo);
+        injectEditsIntoWorkspaceEdit(wsEdit, ws.entries());
+        const matchingEdits = filterEditsMatchingWorkspaceEdit(ws, doc, edits);
+        for (const edit of matchingEdits) {
+            editsToProcess.delete(edit);
+        }
+        assert(startSize > editsToProcess.size, 'No progress was made.');
+    }
+
+    return wsEdit;
+}
+
+async function applyTextEditsToDocumentWithRename(doc: TextDocument, edits: TextEdit[], refInfo: UseRefInfo): Promise<boolean | undefined> {
+    const wsEdit = await calcWorkspaceEditsForDocument(doc, edits, refInfo);
+    return applyWorkspaceEdit(wsEdit, 'applyTextEditsToDocumentWithRename');
+}
+
+async function showUnsuccessfulMessage<T>(value: T, failedMeg: string | undefined): Promise<T> {
+    if (!value) {
+        await failed(failedMeg);
+    }
+    return value;
+}
+
+function failed(msg?: string) {
+    return pvShowErrorMessage(msg || 'Failed to apply spelling changes to the document.');
 }
