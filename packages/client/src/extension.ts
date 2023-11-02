@@ -2,11 +2,11 @@ import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
+import * as addWords from './addWords';
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import { registerSpellCheckerCodeActionProvider } from './codeAction';
 import * as commands from './commands';
-import * as addWords from './addWords';
 import { updateDocumentRelatedContext } from './context';
 import { SpellingIssueDecorator } from './decorate';
 import * as di from './di';
