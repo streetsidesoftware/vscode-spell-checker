@@ -88,6 +88,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     constructor(private options: ProviderOptions) {
         this.issueTracker = options.issueTracker;
         this.client = options.client;
+        this.currentEditor = vscode.window.activeTextEditor;
         this.disposeList.push(
             this.emitOnDidChange,
             vscode.window.onDidChangeActiveTextEditor((editor) => this.updateEditor(editor)),
