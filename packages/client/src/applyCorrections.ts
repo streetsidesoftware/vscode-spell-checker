@@ -7,9 +7,10 @@ import type { TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 import * as di from './di';
 import { toRegExp } from './extensionRegEx/evaluateRegExp';
 import * as Settings from './settings';
+import { logErrors } from './util/errors';
 import { findEditor, findTextDocument } from './util/findEditor';
 import { rangeToString } from './util/toString';
-import { pvShowErrorMessage, pvShowInformationMessage as showInformationMessage } from './util/vscodeHelpers';
+import { pvShowErrorMessage, pvShowInformationMessage } from './util/vscodeHelpers';
 
 const propertyFixSpellingWithRenameProvider = Settings.ConfigFields.fixSpellingWithRenameProvider;
 const propertyUseReferenceProviderWithRename = Settings.ConfigFields['advanced.feature.useReferenceProviderWithRename'];
@@ -89,17 +90,11 @@ async function attemptRename(document: TextDocument, edit: TextEdit, refInfo: Us
     const docText = document.getText(wordRange);
     const fullNewText = [docText.slice(0, a), text, docText.slice(b)].join('');
     const newText = removeRegExp ? fullNewText.replace(removeRegExp, '') : fullNewText;
-    try {
-        const workspaceEdit = await commands
-            .executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText)
-            .then(
-                (a) => a as WorkspaceEdit | undefined,
-                (reason) => (console.log(reason), false),
-            );
-        return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
-    } catch (e) {
-        return false;
-    }
+    const workspaceEdit = await logErrors<WorkspaceEdit>(
+        commands.executeCommand('vscode.executeDocumentRenameProvider', document.uri, range.start, newText),
+        'attemptRename',
+    );
+    return !!workspaceEdit && workspaceEdit.size > 0 && (await workspace.applyEdit(workspaceEdit));
 }
 
 interface UseRefInfo {
@@ -180,7 +175,7 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
     uri ??= window.activeTextEditor?.document.uri;
     const doc = findEditor(uri)?.document || findTextDocument(uri);
     if (!uri || !doc) {
-        return showInformationMessage('Unable to fix spelling issues in current document, document not found.');
+        return pvShowInformationMessage('Unable to fix spelling issues in current document, document not found.');
     }
 
     const issueTracker = di.get('issueTracker');
@@ -201,12 +196,12 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
 
     if (!autoFixes.length) {
         const name = uriToName(uri);
-        return showInformationMessage(`No auto fixable spelling issues found in ${name}.`);
+        return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }
 
     const success = applyTextEdits(uri, autoFixes);
     if (!success) {
-        return showInformationMessage('Unable to apply fixes.');
+        return pvShowInformationMessage('Unable to apply fixes.');
     }
 }
 
