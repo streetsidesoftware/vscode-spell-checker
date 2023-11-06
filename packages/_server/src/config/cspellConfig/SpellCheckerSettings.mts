@@ -1,5 +1,5 @@
 import type { EnableFileTypeId, RegExpString } from './annotatedTypes.mjs';
-import { AppearanceSettings } from './AppearanceSettings.mjs';
+import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
 import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';

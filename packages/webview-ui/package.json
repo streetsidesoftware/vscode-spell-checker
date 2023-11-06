@@ -32,7 +32,7 @@
     "@types/vscode-webview": "^1.57.3",
     "@vscode/codicons": "^0.0.33",
     "rollup": "^3.29.4",
-    "rollup-plugin-css-only": "^4.4.0",
+    "rollup-plugin-css-only": "^4.5.0",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.1.6",
     "svelte": "^4.2.2",

@@ -72,7 +72,7 @@
     "vscode-uri": "^3.0.8",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api",
-    "yaml": "^2.3.3"
+    "yaml": "^2.3.4"
   },
   "engines": {
     "node": ">18.0.0"
