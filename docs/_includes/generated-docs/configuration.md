@@ -1422,13 +1422,18 @@ Default
 
 # Appearance
 
-| Setting                                                  | Scope       | Description                                                                               |
-| -------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
-| [`cSpell.dark`](#cspelldark)                             | application | Decoration for dark themes.                                                               |
-| [`cSpell.decorateIssues`](#cspelldecorateissues)         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
-| [`cSpell.light`](#cspelllight)                           | application | Decoration for light themes.                                                              |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor) | application | The CSS color used to show issues in the ruler.                                           |
-| [`cSpell.textDecoration`](#cspelltextdecoration)         | application | The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`. |
+| Setting                                                                  | Scope       | Description                                                                               |
+| ------------------------------------------------------------------------ | ----------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.dark`](#cspelldark)                                             | application | Decoration for dark themes.                                                               |
+| [`cSpell.decorateIssues`](#cspelldecorateissues)                         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.light`](#cspelllight)                                           | application | Decoration for light themes.                                                              |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | application | The CSS color used to show issues in the ruler.                                           |
+| [`cSpell.textDecoration`](#cspelltextdecoration)                         | application | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.   |
+| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | application | The decoration color for normal spelling issues.                                          |
+| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues.                                                  |
+| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | application | The CSS line type used to decorate issues.                                                |
+| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | application | The CSS line style used to decorate issues.                                               |
+| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | application | The CSS line thickness used to decorate issues.                                           |
 
 ## Definitions
 
@@ -1546,11 +1551,15 @@ Scope
 : application
 
 Description
-: The CSS Style used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+: The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.
+
+    This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
+    - `#cSpell.textDecorationLine#` to pick the line type
+    - `#cSpell.textDecorationStyle#` to pick the style
+    - `#cSpell.textDecorationColor#` to set the color
+    - `#cSpell.textDecorationThickness#` to set the thickness.
 
     See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
-
-    - Use "" (empty string) to disable text decoration.
 
     Format:  `<line> [style] <color> [thickness]`
 
@@ -1565,7 +1574,149 @@ Description
     - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
 
 Default
-: _`"underline wavy #fc4"`_
+: _- none -_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecorationColor`
+
+Name
+: `cSpell.textDecorationColor`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The decoration color for normal spelling issues.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+    Examples:
+    - `green`
+    - `yellow`
+    - `#ff0c`
+
+Default
+: _`"#fc4"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecorationColorFlagged`
+
+Name
+: `cSpell.textDecorationColorFlagged`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The decoration color for flagged issues.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
+
+    Examples:
+    - `green`
+    - `yellow`
+    - `#ff0c`
+
+Default
+: _`"#f44"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecorationLine`
+
+Name
+: `cSpell.textDecorationLine`
+
+Type
+: ( `"underline"` \| `"overline"` \| `"line-through"` )
+
+Scope
+: application
+
+Description
+: The CSS line type used to decorate issues.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
+
+Default
+: _`"underline"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecorationStyle`
+
+Name
+: `cSpell.textDecorationStyle`
+
+Type
+: ( `"solid"` \| `"wavy"` \| `"dotted"` \| `"dashed"` \| `"double"` )
+
+Scope
+: application
+
+Description
+: The CSS line style used to decorate issues.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
+
+Default
+: _`"wavy"`_
+
+Version
+: 4.0.0
+
+---
+
+### `cSpell.textDecorationThickness`
+
+Name
+: `cSpell.textDecorationThickness`
+
+Type
+: string
+
+Scope
+: application
+
+Description
+: The CSS line thickness used to decorate issues.
+
+    See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
+    - thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)
+
+    Examples:
+    - `auto`
+    - `from-font`
+    - `0.2rem`
+    - `1.5px`
+    - `10%`
+
+Default
+: _`"auto"`_
 
 Version
 : 4.0.0

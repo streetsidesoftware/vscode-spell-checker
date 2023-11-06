@@ -1,5 +1,6 @@
 export type {
     AllSpellCheckerSettingsInVSCode,
+    AllSpellCheckerSettingsInVSCodeWithPrefix,
     CSpellUserSettings,
     SpellCheckerSettingsProperties,
     SpellCheckerSettingsVSCode,

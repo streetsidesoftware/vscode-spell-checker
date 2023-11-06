@@ -5,7 +5,9 @@ import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
 
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
 import type { DictionaryDef } from './CustomDictionary.mjs';
-import type { AppearanceSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+import type { PrefixWithCspell } from './Generics.mjs';
+import type { SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+import type { AppearanceSettings } from './AppearanceSettings.mjs';
 
 interface InternalSettings {
     /**
@@ -63,6 +65,7 @@ type OverridesReduced = Omit<OverrideSettings, 'dictionaryDefinitions' | 'langua
     DictionaryDefinitions &
     LanguageSettings &
     Pick<SpellCheckerSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
+
 interface Overrides {
     /**
      * Overrides are used to apply settings for specific files in your project.
@@ -115,11 +118,7 @@ export interface SpellCheckerSettingsVSCodeBase
         Overrides {}
 
 export type AllSpellCheckerSettingsInVSCode = SpellCheckerSettingsVSCodeBase;
-
-type Prefix<T, P extends string> = {
-    [K in keyof T as K extends string ? `${P}${K}` : K]: T[K];
-};
-type PrefixWithCspell<T> = Prefix<T, 'cSpell.'>;
+export type AllSpellCheckerSettingsInVSCodeWithPrefix = PrefixWithCspell<AllSpellCheckerSettingsInVSCode>;
 
 /**
  * @title Code Spell Checker

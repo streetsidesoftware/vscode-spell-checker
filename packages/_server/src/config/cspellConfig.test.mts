@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'vitest';
 
-import type { AllSpellCheckerSettingsInVSCode, CSpellUserSettings, SpellCheckerSettingsVSCode } from './cspellConfig/index.mjs';
+import type {
+    AllSpellCheckerSettingsInVSCode,
+    AllSpellCheckerSettingsInVSCodeWithPrefix,
+    CSpellUserSettings,
+    SpellCheckerSettingsVSCode,
+} from './cspellConfig/index.mjs';
 
 describe('cspellConfig', () => {
     const sampleSettings: AllSpellCheckerSettingsInVSCode[] = [
@@ -96,7 +101,7 @@ describe('Verify all config items are accounted for in configuration.', () => {
 
     type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer R) => any ? R : never;
 
-    type PartialFlatConfig = { [K in keyof AllSpellCheckerSettingsInVSCode as `cSpell.${K}`]: AllSpellCheckerSettingsInVSCode[K] };
+    type PartialFlatConfig = AllSpellCheckerSettingsInVSCodeWithPrefix;
     type FullConfig = Required<UnionToIntersection<ArrayEntry<SpellCheckerSettingsVSCode>>>;
     type FlatConfig = Required<PartialFlatConfig>;
 
