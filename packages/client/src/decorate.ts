@@ -8,12 +8,16 @@ import type { Disposable } from './disposable';
 import type { IssueTracker, SpellingDiagnostic } from './issueTracker';
 
 export class SpellingIssueDecorator implements Disposable {
-    private decorationType: TextEditorDecorationType | undefined;
+    private decorationTypeForIssues: TextEditorDecorationType | undefined;
+    private decorationTypeForFlagged: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
     public dispose = this.disposables.dispose;
 
     constructor(readonly issueTracker: IssueTracker) {
-        this.decorationType = this.createDecorator();
+        const decorators = this.createDecorators();
+
+        this.decorationTypeForIssues = decorators?.decoratorIssues;
+        this.decorationTypeForFlagged = decorators?.decoratorFlagged;
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
@@ -41,27 +45,38 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     refreshDiagnosticsInEditor(editor: TextEditor) {
-        if (!this.decorationType) return;
+        if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged) return;
         const doc = editor.document;
         const diags = this.issueTracker.getDiagnostics(doc.uri) || [];
 
-        const decorations: DecorationOptions[] = diags
+        const decorationsIssues: DecorationOptions[] = diags
             .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
+            .filter((diag) => !diag.data?.isFlagged)
             .map((diag) => diagToDecorationOptions(diag, doc));
-        editor.setDecorations(this.decorationType, decorations);
+        editor.setDecorations(this.decorationTypeForIssues, decorationsIssues);
+
+        const decorationsFlagged: DecorationOptions[] = diags
+            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
+            .filter((diag) => diag.data?.isFlagged)
+            .map((diag) => diagToDecorationOptions(diag, doc));
+        editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
     }
 
     private clearDecoration() {
-        this.decorationType?.dispose();
-        this.decorationType = undefined;
+        this.decorationTypeForIssues?.dispose();
+        this.decorationTypeForIssues = undefined;
+        this.decorationTypeForFlagged?.dispose();
+        this.decorationTypeForFlagged = undefined;
     }
 
     private resetDecorator() {
-        this.decorationType = this.createDecorator();
+        const decorators = this.createDecorators();
+        this.decorationTypeForIssues = decorators?.decoratorIssues;
+        this.decorationTypeForFlagged = decorators?.decoratorFlagged;
         this.refreshDiagnostics();
     }
 
-    private createDecorator(): TextEditorDecorationType | undefined {
+    private createDecorators(): { decoratorIssues: TextEditorDecorationType; decoratorFlagged: TextEditorDecorationType } | undefined {
         this.clearDecoration();
         const decorateIssues = vscode.workspace.getConfiguration('cSpell').get('decorateIssues');
         if (!decorateIssues) return undefined;
@@ -70,17 +85,34 @@ export class SpellingIssueDecorator implements Disposable {
         const cfg = vscode.workspace.getConfiguration('cSpell') as CSpellUserSettings;
 
         const overviewRulerColor: string | undefined = cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor || undefined;
-        const textDecoration: string | undefined = cfg[mode]?.textDecoration || cfg.textDecoration || undefined;
 
-        const decorator = vscode.window.createTextEditorDecorationType({
+        const decoratorIssues = vscode.window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
             overviewRulerLane: vscode.OverviewRulerLane.Right,
             overviewRulerColor: overviewRulerColor,
-            textDecoration: textDecoration,
+            textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColor'),
         });
-        return decorator;
+
+        const decoratorFlagged = vscode.window.createTextEditorDecorationType({
+            isWholeLine: false,
+            rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+            overviewRulerLane: vscode.OverviewRulerLane.Right,
+            overviewRulerColor: overviewRulerColor,
+            textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorFlagged'),
+        });
+
+        return { decoratorIssues, decoratorFlagged };
     }
+}
+
+function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField: 'textDecorationColor' | 'textDecorationColorFlagged') {
+    const textDecoration = cfg[mode]?.textDecoration || cfg.textDecoration || '';
+    const line = cfg[mode]?.textDecorationLine || cfg.textDecorationLine || 'underline';
+    const style = cfg[mode]?.textDecorationStyle || cfg.textDecorationStyle || 'wavy';
+    const thickness = cfg[mode]?.textDecorationThickness || cfg.textDecorationThickness || 'auto';
+    const color = cfg[mode]?.[colorField] || cfg[colorField] || '#fc4';
+    return textDecoration || `${line} ${style} ${color} ${thickness}`;
 }
 
 function diagToDecorationOptions(diag: SpellingDiagnostic, doc: TextDocument): DecorationOptions {
