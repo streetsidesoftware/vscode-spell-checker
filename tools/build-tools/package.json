@@ -30,9 +30,9 @@
     "watch": "tsc -p . --watch"
   },
   "devDependencies": {
-    "@types/deep-equal": "^1.0.3",
-    "@types/jest": "^29.5.7",
-    "@types/json-schema": "^7.0.14",
+    "@types/deep-equal": "^1.0.4",
+    "@types/jest": "^29.5.8",
+    "@types/json-schema": "^7.0.15",
     "ts-jest": "^29.1.1"
   },
   "dependencies": {
