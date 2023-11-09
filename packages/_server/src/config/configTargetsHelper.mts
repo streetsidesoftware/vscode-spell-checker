@@ -1,7 +1,6 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { toUri } from '@internal/common-utils/uriHelper';
 import { capitalize } from '@internal/common-utils/util';
-import { genSequence } from 'gensequence';
 import * as Path from 'path';
 
 import type { WorkspaceConfigForDocument } from '../api.js';
@@ -90,7 +89,7 @@ function dictionariesToTargets(dicts: DictionaryDefinitionCustom[]): ConfigTarge
         if (scopeMask & scopeMaskMap.unknown) yield { ...base, scope: ConfigScopes.Unknown };
     }
 
-    return genSequence(dicts).concatMap(dictToT).toArray();
+    return dicts.map(dictToT).flatMap((x) => [...x]);
 }
 
 type DictScopeMapKnown = {

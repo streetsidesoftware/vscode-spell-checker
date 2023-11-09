@@ -3351,10 +3351,10 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^7.3.8",
-    "@cspell/cspell-types": "^7.3.8",
+    "@cspell/cspell-bundled-dicts": "^8.0.0",
+    "@cspell/cspell-types": "^8.0.0",
     "@types/react": "^17.0.69",
-    "cspell": "^7.3.8",
+    "cspell": "^8.0.0",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

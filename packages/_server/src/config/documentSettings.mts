@@ -1,3 +1,4 @@
+import { opConcatMap, opFilter, pipe } from '@cspell/cspell-pipe/sync';
 import type {
     CSpellSettingsWithSourceTrace,
     DictionaryDefinition,
@@ -28,8 +29,6 @@ import {
     searchForConfig,
 } from 'cspell-lib';
 import * as fs from 'fs';
-import type { Sequence } from 'gensequence';
-import { genSequence } from 'gensequence';
 import * as os from 'os';
 import * as path from 'path';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
@@ -598,13 +597,15 @@ function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[
         return !cfg.source?.sources?.length;
     }
 
-    const ex: Sequence<ExcludedByMatch> = genSequence(getSources(extSettings.settings))
+    const ex: Iterable<ExcludedByMatch> = pipe(
+        getSources(extSettings.settings),
         // keep only leaf sources
-        .filter(keep)
-        .filter(uniqueFilter())
-        .concatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || []);
+        opFilter(keep),
+        opFilter(uniqueFilter()),
+        opConcatMap((settings) => settings.ignorePaths?.map((glob) => ({ glob, settings })) || []),
+    );
 
-    const matches: ExcludedByMatch[] = ex.filter(isExcluded).toArray();
+    const matches: ExcludedByMatch[] = [...pipe(ex, opFilter(isExcluded))];
     return matches;
 }
 

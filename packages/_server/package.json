@@ -35,12 +35,13 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^7.3.8",
-    "@cspell/cspell-types": "^7.3.8",
+    "@cspell/cspell-bundled-dicts": "^8.0.0",
+    "@cspell/cspell-pipe": "^8.0.0",
+    "@cspell/cspell-types": "^8.0.0",
     "@internal/common-utils": "file:../__utils",
-    "cspell-gitignore": "^7.3.8",
-    "cspell-glob": "^7.3.8",
-    "cspell-lib": "^7.3.8",
+    "cspell-gitignore": "^8.0.0",
+    "cspell-glob": "^8.0.0",
+    "cspell-lib": "^8.0.0",
     "gensequence": "^6.0.0",
     "json-rpc-api": "file:../json-rpc-api",
     "node-watch": "^0.7.4",

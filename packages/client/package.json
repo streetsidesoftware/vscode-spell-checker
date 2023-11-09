@@ -46,7 +46,7 @@
     "@types/kefir": "^3.8.9",
     "@types/source-map-support": "^0.5.9",
     "cross-env": "^7.0.3",
-    "cspell-lib": "^7.3.8",
+    "cspell-lib": "^8.0.0",
     "jest": "^29.7.0",
     "jest-when": "^3.6.0",
     "lorem-ipsum": "^2.0.8",
@@ -58,7 +58,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^7.3.8",
+    "@cspell/cspell-types": "^8.0.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/settings-webview": "file:../_settingsViewer",
     "code-spell-checker-server": "file:../_server",
