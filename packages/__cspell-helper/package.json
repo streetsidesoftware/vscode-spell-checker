@@ -22,8 +22,8 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^7.3.8",
-    "cspell-lib": "^7.3.8"
+    "@cspell/cspell-types": "^8.0.0",
+    "cspell-lib": "^8.0.0"
   },
   "engines": {
     "node": ">18.0.0"
