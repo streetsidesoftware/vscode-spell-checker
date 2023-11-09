@@ -3314,12 +3314,12 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "@types/jest-when": "^3.5.4",
-    "@types/node": "^18.18.8",
+    "@types/jest-when": "^3.5.5",
+    "@types/node": "^18.18.9",
     "@types/vscode": "1.80.0",
-    "@types/vscode-webview": "^1.57.3",
-    "@typescript-eslint/eslint-plugin": "^6.9.1",
-    "@typescript-eslint/parser": "^6.9.1",
+    "@types/vscode-webview": "^1.57.4",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
     "@vitest/coverage-istanbul": "^0.34.6",
     "@vscode/vsce": "^2.22.0",
     "chokidar-cli": "^3.0.0",
@@ -3353,7 +3353,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.0.0",
     "@cspell/cspell-types": "^8.0.0",
-    "@types/react": "^17.0.69",
+    "@types/react": "^17.0.70",
     "cspell": "^8.0.0",
     "regexp-worker": "^2.0.2"
   },
