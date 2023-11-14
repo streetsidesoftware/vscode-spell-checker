@@ -234,8 +234,8 @@ function calcDictInfoForConfigRep(configRep: ConfigRepository): DictInfo | undef
     const dictInfo = CSpellConfigRepository.isCSpellConfigRepository(configRep)
         ? calcDictInfoForConfigRepCSpell(configRep)
         : VSCodeRepository.isVSCodeRepository(configRep)
-        ? calcDictInfoForConfigRepVSCode(configRep)
-        : undefined;
+          ? calcDictInfoForConfigRepVSCode(configRep)
+          : undefined;
 
     return dictInfo;
 }
@@ -290,8 +290,8 @@ async function addCustomDictionaryToConfig(cfgRep: ConfigRepository, def: Dictio
     const updater = CSpellConfigRepository.isCSpellConfigRepository(cfgRep)
         ? updaterForCustomDictionaryToConfigCSpell(def)
         : VSCodeRepository.isVSCodeRepository(cfgRep)
-        ? updaterForCustomDictionaryToConfigVSCode(def)
-        : undefined;
+          ? updaterForCustomDictionaryToConfigVSCode(def)
+          : undefined;
     if (!updater) throw Error(`Unsupported config ${cfgRep.kind}`);
     return cfgRep.update(updater);
 }

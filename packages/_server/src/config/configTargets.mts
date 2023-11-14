@@ -82,10 +82,10 @@ type ConfigKindToTarget = {
     [key in ConfigTarget['kind']]: key extends ConfigTargetDictionary['kind']
         ? ConfigTargetDictionary
         : key extends ConfigTargetCSpell['kind']
-        ? ConfigTargetCSpell
-        : key extends ConfigTargetVSCode['kind']
-        ? ConfigTargetVSCode
-        : never;
+          ? ConfigTargetCSpell
+          : key extends ConfigTargetVSCode['kind']
+            ? ConfigTargetVSCode
+            : never;
 };
 
 export const ConfigKinds: ConfigKinds = {
