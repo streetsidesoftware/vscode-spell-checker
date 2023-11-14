@@ -31,7 +31,7 @@
     "clone-deep": "^4.0.1",
     "eslint-plugin-react": "^7.33.2",
     "html-webpack-plugin": "^5.5.3",
-    "mobx": "^6.10.2",
+    "mobx": "^6.11.0",
     "mobx-react": "^7.6.0",
     "mobx-react-lite": "^3.4.3",
     "path-browserify": "^1.0.1",
