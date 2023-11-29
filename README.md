@@ -185,7 +185,7 @@ All settings are prefixed with `cSpell:` or `spell-checker:`.
 
 It is possible to disable / enable the spell checker by adding comments to your code.
 
-> Note: the comment characters for your programming language should be used. The important part is `cSpell:disable` and `cSpell:enable`, or the equivalents from the following sections.
+> Note: the comment characters for your file type should be used. The important part is `cSpell:disable` and `cSpell:enable`, or the equivalents from the following sections.
 
 #### Disable Checking
 
