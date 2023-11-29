@@ -185,6 +185,8 @@ All settings are prefixed with `cSpell:` or `spell-checker:`.
 
 It is possible to disable / enable the spell checker by adding comments to your code.
 
+> Note: the comment characters for your programming language should be used. The important part is `cSpell:disable` and `cSpell:enable`, or the equivalents from the following sections.
+
 #### Disable Checking
 
 -   `/* cSpell:disable */`
@@ -201,12 +203,12 @@ It is possible to disable / enable the spell checker by adding comments to your 
 -   `/* spell-checker: enable */`
 -   `/* spellchecker: enable */`
 
-#### Example
+#### JavaScript Example
 
 ```javascript
 // cSpell:disable
 const wackyWord = ['zaallano', 'wooorrdd', 'zzooommmmmmmm'];
-/* cSpell:enable */
+// cSpell:enable //
 
 // Nest disable / enable is not Supported
 
@@ -215,7 +217,7 @@ const wackyWord = ['zaallano', 'wooorrdd', 'zzooommmmmmmm'];
 
 var liep = 1;
 
-/* cspell:disable */
+// cspell:disable //
 // It is still disabled
 
 // cSpell:enable
@@ -229,6 +231,15 @@ const str = 'goededag'; // <- will be flagged as an error.
 
 // if there isn't an enable, spelling is disabled till the end of the file.
 const str = 'goedemorgen'; // <- will NOT be flagged as an error.
+```
+
+#### Markdown Example
+
+```markdown
+<!--- cSpell:disable --->
+This text is not checked.
+<!--- cSpell:enable --->
+This text is checked.
 ```
 
 <!--- cSpell:enable -->
