@@ -92,6 +92,9 @@ async function sampleCSpellSettings() {
     const cspell = await importCSpellLib();
     assert(isDefined(cspell));
     const localCfg = await cspell.searchForConfig(__filename);
-    sampleSettings = cspell.mergeSettings(cspell.getDefaultSettings(), /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined));
+    sampleSettings = cspell.mergeSettings(
+        await cspell.getDefaultSettings(),
+        /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined),
+    );
     return sampleSettings;
 }

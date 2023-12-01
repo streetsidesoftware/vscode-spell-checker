@@ -69,14 +69,17 @@ const overRideDefaults: CSpellUserSettings = {
 
 // Turn off the spell checker by default. The setting files should have it set.
 // This prevents the spell checker from running too soon.
-const defaultSettings: CSpellUserSettings = {
-    ...CSpell.mergeSettings(getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
-    checkLimit: defaultCheckLimit,
-    // enabled: false,
-};
+const defaultSettings = calcDefaultSettings();
 const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.
 const dictionaryRefreshRateMs = 1000;
+
+async function calcDefaultSettings(): Promise<CSpellUserSettings> {
+    return {
+        ...CSpell.mergeSettings(await getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
+        checkLimit: defaultCheckLimit,
+    };
+}
 
 export function run(): void {
     // debounce buffer
@@ -508,7 +511,7 @@ export function run(): void {
 
     async function getBaseSettings(doc: TextDocumentUri | undefined) {
         const settings = await getActiveSettings(doc);
-        return { ...CSpell.mergeSettings(defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds };
+        return { ...CSpell.mergeSettings(await defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds };
     }
 
     async function getSettingsToUseForDocument(doc: TextDocument) {

@@ -402,7 +402,7 @@ describe('Validate DocumentSettings', () => {
         const mockFolders: WorkspaceFolder[] = [workspaceFolderRoot, workspaceFolderClient, workspaceFolderServer];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
-        const docSettings = newDocumentSettings(getDefaultSettings());
+        const docSettings = newDocumentSettings(await getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
         // Note: toLowerCase is needed because on MacOS and Windows cSpell.json and cspell.json will be considered the same file.
@@ -420,7 +420,7 @@ describe('Validate DocumentSettings', () => {
         const mockFolders: WorkspaceFolder[] = [];
         mockGetWorkspaceFolders.mockReturnValue(Promise.resolve(mockFolders));
         mockGetConfiguration.mockReturnValue(Promise.resolve([{}, {}]));
-        const docSettings = newDocumentSettings(getDefaultSettings());
+        const docSettings = newDocumentSettings(await getDefaultSettings());
         const uri = Uri.file(Path.resolve(pathWorkspaceRoot, filename)).toString();
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
         // Note: toLowerCase is needed because on MacOS and Windows cSpell.json and cspell.json will be considered the same file.
@@ -438,25 +438,25 @@ describe('Validate DocumentSettings', () => {
 });
 
 describe('Validate RegExp corrections', () => {
-    test('fixRegEx', () => {
-        const defaultSettings = cspell.getDefaultSettings();
+    test('fixRegEx', async () => {
+        const defaultSettings = await cspell.getDefaultSettings();
+        const patterns = defaultSettings.patterns;
+
         // Make sure it doesn't change the defaults.
-        expect(defaultSettings.patterns?.map((p) => p.pattern).map(debugExports.fixRegEx)).toEqual(
-            defaultSettings.patterns?.map((p) => p.pattern),
-        );
+        expect(patterns?.map((p) => p.pattern).map(debugExports.fixRegEx)).toEqual(patterns?.map((p) => p.pattern));
         const sampleRegEx: Pattern[] = ['/#.*/', '/"""(.*?\\n?)+?"""/g', "/'''(.*?\\n?)+?'''/g", 'strings'];
         const expectedRegEx: Pattern[] = ['/#.*/', '/(""")[^\\1]*?\\1/g', "/(''')[^\\1]*?\\1/g", 'strings'];
         expect(sampleRegEx.map(debugExports.fixRegEx)).toEqual(expectedRegEx);
     });
 
-    test('fixPattern', () => {
-        const defaultSettings = cspell.getDefaultSettings();
+    test('fixPattern', async () => {
+        const defaultSettings = await cspell.getDefaultSettings();
         // Make sure it doesn't change the defaults.
         expect(defaultSettings.patterns?.map(debugExports.fixPattern)).toEqual(defaultSettings.patterns);
     });
 
-    test('fixPattern', () => {
-        const defaultSettings = cspell.getDefaultSettings();
+    test('fixPattern', async () => {
+        const defaultSettings = await cspell.getDefaultSettings();
         // Make sure it doesn't change the defaults.
         expect(correctBadSettings(defaultSettings)).toEqual(defaultSettings);
 
