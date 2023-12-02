@@ -76,7 +76,7 @@ const dictionaryRefreshRateMs = 1000;
 
 async function calcDefaultSettings(): Promise<CSpellUserSettings> {
     return {
-        ...CSpell.mergeSettings(await getDefaultSettings(), CSpell.getGlobalSettings(), overRideDefaults),
+        ...CSpell.mergeSettings(await getDefaultSettings(), await CSpell.getGlobalSettingsAsync(), overRideDefaults),
         checkLimit: defaultCheckLimit,
     };
 }

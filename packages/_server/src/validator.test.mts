@@ -10,7 +10,7 @@ import * as Validator from './validator.mjs';
 
 // cSpell:ignore brouwn jumpped lazzy wrongg mispelled ctrip nmove mischecked
 
-const defaultSettings: CSpellSettings = { ...getDefaultSettings(), enabledLanguageIds: ['plaintext', 'javascript'] };
+const defaultSettings: CSpellSettings = { ...(await getDefaultSettings()), enabledLanguageIds: ['plaintext', 'javascript'] };
 
 const timeout = 30000; // 30 seconds
 
