@@ -61,6 +61,7 @@
                 "program": "${workspaceFolder:Client}/../../node_modules/jest/bin/jest",
                 "cwd": "${fileDirname}",
                 "args": ["--runInBand", "${fileBasename}"],
+                "env": { "NODE_OPTIONS": "--experimental-vm-modules" },
                 "console": "integratedTerminal",
                 "internalConsoleOptions": "neverOpen"
             },
@@ -71,6 +72,7 @@
                 "program": "${workspaceFolder:Client}/../../node_modules/jest/bin/jest",
                 "cwd": "${fileWorkspaceFolder}",
                 "args": ["--runInBand"],
+                "env": { "NODE_OPTIONS": "--experimental-vm-modules" },
                 "console": "integratedTerminal",
                 "internalConsoleOptions": "neverOpen"
             },

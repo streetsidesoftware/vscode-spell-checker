@@ -113,7 +113,7 @@ describe('Validate text extractors', () => {
 function implGetDiagnostics(): [Uri, Diagnostic[]][];
 function implGetDiagnostics(uri: Uri): Diagnostic[];
 function implGetDiagnostics(uri?: Uri): [Uri, Diagnostic[]][] | Diagnostic[] {
-    console.error('implGetDiagnostics %s', uri);
+    // console.error('implGetDiagnostics %s', uri);
     if (!uri) return sampleDiags();
     return sampleDiags()[0][1];
 }
