@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { commonPrefix } from './commonPrefix';
 
 describe('validate commonPrefix', () => {

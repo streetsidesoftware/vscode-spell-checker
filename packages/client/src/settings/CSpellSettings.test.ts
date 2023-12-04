@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
 
 import type { CSpellUserSettings } from '../client';
@@ -9,9 +10,11 @@ import { createDictionaryTargetForFile } from './DictionaryTarget';
 import { vscodeFs } from './fs';
 import { replaceDocText } from './replaceDocText';
 
-jest.mock('./replaceDocText');
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+vi.mock('./replaceDocText');
 
-const mock_replaceDocText = jest.mocked(replaceDocText);
+const mock_replaceDocText = vi.mocked(replaceDocText);
 
 mock_replaceDocText.mockImplementation(async (doc, text) => {
     await vscodeFs.writeFile(doc.uri, text);

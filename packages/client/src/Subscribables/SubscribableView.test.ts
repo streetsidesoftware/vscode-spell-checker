@@ -1,4 +1,5 @@
 import { disposeOf } from 'utils-disposables';
+import { describe, expect, test } from 'vitest';
 
 import { map, rx } from '.';
 import { createEmitter } from './createFunctions';

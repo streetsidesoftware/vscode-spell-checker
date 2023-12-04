@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import type { CSpellUserSettings } from '../client';
 import type { ConfigKeys, UpdateConfigFieldFn } from './configUpdater';
 import { configUpdaterForKey } from './configUpdater';

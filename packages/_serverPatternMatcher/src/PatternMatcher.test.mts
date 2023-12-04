@@ -7,7 +7,7 @@ import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher } from './PatternMa
 
 const settings = {
     patterns: [],
-    ...getDefaultSettings(),
+    ...(await getDefaultSettings()),
 };
 
 const defaultTimeout = 5000;

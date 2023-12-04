@@ -1,9 +1,14 @@
 import type { CSpellSettings } from '@cspell/cspell-types';
 import { importCSpellLib } from '@internal/cspell-helper';
 import assert from 'assert';
+import { describe, expect, test, vi } from 'vitest';
+import {} from 'vscode';
 
 import { isDefined } from '../util';
 import { __testing__ } from './infoHelper';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const { applyEnableFiletypesToEnabledLanguageIds, calcEnableLang, extractDictionariesFromConfig, normalizeLocales, splitBangPrefix } =
     __testing__;
@@ -92,6 +97,7 @@ async function sampleCSpellSettings() {
     const cspell = await importCSpellLib();
     assert(isDefined(cspell));
     const localCfg = await cspell.searchForConfig(__filename);
-    sampleSettings = cspell.mergeSettings(cspell.getDefaultSettings(), /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined));
+    const defaultSettings = await cspell.getDefaultSettings();
+    sampleSettings = cspell.mergeSettings(defaultSettings, /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined));
     return sampleSettings;
 }

@@ -190,7 +190,7 @@ export function createDisposeMethodFromList(disposables: DisposableLike[], name 
             }
 
             if (error) {
-                _logger && console.error(error);
+                _logger?.warn(error);
                 throw error;
             }
         } finally {

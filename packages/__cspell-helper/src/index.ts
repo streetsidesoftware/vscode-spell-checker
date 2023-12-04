@@ -1,9 +1,9 @@
 import type { CSpellSettings } from '@cspell/cspell-types';
-import { getDefaultSettings, getGlobalSettings, mergeSettings, searchForConfig } from 'cspell-lib';
+import { getDefaultSettings, getGlobalSettingsAsync, mergeSettings, searchForConfig } from 'cspell-lib';
 
 export interface CSpellExports {
-    getDefaultSettings(useDefaultDicts?: boolean): CSpellSettings;
-    getGlobalSettings(): CSpellSettings;
+    getDefaultSettings(useDefaultDicts?: boolean): Promise<CSpellSettings>;
+    getGlobalSettings(): Promise<CSpellSettings>;
     mergeSettings(left: CSpellSettings, ...rest: CSpellSettings[]): CSpellSettings;
     searchForConfig(fromFile?: string): Promise<CSpellSettings | undefined>;
 }
@@ -11,7 +11,7 @@ export interface CSpellExports {
 export async function importCSpellLib(): Promise<CSpellExports> {
     return {
         getDefaultSettings,
-        getGlobalSettings,
+        getGlobalSettings: getGlobalSettingsAsync,
         mergeSettings,
         searchForConfig,
     };

@@ -1,3 +1,5 @@
+import { describe, expect, test, vi } from 'vitest';
+
 import { createEmitter, createSubscribable } from './createFunctions';
 import { awaitSubscribable } from './helpers/awaitSubscribable';
 import { delayUnsubscribe } from './operators/delayUnsubscribe';
@@ -5,12 +7,12 @@ import { delayUnsubscribe } from './operators/delayUnsubscribe';
 describe('Subscribables', () => {
     test('createEmitter', () => {
         const emitter = createEmitter<number>();
-        const sub = jest.fn();
+        const sub = vi.fn();
         emitter.subscribe(sub);
         expect(sub).not.toHaveBeenCalled();
         emitter.notify(7);
         expect(sub).toHaveBeenLastCalledWith(7);
-        const sub2 = jest.fn();
+        const sub2 = vi.fn();
         const d2 = emitter.subscribe(sub2);
         expect(sub2).not.toHaveBeenCalled();
         emitter.notify(49);

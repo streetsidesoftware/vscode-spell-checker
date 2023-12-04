@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { isRegExp, toRegExp } from './evaluateRegExp';
 
 describe('EvaluateRegExp', () => {

@@ -38,7 +38,7 @@ describe('Validate Suggestions', () => {
     );
 
     async function getSettings(doc: DocInfo) {
-        const settings = await cspell.constructSettingsForText(cspell.getDefaultSettings(), doc.text || '', doc.languageId);
+        const settings = await cspell.constructSettingsForText(await cspell.getDefaultSettings(), doc.text || '', doc.languageId);
         const dictionary = await cspell.getDictionary(settings);
         return { settings, dictionary };
     }

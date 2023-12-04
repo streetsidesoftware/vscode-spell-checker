@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { CancellationToken, QuickPickItem, QuickPickOptions } from 'vscode';
 import { ConfigurationTarget, Uri, window } from 'vscode';
 
@@ -29,10 +30,13 @@ import {
     quickPickBestMatchTarget,
 } from './configTargetHelper';
 
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+
 const dirUri = Uri.file(__dirname);
 const fileUri = Uri.file(__filename);
 
-const mockedShowQuickPick = jest.mocked(window.showQuickPick);
+const mockedShowQuickPick = vi.mocked(window.showQuickPick);
 type MockedShowQuickPick = typeof mockedShowQuickPick;
 
 const ctDictA = createClientConfigTargetDictionary(Uri.joinPath(dirUri, 'a/words1.txt'), 'unknown');
@@ -165,7 +169,8 @@ describe('configTargetHelper', () => {
 
 function setQuickPickSelection(mock: MockedShowQuickPick, selected: undefined | number | number[]) {
     const qp = new QuickPickImpl(selected);
-    mock.mockImplementation((...p) => qp.showQuickPick(...p));
+    const impl = qp.showQuickPick.bind(qp);
+    mock.mockImplementation(impl);
 }
 
 class QuickPickImpl {
@@ -183,22 +188,22 @@ class QuickPickImpl {
         items: readonly string[] | Thenable<readonly string[]>,
         options: QuickPickOptions & { canPickMany: true },
         token?: CancellationToken,
-    ): Thenable<string[] | undefined>;
+    ): Promise<string[] | undefined>;
     showQuickPick(
         items: readonly string[] | Thenable<readonly string[]>,
         options?: QuickPickOptions,
         token?: CancellationToken,
-    ): Thenable<string | undefined>;
+    ): Promise<string | undefined>;
     showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options: QuickPickOptions & { canPickMany: true },
         token?: CancellationToken,
-    ): Thenable<T[] | undefined>;
+    ): Promise<T[] | undefined>;
     showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options?: QuickPickOptions,
         token?: CancellationToken,
-    ): Thenable<T | undefined>;
+    ): Promise<T | undefined>;
     async showQuickPick<T extends QuickPickItem>(
         items: readonly T[] | Thenable<readonly T[]>,
         options?: QuickPickOptions,

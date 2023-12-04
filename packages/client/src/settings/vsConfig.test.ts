@@ -1,6 +1,7 @@
 import type { MockWorkspaceConfigurationData } from 'jest-mock-vscode';
 import { createMockWorkspaceConfiguration, readTextDocument } from 'jest-mock-vscode';
 import rfdc from 'rfdc';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ConfigurationScope, WorkspaceConfiguration } from 'vscode';
 import { Uri, workspace } from 'vscode';
 
@@ -23,12 +24,15 @@ import {
     toScope,
 } from './vsConfig';
 
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+
 const clone = rfdc();
 const { mergeInspect } = __testing__;
 
 const uri = Uri.file(__filename);
 
-const mockedWorkspace = jest.mocked(workspace);
+const mockedWorkspace = vi.mocked(workspace);
 
 const baseConfig: MockWorkspaceConfigurationData<{ cSpell: CSpellUserSettings }> = {
     '[*]': {
@@ -213,6 +217,6 @@ async function applySampleConfig(config: WorkspaceConfiguration) {
 }
 
 function sampleConfig(key?: string, scope?: ConfigurationScope | null) {
-    const config = createMockWorkspaceConfiguration(jest, clone(baseConfig), key, scope);
+    const config = createMockWorkspaceConfiguration(vi, clone(baseConfig), key, scope);
     return config;
 }

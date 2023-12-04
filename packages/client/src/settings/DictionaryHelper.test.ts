@@ -1,5 +1,6 @@
 //
 import { homedir } from 'os';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ExtensionContext, WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
@@ -14,6 +15,9 @@ import { __testing__, DictionaryHelper } from './DictionaryHelper';
 import { createDictionaryTargetForConfigRep } from './DictionaryTarget';
 import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
 
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+
 const {
     addCustomDictionaryToConfig,
     calcDictInfoForConfigRep,
@@ -22,11 +26,11 @@ const {
     isTextDocument,
 } = __testing__;
 
-jest.mock('../client/client', () => {
+vi.mock('../client/client', () => {
     return {
-        CSpellClient: jest.fn().mockImplementation(() => {
+        CSpellClient: vi.fn().mockImplementation(() => {
             return {
-                getConfigurationForDocument: jest.fn(),
+                getConfigurationForDocument: vi.fn(),
                 notifySettingsChanged: () => Promise.resolve(),
             };
         }),
@@ -162,7 +166,7 @@ describe('Validate DictionaryHelper methods', () => {
     test('calcDictInfoForConfigRep vscode workspace', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[0];
-        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        vi.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Workspace, undefined, {});
         const rep = createVSCodeConfigRepository(rw);
         expect(calcDictInfoForConfigRep(rep)).toEqual({
@@ -176,7 +180,7 @@ describe('Validate DictionaryHelper methods', () => {
     test('calcDictInfoForConfigRep vscode folder', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[1];
-        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        vi.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.WorkspaceFolder, scope, {});
         const rep = createVSCodeConfigRepository(rw);
         const folderName = 'pkg-b';
@@ -192,7 +196,7 @@ describe('Validate DictionaryHelper methods', () => {
     test('calcDictInfoForConfigRep vscode folder uri', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[2];
-        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        vi.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const uri = Uri.joinPath(scope.uri, 'package.json');
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.WorkspaceFolder, uri, {});
         const rep = createVSCodeConfigRepository(rw);
@@ -209,7 +213,7 @@ describe('Validate DictionaryHelper methods', () => {
     test('calcDictInfoForConfigRep vscode user', () => {
         const info = mockWorkspace(['packages/pkg-a', 'packages/pkg-b', 'packages/pkg-c']);
         const scope = info.workspaceFolders[0];
-        jest.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
+        vi.mocked(workspace.getWorkspaceFolder).mockReturnValue(scope);
         const rw = new MemoryConfigVSReaderWriter(ConfigurationTarget.Global, scope, {});
         const rep = createVSCodeConfigRepository(rw);
         expect(calcDictInfoForConfigRep(rep)).toEqual({
@@ -297,8 +301,8 @@ function ocUri(uri: Uri): Uri {
 function mockWorkspace(workspaceFolders: string[]) {
     const workspaceFolderUris = workspaceFolders.map((s) => getPathToTemp(s));
     const info = workspaceInfo(workspaceFolderUris);
-    jest.spyOn(workspace, 'workspaceFile', 'get').mockReturnValue(info.workspaceFile);
-    jest.spyOn(workspace, 'workspaceFolders', 'get').mockReturnValue(info.workspaceFolders);
+    vi.spyOn(workspace, 'workspaceFile', 'get').mockReturnValue(info.workspaceFile);
+    vi.spyOn(workspace, 'workspaceFolders', 'get').mockReturnValue(info.workspaceFolders);
     return info;
 }
 

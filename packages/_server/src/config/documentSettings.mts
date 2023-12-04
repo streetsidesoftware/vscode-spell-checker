@@ -122,7 +122,7 @@ export class DocumentSettings {
     constructor(
         readonly connection: Connection,
         readonly api: ServerSideApi,
-        readonly defaultSettings: CSpellUserSettings = _defaultSettings,
+        readonly defaultSettings: CSpellUserSettings | Promise<CSpellUserSettings> = _defaultSettings,
     ) {}
 
     async getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
@@ -210,10 +210,10 @@ export class DocumentSettings {
         return this._folders();
     }
 
-    private _importSettings() {
+    private async _importSettings() {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
-        return mergeSettings({}, ...readSettingsFiles(importPaths));
+        return readAndMergeSettingsFiles(importPaths);
     }
 
     private async _fetchWorkspaceConfiguration(uri: DocumentUri): Promise<WorkspaceConfigForDocument> {
@@ -338,12 +338,12 @@ export class DocumentSettings {
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
-        const vscodeCSpellSettings = resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
+        const vscodeCSpellSettings = await resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
-        const mergedSettingsFromVSCode = mergeSettings(this.importedSettings(), vscodeCSpellSettings);
+        const mergedSettingsFromVSCode = mergeSettings(await this.importedSettings(), vscodeCSpellSettings);
         const mergedSettings = mergeSettings(
-            this.defaultSettings,
+            await Promise.resolve(this.defaultSettings),
             filterMergeFields(
                 mergedSettingsFromVSCode,
                 vscodeCSpellSettings['mergeCSpellSettings'] || !settings,
@@ -407,7 +407,7 @@ export class DocumentSettings {
     }
 }
 
-function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CSpellUserSettings {
+async function resolveConfigImports(config: CSpellUserSettings, folderUri: string): Promise<CSpellUserSettings> {
     log('resolveConfigImports:', folderUri);
     const uriFsPath = path.normalize(Uri.parse(folderUri).fsPath);
     const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
@@ -415,9 +415,13 @@ function resolveConfigImports(config: CSpellUserSettings, folderUri: string): CS
     log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
     log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
     const { import: _import, ...result } = importAbsPath.length
-        ? mergeSettings({}, ...readSettingsFiles([...importAbsPath]), config)
+        ? mergeSettings(await readAndMergeSettingsFiles(importAbsPath), config)
         : config;
     return result;
+}
+
+async function readAndMergeSettingsFiles(importAbsPaths: string[]): Promise<CSpellSettingsWithSourceTrace> {
+    return mergeSettings({}, ...(await Promise.all(readSettingsFiles([...importAbsPaths]))));
 }
 
 function readSettingsFiles(paths: string[]) {

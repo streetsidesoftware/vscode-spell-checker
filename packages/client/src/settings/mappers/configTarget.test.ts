@@ -1,9 +1,13 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
 
 import type { ConfigKind, ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client';
 import { oc } from '../../test/helpers';
 import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from '../clientConfigTarget';
 import { mapConfigTargetToClientConfigTarget } from './configTarget';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const cspellUri = Uri.joinPath(Uri.file(__dirname), 'cspell.json');
 const dictUri = Uri.joinPath(Uri.file(__dirname), 'words.txt');

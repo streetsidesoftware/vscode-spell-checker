@@ -1,8 +1,12 @@
+import { describe, expect, test, vi } from 'vitest';
 import { FileSystemError, Uri } from 'vscode';
 import { URI, Utils as UriUtils } from 'vscode-uri';
 
 import { fsRemove, getPathToTemp } from '../test/helpers';
 import { vscodeFs } from './fs';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const sc = expect.stringContaining;
 

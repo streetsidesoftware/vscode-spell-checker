@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { awaitAsyncIterable } from './awaitAsyncIterable';
 import { fromIterable } from './fromIterable';
 import { toAsyncIterable } from './toAsyncIterable';

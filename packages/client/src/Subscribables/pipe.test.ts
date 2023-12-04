@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { awaitSubscribableAll } from './helpers/awaitSubscribable';
 import { map } from './operators';
 import { pipe } from './pipe';
