@@ -55,6 +55,7 @@ const cspellConfigInVsCode: CSpellUserSettings = {
     ],
     enabledLanguageIds: ['typescript', 'javascript', 'php', 'json', 'jsonc'],
     mergeCSpellSettings: true,
+    useLocallyInstalledCSpellDictionaries: true,
 };
 
 const sampleFiles = {
