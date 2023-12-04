@@ -3324,7 +3324,7 @@
     "@vscode/vsce": "^2.22.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "esbuild": "^0.19.6",
+    "esbuild": "^0.19.8",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
