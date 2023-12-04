@@ -1136,7 +1136,7 @@ Default
 | [`cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`](#cspellblockcheckingwhenaveragechunksizegreaterthan) | language-overridable | The maximum average length of chunks of text without word breaks.                |
 | [`cSpell.blockCheckingWhenLineLengthGreaterThan`](#cspellblockcheckingwhenlinelengthgreaterthan)             | language-overridable | The maximum line length.                                                         |
 | [`cSpell.blockCheckingWhenTextChunkSizeGreaterThan`](#cspellblockcheckingwhentextchunksizegreaterthan)       | language-overridable | The maximum length of a chunk of text without word breaks.                       |
-| [`cSpell.checkLimit`](#cspellchecklimit)                                                                     | resource             | The limit in K-Characters to be checked in a file.                               |
+| [`cSpell.checkLimit`](#cspellchecklimit)                                                                     | resource             | Set the maximum number of bocks of text to check. Each block is 1024 characters. |
 | [`cSpell.spellCheckDelayMs`](#cspellspellcheckdelayms)                                                       | application          | Delay in ms after a document has changed before checking it for spelling errors. |
 | [`cSpell.suggestionsTimeout`](#cspellsuggestionstimeout)                                                     | resource             | The maximum amount of time in milliseconds to generate suggestions for a word.   |
 
@@ -1240,7 +1240,8 @@ Scope
 : resource
 
 Description
-: The limit in K-Characters to be checked in a file.
+: Set the maximum number of bocks of text to check.
+Each block is 1024 characters.
 
 Default
 : _`500`_
@@ -1287,12 +1288,13 @@ Default
 
 # CSpell
 
-| Setting                                                | Scope    | Description                                                                                                        |
-| ------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)   | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from…                     |
-| [`cSpell.includeRegExpList`](#cspellincluderegexplist) | resource | List of regular expression patterns or defined pattern names to match for spell checking.                          |
-| [`cSpell.overrides`](#cspelloverrides)                 | resource | Overrides are used to apply settings for specific files in your project.                                           |
-| [`cSpell.patterns`](#cspellpatterns)                   | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
+| Setting                                                                                        | Scope    | Description                                                                                                        |
+| ---------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                           | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from…                     |
+| [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                         | resource | List of regular expression patterns or defined pattern names to match for spell checking.                          |
+| [`cSpell.overrides`](#cspelloverrides)                                                         | resource | Overrides are used to apply settings for specific files in your project.                                           |
+| [`cSpell.patterns`](#cspellpatterns)                                                           | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
+| [`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries) | resource | Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.                             |
 
 ## Definitions
 
@@ -1417,6 +1419,28 @@ Description
 
 Default
 : _- none -_
+
+---
+
+### `cSpell.useLocallyInstalledCSpellDictionaries`
+
+Name
+: `cSpell.useLocallyInstalledCSpellDictionaries`
+
+Type
+: boolean
+
+Scope
+: resource
+
+Description
+: Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+
+Default
+: _`true`_
+
+Version
+: 4.0.0
 
 ---
 

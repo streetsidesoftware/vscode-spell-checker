@@ -23,14 +23,14 @@ import {
     calcOverrideSettings,
     clearCachedFiles,
     ExclusionHelper,
+    getDefaultConfigLoader,
     getSources,
     mergeSettings,
-    readSettings as cspellReadSettingsFile,
     searchForConfig,
 } from 'cspell-lib';
-import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
@@ -213,7 +213,9 @@ export class DocumentSettings {
     private async _importSettings() {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
-        return readAndMergeSettingsFiles(importPaths);
+        const loader = getDefaultConfigLoader();
+        const cfg = loader.createCSpellConfigFile(pathToFileURL('./'), { import: importPaths });
+        return await loader.mergeConfigFileWithImports(cfg);
     }
 
     private async _fetchWorkspaceConfiguration(uri: DocumentUri): Promise<WorkspaceConfigForDocument> {
@@ -329,16 +331,19 @@ export class DocumentSettings {
         if (uriSpecial && uri !== uriSpecial) {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }
+        const loader = getDefaultConfigLoader();
         const folders = await this.folders;
         const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
+        const useURLForConfig = new URL(useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
         const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
+        const vscodeCSpellConfigFileForDocument = loader.createCSpellConfigFile(useURLForConfig, vscodeCSpellConfigSettingsForDocument);
+        const vscodeCSpellSettings: CSpellUserSettings = await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
-        const vscodeCSpellSettings = await resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
         const mergedSettingsFromVSCode = mergeSettings(await this.importedSettings(), vscodeCSpellSettings);
@@ -404,40 +409,6 @@ export class DocumentSettings {
         const lazy = createLazyValue(loader);
         this.valuesToClearOnReset.push(() => lazy.clear());
         return lazy;
-    }
-}
-
-async function resolveConfigImports(config: CSpellUserSettings, folderUri: string): Promise<CSpellUserSettings> {
-    log('resolveConfigImports:', folderUri);
-    const uriFsPath = path.normalize(Uri.parse(folderUri).fsPath);
-    const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
-    const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
-    log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
-    log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
-    const { import: _import, ...result } = importAbsPath.length
-        ? mergeSettings(await readAndMergeSettingsFiles(importAbsPath), config)
-        : config;
-    return result;
-}
-
-async function readAndMergeSettingsFiles(importAbsPaths: string[]): Promise<CSpellSettingsWithSourceTrace> {
-    return mergeSettings({}, ...(await Promise.all(readSettingsFiles([...importAbsPaths]))));
-}
-
-function readSettingsFiles(paths: string[]) {
-    // log('readSettingsFiles:', paths);
-    const existingPaths = paths.filter((filename) => exists(filename));
-    log('readSettingsFiles:', existingPaths);
-    // console.error('readSettingsFiles: %o', existingPaths);
-    return existingPaths.map((file) => cspellReadSettingsFile(file));
-}
-
-function exists(file: string): boolean {
-    try {
-        const s = fs.statSync(file);
-        return s.isFile();
-    } catch (e) {
-        return false;
     }
 }
 

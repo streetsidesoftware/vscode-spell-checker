@@ -19,7 +19,8 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     autoFormatConfigFile?: boolean;
 
     /**
-     * The limit in K-Characters to be checked in a file.
+     * Set the maximum number of bocks of text to check.
+     * Each block is 1024 characters.
      * @scope resource
      * @default 500
      */
@@ -404,6 +405,14 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * }
      */
     mergeCSpellSettingsFields?: CSpellMergeFields;
+
+    /**
+     * Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
+     * @scope resource
+     * @version 4.0.0
+     * @default true
+     */
+    useLocallyInstalledCSpellDictionaries?: boolean;
 }
 
 type AutoOrBoolean = boolean | 'auto';
