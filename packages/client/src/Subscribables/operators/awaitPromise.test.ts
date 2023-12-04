@@ -48,7 +48,7 @@ describe('awaitPromise', () => {
 
         const promiseExpected = new WeakMap<T, string>();
 
-        const onReject = vi.fn<void, Parameters<AwaitPromiseErrorHandler<T>>>((err, emitter, pValue) =>
+        const onReject = vi.fn<Parameters<AwaitPromiseErrorHandler<T>>>((err, emitter, pValue) =>
             emitter(promiseExpected.get(pValue) || toStr(err)),
         );
         const stream = rx(emitter, awaitPromise(onReject));
