@@ -1,5 +1,4 @@
 {
-    "extends": "@tsconfig/node18",
     "compilerOptions": {},
     "files": [],
     "references": [{ "path": "./tsconfig.cjs.json" }, { "path": "./tsconfig.esm.json" }]

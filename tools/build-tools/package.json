@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.4",
-    "@types/jest": "^29.5.8",
+    "@types/jest": "^29.5.10",
     "@types/json-schema": "^7.0.15",
     "ts-jest": "^29.1.1"
   },

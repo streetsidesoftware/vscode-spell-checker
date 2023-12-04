@@ -24,18 +24,18 @@
   "license": "MIT",
   "devDependencies": {
     "@cspell/cspell-types": "^8.1.0",
-    "@types/chai": "^4.3.10",
+    "@types/chai": "^4.3.11",
     "@types/decompress": "^4.2.7",
     "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.4",
-    "@types/node": "^18.18.10",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.2",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "kefir": "^3.8.8"
   },
   "peerDependenciesMeta": {},
   "dependencies": {
-    "@vscode/test-electron": "^2.3.6",
+    "@vscode/test-electron": "^2.3.8",
     "chalk": "^5.3.0",
     "decompress": "^4.2.1",
     "glob": "^10.3.10",
