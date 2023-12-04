@@ -1,3 +1,4 @@
+import { createMockWorkspaceConfiguration } from 'jest-mock-vscode';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { when } from 'vitest-when';
 import type { WorkspaceFolder } from 'vscode';
@@ -49,6 +50,9 @@ describe('configRepository', () => {
     test('CSpellConfigRepository Memory', async () => {
         const uri = getPathToTemp('cspell.json');
         const rw = new MemoryConfigFileReaderWriter(uri, {});
+        const __mockConfig = createMockWorkspaceConfiguration(vi);
+        const mockedGetConfig = vi.mocked(workspace.getConfiguration);
+        mockedGetConfig.mockImplementation(__mockConfig.__getConfiguration.bind(__mockConfig));
         const rep = createCSpellConfigRepository(rw);
 
         await rep.setValue('words', ['one', 'two', 'three']);
