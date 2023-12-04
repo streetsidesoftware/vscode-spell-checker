@@ -1,7 +1,11 @@
 import * as path from 'path';
+import { describe, expect, test, vi } from 'vitest';
 
 import type { StackItem } from './helpers';
 import { getCallStack, getPathToTemp, mustBeDefined, parseStackTrace } from './helpers';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 describe('Validate Helpers', () => {
     test('getCallStack', () => {

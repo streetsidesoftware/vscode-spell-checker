@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import { ConfigurationTarget } from 'vscode';
 
 import {
@@ -5,6 +6,9 @@ import {
     configurationTargetToDictionaryScope,
     dictionaryScopeToConfigurationTarget,
 } from './targetAndScope';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 describe('targetAndScope', () => {
     test.each`

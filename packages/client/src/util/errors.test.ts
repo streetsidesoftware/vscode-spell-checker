@@ -1,11 +1,14 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { window } from 'vscode';
 
 import { catchErrors, ErrorHandlers, handleErrors, isError, logErrors, Resolvers } from './errors';
 
-const debug = jest.spyOn(console, 'debug').mockImplementation(() => undefined);
-const log = jest.spyOn(console, 'log').mockImplementation(() => undefined);
-const error = jest.spyOn(console, 'error').mockImplementation(() => undefined);
-const showErrorMessage = jest.spyOn(window, 'showErrorMessage').mockImplementation(() => Promise.resolve(undefined));
+vi.mock('vscode');
+
+const debug = vi.spyOn(console, 'debug').mockImplementation(() => undefined);
+const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+const showErrorMessage = vi.spyOn(window, 'showErrorMessage').mockImplementation(() => Promise.resolve(undefined));
 
 describe('Validate errors', () => {
     beforeEach(() => {

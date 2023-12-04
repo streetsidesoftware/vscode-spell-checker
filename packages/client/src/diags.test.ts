@@ -1,4 +1,5 @@
 import { createTextDocument } from 'jest-mock-vscode';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import * as vscode from 'vscode';
 import { Diagnostic, DiagnosticSeverity, Position, Range, Uri } from 'vscode';
 
@@ -8,41 +9,43 @@ import { isDefined, mustBeDefined } from './util';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;
 
-jest.mock('./di');
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+vi.mock('./di');
 
-const mockGetDependencies = jest.mocked(getDependencies);
+const mockGetDependencies = vi.mocked(getDependencies);
 
 describe('Validate diags', () => {
     beforeEach(() => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getDiagnostics: jest.fn(implGetDiagnostics) },
+                    issueTracker: { getDiagnostics: vi.fn(implGetDiagnostics) },
                 }) as any,
         );
     });
     afterEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
     });
 
     test('getCSpellDiags empty', () => {
-        const mockGetDependencies = jest.mocked(getDependencies);
+        const mockGetDependencies = vi.mocked(getDependencies);
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getDiagnostics: jest.fn(() => []) },
+                    issueTracker: { getDiagnostics: vi.fn(() => []) },
                 }) as any,
         );
         const uri = Uri.file(__filename);
         const r = getCSpellDiags(uri);
         expect(r).toEqual([]);
-        expect(jest.mocked(getDependencies)).toHaveBeenCalledTimes(1);
+        expect(vi.mocked(getDependencies)).toHaveBeenCalledTimes(1);
     });
 
     test('getCSpellDiags', () => {
         const uri = Uri.file(__filename);
         const r = getCSpellDiags(uri);
-        expect(jest.mocked(getDependencies)).toHaveBeenCalledTimes(1);
+        expect(vi.mocked(getDependencies)).toHaveBeenCalledTimes(1);
         expect(r).toHaveLength(2);
     });
 

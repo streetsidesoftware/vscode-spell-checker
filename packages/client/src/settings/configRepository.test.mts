@@ -1,11 +1,15 @@
-import { when } from 'jest-when';
+import { afterEach, describe, expect, test, vi } from 'vitest';
+import { when } from 'vitest-when';
 import type { WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
-import { getPathToTemp } from '../test/helpers';
-import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository';
-import { addWordsFn } from './configUpdaters';
-import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter';
+import { getPathToTemp } from '../test/helpers.js';
+import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.js';
+import { addWordsFn } from './configUpdaters.js';
+import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter.js';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const { isUri, hasUri, isWorkspaceFolder } = __testing__;
 
@@ -22,9 +26,13 @@ const workspaceFolderWorkspace: WorkspaceFolder = {
     name: 'Workspace',
     index: 0,
 };
-const mockedWorkspace = jest.mocked(workspace);
+const mockedWorkspace = vi.mocked(workspace);
 
 describe('configRepository', () => {
+    afterEach(() => {
+        vi.resetAllMocks();
+    });
+
     test('CSpellConfigRepository', async () => {
         const uri = getPathToTemp('cspell.json');
         const rep = createCSpellConfigRepository(uri);
@@ -103,8 +111,8 @@ describe('configRepository', () => {
         const rw = new MemoryConfigVSReaderWriter(target, scope, {});
         const rep = createVSCodeConfigRepository(rw);
 
-        when(mockedWorkspace.getWorkspaceFolder).calledWith(expect.objectContaining(uri)).mockReturnValue(workspaceFolder);
-        const spy = jest.spyOn(workspace, 'workspaceFolders', 'get');
+        when(mockedWorkspace.getWorkspaceFolder).calledWith(expect.objectContaining(uri)).thenReturn(workspaceFolder);
+        const spy = vi.spyOn(workspace, 'workspaceFolders', 'get');
         spy.mockReturnValue([workspaceFolderWorkspace, workspaceFolder]);
 
         expect(rep.getWorkspaceFolder()).toEqual(expected);

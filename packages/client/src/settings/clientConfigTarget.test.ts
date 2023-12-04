@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
 
 import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from './clientConfigTarget';
@@ -7,6 +8,9 @@ import {
     isClientConfigTargetOfKind,
     isClientConfigTargetVSCode,
 } from './clientConfigTarget';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 describe('clientConfigTarget', () => {
     const tCSpell: ClientConfigTargetCSpell = {

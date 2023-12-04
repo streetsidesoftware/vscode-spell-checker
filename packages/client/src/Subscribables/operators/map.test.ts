@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { awaitSubscribableAll } from '../helpers/awaitSubscribable';
 import { rx } from '../rx';
 import { map } from './map';

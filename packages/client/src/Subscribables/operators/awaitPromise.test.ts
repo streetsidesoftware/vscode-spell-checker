@@ -1,4 +1,5 @@
 import { disposeOf } from 'utils-disposables';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createEmitter } from '../createFunctions';
 import { rx } from '../rx';
@@ -8,10 +9,10 @@ describe('awaitPromise', () => {
     test('awaitPromise', async () => {
         const emitter = createEmitter<Promise<string>>();
 
-        const onReject = jest.fn();
+        const onReject = vi.fn();
         const stream = rx(emitter, awaitPromise(onReject));
 
-        const notify = jest.fn();
+        const notify = vi.fn();
         const dispose = stream.subscribe(notify);
 
         const p0 = Promise.resolve('p0');
@@ -26,10 +27,10 @@ describe('awaitPromise', () => {
     test('awaitPromise rejected', async () => {
         const emitter = createEmitter<Promise<string>>();
 
-        const onReject = jest.fn();
+        const onReject = vi.fn();
         const stream = rx(emitter, awaitPromise(onReject));
 
-        const notify = jest.fn();
+        const notify = vi.fn();
         const dispose = stream.subscribe(notify);
 
         const p0 = rejectIn<string>(1, 'error');
@@ -47,12 +48,12 @@ describe('awaitPromise', () => {
 
         const promiseExpected = new WeakMap<T, string>();
 
-        const onReject = jest.fn<void, Parameters<AwaitPromiseErrorHandler<T>>>((err, emitter, pValue) =>
+        const onReject = vi.fn<void, Parameters<AwaitPromiseErrorHandler<T>>>((err, emitter, pValue) =>
             emitter(promiseExpected.get(pValue) || toStr(err)),
         );
         const stream = rx(emitter, awaitPromise(onReject));
 
-        const notify = jest.fn();
+        const notify = vi.fn();
         const dispose = stream.subscribe(notify);
 
         const p0 = rejectIn<string>(1, 'error 0');

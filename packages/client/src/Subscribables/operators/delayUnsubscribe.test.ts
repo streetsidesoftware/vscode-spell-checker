@@ -1,4 +1,5 @@
 import { createDisposable, disposeOf } from 'utils-disposables';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createSubscribable } from '../createFunctions';
 import { toSubscriberFn } from '../helpers/toSubscriber';
@@ -8,10 +9,10 @@ import { delayUnsubscribe } from './delayUnsubscribe';
 
 describe('delayUnsubscribe', () => {
     test('delayUnsubscribe', () => {
-        const receiver = jest.fn();
+        const receiver = vi.fn();
         const defaultEmitter = () => undefined;
         let emitter: SubscriberFn<number> = defaultEmitter;
-        const resetEmitter = jest.fn(() => (emitter = defaultEmitter));
+        const resetEmitter = vi.fn(() => (emitter = defaultEmitter));
         expect(emitter).toBe(defaultEmitter);
         const source: SubscribeFn<number> = (subscriber: SubscriberLike<number>) => {
             emitter = toSubscriberFn(subscriber);
@@ -52,10 +53,10 @@ describe('delayUnsubscribe', () => {
     });
 
     test('delayUnsubscribe rx', () => {
-        const receiver = jest.fn();
+        const receiver = vi.fn();
         const defaultEmitter = () => undefined;
         let emitter: SubscriberFn<number> = defaultEmitter;
-        const resetEmitter = jest.fn(() => (emitter = defaultEmitter));
+        const resetEmitter = vi.fn(() => (emitter = defaultEmitter));
         expect(emitter).toBe(defaultEmitter);
         const source: SubscribeFn<number> = (subscriber: SubscriberLike<number>) => {
             emitter = toSubscriberFn(subscriber);

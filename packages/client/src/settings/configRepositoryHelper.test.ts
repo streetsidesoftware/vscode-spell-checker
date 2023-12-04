@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import type {
@@ -8,6 +9,9 @@ import type {
 } from './clientConfigTarget';
 import type { ConfigRepository } from './configRepository';
 import { configTargetToConfigRepo } from './configRepositoryHelper';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const fileUri = Uri.file(__filename);
 const dirUri = Uri.file(__dirname);

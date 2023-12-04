@@ -1,9 +1,13 @@
+import { describe, expect, test, vi } from 'vitest';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import type { ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../client';
 import type { ClientConfigTarget } from './clientConfigTarget';
 import type { DictionaryTarget } from './DictionaryTarget';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const fileUri = Uri.file(__filename);
 const dirUri = Uri.file(__dirname);

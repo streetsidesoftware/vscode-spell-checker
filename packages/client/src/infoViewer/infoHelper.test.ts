@@ -1,9 +1,14 @@
 import type { CSpellSettings } from '@cspell/cspell-types';
 import { importCSpellLib } from '@internal/cspell-helper';
 import assert from 'assert';
+import { describe, expect, test, vi } from 'vitest';
+import {} from 'vscode';
 
 import { isDefined } from '../util';
 import { __testing__ } from './infoHelper';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const { applyEnableFiletypesToEnabledLanguageIds, calcEnableLang, extractDictionariesFromConfig, normalizeLocales, splitBangPrefix } =
     __testing__;

@@ -1,6 +1,7 @@
 import { mustBeDefined } from '@internal/common-utils/util';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { expect } from 'vitest';
 import { Uri } from 'vscode';
 
 import { isDefined } from '../util';

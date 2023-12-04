@@ -2,6 +2,16 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     test: {
+        // cspell:ignore tsup
+        exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/cypress/**',
+            '**/coverage/**',
+            '**/temp/**',
+            '**/.{idea,git,cache,output,temp}/**',
+            '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+        ],
         // reporters: 'verbose',
         coverage: {
             // enabled: true,

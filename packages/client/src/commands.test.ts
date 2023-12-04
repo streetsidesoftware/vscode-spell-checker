@@ -1,4 +1,5 @@
 import { readTextDocument } from 'jest-mock-vscode';
+import { describe, expect, test, vi } from 'vitest';
 import * as vscode from 'vscode';
 
 import { __testing__ } from './commands';
@@ -6,6 +7,9 @@ import { extensionId } from './constants';
 import { commandDisplayCSpellInfo } from './infoViewer';
 import { mustBeDefined, readExtensionPackage } from './test/helpers';
 import { registeredCommands as webviewCommands } from './webview';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const { commandHandlers } = __testing__;
 

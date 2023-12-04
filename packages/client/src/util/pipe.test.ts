@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { defaultTo, extract, map, pipe } from './pipe';
 
 interface Address {

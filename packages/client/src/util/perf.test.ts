@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { EVENT_TIMELINE_START, PerformanceTimeline } from './perf';
 
 describe('Validate perf', () => {

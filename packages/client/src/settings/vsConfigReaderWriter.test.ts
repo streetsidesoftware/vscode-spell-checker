@@ -1,13 +1,16 @@
 import type { CSpellUserSettings } from '@cspell/cspell-types';
+import { describe, expect, test, vi } from 'vitest';
 import { ConfigurationTarget, Uri } from 'vscode';
 
 import { calculateConfigForTarget, updateConfig } from './vsConfig';
 import { createVSConfigReaderWriter } from './vsConfigReaderWriter';
 
-jest.mock('./vsConfig');
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+vi.mock('./vsConfig');
 
-const mockedUpdateConfig = jest.mocked(updateConfig);
-const mockedCalculateConfigForTarget = jest.mocked(calculateConfigForTarget);
+const mockedUpdateConfig = vi.mocked(updateConfig);
+const mockedCalculateConfigForTarget = vi.mocked(calculateConfigForTarget);
 
 describe('vsConfigReaderWriter', () => {
     test('createVSConfigReaderWriter', () => {

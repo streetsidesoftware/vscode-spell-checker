@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { ConfigFields } from './configFields';
 
 describe('Validate configFields', () => {

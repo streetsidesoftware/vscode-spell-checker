@@ -1,3 +1,5 @@
+import { describe, expect, test, vi } from 'vitest';
+import {} from 'vscode';
 import type { URI as Uri } from 'vscode-uri';
 import { Utils as UriUtils } from 'vscode-uri';
 
@@ -11,9 +13,11 @@ import { vscodeFs } from './fs';
 import { replaceDocText } from './replaceDocText';
 import { createConfigFile } from './settings';
 
-jest.mock('./replaceDocText');
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
+vi.mock('./replaceDocText');
 
-const mock_replaceDocText = jest.mocked(replaceDocText);
+const mock_replaceDocText = vi.mocked(replaceDocText);
 
 mock_replaceDocText.mockImplementation(async (doc, text) => {
     await vscodeFs.writeFile(doc.uri, text);

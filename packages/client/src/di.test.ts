@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, test } from 'vitest';
+
 import * as di from './di';
 
 describe('Validate di', () => {

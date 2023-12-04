@@ -1,4 +1,9 @@
+import { describe, expect, test, vi } from 'vitest';
+
 import { __testing__ } from './settings.locale';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 const { addLocaleToCurrentLocale, removeLocaleFromCurrentLocale, doLocalesIntersect, isLocaleSubsetOf } = __testing__;
 

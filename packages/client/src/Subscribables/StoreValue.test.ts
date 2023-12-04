@@ -1,3 +1,5 @@
+import { describe, expect, test, vi } from 'vitest';
+
 import { createEmitter, createSubscribable } from './createFunctions';
 import { awaitSubscribable } from './helpers/awaitSubscribable';
 import { createStoreValue } from './StoreValue';
@@ -8,7 +10,7 @@ describe('StoreValue', () => {
         expect(store.value).toBe(5);
         store.set(7);
         expect(store.value).toBe(7);
-        const cb = jest.fn();
+        const cb = vi.fn();
         store.subscribe(cb);
         expect(cb).toHaveBeenLastCalledWith(7);
         store.dispose();

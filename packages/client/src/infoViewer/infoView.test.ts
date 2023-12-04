@@ -1,4 +1,8 @@
+import { describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
+
+vi.mock('vscode');
+vi.mock('vscode-languageclient/node');
 
 import {} from './infoView';
 
