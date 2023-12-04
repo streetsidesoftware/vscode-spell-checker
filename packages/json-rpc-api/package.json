@@ -51,6 +51,6 @@
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.2",
-    "@types/vscode": "^1.84.1"
+    "@types/vscode": "^1.84.2"
   }
 }
