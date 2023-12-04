@@ -33,19 +33,11 @@
     "clean": "shx rm -rf dist temp out coverage",
     "version": "npm run package-extension",
     "test": "vitest run",
-    "test:jest": "node --experimental-vm-modules ../../node_modules/jest/bin/jest",
-    "test-watch": "node --experimental-vm-modules ../../node_modules/jest/bin/jest --watch",
+    "test-watch": "vitest",
     "watch": "concurrently npm:watch:esbuild npm:watch:api npm:watch:tsc",
     "watch:esbuild": "npm run build:esbuild -- --watch",
     "watch:api": "npm run build:api.d.ts -- --watch",
     "watch:tsc": "npm run build:tsc -- --watch"
-  },
-  "#devDependencies": {
-    "@types/jest": "^29.5.8",
-    "@types/jest-when": "^3.5.5",
-    "jest": "^29.7.0",
-    "jest-when": "^3.6.0",
-    "ts-jest": "^29.1.1"
   },
   "devDependencies": {
     "@internal/cspell-helper": "file:../__cspell-helper",
