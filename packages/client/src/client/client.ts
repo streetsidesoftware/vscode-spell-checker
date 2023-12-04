@@ -141,7 +141,7 @@ export class CSpellClient implements Disposable {
         const { uri, languageId } = document || {};
 
         const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
-        if (!uri) {
+        if (!uri || !workspaceConfig.uri) {
             return this.serverApi.getConfigurationForDocument({ workspaceConfig });
         }
         return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
@@ -289,7 +289,7 @@ function calculateWorkspaceConfigForDocument(docUri: Uri | undefined): Workspace
     tWords.user = tUserWords.user;
 
     const resp: WorkspaceConfigForDocumentResponse = {
-        uri: docUri?.toString(),
+        uri: scope?.toString(),
         workspaceFile,
         workspaceFolder,
         words: tWords,

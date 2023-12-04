@@ -178,7 +178,7 @@ describe('Validate configTargetsHelper', () => {
         };
         const cfg = mustBeDefined(await searchForConfig(__dirname));
         const settings = { ...cfg };
-        const r = calculateConfigTargets(settings, wConfig);
+        const r = await calculateConfigTargets(settings, wConfig);
         expect(r).toEqual([
             oc<ConfigTargetDictionary>({
                 kind: 'dictionary',
@@ -231,7 +231,9 @@ describe('Validate configTargetsHelper', () => {
         const defs: DictionaryDef[] = [cd('custom-words', 'path/to/custom-words.txt', false)];
         const dictionaries: string[] = (cfg.dictionaries || []).concat('custom-words');
         const settings: CSpellUserSettings = { ...cfg, dictionaryDefinitions: defs, dictionaries };
-        const r = calculateConfigTargets(settings, wConfig).sort((a, b) => col.compare(a.kind, b.kind) || col.compare(a.name, b.name));
+        const r = (await calculateConfigTargets(settings, wConfig)).sort(
+            (a, b) => col.compare(a.kind, b.kind) || col.compare(a.name, b.name),
+        );
         expect(r).toEqual([
             oc<ConfigTargetCSpell>({
                 kind: 'cspell',

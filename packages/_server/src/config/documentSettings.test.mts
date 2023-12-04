@@ -260,11 +260,9 @@ describe('Validate DocumentSettings', () => {
         expect(configs.map((c) => c.name)).toEqual([
             shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
             shortPathName(Path.join(pathWorkspaceRoot, 'cspell.config.yaml')),
-            'VS Code Settings', // name of the mock config.
             'sampleSourceFiles/cSpell.json',
             'sampleSourceFiles/cspell-ext.json',
             'overrides/cspell.json',
-            'VS Code Imports', //
         ]);
     });
 

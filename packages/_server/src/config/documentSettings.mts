@@ -1,3 +1,5 @@
+import { stat } from 'node:fs/promises';
+
 import { opConcatMap, opFilter, pipe } from '@cspell/cspell-pipe/sync';
 import type {
     CSpellSettingsWithSourceTrace,
@@ -220,6 +222,7 @@ export class DocumentSettings {
         const cfg = loader.createCSpellConfigFile(pathToFileURL(fileConfigsToImport), {
             name: 'VS Code Imports',
             import: importPaths,
+            readonly: true,
         });
         return await loader.mergeConfigFileWithImports(cfg);
     }
@@ -298,9 +301,9 @@ export class DocumentSettings {
         const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
         const docUriAsString = uri.toString();
         const settings = await this.fetchSettingsForUri(docUriAsString);
-        return this.extractCSpellConfigurationFiles(settings.settings)
-            .filter((u) => !u.path.endsWith(fileConfigsToImport))
-            .filter((u) => !u.path.endsWith(fileVSCodeSettings));
+        const uris = this.extractCSpellConfigurationFiles(settings.settings);
+        const found = await Promise.all(uris.map(filterUrl));
+        return found.filter(isDefined);
     }
 
     /**
@@ -328,6 +331,7 @@ export class DocumentSettings {
             id: 'VSCode-Config',
             name: 'VS Code Settings',
             ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
+            readonly: true,
         };
 
         if (cSpellConfigSettings.useLocallyInstalledCSpellDictionaries) {
@@ -650,9 +654,24 @@ export function extractCSpellFileConfigurations(settings: CSpellUserSettings): C
         .filter(isCSpellSettingsWithFileSource)
         .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
         .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
+        .filter(({ source }) => !source.filename.endsWith(fileConfigsToImport))
+        .filter(({ source }) => !source.filename.endsWith(fileVSCodeSettings))
         .reverse();
 
     return configs;
+}
+
+export async function filterExistingCSpellFileConfigurations(
+    configs: CSpellSettingsWithFileSource[],
+): Promise<CSpellSettingsWithFileSource[]> {
+    const existingConfigs = await Promise.all(
+        configs.map(async (cfg) => {
+            const { source } = cfg;
+            const found = await filterUrl(toFileUri(source.filename));
+            return found ? cfg : undefined;
+        }),
+    );
+    return existingConfigs.filter(isDefined);
 }
 
 /**
@@ -707,6 +726,20 @@ export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uri.fsPath);
+}
+
+async function filterUrl(uri: Uri): Promise<Uri | undefined> {
+    if (uri.scheme !== 'file') return undefined;
+    const url = new URL(uri.toString());
+    try {
+        const stats = await stat(url);
+        const found = stats.isFile() ? uri : undefined;
+        console.error('filterUrl %o', { uri: uri.toString(), found: !!found });
+        return found;
+    } catch (e) {
+        console.error('filterUrl Not found', uri.toString());
+        return undefined;
+    }
 }
 
 export const __testing__ = {
