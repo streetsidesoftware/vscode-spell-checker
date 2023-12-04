@@ -106,6 +106,9 @@ const defaultCheckOnlyEnabledFileTypes = true;
 
 type ClearFn = () => void;
 
+const fileConfigsToImport = '.vscode.configs.to.import.cspell.config.json';
+const fileVSCodeSettings = '.vscode.folder.settings.json';
+
 export class DocumentSettings {
     // Cache per folder settings
     private valuesToClearOnReset: ClearFn[] = [];
@@ -214,7 +217,10 @@ export class DocumentSettings {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
         const loader = getDefaultConfigLoader();
-        const cfg = loader.createCSpellConfigFile(pathToFileURL('./'), { import: importPaths });
+        const cfg = loader.createCSpellConfigFile(pathToFileURL(fileConfigsToImport), {
+            name: 'VS Code Imports',
+            import: importPaths,
+        });
         return await loader.mergeConfigFileWithImports(cfg);
     }
 
@@ -292,7 +298,9 @@ export class DocumentSettings {
         const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
         const docUriAsString = uri.toString();
         const settings = await this.fetchSettingsForUri(docUriAsString);
-        return this.extractCSpellConfigurationFiles(settings.settings);
+        return this.extractCSpellConfigurationFiles(settings.settings)
+            .filter((u) => !u.path.endsWith(fileConfigsToImport))
+            .filter((u) => !u.path.endsWith(fileVSCodeSettings));
     }
 
     /**
@@ -318,8 +326,17 @@ export class DocumentSettings {
         const cSpellConfigSettings: CSpellUserSettings = {
             ...cSpell,
             id: 'VSCode-Config',
+            name: 'VS Code Settings',
             ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
         };
+
+        if (cSpellConfigSettings.useLocallyInstalledCSpellDictionaries) {
+            const rawImports = cSpellConfigSettings.import || [];
+            const imports = Array.isArray(rawImports) ? rawImports : [rawImports];
+            imports.push('@cspell/cspell-bundled-dicts');
+            console.error('fetchSettingsFromVSCode %o', { imports });
+            cSpellConfigSettings.import = imports;
+        }
 
         return cSpellConfigSettings;
     }
@@ -334,7 +351,7 @@ export class DocumentSettings {
         const loader = getDefaultConfigLoader();
         const folders = await this.folders;
         const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
-        const useURLForConfig = new URL(useUriForConfig);
+        const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
         const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
@@ -697,4 +714,6 @@ export const __testing__ = {
     extractEnableFiletypes,
     normalizeEnableFiletypes,
     applyEnableFiletypes,
+    fileConfigsToImport,
+    fileVSCodeSettings,
 };

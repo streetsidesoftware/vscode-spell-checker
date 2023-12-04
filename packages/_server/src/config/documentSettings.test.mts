@@ -259,9 +259,11 @@ describe('Validate DocumentSettings', () => {
         expect(configs.map((c) => c.name)).toEqual([
             shortPathName(Path.join(pathWorkspaceServer, 'cspell.json')),
             shortPathName(Path.join(pathWorkspaceRoot, 'cspell.config.yaml')),
+            'VS Code Settings', // name of the mock config.
             'sampleSourceFiles/cSpell.json',
             'sampleSourceFiles/cspell-ext.json',
             'overrides/cspell.json',
+            'VS Code Imports', //
         ]);
     });
 
@@ -409,11 +411,15 @@ describe('Validate DocumentSettings', () => {
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 
+    function rPathWsRoot(...paths: string[]) {
+        return Path.resolve(pathWorkspaceRoot, ...paths);
+    }
+
     test.each`
         filename                               | expected
         ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfigYaml]}
         ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfigJson, configFiles.rootConfigYaml]}
-        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[rPathWsRoot('samples/custom-dictionary/cspell.json')]}
         ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfigYaml]}
         ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfigYaml]}
     `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {
