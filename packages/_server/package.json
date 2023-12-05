@@ -40,7 +40,7 @@
     "@cspell/cspell-types": "^8.1.0",
     "@internal/common-utils": "file:../__utils",
     "cspell-gitignore": "^8.1.0",
-    "cspell-glob": "^8.1.0",
+    "cspell-glob": "^8.1.2",
     "cspell-lib": "^8.1.0",
     "gensequence": "^6.0.0",
     "json-rpc-api": "file:../json-rpc-api",
