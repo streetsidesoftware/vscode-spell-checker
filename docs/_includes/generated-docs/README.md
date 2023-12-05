@@ -185,21 +185,21 @@ It is possible to disable / enable the spell checker by adding comments to your 
 
 #### Disable Checking
 
-- `/* cSpell:disable */`
-- `/* spell-checker: disable */`
-- `/* spellchecker: disable */`
-- `/* cspell: disable-line */`
-- `/* cspell: disable-next-line */`
+- `cSpell:disable`
+- `spell-checker: disable`
+- `spellchecker: disable`
+- `cspell: disable-line`
+- `cspell: disable-next-line`
 
 <!--- cSpell:enable -->
 
 #### Enable Checking
 
-- `/* cSpell:enable */`
-- `/* spell-checker: enable */`
-- `/* spellchecker: enable */`
+- `cSpell:enable`
+- `spell-checker: enable`
+- `spellchecker: enable`
 
-#### Example
+#### JavaScript Example
 
 ```javascript
 // cSpell:disable
@@ -230,6 +230,18 @@ const str = 'goedemorgen'; // <- will NOT be flagged as an error.
 ```
 
 <!--- cSpell:enable -->
+
+#### Markdown Example
+
+```markdown
+<!--- cSpell:disable --->
+
+This text is not checked.
+
+<!--- cSpell:enable --->
+
+This text is checked.
+```
 
 ### Ignore
 
@@ -487,27 +499,29 @@ The spell checker includes a set of default dictionaries.
 
 Based upon the programming language, different dictionaries will be loaded.
 
-Here are the default rules: "\*" matches any language.
-`"locale"` is used to filter based upon the `"cSpell.language"` setting.
+Here are some of the default rules:
+
+- `"*"` matches any programming language / file type.
+- `"locale"` is used to filter based upon the `"cSpell.language"` setting.
 
 ```javascript
 {
 "cSpell.languageSettings": [
-    { "languageId": '*',      "locale": 'en',              "dictionaries": ['wordsEn'] },
-    { "languageId": '*',      "locale": 'en-US',           "dictionaries": ['wordsEn'] },
-    { "languageId": '*',      "locale": 'en-GB',           "dictionaries": ['wordsEnGb'] },
-    { "languageId": '*',                                   "dictionaries": ['companies', 'softwareTerms', 'misc'] },
-    { "languageId": "python", "allowCompoundWords": true,  "dictionaries": ["python"]},
-    { "languageId": "go",     "allowCompoundWords": true,  "dictionaries": ["go"] },
-    { "languageId": "javascript",                          "dictionaries": ["typescript", "node"] },
-    { "languageId": "javascriptreact",                     "dictionaries": ["typescript", "node"] },
-    { "languageId": "typescript",                          "dictionaries": ["typescript", "node"] },
-    { "languageId": "typescriptreact",                     "dictionaries": ["typescript", "node"] },
-    { "languageId": "html",                                "dictionaries": ["html", "fonts", "typescript", "css"] },
-    { "languageId": "php",                                 "dictionaries": ["php", "html", "fonts", "css", "typescript"] },
-    { "languageId": "css",                                 "dictionaries": ["fonts", "css"] },
-    { "languageId": "less",                                "dictionaries": ["fonts", "css"] },
-    { "languageId": "scss",                                "dictionaries": ["fonts", "css"] },
+  { "languageId": '*',      "locale": 'en',    "dictionaries": ['wordsEn'] },
+  { "languageId": '*',      "locale": 'en-US', "dictionaries": ['wordsEn'] },
+  { "languageId": '*',      "locale": 'en-GB', "dictionaries": ['wordsEnGb'] },
+  { "languageId": '*',                         "dictionaries": ['companies', 'softwareTerms', 'misc'] },
+  { "languageId": "python",                    "dictionaries": ["python"]},
+  { "languageId": "go",                        "dictionaries": ["go"] },
+  { "languageId": "javascript",                "dictionaries": ["typescript", "node"] },
+  { "languageId": "javascriptreact",           "dictionaries": ["typescript", "node"] },
+  { "languageId": "typescript",                "dictionaries": ["typescript", "node"] },
+  { "languageId": "typescriptreact",           "dictionaries": ["typescript", "node"] },
+  { "languageId": "html",                      "dictionaries": ["html", "fonts", "typescript", "css"] },
+  { "languageId": "php",                       "dictionaries": ["php", "html", "fonts", "css", "typescript"] },
+  { "languageId": "css",                       "dictionaries": ["fonts", "css"] },
+  { "languageId": "less",                      "dictionaries": ["fonts", "css"] },
+  { "languageId": "scss",                      "dictionaries": ["fonts", "css"] },
 ];
 }
 ```
