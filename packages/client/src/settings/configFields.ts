@@ -49,6 +49,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     suggestionMenuType: 'suggestionMenuType',
     suggestionNumChanges: 'suggestionNumChanges',
     suggestionsTimeout: 'suggestionsTimeout',
+    useLocallyInstalledCSpellDictionaries: 'useLocallyInstalledCSpellDictionaries',
     workspaceRootPath: 'workspaceRootPath',
     decorateIssues: 'decorateIssues',
     textDecoration: 'textDecoration',

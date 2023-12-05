@@ -1,3 +1,5 @@
+import { stat } from 'node:fs/promises';
+
 import { opConcatMap, opFilter, pipe } from '@cspell/cspell-pipe/sync';
 import type {
     CSpellSettingsWithSourceTrace,
@@ -23,14 +25,14 @@ import {
     calcOverrideSettings,
     clearCachedFiles,
     ExclusionHelper,
+    getDefaultConfigLoader,
     getSources,
     mergeSettings,
-    readSettings as cspellReadSettingsFile,
     searchForConfig,
 } from 'cspell-lib';
-import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
@@ -105,6 +107,9 @@ const _defaultSettings: CSpellUserSettings = Object.freeze(Object.create(null));
 const defaultCheckOnlyEnabledFileTypes = true;
 
 type ClearFn = () => void;
+
+const fileConfigsToImport = '.vscode.configs.to.import.cspell.config.json';
+const fileVSCodeSettings = '.vscode.folder.settings.json';
 
 export class DocumentSettings {
     // Cache per folder settings
@@ -213,7 +218,13 @@ export class DocumentSettings {
     private async _importSettings() {
         log('importSettings');
         const importPaths = [...this.configsToImport].sort();
-        return readAndMergeSettingsFiles(importPaths);
+        const loader = getDefaultConfigLoader();
+        const cfg = loader.createCSpellConfigFile(pathToFileURL(fileConfigsToImport), {
+            name: 'VS Code Imports',
+            import: importPaths,
+            readonly: true,
+        });
+        return await loader.mergeConfigFileWithImports(cfg);
     }
 
     private async _fetchWorkspaceConfiguration(uri: DocumentUri): Promise<WorkspaceConfigForDocument> {
@@ -290,7 +301,9 @@ export class DocumentSettings {
         const uri = typeof docUri === 'string' ? Uri.parse(docUri) : docUri;
         const docUriAsString = uri.toString();
         const settings = await this.fetchSettingsForUri(docUriAsString);
-        return this.extractCSpellConfigurationFiles(settings.settings);
+        const uris = this.extractCSpellConfigurationFiles(settings.settings);
+        const found = await Promise.all(uris.map(filterUrl));
+        return found.filter(isDefined);
     }
 
     /**
@@ -316,8 +329,18 @@ export class DocumentSettings {
         const cSpellConfigSettings: CSpellUserSettings = {
             ...cSpell,
             id: 'VSCode-Config',
+            name: 'VS Code Settings',
             ignorePaths: ignorePaths.concat(ExclusionHelper.extractGlobsFromExcludeFilesGlobMap(exclude)),
+            readonly: true,
         };
+
+        if (cSpellConfigSettings.useLocallyInstalledCSpellDictionaries) {
+            const rawImports = cSpellConfigSettings.import || [];
+            const imports = Array.isArray(rawImports) ? rawImports : [rawImports];
+            imports.push('@cspell/cspell-bundled-dicts');
+            console.error('fetchSettingsFromVSCode %o', { imports });
+            cSpellConfigSettings.import = imports;
+        }
 
         return cSpellConfigSettings;
     }
@@ -329,16 +352,19 @@ export class DocumentSettings {
         if (uriSpecial && uri !== uriSpecial) {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }
+        const loader = getDefaultConfigLoader();
         const folders = await this.folders;
         const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
+        const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
         const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
+        const vscodeCSpellConfigFileForDocument = loader.createCSpellConfigFile(useURLForConfig, vscodeCSpellConfigSettingsForDocument);
+        const vscodeCSpellSettings: CSpellUserSettings = await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
-        const vscodeCSpellSettings = await resolveConfigImports(vscodeCSpellConfigSettingsForDocument, folder.uri);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
         const mergedSettingsFromVSCode = mergeSettings(await this.importedSettings(), vscodeCSpellSettings);
@@ -404,40 +430,6 @@ export class DocumentSettings {
         const lazy = createLazyValue(loader);
         this.valuesToClearOnReset.push(() => lazy.clear());
         return lazy;
-    }
-}
-
-async function resolveConfigImports(config: CSpellUserSettings, folderUri: string): Promise<CSpellUserSettings> {
-    log('resolveConfigImports:', folderUri);
-    const uriFsPath = path.normalize(Uri.parse(folderUri).fsPath);
-    const imports = typeof config.import === 'string' ? [config.import] : config.import || [];
-    const importAbsPath = imports.map((file) => resolvePath(uriFsPath, file));
-    log(`resolvingConfigImports: [\n${imports.join('\n')}]`);
-    log(`resolvingConfigImports ABS: [\n${importAbsPath.join('\n')}]`);
-    const { import: _import, ...result } = importAbsPath.length
-        ? mergeSettings(await readAndMergeSettingsFiles(importAbsPath), config)
-        : config;
-    return result;
-}
-
-async function readAndMergeSettingsFiles(importAbsPaths: string[]): Promise<CSpellSettingsWithSourceTrace> {
-    return mergeSettings({}, ...(await Promise.all(readSettingsFiles([...importAbsPaths]))));
-}
-
-function readSettingsFiles(paths: string[]) {
-    // log('readSettingsFiles:', paths);
-    const existingPaths = paths.filter((filename) => exists(filename));
-    log('readSettingsFiles:', existingPaths);
-    // console.error('readSettingsFiles: %o', existingPaths);
-    return existingPaths.map((file) => cspellReadSettingsFile(file));
-}
-
-function exists(file: string): boolean {
-    try {
-        const s = fs.statSync(file);
-        return s.isFile();
-    } catch (e) {
-        return false;
     }
 }
 
@@ -662,9 +654,24 @@ export function extractCSpellFileConfigurations(settings: CSpellUserSettings): C
         .filter(isCSpellSettingsWithFileSource)
         .filter(({ source }) => !regExIsOwnedByCspell.test(source.filename))
         .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
+        .filter(({ source }) => !source.filename.endsWith(fileConfigsToImport))
+        .filter(({ source }) => !source.filename.endsWith(fileVSCodeSettings))
         .reverse();
 
     return configs;
+}
+
+export async function filterExistingCSpellFileConfigurations(
+    configs: CSpellSettingsWithFileSource[],
+): Promise<CSpellSettingsWithFileSource[]> {
+    const existingConfigs = await Promise.all(
+        configs.map(async (cfg) => {
+            const { source } = cfg;
+            const found = await filterUrl(toFileUri(source.filename));
+            return found ? cfg : undefined;
+        }),
+    );
+    return existingConfigs.filter(isDefined);
 }
 
 /**
@@ -721,9 +728,25 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uri.fsPath);
 }
 
+async function filterUrl(uri: Uri): Promise<Uri | undefined> {
+    if (uri.scheme !== 'file') return undefined;
+    const url = new URL(uri.toString());
+    try {
+        const stats = await stat(url);
+        const found = stats.isFile() ? uri : undefined;
+        console.error('filterUrl %o', { uri: uri.toString(), found: !!found });
+        return found;
+    } catch (e) {
+        console.error('filterUrl Not found', uri.toString());
+        return undefined;
+    }
+}
+
 export const __testing__ = {
     extractTargetDictionaries,
     extractEnableFiletypes,
     normalizeEnableFiletypes,
     applyEnableFiletypes,
+    fileConfigsToImport,
+    fileVSCodeSettings,
 };

@@ -1,5 +1,5 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
-import { toUri } from '@internal/common-utils/uriHelper';
+import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { capitalize } from '@internal/common-utils/util';
 import * as Path from 'path';
 
@@ -15,11 +15,24 @@ import type {
 import { ConfigKinds, ConfigScopes, weight } from './configTargets.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import type { CSpellSettingsWithFileSource } from './documentSettings.mjs';
-import { extractCSpellFileConfigurations, extractTargetDictionaries } from './documentSettings.mjs';
+import { extractCSpellFileConfigurations, extractTargetDictionaries, filterExistingCSpellFileConfigurations } from './documentSettings.mjs';
 
-export function calculateConfigTargets(settings: CSpellUserSettings, workspaceConfig: WorkspaceConfigForDocument): ConfigTarget[] {
+export async function calculateConfigTargets(
+    settings: CSpellUserSettings,
+    workspaceConfig: WorkspaceConfigForDocument,
+    configFilesFound?: string[],
+): Promise<ConfigTarget[]> {
+    const found = new Set(configFilesFound);
+    async function isFound(filename: string) {
+        if (found.has(filename)) return true;
+        const href = toFileUri(filename).toString();
+        return found.has(href);
+    }
     const targets: ConfigTarget[] = [];
-    const sources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
+    const possibleSources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
+    const sources = configFilesFound
+        ? possibleSources.filter((cfg) => isFound(cfg.source.filename))
+        : await filterExistingCSpellFileConfigurations(possibleSources);
     const dictionaries = extractTargetDictionaries(settings);
 
     targets.push(...workspaceConfigToTargets(workspaceConfig));

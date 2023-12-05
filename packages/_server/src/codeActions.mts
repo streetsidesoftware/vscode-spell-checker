@@ -170,7 +170,7 @@ class CodeActionHandler {
             // Only suggest adding if it is our diagnostic and there is a word.
             if (isSpellingIssue && word && spellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
-                const targets = calculateConfigTargets(docSetting, wConfig);
+                const targets = await calculateConfigTargets(docSetting, wConfig);
                 debugTargets && logTargets(targets);
 
                 if (!docSetting.hideAddToDictionaryCodeActions) {
@@ -201,7 +201,7 @@ class CodeActionHandler {
             // Only suggest adding if it is our diagnostic and there is a word.
             if (word && eslintSpellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
-                const targets = calculateConfigTargets(docSetting, wConfig);
+                const targets = await calculateConfigTargets(docSetting, wConfig);
                 debugTargets && logTargets(targets);
 
                 if (!docSetting.hideAddToDictionaryCodeActions) {

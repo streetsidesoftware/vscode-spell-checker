@@ -55,6 +55,7 @@ const cspellConfigInVsCode: CSpellUserSettings = {
     ],
     enabledLanguageIds: ['typescript', 'javascript', 'php', 'json', 'jsonc'],
     mergeCSpellSettings: true,
+    useLocallyInstalledCSpellDictionaries: true,
 };
 
 const sampleFiles = {
@@ -409,11 +410,15 @@ describe('Validate DocumentSettings', () => {
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 
+    function rPathWsRoot(...paths: string[]) {
+        return Path.resolve(pathWorkspaceRoot, ...paths);
+    }
+
     test.each`
         filename                               | expected
         ${sampleFiles.sampleClientEsLint}      | ${[configFiles.clientConfig, configFiles.rootConfigYaml]}
         ${sampleFiles.sampleNodePackage}       | ${[configFiles.rootConfigJson, configFiles.rootConfigYaml]}
-        ${sampleFiles.sampleSamplesReadme}     | ${[Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/cspell.json')]}
+        ${sampleFiles.sampleSamplesReadme}     | ${[rPathWsRoot('samples/custom-dictionary/cspell.json')]}
         ${sampleFiles.sampleClientReadme}      | ${[configFiles.clientConfig, configFiles.rootConfigYaml]}
         ${sampleFiles.sampleServerPackageLock} | ${[configFiles.serverConfig, configFiles.rootConfigYaml]}
     `('findCSpellConfigurationFilesForUri no folders $filename', async ({ filename, expected }: FindCSpellConfigurationFilesForUriTest) => {

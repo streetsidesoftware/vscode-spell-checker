@@ -378,7 +378,7 @@ export function run(): void {
         const activeSettings = await getActiveUriSettings(uri);
         const settings = stringifyPatterns(activeSettings);
         const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
-        const configTargets = workspaceConfig ? calculateConfigTargets(settings, workspaceConfig) : [];
+        const configTargets = workspaceConfig ? await calculateConfigTargets(settings, workspaceConfig, configFiles) : [];
         const ieInfo = await calcIncludeExcludeInfo(activeSettings, params);
 
         return {
