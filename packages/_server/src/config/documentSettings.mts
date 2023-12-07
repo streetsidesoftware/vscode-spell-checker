@@ -338,7 +338,7 @@ export class DocumentSettings {
             const rawImports = cSpellConfigSettings.import || [];
             const imports = Array.isArray(rawImports) ? rawImports : [rawImports];
             imports.push('@cspell/cspell-bundled-dicts');
-            console.error('fetchSettingsFromVSCode %o', { imports });
+            // console.error('fetchSettingsFromVSCode %o', { imports });
             cSpellConfigSettings.import = imports;
         }
 
