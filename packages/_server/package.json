@@ -45,7 +45,6 @@
     "cspell-lib": "^8.1.3",
     "gensequence": "^6.0.0",
     "json-rpc-api": "file:../json-rpc-api",
-    "node-watch": "^0.7.4",
     "rxjs": "^7.8.1",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",

@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { addNodeWatchMockImplementation, asNodeWatchMock } from '../test/mock-node-watch.js';
+import { addNodeWatchMockImplementation } from '../test/mock-node-watch.js';
 import { FileWatcher } from './fileWatcher.mjs';
-import { nodeWatch as watch } from './nodeWatch.cjs';
+import { watchFile } from './watchFile.mjs';
 
-vi.mock('node-watch');
+vi.mock('./watchFile.mjs');
 
 describe('Validate FileWatcher', () => {
     afterEach(() => {
-        asNodeWatchMock(watch).__reset();
+        vi.resetAllMocks();
     });
 
     test('watching files', () => {
-        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watch));
+        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watchFile));
         const watcher = new FileWatcher();
         const listener = vi.fn();
         const listener2 = vi.fn();
@@ -47,9 +47,9 @@ describe('Validate FileWatcher', () => {
 
         expect(watcher.watchedFiles).toEqual([]);
 
-        expect(mockWatch).toHaveBeenNthCalledWith(1, 'file1', expect.objectContaining({ persistent: false }), expect.any(Function));
-        expect(mockWatch).toHaveBeenNthCalledWith(2, 'file2', expect.objectContaining({ persistent: false }), expect.any(Function));
-        expect(mockWatch).toHaveBeenNthCalledWith(3, 'file3', expect.objectContaining({ persistent: false }), expect.any(Function));
+        expect(mockWatch).toHaveBeenNthCalledWith(1, 'file1', expect.any(Function));
+        expect(mockWatch).toHaveBeenNthCalledWith(2, 'file2', expect.any(Function));
+        expect(mockWatch).toHaveBeenNthCalledWith(3, 'file3', expect.any(Function));
         expect(mockWatch).toHaveBeenCalledTimes(3);
 
         expect(listener).toHaveBeenNthCalledWith(1, 'update', 'file1');

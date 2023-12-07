@@ -3,17 +3,16 @@ import type { FSWatcher } from 'fs';
 import type { MockedFunction } from 'vitest';
 import { vi } from 'vitest';
 
-declare function watch(pathName: PathName): Watcher;
-declare function watch(pathName: PathName, options: Options): Watcher;
+// declare function watch(pathName: PathName): Watcher;
+// declare function watch(pathName: PathName, options: Options): Watcher;
 declare function watch(pathName: PathName, callback: Callback): Watcher;
-declare function watch(pathName: PathName, options: Options, callback: Callback): Watcher;
+// declare function watch(pathName: PathName, options: Options, callback: Callback): Watcher;
 
-type EventType = 'update' | 'remove';
-type Callback = (eventType: EventType, filePath: string) => any;
-type PathName = string | Array<string>;
+type Callback = (eventType?: string, filePath?: string | null) => any;
+type PathName = string;
 type FilterReturn = boolean | symbol;
 
-declare interface Watcher extends FSWatcher {
+interface WatcherInternal extends FSWatcher {
     /**
      * Returns `true` if the watcher has been closed.
      */
@@ -25,19 +24,21 @@ declare interface Watcher extends FSWatcher {
     getWatchedPaths(): Array<string>;
 }
 
+type Watcher = Pick<FSWatcher, 'close'>;
+
 type NodeWatch = typeof watch;
 
 type MockedNodeWatch = MockedFunction<NodeWatch>;
 
 export interface NodeWatchMock extends MockedNodeWatch {
     __trigger(eventType: 'update' | 'remove' | undefined, filename: string): void;
-    __getWatchers(filename?: string): Watcher[];
+    __getWatchers(filename?: string): WatcherInternal[];
     __reset(): void;
 }
 
 type WatcherCallback = (eventType?: 'update' | 'remove', filename?: string) => void;
 
-interface Watcher extends FSWatcher {
+interface WatcherInternal extends FSWatcher {
     /**
      * Returns `true` if the watcher has been closed.
      */
@@ -86,23 +87,23 @@ type Options = {
 };
 
 export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatchMock {
-    const callbacks = new Map<string, Set<Watcher>>();
+    const callbacks = new Map<string, Set<WatcherInternal>>();
 
     function getWatchedPaths() {
         return [...callbacks.keys()];
     }
 
-    function addCallback(pathName: PathName): Watcher;
-    function addCallback(pathName: PathName, options: Options): Watcher;
-    function addCallback(pathName: PathName, callback: WatcherCallback): Watcher;
-    function addCallback(pathName: PathName, options: Options, callback: WatcherCallback): Watcher;
-    function addCallback(pathName: PathName, options?: Options | WatcherCallback, callback?: WatcherCallback): Watcher {
+    function addCallback(pathName: PathName): WatcherInternal;
+    function addCallback(pathName: PathName, options: Options): WatcherInternal;
+    function addCallback(pathName: PathName, callback: WatcherCallback): WatcherInternal;
+    function addCallback(pathName: PathName, options: Options, callback: WatcherCallback): WatcherInternal;
+    function addCallback(pathName: PathName, options?: Options | WatcherCallback, callback?: WatcherCallback): WatcherInternal {
         if (typeof options === 'function') {
             callback = options;
         }
 
         let isClosed = false;
-        const watcher: Watcher = {
+        const watcher: WatcherInternal = {
             close: vi.fn(() => {
                 isClosed = true;
             }),
@@ -126,14 +127,14 @@ export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatch
             eventNames: vi.fn(),
         };
 
-        function defaultImpl(): Watcher {
+        function defaultImpl(): WatcherInternal {
             return watcher;
         }
 
         const pathNames = Array.isArray(pathName) ? pathName : [pathName];
 
         for (const pathName of pathNames) {
-            const cb = callbacks.get(pathName) || new Set<Watcher>();
+            const cb = callbacks.get(pathName) || new Set<WatcherInternal>();
             cb.add(watcher);
             callbacks.set(pathName, cb);
         }
@@ -153,7 +154,7 @@ export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatch
         }
     }
 
-    function getWatchers(filename: string | undefined): Watcher[] {
+    function getWatchers(filename: string | undefined): WatcherInternal[] {
         if (!filename) {
             return [...callbacks.keys()].map(getWatchers).reduce((acc, cur) => acc.concat(cur), []);
         }

@@ -23,7 +23,7 @@ export async function calculateConfigTargets(
     configFilesFound?: string[],
 ): Promise<ConfigTarget[]> {
     const found = new Set(configFilesFound);
-    async function isFound(filename: string) {
+    function isFound(filename: string) {
         if (found.has(filename)) return true;
         const href = toFileUri(filename).toString();
         return found.has(href);

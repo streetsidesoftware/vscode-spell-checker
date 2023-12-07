@@ -1,17 +1,9 @@
 import { logError } from '@internal/common-utils/log';
-import { toFileUri } from '@internal/common-utils/uriHelper';
-import type { FSWatcher } from 'fs';
 import { format } from 'util';
 import type { Disposable } from 'vscode-languageserver/node.js';
 
-import { nodeWatch } from './nodeWatch.cjs';
-
-export type KnownEvents = 'change' | 'error' | 'close';
-export type EventType = KnownEvents | string;
-
-export type Listener = (eventType?: EventType, filename?: string) => void;
-
-type Watcher = Pick<FSWatcher, 'close'>;
+import type { EventType, Listener, Watcher } from './watchFile.mjs';
+import { watchFile } from './watchFile.mjs';
 
 export class FileWatcher implements Disposable {
     private watchedFile = new Map<string, Watcher>();
@@ -29,7 +21,8 @@ export class FileWatcher implements Disposable {
      * @param eventType - event to trigger
      * @param filename - filename to trigger
      */
-    readonly trigger: Listener = (eventType?: EventType, filename?: string): void => {
+    readonly trigger = (eventType?: EventType, filename?: string | null): void => {
+        filename ??= undefined;
         this.notifyListeners(eventType, filename);
     };
 
@@ -55,7 +48,7 @@ export class FileWatcher implements Disposable {
     addFile(filename: string): boolean {
         if (!this.watchedFile.has(filename)) {
             try {
-                this.watchedFile.set(filename, watch(filename, this.trigger));
+                this.watchedFile.set(filename, watchFile(filename, this.trigger));
             } catch (e) {
                 logError(format(e));
                 return false;
@@ -78,7 +71,11 @@ export class FileWatcher implements Disposable {
      */
     clear(): void {
         for (const w of this.watchedFile.values()) {
-            w.close();
+            try {
+                w.close();
+            } catch (_e) {
+                // ignore
+            }
         }
         this.watchedFile.clear();
     }
@@ -95,17 +92,4 @@ export class FileWatcher implements Disposable {
             listener(eventType, filename);
         }
     }
-}
-
-function watch(filename: string, callback: (eventType?: EventType, filename?: string) => void): Watcher {
-    const uri = toFileUri(filename);
-    if (uri.scheme === 'file') {
-        return nodeWatch(filename, { persistent: false }, callback);
-    }
-
-    return {
-        close() {
-            callback('close', filename);
-        },
-    };
 }
