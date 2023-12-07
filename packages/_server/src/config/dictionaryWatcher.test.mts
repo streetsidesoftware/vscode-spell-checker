@@ -2,11 +2,11 @@ import type { CSpellSettings } from 'cspell-lib';
 import { join } from 'path';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
-import { addNodeWatchMockImplementation, asNodeWatchMock } from '../test/mock-node-watch.js';
-import { watch } from '../utils/nodeWatch.cjs';
+import { addNodeWatchMockImplementation } from '../test/mock-node-watch.js';
+import { watchFile } from '../utils/watchFile.mjs';
 import { DictionaryWatcher } from './dictionaryWatcher.mjs';
 
-vi.mock('node-watch');
+vi.mock('../utils/watchFile.mjs');
 
 const dictA = join(__dirname, 'dictA.txt');
 const dictB = join(__dirname, 'dictB.txt');
@@ -23,11 +23,11 @@ const sampleConfig: CSpellSettings = {
 
 describe('Validate Dictionary Watcher', () => {
     afterEach(() => {
-        asNodeWatchMock(watch).__reset();
+        vi.resetAllMocks();
     });
 
     test('watching dictionaries', () => {
-        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watch));
+        const mockWatch = addNodeWatchMockImplementation(vi.mocked(watchFile));
         const dw = new DictionaryWatcher();
 
         const listener = vi.fn();
@@ -49,8 +49,8 @@ describe('Validate Dictionary Watcher', () => {
 
         expect(dw.watchedFiles).toEqual([]);
 
-        expect(mockWatch).toHaveBeenNthCalledWith(1, dictA, expect.any(Object), expect.any(Function));
-        expect(mockWatch).toHaveBeenNthCalledWith(2, dictB, expect.any(Object), expect.any(Function));
+        expect(mockWatch).toHaveBeenNthCalledWith(1, dictA, expect.any(Function));
+        expect(mockWatch).toHaveBeenNthCalledWith(2, dictB, expect.any(Function));
         expect(mockWatch).toHaveBeenCalledTimes(2);
 
         expect(listener).toHaveBeenCalledWith('update', dictB);

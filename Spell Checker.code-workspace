@@ -50,7 +50,8 @@
         "editor.formatOnSave": true,
         "files.eol": "\n",
         "cSpell.flagWords": [],
-        "cSpell.enableFiletypes": ["github-actions-workflow"]
+        "cSpell.enableFiletypes": ["github-actions-workflow"],
+        "svg.preview.background": "dark-transparent"
     },
     "launch": {
         "configurations": [

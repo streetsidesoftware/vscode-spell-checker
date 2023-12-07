@@ -67,8 +67,6 @@ const overRideDefaults: CSpellUserSettings = {
     ignoreRegExpList: [],
 };
 
-// Turn off the spell checker by default. The setting files should have it set.
-// This prevents the spell checker from running too soon.
 const defaultSettings = calcDefaultSettings();
 const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.

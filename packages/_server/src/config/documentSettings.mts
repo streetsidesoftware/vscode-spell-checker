@@ -734,10 +734,8 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
     try {
         const stats = await stat(url);
         const found = stats.isFile() ? uri : undefined;
-        console.error('filterUrl %o', { uri: uri.toString(), found: !!found });
         return found;
     } catch (e) {
-        console.error('filterUrl Not found', uri.toString());
         return undefined;
     }
 }
