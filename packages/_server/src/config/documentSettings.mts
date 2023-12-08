@@ -678,6 +678,7 @@ export function extractCSpellFileConfigurations(settings: CSpellUserSettings): C
         .filter(({ source }) => !regExIsOwnedByExtension.test(source.filename))
         .filter(({ source }) => !source.filename.endsWith(fileConfigsToImport))
         .filter(({ source }) => !source.filename.endsWith(fileVSCodeSettings))
+        .filter(({ source }) => !source.filename.endsWith(fileConfigLocalImport))
         .reverse();
 
     return configs;
