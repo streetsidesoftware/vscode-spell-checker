@@ -1,4 +1,5 @@
 export * from './client';
+export { DocumentConfigCache } from './DocumentConfigCache';
 export type {
     ClientSideCommandHandlerApi,
     ConfigKind,
