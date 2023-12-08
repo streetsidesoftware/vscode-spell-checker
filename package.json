@@ -3354,7 +3354,7 @@
     "shx": "^0.3.4",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3",
-    "vite": "^4.5.1",
+    "vite": "^5.0.6",
     "vitest": "^0.34.6"
   },
   "dependencies": {
