@@ -434,6 +434,24 @@
         "title": "Add Word to Dictionary",
         "icon": "$(book)",
         "enablement": "view == cspell-info.issuesView"
+      },
+      {
+        "command": "cSpell.insertDisableNextLineDirective",
+        "category": "Spell",
+        "title": "Insert Disable Next Line Directive",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "cSpell.insertDisableLineDirective",
+        "category": "Spell",
+        "title": "Insert Disable Current Line Directive",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "cSpell.insertIgnoreWordsDirective",
+        "category": "Spell",
+        "title": "Insert Ignore Words Directive",
+        "icon": "$(comment-discussion)"
       }
     ],
     "languages": [

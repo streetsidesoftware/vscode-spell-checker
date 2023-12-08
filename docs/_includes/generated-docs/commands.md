@@ -31,6 +31,9 @@
 | `cSpell.goToNextSpellingIssueAndSuggest`          | Go to Next Spelling Issue and Suggest                                                                          |
 | `cSpell.goToPreviousSpellingIssue`                | Go to Previous Spelling Issue                                                                                  |
 | `cSpell.goToPreviousSpellingIssueAndSuggest`      | Go to Previous Spelling Issue and Suggest                                                                      |
+| `cSpell.insertDisableLineDirective`               | Insert Disable Current Line Directive                                                                          |
+| `cSpell.insertDisableNextLineDirective`           | Insert Disable Next Line Directive                                                                             |
+| `cSpell.insertIgnoreWordsDirective`               | Insert Ignore Words Directive                                                                                  |
 | `cSpell.issueViewer.item.addWordToDictionary`     | Add Word to Dictionary<br>**When:**<br> `view == cspell-info.issuesView`                                       |
 | `cSpell.issueViewer.item.autoFixSpellingIssues`   | Fix issue with preferred suggestion in the current document.<br>**When:**<br> `view == cspell-info.issuesView` |
 | `cSpell.issueViewer.item.openSuggestionsForIssue` | Show Suggestions<br>**When:**<br> `view == cspell-info.issuesView`                                             |

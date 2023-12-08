@@ -109,6 +109,7 @@ const defaultCheckOnlyEnabledFileTypes = true;
 type ClearFn = () => void;
 
 const fileConfigsToImport = '.vscode.configs.to.import.cspell.config.json';
+const fileConfigLocalImport = '.vscode.configs.import.cspell.config.json';
 const fileVSCodeSettings = '.vscode.folder.settings.json';
 
 export class DocumentSettings {
@@ -123,6 +124,7 @@ export class DocumentSettings {
     private readonly importedSettings = this.createLazy(() => this._importSettings());
     private _version = 0;
     private gitIgnore = new GitIgnore();
+    private loader = getDefaultConfigLoader();
 
     constructor(
         readonly connection: Connection,
@@ -322,6 +324,21 @@ export class DocumentSettings {
 
     readonly extractTargetDictionaries = extractTargetDictionaries;
 
+    private async fetchLocalImportSettings(
+        uri: URL,
+        useLocallyInstalledCSpellDictionaries: boolean | undefined,
+    ): Promise<CSpellUserSettings> {
+        const cSpellConfigSettings: CSpellUserSettings = {
+            id: 'VSCode-Config-Imports',
+            name: 'VS Code Settings Local Imports',
+            import: useLocallyInstalledCSpellDictionaries ? ['@cspell/cspell-bundled-dicts'] : [],
+            readonly: true,
+        };
+
+        const configFile = this.loader.createCSpellConfigFile(uri, cSpellConfigSettings);
+        return this.loader.mergeConfigFileWithImports(configFile);
+    }
+
     private async fetchSettingsFromVSCode(uri?: string): Promise<CSpellUserSettings> {
         const { cSpell, search } = await this.fetchVSCodeConfiguration(uri || '');
         const { exclude = {} } = search;
@@ -352,7 +369,7 @@ export class DocumentSettings {
         if (uriSpecial && uri !== uriSpecial) {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }
-        const loader = getDefaultConfigLoader();
+        const loader = this.loader;
         const folders = await this.folders;
         const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
         const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
@@ -362,6 +379,10 @@ export class DocumentSettings {
         const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
         const vscodeCSpellConfigFileForDocument = loader.createCSpellConfigFile(useURLForConfig, vscodeCSpellConfigSettingsForDocument);
         const vscodeCSpellSettings: CSpellUserSettings = await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
+        const localDictionarySettings: CSpellUserSettings = await this.fetchLocalImportSettings(
+            new URL(fileConfigLocalImport, useUriForConfig),
+            vscodeCSpellConfigSettingsRel.useLocallyInstalledCSpellDictionaries,
+        );
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
@@ -370,6 +391,7 @@ export class DocumentSettings {
         const mergedSettingsFromVSCode = mergeSettings(await this.importedSettings(), vscodeCSpellSettings);
         const mergedSettings = mergeSettings(
             await Promise.resolve(this.defaultSettings),
+            localDictionarySettings,
             filterMergeFields(
                 mergedSettingsFromVSCode,
                 vscodeCSpellSettings['mergeCSpellSettings'] || !settings,
