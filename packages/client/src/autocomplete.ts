@@ -1,88 +1,62 @@
+import { createAutoResolveCache } from '@internal/common-utils';
+import type { GetConfigurationForDocumentResult } from 'code-spell-checker-server/api';
+import type { InlineCompletionContext, InlineCompletionItemProvider, Position, TextDocument } from 'vscode';
 import * as vscode from 'vscode';
+import { InlineCompletionItem, InlineCompletionList, Range, SnippetString } from 'vscode';
 
+import { DocumentConfigCache } from './client';
 import * as di from './di';
 import { getCSpellDiags } from './diags';
 import type { Disposable } from './disposable';
-import { getSettingFromVSConfig, inspectConfigByScopeAndKey } from './settings/vsConfig';
+import type { SpellingDiagnostic } from './issueTracker';
+import { getSettingFromVSConfig } from './settings/vsConfig';
 
-// cspell:ignore bibtex doctex expl jlweave rsweave
-// See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
-const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
+const regExCSpellInDocDirective = /\b(?:spell-?checker|c?spell)::?(.*)/gi;
+const regExCSpellDirectiveKey = /(?<=\b(?:spell-?checker|c?spell)::?)(?!:)\s*(.*)/i;
+// const regExInFileSettings = [regExCSpellInDocDirective, /\b(LocalWords:?.*)/g];
+
+const directivePrefixes = [
+    { pfx: 'cspell:', min: 3 },
+    { pfx: 'cSpell:', min: 2 },
+    { pfx: 'spell:', min: 5 },
+    { pfx: 'spell-checker:', min: 5 },
+    { pfx: 'spellchecker:', min: 5 },
+    { pfx: 'LocalWords:', min: 6 },
+] as const;
 
 export async function registerCspellInlineCompletionProviders(subscriptions: Disposable[]): Promise<void> {
-    const inlineCompletionLangIds = await calcInlineCompletionIds();
-    subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ':'),
-        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineDictionaryNameCompletionProvider, ' '),
-        vscode.languages.registerCompletionItemProvider(inlineCompletionLangIds, cspellInlineIssuesCompletionProvider, ' '),
-    );
-}
-
-const cspellInlineCompletionProvider: vscode.CompletionItemProvider = {
-    provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-        const diags = findNearestDiags(getCSpellDiags(document.uri), position, 1);
-        const isCSpell = /cspell:\s?$/i;
-        // get all text until the `position` and check if it reads `cspell.`
-        const linePrefix = document.lineAt(position).text.substr(0, position.character);
-        if (!isCSpell.test(linePrefix)) {
-            return undefined;
-        }
-
-        const context: CompletionContext = {
-            words: diags.map((d) => document.getText(d.range)),
-        };
-
-        return completions.map((c) => (typeof c === 'function' ? c(context) : c)).map(genCompletionItem);
-    },
-    resolveCompletionItem(item: vscode.CompletionItem) {
-        return item;
-    },
-};
-
-function genCompletionItem(c: Completion): vscode.CompletionItem {
-    const item = new vscode.CompletionItem(c.label, c.kind || vscode.CompletionItemKind.Text);
-    item.insertText = new vscode.SnippetString(c.insertText);
-    item.documentation = c.description;
-    item.sortText = c.sortText;
-    item.commitCharacters = c.commitCharacters || [' '];
-    return item;
+    subscriptions.push(vscode.languages.registerInlineCompletionItemProvider({ pattern: '**' }, inlineDirectiveCompletionProvider));
 }
 
 interface Completion {
     label: string;
     insertText: string;
+    snippetText?: string;
     description: string;
     sortText?: string;
     kind?: vscode.CompletionItemKind;
     commitCharacters?: string[];
 }
 
-interface CompletionContext {
-    words: string[];
-}
-
-type CompletionFn = (context: CompletionContext) => Completion;
-
-const completions: (Completion | CompletionFn)[] = [
+const inlineCompletions: Completion[] = [
     {
         label: 'words',
         insertText: 'words',
         description: 'Words to be allowed in the document',
         sortText: '1',
-        kind: vscode.CompletionItemKind.Snippet,
     },
     {
         label: 'ignore words',
         insertText: 'ignore',
         description: 'Words to be ignored in the document',
         sortText: '2',
-        kind: vscode.CompletionItemKind.Snippet,
     },
     {
         label: 'ignoreRegExp',
-        insertText: 'ignoreRegExp /${1:expression}/g',
+        insertText: 'ignoreRegExp',
+        snippetText: 'ignoreRegExp /${1:expression}/g',
         description: 'Ignore text matching the regular expression.',
+        kind: vscode.CompletionItemKind.Snippet,
     },
     {
         label: 'disable-next-line',
@@ -110,11 +84,11 @@ const completions: (Completion | CompletionFn)[] = [
         insertText: 'dictionaries',
         commitCharacters: [' '],
         description: 'Add dictionaries to be used in this document.',
-        kind: vscode.CompletionItemKind.Snippet,
     },
     {
         label: 'locale',
-        insertText: 'locale ${1:en}',
+        insertText: 'locale',
+        snippetText: 'locale ${1:en}',
         description: 'Set the language locale to be used in this document. (i.e. fr,en)',
         kind: vscode.CompletionItemKind.Snippet,
     },
@@ -130,104 +104,260 @@ const completions: (Completion | CompletionFn)[] = [
     },
 ];
 
-// function flatten<T>(nested: T[][]): T[] {
-//     function* _flatten<T>(nested: T[][]) {
-//         for (const a of nested) {
-//             yield* a;
-//         }
-//     }
+function getShowAutocompleteSuggestions(docUri: vscode.Uri): boolean {
+    const key = 'showAutocompleteSuggestions';
+    try {
+        return getSettingFromVSConfig(key, docUri) ?? true;
+    } catch (e) {
+        return false;
+    }
+}
 
-//     return [..._flatten(nested)];
-// }
+interface DictionaryInfoForDoc {
+    available: string[] | undefined;
+    enabled: string[] | undefined;
+}
 
-function findNearestDiags(diags: vscode.Diagnostic[], position: vscode.Position, count: number): vscode.Diagnostic[] {
-    /** A Simple distance calculation weighted towards lines over characters while trying to preserve order. */
-    function dist(diag: vscode.Diagnostic) {
-        const p0 = diag.range.start;
-        const deltaLine = Math.abs(p0.line - position.line);
-        return deltaLine * 1000 + p0.character;
+class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemProvider {
+    private cacheConfig: DocumentConfigCache;
+    private cacheDocDictionaries = createAutoResolveCache<string, DictionaryInfoForDoc>();
+
+    constructor() {
+        this.cacheConfig = new DocumentConfigCache((doc) => di.get('client').getConfigurationForDocument(doc));
     }
 
-    const sorted = [...diags].sort((a, b) => dist(a) - dist(b));
-    return sorted.slice(0, count);
-}
+    provideInlineCompletionItems(
+        document: TextDocument,
+        position: Position,
+        _context: InlineCompletionContext,
+        _token: vscode.CancellationToken,
+    ) {
+        if (!getShowAutocompleteSuggestions(document.uri)) return undefined;
+        const cfg = this.getConfigForDocument(document);
+        if (!cfg) return undefined;
 
-const cspellInlineDictionaryNameCompletionProvider: vscode.CompletionItemProvider = {
-    async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-        // get all text until the `position` and check if it reads `cspell.`
-        const linePrefix = document.lineAt(position).text.substr(0, position.character);
-
-        const isDictionaryRequest = /cspell:\s*dictionaries/i;
-
-        if (!isDictionaryRequest.test(linePrefix)) {
-            return undefined;
+        const line = document.lineAt(position.line);
+        const lineText = line.text;
+        const linePrefix = lineText.slice(0, position.character);
+        const match = linePrefix.match(regExCSpellInDocDirective);
+        // console.log('inlineDirectiveCompletionProvider %o', { match, context, linePrefix });
+        if (!match) {
+            return generateDirectivePrefixCompletionItems(linePrefix, position);
         }
 
-        const settings = await di.get('client').getConfigurationForDocument(document);
+        const result: InlineCompletionList = {
+            items: [],
+        };
+
+        const regDir = new RegExp(regExCSpellDirectiveKey);
+        regDir.lastIndex = match.index || 0;
+        const matchDir = regDir.exec(linePrefix);
+        if (!matchDir) return undefined;
+
+        const directive = matchDir[1];
+        const startChar = (matchDir.index || 0) + matchDir[0].length - directive.length;
+
+        // console.log('inlineDirectiveCompletionProvider %o', { directive, context });
+
+        if (directive.startsWith('dictionaries') || directive.startsWith('dictionary')) {
+            return generateDictionaryNameInlineCompletionItems(document, position, lineText, startChar, (document) =>
+                this.getListOfDictionaries(document),
+            );
+        }
+
+        if (directive.startsWith('words') || directive.startsWith('ignore')) {
+            return generateWordInlineCompletionItems(document, position, lineText, startChar);
+        }
+
+        const parts = directive.split(/\s+/);
+        if (parts.length > 1) return undefined;
+
+        const range = new vscode.Range(position.line, startChar, position.line, position.character);
+        const completions = inlineCompletions.filter((c) => c.insertText.startsWith(parts[0])).map((c) => toInlineCompletionItem(c, range));
+
+        result.items.push(...completions);
+
+        return result;
+    }
+
+    getConfigForDocument(document: TextDocument): GetConfigurationForDocumentResult | undefined {
+        return this.cacheConfig.get(document.uri);
+    }
+
+    getListOfDictionaries(document: TextDocument): DictionaryInfoForDoc {
+        const settings = this.getConfigForDocument(document);
+
+        const key = document.uri.toString();
+        const result = this.cacheDocDictionaries.get(key, () => ({ available: undefined, enabled: undefined }));
+
+        if (!settings) return result;
         const docSettings = settings.docSettings || settings.settings;
-        if (!docSettings) return undefined;
+        if (!docSettings) return result;
+        const calc = createDictionaryInfoForDoc(settings);
+        this.cacheDocDictionaries.set(key, calc);
+        return calc;
+    }
+}
 
-        const enabledDicts = new Set(docSettings.dictionaries || []);
-        const dicts = (docSettings.dictionaryDefinitions || [])
-            .map((def) => def.name)
+function generateDirectivePrefixCompletionItems(linePrefix: string, position: Position): InlineCompletionList | undefined {
+    const result: InlineCompletionList = {
+        items: [],
+    };
+
+    const p = linePrefix.lastIndexOf(' ');
+    const startChar = p + 1;
+    const directivePrefix = linePrefix.slice(startChar);
+    const dLen = directivePrefix.length;
+    const matches = directivePrefixes.filter((p) => p.pfx.startsWith(directivePrefix) && dLen >= p.min).map((p) => p.pfx);
+    // console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches });
+    if (!matches.length) return undefined;
+
+    const range = new Range(position.line, startChar, position.line, position.character);
+    const items = matches.map((insertText) => new InlineCompletionItem(insertText, range));
+
+    result.items.push(...items);
+
+    // console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches, items });
+
+    return result;
+}
+
+function toInlineCompletionItem(item: Completion, range: Range): InlineCompletionItem {
+    if (item.snippetText) {
+        const snippet = new SnippetString(item.snippetText);
+        const result = new InlineCompletionItem(snippet, range);
+        result.filterText = item.insertText;
+    }
+    const result = new InlineCompletionItem(item.insertText, range);
+    return result;
+}
+
+function generateDictionaryNameInlineCompletionItems(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    line: string,
+    startIndexForDirective: number,
+    getListOfDictionaries: (document: vscode.TextDocument) => DictionaryInfoForDoc,
+): InlineCompletionList | undefined {
+    const regDir = new RegExp(regExCSpellDirectiveKey, 's');
+    regDir.lastIndex = startIndexForDirective;
+    const matchDirective = regDir.exec(line);
+    if (!matchDirective) return undefined;
+
+    const directive = matchDirective[1];
+    const startDirChar = (matchDirective.index || 0) + matchDirective[0].length - directive.length;
+    const curIndex = position.character;
+
+    const endIndex = findNextNonWordChar(line, startDirChar);
+
+    if (endIndex < curIndex) return undefined;
+
+    const dictInfo = getListOfDictionaries(document);
+    if (!dictInfo.available) return undefined;
+
+    const regExHasSpaceAfter = /\s|$/ms;
+    regExHasSpaceAfter.lastIndex = curIndex;
+    const suffix = regExHasSpaceAfter.exec(line) ? '' : ' ';
+    const lastWordBreak = line.lastIndexOf(' ', curIndex - 1) + 1;
+    const prefix = lastWordBreak <= startDirChar ? ' ' : '';
+
+    const regExSplitNames = /[\s,]+/g;
+
+    const namesBefore = line.slice(startDirChar, lastWordBreak).split(regExSplitNames);
+    const namesAfter = line.slice(curIndex, endIndex).split(regExSplitNames);
+
+    const enabledDicts = new Set([...(dictInfo.enabled || []), ...namesBefore, ...namesAfter]);
+
+    const dicts = dictInfo.available.filter((name) => !enabledDicts.has(name));
+
+    if (!dicts.length) return undefined;
+
+    const range = new Range(position.line, lastWordBreak, position.line, curIndex);
+
+    return new InlineCompletionList(dicts.map((insertText) => new InlineCompletionItem(prefix + insertText + suffix, range)));
+}
+
+/**
+ * Handle `words` and `ignore` inline completions.
+ * @param document - document
+ * @param position - cursor position
+ * @param line - line text
+ * @param startIndexForDirective - start index of the directive
+ */
+function generateWordInlineCompletionItems(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+    line: string,
+    startIndexForDirective: number,
+): InlineCompletionList | undefined {
+    const regDir = new RegExp(regExCSpellDirectiveKey, 's');
+    regDir.lastIndex = startIndexForDirective;
+    const matchDirective = regDir.exec(line);
+    if (!matchDirective) return undefined;
+
+    const directive = matchDirective[1];
+    const startDirChar = (matchDirective.index || 0) + matchDirective[0].length - directive.length;
+    const curIndex = position.character;
+
+    const endIndex = findNextNonWordChar(line, startDirChar);
+
+    if (endIndex < curIndex) return undefined;
+
+    const issues = getIssues(document);
+    if (!issues.length) return undefined;
+
+    const regExHasSpaceAfter = /\s|$/ms;
+    regExHasSpaceAfter.lastIndex = curIndex;
+    const suffix = regExHasSpaceAfter.exec(line) ? '' : ' ';
+    const lastWordBreak = line.lastIndexOf(' ', curIndex - 1) + 1;
+    const prefix = lastWordBreak <= startDirChar ? ' ' : '';
+    const words = sortIssuesBy(document, position, issues);
+    // console.log('words: %o', { words, directive, curIndex, endIndex, lastWordBreak, prefix, suffix });
+    const range = new Range(position.line, lastWordBreak, position.line, curIndex);
+
+    return new InlineCompletionList(words.map((insertText) => new InlineCompletionItem(prefix + insertText + suffix, range)));
+}
+
+function sortIssuesBy(document: TextDocument, position: Position, issues: SpellingDiagnostic[]): string[] {
+    // Look for close by issues first, otherwise sort alphabetically.
+
+    const numLines = 3;
+    const line = position.line;
+    const nearbyRange = new Range(Math.max(line - numLines, 0), 0, line + numLines, 0);
+    const nearbyIssues = issues.filter((i) => nearbyRange.contains(i.range));
+    if (nearbyIssues.length) {
+        nearbyIssues.sort((a, b) => Math.abs(a.range.start.line - line) - Math.abs(b.range.start.line - line));
+        const words = new Set(nearbyIssues.map((i) => document.getText(i.range)));
+        return [...words];
+    }
+    const words = [...new Set(issues.map((i) => document.getText(i.range)))];
+    words.sort();
+    return words;
+}
+
+function findNextNonWordChar(line: string, start: number): number {
+    const regExNonDictionaryNameCharacters = /[^a-z0-9_\s,\p{L}-]/giu;
+    regExNonDictionaryNameCharacters.lastIndex = start;
+    const r = regExNonDictionaryNameCharacters.exec(line);
+    if (!r) return line.length;
+    return r.index;
+}
+
+const inlineDirectiveCompletionProvider: InlineCompletionItemProvider = new CSpellInlineDirectiveCompletionProvider();
+
+function createDictionaryInfoForDoc(config: GetConfigurationForDocumentResult): DictionaryInfoForDoc {
+    try {
+        const dicts = (config.docSettings?.dictionaryDefinitions || [])
             .filter((a) => !!a)
-            .filter((name) => !enabledDicts.has(name));
-
-        return dicts.map((d) => new vscode.CompletionItem(d, vscode.CompletionItemKind.Text)).map((c) => ((c.commitCharacters = [' ']), c));
-    },
-    resolveCompletionItem(item: vscode.CompletionItem) {
-        return item;
-    },
-};
-
-const cspellInlineIssuesCompletionProvider: vscode.CompletionItemProvider = {
-    provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
-        // get all text until the `position` and check if it reads `cspell.`
-        const line = document.lineAt(position);
-        const linePrefix = line.text.substr(0, position.character);
-        const isDictionaryRequest = /cspell:\s*(words|ignore)/i;
-        if (!isDictionaryRequest.test(linePrefix)) {
-            return undefined;
-        }
-        const wordsOnline = new Set(line.text.split(/[\s:.]/));
-        const allDiags = getCSpellDiags(document.uri).filter((d) => !wordsOnline.has(document.getText(d.range)));
-
-        const diags = findNearestDiags(allDiags, position, 10);
-
-        if (!diags.length) return undefined;
-
-        const words = [...new Set(diags.map((d) => document.getText(d.range)))].sort();
-
-        return words
-            .map((word) => new vscode.CompletionItem(word, vscode.CompletionItemKind.Text))
-            .map((c) => ((c.commitCharacters = [' ']), c));
-    },
-    resolveCompletionItem(item: vscode.CompletionItem) {
-        return item;
-    },
-};
-
-interface ShowSuggestionsSettings {
-    value: boolean;
-    byLangId: Map<string, boolean>;
+            .map((def) => def.name)
+            .filter((a) => !!a);
+        const enabled = config.docSettings?.dictionaries || [];
+        return { available: dicts, enabled };
+    } catch (e) {
+        return { available: undefined, enabled: undefined };
+    }
 }
 
-function getShowSuggestionsSettings(): ShowSuggestionsSettings {
-    const key = 'showAutocompleteSuggestions';
-    const setting = inspectConfigByScopeAndKey(undefined, key);
-    const byLangOverrideIds = setting.languageIds ?? [];
-
-    const value = getSettingFromVSConfig(key, undefined) ?? false;
-    const byLangOverrides = byLangOverrideIds.map(
-        (languageId) => [languageId, getSettingFromVSConfig(key, { languageId })] as [string, boolean],
-    );
-    const byLangId = new Map(byLangOverrides);
-    return { value, byLangId };
-}
-
-async function calcInlineCompletionIds(): Promise<string[]> {
-    const langIds = await vscode.languages.getLanguages();
-    const { value, byLangId } = getShowSuggestionsSettings();
-    const inlineCompletionLangIds = langIds.filter((lang) => byLangId.get(lang) ?? (!blockLangIdsForInlineCompletion.has(lang) && value));
-    return inlineCompletionLangIds;
+function getIssues(doc: TextDocument) {
+    return getCSpellDiags(doc.uri).filter((issue) => !issue.data?.issueType);
 }

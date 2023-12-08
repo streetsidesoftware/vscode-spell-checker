@@ -1,3 +1,4 @@
+export { AutoResolveCache, createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve.js';
 export * from './errors.js';
 export { LogFileConnection } from './logFile.js';
 export * from './uriHelper.js';

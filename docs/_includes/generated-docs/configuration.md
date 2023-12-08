@@ -611,7 +611,7 @@ Description
     **Note:** VS Code must be restarted for this setting to take effect.
 
 Default
-: _`false`_
+: _`true`_
 
 ---
 

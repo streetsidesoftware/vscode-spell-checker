@@ -128,7 +128,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * **Note:** VS Code must be restarted for this setting to take effect.
      * @scope language-overridable
-     * @default false
+     * @default true
      */
     showAutocompleteSuggestions?: boolean;
 

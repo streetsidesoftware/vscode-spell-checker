@@ -1,23 +1,26 @@
+import type { IssueType } from '@cspell/cspell-types';
 import type { Diagnostic, Range, Selection, TextDocument, Uri } from 'vscode';
 
 import { diagnosticSource } from './constants';
 import { getDependencies } from './di';
+import type { SpellingDiagnostic } from './issueTracker';
 import { isWordLike } from './settings/CSpellSettings';
 import { isDefined, uniqueFilter } from './util';
 
 /**
  * Return cspell diags for a given uri.
  * @param docUri - uri of diag to look for.
+ * @param issueType - optional issue type to filter on -- by default it returns only spelling issues.
  * @returns any cspell diags found matching the uri.
  */
-export function getCSpellDiags(docUri: Uri | undefined): Diagnostic[] {
+export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): SpellingDiagnostic[] {
     const issueTracker = getDependencies().issueTracker;
     const diags = (docUri && issueTracker.getDiagnostics(docUri)) || [];
-    const cSpellDiags = filterDiags(diags);
+    const cSpellDiags = filterDiags(diags).filter((d) => d.data?.issueType === issueType || (!d.data?.issueType && !issueType));
     return cSpellDiags;
 }
 
-export function filterDiags(diags: readonly Diagnostic[], source = diagnosticSource): Diagnostic[] {
+export function filterDiags<D extends Diagnostic>(diags: readonly D[], source = diagnosticSource): D[] {
     return diags.filter((d) => d.source === source);
 }
 
