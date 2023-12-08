@@ -2788,7 +2788,7 @@
           "type": "number"
         },
         "cSpell.showAutocompleteSuggestions": {
-          "default": false,
+          "default": true,
           "description": "Show CSpell in-document directives as you type.\n\n**Note:** VS Code must be restarted for this setting to take effect.",
           "markdownDescription": "Show CSpell in-document directives as you type.\n\n**Note:** VS Code must be restarted for this setting to take effect.",
           "scope": "language-overridable",

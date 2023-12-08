@@ -7,12 +7,14 @@ vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
 const mockedRegisterCompletionItemProvider = vi.mocked(languages.registerCompletionItemProvider);
+const mockedRegisterInlineCompletionItemProvider = vi.mocked(languages.registerInlineCompletionItemProvider);
 
 describe('autocomplete', () => {
     test('registerCspellInlineCompletionProviders', async () => {
         const disposables: { dispose(): any }[] = [];
         await registerCspellInlineCompletionProviders(disposables);
-        expect(mockedRegisterCompletionItemProvider).toHaveBeenCalledTimes(4);
-        expect(disposables).toHaveLength(4);
+        expect(mockedRegisterCompletionItemProvider).toHaveBeenCalledTimes(0);
+        expect(mockedRegisterInlineCompletionItemProvider).toHaveBeenCalledTimes(1);
+        expect(disposables).toHaveLength(1);
     });
 });

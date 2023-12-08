@@ -9,11 +9,7 @@ import * as di from './di';
 import { getCSpellDiags } from './diags';
 import type { Disposable } from './disposable';
 import type { SpellingDiagnostic } from './issueTracker';
-import { getSettingFromVSConfig, inspectConfigByScopeAndKey } from './settings/vsConfig';
-
-// cspell:ignore bibtex doctex expl jlweave rsweave
-// See [Issue #1450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/1450)
-const blockLangIdsForInlineCompletion = new Set(['tex', 'bibtex', 'latex', 'latex-expl3', 'jlweave', 'rsweave', 'doctex']);
+import { getSettingFromVSConfig } from './settings/vsConfig';
 
 const regExCSpellInDocDirective = /\b(?:spell-?checker|c?spell)::?(.*)/gi;
 const regExCSpellDirectiveKey = /(?<=\b(?:spell-?checker|c?spell)::?)(?!:)\s*(.*)/i;
@@ -108,29 +104,13 @@ const inlineCompletions: Completion[] = [
     },
 ];
 
-interface ShowSuggestionsSettings {
-    value: boolean;
-    byLangId: Map<string, boolean>;
-}
-
-function getShowSuggestionsSettings(): ShowSuggestionsSettings {
+function getShowAutocompleteSuggestions(docUri: vscode.Uri): boolean {
     const key = 'showAutocompleteSuggestions';
-    const setting = inspectConfigByScopeAndKey(undefined, key);
-    const byLangOverrideIds = setting.languageIds ?? [];
-
-    const value = getSettingFromVSConfig(key, undefined) ?? false;
-    const byLangOverrides = byLangOverrideIds.map(
-        (languageId) => [languageId, getSettingFromVSConfig(key, { languageId })] as [string, boolean],
-    );
-    const byLangId = new Map(byLangOverrides);
-    return { value, byLangId };
-}
-
-async function _calcInlineCompletionIds(): Promise<string[]> {
-    const langIds = await vscode.languages.getLanguages();
-    const { value, byLangId } = getShowSuggestionsSettings();
-    const inlineCompletionLangIds = langIds.filter((lang) => byLangId.get(lang) ?? (!blockLangIdsForInlineCompletion.has(lang) && value));
-    return inlineCompletionLangIds;
+    try {
+        return getSettingFromVSConfig(key, docUri) ?? true;
+    } catch (e) {
+        return false;
+    }
 }
 
 interface DictionaryInfoForDoc {
@@ -149,16 +129,18 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
     provideInlineCompletionItems(
         document: TextDocument,
         position: Position,
-        context: InlineCompletionContext,
+        _context: InlineCompletionContext,
         _token: vscode.CancellationToken,
     ) {
-        if (blockLangIdsForInlineCompletion.has(document.languageId)) return undefined;
+        if (!getShowAutocompleteSuggestions(document.uri)) return undefined;
+        const cfg = this.getConfigForDocument(document);
+        if (!cfg) return undefined;
 
         const line = document.lineAt(position.line);
         const lineText = line.text;
         const linePrefix = lineText.slice(0, position.character);
         const match = linePrefix.match(regExCSpellInDocDirective);
-        console.log('inlineDirectiveCompletionProvider %o', { match, context, linePrefix });
+        // console.log('inlineDirectiveCompletionProvider %o', { match, context, linePrefix });
         if (!match) {
             return generateDirectivePrefixCompletionItems(linePrefix, position);
         }
@@ -175,7 +157,7 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
         const directive = matchDir[1];
         const startChar = (matchDir.index || 0) + matchDir[0].length - directive.length;
 
-        console.log('inlineDirectiveCompletionProvider %o', { directive, context });
+        // console.log('inlineDirectiveCompletionProvider %o', { directive, context });
 
         if (directive.startsWith('dictionaries') || directive.startsWith('dictionary')) {
             return generateDictionaryNameInlineCompletionItems(document, position, lineText, startChar, (document) =>
@@ -227,7 +209,7 @@ function generateDirectivePrefixCompletionItems(linePrefix: string, position: Po
     const directivePrefix = linePrefix.slice(startChar);
     const dLen = directivePrefix.length;
     const matches = directivePrefixes.filter((p) => p.pfx.startsWith(directivePrefix) && dLen >= p.min).map((p) => p.pfx);
-    console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches });
+    // console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches });
     if (!matches.length) return undefined;
 
     const range = new Range(position.line, startChar, position.line, position.character);
@@ -235,7 +217,7 @@ function generateDirectivePrefixCompletionItems(linePrefix: string, position: Po
 
     result.items.push(...items);
 
-    console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches, items });
+    // console.log('generateDirectivePrefixCompletionItems %o', { linePrefix, position, matches, items });
 
     return result;
 }
@@ -330,7 +312,7 @@ function generateWordInlineCompletionItems(
     const lastWordBreak = line.lastIndexOf(' ', curIndex - 1) + 1;
     const prefix = lastWordBreak <= startDirChar ? ' ' : '';
     const words = sortIssuesBy(document, position, issues);
-    console.log('words: %o', { words, directive, curIndex, endIndex, lastWordBreak, prefix, suffix });
+    // console.log('words: %o', { words, directive, curIndex, endIndex, lastWordBreak, prefix, suffix });
     const range = new Range(position.line, lastWordBreak, position.line, curIndex);
 
     return new InlineCompletionList(words.map((insertText) => new InlineCompletionItem(prefix + insertText + suffix, range)));
@@ -379,7 +361,3 @@ function createDictionaryInfoForDoc(config: GetConfigurationForDocumentResult): 
 function getIssues(doc: TextDocument) {
     return getCSpellDiags(doc.uri).filter((issue) => !issue.data?.issueType);
 }
-
-export const __delete_me__ = {
-    _calcInlineCompletionIds,
-};
