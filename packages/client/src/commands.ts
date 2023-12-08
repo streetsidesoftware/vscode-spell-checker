@@ -1,5 +1,5 @@
-import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, Uri } from 'vscode';
-import { commands, FileType, Position, Range, Selection, TextEditorRevealType, window, workspace } from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit, Uri } from 'vscode';
+import { commands, FileType, Position, Range, Selection, SnippetString, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import { addWordToFolderDictionary, addWordToTarget, addWordToUserDictionary, addWordToWorkspaceDictionary, fnWTarget } from './addWords';
@@ -68,7 +68,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
 
 type CommandHandler = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key in string]: (...params: any[]) => void | Promise<void>;
+    [key in string]: (...params: any[]) => void | Promise<void> | Promise<unknown>;
 };
 
 const prompt = onCommandUseDiagsSelectionOrPrompt;
@@ -151,6 +151,11 @@ export const commandHandlers = {
     'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
     'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
     'cSpell.issueViewer.item.addWordToDictionary': handlerResolvedLater,
+
+    'cSpell.insertDisableNextLineDirective': handleInsertDisableNextLineDirective,
+    'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,
+    'cSpell.insertIgnoreWordsDirective': handleInsertIgnoreWordsDirective,
+    'cSpell.insertWordsDirective': handleInsertWordsDirective,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -161,9 +166,16 @@ export const knownCommands = Object.fromEntries(
 ) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
 export function registerCommands(): Disposable[] {
-    const registeredHandlers = Object.entries(commandHandlers).map(([cmd, fn]) => registerCmd(cmd, fn));
+    const skipRegister = new Set<string>();
+    const registeredHandlers = Object.entries(commandHandlers)
+        .filter(([cmd]) => !skipRegister.has(cmd))
+        .map(([cmd, fn]) => registerCmd(cmd, fn));
     const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
-    return [...registeredHandlers, ...registeredFromServer];
+    return [
+        ...registeredHandlers,
+        ...registeredFromServer,
+        // commands.registerTextEditorCommand(knownCommands['cSpell.insertDisableNextLineDirective'], handleInsertDisableNextLineDirective),
+    ];
 }
 
 function handlerResolvedLater() {}
@@ -498,4 +510,74 @@ async function handleSelectRange(uri?: Uri, range?: Range): Promise<void> {
     // editor.revealRange(range);
     // editor.selection = new Selection(range.start, range.end);
     await window.showTextDocument(uri, { selection: range });
+}
+
+const snippedBlockCommentStart = '${BLOCK_COMMENT_START/^(<!--)$/$1-/}';
+const snippedBlockCommentEnd = '${BLOCK_COMMENT_END/^(-->)$/-$1/}';
+
+function handleInsertDisableNextLineDirective(textEditor?: TextEditor, _edit?: TextEditorEdit): Promise<boolean | undefined> {
+    return handleErrors(async () => {
+        const editor = textEditor || window.activeTextEditor;
+        if (!editor) return;
+        const { document, selection } = editor;
+        const { line } = selection.active;
+        const textLine = document.lineAt(line);
+        const prefix = textLine.text.slice(0, textLine.firstNonWhitespaceCharacterIndex);
+        const suffix = textLine.text.length > textLine.firstNonWhitespaceCharacterIndex ? '\n' : '';
+        return await editor.insertSnippet(
+            new SnippetString(`${prefix}${snippedBlockCommentStart} cspell:disable-next-line ${snippedBlockCommentEnd}` + suffix),
+            new Range(textLine.range.start, textLine.range.start),
+        );
+    }, 'handleInsertDisableNextLineDirective');
+}
+
+function handleInsertDisableLineDirective(textEditor?: TextEditor, _edit?: TextEditorEdit): Promise<boolean | undefined> {
+    return handleErrors(async () => {
+        const editor = textEditor || window.activeTextEditor;
+        if (!editor) return;
+        const { document, selection } = editor;
+        const { line } = selection.active;
+        const textLine = document.lineAt(line);
+        const prefix = textLine.text.endsWith(' ') ? '' : ' ';
+        return await editor.insertSnippet(
+            new SnippetString(`${prefix}${snippedBlockCommentStart} cspell:disable-line ${snippedBlockCommentEnd}\n`),
+            new Range(textLine.range.end, textLine.range.end),
+        );
+    }, 'handleInsertDisableLineDirective');
+}
+
+function handleInsertIgnoreWordsDirective(textEditor?: TextEditor, _edit?: TextEditorEdit): Promise<boolean | undefined> {
+    return handleErrors(async () => {
+        const editor = textEditor || window.activeTextEditor;
+        if (!editor) return;
+        const { document, selection } = editor;
+        const { line } = selection.active;
+        const textLine = document.lineAt(line);
+        const prefix = textLine.text.slice(0, textLine.firstNonWhitespaceCharacterIndex);
+        const suffix = textLine.text.length > textLine.firstNonWhitespaceCharacterIndex ? '\n' : '';
+        return await editor.insertSnippet(
+            new SnippetString(
+                `${prefix}${snippedBlockCommentStart} cspell:ignore \${0:$TM_CURRENT_WORD} ${snippedBlockCommentEnd}` + suffix,
+            ),
+            new Range(textLine.range.start, textLine.range.start),
+        );
+    }, 'handleInsertIgnoreWordsDirective');
+}
+
+function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorEdit): Promise<boolean | undefined> {
+    return handleErrors(async () => {
+        const editor = textEditor || window.activeTextEditor;
+        if (!editor) return;
+        const { document, selection } = editor;
+        const { line } = selection.active;
+        const textLine = document.lineAt(line);
+        const prefix = textLine.text.slice(0, textLine.firstNonWhitespaceCharacterIndex);
+        const suffix = textLine.text.length > textLine.firstNonWhitespaceCharacterIndex ? '\n' : '';
+        return await editor.insertSnippet(
+            new SnippetString(
+                `${prefix}${snippedBlockCommentStart} cspell:words \${0:$TM_CURRENT_WORD} ${snippedBlockCommentEnd}` + suffix,
+            ),
+            new Range(textLine.range.start, textLine.range.start),
+        );
+    }, 'handleInsertWordsDirective');
 }

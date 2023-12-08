@@ -11,7 +11,7 @@ import type { Disposable } from './disposable';
 import type { SpellingDiagnostic } from './issueTracker';
 import { getSettingFromVSConfig } from './settings/vsConfig';
 
-const regExCSpellInDocDirective = /\b(?:spell-?checker|c?spell)::?(.*)/gi;
+const regExCSpellInDocDirective = /\b(?:spell-?checker|c?spell|LocalWords)::?(.*)/gi;
 const regExCSpellDirectiveKey = /(?<=\b(?:spell-?checker|c?spell)::?)(?!:)\s*(.*)/i;
 // const regExInFileSettings = [regExCSpellInDocDirective, /\b(LocalWords:?.*)/g];
 
@@ -150,9 +150,16 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
         };
 
         const regDir = new RegExp(regExCSpellDirectiveKey);
-        regDir.lastIndex = match.index || 0;
+        const matchIndex = match.index || 0;
+        regDir.lastIndex = matchIndex;
         const matchDir = regDir.exec(linePrefix);
-        if (!matchDir) return undefined;
+        if (!matchDir) {
+            const directiveLocalWords = 'LocalWords:';
+            if (match[0].startsWith(directiveLocalWords)) {
+                return generateWordInlineCompletionItems(document, position, lineText, matchIndex + directiveLocalWords.length);
+            }
+            return undefined;
+        }
 
         const directive = matchDir[1];
         const startChar = (matchDir.index || 0) + matchDir[0].length - directive.length;
@@ -166,7 +173,7 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
         }
 
         if (directive.startsWith('words') || directive.startsWith('ignore')) {
-            return generateWordInlineCompletionItems(document, position, lineText, startChar);
+            return generateWordInlineCompletionItems(document, position, lineText, getDirectiveStart(lineText, startChar));
         }
 
         const parts = directive.split(/\s+/);
@@ -288,15 +295,8 @@ function generateWordInlineCompletionItems(
     document: vscode.TextDocument,
     position: vscode.Position,
     line: string,
-    startIndexForDirective: number,
+    startDirChar: number,
 ): InlineCompletionList | undefined {
-    const regDir = new RegExp(regExCSpellDirectiveKey, 's');
-    regDir.lastIndex = startIndexForDirective;
-    const matchDirective = regDir.exec(line);
-    if (!matchDirective) return undefined;
-
-    const directive = matchDirective[1];
-    const startDirChar = (matchDirective.index || 0) + matchDirective[0].length - directive.length;
     const curIndex = position.character;
 
     const endIndex = findNextNonWordChar(line, startDirChar);
@@ -311,20 +311,35 @@ function generateWordInlineCompletionItems(
     const suffix = regExHasSpaceAfter.exec(line) ? '' : ' ';
     const lastWordBreak = line.lastIndexOf(' ', curIndex - 1) + 1;
     const prefix = lastWordBreak <= startDirChar ? ' ' : '';
-    const words = sortIssuesBy(document, position, issues);
+    const wordPrefix = line.slice(prefix ? curIndex : lastWordBreak, curIndex);
+    const words = sortIssuesBy(document, position, issues, wordPrefix);
     // console.log('words: %o', { words, directive, curIndex, endIndex, lastWordBreak, prefix, suffix });
     const range = new Range(position.line, lastWordBreak, position.line, curIndex);
 
     return new InlineCompletionList(words.map((insertText) => new InlineCompletionItem(prefix + insertText + suffix, range)));
 }
 
-function sortIssuesBy(document: TextDocument, position: Position, issues: SpellingDiagnostic[]): string[] {
+function getDirectiveStart(line: string, startIndexForDirective: number): number {
+    const regDir = new RegExp(regExCSpellDirectiveKey, 's');
+    regDir.lastIndex = startIndexForDirective;
+    const matchDirective = regDir.exec(line);
+    if (!matchDirective) return 0;
+
+    const directive = matchDirective[1];
+    const startDirChar = (matchDirective.index || 0) + matchDirective[0].length - directive.length;
+
+    return startDirChar;
+}
+
+function sortIssuesBy(document: TextDocument, position: Position, issues: SpellingDiagnostic[], wordPrefix: string): string[] {
     // Look for close by issues first, otherwise sort alphabetically.
 
     const numLines = 3;
     const line = position.line;
     const nearbyRange = new Range(Math.max(line - numLines, 0), 0, line + numLines, 0);
-    const nearbyIssues = issues.filter((i) => nearbyRange.contains(i.range));
+    const nearbyIssues = issues
+        .filter((i) => nearbyRange.contains(i.range))
+        .filter((i) => document.getText(i.range).startsWith(wordPrefix));
     if (nearbyIssues.length) {
         nearbyIssues.sort((a, b) => Math.abs(a.range.start.line - line) - Math.abs(b.range.start.line - line));
         const words = new Set(nearbyIssues.map((i) => document.getText(i.range)));
