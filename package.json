@@ -452,6 +452,12 @@
         "category": "Spell",
         "title": "Insert Ignore Words Directive",
         "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "cSpell.insertWordsDirective",
+        "category": "Spell",
+        "title": "Insert Words Directive",
+        "icon": "$(comment-discussion)"
       }
     ],
     "languages": [

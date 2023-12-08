@@ -155,6 +155,7 @@ export const commandHandlers = {
     'cSpell.insertDisableNextLineDirective': handleInsertDisableNextLineDirective,
     'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,
     'cSpell.insertIgnoreWordsDirective': handleInsertIgnoreWordsDirective,
+    'cSpell.insertWordsDirective': handleInsertWordsDirective,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -555,8 +556,28 @@ function handleInsertIgnoreWordsDirective(textEditor?: TextEditor, _edit?: TextE
         const prefix = textLine.text.slice(0, textLine.firstNonWhitespaceCharacterIndex);
         const suffix = textLine.text.length > textLine.firstNonWhitespaceCharacterIndex ? '\n' : '';
         return await editor.insertSnippet(
-            new SnippetString(`${prefix}${snippedBlockCommentStart} cspell:ignore $0 ${snippedBlockCommentEnd}` + suffix),
+            new SnippetString(
+                `${prefix}${snippedBlockCommentStart} cspell:ignore \${0:$TM_CURRENT_WORD} ${snippedBlockCommentEnd}` + suffix,
+            ),
             new Range(textLine.range.start, textLine.range.start),
         );
     }, 'handleInsertIgnoreWordsDirective');
+}
+
+function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorEdit): Promise<boolean | undefined> {
+    return handleErrors(async () => {
+        const editor = textEditor || window.activeTextEditor;
+        if (!editor) return;
+        const { document, selection } = editor;
+        const { line } = selection.active;
+        const textLine = document.lineAt(line);
+        const prefix = textLine.text.slice(0, textLine.firstNonWhitespaceCharacterIndex);
+        const suffix = textLine.text.length > textLine.firstNonWhitespaceCharacterIndex ? '\n' : '';
+        return await editor.insertSnippet(
+            new SnippetString(
+                `${prefix}${snippedBlockCommentStart} cspell:words \${0:$TM_CURRENT_WORD} ${snippedBlockCommentEnd}` + suffix,
+            ),
+            new Range(textLine.range.start, textLine.range.start),
+        );
+    }, 'handleInsertWordsDirective');
 }
