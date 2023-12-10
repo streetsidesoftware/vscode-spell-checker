@@ -84,7 +84,7 @@
                 "autoAttachChildProcesses": true,
                 "program": "${workspaceFolder:Client}/../../node_modules/vitest/vitest.mjs",
                 "cwd": "${fileWorkspaceFolder}",
-                "args": ["run", "${relativeFile}"],
+                "args": ["run", "--test-timeout=600000", "${relativeFile}"],
                 "console": "integratedTerminal"
             },
             {
@@ -94,7 +94,7 @@
                 "autoAttachChildProcesses": true,
                 "program": "${workspaceFolder:Client}/../../node_modules/vitest/vitest.mjs",
                 "cwd": "${fileWorkspaceFolder}",
-                "args": ["run"],
+                "args": ["run", "--test-timeout=600000"],
                 "console": "integratedTerminal"
             }
         ],

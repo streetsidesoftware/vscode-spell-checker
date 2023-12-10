@@ -379,7 +379,7 @@ export class DocumentSettings {
         const loader = this.loader;
         const folders = await this.folders;
         const useUriForConfig =
-            (docUri && tryJoinURL(fileVSCodeSettings, docUri)?.href) ||
+            (docUri && tryJoinURL(fileVSCodeSettings, docUri) && docUri) ||
             toDirURL(_bestMatchingFolderForUri(folders, docUri, folders[0])?.uri || defaultRootUri).href;
         // console.error('fetchSettingsForUri: %o', { fileVSCodeSettings, useUriForConfig });
         const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
@@ -789,6 +789,13 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
     }
 }
 
+/**
+ * See if it is possible to join the rel to the base.
+ * This helps detect `untitled:untitled-1` uri's that are not valid.
+ * @param rel - relative path
+ * @param base - base URL
+ * @returns the joined path or undefined if it is not possible.
+ */
 function tryJoinURL(rel: string, base: URL | string): URL | undefined {
     try {
         return new URL(rel, base);
