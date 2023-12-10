@@ -351,18 +351,25 @@ export class DocumentSettings {
             readonly: true,
         };
 
-        if (cSpellConfigSettings.useLocallyInstalledCSpellDictionaries) {
-            const rawImports = cSpellConfigSettings.import || [];
-            const imports = Array.isArray(rawImports) ? rawImports : [rawImports];
-            imports.push('@cspell/cspell-bundled-dicts');
-            // console.error('fetchSettingsFromVSCode %o', { imports });
-            cSpellConfigSettings.import = imports;
-        }
-
         return cSpellConfigSettings;
     }
 
     private async _fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
+        try {
+            return await this.__fetchSettingsForUri(docUri);
+        } catch (e) {
+            // console.error('fetchSettingsForUri: %s %s', docUri, e);
+            return {
+                uri: docUri || '',
+                vscodeSettings: { cSpell: {} },
+                settings: {},
+                excludeGlobMatcher: new GlobMatcher([]),
+                includeGlobMatcher: new GlobMatcher([]),
+            };
+        }
+    }
+
+    private async __fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
         log(`fetchFolderSettings: URI ${docUri}`);
         const uri = (docUri && Uri.parse(docUri)) || undefined;
         const uriSpecial = uri && handleSpecialUri(uri);
@@ -371,7 +378,10 @@ export class DocumentSettings {
         }
         const loader = this.loader;
         const folders = await this.folders;
-        const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
+        const useUriForConfig =
+            (docUri && tryJoinURL(fileVSCodeSettings, docUri)?.href) ||
+            toDirURL(_bestMatchingFolderForUri(folders, docUri, folders[0])?.uri || defaultRootUri).href;
+        // console.error('fetchSettingsForUri: %o', { fileVSCodeSettings, useUriForConfig });
         const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
@@ -521,6 +531,22 @@ export function isLanguageEnabled(languageId: string, settings: CSpellUserSettin
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
     return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
+}
+
+function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;
+function _bestMatchingFolderForUri(
+    folders: WorkspaceFolder[],
+    docUri: string | undefined,
+    defaultFolder?: undefined,
+): WorkspaceFolder | undefined;
+function _bestMatchingFolderForUri(
+    folders: WorkspaceFolder[],
+    docUri: string | undefined,
+    defaultFolder?: WorkspaceFolder,
+): WorkspaceFolder | undefined {
+    if (!docUri) return defaultFolder;
+    const matches = _matchingFoldersForUri(folders, docUri);
+    return matches[0] || defaultFolder;
 }
 
 function filterFnConfigFilesToMatchInheritedPath(dir: Uri): (uri: Uri) => boolean {
@@ -761,6 +787,28 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
     } catch (e) {
         return undefined;
     }
+}
+
+function tryJoinURL(rel: string, base: URL | string): URL | undefined {
+    try {
+        return new URL(rel, base);
+    } catch (e) {
+        return undefined;
+    }
+}
+
+function toDirURL(url: string | URL): URL {
+    if (url instanceof URL) {
+        if (url.pathname.endsWith('/')) {
+            return url;
+        }
+        url = url.href;
+    }
+    url = new URL(url);
+    if (!url.pathname.endsWith('/')) {
+        url.pathname += '/';
+    }
+    return url;
 }
 
 export const __testing__ = {
