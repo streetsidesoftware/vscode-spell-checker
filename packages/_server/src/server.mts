@@ -54,6 +54,7 @@ import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
 import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
+import { CSpellFileSystemProvider } from './vfs/CSpellFileSystemProvider.mjs';
 
 log('Starting Spell Checker Server');
 
@@ -103,6 +104,8 @@ export function run(): void {
 
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
+
+    CSpell.getVirtualFS().registerFileSystemProvider(new CSpellFileSystemProvider(documents));
 
     const clientServerApi: Api.ServerSideApi = dd(
         createServerApi(

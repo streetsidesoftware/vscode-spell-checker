@@ -97,7 +97,7 @@ const defaultExclude: Glob[] = [
     '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
-const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
+const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell', 'vscode-vfs'];
 const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
@@ -370,7 +370,7 @@ export class DocumentSettings {
     }
 
     private async __fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
-        log(`fetchFolderSettings: URI ${docUri}`);
+        log(`__fetchSettingsForUri: URI ${docUri}`);
         const uri = (docUri && Uri.parse(docUri)) || undefined;
         const uriSpecial = uri && handleSpecialUri(uri);
         if (uriSpecial && uri !== uriSpecial) {
@@ -393,7 +393,7 @@ export class DocumentSettings {
             new URL(fileConfigLocalImport, useUriForConfig),
             vscodeCSpellConfigSettingsRel.useLocallyInstalledCSpellDictionaries,
         );
-        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
+        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(useURLForConfig);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
@@ -778,7 +778,7 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {
-    if (uri.scheme !== 'file') return undefined;
+    if (uri.scheme !== 'file' && uri.scheme !== 'vscode-vfs') return undefined;
     const url = new URL(uri.toString());
     try {
         const stats = await stat(url);
