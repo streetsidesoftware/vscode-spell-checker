@@ -105,8 +105,6 @@ export function run(): void {
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
 
-    CSpell.getVirtualFS().registerFileSystemProvider(new CSpellFileSystemProvider(documents));
-
     const clientServerApi: Api.ServerSideApi = dd(
         createServerApi(
             connection,
@@ -128,6 +126,8 @@ export function run(): void {
             _logger,
         ),
     );
+
+    CSpell.getVirtualFS().registerFileSystemProvider(new CSpellFileSystemProvider(clientServerApi, documents));
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 

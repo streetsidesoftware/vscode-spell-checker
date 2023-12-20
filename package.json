@@ -45,7 +45,7 @@
   "contributes": {
     "virtualWorkspaces": {
       "supported": "limited",
-      "description": "In virtual workspaces, remote configuration is not supported."
+      "description": "In virtual workspaces, it is not possible to load the cspell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
     },
     "untrustedWorkspaces": {
       "supported": false
@@ -3386,10 +3386,10 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.2.0",
-    "@cspell/cspell-types": "^8.2.0",
+    "@cspell/cspell-bundled-dicts": "^8.2.1",
+    "@cspell/cspell-types": "^8.2.1",
     "@types/react": "^17.0.71",
-    "cspell": "^8.2.0",
+    "cspell": "^8.2.1",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

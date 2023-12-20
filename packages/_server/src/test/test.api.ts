@@ -22,6 +22,9 @@ export function createMockServerSideApi() {
         },
         clientRequest: {
             onWorkspaceConfigForDocumentRequest: vi.fn(),
+            vfsReadDirectory: vi.fn(() => Promise.resolve([])),
+            vfsReadFile: vi.fn(() => Promise.resolve({ uri: '', content: '' })),
+            vfsStat: vi.fn(() => Promise.resolve({ type: 0, size: 0, mtime: 0 })),
         },
     } satisfies ExcludeDisposableHybrid<ServerSideApi>;
 

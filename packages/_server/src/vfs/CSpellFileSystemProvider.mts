@@ -1,52 +1,65 @@
-import { createHash } from 'node:crypto';
-
 import { log } from '@internal/common-utils/log';
 import type { VProviderFileSystem } from 'cspell-io';
-import { FileType, FSCapabilityFlags, urlOrReferenceToUrl } from 'cspell-io';
+import { FSCapabilityFlags, urlOrReferenceToUrl, VFileType } from 'cspell-io';
 import type { VFileSystemProvider } from 'cspell-lib';
 import type { TextDocuments } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
+import type { ServerSideApi } from '../api.js';
+import { FileType } from '../api.js';
+
 export class CSpellFileSystemProvider implements VFileSystemProvider {
     readonly name = 'VSCode';
-    constructor(private documents: TextDocuments<TextDocument>) {}
+    constructor(
+        private api: ServerSideApi,
+        private documents: TextDocuments<TextDocument>,
+    ) {}
 
     getFileSystem(url: URL): VProviderFileSystem | undefined {
         if (url.protocol !== 'vscode-vfs:') return undefined;
 
         const vfs: VProviderFileSystem = {
-            capabilities: FSCapabilityFlags.Read | FSCapabilityFlags.Stat,
+            capabilities: FSCapabilityFlags.Read | FSCapabilityFlags.Stat | FSCapabilityFlags.ReadDir,
             stat: async (urlRef) => {
                 const url = urlOrReferenceToUrl(urlRef);
                 log(`stat: ${url.href}`);
-                const doc = this.documents.get(url.href);
-                if (!doc) {
-                    log(`File not found: ${url.href}`);
-                    throw new VFSError('File not found', url);
-                }
-                const t = doc.getText();
+                const stat = await this.api.clientRequest.vfsStat(url.href);
+
                 return {
-                    isDirectory: () => false,
-                    isFile: () => true,
-                    isUnknown: () => false,
-                    size: t.length,
-                    mtimeMs: 0,
-                    eTag: createHash('md5').update(t).digest('hex'),
-                    fileType: FileType.File,
+                    size: stat.size,
+                    mtimeMs: stat.mtime,
+                    fileType:
+                        stat.type & FileType.File
+                            ? VFileType.File
+                            : stat.type & FileType.Directory
+                              ? VFileType.Directory
+                              : VFileType.Unknown,
                 };
             },
-            readDirectory: async (_url) => [],
+            readDirectory: async (_url) => {
+                const url = urlOrReferenceToUrl(_url);
+                log(`readDirectory: ${url.href}`);
+                const entries = await this.api.clientRequest.vfsReadDirectory(url.href);
+                return entries
+                    .map(([name, type]) => [name, type & FileType.Directory ? VFileType.Directory : VFileType.File] as const)
+                    .map(([name, type]) => ({ name, dir: url, fileType: type }));
+            },
             readFile: async (urlRef) => {
                 const url = urlOrReferenceToUrl(urlRef);
                 log(`ReadFile: ${url.href}`);
                 const doc = this.documents.get(url.href);
-                if (!doc) {
-                    throw new VFSError('File not found', url);
+                if (doc) {
+                    return {
+                        url,
+                        encoding: 'utf8',
+                        content: doc.getText(),
+                    };
                 }
+                const result = await this.api.clientRequest.vfsReadFile(url.href);
                 return {
-                    url,
+                    url: new URL(result.uri),
                     encoding: 'utf8',
-                    content: doc.getText(),
+                    content: result.content,
                 };
             },
             writeFile: async (urlRef) => {
