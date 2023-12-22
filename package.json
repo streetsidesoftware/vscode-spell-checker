@@ -3355,7 +3355,7 @@
     "@types/vscode-webview": "^1.57.4",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
-    "@vitest/coverage-istanbul": "^0.34.6",
+    "@vitest/coverage-istanbul": "^1.1.0",
     "@vscode/vsce": "^2.22.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
@@ -3383,7 +3383,7 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vitest": "^0.34.6"
+    "vitest": "^1.1.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.2.3",
