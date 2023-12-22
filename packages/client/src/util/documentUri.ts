@@ -1,10 +1,12 @@
-import type { Uri } from 'vscode';
-import { workspace } from 'vscode';
+import type { ConfigurationScope } from 'vscode';
+import { Uri, workspace } from 'vscode';
 
-const _schemaFile = {
-    file: true,
-    untitled: true,
-} as const;
+import { findTextDocument } from './findEditor';
+
+// const _schemaFile = {
+//     file: true,
+//     untitled: true,
+// } as const;
 
 const _schemaMapToFile = {
     'vscode-notebook-cell': true,
@@ -17,14 +19,16 @@ const _schemeBlocked = {
     vscode: true,
 } as const;
 
-const schemeFile: Record<string, true> = Object.freeze(Object.assign(Object.create(null), _schemaFile));
+// const schemeFile: Record<string, true> = Object.freeze(Object.assign(Object.create(null), _schemaFile));
 const schemeBlocked: Record<string, true> = Object.freeze(Object.assign(Object.create(null), _schemeBlocked));
 const schemeMapToFile: Record<string, true> = Object.freeze(Object.assign(Object.create(null), _schemaMapToFile));
 
-export function findConicalDocumentScope(docUri: Uri | undefined): Uri | undefined {
+export function findConicalDocumentScope(docUri: Uri | undefined): ConfigurationScope | undefined {
     if (docUri === undefined) return undefined;
     if (docUri.scheme in schemeBlocked) return undefined;
-    if (docUri.scheme in schemeFile) return docUri;
+    const doc = findTextDocument(docUri);
+    if (doc) return doc;
+    if (docUri.scheme === 'file') return docUri;
 
     const path = docUri.path;
 
@@ -40,7 +44,7 @@ export function findConicalDocumentScope(docUri: Uri | undefined): Uri | undefin
     for (const doc of workspace.textDocuments) {
         const uri = doc.uri;
         if (uri.path === path && uri.scheme === 'file') {
-            return uri;
+            return doc;
         }
     }
 
@@ -50,4 +54,11 @@ export function findConicalDocumentScope(docUri: Uri | undefined): Uri | undefin
 
     // Hope for the best.
     return docUri;
+}
+
+export function extractUriFromConfigurationScope(scope: ConfigurationScope | undefined): Uri | undefined {
+    if (!scope) return undefined;
+    if (scope instanceof Uri) return scope;
+    if ('uri' in scope) return scope.uri;
+    return undefined;
 }

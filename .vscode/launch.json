@@ -39,6 +39,25 @@
             ]
         },
         {
+            "name": "Client: Launch Extension -- virtual workspace",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}",
+                "--folder-uri=vscode-vfs://github/streetsidesoftware/cspell-dicts"
+            ],
+            "stopOnEntry": false,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/packages/client/dist/**/*.js"
+            ],
+            "smartStep": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
             "name": "Client: Launch Extension - .gitignore",
             "type": "extensionHost",
             "request": "launch",

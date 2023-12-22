@@ -1,9 +1,9 @@
 import { createAutoResolveCache } from '@internal/common-utils';
-import type { GetConfigurationForDocumentResult } from 'code-spell-checker-server/api';
 import type { InlineCompletionContext, InlineCompletionItemProvider, Position, TextDocument } from 'vscode';
 import * as vscode from 'vscode';
 import { InlineCompletionItem, InlineCompletionList, Range, SnippetString } from 'vscode';
 
+import type { GetConfigurationForDocumentResult } from './client';
 import { DocumentConfigCache } from './client';
 import * as di from './di';
 import { getCSpellDiags } from './diags';

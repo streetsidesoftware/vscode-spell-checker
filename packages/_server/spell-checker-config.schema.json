@@ -998,7 +998,7 @@
       "order": 3,
       "properties": {
         "cSpell.allowedSchemas": {
-          "default": ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata"],
+          "default": ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata", "vscode-vfs"],
           "description": "Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).\n\n\nSome schemas have special meaning like:\n- `untitled` - Used for new documents that have not yet been saved\n- `vscode-notebook-cell` - Used for validating segments of a Notebook.\n- `vscode-userdata` - Needed to spell check `.code-snippets`\n- `vscode-scm` - Needed to spell check Source Control commit messages.",
           "items": {
             "type": "string"

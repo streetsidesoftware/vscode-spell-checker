@@ -18,7 +18,7 @@ import { inspectConfigKeys, sectionCSpell } from '../settings';
 import * as LanguageIds from '../settings/languageIds';
 import type { Maybe } from '../util';
 import { createBroadcaster } from '../util/broadcaster';
-import { findConicalDocumentScope } from '../util/documentUri';
+import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri';
 import { logErrors, silenceErrors } from '../util/errors';
 import { Resolvable } from './Resolvable';
 import type {
@@ -31,6 +31,8 @@ import type {
     WorkspaceConfigForDocumentResponse,
 } from './server';
 import { createServerApi, requestCodeAction } from './server';
+
+export { GetConfigurationForDocumentResult } from './server';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];
@@ -140,11 +142,24 @@ export class CSpellClient implements Disposable {
     ): Promise<GetConfigurationForDocumentResult> {
         const { uri, languageId } = document || {};
 
-        const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
-        if (!uri || !workspaceConfig.uri) {
-            return this.serverApi.getConfigurationForDocument({ workspaceConfig });
+        const emptyResult: GetConfigurationForDocumentResult = {
+            configFiles: [],
+            configTargets: [],
+            fileEnabled: false,
+            fileIsIncluded: false,
+            fileIsExcluded: false,
+        };
+
+        try {
+            const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
+            if (!uri || !workspaceConfig.uri) {
+                return await this.serverApi.getConfigurationForDocument({ workspaceConfig });
+            }
+            return await this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
+        } catch (e) {
+            console.error(`Failed to get configuration for document: ${uri} ${languageId} ${e}`);
+            return emptyResult;
         }
-        return this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
     }
 
     private cacheGetConfigurationForDocument = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
@@ -276,9 +291,10 @@ function handleOnWorkspaceConfigForDocumentRequest(req: WorkspaceConfigForDocume
 
 function calculateWorkspaceConfigForDocument(docUri: Uri | undefined): WorkspaceConfigForDocument {
     const scope = findConicalDocumentScope(docUri);
+    const scopeUri = extractUriFromConfigurationScope(scope);
     const cfg = inspectConfigKeys(scope, ['words', 'userWords', 'ignoreWords']);
     const workspaceFile = workspace.workspaceFile?.toString();
-    const workspaceFolder = scope && workspace.getWorkspaceFolder(scope)?.uri.toString();
+    const workspaceFolder = scopeUri && workspace.getWorkspaceFolder(scopeUri)?.uri.toString();
 
     const allowFolder = workspaceFile !== undefined;
 
@@ -289,7 +305,7 @@ function calculateWorkspaceConfigForDocument(docUri: Uri | undefined): Workspace
     tWords.user = tUserWords.user;
 
     const resp: WorkspaceConfigForDocumentResponse = {
-        uri: scope?.toString(),
+        uri: scopeUri?.toString(),
         workspaceFile,
         workspaceFolder,
         words: tWords,

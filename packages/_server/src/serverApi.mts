@@ -21,6 +21,9 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
         },
         clientRequests: {
             onWorkspaceConfigForDocumentRequest: true,
+            vfsReadDirectory: true,
+            vfsReadFile: true,
+            vfsStat: true,
         },
         clientNotifications: {
             onSpellCheckDocument: true,

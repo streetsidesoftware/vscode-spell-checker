@@ -15,7 +15,6 @@ export type {
     CustomDictionaryScope,
     DictionaryDefinition,
     DictionaryDefinitionCustom,
-    GetConfigurationForDocumentResult,
     NamedPattern,
     PatternMatch,
     SpellCheckerDiagnosticData,

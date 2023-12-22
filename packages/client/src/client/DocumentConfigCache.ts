@@ -1,7 +1,6 @@
 import type { Uri } from 'vscode';
 
-import type { CSpellClient } from './client';
-import type { GetConfigurationForDocumentResult } from './server';
+import type { CSpellClient, GetConfigurationForDocumentResult } from './client';
 
 interface CacheItem {
     config: GetConfigurationForDocumentResult | undefined;

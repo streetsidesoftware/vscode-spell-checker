@@ -17,6 +17,9 @@ mockedCreateClientApi.mockImplementation(() => {
         {
             clientRequest: {
                 onWorkspaceConfigForDocumentRequest: vi.fn(),
+                vfsReadDirectory: vi.fn(() => Promise.resolve([])),
+                vfsReadFile: vi.fn(() => Promise.resolve({ uri: '', content: '' })),
+                vfsStat: vi.fn(() => Promise.resolve({ type: 0, size: 0, mtime: 0 })),
             },
             clientNotification: {
                 onSpellCheckDocument: vi.fn(),

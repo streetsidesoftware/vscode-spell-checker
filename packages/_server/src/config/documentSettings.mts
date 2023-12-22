@@ -97,7 +97,7 @@ const defaultExclude: Glob[] = [
     '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
-const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell'];
+const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell', 'vscode-vfs'];
 const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
@@ -351,19 +351,26 @@ export class DocumentSettings {
             readonly: true,
         };
 
-        if (cSpellConfigSettings.useLocallyInstalledCSpellDictionaries) {
-            const rawImports = cSpellConfigSettings.import || [];
-            const imports = Array.isArray(rawImports) ? rawImports : [rawImports];
-            imports.push('@cspell/cspell-bundled-dicts');
-            // console.error('fetchSettingsFromVSCode %o', { imports });
-            cSpellConfigSettings.import = imports;
-        }
-
         return cSpellConfigSettings;
     }
 
     private async _fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
-        log(`fetchFolderSettings: URI ${docUri}`);
+        try {
+            return await this.__fetchSettingsForUri(docUri);
+        } catch (e) {
+            // console.error('fetchSettingsForUri: %s %s', docUri, e);
+            return {
+                uri: docUri || '',
+                vscodeSettings: { cSpell: {} },
+                settings: {},
+                excludeGlobMatcher: new GlobMatcher([]),
+                includeGlobMatcher: new GlobMatcher([]),
+            };
+        }
+    }
+
+    private async __fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
+        log(`__fetchSettingsForUri: URI ${docUri}`);
         const uri = (docUri && Uri.parse(docUri)) || undefined;
         const uriSpecial = uri && handleSpecialUri(uri);
         if (uriSpecial && uri !== uriSpecial) {
@@ -371,7 +378,10 @@ export class DocumentSettings {
         }
         const loader = this.loader;
         const folders = await this.folders;
-        const useUriForConfig = docUri || folders[0]?.uri || defaultRootUri;
+        const useUriForConfig =
+            (docUri && tryJoinURL(fileVSCodeSettings, docUri) && docUri) ||
+            toDirURL(_bestMatchingFolderForUri(folders, docUri, folders[0])?.uri || defaultRootUri).href;
+        // console.error('fetchSettingsForUri: %o', { fileVSCodeSettings, useUriForConfig });
         const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
@@ -383,7 +393,7 @@ export class DocumentSettings {
             new URL(fileConfigLocalImport, useUriForConfig),
             vscodeCSpellConfigSettingsRel.useLocallyInstalledCSpellDictionaries,
         );
-        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(searchForFsPath);
+        const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(useURLForConfig);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
@@ -521,6 +531,22 @@ export function isLanguageEnabled(languageId: string, settings: CSpellUserSettin
 
 function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
     return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
+}
+
+function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;
+function _bestMatchingFolderForUri(
+    folders: WorkspaceFolder[],
+    docUri: string | undefined,
+    defaultFolder?: undefined,
+): WorkspaceFolder | undefined;
+function _bestMatchingFolderForUri(
+    folders: WorkspaceFolder[],
+    docUri: string | undefined,
+    defaultFolder?: WorkspaceFolder,
+): WorkspaceFolder | undefined {
+    if (!docUri) return defaultFolder;
+    const matches = _matchingFoldersForUri(folders, docUri);
+    return matches[0] || defaultFolder;
 }
 
 function filterFnConfigFilesToMatchInheritedPath(dir: Uri): (uri: Uri) => boolean {
@@ -752,7 +778,7 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {
-    if (uri.scheme !== 'file') return undefined;
+    if (uri.scheme !== 'file' && uri.scheme !== 'vscode-vfs') return undefined;
     const url = new URL(uri.toString());
     try {
         const stats = await stat(url);
@@ -761,6 +787,35 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
     } catch (e) {
         return undefined;
     }
+}
+
+/**
+ * See if it is possible to join the rel to the base.
+ * This helps detect `untitled:untitled-1` uri's that are not valid.
+ * @param rel - relative path
+ * @param base - base URL
+ * @returns the joined path or undefined if it is not possible.
+ */
+function tryJoinURL(rel: string, base: URL | string): URL | undefined {
+    try {
+        return new URL(rel, base);
+    } catch (e) {
+        return undefined;
+    }
+}
+
+function toDirURL(url: string | URL): URL {
+    if (url instanceof URL) {
+        if (url.pathname.endsWith('/')) {
+            return url;
+        }
+        url = url.href;
+    }
+    url = new URL(url);
+    if (!url.pathname.endsWith('/')) {
+        url.pathname += '/';
+    }
+    return url;
 }
 
 export const __testing__ = {

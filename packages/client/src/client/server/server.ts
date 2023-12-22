@@ -1,7 +1,13 @@
-import type { ClientSideApi, ClientSideApiDef } from 'code-spell-checker-server/api';
+import type {
+    ClientSideApi,
+    ClientSideApiDef,
+    GetConfigurationForDocumentResult as APIGetConfigurationForDocumentResult,
+} from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
 import { CodeActionRequest } from 'vscode-languageclient/node';
+
+import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs';
 export type {
     ClientSideCommandHandlerApi,
     ConfigKind,
@@ -18,7 +24,6 @@ export type {
     DictionaryDefinition,
     DictionaryDefinitionCustom,
     FieldExistsInTarget,
-    GetConfigurationForDocumentResult,
     IsSpellCheckEnabledResult,
     LanguageSetting,
     MatchPatternsToDocumentResult,
@@ -31,6 +36,9 @@ export type {
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from 'code-spell-checker-server/api';
+
+export type GetConfigurationForDocumentResult = Partial<APIGetConfigurationForDocumentResult> &
+    Pick<APIGetConfigurationForDocumentResult, 'configFiles' | 'configTargets' | 'fileEnabled' | 'fileIsIncluded' | 'fileIsExcluded'>;
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
@@ -77,6 +85,9 @@ export function createServerApi(client: LanguageClient): ServerApi {
         },
         clientRequests: {
             onWorkspaceConfigForDocumentRequest: true,
+            vfsReadDirectory,
+            vfsReadFile,
+            vfsStat,
         },
     };
 

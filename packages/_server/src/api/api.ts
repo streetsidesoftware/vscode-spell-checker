@@ -24,6 +24,7 @@ import type {
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from './apiModels.js';
+import type { VfsFileSystem } from './models/vfs.mjs';
 
 export type { Logger, MessageConnection } from 'json-rpc-api';
 
@@ -47,6 +48,9 @@ export interface ServerNotificationsAPI {
  */
 export interface ClientRequestsAPI {
     onWorkspaceConfigForDocumentRequest: (req: WorkspaceConfigForDocumentRequest) => WorkspaceConfigForDocumentResponse;
+    vfsReadFile: VfsFileSystem['readFile'];
+    vfsStat: VfsFileSystem['stat'];
+    vfsReadDirectory: VfsFileSystem['readDirectory'];
 }
 
 /** Notifications from the server to the client(vscode extension) */
@@ -104,6 +108,9 @@ export function createClientSideApi(
 ): ClientSideApi {
     return createClientApi(connection, api, logger, apiPrefix);
 }
+
+export type { FileContent, FileStat } from './models/vfs.mjs';
+export { FileType } from './models/vfs.mjs';
 
 type DefineHandlers<T> = {
     [P in keyof T]: Exclude<T[P], boolean>;
