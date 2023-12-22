@@ -3386,10 +3386,10 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.2.1",
-    "@cspell/cspell-types": "^8.2.1",
+    "@cspell/cspell-bundled-dicts": "^8.2.3",
+    "@cspell/cspell-types": "^8.2.3",
     "@types/react": "^17.0.71",
-    "cspell": "^8.2.1",
+    "cspell": "^8.2.3",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

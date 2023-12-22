@@ -1,4 +1,4 @@
-import { log } from '@internal/common-utils/log';
+import { logDebug } from '@internal/common-utils/log';
 import type { VProviderFileSystem } from 'cspell-io';
 import { FSCapabilityFlags, urlOrReferenceToUrl, VFileType } from 'cspell-io';
 import type { VFileSystemProvider } from 'cspell-lib';
@@ -8,6 +8,12 @@ import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { ServerSideApi } from '../api.js';
 import { FileType } from '../api.js';
 
+const UseCSpellForProtocol: Record<string, boolean> = {
+    'http:': true,
+    'https:': true,
+    'file:': true, // Use the cspell-io file system provider for performance.
+};
+
 export class CSpellFileSystemProvider implements VFileSystemProvider {
     readonly name = 'VSCode';
     constructor(
@@ -16,14 +22,15 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
     ) {}
 
     getFileSystem(url: URL): VProviderFileSystem | undefined {
-        if (url.protocol !== 'vscode-vfs:') return undefined;
+        if (UseCSpellForProtocol[url.protocol.toLowerCase()]) return undefined;
 
         const vfs: VProviderFileSystem = {
             capabilities: FSCapabilityFlags.Read | FSCapabilityFlags.Stat | FSCapabilityFlags.ReadDir,
             stat: async (urlRef) => {
                 const url = urlOrReferenceToUrl(urlRef);
-                log(`stat: ${url.href}`);
+                logDebug(`stat req: ${url.href}`);
                 const stat = await this.api.clientRequest.vfsStat(url.href);
+                logDebug(`stat res: ${url.href}\n                                    \t${JSON.stringify(stat)}`);
 
                 return {
                     size: stat.size,
@@ -38,7 +45,7 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
             },
             readDirectory: async (_url) => {
                 const url = urlOrReferenceToUrl(_url);
-                log(`readDirectory: ${url.href}`);
+                logDebug(`readDirectory: ${url.href}`);
                 const entries = await this.api.clientRequest.vfsReadDirectory(url.href);
                 return entries
                     .map(([name, type]) => [name, type & FileType.Directory ? VFileType.Directory : VFileType.File] as const)
@@ -46,7 +53,7 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
             },
             readFile: async (urlRef) => {
                 const url = urlOrReferenceToUrl(urlRef);
-                log(`ReadFile: ${url.href}`);
+                logDebug(`ReadFile: ${url.href}`);
                 const doc = this.documents.get(url.href);
                 if (doc) {
                     return {
@@ -58,8 +65,7 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
                 const result = await this.api.clientRequest.vfsReadFile(url.href);
                 return {
                     url: new URL(result.uri),
-                    encoding: 'utf8',
-                    content: result.content,
+                    content: Buffer.from(result.content, result.encoding),
                 };
             },
             writeFile: async (urlRef) => {

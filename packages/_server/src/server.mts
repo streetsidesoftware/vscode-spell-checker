@@ -71,7 +71,7 @@ const overRideDefaults: CSpellUserSettings = {
 const defaultSettings = calcDefaultSettings();
 const defaultDebounceMs = 50;
 // Refresh the dictionary cache every 1000ms.
-const dictionaryRefreshRateMs = 1000;
+const dictionaryRefreshRateMs = 10000;
 
 async function calcDefaultSettings(): Promise<CSpellUserSettings> {
     return {
@@ -110,7 +110,7 @@ export function run(): void {
             connection,
             {
                 serverNotifications: {
-                    notifyConfigChange: onConfigChange,
+                    notifyConfigChange: (...p) => (logInfo('notifyConfigChange'), onConfigChange(...p)),
                     registerConfigurationFile,
                 },
                 serverRequests: {
@@ -155,7 +155,7 @@ export function run(): void {
     );
 
     // The settings have changed. Is sent on server activation as well.
-    dd(connection.onDidChangeConfiguration(onConfigChange));
+    dd(connection.onDidChangeConfiguration((...p) => (logInfo('onDidChangeConfiguration'), onConfigChange(...p))));
 
     const _getActiveUriSettings = simpleDebounce(__getActiveUriSettings, 50);
 
@@ -301,11 +301,13 @@ export function run(): void {
 
     function onDictionaryChange(eventType?: string, filename?: string) {
         logInfo(`Dictionary Change ${eventType}`, filename);
+        if (eventType === 'close') return;
         triggerUpdateConfig.next(undefined);
     }
 
     function onConfigFileChange(eventType?: string, filename?: string) {
         logInfo(`Config File Change ${eventType}`, filename);
+        if (eventType === 'close') return;
         handleConfigChange();
     }
 

@@ -37,6 +37,7 @@ export async function vfsReadFile(href: UriString): Promise<FileContent> {
     const content = await workspace.fs.readFile(uri);
     return {
         uri: href,
-        content: Buffer.from(content).toString('utf8'),
+        encoding: 'base64',
+        content: Buffer.from(content).toString('base64'),
     };
 }

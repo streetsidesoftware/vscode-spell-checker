@@ -58,8 +58,9 @@ export interface FileContent {
     /**
      * The encoding of the content if known.
      * Defaults to 'utf8' if not provided.
+     * Use `base64` for binary files.
      */
-    encoding?: string;
+    encoding?: 'utf8' | 'base64';
     content: string;
 }
 

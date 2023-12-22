@@ -3,6 +3,7 @@ import { watch as fsWatch } from 'node:fs';
 
 import { toFileUri } from '@internal/common-utils/uriHelper';
 
+// Note: Node documentation isn't very clear on the exact events that will be emitted.
 export type KnownEvents = 'change' | 'error' | 'close';
 export type EventType = KnownEvents | string;
 
@@ -21,7 +22,7 @@ export function watchFile(filename: string, callback: (eventType?: EventType, fi
 
     return {
         close() {
-            callback('close', filename);
+            // callback('close', filename);
         },
     };
 }
