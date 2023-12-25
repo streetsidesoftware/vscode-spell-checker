@@ -112,12 +112,15 @@ const fileConfigsToImport = '.vscode.configs.to.import.cspell.config.json';
 const fileConfigLocalImport = '.vscode.configs.import.cspell.config.json';
 const fileVSCodeSettings = '.vscode.folder.settings.json';
 
+const holdSettingsForMs = 1000;
+
 export class DocumentSettings {
     // Cache per folder settings
     private valuesToClearOnReset: ClearFn[] = [];
     private readonly fetchSettingsForUri = this.createCache((docUri: string | undefined) => this._fetchSettingsForUri(docUri));
     private readonly fetchVSCodeConfiguration = this.createCache((uri?: string) => this._fetchVSCodeConfiguration(uri));
     private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
+    private readonly pendingUrisToRelease = new Map<string, NodeJS.Timeout>();
     public readonly fetchWorkspaceConfiguration = this.createCache((docUri: DocumentUri) => this._fetchWorkspaceConfiguration(docUri));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
     readonly configsToImport = new Set<string>();
@@ -132,12 +135,27 @@ export class DocumentSettings {
         readonly defaultSettings: CSpellUserSettings | Promise<CSpellUserSettings> = _defaultSettings,
     ) {}
 
-    async getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
+    getSettings(document: TextDocumentUri): Promise<CSpellUserSettings> {
         return this.getUriSettings(document.uri);
     }
 
     getUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
         return this.fetchUriSettings(uri);
+    }
+
+    releaseUriSettings(uri: string): void {
+        log(`releaseUriSettings ${uri}`);
+        const pending = this.pendingUrisToRelease.get(uri);
+        if (pending !== undefined) return;
+
+        this.pendingUrisToRelease.set(
+            uri,
+            setTimeout(() => {
+                log(`releasedUriSettings ${uri}`);
+                this.pendingUrisToRelease.delete(uri);
+                this.fetchSettingsForUri.delete(uri);
+            }, holdSettingsForMs),
+        );
     }
 
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
@@ -245,6 +263,13 @@ export class DocumentSettings {
     }
 
     private async fetchUriSettings(uri: string | undefined): Promise<CSpellUserSettings> {
+        if (uri) {
+            const pendingRelease = this.pendingUrisToRelease.get(uri);
+            if (pendingRelease !== undefined) {
+                clearTimeout(pendingRelease);
+                this.pendingUrisToRelease.delete(uri);
+            }
+        }
         const exSettings = await this.fetchUriSettingsEx(uri);
         return exSettings.settings;
     }

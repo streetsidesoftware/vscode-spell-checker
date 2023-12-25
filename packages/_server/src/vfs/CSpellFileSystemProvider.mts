@@ -2,19 +2,22 @@ import { logDebug } from '@internal/common-utils/log';
 import type { VProviderFileSystem } from 'cspell-io';
 import { FSCapabilityFlags, urlOrReferenceToUrl, VFileType } from 'cspell-io';
 import type { VFileSystemProvider } from 'cspell-lib';
-import type { TextDocuments } from 'vscode-languageserver/node.js';
+import { getVirtualFS } from 'cspell-lib';
+import type { Disposable, TextDocuments } from 'vscode-languageserver/node.js';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { ServerSideApi } from '../api.js';
 import { FileType } from '../api.js';
 
-const UseCSpellForProtocol: Record<string, boolean> = {
+const debugFileProtocol = true;
+
+const NotHandledProtocols: Record<string, boolean> = {
     'http:': true,
     'https:': true,
-    'file:': true, // Use the cspell-io file system provider for performance.
+    'file:': !debugFileProtocol, // Use the cspell-io file system provider for performance.
 };
 
-export class CSpellFileSystemProvider implements VFileSystemProvider {
+class CSpellFileSystemProvider implements VFileSystemProvider {
     readonly name = 'VSCode';
     constructor(
         private api: ServerSideApi,
@@ -22,7 +25,7 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
     ) {}
 
     getFileSystem(url: URL): VProviderFileSystem | undefined {
-        if (UseCSpellForProtocol[url.protocol.toLowerCase()]) return undefined;
+        if (NotHandledProtocols[url.protocol.toLowerCase()]) return undefined;
 
         const vfs: VProviderFileSystem = {
             capabilities: FSCapabilityFlags.Read | FSCapabilityFlags.Stat | FSCapabilityFlags.ReadDir,
@@ -30,7 +33,6 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
                 const url = urlOrReferenceToUrl(urlRef);
                 logDebug(`stat req: ${url.href}`);
                 const stat = await this.api.clientRequest.vfsStat(url.href);
-                logDebug(`stat res: ${url.href}\n                                    \t${JSON.stringify(stat)}`);
 
                 return {
                     size: stat.size,
@@ -79,6 +81,15 @@ export class CSpellFileSystemProvider implements VFileSystemProvider {
 
         return vfs;
     }
+}
+
+export function bindFileSystemProvider(api: ServerSideApi, documents: TextDocuments<TextDocument>): Disposable {
+    const provider = new CSpellFileSystemProvider(api, documents);
+    const vfs = getVirtualFS();
+    if (debugFileProtocol) {
+        vfs.enableLogging(true);
+    }
+    return vfs.registerFileSystemProvider(provider);
 }
 
 export class VFSError extends Error {

@@ -34,6 +34,7 @@ export const configFileLocations = [
     // Dynamic config is looked for last
     'cspell.config.js',
     'cspell.config.cjs',
+    'cspell.config.mjs',
     // .config
     '.config/.cspell.json',
     '.config/cspell.json',
@@ -51,7 +52,16 @@ export const configFileLocations = [
     '.config/cspell.config.cjs',
 ] as const;
 
-export const configFileLocationGlob = `**/{${configFileLocations.join(',')}}`;
+const setOfConfigFilesNames = new Set(configFileLocations.map((filename) => filename.split('/').slice(-1)[0]));
+
+/**
+ * A set of files that if changed, could indicate that the cspell configuration changed.
+ *
+ * An alias of possibleConfigFiles
+ */
+export const configFilesToWatch: Set<string> = Object.freeze(setOfConfigFilesNames);
+
+export const configFileLocationGlob = `**/{${[...setOfConfigFilesNames].join(',')}}`;
 
 type ConfigFileNames = (typeof configFileLocations)[number];
 
@@ -59,16 +69,7 @@ export const nestedConfigLocations = ['package.json'];
 
 export const cspellConfigDirectory = '.cspell';
 
-export const possibleConfigFiles = Object.freeze(new Set(configFileLocations));
-
 export const preferredConfigFiles: ConfigFileNames[] = ['cspell.json', 'cspell.config.yaml', 'package.json'];
-
-/**
- * A set of files that if changed, could indicate that the cspell configuration changed.
- *
- * An alias of possibleConfigFiles
- */
-export const configFilesToWatch = possibleConfigFiles as Set<string>;
 
 export type CSpellSettings = CSpellUserSettings;
 
