@@ -9,7 +9,7 @@ import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { ServerSideApi } from '../api.js';
 import { FileType } from '../api.js';
 
-const debugFileProtocol = true;
+const debugFileProtocol = false;
 
 const NotHandledProtocols: Record<string, boolean> = {
     'http:': true,
