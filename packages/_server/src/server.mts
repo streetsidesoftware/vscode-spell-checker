@@ -54,11 +54,9 @@ import { debounce as simpleDebounce } from './utils/debounce.mjs';
 import { textToWords } from './utils/index.mjs';
 import { createPrecisionLogger } from './utils/logging.mjs';
 import * as Validator from './validator.mjs';
-import { CSpellFileSystemProvider } from './vfs/CSpellFileSystemProvider.mjs';
+import { bindFileSystemProvider } from './vfs/CSpellFileSystemProvider.mjs';
 
 log('Starting Spell Checker Server');
-
-const tds = CSpell;
 
 const defaultCheckLimit = Validator.defaultCheckLimit;
 
@@ -127,7 +125,7 @@ export function run(): void {
         ),
     );
 
-    CSpell.getVirtualFS().registerFileSystemProvider(new CSpellFileSystemProvider(clientServerApi, documents));
+    dd(bindFileSystemProvider(clientServerApi, documents));
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
 
@@ -272,6 +270,7 @@ export function run(): void {
                 validationByDoc.delete(uri);
                 sub.unsubscribe();
             }
+            documentSettings.releaseUriSettings(uri);
             // A text document was closed we clear the diagnostics
             catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }), 'onDidClose');
         }),
@@ -518,7 +517,7 @@ export function run(): void {
     }
 
     async function getSettingsToUseForDocument(doc: TextDocument) {
-        return tds.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
+        return CSpell.constructSettingsForText(await getBaseSettings(doc), doc.getText(), doc.languageId);
     }
 
     function isStale(doc: TextDocument, writeLog = true): boolean {

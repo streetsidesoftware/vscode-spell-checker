@@ -45,7 +45,7 @@
   "contributes": {
     "virtualWorkspaces": {
       "supported": "limited",
-      "description": "In virtual workspaces, it is not possible to load the cspell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
+      "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
     },
     "untrustedWorkspaces": {
       "supported": false

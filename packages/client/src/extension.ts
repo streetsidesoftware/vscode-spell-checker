@@ -128,8 +128,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         detectPossibleCSpellConfigChange(event.files);
     }
 
-    function handleOpenFile(doc: vscode.TextDocument) {
-        detectPossibleCSpellConfigChange([doc.uri]);
+    function handleOpenFile(_doc: vscode.TextDocument) {
+        // detectPossibleCSpellConfigChange([doc.uri]);
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
