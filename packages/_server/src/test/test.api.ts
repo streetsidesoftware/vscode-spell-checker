@@ -14,6 +14,7 @@ export function createMockServerSideApi() {
             getConfigurationForDocument: { subscribe: vi.fn() },
             isSpellCheckEnabled: { subscribe: vi.fn() },
             splitTextIntoWords: { subscribe: vi.fn() },
+            getSpellCheckingOffsets: { subscribe: vi.fn() },
             spellingSuggestions: { subscribe: vi.fn() },
         },
         clientNotification: {
@@ -62,6 +63,7 @@ export function mockHandlers(): ServerSideHandlers {
             isSpellCheckEnabled: vi.fn(() => ({ ...sampleIsSpellCheckEnabledResult })),
             splitTextIntoWords: vi.fn(() => ({ words: [] })),
             spellingSuggestions: vi.fn(() => ({ suggestions: [] })),
+            getSpellCheckingOffsets: vi.fn(() => ({ offsets: [] })),
         },
     };
 }

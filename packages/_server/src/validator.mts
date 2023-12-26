@@ -1,4 +1,4 @@
-import { createTextDocument, DocumentValidator, Text as TextUtil } from 'cspell-lib';
+import { Text as TextUtil } from 'cspell-lib';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
@@ -7,12 +7,12 @@ import type { SpellCheckerDiagnosticData, SpellingDiagnostic, Suggestion } from 
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import { isScmUri } from './config/docUriHelper.mjs';
 import { diagnosticSource } from './constants.mjs';
+import { createDocumentValidator } from './DocumentValidationController.mjs';
 
 export { createTextDocument, validateText } from 'cspell-lib';
 
 export const diagnosticCollectionName = diagnosticSource;
 export const diagSource = diagnosticCollectionName;
-export const defaultCheckLimit = 500;
 
 const diagSeverityMap = new Map<string, DiagnosticSeverity | undefined>([
     ['error', DiagnosticSeverity.Error],
@@ -24,17 +24,7 @@ const diagSeverityMap = new Map<string, DiagnosticSeverity | undefined>([
 
 export async function validateTextDocument(textDocument: TextDocument, options: CSpellUserSettings): Promise<Diagnostic[]> {
     const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
-    const limit = (options.checkLimit || defaultCheckLimit) * 1024;
-    const content = textDocument.getText().slice(0, limit);
-    const docInfo = {
-        uri: textDocument.uri,
-        content,
-        languageId: textDocument.languageId,
-        version: textDocument.version,
-    };
-    const doc = createTextDocument(docInfo);
-    const docVal = new DocumentValidator(doc, { noConfigSearch: true }, options);
-    await docVal.prepare();
+    const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
     const diags = r
         // Convert the offset into a position

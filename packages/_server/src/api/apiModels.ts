@@ -67,6 +67,14 @@ export interface SpellingSuggestionsResult {
     suggestions: Suggestion[];
 }
 
+export interface GetSpellCheckingOffsetsResult {
+    /**
+     * The text offsets of the text in the document that should be spell checked.
+     * The offsets are start/end pairs.
+     */
+    offsets: number[];
+}
+
 export interface GetConfigurationForDocumentRequest extends Partial<TextDocumentInfo> {
     /** used to calculate configTargets, configTargets will be empty if undefined. */
     workspaceConfig?: WorkspaceConfigForDocument;

@@ -42,6 +42,7 @@ export type GetConfigurationForDocumentResult = Partial<APIGetConfigurationForDo
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
+    getSpellCheckingOffsets: ClientSideApi['serverRequest']['getSpellCheckingOffsets'];
     isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
     notifyConfigChange: ClientSideApi['serverNotification']['notifyConfigChange'];
     registerConfigurationFile: ClientSideApi['serverNotification']['registerConfigurationFile'];
@@ -72,6 +73,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
         serverRequests: {
             isSpellCheckEnabled: true,
             getConfigurationForDocument: true,
+            getSpellCheckingOffsets: true,
             spellingSuggestions: true,
             splitTextIntoWords: true,
         },
@@ -98,6 +100,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
     const api: ServerApi = {
         isSpellCheckEnabled: log2Sfn(serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
         getConfigurationForDocument: log2Sfn(serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
+        getSpellCheckingOffsets: log2Sfn(serverRequest.getSpellCheckingOffsets, 'getSpellCheckingOffsets'),
         spellingSuggestions: log2Sfn(serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
