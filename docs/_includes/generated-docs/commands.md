@@ -46,3 +46,4 @@
 | `cSpell.toggleEnableForGlobal`                    | Toggle Spell Checking in User Settings                                                                         |
 | `cSpell.toggleEnableForWorkspace`                 | Toggle Spell Checking for Workspace                                                                            |
 | `cSpell.toggleEnableSpellChecker`                 | Toggle Spell Checking                                                                                          |
+| `cSpell.toggleTraceMode`                          | Toggle Trace Mode                                                                                              |
