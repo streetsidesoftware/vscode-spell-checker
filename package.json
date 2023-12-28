@@ -460,6 +460,12 @@
         "category": "Spell",
         "title": "Insert Words Directive",
         "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "cSpell.toggleTraceMode",
+        "category": "Spell",
+        "title": "Toggle Trace Mode",
+        "icon": "$(search)"
       }
     ],
     "languages": [
@@ -3386,10 +3392,10 @@
     "vitest": "^1.1.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.2.3",
-    "@cspell/cspell-types": "^8.2.3",
+    "@cspell/cspell-bundled-dicts": "^8.2.4",
+    "@cspell/cspell-types": "^8.2.4",
     "@types/react": "^17.0.73",
-    "cspell": "^8.2.3",
+    "cspell": "^8.2.4",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

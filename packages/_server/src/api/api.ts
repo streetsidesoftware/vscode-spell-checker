@@ -23,6 +23,8 @@ import type {
     SplitTextIntoWordsResult,
     TextDocumentInfo,
     TextDocumentRef,
+    TraceWordRequest,
+    TraceWordResult,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from './apiModels.js';
@@ -41,6 +43,7 @@ export interface ServerRequestsAPI {
      * @param doc The document to be spell checked.
      */
     getSpellCheckingOffsets(doc: TextDocumentRef): GetSpellCheckingOffsetsResult;
+    traceWord(req: TraceWordRequest): TraceWordResult;
 }
 
 /** Notifications that can be sent to the server */

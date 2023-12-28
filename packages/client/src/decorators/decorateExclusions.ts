@@ -4,7 +4,11 @@ import vscode from 'vscode';
 
 import type { CSpellClient } from '../client';
 import type { Disposable } from '../disposable';
-import { createEmitter, pipe, throttle } from '../Subscribables';
+import { createEmitter, map, pipe, throttle } from '../Subscribables';
+
+const ignoreSchemes: Record<string, boolean> = {
+    output: true,
+};
 
 export class SpellingExclusionsDecorator implements Disposable {
     private decorationType: TextEditorDecorationType | undefined;
@@ -12,15 +16,25 @@ export class SpellingExclusionsDecorator implements Disposable {
     public dispose = this.disposables.dispose;
     private eventEmitter = createEmitter<vscode.TextEditor | undefined>();
     private _enabled = false;
+    private _pendingUpdates = new Set<vscode.TextEditor>();
 
-    constructor(readonly client: CSpellClient) {
+    constructor(
+        readonly context: vscode.ExtensionContext,
+        readonly client: CSpellClient,
+    ) {
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
             vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.refreshEditor(undefined)),
             vscode.workspace.onDidChangeTextDocument((e) => this.refreshDocument(e.document)),
-            pipe(this.eventEmitter, throttle(100)).subscribe((e) => this.updateDecorations(e)),
+            vscode.languages.registerHoverProvider('*', this.getHoverProvider()),
+            pipe(
+                this.eventEmitter,
+                map((e) => (e && this._pendingUpdates.add(e), e)),
+                throttle(100),
+            ).subscribe(() => this.handlePendingUpdates()),
         );
+        this._enabled = context.workspaceState.get(SpellingExclusionsDecorator.workspaceStateKey, false);
     }
 
     get enabled() {
@@ -35,12 +49,13 @@ export class SpellingExclusionsDecorator implements Disposable {
 
     toggleEnabled() {
         this.enabled = !this.enabled;
+        this.context.workspaceState.update(SpellingExclusionsDecorator.workspaceStateKey, this.enabled);
     }
 
-    private refreshEditor(e: vscode.TextEditor | undefined) {
-        e ??= vscode.window.activeTextEditor;
-        if (!e) return;
-        this.eventEmitter.notify(e);
+    private refreshEditor(editor?: vscode.TextEditor | undefined) {
+        editor ??= vscode.window.activeTextEditor;
+        if (!editor) return;
+        this.eventEmitter.notify(editor);
     }
 
     private refreshDocument(doc: vscode.TextDocument) {
@@ -59,6 +74,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         this.clearDecoration();
         if (!this.enabled) return;
         this.createDecorator();
+        this.refreshEditor();
     }
 
     private createDecorator() {
@@ -78,13 +94,22 @@ export class SpellingExclusionsDecorator implements Disposable {
     private async getOffsets(editor: vscode.TextEditor | undefined): Promise<number[]> {
         const doc = editor?.document;
         if (!doc) return [];
-        if (doc.uri.scheme === 'output') return [];
+        if (doc.uri.scheme in ignoreSchemes) return [];
         const exclusions = await this.client.serverApi.getSpellCheckingOffsets({ uri: doc.uri.toString() });
         return exclusions.offsets;
     }
 
+    private handlePendingUpdates() {
+        const editors = [...this._pendingUpdates];
+        this._pendingUpdates.clear();
+        for (const editor of editors) {
+            this.updateDecorations(editor);
+        }
+    }
+
     private async updateDecorations(editor: vscode.TextEditor | undefined) {
         if (!this.decorationType || !editor) return;
+        const hoverMessage = new vscode.MarkdownString('Excluded from spell checking');
         try {
             const doc = editor.document;
             const decorations: vscode.DecorationOptions[] = [];
@@ -98,7 +123,7 @@ export class SpellingExclusionsDecorator implements Disposable {
                     continue;
                 }
                 const range = new vscode.Range(doc.positionAt(lastPos), doc.positionAt(end));
-                decorations.push({ range });
+                decorations.push({ range, hoverMessage });
                 lastPos = offsets[i + 1];
             }
             const textLen = doc.getText().length;
@@ -112,4 +137,59 @@ export class SpellingExclusionsDecorator implements Disposable {
             console.error(err);
         }
     }
+
+    private getHoverProvider(): vscode.HoverProvider {
+        return {
+            provideHover: async (doc, pos) => {
+                if (!this.enabled) return undefined;
+                if (doc.uri.scheme in ignoreSchemes) return undefined;
+                const range = doc.getWordRangeAtPosition(pos);
+                if (!range) return undefined;
+                const word = doc.getText(range);
+                const traceResult = await this.client.serverApi.traceWord({ uri: doc.uri.toString(), word });
+                const hoverMessage = new vscode.MarkdownString();
+                hoverMessage.appendMarkdown('**Trace:** ').appendText(word + '\n');
+                hoverMessage.isTrusted = true;
+                hoverMessage.baseUri = doc.uri;
+                hoverMessage.supportThemeIcons = true;
+                if (traceResult.errors) {
+                    hoverMessage.appendMarkdown('**Errors:** ').appendText(traceResult.errors + '\n');
+                }
+                if (traceResult.traces) {
+                    const found = traceResult.traces.filter((t) => t.found);
+                    if (!found.length) {
+                        hoverMessage.appendMarkdown('**Not Found**\n');
+                    }
+
+                    for (const trace of found) {
+                        if (isUrlLike(trace.dictSource || '') && !trace.dictSource.includes('node_modules')) {
+                            hoverMessage
+                                .appendMarkdown('- $(book) [')
+                                .appendText(trace.dictName)
+                                .appendMarkdown('](')
+                                .appendText(trace.dictSource)
+                                .appendMarkdown(')');
+                        } else {
+                            hoverMessage.appendMarkdown('- $(book) _').appendText(trace.dictName).appendMarkdown('_');
+                        }
+                        if (trace.foundWord && trace.foundWord !== word) {
+                            hoverMessage.appendMarkdown(' **').appendText(trace.foundWord.trim()).appendMarkdown('**');
+                        }
+                        hoverMessage.appendMarkdown('\n');
+                    }
+                }
+                hoverMessage.appendMarkdown('\n[Disable Trace Mode](command:cSpell.toggleTraceMode)');
+                const hover = new vscode.Hover(hoverMessage, range);
+                return hover;
+            },
+        };
+    }
+
+    static workspaceStateKey = 'showTrace';
+}
+
+const regExpUri = /^([a-z-]{2,}):\/\//i;
+
+function isUrlLike(uri: string): boolean {
+    return regExpUri.test(uri);
 }

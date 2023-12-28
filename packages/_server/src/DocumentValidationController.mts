@@ -1,4 +1,6 @@
 import { createTextDocument, DocumentValidator } from 'cspell-lib';
+import { DisposableList } from 'utils-disposables';
+import type { TextDocumentChangeEvent, TextDocuments } from 'vscode-languageserver';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { TextDocumentInfoWithText, TextDocumentRef } from './api.js';
@@ -14,8 +16,17 @@ interface DocValEntry {
 
 export class DocumentValidationController {
     private docValMap = new Map<string, DocValEntry>();
+    private disposables = new DisposableList();
 
-    constructor(readonly documentSettings: DocumentSettings) {}
+    constructor(
+        readonly documentSettings: DocumentSettings,
+        readonly documents: TextDocuments<TextDocument>,
+    ) {
+        this.disposables.push(
+            documents.onDidClose((e) => this.handleOnDidClose(e)),
+            documents.onDidChangeContent((e) => this.handleOnDidChangeContent(e)),
+        );
+    }
 
     get(doc: TextDocumentRef) {
         return this.docValMap.get(doc.uri);
@@ -45,6 +56,29 @@ export class DocumentValidationController {
 
     dispose() {
         this.clear();
+        this.disposables.dispose();
+    }
+
+    private handleOnDidClose(e: TextDocumentChangeEvent<TextDocument>) {
+        this.docValMap.delete(e.document.uri);
+    }
+
+    private handleOnDidChangeContent(e: TextDocumentChangeEvent<TextDocument>) {
+        this._handleOnDidChangeContent(e).catch(() => undefined);
+    }
+
+    private async _handleOnDidChangeContent(e: TextDocumentChangeEvent<TextDocument>) {
+        const { document } = e;
+        const entry = this.docValMap.get(document.uri);
+        if (!entry) return;
+        const { settings, docVal } = entry;
+        const updatedSettings = await this.documentSettings.getSettings(document);
+        const [_settings, _docVal, _curSettings] = await Promise.all([settings, docVal, updatedSettings] as const);
+        if (_settings !== _curSettings) {
+            this.docValMap.set(document.uri, this.createDocValEntry(document));
+            return;
+        }
+        await _docVal.updateDocumentText(document.getText());
     }
 }
 

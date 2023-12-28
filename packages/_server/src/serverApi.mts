@@ -13,6 +13,7 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
             isSpellCheckEnabled: true,
             splitTextIntoWords: true,
             spellingSuggestions: true,
+            traceWord: true,
             ...handlers.serverRequests,
         },
         serverNotifications: {

@@ -213,3 +213,23 @@ export type VSCodeSettingsCspell = {
 };
 
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
+
+export interface TraceWordRequest {
+    uri: DocumentUri;
+    word: string;
+}
+export interface WordTrace {
+    word: string;
+    found: boolean;
+    foundWord: string | undefined;
+    forbidden: boolean;
+    noSuggest: boolean;
+    dictName: string;
+    dictSource: string;
+    errors: string | undefined;
+}
+
+export interface TraceWordResult {
+    traces?: WordTrace[] | undefined;
+    errors?: string | undefined;
+}

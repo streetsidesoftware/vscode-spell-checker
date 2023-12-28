@@ -112,6 +112,7 @@ export function run(): void {
         serverRequests: {
             getConfigurationForDocument: handleGetConfigurationForDocument,
             getSpellCheckingOffsets: simpleDebounce(_handleGetSpellCheckingOffsets, 100, ({ uri }) => uri),
+            traceWord: simpleDebounce(_handleGetWordTrace, 100, ({ uri, word }) => uri + '|' + word),
             isSpellCheckEnabled: handleIsSpellCheckEnabled,
             splitTextIntoWords: handleSplitTextIntoWords,
             spellingSuggestions: createOnSuggestionsHandler(documents, {
@@ -123,10 +124,10 @@ export function run(): void {
 
     const clientServerApi: Api.ServerSideApi = dd(createServerApi(connection, handlers, _logger));
 
-    dd(bindFileSystemProvider(clientServerApi, documents));
+    dd(bindFileSystemProvider(connection, clientServerApi, documents));
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
-    const docValidationController = dd(new DocumentValidationController(documentSettings));
+    const docValidationController = dd(new DocumentValidationController(documentSettings, documents));
 
     const progressNotifier = createProgressNotifier(clientServerApi);
 
@@ -223,7 +224,10 @@ export function run(): void {
                 tap(() => log('Update Config Triggered')),
                 mergeMap(updateActiveSettings),
             )
-            .subscribe(() => {}),
+            .subscribe(() => {
+                docValidationController.clear();
+                log('Update Config Completed');
+            }),
     );
 
     ds(
@@ -399,6 +403,16 @@ export function run(): void {
         const docVal = await docValidationController.getDocumentValidator(doc);
         const offsets = docVal.getCheckedTextRanges().flatMap((r) => [r.startPos, r.endPos]);
         return { offsets };
+    }
+
+    async function _handleGetWordTrace(req: Api.TraceWordRequest): Promise<Api.TraceWordResult> {
+        const { word, uri } = req;
+        log(`_handleGetWordTrace "${word}"`, uri);
+        const doc = documents.get(uri);
+        if (!doc) return { errors: 'Document Not Found.' };
+        const docVal = await docValidationController.getDocumentValidator(doc);
+        const traces = docVal.traceWord(word).map((t) => ({ ...t, errors: errorsToString(t.errors) }));
+        return { traces };
     }
 
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
@@ -716,4 +730,9 @@ interface OnChangeParam extends DidChangeConfigurationParams {
 interface DocSettingPair {
     doc: TextDocument;
     settings: CSpellUserSettings;
+}
+
+function errorsToString(errors: Error[] | undefined): string | undefined {
+    if (!errors || !errors.length) return undefined;
+    return errors.map((e) => e.message).join('\n');
 }

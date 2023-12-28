@@ -47,6 +47,7 @@ interface ServerSide {
     notifyConfigChange: ClientSideApi['serverNotification']['notifyConfigChange'];
     registerConfigurationFile: ClientSideApi['serverNotification']['registerConfigurationFile'];
     spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
+    traceWord: ClientSideApi['serverRequest']['traceWord'];
 }
 
 interface ExtensionSide {
@@ -76,6 +77,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
             getSpellCheckingOffsets: true,
             spellingSuggestions: true,
             splitTextIntoWords: true,
+            traceWord: true,
         },
         serverNotifications: {
             notifyConfigChange: true,
@@ -104,11 +106,11 @@ export function createServerApi(client: LanguageClient): ServerApi {
         spellingSuggestions: log2Sfn(serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
+        traceWord: log2Sfn(serverRequest.traceWord, 'traceWord'),
         onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onDiagnostics: (fn) => clientNotification.onDiagnostics.subscribe(log2Cfn(fn, 'onDiagnostics')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
             clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
-
         dispose: rpcApi.dispose,
     };
 

@@ -6,6 +6,7 @@ import * as addWords from './addWords';
 import { registerCspellInlineCompletionProviders } from './autocomplete';
 import { CSpellClient } from './client';
 import { registerSpellCheckerCodeActionProvider } from './codeAction';
+import type { InjectableCommandHandlers } from './commands';
 import * as commands from './commands';
 import { updateDocumentRelatedContext } from './context';
 import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate';
@@ -69,9 +70,13 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
-    const decoratorExclusions = new SpellingExclusionsDecorator(client);
+    const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
     decoratorExclusions.enabled = true;
     activateIssueViewer(context, issueTracker, client);
+
+    const extensionCommand: InjectableCommandHandlers = {
+        'cSpell.toggleTraceMode': () => decoratorExclusions.toggleEnabled(),
+    };
 
     // Push the disposable to the context's subscriptions so that the
     // client can be deactivated on extension deactivation
@@ -93,7 +98,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         decoratorExclusions,
         registerSpellCheckerCodeActionProvider(issueTracker),
 
-        ...commands.registerCommands(),
+        ...commands.registerCommands(extensionCommand),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
