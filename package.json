@@ -42,14 +42,17 @@
   ],
   "type": "commonjs",
   "main": "./packages/client/dist/extension.js",
-  "contributes": {
+  "capabilities": {
     "virtualWorkspaces": {
       "supported": "limited",
       "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
     },
     "untrustedWorkspaces": {
-      "supported": false
-    },
+      "supported": false,
+      "description": "JavaScript configuration files will NOT be loaded."
+    }
+  },
+  "contributes": {
     "menus": {
       "editor/context": [
         {
