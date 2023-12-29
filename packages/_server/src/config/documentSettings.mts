@@ -39,6 +39,7 @@ import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigForDocument } from '../api.js';
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
+import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
@@ -46,7 +47,6 @@ import { handleSpecialUri } from './docUriHelper.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
-import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
 
 // The settings interface describe the server relevant settings part
 export type SettingsCspell = VSCodeSettingsCspell;
