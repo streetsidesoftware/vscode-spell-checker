@@ -67,6 +67,14 @@ export interface SpellingSuggestionsResult {
     suggestions: Suggestion[];
 }
 
+export interface GetSpellCheckingOffsetsResult {
+    /**
+     * The text offsets of the text in the document that should be spell checked.
+     * The offsets are start/end pairs.
+     */
+    offsets: number[];
+}
+
 export interface GetConfigurationForDocumentRequest extends Partial<TextDocumentInfo> {
     /** used to calculate configTargets, configTargets will be empty if undefined. */
     workspaceConfig?: WorkspaceConfigForDocument;
@@ -205,3 +213,23 @@ export type VSCodeSettingsCspell = {
 };
 
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
+
+export interface TraceWordRequest {
+    uri: DocumentUri;
+    word: string;
+}
+export interface WordTrace {
+    word: string;
+    found: boolean;
+    foundWord: string | undefined;
+    forbidden: boolean;
+    noSuggest: boolean;
+    dictName: string;
+    dictSource: string;
+    errors: string | undefined;
+}
+
+export interface TraceWordResult {
+    traces?: WordTrace[] | undefined;
+    errors?: string | undefined;
+}

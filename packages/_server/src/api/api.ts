@@ -15,12 +15,16 @@ import { createClientApi, createServerApi } from 'json-rpc-api';
 import type {
     GetConfigurationForDocumentRequest,
     GetConfigurationForDocumentResult,
+    GetSpellCheckingOffsetsResult,
     IsSpellCheckEnabledResult,
     OnSpellCheckDocumentStep,
     PublishDiagnostics,
     SpellingSuggestionsResult,
     SplitTextIntoWordsResult,
     TextDocumentInfo,
+    TextDocumentRef,
+    TraceWordRequest,
+    TraceWordResult,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
 } from './apiModels.js';
@@ -34,6 +38,12 @@ export interface ServerRequestsAPI {
     isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult;
     splitTextIntoWords(req: string): SplitTextIntoWordsResult;
     spellingSuggestions(word: string, doc?: TextDocumentInfo): SpellingSuggestionsResult;
+    /**
+     * Calculate the text ranges that should be spell checked.
+     * @param doc The document to be spell checked.
+     */
+    getSpellCheckingOffsets(doc: TextDocumentRef): GetSpellCheckingOffsetsResult;
+    traceWord(req: TraceWordRequest): TraceWordResult;
 }
 
 /** Notifications that can be sent to the server */

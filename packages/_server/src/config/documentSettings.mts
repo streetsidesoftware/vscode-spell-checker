@@ -46,6 +46,7 @@ import { handleSpecialUri } from './docUriHelper.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
+import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
 
 // The settings interface describe the server relevant settings part
 export type SettingsCspell = VSCodeSettingsCspell;
@@ -474,7 +475,7 @@ export class DocumentSettings {
 
     public async matchingFoldersForUri(docUri: string): Promise<WorkspaceFolder[]> {
         const folders = await this.folders;
-        return _matchingFoldersForUri(folders, docUri);
+        return findMatchingFoldersForUri(folders, docUri);
     }
 
     private createCache<K, T>(loader: (key: K) => T): AutoLoadCache<K, T> {
@@ -554,10 +555,6 @@ export function isLanguageEnabled(languageId: string, settings: CSpellUserSettin
     return checkOnly && starEnabled !== true ? !!enabled : enabled !== false;
 }
 
-function _matchingFoldersForUri(folders: WorkspaceFolder[], docUri: string): WorkspaceFolder[] {
-    return folders.filter(({ uri }) => docUri.startsWith(uri)).sort((a, b) => b.uri.length - a.uri.length);
-}
-
 function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;
 function _bestMatchingFolderForUri(
     folders: WorkspaceFolder[],
@@ -570,7 +567,7 @@ function _bestMatchingFolderForUri(
     defaultFolder?: WorkspaceFolder,
 ): WorkspaceFolder | undefined {
     if (!docUri) return defaultFolder;
-    const matches = _matchingFoldersForUri(folders, docUri);
+    const matches = findMatchingFoldersForUri(folders, docUri);
     return matches[0] || defaultFolder;
 }
 

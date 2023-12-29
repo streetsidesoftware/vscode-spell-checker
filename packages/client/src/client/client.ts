@@ -58,7 +58,7 @@ export class CSpellClient implements Disposable {
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
 
-    private serverApi: ServerApi;
+    serverApi: ServerApi;
     private disposables: Set<Disposable> = new Set();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
     private ready: Resolvable<void> = new Resolvable();

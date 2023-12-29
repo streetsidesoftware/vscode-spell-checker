@@ -1,11 +1,10 @@
-import type { ExcludeDisposableHybrid } from 'utils-disposables';
-import { injectDisposable } from 'utils-disposables';
 import { describe, expect, test, vi } from 'vitest';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type { MessageConnection, ServerSideApi } from './api.js';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import { createServerApi } from './serverApi.mjs';
+import { createMockServerSideApi } from './test/test.api.js';
 
 vi.mock('./serverApi');
 
@@ -13,31 +12,7 @@ const mockedCreateClientApi = vi.mocked(createServerApi);
 // const mockedCreateConnection = jest.mocked(createConnection);
 
 mockedCreateClientApi.mockImplementation(() => {
-    const mock: ServerSideApi = injectDisposable<ExcludeDisposableHybrid<ServerSideApi>>(
-        {
-            clientRequest: {
-                onWorkspaceConfigForDocumentRequest: vi.fn(),
-                vfsReadDirectory: vi.fn(() => Promise.resolve([])),
-                vfsReadFile: vi.fn(() => Promise.resolve({ uri: '', content: '' })),
-                vfsStat: vi.fn(() => Promise.resolve({ type: 0, size: 0, mtime: 0 })),
-            },
-            clientNotification: {
-                onSpellCheckDocument: vi.fn(),
-                onDiagnostics: vi.fn(),
-            },
-            serverRequest: {
-                getConfigurationForDocument: { subscribe: vi.fn() },
-                isSpellCheckEnabled: { subscribe: vi.fn() },
-                splitTextIntoWords: { subscribe: vi.fn() },
-                spellingSuggestions: { subscribe: vi.fn() },
-            },
-            serverNotification: {
-                notifyConfigChange: { subscribe: vi.fn() },
-                registerConfigurationFile: { subscribe: vi.fn() },
-            },
-        },
-        () => undefined,
-    );
+    const mock: ServerSideApi = createMockServerSideApi();
     return mock;
 });
 

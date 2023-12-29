@@ -45,7 +45,10 @@ import {
 } from './config/documentSettings.mjs';
 import { isScmUri } from './config/docUriHelper.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
+import { defaultCheckLimit } from './constants.mjs';
+import { DocumentValidationController } from './DocumentValidationController.mjs';
 import { createProgressNotifier } from './progressNotifier.mjs';
+import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
@@ -57,8 +60,6 @@ import * as Validator from './validator.mjs';
 import { bindFileSystemProvider } from './vfs/CSpellFileSystemProvider.mjs';
 
 log('Starting Spell Checker Server');
-
-const defaultCheckLimit = Validator.defaultCheckLimit;
 
 const overRideDefaults: CSpellUserSettings = {
     id: 'Extension overrides',
@@ -103,31 +104,30 @@ export function run(): void {
     // Create a simple text document manager.
     const documents = new TextDocuments(TextDocument);
 
-    const clientServerApi: Api.ServerSideApi = dd(
-        createServerApi(
-            connection,
-            {
-                serverNotifications: {
-                    notifyConfigChange: (...p) => (logInfo('notifyConfigChange'), onConfigChange(...p)),
-                    registerConfigurationFile,
-                },
-                serverRequests: {
-                    getConfigurationForDocument: handleGetConfigurationForDocument,
-                    isSpellCheckEnabled: handleIsSpellCheckEnabled,
-                    splitTextIntoWords: handleSplitTextIntoWords,
-                    spellingSuggestions: createOnSuggestionsHandler(documents, {
-                        fetchSettings: getBaseSettings,
-                        getSettingsVersion: () => documentSettings.version,
-                    }),
-                },
-            },
-            _logger,
-        ),
-    );
+    const handlers: PartialServerSideHandlers = {
+        serverNotifications: {
+            notifyConfigChange: (...p) => (logInfo('notifyConfigChange'), onConfigChange(...p)),
+            registerConfigurationFile,
+        },
+        serverRequests: {
+            getConfigurationForDocument: handleGetConfigurationForDocument,
+            getSpellCheckingOffsets: simpleDebounce(_handleGetSpellCheckingOffsets, 100, ({ uri }) => uri),
+            traceWord: simpleDebounce(_handleGetWordTrace, 100, ({ uri, word }) => uri + '|' + word),
+            isSpellCheckEnabled: handleIsSpellCheckEnabled,
+            splitTextIntoWords: handleSplitTextIntoWords,
+            spellingSuggestions: createOnSuggestionsHandler(documents, {
+                fetchSettings: getBaseSettings,
+                getSettingsVersion: () => documentSettings.version,
+            }),
+        },
+    };
 
-    dd(bindFileSystemProvider(clientServerApi, documents));
+    const clientServerApi: Api.ServerSideApi = dd(createServerApi(connection, handlers, _logger));
+
+    dd(bindFileSystemProvider(connection, clientServerApi, documents));
 
     const documentSettings = new DocumentSettings(connection, clientServerApi, defaultSettings);
+    const docValidationController = dd(new DocumentValidationController(documentSettings, documents));
 
     const progressNotifier = createProgressNotifier(clientServerApi);
 
@@ -224,7 +224,10 @@ export function run(): void {
                 tap(() => log('Update Config Triggered')),
                 mergeMap(updateActiveSettings),
             )
-            .subscribe(() => {}),
+            .subscribe(() => {
+                docValidationController.clear();
+                log('Update Config Completed');
+            }),
     );
 
     ds(
@@ -392,6 +395,26 @@ export function run(): void {
         };
     }
 
+    async function _handleGetSpellCheckingOffsets(docRef: Api.TextDocumentRef): Promise<Api.GetSpellCheckingOffsetsResult> {
+        log('handleGetSpellCheckingOffsets', docRef.uri);
+        const { uri } = docRef;
+        const doc = documents.get(uri);
+        if (!doc) return { offsets: [] };
+        const docVal = await docValidationController.getDocumentValidator(doc);
+        const offsets = docVal.getCheckedTextRanges().flatMap((r) => [r.startPos, r.endPos]);
+        return { offsets };
+    }
+
+    async function _handleGetWordTrace(req: Api.TraceWordRequest): Promise<Api.TraceWordResult> {
+        const { word, uri } = req;
+        log(`_handleGetWordTrace "${word}"`, uri);
+        const doc = documents.get(uri);
+        if (!doc) return { errors: 'Document Not Found.' };
+        const docVal = await docValidationController.getDocumentValidator(doc);
+        const traces = docVal.traceWord(word).map((t) => ({ ...t, errors: errorsToString(t.errors) }));
+        return { traces };
+    }
+
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
         function globToString(g: Glob): string {
             if (typeof g === 'string') return g;
@@ -513,7 +536,7 @@ export function run(): void {
 
     async function getBaseSettings(doc: TextDocumentUri | undefined) {
         const settings = await getActiveSettings(doc);
-        return { ...CSpell.mergeSettings(await defaultSettings, settings), enabledLanguageIds: settings.enabledLanguageIds };
+        return { ...settings, enabledLanguageIds: settings.enabledLanguageIds };
     }
 
     async function getSettingsToUseForDocument(doc: TextDocument) {
@@ -707,4 +730,9 @@ interface OnChangeParam extends DidChangeConfigurationParams {
 interface DocSettingPair {
     doc: TextDocument;
     settings: CSpellUserSettings;
+}
+
+function errorsToString(errors: Error[] | undefined): string | undefined {
+    if (!errors || !errors.length) return undefined;
+    return errors.map((e) => e.message).join('\n');
 }

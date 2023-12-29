@@ -42,10 +42,12 @@ export type GetConfigurationForDocumentResult = Partial<APIGetConfigurationForDo
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
+    getSpellCheckingOffsets: ClientSideApi['serverRequest']['getSpellCheckingOffsets'];
     isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
     notifyConfigChange: ClientSideApi['serverNotification']['notifyConfigChange'];
     registerConfigurationFile: ClientSideApi['serverNotification']['registerConfigurationFile'];
     spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
+    traceWord: ClientSideApi['serverRequest']['traceWord'];
 }
 
 interface ExtensionSide {
@@ -72,8 +74,10 @@ export function createServerApi(client: LanguageClient): ServerApi {
         serverRequests: {
             isSpellCheckEnabled: true,
             getConfigurationForDocument: true,
+            getSpellCheckingOffsets: true,
             spellingSuggestions: true,
             splitTextIntoWords: true,
+            traceWord: true,
         },
         serverNotifications: {
             notifyConfigChange: true,
@@ -98,14 +102,15 @@ export function createServerApi(client: LanguageClient): ServerApi {
     const api: ServerApi = {
         isSpellCheckEnabled: log2Sfn(serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
         getConfigurationForDocument: log2Sfn(serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
+        getSpellCheckingOffsets: log2Sfn(serverRequest.getSpellCheckingOffsets, 'getSpellCheckingOffsets'),
         spellingSuggestions: log2Sfn(serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
+        traceWord: log2Sfn(serverRequest.traceWord, 'traceWord'),
         onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onDiagnostics: (fn) => clientNotification.onDiagnostics.subscribe(log2Cfn(fn, 'onDiagnostics')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
             clientRequest.onWorkspaceConfigForDocumentRequest.subscribe(log2Cfn(fn, 'onWorkspaceConfigForDocumentRequest')),
-
         dispose: rpcApi.dispose,
     };
 

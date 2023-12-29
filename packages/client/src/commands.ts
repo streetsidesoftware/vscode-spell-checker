@@ -156,18 +156,22 @@ export const commandHandlers = {
     'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,
     'cSpell.insertIgnoreWordsDirective': handleInsertIgnoreWordsDirective,
     'cSpell.insertWordsDirective': handleInsertWordsDirective,
+
+    'cSpell.toggleTraceMode': handlerResolvedLater,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
 type ImplementedCommandNames = keyof ImplementedCommandHandlers;
 
+export type InjectableCommandHandlers = Partial<ImplementedCommandHandlers>;
+
 export const knownCommands = Object.fromEntries(
     Object.keys(commandHandlers).map((key) => [key, key] as [ImplementedCommandNames, ImplementedCommandNames]),
 ) as Record<ImplementedCommandNames, ImplementedCommandNames>;
 
-export function registerCommands(): Disposable[] {
+export function registerCommands(injectCommands: InjectableCommandHandlers): Disposable[] {
     const skipRegister = new Set<string>();
-    const registeredHandlers = Object.entries(commandHandlers)
+    const registeredHandlers = Object.entries({ ...commandHandlers, ...injectCommands })
         .filter(([cmd]) => !skipRegister.has(cmd))
         .map(([cmd, fn]) => registerCmd(cmd, fn));
     const registeredFromServer = Object.entries(commandsFromServer).map(([cmd, fn]) => registerCmd(cmd, fn));
