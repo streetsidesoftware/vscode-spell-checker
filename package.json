@@ -48,8 +48,11 @@
       "description": "In virtual workspaces, it is not possible to load the CSpell configuration from a JavaScript file. The configuration must be in a JSON, JSONC, or YAML file. Any configuration that relies upon `node_modules` will not be loaded."
     },
     "untrustedWorkspaces": {
-      "supported": false,
-      "description": "JavaScript configuration files will NOT be loaded."
+      "supported": "limited",
+      "description": "JavaScript configuration files will NOT be loaded.",
+      "restrictedConfigurations": [
+        "cSpell.trustedWorkspace"
+      ]
     }
   },
   "contributes": {
@@ -585,6 +588,13 @@
             "scope": "window",
             "title": "Set Logging Level",
             "type": "string"
+          },
+          "cSpell.trustedWorkspace": {
+            "default": true,
+            "markdownDescription": "Enable loading JavaScript CSpell configuration files.\n\nThis setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,\nbut a setting of `true` in an untrusted workspace will be ignored.\n\nSee:\n- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)\n- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)",
+            "scope": "window",
+            "type": "boolean",
+            "version": "4.0.0"
           }
         },
         "title": "Advanced",
@@ -3395,10 +3405,10 @@
     "vitest": "^1.1.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.2.4",
-    "@cspell/cspell-types": "^8.2.4",
+    "@cspell/cspell-bundled-dicts": "^8.3.0",
+    "@cspell/cspell-types": "^8.3.0",
     "@types/react": "^17.0.74",
-    "cspell": "^8.2.4",
+    "cspell": "^8.3.0",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

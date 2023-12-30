@@ -252,7 +252,7 @@ type _VSConfigLegacy = Pick<
  * @title Advanced
  * @order 18
  */
-type VSConfigAdvanced = PrefixWithCspell<_VSConfigAdvanced>;
+export type VSConfigAdvanced = PrefixWithCspell<_VSConfigAdvanced>;
 type _VSConfigAdvanced = Pick<
     SpellCheckerSettingsVSCodeBase,
     | 'advanced.feature.useReferenceProviderWithRename'
@@ -260,6 +260,7 @@ type _VSConfigAdvanced = Pick<
     | 'fixSpellingWithRenameProvider'
     | 'logFile'
     | 'logLevel'
+    | 'trustedWorkspace'
 >;
 
 /**

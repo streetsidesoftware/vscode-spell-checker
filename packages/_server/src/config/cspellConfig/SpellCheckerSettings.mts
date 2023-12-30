@@ -413,6 +413,21 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default true
      */
     useLocallyInstalledCSpellDictionaries?: boolean;
+
+    /**
+     * Enable loading JavaScript CSpell configuration files.
+     *
+     * This setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,
+     * but a setting of `true` in an untrusted workspace will be ignored.
+     *
+     * See:
+     * - [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
+     * - [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
+     * @scope window
+     * @version 4.0.0
+     * @default true
+     */
+    trustedWorkspace?: boolean;
 }
 
 type AutoOrBoolean = boolean | 'auto';

@@ -40,6 +40,7 @@ import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigF
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
+import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
@@ -52,6 +53,8 @@ import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathRe
 export type SettingsCspell = VSCodeSettingsCspell;
 
 const cSpellSection: keyof SettingsCspell = extensionId;
+
+const configKeyTrustedWorkspace = 'cSpell.trustedWorkspace' as const satisfies keyof VSConfigAdvanced;
 
 type FsPath = string;
 export interface SettingsVSCode {
@@ -129,6 +132,8 @@ export class DocumentSettings {
     private _version = 0;
     private gitIgnore = new GitIgnore();
     private loader = getDefaultConfigLoader();
+    private isTrusted: boolean | undefined;
+    private pIsTrusted: Promise<boolean> | undefined;
 
     constructor(
         readonly connection: Connection,
@@ -225,6 +230,7 @@ export class DocumentSettings {
 
     async resetSettings(): Promise<void> {
         log('resetSettings');
+        this.pIsTrusted = undefined;
         const waitFor = clearCachedFiles();
         this.valuesToClearOnReset.forEach((fn) => fn());
         this._version += 1;
@@ -382,6 +388,7 @@ export class DocumentSettings {
 
     private async _fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
         try {
+            await this.determineIsTrusted();
             return await this.__fetchSettingsForUri(docUri);
         } catch (e) {
             // console.error('fetchSettingsForUri: %s %s', docUri, e);
@@ -488,6 +495,22 @@ export class DocumentSettings {
         const lazy = createLazyValue(loader);
         this.valuesToClearOnReset.push(() => lazy.clear());
         return lazy;
+    }
+
+    private determineIsTrusted(): Promise<boolean> {
+        if (this.pIsTrusted !== undefined) return this.pIsTrusted;
+        this.pIsTrusted = this._determineIsTrusted();
+        return this.pIsTrusted;
+    }
+
+    private async _determineIsTrusted(): Promise<boolean> {
+        const isTrusted = await this.connection.workspace.getConfiguration(configKeyTrustedWorkspace);
+        log(`isTrusted: ${JSON.stringify(isTrusted)}`);
+        this.isTrusted = !!isTrusted;
+        if (this.loader.isTrusted !== this.isTrusted) {
+            this.loader.setIsTrusted(this.isTrusted);
+        }
+        return this.isTrusted;
     }
 }
 

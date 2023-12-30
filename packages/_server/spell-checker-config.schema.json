@@ -65,6 +65,14 @@
           "scope": "window",
           "title": "Set Logging Level",
           "type": "string"
+        },
+        "cSpell.trustedWorkspace": {
+          "default": true,
+          "description": "Enable loading JavaScript CSpell configuration files.\n\nThis setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace, but a setting of `true` in an untrusted workspace will be ignored.\n\nSee:\n- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)\n- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)",
+          "markdownDescription": "Enable loading JavaScript CSpell configuration files.\n\nThis setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,\nbut a setting of `true` in an untrusted workspace will be ignored.\n\nSee:\n- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)\n- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)",
+          "scope": "window",
+          "type": "boolean",
+          "version": "4.0.0"
         }
       },
       "title": "Advanced",
