@@ -23,7 +23,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         readonly context: vscode.ExtensionContext,
         readonly client: CSpellClient,
     ) {
-        this.enabled = context.globalState.get(SpellingExclusionsDecorator.workspaceStateKey, false);
+        this.enabled = context.globalState.get(SpellingExclusionsDecorator.globalStateKey, false);
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
@@ -43,7 +43,8 @@ export class SpellingExclusionsDecorator implements Disposable {
     }
 
     set enabled(value: boolean) {
-        this.context.globalState.update(SpellingExclusionsDecorator.workspaceStateKey, this.enabled);
+        this.context.globalState.update(SpellingExclusionsDecorator.globalStateKey, this.enabled);
+        // console.error('globalState.keys %o', this.context.globalState.keys());
         if (this._enabled === value) return;
         this._enabled = value;
         this.resetDecorator();
@@ -186,7 +187,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         };
     }
 
-    static workspaceStateKey = 'showTrace';
+    static globalStateKey = 'showTrace';
 }
 
 const regExpUri = /^([a-z-]{2,}):\/\//i;
