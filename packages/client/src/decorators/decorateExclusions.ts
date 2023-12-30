@@ -22,7 +22,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         readonly context: vscode.ExtensionContext,
         readonly client: CSpellClient,
     ) {
-        this._enabled = context.workspaceState.get(SpellingExclusionsDecorator.workspaceStateKey, false);
+        this._enabled = context.globalState.get(SpellingExclusionsDecorator.workspaceStateKey, false);
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
@@ -49,7 +49,7 @@ export class SpellingExclusionsDecorator implements Disposable {
 
     toggleEnabled() {
         this.enabled = !this.enabled;
-        this.context.workspaceState.update(SpellingExclusionsDecorator.workspaceStateKey, this.enabled);
+        this.context.globalState.update(SpellingExclusionsDecorator.workspaceStateKey, this.enabled);
     }
 
     private refreshEditor(editor?: vscode.TextEditor | undefined) {
