@@ -71,7 +71,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
-    decoratorExclusions.enabled = true;
     activateIssueViewer(context, issueTracker, client);
 
     const extensionCommand: InjectableCommandHandlers = {

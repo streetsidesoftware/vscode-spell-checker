@@ -51,6 +51,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     suggestionsTimeout: 'suggestionsTimeout',
     useLocallyInstalledCSpellDictionaries: 'useLocallyInstalledCSpellDictionaries',
     workspaceRootPath: 'workspaceRootPath',
+    trustedWorkspace: 'trustedWorkspace',
     decorateIssues: 'decorateIssues',
     textDecoration: 'textDecoration',
     textDecorationLine: 'textDecorationLine',

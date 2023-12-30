@@ -1749,13 +1749,14 @@ Version
 
 # Advanced
 
-| Setting                                                                                                          | Scope                | Description                                      |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------ |
-| [`cSpell.advanced.feature.useReferenceProviderRemove`](#cspelladvancedfeatureusereferenceproviderremove)         | language-overridable | Remove Matching Characters Before Rename         |
-| [`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename) | language-overridable | Use Reference Provider During Rename             |
-| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                                   | language-overridable | Use Rename Provider when fixing spelling issues. |
-| [`cSpell.logFile`](#cspelllogfile)                                                                               | window               | Write Logs to a File                             |
-| [`cSpell.logLevel`](#cspellloglevel)                                                                             | window               | Set Logging Level                                |
+| Setting                                                                                                          | Scope                | Description                                           |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------- |
+| [`cSpell.advanced.feature.useReferenceProviderRemove`](#cspelladvancedfeatureusereferenceproviderremove)         | language-overridable | Remove Matching Characters Before Rename              |
+| [`cSpell.advanced.feature.useReferenceProviderWithRename`](#cspelladvancedfeatureusereferenceproviderwithrename) | language-overridable | Use Reference Provider During Rename                  |
+| [`cSpell.fixSpellingWithRenameProvider`](#cspellfixspellingwithrenameprovider)                                   | language-overridable | Use Rename Provider when fixing spelling issues.      |
+| [`cSpell.logFile`](#cspelllogfile)                                                                               | window               | Write Logs to a File                                  |
+| [`cSpell.logLevel`](#cspellloglevel)                                                                             | window               | Set Logging Level                                     |
+| [`cSpell.trustedWorkspace`](#cspelltrustedworkspace)                                                             | window               | Enable loading JavaScript CSpell configuration files. |
 
 ## Definitions
 
@@ -1867,6 +1868,35 @@ Description
 
 Default
 : _`"Error"`_
+
+---
+
+### `cSpell.trustedWorkspace`
+
+Name
+: `cSpell.trustedWorkspace`
+
+Type
+: boolean
+
+Scope
+: window
+
+Description
+: Enable loading JavaScript CSpell configuration files.
+
+    This setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,
+    but a setting of `true` in an untrusted workspace will be ignored.
+
+    See:
+    - [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
+    - [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
+
+Default
+: _`true`_
+
+Version
+: 4.0.0
 
 ---
 

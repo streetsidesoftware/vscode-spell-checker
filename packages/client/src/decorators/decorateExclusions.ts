@@ -5,6 +5,7 @@ import vscode from 'vscode';
 import type { CSpellClient } from '../client';
 import type { Disposable } from '../disposable';
 import { createEmitter, map, pipe, throttle } from '../Subscribables';
+import { logError } from '../util/errors';
 
 const ignoreSchemes: Record<string, boolean> = {
     output: true,
@@ -22,7 +23,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         readonly context: vscode.ExtensionContext,
         readonly client: CSpellClient,
     ) {
-        this._enabled = context.workspaceState.get(SpellingExclusionsDecorator.workspaceStateKey, false);
+        this.enabled = context.globalState.get(SpellingExclusionsDecorator.globalStateKey, false);
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
@@ -42,6 +43,8 @@ export class SpellingExclusionsDecorator implements Disposable {
     }
 
     set enabled(value: boolean) {
+        this.context.globalState.update(SpellingExclusionsDecorator.globalStateKey, this.enabled);
+        // console.error('globalState.keys %o', this.context.globalState.keys());
         if (this._enabled === value) return;
         this._enabled = value;
         this.resetDecorator();
@@ -49,7 +52,6 @@ export class SpellingExclusionsDecorator implements Disposable {
 
     toggleEnabled() {
         this.enabled = !this.enabled;
-        this.context.workspaceState.update(SpellingExclusionsDecorator.workspaceStateKey, this.enabled);
     }
 
     private refreshEditor(editor?: vscode.TextEditor | undefined) {
@@ -134,7 +136,7 @@ export class SpellingExclusionsDecorator implements Disposable {
             editor.setDecorations(this.decorationType, decorations);
         } catch (err) {
             editor.setDecorations(this.decorationType, []);
-            console.error(err);
+            logError(err, 'Failed to update decorations');
         }
     }
 
@@ -185,7 +187,7 @@ export class SpellingExclusionsDecorator implements Disposable {
         };
     }
 
-    static workspaceStateKey = 'showTrace';
+    static globalStateKey = 'showTrace';
 }
 
 const regExpUri = /^([a-z-]{2,}):\/\//i;
