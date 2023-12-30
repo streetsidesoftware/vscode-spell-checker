@@ -4,7 +4,7 @@ import { getDefaultSettings } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
+import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
 import { createMockServerSideApi } from '../test/test.api.js';
@@ -438,7 +438,24 @@ describe('Validate DocumentSettings', () => {
     });
 
     function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
-        return new DocumentSettings({} as Connection, createMockServerSideApi(), defaultSettings);
+        const connection = createMockConnection();
+        const mockWorkspaceGetConfiguration = vi.mocked(connection.workspace.getConfiguration);
+        mockWorkspaceGetConfiguration.mockImplementation(implGetConfiguration);
+        return new DocumentSettings(connection, createMockServerSideApi(), defaultSettings);
+    }
+
+    function implGetConfiguration(): Promise<any>;
+    function implGetConfiguration(section: string): Promise<any>;
+    function implGetConfiguration(section: ConfigurationItem): Promise<any>;
+    function implGetConfiguration(section: ConfigurationItem[]): Promise<any[]>;
+    function implGetConfiguration(section?: string | ConfigurationItem | ConfigurationItem[]): Promise<any> {
+        const sec =
+            typeof section == 'string' ? section : !section ? undefined : Array.isArray(section) ? section[0].section : section.section;
+        if (sec === 'cSpell.trustedWorkspace') {
+            return Promise.resolve(true);
+        }
+
+        return Promise.resolve(undefined);
     }
 });
 
@@ -494,4 +511,36 @@ function shortPathName(file: string | Uri): string {
     const uri = filePathToUri(file);
     const parts = uri.toString().split('/');
     return parts.slice(-2).join('/');
+}
+
+function createMockConnection(): Connection {
+    const jest = vi;
+
+    return {
+        listen: jest.fn(),
+        onInitialize: jest.fn(),
+        onInitialized: jest.fn(),
+        onDidChangeConfiguration: jest.fn(),
+        onDidChangeWatchedFiles: jest.fn(),
+        onShutdown: jest.fn(),
+        sendNotification: jest.fn() as unknown as Connection['sendNotification'],
+        sendRequest: jest.fn() as unknown as Connection['sendRequest'],
+        onRequest: jest.fn() as unknown as Connection['onRequest'],
+        onNotification: jest.fn() as unknown as Connection['onNotification'],
+        dispose: jest.fn(),
+        window: {
+            connection: {} as Connection,
+            initialize: jest.fn(),
+            fillServerCapabilities: jest.fn(),
+            showErrorMessage: jest.fn(),
+            showInformationMessage: jest.fn(),
+            showWarningMessage: jest.fn(),
+            attachWorkDoneProgress: jest.fn(),
+            createWorkDoneProgress: jest.fn(),
+            showDocument: jest.fn(),
+        },
+        workspace: {
+            getConfiguration: jest.fn(),
+        } as unknown as Connection['workspace'],
+    } as unknown as Connection;
 }
