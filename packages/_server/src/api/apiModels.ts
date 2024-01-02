@@ -218,7 +218,8 @@ export interface TraceWordRequest {
     uri: DocumentUri;
     word: string;
 }
-export interface WordTrace {
+
+export interface Trace {
     word: string;
     found: boolean;
     foundWord: string | undefined;
@@ -229,7 +230,20 @@ export interface WordTrace {
     errors: string | undefined;
 }
 
+export interface TraceWordFound {
+    word: string;
+    found: boolean;
+}
+
+export interface WordTrace extends TraceWordFound {
+    traces: readonly Trace[];
+}
+
 export interface TraceWordResult {
-    traces?: WordTrace[] | undefined;
+    word: string;
+    /** the word traces. */
+    traces?: readonly WordTrace[] | undefined;
+    /** The split word results */
+    splits?: readonly TraceWordFound[];
     errors?: string | undefined;
 }

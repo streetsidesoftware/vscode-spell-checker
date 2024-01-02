@@ -1,2 +1,2 @@
-export { SpellingExclusionsDecorator } from './decorators/decorateExclusions.js';
+export { SpellingExclusionsDecorator } from './decorators/traceDecorations.js';
 export { SpellingIssueDecorator } from './decorators/decorateIssues.js';

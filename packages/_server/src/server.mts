@@ -51,6 +51,7 @@ import { createProgressNotifier } from './progressNotifier.mjs';
 import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
+import { traceWord } from './trace.js';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
@@ -409,10 +410,8 @@ export function run(): void {
         const { word, uri } = req;
         log(`_handleGetWordTrace "${word}"`, uri);
         const doc = documents.get(uri);
-        if (!doc) return { errors: 'Document Not Found.' };
-        const docVal = await docValidationController.getDocumentValidator(doc);
-        const traces = docVal.traceWord(word).map((t) => ({ ...t, errors: errorsToString(t.errors) }));
-        return { traces };
+        if (!doc) return { word, errors: 'Document Not Found.' };
+        return traceWord(docValidationController, doc, word);
     }
 
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
@@ -730,9 +729,4 @@ interface OnChangeParam extends DidChangeConfigurationParams {
 interface DocSettingPair {
     doc: TextDocument;
     settings: CSpellUserSettings;
-}
-
-function errorsToString(errors: Error[] | undefined): string | undefined {
-    if (!errors || !errors.length) return undefined;
-    return errors.map((e) => e.message).join('\n');
 }

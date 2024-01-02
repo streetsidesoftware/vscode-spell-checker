@@ -65,7 +65,7 @@ export function mockHandlers(): ServerSideHandlers {
             splitTextIntoWords: vi.fn(() => ({ words: [] })),
             spellingSuggestions: vi.fn(() => ({ suggestions: [] })),
             getSpellCheckingOffsets: vi.fn(() => ({ offsets: [] })),
-            traceWord: vi.fn(() => ({ traces: [] })),
+            traceWord: vi.fn((req) => ({ word: req.word, traces: [] })),
         },
     };
 }
