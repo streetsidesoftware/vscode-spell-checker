@@ -150,7 +150,7 @@ export class SpellingExclusionsDecorator implements Disposable {
                 const word = doc.getText(range);
                 const traceResult = await this.client.serverApi.traceWord({ uri: doc.uri.toString(), word });
                 const hoverMessage = new vscode.MarkdownString();
-                hoverMessage.appendMarkdown('**Trace:** ').appendText(word + '\n');
+                hoverMessage.appendMarkdown('### Trace:\n');
                 hoverMessage.isTrusted = true;
                 hoverMessage.baseUri = doc.uri;
                 hoverMessage.supportThemeIcons = true;
@@ -158,24 +158,26 @@ export class SpellingExclusionsDecorator implements Disposable {
                     hoverMessage.appendMarkdown('**Errors:** ').appendText(traceResult.errors + '\n');
                 }
                 if (traceResult.traces) {
-                    const found = traceResult.traces.filter((t) => t.found);
-                    if (!found.length) {
-                        hoverMessage.appendMarkdown('**Not Found**\n');
-                    }
+                    for (const wordTrace of traceResult.traces) {
+                        const found = wordTrace.traces.filter((t) => t.found);
+                        const word = wordTrace.word;
+                        hoverMessage.appendMarkdown(`**\`${word.replace(/`/g, "'")}\`:** ${wordTrace.found ? 'Found' : 'Not Found'}\n`);
 
-                    for (const trace of found) {
-                        if (isUrlLike(trace.dictSource || '') && !trace.dictSource.includes('node_modules')) {
-                            hoverMessage
-                                .appendMarkdown('- $(book) [')
-                                .appendText(trace.dictName)
-                                .appendMarkdown('](')
-                                .appendText(trace.dictSource)
-                                .appendMarkdown(')');
-                        } else {
-                            hoverMessage.appendMarkdown('- $(book) _').appendText(trace.dictName).appendMarkdown('_');
-                        }
-                        if (trace.foundWord && trace.foundWord !== word) {
-                            hoverMessage.appendMarkdown(' **').appendText(trace.foundWord.trim()).appendMarkdown('**');
+                        for (const trace of found) {
+                            if (isUrlLike(trace.dictSource || '') && !trace.dictSource.includes('node_modules')) {
+                                hoverMessage
+                                    .appendMarkdown('- $(book) [')
+                                    .appendText(trace.dictName)
+                                    .appendMarkdown('](')
+                                    .appendText(trace.dictSource)
+                                    .appendMarkdown(')');
+                            } else {
+                                hoverMessage.appendMarkdown('- $(book) _').appendText(trace.dictName).appendMarkdown('_');
+                            }
+                            if (trace.foundWord && trace.foundWord !== word) {
+                                hoverMessage.appendMarkdown(' **').appendText(trace.foundWord.trim()).appendMarkdown('**');
+                            }
+                            hoverMessage.appendMarkdown('\n');
                         }
                         hoverMessage.appendMarkdown('\n');
                     }
