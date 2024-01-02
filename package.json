@@ -3372,9 +3372,9 @@
     "@types/node": "^18.19.4",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.4",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "@vitest/coverage-istanbul": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "@vitest/coverage-istanbul": "^1.1.1",
     "@vscode/vsce": "^2.22.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
@@ -3383,7 +3383,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-jest": "^27.6.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-promise": "^6.1.1",
@@ -3402,13 +3402,13 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
-    "vitest": "^1.1.0"
+    "vitest": "^1.1.1"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.3.1",
-    "@cspell/cspell-types": "^8.3.1",
+    "@cspell/cspell-bundled-dicts": "^8.3.2",
+    "@cspell/cspell-types": "^8.3.2",
     "@types/react": "^17.0.74",
-    "cspell": "^8.3.1",
+    "cspell": "^8.3.2",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
