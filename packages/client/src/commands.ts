@@ -166,9 +166,9 @@ export const commandHandlers = {
     'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
     'cSpell.issueViewer.item.addWordToDictionary': handlerResolvedLater,
 
-    'cSpell.issuesViewByFile.item.openSuggestionsForIssue': handlerResolvedLater,
-    'cSpell.issuesViewByFile.item.autoFixSpellingIssues': handlerResolvedLater,
-    'cSpell.issuesViewByFile.item.addWordToDictionary': handlerResolvedLater,
+    // 'cSpell.issuesViewByFile.item.openSuggestionsForIssue': handlerResolvedLater,
+    // 'cSpell.issuesViewByFile.item.autoFixSpellingIssues': handlerResolvedLater,
+    // 'cSpell.issuesViewByFile.item.addWordToDictionary': handlerResolvedLater,
 
     'cSpell.insertDisableNextLineDirective': handleInsertDisableNextLineDirective,
     'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,
@@ -539,7 +539,7 @@ async function handleSelectRange(uri?: Uri, range?: Range, cursorAtStart?: boole
             const nbRange = new NotebookRange(cell.index, cell.index + 1);
             await window.showNotebookDocument(notebook, { selections: [nbRange] });
         }
-        const editor = await window.showTextDocument(uri);
+        const editor = await window.showTextDocument(uri, { selection: range });
         editor.selection = cursorAtStart ? new Selection(range.end, range.start) : new Selection(range.start, range.end);
     } catch (e) {
         logError(format('Error: handleSelectRange', e), uri.toString());
