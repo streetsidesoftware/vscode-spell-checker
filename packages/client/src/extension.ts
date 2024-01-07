@@ -15,7 +15,7 @@ import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
 import * as settingsViewer from './infoViewer/infoView';
 import { IssueTracker } from './issueTracker';
-import { activateIssueViewer } from './issueViewer';
+import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer';
 import * as modules from './modules';
 import type { ConfigTargetLegacy } from './settings';
 import * as settings from './settings';
@@ -72,6 +72,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const decorator = new SpellingIssueDecorator(issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
     activateIssueViewer(context, issueTracker, client);
+    activateFileIssuesViewer(context, issueTracker, client);
 
     const extensionCommand: InjectableCommandHandlers = {
         'cSpell.toggleTraceMode': () => decoratorExclusions.toggleEnabled(),

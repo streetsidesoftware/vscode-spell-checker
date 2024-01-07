@@ -1,3 +1,5 @@
+import { logError } from '@internal/common-utils/log';
+import { format } from 'util';
 import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit, Uri } from 'vscode';
 import { commands, FileType, Position, Range, Selection, SnippetString, TextEditorRevealType, window, workspace } from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
@@ -151,6 +153,10 @@ export const commandHandlers = {
     'cSpell.issueViewer.item.openSuggestionsForIssue': handlerResolvedLater,
     'cSpell.issueViewer.item.autoFixSpellingIssues': handlerResolvedLater,
     'cSpell.issueViewer.item.addWordToDictionary': handlerResolvedLater,
+
+    'cSpell.issuesViewByFile.item.openSuggestionsForIssue': handlerResolvedLater,
+    'cSpell.issuesViewByFile.item.autoFixSpellingIssues': handlerResolvedLater,
+    'cSpell.issuesViewByFile.item.addWordToDictionary': handlerResolvedLater,
 
     'cSpell.insertDisableNextLineDirective': handleInsertDisableNextLineDirective,
     'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,
@@ -513,7 +519,11 @@ async function handleSelectRange(uri?: Uri, range?: Range): Promise<void> {
     // if (!editor) return;
     // editor.revealRange(range);
     // editor.selection = new Selection(range.start, range.end);
-    await window.showTextDocument(uri, { selection: range });
+    try {
+        await window.showTextDocument(uri, { selection: range });
+    } catch (e) {
+        logError(format('handleSelectRange', e));
+    }
 }
 
 const snippedBlockCommentStart = '${BLOCK_COMMENT_START/^(<!--)$/$1-/}';

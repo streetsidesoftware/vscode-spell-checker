@@ -165,7 +165,7 @@ export class DocumentSettings {
     }
 
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
-        const _uri = handleSpecialUri(uri);
+        const _uri = handleSpecialUri(uri, await this.getRootUri());
         const settings = await this.fetchSettingsForUri(_uri.toString());
         const ie = calcIncludeExclude(settings, _uri);
         const ignoredEx = await this._isGitIgnoredEx(settings, _uri);
@@ -240,6 +240,13 @@ export class DocumentSettings {
 
     get folders(): Promise<WorkspaceFolder[]> {
         return this._folders();
+    }
+
+    async getRootUri(): Promise<Uri> {
+        const folders = await this.folders;
+        if (!folders.length) return Uri.parse(defaultRootUri);
+        const urls = folders.map((f) => new URL(f.uri)).sort((a, b) => a.pathname.length - b.pathname.length);
+        return Uri.parse(urls[0].href);
     }
 
     private async _importSettings() {
@@ -405,7 +412,7 @@ export class DocumentSettings {
     private async __fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
         log(`__fetchSettingsForUri: URI ${docUri}`);
         const uri = (docUri && Uri.parse(docUri)) || undefined;
-        const uriSpecial = uri && handleSpecialUri(uri);
+        const uriSpecial = uri && handleSpecialUri(uri, await this.getRootUri());
         if (uriSpecial && uri !== uriSpecial) {
             return this.fetchSettingsForUri(uriSpecial.toString());
         }

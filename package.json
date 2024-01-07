@@ -200,15 +200,23 @@
           "title": "Spell Checker",
           "icon": "resources/dark/check_circle.svg"
         }
+      ],
+      "panel": [
+        {
+          "id": "cspellPanel",
+          "title": "Spell Checker",
+          "icon": "resources/dark/check_circle.svg"
+        }
       ]
+    },
+    "icons": {
+      "cspell-issues": {
+        "description": "cspell-issues lightbulb icon",
+        "default": "lightbulb"
+      }
     },
     "views": {
       "cspell-info-explorer": [
-        {
-          "type": "tree",
-          "id": "cspell-info.issuesView",
-          "name": "Issues"
-        },
         {
           "type": "webview",
           "id": "cspell-info.infoView",
@@ -216,15 +224,29 @@
           "when": "config.cSpell.experimental.enableSettingsViewerV2"
         },
         {
-          "type": "webview",
-          "id": "cspell-info.todoView",
-          "name": "Spell Checker Todos",
-          "when": "config.cSpell.experimental.enableSettingsViewerV2"
-        },
-        {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
           "when": "config.cSpell.experimental.enableRegexpView"
+        }
+      ],
+      "cspellPanel": [
+        {
+          "type": "tree",
+          "id": "cspell.issuesViewByFile",
+          "name": "File Issues",
+          "contextualTitle": "Spell Checker",
+          "icon": "$(lightbulb)",
+          "initialSize": 4,
+          "visibility": "visible"
+        },
+        {
+          "type": "tree",
+          "id": "cspell-info.issuesView",
+          "name": "Issues",
+          "contextualTitle": "Spell Checker",
+          "icon": "$(lightbulb)",
+          "initialSize": 1,
+          "visibility": "visible"
         }
       ]
     },

@@ -1,4 +1,4 @@
-import { log, logDebug } from '@internal/common-utils/log';
+import { log, logDebug, logError } from '@internal/common-utils/log';
 import { capitalize } from '@internal/common-utils/util';
 import type { SpellingDictionary } from 'cspell-lib';
 import { constructSettingsForText, getDictionary, IssueType, Text } from 'cspell-lib';
@@ -115,9 +115,16 @@ class CodeActionHandler {
             textDocument,
         };
 
-        return eslintSpellCheckerDiags.length
-            ? this.handlerESLint({ ...ctx, diags: eslintSpellCheckerDiags })
-            : this.handlerCSpell({ ...ctx, diags: spellCheckerDiags });
+        try {
+            const actions = eslintSpellCheckerDiags.length
+                ? await this.handlerESLint({ ...ctx, diags: eslintSpellCheckerDiags })
+                : await this.handlerCSpell({ ...ctx, diags: spellCheckerDiags });
+            // log(format('CodeAction Result: %o', actions), uri);
+            return actions;
+        } catch (e) {
+            logError(format('CodeAction Error', e), uri);
+            return [];
+        }
     }
 
     private async handlerCSpell(handlerContext: CodeActionHandlerContext) {
@@ -145,7 +152,6 @@ class CodeActionHandler {
         };
 
         async function genCodeActionsForSuggestions(_dictionary: SpellingDictionary) {
-            log('CodeAction generate suggestions');
             let isSpellingIssue: boolean | undefined;
             let diagWord: string | undefined;
             for (const diag of spellCheckerDiags) {
@@ -180,7 +186,15 @@ class CodeActionHandler {
             return actions;
         }
 
-        return genCodeActionsForSuggestions(dictionary);
+        try {
+            log('CodeAction generate suggestions', uri);
+            return await genCodeActionsForSuggestions(dictionary);
+        } catch (e) {
+            logError(format('CodeAction generate suggestions Error', e), uri);
+            return [];
+        } finally {
+            log('CodeAction generate suggestions Done.', uri);
+        }
     }
 
     private async handlerESLint(handlerContext: CodeActionHandlerContext): Promise<CodeAction[]> {
