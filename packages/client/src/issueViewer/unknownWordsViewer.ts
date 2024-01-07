@@ -8,7 +8,7 @@ import type { CSpellClient } from '../client';
 import { commandHandlers, knownCommands } from '../commands';
 import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
 import { createEmitter } from '../Subscribables';
-import { findNotebookCellForDocument, findConicalDocument } from '../util/documentUri';
+import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
 import { findTextDocument } from '../util/findEditor';
 
@@ -317,7 +317,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         item.command = {
             title: 'Goto Issue',
             command: knownCommands['cSpell.selectRange'],
-            arguments: [this.doc.uri, this.diag.range],
+            arguments: [this.doc.uri, this.diag.range, true],
         };
         item.contextValue = 'issue.location';
         return item;

@@ -1,7 +1,18 @@
 import { logError } from '@internal/common-utils/log';
 import { format } from 'util';
 import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit, Uri } from 'vscode';
-import { commands, FileType, Position, Range, Selection, SnippetString, TextEditorRevealType, window, workspace } from 'vscode';
+import {
+    commands,
+    FileType,
+    NotebookRange,
+    Position,
+    Range,
+    Selection,
+    SnippetString,
+    TextEditorRevealType,
+    window,
+    workspace,
+} from 'vscode';
 import type { Position as LsPosition, Range as LsRange, TextEdit as LsTextEdit } from 'vscode-languageclient/node';
 
 import { addWordToFolderDictionary, addWordToTarget, addWordToUserDictionary, addWordToWorkspaceDictionary, fnWTarget } from './addWords';
@@ -47,6 +58,7 @@ import {
     configurationTargetToDictionaryScope,
     dictionaryScopeToConfigurationTarget,
 } from './settings/targetAndScope';
+import { findNotebookCell } from './util/documentUri';
 import { catchErrors, handleErrors } from './util/errors';
 import { performance, toMilliseconds } from './util/perf';
 import { pVoid } from './util/pVoid';
@@ -513,16 +525,24 @@ function toLsTextEdit(edit: LsTextEdit | TextEdit): LsTextEdit {
     };
 }
 
-async function handleSelectRange(uri?: Uri, range?: Range): Promise<void> {
+async function handleSelectRange(uri?: Uri, range?: Range, cursorAtStart?: boolean): Promise<void> {
     if (!uri || !range) return;
     // const editor = findEditor(uri);
     // if (!editor) return;
     // editor.revealRange(range);
     // editor.selection = new Selection(range.start, range.end);
     try {
-        await window.showTextDocument(uri, { selection: range });
+        const cell = findNotebookCell(uri);
+        if (cell) {
+            const notebook = cell.notebook;
+            if (cell.index < 0) return;
+            const nbRange = new NotebookRange(cell.index, cell.index + 1);
+            await window.showNotebookDocument(notebook, { selections: [nbRange] });
+        }
+        const editor = await window.showTextDocument(uri);
+        editor.selection = cursorAtStart ? new Selection(range.end, range.start) : new Selection(range.start, range.end);
     } catch (e) {
-        logError(format('handleSelectRange', e));
+        logError(format('Error: handleSelectRange', e), uri.toString());
     }
 }
 
