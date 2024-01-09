@@ -110,9 +110,9 @@ class IssueExplorerByFile {
          */
         const reveal = async () => {
             if (end !== start) {
-                await this.treeView.reveal(end, { select: false, focus: false });
+                await this.treeView.reveal(end, { select: false, focus: false, expand: true });
             }
-            await this.treeView.reveal(start, { select: true, focus: false });
+            await this.treeView.reveal(start, { select: true, focus: false, expand: true });
         };
 
         return logErrors(reveal(), 'IssueExplorerByFile.revealItem');
