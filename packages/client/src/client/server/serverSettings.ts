@@ -38,6 +38,11 @@ export function extractDictionariesByLocaleLanguageSettings(langSettings: Langua
     return mapOfDict;
 }
 
+/**
+ * Groups the dictionaries by name. If two dictionaries have the same name, the last one wins.
+ * @param config - cspell configuration
+ * @returns dictionary definitions grouped by name.
+ */
 export function extractDictionariesGroupByName(config: CSpellUserSettings): Map<string, DictionaryDefinition> {
     return new Map(config.dictionaryDefinitions?.map((def) => [def.name, def]) || []);
 }
