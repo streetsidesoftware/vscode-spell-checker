@@ -1,3 +1,5 @@
+import { logger } from '@internal/common-utils/log';
+import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
@@ -33,10 +35,12 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     performance.mark('cspell_activate_start');
 
     // await settingsViewerActivate(context);
+    const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
+    const dLogger = bindLoggerToOutput(logOutput);
 
     // Get the cSpell Client
     const client = await CSpellClient.create(context);
-    context.subscriptions.push(client);
+    context.subscriptions.push(client, logOutput, dLogger);
 
     di.set('client', client);
     di.set('extensionContext', context);
@@ -206,6 +210,22 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     performance.mark('cspell_activate_end');
     performance.measure('cspell_activation', 'cspell_activate_start', 'cspell_activate_end');
     return server;
+}
+
+function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposable {
+    const disposableList = createDisposableList();
+
+    const console = {
+        log: (msg: string) => logOutput.info(msg),
+        error: (msg: string) => logOutput.error(msg),
+        info: (msg: string) => logOutput.info(msg),
+        warn: (msg: string) => logOutput.warn(msg),
+        debug: (msg: string) => logOutput.debug(msg),
+    };
+    logger.setConnection({ console, onExit: (fn) => disposableList.push(fn) });
+    logger.logTime = false;
+    logger.logSequence = false;
+    return disposableList;
 }
 
 performance.mark('cspell_done_load');

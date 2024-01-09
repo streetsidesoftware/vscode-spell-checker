@@ -1,4 +1,4 @@
-import { groupByField } from '@internal/common-utils';
+import { groupByField, logDebug } from '@internal/common-utils';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
 import * as vscode from 'vscode';
@@ -43,6 +43,7 @@ class IssueExplorerByFile {
             setMessage: (msg) => {
                 this.treeView.message = msg;
             },
+            onDidUpdate: () => this.onDidUpdate(),
         });
         this.treeDataProvider = treeDataProvider;
         this.treeView = vscode.window.createTreeView(IssueExplorerByFile.viewID, { treeDataProvider, showCollapseAll: true });
@@ -50,7 +51,7 @@ class IssueExplorerByFile {
             this.treeView,
             vscode.window.onDidChangeActiveTextEditor((e) => this.onDidChangeActiveTextEditor(e)),
             vscode.window.onDidChangeActiveNotebookEditor((e) => this.onDidChangeActiveNotebookEditor(e)),
-            // vscode.window.onDidChangeTextEditorVisibleRanges((e) => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
+            vscode.window.onDidChangeTextEditorVisibleRanges((e) => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
             vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
                 this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges),
             ),
@@ -91,7 +92,7 @@ class IssueExplorerByFile {
         return this.revealItems(itemsToReveal);
     }
 
-    private findElementsToReveal(document: TextDocument, ranges: readonly Range[]): IssueTreeItemBase[] | undefined {
+    private findElementsToReveal(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
         if (!this.treeView.visible) return;
         // if (!_ranges.length) return;
         return this.treeDataProvider.findMatchingItems(document, ranges);
@@ -119,7 +120,16 @@ class IssueExplorerByFile {
     }
 
     private adjustRevel(document: TextDocument, ranges: readonly Range[]) {
-        return this.revealItems(this.findElementsToReveal(document, ranges));
+        const allItems = this.findElementsToReveal(document, undefined);
+        const items = this.findElementsToReveal(document, ranges);
+        const pReveal = this.revealItems(allItems)?.then(() => this.revealItems(items));
+        return pReveal && logErrors(pReveal, 'IssueExplorerByFile.adjustRevel');
+    }
+
+    /** The tree data has updated */
+    private onDidUpdate() {
+        logDebug('IssueExplorerByFile.onDidUpdate', vscode.window.activeTextEditor?.document.uri.toString());
+        this.onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
     }
 
     readonly dispose = this.disposeList.dispose;
@@ -142,6 +152,8 @@ interface ProviderOptions {
     client: CSpellClient;
     setMessage(msg: string | undefined): void;
     setDescription(des: string | undefined): void;
+    /** This function is called after the children have been generated. */
+    onDidUpdate(): void;
 }
 
 class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
@@ -177,6 +189,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         };
         this.children = collectIssuesByFile(context);
         this.updateMessage(this.children.length ? undefined : 'No issues found...');
+        setTimeout(() => this.options.onDidUpdate(), 10);
         return this.children;
     }
 
@@ -226,7 +239,13 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     //     logErrors(vscode.commands.executeCommand('setContext', 'cspell-info.issueViewer', context), 'updateVSCodeContext');
     // }
 
-    findMatchingItems(document: TextDocument, ranges: readonly Range[]): IssueTreeItemBase[] | undefined {
+    /**
+     * Find the issue items that match the document and ranges.
+     * @param document - document to match
+     * @param ranges - ranges to match, if undefined, then all items are returned that match the document.
+     * @returns matching items or undefined if no matches.
+     */
+    findMatchingItems(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
         if (!this.children) return undefined;
         for (const child of this.children) {
             const item = child.findMatchingIssues(document, ranges);
@@ -249,7 +268,7 @@ abstract class IssueTreeItemBase {
     abstract getTreeItem(): TreeItem | Promise<TreeItem>;
     abstract getChildren(): ProviderResult<IssueTreeItemBase[]>;
     abstract getParent(): ProviderResult<IssueTreeItemBase>;
-    abstract findMatchingIssues(document: TextDocument, ranges: readonly Range[]): IssueTreeItemBase[] | undefined;
+    abstract findMatchingIssues(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined;
 }
 
 class FileWithIssuesTreeItem extends IssueTreeItemBase {
@@ -283,11 +302,12 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         return undefined;
     }
 
-    findMatchingIssues(document: TextDocument, ranges: readonly Range[]): IssueTreeItemBase[] | undefined {
+    findMatchingIssues(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
         const conical = findConicalDocument(document);
         if (conical !== this.document) return undefined;
         if (!this.children) return undefined;
         const matches = this.children.flatMap((child) => child.findMatchingIssues(document, ranges)).filter(isDefined);
+
         return matches.length ? matches : undefined;
     }
 }
@@ -334,8 +354,9 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         return this.file;
     }
 
-    findMatchingIssues(document: TextDocument, ranges: readonly Range[]): [this] | undefined {
+    findMatchingIssues(document: TextDocument, ranges: readonly Range[] | undefined): [this] | undefined {
         if (this.document.uri.toString() !== document.uri.toString()) return undefined;
+        if (!ranges) return [this];
         for (const range of ranges) {
             if (range.contains(this.range)) return [this];
         }
@@ -402,3 +423,16 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
         }
     }
 }
+
+// function mergeRanges(ranges: readonly Range[]): Range {
+//     if (!ranges.length) {
+//         return new vscode.Range(0, 0, 0, 0);
+//     }
+//     let start = ranges[0].start;
+//     let end = ranges[0].end;
+//     for (const range of ranges) {
+//         start = start.isBeforeOrEqual(range.start) ? start : range.start;
+//         end = end.isAfterOrEqual(range.end) ? end : range.end;
+//     }
+//     return new vscode.Range(start, end);
+// }
