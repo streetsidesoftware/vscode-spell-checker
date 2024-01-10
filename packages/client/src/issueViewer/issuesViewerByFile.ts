@@ -7,7 +7,7 @@ import { TreeItem } from 'vscode';
 import type { CSpellClient } from '../client';
 import { knownCommands } from '../commands';
 import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
-import { createEmitter } from '../Subscribables';
+import { createEmitter, debounce, rx } from '../Subscribables';
 import { isDefined } from '../util';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
@@ -32,6 +32,9 @@ class IssueExplorerByFile {
     private disposeList = createDisposableList();
     private treeView: vscode.TreeView<IssueTreeItemBase>;
     private treeDataProvider: IssuesTreeDataProvider;
+    private pendingReveal: Promise<void> | undefined;
+    private revealEmitter = createEmitter<CalcRevealResult>();
+    private uiEventFnEmitter = createEmitter<() => void>();
 
     constructor(issueTracker: IssueTracker, client: CSpellClient) {
         const treeDataProvider = new IssuesTreeDataProvider({
@@ -49,15 +52,26 @@ class IssueExplorerByFile {
         this.treeView = vscode.window.createTreeView(IssueExplorerByFile.viewID, { treeDataProvider, showCollapseAll: true });
         this.disposeList.push(
             this.treeView,
-            vscode.window.onDidChangeActiveTextEditor((e) => this.onDidChangeActiveTextEditor(e)),
-            vscode.window.onDidChangeActiveNotebookEditor((e) => this.onDidChangeActiveNotebookEditor(e)),
-            vscode.window.onDidChangeTextEditorVisibleRanges((e) => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
-            vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
-                this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges),
+            this.revealEmitter,
+            this.uiEventFnEmitter,
+            rx(this.revealEmitter, debounce(100)).subscribe((calc) => this._handleReveal(calc)),
+            rx(this.uiEventFnEmitter, debounce(1000)).subscribe((fn) => fn()),
+            vscode.window.onDidChangeActiveTextEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e))),
+            vscode.window.onDidChangeActiveNotebookEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e))),
+            vscode.window.onDidChangeTextEditorVisibleRanges((e) =>
+                this._emitUIEvent(() => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
             ),
+            vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
+                this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges)),
+            ),
+            vscode.window.onDidChangeTextEditorSelection((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e.textEditor))),
         );
         this.treeView.title = 'Spelling Issues';
         this.treeView.message = 'No open documents.';
+    }
+
+    private _emitUIEvent(fn: () => void) {
+        this.uiEventFnEmitter.notify(fn);
     }
 
     private onDidChangeActiveTextEditor(editor: vscode.TextEditor | undefined) {
@@ -74,7 +88,7 @@ class IssueExplorerByFile {
         const activeEditors = vscode.window.visibleTextEditors;
         const editorsByDocument = groupByField(activeEditors, 'document');
 
-        const itemsToReveal: IssueTreeItemBase[] = [];
+        const itemsToReveal: CalcRevealResult[] = [];
 
         for (const range of ranges) {
             for (let cellIndex = range.start; cellIndex < range.end; cellIndex++) {
@@ -83,47 +97,76 @@ class IssueExplorerByFile {
                 if (!editors) continue;
                 const ranges = editors.flatMap((e) => e.visibleRanges);
                 const items = this.findElementsToReveal(cell.document, ranges);
-                if (items?.length) {
-                    itemsToReveal.push(...items);
+                if (items) {
+                    itemsToReveal.push(items);
                 }
             }
         }
 
-        return this.revealItems(itemsToReveal);
+        if (!itemsToReveal.length) return;
+
+        const item = itemsToReveal.reduce(
+            (a, b) => {
+                a.top ??= b.top;
+                a.bottom = b.bottom ?? a.bottom;
+                a.closest ??= b.closest;
+                return a;
+            },
+            { ...itemsToReveal[0] },
+        );
+        const middles = itemsToReveal.map((i) => i.middle).filter(isDefined);
+        item.middle = middles[Math.floor(middles.length / 2)];
+
+        return this.revealItems(item);
     }
 
-    private findElementsToReveal(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
+    private findElementsToReveal(document: TextDocument, ranges: readonly Range[] | undefined): CalcRevealResult | undefined {
         if (!this.treeView.visible) return;
-        // if (!_ranges.length) return;
-        return this.treeDataProvider.findMatchingItems(document, ranges);
+        const point = vscode.window.activeTextEditor?.document === document ? vscode.window.activeTextEditor?.selection.active : undefined;
+        // Make sure the point is in the visible ranges.
+        const found = (point && (ranges?.some((range) => range.contains(point)) ?? true)) || undefined;
+        return this.treeDataProvider.calculateReveal(document, ranges, found && point);
     }
 
-    private revealItems(items: IssueTreeItemBase[] | undefined) {
-        if (!items?.length) return;
+    private revealItems(calc: CalcRevealResult | undefined) {
+        if (!calc) return;
+        this.revealEmitter.notify(calc);
+    }
 
-        const start = items[0];
-        const end = items[items.length - 1];
+    private _handleReveal(calc: CalcRevealResult) {
+        if (this.pendingReveal) {
+            // It seems to have take a long time to reveal the items.
+            logDebug('IssueExplorerByFile.handleReveal: pending reveal');
+            // We could re-queue the reveal, but for now, we will just ignore it.
+            // this.revealEmitter.notify(calc);
+            return;
+        }
 
-        /**
-         * Try to show all the elements in the view.
-         * First scroll to the end, then scroll to the start.
-         * This is to ensure that the start is visible.
-         */
-        const reveal = async () => {
-            if (end !== start) {
-                await this.treeView.reveal(end, { select: false, focus: false, expand: true });
-            }
-            await this.treeView.reveal(start, { select: true, focus: false, expand: true });
-        };
+        logErrors(
+            (this.pendingReveal = this._reveal(calc).finally(() => (this.pendingReveal = undefined))),
+            'IssueExplorerByFile.handleReveal',
+        );
+    }
 
-        return logErrors(reveal(), 'IssueExplorerByFile.revealItem');
+    /**
+     * Try to show all the elements in the view.
+     * First scroll to the end, then scroll to the start.
+     * This is to ensure that the start is visible.
+     */
+    private async _reveal(calc: CalcRevealResult) {
+        logDebug('IssueExplorerByFile._reveal');
+        const { top, closest, middle, bottom } = calc;
+        if (bottom && bottom !== top) {
+            await this.treeView.reveal(bottom, { select: false, focus: false, expand: true });
+        }
+        top && (await this.treeView.reveal(top, { select: false, focus: false, expand: true }));
+        middle && (await this.treeView.reveal(middle, { select: true, focus: false, expand: true }));
+        closest && (await this.treeView.reveal(closest, { select: true, focus: false, expand: true }));
     }
 
     private adjustRevel(document: TextDocument, ranges: readonly Range[]) {
-        const allItems = this.findElementsToReveal(document, undefined);
-        const items = this.findElementsToReveal(document, ranges);
-        const pReveal = this.revealItems(allItems)?.then(() => this.revealItems(items));
-        return pReveal && logErrors(pReveal, 'IssueExplorerByFile.adjustRevel');
+        const toReveal = this.findElementsToReveal(document, ranges);
+        this.revealItems(toReveal);
     }
 
     /** The tree data has updated */
@@ -161,7 +204,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     private disposeList = createDisposableList();
     private issueTracker: IssueTracker;
     private client: CSpellClient;
-    private children: IssueTreeItemBase[] | undefined;
+    private children: FileWithIssuesTreeItem[] | undefined;
 
     constructor(private options: ProviderOptions) {
         this.issueTracker = options.issueTracker;
@@ -253,6 +296,20 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         }
     }
 
+    calculateReveal(
+        document: TextDocument,
+        ranges: readonly Range[] | undefined,
+        position: vscode.Position | undefined,
+    ): CalcRevealResult | undefined {
+        if (!this.children) return undefined;
+        for (const child of this.children) {
+            const calc = child.calculateReveal(document, ranges, position);
+            // Each document can be in the list exactly once.
+            if (calc) return calc;
+        }
+        return undefined;
+    }
+
     readonly dispose = this.disposeList.dispose;
 }
 
@@ -263,6 +320,13 @@ const icons = {
     suggestion: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb'),
     suggestionPreferred: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb-autofix'),
 } as const;
+
+interface CalcRevealResult {
+    top: IssueTreeItemBase | undefined;
+    closest: IssueTreeItemBase | undefined;
+    middle: IssueTreeItemBase | undefined;
+    bottom: IssueTreeItemBase | undefined;
+}
 
 abstract class IssueTreeItemBase {
     abstract getTreeItem(): TreeItem | Promise<TreeItem>;
@@ -309,6 +373,30 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         const matches = this.children.flatMap((child) => child.findMatchingIssues(document, ranges)).filter(isDefined);
 
         return matches.length ? matches : undefined;
+    }
+
+    calculateReveal(
+        document: TextDocument,
+        ranges: readonly Range[] | undefined,
+        position: vscode.Position | undefined,
+    ): CalcRevealResult | undefined {
+        const conical = findConicalDocument(document);
+        if (conical !== this.document) return undefined;
+        if (!this.children) return undefined;
+        const matchingChildren = this.children.filter((child) => child.document === document);
+        if (!matchingChildren.length) return undefined;
+        const top = matchingChildren[0];
+        const bottom = matchingChildren[matchingChildren.length - 1];
+        const issuesInRange = ranges
+            ? matchingChildren.filter((child) => ranges.some((range) => range.contains(child.range)))
+            : matchingChildren;
+        const middle = issuesInRange[Math.floor(issuesInRange.length / 2)];
+        const r: CalcRevealResult = { top, middle, closest: undefined, bottom };
+        if (!position) {
+            return r;
+        }
+        r.closest = findClosest(matchingChildren, position);
+        return r;
     }
 }
 
@@ -436,3 +524,29 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
 //     }
 //     return new vscode.Range(start, end);
 // }
+
+function calcDeltaFromRange(range: Range, point: vscode.Position): { dLine: number; dChar: number } {
+    if (range.contains(point)) return { dLine: 0, dChar: 0 };
+    const midLine = (range.start.line + range.end.line - 1) / 2;
+    const midChar = (range.start.character + range.end.character - 1) / 2;
+    return { dLine: point.line - midLine, dChar: point.character - midChar };
+}
+
+function findClosest(items: FileIssueTreeItem[], position: vscode.Position): FileIssueTreeItem | undefined {
+    let closest = items[0];
+    let closestDelta = calcDeltaFromRange(closest.range, position);
+    let cDist = Math.abs(closestDelta.dLine) + Math.abs(closestDelta.dChar / 100);
+    for (let i = 1; i < items.length; i++) {
+        const item = items[i];
+        const delta = calcDeltaFromRange(item.range, position);
+        // Weighted Manhattan distance.
+        const dist = Math.abs(delta.dLine) + Math.abs(delta.dChar / 100);
+
+        if (dist < cDist) {
+            closest = item;
+            closestDelta = delta;
+            cDist = dist;
+        }
+    }
+    return closest;
+}
