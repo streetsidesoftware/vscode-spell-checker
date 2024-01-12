@@ -4,7 +4,6 @@ import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument,
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
-import type { CSpellClient } from '../client';
 import { commandHandlers, knownCommands } from '../commands';
 import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
 import { createEmitter } from '../Subscribables';
@@ -12,8 +11,8 @@ import { findConicalDocument, findNotebookCellForDocument } from '../util/docume
 import { logErrors } from '../util/errors';
 import { findTextDocument } from '../util/findEditor';
 
-export function activate(context: ExtensionContext, issueTracker: IssueTracker, client: CSpellClient) {
-    context.subscriptions.push(UnknownWordsExplorer.register(issueTracker, client));
+export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
+    context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
     context.subscriptions.push(
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.openSuggestionsForIssue'], handleOpenSuggestionsForIssue),
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
@@ -33,10 +32,9 @@ class UnknownWordsExplorer {
     private disposeList = createDisposableList();
     private treeView: vscode.TreeView<IssueTreeItemBase>;
 
-    constructor(issueTracker: IssueTracker, client: CSpellClient) {
+    constructor(issueTracker: IssueTracker) {
         const treeDataProvider = new UnknownWordsTreeDataProvider({
             issueTracker,
-            client,
             setDescription: (des) => {
                 this.treeView.description = des;
             },
@@ -54,13 +52,12 @@ class UnknownWordsExplorer {
 
     static viewID = 'cspell-info.issuesView';
 
-    static register(issueTracker: IssueTracker, client: CSpellClient) {
-        return new UnknownWordsExplorer(issueTracker, client);
+    static register(issueTracker: IssueTracker) {
+        return new UnknownWordsExplorer(issueTracker);
     }
 }
 
 interface Context {
-    client: CSpellClient;
     issueTracker: IssueTracker;
     invalidate: (item: OnDidChangeEventType) => void;
     requestSuggestions: (item: RequestSuggestionsParam) => Suggestion[] | undefined;
@@ -68,7 +65,6 @@ interface Context {
 
 interface ProviderOptions {
     issueTracker: IssueTracker;
-    client: CSpellClient;
     setMessage(msg: string | undefined): void;
     setDescription(des: string | undefined): void;
 }
@@ -78,11 +74,9 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     private disposeList = createDisposableList();
     private suggestions = new Map<string, Suggestion[]>();
     private issueTracker: IssueTracker;
-    private client: CSpellClient;
 
     constructor(private options: ProviderOptions) {
         this.issueTracker = options.issueTracker;
-        this.client = options.client;
         this.disposeList.push(
             this.emitOnDidChange,
             this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
@@ -99,7 +93,6 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         }
         const context: Context = {
             issueTracker: this.issueTracker,
-            client: this.client,
             invalidate: (item) => this.emitOnDidChange.notify(item),
             requestSuggestions: (item) => {
                 logErrors(this.fetchSuggestions(item), 'IssuesTreeDataProvider requestSuggestions');
@@ -125,9 +118,8 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     }
 
     private async fetchSuggestions(item: RequestSuggestionsParam) {
-        const { word, document } = item;
-        const result = await this.client.requestSpellingSuggestions(word, document);
-        const suggestions = result.suggestions;
+        const { word } = item;
+        const suggestions = await this.issueTracker.getSuggestionsForIssue(item);
         this.suggestions.set(word, suggestions);
         // this.updateVSCodeContext();
         item.onUpdate(suggestions);

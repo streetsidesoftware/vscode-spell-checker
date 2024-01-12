@@ -30,20 +30,16 @@ import { activate as activateWebview } from './webview';
 
 performance.mark('cspell_done_import');
 
+const debugMode = true;
+
 modules.init();
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
 
-    // await settingsViewerActivate(context);
     const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
     const dLogger = bindLoggerToOutput(logOutput);
     setOutputChannelLogLevel();
-    logOutput.info('LogeLevel: ', logOutput.logLevel);
-    logOutput.debug('debug');
-    logOutput.info('info');
-    logOutput.warn('warn');
-    logOutput.error('error');
 
     // Get the cSpell Client
     const client = await CSpellClient.create(context);
@@ -82,8 +78,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
-    activateIssueViewer(context, issueTracker, client);
-    activateFileIssuesViewer(context, issueTracker, client);
+    activateIssueViewer(context, issueTracker);
+    activateFileIssuesViewer(context, issueTracker);
 
     const extensionCommand: InjectableCommandHandlers = {
         'cSpell.toggleTraceMode': () => decoratorExclusions.toggleEnabled(),
@@ -228,9 +224,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
 function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposable {
     const disposableList = createDisposableList();
-
     const console = {
-        log: logOutput.debug.bind(logOutput),
+        log: debugMode ? logOutput.info.bind(logOutput) : logOutput.debug.bind(logOutput),
         error: logOutput.error.bind(logOutput),
         info: logOutput.info.bind(logOutput),
         warn: logOutput.warn.bind(logOutput),

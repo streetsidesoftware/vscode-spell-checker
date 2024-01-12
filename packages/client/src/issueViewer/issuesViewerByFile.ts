@@ -1,26 +1,25 @@
-import { groupByField, logDebug, logInfo } from '@internal/common-utils';
+import { groupByField, logDebug } from '@internal/common-utils';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
-import type { CSpellClient } from '../client';
 import { knownCommands } from '../commands';
-import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
+import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 import { createEmitter, debounce, rx } from '../Subscribables';
 import { isDefined } from '../util';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
 import { findTextDocument } from '../util/findEditor';
 
-const debug = false;
-const log = debug ? logInfo : logDebug;
+const log = logDebug;
 
 const debounceRevealDelay = 100;
 const debounceUIDelay = 500;
+const viewItemSpan = 5;
 
-export function activate(context: ExtensionContext, issueTracker: IssueTracker, client: CSpellClient) {
-    context.subscriptions.push(IssueExplorerByFile.register(issueTracker, client));
+export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
+    context.subscriptions.push(IssueExplorerByFile.register(issueTracker));
     context.subscriptions
         .push
         // vscode.commands.registerCommand(
@@ -42,10 +41,9 @@ class IssueExplorerByFile {
     private revealEmitter = createEmitter<CalcRevealResult>();
     private uiEventFnEmitter = createEmitter<() => void>();
 
-    constructor(issueTracker: IssueTracker, client: CSpellClient) {
+    constructor(issueTracker: IssueTracker) {
         const treeDataProvider = new IssuesTreeDataProvider({
             issueTracker,
-            client,
             setDescription: (des) => {
                 this.treeView.description = des;
             },
@@ -159,16 +157,24 @@ class IssueExplorerByFile {
      * Try to show all the elements in the view.
      * First scroll to the end, then scroll to the start.
      * This is to ensure that the start is visible.
+     * Note: VSCode does not offer a way to scroll to the start / end / or middle.
      */
     private async _reveal(calc: CalcRevealResult) {
         log('IssueExplorerByFile._reveal');
         const { top, closest, middle, bottom } = calc;
+        const reveals: PromiseLike<void>[] = [];
+
         if (bottom && bottom !== top) {
-            await this.treeView.reveal(bottom, { select: false, focus: false, expand: true });
+            reveals.push(this.treeView.reveal(bottom, { select: false, focus: false, expand: true }));
         }
-        top && (await this.treeView.reveal(top, { select: false, focus: false, expand: true }));
-        middle && (await this.treeView.reveal(middle, { select: true, focus: false, expand: true }));
-        closest && (await this.treeView.reveal(closest, { select: true, focus: false, expand: true }));
+        top && reveals.push(this.treeView.reveal(top, { select: false, focus: false, expand: true }));
+        !closest && middle && reveals.push(this.treeView.reveal(middle, { select: false, focus: false, expand: true }));
+        closest && reveals.push(this.treeView.reveal(closest, { select: true, focus: false, expand: true }));
+        for (const reveal of reveals) {
+            // We need to wait for each one or the reveal will not work.
+            await reveal;
+        }
+        log('IssueExplorerByFile._reveal done');
     }
 
     private adjustRevel(document: TextDocument, ranges: readonly Range[]) {
@@ -196,20 +202,18 @@ class IssueExplorerByFile {
 
     static viewID = 'cspell.issuesViewByFile';
 
-    static register(issueTracker: IssueTracker, client: CSpellClient) {
-        return new IssueExplorerByFile(issueTracker, client);
+    static register(issueTracker: IssueTracker) {
+        return new IssueExplorerByFile(issueTracker);
     }
 }
 
 interface Context {
-    client: CSpellClient;
     issueTracker: IssueTracker;
     invalidate: (item: OnDidChangeEventType) => void;
 }
 
 interface ProviderOptions {
     issueTracker: IssueTracker;
-    client: CSpellClient;
     setMessage(msg: string | undefined): void;
     setDescription(des: string | undefined): void;
     /** This function is called after the children have been generated. */
@@ -220,12 +224,10 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     private emitOnDidChange = createEmitter<OnDidChangeEventType>();
     private disposeList = createDisposableList();
     private issueTracker: IssueTracker;
-    private client: CSpellClient;
     private children: FileWithIssuesTreeItem[] | undefined;
 
     constructor(private options: ProviderOptions) {
         this.issueTracker = options.issueTracker;
-        this.client = options.client;
         this.disposeList.push(
             this.emitOnDidChange,
             // vscode.window.onDidChangeActiveTextEditor((editor) => this.updateEditor(editor)),
@@ -244,7 +246,6 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         if (this.children) return this.children;
         const context: Context = {
             issueTracker: this.issueTracker,
-            client: this.client,
             invalidate: (item) => this.updateChild(item),
         };
         this.children = collectIssuesByFile(context);
@@ -270,7 +271,11 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         return d;
     }
 
-    private handleOnDidChangeDiagnostics(_e: vscode.DiagnosticChangeEvent) {
+    private handleOnDidChangeDiagnostics(e: vscode.DiagnosticChangeEvent) {
+        log(
+            'IssuesTreeDataProvider.handleOnDidChangeDiagnostics',
+            e.uris.map((u) => u.toString(true)),
+        );
         this.updateChild();
     }
 
@@ -298,20 +303,6 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     //     const context = this.hasPreferred() ? { hasPreferred: true } : {};
     //     logErrors(vscode.commands.executeCommand('setContext', 'cspell-info.issueViewer', context), 'updateVSCodeContext');
     // }
-
-    /**
-     * Find the issue items that match the document and ranges.
-     * @param document - document to match
-     * @param ranges - ranges to match, if undefined, then all items are returned that match the document.
-     * @returns matching items or undefined if no matches.
-     */
-    findMatchingItems(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
-        if (!this.children) return undefined;
-        for (const child of this.children) {
-            const item = child.findMatchingIssues(document, ranges);
-            if (item) return item;
-        }
-    }
 
     calculateReveal(
         document: TextDocument,
@@ -353,7 +344,6 @@ abstract class IssueTreeItemBase {
     abstract getTreeItem(): TreeItem | Promise<TreeItem>;
     abstract getChildren(): ProviderResult<IssueTreeItemBase[]>;
     abstract getParent(): ProviderResult<IssueTreeItemBase>;
-    abstract findMatchingIssues(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined;
 }
 
 class FileWithIssuesTreeItem extends IssueTreeItemBase {
@@ -387,15 +377,6 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         return undefined;
     }
 
-    findMatchingIssues(document: TextDocument, ranges: readonly Range[] | undefined): IssueTreeItemBase[] | undefined {
-        const conical = findConicalDocument(document);
-        if (conical !== this.document) return undefined;
-        if (!this.children) return undefined;
-        const matches = this.children.flatMap((child) => child.findMatchingIssues(document, ranges)).filter(isDefined);
-
-        return matches.length ? matches : undefined;
-    }
-
     calculateReveal(
         document: TextDocument,
         ranges: readonly Range[] | undefined,
@@ -406,17 +387,35 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         if (!this.children) return undefined;
         const matchingChildren = this.children.filter((child) => child.document === document);
         if (!matchingChildren.length) return undefined;
-        const top = matchingChildren[0];
-        const bottom = matchingChildren[matchingChildren.length - 1];
         const issuesInRange = ranges
             ? matchingChildren.filter((child) => ranges.some((range) => range.contains(child.range)))
             : matchingChildren;
         const middle = issuesInRange[Math.floor(issuesInRange.length / 2)];
+
+        const indexMiddle = matchingChildren.findIndex((child) => child === middle);
+
+        let top = matchingChildren[0];
+        let bottom = matchingChildren[matchingChildren.length - 1];
+
+        if (indexMiddle >= 0) {
+            top = matchingChildren[Math.max(0, indexMiddle - viewItemSpan)];
+            bottom = matchingChildren[Math.min(matchingChildren.length - 1, indexMiddle + viewItemSpan)];
+        }
+
         const r: CalcRevealResult = { top, middle, closest: undefined, bottom };
         if (!position) {
             return r;
         }
         r.closest = findClosest(matchingChildren, position);
+
+        if (r.closest) {
+            const indexClosest = matchingChildren.findIndex((child) => child === r.closest);
+            if (indexClosest >= 0) {
+                r.top = matchingChildren[Math.max(0, indexClosest - viewItemSpan)];
+                r.bottom = matchingChildren[Math.min(matchingChildren.length - 1, indexClosest + viewItemSpan)];
+            }
+        }
+
         return r;
     }
 }
@@ -432,8 +431,8 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         readonly issue: SpellingIssue,
     ) {
         super();
-        this.cell = findNotebookCellForDocument(issue.doc);
-        this.document = this.cell?.document ?? issue.doc;
+        this.cell = findNotebookCellForDocument(issue.document);
+        this.document = this.cell?.document ?? issue.document;
         this.cellIndex = this.cell ? this.cell.index : -1;
         this.range = issue.range;
     }
@@ -450,7 +449,7 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         item.command = {
             title: 'Goto Issue',
             command: knownCommands['cSpell.selectRange'],
-            arguments: [this.issue.doc.uri, this.range, true],
+            arguments: [this.issue.document.uri, this.range, true],
         };
         return item;
     }
@@ -483,20 +482,13 @@ class FileIssueTreeItem extends IssueTreeItemBase {
 interface FileIssue {
     uri: Uri;
     doc: TextDocument | undefined;
-    diags: SpellingDiagnostic[];
+    issues: SpellingCheckerIssue[];
 }
 
-interface SpellingIssue {
-    word: string;
-    doc: TextDocument;
-    diag: SpellingDiagnostic;
-    range: Range;
-}
+type SpellingIssue = SpellingCheckerIssue;
 
 function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
-    const fileIssues: FileIssue[] = context.issueTracker
-        .getDiagnostics()
-        .map(([uri, diags]) => ({ uri, doc: findTextDocument(uri), diags }));
+    const fileIssues: FileIssue[] = context.issueTracker.getIssues().map(([uri, issues]) => ({ uri, doc: findTextDocument(uri), issues }));
     const groupedByFile = groupIssues(fileIssues);
 
     const comp = new Intl.Collator().compare;
@@ -520,53 +512,43 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
             if (!fileIssue.doc) return;
             const doc = fileIssue.doc;
             const parent = findConicalDocument(doc);
-
             const spellingIssues = groupedByFile.get(parent) || [];
-
-            fileIssue.diags.forEach((diag) => {
-                const word = doc.getText(diag.range);
-                spellingIssues.push({ word, doc, diag, range: diag.range });
-            });
-
+            spellingIssues.push(...fileIssue.issues);
             groupedByFile.set(parent, spellingIssues);
         }
     }
 }
 
-// function mergeRanges(ranges: readonly Range[]): Range {
-//     if (!ranges.length) {
-//         return new vscode.Range(0, 0, 0, 0);
-//     }
-//     let start = ranges[0].start;
-//     let end = ranges[0].end;
-//     for (const range of ranges) {
-//         start = start.isBeforeOrEqual(range.start) ? start : range.start;
-//         end = end.isAfterOrEqual(range.end) ? end : range.end;
-//     }
-//     return new vscode.Range(start, end);
-// }
+/**
+ * Try to convert the position into a single number.
+ * The whole number is the line, the fraction is the character.
+ * @param p - Position
+ * @returns number that can be compared to other positions.
+ */
+function ph(p: vscode.Position, avgMaxLineLength = 100): number {
+    // 100 is used to slow down the convergence to 1.
+    return p.line + Math.tanh(p.character / avgMaxLineLength);
+}
 
-function calcDeltaFromRange(range: Range, point: vscode.Position): { dLine: number; dChar: number } {
-    if (range.contains(point)) return { dLine: 0, dChar: 0 };
-    const midLine = (range.start.line + range.end.line - 1) / 2;
-    const midChar = (range.start.character + range.end.character - 1) / 2;
-    return { dLine: point.line - midLine, dChar: point.character - midChar };
+function phRange(range: vscode.Range): number {
+    return (ph(range.start) + ph(range.end)) / 2;
 }
 
 function findClosest(items: FileIssueTreeItem[], position: vscode.Position): FileIssueTreeItem | undefined {
+    if (!items.length) return undefined;
+    const p = ph(position);
+
     let closest = items[0];
-    let closestDelta = calcDeltaFromRange(closest.range, position);
-    let cDist = Math.abs(closestDelta.dLine) + Math.abs(closestDelta.dChar / 100);
+    const cDist = phRange(closest.range) - p;
+    let cDist2 = cDist * cDist;
     for (let i = 1; i < items.length; i++) {
         const item = items[i];
-        const delta = calcDeltaFromRange(item.range, position);
-        // Weighted Manhattan distance.
-        const dist = Math.abs(delta.dLine) + Math.abs(delta.dChar / 100);
+        const dist = phRange(item.range) - p;
+        const dist2 = dist * dist;
 
-        if (dist < cDist) {
+        if (dist2 < cDist2) {
             closest = item;
-            closestDelta = delta;
-            cDist = dist;
+            cDist2 = dist2;
         }
     }
     return closest;
