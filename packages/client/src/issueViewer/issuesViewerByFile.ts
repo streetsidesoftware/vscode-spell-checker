@@ -1,4 +1,4 @@
-import { groupByField, logDebug } from '@internal/common-utils';
+import { groupByField, logDebug, logInfo } from '@internal/common-utils';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
 import * as vscode from 'vscode';
@@ -12,6 +12,12 @@ import { isDefined } from '../util';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
 import { findTextDocument } from '../util/findEditor';
+
+const debug = false;
+const log = debug ? logInfo : logDebug;
+
+const debounceRevealDelay = 100;
+const debounceUIDelay = 500;
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker, client: CSpellClient) {
     context.subscriptions.push(IssueExplorerByFile.register(issueTracker, client));
@@ -54,8 +60,8 @@ class IssueExplorerByFile {
             this.treeView,
             this.revealEmitter,
             this.uiEventFnEmitter,
-            rx(this.revealEmitter, debounce(100)).subscribe((calc) => this._handleReveal(calc)),
-            rx(this.uiEventFnEmitter, debounce(1000)).subscribe((fn) => fn()),
+            rx(this.revealEmitter, debounce(debounceRevealDelay)).subscribe((calc) => this._handleReveal(calc)),
+            rx(this.uiEventFnEmitter, debounce(debounceUIDelay)).subscribe((fn) => fn()),
             vscode.window.onDidChangeActiveTextEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e))),
             vscode.window.onDidChangeActiveNotebookEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e))),
             vscode.window.onDidChangeTextEditorVisibleRanges((e) =>
@@ -65,6 +71,7 @@ class IssueExplorerByFile {
                 this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges)),
             ),
             vscode.window.onDidChangeTextEditorSelection((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e.textEditor))),
+            treeDataProvider.onDidChangeTreeData((e) => this.onDidChangeTreeData(e)),
         );
         this.treeView.title = 'Spelling Issues';
         this.treeView.message = 'No open documents.';
@@ -136,7 +143,7 @@ class IssueExplorerByFile {
     private _handleReveal(calc: CalcRevealResult) {
         if (this.pendingReveal) {
             // It seems to have take a long time to reveal the items.
-            logDebug('IssueExplorerByFile.handleReveal: pending reveal');
+            log('IssueExplorerByFile.handleReveal: pending reveal');
             // We could re-queue the reveal, but for now, we will just ignore it.
             // this.revealEmitter.notify(calc);
             return;
@@ -154,7 +161,7 @@ class IssueExplorerByFile {
      * This is to ensure that the start is visible.
      */
     private async _reveal(calc: CalcRevealResult) {
-        logDebug('IssueExplorerByFile._reveal');
+        log('IssueExplorerByFile._reveal');
         const { top, closest, middle, bottom } = calc;
         if (bottom && bottom !== top) {
             await this.treeView.reveal(bottom, { select: false, focus: false, expand: true });
@@ -171,8 +178,18 @@ class IssueExplorerByFile {
 
     /** The tree data has updated */
     private onDidUpdate() {
-        logDebug('IssueExplorerByFile.onDidUpdate', vscode.window.activeTextEditor?.document.uri.toString());
+        log('IssueExplorerByFile.onDidUpdate', vscode.window.activeTextEditor?.document.uri.toString());
         this.onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
+    }
+
+    private onDidChangeTreeData(_e: OnDidChangeEventType) {
+        const count = this.treeDataProvider.getIssueCount();
+        this.treeView.badge = count
+            ? {
+                  tooltip: `Issues found: ${count}`,
+                  value: count,
+              }
+            : undefined;
     }
 
     readonly dispose = this.disposeList.dispose;
@@ -308,6 +325,10 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
             if (calc) return calc;
         }
         return undefined;
+    }
+
+    getIssueCount(): number {
+        return this.issueTracker.getIssueCount();
     }
 
     readonly dispose = this.disposeList.dispose;
