@@ -23,13 +23,6 @@ export class IssueTracker {
         this.disposables.push(workspace.onDidCloseTextDocument((doc) => this.handleDocClose(doc)));
     }
 
-    public getDiagnostics(uri: Uri): SpellingDiagnostic[];
-    public getDiagnostics(): [Uri, SpellingDiagnostic[]][];
-    public getDiagnostics(uri?: Uri): SpellingDiagnostic[] | [Uri, SpellingDiagnostic[]][] {
-        if (!uri) return [...this.issues.values()].map((d) => [d.uri, d.issues.map((issue) => issue.diag)] as [Uri, SpellingDiagnostic[]]);
-        return this.issues.get(uri.toString())?.issues.map((issue) => issue.diag) || [];
-    }
-
     public getIssues(uri: Uri): SpellingCheckerIssue[] | undefined;
     public getIssues(): [Uri, SpellingCheckerIssue[]][];
     public getIssues(uri?: Uri): SpellingCheckerIssue[] | [Uri, SpellingCheckerIssue[]][] | undefined {
@@ -104,6 +97,10 @@ export class SpellingCheckerIssue {
         this.document = document;
     }
 
+    get uri(): Uri {
+        return this.document.uri;
+    }
+
     /**
      * @returns true if it is a more severe spelling issue should be addressed.
      */
@@ -146,6 +143,10 @@ export class SpellingCheckerIssue {
         return this.version !== this.document.version;
     }
 
+    get severity() {
+        return this.diag.severity;
+    }
+
     get range(): Diagnostic['range'] {
         return this.diag.range;
     }
@@ -156,8 +157,8 @@ export class SpellingCheckerIssue {
      * calculate a full set of suggestions.
      * @returns the suggestions for the issue.
      */
-    providedSuggestions(): Suggestion[] {
-        return this.diag.data?.suggestions || [];
+    providedSuggestions(): Suggestion[] | undefined {
+        return this.diag.data?.suggestions;
     }
 
     static fromDiagnostic(document: TextDocument, diag: SpellingDiagnostic, version: number): SpellingCheckerIssue {

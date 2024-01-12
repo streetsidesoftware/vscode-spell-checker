@@ -15,7 +15,7 @@ import { isDefined, uniqueFilter } from './util';
  */
 export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): SpellingDiagnostic[] {
     const issueTracker = getDependencies().issueTracker;
-    const diags = (docUri && issueTracker.getDiagnostics(docUri)) || [];
+    const diags = (docUri && issueTracker.getIssues(docUri))?.map((issue) => issue.diag) || [];
     const cSpellDiags = filterDiags(diags).filter((d) => d.data?.issueType === issueType || (!d.data?.issueType && !issueType));
     return cSpellDiags;
 }

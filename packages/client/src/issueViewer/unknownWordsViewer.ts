@@ -1,15 +1,14 @@
 import type { Suggestion } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
-import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
+import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider } from 'vscode';
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
 import { commandHandlers, knownCommands } from '../commands';
-import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
+import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 import { createEmitter } from '../Subscribables';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
-import { findTextDocument } from '../util/findEditor';
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
     context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
@@ -162,19 +161,19 @@ class WordIssueTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
     suggestionsByDocument: Map<TextDocument, Suggestion[]> = new Map();
     conicalDocuments: Set<TextDocument | vscode.NotebookDocument> = new Set();
-    readonly issues: SpellingIssue[] = [];
+    readonly issues: SpellingCheckerIssue[] = [];
 
     constructor(
         readonly context: Context,
         readonly word: string,
-        issues: SpellingIssue[] = [],
+        issues: SpellingCheckerIssue[] = [],
     ) {
         super();
         issues.forEach((issue) => this.addIssue(issue));
     }
 
-    addIssue(issue: SpellingIssue) {
-        const document = issue.doc;
+    addIssue(issue: SpellingCheckerIssue) {
+        const document = issue.document;
         const suggestions = this.context.requestSuggestions({
             word: this.word,
             document,
@@ -232,7 +231,7 @@ class WordIssueTreeItem extends IssueTreeItemBase {
     }
 
     async addToDictionary() {
-        const doc = this.issues[0].doc;
+        const doc = this.issues[0]?.document;
         return commandHandlers['cSpell.addWordToDictionary'](this.word, doc?.uri);
     }
 
@@ -247,7 +246,7 @@ class IssueLocationsTreeItem extends IssueTreeItemBase {
     constructor(
         readonly context: Context,
         readonly word: string,
-        readonly issues: SpellingIssue[],
+        readonly issues: SpellingCheckerIssue[],
     ) {
         super();
     }
@@ -267,7 +266,7 @@ class IssueFixesTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
     constructor(
         readonly word: string,
-        readonly issues: SpellingIssue[],
+        readonly issues: SpellingCheckerIssue[],
         suggestions: Suggestion[] | undefined,
     ) {
         super();
@@ -284,18 +283,18 @@ class IssueFixesTreeItem extends IssueTreeItemBase {
 }
 
 class IssueLocationTreeItem extends IssueTreeItemBase {
-    readonly diag: SpellingDiagnostic;
-    readonly doc: TextDocument;
     readonly cell: vscode.NotebookCell | undefined;
-    constructor(readonly issue: SpellingIssue) {
+    constructor(readonly issue: SpellingCheckerIssue) {
         super();
-        this.diag = issue.diag;
-        this.doc = issue.doc;
         this.cell = findNotebookCellForDocument(this.doc);
     }
 
+    get doc() {
+        return this.issue.document;
+    }
+
     getTreeItem(): TreeItem {
-        const range = this.diag.range;
+        const range = this.issue.range;
         const cellInfo = this.cell ? `Cell ${this.cell.index + 1} ` : ' ';
         const location = `${cellInfo}Ln ${range.start.line + 1} Col ${range.start.character + 1}`;
         const item = new TreeItem('');
@@ -309,7 +308,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         item.command = {
             title: 'Goto Issue',
             command: knownCommands['cSpell.selectRange'],
-            arguments: [this.doc.uri, this.diag.range, true],
+            arguments: [this.doc.uri, this.issue.range, true],
         };
         item.contextValue = 'issue.location';
         return item;
@@ -320,7 +319,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
     }
 
     getRange(): Range {
-        return this.diag.range;
+        return this.issue.range;
     }
 
     static compare(a: IssueLocationTreeItem, b: IssueLocationTreeItem) {
@@ -331,8 +330,8 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         if (a.cell?.index !== b.cell?.index) {
             return (a.cell?.index || 0) - (b.cell?.index || 0);
         }
-        const ra = a.diag.range;
-        const rb = b.diag.range;
+        const ra = a.issue.range;
+        const rb = b.issue.range;
         return ra.start.line - rb.start.line || ra.start.character - rb.start.character;
     }
 }
@@ -375,22 +374,10 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
     }
 }
 
-interface FileIssue {
-    uri: Uri;
-    doc: TextDocument | undefined;
-    diags: SpellingDiagnostic[];
-}
-
-interface SpellingIssue {
-    word: string;
-    doc: TextDocument;
-    diag: SpellingDiagnostic;
-    range: Range;
-}
-
 function collectIssues(context: Context): WordIssueTreeItem[] {
-    const issues: FileIssue[] = context.issueTracker.getDiagnostics().map(([uri, diags]) => ({ uri, doc: findTextDocument(uri), diags }));
+    const issues = context.issueTracker.getIssues().flatMap(([_, issues]) => issues);
     const groupedByWord = new Map<string, WordIssueTreeItem>();
+    const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
 
     const comp = new Intl.Collator().compare;
@@ -399,21 +386,9 @@ function collectIssues(context: Context): WordIssueTreeItem[] {
 
     return sorted;
 
-    function groupIssue(fileIssues: FileIssue) {
-        if (!fileIssues.doc) return;
-        const doc = fileIssues.doc;
-        const issueContext = { ...context, document: doc };
-
-        function getWord(issue: SpellingDiagnostic): string {
-            return doc.getText(issue.range);
-        }
-
-        const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(issueContext, word));
-
-        fileIssues.diags.forEach((issue) => {
-            const word = getWord(issue);
-            getGroup(word).addIssue({ word, doc, diag: issue, range: issue.range });
-        });
+    function groupIssue(issue: SpellingCheckerIssue) {
+        const wordIssue = getGroup(issue.word);
+        wordIssue.addIssue(issue);
     }
 }
 

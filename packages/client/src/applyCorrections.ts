@@ -199,20 +199,27 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
     const issueTracker = di.get('issueTracker');
 
     const autoFixes = issueTracker
-        .getDiagnostics(uri)
-        .map((diag) => ({ range: diag.range, ...diag.data }))
+        .getIssues(uri)
+        ?.map((issue) => ({
+            issue,
+            suggestions: issue.providedSuggestions(),
+        }))
         .filter(
-            (fix) =>
-                fix.suggestions?.[0]?.isPreferred && !fix.suggestions?.[1]?.isPreferred && fix.text && !fix.issueType && !fix.isSuggestion,
+            ({ issue, suggestions }) =>
+                suggestions?.[0]?.isPreferred &&
+                !suggestions?.[1]?.isPreferred &&
+                issue.word &&
+                issue.isIssueTypeSpelling() &&
+                !issue.isSuggestion(),
         )
-        .filter((fix) => doc.getText(fix.range) === fix.text)
-        .map((fix) => {
-            const sug = fix.suggestions?.[0].word;
+        .filter(({ issue }) => doc.getText(issue.range) === issue.word)
+        .map(({ issue }) => {
+            const sug = issue.providedSuggestions()?.[0].word;
             assert(sug !== undefined);
-            return new TextEdit(fix.range, sug);
+            return new TextEdit(issue.range, sug);
         });
 
-    if (!autoFixes.length) {
+    if (!autoFixes?.length) {
         const name = uriToName(uri);
         return pvShowInformationMessage(`No auto fixable spelling issues found in ${name}.`);
     }

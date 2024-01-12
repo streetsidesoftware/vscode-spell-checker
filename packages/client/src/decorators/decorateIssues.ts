@@ -1,11 +1,11 @@
 import { createDisposableList } from 'utils-disposables';
-import type { DecorationOptions, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
+import type { DecorationOptions, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
 import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString, window, workspace } from 'vscode';
 
 import type { CSpellUserSettings } from '../client';
 import { commandUri, createTextEditCommand } from '../commands';
 import type { Disposable } from '../disposable';
-import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
+import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 
 export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForIssues: TextEditorDecorationType | undefined;
@@ -64,18 +64,18 @@ export class SpellingIssueDecorator implements Disposable {
     refreshDiagnosticsInEditor(editor: TextEditor) {
         if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged) return;
         const doc = editor.document;
-        const diags = this.issueTracker.getDiagnostics(doc.uri) || [];
+        const issues = this.issueTracker.getIssues(doc.uri) || [];
 
-        const decorationsIssues: DecorationOptions[] = diags
-            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
-            .filter((diag) => !diag.data?.isFlagged)
-            .map((diag) => diagToDecorationOptions(diag, doc));
+        const decorationsIssues: DecorationOptions[] = issues
+            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
+            .filter((issue) => !issue.isFlagged())
+            .map((diag) => diagToDecorationOptions(diag));
         editor.setDecorations(this.decorationTypeForIssues, decorationsIssues);
 
-        const decorationsFlagged: DecorationOptions[] = diags
-            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
-            .filter((diag) => diag.data?.isFlagged)
-            .map((diag) => diagToDecorationOptions(diag, doc));
+        const decorationsFlagged: DecorationOptions[] = issues
+            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
+            .filter((issue) => issue.isFlagged())
+            .map((diag) => diagToDecorationOptions(diag));
         editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
     }
 
@@ -133,10 +133,13 @@ function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField
     return textDecoration || `${line} ${style} ${color} ${thickness}`;
 }
 
-function diagToDecorationOptions(diag: SpellingDiagnostic, doc: TextDocument): DecorationOptions {
-    const { range } = diag;
-    const { suggestions, isFlagged, isSuggestion } = diag.data || {};
-    const text = doc.getText(range);
+function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions {
+    const { range } = issue;
+    const suggestions = issue.providedSuggestions();
+    const isFlagged = issue.isFlagged();
+    const isSuggestion = issue.isSuggestion();
+    const text = issue.word;
+    const doc = issue.document;
 
     const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', doc.uri, range, text);
     // const commandAdd = commandUri('cSpell.addWordToDictionary', text);
