@@ -6,7 +6,7 @@ import { TreeItem } from 'vscode';
 
 import { commandHandlers, knownCommands } from '../commands';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
-import { createEmitter } from '../Subscribables';
+import { createEmitter, debounce, rx } from '../Subscribables';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
 
@@ -19,6 +19,8 @@ export function activate(context: ExtensionContext, issueTracker: IssueTracker) 
     );
 }
 
+const debounceUIDelay = 100;
+
 type OnDidChangeEventType = IssueTreeItemBase | undefined;
 
 interface RequestSuggestionsParam {
@@ -27,12 +29,19 @@ interface RequestSuggestionsParam {
     readonly onUpdate: (suggestions: Suggestion[]) => void;
 }
 
+interface ActiveDocumentSelection {
+    document: TextDocument;
+    selection: vscode.Selection | vscode.Range;
+}
+
 class UnknownWordsExplorer {
     private disposeList = createDisposableList();
     private treeView: vscode.TreeView<IssueTreeItemBase>;
+    private uiEventFnEmitter = createEmitter<() => void>();
+    private treeDataProvider: UnknownWordsTreeDataProvider;
 
     constructor(issueTracker: IssueTracker) {
-        const treeDataProvider = new UnknownWordsTreeDataProvider({
+        this.treeDataProvider = new UnknownWordsTreeDataProvider({
             issueTracker,
             setDescription: (des) => {
                 this.treeView.description = des;
@@ -41,13 +50,39 @@ class UnknownWordsExplorer {
                 this.treeView.message = msg;
             },
         });
-        this.treeView = vscode.window.createTreeView(UnknownWordsExplorer.viewID, { treeDataProvider, showCollapseAll: true });
-        this.disposeList.push(this.treeView);
+        this.treeView = vscode.window.createTreeView(UnknownWordsExplorer.viewID, {
+            treeDataProvider: this.treeDataProvider,
+            showCollapseAll: true,
+        });
+        this.disposeList.push(
+            this.treeView,
+            rx(this.uiEventFnEmitter, debounce(debounceUIDelay)).subscribe((fn) => fn()),
+            this.listenEvent(vscode.window.onDidChangeTextEditorSelection, (e) => this.handleOnDidChangeTextEditorSelection(e)),
+            this.listenEvent(vscode.window.onDidChangeActiveTextEditor, (e) => this.handleTextEditorChange(e)),
+            this.listenEvent(this.treeDataProvider.onDidChangeTreeData.bind(this.treeDataProvider), () =>
+                this.handleTextEditorChange(vscode.window.activeTextEditor),
+            ),
+        );
         this.treeView.title = 'Unknown Words';
         this.treeView.message = 'No open documents.';
     }
 
     readonly dispose = this.disposeList.dispose;
+
+    private handleOnDidChangeTextEditorSelection(e: vscode.TextEditorSelectionChangeEvent) {
+        this.handleTextEditorChange(e.textEditor);
+    }
+
+    private handleTextEditorChange(e: vscode.TextEditor | undefined) {
+        if (!e) return;
+        const found = this.treeDataProvider.findRelatedIssue(e);
+        if (!found) return;
+        this.treeView.reveal(found, { select: true, focus: false });
+    }
+
+    private listenEvent<T>(event: vscode.Event<T>, fn: (e: T) => void) {
+        return event((e) => this.uiEventFnEmitter.notify(() => fn(e)));
+    }
 
     static viewID = 'cspell-info.issuesView';
 
@@ -73,6 +108,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     private disposeList = createDisposableList();
     private suggestions = new Map<string, Suggestion[]>();
     private issueTracker: IssueTracker;
+    private children: WordIssueTreeItem[] | undefined;
 
     constructor(private options: ProviderOptions) {
         this.issueTracker = options.issueTracker;
@@ -99,17 +135,31 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
             },
         };
         const issues = collectIssues(context);
+        this.children = issues;
         this.updateMessage(issues.length ? undefined : 'No issues found...');
         return issues;
     }
 
+    getParent(element: IssueTreeItemBase): ProviderResult<IssueTreeItemBase>;
+    getParent(element: unknown): ProviderResult<IssueTreeItemBase> {
+        if (!(element instanceof IssueTreeItemBase)) return undefined;
+        return element.getParent();
+    }
+
     onDidChangeTreeData(listener: (e: OnDidChangeEventType) => void, thisArg?: unknown, disposables?: Disposable[]): Disposable {
+        this.children = undefined;
         const fn = thisArg ? listener.bind(thisArg) : listener;
         const d = this.emitOnDidChange.subscribe((e) => fn(e));
         if (disposables) {
             disposables.push(d);
         }
         return d;
+    }
+
+    findRelatedIssue(active: ActiveDocumentSelection) {
+        if (!this.children) return;
+        const found = this.children.find((item) => item.intersectsActiveSelection(active));
+        return found;
     }
 
     private handleOnDidChangeDiagnostics(_e: vscode.DiagnosticChangeEvent) {
@@ -155,6 +205,7 @@ const icons = {
 abstract class IssueTreeItemBase {
     abstract getTreeItem(): TreeItem | Promise<TreeItem>;
     abstract getChildren(): ProviderResult<IssueTreeItemBase[]>;
+    abstract getParent(): IssueTreeItemBase | undefined;
 }
 
 class WordIssueTreeItem extends IssueTreeItemBase {
@@ -189,10 +240,18 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         const hasPreferred = this.hasPreferred();
         const isFlagged = !!this.issues.find((issue) => issue.diag.data?.isFlagged);
         item.iconPath = isFlagged ? icons.error : icons.warning;
-        item.description =
+
+        item.description = `${nText(this.issues.length, 'issue', 'issues')} in ${nText(this.conicalDocuments.size, 'file', 'files')}${
+            hasPreferred ? '*' : ''
+        }`;
+
+        const verboseDescription =
             `Number of occurrences: ${this.issues.length}, files: ${this.conicalDocuments.size}` + (hasPreferred ? ' (auto fix)' : '');
-        const cWord = cleanWord(this.word);
-        item.tooltip = new vscode.MarkdownString().appendMarkdown((isFlagged ? 'Flagged' : 'Unknown') + ' word: `' + cWord + '`');
+        const inlineWord = markdownInlineCode(this.word);
+        item.tooltip = new vscode.MarkdownString()
+            .appendMarkdown((isFlagged ? 'Flagged' : 'Unknown') + ' word: ' + inlineWord)
+            .appendText('\n\n')
+            .appendText(verboseDescription);
         // if (this.diags.length === 1) {
         //     item.command = {
         //         title: 'Goto Issue',
@@ -205,9 +264,13 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         return item;
     }
 
+    getParent(): IssueTreeItemBase | undefined {
+        return undefined;
+    }
+
     getChildren() {
         const { context, word, issues: diags, suggestions } = this;
-        return [new IssueLocationsTreeItem(context, word, diags), new IssueFixesTreeItem(word, diags, suggestions)];
+        return [new IssueLocationsTreeItem(context, this, word, diags), new IssueFixesTreeItem(this, word, diags, suggestions)];
     }
 
     getRange(): Range | undefined {
@@ -230,6 +293,13 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         };
     }
 
+    intersectsActiveSelection(active: ActiveDocumentSelection): boolean {
+        const { document, selection } = active;
+        const { issues } = this;
+        const matching = issues.filter((issue) => issue.document === document).find((issue) => issue.range.intersection(selection));
+        return !!matching;
+    }
+
     async addToDictionary() {
         const doc = this.issues[0]?.document;
         return commandHandlers['cSpell.addWordToDictionary'](this.word, doc?.uri);
@@ -245,6 +315,7 @@ class WordIssueTreeItem extends IssueTreeItemBase {
 class IssueLocationsTreeItem extends IssueTreeItemBase {
     constructor(
         readonly context: Context,
+        readonly parent: WordIssueTreeItem,
         readonly word: string,
         readonly issues: SpellingCheckerIssue[],
     ) {
@@ -258,13 +329,18 @@ class IssueLocationsTreeItem extends IssueTreeItemBase {
     }
 
     getChildren() {
-        return this.issues.map((issue) => new IssueLocationTreeItem(issue)).sort(IssueLocationTreeItem.compare);
+        return this.issues.map((issue) => new IssueLocationTreeItem(this, issue)).sort(IssueLocationTreeItem.compare);
+    }
+
+    getParent(): IssueTreeItemBase | undefined {
+        return this.parent;
     }
 }
 
 class IssueFixesTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
     constructor(
+        readonly parent: WordIssueTreeItem,
         readonly word: string,
         readonly issues: SpellingCheckerIssue[],
         suggestions: Suggestion[] | undefined,
@@ -278,13 +354,20 @@ class IssueFixesTreeItem extends IssueTreeItemBase {
     }
 
     getChildren() {
-        return this.suggestions?.map((sug) => new IssueSuggestionTreeItem(this.word, sug));
+        return this.suggestions?.map((sug) => new IssueSuggestionTreeItem(this, this.word, sug));
+    }
+
+    getParent(): IssueTreeItemBase | undefined {
+        return this.parent;
     }
 }
 
 class IssueLocationTreeItem extends IssueTreeItemBase {
     readonly cell: vscode.NotebookCell | undefined;
-    constructor(readonly issue: SpellingCheckerIssue) {
+    constructor(
+        readonly parent: IssueLocationsTreeItem,
+        readonly issue: SpellingCheckerIssue,
+    ) {
         super();
         this.cell = findNotebookCellForDocument(this.doc);
     }
@@ -318,6 +401,10 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         return undefined;
     }
 
+    getParent(): IssueTreeItemBase | undefined {
+        return this.parent;
+    }
+
     getRange(): Range {
         return this.issue.range;
     }
@@ -338,6 +425,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
 
 class IssueSuggestionTreeItem extends IssueTreeItemBase {
     constructor(
+        readonly parent: IssueFixesTreeItem,
         readonly word: string,
         readonly suggestion: Suggestion,
     ) {
@@ -349,24 +437,26 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
         const item = new TreeItem(word);
         item.iconPath = isPreferred ? icons.suggestionPreferred : icons.suggestion;
         item.description = isPreferred && '(preferred)';
-        const fixMessage = 'Fix Issue with: ' + word;
+        const inlineWord = markdownInlineCode(word);
+        const cleanedWord = cleanWord(word);
+        const fixMessage = 'Fix Issue with: ' + cleanedWord;
         // item.command = {
         //     title: fixMessage,
         //     command: knownCommands['cSpell.fixSpellingIssue'],
         //     arguments: [this.issue.doc.uri, this.issue.word, word, this.issue..map((d) => d.range)],
         // };
-        item.tooltip = new vscode.MarkdownString().appendText(fixMessage).appendMarkdown('\n- hello\n');
+        item.tooltip = new vscode.MarkdownString().appendMarkdown(`Fix Issue with: ${inlineWord}`);
         item.accessibilityInformation = { label: fixMessage };
         item.contextValue = isPreferred ? 'issue.suggestion-preferred' : 'issue.suggestion';
-        // item.checkboxState = {
-        //     state: vscode.TreeItemCheckboxState.Unchecked,
-        //     tooltip: fixMessage,
-        // };
         return item;
     }
 
     getChildren() {
         return undefined;
+    }
+
+    getParent(): IssueTreeItemBase | undefined {
+        return this.parent;
     }
 
     isPreferred(): boolean {
@@ -428,12 +518,25 @@ interface PreferredFix {
 //     if (!issues.length) return undefined;
 // }
 
+function cleanWord(word: string) {
+    const inlineWord = markdownInlineCode(word);
+    return inlineWord.replace(/^`+/g, '').replace(/`+$/g, '');
+}
+
 /**
- * Clean a word for markdown.
- * @param word
+ * Create valid markdown for inline code.
+ * @param text - text to inline
+ * @returns string
  */
-function cleanWord(word: string): string {
-    return word.replace(/\s/g, ' ').replace(/`/g, "'");
+function markdownInlineCode(text: string): string {
+    const countTicks = [...text.matchAll(/`+/g)].map((m) => m[0].length).reduce((a, b) => Math.max(a, b), 0);
+    const ticks = '`'.repeat(countTicks + 1);
+    text = text.replace(/\t/g, '⇥').replace(/\r?\n/g, '⏎').replace(/\r/g, '⏎').replace(/\s/g, ' ').replace('`$', '` ').replace('^`', ' `');
+    return ticks + text + ticks;
+}
+
+function nText(n: number, singular: string, plural: string): string {
+    return `${n} ${n === 1 ? singular : plural}`;
 }
 
 function gatherSuggestions(suggestionsByDocument: Map<TextDocument, Suggestion[]>) {

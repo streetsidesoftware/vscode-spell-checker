@@ -115,6 +115,20 @@ export class SpellingCheckerIssue {
         return this.diag.data?.isSuggestion || false;
     }
 
+    hasPreferredSuggestions(): boolean {
+        const sugs = this.providedSuggestions();
+        if (!sugs) return false;
+        return sugs.filter((s) => s.isPreferred).length === 1;
+    }
+
+    getPreferredSuggestions(): string[] | undefined {
+        const sugs = this.providedSuggestions();
+        if (!sugs) return undefined;
+        const pref = sugs.filter((s) => s.isPreferred);
+        if (pref.length !== 1) return undefined;
+        return pref.map((s) => s.word);
+    }
+
     /**
      * @returns the text of the issue.
      */

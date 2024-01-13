@@ -67,7 +67,7 @@ class IssueExplorerByFile {
             // vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
             //     this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges)),
             // ),
-            vscode.window.onDidChangeTextEditorSelection((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e.textEditor))),
+            // vscode.window.onDidChangeTextEditorSelection((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e.textEditor))),
             treeDataProvider.onDidChangeTreeData((e) => this.onDidChangeTreeData(e)),
             this.treeView.onDidChangeSelection((e) => this.onDidChangeSelection(e)),
         );
@@ -453,7 +453,9 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         const location = `${this.cellIndex >= 0 ? `Cell ${this.cellIndex + 1}, ` : ''}Ln ${this.range.start.line + 1}, Col ${
             this.range.start.character + 1
         }`;
-        item.description = location;
+        const fixWith = this.issue.getPreferredSuggestions();
+        const fixDesc = fixWith ? ` (fix with: ${fixWith.join(', ')})` : '';
+        item.description = location + fixDesc;
         item.contextValue = 'issue.FileIssueTreeItem';
         const isFlagged = !!this.issue.diag.data?.isFlagged;
         item.iconPath = isFlagged ? icons.error : icons.warning;
