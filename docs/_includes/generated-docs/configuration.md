@@ -387,7 +387,7 @@ Default
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
 | [`cSpell.minWordLength`](#cspellminwordlength)                                                   | resource             | The minimum length of a word before checking it against a dictionary.           |
 | [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                 | resource             | Controls the number of suggestions shown.                                       |
-| [`cSpell.showAutocompleteSuggestions`](#cspellshowautocompletesuggestions)                       | language-overridable | Show CSpell in-document directives as you type.                                 |
+| [`cSpell.showAutocompleteDirectiveSuggestions`](#cspellshowautocompletedirectivesuggestions)     | language-overridable | Show CSpell in-document directives as you type.                                 |
 | [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)               | application          | Show Spell Checker actions in Editor Context Menu                               |
 | [`cSpell.showStatus`](#cspellshowstatus)                                                         | application          | Display the spell checker status on the status bar.                             |
 | [`cSpell.showStatusAlignment`](#cspellshowstatusalignment)                                       | application          | The side of the status bar to display the spell checker status.                 |
@@ -594,10 +594,10 @@ Default
 
 ---
 
-### `cSpell.showAutocompleteSuggestions`
+### `cSpell.showAutocompleteDirectiveSuggestions`
 
 Name
-: `cSpell.showAutocompleteSuggestions`
+: `cSpell.showAutocompleteDirectiveSuggestions`
 
 Type
 : boolean

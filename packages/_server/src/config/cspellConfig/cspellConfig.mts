@@ -165,7 +165,7 @@ type _VSConfigReporting = Pick<
     | 'maxNumberOfProblems'
     | 'minWordLength'
     | 'numSuggestions'
-    | 'showAutocompleteSuggestions'
+    | 'showAutocompleteDirectiveSuggestions'
     | 'showCommandsInEditorContextMenu'
     | 'showStatus'
     | 'showStatusAlignment'
