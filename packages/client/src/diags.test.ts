@@ -5,6 +5,7 @@ import { Diagnostic, DiagnosticSeverity, Position, Range, Uri } from 'vscode';
 
 import { getDependencies } from './di';
 import { __testing__, extractMatchingDiagText, getCSpellDiags } from './diags';
+import { SpellingCheckerIssue } from './issueTracker';
 import { isDefined, mustBeDefined } from './util';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;
@@ -20,7 +21,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getDiagnostics: vi.fn(implGetDiagnostics) },
+                    issueTracker: { getIssues: vi.fn(implGetIssues) },
                 }) as any,
         );
     });
@@ -33,7 +34,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getDiagnostics: vi.fn(() => []) },
+                    issueTracker: { getIssues: vi.fn(() => []) },
                 }) as any,
         );
         const uri = Uri.file(__filename);
@@ -113,20 +114,24 @@ describe('Validate text extractors', () => {
     });
 });
 
-function implGetDiagnostics(): [Uri, Diagnostic[]][];
-function implGetDiagnostics(uri: Uri): Diagnostic[];
-function implGetDiagnostics(uri?: Uri): [Uri, Diagnostic[]][] | Diagnostic[] {
+function implGetIssues(): [Uri, SpellingCheckerIssue[]][];
+function implGetIssues(uri: Uri): SpellingCheckerIssue[];
+function implGetIssues(uri?: Uri): [Uri, SpellingCheckerIssue[]][] | SpellingCheckerIssue[] {
     // console.error('implGetDiagnostics %s', uri);
     if (!uri) return sampleDiags();
     return sampleDiags()[0][1];
 }
 
-function sampleDiags(): [Uri, Diagnostic[]][] {
+function sampleDiags(): [Uri, SpellingCheckerIssue[]][] {
     const uriDir = Uri.file(__dirname);
     return [
-        [Uri.file(__filename), [fakeDiag('eslint', 'eslint'), fakeDiag('Unknown word ', 'cSpell'), fakeDiag('Unknown word 2', 'cSpell')]],
-        [Uri.joinPath(uriDir, 'other.js'), [fakeDiag('eslint', 'eslint'), fakeDiag('Unknown word ', 'cSpell')]],
-        [Uri.joinPath(uriDir, 'this.js'), [fakeDiag('eslint', 'eslint'), fakeDiag('Unknown word ', 'cSpell')]],
+        fakeFileIssues(Uri.file(__filename), [
+            fakeDiag('eslint', 'eslint'),
+            fakeDiag('Unknown word ', 'cSpell'),
+            fakeDiag('Unknown word 2', 'cSpell'),
+        ]),
+        fakeFileIssues(Uri.joinPath(uriDir, 'other.js'), [fakeDiag('eslint', 'eslint'), fakeDiag('Unknown word ', 'cSpell')]),
+        fakeFileIssues(Uri.joinPath(uriDir, 'this.js'), [fakeDiag('eslint', 'eslint'), fakeDiag('Unknown word ', 'cSpell')]),
     ];
 }
 
@@ -138,6 +143,11 @@ function fakeDiag(message: string, source: string): Diagnostic {
     const diag = new Diagnostic(range, message, DiagnosticSeverity.Information);
     diag.source = source;
     return diag;
+}
+
+function fakeFileIssues(uri: Uri, diags: Diagnostic[]): [Uri, SpellingCheckerIssue[]] {
+    const document = createTextDocument(uri, sampleText());
+    return [uri, diags.map((d) => SpellingCheckerIssue.fromDiagnostic(document, d, 1))];
 }
 
 function findSelection(doc: vscode.TextDocument, search: string | RegExp): vscode.Selection | undefined {
