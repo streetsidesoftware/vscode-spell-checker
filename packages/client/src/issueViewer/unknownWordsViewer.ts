@@ -307,8 +307,8 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         item.description = location;
         item.command = {
             title: 'Goto Issue',
-            command: knownCommands['cSpell.selectRange'],
-            arguments: [this.doc.uri, this.issue.range, true],
+            command: 'vscode.open',
+            arguments: [this.issue.document.uri, { selection: this.issue.range }],
         };
         item.contextValue = 'issue.location';
         return item;

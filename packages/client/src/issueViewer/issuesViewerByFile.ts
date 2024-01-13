@@ -4,7 +4,6 @@ import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument,
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
-import { knownCommands } from '../commands';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 import { createEmitter, debounce, rx } from '../Subscribables';
 import { isDefined } from '../util';
@@ -62,14 +61,15 @@ class IssueExplorerByFile {
             rx(this.uiEventFnEmitter, debounce(debounceUIDelay)).subscribe((fn) => fn()),
             vscode.window.onDidChangeActiveTextEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e))),
             vscode.window.onDidChangeActiveNotebookEditor((e) => this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e))),
-            vscode.window.onDidChangeTextEditorVisibleRanges((e) =>
-                this._emitUIEvent(() => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
-            ),
-            vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
-                this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges)),
-            ),
+            // vscode.window.onDidChangeTextEditorVisibleRanges((e) =>
+            //     this._emitUIEvent(() => this.adjustRevel(e.textEditor.document, e.visibleRanges)),
+            // ),
+            // vscode.window.onDidChangeNotebookEditorVisibleRanges((e) =>
+            //     this._emitUIEvent(() => this.onDidChangeActiveNotebookEditor(e.notebookEditor, e.visibleRanges)),
+            // ),
             vscode.window.onDidChangeTextEditorSelection((e) => this._emitUIEvent(() => this.onDidChangeActiveTextEditor(e.textEditor))),
             treeDataProvider.onDidChangeTreeData((e) => this.onDidChangeTreeData(e)),
+            this.treeView.onDidChangeSelection((e) => this.onDidChangeSelection(e)),
         );
         this.treeView.title = 'Spelling Issues';
         this.treeView.message = 'No open documents.';
@@ -169,7 +169,7 @@ class IssueExplorerByFile {
         }
         top && reveals.push(this.treeView.reveal(top, { select: false, focus: false, expand: true }));
         !closest && middle && reveals.push(this.treeView.reveal(middle, { select: false, focus: false, expand: true }));
-        closest && reveals.push(this.treeView.reveal(closest, { select: true, focus: false, expand: true }));
+        closest && reveals.push(this.treeView.reveal(closest, { select: false, focus: false, expand: true }));
         for (const reveal of reveals) {
             // We need to wait for each one or the reveal will not work.
             await reveal;
@@ -196,6 +196,17 @@ class IssueExplorerByFile {
                   value: count,
               }
             : undefined;
+    }
+
+    private onDidChangeSelection(e: vscode.TreeViewSelectionChangeEvent<IssueTreeItemBase>) {
+        const selected = e.selection[0];
+        if (selected instanceof FileIssueTreeItem) {
+            log('IssueExplorerByFile.onDidChangeSelection', selected.issue.diag.message);
+            // const cmd = selected.getCommand();
+            // if (cmd) {
+            //     vscode.commands.executeCommand(cmd.command, ...(cmd.arguments || []));
+            // }
+        }
     }
 
     readonly dispose = this.disposeList.dispose;
@@ -437,7 +448,7 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         this.range = issue.range;
     }
 
-    getTreeItem(): TreeItem {
+    async getTreeItem(): Promise<TreeItem> {
         const item = new TreeItem(this.issue.diag.message);
         const location = `${this.cellIndex >= 0 ? `Cell ${this.cellIndex + 1}, ` : ''}Ln ${this.range.start.line + 1}, Col ${
             this.range.start.character + 1
@@ -446,12 +457,17 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         item.contextValue = 'issue.FileIssueTreeItem';
         const isFlagged = !!this.issue.diag.data?.isFlagged;
         item.iconPath = isFlagged ? icons.error : icons.warning;
-        item.command = {
-            title: 'Goto Issue',
-            command: knownCommands['cSpell.selectRange'],
-            arguments: [this.issue.document.uri, this.range, true],
-        };
+        item.tooltip = await this.tooltip();
+        item.command = this.getCommand();
         return item;
+    }
+
+    getCommand(): vscode.Command | undefined {
+        return {
+            title: 'Goto Issue',
+            command: 'vscode.open',
+            arguments: [this.issue.document.uri, { selection: this.range, preserveFocus: true }],
+        };
     }
 
     getChildren() {
@@ -468,6 +484,13 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         for (const range of ranges) {
             if (range.contains(this.range)) return [this];
         }
+    }
+
+    async tooltip(): Promise<vscode.MarkdownString | undefined> {
+        return undefined;
+        // const md = new vscode.MarkdownString();
+        // md.appendMarkdown(`Unknown word: **\`${cleanWord(this.issue.word)}\`**`);
+        // return md;
     }
 
     static compare(a: FileIssueTreeItem, b: FileIssueTreeItem) {
