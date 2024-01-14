@@ -167,8 +167,8 @@ export const commandHandlers = {
     'cSpell.issueViewer.item.addWordToDictionary': handlerResolvedLater,
 
     // 'cSpell.issuesViewByFile.item.openSuggestionsForIssue': handlerResolvedLater,
-    // 'cSpell.issuesViewByFile.item.autoFixSpellingIssues': handlerResolvedLater,
-    // 'cSpell.issuesViewByFile.item.addWordToDictionary': handlerResolvedLater,
+    'cSpell.issuesViewByFile.item.autoFixSpellingIssues': handlerResolvedLater,
+    'cSpell.issuesViewByFile.item.addWordToDictionary': handlerResolvedLater,
 
     'cSpell.insertDisableNextLineDirective': handleInsertDisableNextLineDirective,
     'cSpell.insertDisableLineDirective': handleInsertDisableLineDirective,

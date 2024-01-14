@@ -4,12 +4,15 @@ import type { Disposable, ExtensionContext, ProviderResult, Range, TextDocument,
 import * as vscode from 'vscode';
 import { TreeItem } from 'vscode';
 
+import { actionAutoFixSpellingIssues } from '../applyCorrections';
+import { commandHandlers, knownCommands } from '../commands';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 import { createEmitter, debounce, rx } from '../Subscribables';
 import { isDefined } from '../util';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
 import { findTextDocument } from '../util/findEditor';
+import { IssueTreeItemBase } from './IssueTreeItemBase';
 
 const log = logDebug;
 
@@ -19,15 +22,14 @@ const viewItemSpan = 5;
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
     context.subscriptions.push(IssueExplorerByFile.register(issueTracker));
-    context.subscriptions
-        .push
+    context.subscriptions.push(
         // vscode.commands.registerCommand(
         //     knownCommands['cSpell.issuesViewByFile.item.openSuggestionsForIssue'],
         //     handleOpenSuggestionsForIssue,
         // ),
-        // vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
-        // vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.addWordToDictionary'], handleAddWordToDictionary),
-        ();
+        vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
+        vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.addWordToDictionary'], handleAddWordToDictionary),
+    );
 }
 
 type OnDidChangeEventType = IssueTreeItemBase | undefined;
@@ -351,12 +353,6 @@ interface CalcRevealResult {
     bottom: IssueTreeItemBase | undefined;
 }
 
-abstract class IssueTreeItemBase {
-    abstract getTreeItem(): TreeItem | Promise<TreeItem>;
-    abstract getChildren(): ProviderResult<IssueTreeItemBase[]>;
-    abstract getParent(): ProviderResult<IssueTreeItemBase>;
-}
-
 class FileWithIssuesTreeItem extends IssueTreeItemBase {
     private children: FileIssueTreeItem[] | undefined;
     constructor(
@@ -373,7 +369,8 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         item.resourceUri = this.document.uri;
         item.iconPath = vscode.ThemeIcon.File;
         item.description = `${this.issues.length}`;
-        item.contextValue = 'issue.FileWithIssuesTreeItem';
+        const hasPreferred = this.issues.some((issue) => issue.hasPreferredSuggestions());
+        item.contextValue = hasPreferred ? 'issue.FileWithIssuesTreeItem.hasPreferred' : 'issue.FileWithIssuesTreeItem';
         item.collapsibleState = this.issues.length ? vscode.TreeItemCollapsibleState.Expanded : undefined;
         return item;
     }
@@ -456,8 +453,8 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         const fixWith = this.issue.getPreferredSuggestions();
         const fixDesc = fixWith ? ` (fix with: ${fixWith.join(', ')})` : '';
         item.description = location + fixDesc;
-        item.contextValue = 'issue.FileIssueTreeItem';
         const isFlagged = !!this.issue.diag.data?.isFlagged;
+        item.contextValue = 'issue.FileIssueTreeItem' + (isFlagged ? '.flagged' : '');
         item.iconPath = isFlagged ? icons.error : icons.warning;
         item.tooltip = await this.tooltip();
         item.command = this.getCommand();
@@ -577,4 +574,16 @@ function findClosest(items: FileIssueTreeItem[], position: vscode.Position): Fil
         }
     }
     return closest;
+}
+
+function handleAutoFixSpellingIssues(item?: unknown) {
+    if (!(item instanceof FileWithIssuesTreeItem)) return;
+    return actionAutoFixSpellingIssues(item.document.uri);
+}
+
+function handleAddWordToDictionary(item?: unknown) {
+    if (!(item instanceof FileIssueTreeItem)) return;
+
+    const doc = item.document;
+    return commandHandlers['cSpell.addWordToDictionary'](item.issue.word, doc.uri);
 }

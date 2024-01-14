@@ -9,6 +9,7 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 import { createEmitter, debounce, rx } from '../Subscribables';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri';
 import { logErrors } from '../util/errors';
+import { IssueTreeItemBase } from './IssueTreeItemBase';
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
     context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
@@ -202,12 +203,6 @@ const icons = {
     suggestionPreferred: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb-autofix'),
 } as const;
 
-abstract class IssueTreeItemBase {
-    abstract getTreeItem(): TreeItem | Promise<TreeItem>;
-    abstract getChildren(): ProviderResult<IssueTreeItemBase[]>;
-    abstract getParent(): IssueTreeItemBase | undefined;
-}
-
 class WordIssueTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
     suggestionsByDocument: Map<TextDocument, Suggestion[]> = new Map();
@@ -382,9 +377,7 @@ class IssueLocationTreeItem extends IssueTreeItemBase {
         const location = `${cellInfo}Ln ${range.start.line + 1} Col ${range.start.character + 1}`;
         const item = new TreeItem('');
         // const item = new TreeItem('');
-        const docUri = this.doc.uri;
-        const uri = docUri; // docUri.with({ path: docUri.path + `:${range.start.line + 1}:${range.start.character + 1}` });
-        item.resourceUri = uri;
+        item.resourceUri = this.doc.uri;
         item.label = undefined;
         item.iconPath = vscode.ThemeIcon.File;
         item.description = location;

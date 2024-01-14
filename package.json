@@ -180,6 +180,16 @@
           "command": "cSpell.issueViewer.item.addWordToDictionary",
           "when": "view == cspell-info.issuesView && viewItem == issue",
           "group": "inline"
+        },
+        {
+          "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileWithIssuesTreeItem.hasPreferred",
+          "group": "inline"
+        },
+        {
+          "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
+          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileIssueTreeItem",
+          "group": "inline"
         }
       ]
     },
@@ -464,6 +474,19 @@
         "title": "Add Word to Dictionary",
         "icon": "$(book)",
         "enablement": "view == cspell-info.issuesView"
+      },
+      {
+        "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+        "title": "Fix issue with preferred suggestion in the current document.",
+        "icon": "$(lightbulb-autofix)",
+        "enablement": "view == cspell.issuesViewByFile"
+      },
+      {
+        "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
+        "category": "Spell",
+        "title": "Add Word to Dictionary",
+        "icon": "$(book)",
+        "enablement": "view == cspell.issuesViewByFile"
       },
       {
         "command": "cSpell.insertDisableNextLineDirective",

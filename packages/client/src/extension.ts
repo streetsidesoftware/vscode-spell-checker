@@ -30,7 +30,7 @@ import { activate as activateWebview } from './webview';
 
 performance.mark('cspell_done_import');
 
-const debugMode = true;
+const debugMode = false;
 
 modules.init();
 
