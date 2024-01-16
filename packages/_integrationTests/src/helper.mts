@@ -1,21 +1,33 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
+/* eslint-disable import/no-duplicates */
+import assert from 'node:assert';
+import { createRequire } from 'node:module';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import type { ExtensionApi } from './ExtensionApi.cjs';
-import assert = require('assert');
-import { esmMethods } from './esmHelper.cjs';
+import type { Extension, TextDocument, TextEditor, Uri } from 'vscode';
+import type * as ModuleVSCode from 'vscode';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, node/no-unpublished-require
+import type { ExtensionApi } from './ExtensionApi.mjs';
+import { chalk, log } from './logger.mjs';
+
+export { log } from './logger.mjs';
+
+const require = createRequire(import.meta.url);
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
 const extensionPackage = require('../../../package.json');
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
 
+const vscode = require('vscode') as typeof ModuleVSCode;
+
 export interface DocumentContext {
-    doc: vscode.TextDocument;
-    editor: vscode.TextEditor;
+    doc: TextDocument;
+    editor: TextEditor;
 }
 
 export interface ExtensionActivation {
-    ext: vscode.Extension<ExtensionApi>;
+    ext: Extension<ExtensionApi>;
     extActivate: ExtensionApi;
     extApi: ExtensionApi;
 }
@@ -45,7 +57,7 @@ export async function activateExtension(): Promise<ExtensionActivation> {
 /**
  * Activates the spell checker extension
  */
-export async function loadDocument(docUri: vscode.Uri): Promise<DocumentContext | undefined> {
+export async function loadDocument(docUri: Uri): Promise<DocumentContext | undefined> {
     try {
         const doc = await vscode.workspace.openTextDocument(docUri);
         const editor = await vscode.window.showTextDocument(doc);
@@ -83,17 +95,12 @@ function getExtensionId() {
 
 export const sampleWorkspaceRoot = vscode.Uri.file(path.resolve(__dirname, '../sampleWorkspaces'));
 
-export function sampleWorkspaceUri(...pathSegments: string[]): vscode.Uri {
+export function sampleWorkspaceUri(...pathSegments: string[]): Uri {
     return vscode.Uri.joinPath(sampleWorkspaceRoot, ...pathSegments);
 }
 
-export async function log(...params: Parameters<typeof console.log>): Promise<void> {
-    return (await esmMethods()).log(...params);
-}
-
-export async function logYellow(...params: Parameters<typeof console.log>): Promise<void> {
-    const { log, chalk } = await esmMethods();
+export function logYellow(...params: Parameters<typeof console.log>): void {
     const [message, ...rest] = params;
     if (!message) return log('');
-    return log(chalk.yellow(message), ...rest);
+    log(chalk.yellow(message), ...rest);
 }

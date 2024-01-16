@@ -8,10 +8,10 @@ import { createRequire } from 'node:module';
 import { expect } from 'chai';
 import type { Stream } from 'kefir';
 import { stream } from 'kefir';
+import type { Diagnostic, languages as vscodeLanguages, Position, Uri, window as vscodeWindow } from 'vscode';
 
-import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.cjs';
-import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.cjs';
-import type { Diagnostic, languages as vscodeLanguages, Position, Uri, window as vscodeWindow } from './vscode.cjs';
+import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.mjs';
+import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.mjs';
 
 type VscodeLanguages = typeof vscodeLanguages;
 type VscodeWindow = typeof vscodeWindow;
