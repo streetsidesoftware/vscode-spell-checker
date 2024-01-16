@@ -24,7 +24,7 @@ export class PatternMatcherClient implements Disposable {
         // Create the language client and start the client.
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
-            documentSelector: [{ scheme: 'file' }, { scheme: 'untitled' }],
+            documentSelector: [{ scheme: 'file' }, { scheme: 'vscode-vfs' }, { scheme: 'untitled' }],
             diagnosticCollectionName: 'cspell-pattern-matcher',
             initializationFailedHandler: (error) => {
                 console.error('Server initialization failed. %o', error);
