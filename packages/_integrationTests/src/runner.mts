@@ -13,12 +13,14 @@ export async function run(): Promise<void> {
 
     const testsRoot = fileURLToPath(new URL('.', import.meta.url));
 
-    const files = await glob('**/**.test.?(c)js', { cwd: testsRoot });
+    const files = await glob('**/**.test.?(c|m)js', { cwd: testsRoot });
 
     console.log('files: %o', files);
 
     // Add files to the test suite
     files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
+
+    await mocha.loadFilesAsync();
 
     return new Promise((resolve, reject) => {
         // Run the mocha test
