@@ -3,13 +3,29 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
+import { createRequire } from 'node:module';
+
 import { expect } from 'chai';
 import type { Stream } from 'kefir';
 import { stream } from 'kefir';
-import * as vscode from 'vscode';
+import type { Diagnostic, languages as vscodeLanguages, Position, Uri, window as vscodeWindow } from 'vscode';
 
-import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.cjs';
-import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.cjs';
+import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.mjs';
+import { activateExtension, getDocUri, loadDocument, log, logYellow, sampleWorkspaceUri, sleep } from './helper.mjs';
+
+type VscodeLanguages = typeof vscodeLanguages;
+type VscodeWindow = typeof vscodeWindow;
+
+type Vscode = {
+    languages: VscodeLanguages;
+    window: VscodeWindow;
+    Position: typeof Position;
+    Uri: typeof Uri;
+};
+
+const require = createRequire(import.meta.url);
+
+const vscode = require('vscode') as Vscode;
 
 type Api = {
     [K in keyof ExtensionApi]: K;
@@ -126,7 +142,7 @@ function streamOnSpellCheckDocumentNotification(cSpellClient: CSpellClient): Str
     });
 }
 
-async function waitForSpellComplete(uri: vscode.Uri, timeout: number): Promise<OnSpellCheckDocumentStep | undefined> {
+async function waitForSpellComplete(uri: Uri, timeout: number): Promise<OnSpellCheckDocumentStep | undefined> {
     const matchUri = uri.toString();
     const ext = await activateExtension();
     const s = streamOnSpellCheckDocumentNotification(ext.extApi.cSpellClient())
@@ -136,10 +152,10 @@ async function waitForSpellComplete(uri: vscode.Uri, timeout: number): Promise<O
     return Promise.race([s.toPromise(), sleep(timeout)]);
 }
 
-async function getDiagsFromVsCode(uri: vscode.Uri, waitInMs: number): Promise<vscode.Diagnostic[]> {
+async function getDiagsFromVsCode(uri: Uri, waitInMs: number): Promise<Diagnostic[]> {
     let stop = false;
     setInterval(() => (stop = true), waitInMs);
-    let diag: vscode.Diagnostic[] = vscode.languages.getDiagnostics(uri);
+    let diag: Diagnostic[] = vscode.languages.getDiagnostics(uri);
     while (!stop && !diag.length) {
         await sleep(5);
         diag = vscode.languages.getDiagnostics(uri);
