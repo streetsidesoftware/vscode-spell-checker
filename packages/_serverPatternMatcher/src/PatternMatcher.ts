@@ -37,6 +37,8 @@ export interface NamedPattern {
 
 type Patterns = (string | NamedPattern)[];
 
+const defaultRegExpFlags = 'gim';
+
 export class PatternMatcher {
     private worker: RegExpWorker;
 
@@ -160,8 +162,15 @@ function resolvePattern(pat: string | NamedPattern, knownPatterns: Map<string, M
     if (isNamedPattern(pat)) {
         return namedPatternToMultiPattern(pat);
     }
+    const patAsRegExp = typeof pat === 'string' ? toRegExp(pat, defaultRegExpFlags)?.toString() : undefined;
     return (
-        knownPatterns.get(pat) || knownPatterns.get(pat.toLowerCase()) || { name: pat, regexp: [toRegExp(pat, 'gim')].filter(isDefined) }
+        knownPatterns.get(pat) ||
+        knownPatterns.get(pat.toLowerCase()) ||
+        (patAsRegExp && knownPatterns.get(patAsRegExp)) || {
+            name: pat,
+            altPatternNames: [],
+            regexp: [toRegExp(pat, defaultRegExpFlags)].filter(isDefined),
+        }
     );
 }
 
@@ -170,23 +179,25 @@ function isNamedPattern(pattern: string | NamedPattern): pattern is NamedPattern
 }
 
 function namedPatternToMultiPattern(pat: NamedPattern): MultiPattern {
-    const { name, pattern } = pat;
-    const regexp = (typeof pattern === 'string' ? [toRegExp(pattern, 'gim')] : pattern.map((p) => toRegExp(p, 'gim'))).filter(isDefined);
-    return { name, regexp };
+    return mapDef(pat);
 }
 
 function extractPatternsFromSettings(settings: PatternSettings): Map<string, MultiPattern> {
     const patterns = settings.patterns?.map(mapDef) || [];
-    const knownPatterns: [string, MultiPattern][] = patterns.map((pat) => [pat.name.toLowerCase(), pat]);
-    const knownRegexp: [string, MultiPattern][] = patterns.map((pat) => [pat.regexp.map((r) => r.toString()).join(','), pat]);
-    return new Map(knownPatterns.concat(knownRegexp));
+    const knownPatterns = patterns.map((pat) => [pat.name.toLowerCase(), pat] as const);
+    const altNames = patterns.flatMap((pat) => pat.altPatternNames.map((name) => [name, pat] as const));
+    const knownRegexp = patterns.map((pat) => [pat.regexp.map((r) => r.toString()).join(','), pat] as const);
+    return new Map([...knownPatterns, ...altNames, ...knownRegexp]);
 }
 
 function mapDef(pat: RegExpPatternDefinition): MultiPattern {
     const { name, pattern } = pat;
-    const patterns = (Array.isArray(pattern) ? pattern.map((r) => toRegExp(r, 'gim')) : [toRegExp(pattern, 'gim')]).filter(isDefined);
+    const p = Array.isArray(pattern) ? pattern : [pattern];
+
+    const altPatternNames = new Set([...p.map((r) => toRegExp(r)?.toString()).filter(isDefined), ...p.map((r) => r.toString())]);
+    const patternsRegexp = p.map((r) => toRegExp(r, defaultRegExpFlags)).filter(isDefined);
     // ) => ({ name, patterns: toRegExp(pattern) })
-    return { name, regexp: patterns };
+    return { name, altPatternNames: [...altPatternNames], regexp: patternsRegexp };
 }
 
 export function toRegExp(r: RegExp | string, defaultFlags?: string): RegExp | undefined {
@@ -222,5 +233,6 @@ function extractUniqueRegExps(patterns: MultiPattern[]): RegExp[] {
 
 interface MultiPattern {
     name: string;
+    altPatternNames: string[];
     regexp: RegExp[];
 }
