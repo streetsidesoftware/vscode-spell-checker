@@ -130,7 +130,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @scope language-overridable
      * @default true
      */
-    showAutocompleteSuggestions?: boolean;
+    showAutocompleteDirectiveSuggestions?: boolean;
 
     /**
      * Delay in ms after a document has changed before checking it for spelling errors.

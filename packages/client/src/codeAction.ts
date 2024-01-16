@@ -5,7 +5,7 @@ import { CodeAction, CodeActionKind, languages } from 'vscode';
 import { requestSpellingSuggestions } from './codeActions/actionSuggestSpellingCorrections';
 import { createTextEditCommand } from './commands';
 import { filterDiags } from './diags';
-import type { IssueTracker, SpellingDiagnostic } from './issueTracker';
+import type { IssueTracker, SpellingCheckerIssue } from './issueTracker';
 
 export class SpellCheckerCodeActionProvider implements CodeActionProvider {
     public static readonly providedCodeActionKinds = [CodeActionKind.QuickFix];
@@ -24,20 +24,20 @@ export class SpellCheckerCodeActionProvider implements CodeActionProvider {
             return [];
         }
 
-        const diags = this.issueTracker.getDiagnostics(document.uri).filter((diag) => diag.range.contains(range));
-        if (diags.length !== 1) return [];
+        const diags = this.issueTracker.getIssues(document.uri)?.filter((diag) => diag.range.contains(range));
+        if (diags?.length !== 1) return [];
         const pendingDiags = diags.map((diag) => this.diagToAction(document, diag));
         return (await Promise.all(pendingDiags)).flatMap((action) => action);
     }
 
-    private async diagToAction(doc: TextDocument, diag: SpellingDiagnostic): Promise<(CodeAction | Command)[]> {
-        const suggestions = diag.data?.suggestions;
+    private async diagToAction(doc: TextDocument, issue: SpellingCheckerIssue): Promise<(CodeAction | Command)[]> {
+        const suggestions = issue.providedSuggestions();
         if (!suggestions?.length) {
             // fetch the result from the server.
-            const actionsFromServer = await requestSpellingSuggestions(doc, diag.range, [diag]);
+            const actionsFromServer = await requestSpellingSuggestions(doc, issue.range, [issue.diag]);
             return actionsFromServer;
         }
-        return suggestions.map((sug) => suggestionToAction(doc, diag.range, sug));
+        return suggestions.map((sug) => suggestionToAction(doc, issue.range, sug));
     }
 }
 

@@ -39,7 +39,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     mergeCSpellSettings: 'mergeCSpellSettings',
     mergeCSpellSettingsFields: 'mergeCSpellSettingsFields',
     noSuggestDictionaries: 'noSuggestDictionaries',
-    showAutocompleteSuggestions: 'showAutocompleteSuggestions',
+    showAutocompleteDirectiveSuggestions: 'showAutocompleteDirectiveSuggestions',
     showCommandsInEditorContextMenu: 'showCommandsInEditorContextMenu',
     showStatus: 'showStatus',
     showStatusAlignment: 'showStatusAlignment',

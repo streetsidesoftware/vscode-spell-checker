@@ -1,16 +1,17 @@
 import { createDisposableList } from 'utils-disposables';
-import type { DecorationOptions, DiagnosticChangeEvent, TextDocument, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
-import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString } from 'vscode';
+import type { DecorationOptions, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
+import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString, window, workspace } from 'vscode';
 
 import type { CSpellUserSettings } from '../client';
 import { commandUri, createTextEditCommand } from '../commands';
 import type { Disposable } from '../disposable';
-import type { IssueTracker, SpellingDiagnostic } from '../issueTracker';
+import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker';
 
 export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForIssues: TextEditorDecorationType | undefined;
     private decorationTypeForFlagged: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
+    private visibleEditors = new Set<TextEditor>();
     public dispose = this.disposables.dispose;
 
     constructor(readonly issueTracker: IssueTracker) {
@@ -20,10 +21,11 @@ export class SpellingIssueDecorator implements Disposable {
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
         this.disposables.push(
             () => this.clearDecoration(),
-            vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
-            vscode.window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
+            workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
+            window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
             issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
-            vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
+            window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
+            window.onDidChangeVisibleTextEditors((e) => this.handleOnDidChangeVisibleTextEditors(e)),
         );
     }
 
@@ -31,38 +33,54 @@ export class SpellingIssueDecorator implements Disposable {
         this.refreshDiagnostics(event.uris);
     }
 
+    private handleOnDidChangeVisibleTextEditors(editors: readonly TextEditor[]) {
+        const added = editors.filter((e) => !this.visibleEditors.has(e));
+        this.visibleEditors.clear();
+        this.visibleEditors = new Set(editors);
+        this.refreshDiagnostics([...added].map((e) => e.document.uri));
+    }
+
     refreshEditor(e: vscode.TextEditor | undefined) {
-        e ??= vscode.window.activeTextEditor;
+        e ??= window.activeTextEditor;
         if (!e) return;
         return this.refreshDiagnostics([e.document.uri]);
     }
 
     refreshDiagnostics(docUris?: readonly Uri[]) {
-        docUris ??= vscode.window.visibleTextEditors.map((e) => e.document.uri);
+        // console.log('refreshDiagnostics %o', {
+        //     docUris: docUris?.map((u) => u.toString(true)),
+        //     docs: workspace.textDocuments.map((d) => ({ uri: d.uri.toString(true), languageId: d.languageId })),
+        //     notebooks: workspace.notebookDocuments.map((d) => d.uri.toString(true)),
+        //     folders: workspace.workspaceFolders?.map((f) => f.uri.toString(true)),
+        //     editors: window.visibleTextEditors.map((e) => e.document.uri.toString(true)),
+        //     notebookEditors: window.visibleNotebookEditors.map((e) => e.notebook.uri.toString(true)),
+        // });
+        docUris ??= window.visibleTextEditors.map((e) => e.document.uri);
         const updated = new Set(docUris.map((uri) => uri.toString()));
-        const editors = vscode.window.visibleTextEditors.filter((editor) => updated.has(editor.document.uri.toString()));
+        const editors = window.visibleTextEditors.filter((editor) => updated.has(editor.document.uri.toString()));
         editors.forEach((editor) => this.refreshDiagnosticsInEditor(editor));
     }
 
     refreshDiagnosticsInEditor(editor: TextEditor) {
         if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged) return;
         const doc = editor.document;
-        const diags = this.issueTracker.getDiagnostics(doc.uri) || [];
+        const issues = this.issueTracker.getIssues(doc.uri) || [];
 
-        const decorationsIssues: DecorationOptions[] = diags
-            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
-            .filter((diag) => !diag.data?.isFlagged)
-            .map((diag) => diagToDecorationOptions(diag, doc));
+        const decorationsIssues: DecorationOptions[] = issues
+            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
+            .filter((issue) => !issue.isFlagged())
+            .map((diag) => diagToDecorationOptions(diag));
         editor.setDecorations(this.decorationTypeForIssues, decorationsIssues);
 
-        const decorationsFlagged: DecorationOptions[] = diags
-            .filter((diag) => diag.severity === DiagnosticSeverity.Hint)
-            .filter((diag) => diag.data?.isFlagged)
-            .map((diag) => diagToDecorationOptions(diag, doc));
+        const decorationsFlagged: DecorationOptions[] = issues
+            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
+            .filter((issue) => issue.isFlagged())
+            .map((diag) => diagToDecorationOptions(diag));
         editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
     }
 
     private clearDecoration() {
+        this.visibleEditors.clear();
         this.decorationTypeForIssues?.dispose();
         this.decorationTypeForIssues = undefined;
         this.decorationTypeForFlagged?.dispose();
@@ -78,15 +96,15 @@ export class SpellingIssueDecorator implements Disposable {
 
     private createDecorators(): { decoratorIssues: TextEditorDecorationType; decoratorFlagged: TextEditorDecorationType } | undefined {
         this.clearDecoration();
-        const decorateIssues = vscode.workspace.getConfiguration('cSpell').get('decorateIssues');
+        const decorateIssues = workspace.getConfiguration('cSpell').get('decorateIssues');
         if (!decorateIssues) return undefined;
 
-        const mode = calcMode(vscode.window.activeColorTheme.kind);
-        const cfg = vscode.workspace.getConfiguration('cSpell') as CSpellUserSettings;
+        const mode = calcMode(window.activeColorTheme.kind);
+        const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
 
         const overviewRulerColor: string | undefined = cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor || undefined;
 
-        const decoratorIssues = vscode.window.createTextEditorDecorationType({
+        const decoratorIssues = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
             overviewRulerLane: vscode.OverviewRulerLane.Right,
@@ -94,7 +112,7 @@ export class SpellingIssueDecorator implements Disposable {
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColor'),
         });
 
-        const decoratorFlagged = vscode.window.createTextEditorDecorationType({
+        const decoratorFlagged = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
             overviewRulerLane: vscode.OverviewRulerLane.Right,
@@ -115,10 +133,13 @@ function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField
     return textDecoration || `${line} ${style} ${color} ${thickness}`;
 }
 
-function diagToDecorationOptions(diag: SpellingDiagnostic, doc: TextDocument): DecorationOptions {
-    const { range } = diag;
-    const { suggestions, isFlagged, isSuggestion } = diag.data || {};
-    const text = doc.getText(range);
+function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions {
+    const { range } = issue;
+    const suggestions = issue.providedSuggestions();
+    const isFlagged = issue.isFlagged();
+    const isSuggestion = issue.isSuggestion();
+    const text = issue.word;
+    const doc = issue.document;
 
     const commandSuggest = commandUri('cSpell.suggestSpellingCorrections', doc.uri, range, text);
     // const commandAdd = commandUri('cSpell.addWordToDictionary', text);

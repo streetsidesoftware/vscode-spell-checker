@@ -1,3 +1,5 @@
+import { logger } from '@internal/common-utils/log';
+import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
@@ -15,11 +17,12 @@ import type { ExtensionApi } from './extensionApi';
 import * as ExtensionRegEx from './extensionRegEx';
 import * as settingsViewer from './infoViewer/infoView';
 import { IssueTracker } from './issueTracker';
-import { activateIssueViewer } from './issueViewer';
+import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer';
 import * as modules from './modules';
-import type { ConfigTargetLegacy } from './settings';
+import type { ConfigTargetLegacy, CSpellSettings } from './settings';
 import * as settings from './settings';
 import { sectionCSpell } from './settings';
+import { getSectionName } from './settings/vsConfig';
 import { initStatusBar } from './statusbar';
 import { logErrors, silenceErrors } from './util/errors';
 import { performance } from './util/perf';
@@ -27,16 +30,20 @@ import { activate as activateWebview } from './webview';
 
 performance.mark('cspell_done_import');
 
+const debugMode = false;
+
 modules.init();
 
 export async function activate(context: ExtensionContext): Promise<ExtensionApi> {
     performance.mark('cspell_activate_start');
 
-    // await settingsViewerActivate(context);
+    const logOutput = vscode.window.createOutputChannel('Code Spell Checker', { log: true });
+    const dLogger = bindLoggerToOutput(logOutput);
+    setOutputChannelLogLevel();
 
     // Get the cSpell Client
     const client = await CSpellClient.create(context);
-    context.subscriptions.push(client);
+    context.subscriptions.push(client, logOutput, dLogger);
 
     di.set('client', client);
     di.set('extensionContext', context);
@@ -71,7 +78,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
     const decorator = new SpellingIssueDecorator(issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
-    activateIssueViewer(context, issueTracker, client);
+    activateIssueViewer(context, issueTracker);
+    activateFileIssuesViewer(context, issueTracker);
 
     const extensionCommand: InjectableCommandHandlers = {
         'cSpell.toggleTraceMode': () => decoratorExclusions.toggleEnabled(),
@@ -90,6 +98,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),
         vscode.workspace.onDidCreateFiles(handleCreateFile),
         vscode.workspace.onDidOpenTextDocument(handleOpenFile),
+        vscode.workspace.onDidChangeConfiguration(handleConfigChange),
         vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
         vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
@@ -137,6 +146,12 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function handleOpenFile(_doc: vscode.TextDocument) {
         // detectPossibleCSpellConfigChange([doc.uri]);
+    }
+
+    function handleConfigChange(event: vscode.ConfigurationChangeEvent) {
+        if (event.affectsConfiguration(getSectionName('logLevel'))) {
+            setOutputChannelLogLevel();
+        }
     }
 
     function handleOnDidChangeActiveTextEditor(e?: vscode.TextEditor) {
@@ -207,4 +222,23 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     return server;
 }
 
+function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposable {
+    const disposableList = createDisposableList();
+    const console = {
+        log: debugMode ? logOutput.info.bind(logOutput) : logOutput.debug.bind(logOutput),
+        error: logOutput.error.bind(logOutput),
+        info: logOutput.info.bind(logOutput),
+        warn: logOutput.warn.bind(logOutput),
+    };
+    logger.setConnection({ console, onExit: (fn) => disposableList.push(fn) });
+    logger.logTime = false;
+    logger.logSequence = false;
+    return disposableList;
+}
+
 performance.mark('cspell_done_load');
+
+function setOutputChannelLogLevel(level?: CSpellSettings['logLevel']) {
+    const logLevel = level ?? (settings.getSettingFromVSConfig('logLevel', undefined) || 'Error');
+    logger.level = logLevel;
+}

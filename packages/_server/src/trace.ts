@@ -1,8 +1,8 @@
+import { groupByField } from '@internal/common-utils';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 
 import type * as Api from './api.js';
 import type { DocumentValidationController } from './DocumentValidationController.mjs';
-import { groupByField } from './utils/groupByField.js';
 
 export async function traceWord(
     docValidationController: DocumentValidationController,

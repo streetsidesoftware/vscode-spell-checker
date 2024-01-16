@@ -105,7 +105,7 @@ const inlineCompletions: Completion[] = [
 ];
 
 function getShowAutocompleteSuggestions(docUri: vscode.Uri): boolean {
-    const key = 'showAutocompleteSuggestions';
+    const key = 'showAutocompleteDirectiveSuggestions';
     try {
         return getSettingFromVSConfig(key, docUri) ?? true;
     } catch (e) {

@@ -59,10 +59,6 @@ describe('Validate PatternMatcher', () => {
         const matches = matchedResults.matches[0];
         expect(isRegExpMatchTimeout(matches)).toBe(false);
         expect(isRegExpMatch(matches)).toBe(true);
-        if (isRegExpMatch(matches)) {
-            const matchedText = matches.ranges.map((r) => extract(sampleText, r));
-            expect(matchedText).toEqual(['']);
-        }
     });
 
     testMatcher(

@@ -6,7 +6,7 @@ export const schemasWithSpecialHandling = {
     vscodeScm: 'vscode-scm',
 } as const satisfies Readonly<Record<string, string>>;
 
-type SpecialHandlingFunction = (uri: Uri) => Uri;
+type SpecialHandlingFunction = (uri: Uri, root: Uri) => Uri;
 
 const _schemaMapToHandler = {
     [schemasWithSpecialHandling.vscodeNoteBookCell]: forceToFileUri,
@@ -18,16 +18,16 @@ const schemaMapToHandler: Readonly<Record<string, SpecialHandlingFunction>> = _s
 const _alwaysIncludeMatchedFiles = [/^vscode-scm:/];
 
 // handleSpecialUri
-export function handleSpecialUri(uri: Uri): Uri {
+export function handleSpecialUri(uri: Uri, rootUri: Uri): Uri {
     if (!uriNeedsSpecialHandling(uri)) return uri;
-    return getHandler(uri)(uri);
+    return getHandler(uri)(uri, rootUri);
 }
 
-export function forceToFileUri(uri: Uri): Uri {
+export function forceToFileUri(uri: Uri, rootUri: Uri): Uri {
     if (uri.scheme === 'file') return uri;
 
     return uri.with({
-        scheme: 'file',
+        scheme: rootUri.scheme,
         query: '',
         fragment: '',
     });

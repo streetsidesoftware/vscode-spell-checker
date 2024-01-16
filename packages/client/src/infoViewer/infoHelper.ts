@@ -224,7 +224,9 @@ function normalizeFilenameToFriendlyName(filename: string | Uri): string {
 }
 
 function normalizeUriToFriendlyName(uri: Uri): string {
-    return uri.scheme === 'file' ? vscode.workspace.asRelativePath(uri, true) : uri.toString();
+    return uri.scheme === 'file' || vscode.workspace.getWorkspaceFolder(uri)
+        ? vscode.workspace.asRelativePath(uri, true)
+        : uri.toString(true);
 }
 
 interface ExtractConfigFilesRequest {

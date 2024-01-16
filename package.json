@@ -180,6 +180,16 @@
           "command": "cSpell.issueViewer.item.addWordToDictionary",
           "when": "view == cspell-info.issuesView && viewItem == issue",
           "group": "inline"
+        },
+        {
+          "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileWithIssuesTreeItem.hasPreferred",
+          "group": "inline"
+        },
+        {
+          "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
+          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileIssueTreeItem",
+          "group": "inline"
         }
       ]
     },
@@ -200,15 +210,23 @@
           "title": "Spell Checker",
           "icon": "resources/dark/check_circle.svg"
         }
+      ],
+      "panel": [
+        {
+          "id": "cspellPanel",
+          "title": "Spell Checker",
+          "icon": "resources/dark/check_circle.svg"
+        }
       ]
+    },
+    "icons": {
+      "cspell-issues": {
+        "description": "cspell-issues lightbulb icon",
+        "default": "lightbulb"
+      }
     },
     "views": {
       "cspell-info-explorer": [
-        {
-          "type": "tree",
-          "id": "cspell-info.issuesView",
-          "name": "Issues"
-        },
         {
           "type": "webview",
           "id": "cspell-info.infoView",
@@ -216,15 +234,29 @@
           "when": "config.cSpell.experimental.enableSettingsViewerV2"
         },
         {
-          "type": "webview",
-          "id": "cspell-info.todoView",
-          "name": "Spell Checker Todos",
-          "when": "config.cSpell.experimental.enableSettingsViewerV2"
-        },
-        {
           "id": "cSpellRegExpView",
           "name": "Regular Expressions",
           "when": "config.cSpell.experimental.enableRegexpView"
+        }
+      ],
+      "cspellPanel": [
+        {
+          "type": "tree",
+          "id": "cspell.issuesViewByFile",
+          "name": "File Issues",
+          "contextualTitle": "Spell Checker",
+          "icon": "$(lightbulb)",
+          "initialSize": 4,
+          "visibility": "visible"
+        },
+        {
+          "type": "tree",
+          "id": "cspell-info.issuesView",
+          "name": "Issues",
+          "contextualTitle": "Spell Checker",
+          "icon": "$(lightbulb)",
+          "initialSize": 1,
+          "visibility": "visible"
         }
       ]
     },
@@ -442,6 +474,19 @@
         "title": "Add Word to Dictionary",
         "icon": "$(book)",
         "enablement": "view == cspell-info.issuesView"
+      },
+      {
+        "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
+        "title": "Fix issue with preferred suggestion in the current document.",
+        "icon": "$(lightbulb-autofix)",
+        "enablement": "view == cspell.issuesViewByFile"
+      },
+      {
+        "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
+        "category": "Spell",
+        "title": "Add Word to Dictionary",
+        "icon": "$(book)",
+        "enablement": "view == cspell.issuesViewByFile"
       },
       {
         "command": "cSpell.insertDisableNextLineDirective",
@@ -3250,7 +3295,7 @@
             "scope": "resource",
             "type": "number"
           },
-          "cSpell.showAutocompleteSuggestions": {
+          "cSpell.showAutocompleteDirectiveSuggestions": {
             "default": true,
             "markdownDescription": "Show CSpell in-document directives as you type.\n\n**Note:** VS Code must be restarted for this setting to take effect.",
             "scope": "language-overridable",
