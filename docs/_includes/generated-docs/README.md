@@ -69,6 +69,8 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 - [German](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-german) - German dictionary extension for VS Code.
 - [Greek](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-greek) - Greek dictionary extension for VS Code.
 - [Hebrew](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hebrew) - Hebrew dictionary extension for VS Code.
+- [Hungarian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-hungarian) - Hungarian dictionary extension for VS Code.
+- [Indonesian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-indonesian) - Indonesian dictionary extension for VS Code.
 - [Italian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-italian) - Italian dictionary extension for VS Code.
 - [Latvian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-latvian) - Latvian dictionary extension for VS Code.
 - [Lithuanian](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-lithuanian) - Lithuanian dictionary extension for VS Code.
