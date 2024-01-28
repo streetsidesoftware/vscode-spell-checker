@@ -478,7 +478,7 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
     //   Error - Report Spelling Issues as Errors
     //   Warning - Report Spelling Issues as Warnings
     //   Information - Report Spelling Issues as Information (default)
-    //   Hint	- Report Spelling Issues as Hints, will not show up in Problems
+    //   Hint - Report Spelling Issues as Hints, will not show up in Problems
     "cSpell.diagnosticLevel": "Information",
 ```
 
