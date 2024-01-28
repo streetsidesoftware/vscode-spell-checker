@@ -473,6 +473,13 @@ Note, the settings in `cspell.json` will override the equivalent cSpell settings
 
     // Set the delay before spell checking the document. Default is 50.
     "cSpell.spellCheckDelayMs": 50,
+
+    // Set Diagnostic Reporting Level
+    //   Error - Report Spelling Issues as Errors
+    //   Warning - Report Spelling Issues as Warnings
+    //   Information - Report Spelling Issues as Information (default)
+    //   Hint	- Report Spelling Issues as Hints, will not show up in Problems
+    "cSpell.diagnosticLevel": "Information",
 ```
 
 ## Dictionaries
