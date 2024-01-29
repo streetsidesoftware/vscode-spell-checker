@@ -1,4 +1,4 @@
-name: " 🔤 Check Spelling"
+name: ' 🔤 Check Spelling'
 on:
   workflow_dispatch:
   pull_request:

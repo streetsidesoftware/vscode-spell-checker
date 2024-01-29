@@ -24,9 +24,6 @@
         }
     ],
     "settings": {
-        "cSpell.words": [
-            "PROJECTA",
-            "PROJECTB"
-        ]
+        "cSpell.words": ["PROJECTA", "PROJECTB"]
     }
 }

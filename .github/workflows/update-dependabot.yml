@@ -1,4 +1,4 @@
-name: " 🤖 Update Dependabot 🤖"
+name: ' 🤖 Update Dependabot 🤖'
 
 on:
   workflow_dispatch:
@@ -6,10 +6,10 @@ on:
       base:
         description: The Base Ref to apply the diff
         required: false
-        default: "main"
+        default: 'main'
 
   schedule:
-    - cron: "0 12 * * *"
+    - cron: '0 12 * * *'
 
 permissions:
   contents: read
@@ -30,9 +30,9 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
           node-version: 20.x
-          cache: "npm"
+          cache: 'npm'
 
       - name: Run Action
         id: dependabot
@@ -49,10 +49,10 @@ jobs:
       - name: PR
         uses: streetsidesoftware/actions/.github/actions/pr@v1
         with:
-          commit-message: "${{ env.PR_TYPE }}: Workflow Bot -- Update dependabot.yml"
+          commit-message: '${{ env.PR_TYPE }}: Workflow Bot -- Update dependabot.yml'
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
-          title: "${{ env.PR_TYPE }}: Workflow Bot -- Update dependabot.yml (${{ env.REF_BRANCH }})"
+          title: '${{ env.PR_TYPE }}: Workflow Bot -- Update dependabot.yml (${{ env.REF_BRANCH }})'
           body: ${{ steps.dependabot.outputs.summary }}
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}

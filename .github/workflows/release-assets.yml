@@ -1,4 +1,4 @@
-name: " 📦 Upload Release Assets"
+name: ' 📦 Upload Release Assets'
 
 on:
   workflow_dispatch:
@@ -53,6 +53,6 @@ jobs:
       - name: Upload Assets
         uses: AButler/upload-release-assets@v2.0.2
         with:
-          files: "build/code-spell*.vsix"
+          files: 'build/code-spell*.vsix'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           release-tag: ${{ env.REF }}

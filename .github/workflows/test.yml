@@ -1,20 +1,20 @@
-name: " 🧪 Build and Test"
+name: ' 🧪 Build and Test'
 on: # rebuild any PRs and main branch changes
   pull_request:
     paths-ignore:
-      - "docs/**"
+      - 'docs/**'
   push:
     branches:
       - main
     paths-ignore:
-      - "docs/**"
+      - 'docs/**'
 
 jobs:
   build-test:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: ["${{ vars.DEFAULT_NODE_VERSION }}"]
+        node-version: ['${{ vars.DEFAULT_NODE_VERSION }}']
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -35,7 +35,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ["${{ vars.DEFAULT_NODE_VERSION }}"]
+        node-version: ['${{ vars.DEFAULT_NODE_VERSION }}']
 
     runs-on: ${{ matrix.os }}
     steps:

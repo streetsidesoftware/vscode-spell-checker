@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: 'CodeQL'
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [main]
   schedule:
-    - cron: "0 6 * * 2"
+    - cron: '0 6 * * 2'
 
 jobs:
   analyze:
@@ -21,7 +21,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: "javascript"
+          languages: 'javascript'
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

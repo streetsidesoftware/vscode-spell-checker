@@ -23,7 +23,7 @@ inputs:
     description: Application Private Key used to sign the PR
     required: true
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Has changes
       shell: bash
