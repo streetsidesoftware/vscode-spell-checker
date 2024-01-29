@@ -13,8 +13,6 @@
                 "path": "${workspaceFolder}/alt-words.txt"
             }
         ],
-        "cSpell.flagWords": [
-            "flagthisword"
-        ]
+        "cSpell.flagWords": ["flagthisword"]
     }
 }

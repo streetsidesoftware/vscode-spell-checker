@@ -1,6 +1,6 @@
 query CurrentUserForLayout {
-  currentUser {
-    login
-    avatar_url
-  }
+    currentUser {
+        login
+        avatar_url
+    }
 }

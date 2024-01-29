@@ -19,3 +19,5 @@ samples/php/**/vendor
 package-lock.json
 packages/webview-ui/public/build
 **/*.schema.json
+**/*.lock
+**/*.log

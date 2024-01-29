@@ -1,28 +1,28 @@
 // These must come before the imports to set the right theme colors.
 $background: var(--vscode-editor-background, #aaaaaa);
-$foreground: var(--vscode-editor-foreground, #EEFFEE);
+$foreground: var(--vscode-editor-foreground, #eeffee);
 $background-button: var(--vscode-button-background, #337733);
-$foreground-button: var(--vscode-button-foreground, #EEFFEE);
+$foreground-button: var(--vscode-button-foreground, #eeffee);
 $primary: $background-button;
 $on-primary: $foreground-button;
 $secondary: var(--vscode-editor-selectionBackground, #774400);
-$on-secondary: var(--vscode-editor-selectionForeground, #EEFFEE);
+$on-secondary: var(--vscode-editor-selectionForeground, #eeffee);
 $color: $foreground;
 
 :root {
-  // RIGHT, will work in all Sass versions.
-  --cspell-foreground: #{$foreground};
-  --cspell-background: #{$background};
-  --cspell-primary: #{$primary};
-  --cspell-on-primary: #{$on-primary};
-  --cspell-secondary: #{$secondary};
-  --cspell-on-secondary: #{$on-secondary};
+    // RIGHT, will work in all Sass versions.
+    --cspell-foreground: #{$foreground};
+    --cspell-background: #{$background};
+    --cspell-primary: #{$primary};
+    --cspell-on-primary: #{$on-primary};
+    --cspell-secondary: #{$secondary};
+    --cspell-on-secondary: #{$on-secondary};
 }
 
 body {
-  color: var(--cspell-foreground);
-  background-color: var(--cspell-background);
-  font-family: var(--vscode-editor-font-family, -apple-system, system-ui, sans-serif);
+    color: var(--cspell-foreground);
+    background-color: var(--cspell-background);
+    font-family: var(--vscode-editor-font-family, -apple-system, system-ui, sans-serif);
 }
 
 // .mdc-checkbox {

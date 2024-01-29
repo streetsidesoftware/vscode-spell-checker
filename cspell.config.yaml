@@ -1,5 +1,5 @@
 $schema: ./node_modules/@cspell/cspell-types/cspell.schema.json
-version: "0.2"
+version: '0.2'
 language: en-US
 flagWords:
   - hte
@@ -7,14 +7,14 @@ ignorePaths:
   - .git
   - .gitignore
   - .vscodeignore
-  - "*.lock"
-  - "*.log"
-  - "*.vsix"
-  - "*.tsv"
-  - "*.svg"
-  - "**/__snapshots__/**"
-  - "**/server.js"
-  - "**/scripts/ts-json-schema-generator.cjs"
+  - '*.lock'
+  - '*.log'
+  - '*.vsix'
+  - '*.tsv'
+  - '*.svg'
+  - '**/__snapshots__/**'
+  - '**/server.js'
+  - '**/scripts/ts-json-schema-generator.cjs'
   - /samples
   - CHANGELOG.md
   - cspell.json
@@ -46,7 +46,7 @@ dictionaries:
   - cities
   - cspell-words
 languageSettings:
-  - languageId: "*"
+  - languageId: '*'
     allowCompoundWords: false
 overrides:
   - filename: package.json

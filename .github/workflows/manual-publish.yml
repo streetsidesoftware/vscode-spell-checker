@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: " 🚀 Publish to Marketplace"
+name: ' 🚀 Publish to Marketplace'
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -10,7 +10,7 @@ on:
       ref:
         description: The release TAG to publish. i.e. `v2.3.0`
         required: true
-        default: "v2.3.0"
+        default: 'v2.3.0'
   workflow_call:
     inputs:
       ref:

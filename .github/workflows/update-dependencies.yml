@@ -1,22 +1,22 @@
-name: " 🔗 Update Dependencies Main"
+name: ' 🔗 Update Dependencies Main'
 
 on:
   push:
     branches:
       - main
     paths:
-      - "**/package.json"
-      - "**/package-lock.json"
+      - '**/package.json'
+      - '**/package-lock.json'
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * 0"
+    - cron: '0 12 * * 0'
 
 jobs:
   update-dependencies:
     if: github.repository_owner == 'streetsidesoftware'
     runs-on: ubuntu-latest
     env:
-      NEW_BRANCH: "update-dependencies-main"
+      NEW_BRANCH: 'update-dependencies-main'
       REF_BRANCH: main
     steps:
       - name: Checkout code
@@ -46,10 +46,10 @@ jobs:
       - name: PR
         uses: ./.github/actions/pr
         with:
-          commit-message: "ci: Update ALL Dependencies -- Workflow Bot"
+          commit-message: 'ci: Update ALL Dependencies -- Workflow Bot'
           branch: ${{ env.NEW_BRANCH }}
           base: ${{ env.REF_BRANCH }}
-          title: "ci: Update ALL Dependencies (${{ env.REF_BRANCH }}) -- Workflow Bot"
+          title: 'ci: Update ALL Dependencies (${{ env.REF_BRANCH }}) -- Workflow Bot'
           body: ${{ steps.body.outputs.body }}
           app_id: ${{ secrets.AUTOMATION_APP_ID }}
           app_private_key: ${{ secrets.AUTOMATION_PRIVATE_KEY }}

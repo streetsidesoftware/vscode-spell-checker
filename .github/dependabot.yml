@@ -10,11 +10,11 @@ updates:
     schedule:
       interval: 'daily'
 
-  - package-ecosystem: "bundler"
+  - package-ecosystem: 'bundler'
     # The Gemfile used in for the Jekyll doc site
-    directory: "/docs"
+    directory: '/docs'
     schedule:
-      interval: "daily"
+      interval: 'daily'
 
   - package-ecosystem: 'github-actions'
     # Workflow files stored in the

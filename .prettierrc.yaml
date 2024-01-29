@@ -5,22 +5,22 @@ singleQuote: true
 tabWidth: 4
 endOfLine: lf
 overrides:
-  - files: "**/*.{yaml,yml}"
+  - files: '**/*.{yaml,yml}'
     options:
       tabWidth: 2
-      singleQuote: false
-  - files: "**/*.svelte"
+      singleQuote: true
+  - files: '**/*.svelte'
     options:
       tabWidth: 2
-  - files: "**/*.json"
+  - files: '**/*.json'
     options:
       tabWidth: 4
       singleQuote: false
-  - files: "**/*.schema.json"
+  - files: '**/*.schema.json'
     options:
       tabWidth: 2
       singleQuote: false
-  - files: "**/package.json"
+  - files: '**/package.json'
     options:
       tabWidth: 2
       singleQuote: false
@@ -30,3 +30,6 @@ overrides:
   - files: packages/client/src/**/configUpdater.ts
     options:
       printWidth: 200
+  - files: '**/*.{json,jsonc,md,code-snippets,code-workspace}'
+    options:
+      trailingComma: none
