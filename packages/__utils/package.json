@@ -63,7 +63,7 @@
     "watch": "tsc -b . --watch"
   },
   "devDependencies": {
-    "ts-jest": "^29.1.1",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
