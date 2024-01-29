@@ -16,27 +16,27 @@ For the readme on the plugin: [README](./packages/client/README.md).
 
 ## Building the extension
 
-1. `npm install -g yarn`
-2. `yarn install`
-3. `yarn build`
-4. Launch vscode: `code Spell Checker.code-workspace`
-5. Run the extension from vscode:
+1. `npm install`
+1. `npm run build`
+1. Launch vscode: `code "Spell Checker.code-workspace"`
+1. Run the extension from vscode:
     1. `Debug Tab`
     1. Choose `Client: Launch Extension (Spell Checker Root)` configuration.
     1. `F5`
 
-<sup>\*</sup> Requires Node >= 14
+<sup>\*</sup> Requires Node >= 18
 
 ### Debugging the Client
 
-1. Launch vscode: `code packages/client`
-1. Run the extension from vscode: `F5`
+1. Run the extension from vscode:
+    1. `Debug Tab`
+    1. Choose `Client: Launch Extension (Spell Checker Root)` configuration.
+    1. `F5`
 
 ### Debugging the Server
 
-1. Launch vscode for the server: `code packages/_server`
 1. Launch the client as specified above.
-1. Attach to the server: `F5` or `Debug -> Attach Server`
+1. Attach to the server: `Server: Attach Server (Server - Spell Checker)`
 
 Sometimes the ports get stuck. You can see if they are being used with:
 
@@ -160,11 +160,11 @@ angeles
 Spaces in the compiled dictionary have a special meaning.
 They tell the suggestion algorithm to suggest: 'newYork', 'new_york', 'new york', etc. for 'newyork'.
 
-### Locals
+### Locales
 
 The default language is English: `"cSpell.language": "en"`
 
-CSpell currently has English locals: `en-US` and `en-GB`.
+CSpell currently has English locales: `en-US` and `en-GB`.
 
 Example words differences: behaviour (en-GB) vs behavior (en-US)
 
