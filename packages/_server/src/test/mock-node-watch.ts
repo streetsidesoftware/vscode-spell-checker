@@ -125,6 +125,8 @@ export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatch
             emit: vi.fn(),
             rawListeners: vi.fn(),
             eventNames: vi.fn(),
+            ref: vi.fn(),
+            unref: vi.fn(),
         };
 
         function defaultImpl(): WatcherInternal {
