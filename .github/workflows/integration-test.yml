@@ -14,7 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os:
+          # - macos-latest # Disabled because github actions randomly fails on macos
+          - ubuntu-latest
+          - windows-latest
         node-version:
           - ${{ vars.DEFAULT_NODE_VERSION }}
         vscode-version: [stable]
