@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "ts-loader": "^9.5.1",
-    "webpack": "^5.90.0",
+    "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
