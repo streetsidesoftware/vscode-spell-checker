@@ -740,7 +740,7 @@ interface DictionaryDefinition {
     "name": "companyTerms",
     "path": "${workspaceFolder}/../company/terms.txt"
     // "addWords": true -- is implied
-  }
+  },
   "custom": true, // Enable the `custom` dictionary
   "internal-terms": false // Disable the `internal-terms` dictionary
 }
