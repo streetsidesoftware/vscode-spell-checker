@@ -44,8 +44,12 @@ jobs:
             const alpha = version.includes('alpha');
             core.setOutput('alpha', alpha);
             const validVersion = /^\d+\.\d+\.\d+$/.test(version);
-            core.setOutput('valid_version', validVersion);
-            return validVersion || '';
+            core.setOutput('validVersion', validVersion || '');
+            return {
+              version,
+              alpha,
+              validVersion
+            };
 
       - name: Display Info
         uses: streetsidesoftware/actions/public/summary@v1
@@ -55,6 +59,7 @@ jobs:
             ref: ${{ inputs.ref }}
             version: `${{ steps.version.outputs.version }}`
             alpha: ${{ contains(steps.version.outputs.version, 'alpha') }}
+            validVersion: ${{ steps.version.outputs.validVersion }}
             versionInfo: ${{ toJSON(steps.version.outputs) }}
 
       - name: Test Exit
