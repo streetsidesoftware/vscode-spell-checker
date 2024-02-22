@@ -53,11 +53,18 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - release-please
-    env:
-      OUTPUTS: ${{ toJSON(needs.release-please.outputs) }}
     steps:
-      - run: echo "Result"
-      - run: echo "$OUTPUTS"
+      - name: Summary Info
+        uses: streetsidesoftware/actions/public/summary@v1
+        with:
+          text: |
+            # Release Please Results
+
+            Release Created: ${{ needs.release-please.outputs.release_created || 'false' }}
+            Results:
+            ```json
+            ${{ toJSON(needs.release-please.outputs) }}
+            ```
 
   assets:
     needs:
