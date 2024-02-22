@@ -3423,7 +3423,7 @@
     "@vscode/vsce": "^2.23.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "esbuild": "^0.20.0",
+    "esbuild": "^0.20.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -3450,10 +3450,10 @@
     "vitest": "^1.3.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.3.2",
-    "@cspell/cspell-types": "^8.3.2",
+    "@cspell/cspell-bundled-dicts": "^8.4.0",
+    "@cspell/cspell-types": "^8.4.0",
     "@types/react": "^17.0.75",
-    "cspell": "^8.3.2",
+    "cspell": "^8.4.0",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
