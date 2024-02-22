@@ -65,8 +65,9 @@ jobs:
       - name: Check Version
         if: ${{ steps.version.outputs.validVersion != 'true' }}
         run: |
-          echo "::error title=Invalid Version::The version in package.json is not a releasable version."
-          exit 1
+          echo "::warning title=Invalid Version::The version in package.json is not a releasable version."
+          echo "::notice: title=Exiting Workflow::The package will not be published."
+          exit 0
 
       - name: Test Exit
         run: |
