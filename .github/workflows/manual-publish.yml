@@ -42,7 +42,7 @@ jobs:
             const version = manifest.version;
             core.setOutput('version', version);
             const alpha = version.includes('alpha');
-            core.setOutput('alpha', alpha);
+            core.setOutput('alpha', alpha || '');
             const validVersion = /^\d+\.\d+\.\d+$/.test(version);
             core.setOutput('validVersion', validVersion || '');
             return {
@@ -61,6 +61,12 @@ jobs:
             alpha: ${{ contains(steps.version.outputs.version, 'alpha') }}
             validVersion: ${{ steps.version.outputs.validVersion }}
             versionInfo: ${{ toJSON(steps.version.outputs) }}
+
+      - name: Check Version
+        if: ${{ steps.version.outputs.validVersion != 'true' }}
+        run: |
+          echo "::error title=Invalid Version::The version in package.json is not a releasable version."
+          exit 1
 
       - name: Test Exit
         run: |
