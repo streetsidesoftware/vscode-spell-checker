@@ -81,11 +81,6 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      - name: Test Exit
-        run: |
-          echo "::error title=Test::This is a test error"
-          exit 1
-
       - name: Install
         run: |
           npm install
