@@ -24,8 +24,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  publish:
+  check_version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      alpha: ${{ steps.version.outputs.alpha }}
+      validVersion: ${{ steps.version.outputs.validVersion }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -67,7 +71,16 @@ jobs:
         run: |
           echo "::warning title=Invalid Version::The version in package.json is not a releasable version."
           echo "::notice title=Exiting Workflow::The package will not be published."
-          exit 0
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: check_version
+    if: ${{ needs.check_version.outputs.validVersion == 'true' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Test Exit
         run: |
