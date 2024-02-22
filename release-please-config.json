@@ -1,6 +1,8 @@
 {
     "bootstrap-sha": "569b42758f06ccd890eb4404b2176118e6f933ec",
     "release-type": "node",
+    "prerelease": true,
+    "prerelease-type": "alpha",
     "changelog-sections": [
         {
             "type": "feat",
