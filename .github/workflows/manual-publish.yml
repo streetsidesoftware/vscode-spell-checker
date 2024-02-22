@@ -32,7 +32,7 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      - name: Get Package Version
+      - name: Check Package Version
         id: version
         uses: actions/github-script@v7
         with:
@@ -45,7 +45,7 @@ jobs:
             core.setOutput('alpha', alpha);
             const validVersion = /^\d+\.\d+\.\d+$/.test(version);
             core.setOutput('valid_version', validVersion);
-            return validVersion
+            return validVersion || '';
 
       - name: Display Info
         uses: streetsidesoftware/actions/public/summary@v1
