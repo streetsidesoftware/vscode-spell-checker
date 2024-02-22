@@ -49,6 +49,7 @@ jobs:
             # Package Info
             ref: ${{ inputs.ref }}
             version: `${{ steps.version.outputs.version }}`
+            alpha: ${{ contains(steps.version.outputs.version, 'alpha') }}
 
       - name: Test Exit
         run: |
