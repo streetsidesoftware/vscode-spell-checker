@@ -55,7 +55,7 @@ jobs:
             ref: ${{ inputs.ref }}
             version: `${{ steps.version.outputs.version }}`
             alpha: ${{ contains(steps.version.outputs.version, 'alpha') }}
-            versionInfo: ${{ steps.version.outputs }}
+            versionInfo: ${{ toJSON(steps.version.outputs) }}
 
       - name: Test Exit
         run: |
