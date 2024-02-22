@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v3.0.1...code-spell-checker-v4.0.0-alpha.1) (2024-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update the client/server api ([#2859](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2859))
+
+### Features
+
+* Add command to autofix spelling issues. ([#2906](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2906)) ([356fae5](https://github.com/streetsidesoftware/vscode-spell-checker/commit/356fae553b255a1d71d58c1e62912e4fa12d789a))
+* Add insert directive commands ([#2968](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2968)) ([0c3fe26](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0c3fe262a6cff0e3befc5b16a32ff62a42386e07))
+* Add light/dark theme support ([#2890](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2890)) ([dc806da](https://github.com/streetsidesoftware/vscode-spell-checker/commit/dc806da9054fadbe8d47bf8d3740e9d2c113cd15))
+* Control which settings are passed to cspell ([#2868](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2868)) ([68bca74](https://github.com/streetsidesoftware/vscode-spell-checker/commit/68bca74bee42963121efbf91fd20c504b7e5dc8f))
+* Improve Spelling Issues Viewer ([#3005](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3005)) ([1b9a59d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1b9a59dd9feb6cd09e664f156ac9e8fc9902aa01))
+* Make it easier to decorate issues ([#2920](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2920)) ([79f9a8b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/79f9a8b52cfb8aac6abe1f4fb4c0f1c21591f41c))
+* support custom decorators ([#2887](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2887)) ([d179d2e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d179d2e4cd0731bb1a2ebf627caf14b8d7c21edc))
+* Support inline cspell directives ([#2966](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2966)) ([d1b3ac3](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d1b3ac37b8696962a617ffdb73ab53256c5a9a39))
+* Support loading local cspell dictionaries ([#2955](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2955)) ([d0ed69d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d0ed69db086c2db34e5483873ba1430327e9208a))
+* Support Virtual Workspaces ([#2971](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2971)) ([99c37d1](https://github.com/streetsidesoftware/vscode-spell-checker/commit/99c37d1178844175f27ae44917573a2307dc6ce8))
+* Support Word Tracing ([#2987](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2987)) ([001645b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/001645beda5dc9bfa2f0b53f8a26d51a65f4a748))
+* Update the client/server api ([#2859](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2859)) ([6430b3b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6430b3b51198231b98fa7dfbb65e1014d39894c7))
+* Upgrade to CSpell 8 ([#2925](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2925)) ([f984dde](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f984ddee2b9c1669290d36715a9f51e53677954f))
+* Upgrade vscode-language-server ([#2840](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2840)) ([b0af8f9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b0af8f90d209907cfb9244af296334ee62427df6))
+
+
+### Updates and Bug Fixes
+
+* Add link to suggestions ([#2888](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2888)) ([eff9c8c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/eff9c8cadb3ce4cc62a4dd140ae3e79e8495bae5))
+* Add suggestions to hover ([#2896](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2896)) ([cf88324](https://github.com/streetsidesoftware/vscode-spell-checker/commit/cf8832486f8d768a8a5d24a9c1dfda721ce02dac))
+* correct regression with spell checking commit messages ([#2872](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2872)) ([6c82393](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6c82393e838882e8f0e58e6255684927a101e3ce))
+* Enable workspace trust ([#2993](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2993)) ([15fe163](https://github.com/streetsidesoftware/vscode-spell-checker/commit/15fe16369b1e241ae49dc7758415b3a9982bcf08))
+* Improve decorations and suggestions ([#2900](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2900)) ([1bc7bd0](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1bc7bd0de0b8853507a518feeaf9e388e040eee4))
+* Improve the handling of spelling corrections ([#2916](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2916)) ([be8610d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/be8610dace320a6348c3b531f0acb99bfc35fccd))
+* lint issues and improve error handling ([#2825](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2825)) ([dfa5889](https://github.com/streetsidesoftware/vscode-spell-checker/commit/dfa58898a5b3a6e34f66e824c80deae9c3b24eff))
+* Make sure the capabilities are correctly set ([#2990](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2990)) ([c2199a9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c2199a9c09975762212fd46fa40582c0d27d2ee5))
+* Reduce handshaking between extension and spell checker server ([#2863](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2863)) ([73b7c03](https://github.com/streetsidesoftware/vscode-spell-checker/commit/73b7c03374546fef2823534fb8fa9efe0a0b9983))
+* reduce reloading when opening a cspell config ([#2986](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2986)) ([a8a1e18](https://github.com/streetsidesoftware/vscode-spell-checker/commit/a8a1e1810b550d966c157d093ed50625244f3340))
+* Support Quick Fixes with custom decorators ([#2897](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2897)) ([4e93033](https://github.com/streetsidesoftware/vscode-spell-checker/commit/4e93033db480c7bc1eececb336e33f1601d22323))
+* Typo in README.md ([#3037](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3037)) ([96ed582](https://github.com/streetsidesoftware/vscode-spell-checker/commit/96ed582e521a8dcdbd076076e1fa3a76369f9a99))
+* Update list of supported language Ids ([#2796](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2796)) ([e169d64](https://github.com/streetsidesoftware/vscode-spell-checker/commit/e169d6412c63afc2012c47f44418924c9d65e5f9))
+
+
+### Miscellaneous
+
+* Use alpha as the prerelease type ([03100de](https://github.com/streetsidesoftware/vscode-spell-checker/commit/03100de64ba11a9b29f44aedca384c1c592150c5))
+
+
+### Code Refactoring
+
+* clean up legacy settings viewer ([#2866](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2866)) ([0b0028a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0b0028a68f9f720061687c7a0caec0e9fd8c4944))
+* Refactor Issues viewer ([#2914](https://github.com/streetsidesoftware/vscode-spell-checker/issues/2914)) ([2031949](https://github.com/streetsidesoftware/vscode-spell-checker/commit/20319497a19539f2bae0ff40f5e5b52e311c1a77))
+
 ## [3.0.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v3.0.0...code-spell-checker-v3.0.1) (2023-09-11)
 
 
