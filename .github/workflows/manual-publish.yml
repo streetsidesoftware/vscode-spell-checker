@@ -43,10 +43,10 @@ jobs:
             core.setOutput('version', version);
 
       - name: Display Info
-        uses: streetsidesoftware/actions/public/output@v1
+        uses: streetsidesoftware/actions/public/summary@v1
         with:
-          value: |
-            # Package Version
+          text: |
+            # Package Info
             ref: ${{ inputs.ref }}
             version: `${{ steps.version.outputs.version }}`
 
