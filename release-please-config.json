@@ -1,5 +1,4 @@
 {
-    "bootstrap-sha": "569b42758f06ccd890eb4404b2176118e6f933ec",
     "release-type": "node",
     "versioning": "prerelease",
     "prerelease-type": "alpha",
@@ -74,8 +73,6 @@
         }
     ],
     "packages": {
-        ".": {
-            "include-component-in-tag": false
-        }
+        ".": {}
     }
 }
