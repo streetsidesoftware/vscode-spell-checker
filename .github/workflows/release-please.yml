@@ -70,7 +70,7 @@ jobs:
   publish:
     needs:
       - release-please
-    if: ${{ needs.release-please.outputs.release_created && !contains('alpha', needs.release-please.outputs.tag_name) }}
+    if: ${{ needs.release-please.outputs.release_created && !contains(needs.release-please.outputs.tag_name, 'alpha') }}
     uses: ./.github/workflows/manual-publish.yml
     with:
       ref: ${{ needs.release-please.outputs.tag_name }}
