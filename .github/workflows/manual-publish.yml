@@ -41,6 +41,11 @@ jobs:
             const manifest = JSON.parse(fs.readFileSync('package.json', 'utf8'));
             const version = manifest.version;
             core.setOutput('version', version);
+            const alpha = version.includes('alpha');
+            core.setOutput('alpha', alpha);
+            const validVersion = /^\d+\.\d+\.\d+$/.test(version);
+            core.setOutput('valid_version', validVersion);
+            return validVersion
 
       - name: Display Info
         uses: streetsidesoftware/actions/public/summary@v1
@@ -50,6 +55,7 @@ jobs:
             ref: ${{ inputs.ref }}
             version: `${{ steps.version.outputs.version }}`
             alpha: ${{ contains(steps.version.outputs.version, 'alpha') }}
+            versionInfo: ${{ steps.version.outputs }}
 
       - name: Test Exit
         run: |
