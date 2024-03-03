@@ -24,7 +24,7 @@
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@types/clone-deep": "^4.0.4",
-    "@types/react": "^17.0.75",
+    "@types/react": "^17.0.76",
     "@types/react-dom": "^17.0.25",
     "@types/react-test-renderer": "^17.0.9",
     "browser-resolve": "^2.0.0",
