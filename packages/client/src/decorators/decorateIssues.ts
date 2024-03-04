@@ -12,11 +12,15 @@ export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForFlagged: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
     private visibleEditors = new Set<TextEditor>();
+    private _visible = true;
     public dispose = this.disposables.dispose;
 
-    constructor(readonly issueTracker: IssueTracker) {
+    constructor(
+        readonly context: vscode.ExtensionContext,
+        readonly issueTracker: IssueTracker,
+    ) {
         const decorators = this.createDecorators();
-
+        this._visible = context.globalState.get(SpellingIssueDecorator.globalStateKey, true);
         this.decorationTypeForIssues = decorators?.decoratorIssues;
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
         this.disposables.push(
@@ -27,6 +31,7 @@ export class SpellingIssueDecorator implements Disposable {
             window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
             window.onDidChangeVisibleTextEditors((e) => this.handleOnDidChangeVisibleTextEditors(e)),
         );
+        this.setContext(this._visible);
     }
 
     private handleOnDidChangeDiagnostics(event: DiagnosticChangeEvent) {
@@ -79,6 +84,26 @@ export class SpellingIssueDecorator implements Disposable {
         editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
     }
 
+    get visible() {
+        return this.context.globalState.get(SpellingIssueDecorator.globalStateKey, this._visible);
+    }
+
+    set visible(value: boolean) {
+        this.setContext(value);
+        if (this._visible === value) return;
+        this._visible = value;
+        this.resetDecorator();
+    }
+
+    toggleVisible() {
+        this.visible = !this.visible;
+    }
+
+    private setContext(value: boolean) {
+        this.context.globalState.update(SpellingIssueDecorator.globalStateKey, value);
+        Promise.resolve(vscode.commands.executeCommand('setContext', 'cSpell.showDecorations', value)).catch(() => undefined);
+    }
+
     private clearDecoration() {
         this.visibleEditors.clear();
         this.decorationTypeForIssues?.dispose();
@@ -96,7 +121,7 @@ export class SpellingIssueDecorator implements Disposable {
 
     private createDecorators(): { decoratorIssues: TextEditorDecorationType; decoratorFlagged: TextEditorDecorationType } | undefined {
         this.clearDecoration();
-        const decorateIssues = workspace.getConfiguration('cSpell').get('decorateIssues');
+        const decorateIssues = this.visible && workspace.getConfiguration('cSpell').get('decorateIssues');
         if (!decorateIssues) return undefined;
 
         const mode = calcMode(window.activeColorTheme.kind);
@@ -122,6 +147,8 @@ export class SpellingIssueDecorator implements Disposable {
 
         return { decoratorIssues, decoratorFlagged };
     }
+
+    static globalStateKey = 'showDecorations';
 }
 
 function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField: 'textDecorationColor' | 'textDecorationColorFlagged') {

@@ -16,14 +16,14 @@ export class SpellingExclusionsDecorator implements Disposable {
     private disposables = createDisposableList();
     public dispose = this.disposables.dispose;
     private eventEmitter = createEmitter<vscode.TextEditor | undefined>();
-    private _enabled = false;
+    private _visible = false;
     private _pendingUpdates = new Set<vscode.TextEditor>();
 
     constructor(
         readonly context: vscode.ExtensionContext,
         readonly client: CSpellClient,
     ) {
-        this.enabled = context.globalState.get(SpellingExclusionsDecorator.globalStateKey, false);
+        this._visible = context.globalState.get(SpellingExclusionsDecorator.globalStateKey, false);
         this.disposables.push(
             () => this.clearDecoration(),
             vscode.window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
@@ -38,20 +38,19 @@ export class SpellingExclusionsDecorator implements Disposable {
         );
     }
 
-    get enabled() {
-        return this._enabled;
+    get visible() {
+        return this._visible;
     }
 
-    set enabled(value: boolean) {
-        this.context.globalState.update(SpellingExclusionsDecorator.globalStateKey, this.enabled);
-        // console.error('globalState.keys %o', this.context.globalState.keys());
-        if (this._enabled === value) return;
-        this._enabled = value;
+    set visible(value: boolean) {
+        this.context.globalState.update(SpellingExclusionsDecorator.globalStateKey, value);
+        if (this._visible === value) return;
+        this._visible = value;
         this.resetDecorator();
     }
 
-    toggleEnabled() {
-        this.enabled = !this.enabled;
+    toggleVisible() {
+        this.visible = !this.visible;
     }
 
     private refreshEditor(editor?: vscode.TextEditor | undefined) {
@@ -61,7 +60,7 @@ export class SpellingExclusionsDecorator implements Disposable {
     }
 
     private refreshDocument(doc: vscode.TextDocument) {
-        if (!this.enabled) return;
+        if (!this.visible) return;
         const editor = vscode.window.visibleTextEditors.find((e) => e.document === doc);
         if (!editor) return;
         this.refreshEditor(editor);
@@ -74,7 +73,7 @@ export class SpellingExclusionsDecorator implements Disposable {
 
     private resetDecorator() {
         this.clearDecoration();
-        if (!this.enabled) return;
+        if (!this.visible) return;
         this.createDecorator();
         this.refreshEditor();
     }
@@ -143,7 +142,7 @@ export class SpellingExclusionsDecorator implements Disposable {
     private getHoverProvider(): vscode.HoverProvider {
         return {
             provideHover: async (doc, pos) => {
-                if (!this.enabled) return undefined;
+                if (!this.visible) return undefined;
                 if (doc.uri.scheme in ignoreSchemes) return undefined;
                 const range = doc.getWordRangeAtPosition(pos);
                 if (!range) return undefined;

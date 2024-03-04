@@ -34,18 +34,22 @@ type Api = {
 const apiSignature: Api = {
     addWordToUserDictionary: 'addWordToUserDictionary',
     addWordToWorkspaceDictionary: 'addWordToWorkspaceDictionary',
-    disableCurrentLanguage: 'disableCurrentLanguage',
     disableLanguageId: 'disableLanguageId',
     disableLocale: 'disableLocale',
-    enableCurrentLanguage: 'enableCurrentLanguage',
     enableLanguageId: 'enableLanguageId',
     enableLocale: 'enableLocale',
     registerConfig: 'registerConfig',
     triggerGetSettings: 'triggerGetSettings',
     updateSettings: 'updateSettings',
     cSpellClient: 'cSpellClient',
+    enableCurrentFileType: 'enableCurrentFileType',
+    disableCurrentFileType: 'disableCurrentFileType',
+
+    // Legacy
     enableLocal: 'enableLocal',
     disableLocal: 'disableLocal',
+    enableCurrentLanguage: 'enableCurrentLanguage',
+    disableCurrentLanguage: 'disableCurrentLanguage',
 };
 
 describe('Launch code spell extension', function () {

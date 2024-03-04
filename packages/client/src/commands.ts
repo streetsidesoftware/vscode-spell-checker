@@ -145,8 +145,10 @@ export const commandHandlers = {
     'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), false),
     'cSpell.toggleEnableForWorkspace': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Workspace)),
     'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global)),
-    'cSpell.enableCurrentLanguage': enableCurrentLanguage,
-    'cSpell.disableCurrentLanguage': disableCurrentLanguage,
+    'cSpell.enableCurrentLanguage': enableCurrentFileType, // legacy
+    'cSpell.disableCurrentLanguage': disableCurrentFileType, // legacy
+    'cSpell.enableCurrentFileType': enableCurrentFileType,
+    'cSpell.disableCurrentFileType': disableCurrentFileType,
 
     'cSpell.editText': handleApplyLsTextEdits,
     'cSpell.logPerfTimeline': dumpPerfTimeline,
@@ -176,6 +178,9 @@ export const commandHandlers = {
     'cSpell.insertWordsDirective': handleInsertWordsDirective,
 
     'cSpell.toggleTraceMode': handlerResolvedLater,
+    'cSpell.toggleVisible': handlerResolvedLater,
+    'cSpell.show': handlerResolvedLater,
+    'cSpell.hide': handlerResolvedLater,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -322,22 +327,22 @@ export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, 
     return enableDisableLocale(locale, t.uri, t.target, t.configScope, enable);
 }
 
-export function enableCurrentLanguage(): Promise<void> {
+export function enableCurrentFileType(): Promise<void> {
     return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
         return Settings.enableLanguageId(targets, document.languageId);
-    }, 'enableCurrentLanguage');
+    }, 'enableCurrentFileType');
 }
 
-export function disableCurrentLanguage(): Promise<void> {
+export function disableCurrentFileType(): Promise<void> {
     return handleErrors(async () => {
         const document = window.activeTextEditor?.document;
         if (!document) return;
         const targets = await targetsForTextDocument(document);
         return Settings.disableLanguageId(targets, document.languageId);
-    }, 'disableCurrentLanguage');
+    }, 'disableCurrentFileType');
 }
 
 async function targetsAndScopeFromConfigurationTarget(
