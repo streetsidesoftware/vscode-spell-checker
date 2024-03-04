@@ -43,7 +43,7 @@
     "cspell-gitignore": "^8.5.0",
     "cspell-glob": "^8.5.0",
     "cspell-lib": "^8.5.0",
-    "gensequence": "^6.0.0",
+    "gensequence": "^7.0.0",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.1",
     "utils-disposables": "file:../utils-disposables",
