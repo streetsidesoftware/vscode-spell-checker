@@ -31,7 +31,7 @@ export async function calculateConfigTargets(
     const targets: ConfigTarget[] = [];
     const possibleSources = extractCSpellFileConfigurations(settings).filter((cfg) => !cfg.readonly);
     const sources = configFilesFound
-        ? possibleSources.filter((cfg) => cfg.source.fileSource && isFound(cfg.source.filename))
+        ? possibleSources.filter((cfg) => isFound(cfg.source.filename))
         : await filterExistingCSpellFileConfigurations(possibleSources);
     const dictionaries = extractTargetDictionaries(settings);
 
