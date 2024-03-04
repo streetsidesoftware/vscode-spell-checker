@@ -1,5 +1,5 @@
-import type { QuickPickOptions, Uri } from 'vscode';
-import { window } from 'vscode';
+import type { QuickPickOptions } from 'vscode';
+import { Uri, window } from 'vscode';
 
 import { extractMatchingDiagTexts, getCSpellDiags } from './diags';
 import { normalizeWords } from './settings/CSpellSettings';
@@ -13,6 +13,7 @@ export function onCommandUseDiagsSelectionOrPrompt(
     fnAction: (text: string, uri: Uri | undefined) => Promise<void>,
 ): (text?: string, uri?: Uri | string) => Promise<void> {
     return async function (text?: string, uri?: Uri | string) {
+        // console.log('onCommandUseDiagsSelectionOrPrompt %o', { prompt, text, uri });
         const selected = await determineTextSelection(prompt, text, uri);
         if (!selected) return;
 
@@ -22,10 +23,14 @@ export function onCommandUseDiagsSelectionOrPrompt(
     };
 }
 
-async function determineTextSelection(prompt: string, text?: string, uri?: Uri | string): Promise<{ text: string; uri?: Uri } | undefined> {
-    uri = toUri(uri);
-    if (text) {
-        return { text, uri: uri || window.activeTextEditor?.document.uri };
+async function determineTextSelection(
+    prompt: string,
+    textOrUri?: string | Uri,
+    uri?: Uri | string,
+): Promise<{ text: string; uri?: Uri } | undefined> {
+    uri = uri ? toUri(uri) : textOrUri instanceof Uri ? textOrUri : undefined;
+    if (typeof textOrUri === 'string' && textOrUri) {
+        return { text: textOrUri, uri: uri || window.activeTextEditor?.document.uri };
     }
 
     const editor = findEditor(uri);
@@ -50,7 +55,7 @@ async function determineTextSelection(prompt: string, text?: string, uri?: Uri |
         return { text: word, uri: document?.uri };
     }
 
-    text = selection.contains(range) ? document.getText(selection) : document.getText(range);
+    const text = selection.contains(range) ? document.getText(selection) : document.getText(range);
 
     const words = normalizeWords(text);
     const picked =
