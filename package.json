@@ -60,13 +60,23 @@
       "editor/context": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions",
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && (!config.cSpell.decorateIssues || cSpell.showDecorations)",
           "group": "A_cspell@000"
         },
         {
           "submenu": "cSpell.spelling",
           "group": "A_cspell@001",
           "when": "!editorReadonly && editorTextFocus && config.cSpell.showCommandsInEditorContextMenu"
+        },
+        {
+          "command": "cSpell.show",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && config.cSpell.decorateIssues && !cSpell.showDecorations",
+          "group": "A_cspell@002"
+        },
+        {
+          "command": "cSpell.hide",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && config.cSpell.decorateIssues && cSpell.showDecorations",
+          "group": "A_cspell@002"
         }
       ],
       "cSpell.spelling": [
@@ -321,12 +331,26 @@
       {
         "command": "cSpell.enableCurrentLanguage",
         "category": "Spell",
-        "title": "Enable Spell Checking Document Language"
+        "title": "Enable Spell Checking Document Language",
+        "when": "cSpell.showLegacyCommands.enableCurrentLanguage"
       },
       {
         "command": "cSpell.disableCurrentLanguage",
         "category": "Spell",
-        "title": "Disable Spell Checking Document Language"
+        "title": "Disable Spell Checking Document Language",
+        "when": "cSpell.showLegacyCommands.disableCurrentLanguage"
+      },
+      {
+        "command": "cSpell.enableCurrentFileType",
+        "category": "Spell",
+        "title": "Enable Spell Checking File Type",
+        "shortTitle": "Enable File Type"
+      },
+      {
+        "command": "cSpell.disableCurrentFileType",
+        "category": "Spell",
+        "title": "Disable Spell Checking File Type",
+        "shortTitle": "Disable File Type"
       },
       {
         "command": "cSpell.displayCSpellInfo",
@@ -511,6 +535,30 @@
         "category": "Spell",
         "title": "Insert Words Directive",
         "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "cSpell.toggleVisible",
+        "category": "Spell",
+        "title": "Toggle Show Decorations",
+        "shortTitle": "Toggle Decorations",
+        "when": "config.cSpell.decorateIssues",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "cSpell.show",
+        "category": "Spell",
+        "title": "Show Decorations",
+        "shortTitle": "Show",
+        "when": "config.cSpell.decorateIssues && !cSpell.showDecorations",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "cSpell.hide",
+        "category": "Spell",
+        "title": "Hide Decorations",
+        "shortTitle": "Hide",
+        "when": "config.cSpell.decorateIssues && cSpell.showDecorations",
+        "icon": "$(eye-closed)"
       },
       {
         "command": "cSpell.toggleTraceMode",

@@ -76,13 +76,16 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
-    const decorator = new SpellingIssueDecorator(issueTracker);
+    const decorator = new SpellingIssueDecorator(context, issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
     activateIssueViewer(context, issueTracker);
     activateFileIssuesViewer(context, issueTracker);
 
     const extensionCommand: InjectableCommandHandlers = {
-        'cSpell.toggleTraceMode': () => decoratorExclusions.toggleEnabled(),
+        'cSpell.toggleTraceMode': () => decoratorExclusions.toggleVisible(),
+        'cSpell.toggleVisible': () => decorator.toggleVisible(),
+        'cSpell.show': () => (decorator.visible = true),
+        'cSpell.hide': () => (decorator.visible = false),
     };
 
     // Push the disposable to the context's subscriptions so that the
@@ -195,25 +198,29 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableLocale: (target: ConfigTargetLegacy | boolean, locale: string) => commands.enableDisableLocaleLegacy(target, locale, false),
     };
 
+    const getConfigurationForDocument = (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc);
+
     const server = {
         registerConfig,
         triggerGetSettings,
         enableLanguageId: commands.enableLanguageIdCmd,
         disableLanguageId: commands.disableLanguageIdCmd,
-        enableCurrentLanguage: commands.enableCurrentLanguage,
-        disableCurrentLanguage: commands.disableCurrentLanguage,
+        enableCurrentFileType: commands.enableCurrentFileType,
+        disableCurrentFileType: commands.disableCurrentFileType,
         addWordToUserDictionary: addWords.addWordToUserDictionary,
         addWordToWorkspaceDictionary: addWords.addWordToWorkspaceDictionary,
         enableLocale: methods.enableLocale,
         disableLocale: methods.disableLocale,
         updateSettings: () => false,
         cSpellClient: () => client,
-        getConfigurationForDocument: (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc),
+        getConfigurationForDocument,
 
         // Legacy
         enableLocal: methods.enableLocale,
         disableLocal: methods.disableLocale,
-    };
+        enableCurrentLanguage: commands.enableCurrentFileType,
+        disableCurrentLanguage: commands.disableCurrentFileType,
+    } as const satisfies ExtensionApi & { getConfigurationForDocument: typeof getConfigurationForDocument };
 
     activateWebview(context);
 

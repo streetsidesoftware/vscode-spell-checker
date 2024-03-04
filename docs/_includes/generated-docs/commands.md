@@ -20,10 +20,12 @@
 | `cSpell.autoFixSpellingIssues`                       | Fix all issues with a preferred suggestion in the current document.                                             |
 | `cSpell.createCSpellConfig`                          | Create a CSpell Configuration File.                                                                             |
 | `cSpell.createCustomDictionary`                      | Create a Custom Dictionary File.                                                                                |
+| `cSpell.disableCurrentFileType`                      | Disable Spell Checking File Type                                                                                |
 | `cSpell.disableCurrentLanguage`                      | Disable Spell Checking Document Language                                                                        |
 | `cSpell.disableForGlobal`                            | Disable Spell Checking by Default                                                                               |
 | `cSpell.disableForWorkspace`                         | Disable Spell Checking For Workspace                                                                            |
 | `cSpell.displayCSpellInfo`                           | Show Spell Checker Configuration Info                                                                           |
+| `cSpell.enableCurrentFileType`                       | Enable Spell Checking File Type                                                                                 |
 | `cSpell.enableCurrentLanguage`                       | Enable Spell Checking Document Language                                                                         |
 | `cSpell.enableForGlobal`                             | Enable Spell Checking by Default                                                                                |
 | `cSpell.enableForWorkspace`                          | Enable Spell Checking For Workspace                                                                             |
@@ -31,6 +33,7 @@
 | `cSpell.goToNextSpellingIssueAndSuggest`             | Go to Next Spelling Issue and Suggest                                                                           |
 | `cSpell.goToPreviousSpellingIssue`                   | Go to Previous Spelling Issue                                                                                   |
 | `cSpell.goToPreviousSpellingIssueAndSuggest`         | Go to Previous Spelling Issue and Suggest                                                                       |
+| `cSpell.hide`                                        | Hide Decorations                                                                                                |
 | `cSpell.insertDisableLineDirective`                  | Insert Disable Current Line Directive                                                                           |
 | `cSpell.insertDisableNextLineDirective`              | Insert Disable Next Line Directive                                                                              |
 | `cSpell.insertIgnoreWordsDirective`                  | Insert Ignore Words Directive                                                                                   |
@@ -44,8 +47,10 @@
 | `cSpell.removeWordFromFolderDictionary`              | Remove Words from the Folder Dictionary                                                                         |
 | `cSpell.removeWordFromUserDictionary`                | Remove Words from the Global Dictionary                                                                         |
 | `cSpell.removeWordFromWorkspaceDictionary`           | Remove Words from the Workspace Dictionaries                                                                    |
+| `cSpell.show`                                        | Show Decorations                                                                                                |
 | `cSpell.suggestSpellingCorrections`                  | Spelling Suggestions...<br>**When:**<br> `editorTextFocus && cSpell.editorMenuContext.showSuggestions`          |
 | `cSpell.toggleEnableForGlobal`                       | Toggle Spell Checking in User Settings                                                                          |
 | `cSpell.toggleEnableForWorkspace`                    | Toggle Spell Checking for Workspace                                                                             |
 | `cSpell.toggleEnableSpellChecker`                    | Toggle Spell Checking                                                                                           |
 | `cSpell.toggleTraceMode`                             | Toggle Trace Mode                                                                                               |
+| `cSpell.toggleVisible`                               | Toggle Show Decorations                                                                                         |
