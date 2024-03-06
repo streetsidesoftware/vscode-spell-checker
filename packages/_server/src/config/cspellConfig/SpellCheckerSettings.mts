@@ -27,10 +27,12 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     checkLimit?: number;
 
     /**
-     * Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+     * The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
+     * Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+     * to control how issues are displayed in the document.
      * @title Set Diagnostic Reporting Level
      * @scope resource
-     * @default "Information"
+     * @default "Hint"
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
@@ -375,7 +377,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * @scope resource
      * @version 4.0.0
-     * @default false
+     * @default true
      */
     mergeCSpellSettings?: boolean;
 

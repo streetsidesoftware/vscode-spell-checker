@@ -516,6 +516,7 @@ function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
     const comp = new Intl.Collator().compare;
 
     const sorted = [...groupedByFile]
+        .filter(([_, issues]) => issues.length)
         .map(([doc, issues]) => new FileWithIssuesTreeItem(context, doc, issues))
         .sort((a, b) => comp(a.document.uri.toString(true), b.document.uri.toString(true)));
 

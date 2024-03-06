@@ -734,7 +734,7 @@
                   "type": "string"
                 },
                 "diagnosticLevel": {
-                  "default": "Information",
+                  "default": "Hint",
                   "enum": [
                     "Error",
                     "Warning",
@@ -747,7 +747,7 @@
                     "Report Spelling Issues as Information",
                     "Report Spelling Issues as Hints, will not show up in Problems"
                   ],
-                  "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
+                  "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.",
                   "scope": "resource",
                   "title": "Set Diagnostic Reporting Level",
                   "type": "string"
@@ -1651,7 +1651,7 @@
             "type": "array"
           },
           "cSpell.mergeCSpellSettings": {
-            "default": false,
+            "default": true,
             "markdownDescription": "Specify if fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged based upon `#cSpell.mergeCSpellSettingsFields#`.\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n\nNote: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.",
             "scope": "resource",
             "type": "boolean",
@@ -2545,7 +2545,7 @@
             "type": "object"
           },
           "cSpell.decorateIssues": {
-            "default": false,
+            "default": true,
             "markdownDescription": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
             "scope": "application",
             "type": "boolean",
@@ -3256,7 +3256,7 @@
             "type": "boolean"
           },
           "cSpell.diagnosticLevel": {
-            "default": "Information",
+            "default": "Hint",
             "enum": [
               "Error",
               "Warning",
@@ -3269,7 +3269,7 @@
               "Report Spelling Issues as Information",
               "Report Spelling Issues as Hints, will not show up in Problems"
             ],
-            "markdownDescription": "Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.",
+            "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.",
             "scope": "resource",
             "title": "Set Diagnostic Reporting Level",
             "type": "string"
