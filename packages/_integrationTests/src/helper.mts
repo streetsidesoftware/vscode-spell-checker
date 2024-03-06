@@ -70,6 +70,14 @@ export async function loadDocument(docUri: Uri): Promise<DocumentContext | undef
     }
 }
 
+export async function loadFolder(folderUri: Uri): Promise<void> {
+    return await vscode.commands.executeCommand('vscode.openFolder', folderUri);
+}
+
+export function getVscodeWorkspace(): typeof vscode.workspace {
+    return vscode.workspace;
+}
+
 export async function sleep(ms: number): Promise<undefined> {
     return new Promise((resolve) => setTimeout(() => resolve(undefined), ms));
 }

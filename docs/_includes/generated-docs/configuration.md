@@ -436,10 +436,12 @@ Scope
 : resource
 
 Description
-: Issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
+: The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
+Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+to control how issues are displayed in the document.
 
 Default
-: _`"Information"`_
+: _`"Hint"`_
 
 ---
 
@@ -977,7 +979,7 @@ This only applies when there is a CSpell configuration file in the workspace.
     Note: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.
 
 Default
-: _`false`_
+: _`true`_
 
 Version
 : 4.0.0
@@ -1499,7 +1501,7 @@ Description
 : Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
 
 Default
-: _`false`_
+: _`true`_
 
 Version
 : 4.0.0
