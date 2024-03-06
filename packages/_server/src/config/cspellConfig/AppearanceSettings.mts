@@ -178,7 +178,7 @@ export interface AppearanceSettings extends Appearance {
      *
      * @scope application
      * @version 4.0.0
-     * @default false
+     * @default true
      */
     decorateIssues?: boolean;
 }
