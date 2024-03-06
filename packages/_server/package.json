@@ -37,7 +37,7 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.5.0",
     "@cspell/cspell-pipe": "^8.5.0",
-    "@cspell/cspell-types": "^8.5.0",
+    "@cspell/cspell-types": "^8.6.0",
     "@internal/common-utils": "file:../__utils",
     "cspell-config-lib": "^8.5.0",
     "cspell-gitignore": "^8.5.0",
