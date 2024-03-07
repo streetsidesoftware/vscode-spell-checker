@@ -3462,7 +3462,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
     "@types/jest-when": "^3.5.5",
-    "@types/node": "^18.19.21",
+    "@types/node": "^18.19.22",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
