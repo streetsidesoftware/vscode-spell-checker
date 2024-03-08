@@ -1579,7 +1579,8 @@
               "vscode-notebook-cell",
               "vscode-scm",
               "vscode-userdata",
-              "vscode-vfs"
+              "vscode-vfs",
+              "vsls"
             ],
             "items": {
               "type": "string"

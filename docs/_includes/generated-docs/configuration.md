@@ -802,7 +802,7 @@ Description
     - `vscode-scm` - Needed to spell check Source Control commit messages.
 
 Default
-: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_, _`"vscode-vfs"`_ ]
+: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_, _`"vscode-vfs"`_, _`"vsls"`_ ]
 
 ---
 

@@ -101,7 +101,16 @@ const defaultExclude: Glob[] = [
     '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
-const defaultAllowedSchemes = ['gist', 'repo', 'file', 'sftp', 'untitled', 'vscode-notebook-cell', 'vscode-vfs'];
+const defaultAllowedSchemes = [
+    'gist',
+    'repo',
+    'file',
+    'sftp',
+    'untitled',
+    'vscode-notebook-cell',
+    'vscode-vfs', // Visual Studio Remote File System
+    'vsls', // Visual Studio Live Share
+];
 const schemeBlockList = ['git', 'output', 'debug'];
 
 const defaultRootUri = toFileUri(process.cwd()).toString();
