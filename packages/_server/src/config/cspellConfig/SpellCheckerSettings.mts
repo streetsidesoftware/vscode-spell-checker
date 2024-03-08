@@ -83,7 +83,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - `vscode-scm` - Needed to spell check Source Control commit messages.
      * @title Define Allowed Schemas
      * @scope window
-     * @default ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata", "vscode-vfs"]
+     * @default ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "vscode-userdata", "vscode-vfs", "vsls"]
      */
     allowedSchemas?: string[];
 
