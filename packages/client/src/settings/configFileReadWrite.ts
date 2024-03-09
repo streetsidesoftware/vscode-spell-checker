@@ -54,7 +54,7 @@ export async function readConfigFile(uri: Uri, defaultValueIfNotFound?: CSpellSe
     }
 }
 
-export function writeConfigFile(uri: Uri, cfg: CSpellSettings): Promise<void> {
+export function writeConfigFile(uri: Uri, cfg: Readonly<CSpellSettings>): Promise<void> {
     const rw = createConfigFileReaderWriter(uri);
     return rw.write(cfg);
 }

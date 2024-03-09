@@ -10,7 +10,7 @@ type ConfigKeys = keyof CSpellUserSettings;
 
 export interface ConfigReaderWriter {
     read<K extends ConfigKeys>(keys: readonly K[]): Promise<Pick<CSpellUserSettings, K>>;
-    write(settings: CSpellUserSettings): Promise<void>;
+    write(settings: Readonly<CSpellUserSettings>): Promise<void>;
     update<K extends ConfigKeys>(fn: ConfigUpdateFn, keys: readonly K[]): Promise<void>;
 }
 

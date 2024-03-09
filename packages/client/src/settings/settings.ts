@@ -5,9 +5,8 @@ import { Uri, workspace } from 'vscode';
 import type { CSpellUserSettings } from '../client';
 import { unique } from '../util';
 import type { ClientConfigTarget } from './clientConfigTarget';
-import { writeConfigFile } from './configFileReadWrite';
+import { readConfigFile, writeConfigFile } from './configFileReadWrite';
 import { normalizeWords, preferredConfigFiles } from './CSpellSettings';
-import { vscodeFs as fs } from './fs';
 import { setConfigFieldQuickPick } from './settings.base';
 
 export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable';
@@ -92,11 +91,19 @@ const settingsFileTemplate: CSpellSettings = {
 };
 
 export async function createConfigFile(fileUri: Uri, overwrite?: boolean): Promise<Uri | undefined> {
-    if (!overwrite && (await fs.fileExists(fileUri))) {
+    const existing = await readConfigFile(fileUri);
+    if (!overwrite && existing && Object.keys(existing).length > 1) {
         const overwrite = 'Overwrite';
-        const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite);
-        if (choice !== overwrite) {
-            return undefined;
+        const open = 'Open';
+        const choice = await vscode.window.showWarningMessage('Configuration file already exists.', { modal: true }, overwrite, open);
+        switch (choice) {
+            case overwrite:
+                break;
+            case open:
+                await vscode.window.showTextDocument(fileUri);
+                return undefined;
+            default:
+                return undefined;
         }
     }
 
@@ -125,7 +132,6 @@ export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Ur
     const folder = getDefaultWorkspaceConfigLocation(referenceDocUri);
 
     if (!folder) throw new Error(msgNoPossibleConfigLocation);
-    if (folder.uri.scheme !== 'file') throw new Error(`Unsupported scheme: ${folder.uri.scheme}`);
 
     const optionalFiles = new Set(preferredConfigFiles);
 
