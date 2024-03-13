@@ -1,4 +1,5 @@
 # Project Words
+abortable
 acanthopterygious
 activitybar
 aeiouy
@@ -70,6 +71,7 @@ paginator
 permalinks
 Preformat
 preinstall
+Pseudoterminal
 quickfix
 quotemark
 readonly

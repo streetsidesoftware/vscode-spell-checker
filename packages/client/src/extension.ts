@@ -19,6 +19,7 @@ import * as settingsViewer from './infoViewer/infoView';
 import { IssueTracker } from './issueTracker';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer';
 import * as modules from './modules';
+import { activate as activateRepl } from './repl/index.js';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings';
 import * as settings from './settings';
 import { sectionCSpell } from './settings';
@@ -110,6 +111,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         registerSpellCheckerCodeActionProvider(issueTracker),
 
         ...commands.registerCommands(extensionCommand),
+        activateRepl(),
 
         /*
          * We need to listen for all change events and see of `cSpell` section changed.
