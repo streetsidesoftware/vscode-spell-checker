@@ -565,6 +565,12 @@
         "category": "Spell",
         "title": "Toggle Trace Mode",
         "icon": "$(search)"
+      },
+      {
+        "command": "cSpell.createCSpellTerminal",
+        "category": "Spell",
+        "title": "Create CSpell REPL Terminal",
+        "icon": "$(terminal)"
       }
     ],
     "languages": [
