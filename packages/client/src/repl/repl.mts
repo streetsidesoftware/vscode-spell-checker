@@ -4,10 +4,10 @@ import stream from 'node:stream';
 import { formatWithOptions } from 'node:util';
 
 import styles from 'ansi-styles';
-import { parseArgsStringToArgv } from 'string-argv';
 import * as vscode from 'vscode';
-import type { Arguments } from 'yargs';
 import yargs from 'yargs';
+
+import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.js';
 
 export function createTerminal() {
     const pty = new Repl();
@@ -71,9 +71,13 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     #processLine = (line: string) => {
-        consoleError('Repl.processLine %o', { line, args: parseArgsStringToArgv(line) });
+        consoleError('Repl.processLine %o', { line, args: parseCommandLineIntoArgs(line) });
 
         const parseAsync = async () => {
+            if (line === '?') {
+                await this.#argsParser('').showHelp((text) => this.log(text));
+                return;
+            }
             await this.#argsParser(line).parseAsync();
         };
 
@@ -81,7 +85,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     #argsParser(line: string) {
-        const argv = parseArgsStringToArgv(line);
+        const argv = parseCommandLineIntoArgs(line);
 
         return yargs(argv)
             .scriptName('')
@@ -117,10 +121,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 describe: 'Change the current working directory.',
                 handler: (args) => this.#cmdCd(args.path),
             })
-            .command<{ path?: string }>({
-                command: 'ls',
+            .command<{ paths?: string[] }>({
+                command: 'ls [paths...]',
                 describe: 'List the directory contents.',
-                handler: (args) => this.#cmdLs(args.path),
+                handler: (args) => this.#cmdLs(args.paths),
             })
             .command({
                 command: 'exit',
@@ -134,7 +138,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 command: 'help [command]',
                 describe: 'Show help.',
                 handler: async (args) => {
-                    this.#argsParser(args.command || '').showHelp((text) => this.log(text));
+                    await this.#argsParser(args.command || '').showHelp((text) => this.log(text));
                 },
             })
             .help(false)
@@ -170,7 +174,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     }
 
     #updatePrompt() {
-        this.#rl?.setPrompt(`${wd(this.#cwd)} > `);
+        this.#rl?.setPrompt(`cspell ${green(wd(vscode.Uri.joinPath(this.#cwd, '/')) || '')} > `);
     }
 
     async #cmdCheck(globs: string[] | undefined) {
@@ -197,65 +201,68 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.log((globs || []).join(' '));
     }
 
-    completer = async (line: string) => {
-        const args = parseArgsStringToArgv(line);
+    completer = async (line: string): Promise<[string[], string]> => {
+        if (!line.trim()) return [commands, ''];
+
+        const cmdLine = commandLineBuilder(line);
+        const args = cmdLine.args;
         if (args.length === 1 && line === args[0]) {
-            return this.#completeWithOptions(line, commands);
+            return [this.#completeWithOptions(line, commands).map((c) => c + ' '), line];
         }
 
-        const parser = this.#argsParser(line);
+        const command = args[0];
 
-        const current = await parser.completion('', this.#cmdCompletion).getCompletion(args);
+        const argIndex = cmdLine.hasTrailingSeparator() ? 0 : args.length - 1;
+        const current = argIndex ? args[argIndex] : '';
+        const results = await this.#cmdCompletion(command, current);
 
-        const lastItem = args[args.length - 1] || '';
+        const completions = results.map((c) => {
+            const cmd = cmdLine.clone();
+            if (argIndex) {
+                cmd.setArg(argIndex, c);
+            } else {
+                cmd.pushArg(c);
+            }
+            cmd.pushSeparator();
+            return cmd.line;
+        });
 
-        const completions = current.map((c) => line + (c.startsWith(lastItem) ? c.slice(lastItem.length) : c));
-
-        return [completions, line];
+        return [completions.filter((c) => c.startsWith(line)), line];
     };
 
-    #cmdCompletion = async (current: string, argv: Arguments) => {
-        console.error('Repl.cmdCompletion %o', { current, argv });
-        if (argv._.length === 1) return [current];
-        switch (argv._[0]) {
+    #cmdCompletion = async (command: string, current: string) => {
+        console.error('Repl.cmdCompletion %o', { command, current });
+        switch (command) {
             case 'check':
-                return this.#cmdCheckCompletion(current, argv);
+                return this.#cmdCheckCompletion(current);
             case 'cd':
-                return this.#cmdCdCompletion(current, argv);
+                return this.#cmdCdCompletion(current);
             case 'ls':
-                return this.#completeWithPath(current, argv, false);
+                return this.#completeWithPath(current, false);
             case 'help':
                 return this.#completeWithOptions(current, commands);
         }
         return [];
     };
 
-    #cmdCheckCompletion = async (current: string, argv: Arguments) => {
-        if (argv._[0] !== 'check') return [];
-        // console.error('Repl.cmdCheckCompletion %o', { current, argv });
-        if (argv._.length === 1) return ['check '];
-
-        return this.#completeWithPath(current, argv, false);
+    #cmdCheckCompletion = async (current: string) => {
+        return this.#completeWithPath(current, false);
     };
 
-    #cmdCdCompletion = async (current: string, argv: Arguments) => {
-        if (argv._[0] !== 'cd') return [];
-        // console.error('Repl.cmdCdCompletion %o', { current, argv });
-        if (argv._.length === 1) return ['cd '];
-
-        return this.#completeWithPath(current, argv, true);
+    #cmdCdCompletion = async (current: string) => {
+        return this.#completeWithPath(current, true);
     };
 
-    #completeWithPath = async (current: string, _argv: Arguments, directoriesOnly: boolean) => {
+    #completeWithPath = async (current: string, directoriesOnly: boolean) => {
         const files = await this.readDirEntryNames(directoriesOnly ? vscode.FileType.Directory : undefined);
         return this.#completeWithOptions(current, files);
     };
 
-    #completeWithOptions = async (current: string, options: string[]) => {
+    #completeWithOptions = (current: string, options: string[]): string[] => {
         // console.error('Repl.completeWithOptions %o', { current, options });
-        const matchingCommands = options.filter((c) => c.startsWith(current)).map((c) => c + ' ');
+        const matchingCommands = options.filter((c) => c.startsWith(current));
         const prefix = findLongestPrefix(matchingCommands);
-        return [prefix && prefix !== current ? [prefix] : matchingCommands, current];
+        return prefix && prefix !== current ? [prefix] : matchingCommands;
     };
 
     #cmdPwd() {
@@ -263,7 +270,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.log(this.#cwd?.toString(false) || 'No Working Directory');
     }
 
-    async #cmdLs(_path: string | undefined) {
+    async #cmdLs(_paths: string[] | undefined) {
         consoleError('Repl.cmdLs');
         const files = await this.readDir();
 
@@ -284,7 +291,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
     async readDirEntryNames(filterType?: vscode.FileType): Promise<string[]> {
         const filterFn = filterType ? ([, type]: [string, vscode.FileType]) => type === filterType : () => true;
-        return (await this.readDir()).filter(filterFn).map(([name]) => name);
+        return (await this.readDir()).filter(filterFn).map(([name, type]) => name + (type === vscode.FileType.Directory ? '/' : ''));
     }
 
     async #cmdCd(path?: string) {

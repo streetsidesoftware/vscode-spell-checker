@@ -60,6 +60,12 @@ export function parseCommandLineIntoTokens(line: string): ArgToken[] {
                 pushToken(parseSeparator(), true);
                 break;
             case '\\':
+                if (['\n', '\r'].includes(line[i + 1])) {
+                    pushToken(arg);
+                    arg = undefined;
+                    pushToken(parseSeparator(), true);
+                    continue;
+                }
                 arg = (arg || '') + parseSlash();
                 break;
             case '"':
@@ -104,11 +110,17 @@ export function parseCommandLineIntoTokens(line: string): ArgToken[] {
         return line[i++];
     }
 
-    function parseEscape() {
+    function parseQuoteEscape() {
         if (i >= line.length) {
             return '\\';
         }
         const c = line[i++];
+        if (c === '\n' || c === '\r') {
+            if (c === '\r' && line[i] === '\n') {
+                ++i;
+            }
+            return '';
+        }
         if (c in escapeSequenceMap) return escapeSequenceMap[c];
         return '\\' + c;
     }
@@ -119,7 +131,7 @@ export function parseCommandLineIntoTokens(line: string): ArgToken[] {
         while (i < line.length) {
             const c = line[i++];
             if (c === '\\') {
-                arg += parseEscape();
+                arg += parseQuoteEscape();
             } else if (c === quote) {
                 return arg;
             } else {
@@ -138,7 +150,16 @@ const escapeQuotedStringMap: Record<string, string> = {
     '\\': '\\\\',
 };
 
-const escapeMap: Record<string, string> = { ...escapeQuotedStringMap, ' ': '\\ ' };
+/**
+ * Escape characters that are special in a command line.
+ *
+ * The following have not been included to support future support of environment variables.
+ * `'(', ')', '$'`
+ */
+const specialCommandLineChars = [' ', '&', ';', '|', '<', '>', '`', '"', "'", '\\'];
+const specialCommandLineCharsMap = Object.fromEntries(specialCommandLineChars.map((c) => [c, '\\' + c]));
+
+const escapeMap: Record<string, string> = { ...escapeQuotedStringMap, ...specialCommandLineCharsMap };
 
 export interface ParsedCommandLine {
     readonly line: string;
@@ -202,7 +223,7 @@ export function commandLineBuilder(line: string): CommandLineBuilder {
 }
 
 export class CommandLineBuilder {
-    constructor(readonly tokens: ArgToken[] = []) {}
+    constructor(readonly tokens: Readonly<ArgToken>[] = []) {}
 
     get line() {
         return this.tokens.map((t) => t.original).join('');
@@ -223,9 +244,21 @@ export class CommandLineBuilder {
         const token: ArgToken = { value, original: encodeArg(value, quote), quote, separator: false };
         const lastToken = this.tokens[this.tokens.length - 1];
         if (lastToken && !lastToken.separator) {
-            this.tokens.push({ value: ' ', original: ' ', quote: '', separator: true });
+            this.pushSeparator();
         }
         this.tokens.push(token);
+    }
+
+    hasTrailingSeparator() {
+        return this.tokens[this.tokens.length - 1]?.separator || false;
+    }
+
+    pushSeparator(value: ' ' | '\t' | '\n' | '\r' = ' ') {
+        this.tokens.push({ value, original: value, quote: '', separator: true });
+    }
+
+    clone() {
+        return new CommandLineBuilder([...this.tokens]);
     }
 }
 
