@@ -17,7 +17,7 @@ export function createTerminal() {
 
 const debugMode = true;
 
-const consoleError: typeof console.error = debugMode ? console.error : () => undefined;
+const consoleDebug: typeof console.error = debugMode ? console.debug : () => undefined;
 
 const commands = ['check', 'cd', 'ls', 'pwd', 'exit', 'help', 'trace', 'echo'].sort();
 
@@ -41,7 +41,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     constructor() {}
 
     open(dimensions: vscode.TerminalDimensions | undefined) {
-        consoleError('Repl.open');
+        consoleDebug('Repl.open');
         assert(!this.#rl, 'Repl already open');
         assert(!this.#closed, 'Repl already closed');
         this.#rl = readline.createInterface({
@@ -53,31 +53,34 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const rl = this.#rl;
         rl.on('SIGTSTP', () => undefined);
         rl.on('SIGINT', this.#cancelAction);
-        rl.on('close', () => (consoleError('rl close'), this.close()));
+        rl.on('close', () => (consoleDebug('rl close'), this.close()));
         rl.on('line', this.#processLine);
         if (dimensions) {
+            this.log('CSpell REPL');
+            this.log('Type "help" or "?" for help.');
             this.#prompt();
         }
     }
 
     setDimensions() {
-        consoleError('Repl.setDimensions');
+        consoleDebug('Repl.setDimensions');
         this.#updatePrompt();
     }
 
     dispose = () => {
-        consoleError('Repl.dispose');
+        consoleDebug('Repl.dispose');
         this.close();
     };
 
     #processLine = (line: string) => {
-        consoleError('Repl.processLine %o', { line, args: parseCommandLineIntoArgs(line) });
+        consoleDebug('Repl.processLine %o', { line, args: parseCommandLineIntoArgs(line) });
 
         const parseAsync = async () => {
             if (line === '?') {
                 await this.#argsParser('').showHelp((text) => this.log(text));
                 return;
             }
+            this.#createCancelationTokenForAction();
             await this.#argsParser(line).parseAsync();
         };
 
@@ -87,65 +90,67 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #argsParser(line: string) {
         const argv = parseCommandLineIntoArgs(line);
 
-        return yargs(argv)
-            .scriptName('')
-            .version(false)
-            .command<{ globs?: string[] }>({
-                command: 'check [globs...]',
-                describe: 'Spell check the files matching the globs.',
-                handler: async (args) => {
-                    await this.#cmdCheck(args.globs);
-                },
-            })
-            .command<{ values?: string[] }>({
-                command: 'echo [values...]',
-                describe: 'Echo the values.',
-                handler: async (args) => {
-                    await this.#cmdEcho(args.values);
-                },
-            })
-            .command<{ word: string }>({
-                command: 'trace <word>',
-                describe: 'Trace which dictionaries contain the word.',
-                handler: (args) => {
-                    this.log('Tracing... %o', args);
-                },
-            })
-            .command({
-                command: 'pwd',
-                describe: 'Print the current working directory.',
-                handler: () => this.#cmdPwd(),
-            })
-            .command<{ path?: string }>({
-                command: 'cd <path>',
-                describe: 'Change the current working directory.',
-                handler: (args) => this.#cmdCd(args.path),
-            })
-            .command<{ paths?: string[] }>({
-                command: 'ls [paths...]',
-                describe: 'List the directory contents.',
-                handler: (args) => this.#cmdLs(args.paths),
-            })
-            .command({
-                command: 'exit',
-                describe: 'Exit the REPL.',
-                handler: () => {
-                    this.log('Exiting...');
-                    this.close();
-                },
-            })
-            .command<{ command?: string }>({
-                command: 'help [command]',
-                describe: 'Show help.',
-                handler: async (args) => {
-                    await this.#argsParser(args.command || '').showHelp((text) => this.log(text));
-                },
-            })
-            .help(false)
-            .exitProcess(false)
-            .fail((msg, err, _yargs) => {
-                this.log('Error: %o', { msg, err });
-            });
+        return (
+            yargs(argv)
+                .scriptName('')
+                .version(false)
+                .command<{ globs?: string[] }>({
+                    command: 'check [globs...]',
+                    describe: 'Spell check the files matching the globs.',
+                    handler: async (args) => {
+                        await this.#cmdCheck(args.globs);
+                    },
+                })
+                .command<{ values?: string[] }>({
+                    command: 'echo [values...]',
+                    describe: 'Echo the values.',
+                    handler: async (args) => {
+                        await this.#cmdEcho(args.values);
+                    },
+                })
+                .command<{ word: string }>({
+                    command: 'trace <word>',
+                    describe: 'Trace which dictionaries contain the word.',
+                    handler: (args) => {
+                        this.log('Tracing... %o', args);
+                    },
+                })
+                .command({
+                    command: 'pwd',
+                    describe: 'Print the current working directory.',
+                    handler: () => this.#cmdPwd(),
+                })
+                .command<{ path?: string }>({
+                    command: 'cd <path>',
+                    describe: 'Change the current working directory.',
+                    handler: (args) => this.#cmdCd(args.path),
+                })
+                .command<{ paths?: string[] }>({
+                    command: 'ls [paths...]',
+                    describe: 'List the directory contents.',
+                    handler: (args) => this.#cmdLs(args.paths),
+                })
+                .command({
+                    command: 'exit',
+                    describe: 'Exit the REPL.',
+                    handler: () => {
+                        this.log('Exiting...');
+                        this.close();
+                    },
+                })
+                .command<{ command?: string }>({
+                    command: 'help [command]',
+                    describe: 'Show help.',
+                    handler: async (args) => {
+                        this.#argsParser(args.command || '').showHelp((text) => this.log(text));
+                    },
+                })
+                .help(false)
+                // .exitProcess(false)
+                .fail((msg, err, _yargs) => {
+                    this.error('%o', { msg, err });
+                })
+        );
     }
 
     #prompt(waitFor?: Promise<unknown>) {
@@ -178,7 +183,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     }
 
     async #cmdCheck(globs: string[] | undefined) {
-        consoleError('Repl.cmdCheck');
+        consoleDebug('Repl.cmdCheck');
         let pattern: string | undefined;
         if (globs?.length) {
             const patterns = globs.map((g) => g.trim()).filter((g) => g);
@@ -192,12 +197,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
         this.log('Checking...');
 
-        const files = await globSearch(pattern, currentDirectory(), this.#createCancelationTokenForAction());
+        const files = await globSearch(pattern, currentDirectory(), this.#getCancelationTokenForAction());
         files.forEach((f) => this.#output(`File: ${colorText(vscode.workspace.asRelativePath(f, true))}\r\n`));
     }
 
     async #cmdEcho(globs: string[] | undefined) {
-        consoleError('Repl.cmdEcho');
+        consoleDebug('Repl.cmdEcho');
         this.log((globs || []).join(' '));
     }
 
@@ -207,14 +212,14 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cmdLine = commandLineBuilder(line);
         const args = cmdLine.args;
         if (args.length === 1 && line === args[0]) {
-            return [this.#completeWithOptions(line, commands).map((c) => c + ' '), line];
+            return [this.#completeWithOptions(line, commands).map((line) => line + ' '), line];
         }
 
         const command = args[0];
 
         const argIndex = cmdLine.hasTrailingSeparator() ? 0 : args.length - 1;
         const current = argIndex ? args[argIndex] : '';
-        const results = await this.#cmdCompletion(command, current);
+        const results = await this.#cmdCompletion(command, current, args);
 
         const completions = results.map((c) => {
             const cmd = cmdLine.clone();
@@ -223,20 +228,19 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             } else {
                 cmd.pushArg(c);
             }
-            cmd.pushSeparator();
             return cmd.line;
         });
 
         return [completions.filter((c) => c.startsWith(line)), line];
     };
 
-    #cmdCompletion = async (command: string, current: string) => {
+    #cmdCompletion = async (command: string, current: string, args: string[]) => {
         console.error('Repl.cmdCompletion %o', { command, current });
         switch (command) {
             case 'check':
                 return this.#cmdCheckCompletion(current);
             case 'cd':
-                return this.#cmdCdCompletion(current);
+                return this.#cmdCdCompletion(current, args);
             case 'ls':
                 return this.#completeWithPath(current, false);
             case 'help':
@@ -249,13 +253,17 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         return this.#completeWithPath(current, false);
     };
 
-    #cmdCdCompletion = async (current: string) => {
+    #cmdCdCompletion = async (current: string, args: string[]) => {
+        if (args.length > 2 || (args.length === 2 && args[1] !== current)) return [];
         return this.#completeWithPath(current, true);
     };
 
     #completeWithPath = async (current: string, directoriesOnly: boolean) => {
-        const files = await this.readDirEntryNames(directoriesOnly ? vscode.FileType.Directory : undefined);
-        return this.#completeWithOptions(current, files);
+        const files = await this.readDirEntryNames(current, directoriesOnly ? vscode.FileType.Directory : undefined);
+        return this.#completeWithOptions(
+            current,
+            files.map((f) => (f.startsWith('-') ? `./${f}` : f)),
+        );
     };
 
     #completeWithOptions = (current: string, options: string[]): string[] => {
@@ -266,32 +274,70 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     #cmdPwd() {
-        consoleError('Repl.cmdPwd');
+        consoleDebug('Repl.cmdPwd');
         this.log(this.#cwd?.toString(false) || 'No Working Directory');
     }
 
-    async #cmdLs(_paths: string[] | undefined) {
-        consoleError('Repl.cmdLs');
-        const files = await this.readDir();
+    async #cmdLs(paths: string[] | undefined) {
+        consoleDebug('Repl.cmdLs');
 
-        function decorate([name, fileType]: [string, vscode.FileType]): string {
+        const readDirEntries = async () => {
+            if (!paths?.length) return await this.readDir();
+            const results: DirEntry[] = [];
+            for (const p of paths) {
+                try {
+                    results.push(...(await this.searchDir(p)));
+                } catch {
+                    this.error(`"${p}" is not a valid file or directory.`);
+                }
+            }
+            return results;
+        };
+
+        const files = await readDirEntries();
+        files.map(decorate).forEach((name) => this.log(name));
+
+        function decorate([name, fileType]: DirEntry): string {
             let show = fileType === vscode.FileType.Directory ? green(name) : name;
             if (name.startsWith('.')) {
                 show = styles.dim.open + show + styles.dim.close;
             }
             return show;
         }
-
-        files.map(decorate).forEach((name) => this.log(name));
     }
 
-    async readDir() {
-        return await vscode.workspace.fs.readDirectory(this.#cwd);
+    async readDir(relUri?: string | vscode.Uri | undefined): Promise<DirEntry[]> {
+        const uri = typeof relUri === 'string' ? vscode.Uri.joinPath(this.#cwd, relUri) : relUri || this.#cwd;
+        return await vscode.workspace.fs.readDirectory(uri);
     }
 
-    async readDirEntryNames(filterType?: vscode.FileType): Promise<string[]> {
-        const filterFn = filterType ? ([, type]: [string, vscode.FileType]) => type === filterType : () => true;
-        return (await this.readDir()).filter(filterFn).map(([name, type]) => name + (type === vscode.FileType.Directory ? '/' : ''));
+    async searchDir(pattern: string, base?: vscode.Uri): Promise<DirEntry[]> {
+        const [searchPattern, searchBase] = normalizePatternBase(pattern, base || this.#cwd);
+
+        consoleDebug('Repl.searchDir %o', { searchPattern, searchBase });
+
+        const files = await globSearch(searchPattern || '*', searchBase, this.#getCancelationTokenForAction());
+        const stats = await readStatsForFiles(files, this.#getCancelationTokenForAction());
+        const basePath = searchBase.path;
+
+        const dirEntries = stats.map(([uri, stat]) => {
+            const relPath = uri.path.slice(basePath.length + 1);
+            return [relPath, stat.type] as DirEntry;
+        });
+        return dirEntries;
+    }
+
+    async readDirEntryNames(relativePartialPath: string, filterType?: vscode.FileType): Promise<string[]> {
+        const relPath = relativePartialPath.split('/').slice(0, -1).join('/');
+        const filterFn = filterType ? ([, type]: Readonly<[string, vscode.FileType]>) => type === filterType : () => true;
+        const defaultDir: DirEntry[] = relPath ? [] : [['..', vscode.FileType.Directory]];
+
+        const relPrefix = relPath ? relPath + '/' : '';
+
+        const dirInfo = [...defaultDir, ...(await this.readDir(relPath)).map(([name, type]) => [relPrefix + name, type] as DirEntry)]
+            .filter(filterFn)
+            .map(([name, type]) => name + (type === vscode.FileType.Directory ? '/' : ''));
+        return dirInfo;
     }
 
     async #cmdCd(path?: string) {
@@ -316,7 +362,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     }
 
     close = () => {
-        consoleError('Repl.close');
+        consoleDebug('Repl.close');
         if (this.#closed) return;
         this.#closed = true;
         this.#cancelationTokenSource?.cancel();
@@ -330,11 +376,16 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     log: typeof console.log = (...args) => this.#output(crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
+    error: typeof console.error = (...args) => this.#output(red('Error: ') + crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
 
     #cancelAction = () => this.#cancelationTokenSource?.cancel();
 
     #createCancelationTokenForAction(): vscode.CancellationToken {
         return this.#createCancelationTokenSourceForAction().token;
+    }
+
+    #getCancelationTokenForAction(): vscode.CancellationToken {
+        return this.#cancelationTokenSource?.token || this.#createCancelationTokenForAction();
     }
 
     #createCancelationTokenSourceForAction(): vscode.CancellationTokenSource {
@@ -357,6 +408,8 @@ function emitterToWriteStream(emitter: vscode.EventEmitter<string>): stream.Writ
         },
     });
 }
+
+type DirEntry = [string, vscode.FileType];
 
 class ReadableEmitter extends stream.Readable {
     private buffer: string[] = [];
@@ -392,7 +445,11 @@ function emitterToReadStream(emitter: vscode.EventEmitter<string>): stream.Reada
 }
 
 function wd(uri: vscode.Uri | undefined): string | undefined {
-    return uri && vscode.workspace.asRelativePath(uri, true);
+    if (!uri) return;
+    const uriHref = uri.toString().replace(/\/$/, '');
+    const folder = vscode.workspace.workspaceFolders?.find((f) => f.uri.toString() === uriHref);
+    if (folder) return folder.name + '/';
+    return vscode.workspace.asRelativePath(uri, true);
 }
 
 function currentDirectory(): vscode.Uri {
@@ -413,12 +470,21 @@ async function globSearch(
     base: vscode.Uri | undefined,
     cancelationToken?: vscode.CancellationToken,
 ): Promise<vscode.Uri[]> {
+    consoleDebug('globSearch %o', { pattern, base, cancelationToken });
     const pat = base ? new vscode.RelativePattern(base, pattern) : pattern;
-    return await vscode.workspace.findFiles(pat, undefined, undefined, cancelationToken);
+    const result = await vscode.workspace.findFiles(pat, undefined, undefined, cancelationToken);
+    if (cancelationToken?.isCancellationRequested) {
+        consoleDebug('globSearch cancelled');
+    }
+    return result;
 }
 
 function green(text: string): string {
     return styles.green.open + text + styles.green.close;
+}
+
+function red(text: string): string {
+    return styles.red.open + text + styles.red.close;
 }
 
 function crlf(text: string): string {
@@ -443,4 +509,74 @@ function findLongestPrefix(values: string[]): string {
         if (!val) return val;
     }
     return val;
+}
+
+function normalizePatternBase(pattern: string, base: vscode.Uri): [string, vscode.Uri] {
+    if (pattern.startsWith('/')) {
+        pattern = pattern.slice(1);
+        base = vscode.Uri.joinPath(base, '/');
+    }
+    const relPatterns = ['..', '.'];
+    const parts = pattern.split('/');
+    let i = 0;
+    for (; i < parts.length && relPatterns.includes(parts[i]); ++i) {
+        base = vscode.Uri.joinPath(base, parts[i]);
+    }
+    return [parts.slice(i).join('/'), base];
+}
+
+type UriStats = [vscode.Uri, vscode.FileStat];
+
+async function readStatsForFiles(uris: vscode.Uri[], cancelationToken: vscode.CancellationToken): Promise<UriStats[]> {
+    consoleDebug('readStatsForFiles %o', { uris: uris.slice(0, 100), length: uris.length, cancelationToken });
+    if (cancelationToken.isCancellationRequested) {
+        consoleDebug('readStatsForFiles cancelled before starting.');
+        return [];
+    }
+
+    const results: UriStats[] = [];
+
+    const statsRequests = uris.map((uri) => async () => [uri, await vscode.workspace.fs.stat(uri)] as UriStats);
+
+    for await (const result of asyncQueue(statsRequests, 10)) {
+        if (cancelationToken.isCancellationRequested) {
+            consoleDebug('readStatsForFiles cancelled');
+            break;
+        }
+        results.push(result);
+    }
+
+    return results;
+}
+
+async function* asyncQueue<T>(fnValues: Iterable<() => T | Promise<T>>, maxQueue = 10): AsyncIterable<T> {
+    function* buffered() {
+        let done = false;
+        const buffer: Promise<T>[] = [];
+        const iter = fnValues[Symbol.iterator]();
+
+        function fill() {
+            while (buffer.length < maxQueue) {
+                const next = iter.next();
+                done = !!next.done;
+                if (done) return;
+                if (next.done) return;
+                buffer.push(Promise.resolve(next.value()));
+            }
+        }
+
+        fill();
+
+        while (!done && buffer.length) {
+            yield buffer[0];
+            buffer.shift();
+            fill();
+        }
+
+        yield* buffer;
+    }
+
+    for await (const value of buffered()) {
+        yield value;
+    }
 }
