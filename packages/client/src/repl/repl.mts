@@ -5,12 +5,13 @@ import { formatWithOptions } from 'node:util';
 import * as vscode from 'vscode';
 import yargs from 'yargs';
 
-import { crlf, dim, green, red, yellow } from './ansiUtils.mjs';
+import { crlf, green, red } from './ansiUtils.mjs';
+import { cmdLs } from './cmdLs.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
 import type { DirEntry } from './fsUtils.mjs';
-import { currentDirectory, globSearch, readDir, readStatsForFiles, toRelativeWorkspacePath } from './fsUtils.mjs';
-import { globsToGlob, normalizePatternBase } from './globsToGlob.mjs';
+import { currentDirectory, globSearch, readDir, toRelativeWorkspacePath } from './fsUtils.mjs';
+import { globsToGlob } from './globUtils.mjs';
 import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.js';
 
 export function createTerminal() {
@@ -279,79 +280,11 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     async #cmdLs(paths: string[] | undefined) {
         consoleDebug('Repl.cmdLs');
 
-        const visited = new Set<string>();
-
-        const readDirEntries = () => {
-            return _readDirEntries(
-                paths,
-                () => this.readDir(),
-                (p) => this.searchDir(p),
-                this.error,
-            );
-        };
-
-        for await (const entry of readDirEntries()) {
-            const [name] = entry;
-            if (visited.has(name)) continue;
-            visited.add(name);
-            this.log(decorate(entry));
-        }
-
-        async function* _readDirEntries(
-            paths: string[] | undefined,
-            readDir: () => Promise<DirEntry[]>,
-            searchDir: (p: string) => AsyncGenerator<DirEntry>,
-            error: typeof console.error,
-        ) {
-            if (!paths?.length) {
-                yield* await readDir();
-                return;
-            }
-            for (const p of paths) {
-                try {
-                    yield* searchDir(p);
-                } catch {
-                    error(`"${p}" is not a valid file or directory.`);
-                }
-            }
-        }
-
-        function decorate([name, fileType]: DirEntry): string {
-            const dirSuffix = name.endsWith('/') ? '' : '/';
-            name += fileType & vscode.FileType.Directory ? dirSuffix : '';
-            const color =
-                fileType & vscode.FileType.SymbolicLink ? yellow : fileType & vscode.FileType.Directory ? green : (s: string) => s;
-            let show = color(name);
-            if (name.startsWith('.')) {
-                show = dim(show);
-            }
-            return show;
-        }
+        await cmdLs(paths, { log: this.log, cwd: this.#cwd, cancelationToken: this.#getCancelationTokenForAction() });
     }
 
     async readDir(relUri?: string | vscode.Uri | undefined): Promise<DirEntry[]> {
         return readDir(relUri, this.#cwd);
-    }
-
-    async *searchDir(pattern: string, base?: vscode.Uri): AsyncGenerator<DirEntry> {
-        const [searchPattern, searchBase] = normalizePatternBase(pattern, base || this.#cwd);
-
-        consoleDebug('Repl.searchDir %o', { searchPattern, searchBase });
-        const collator = new Intl.Collator(undefined, { sensitivity: 'variant' });
-
-        const files = await globSearch(searchPattern || '*', searchBase, undefined, undefined, this.#getCancelationTokenForAction());
-        files.sort((a, b) => collator.compare(a.path, b.path));
-        const stats = readStatsForFiles(files, this.#getCancelationTokenForAction());
-        const basePath = searchBase.path;
-
-        for await (const [uri, stat] of stats) {
-            if (this.#getCancelationTokenForAction().isCancellationRequested) {
-                consoleDebug('Repl.searchDir cancelled');
-                break;
-            }
-            const relPath = uri.path.slice(basePath.length + 1);
-            yield [relPath, stat.type] as DirEntry;
-        }
     }
 
     async readDirEntryNames(relativePartialPath: string, filterType?: vscode.FileType): Promise<string[]> {

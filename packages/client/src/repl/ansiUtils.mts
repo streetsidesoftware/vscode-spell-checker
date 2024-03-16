@@ -19,3 +19,9 @@ export function crlf(text: string): string {
 export function dim(text: string): string {
     return styles.dim.open + text + styles.dim.close;
 }
+
+export type ColorFn = (text: string) => string;
+
+export function combine(fn: ColorFn, ...fns: ColorFn[]): ColorFn {
+    return (text) => fns.reduce((acc, f) => f(acc), fn(text));
+}
