@@ -1,9 +1,10 @@
-import * as vscode from 'vscode';
+import type { GlobPattern } from 'vscode';
+import { RelativePattern, Uri } from 'vscode';
 
 import { currentDirectory } from './fsUtils.mjs';
 
-export function toGlobPattern(pattern: string, url?: vscode.Uri): vscode.GlobPattern {
-    return new vscode.RelativePattern(url || currentDirectory(), pattern);
+export function toGlobPattern(pattern: string, url?: Uri): GlobPattern {
+    return new RelativePattern(url || currentDirectory(), pattern);
 }
 export function globsToGlob(glob: string): string;
 export function globsToGlob(globs: [string, ...string[]]): string;
@@ -20,16 +21,17 @@ export function globsToGlob(globs: string[] | string | undefined): string | unde
  * @param base - the starting uri for the pattern.
  * @returns [normalizedPattern, normalizedBaseUri]
  */
-export function normalizePatternBase(pattern: string, base: vscode.Uri): [string, vscode.Uri] {
-    if (pattern.startsWith('/')) {
-        pattern = pattern.slice(1);
-        base = vscode.Uri.joinPath(base, '/');
-    }
-    const relPatterns = ['..', '.'];
+export function normalizePatternBase(pattern: string, base: Uri): [string, Uri] {
+    if (!containsGlobPattern(pattern)) return ['', Uri.joinPath(base, pattern)];
+
     const parts = pattern.split('/');
     let i = 0;
-    for (; i < parts.length && relPatterns.includes(parts[i]); ++i) {
-        base = vscode.Uri.joinPath(base, parts[i]);
+    for (; i < parts.length && !containsGlobPattern(parts[i]); ++i) {
+        base = Uri.joinPath(base, parts[i]);
     }
     return [parts.slice(i).join('/'), base];
+}
+
+export function containsGlobPattern(pattern: string): boolean {
+    return /[*?{}[\]]/.test(pattern);
 }

@@ -1,34 +1,42 @@
+import { relative as pathRelative } from 'node:path/posix';
+
+import type { CancellationToken, FileStat, FileType } from 'vscode';
+import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 
+import { toError } from '../util/errors.js';
 import { asyncQueue } from './asyncQueue.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
-import { toGlobPattern } from './globsToGlob.mjs';
+import { toGlobPattern } from './globUtils.mjs';
 
-export type DirEntry = [string, vscode.FileType];
-export type UriStats = [vscode.Uri, vscode.FileStat];
+export type DirEntryStat = Partial<FileStat> & Pick<FileStat, 'type'>;
+export type ExDirEntry = [string, DirEntryStat | Error];
 
-export function currentDirectory(): vscode.Uri {
-    return vscode.workspace.workspaceFolders?.[0].uri || uriParent(getCurrentDocumentUri()) || vscode.Uri.file('.');
+export type DirEntry = [string, FileType];
+export type UriStats = [Uri, FileStat];
+
+export function currentDirectory(): Uri {
+    return vscode.workspace.workspaceFolders?.[0].uri || uriParent(getCurrentDocumentUri()) || Uri.file('.');
 }
 
-function getCurrentDocumentUri(): vscode.Uri | undefined {
+function getCurrentDocumentUri(): Uri | undefined {
     const editor = vscode.window.activeTextEditor;
     return editor?.document.uri;
 }
 
-function uriParent(uri: vscode.Uri | undefined): vscode.Uri | undefined {
-    return uri && vscode.Uri.joinPath(uri, '..');
+function uriParent(uri: Uri | undefined): Uri | undefined {
+    return uri && Uri.joinPath(uri, '..');
 }
 
-export async function* readStatsForFiles(uris: vscode.Uri[], cancelationToken: vscode.CancellationToken): AsyncGenerator<UriStats> {
-    if (cancelationToken.isCancellationRequested) {
+export async function* readStatsForFiles(uris: Uri[], cancelationToken: vscode.CancellationToken | undefined): AsyncGenerator<UriStats> {
+    if (cancelationToken?.isCancellationRequested) {
         return [];
     }
 
     const statsRequests = uris.map((uri) => async () => [uri, await vscode.workspace.fs.stat(uri)] as UriStats);
 
     for await (const result of asyncQueue(statsRequests, 10)) {
-        if (cancelationToken.isCancellationRequested) {
+        if (cancelationToken?.isCancellationRequested) {
             break;
         }
         yield result;
@@ -39,11 +47,11 @@ export async function* readStatsForFiles(uris: vscode.Uri[], cancelationToken: v
 
 export async function globSearch(
     pattern: string,
-    base: vscode.Uri | undefined,
+    base: Uri | undefined,
     excludePattern: string | undefined,
     maxResults: number | undefined,
     cancelationToken?: vscode.CancellationToken,
-): Promise<vscode.Uri[]> {
+): Promise<Uri[]> {
     const pat = toGlobPattern(pattern, base);
     const result = await vscode.workspace.findFiles(
         pat,
@@ -57,10 +65,20 @@ export async function globSearch(
     return result;
 }
 
-export async function readDir(relUri?: string | vscode.Uri | undefined, cwd?: vscode.Uri): Promise<DirEntry[]> {
+export async function readDir(relUri?: string | Uri | undefined, cwd?: Uri): Promise<DirEntry[]> {
     cwd ??= currentDirectory();
-    const uri = typeof relUri === 'string' ? vscode.Uri.joinPath(cwd, relUri) : relUri || cwd;
+    const uri = typeof relUri === 'string' ? Uri.joinPath(cwd, relUri) : relUri || cwd;
     return await vscode.workspace.fs.readDirectory(uri);
+}
+
+export async function* readDirStats(dirUri: Uri, extendedStats = false, cancelationToken?: CancellationToken): AsyncGenerator<ExDirEntry> {
+    if (cancelationToken?.isCancellationRequested) return;
+
+    for await (const [name, type] of await vscode.workspace.fs.readDirectory(dirUri)) {
+        if (cancelationToken?.isCancellationRequested) return;
+        const stat = extendedStats ? await vscode.workspace.fs.stat(Uri.joinPath(dirUri, name)) : { type };
+        yield [name, stat] as ExDirEntry;
+    }
 }
 
 /**
@@ -68,10 +86,22 @@ export async function readDir(relUri?: string | vscode.Uri | undefined, cwd?: vs
  * @param uri - uri to convert to a relative path
  * @returns
  */
-export function toRelativeWorkspacePath(uri: vscode.Uri | undefined): string | undefined {
+export function toRelativeWorkspacePath(uri: Uri | undefined): string | undefined {
     if (!uri) return;
     const uriHref = uri.toString().replace(/\/$/, '');
     const folder = vscode.workspace.workspaceFolders?.find((f) => f.uri.toString() === uriHref);
     if (folder) return folder.name + '/';
     return vscode.workspace.asRelativePath(uri, true);
+}
+
+export function relativePath(from: Uri, to: Uri): string {
+    return pathRelative(from.path, to.path);
+}
+
+export async function readStatOrError(uri: Uri): Promise<FileStat | Error> {
+    try {
+        return await vscode.workspace.fs.stat(uri);
+    } catch (e) {
+        return toError(e);
+    }
 }
