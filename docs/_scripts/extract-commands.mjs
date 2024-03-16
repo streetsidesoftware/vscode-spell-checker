@@ -1,7 +1,10 @@
-// eslint-disable-next-line node/no-unpublished-require
-const package = require('../../package.json');
+import { createRequire } from 'module';
 
-const commands = package.contributes.commands;
+const require = createRequire(import.meta.url);
+
+const pkgJson = require('../../package.json');
+
+const commands = pkgJson.contributes.commands;
 
 const compare = new Intl.Collator().compare;
 
