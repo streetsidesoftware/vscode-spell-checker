@@ -25,3 +25,7 @@ export type ColorFn = (text: string) => string;
 export function combine(fn: ColorFn, ...fns: ColorFn[]): ColorFn {
     return (text) => fns.reduce((acc, f) => f(acc), fn(text));
 }
+
+export function clearScreen() {
+    return '\x1Bc';
+}
