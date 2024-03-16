@@ -57,7 +57,7 @@ const config = {
     },
     overrides: [
         {
-            files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx'],
+            files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx', '**/*.js', '**/*.mjs'],
             extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],
