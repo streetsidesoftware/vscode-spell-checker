@@ -34,6 +34,8 @@ const config = {
         '**/build/**',
         'package-lock.json',
         '**/scripts/ts-json-schema-generator.cjs',
+        '**/fixtures/**/*.js',
+        '**/webpack*.js',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
     rules: {
