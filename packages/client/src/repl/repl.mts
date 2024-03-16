@@ -5,7 +5,7 @@ import { formatWithOptions } from 'node:util';
 import * as vscode from 'vscode';
 import yargs from 'yargs';
 
-import { crlf, green, red } from './ansiUtils.mjs';
+import { clearScreen, crlf, green, red } from './ansiUtils.mjs';
 import { cmdLs } from './cmdLs.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
@@ -20,7 +20,7 @@ export function createTerminal() {
     terminal.show();
 }
 
-const commands = ['check', 'cd', 'ls', 'pwd', 'exit', 'help', 'trace', 'echo'].sort();
+const commands = ['check', 'cd', 'ls', 'pwd', 'exit', 'help', 'trace', 'echo', 'cls', 'info'].sort();
 
 class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     readonly #emitterInput = new vscode.EventEmitter<string>();
@@ -38,6 +38,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #cancelationTokenSource: vscode.CancellationTokenSource | undefined;
     #rl: readline.Interface | undefined;
     #closed = false;
+    #dimensions: vscode.TerminalDimensions | undefined;
 
     constructor() {}
 
@@ -56,6 +57,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         rl.on('SIGINT', this.#cancelAction);
         rl.on('close', () => (consoleDebug('rl close'), this.close()));
         rl.on('line', this.#processLine);
+        this.#dimensions = dimensions;
         if (dimensions) {
             this.log('CSpell REPL');
             this.log('Type "help" or "?" for help.');
@@ -63,7 +65,8 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         }
     }
 
-    setDimensions() {
+    setDimensions(dimensions: vscode.TerminalDimensions) {
+        this.#dimensions = dimensions;
         consoleDebug('Repl.setDimensions');
         this.#updatePrompt();
     }
@@ -78,7 +81,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
         const parseAsync = async () => {
             if (line === '?') {
-                await this.#argsParser('').showHelp((text) => this.log(text));
+                this.#argsParser('').showHelp((text) => this.log(text));
                 return;
             }
             this.#createCancelationTokenForAction();
@@ -91,67 +94,85 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #argsParser(line: string) {
         const argv = parseCommandLineIntoArgs(line);
 
-        return (
-            yargs(argv)
-                .scriptName('')
-                .version(false)
-                .command<{ globs?: string[] }>({
-                    command: 'check [globs...]',
-                    describe: 'Spell check the files matching the globs.',
-                    handler: async (args) => {
-                        await this.#cmdCheck(args.globs);
-                    },
-                })
-                .command<{ values?: string[] }>({
-                    command: 'echo [values...]',
-                    describe: 'Echo the values.',
-                    handler: async (args) => {
-                        await this.#cmdEcho(args.values);
-                    },
-                })
-                .command<{ word: string }>({
-                    command: 'trace <word>',
-                    describe: 'Trace which dictionaries contain the word.',
-                    handler: (args) => {
-                        this.log('Tracing... %o', args);
-                    },
-                })
-                .command({
-                    command: 'pwd',
-                    describe: 'Print the current working directory.',
-                    handler: () => this.#cmdPwd(),
-                })
-                .command<{ path?: string }>({
-                    command: 'cd <path>',
-                    describe: 'Change the current working directory.',
-                    handler: (args) => this.#cmdCd(args.path),
-                })
-                .command<{ paths?: string[] }>({
-                    command: 'ls [paths...]',
-                    describe: 'List the directory contents.',
-                    handler: (args) => this.#cmdLs(args.paths),
-                })
-                .command({
-                    command: 'exit',
-                    describe: 'Exit the REPL.',
-                    handler: () => {
-                        this.log('Exiting...');
-                        this.close();
-                    },
-                })
-                .command<{ command?: string }>({
-                    command: 'help [command]',
-                    describe: 'Show help.',
-                    handler: async (args) => {
-                        this.#argsParser(args.command || '').showHelp((text) => this.log(text));
-                    },
-                })
-                .help(false)
-                // .exitProcess(false)
-                .fail((msg, err, _yargs) => {
-                    this.error('%o', { msg, err });
-                })
-        );
+        return yargs(argv)
+            .scriptName('')
+            .version(false)
+            .command<{ globs?: string[] }>({
+                command: 'check [globs...]',
+                describe: 'Spell check the files matching the globs.',
+                handler: async (args) => {
+                    await this.#cmdCheck(args.globs);
+                },
+            })
+            .command<{ values?: string[] }>({
+                command: 'echo [values...]',
+                describe: 'Echo the values.',
+                handler: async (args) => {
+                    await this.#cmdEcho(args.values);
+                },
+            })
+            .command<{ word: string }>({
+                command: 'trace <word>',
+                describe: 'Trace which dictionaries contain the word.',
+                handler: (args) => {
+                    this.log('Tracing... %o', args);
+                },
+            })
+            .command({
+                command: 'pwd',
+                describe: 'Print the current working directory.',
+                handler: () => this.#cmdPwd(),
+            })
+            .command<{ path?: string }>({
+                command: 'cd <path>',
+                describe: 'Change the current working directory.',
+                handler: (args) => this.#cmdCd(args.path),
+            })
+            .command<{ paths?: string[] }>({
+                command: 'ls [paths...]',
+                describe: 'List the directory contents.',
+                handler: (args) => this.#cmdLs(args),
+            })
+            .command({
+                command: 'exit',
+                describe: 'Exit the REPL.',
+                handler: () => {
+                    this.log('Exiting...');
+                    this.close();
+                },
+            })
+            .command<{ command?: string }>({
+                command: 'help [command]',
+                describe: 'Show help.',
+                handler: async (args) => {
+                    this.#argsParser(args.command || '').showHelp((text) => this.log(text));
+                },
+            })
+            .command({
+                command: 'cls',
+                describe: 'Clear the screen.',
+                handler: () => {
+                    this.#output(clearScreen());
+                },
+            })
+            .command({
+                command: 'info',
+                describe: 'Show information about the REPL.',
+                handler: () => {
+                    this.log('CSpell REPL');
+                    this.log('Type "help" or "?" for help.');
+                    this.log('Working Directory: %s', green(this.#cwd.toString(true)));
+                    this.log('Dimensions: %o', this.#dimensions);
+                },
+            })
+            .help(false)
+            .strict()
+            .exitProcess(false)
+            .fail((msg, err, _yargs) => {
+                consoleDebug('Repl.argsParser.fail %o', { msg, err });
+                this.error('%s', msg);
+                throw new Error(msg);
+            });
     }
 
     #prompt(waitFor?: Promise<unknown>) {
@@ -277,10 +298,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.log(this.#cwd?.toString(false) || 'No Working Directory');
     }
 
-    async #cmdLs(paths: string[] | undefined) {
-        consoleDebug('Repl.cmdLs');
+    async #cmdLs(args: { paths?: string[] | undefined }) {
+        consoleDebug('Repl.cmdLs %o', args);
 
-        await cmdLs(paths, { log: this.log, cwd: this.#cwd, cancelationToken: this.#getCancelationTokenForAction() });
+        await cmdLs(args.paths, { log: this.log, cwd: this.#cwd, cancelationToken: this.#getCancelationTokenForAction() });
     }
 
     async readDir(relUri?: string | vscode.Uri | undefined): Promise<DirEntry[]> {
