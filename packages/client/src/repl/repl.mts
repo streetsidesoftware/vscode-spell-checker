@@ -3,7 +3,8 @@ import readline from 'node:readline/promises';
 import { formatWithOptions } from 'node:util';
 
 import * as vscode from 'vscode';
-import yargs from 'yargs';
+import type { Arguments } from 'yargs';
+import yargs from 'yargs/yargs';
 
 import { clearScreen, crlf, green, red } from './ansiUtils.mjs';
 import { cmdLs } from './cmdLs.mjs';
@@ -84,8 +85,16 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 this.#argsParser('').showHelp((text) => this.log(text));
                 return;
             }
+            // let failed = false;
+            // let failedMsg = '';
             this.#createCancelationTokenForAction();
-            await this.#argsParser(line).parseAsync();
+            let args: Arguments | undefined;
+            try {
+                args = await this.#argsParser(line).parseAsync();
+            } catch (e) {
+                this.error(e);
+            }
+            consoleDebug('Repl.processLine.parseAsync %o', { args });
         };
 
         this.#prompt(parseAsync());
@@ -168,10 +177,9 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             .help(false)
             .strict()
             .exitProcess(false)
-            .fail((msg, err, _yargs) => {
+            .fail(async (msg, err, _yargs) => {
                 consoleDebug('Repl.argsParser.fail %o', { msg, err });
-                this.error('%s', msg);
-                throw new Error(msg);
+                // throw new Error(msg);
             });
     }
 
