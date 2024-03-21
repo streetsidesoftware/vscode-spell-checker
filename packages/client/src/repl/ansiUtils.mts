@@ -1,4 +1,6 @@
 import styles from 'ansi-styles';
+import ansiEscapes from 'ansi-escapes';
+import { Direction } from 'node:tty';
 
 export function green(text: string): string {
     return styles.green.open + text + styles.green.close;
@@ -27,5 +29,21 @@ export function combine(fn: ColorFn, ...fns: ColorFn[]): ColorFn {
 }
 
 export function clearScreen() {
-    return '\x1Bc';
+    return ansiEscapes.clearScreen;
+}
+
+export function clearLine(dir: Direction) {
+    return dir > 0 ? ansiEscapes.eraseEndLine : dir < 0 ? ansiEscapes.eraseStartLine : ansiEscapes.eraseLine;
+}
+
+export function clearDown() {
+    return ansiEscapes.eraseDown;
+}
+
+export function moveCursor(dx: number, dy?: number | undefined) {
+    return ansiEscapes.cursorMove(dx, dy);
+}
+
+export function cursorTo(x: number, y?: number | undefined) {
+    return ansiEscapes.cursorTo(x, y);
 }

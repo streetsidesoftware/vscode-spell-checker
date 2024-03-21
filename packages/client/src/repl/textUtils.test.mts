@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { removeLeftPad, splitIntoLines } from './textUtils.mjs';
+import { splitIntoLines, unindent } from './textUtils.mjs';
 
 describe('textUtils', () => {
     test('splitIntoLines should split text into lines of specified width', () => {
@@ -16,7 +16,7 @@ describe('textUtils', () => {
     test('splitIntoLines should honor \\n', () => {
         const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\t- one\n\t- two\n';
         const width = 20;
-        const expectedLines = removeLeftPad(`\
+        const expectedLines = unindent(`\
             Lorem ipsum dolor
             sit amet,
             consectetur
@@ -52,18 +52,30 @@ describe('textUtils', () => {
     // Add more test cases here...
 });
 
-describe('removeLeftPad', () => {
-    test('removeLeftPad should remove left padding from multi-line text', () => {
+describe('unindent', () => {
+    test('unindent should remove left padding from multi-line text', () => {
         const input = `\
-        This is a command with unnecessary complexity and options.
-        Even the description is long and verbose. with a lot of words and new lines.
-    `;
-        const expectedOutput = `This is a command with unnecessary complexity and options.
-Even the description is long and verbose. with a lot of words and new lines.
-`;
+            This is a command with unnecessary complexity and options.
+            Even the description is long and verbose. with a lot of words and new lines.
+        `;
+        const expectedOutput =
+            'This is a command with unnecessary complexity and options.\n' +
+            'Even the description is long and verbose. with a lot of words and new lines.\n';
 
-        const result = removeLeftPad(input);
+        const result = unindent(input);
 
         expect(result).toBe(expectedOutput);
+    });
+
+    test('unindent should remove left padding from a template string.', () => {
+        const input = unindent`\
+            This is a command with unnecessary complexity and options.
+            Even the description is long and verbose. with a lot of words and new lines.
+        `;
+        const expectedOutput =
+            'This is a command with unnecessary complexity and options.\n' +
+            'Even the description is long and verbose. with a lot of words and new lines.\n';
+
+        expect(input).toBe(expectedOutput);
     });
 });
