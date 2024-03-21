@@ -30,7 +30,9 @@ export function splitIntoLines(text: string, width: number): string[] {
     return lines.map((line) => line.trimEnd());
 }
 
-export function removeLeftPad(s: string) {
+(strings, ...values) => String.raw({ raw: strings }, ...values);
+
+function _unindent(s: string) {
     const lines = s.split('\n');
     const indents = lines
         .map((line) => line.replace(/^\s+$/, ''))
@@ -38,6 +40,31 @@ export function removeLeftPad(s: string) {
         .filter((n) => n > 0);
     const minIndent = Math.min(...indents);
     return lines.map((line) => line.slice(minIndent)).join('\n');
+}
+
+/**
+ * Moves all lines to the left by the minimum amount of leading whitespace found in any line.
+ *
+ * @param str - string to unindent
+ * @returns unindented string
+ */
+export function unindent(str: string): string;
+/**
+ * Template function that unindents a string by the minimum amount of leading whitespace found in any line.
+ *
+ * Example:
+ * ```ts
+ *    const usage = unindent`\
+ *       Usage: foo [options]
+ *    `;
+ * ```
+ * See: {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates MDN: Tagged Templates}
+ * @param strings - TemplateStringsArray
+ * @param values - values to interpolate
+ */
+export function unindent(strings: TemplateStringsArray, ...values: unknown[]): string;
+export function unindent(strings: TemplateStringsArray | string, ...values: unknown[]): string {
+    return typeof strings === 'string' ? _unindent(strings) : _unindent(String.raw({ raw: strings }, ...values));
 }
 
 function splitLinesKeepNewLine(text: string): string[] {

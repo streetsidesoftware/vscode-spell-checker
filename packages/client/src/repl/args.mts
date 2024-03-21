@@ -163,6 +163,8 @@ class Option<K extends string = string, V extends TypeNames = TypeNames> impleme
     readonly short: string;
     readonly param: string;
     readonly required: boolean;
+    readonly baseType: TypeBaseNames;
+    readonly variadic: boolean;
 
     constructor(
         readonly name: K,
@@ -173,13 +175,15 @@ class Option<K extends string = string, V extends TypeNames = TypeNames> impleme
         this.short = def.short || '';
         this.param = def.param || this.name;
         this.required = def.required ?? true;
+        this.baseType = typeNameToBaseTypeName(this.type);
         this.multiple = this.type.endsWith('[]');
+        this.variadic = def.variadic || false;
     }
 
     toString() {
         const short = this.short ? `-${this.short}, ` : '';
         const paramName = this.param || this.name;
-        const suffix = this.multiple ? '...' : '';
+        const suffix = this.variadic ? '...' : '';
 
         const paramWithSuffix = this.type == 'boolean' ? '' : `${paramName}${suffix}`;
         const param = paramWithSuffix && (this.required ? ` <${paramWithSuffix}>` : ` [${paramWithSuffix}]`);
@@ -213,6 +217,8 @@ interface OptionDef<T extends TypeNames> {
      * @default true
      */
     readonly required?: boolean | undefined;
+
+    readonly variadic?: boolean | undefined;
 }
 
 interface ArgDef<T extends TypeNames> {
@@ -233,15 +239,19 @@ interface ArgDef<T extends TypeNames> {
     readonly required?: boolean | undefined;
 }
 
-type ArgTypeDefs = {
+interface ArgTypeDefBase {
     boolean: boolean;
     string: string;
     number: number;
+}
+
+interface ArgTypeDefs extends ArgTypeDefBase {
     'boolean[]': boolean[];
     'string[]': string[];
     'number[]': number[];
-};
+}
 
+export type TypeBaseNames = keyof ArgTypeDefBase;
 export type TypeNames = keyof ArgTypeDefs;
 export type ArgTypes = ArgTypeDefs[TypeNames];
 
@@ -326,4 +336,33 @@ function formatTwoColumns(columns: readonly (readonly [string, string])[], width
         }
     }
     return lines.join('\n');
+}
+
+// function commandToParseArgsConfig(command: Command): ParseArgsConfig {
+//     const options: Exclude<ParseArgsConfig['options'], undefined> = {};
+//     const config: ParseArgsConfig = {
+//         options,
+//         allowPositionals: true,
+//         tokens: true,
+//     };
+
+//     for (const opt of command.options) {
+//         options[opt.name] = {
+//             type: opt.baseType !== 'boolean' ? 'string' : 'boolean',
+//             multiple: opt.multiple,
+//             short: opt.short || undefined,
+//         };
+//     }
+//     return config;
+// }
+
+function typeNameToBaseTypeName(type: 'boolean'): 'boolean';
+function typeNameToBaseTypeName(type: 'number'): 'number';
+function typeNameToBaseTypeName(type: 'string'): 'string';
+function typeNameToBaseTypeName(type: 'boolean[]'): 'boolean';
+function typeNameToBaseTypeName(type: 'number[]'): 'number';
+function typeNameToBaseTypeName(type: 'string[]'): 'string';
+function typeNameToBaseTypeName(type: TypeNames): TypeBaseNames;
+function typeNameToBaseTypeName(type: TypeNames): TypeBaseNames {
+    return type.replace('[]', '') as TypeBaseNames;
 }

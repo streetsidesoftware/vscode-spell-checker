@@ -1,16 +1,23 @@
 import type { ParseArgsConfig } from 'node:util';
 import { parseArgs } from 'node:util';
 
-import { describe, expect, test } from 'vitest';
+import createOptionParser from 'optionator';
+import { describe, expect, test, vi } from 'vitest';
+import { EventEmitter } from 'vscode';
 
 import { Application, Command } from './args.mjs';
-import { removeLeftPad } from './textUtils.mjs';
+import { emitterToWriteStream } from './emitterToWriteStream.mjs';
+import { unindent } from './textUtils.mjs';
+
+vi.mock('vscode');
 
 const ac = expect.arrayContaining;
 
 const tokens = ac([]);
 
-const r = removeLeftPad;
+const T = true;
+
+const r = unindent;
 
 describe('parseArgs', () => {
     test.each`
@@ -21,17 +28,97 @@ describe('parseArgs', () => {
         ${['-f=apple', '--fruit=banana', '--']}                      | ${{ positionals: [], values: { fruit: ['=apple', 'banana'] }, tokens }}
         ${['-abC7', 'hello', 'there']}                               | ${{ positionals: ['hello', 'there'], values: { apple: true, banana: true, code: '7' }, tokens }}
         ${['-C7', '-C8']}                                            | ${{ positionals: [], values: { code: '8' }, tokens }}
+        ${['-a', 'red', '-C', '8', '-vvv', '--verbose']}             | ${{ positionals: ['red'], values: { apple: true, code: '8', verbose: [T, T, T, T] }, tokens }}
     `('pareArgs $args', ({ args, expected }) => {
         const options: ParseArgsConfig['options'] = {
             apple: { type: 'boolean', short: 'a' },
             banana: { type: 'boolean', short: 'b' },
             cherry: { type: 'boolean', short: 'c' },
             code: { type: 'string', short: 'C' },
+            verbose: { type: 'boolean', short: 'v', multiple: true },
             fruit: { type: 'string', short: 'f', multiple: true },
         };
         const result = parseArgs({ args, options, allowPositionals: true, tokens: true });
         // console.log('%o', result);
         expect(result).toEqual(expected);
+    });
+});
+
+// cspell:words optionator
+
+describe('optionator', () => {
+    const config1: createOptionParser.IOptionatorArgs = {
+        prepend: 'Usage: test [options] <source> [target]',
+        append: 'Version 1.0.0',
+        options: [
+            { heading: 'Options' },
+            { option: 'verbose', alias: 'v', type: 'Boolean', description: 'Show extra details' },
+            { option: 'upper', alias: 'u', type: 'Boolean', description: 'Show in uppercase' },
+            { option: 'lower', alias: 'l', type: 'Boolean', description: 'Show in lowercase' },
+            { option: 'pad-left', type: 'Number', description: 'Pad the left side', default: '0' },
+            { option: 'pad-right', type: 'Number', description: 'Pad the right side', default: '0' },
+            { option: 'help', alias: 'h', type: 'Boolean', description: 'Show help' },
+        ],
+        positionalAnywhere: true,
+    };
+
+    test('generateHelp', () => {
+        const emitter = new EventEmitter<string>();
+        const outputFn = vi.fn();
+        emitter.event(outputFn);
+        const stdout = emitterToWriteStream(emitter);
+        const optionator = createOptionParser({ ...config1, stdout });
+
+        expect(optionator.generateHelp()).toBe(
+            unindent(`\
+        Usage: test [options] <source> [target]
+
+        Options:
+          -v, --verbose       Show extra details
+          -u, --upper         Show in uppercase
+          -l, --lower         Show in lowercase
+          --pad-left Number   Pad the left side - default: 0
+          --pad-right Number  Pad the right side - default: 0
+          -h, --help          Show help
+
+        Version 1.0.0`),
+        );
+
+        expect(outputFn).not.toHaveBeenCalled();
+    });
+
+    test.each`
+        args                                | expected
+        ${['-v', '--pad-left', '3', 'foo']} | ${{ _: ['foo'], verbose: true, padLeft: 3, padRight: 0 }}
+        ${'one two three'}                  | ${{ _: ['one', 'two', 'three'], padLeft: 0, padRight: 0 }}
+        ${'show --no-upper'}                | ${{ _: ['show'], padLeft: 0, padRight: 0, upper: false }}
+        ${'show --upper=false'}             | ${{ _: ['show'], padLeft: 0, padRight: 0, upper: false }}
+        ${'show -u -- again'}               | ${{ _: ['show', 'again'], padLeft: 0, padRight: 0, upper: true }}
+        ${'show -u -- again'.split(' ')}    | ${{ _: ['show', 'again'], padLeft: 0, padRight: 0, upper: true }}
+    `('parse $args', ({ args, expected }) => {
+        const emitter = new EventEmitter<string>();
+        const outputFn = vi.fn();
+        emitter.event(outputFn);
+        const stdout = emitterToWriteStream(emitter);
+        const optionator = createOptionParser({ ...config1, stdout });
+
+        const result = optionator.parse(args, { slice: 0 });
+        expect(result).toEqual(expected);
+        expect(outputFn).not.toHaveBeenCalled();
+    });
+
+    test.each`
+        args           | expected
+        ${'--no-show'} | ${"Invalid option '--show' - perhaps you meant '-h'?"}
+    `('parse fail $args', ({ args, expected }) => {
+        const emitter = new EventEmitter<string>();
+        const outputFn = vi.fn();
+        emitter.event(outputFn);
+        const stdout = emitterToWriteStream(emitter);
+        const optionator = createOptionParser({ ...config1, stdout });
+
+        expect(() => optionator.parse(args, { slice: 0 })).toThrow(expected);
+        expect(outputFn).not.toHaveBeenCalled();
     });
 });
 
