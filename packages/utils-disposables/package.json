@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@tsconfig/node18": "^18.2.2",
+    "@tsconfig/node18": "^18.2.3",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.19.26",
     "jest": "^29.7.0",
