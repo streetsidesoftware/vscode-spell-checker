@@ -3499,10 +3499,10 @@
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.6.0",
-    "@cspell/cspell-types": "^8.6.0",
+    "@cspell/cspell-bundled-dicts": "^8.6.1",
+    "@cspell/cspell-types": "^8.6.1",
     "@types/react": "^17.0.79",
-    "cspell": "^8.6.0",
+    "cspell": "^8.6.1",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
