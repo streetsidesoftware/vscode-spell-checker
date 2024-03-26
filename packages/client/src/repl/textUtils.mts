@@ -30,8 +30,6 @@ export function splitIntoLines(text: string, width: number): string[] {
     return lines.map((line) => line.trimEnd());
 }
 
-(strings, ...values) => String.raw({ raw: strings }, ...values);
-
 function _unindent(s: string) {
     const lines = s.split('\n');
     const indents = lines
