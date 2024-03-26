@@ -64,6 +64,7 @@ nohoist
 noreply
 nospace
 onfinally
+optionator
 outfile
 overridable
 OVSX
