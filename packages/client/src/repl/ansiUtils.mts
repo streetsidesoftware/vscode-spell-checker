@@ -1,6 +1,7 @@
-import styles from 'ansi-styles';
+import type { Direction } from 'node:tty';
+
 import ansiEscapes from 'ansi-escapes';
-import { Direction } from 'node:tty';
+import styles from 'ansi-styles';
 
 export function green(text: string): string {
     return styles.green.open + text + styles.green.close;
