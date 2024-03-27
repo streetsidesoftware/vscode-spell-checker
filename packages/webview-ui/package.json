@@ -28,7 +28,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@tsconfig/svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.35",
     "rollup": "^4.13.0",

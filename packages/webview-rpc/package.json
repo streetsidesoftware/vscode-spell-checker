@@ -60,7 +60,7 @@
     "node": ">18.0.0"
   },
   "devDependencies": {
-    "@tsconfig/svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
     "@types/vscode": "^1.87.0"
   }
 }
