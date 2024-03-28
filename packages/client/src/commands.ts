@@ -181,6 +181,7 @@ export const commandHandlers = {
     'cSpell.toggleVisible': handlerResolvedLater,
     'cSpell.show': handlerResolvedLater,
     'cSpell.hide': handlerResolvedLater,
+    'cSpell.createCSpellTerminal': handlerResolvedLater,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;

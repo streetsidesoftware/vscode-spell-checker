@@ -53,6 +53,9 @@ overrides:
     ignoreWords:
       - colour
       - canot
+  - filename: '**/*.test.*'
+    dictionaries:
+      - lorem-ipsum
 useGitignore: true
 words:
   - dbaeumer

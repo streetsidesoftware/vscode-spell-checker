@@ -2,6 +2,7 @@ import { format } from 'util';
 import { window } from 'vscode';
 
 export function isError(e: unknown): e is Error {
+    if (e instanceof Error) return true;
     if (!e || typeof e !== 'object') return false;
     const err = <Error>e;
     return err.message !== undefined && err.name !== undefined;
@@ -129,4 +130,13 @@ const canceledName = 'Canceled';
  */
 function isPromiseCanceledError(error: unknown): boolean {
     return error instanceof Error && error.name === canceledName && error.message === canceledName;
+}
+
+export function toError(e: unknown): Error {
+    if (isError(e)) {
+        return e;
+    }
+    const err = new Error(format('Error: %o', e));
+    err.cause = e;
+    return err;
 }

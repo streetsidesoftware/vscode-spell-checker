@@ -19,6 +19,7 @@
 | `cSpell.addWordToWorkspaceSettings`                  | Add Words to Workspace Settings                                                                                 |
 | `cSpell.autoFixSpellingIssues`                       | Fix all issues with a preferred suggestion in the current document.                                             |
 | `cSpell.createCSpellConfig`                          | Create a CSpell Configuration File.                                                                             |
+| `cSpell.createCSpellTerminal`                        | Create CSpell REPL Terminal                                                                                     |
 | `cSpell.createCustomDictionary`                      | Create a Custom Dictionary File.                                                                                |
 | `cSpell.disableCurrentFileType`                      | Disable Spell Checking File Type                                                                                |
 | `cSpell.disableCurrentLanguage`                      | Disable Spell Checking Document Language                                                                        |

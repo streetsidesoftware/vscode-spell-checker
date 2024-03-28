@@ -1,4 +1,5 @@
 # Project Words
+abortable
 acanthopterygious
 activitybar
 aeiouy
@@ -63,13 +64,16 @@ nohoist
 noreply
 nospace
 onfinally
+optionator
 outfile
 overridable
 OVSX
 paginator
 permalinks
+Positionals
 Preformat
 preinstall
+Pseudoterminal
 quickfix
 quotemark
 readonly
@@ -95,6 +99,8 @@ tsbuildInfo
 tslib
 typechecking
 unelevated
+unindented
+unindents
 untracked
 untrusted
 uri's
