@@ -3463,7 +3463,7 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "@types/jest-when": "^3.5.5",
-    "@types/node": "^18.19.28",
+    "@types/node": "^18.19.29",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
@@ -3490,12 +3490,12 @@
     "ovsx": "^0.9.0",
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.2",
-    "rollup": "^4.13.2",
+    "rollup": "^4.14.0",
     "rollup-plugin-dts": "^6.1.0",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.3",
-    "vite": "^5.2.7",
+    "vite": "^5.2.8",
     "vitest": "^1.4.0"
   },
   "dependencies": {
