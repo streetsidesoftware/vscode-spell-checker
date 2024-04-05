@@ -800,9 +800,10 @@ Description
     - `vscode-notebook-cell` - Used for validating segments of a Notebook.
     - `vscode-userdata` - Needed to spell check `.code-snippets`
     - `vscode-scm` - Needed to spell check Source Control commit messages.
+    - `comment` - Used for new comment editors.
 
 Default
-: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"vscode-userdata"`_, _`"vscode-vfs"`_, _`"vsls"`_ ]
+: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"comment"`_, _`"vscode-userdata"`_, _`"vscode-vfs"`_, _`"vsls"`_ ]
 
 ---
 
