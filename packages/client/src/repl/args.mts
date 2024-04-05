@@ -390,6 +390,25 @@ export type ArgsDefinitions = {
     [k in string]: ArgDef<ArgTypeNames>;
 };
 
+type ArgInlineDef<N extends string, T extends ArgTypeNames> = { [k in N]: ArgDef<T> };
+
+/**
+ * Define an argument
+ * @param name - The name of the argument
+ * @param type - The type of the argument `string` | `string[]`
+ * @param description - The description of the argument
+ * @param required - Indicates if the argument is required or optional
+ * @returns An object that can be used to define arguments inline
+ */
+export function defArg<N extends string, T extends ArgTypeNames>(
+    name: N,
+    type: T,
+    description: string,
+    required?: boolean,
+): ArgInlineDef<N, T> {
+    return { [name]: { type, description, required } } as ArgInlineDef<N, T>;
+}
+
 type ArgDefsToArgs<T extends ArgsDefinitions> = {
     [k in keyof T]?: TypeNameToType<T[k]['type']>;
 } & { _: string[] };

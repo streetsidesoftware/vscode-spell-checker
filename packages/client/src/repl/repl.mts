@@ -4,8 +4,8 @@ import { formatWithOptions } from 'node:util';
 
 import * as vscode from 'vscode';
 
-import { clearScreen, crlf, green, red } from './ansiUtils.mjs';
-import { Application, Command } from './args.mjs';
+import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
+import { Application, Command, defArg } from './args.mjs';
 import { cmdLs } from './cmdLs.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
@@ -106,37 +106,25 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cmdCheck = new Command(
             'check',
             'Spell check the files matching the globs.',
-            {
-                globs: { type: 'string[]', description: 'File glob patterns.' },
-            },
+            { ...defArg('globs', 'string[]', 'File glob patterns.') },
             {},
-            async (args) => {
-                await this.#cmdCheck(args.args.globs);
-            },
+            (args) => this.#cmdCheck(args.args.globs),
         );
 
         const cmdEcho = new Command(
             'echo',
             'Echo the values.',
-            {
-                values: { type: 'string[]', description: 'Echo the values to the console.' },
-            },
+            { ...defArg('values', 'string[]', 'Echo the values to the console.') },
             {},
-            async (args) => {
-                await this.#cmdEcho(args.args.values);
-            },
+            (args) => this.#cmdEcho(args.args.values),
         );
 
         const cmdTrace = new Command(
             'trace',
             'Trace which dictionaries contain the word.',
-            {
-                word: { type: 'string', description: 'The word to trace.' },
-            },
+            { ...defArg('word', 'string', 'The word to trace.') },
             {},
-            async (args) => {
-                this.log('Tracing... %o', args);
-            },
+            (args) => this.log('Tracing... %o', args),
         );
 
         const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
@@ -144,25 +132,21 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cmdCd = new Command(
             'cd',
             'Change the current working directory.',
-            {
-                path: { type: 'string', description: 'The path to change to.' },
-            },
+            { ...defArg('path', 'string', 'The path to change to.') },
             {},
-            async (args) => {
-                await this.#cmdCd(args.args.path);
-            },
+            (args) => this.#cmdCd(args.args.path),
         );
 
         const cmdLs = new Command(
             'ls',
             'List the directory contents.',
-            {
-                paths: { type: 'string[]', description: 'The paths to list.' },
-            },
+            { ...defArg('paths', 'string[]', 'The paths to list.') },
             {},
-            async (args) => {
-                await this.#cmdLs(args.args);
-            },
+            (args) => this.#cmdLs(args.args),
+        );
+
+        const cmdEnv = new Command('env', 'Show the environment.', { ...defArg('filter', 'string[]', 'Optional filter.') }, {}, (args) =>
+            this.#cmdEnv(args.args.filter),
         );
 
         const cmdExit = new Command('exit', 'Exit the REPL.', {}, {}, () => {
@@ -177,7 +161,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 command: { type: 'string', description: 'Show Help', required: false },
             },
             {},
-            async (args) => this.showHelp(args.args.command),
+            (args) => this.showHelp(args.args.command),
         );
 
         const cmdCls = new Command('cls', 'Clear the screen.', {}, {}, () => this.#output(clearScreen()));
@@ -189,7 +173,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             this.log('Dimensions: %o', this.#dimensions);
         });
 
-        const commands = [cmdCheck, cmdEcho, cmdTrace, cmdPwd, cmdCd, cmdLs, cmdExit, cmdHelp, cmdCls, cmdInfo];
+        const commands = [cmdCheck, cmdEcho, cmdTrace, cmdPwd, cmdCd, cmdLs, cmdEnv, cmdExit, cmdHelp, cmdCls, cmdInfo];
         app.addCommands(commands);
         this.#application = app;
         return app;
@@ -215,7 +199,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                         return;
                     }
                 }
-            } catch {
+            } catch (e) {
+                if (e instanceof Error) {
+                    this.error(e.message);
+                }
                 // empty
             }
             this.#updatePrompt();
@@ -324,6 +311,17 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #cmdPwd() {
         consoleDebug('Repl.cmdPwd');
         this.log(this.#cwd?.toString(false) || 'No Working Directory');
+    }
+
+    #cmdEnv(filter?: string[] | undefined) {
+        consoleDebug('Repl.cmdEnv');
+        this.log('Environment:');
+        const entries = Object.entries(process.env)
+            .filter(([key]) => !filter || filter.find((f) => key.toLowerCase().includes(f)))
+            .sort((a, b) => a[0].localeCompare(b[0]));
+        for (const [key, value] of entries) {
+            this.log(`${green(key)}${yellow('=')}${value}`);
+        }
     }
 
     async #cmdLs(args: { paths?: string[] | undefined }) {

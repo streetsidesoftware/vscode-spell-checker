@@ -43,6 +43,7 @@ describe('parseArgs', () => {
         expect(result).toEqual(expected);
     });
 
+    // cspell:ignore alse
     test.each`
         args                                                                | expected
         ${['-a', 'red', '-C', '8', '-vvv', '--verbose', '--verbose=false']} | ${{ positionals: ['red'], values: { apple: true, code: '8', verbose: [T, T, T, T, 'false'] }, tokens }}
