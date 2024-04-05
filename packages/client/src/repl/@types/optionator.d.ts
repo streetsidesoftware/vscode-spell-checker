@@ -4,11 +4,11 @@ declare module 'optionator' {
     // eslint-disable-next-line
     module optionator {
 
-        interface IOptionatorHeading {
+        interface OptionatorHeading {
             heading: string;
         }
 
-        interface IOptionatorOption {
+        interface OptionatorOption {
             option: string;
             alias?: string | string[];
             type: string;
@@ -25,7 +25,7 @@ declare module 'optionator' {
             example?: string | string[];
         }
 
-        interface IOptionatorHelpStyle {
+        interface OptionatorHelpStyle {
             aliasSeparator?: string;
             typeSeparator?: string;
             descriptionSeparator?: string;
@@ -34,19 +34,19 @@ declare module 'optionator' {
             maxPadFactor?: number;
         }
 
-        interface IOptionatorArgs {
+        interface OptionatorArgs {
             prepend?: string;
             append?: string;
-            options: (IOptionatorHeading | IOptionatorOption)[];
-            helpStyle?: IOptionatorHelpStyle;
+            options: (OptionatorHeading | OptionatorOption)[];
+            helpStyle?: OptionatorHelpStyle;
             mutuallyExclusive?: (string | string[])[];
             positionalAnywhere?: boolean;
             typeAliases?: object;
-            defaults?: Partial<IOptionatorOption>;
+            defaults?: Partial<OptionatorOption>;
             stdout?:  NodeJS.WritableStream;
         }
 
-        interface IOptionator {
+        interface Optionator {
             parse(input: string | string[] | object, parseOptions?: { slice?: number }): any;
             parseArgv(input: string[]): any;
             generateHelp(helpOptions?: { showHidden?: boolean; interpolate?: any }): string;
@@ -54,7 +54,7 @@ declare module 'optionator' {
         }
     }
 
-    function optionator(args: optionator.IOptionatorArgs): optionator.IOptionator;
+    function optionator(args: optionator.OptionatorArgs): optionator.Optionator;
     export = optionator;
 }
 

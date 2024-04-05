@@ -1,15 +1,12 @@
+import assert from 'node:assert';
 import type { ParseArgsConfig } from 'node:util';
 import { parseArgs } from 'node:util';
 
-import createOptionParser from 'optionator';
-import { describe, expect, test, vi } from 'vitest';
-import { EventEmitter } from 'vscode';
+import { describe, expect, test } from 'vitest';
 
-import { Application, Command } from './args.mjs';
-import { emitterToWriteStream } from './emitterToWriteStream.mjs';
+import { Application, castValueToType, Command, toBoolean } from './args.mjs';
+import { parseCommandLineIntoArgs } from './parseCommandLine.js';
 import { unindent } from './textUtils.mjs';
-
-vi.mock('vscode');
 
 const ac = expect.arrayContaining;
 
@@ -19,6 +16,9 @@ const T = true;
 
 const r = unindent;
 
+/*
+ * Test our parseArgs assumptions.
+ */
 describe('parseArgs', () => {
     test.each`
         args                                                         | expected
@@ -42,97 +42,39 @@ describe('parseArgs', () => {
         // console.log('%o', result);
         expect(result).toEqual(expected);
     });
-});
-
-// cspell:words optionator
-
-describe('optionator', () => {
-    const config1: createOptionParser.IOptionatorArgs = {
-        prepend: 'Usage: test [options] <source> [target]',
-        append: 'Version 1.0.0',
-        options: [
-            { heading: 'Options' },
-            { option: 'verbose', alias: 'v', type: 'Boolean', description: 'Show extra details' },
-            { option: 'upper', alias: 'u', type: 'Boolean', description: 'Show in uppercase' },
-            { option: 'lower', alias: 'l', type: 'Boolean', description: 'Show in lowercase' },
-            { option: 'pad-left', type: 'Number', description: 'Pad the left side', default: '0' },
-            { option: 'pad-right', type: 'Number', description: 'Pad the right side', default: '0' },
-            { option: 'help', alias: 'h', type: 'Boolean', description: 'Show help' },
-        ],
-        positionalAnywhere: true,
-    };
-
-    test('generateHelp', () => {
-        const emitter = new EventEmitter<string>();
-        const outputFn = vi.fn();
-        emitter.event(outputFn);
-        const stdout = emitterToWriteStream(emitter);
-        const optionator = createOptionParser({ ...config1, stdout });
-
-        expect(optionator.generateHelp()).toBe(
-            unindent(`\
-        Usage: test [options] <source> [target]
-
-        Options:
-          -v, --verbose       Show extra details
-          -u, --upper         Show in uppercase
-          -l, --lower         Show in lowercase
-          --pad-left Number   Pad the left side - default: 0
-          --pad-right Number  Pad the right side - default: 0
-          -h, --help          Show help
-
-        Version 1.0.0`),
-        );
-
-        expect(outputFn).not.toHaveBeenCalled();
-    });
 
     test.each`
-        args                                | expected
-        ${['-v', '--pad-left', '3', 'foo']} | ${{ _: ['foo'], verbose: true, padLeft: 3, padRight: 0 }}
-        ${'one two three'}                  | ${{ _: ['one', 'two', 'three'], padLeft: 0, padRight: 0 }}
-        ${'show --no-upper'}                | ${{ _: ['show'], padLeft: 0, padRight: 0, upper: false }}
-        ${'show --upper=false'}             | ${{ _: ['show'], padLeft: 0, padRight: 0, upper: false }}
-        ${'show -u -- again'}               | ${{ _: ['show', 'again'], padLeft: 0, padRight: 0, upper: true }}
-        ${'show -u -- again'.split(' ')}    | ${{ _: ['show', 'again'], padLeft: 0, padRight: 0, upper: true }}
-    `('parse $args', ({ args, expected }) => {
-        const emitter = new EventEmitter<string>();
-        const outputFn = vi.fn();
-        emitter.event(outputFn);
-        const stdout = emitterToWriteStream(emitter);
-        const optionator = createOptionParser({ ...config1, stdout });
-
-        const result = optionator.parse(args, { slice: 0 });
+        args                                                                | expected
+        ${['-a', 'red', '-C', '8', '-vvv', '--verbose', '--verbose=false']} | ${{ positionals: ['red'], values: { apple: true, code: '8', verbose: [T, T, T, T, 'false'] }, tokens }}
+        ${['-a', 'red', '-C', '8', '-vvv', '--verbose', '-v=false']}        | ${{ positionals: ['red'], values: { apple: true, code: '8', fruit: ['alse'], verbose: [T, T, T, T, T], '=': T }, tokens }}
+    `('pareArgs $args', ({ args, expected }) => {
+        const options: ParseArgsConfig['options'] = {
+            apple: { type: 'boolean', short: 'a' },
+            banana: { type: 'boolean', short: 'b' },
+            cherry: { type: 'boolean', short: 'c' },
+            code: { type: 'string', short: 'C' },
+            verbose: { type: 'boolean', short: 'v', multiple: true },
+            fruit: { type: 'string', short: 'f', multiple: true },
+        };
+        const result = parseArgs({ args, options, allowPositionals: true, tokens: true, strict: false });
+        console.log('%o', result);
         expect(result).toEqual(expected);
-        expect(outputFn).not.toHaveBeenCalled();
-    });
-
-    test.each`
-        args           | expected
-        ${'--no-show'} | ${"Invalid option '--show' - perhaps you meant '-h'?"}
-    `('parse fail $args', ({ args, expected }) => {
-        const emitter = new EventEmitter<string>();
-        const outputFn = vi.fn();
-        emitter.event(outputFn);
-        const stdout = emitterToWriteStream(emitter);
-        const optionator = createOptionParser({ ...config1, stdout });
-
-        expect(() => optionator.parse(args, { slice: 0 })).toThrow(expected);
-        expect(outputFn).not.toHaveBeenCalled();
     });
 });
 
 describe('Application', () => {
+    const anyArgs = ac([]);
     const cmdFoo = new Command(
         'foo',
         'Display some foo.',
         {
-            count: { type: 'number', required: true, description: 'Amount of foo to display' },
+            count: { type: 'string', required: true, description: 'Amount of foo to display' },
             names: { type: 'string[]', description: 'Optional names to display.' },
         },
         {
             verbose: { type: 'boolean', short: 'v', description: 'Show extra details' },
             upper: { type: 'boolean', short: 'u', description: 'Show in uppercase' },
+            repeat: { type: 'number', short: 'r', description: 'Repeat the message' },
         },
     );
 
@@ -200,6 +142,26 @@ describe('Application', () => {
         );
     });
 
+    test.each`
+        cmd                                  | expected
+        ${'bar hello --loud'}                | ${{ argv: anyArgs, args: { _: ['hello'], message: 'hello' }, options: { loud: true } }}
+        ${'bar  -l none'}                    | ${{ argv: anyArgs, args: { _: ['none'], message: 'none' }, options: { loud: true } }}
+        ${'foo 5 one two -r 2'}              | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 2 } }}
+        ${'foo 5 one two -r 2 -r7'}          | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 7 } }}
+        ${'foo 42 --repeat=7'}               | ${{ argv: anyArgs, args: { _: ['42'], count: '42' }, options: { repeat: 7 } }}
+        ${'complex a b c d -v -v -v -v'}     | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: true } }}
+        ${'complex a b c d'}                 | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: {} }}
+        ${'complex a b c --verbose=false d'} | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: false } }}
+    `('Parse Command $cmd', ({ cmd: commandLine, expected }) => {
+        const commands = [cmdFoo, cmdBar, cmdComplex, cmdHelp];
+        const app = new Application('test', 'Test Application.').addCommands(commands);
+        const argv = parseCommandLineIntoArgs(commandLine);
+        const command = app.getCommand(argv[0]);
+        assert(command);
+        const args = command.parse(argv);
+        expect(args).toEqual(expected);
+    });
+
     test('Command Help', () => {
         const commands = [cmdFoo, cmdBar, cmdComplex, cmdHelp];
         const app = new Application('test', 'Test Application.').addCommands(commands);
@@ -215,8 +177,9 @@ describe('Application', () => {
               [names...]  Optional names to display.
 
             Options:
-              -v, --verbose  Show extra details
-              -u, --upper    Show in uppercase`),
+              -v, --verbose          Show extra details
+              -u, --upper            Show in uppercase
+              -r, --repeat <repeat>  Repeat the message`),
         );
 
         expect(app.getHelp('bar')).toBe(
@@ -241,5 +204,82 @@ describe('Application', () => {
             Arguments:
               [command]  Show Help for command.`),
         );
+
+        expect(app.getHelp('complex')).toBe(
+            r(`\
+            Usage: complex [options] <one> <two> [many...]
+
+            This is a command with unnecessary complexity and options.
+            Even the description is long and verbose. with a lot of words and new lines.
+              - one: Argument one.
+              - two: Argument two.
+
+
+            Arguments:
+              <one>      Argument one.
+              <two>      Argument two.
+              [many...]  The rest of the arguments.
+
+            Options:
+              -v, --verbose            Show extra details
+              -u, --upper              Show in uppercase
+              -l, --lower              Show in lowercase
+              --pad-left <pad-left>    Pad the left side
+              --pad-right <pad-right>  Pad the right side`),
+        );
+    });
+});
+
+describe('conversions', () => {
+    test.each`
+        value        | expected
+        ${true}      | ${true}
+        ${false}     | ${false}
+        ${1}         | ${true}
+        ${0}         | ${false}
+        ${NaN}       | ${false}
+        ${'True'}    | ${true}
+        ${'False'}   | ${false}
+        ${'T'}       | ${true}
+        ${'F'}       | ${false}
+        ${'1'}       | ${true}
+        ${'0'}       | ${false}
+        ${'yes'}     | ${true}
+        ${'no'}      | ${false}
+        ${undefined} | ${undefined}
+    `('toBoolean $value', ({ value, expected }) => {
+        expect(toBoolean(value)).toBe(expected);
+    });
+
+    test.each`
+        value      | expected
+        ${'sunny'} | ${'Invalid boolean value: sunny'}
+    `('toBoolean $value with error', ({ value, expected }) => {
+        expect(() => toBoolean(value)).toThrow(expected);
+    });
+
+    test.each`
+        value         | optType      | expected
+        ${true}       | ${'boolean'} | ${true}
+        ${true}       | ${'string'}  | ${'true'}
+        ${42}         | ${'string'}  | ${'42'}
+        ${{ a: 'b' }} | ${'string'}  | ${'[object Object]'}
+        ${NaN}        | ${'string'}  | ${'NaN'}
+        ${true}       | ${'number'}  | ${1}
+        ${42}         | ${'number'}  | ${42}
+        ${'42'}       | ${'number'}  | ${42}
+        ${'0x10'}     | ${'number'}  | ${16}
+        ${'010'}      | ${'number'}  | ${10}
+    `('castValueToType $value $optType', ({ value, optType, expected }) => {
+        expect(castValueToType(value, optType)).toBe(expected);
+    });
+
+    test.each`
+        value    | optType      | expected
+        ${'42b'} | ${'number'}  | ${'Invalid number value: 42b'}
+        ${'42b'} | ${'boolean'} | ${'Invalid boolean value: 42b'}
+        ${{}}    | ${'boolean'} | ${'Invalid boolean value: [object Object]'}
+    `('castValueToType $value $optType to error', ({ value, optType, expected }) => {
+        expect(() => castValueToType(value, optType)).toThrow(expected);
     });
 });

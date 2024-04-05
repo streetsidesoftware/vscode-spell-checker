@@ -1,6 +1,12 @@
+import type { ParseArgsConfig } from 'node:util';
+import { parseArgs } from 'node:util';
+
 import assert from 'assert';
 
 import { splitIntoLines } from './textUtils.mjs';
+
+type NodeParsedResults = ReturnType<typeof parseArgs>;
+type ParsedToken = Exclude<NodeParsedResults['tokens'], undefined>[number];
 
 const defaultWidth = 80;
 
@@ -33,9 +39,59 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
         return argv[0] == this.name;
     }
 
-    async parse(argv: string[]) {
+    parse(argv: string[]): ParsedResults<ArgDefs, OptDefs> {
+        const tokenizer = createTokenizer(this);
+        assert(argv[0] == this.name, `Command name mismatch: ${argv[0]} != ${this.name}`);
+        const tokens = tokenizer(argv.slice(1));
+
+        console.log('tokens: %o', tokens);
+
+        const positionals: string[] = [];
+        const args = { _: positionals } as ArgDefsToArgs<ArgDefs>;
+        const shadowArgs: Record<string, string[] | string | undefined> = args;
+        const options = {} as OptDefsToOpts<OptDefs>;
+        const shadowOpts: Record<string, OptionTypes | OptionTypes[] | undefined> = options;
+
+        const argDefs = this.arguments;
+        let i = 0;
+        for (const token of tokens) {
+            switch (token.kind) {
+                case 'option':
+                    {
+                        const opt = this.#options.find((o) => o.name == token.name);
+                        if (!opt) {
+                            throw new Error(`Unknown option: ${token.name}`);
+                        }
+                        const name = opt.name;
+                        const value = castValueToType(token.value, opt.baseType);
+                        shadowOpts[name] = opt.multiple ? append(options[name], value) : value;
+                    }
+                    break;
+                case 'positional':
+                    {
+                        positionals.push(token.value);
+                        if (i >= argDefs.length) {
+                            throw new Error(`Unexpected argument: ${token.value}`);
+                        }
+                        const arg = argDefs[i];
+                        const value = token.value;
+                        shadowArgs[arg.name] = arg.multiple ? append(args[arg.name], value) : value;
+                        i += arg.multiple ? 0 : 1;
+                    }
+                    break;
+                case 'option-terminator':
+                    break;
+            }
+        }
+
+        return { args, options, argv };
+    }
+
+    async exec(argv: string[]) {
         assert(this.#handler, 'handler not set');
         assert(argv[0] == this.name);
+        const parsedArgs = this.parse(argv);
+        await this.#handler(parsedArgs);
     }
 
     getArgString() {
@@ -127,6 +183,10 @@ export class Application {
         }
         return lines.join('\n');
     }
+
+    getCommand(cmdName: string): Command | undefined {
+        return this.#commands.get(cmdName);
+    }
 }
 
 function commandHelpLine(cmd: Command) {
@@ -134,7 +194,7 @@ function commandHelpLine(cmd: Command) {
     return { cmd: cmd.name, args: argLine, description: cmd.description };
 }
 
-class Argument<K extends string = string, V extends TypeNames = TypeNames> implements Required<ArgDef<V>> {
+class Argument<K extends string = string, V extends ArgTypeNames = ArgTypeNames> implements Required<ArgDef<V>> {
     readonly multiple: boolean;
     readonly description: string;
     readonly type: V;
@@ -156,14 +216,14 @@ class Argument<K extends string = string, V extends TypeNames = TypeNames> imple
     }
 }
 
-class Option<K extends string = string, V extends TypeNames = TypeNames> implements Required<OptionDef<V>> {
+class Option<K extends string = string, V extends OptionTypeNames = OptionTypeNames> implements Required<OptionDef<V>> {
     readonly multiple: boolean;
     readonly description: string;
     readonly type: V;
     readonly short: string;
     readonly param: string;
     readonly required: boolean;
-    readonly baseType: TypeBaseNames;
+    readonly baseType: OptionTypeBaseNames;
     readonly variadic: boolean;
 
     constructor(
@@ -178,6 +238,10 @@ class Option<K extends string = string, V extends TypeNames = TypeNames> impleme
         this.baseType = typeNameToBaseTypeName(this.type);
         this.multiple = this.type.endsWith('[]');
         this.variadic = def.variadic || false;
+
+        if (this.variadic && !this.multiple) {
+            throw new Error('variadic option must be multiple');
+        }
     }
 
     toString() {
@@ -192,7 +256,7 @@ class Option<K extends string = string, V extends TypeNames = TypeNames> impleme
     }
 }
 
-interface OptionDef<T extends TypeNames> {
+interface OptionDef<T extends OptionTypeNames> {
     /**
      * The description of the option
      */
@@ -221,7 +285,7 @@ interface OptionDef<T extends TypeNames> {
     readonly variadic?: boolean | undefined;
 }
 
-interface ArgDef<T extends TypeNames> {
+interface ArgDef<T extends ArgTypeNames> {
     /**
      * The description of the option
      */
@@ -239,23 +303,27 @@ interface ArgDef<T extends TypeNames> {
     readonly required?: boolean | undefined;
 }
 
-interface ArgTypeDefBase {
+interface OptionTypeDefBase {
     boolean: boolean;
     string: string;
     number: number;
 }
 
-interface ArgTypeDefs extends ArgTypeDefBase {
+interface OptionTypeDefs extends OptionTypeDefBase {
     'boolean[]': boolean[];
     'string[]': string[];
     'number[]': number[];
 }
 
-export type TypeBaseNames = keyof ArgTypeDefBase;
-export type TypeNames = keyof ArgTypeDefs;
-export type ArgTypes = ArgTypeDefs[TypeNames];
+export type OptionTypeBaseNames = keyof OptionTypeDefBase;
+export type OptionTypeNames = keyof OptionTypeDefs;
 
-export type TypeNameToType<T extends TypeNames> = T extends 'boolean'
+type ArgTypeDefs = Pick<OptionTypeDefs, 'string' | 'string[]'>;
+
+export type ArgTypeNames = keyof ArgTypeDefs;
+export type ArgTypes = ArgTypeDefs[ArgTypeNames];
+
+export type TypeNameToType<T extends OptionTypeNames> = T extends 'boolean'
     ? boolean
     : T extends 'string'
       ? string
@@ -269,9 +337,12 @@ export type TypeNameToType<T extends TypeNames> = T extends 'boolean'
               ? number[]
               : never;
 
-export type DefToType<T extends Record<string, TypeNames>> = {
+export type DefToType<T extends Record<string, OptionTypeNames>> = {
     [K in keyof T]: TypeNameToType<T[K]>;
 };
+
+type SpecificOptionTypes<K extends keyof OptionTypeDefs> = OptionTypeDefs[K];
+type OptionTypes = SpecificOptionTypes<keyof OptionTypeDefs>;
 
 export type TypeToTypeName<T> = T extends boolean
     ? 'boolean'
@@ -288,40 +359,30 @@ export type TypeToTypeName<T> = T extends boolean
               : never;
 
 export type ArgsDefinitions = {
-    [k in string]: ArgDef<TypeNames>;
+    [k in string]: ArgDef<ArgTypeNames>;
 };
 
 type ArgDefsToArgs<T extends ArgsDefinitions> = {
-    [k in keyof T]: TypeNameToType<T[k]['type']>;
-};
+    [k in keyof T]?: TypeNameToType<T[k]['type']>;
+} & { _: string[] };
 
 export type OptionDefinitions = {
-    [k in string]: OptionDef<TypeNames>;
+    [k in string]: OptionDef<OptionTypeNames>;
 };
 
 type OptDefsToOpts<T extends OptionDefinitions> = {
     [k in keyof T]: TypeNameToType<T[k]['type']>;
 };
 
-type HandlerFn<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> = (parsedArgs: {
+type ParsedResults<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> = {
     args: ArgDefsToArgs<ArgDefs>;
     options: OptDefsToOpts<OptDefs>;
     argv: string[];
-}) => Promise<void> | void;
+};
 
-const cmd2 = new Command(
-    'test',
-    'test command',
-    { globs: { description: 'globs', type: 'string[]' } },
-    { verbose: { description: 'verbose', type: 'boolean', short: 'v' } },
-);
-
-cmd2.handler(({ args, options }) => {
-    const globs = args.globs;
-    globs.forEach((g) => console.log(g));
-    console.log(args.globs);
-    console.log(options.verbose);
-});
+type HandlerFn<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> = (
+    parsedArgs: ParsedResults<ArgDefs, OptDefs>,
+) => Promise<void> | void;
 
 function formatTwoColumns(columns: readonly (readonly [string, string])[], width: number, sep = '  ') {
     const lines = [];
@@ -338,31 +399,72 @@ function formatTwoColumns(columns: readonly (readonly [string, string])[], width
     return lines.join('\n');
 }
 
-// function commandToParseArgsConfig(command: Command): ParseArgsConfig {
-//     const options: Exclude<ParseArgsConfig['options'], undefined> = {};
-//     const config: ParseArgsConfig = {
-//         options,
-//         allowPositionals: true,
-//         tokens: true,
-//     };
-
-//     for (const opt of command.options) {
-//         options[opt.name] = {
-//             type: opt.baseType !== 'boolean' ? 'string' : 'boolean',
-//             multiple: opt.multiple,
-//             short: opt.short || undefined,
-//         };
-//     }
-//     return config;
-// }
-
 function typeNameToBaseTypeName(type: 'boolean'): 'boolean';
 function typeNameToBaseTypeName(type: 'number'): 'number';
 function typeNameToBaseTypeName(type: 'string'): 'string';
 function typeNameToBaseTypeName(type: 'boolean[]'): 'boolean';
 function typeNameToBaseTypeName(type: 'number[]'): 'number';
 function typeNameToBaseTypeName(type: 'string[]'): 'string';
-function typeNameToBaseTypeName(type: TypeNames): TypeBaseNames;
-function typeNameToBaseTypeName(type: TypeNames): TypeBaseNames {
-    return type.replace('[]', '') as TypeBaseNames;
+function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames;
+function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames {
+    return type.replace('[]', '') as OptionTypeBaseNames;
+}
+
+function append<T>(...values: (T | T[] | undefined)[]): T[] {
+    return values.flatMap((a) => a).filter((v): v is T => v !== undefined);
+}
+
+function createTokenizer<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs extends OptionDefinitions = OptionDefinitions>(
+    command: Command<ArgDefs, OptDefs>,
+): (args: string[]) => ParsedToken[] {
+    const options: ParseArgsConfig['options'] = {};
+
+    for (const opt of command.options) {
+        options[opt.name] = {
+            type: opt.baseType !== 'boolean' ? 'string' : 'boolean',
+            multiple: opt.multiple,
+        };
+        if (opt.short) {
+            options[opt.name].short = opt.short;
+        }
+    }
+
+    return (args: string[]) => {
+        const result = parseArgs({ args, options, allowPositionals: true, tokens: true, strict: false });
+        const tokens = result.tokens || [];
+        return tokens;
+    };
+}
+
+export function castValueToType<T extends OptionTypeBaseNames>(value: unknown, type: T): SpecificOptionTypes<T>;
+export function castValueToType(value: unknown, type: OptionTypeBaseNames): SpecificOptionTypes<OptionTypeBaseNames>;
+export function castValueToType(value: unknown, type: OptionTypeBaseNames): SpecificOptionTypes<OptionTypeBaseNames> {
+    switch (type) {
+        case 'boolean':
+            return toBoolean(value ?? true);
+        case 'number':
+            return toNumber(value);
+        case 'string':
+            return typeof value == 'string' ? value : `${value}`;
+    }
+}
+
+export function toBoolean(value: unknown): boolean;
+export function toBoolean(value: unknown | undefined): boolean | undefined;
+export function toBoolean(value: unknown | undefined): boolean | undefined {
+    if (value === undefined) return undefined;
+    if (typeof value == 'boolean') return value;
+    if (typeof value == 'number') return !!value;
+    if (typeof value == 'string') {
+        const v = value.toLowerCase().trim();
+        if (['true', 't', 'yes', 'y', '1', 'ok'].includes(v)) return true;
+        if (['false', 'f', 'no', 'n', '0', ''].includes(v)) return false;
+    }
+    throw new Error(`Invalid boolean value: ${value}`);
+}
+
+export function toNumber(value: unknown): number {
+    const num = Number(value);
+    if (!Number.isNaN(num)) return num;
+    throw new Error(`Invalid number value: ${value}`);
 }
