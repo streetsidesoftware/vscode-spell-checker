@@ -197,6 +197,24 @@ export class Application {
     getCommand(cmdName: string): Command | undefined {
         return this.#commands.get(cmdName);
     }
+
+    parseArgs(args: string[]) {
+        const cmdName = args[0];
+        const cmd = this.getCommand(cmdName);
+        if (!cmd) {
+            throw new Error(`Unknown command: ${cmdName}`);
+        }
+        return cmd.parse(args);
+    }
+
+    async exec(argv: string[]) {
+        const cmdName = argv[0];
+        const cmd = this.getCommand(cmdName);
+        if (!cmd) {
+            throw new Error(`Unknown command: ${cmdName}`);
+        }
+        await cmd.exec(argv);
+    }
 }
 
 function commandHelpLine(cmd: Command) {

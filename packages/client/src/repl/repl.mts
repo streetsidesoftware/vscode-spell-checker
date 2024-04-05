@@ -3,10 +3,9 @@ import readline from 'node:readline/promises';
 import { formatWithOptions } from 'node:util';
 
 import * as vscode from 'vscode';
-import type { Arguments } from 'yargs';
-import yargs from 'yargs/yargs';
 
 import { clearScreen, crlf, green, red } from './ansiUtils.mjs';
+import { Application, Command } from './args.mjs';
 import { cmdLs } from './cmdLs.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
@@ -40,6 +39,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #rl: readline.Interface | undefined;
     #closed = false;
     #dimensions: vscode.TerminalDimensions | undefined;
+    #application: Application | undefined;
 
     constructor() {}
 
@@ -47,6 +47,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         consoleDebug('Repl.open');
         assert(!this.#rl, 'Repl already open');
         assert(!this.#closed, 'Repl already closed');
+        if (dimensions) {
+            this.#dimensions = dimensions;
+            this.#writeStream.dimensions = dimensions;
+        }
         this.#rl = readline.createInterface({
             input: this.#readStream,
             output: this.#writeStream,
@@ -68,7 +72,8 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
     setDimensions(dimensions: vscode.TerminalDimensions) {
         this.#dimensions = dimensions;
-        consoleDebug('Repl.setDimensions');
+        this.#writeStream.dimensions = dimensions;
+        consoleDebug('Repl.setDimensions %o', dimensions);
         this.#updatePrompt();
     }
 
@@ -78,109 +83,120 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     #processLine = (line: string) => {
+        line = line.trim();
         consoleDebug('Repl.processLine %o', { line, args: parseCommandLineIntoArgs(line) });
 
         const parseAsync = async () => {
+            if (!line) return;
             if (line === '?') {
-                this.#argsParser('').showHelp((text) => this.log(text));
+                this.showHelp();
                 return;
             }
-            // let failed = false;
-            // let failedMsg = '';
-            this.#createCancelationTokenForAction();
-            let args: Arguments | undefined;
-            try {
-                args = await this.#argsParser(line).parseAsync();
-            } catch (e) {
-                this.error(e);
-            }
-            consoleDebug('Repl.processLine.parseAsync %o', { args });
+
+            const argv = parseCommandLineIntoArgs(line);
+            return this.#getApplication().exec(argv);
         };
 
         this.#prompt(parseAsync());
     };
 
-    #argsParser(line: string) {
-        const argv = parseCommandLineIntoArgs(line);
+    #getApplication(): Application {
+        if (this.#application) return this.#application;
+        const app = new Application('repl', 'CSpell REPL', 'Usage: ????');
+        const cmdCheck = new Command(
+            'check',
+            'Spell check the files matching the globs.',
+            {
+                globs: { type: 'string[]', description: 'File glob patterns.' },
+            },
+            {},
+            async (args) => {
+                await this.#cmdCheck(args.args.globs);
+            },
+        );
 
-        return yargs(argv)
-            .scriptName('')
-            .version(false)
-            .command<{ globs?: string[] }>({
-                command: 'check [globs...]',
-                describe: 'Spell check the files matching the globs.',
-                handler: async (args) => {
-                    await this.#cmdCheck(args.globs);
-                },
-            })
-            .command<{ values?: string[] }>({
-                command: 'echo [values...]',
-                describe: 'Echo the values.',
-                handler: async (args) => {
-                    await this.#cmdEcho(args.values);
-                },
-            })
-            .command<{ word: string }>({
-                command: 'trace <word>',
-                describe: 'Trace which dictionaries contain the word.',
-                handler: (args) => {
-                    this.log('Tracing... %o', args);
-                },
-            })
-            .command({
-                command: 'pwd',
-                describe: 'Print the current working directory.',
-                handler: () => this.#cmdPwd(),
-            })
-            .command<{ path?: string }>({
-                command: 'cd <path>',
-                describe: 'Change the current working directory.',
-                handler: (args) => this.#cmdCd(args.path),
-            })
-            .command<{ paths?: string[] }>({
-                command: 'ls [paths...]',
-                describe: 'List the directory contents.',
-                handler: (args) => this.#cmdLs(args),
-            })
-            .command({
-                command: 'exit',
-                describe: 'Exit the REPL.',
-                handler: () => {
-                    this.log('Exiting...');
-                    this.close();
-                },
-            })
-            .command<{ command?: string }>({
-                command: 'help [command]',
-                describe: 'Show help.',
-                handler: async (args) => {
-                    this.#argsParser(args.command || '').showHelp((text) => this.log(text));
-                },
-            })
-            .command({
-                command: 'cls',
-                describe: 'Clear the screen.',
-                handler: () => {
-                    this.#output(clearScreen());
-                },
-            })
-            .command({
-                command: 'info',
-                describe: 'Show information about the REPL.',
-                handler: () => {
-                    this.log('CSpell REPL');
-                    this.log('Type "help" or "?" for help.');
-                    this.log('Working Directory: %s', green(this.#cwd.toString(true)));
-                    this.log('Dimensions: %o', this.#dimensions);
-                },
-            })
-            .help(false)
-            .strict()
-            .exitProcess(false)
-            .fail(async (msg, err, _yargs) => {
-                consoleDebug('Repl.argsParser.fail %o', { msg, err });
-                // throw new Error(msg);
-            });
+        const cmdEcho = new Command(
+            'echo',
+            'Echo the values.',
+            {
+                values: { type: 'string[]', description: 'Echo the values to the console.' },
+            },
+            {},
+            async (args) => {
+                await this.#cmdEcho(args.args.values);
+            },
+        );
+
+        const cmdTrace = new Command(
+            'trace',
+            'Trace which dictionaries contain the word.',
+            {
+                word: { type: 'string', description: 'The word to trace.' },
+            },
+            {},
+            async (args) => {
+                this.log('Tracing... %o', args);
+            },
+        );
+
+        const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
+
+        const cmdCd = new Command(
+            'cd',
+            'Change the current working directory.',
+            {
+                path: { type: 'string', description: 'The path to change to.' },
+            },
+            {},
+            async (args) => {
+                await this.#cmdCd(args.args.path);
+            },
+        );
+
+        const cmdLs = new Command(
+            'ls',
+            'List the directory contents.',
+            {
+                paths: { type: 'string[]', description: 'The paths to list.' },
+            },
+            {},
+            async (args) => {
+                await this.#cmdLs(args.args);
+            },
+        );
+
+        const cmdExit = new Command('exit', 'Exit the REPL.', {}, {}, () => {
+            this.log('Exiting...');
+            this.close();
+        });
+
+        const cmdHelp = new Command(
+            'help',
+            'Show help.',
+            {
+                command: { type: 'string', description: 'Show Help', required: false },
+            },
+            {},
+            async (args) => this.showHelp(args.args.command),
+        );
+
+        const cmdCls = new Command('cls', 'Clear the screen.', {}, {}, () => this.#output(clearScreen()));
+
+        const cmdInfo = new Command('info', 'Show information about the REPL.', {}, {}, () => {
+            this.log('CSpell REPL');
+            this.log('Type "help" or "?" for help.');
+            this.log('Working Directory: %s', green(this.#cwd.toString(true)));
+            this.log('Dimensions: %o', this.#dimensions);
+        });
+
+        const commands = [cmdCheck, cmdEcho, cmdTrace, cmdPwd, cmdCd, cmdLs, cmdExit, cmdHelp, cmdCls, cmdInfo];
+        app.addCommands(commands);
+        this.#application = app;
+        return app;
+    }
+
+    showHelp(command?: string) {
+        this.log(this.#getApplication().getHelp(command));
     }
 
     #prompt(waitFor?: Promise<unknown>) {
@@ -204,6 +220,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             }
             this.#updatePrompt();
             this.#rl?.prompt();
+            if (this.#rl) {
+                const { cursor, line, terminal } = this.#rl;
+                consoleDebug('cursor pos: %o', { cursorPos: this.#rl.getCursorPos(), dim: this.#dimensions, cursor, line, terminal });
+            }
         };
         p();
     }

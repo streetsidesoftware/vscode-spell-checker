@@ -8,17 +8,37 @@ import { clearDown, clearLine, cursorTo, moveCursor } from './ansiUtils.mjs';
 
 interface WriteStream extends stream.Writable, Omit<TTYWriteStream, keyof Socket> {}
 
-export function emitterToWriteStream(emitter: vscode.EventEmitter<string>): WriteStream {
+const debug = false;
+const consoleDebug = debug ? console.debug : () => {};
+
+export function emitterToWriteStream(emitter: vscode.EventEmitter<string>): WriteableEmitter {
     return new WriteableEmitter(emitter);
 }
+
+const allowedEncodings: Readonly<Record<string, true>> = {
+    ascii: true,
+    utf8: true,
+    utf16le: true,
+    ucs2: true,
+    base64: true,
+    base64url: true,
+    latin1: true,
+    binary: true,
+    hex: true,
+    'utf-8': true, // Alias of 'utf8'
+    'ucs-2': true, // Alias of 'usc2'
+} as const satisfies Readonly<Record<BufferEncoding, true>>;
 
 class WriteableEmitter extends stream.Writable implements WriteStream {
     #dimensions: vscode.TerminalDimensions = { columns: 80, rows: 24 };
     constructor(emitter: vscode.EventEmitter<string>) {
         super({
             write: (chunk, encoding, callback) => {
-                emitter.fire(chunk.toString(encoding));
-                callback();
+                const enc = encoding in allowedEncodings ? encoding : undefined;
+                const str = chunk.toString(enc);
+                consoleDebug('write: %o', mapAnsiSequence(str));
+                emitter.fire(str);
+                setTimeout(callback, 0);
             },
         });
     }
@@ -40,6 +60,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * emitted before continuing to write additional data; otherwise `true`.
      */
     clearLine(dir: Direction, callback?: () => void): boolean {
+        consoleDebug('clearLine: %o', dir);
         return this.write(clearLine(dir), callback);
     }
 
@@ -52,6 +73,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * emitted before continuing to write additional data; otherwise `true`.
      */
     clearScreenDown(callback?: () => void): boolean {
+        consoleDebug('clearScreenDown');
         return this.write(clearDown(), callback);
     }
 
@@ -66,6 +88,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
     cursorTo(x: number, y?: number, callback?: () => void): boolean;
     cursorTo(x: number, callback: () => void): boolean;
     cursorTo(x: number, y?: number | (() => void), callback?: () => void): boolean {
+        consoleDebug('cursorTo: %o, %o', x, y);
         callback = typeof y === 'function' ? y : callback;
         y = typeof y === 'number' ? y : undefined;
         return this.write(cursorTo(x, y), callback);
@@ -80,6 +103,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * emitted before continuing to write additional data; otherwise `true`.
      */
     moveCursor(dx: number, dy: number, callback?: () => void): boolean {
+        consoleDebug('moveCursor: %o, %o', dx, dy);
         return this.write(moveCursor(dx, dy), callback);
     }
 
@@ -111,6 +135,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * This enables simulating the usage of a specific terminal.
      */
     getColorDepth(_env?: object): number {
+        consoleDebug('getColorDepth');
         return 256;
     }
 
@@ -139,6 +164,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
     hasColors(env?: object): boolean;
     hasColors(count: number, env?: object): boolean;
     hasColors(count?: number | object, _env?: object): boolean {
+        consoleDebug('hasColors: %o', count);
         return typeof count !== 'number' || count <= 256;
     }
 
@@ -149,6 +175,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * @since v0.7.7
      */
     getWindowSize(): [number, number] {
+        consoleDebug('getWindowSize: %o', this.#dimensions);
         return [this.#dimensions.columns, this.#dimensions.rows];
     }
     /**
@@ -157,6 +184,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * @since v0.7.7
      */
     get columns(): number {
+        consoleDebug('columns: %o', this.#dimensions.columns);
         return this.#dimensions.columns;
     }
     /**
@@ -165,6 +193,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * @since v0.7.7
      */
     get rows(): number {
+        consoleDebug('rows: %o', this.#dimensions.rows);
         return this.#dimensions.rows;
     }
     /**
@@ -172,6 +201,7 @@ class WriteableEmitter extends stream.Writable implements WriteStream {
      * @since v0.5.8
      */
     get isTTY() {
+        consoleDebug('isTTY');
         return true;
     }
 }
@@ -200,12 +230,24 @@ class ReadableEmitter extends stream.Readable {
     private pushBuffer() {
         if (this.paused) return;
         for (let data = this.buffer.shift(); data !== undefined && !this.paused; data = this.buffer.shift()) {
+            consoleDebug('read: %o', mapAnsiSequence(data));
             this.push(data);
         }
-        process.stdin;
     }
 }
 
 export function emitterToReadStream(emitter: vscode.EventEmitter<string>): stream.Readable {
     return new ReadableEmitter(emitter);
+}
+
+const charMap: Record<string, string> = {
+    '\x1b': '␛',
+    '\n': '↵',
+    '\r': '↤',
+    '\t': '⇥',
+    ' ': '␣',
+};
+
+function mapAnsiSequence(seq: string): string {
+    return [...seq].map((char) => charMap[char] || char).join('');
 }
