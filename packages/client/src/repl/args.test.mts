@@ -112,7 +112,7 @@ describe('Application', () => {
             many: { type: 'string[]', description: 'The rest of the arguments.' },
         },
         {
-            verbose: { type: 'boolean', short: 'v', description: 'Show extra details' },
+            verbose: { type: 'boolean[]', short: 'v', description: 'Show extra details' },
             upper: { type: 'boolean', short: 'u', description: 'Show in uppercase' },
             lower: { type: 'boolean', short: 'l', description: 'Show in lowercase' },
             'pad-left': { type: 'number', description: 'Pad the left side' },
@@ -143,15 +143,17 @@ describe('Application', () => {
     });
 
     test.each`
-        cmd                                  | expected
-        ${'bar hello --loud'}                | ${{ argv: anyArgs, args: { _: ['hello'], message: 'hello' }, options: { loud: true } }}
-        ${'bar  -l none'}                    | ${{ argv: anyArgs, args: { _: ['none'], message: 'none' }, options: { loud: true } }}
-        ${'foo 5 one two -r 2'}              | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 2 } }}
-        ${'foo 5 one two -r 2 -r7'}          | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 7 } }}
-        ${'foo 42 --repeat=7'}               | ${{ argv: anyArgs, args: { _: ['42'], count: '42' }, options: { repeat: 7 } }}
-        ${'complex a b c d -v -v -v -v'}     | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: true } }}
-        ${'complex a b c d'}                 | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: {} }}
-        ${'complex a b c --verbose=false d'} | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: false } }}
+        cmd                                    | expected
+        ${'bar hello --loud'}                  | ${{ argv: anyArgs, args: { _: ['hello'], message: 'hello' }, options: { loud: true } }}
+        ${'bar  -l none'}                      | ${{ argv: anyArgs, args: { _: ['none'], message: 'none' }, options: { loud: true } }}
+        ${'foo 5 one two -r 2'}                | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 2 } }}
+        ${'foo 5 one two -r 2 -r7'}            | ${{ argv: anyArgs, args: { _: ['5', 'one', 'two'], count: '5', names: ['one', 'two'] }, options: { repeat: 7 } }}
+        ${'foo 42 --repeat=7'}                 | ${{ argv: anyArgs, args: { _: ['42'], count: '42' }, options: { repeat: 7 } }}
+        ${'complex a b c d -v -v -v -v'}       | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: [T, T, T, T] } }}
+        ${'complex a b c d'}                   | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: {} }}
+        ${'complex a b c --verbose=false d'}   | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: [false] } }}
+        ${'complex a b c --no-verbose d'}      | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: [false] } }}
+        ${'complex a b c --no-verbose=true d'} | ${{ argv: anyArgs, args: { _: [...'abcd'], one: 'a', two: 'b', many: ['c', 'd'] }, options: { verbose: [false] } }}
     `('Parse Command $cmd', ({ cmd: commandLine, expected }) => {
         const commands = [cmdFoo, cmdBar, cmdComplex, cmdHelp];
         const app = new Application('test', 'Test Application.').addCommands(commands);

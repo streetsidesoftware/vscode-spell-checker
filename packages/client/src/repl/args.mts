@@ -44,7 +44,7 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
         assert(argv[0] == this.name, `Command name mismatch: ${argv[0]} != ${this.name}`);
         const tokens = tokenizer(argv.slice(1));
 
-        console.log('tokens: %o', tokens);
+        // console.log('tokens: %o', tokens);
 
         const positionals: string[] = [];
         const args = { _: positionals } as ArgDefsToArgs<ArgDefs>;
@@ -58,12 +58,22 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
             switch (token.kind) {
                 case 'option':
                     {
-                        const opt = this.#options.find((o) => o.name == token.name);
+                        let invert = false;
+                        let opt = this.#options.find((o) => o.name == token.name);
+                        if (!opt) {
+                            if (token.name.startsWith('no-')) {
+                                opt = this.#options.find((o) => o.name == token.name.slice(3));
+                                invert = true;
+                            }
+                        }
                         if (!opt) {
                             throw new Error(`Unknown option: ${token.name}`);
                         }
                         const name = opt.name;
-                        const value = castValueToType(token.value, opt.baseType);
+                        let value = castValueToType(token.value, opt.baseType);
+                        if (invert && typeof value == 'boolean') {
+                            value = !value;
+                        }
                         shadowOpts[name] = opt.multiple ? append(options[name], value) : value;
                     }
                     break;
@@ -249,7 +259,7 @@ class Option<K extends string = string, V extends OptionTypeNames = OptionTypeNa
         const paramName = this.param || this.name;
         const suffix = this.variadic ? '...' : '';
 
-        const paramWithSuffix = this.type == 'boolean' ? '' : `${paramName}${suffix}`;
+        const paramWithSuffix = ['boolean', 'boolean[]'].includes(this.type) ? '' : `${paramName}${suffix}`;
         const param = paramWithSuffix && (this.required ? ` <${paramWithSuffix}>` : ` [${paramWithSuffix}]`);
 
         return `${short}--${this.name}${param}`;
