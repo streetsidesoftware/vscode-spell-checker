@@ -16,9 +16,9 @@ interface CmdLsOptions {
 
 const identity = <T,>(x: T) => x;
 
-export async function cmdLs(_paths: string[] | undefined, options: CmdLsOptions) {
+export async function cmdLs(paths: string[] | undefined, options: CmdLsOptions) {
     const { log, dirSuffix = '/' } = options;
-    for await (const entry of ls(_paths, options.cwd, options.cancelationToken)) {
+    for await (const entry of ls(paths, options.cwd, options.cancelationToken)) {
         const [name, stat] = entry;
         const isError = stat instanceof Error;
         if (isError) {

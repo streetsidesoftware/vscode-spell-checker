@@ -10,7 +10,7 @@ import { cmdLs } from './cmdLs.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
 import type { DirEntry } from './fsUtils.mjs';
-import { currentDirectory, globSearch, readDir, toRelativeWorkspacePath } from './fsUtils.mjs';
+import { currentDirectory, globSearch, readDir, resolvePath, toRelativeWorkspacePath } from './fsUtils.mjs';
 import { globsToGlob } from './globUtils.mjs';
 import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.js';
 
@@ -19,8 +19,6 @@ export function createTerminal() {
     const terminal = vscode.window.createTerminal({ name: 'Spell Checker REPL', pty });
     terminal.show();
 }
-
-const commands = ['check', 'cd', 'ls', 'pwd', 'exit', 'help', 'trace', 'echo', 'cls', 'info'].sort();
 
 class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     readonly #emitterInput = new vscode.EventEmitter<string>();
@@ -241,7 +239,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.log((globs || []).join(' '));
     }
 
+    getCommandNames() {
+        return this.#getApplication().getCommandNames().sort();
+    }
+
     completer = async (line: string): Promise<[string[], string]> => {
+        const commands = this.getCommandNames();
         if (!line.trim()) return [commands, ''];
 
         const cmdLine = commandLineBuilder(line);
@@ -279,7 +282,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             case 'ls':
                 return this.#completeWithPath(current, false);
             case 'help':
-                return this.#completeWithOptions(current, commands);
+                return this.#completeWithOptions(current, this.getCommandNames());
         }
         return [];
     };
@@ -294,11 +297,15 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     };
 
     #completeWithPath = async (current: string, directoriesOnly: boolean) => {
-        const files = await this.readDirEntryNames(current, directoriesOnly ? vscode.FileType.Directory : undefined);
-        return this.#completeWithOptions(
-            current,
-            files.map((f) => (f.startsWith('-') ? `./${f}` : f)),
-        );
+        try {
+            const files = await this.readDirEntryNames(current, directoriesOnly ? vscode.FileType.Directory : undefined);
+            return this.#completeWithOptions(
+                current,
+                files.map((f) => (f.startsWith('-') ? `./${f}` : f)),
+            );
+        } catch {
+            return [];
+        }
     };
 
     #completeWithOptions = (current: string, options: string[]): string[] => {
@@ -352,12 +359,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             return this.#cmdPwd();
         }
         try {
-            const newDir = vscode.Uri.joinPath(this.#cwd, path);
-            const s = await vscode.workspace.fs.stat(newDir);
+            const dirUri = resolvePath(path, this.#cwd);
+            const s = await vscode.workspace.fs.stat(dirUri);
             if (s.type & vscode.FileType.Directory) {
-                this.#cwd = newDir;
+                this.#cwd = dirUri;
             } else {
-                throw vscode.FileSystemError.FileNotADirectory(newDir);
+                throw vscode.FileSystemError.FileNotADirectory(dirUri);
             }
         } catch (e) {
             if (e instanceof vscode.FileSystemError) {

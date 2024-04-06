@@ -1,3 +1,5 @@
+import { homedir } from 'node:os';
+
 import type { GlobPattern } from 'vscode';
 import { RelativePattern, Uri } from 'vscode';
 
@@ -22,6 +24,10 @@ export function globsToGlob(globs: string[] | string | undefined): string | unde
  * @returns [normalizedPattern, normalizedBaseUri]
  */
 export function normalizePatternBase(pattern: string, base: Uri): [string, Uri] {
+    if (pattern === '~' || pattern.startsWith('~/')) {
+        base = Uri.file(homedir());
+        pattern = pattern.slice(2);
+    }
     if (!containsGlobPattern(pattern)) return ['', Uri.joinPath(base, pattern)];
 
     const parts = pattern.split('/');

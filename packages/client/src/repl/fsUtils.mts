@@ -1,3 +1,4 @@
+import { homedir } from 'node:os';
 import { relative as pathRelative } from 'node:path/posix';
 
 import type { CancellationToken, FileStat, FileType } from 'vscode';
@@ -65,9 +66,16 @@ export async function globSearch(
     return result;
 }
 
+export function resolvePath(relPath: string | Uri | undefined, cwd?: Uri): Uri {
+    if (typeof relPath === 'string' && relPath.startsWith('~')) {
+        cwd = Uri.file(homedir());
+        relPath = relPath.slice(2);
+    }
+    return typeof relPath === 'string' ? Uri.joinPath(cwd || currentDirectory(), relPath) : relPath || currentDirectory();
+}
+
 export async function readDir(relUri?: string | Uri | undefined, cwd?: Uri): Promise<DirEntry[]> {
-    cwd ??= currentDirectory();
-    const uri = typeof relUri === 'string' ? Uri.joinPath(cwd, relUri) : relUri || cwd;
+    const uri = resolvePath(relUri, cwd);
     return await vscode.workspace.fs.readDirectory(uri);
 }
 

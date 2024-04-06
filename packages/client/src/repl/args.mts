@@ -215,6 +215,10 @@ export class Application {
         }
         await cmd.exec(argv);
     }
+
+    getCommandNames() {
+        return [...this.#commands.keys()];
+    }
 }
 
 function commandHelpLine(cmd: Command) {
