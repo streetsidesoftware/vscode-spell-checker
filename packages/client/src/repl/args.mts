@@ -123,7 +123,7 @@ export class Application {
 
     constructor(
         public name: string,
-        public description: string,
+        public description: string = '',
         public usage: string = '',
     ) {}
 
@@ -187,9 +187,12 @@ export class Application {
 
     #formatApplicationHeader(width: number) {
         const lines = [];
-        lines.push(this.name, '', ...splitIntoLines(this.description, width), '');
+        lines.push(this.name, '');
+        if (this.description) {
+            lines.push(...splitIntoLines(this.description, width), '');
+        }
         if (this.usage) {
-            lines.push('', 'Usage:', '', ...splitIntoLines(this.usage, width), '');
+            lines.push('Usage:', ...splitIntoLines(this.usage, width), '');
         }
         return lines.join('\n');
     }

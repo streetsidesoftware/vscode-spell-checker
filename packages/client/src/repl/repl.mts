@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
 import { Application, Command, defArg } from './args.mjs';
 import { cmdLs } from './cmdLs.mjs';
+import { traceWord } from './cmdTrace.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
 import type { DirEntry } from './fsUtils.mjs';
@@ -100,7 +101,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
     #getApplication(): Application {
         if (this.#application) return this.#application;
-        const app = new Application('repl', 'CSpell REPL', 'Usage: ????');
+        const app = new Application('CSpell REPL');
         const cmdCheck = new Command(
             'check',
             'Spell check the files matching the globs.',
@@ -120,9 +121,9 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cmdTrace = new Command(
             'trace',
             'Trace which dictionaries contain the word.',
-            { ...defArg('word', 'string', 'The word to trace.') },
+            { ...defArg('word', 'string', 'The word to trace.', true) },
             {},
-            (args) => this.log('Tracing... %o', args),
+            (args) => this.#cmdTrace(args.args),
         );
 
         const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
@@ -143,8 +144,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             (args) => this.#cmdLs(args.args),
         );
 
-        const cmdEnv = new Command('env', 'Show the environment.', { ...defArg('filter', 'string[]', 'Optional filter.') }, {}, (args) =>
-            this.#cmdEnv(args.args.filter),
+        const cmdEnv = new Command(
+            'env',
+            'Show environment variables.',
+            { ...defArg('filter', 'string[]', 'Optional filter.') },
+            {},
+            (args) => this.#cmdEnv(args.args.filter),
         );
 
         const cmdExit = new Command('exit', 'Exit the REPL.', {}, {}, () => {
@@ -329,6 +334,17 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         for (const [key, value] of entries) {
             this.log(`${green(key)}${yellow('=')}${value}`);
         }
+    }
+
+    async #cmdTrace(args: { word?: string | undefined }) {
+        consoleDebug('Repl.cmdTrace %o', args);
+        const { word } = args;
+        if (!word) {
+            this.log('No word specified.');
+            return;
+        }
+        const result = await traceWord(word, vscode.window.activeTextEditor?.document.uri || this.#cwd, this.#dimensions?.columns || 80);
+        this.log('%s', result);
     }
 
     async #cmdLs(args: { paths?: string[] | undefined }) {
