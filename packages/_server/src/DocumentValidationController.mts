@@ -7,6 +7,7 @@ import type { TextDocumentInfoWithText, TextDocumentRef } from './api.js';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
 import type { DocumentSettings } from './config/documentSettings.mjs';
 import { defaultCheckLimit } from './constants.mjs';
+import { breakTextAtLimit } from './utils/breakTextAtLimit.mjs';
 
 interface DocValEntry {
     uri: string;
@@ -88,7 +89,8 @@ export async function createDocumentValidator(
 ): Promise<DocumentValidator> {
     const settings = await pSettings;
     const limit = (settings.checkLimit || defaultCheckLimit) * 1024;
-    const content = ('getText' in textDocument ? textDocument.getText() : textDocument.text).slice(0, limit);
+    const fullContent = 'getText' in textDocument ? textDocument.getText() : textDocument.text;
+    const content = breakTextAtLimit(fullContent, limit);
     const { uri, languageId, version } = textDocument;
     const docInfo = { uri, content, languageId, version };
     const doc = createTextDocument(docInfo);
