@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.3...code-spell-checker-v4.0.0-alpha.4) (2024-04-08)
+
+
+### Features
+
+* Enable support for [Live Share](https://code.visualstudio.com/learn/collaboration/live-share) by adding `vsls` to the list of supported schemes. ([76e1583](https://github.com/streetsidesoftware/vscode-spell-checker/commit/76e1583e8e6f2c7cdc0e0211074da565bf3f0e52))
+
+
+### Updates and Bug Fixes
+
+* Enable creating config files on remote servers ([#3102](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3102)) ([715ad29](https://github.com/streetsidesoftware/vscode-spell-checker/commit/715ad296f478ae8d94b6e9b0de29035445413257))
+* Fix word break issue with large documents ([#3156](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3156)) ([6ca6d11](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6ca6d11efa18844143f606afaf1cf2ca7028c156))
+
 ## [4.0.0-alpha.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.2...code-spell-checker-v4.0.0-alpha.3) (2024-03-06)
 
 
