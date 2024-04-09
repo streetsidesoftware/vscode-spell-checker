@@ -28,7 +28,7 @@
     "@types/decompress": "^4.2.7",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^18.19.30",
+    "@types/node": "^18.19.31",
     "chai": "^5.1.0",
     "cross-env": "^7.0.3",
     "kefir": "^3.8.8"
