@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@cspell/cspell-types": "^8.7.0",
-    "cspell-lib": "^8.6.1"
+    "cspell-lib": "^8.7.0"
   },
   "engines": {
     "node": ">18.0.0"

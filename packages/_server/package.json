@@ -42,7 +42,7 @@
     "cspell-config-lib": "^8.6.1",
     "cspell-gitignore": "^8.6.1",
     "cspell-glob": "^8.6.1",
-    "cspell-lib": "^8.6.1",
+    "cspell-lib": "^8.7.0",
     "gensequence": "^7.0.0",
     "json-rpc-api": "file:../json-rpc-api",
     "rxjs": "^7.8.1",
