@@ -343,7 +343,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             this.log('No word specified.');
             return;
         }
-        const result = await traceWord(word, vscode.window.activeTextEditor?.document.uri || this.#cwd, this.#dimensions?.columns || 80);
+        const result = await traceWord(word, this.#cwd, this.#dimensions?.columns || 80);
         this.log('%s', result);
     }
 

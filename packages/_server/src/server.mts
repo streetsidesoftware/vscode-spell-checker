@@ -51,7 +51,7 @@ import { createProgressNotifier } from './progressNotifier.mjs';
 import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
 import { createOnSuggestionsHandler } from './suggestionsServer.mjs';
-import { traceWord } from './trace.js';
+import { handleTraceRequest } from './trace.js';
 import { defaultIsTextLikelyMinifiedOptions, isTextLikelyMinified } from './utils/analysis.mjs';
 import { catchPromise } from './utils/catchPromise.mjs';
 import { debounce as simpleDebounce } from './utils/debounce.mjs';
@@ -407,11 +407,8 @@ export function run(): void {
     }
 
     async function _handleGetWordTrace(req: Api.TraceWordRequest): Promise<Api.TraceWordResult> {
-        const { word, uri } = req;
-        log(`_handleGetWordTrace "${word}"`, uri);
-        const doc = documents.get(uri);
-        if (!doc) return { word, errors: 'Document Not Found.' };
-        return traceWord(docValidationController, doc, word);
+        log(`_handleGetWordTrace "${req.word}"`, req.uri);
+        return handleTraceRequest(docValidationController, req, (uri) => documents.get(uri));
     }
 
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
