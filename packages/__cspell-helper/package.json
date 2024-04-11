@@ -22,7 +22,7 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^8.6.1",
+    "@cspell/cspell-types": "^8.7.0",
     "cspell-lib": "^8.6.1"
   },
   "engines": {
