@@ -55,7 +55,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@cspell/cspell-types": "^8.6.1",
+    "@cspell/cspell-types": "^8.7.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/settings-webview": "file:../_settingsViewer",
     "code-spell-checker-server": "file:../_server",
