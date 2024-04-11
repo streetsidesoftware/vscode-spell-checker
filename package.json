@@ -3495,15 +3495,15 @@
     "rollup-plugin-dts": "^6.1.0",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "vite": "^5.2.8",
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.6.1",
+    "@cspell/cspell-bundled-dicts": "^8.7.0",
     "@cspell/cspell-types": "^8.7.0",
     "@types/react": "^17.0.80",
-    "cspell": "^8.6.1",
+    "cspell": "^8.7.0",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
