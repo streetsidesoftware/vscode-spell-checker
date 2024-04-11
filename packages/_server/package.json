@@ -40,7 +40,7 @@
     "@cspell/cspell-types": "^8.7.0",
     "@internal/common-utils": "file:../__utils",
     "cspell-config-lib": "^8.6.1",
-    "cspell-gitignore": "^8.6.1",
+    "cspell-gitignore": "^8.7.0",
     "cspell-glob": "^8.6.1",
     "cspell-lib": "^8.6.1",
     "gensequence": "^7.0.0",
