@@ -51,7 +51,7 @@ jobs:
       - run: zip code-spell-checker build/*
 
       - name: Upload Assets
-        uses: AButler/upload-release-assets@v2.0.2
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: 'build/code-spell*.vsix'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
