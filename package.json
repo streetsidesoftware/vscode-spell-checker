@@ -3469,7 +3469,7 @@
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
-    "@vitest/coverage-istanbul": "^1.4.0",
+    "@vitest/coverage-istanbul": "^1.5.0",
     "@vscode/vsce": "^2.24.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
