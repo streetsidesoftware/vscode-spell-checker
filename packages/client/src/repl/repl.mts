@@ -9,6 +9,7 @@ import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
 import { Application, Command, defArg, defOpt } from './args.mjs';
 import { cmdLs } from './cmdLs.mjs';
 import { traceWord } from './cmdTrace.mjs';
+import { cmdSuggestions } from './cmdSuggestions.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
 import type { DirEntry } from './fsUtils.mjs';
@@ -135,6 +136,14 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             (args) => this.#cmdTrace(args.args, args.options),
         );
 
+        const cmdSuggest = new Command(
+            'suggestions',
+            'Generate suggestions for a word.',
+            { ...defArg('word', 'string', 'The word to make suggestions.', true) },
+            { ...defOpt('max', 'number', 'The maximum number of suggestions to generate.', '') },
+            (args) => this.#cmdSuggestions(args.args.word, args.options),
+        );
+
         const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
 
         const cmdCd = new Command(
@@ -185,7 +194,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             this.log('Dimensions: %o', this.#dimensions);
         });
 
-        const commands = [cmdCheck, cmdEcho, cmdTrace, cmdPwd, cmdCd, cmdLs, cmdEnv, cmdExit, cmdHelp, cmdCls, cmdInfo];
+        const commands = [cmdCheck, cmdEcho, cmdTrace, cmdPwd, cmdCd, cmdLs, cmdEnv, cmdExit, cmdHelp, cmdCls, cmdInfo, cmdSuggest];
         app.addCommands(commands);
         this.#application = app;
         return app;
@@ -398,6 +407,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             }
             this.log('Error: %o', e);
         }
+    }
+
+    async #cmdSuggestions(word: string | undefined, _options: { max?: number | undefined }) {
+        if (!word) return;
+        const result = await cmdSuggestions(word, this.#cwd);
+        this.log('%s', result);
     }
 
     close = () => {
