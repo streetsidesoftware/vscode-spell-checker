@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import readline from 'node:readline/promises';
 import { formatWithOptions } from 'node:util';
 
+import camelize from 'camelize';
 import * as vscode from 'vscode';
 
 import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
@@ -124,7 +125,13 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             'trace',
             'Trace which dictionaries contain the word.',
             { ...defArg('word', 'string', 'The word to trace.', true) },
-            { ...defOpt('all', 'boolean', 'Show all dictionaries.', '') },
+            {
+                ...defOpt('all', 'boolean', 'Show all dictionaries.', ''),
+                ...defOpt('only-found', 'boolean', 'Show only found dictionaries.', 'f'),
+                ...defOpt('only-enabled', 'boolean', 'Show only enabled dictionaries.', ''),
+                ...defOpt('filetype', 'string', 'The file type to use. Example: `python`', 't'),
+                ...defOpt('allow-compound-words', 'boolean', 'Allow compound words.', ''),
+            },
             (args) => this.#cmdTrace(args.args, args.options),
         );
 
@@ -345,7 +352,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             this.log('No word specified.');
             return;
         }
-        const result = await traceWord(word, this.#cwd, { ...options, width: this.#dimensions?.columns || defaultWidth });
+        const result = await traceWord(word, this.#cwd, { ...camelize(options), width: this.#dimensions?.columns || defaultWidth });
         this.log('%s', result);
     }
 

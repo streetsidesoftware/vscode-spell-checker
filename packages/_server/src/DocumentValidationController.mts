@@ -33,13 +33,21 @@ export class DocumentValidationController {
         return this.docValMap.get(doc.uri);
     }
 
-    getDocumentValidator(docInfo: TextDocumentInfoWithText | TextDocument) {
+    delete(doc: TextDocumentRef) {
+        this.docValMap.delete(doc.uri);
+    }
+
+    getDocumentValidator(docInfo: TextDocumentInfoWithText | TextDocument, cache = true) {
         const uri = docInfo.uri;
         const docValEntry = this.docValMap.get(uri);
-        if (docValEntry) return docValEntry.docVal;
+        if (docValEntry) {
+            return docValEntry.docVal;
+        }
 
         const entry = this.createDocValEntry(docInfo);
-        this.docValMap.set(uri, entry);
+        if (cache) {
+            this.docValMap.set(uri, entry);
+        }
         return entry.docVal;
     }
 
@@ -61,7 +69,7 @@ export class DocumentValidationController {
     }
 
     private handleOnDidClose(e: TextDocumentChangeEvent<TextDocument>) {
-        this.docValMap.delete(e.document.uri);
+        this.delete(e.document);
     }
 
     private handleOnDidChangeContent(e: TextDocumentChangeEvent<TextDocument>) {
@@ -69,7 +77,10 @@ export class DocumentValidationController {
     }
 
     private async _handleOnDidChangeContent(e: TextDocumentChangeEvent<TextDocument>) {
-        const { document } = e;
+        await this.updateDocument(e.document);
+    }
+
+    async updateDocument(document: TextDocument) {
         const entry = this.docValMap.get(document.uri);
         if (!entry) return;
         const { settings, docVal } = entry;
@@ -80,6 +91,7 @@ export class DocumentValidationController {
             return;
         }
         await _docVal.updateDocumentText(document.getText());
+        return _docVal;
     }
 }
 

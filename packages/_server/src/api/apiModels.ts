@@ -234,6 +234,10 @@ export interface TraceWordRequest {
      * @default false
      */
     searchAllDictionaries?: boolean | undefined;
+    /**
+     * Search for compound words.
+     */
+    allowCompoundWords?: boolean | undefined;
 }
 
 export interface Trace {

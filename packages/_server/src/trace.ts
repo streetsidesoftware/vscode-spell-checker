@@ -17,7 +17,7 @@ export async function traceWord(
     word: string,
     options: TraceWordOptions | undefined,
 ): Promise<Api.TraceWordResult> {
-    const docVal = await docValidationController.getDocumentValidator(doc);
+    const docVal = await docValidationController.getDocumentValidator(doc, false);
     const { searchAllDictionaries, ...traceOptions } = options || {};
     if (!searchAllDictionaries && !Object.keys(traceOptions).length) {
         return simpleDocTrace(docVal, word);
@@ -82,7 +82,9 @@ export async function handleTraceRequest(
     if (!doc) {
         try {
             const s = await stat(uri);
-            doc = s.isDirectory() ? TextDocument.create(uri, 'plaintext', 0, '') : await readTextDocument(uri);
+            doc = s.isDirectory()
+                ? TextDocument.create(uri, req.languageId || 'plaintext', 0, '')
+                : await readTextDocument(uri, req.languageId);
         } catch {
             doc = undefined;
         }

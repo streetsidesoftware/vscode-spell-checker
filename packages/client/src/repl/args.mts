@@ -156,7 +156,7 @@ export class Application {
     #formatHelp(width: number): string {
         const lines = [];
         lines.push(this.#formatApplicationHeader(width));
-        const commands = [...this.#commands.values()];
+        const commands = [...this.#commands.values()].sort((a, b) => a.name.localeCompare(b.name));
         const cmdPrefix = '  ';
         const cols = commands
             .map((cmd) => commandHelpLine(cmd))
