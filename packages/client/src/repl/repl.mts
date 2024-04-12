@@ -5,7 +5,7 @@ import { formatWithOptions } from 'node:util';
 import * as vscode from 'vscode';
 
 import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
-import { Application, Command, defArg } from './args.mjs';
+import { Application, Command, defArg, defOpt } from './args.mjs';
 import { cmdLs } from './cmdLs.mjs';
 import { traceWord } from './cmdTrace.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
@@ -14,6 +14,8 @@ import type { DirEntry } from './fsUtils.mjs';
 import { currentDirectory, globSearch, readDir, resolvePath, toRelativeWorkspacePath } from './fsUtils.mjs';
 import { globsToGlob } from './globUtils.mjs';
 import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.js';
+
+const defaultWidth = 80;
 
 export function createTerminal() {
     const pty = new Repl();
@@ -93,7 +95,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             }
 
             const argv = parseCommandLineIntoArgs(line);
-            return this.#getApplication().exec(argv);
+            return this.#getApplication().exec(argv, this.log);
         };
 
         this.#prompt(parseAsync());
@@ -122,8 +124,8 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             'trace',
             'Trace which dictionaries contain the word.',
             { ...defArg('word', 'string', 'The word to trace.', true) },
-            {},
-            (args) => this.#cmdTrace(args.args),
+            { ...defOpt('all', 'boolean', 'Show all dictionaries.', '') },
+            (args) => this.#cmdTrace(args.args, args.options),
         );
 
         const cmdPwd = new Command('pwd', 'Print the current working directory.', {}, {}, () => this.#cmdPwd());
@@ -336,14 +338,14 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         }
     }
 
-    async #cmdTrace(args: { word?: string | undefined }) {
+    async #cmdTrace(args: { word?: string | undefined }, options: { all?: boolean | undefined }) {
         consoleDebug('Repl.cmdTrace %o', args);
         const { word } = args;
         if (!word) {
             this.log('No word specified.');
             return;
         }
-        const result = await traceWord(word, this.#cwd, this.#dimensions?.columns || 80);
+        const result = await traceWord(word, this.#cwd, { ...options, width: this.#dimensions?.columns || defaultWidth });
         this.log('%s', result);
     }
 

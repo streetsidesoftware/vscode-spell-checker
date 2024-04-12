@@ -27,6 +27,8 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
         for (const [key, def] of Object.entries(options)) {
             this.#options.push(new Option(key, def));
         }
+        const found = this.#options.find((o) => o.name == 'help');
+        !found && this.#options.push(new Option('help', { type: 'boolean', description: 'Show help', short: 'h' }));
         this.#handler = handler;
     }
 
@@ -210,11 +212,16 @@ export class Application {
         return cmd.parse(args);
     }
 
-    async exec(argv: string[]) {
+    async exec(argv: string[], log: typeof console.log) {
         const cmdName = argv[0];
         const cmd = this.getCommand(cmdName);
         if (!cmd) {
             throw new Error(`Unknown command: ${cmdName}`);
+        }
+        const parsedArgs = cmd.parse(argv);
+        if (parsedArgs.options.help) {
+            log(this.#formatCommandHelp(cmd, this.displayWidth));
+            return;
         }
         await cmd.exec(argv);
     }
@@ -414,6 +421,25 @@ export function defArg<N extends string, T extends ArgTypeNames>(
     required?: boolean,
 ): ArgInlineDef<N, T> {
     return { [name]: { type, description, required } } as ArgInlineDef<N, T>;
+}
+
+type OptInlineDef<N extends string, T extends OptionTypeNames> = { [k in N]: OptionDef<T> };
+
+/**
+ * Define an option
+ * @param name - The name of the argument
+ * @param type - The type of the argument `string` | `string[]`
+ * @param description - The description of the argument
+ * @param required - Indicates if the argument is required or optional
+ * @returns An object that can be used to define arguments inline
+ */
+export function defOpt<N extends string, T extends OptionTypeNames>(
+    name: N,
+    type: T,
+    description: string,
+    short: string | undefined,
+): OptInlineDef<N, T> {
+    return { [name]: { type, description, short: short ? short : undefined } } as OptInlineDef<N, T>;
 }
 
 type ArgDefsToArgs<T extends ArgsDefinitions> = {

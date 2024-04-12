@@ -215,18 +215,63 @@ export type VSCodeSettingsCspell = {
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
 
 export interface TraceWordRequest {
+    /**
+     * URL to a document or directory.
+     * The configuration is determined by the languageId and configuration files relative to the uri.
+     */
     uri: DocumentUri;
+    /**
+     * The word to look up in the dictionaries.
+     */
     word: string;
+    /**
+     * The languageId to use if the uri is a directory.
+     * @default document languageId or 'plaintext'
+     */
+    languageId?: string | undefined;
+    /**
+     * Search all known dictionaries for the word.
+     * @default false
+     */
+    searchAllDictionaries?: boolean | undefined;
 }
 
 export interface Trace {
+    /**
+     * The word searched for in the dictionary.
+     */
     word: string;
+    /**
+     * true if found in the dictionary.
+     */
     found: boolean;
+    /**
+     * The actual word found in the dictionary.
+     */
     foundWord: string | undefined;
+    /**
+     * true if the word is forbidden.
+     */
     forbidden: boolean;
+    /**
+     * true if it is a no-suggest word.
+     */
     noSuggest: boolean;
+    /**
+     * name of the dictionary
+     */
     dictName: string;
+    /**
+     * Path or URL to the dictionary.
+     */
     dictSource: string;
+    /**
+     * true if the dictionary is enabled for the languageId (file type).
+     */
+    dictEnabled: boolean;
+    /**
+     * The errors found while looking up the word.
+     */
     errors: string | undefined;
 }
 

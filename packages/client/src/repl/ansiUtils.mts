@@ -1,7 +1,14 @@
 import type { Direction } from 'node:tty';
 
 import ansiEscapes from 'ansi-escapes';
-import styles from 'ansi-styles';
+import type { ColorName, ModifierName } from 'ansi-styles';
+import styles, { colorNames, modifierNames } from 'ansi-styles';
+
+const colorFns = [...colorNames, ...modifierNames].map((name) => [name, (text: string) => styles[name].open + text + styles[name].close]);
+
+type ColorMethods = Record<ColorName | ModifierName, (t: string) => string>;
+
+export const colors: ColorMethods = Object.fromEntries(colorFns) as ColorMethods;
 
 export function green(text: string): string {
     return styles.green.open + text + styles.green.close;

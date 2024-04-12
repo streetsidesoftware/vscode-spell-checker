@@ -60,6 +60,7 @@
     "@internal/settings-webview": "file:../_settingsViewer",
     "ansi-escapes": "^6.2.0",
     "ansi-styles": "^6.2.1",
+    "as-table": "^1.0.55",
     "code-spell-checker-server": "file:../_server",
     "comment-json": "^4.2.3",
     "fast-deep-equal": "^3.1.3",
