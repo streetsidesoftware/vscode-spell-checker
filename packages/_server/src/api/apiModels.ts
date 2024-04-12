@@ -2,6 +2,7 @@ import type { PublishDiagnosticsParams } from 'vscode-languageserver';
 
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
+import type { CheckDocumentIssue } from './models/Diagnostic.mjs';
 import type { Suggestion } from './models/Suggestion.mjs';
 import type { ExtensionId } from './models/types.mjs';
 
@@ -13,6 +14,7 @@ export type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from '../config/configTargets.mjs';
+export type { CheckDocumentIssue } from './models/Diagnostic.mjs';
 export type { Position, Range } from 'vscode-languageserver-types';
 
 export interface BlockedFileReason {
@@ -295,4 +297,18 @@ export interface TraceWordResult {
     /** The split word results */
     splits?: readonly TraceWordFound[];
     errors?: string | undefined;
+}
+
+export interface CheckDocumentOptions {
+    /**
+     * Force a check even if the document would normally be excluded.
+     */
+    forceCheck?: boolean;
+}
+
+export interface CheckDocumentResult {
+    uri: DocumentUri;
+    errors?: string;
+    skipped?: boolean;
+    issues?: CheckDocumentIssue[];
 }

@@ -1,5 +1,5 @@
 import type { IssueType } from '@cspell/cspell-types';
-import type { Diagnostic } from 'vscode-languageserver-types';
+import type { Diagnostic, Range } from 'vscode-languageserver-types';
 
 import type { Suggestion } from './Suggestion.mjs';
 import type { DiagnosticSource } from './types.mjs';
@@ -18,4 +18,9 @@ export interface SpellCheckerDiagnosticData {
 export interface SpellingDiagnostic extends Diagnostic {
     source: DiagnosticSource;
     data: SpellCheckerDiagnosticData;
+}
+
+export interface CheckDocumentIssue extends SpellCheckerDiagnosticData {
+    text: string;
+    range: Range;
 }

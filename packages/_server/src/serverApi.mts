@@ -14,6 +14,7 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
             splitTextIntoWords: true,
             spellingSuggestions: true,
             traceWord: true,
+            checkDocument: true,
             ...handlers.serverRequests,
         },
         serverNotifications: {

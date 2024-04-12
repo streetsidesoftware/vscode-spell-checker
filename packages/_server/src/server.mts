@@ -47,6 +47,7 @@ import { isScmUri } from './config/docUriHelper.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
+import { handleCheckDocumentRequest } from './handleCheckDocumentRequest.js';
 import { createProgressNotifier } from './progressNotifier.mjs';
 import type { PartialServerSideHandlers } from './serverApi.mjs';
 import { createServerApi } from './serverApi.mjs';
@@ -114,6 +115,7 @@ export function run(): void {
             getConfigurationForDocument: handleGetConfigurationForDocument,
             getSpellCheckingOffsets: simpleDebounce(_handleGetSpellCheckingOffsets, 100, ({ uri }) => uri),
             traceWord: simpleDebounce(_handleGetWordTrace, 100, ({ uri, word }) => uri + '|' + word),
+            checkDocument: simpleDebounce(_handleCheckDocument, 100, ({ uri }) => uri),
             isSpellCheckEnabled: handleIsSpellCheckEnabled,
             splitTextIntoWords: handleSplitTextIntoWords,
             spellingSuggestions: createOnSuggestionsHandler(documents, {
@@ -411,6 +413,10 @@ export function run(): void {
         return handleTraceRequest(docValidationController, req, (uri) => documents.get(uri));
     }
 
+    async function _handleCheckDocument(doc: Api.TextDocumentInfo, options?: Api.CheckDocumentOptions): Promise<Api.CheckDocumentResult> {
+        return handleCheckDocumentRequest(docValidationController, doc, options || {}, (uri) => documents.get(uri), shouldValidateDocument);
+    }
+
     async function getExcludedBy(uri: string): Promise<Api.ExcludeRef[]> {
         function globToString(g: Glob): string {
             if (typeof g === 'string') return g;
@@ -451,17 +457,19 @@ export function run(): void {
         catchPromise(connection.sendDiagnostics(diagsForVSCode), 'sendDiagnostics');
     }
 
-    async function shouldValidateDocument(textDocument: TextDocument, settings: CSpellUserSettings): Promise<boolean> {
+    type ShouldValidateDocument = Pick<TextDocument, 'uri'> & Partial<TextDocument>;
+
+    async function shouldValidateDocument(textDocument: ShouldValidateDocument, settings: CSpellUserSettings): Promise<boolean> {
         const { uri, languageId } = textDocument;
         return (
             !!settings.enabled &&
-            isLanguageEnabled(languageId, settings) &&
+            (!languageId || isLanguageEnabled(languageId, settings)) &&
             !(await isUriExcluded(uri)) &&
             !isBlocked(textDocument, settings)
         );
     }
 
-    function isBlocked(textDocument: TextDocument, settings: CSpellUserSettings): boolean {
+    function isBlocked(textDocument: ShouldValidateDocument, settings: CSpellUserSettings): boolean {
         const { uri } = textDocument;
         const {
             blockCheckingWhenLineLengthGreaterThan = defaultIsTextLikelyMinifiedOptions.blockCheckingWhenLineLengthGreaterThan,
@@ -472,11 +480,13 @@ export function run(): void {
             log(`File is blocked ${blockedFiles.get(uri)?.message}`, uri);
             return true;
         }
-        const isMiniReason = isTextLikelyMinified(textDocument.getText(), {
-            blockCheckingWhenAverageChunkSizeGreaterThan,
-            blockCheckingWhenLineLengthGreaterThan,
-            blockCheckingWhenTextChunkSizeGreaterThan,
-        });
+        const isMiniReason =
+            textDocument.getText &&
+            isTextLikelyMinified(textDocument.getText(), {
+                blockCheckingWhenAverageChunkSizeGreaterThan,
+                blockCheckingWhenLineLengthGreaterThan,
+                blockCheckingWhenTextChunkSizeGreaterThan,
+            });
 
         if (isMiniReason) {
             blockedFiles.set(uri, isMiniReason);

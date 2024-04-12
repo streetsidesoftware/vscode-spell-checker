@@ -5,11 +5,12 @@ import { formatWithOptions } from 'node:util';
 import camelize from 'camelize';
 import * as vscode from 'vscode';
 
-import { clearScreen, crlf, green, red, yellow } from './ansiUtils.mjs';
+import { clearScreen, crlf, eraseLine, green, red, yellow } from './ansiUtils.mjs';
 import { Application, Command, defArg, defOpt } from './args.mjs';
+import { cmdCheckDocuments } from './cmdCheck.mjs';
 import { cmdLs } from './cmdLs.mjs';
-import { traceWord } from './cmdTrace.mjs';
 import { cmdSuggestions } from './cmdSuggestions.mjs';
+import { traceWord } from './cmdTrace.mjs';
 import { consoleDebug } from './consoleDebug.mjs';
 import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStream.mjs';
 import type { DirEntry } from './fsUtils.mjs';
@@ -242,19 +243,25 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
     async #cmdCheck(globs: string[] | undefined) {
         consoleDebug('Repl.cmdCheck');
+        const { log, error } = this;
+        const output = this.#output;
+
         let pattern = globsToGlob(globs);
         if (!pattern) {
             pattern = await this.#rl?.question('File glob pattern: ', this.#abortable);
         }
         if (!pattern) return;
 
-        this.log('Checking...');
+        output(eraseLine() + 'Gathering Files...');
 
         const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as { [key: string]: boolean };
         const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k] === true);
         const excludePattern = globsToGlob(searchExclude);
         const files = await globSearch(pattern, currentDirectory(), excludePattern, undefined, this.#getCancelationTokenForAction());
-        files.forEach((f) => this.#output(`File: ${colorText(vscode.workspace.asRelativePath(f, true))}\r\n`));
+
+        log(eraseLine() + 'Checking...');
+
+        await cmdCheckDocuments(files, { log, error, output, cancelationToken: this.#getCancelationTokenForAction(), width: this.width });
     }
 
     async #cmdEcho(globs: string[] | undefined) {
@@ -361,8 +368,12 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
             this.log('No word specified.');
             return;
         }
-        const result = await traceWord(word, this.#cwd, { ...camelize(options), width: this.#dimensions?.columns || defaultWidth });
+        const result = await traceWord(word, this.#cwd, { ...camelize(options), width: this.width });
         this.log('%s', result);
+    }
+
+    get width() {
+        return this.#dimensions?.columns || defaultWidth;
     }
 
     async #cmdLs(args: { paths?: string[] | undefined }) {
@@ -448,10 +459,6 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         this.#cancelationTokenSource = t;
         return t;
     }
-}
-
-function colorText(text: string): string {
-    return green(text);
 }
 
 function abortControllerToCancelationTokenSource(ac: AbortController): vscode.CancellationTokenSource {

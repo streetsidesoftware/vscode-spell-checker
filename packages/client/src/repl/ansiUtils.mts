@@ -55,3 +55,11 @@ export function moveCursor(dx: number, dy?: number | undefined) {
 export function cursorTo(x: number, y?: number | undefined) {
     return ansiEscapes.cursorTo(x, y);
 }
+
+export function eraseLines(n: number) {
+    return ansiEscapes.eraseLines(n);
+}
+
+export function eraseLine() {
+    return ansiEscapes.eraseLine + '\r';
+}
