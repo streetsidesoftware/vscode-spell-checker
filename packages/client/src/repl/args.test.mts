@@ -58,7 +58,7 @@ describe('parseArgs', () => {
             fruit: { type: 'string', short: 'f', multiple: true },
         };
         const result = parseArgs({ args, options, allowPositionals: true, tokens: true, strict: false });
-        console.log('%o', result);
+        // console.log('%o', result);
         expect(result).toEqual(expected);
     });
 });
@@ -131,7 +131,6 @@ describe('Application', () => {
             Test Application.
 
             Commands:
-              foo <count> [names...]         Display some foo.
               bar <message>                  Make blocking statements.
               complex <one> <two> [many...]  This is a command with unnecessary complexity
                                              and options.
@@ -139,6 +138,7 @@ describe('Application', () => {
                                              a lot of words and new lines.
                                                - one: Argument one.
                                                - two: Argument two.
+              foo <count> [names...]         Display some foo.
               help [command]                 Display Help`),
         );
     });
@@ -182,7 +182,8 @@ describe('Application', () => {
             Options:
               -v, --verbose          Show extra details
               -u, --upper            Show in uppercase
-              -r, --repeat <repeat>  Repeat the message`),
+              -r, --repeat <repeat>  Repeat the message
+              -h, --help             Show help`),
         );
 
         expect(app.getHelp('bar')).toBe(
@@ -195,17 +196,21 @@ describe('Application', () => {
               <message>  The message to display
 
             Options:
-              -l, --loud  Make it loud`),
+              -l, --loud  Make it loud
+              -h, --help  Show help`),
         );
 
         expect(app.getHelp('help')).toBe(
             r(`\
-            Usage: help [command]
+            Usage: help [options] [command]
 
             Display Help
 
             Arguments:
-              [command]  Show Help for command.`),
+              [command]  Show Help for command.
+
+            Options:
+              -h, --help  Show help`),
         );
 
         expect(app.getHelp('complex')).toBe(
@@ -228,7 +233,8 @@ describe('Application', () => {
               -u, --upper              Show in uppercase
               -l, --lower              Show in lowercase
               --pad-left <pad-left>    Pad the left side
-              --pad-right <pad-right>  Pad the right side`),
+              --pad-right <pad-right>  Pad the right side
+              -h, --help               Show help`),
         );
     });
 });
