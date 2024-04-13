@@ -3475,8 +3475,8 @@
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
-    "@vitest/coverage-istanbul": "^1.4.0",
-    "@vscode/vsce": "^2.24.0",
+    "@vitest/coverage-istanbul": "^1.5.0",
+    "@vscode/vsce": "^2.25.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.20.2",
@@ -3496,14 +3496,14 @@
     "jest-when": "^3.6.0",
     "ovsx": "^0.9.0",
     "prettier": "^3.2.5",
-    "prettier-plugin-svelte": "^3.2.2",
-    "rollup": "^4.14.1",
+    "prettier-plugin-svelte": "^3.2.3",
+    "rollup": "^4.14.2",
     "rollup-plugin-dts": "^6.1.0",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.8",
-    "vitest": "^1.4.0"
+    "vitest": "^1.5.0"
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.7.0",
