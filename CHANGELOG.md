@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.4...code-spell-checker-v4.0.0-alpha.5) (2024-04-13)
+
+
+### Features
+
+* CSpell REPL ([#3109](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3109)) ([5047a1d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5047a1d71588af64f30b880349aa2db31aa19d0a))
+
 ## [4.0.0-alpha.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.3...code-spell-checker-v4.0.0-alpha.4) (2024-04-08)
 
 
