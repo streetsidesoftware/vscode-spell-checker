@@ -34,6 +34,8 @@ const config = {
         '**/build/**',
         'package-lock.json',
         '**/scripts/ts-json-schema-generator.cjs',
+        '**/fixtures/**/*.js',
+        '**/webpack*.js',
     ],
     plugins: ['import', 'unicorn', 'simple-import-sort'],
     rules: {
@@ -57,7 +59,7 @@ const config = {
     },
     overrides: [
         {
-            files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx'],
+            files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx', '**/*.js', '**/*.mjs'],
             extends: ['plugin:@typescript-eslint/recommended', 'plugin:import/typescript'],
             parser: '@typescript-eslint/parser',
             plugins: ['@typescript-eslint'],

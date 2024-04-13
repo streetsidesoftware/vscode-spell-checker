@@ -13,6 +13,8 @@ import type {
 import { createClientApi, createServerApi } from 'json-rpc-api';
 
 import type {
+    CheckDocumentOptions,
+    CheckDocumentResult,
     GetConfigurationForDocumentRequest,
     GetConfigurationForDocumentResult,
     GetSpellCheckingOffsetsResult,
@@ -44,6 +46,7 @@ export interface ServerRequestsAPI {
      */
     getSpellCheckingOffsets(doc: TextDocumentRef): GetSpellCheckingOffsetsResult;
     traceWord(req: TraceWordRequest): TraceWordResult;
+    checkDocument(doc: TextDocumentInfo, options?: CheckDocumentOptions): CheckDocumentResult;
 }
 
 /** Notifications that can be sent to the server */

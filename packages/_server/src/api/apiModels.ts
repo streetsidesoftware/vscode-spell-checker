@@ -2,6 +2,7 @@ import type { PublishDiagnosticsParams } from 'vscode-languageserver';
 
 import type { ConfigScopeVScode, ConfigTarget } from '../config/configTargets.mjs';
 import type * as config from '../config/cspellConfig/index.mjs';
+import type { CheckDocumentIssue } from './models/Diagnostic.mjs';
 import type { Suggestion } from './models/Suggestion.mjs';
 import type { ExtensionId } from './models/types.mjs';
 
@@ -13,6 +14,7 @@ export type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from '../config/configTargets.mjs';
+export type { CheckDocumentIssue } from './models/Diagnostic.mjs';
 export type { Position, Range } from 'vscode-languageserver-types';
 
 export interface BlockedFileReason {
@@ -215,18 +217,67 @@ export type VSCodeSettingsCspell = {
 export type PublishDiagnostics = Required<PublishDiagnosticsParams>;
 
 export interface TraceWordRequest {
+    /**
+     * URL to a document or directory.
+     * The configuration is determined by the languageId and configuration files relative to the uri.
+     */
     uri: DocumentUri;
+    /**
+     * The word to look up in the dictionaries.
+     */
     word: string;
+    /**
+     * The languageId to use if the uri is a directory.
+     * @default document languageId or 'plaintext'
+     */
+    languageId?: string | undefined;
+    /**
+     * Search all known dictionaries for the word.
+     * @default false
+     */
+    searchAllDictionaries?: boolean | undefined;
+    /**
+     * Search for compound words.
+     */
+    allowCompoundWords?: boolean | undefined;
 }
 
 export interface Trace {
+    /**
+     * The word searched for in the dictionary.
+     */
     word: string;
+    /**
+     * true if found in the dictionary.
+     */
     found: boolean;
+    /**
+     * The actual word found in the dictionary.
+     */
     foundWord: string | undefined;
+    /**
+     * true if the word is forbidden.
+     */
     forbidden: boolean;
+    /**
+     * true if it is a no-suggest word.
+     */
     noSuggest: boolean;
+    /**
+     * name of the dictionary
+     */
     dictName: string;
+    /**
+     * Path or URL to the dictionary.
+     */
     dictSource: string;
+    /**
+     * true if the dictionary is enabled for the languageId (file type).
+     */
+    dictEnabled: boolean;
+    /**
+     * The errors found while looking up the word.
+     */
     errors: string | undefined;
 }
 
@@ -246,4 +297,18 @@ export interface TraceWordResult {
     /** The split word results */
     splits?: readonly TraceWordFound[];
     errors?: string | undefined;
+}
+
+export interface CheckDocumentOptions {
+    /**
+     * Force a check even if the document would normally be excluded.
+     */
+    forceCheck?: boolean;
+}
+
+export interface CheckDocumentResult {
+    uri: DocumentUri;
+    errors?: string;
+    skipped?: boolean;
+    issues?: CheckDocumentIssue[];
 }

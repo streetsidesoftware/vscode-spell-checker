@@ -17,6 +17,7 @@ export function createMockServerSideApi() {
             getSpellCheckingOffsets: { subscribe: vi.fn() },
             spellingSuggestions: { subscribe: vi.fn() },
             traceWord: { subscribe: vi.fn() },
+            checkDocument: { subscribe: vi.fn() },
         },
         clientNotification: {
             onSpellCheckDocument: vi.fn(),
@@ -66,6 +67,9 @@ export function mockHandlers(): ServerSideHandlers {
             spellingSuggestions: vi.fn(() => ({ suggestions: [] })),
             getSpellCheckingOffsets: vi.fn(() => ({ offsets: [] })),
             traceWord: vi.fn((req) => ({ word: req.word, traces: [] })),
+            checkDocument(_doc, _options) {
+                return { uri: 'uri' };
+            },
         },
     };
 }

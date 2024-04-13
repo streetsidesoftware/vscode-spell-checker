@@ -9,6 +9,7 @@ import { CodeActionRequest } from 'vscode-languageclient/node';
 
 import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs';
 export type {
+    CheckDocumentIssue,
     ClientSideCommandHandlerApi,
     ConfigKind,
     ConfigScope,
@@ -48,6 +49,7 @@ interface ServerSide {
     registerConfigurationFile: ClientSideApi['serverNotification']['registerConfigurationFile'];
     spellingSuggestions: ClientSideApi['serverRequest']['spellingSuggestions'];
     traceWord: ClientSideApi['serverRequest']['traceWord'];
+    checkDocument: ClientSideApi['serverRequest']['checkDocument'];
 }
 
 interface ExtensionSide {
@@ -78,6 +80,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
             spellingSuggestions: true,
             splitTextIntoWords: true,
             traceWord: true,
+            checkDocument: true,
         },
         serverNotifications: {
             notifyConfigChange: true,
@@ -107,6 +110,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
         notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),
         registerConfigurationFile: log2Sfn(serverNotification.registerConfigurationFile, 'registerConfigurationFile'),
         traceWord: log2Sfn(serverRequest.traceWord, 'traceWord'),
+        checkDocument: log2Sfn(serverRequest.checkDocument, 'checkDocument'),
         onSpellCheckDocument: (fn) => clientNotification.onSpellCheckDocument.subscribe(log2Cfn(fn, 'onSpellCheckDocument')),
         onDiagnostics: (fn) => clientNotification.onDiagnostics.subscribe(log2Cfn(fn, 'onDiagnostics')),
         onWorkspaceConfigForDocumentRequest: (fn) =>
