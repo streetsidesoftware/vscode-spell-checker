@@ -59,7 +59,7 @@
     "@cspell/cspell-types": "^8.7.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/settings-webview": "file:../_settingsViewer",
-    "ansi-escapes": "^6.2.0",
+    "ansi-escapes": "^6.2.1",
     "ansi-styles": "^6.2.1",
     "as-table": "^1.0.55",
     "camelize": "^1.0.1",
