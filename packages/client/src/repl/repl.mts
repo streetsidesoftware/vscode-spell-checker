@@ -16,7 +16,7 @@ import { emitterToReadStream, emitterToWriteStream } from './emitterToWriteStrea
 import type { DirEntry } from './fsUtils.mjs';
 import { currentDirectory, globSearch, readDir, resolvePath, toRelativeWorkspacePath } from './fsUtils.mjs';
 import { globsToGlob } from './globUtils.mjs';
-import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.js';
+import { commandLineBuilder, parseCommandLineIntoArgs } from './parseCommandLine.mjs';
 
 const defaultWidth = 80;
 

@@ -19,7 +19,7 @@ import * as settingsViewer from './infoViewer/infoView.js';
 import { IssueTracker } from './issueTracker.js';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.js';
 import * as modules from './modules.js';
-import { createTerminal, registerTerminalProfileProvider } from './repl/index.js';
+import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.js';
 import * as settings from './settings/index.js';
 import { sectionCSpell } from './settings/index.js';

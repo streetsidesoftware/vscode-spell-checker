@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util';
 import { describe, expect, test } from 'vitest';
 
 import { Application, castValueToType, Command, toBoolean } from './args.mjs';
-import { parseCommandLineIntoArgs } from './parseCommandLine.js';
+import { parseCommandLineIntoArgs } from './parseCommandLine.mjs';
 import { unindent } from './textUtils.mjs';
 
 const ac = expect.arrayContaining;
