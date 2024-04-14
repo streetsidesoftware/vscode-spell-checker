@@ -19,7 +19,7 @@
   "bin": {
     "build": "./build.mjs"
   },
-  "main": "./dist/extension.js",
+  "main": "./dist/extension.cjs",
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
     "build-production": "npm run clean-build-production",

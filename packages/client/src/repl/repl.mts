@@ -26,6 +26,14 @@ export function createTerminal() {
     terminal.show();
 }
 
+export function registerTerminalProfileProvider(): vscode.Disposable {
+    return vscode.window.registerTerminalProfileProvider('cSpell.terminal-profile', {
+        provideTerminalProfile: () => {
+            return new vscode.TerminalProfile({ name: 'Spell Checker REPL', pty: new Repl() });
+        },
+    });
+}
+
 class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     readonly #emitterInput = new vscode.EventEmitter<string>();
     readonly #emitterOutput = new vscode.EventEmitter<string>();
