@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { commandLineBuilder, parseCommandLine, parseCommandLineIntoArgs } from './parseCommandLine.js';
+import { commandLineBuilder, parseCommandLine, parseCommandLineIntoArgs } from './parseCommandLine.mjs';
 
 describe('parseArgs', () => {
     test.each`
