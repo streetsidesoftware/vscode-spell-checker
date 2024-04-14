@@ -3,4 +3,4 @@
 /* @ts-ignore */
 export type { OnSpellCheckDocumentStep } from '../../_server/dist/api.js';
 export type { CSpellClient } from '../../client/dist/client/index.js';
-export type { ExtensionApi } from '../../client/dist/extensionApi.js';
+export type { ExtensionApi } from '../../client/dist/extensionApi.cjs';

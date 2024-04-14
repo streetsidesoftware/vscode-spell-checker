@@ -41,7 +41,7 @@
     "onStartupFinished"
   ],
   "type": "commonjs",
-  "main": "./packages/client/dist/extension.js",
+  "main": "./packages/client/dist/extension.cjs",
   "capabilities": {
     "virtualWorkspaces": {
       "supported": "limited",
@@ -3418,7 +3418,15 @@
         "title": "Reporting and Display",
         "type": "object"
       }
-    ]
+    ],
+    "terminal": {
+      "profiles": [
+        {
+          "title": "Spell Checker REPL",
+          "id": "cSpell.terminal-profile"
+        }
+      ]
+    }
   },
   "workspaces": [
     "docs",

@@ -48,13 +48,13 @@ async function buildAll() {
     const configs = [
         {
             ...optionsBase,
-            entryPoints: ['src/extension.ts'],
-            outfile: 'dist/extension.js',
+            entryPoints: ['src/extension.mts'],
+            outfile: 'dist/extension.cjs',
         },
         {
             ...optionsBase,
-            entryPoints: ['src/extensionApi.ts'],
-            outfile: 'dist/extensionApi.js',
+            entryPoints: ['src/extensionApi.cts'],
+            outfile: 'dist/extensionApi.cjs',
         },
     ];
 

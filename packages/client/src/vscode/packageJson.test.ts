@@ -17,7 +17,7 @@ const sample = {
     name: 'code-spell-checker',
     description: 'Spelling checker for source code',
     displayName: 'Code Spell Checker',
-    main: './packages/client/dist/extension.js',
+    main: './packages/client/dist/extension.cjs',
     contributes: {
         menus: {
             'editor/context': [

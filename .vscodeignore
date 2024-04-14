@@ -38,7 +38,7 @@
 # Old settings viewer, to be removed
 !packages/_settingsViewer/dist/webapp/*.{js,html,LICENSE.txt}
 
-!packages/client/dist/**/*.js
+!packages/client/dist/**/*.cjs
 !packages/client/License.txt
 !packages/client/package.json
 !resources/**

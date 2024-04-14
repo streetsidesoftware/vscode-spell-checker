@@ -3,5 +3,5 @@
     "compilerOptions": {
         "emitDeclarationOnly": true
     },
-    "files": ["src/extensionApi.ts"]
+    "files": ["src/extensionApi.cts"]
 }

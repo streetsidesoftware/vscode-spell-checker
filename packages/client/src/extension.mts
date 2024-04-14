@@ -4,30 +4,30 @@ import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
-import * as addWords from './addWords';
-import { registerCspellInlineCompletionProviders } from './autocomplete';
-import { CSpellClient } from './client';
-import { registerSpellCheckerCodeActionProvider } from './codeAction';
-import type { InjectableCommandHandlers } from './commands';
-import * as commands from './commands';
-import { updateDocumentRelatedContext } from './context';
-import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate';
-import * as di from './di';
-import type { ExtensionApi } from './extensionApi';
-import * as ExtensionRegEx from './extensionRegEx';
-import * as settingsViewer from './infoViewer/infoView';
-import { IssueTracker } from './issueTracker';
-import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer';
-import * as modules from './modules';
-import { createTerminal } from './repl/index.js';
-import type { ConfigTargetLegacy, CSpellSettings } from './settings';
-import * as settings from './settings';
-import { sectionCSpell } from './settings';
-import { getSectionName } from './settings/vsConfig';
-import { initStatusBar } from './statusbar';
-import { logErrors, silenceErrors } from './util/errors';
-import { performance } from './util/perf';
-import { activate as activateWebview } from './webview';
+import * as addWords from './addWords.js';
+import { registerCspellInlineCompletionProviders } from './autocomplete.js';
+import { CSpellClient } from './client/index.js';
+import { registerSpellCheckerCodeActionProvider } from './codeAction.js';
+import type { InjectableCommandHandlers } from './commands.js';
+import * as commands from './commands.js';
+import { updateDocumentRelatedContext } from './context.js';
+import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate.js';
+import * as di from './di.js';
+import type { ExtensionApi } from './extensionApi.cjs';
+import * as ExtensionRegEx from './extensionRegEx/index.js';
+import * as settingsViewer from './infoViewer/infoView.js';
+import { IssueTracker } from './issueTracker.js';
+import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.js';
+import * as modules from './modules.js';
+import { createTerminal, registerTerminalProfileProvider } from './repl/index.js';
+import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.js';
+import * as settings from './settings/index.js';
+import { sectionCSpell } from './settings/index.js';
+import { getSectionName } from './settings/vsConfig.js';
+import { initStatusBar } from './statusbar.js';
+import { logErrors, silenceErrors } from './util/errors.js';
+import { performance } from './util/perf.js';
+import { activate as activateWebview } from './webview/index.js';
 
 performance.mark('cspell_done_import');
 
@@ -110,6 +110,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         decorator,
         decoratorExclusions,
         registerSpellCheckerCodeActionProvider(issueTracker),
+        await registerTerminalProfileProvider(),
 
         ...commands.registerCommands(extensionCommand),
 
