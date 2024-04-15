@@ -51,7 +51,7 @@ runs:
 
     - name: Create Pull Request
       if: env.git_status == 'dirty'
-      uses: peter-evans/create-pull-request@70a41aba780001da0a30141984ae2a0c95d8704e # v4
+      uses: peter-evans/create-pull-request@c55203cfde3e5c11a452d352b4393e68b85b4533 # v4
       with:
         commit-message: ${{ inputs.commit-message }}
         branch: ${{ inputs.branch }}
