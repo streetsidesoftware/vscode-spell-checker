@@ -3481,7 +3481,7 @@
     "@types/node": "^18.19.31",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.6.0",
     "@vitest/coverage-istanbul": "^1.5.0",
     "@vscode/vsce": "^2.25.0",
