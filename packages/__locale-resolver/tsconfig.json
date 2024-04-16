@@ -1,7 +1,7 @@
 {
     "extends": "../../tsconfig.packages.base.json",
     "compilerOptions": {
-        "types": ["node", "jest"],
+        "types": ["node"],
         "outDir": "dist",
         "rootDir": "src"
     },

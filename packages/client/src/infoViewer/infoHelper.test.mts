@@ -1,6 +1,5 @@
 import type { CSpellSettings } from '@cspell/cspell-types';
-import { importCSpellLib } from '@internal/cspell-helper';
-import assert from 'assert';
+import * as cspell from 'cspell-lib';
 import { describe, expect, test, vi } from 'vitest';
 import {} from 'vscode';
 
@@ -94,8 +93,6 @@ let sampleSettings: CSpellSettings | undefined;
 
 async function sampleCSpellSettings() {
     if (sampleSettings) return sampleSettings;
-    const cspell = await importCSpellLib();
-    assert(isDefined(cspell));
     const localCfg = await cspell.searchForConfig(__filename);
     const defaultSettings = await cspell.getDefaultSettings();
     sampleSettings = cspell.mergeSettings(defaultSettings, /*cspell.getGlobalSettings(),*/ ...[localCfg].filter(isDefined));
