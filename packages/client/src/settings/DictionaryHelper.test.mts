@@ -5,8 +5,8 @@ import type { ExtensionContext, WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
-import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client/index.mjs';
 import { CSpellClient } from '../client/client.mjs';
+import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client/index.mjs';
 import { getPathToTemp } from '../test/helpers.js';
 import { createConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.mjs';
