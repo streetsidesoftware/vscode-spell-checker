@@ -1,4 +1,6 @@
-import { isErrnoException } from './errors';
+import { describe, expect, test } from 'vitest';
+
+import { isErrnoException } from './errors.js';
 
 describe('errors', () => {
     const ex1: NodeJS.ErrnoException = {

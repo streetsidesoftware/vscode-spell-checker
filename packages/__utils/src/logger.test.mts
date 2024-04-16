@@ -1,4 +1,6 @@
-import { Logger, LogLevel } from './logger';
+import { describe, expect, test, vi } from 'vitest';
+
+import { Logger, LogLevel } from './logger.js';
 
 describe('Validate Logger', () => {
     test('Logger Late Binding', () => {
@@ -132,10 +134,10 @@ function exit() {
 function makeConnection() {
     const connection = {
         console: {
-            log: jest.fn(),
-            error: jest.fn(),
-            warn: jest.fn(),
-            info: jest.fn(),
+            log: vi.fn(),
+            error: vi.fn(),
+            warn: vi.fn(),
+            info: vi.fn(),
         },
         onExit: (fn: () => void) => (connection.exit = fn),
         exit,

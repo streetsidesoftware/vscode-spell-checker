@@ -1,4 +1,6 @@
-import { freqCount, isDefined, mustBeDefined, pick, setIfDefined, textToWords, unique, uniqueFilter } from './util';
+import { describe, expect, test } from 'vitest';
+
+import { freqCount, isDefined, mustBeDefined, pick, setIfDefined, textToWords, unique, uniqueFilter } from './util.js';
 
 describe('Util', () => {
     test('unique', () => {

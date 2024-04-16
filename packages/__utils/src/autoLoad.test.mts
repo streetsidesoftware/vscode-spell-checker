@@ -1,4 +1,6 @@
-import { createAutoLoadCache, createLazyValue } from './autoLoad';
+import { describe, expect, test } from 'vitest';
+
+import { createAutoLoadCache, createLazyValue } from './autoLoad.js';
 
 describe('Validate AutoLoadCache', () => {
     test('create', () => {

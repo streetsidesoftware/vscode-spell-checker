@@ -1,12 +1,12 @@
-// import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
-import { createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve';
+import { createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve.js';
 
 describe('AutoResolve', () => {
     test('createAutoResolveCache', () => {
         const cache = createAutoResolveCache<string, string>();
 
-        const resolver = jest.fn((s: string) => s.toUpperCase());
+        const resolver = vi.fn((s: string) => s.toUpperCase());
 
         expect(cache.get('hello')).toBe(undefined);
         expect(cache.get('hello', resolver)).toBe('HELLO');
@@ -23,7 +23,7 @@ describe('AutoResolve', () => {
     test('createAutoResolveWeakCache', () => {
         const cache = createAutoResolveWeakCache<{ name: string }, string>();
 
-        const resolver = jest.fn((v: { name: string }) => v.name.toUpperCase());
+        const resolver = vi.fn((v: { name: string }) => v.name.toUpperCase());
 
         const tagHello = { name: 'hello' };
         const tagHello2 = { ...tagHello };

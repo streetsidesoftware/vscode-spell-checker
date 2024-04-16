@@ -59,13 +59,10 @@
     "build": "tsc -b . && ts2mjs ./dist/esm",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
-    "test": "jest",
+    "test": "vitest run .",
     "watch": "tsc -b . --watch"
   },
-  "devDependencies": {
-    "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2"
-  },
+  "devDependencies": {},
   "dependencies": {
     "vscode-uri": "^3.0.8"
   },

@@ -1,6 +1,7 @@
+import { describe, expect, test } from 'vitest';
 import { URI as Uri } from 'vscode-uri';
 
-import { fileExists } from './file';
+import { fileExists } from './file.js';
 
 describe('Validate file', () => {
     test('fileExists', async () => {

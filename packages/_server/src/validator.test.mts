@@ -156,7 +156,7 @@ describe('Validator', () => {
             const text = sampleCode;
             const languageId = 'plaintext';
             const settings = { ...getSettings(text, languageId), maxNumberOfProblems: 10 };
-            const uri = Uri.parse(import.meta.url).toString();
+            const uri = URI.parse(import.meta.url).toString();
             const textDoc = TextDocument.create(uri, languageId, 1, text);
             const results = await Validator.validateTextDocument(textDoc, settings);
             const words = results.map((diag) => diag.message);

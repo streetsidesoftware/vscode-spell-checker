@@ -1,4 +1,5 @@
 {
+    "extends": "@tsconfig/node18",
     "compilerOptions": {
         "esModuleInterop": true
     },
