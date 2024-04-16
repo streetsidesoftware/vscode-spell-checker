@@ -48,8 +48,8 @@ export interface GitignoreInfo {
 
 export interface IsSpellCheckEnabledResult {
     /** The Uri used to determine the settings. */
-    uriUsed: string | undefined;
-    workspaceFolderUri: string | undefined;
+    uriUsed: DocumentUri | undefined;
+    workspaceFolderUri: UriString | undefined;
     languageEnabled: boolean | undefined;
     languageId: string | undefined;
     fileEnabled: boolean;
@@ -311,4 +311,24 @@ export interface CheckDocumentResult {
     errors?: string;
     skipped?: boolean;
     issues?: CheckDocumentIssue[];
+}
+
+export interface IsSpellCheckingEnabledForUrisRequest {
+    /**
+     * The current workspace folder, used to determine the settings.
+     * If undefined, the settings will be determined by the uris with respect to the workspace folders.
+     * If no workspace folders are defined, the settings will be determined by the uris.
+     */
+    cwd?: DocumentUri;
+    uris: DocumentUri[];
+}
+
+export interface IsSpellCheckingEnabledForUri {
+    uri: DocumentUri;
+    shouldCheck: boolean;
+}
+
+export interface IsSpellCheckingEnabledForUrisResponse {
+    uris: DocumentUri[];
+    shouldCheck: boolean[];
 }

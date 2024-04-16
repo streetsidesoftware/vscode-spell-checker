@@ -4,30 +4,31 @@ import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
-import * as addWords from './addWords.js';
-import { registerCspellInlineCompletionProviders } from './autocomplete.js';
-import { CSpellClient } from './client/index.js';
-import { registerSpellCheckerCodeActionProvider } from './codeAction.js';
-import type { InjectableCommandHandlers } from './commands.js';
-import * as commands from './commands.js';
-import { updateDocumentRelatedContext } from './context.js';
-import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate.js';
-import * as di from './di.js';
-import type { ExtensionApi } from './extensionApi.cjs';
-import * as ExtensionRegEx from './extensionRegEx/index.js';
-import * as settingsViewer from './infoViewer/infoView.js';
-import { IssueTracker } from './issueTracker.js';
-import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.js';
-import * as modules from './modules.js';
+import * as addWords from './addWords.mjs';
+import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
+import { CSpellClient } from './client/index.mjs';
+import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
+import type { InjectableCommandHandlers } from './commands.mjs';
+import * as commands from './commands.mjs';
+import { createConfigWatcher } from './configWatcher.mjs';
+import { updateDocumentRelatedContext } from './context.mjs';
+import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate.mjs';
+import * as di from './di.mjs';
+import type { ExtensionApi } from './extensionApi.mjs';
+import * as ExtensionRegEx from './extensionRegEx/index.mjs';
+import * as settingsViewer from './infoViewer/infoView.mjs';
+import { IssueTracker } from './issueTracker.mjs';
+import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
+import * as modules from './modules.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
-import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.js';
-import * as settings from './settings/index.js';
-import { sectionCSpell } from './settings/index.js';
-import { getSectionName } from './settings/vsConfig.js';
-import { initStatusBar } from './statusbar.js';
+import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
+import * as settings from './settings/index.mjs';
+import { sectionCSpell } from './settings/index.mjs';
+import { getSectionName } from './settings/vsConfig.mjs';
+import { initStatusBar } from './statusbar.mjs';
 import { logErrors, silenceErrors } from './util/errors.js';
 import { performance } from './util/perf.js';
-import { activate as activateWebview } from './webview/index.js';
+import { activate as activateWebview } from './webview/index.mjs';
 
 performance.mark('cspell_done_import');
 
@@ -72,11 +73,13 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
             .catch(() => undefined);
     }
 
-    function triggerConfigChange() {
+    function triggerConfigChange(uri: vscode.Uri) {
+        logger.log(`Configuration Change: ${uri.toString()}`);
         triggerGetSettings();
     }
 
-    const configWatcher = vscode.workspace.createFileSystemWatcher(settings.configFileLocationGlob);
+    const configWatcher = createConfigWatcher();
+    console.log('config files: %o', await configWatcher.scanWorkspaceForConfigFiles());
     const decorator = new SpellingIssueDecorator(context, issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
     activateIssueViewer(context, issueTracker);
@@ -95,9 +98,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     context.subscriptions.push(
         issueTracker,
         configWatcher,
-        configWatcher.onDidChange(triggerConfigChange),
-        configWatcher.onDidCreate(triggerConfigChange),
-        configWatcher.onDidDelete(triggerConfigChange),
+        configWatcher.onDidChangeConfig(triggerConfigChange),
         vscode.workspace.onDidSaveTextDocument(handleOnDidSaveTextDocument),
         vscode.workspace.onDidRenameFiles(handleRenameFile),
         vscode.workspace.onDidDeleteFiles(handleDeleteFile),

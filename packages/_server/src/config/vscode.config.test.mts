@@ -12,7 +12,7 @@ describe('Validate vscode config', () => {
         const mockedWorkspace = vi.mocked(connection.workspace);
         const cfg = [{}, {}];
         mockedWorkspace.getConfiguration.mockResolvedValue(cfg);
-        const items = [{ scopeUri: Uri.file(__filename).toString(), section: 'cSpell' }, { section: 'search' }];
+        const items = [{ scopeUri: Uri.parse(import.meta.url).toString(), section: 'cSpell' }, { section: 'search' }];
         await expect(getConfiguration(connection, items)).resolves.toBe(cfg);
         expect(mockedWorkspace.getConfiguration).toHaveBeenLastCalledWith(items);
     });

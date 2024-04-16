@@ -5,17 +5,17 @@ import type { WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
 import { getPathToTemp } from '../test/helpers.js';
-import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.js';
-import { addWordsFn } from './configUpdaters.js';
-import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter.js';
+import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.mjs';
+import { addWordsFn } from './configUpdaters.mjs';
+import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter.mjs';
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
 const { isUri, hasUri, isWorkspaceFolder } = __testing__;
 
-const uri = Uri.file(__filename);
-const folderUri = Uri.file(__dirname);
+const uri = Uri.parse(import.meta.url);
+const folderUri = Uri.parse(new URL('.', import.meta.url).toString());
 const workspaceFolder: WorkspaceFolder = {
     uri: folderUri,
     name: 'Folder',

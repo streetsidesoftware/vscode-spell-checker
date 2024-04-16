@@ -19,7 +19,7 @@
   "bin": {
     "build": "./build.mjs"
   },
-  "main": "./dist/extension.cjs",
+  "main": "./dist/extension.mjs",
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
     "build-production": "npm run clean-build-production",
@@ -56,6 +56,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@cspell/cspell-pipe": "^8.7.0",
     "@cspell/cspell-types": "^8.7.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/settings-webview": "file:../_settingsViewer",

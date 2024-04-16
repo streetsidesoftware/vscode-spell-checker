@@ -1,0 +1,131 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Validate configFileReadWrite > update 'cspell.config.yaml' 1`] = `
+"version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - sample
+  - one
+  - two
+ignoreWords: []
+import: []
+"
+`;
+
+exports[`Validate configFileReadWrite > update 'cspell.json' 1`] = `
+"{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "sample",
+        "one",
+        "two"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > update 'cspell.jsonc' 1`] = `
+"{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "sample",
+        "one",
+        "two"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > update 'package.json' 1`] = `
+"{
+    "name": "sample-package",
+    "scripts": {},
+    "dependencies": {},
+    "cspell": {
+        "version": "0.2",
+        "ignorePaths": [],
+        "dictionaryDefinitions": [],
+        "dictionaries": [],
+        "words": [
+            "sample",
+            "one",
+            "two"
+        ],
+        "ignoreWords": [],
+        "import": []
+    }
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > write 'cspell.config.json' 1`] = `
+"// This is a Json file with comments.
+{
+    // Version should be 0.2
+    "version": "0.2",
+    // Custom terms should be here.
+    "words": [],
+    // Words to be ignored
+    "ignoreWords": []
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > write 'cspell.config.yaml' 1`] = `
+"version: "0.2"
+words: []
+ignoreWords: []
+"
+`;
+
+exports[`Validate configFileReadWrite > write 'cspell.json' 1`] = `
+"// This is a Json file with comments.
+{
+    // Version should be 0.2
+    "version": "0.2",
+    // Custom terms should be here.
+    "words": [],
+    // Words to be ignored
+    "ignoreWords": []
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > write 'cspell.jsonc' 1`] = `
+"// This is a Json file with comments.
+{
+    // Version should be 0.2
+    "version": "0.2",
+    // Custom terms should be here.
+    "words": [],
+    // Words to be ignored
+    "ignoreWords": []
+}
+"
+`;
+
+exports[`Validate configFileReadWrite > write 'package.json' 1`] = `
+"{
+    "name": "sample-package",
+    "scripts": {},
+    "dependencies": {},
+    "cspell": {
+        "version": "0.2",
+        "words": [],
+        "ignoreWords": []
+    }
+}
+"
+`;

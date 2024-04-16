@@ -2,7 +2,7 @@ import { isDefined } from '@internal/common-utils';
 import asTable from 'as-table';
 import type { Uri } from 'vscode';
 
-import * as di from '../di.js';
+import * as di from '../di.mjs';
 import { colors } from './ansiUtils.mjs';
 
 export interface TraceWordOptions {

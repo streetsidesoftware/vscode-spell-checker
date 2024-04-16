@@ -53,7 +53,7 @@ async function buildAll() {
         },
         {
             ...optionsBase,
-            entryPoints: ['src/extensionApi.cts'],
+            entryPoints: ['src/extensionApi.mts'],
             outfile: 'dist/extensionApi.cjs',
         },
     ];

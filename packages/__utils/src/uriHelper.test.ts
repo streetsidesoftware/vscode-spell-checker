@@ -3,7 +3,7 @@ import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 import { cleanUri, isSupportedDoc, isSupportedUri, relativeTo, relativeToFile, toFileUri, toUri, uriToName } from './uriHelper';
 
-const uri = Uri.file(__filename);
+const uri = Uri.parse(import.meta.url);
 
 describe('Validate uriHelper', () => {
     test.each`
@@ -38,7 +38,7 @@ describe('Validate uriHelper', () => {
         ${uri}                                           | ${uri}
         ${'http://www.streetsidesoftware.nl'}            | ${'http://www.streetsidesoftware.nl/'}
         ${Uri.parse('http://www.streetsidesoftware.nl')} | ${'http://www.streetsidesoftware.nl/'}
-        ${__filename}                                    | ${Uri.file(__filename)}
+        ${__filename}                                    | ${Uri.parse(import.meta.url)}
         ${path.resolve('/file.js')}                      | ${Uri.file(path.resolve('/file.js'))}
     `('toFileUri $uri', ({ uri, expected }) => {
         expect(toFileUri(uri).toString()).toBe(expected.toString());
