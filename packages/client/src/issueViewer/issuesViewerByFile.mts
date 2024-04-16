@@ -8,10 +8,10 @@ import { actionAutoFixSpellingIssues } from '../applyCorrections.mjs';
 import { commandHandlers, knownCommands } from '../commands.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { createEmitter, debounce, rx } from '../Subscribables/index.js';
-import { isDefined } from '../util/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
+import { isDefined } from '../util/index.js';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 
 const log = logDebug;

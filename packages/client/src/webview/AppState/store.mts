@@ -7,8 +7,8 @@ import type { WatchFieldList, WatchFields } from 'webview-api';
 
 import { getDependencies } from '../../di.mjs';
 import { calcSettings } from '../../infoViewer/infoHelper.mjs';
-import { createSubscribableView, pipe, rx, throttle } from '../../Subscribables/index.js';
 import { toSubscriberFn } from '../../Subscribables/helpers/toSubscriber.js';
+import { createSubscribableView, pipe, rx, throttle } from '../../Subscribables/index.js';
 import type { MakeSubscribable, StoreValue } from '../../Subscribables/StoreValue.js';
 import { createStoreValue } from '../../Subscribables/StoreValue.js';
 import type { SubscriberLike } from '../../Subscribables/Subscribables.js';
