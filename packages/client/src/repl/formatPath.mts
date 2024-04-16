@@ -36,14 +36,14 @@ export function formatPath(uri: Uri | string, width: number): string {
                 rightSide = '/' + right + rightSide;
                 j--;
             }
-            console.log('%o', {
-                leftSide,
-                rightSide,
-                middle,
-                rel: leftSide + middle + rightSide,
-                len,
-                len2: (leftSide + middle + rightSide).length,
-            });
+            // console.log('%o', {
+            //     leftSide,
+            //     rightSide,
+            //     middle,
+            //     rel: leftSide + middle + rightSide,
+            //     len,
+            //     len2: (leftSide + middle + rightSide).length,
+            // });
         }
         rel = leftSide + middle + rightSide;
         if (rel === middle) {

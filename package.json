@@ -3437,7 +3437,6 @@
     "packages/webview-rpc",
     "packages/webview-api",
     "packages/webview-ui",
-    "packages/__cspell-helper",
     "packages/__locale-resolver",
     "packages/__utils",
     "packages/_server",

@@ -1,6 +1,6 @@
 import type { Uri } from 'vscode';
 
-import * as di from '../di.js';
+import * as di from '../di.mjs';
 import { colors } from './ansiUtils.mjs';
 
 export async function cmdSuggestions(word: string, uri: Uri | string): Promise<string> {

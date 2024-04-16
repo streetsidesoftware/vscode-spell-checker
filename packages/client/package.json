@@ -19,7 +19,7 @@
   "bin": {
     "build": "./build.mjs"
   },
-  "main": "./dist/extension.cjs",
+  "main": "./dist/extension.mjs",
   "scripts": {
     "build": "npm run build:esbuild && npm run build:api && npm run build:tsc",
     "build-production": "npm run clean-build-production",
@@ -40,7 +40,6 @@
     "watch:tsc": "npm run build:tsc -- --watch"
   },
   "devDependencies": {
-    "@internal/cspell-helper": "file:../__cspell-helper",
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@types/camelize": "^1.0.0",
     "@types/kefir": "^3.8.11",
@@ -56,6 +55,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@cspell/cspell-pipe": "^8.7.0",
     "@cspell/cspell-types": "^8.7.0",
     "@internal/common-utils": "file:../__utils",
     "@internal/settings-webview": "file:../_settingsViewer",

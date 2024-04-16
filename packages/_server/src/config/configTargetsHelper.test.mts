@@ -18,9 +18,9 @@ const col = new Intl.Collator();
 describe('Validate configTargetsHelper', () => {
     test('workspaceConfigToTargets in single root workspace', () => {
         const wConfig: WorkspaceConfigForDocument = {
-            uri: URI.file(__filename).toString(),
+            uri: URI.parse(import.meta.url).toString(),
             workspaceFile: undefined,
-            workspaceFolder: URI.file(__dirname).toString(),
+            workspaceFolder: URI.parse(new URL('.', import.meta.url).toString()).toString(),
             words: {
                 user: true,
             },
@@ -47,9 +47,9 @@ describe('Validate configTargetsHelper', () => {
 
     test('workspaceConfigToTargets in multi root workspace', () => {
         const wConfig: WorkspaceConfigForDocument = {
-            uri: URI.file(__filename).toString(),
+            uri: URI.parse(import.meta.url).toString(),
             workspaceFile: 'file://workspace-file.code-workspace',
-            workspaceFolder: URI.file(__dirname).toString(),
+            workspaceFolder: URI.parse(new URL('.', import.meta.url).toString()).toString(),
             words: {
                 user: true,
                 folder: true,
@@ -86,7 +86,7 @@ describe('Validate configTargetsHelper', () => {
 
     test('workspaceConfigToTargets with no workspace', () => {
         const wConfig: WorkspaceConfigForDocument = {
-            uri: URI.file(__filename).toString(),
+            uri: URI.parse(import.meta.url).toString(),
             workspaceFile: undefined,
             workspaceFolder: undefined,
             words: {
@@ -168,9 +168,9 @@ describe('Validate configTargetsHelper', () => {
 
     test('calculateConfigTargets user', async () => {
         const wConfig: WorkspaceConfigForDocument = {
-            uri: URI.file(__filename).toString(),
+            uri: URI.parse(import.meta.url).toString(),
             workspaceFile: undefined,
-            workspaceFolder: URI.file(__dirname).toString(),
+            workspaceFolder: URI.parse(new URL('.', import.meta.url).toString()).toString(),
             words: {
                 user: true,
             },
@@ -219,9 +219,9 @@ describe('Validate configTargetsHelper', () => {
 
     test('calculateConfigTargets workspace', async () => {
         const wConfig: WorkspaceConfigForDocument = {
-            uri: URI.file(__filename).toString(),
+            uri: URI.parse(import.meta.url).toString(),
             workspaceFile: undefined,
-            workspaceFolder: URI.file(__dirname).toString(),
+            workspaceFolder: URI.parse(new URL('.', import.meta.url).toString()).toString(),
             words: {
                 workspace: true,
             },

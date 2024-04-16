@@ -3,9 +3,8 @@
     "compilerOptions": {
         "composite": true,
         "outDir": "./dist/esm",
-        "target": "es2022",
-        "lib": ["es2022", "dom"],
-        "types": ["node", "jest"],
+        "lib": ["es2023", "dom"],
+        "types": ["node"],
         "module": "ES2022",
         "moduleResolution": "Node",
         "esModuleInterop": true,

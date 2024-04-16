@@ -5,8 +5,8 @@
         "rootDir": "src",
         "types": ["node"],
         "target": "ESNext",
-        "module": "Node16",
-        "moduleResolution": "Node16"
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext"
     },
     "include": ["src"],
     "exclude": []

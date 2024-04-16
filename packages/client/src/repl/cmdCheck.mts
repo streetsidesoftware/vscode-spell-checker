@@ -1,7 +1,7 @@
 import type * as API from 'code-spell-checker-server/api';
 import type { CancellationToken, Uri } from 'vscode';
 
-import * as di from '../di.js';
+import * as di from '../di.mjs';
 import { colors } from './ansiUtils.mjs';
 import { formatPath, relative } from './formatPath.mjs';
 

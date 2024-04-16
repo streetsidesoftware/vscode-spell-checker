@@ -3,9 +3,7 @@
     "compilerOptions": {
         "composite": true,
         "outDir": "./dist/cjs",
-        "target": "es2022",
-        "lib": ["es2022"],
-        "types": ["node", "jest"],
+        "types": ["node"],
         "module": "CommonJS",
         "moduleResolution": "Node",
         "esModuleInterop": true,
@@ -16,5 +14,6 @@
         "rootDir": "./src",
         "strict": true
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["**/*.mts"]
 }
