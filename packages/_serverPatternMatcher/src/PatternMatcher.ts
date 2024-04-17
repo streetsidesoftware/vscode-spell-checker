@@ -92,7 +92,6 @@ type ExecMatchRegExpResults = ExecMatchRegExpResult | ExecMatchRegExpResultTimeo
 function execMatchArray(worker: RegExpWorker, text: string, regexpArray: RegExp[]): Promise<ExecMatchRegExpResults[]> {
     return execMatchRegExpArray(worker, text, regexpArray).catch((e) => {
         if (!isTimeoutError(e)) {
-            // eslint-disable-next-line promise/no-return-wrap
             return Promise.reject(e);
         }
         return execMatchRegExpArrayOneByOne(worker, text, regexpArray);

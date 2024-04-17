@@ -40,7 +40,7 @@ export function extractUriFromQueryParam(uri: Uri | string, param: string): Uri 
     if (!newUrl) return undefined;
     try {
         return Uri.parse(newUrl);
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }

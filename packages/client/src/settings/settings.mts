@@ -117,7 +117,7 @@ async function directoryHasPackageJson(dir: vscode.Uri): Promise<boolean> {
     try {
         const stat = await workspace.fs.stat(uri);
         return stat.type === vscode.FileType.File;
-    } catch (e) {
+    } catch {
         return false;
     }
 }

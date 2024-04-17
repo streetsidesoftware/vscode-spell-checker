@@ -108,7 +108,7 @@ function getShowAutocompleteSuggestions(docUri: vscode.Uri): boolean {
     const key = 'showAutocompleteDirectiveSuggestions';
     try {
         return getSettingFromVSConfig(key, docUri) ?? true;
-    } catch (e) {
+    } catch {
         return false;
     }
 }
@@ -368,7 +368,7 @@ function createDictionaryInfoForDoc(config: GetConfigurationForDocumentResult): 
             .filter((a) => !!a);
         const enabled = config.docSettings?.dictionaries || [];
         return { available: dicts, enabled };
-    } catch (e) {
+    } catch {
         return { available: undefined, enabled: undefined };
     }
 }
