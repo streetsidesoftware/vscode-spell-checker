@@ -122,7 +122,7 @@ function secondaryFileMessage(config: FileConfig | undefined): React.ReactFragme
 
     const excludedBy =
         config.excludedBy
-            ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` } || '*'))
+            ?.map((e) => e.configUri && LinkOpenFile({ uri: e.configUri, text: e.name ? `${e.name} - "${e.glob}"` : `"${e.glob}"` }))
             .filter(isDefined) ?? [];
 
     const linkGitignore = formatGitignoreLink(gitignoreInfo);

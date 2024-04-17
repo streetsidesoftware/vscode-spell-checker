@@ -30,7 +30,7 @@ async function findReferences(uri: Uri, range: Range): Promise<Location[] | unde
         //     locations.map((loc) => ({ uri: loc.uri.toString(), range: rangeToString(loc.range) })),
         // );
         return locations;
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }
@@ -161,7 +161,7 @@ function stringToRegExp(regExStr: string | undefined, flags = 'g'): RegExp | und
     if (!regExStr) return undefined;
     try {
         return toRegExp(regExStr, flags);
-    } catch (e) {
+    } catch {
         console.log('Invalid Regular Expression: %s', regExStr);
     }
     return undefined;

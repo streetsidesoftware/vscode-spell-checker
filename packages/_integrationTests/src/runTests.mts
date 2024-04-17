@@ -80,8 +80,7 @@ async function main() {
     } catch (err) {
         console.error(err);
         console.error('Failed to run tests');
-        // eslint-disable-next-line no-process-exit
-        process.exit(1);
+        process.exitCode = 1;
     }
 }
 

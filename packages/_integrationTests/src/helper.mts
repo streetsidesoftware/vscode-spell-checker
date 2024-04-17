@@ -1,4 +1,3 @@
-/* eslint-disable import/no-duplicates */
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 import * as path from 'node:path';

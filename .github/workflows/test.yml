@@ -1,5 +1,5 @@
 name: ' 🧪 Build and Test'
-on: # rebuild any PRs and main branch changes
+on:
   pull_request:
     paths-ignore:
       - 'docs/**'

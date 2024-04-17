@@ -406,7 +406,7 @@ export class DocumentSettings {
         try {
             await this.determineIsTrusted();
             return await this.__fetchSettingsForUri(docUri);
-        } catch (e) {
+        } catch {
             // console.error('fetchSettingsForUri: %s %s', docUri, e);
             return {
                 uri: docUri || '',
@@ -845,7 +845,7 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
         const stats = await stat(url);
         const found = stats.isFile() ? uri : undefined;
         return found;
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }
@@ -860,7 +860,7 @@ async function filterUrl(uri: Uri): Promise<Uri | undefined> {
 function tryJoinURL(rel: string, base: URL | string): URL | undefined {
     try {
         return new URL(rel, base);
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }

@@ -15,7 +15,7 @@ export function watchFile(filename: string, callback: (eventType?: EventType, fi
     if (uri.scheme === 'file') {
         try {
             return fsWatch(filename, { persistent: false }, callback);
-        } catch (e) {
+        } catch {
             // Watch is not supported
         }
     }
