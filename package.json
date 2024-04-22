@@ -3513,7 +3513,7 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.0",
-    "vite": "^5.2.9",
+    "vite": "^5.2.10",
     "vitest": "^1.5.0"
   },
   "dependencies": {
