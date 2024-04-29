@@ -3507,7 +3507,7 @@
     "ovsx": "^0.9.1",
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.3",
-    "rollup": "^4.14.3",
+    "rollup": "^4.17.1",
     "rollup-plugin-dts": "^6.1.0",
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
