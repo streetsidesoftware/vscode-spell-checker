@@ -125,7 +125,7 @@ Name
 : `cSpell.dictionaries`
 
 Type
-: string[]
+: []
 
 Scope
 : resource
@@ -288,7 +288,7 @@ Name
 : `cSpell.noSuggestDictionaries`
 
 Type
-: string[]
+: []
 
 Scope
 : resource
@@ -1307,7 +1307,7 @@ Name
 : `cSpell.ignoreRegExpList`
 
 Type
-: string[]
+: []
 
 Scope
 : resource
@@ -1339,7 +1339,7 @@ Name
 : `cSpell.includeRegExpList`
 
 Type
-: string[]
+: []
 
 Scope
 : resource

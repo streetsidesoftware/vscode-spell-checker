@@ -38,7 +38,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-test-renderer": "^17.0.2",
-    "terser": "^5.30.4",
+    "terser": "^5.31.0",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "vscode-uri": "^3.0.8",
