@@ -3512,7 +3512,7 @@
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.7.1",
+    "typescript-eslint": "^7.8.0",
     "vite": "^5.2.10",
     "vitest": "^1.5.2"
   },
