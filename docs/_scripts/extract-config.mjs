@@ -252,7 +252,7 @@ function formatDefaultValue(value) {
     const lines = text.split('\n');
     if (lines.length > 1) {
         // console.error('%o', lines);
-        return '-\n```\n' + text + '\n```\n';
+        return 'code\n```js\n' + text + '\n```\n';
     }
 
     return '_`' + text + '`_';
@@ -327,7 +327,7 @@ ${defs}
 function formatType(def) {
     const typeLines = beautifyType(extractTypeAndFormat(def), 80);
     const types =
-        typeLines.length > 1 ? 'definition:\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+        typeLines.length > 1 ? 'definition\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
     const enumDefs = extractEnumDescriptions(def);
     return types + enumDefs;
 }
