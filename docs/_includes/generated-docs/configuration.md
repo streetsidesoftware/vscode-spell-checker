@@ -819,13 +819,13 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-:
-    `````js
+: JSON
+    ```
     [
     "file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell",
     "vscode-scm", "comment", "vscode-userdata", "vscode-vfs", "vsls"
     ]
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
@@ -955,13 +955,13 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-:
-    `````js
+: JSON
+    ```
     [
     "package-lock.json", "node_modules", "vscode-extension", ".git/objects",
     ".vscode", ".vscode-insiders"
     ]
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
@@ -1046,8 +1046,8 @@ This only applies when there is a CSpell configuration file in the workspace and
 
 <!-- prettier-ignore-start -->
 Default
-:
-    `````js
+: JSON
+    ```
     {
     "allowCompoundWords": true, "caseSensitive": true, "dictionaries": true,
     "dictionaryDefinitions": true, "enableGlobDot": true, "features": true,
@@ -1060,7 +1060,7 @@ Default
     "suggestWords": true, "useGitignore": true, "usePnP": true, "userWords": true,
     "validateDirectives": true, "words": true
     }
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
@@ -1359,7 +1359,7 @@ Name
 <!-- prettier-ignore-start -->
 Type
 :
-    `````
+    ```
     ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
      "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
      "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
@@ -1368,7 +1368,7 @@ Type
      "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
      "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
      "UUID"  | "Everything" )[]
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
@@ -1404,7 +1404,7 @@ Name
 <!-- prettier-ignore-start -->
 Type
 :
-    `````
+    ```
     ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
      "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
      "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
@@ -1413,7 +1413,7 @@ Type
      "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
      "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
      "UUID"  | "Everything" )[]
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
@@ -2144,8 +2144,8 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-:
-    `````js
+: JSON
+    ```
     [
     "asciidoc", "bat", "c", "clojure", "coffeescript", "cpp", "csharp", "css",
     "dart", "diff", "dockerfile", "elixir", "erlang", "fsharp", "git-commit",
@@ -2158,7 +2158,7 @@ Default
     "swift", "text", "typescript", "typescriptreact", "vb", "vue", "xml", "xsl",
     "yaml"
     ]
-    `````
+    ```
 
 <!-- prettier-ignore-end -->
 
