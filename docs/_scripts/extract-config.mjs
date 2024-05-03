@@ -1,4 +1,5 @@
 import { promises as fs } from 'node:fs';
+import { type } from 'node:os';
 
 const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
 const descriptionWidth = 90;
@@ -171,6 +172,14 @@ function extractType(def) {
 
     if (def.enum) {
         return `( ${def.enum.map((v) => '`' + JSON.stringify(v) + '`').join(' \\| ')} )`;
+    }
+
+    if (def.type) return def.type;
+
+    if (Array.isArray(def.anyOf)) {
+        const types = [...new Set(def.anyOf.map(extractType))];
+        if (types.length === 1) return types[0];
+        return `( ${types.join(' | ')} )`;
     }
 
     return def.type || '';

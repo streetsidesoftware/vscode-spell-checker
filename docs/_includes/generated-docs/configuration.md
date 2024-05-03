@@ -125,7 +125,7 @@ Name
 : `cSpell.dictionaries`
 
 Type
-: []
+: string[]
 
 Scope
 : resource
@@ -157,7 +157,7 @@ Name
 : `cSpell.dictionaryDefinitions` -- Dictionary Definitions
 
 Type
-: []
+: object[]
 
 Scope
 : resource
@@ -288,7 +288,7 @@ Name
 : `cSpell.noSuggestDictionaries`
 
 Type
-: []
+: string[]
 
 Scope
 : resource
@@ -1307,7 +1307,7 @@ Name
 : `cSpell.ignoreRegExpList`
 
 Type
-: []
+: ( string | ( `"Base64"` \| `"Base64MultiLine"` \| `"Base64SingleLine"` \| `"CStyleComment"` \| `"CStyleHexValue"` \| `"CSSHexValue"` \| `"CommitHash"` \| `"CommitHashLink"` \| `"Email"` \| `"EscapeCharacters"` \| `"HexValues"` \| `"href"` \| `"PhpHereDoc"` \| `"PublicKey"` \| `"RsaCert"` \| `"SshRsa"` \| `"SHA"` \| `"HashStrings"` \| `"SpellCheckerDisable"` \| `"SpellCheckerDisableBlock"` \| `"SpellCheckerDisableLine"` \| `"SpellCheckerDisableNext"` \| `"SpellCheckerIgnoreInDocSetting"` \| `"string"` \| `"UnicodeRef"` \| `"Urls"` \| `"UUID"` \| `"Everything"` ) )[]
 
 Scope
 : resource
@@ -1339,7 +1339,7 @@ Name
 : `cSpell.includeRegExpList`
 
 Type
-: []
+: ( string | ( `"Base64"` \| `"Base64MultiLine"` \| `"Base64SingleLine"` \| `"CStyleComment"` \| `"CStyleHexValue"` \| `"CSSHexValue"` \| `"CommitHash"` \| `"CommitHashLink"` \| `"Email"` \| `"EscapeCharacters"` \| `"HexValues"` \| `"href"` \| `"PhpHereDoc"` \| `"PublicKey"` \| `"RsaCert"` \| `"SshRsa"` \| `"SHA"` \| `"HashStrings"` \| `"SpellCheckerDisable"` \| `"SpellCheckerDisableBlock"` \| `"SpellCheckerDisableLine"` \| `"SpellCheckerDisableNext"` \| `"SpellCheckerIgnoreInDocSetting"` \| `"string"` \| `"UnicodeRef"` \| `"Urls"` \| `"UUID"` \| `"Everything"` ) )[]
 
 Scope
 : resource
@@ -1986,7 +1986,7 @@ Name
 : ~~`cSpell.customFolderDictionaries`~~ -- Custom Folder Dictionaries
 
 Type
-: []
+: ( object | string )[]
 
 Scope
 : resource
@@ -2009,7 +2009,7 @@ Name
 : ~~`cSpell.customUserDictionaries`~~ -- Custom User Dictionaries
 
 Type
-: []
+: ( object | string )[]
 
 Scope
 : application
@@ -2032,7 +2032,7 @@ Name
 : ~~`cSpell.customWorkspaceDictionaries`~~ -- Custom Workspace Dictionaries
 
 Type
-: []
+: ( object | string )[]
 
 Scope
 : resource
