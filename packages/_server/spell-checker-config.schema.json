@@ -91,9 +91,51 @@
         "cSpell.ignoreRegExpList": {
           "description": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,   it is necessary to escape `\\`.   Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  | | :------------------ | :-------------------- | :------------------------------------------- | | `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         | | `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    | | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
           "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "description": "This matches the name in a pattern definition.",
+                "markdownDescription": "This matches the name in a pattern definition.",
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "Base64",
+                  "Base64MultiLine",
+                  "Base64SingleLine",
+                  "CStyleComment",
+                  "CStyleHexValue",
+                  "CSSHexValue",
+                  "CommitHash",
+                  "CommitHashLink",
+                  "Email",
+                  "EscapeCharacters",
+                  "HexValues",
+                  "href",
+                  "PhpHereDoc",
+                  "PublicKey",
+                  "RsaCert",
+                  "SshRsa",
+                  "SHA",
+                  "HashStrings",
+                  "SpellCheckerDisable",
+                  "SpellCheckerDisableBlock",
+                  "SpellCheckerDisableLine",
+                  "SpellCheckerDisableNext",
+                  "SpellCheckerIgnoreInDocSetting",
+                  "string",
+                  "UnicodeRef",
+                  "Urls",
+                  "UUID",
+                  "Everything"
+                ],
+                "type": "string"
+              }
+            ],
             "description": "A PatternRef is a Pattern or PatternId.",
-            "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-            "type": "string"
+            "markdownDescription": "A PatternRef is a Pattern or PatternId."
           },
           "markdownDescription": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,\n  it is necessary to escape `\\`.\n  Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  |\n| :------------------ | :-------------------- | :------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
           "scope": "resource",
@@ -102,9 +144,51 @@
         "cSpell.includeRegExpList": {
           "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
           "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "description": "This matches the name in a pattern definition.",
+                "markdownDescription": "This matches the name in a pattern definition.",
+                "type": "string"
+              },
+              {
+                "enum": [
+                  "Base64",
+                  "Base64MultiLine",
+                  "Base64SingleLine",
+                  "CStyleComment",
+                  "CStyleHexValue",
+                  "CSSHexValue",
+                  "CommitHash",
+                  "CommitHashLink",
+                  "Email",
+                  "EscapeCharacters",
+                  "HexValues",
+                  "href",
+                  "PhpHereDoc",
+                  "PublicKey",
+                  "RsaCert",
+                  "SshRsa",
+                  "SHA",
+                  "HashStrings",
+                  "SpellCheckerDisable",
+                  "SpellCheckerDisableBlock",
+                  "SpellCheckerDisableLine",
+                  "SpellCheckerDisableNext",
+                  "SpellCheckerIgnoreInDocSetting",
+                  "string",
+                  "UnicodeRef",
+                  "Urls",
+                  "UUID",
+                  "Everything"
+                ],
+                "type": "string"
+              }
+            ],
             "description": "A PatternRef is a Pattern or PatternId.",
-            "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-            "type": "string"
+            "markdownDescription": "A PatternRef is a Pattern or PatternId."
           },
           "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
           "scope": "resource",
@@ -175,9 +259,22 @@
               "dictionaries": {
                 "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                 "items": {
+                  "anyOf": [
+                    {
+                      "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                      "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                      "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                      "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    }
+                  ],
                   "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "type": "string"
+                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                 },
                 "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                 "type": "array"
@@ -424,9 +521,51 @@
               "ignoreRegExpList": {
                 "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "This matches the name in a pattern definition.",
+                      "markdownDescription": "This matches the name in a pattern definition.",
+                      "type": "string"
+                    },
+                    {
+                      "enum": [
+                        "Base64",
+                        "Base64MultiLine",
+                        "Base64SingleLine",
+                        "CStyleComment",
+                        "CStyleHexValue",
+                        "CSSHexValue",
+                        "CommitHash",
+                        "CommitHashLink",
+                        "Email",
+                        "EscapeCharacters",
+                        "HexValues",
+                        "href",
+                        "PhpHereDoc",
+                        "PublicKey",
+                        "RsaCert",
+                        "SshRsa",
+                        "SHA",
+                        "HashStrings",
+                        "SpellCheckerDisable",
+                        "SpellCheckerDisableBlock",
+                        "SpellCheckerDisableLine",
+                        "SpellCheckerDisableNext",
+                        "SpellCheckerIgnoreInDocSetting",
+                        "string",
+                        "UnicodeRef",
+                        "Urls",
+                        "UUID",
+                        "Everything"
+                      ],
+                      "type": "string"
+                    }
+                  ],
                   "description": "A PatternRef is a Pattern or PatternId.",
-                  "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                  "type": "string"
+                  "markdownDescription": "A PatternRef is a Pattern or PatternId."
                 },
                 "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "type": "array"
@@ -442,9 +581,51 @@
               "includeRegExpList": {
                 "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "This matches the name in a pattern definition.",
+                      "markdownDescription": "This matches the name in a pattern definition.",
+                      "type": "string"
+                    },
+                    {
+                      "enum": [
+                        "Base64",
+                        "Base64MultiLine",
+                        "Base64SingleLine",
+                        "CStyleComment",
+                        "CStyleHexValue",
+                        "CSSHexValue",
+                        "CommitHash",
+                        "CommitHashLink",
+                        "Email",
+                        "EscapeCharacters",
+                        "HexValues",
+                        "href",
+                        "PhpHereDoc",
+                        "PublicKey",
+                        "RsaCert",
+                        "SshRsa",
+                        "SHA",
+                        "HashStrings",
+                        "SpellCheckerDisable",
+                        "SpellCheckerDisableBlock",
+                        "SpellCheckerDisableLine",
+                        "SpellCheckerDisableNext",
+                        "SpellCheckerIgnoreInDocSetting",
+                        "string",
+                        "UnicodeRef",
+                        "Urls",
+                        "UUID",
+                        "Everything"
+                      ],
+                      "type": "string"
+                    }
+                  ],
                   "description": "A PatternRef is a Pattern or PatternId.",
-                  "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                  "type": "string"
+                  "markdownDescription": "A PatternRef is a Pattern or PatternId."
                 },
                 "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "type": "array"
@@ -476,7 +657,26 @@
                   },
                   {
                     "items": {
-                      "type": "string"
+                      "anyOf": [
+                        {
+                          "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                          "type": "string"
+                        },
+                        {
+                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                          "type": "string"
+                        },
+                        {
+                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                          "type": "string"
+                        }
+                      ]
                     },
                     "type": "array"
                   }
@@ -509,9 +709,22 @@
                     "dictionaries": {
                       "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                       "items": {
+                        "anyOf": [
+                          {
+                            "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                            "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "type": "string"
+                          },
+                          {
+                            "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                            "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                            "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "type": "string"
+                          }
+                        ],
                         "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                        "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                        "type": "string"
+                        "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                       },
                       "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                       "type": "array"
@@ -714,9 +927,51 @@
                     "ignoreRegExpList": {
                       "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "description": "This matches the name in a pattern definition.",
+                            "markdownDescription": "This matches the name in a pattern definition.",
+                            "type": "string"
+                          },
+                          {
+                            "enum": [
+                              "Base64",
+                              "Base64MultiLine",
+                              "Base64SingleLine",
+                              "CStyleComment",
+                              "CStyleHexValue",
+                              "CSSHexValue",
+                              "CommitHash",
+                              "CommitHashLink",
+                              "Email",
+                              "EscapeCharacters",
+                              "HexValues",
+                              "href",
+                              "PhpHereDoc",
+                              "PublicKey",
+                              "RsaCert",
+                              "SshRsa",
+                              "SHA",
+                              "HashStrings",
+                              "SpellCheckerDisable",
+                              "SpellCheckerDisableBlock",
+                              "SpellCheckerDisableLine",
+                              "SpellCheckerDisableNext",
+                              "SpellCheckerIgnoreInDocSetting",
+                              "string",
+                              "UnicodeRef",
+                              "Urls",
+                              "UUID",
+                              "Everything"
+                            ],
+                            "type": "string"
+                          }
+                        ],
                         "description": "A PatternRef is a Pattern or PatternId.",
-                        "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                        "type": "string"
+                        "markdownDescription": "A PatternRef is a Pattern or PatternId."
                       },
                       "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "type": "array"
@@ -732,9 +987,51 @@
                     "includeRegExpList": {
                       "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "description": "This matches the name in a pattern definition.",
+                            "markdownDescription": "This matches the name in a pattern definition.",
+                            "type": "string"
+                          },
+                          {
+                            "enum": [
+                              "Base64",
+                              "Base64MultiLine",
+                              "Base64SingleLine",
+                              "CStyleComment",
+                              "CStyleHexValue",
+                              "CSSHexValue",
+                              "CommitHash",
+                              "CommitHashLink",
+                              "Email",
+                              "EscapeCharacters",
+                              "HexValues",
+                              "href",
+                              "PhpHereDoc",
+                              "PublicKey",
+                              "RsaCert",
+                              "SshRsa",
+                              "SHA",
+                              "HashStrings",
+                              "SpellCheckerDisable",
+                              "SpellCheckerDisableBlock",
+                              "SpellCheckerDisableLine",
+                              "SpellCheckerDisableNext",
+                              "SpellCheckerIgnoreInDocSetting",
+                              "string",
+                              "UnicodeRef",
+                              "Urls",
+                              "UUID",
+                              "Everything"
+                            ],
+                            "type": "string"
+                          }
+                        ],
                         "description": "A PatternRef is a Pattern or PatternId.",
-                        "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                        "type": "string"
+                        "markdownDescription": "A PatternRef is a Pattern or PatternId."
                       },
                       "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                       "type": "array"
@@ -761,7 +1058,26 @@
                         },
                         {
                           "items": {
-                            "type": "string"
+                            "anyOf": [
+                              {
+                                "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                                "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                                "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                                "type": "string"
+                              },
+                              {
+                                "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                                "type": "string"
+                              },
+                              {
+                                "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                                "type": "string"
+                              }
+                            ]
                           },
                           "type": "array"
                         }
@@ -796,9 +1112,22 @@
                     "noSuggestDictionaries": {
                       "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                       "items": {
+                        "anyOf": [
+                          {
+                            "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                            "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                            "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "type": "string"
+                          },
+                          {
+                            "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                            "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                            "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                            "type": "string"
+                          }
+                        ],
                         "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                        "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                        "type": "string"
+                        "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                       },
                       "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                       "type": "array"
@@ -901,9 +1230,22 @@
               "noSuggestDictionaries": {
                 "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                 "items": {
+                  "anyOf": [
+                    {
+                      "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                      "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                      "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                      "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    }
+                  ],
                   "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "type": "string"
+                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                 },
                 "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                 "type": "array"
@@ -1420,10 +1762,22 @@
                     "type": "boolean"
                   },
                   "path": {
+                    "anyOf": [
+                      {
+                        "description": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found in the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json \"path\": \"~/dictionaries/custom_dictionary.txt\" ```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json \"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative workspace for the currently open file.\n\n```json \"path\": \"${workspaceFolder}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in a multi-root workspace\n\n```json \"path\": \"./build/custom_dictionary.txt\" ```",
+                        "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                        "title": "Path to Dictionary Text File",
+                        "type": "string"
+                      },
+                      {
+                        "description": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found in the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json \"path\": \"~/dictionaries/custom_dictionary.txt\" ```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json \"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative workspace for the currently open file.\n\n```json \"path\": \"${workspaceFolder}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in a multi-root workspace\n\n```json \"path\": \"./build/custom_dictionary.txt\" ```",
+                        "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                        "type": "string"
+                      }
+                    ],
                     "description": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found in the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json \"path\": \"~/dictionaries/custom_dictionary.txt\" ```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json \"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative workspace for the currently open file.\n\n```json \"path\": \"${workspaceFolder}/build/custom_dictionary.txt\" ```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in a multi-root workspace\n\n```json \"path\": \"./build/custom_dictionary.txt\" ```",
                     "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
-                    "title": "Path to Dictionary Text File",
-                    "type": "string"
+                    "title": "Path to Dictionary Text File"
                   },
                   "scope": {
                     "anyOf": [
@@ -1470,9 +1824,22 @@
         "cSpell.dictionaries": {
           "description": "Optional list of dictionaries to use.\n\nEach entry should match the name of the dictionary.\n\nTo remove a dictionary from the list add `!` before the name. i.e. `!typescript` will turn off the dictionary with the name `typescript`.\n\n\nExample:\n\n```jsonc // Enable `lorem-ipsum` and disable `typescript` \"cSpell.dictionaries\": [\"lorem-ipsum\", \"!typescript\"] ```",
           "items": {
+            "anyOf": [
+              {
+                "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                "type": "string"
+              },
+              {
+                "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                "type": "string"
+              }
+            ],
             "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-            "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-            "type": "string"
+            "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
           },
           "markdownDescription": "Optional list of dictionaries to use.\n\nEach entry should match the name of the dictionary.\n\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.\n\n\nExample:\n\n```jsonc\n// Enable `lorem-ipsum` and disable `typescript`\n\"cSpell.dictionaries\": [\"lorem-ipsum\", \"!typescript\"]\n```",
           "scope": "resource",
@@ -1704,9 +2071,22 @@
               "dictionaries": {
                 "description": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/) and [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                 "items": {
+                  "anyOf": [
+                    {
+                      "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                      "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                      "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                      "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    }
+                  ],
                   "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "type": "string"
+                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                 },
                 "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                 "type": "array"
@@ -1909,9 +2289,51 @@
               "ignoreRegExpList": {
                 "description": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON ```json \"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"] ```\n\nYAML ```yaml ignoreRegExpList:   - >-    /\\b[A-Z]+\\b/g ```\n\nBy default, several patterns are excluded. See [Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "This matches the name in a pattern definition.",
+                      "markdownDescription": "This matches the name in a pattern definition.",
+                      "type": "string"
+                    },
+                    {
+                      "enum": [
+                        "Base64",
+                        "Base64MultiLine",
+                        "Base64SingleLine",
+                        "CStyleComment",
+                        "CStyleHexValue",
+                        "CSSHexValue",
+                        "CommitHash",
+                        "CommitHashLink",
+                        "Email",
+                        "EscapeCharacters",
+                        "HexValues",
+                        "href",
+                        "PhpHereDoc",
+                        "PublicKey",
+                        "RsaCert",
+                        "SshRsa",
+                        "SHA",
+                        "HashStrings",
+                        "SpellCheckerDisable",
+                        "SpellCheckerDisableBlock",
+                        "SpellCheckerDisableLine",
+                        "SpellCheckerDisableNext",
+                        "SpellCheckerIgnoreInDocSetting",
+                        "string",
+                        "UnicodeRef",
+                        "Urls",
+                        "UUID",
+                        "Everything"
+                      ],
+                      "type": "string"
+                    }
+                  ],
                   "description": "A PatternRef is a Pattern or PatternId.",
-                  "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                  "type": "string"
+                  "markdownDescription": "A PatternRef is a Pattern or PatternId."
                 },
                 "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "type": "array"
@@ -1927,9 +2349,51 @@
               "includeRegExpList": {
                 "description": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are [built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "This matches the name in a pattern definition.",
+                      "markdownDescription": "This matches the name in a pattern definition.",
+                      "type": "string"
+                    },
+                    {
+                      "enum": [
+                        "Base64",
+                        "Base64MultiLine",
+                        "Base64SingleLine",
+                        "CStyleComment",
+                        "CStyleHexValue",
+                        "CSSHexValue",
+                        "CommitHash",
+                        "CommitHashLink",
+                        "Email",
+                        "EscapeCharacters",
+                        "HexValues",
+                        "href",
+                        "PhpHereDoc",
+                        "PublicKey",
+                        "RsaCert",
+                        "SshRsa",
+                        "SHA",
+                        "HashStrings",
+                        "SpellCheckerDisable",
+                        "SpellCheckerDisableBlock",
+                        "SpellCheckerDisableLine",
+                        "SpellCheckerDisableNext",
+                        "SpellCheckerIgnoreInDocSetting",
+                        "string",
+                        "UnicodeRef",
+                        "Urls",
+                        "UUID",
+                        "Everything"
+                      ],
+                      "type": "string"
+                    }
+                  ],
                   "description": "A PatternRef is a Pattern or PatternId.",
-                  "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                  "type": "string"
+                  "markdownDescription": "A PatternRef is a Pattern or PatternId."
                 },
                 "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                 "type": "array"
@@ -1956,7 +2420,26 @@
                   },
                   {
                     "items": {
-                      "type": "string"
+                      "anyOf": [
+                        {
+                          "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                          "type": "string"
+                        },
+                        {
+                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                          "type": "string"
+                        },
+                        {
+                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                          "type": "string"
+                        }
+                      ]
                     },
                     "type": "array"
                   }
@@ -1991,9 +2474,22 @@
               "noSuggestDictionaries": {
                 "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
                 "items": {
+                  "anyOf": [
+                    {
+                      "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                      "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                      "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    },
+                    {
+                      "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                      "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                      "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                      "type": "string"
+                    }
+                  ],
                   "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                  "type": "string"
+                  "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                 },
                 "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                 "type": "array"
@@ -2067,9 +2563,22 @@
         "cSpell.noSuggestDictionaries": {
           "description": "Optional list of dictionaries that will not be used for suggestions. Words in these dictionaries are considered correct, but will not be used when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in one of these dictionaries, it will be removed from the set of possible suggestions.",
           "items": {
+            "anyOf": [
+              {
+                "description": "This a reference to a named dictionary. It is expected to match the name of a dictionary.",
+                "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                "type": "string"
+              },
+              {
+                "description": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.    Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.    Overrides `!!<dictionary_name>`.",
+                "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                "type": "string"
+              }
+            ],
             "description": "Reference to a dictionary by name. One of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-            "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-            "type": "string"
+            "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
           },
           "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
           "scope": "resource",
