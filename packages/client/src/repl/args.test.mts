@@ -1,5 +1,6 @@
 import assert from 'node:assert';
 import type { ParseArgsConfig } from 'node:util';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { parseArgs } from 'node:util';
 
 import { describe, expect, test } from 'vitest';

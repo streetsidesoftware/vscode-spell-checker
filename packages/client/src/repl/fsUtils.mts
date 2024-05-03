@@ -29,15 +29,15 @@ function uriParent(uri: Uri | undefined): Uri | undefined {
     return uri && Uri.joinPath(uri, '..');
 }
 
-export async function* readStatsForFiles(uris: Uri[], cancelationToken: vscode.CancellationToken | undefined): AsyncGenerator<UriStats> {
-    if (cancelationToken?.isCancellationRequested) {
+export async function* readStatsForFiles(uris: Uri[], cancellationToken: vscode.CancellationToken | undefined): AsyncGenerator<UriStats> {
+    if (cancellationToken?.isCancellationRequested) {
         return [];
     }
 
     const statsRequests = uris.map((uri) => async () => [uri, await vscode.workspace.fs.stat(uri)] as UriStats);
 
     for await (const result of asyncQueue(statsRequests, 10)) {
-        if (cancelationToken?.isCancellationRequested) {
+        if (cancellationToken?.isCancellationRequested) {
             break;
         }
         yield result;
@@ -51,16 +51,16 @@ export async function globSearch(
     base: Uri | undefined,
     excludePattern: string | undefined,
     maxResults: number | undefined,
-    cancelationToken?: vscode.CancellationToken,
+    cancellationToken?: vscode.CancellationToken,
 ): Promise<Uri[]> {
     const pat = toGlobPattern(pattern, base);
     const result = await vscode.workspace.findFiles(
         pat,
         excludePattern && toGlobPattern(excludePattern, base),
         maxResults,
-        cancelationToken,
+        cancellationToken,
     );
-    if (cancelationToken?.isCancellationRequested) {
+    if (cancellationToken?.isCancellationRequested) {
         consoleDebug('globSearch cancelled');
     }
     return result;
@@ -79,11 +79,11 @@ export async function readDir(relUri?: string | Uri | undefined, cwd?: Uri): Pro
     return await vscode.workspace.fs.readDirectory(uri);
 }
 
-export async function* readDirStats(dirUri: Uri, extendedStats = false, cancelationToken?: CancellationToken): AsyncGenerator<ExDirEntry> {
-    if (cancelationToken?.isCancellationRequested) return;
+export async function* readDirStats(dirUri: Uri, extendedStats = false, cancellationToken?: CancellationToken): AsyncGenerator<ExDirEntry> {
+    if (cancellationToken?.isCancellationRequested) return;
 
     for await (const [name, type] of await vscode.workspace.fs.readDirectory(dirUri)) {
-        if (cancelationToken?.isCancellationRequested) return;
+        if (cancellationToken?.isCancellationRequested) return;
         const stat = extendedStats ? await vscode.workspace.fs.stat(Uri.joinPath(dirUri, name)) : { type };
         yield [name, stat] as ExDirEntry;
     }
