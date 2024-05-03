@@ -29,7 +29,7 @@ async function run() {
         return;
     }
 
-    configSections.sort((a, b) => a.order - b.order || compare(a.title, b.title));
+    configSections.sort((a, b) => a.order - b.order || compare(a.title || '', b.title || ''));
 
     const doc = `
 <!--- AUTO-GENERATED ALL CHANGES WILL BE LOST --->
@@ -55,11 +55,15 @@ ${formatSections(configSections)}
          * @returns
          */
         function tocEntry(value) {
+            if (!value.title) return '';
             const title = value.title;
             return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
         }
 
-        return `\n${sections.map(tocEntry).join('\n')}\n`;
+        return `\n${sections
+            .map(tocEntry)
+            .filter((a) => !!a)
+            .join('\n')}\n`;
     }
 }
 
@@ -77,7 +81,7 @@ function formatSections(sections) {
  * @returns
  */
 function sectionEntry(section) {
-    const entries = Object.entries(section.properties);
+    const entries = Object.entries(section.properties || {});
     entries.sort(([a], [b]) => compare(a, b));
     const activeEntries = entries.filter(([, value]) => !value.deprecationMessage);
 
@@ -179,7 +183,7 @@ function definition(entry) {
 
 ${singleDef('Name', `${name} ${title}`)}
 
-${singleDef('Type', formatType(value))}
+${singleDef('Type', formatType(value), true)}
 
 ${singleDef('Scope', value.scope || '')}
 
@@ -187,7 +191,7 @@ ${singleDef('Description', description)}
 
 ${deprecationMessage}
 
-${singleDef('Default', defaultValue)}
+${singleDef('Default', defaultValue, true)}
 
 ${since ? singleDef('Since Version', since) : ''}
 
@@ -201,28 +205,62 @@ ${since ? singleDef('Since Version', since) : ''}
  * @param {string} def
  * @returns
  */
-function singleDef(term, def) {
-    return `${term}\n: ${def.replace(/\n/g, '\n    ')}`;
+function singleDef(term, def, addIgnore = false) {
+    const lines = [];
+
+    const defLines = def.replace(/\n/g, '\n    ');
+    const termDef = `${term}\n: ${defLines}`;
+    const termLines = termDef.split('\n').map((line) => line.trimEnd());
+
+    if (termLines.length > 2 && addIgnore) {
+        lines.push('<!-- prettier-ignore-start -->');
+    }
+
+    lines.push(...termLines);
+
+    if (termLines.length > 2 && addIgnore) {
+        lines.push('<!-- prettier-ignore-end -->');
+    }
+
+    return lines.join('\n');
 }
 
 /**
  *
- * @param {JSONSchema4Type} value
+ * @param {JSONSchema4Type | undefined} value
+ * @returns {string}
+ */
+function _formatDefaultValue(value) {
+    if (value === undefined) return '';
+
+    if (Array.isArray(value)) {
+        return '[ ' + value.map(_formatDefaultValue).join(', ') + ' ]';
+    }
+
+    return JSON.stringify(value);
+}
+
+/**
+ *
+ * @param {JSONSchema4Type | undefined} value
  * @returns
  */
 function formatDefaultValue(value) {
     if (value === undefined) return '_- none -_';
 
-    if (Array.isArray(value)) {
-        return '[ ' + value.map(formatDefaultValue).join(', ') + ' ]';
+    const text = beautifyJSON(_formatDefaultValue(value), 80);
+    const lines = text.split('\n');
+    if (lines.length > 1) {
+        // console.error('%o', lines);
+        return '\n`````js\n' + text + '\n`````\n';
     }
 
-    return '_`' + JSON.stringify(value) + '`_';
+    return '_`' + text + '`_';
 }
 
 /**
  *
- * @param {JSONSchema4} def
+ * @param {JSONSchema4 | undefined} def
  * @returns {string}
  */
 function extractTypeAndFormat(def) {
@@ -240,10 +278,11 @@ function formatExtractedType(types) {
 }
 
 /**
- * @param {JSONSchema4} def
+ * @param {JSONSchema4 | undefined} def
  * @returns {string | string[]}
  */
 function extractType(def) {
+    if (!def) return '';
     if (def.type === 'array') return extractTypeAndFormat(def.items) + '[]';
 
     if (def.enum) {
@@ -286,9 +325,10 @@ ${defs}
  * @returns
  */
 function formatType(def) {
-    const type = extractTypeAndFormat(def);
+    const typeLines = beautifyType(extractTypeAndFormat(def), 80);
+    const types = typeLines.length > 1 ? '\n`````\n' + typeLines.join('\n') + '\n`````\n' : '`' + typeLines[0] + '`';
     const enumDefs = extractEnumDescriptions(def);
-    return '`' + type + '` ' + enumDefs;
+    return types + enumDefs;
 }
 
 /**
@@ -310,6 +350,103 @@ async function loadSchema() {
     return {
         properties: schema.properties,
     };
+}
+
+/**
+ * @param {string} json
+ * @param {number} width
+ * @returns {string}
+ */
+function beautifyJSON(json, width) {
+    if (json.length < width) return json;
+
+    const lines = [];
+    let line = '';
+
+    /**
+     *
+     * @param  {...string} items
+     * @returns {void}
+     */
+    function addToLine(...items) {
+        for (const text of items) {
+            if (text === '\n') {
+                lines.push(line);
+                line = '';
+                continue;
+            }
+            if (line.length + text.length > width) {
+                line && lines.push(line);
+                line = '';
+            }
+            line += text;
+        }
+    }
+
+    const obj = JSON.parse(json);
+    if (typeof obj !== 'object') return json;
+    if (Array.isArray(obj)) {
+        addToLine('[', '\n');
+        obj.forEach((item, index) => {
+            addToLine(JSON.stringify(item) + (index === obj.length - 1 ? '' : ', '));
+        });
+        addToLine('\n', ']');
+    } else if (typeof obj === 'object') {
+        addToLine('{', '\n');
+        const entries = Object.entries(obj);
+        entries.forEach(([key, item], index) => {
+            addToLine(JSON.stringify(key) + ': ', JSON.stringify(item) + (index === entries.length - 1 ? '' : ', '));
+        });
+        addToLine('\n', '}');
+    }
+
+    line && lines.push(line);
+
+    // console.error('%o', lines);
+
+    return lines.join('\n');
+}
+
+/**
+ * @param {string} dataType
+ * @param {number} width
+ * @returns {string[]}
+ */
+function beautifyType(dataType, width) {
+    if (dataType.length < width) return [dataType];
+
+    const lines = [];
+    let line = '';
+
+    /**
+     *
+     * @param  {...string} items
+     * @returns {void}
+     */
+    function addToLine(...items) {
+        for (const text of items) {
+            if (text === '\n') {
+                lines.push(line);
+                line = '';
+                continue;
+            }
+            if (line.length + text.length > width) {
+                line && lines.push(line);
+                line = '';
+            }
+            line += text;
+        }
+    }
+
+    const items = dataType.split('|');
+    const fixed = items.map((item, index) => item + (index === items.length - 1 ? '' : ' |'));
+
+    addToLine(...fixed);
+    line && lines.push(line);
+
+    // console.error('%o', lines);
+
+    return lines;
 }
 
 run();

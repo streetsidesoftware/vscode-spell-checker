@@ -424,6 +424,7 @@ Default
 Name
 : `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
 
+<!-- prettier-ignore-start -->
 Type
 : `( "Error" | "Warning" | "Information" | "Hint" )`
 
@@ -431,6 +432,8 @@ Type
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -450,6 +453,7 @@ Default
 Name
 : `cSpell.diagnosticLevelFlaggedWords` -- Set Diagnostic Reporting Level for Flagged Words
 
+<!-- prettier-ignore-start -->
 Type
 : `( "Error" | "Warning" | "Information" | "Hint" )`
 
@@ -457,6 +461,8 @@ Type
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -478,6 +484,7 @@ Since Version
 Name
 : `cSpell.diagnosticLevelSCM` -- Set Diagnostic Reporting Level in SCM Commit Message
 
+<!-- prettier-ignore-start -->
 Type
 : `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
 
@@ -486,6 +493,8 @@ Type
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
     | `Off` | Do not Report Spelling Issues |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -660,11 +669,14 @@ Default
 Name
 : `cSpell.showStatusAlignment`
 
+<!-- prettier-ignore-start -->
 Type
 : `( "Left" | "Right" )`
 
     | `Left` | Left Side of Statusbar |
     | `Right` | Right Side of Statusbar |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : application
@@ -701,11 +713,14 @@ Default
 Name
 : `cSpell.suggestionMenuType`
 
+<!-- prettier-ignore-start -->
 Type
 : `( "quickPick" | "quickFix" )`
 
     | `quickPick` | Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings) |
     | `quickFix` | Suggestions will appear inline near the word, inside the text editor. |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -802,8 +817,17 @@ Description
     - `vscode-scm` - Needed to spell check Source Control commit messages.
     - `comment` - Used for new comment editors.
 
+<!-- prettier-ignore-start -->
 Default
-: [ _`"file"`_, _`"gist"`_, _`"repo"`_, _`"sftp"`_, _`"untitled"`_, _`"vscode-notebook-cell"`_, _`"vscode-scm"`_, _`"comment"`_, _`"vscode-userdata"`_, _`"vscode-vfs"`_, _`"vsls"`_ ]
+:
+    `````js
+    [
+    "file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell",
+    "vscode-scm", "comment", "vscode-userdata", "vscode-vfs", "vsls"
+    ]
+    `````
+
+<!-- prettier-ignore-end -->
 
 ---
 
@@ -929,8 +953,17 @@ Scope
 Description
 : Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
 
+<!-- prettier-ignore-start -->
 Default
-: [ _`"package-lock.json"`_, _`"node_modules"`_, _`"vscode-extension"`_, _`".git/objects"`_, _`".vscode"`_, _`".vscode-insiders"`_ ]
+:
+    `````js
+    [
+    "package-lock.json", "node_modules", "vscode-extension", ".git/objects",
+    ".vscode", ".vscode-insiders"
+    ]
+    `````
+
+<!-- prettier-ignore-end -->
 
 ---
 
@@ -1011,8 +1044,25 @@ This only applies when there is a CSpell configuration file in the workspace and
     "cSpell.mergeCSpellSettingsFields": { "userWords": false }
     ```
 
+<!-- prettier-ignore-start -->
 Default
-: _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
+:
+    `````js
+    {
+    "allowCompoundWords": true, "caseSensitive": true, "dictionaries": true,
+    "dictionaryDefinitions": true, "enableGlobDot": true, "features": true,
+    "files": true, "flagWords": true, "gitignoreRoot": true, "globRoot": true,
+    "ignorePaths": true, "ignoreRegExpList": true, "ignoreWords": true, "import":
+    true, "includeRegExpList": true, "language": true, "languageId": true,
+    "languageSettings": true, "loadDefaultConfiguration": true, "minWordLength":
+    true, "noConfigSearch": true, "noSuggestDictionaries": true, "numSuggestions":
+    true, "overrides": true, "patterns": true, "pnpFiles": true, "reporters": true,
+    "suggestWords": true, "useGitignore": true, "usePnP": true, "userWords": true,
+    "validateDirectives": true, "words": true
+    }
+    `````
+
+<!-- prettier-ignore-end -->
 
 Since Version
 : 4.0.0
@@ -1306,8 +1356,21 @@ Default
 Name
 : `cSpell.ignoreRegExpList`
 
+<!-- prettier-ignore-start -->
 Type
-: `( string | "Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything" )[]`
+:
+    `````
+    ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
+     "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
+     "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
+     "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
+     "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
+     "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
+     "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
+     "UUID"  | "Everything" )[]
+    `````
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -1338,8 +1401,21 @@ Default
 Name
 : `cSpell.includeRegExpList`
 
+<!-- prettier-ignore-start -->
 Type
-: `( string | "Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything" )[]`
+:
+    `````
+    ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
+     "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
+     "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
+     "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
+     "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
+     "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
+     "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
+     "UUID"  | "Everything" )[]
+    `````
+
+<!-- prettier-ignore-end -->
 
 Scope
 : resource
@@ -1854,6 +1930,7 @@ Default
 Name
 : `cSpell.logLevel` -- Set Logging Level
 
+<!-- prettier-ignore-start -->
 Type
 : `( "None" | "Error" | "Warning" | "Information" | "Debug" )`
 
@@ -1862,6 +1939,8 @@ Type
     | `Warning` | Log errors and warnings |
     | `Information` | Log errors, warnings, and info |
     | `Debug` | Log everything (noisy) |
+
+<!-- prettier-ignore-end -->
 
 Scope
 : window
@@ -2063,7 +2142,24 @@ Scope
 Description
 : Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
 
+<!-- prettier-ignore-start -->
 Default
-: [ _`"asciidoc"`_, _`"bat"`_, _`"c"`_, _`"clojure"`_, _`"coffeescript"`_, _`"cpp"`_, _`"csharp"`_, _`"css"`_, _`"dart"`_, _`"diff"`_, _`"dockerfile"`_, _`"elixir"`_, _`"erlang"`_, _`"fsharp"`_, _`"git-commit"`_, _`"git-rebase"`_, _`"github-actions-workflow"`_, _`"go"`_, _`"graphql"`_, _`"groovy"`_, _`"handlebars"`_, _`"haskell"`_, _`"html"`_, _`"ini"`_, _`"jade"`_, _`"java"`_, _`"javascript"`_, _`"javascriptreact"`_, _`"json"`_, _`"jsonc"`_, _`"julia"`_, _`"jupyter"`_, _`"latex"`_, _`"less"`_, _`"lua"`_, _`"makefile"`_, _`"markdown"`_, _`"objective-c"`_, _`"perl"`_, _`"perl6"`_, _`"php"`_, _`"plaintext"`_, _`"powershell"`_, _`"properties"`_, _`"pug"`_, _`"python"`_, _`"r"`_, _`"razor"`_, _`"restructuredtext"`_, _`"ruby"`_, _`"rust"`_, _`"scala"`_, _`"scminput"`_, _`"scss"`_, _`"shaderlab"`_, _`"shellscript"`_, _`"sql"`_, _`"swift"`_, _`"text"`_, _`"typescript"`_, _`"typescriptreact"`_, _`"vb"`_, _`"vue"`_, _`"xml"`_, _`"xsl"`_, _`"yaml"`_ ]
+:
+    `````js
+    [
+    "asciidoc", "bat", "c", "clojure", "coffeescript", "cpp", "csharp", "css",
+    "dart", "diff", "dockerfile", "elixir", "erlang", "fsharp", "git-commit",
+    "git-rebase", "github-actions-workflow", "go", "graphql", "groovy",
+    "handlebars", "haskell", "html", "ini", "jade", "java", "javascript",
+    "javascriptreact", "json", "jsonc", "julia", "jupyter", "latex", "less", "lua",
+    "makefile", "markdown", "objective-c", "perl", "perl6", "php", "plaintext",
+    "powershell", "properties", "pug", "python", "r", "razor", "restructuredtext",
+    "ruby", "rust", "scala", "scminput", "scss", "shaderlab", "shellscript", "sql",
+    "swift", "text", "typescript", "typescriptreact", "vb", "vue", "xml", "xsl",
+    "yaml"
+    ]
+    `````
+
+<!-- prettier-ignore-end -->
 
 ---
