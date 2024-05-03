@@ -1,6 +1,10 @@
 {
-  "type": "commonjs",
+  "name": "docs_scripts",
+  "type": "module",
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/json-schema": "^7.0.15"
   }
 }

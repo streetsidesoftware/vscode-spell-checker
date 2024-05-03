@@ -3904,6 +3904,7 @@
   },
   "workspaces": [
     "docs",
+    "docs/_scripts",
     "tools/build-tools",
     "packages/utils-logger",
     "packages/utils-disposables",

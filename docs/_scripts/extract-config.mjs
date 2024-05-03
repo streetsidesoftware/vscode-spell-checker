@@ -1,12 +1,33 @@
+// @ts-check
 import { promises as fs } from 'node:fs';
-import { type } from 'node:os';
 
+/**
+ * JSONSchema4.
+ * @typedef {import('json-schema').JSONSchema4} JSONSchema4
+ */
+
+/**
+ * JSON Schema primitive types
+ * @typedef {import('json-schema').JSONSchema4Type} JSONSchema4Type
+ */
+
+/**
+ * @typedef {import('json-schema').JSONSchema4TypeName} JSONSchema4TypeName
+ */
+
+/**
+ * The Schema File URL
+ */
 const schemaFile = new URL('../../packages/_server/spell-checker-config.schema.json', import.meta.url);
 const descriptionWidth = 90;
 const compare = new Intl.Collator().compare;
 
 async function run() {
     const configSections = await loadSchema();
+
+    if (!Array.isArray(configSections)) {
+        return;
+    }
 
     configSections.sort((a, b) => a.order - b.order || compare(a.title, b.title));
 
@@ -23,10 +44,14 @@ ${formatSections(configSections)}
 
     console.log(doc);
 
+    /**
+     * @param {JSONSchema4[]} sections
+     * @returns
+     */
     function sectionTOC(sections) {
         /**
          *
-         * @param {[string, any]} param0
+         * @param {JSONSchema4} value
          * @returns
          */
         function tocEntry(value) {
@@ -34,16 +59,23 @@ ${formatSections(configSections)}
             return `- [${title}](#${title.toLowerCase().replace(/\W+/g, '-')})`;
         }
 
-        return `
-${sections.map(tocEntry).join('\n')}
-`;
+        return `\n${sections.map(tocEntry).join('\n')}\n`;
     }
 }
 
+/**
+ *
+ * @param {JSONSchema4[]} sections
+ * @returns
+ */
 function formatSections(sections) {
     return sections.map(sectionEntry).join('\n');
 }
 
+/**
+ * @param {JSONSchema4} section
+ * @returns
+ */
 function sectionEntry(section) {
     const entries = Object.entries(section.properties);
     entries.sort(([a], [b]) => compare(a, b));
@@ -61,6 +93,11 @@ ${configDefinitions(entries)}
 `;
 }
 
+/**
+ *
+ * @param {[string, JSONSchema4][]} entries
+ * @returns
+ */
 function configTable(entries) {
     /**
      *
@@ -107,13 +144,18 @@ function shortenLine(line, len) {
     return i < line.length ? line.slice(0, i) + '…' : line;
 }
 
+/**
+ *
+ * @param {[string, JSONSchema4][]} entries
+ * @returns
+ */
 function configDefinitions(entries) {
     return entries.map(definition).join('\n');
 }
 
 /**
  *
- * @param {[string, any]} entry
+ * @param {[string, JSONSchema4]} entry
  * @returns
  */
 function definition(entry) {
@@ -153,10 +195,21 @@ ${version ? singleDef('Version', version) : ''}
 `;
 }
 
+/**
+ *
+ * @param {string} term
+ * @param {string} def
+ * @returns
+ */
 function singleDef(term, def) {
     return `${term}\n: ${def.replace(/\n/g, '\n    ')}`;
 }
 
+/**
+ *
+ * @param {JSONSchema4Type} value
+ * @returns
+ */
 function formatDefaultValue(value) {
     if (value === undefined) return '_- none -_';
 
@@ -167,24 +220,52 @@ function formatDefaultValue(value) {
     return '_`' + JSON.stringify(value) + '`_';
 }
 
+/**
+ *
+ * @param {JSONSchema4} def
+ * @returns {string}
+ */
+function extractTypeAndFormat(def) {
+    return formatExtractedType(extractType(def));
+}
+
+/**
+ *
+ * @param {string | string[]} types
+ */
+function formatExtractedType(types) {
+    if (!Array.isArray(types)) return types;
+    if (types.length === 1) return types[0];
+    return '( ' + types.join(' | ') + ' )';
+}
+
+/**
+ * @param {JSONSchema4} def
+ * @returns {string | string[]}
+ */
 function extractType(def) {
-    if (def.type === 'array') return extractType(def.items) + '[]';
+    if (def.type === 'array') return extractTypeAndFormat(def.items) + '[]';
 
     if (def.enum) {
-        return `( ${def.enum.map((v) => '`' + JSON.stringify(v) + '`').join(' \\| ')} )`;
+        return def.enum.map((v) => JSON.stringify(v));
     }
 
     if (def.type) return def.type;
 
     if (Array.isArray(def.anyOf)) {
-        const types = [...new Set(def.anyOf.map(extractType))];
+        const types = [...new Set(def.anyOf.map(extractType).flat())];
         if (types.length === 1) return types[0];
-        return `( ${types.join(' | ')} )`;
+        return types;
     }
 
-    return def.type || '';
+    return '';
 }
 
+/**
+ *
+ * @param {JSONSchema4} def
+ * @returns {string}
+ */
 function extractEnumDescriptions(def) {
     if (!def.enumDescriptions || !def.enum) return '';
 
@@ -199,10 +280,15 @@ ${defs}
 `;
 }
 
+/**
+ *
+ * @param {JSONSchema4} def
+ * @returns
+ */
 function formatType(def) {
-    const type = extractType(def);
+    const type = extractTypeAndFormat(def);
     const enumDefs = extractEnumDescriptions(def);
-    return type + enumDefs;
+    return '`' + type + '` ' + enumDefs;
 }
 
 /**
@@ -214,6 +300,9 @@ function shorten(text, len) {
     return text.length <= len ? text : text.slice(0, len - 1) + '…';
 }
 
+/**
+ * @returns {Promise<JSONSchema4['items'] | Pick<JSONSchema4, 'properties'>>}
+ */
 async function loadSchema() {
     const schema = JSON.parse(await fs.readFile(schemaFile, 'utf8'));
 
