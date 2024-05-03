@@ -161,7 +161,7 @@ function configDefinitions(entries) {
 function definition(entry) {
     const [key, value] = entry;
     const description = value.markdownDescription || value.description || value.title || '';
-    const version = value.version || '';
+    const since = value.since || '';
     const defaultValue = formatDefaultValue(value.default);
 
     const title = value.title ? `-- ${value.title}` : '';
@@ -189,7 +189,7 @@ ${deprecationMessage}
 
 ${singleDef('Default', defaultValue)}
 
-${version ? singleDef('Version', version) : ''}
+${since ? singleDef('Since Version', since) : ''}
 
 ---
 `;

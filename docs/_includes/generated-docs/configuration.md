@@ -468,7 +468,7 @@ By default, flagged words will use the same diagnostic level as general issues. 
 Default
 : _- none -_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -982,7 +982,7 @@ This only applies when there is a CSpell configuration file in the workspace.
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1014,7 +1014,7 @@ This only applies when there is a CSpell configuration file in the workspace and
 Default
 : _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1442,7 +1442,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1504,7 +1504,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1561,7 +1561,7 @@ Description
 Default
 : _`"#fc4c"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1603,7 +1603,7 @@ Description
 Default
 : _- none -_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1633,7 +1633,7 @@ Description
 Default
 : _`"#fc4"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1663,7 +1663,7 @@ Description
 Default
 : _`"#f44"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1688,7 +1688,7 @@ Description
 Default
 : _`"underline"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1713,7 +1713,7 @@ Description
 Default
 : _`"wavy"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1745,7 +1745,7 @@ Description
 Default
 : _`"auto"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1898,7 +1898,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---

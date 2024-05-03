@@ -4,6 +4,10 @@
   "engines": {
     "node": ">=18"
   },
+  "scripts": {
+    "build": "",
+    "test": ""
+  },
   "devDependencies": {
     "@types/json-schema": "^7.0.15"
   }

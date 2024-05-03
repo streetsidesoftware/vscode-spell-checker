@@ -19,7 +19,7 @@ interface Decoration {
      *
      * @scope application
      * @default "#fc4c"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     overviewRulerColor?: string;
 
@@ -47,7 +47,7 @@ interface Decoration {
      * - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
      *
      * @scope application
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecoration?: string;
 
@@ -59,7 +59,7 @@ interface Decoration {
      *
      * @scope application
      * @default "underline"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecorationLine?: 'underline' | 'overline' | 'line-through';
 
@@ -71,7 +71,7 @@ interface Decoration {
      *
      * @scope application
      * @default "wavy"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecorationStyle?: 'solid' | 'wavy' | 'dotted' | 'dashed' | 'double';
 
@@ -90,7 +90,7 @@ interface Decoration {
      *
      * @scope application
      * @default "auto"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecorationThickness?: 'auto' | 'from-font' | string;
 
@@ -107,7 +107,7 @@ interface Decoration {
      *
      * @scope application
      * @default "#fc4"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecorationColor?: string;
 
@@ -124,7 +124,7 @@ interface Decoration {
      *
      * @scope application
      * @default "#f44"
-     * @version 4.0.0
+     * @since 4.0.0
      */
     textDecorationColorFlagged?: string;
 
@@ -141,7 +141,7 @@ interface Decoration {
      *
      * @scope application
      * @default "#888"
-     * @version 4.0.0
+     * @since 4.0.0
      * @hidden hide this for now. It won't be used until we have a way to get pure suggestions.
      */
     textDecorationColorSuggestion?: string;
@@ -177,7 +177,7 @@ export interface AppearanceSettings extends Appearance {
      * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
      *
      * @scope application
-     * @version 4.0.0
+     * @since 4.0.0
      * @default true
      */
     decorateIssues?: boolean;

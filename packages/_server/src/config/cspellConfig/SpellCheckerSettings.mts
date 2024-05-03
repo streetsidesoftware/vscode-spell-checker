@@ -46,7 +46,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
      * @title Set Diagnostic Reporting Level for Flagged Words
      * @scope resource
-     * @version 4.0.0
+     * @since 4.0.0
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
@@ -377,7 +377,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * Note: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.
      *
      * @scope resource
-     * @version 4.0.0
+     * @since 4.0.0
      * @default true
      */
     mergeCSpellSettings?: boolean;
@@ -396,7 +396,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * ```
      *
      * @scope resource
-     * @version 4.0.0
+     * @since 4.0.0
      * @default {
      * "allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,
      * "enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,
@@ -412,7 +412,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
     /**
      * Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.
      * @scope resource
-     * @version 4.0.0
+     * @since 4.0.0
      * @default true
      */
     useLocallyInstalledCSpellDictionaries?: boolean;
@@ -427,7 +427,7 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * - [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)
      * - [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)
      * @scope window
-     * @version 4.0.0
+     * @since 4.0.0
      * @default true
      */
     trustedWorkspace?: boolean;
