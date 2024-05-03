@@ -316,7 +316,7 @@ Type
 : `string[]`
 
 Scope
-:
+: _- none -_
 
 Description
 : A list of suggested replacements for words.
@@ -819,7 +819,7 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-: JSON
+: -
     ```
     [
     "file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell",
@@ -955,7 +955,7 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-: JSON
+: -
     ```
     [
     "package-lock.json", "node_modules", "vscode-extension", ".git/objects",
@@ -1046,7 +1046,7 @@ This only applies when there is a CSpell configuration file in the workspace and
 
 <!-- prettier-ignore-start -->
 Default
-: JSON
+: -
     ```
     {
     "allowCompoundWords": true, "caseSensitive": true, "dictionaries": true,
@@ -1358,7 +1358,7 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-:
+: definition:
     ```
     ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
      "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
@@ -1403,7 +1403,7 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-:
+: definition:
     ```
     ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
      "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
@@ -2144,7 +2144,7 @@ Description
 
 <!-- prettier-ignore-start -->
 Default
-: JSON
+: -
     ```
     [
     "asciidoc", "bat", "c", "clojure", "coffeescript", "cpp", "csharp", "css",

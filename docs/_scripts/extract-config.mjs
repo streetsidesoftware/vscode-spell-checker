@@ -185,7 +185,7 @@ ${singleDef('Name', `${name} ${title}`)}
 
 ${singleDef('Type', formatType(value), true)}
 
-${singleDef('Scope', value.scope || '')}
+${singleDef('Scope', value.scope || '_- none -_')}
 
 ${singleDef('Description', description)}
 
@@ -252,7 +252,7 @@ function formatDefaultValue(value) {
     const lines = text.split('\n');
     if (lines.length > 1) {
         // console.error('%o', lines);
-        return 'JSON\n```\n' + text + '\n```\n';
+        return '-\n```\n' + text + '\n```\n';
     }
 
     return '_`' + text + '`_';
@@ -326,7 +326,8 @@ ${defs}
  */
 function formatType(def) {
     const typeLines = beautifyType(extractTypeAndFormat(def), 80);
-    const types = typeLines.length > 1 ? '\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
+    const types =
+        typeLines.length > 1 ? 'definition:\n```\n' + typeLines.join('\n') + '\n```\n' : '`' + typeLines[0] + '`';
     const enumDefs = extractEnumDescriptions(def);
     return types + enumDefs;
 }
