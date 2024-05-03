@@ -48,7 +48,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     readonly #controller = new AbortController();
     readonly #abortable = { signal: this.#controller.signal };
     #cwd = currentDirectory();
-    #cancelationTokenSource: vscode.CancellationTokenSource | undefined;
+    #cancellationTokenSource: vscode.CancellationTokenSource | undefined;
     #rl: readline.Interface | undefined;
     #closed = false;
     #dimensions: vscode.TerminalDimensions | undefined;
@@ -220,10 +220,10 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
                 await waitFor;
                 if (waitFor) {
                     // clean up the action.
-                    this.#cancelationTokenSource?.dispose();
-                    this.#cancelationTokenSource = undefined;
+                    this.#cancellationTokenSource?.dispose();
+                    this.#cancellationTokenSource = undefined;
                 } else {
-                    if (this.#cancelationTokenSource) {
+                    if (this.#cancellationTokenSource) {
                         // It is busy, do not display the prompt.
                         // It is possible to get here if the dimensions of the window change
                         // while in the middle of an action.
@@ -266,11 +266,11 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as { [key: string]: boolean };
         const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k] === true);
         const excludePattern = globsToGlob(searchExclude);
-        const files = await globSearch(pattern, currentDirectory(), excludePattern, undefined, this.#getCancelationTokenForAction());
+        const files = await globSearch(pattern, currentDirectory(), excludePattern, undefined, this.#getCancellationTokenForAction());
 
         log(eraseLine() + 'Checking...');
 
-        await cmdCheckDocuments(files, { log, error, output, cancelationToken: this.#getCancelationTokenForAction(), width: this.width });
+        await cmdCheckDocuments(files, { log, error, output, cancellationToken: this.#getCancellationTokenForAction(), width: this.width });
     }
 
     async #cmdEcho(globs: string[] | undefined) {
@@ -388,7 +388,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     async #cmdLs(args: { paths?: string[] | undefined }) {
         consoleDebug('Repl.cmdLs %o', args);
 
-        await cmdLs(args.paths, { log: this.log, cwd: this.#cwd, cancelationToken: this.#getCancelationTokenForAction() });
+        await cmdLs(args.paths, { log: this.log, cwd: this.#cwd, cancellationToken: this.#getCancellationTokenForAction() });
     }
 
     async readDir(relUri?: string | vscode.Uri | undefined): Promise<DirEntry[]> {
@@ -439,38 +439,38 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
         consoleDebug('Repl.close');
         if (this.#closed) return;
         this.#closed = true;
-        this.#cancelationTokenSource?.cancel();
+        this.#cancellationTokenSource?.cancel();
         this.#controller.abort();
         this.#rl?.close();
         this.#readStream.destroy();
         this.#writeStream.destroy();
         this.#emitterOnDidClose.fire();
-        this.#cancelationTokenSource?.dispose();
-        this.#cancelationTokenSource = undefined;
+        this.#cancellationTokenSource?.dispose();
+        this.#cancellationTokenSource = undefined;
     };
 
     log: typeof console.log = (...args) => this.#output(crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
     error: typeof console.error = (...args) => this.#output(red('Error: ') + crlf(formatWithOptions({ colors: true }, ...args) + '\n'));
 
-    #cancelAction = () => this.#cancelationTokenSource?.cancel();
+    #cancelAction = () => this.#cancellationTokenSource?.cancel();
 
-    #createCancelationTokenForAction(): vscode.CancellationToken {
-        return this.#createCancelationTokenSourceForAction().token;
+    #createCancellationTokenForAction(): vscode.CancellationToken {
+        return this.#createCancellationTokenSourceForAction().token;
     }
 
-    #getCancelationTokenForAction(): vscode.CancellationToken {
-        return this.#cancelationTokenSource?.token || this.#createCancelationTokenForAction();
+    #getCancellationTokenForAction(): vscode.CancellationToken {
+        return this.#cancellationTokenSource?.token || this.#createCancellationTokenForAction();
     }
 
-    #createCancelationTokenSourceForAction(): vscode.CancellationTokenSource {
-        this.#cancelationTokenSource?.dispose();
-        const t = abortControllerToCancelationTokenSource(this.#controller);
-        this.#cancelationTokenSource = t;
+    #createCancellationTokenSourceForAction(): vscode.CancellationTokenSource {
+        this.#cancellationTokenSource?.dispose();
+        const t = abortControllerToCancellationTokenSource(this.#controller);
+        this.#cancellationTokenSource = t;
         return t;
     }
 }
 
-function abortControllerToCancelationTokenSource(ac: AbortController): vscode.CancellationTokenSource {
+function abortControllerToCancellationTokenSource(ac: AbortController): vscode.CancellationTokenSource {
     const t = new vscode.CancellationTokenSource();
     ac.signal.onabort = () => t.cancel();
     return t;

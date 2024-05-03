@@ -11,14 +11,14 @@ interface CmdLsOptions {
     cwd: Uri;
     log: typeof console.log;
     dirSuffix?: string;
-    cancelationToken?: CancellationToken;
+    cancellationToken?: CancellationToken;
 }
 
 const identity = <T,>(x: T) => x;
 
 export async function cmdLs(paths: string[] | undefined, options: CmdLsOptions) {
     const { log, dirSuffix = '/' } = options;
-    for await (const entry of ls(paths, options.cwd, options.cancelationToken)) {
+    for await (const entry of ls(paths, options.cwd, options.cancellationToken)) {
         const [name, stat] = entry;
         const isError = stat instanceof Error;
         if (isError) {
@@ -37,16 +37,16 @@ export async function cmdLs(paths: string[] | undefined, options: CmdLsOptions) 
     }
 }
 
-async function* ls(paths: string[] | undefined, cwd: Uri, cancelationToken: CancellationToken | undefined): AsyncGenerator<ExDirEntry> {
+async function* ls(paths: string[] | undefined, cwd: Uri, cancellationToken: CancellationToken | undefined): AsyncGenerator<ExDirEntry> {
     const collation = new Intl.Collator(undefined, { numeric: true, sensitivity: 'variant' });
 
     if (!paths?.length) {
-        yield* readDirStats(cwd, false, cancelationToken);
+        yield* readDirStats(cwd, false, cancellationToken);
         return;
     }
 
     for (const path of paths) {
-        if (cancelationToken?.isCancellationRequested) {
+        if (cancellationToken?.isCancellationRequested) {
             return;
         }
         const [glob, base] = normalizePatternBase(path, cwd);
@@ -58,7 +58,7 @@ async function* ls(paths: string[] | undefined, cwd: Uri, cancelationToken: Canc
                 continue;
             }
             if (stats.type & FileType.Directory) {
-                yield* readDirStats(base, false, cancelationToken);
+                yield* readDirStats(base, false, cancellationToken);
                 continue;
             }
             yield [path, stats];
@@ -66,11 +66,11 @@ async function* ls(paths: string[] | undefined, cwd: Uri, cancelationToken: Canc
         }
 
         try {
-            const uris = await globSearch(glob, base, undefined, undefined, cancelationToken);
+            const uris = await globSearch(glob, base, undefined, undefined, cancellationToken);
 
             uris.sort((a, b) => collation.compare(a.path, b.path));
 
-            for await (const [uri, stats] of readStatsForFiles(uris, cancelationToken)) {
+            for await (const [uri, stats] of readStatsForFiles(uris, cancellationToken)) {
                 yield [relativePath(cwd, uri), stats];
             }
         } catch (e) {

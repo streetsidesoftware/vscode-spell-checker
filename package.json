@@ -692,8 +692,8 @@
             "default": true,
             "markdownDescription": "Enable loading JavaScript CSpell configuration files.\n\nThis setting is automatically set to `true` in a trusted workspace. It is possible to override the setting to `false` in a trusted workspace,\nbut a setting of `true` in an untrusted workspace will be ignored.\n\nSee:\n- [Visual Studio Code Workspace Trust security](https://code.visualstudio.com/docs/editor/workspace-trust)\n- [Workspace Trust Extension Guide -- Visual Studio Code Extension API](https://code.visualstudio.com/api/extension-guides/workspace-trust)",
             "scope": "window",
-            "type": "boolean",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "boolean"
           }
         },
         "title": "Advanced",
@@ -705,8 +705,49 @@
         "properties": {
           "cSpell.ignoreRegExpList": {
             "items": {
-              "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "markdownDescription": "This matches the name in a pattern definition.",
+                  "type": "string"
+                },
+                {
+                  "enum": [
+                    "Base64",
+                    "Base64MultiLine",
+                    "Base64SingleLine",
+                    "CStyleComment",
+                    "CStyleHexValue",
+                    "CSSHexValue",
+                    "CommitHash",
+                    "CommitHashLink",
+                    "Email",
+                    "EscapeCharacters",
+                    "HexValues",
+                    "href",
+                    "PhpHereDoc",
+                    "PublicKey",
+                    "RsaCert",
+                    "SshRsa",
+                    "SHA",
+                    "HashStrings",
+                    "SpellCheckerDisable",
+                    "SpellCheckerDisableBlock",
+                    "SpellCheckerDisableLine",
+                    "SpellCheckerDisableNext",
+                    "SpellCheckerIgnoreInDocSetting",
+                    "string",
+                    "UnicodeRef",
+                    "Urls",
+                    "UUID",
+                    "Everything"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "markdownDescription": "A PatternRef is a Pattern or PatternId."
             },
             "markdownDescription": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,\n  it is necessary to escape `\\`.\n  Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  |\n| :------------------ | :-------------------- | :------------------------------------------- |\n| `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         |\n| `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    |\n| `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
             "scope": "resource",
@@ -714,8 +755,49 @@
           },
           "cSpell.includeRegExpList": {
             "items": {
-              "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "markdownDescription": "This matches the name in a pattern definition.",
+                  "type": "string"
+                },
+                {
+                  "enum": [
+                    "Base64",
+                    "Base64MultiLine",
+                    "Base64SingleLine",
+                    "CStyleComment",
+                    "CStyleHexValue",
+                    "CSSHexValue",
+                    "CommitHash",
+                    "CommitHashLink",
+                    "Email",
+                    "EscapeCharacters",
+                    "HexValues",
+                    "href",
+                    "PhpHereDoc",
+                    "PublicKey",
+                    "RsaCert",
+                    "SshRsa",
+                    "SHA",
+                    "HashStrings",
+                    "SpellCheckerDisable",
+                    "SpellCheckerDisableBlock",
+                    "SpellCheckerDisableLine",
+                    "SpellCheckerDisableNext",
+                    "SpellCheckerIgnoreInDocSetting",
+                    "string",
+                    "UnicodeRef",
+                    "Urls",
+                    "UUID",
+                    "Everything"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "markdownDescription": "A PatternRef is a Pattern or PatternId."
             },
             "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.",
             "scope": "resource",
@@ -773,14 +855,25 @@
                   ],
                   "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
                   "scope": "resource",
+                  "since": "4.0.0",
                   "title": "Set Diagnostic Reporting Level for Flagged Words",
-                  "type": "string",
-                  "version": "4.0.0"
+                  "type": "string"
                 },
                 "dictionaries": {
                   "items": {
-                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                        "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                        "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
                   "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "type": "array"
@@ -995,8 +1088,49 @@
                 },
                 "ignoreRegExpList": {
                   "items": {
-                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This matches the name in a pattern definition.",
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "Base64",
+                          "Base64MultiLine",
+                          "Base64SingleLine",
+                          "CStyleComment",
+                          "CStyleHexValue",
+                          "CSSHexValue",
+                          "CommitHash",
+                          "CommitHashLink",
+                          "Email",
+                          "EscapeCharacters",
+                          "HexValues",
+                          "href",
+                          "PhpHereDoc",
+                          "PublicKey",
+                          "RsaCert",
+                          "SshRsa",
+                          "SHA",
+                          "HashStrings",
+                          "SpellCheckerDisable",
+                          "SpellCheckerDisableBlock",
+                          "SpellCheckerDisableLine",
+                          "SpellCheckerDisableNext",
+                          "SpellCheckerIgnoreInDocSetting",
+                          "string",
+                          "UnicodeRef",
+                          "Urls",
+                          "UUID",
+                          "Everything"
+                        ],
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId."
                   },
                   "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
@@ -1010,8 +1144,49 @@
                 },
                 "includeRegExpList": {
                   "items": {
-                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This matches the name in a pattern definition.",
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "Base64",
+                          "Base64MultiLine",
+                          "Base64SingleLine",
+                          "CStyleComment",
+                          "CStyleHexValue",
+                          "CSSHexValue",
+                          "CommitHash",
+                          "CommitHashLink",
+                          "Email",
+                          "EscapeCharacters",
+                          "HexValues",
+                          "href",
+                          "PhpHereDoc",
+                          "PublicKey",
+                          "RsaCert",
+                          "SshRsa",
+                          "SHA",
+                          "HashStrings",
+                          "SpellCheckerDisable",
+                          "SpellCheckerDisableBlock",
+                          "SpellCheckerDisableLine",
+                          "SpellCheckerDisableNext",
+                          "SpellCheckerIgnoreInDocSetting",
+                          "string",
+                          "UnicodeRef",
+                          "Urls",
+                          "UUID",
+                          "Everything"
+                        ],
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId."
                   },
                   "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
@@ -1039,7 +1214,23 @@
                     },
                     {
                       "items": {
-                        "type": "string"
+                        "anyOf": [
+                          {
+                            "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                            "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                            "type": "string"
+                          },
+                          {
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                            "type": "string"
+                          },
+                          {
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                            "type": "string"
+                          }
+                        ]
                       },
                       "type": "array"
                     }
@@ -1066,8 +1257,19 @@
                       },
                       "dictionaries": {
                         "items": {
-                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                              "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                              "type": "string"
+                            },
+                            {
+                              "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                              "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                              "type": "string"
+                            }
+                          ],
+                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                         },
                         "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                         "type": "array"
@@ -1245,8 +1447,49 @@
                       },
                       "ignoreRegExpList": {
                         "items": {
-                          "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "markdownDescription": "This matches the name in a pattern definition.",
+                              "type": "string"
+                            },
+                            {
+                              "enum": [
+                                "Base64",
+                                "Base64MultiLine",
+                                "Base64SingleLine",
+                                "CStyleComment",
+                                "CStyleHexValue",
+                                "CSSHexValue",
+                                "CommitHash",
+                                "CommitHashLink",
+                                "Email",
+                                "EscapeCharacters",
+                                "HexValues",
+                                "href",
+                                "PhpHereDoc",
+                                "PublicKey",
+                                "RsaCert",
+                                "SshRsa",
+                                "SHA",
+                                "HashStrings",
+                                "SpellCheckerDisable",
+                                "SpellCheckerDisableBlock",
+                                "SpellCheckerDisableLine",
+                                "SpellCheckerDisableNext",
+                                "SpellCheckerIgnoreInDocSetting",
+                                "string",
+                                "UnicodeRef",
+                                "Urls",
+                                "UUID",
+                                "Everything"
+                              ],
+                              "type": "string"
+                            }
+                          ],
+                          "markdownDescription": "A PatternRef is a Pattern or PatternId."
                         },
                         "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "type": "array"
@@ -1260,8 +1503,49 @@
                       },
                       "includeRegExpList": {
                         "items": {
-                          "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "markdownDescription": "This matches the name in a pattern definition.",
+                              "type": "string"
+                            },
+                            {
+                              "enum": [
+                                "Base64",
+                                "Base64MultiLine",
+                                "Base64SingleLine",
+                                "CStyleComment",
+                                "CStyleHexValue",
+                                "CSSHexValue",
+                                "CommitHash",
+                                "CommitHashLink",
+                                "Email",
+                                "EscapeCharacters",
+                                "HexValues",
+                                "href",
+                                "PhpHereDoc",
+                                "PublicKey",
+                                "RsaCert",
+                                "SshRsa",
+                                "SHA",
+                                "HashStrings",
+                                "SpellCheckerDisable",
+                                "SpellCheckerDisableBlock",
+                                "SpellCheckerDisableLine",
+                                "SpellCheckerDisableNext",
+                                "SpellCheckerIgnoreInDocSetting",
+                                "string",
+                                "UnicodeRef",
+                                "Urls",
+                                "UUID",
+                                "Everything"
+                              ],
+                              "type": "string"
+                            }
+                          ],
+                          "markdownDescription": "A PatternRef is a Pattern or PatternId."
                         },
                         "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                         "type": "array"
@@ -1285,7 +1569,23 @@
                           },
                           {
                             "items": {
-                              "type": "string"
+                              "anyOf": [
+                                {
+                                  "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                                  "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                                  "type": "string"
+                                },
+                                {
+                                  "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                  "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                                  "type": "string"
+                                },
+                                {
+                                  "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                  "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                                  "type": "string"
+                                }
+                              ]
                             },
                             "type": "array"
                           }
@@ -1314,8 +1614,19 @@
                       },
                       "noSuggestDictionaries": {
                         "items": {
-                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                              "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                              "type": "string"
+                            },
+                            {
+                              "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                              "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                              "type": "string"
+                            }
+                          ],
+                          "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                         },
                         "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                         "type": "array"
@@ -1406,8 +1717,19 @@
                 },
                 "noSuggestDictionaries": {
                   "items": {
-                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                        "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                        "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
                   "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                   "type": "array"
@@ -1544,8 +1866,8 @@
             "default": true,
             "markdownDescription": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
             "scope": "resource",
-            "type": "boolean",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "boolean"
           }
         },
         "title": "CSpell",
@@ -1662,8 +1984,8 @@
             "default": true,
             "markdownDescription": "Specify if fields from `.vscode/settings.json` are passed to the spell checker.\nThis only applies when there is a CSpell configuration file in the workspace.\n\nThe purpose of this setting to help provide a consistent result compared to the\nCSpell spell checker command line tool.\n\nValues:\n- `true` - all settings will be merged based upon `#cSpell.mergeCSpellSettingsFields#`.\n- `false` - only use `.vscode/settings.json` if a CSpell configuration is not found.\n\nNote: this setting is used in conjunction with `#cSpell.mergeCSpellSettingsFields#`.",
             "scope": "resource",
-            "type": "boolean",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "boolean"
           },
           "cSpell.mergeCSpellSettingsFields": {
             "additionalProperties": false,
@@ -1805,8 +2127,8 @@
               }
             },
             "scope": "resource",
-            "type": "object",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "object"
           },
           "cSpell.noConfigSearch": {
             "markdownDescription": "Prevents searching for local configuration when checking individual documents.",
@@ -1882,9 +2204,19 @@
                       "type": "boolean"
                     },
                     "path": {
+                      "anyOf": [
+                        {
+                          "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                          "title": "Path to Dictionary Text File",
+                          "type": "string"
+                        },
+                        {
+                          "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
+                          "type": "string"
+                        }
+                      ],
                       "markdownDescription": "Define the path to the dictionary text file.\n\n**Note:** if path is `undefined` the `name`d dictionary is expected to be found\nin the `dictionaryDefinitions`.\n\nFile Format: Each line in the file is considered a dictionary entry.\n\nCase is preserved while leading and trailing space is removed.\n\nThe path should be absolute, or relative to the workspace.\n\n**Example:** relative to User's folder\n\n```json\n\"path\": \"~/dictionaries/custom_dictionary.txt\"\n```\n\n**Example:** relative to the `client` folder in a multi-root workspace\n\n```json\n\"path\": \"${workspaceFolder:client}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the current workspace folder in a single-root workspace\n\n**Note:** this might not work as expected in a multi-root workspace since it is based upon the relative\nworkspace for the currently open file.\n\n```json\n\"path\": \"${workspaceFolder}/build/custom_dictionary.txt\"\n```\n\n**Example:** relative to the workspace folder in a single-root workspace or the first folder in\na multi-root workspace\n\n```json\n\"path\": \"./build/custom_dictionary.txt\"\n```",
-                      "title": "Path to Dictionary Text File",
-                      "type": "string"
+                      "title": "Path to Dictionary Text File"
                     },
                     "scope": {
                       "anyOf": [
@@ -1926,8 +2258,19 @@
           },
           "cSpell.dictionaries": {
             "items": {
-              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-              "type": "string"
+              "anyOf": [
+                {
+                  "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                  "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                  "type": "string"
+                },
+                {
+                  "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                  "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                  "type": "string"
+                }
+              ],
+              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
             },
             "markdownDescription": "Optional list of dictionaries to use.\n\nEach entry should match the name of the dictionary.\n\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.\n\n\nExample:\n\n```jsonc\n// Enable `lorem-ipsum` and disable `typescript`\n\"cSpell.dictionaries\": [\"lorem-ipsum\", \"!typescript\"]\n```",
             "scope": "resource",
@@ -2130,8 +2473,19 @@
                 },
                 "dictionaries": {
                   "items": {
-                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                        "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                        "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
                   "markdownDescription": "Optional list of dictionaries to use. Each entry should match the name of the dictionary.\n\nTo remove a dictionary from the list, add `!` before the name.\n\nFor example, `!typescript` will turn off the dictionary with the name `typescript`.\n\nSee the [Dictionaries](https://cspell.org/docs/dictionaries/)\nand [Custom Dictionaries](https://cspell.org/docs/dictionaries-custom/) for more details.",
                   "type": "array"
@@ -2309,8 +2663,49 @@
                 },
                 "ignoreRegExpList": {
                   "items": {
-                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This matches the name in a pattern definition.",
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "Base64",
+                          "Base64MultiLine",
+                          "Base64SingleLine",
+                          "CStyleComment",
+                          "CStyleHexValue",
+                          "CSSHexValue",
+                          "CommitHash",
+                          "CommitHashLink",
+                          "Email",
+                          "EscapeCharacters",
+                          "HexValues",
+                          "href",
+                          "PhpHereDoc",
+                          "PublicKey",
+                          "RsaCert",
+                          "SshRsa",
+                          "SHA",
+                          "HashStrings",
+                          "SpellCheckerDisable",
+                          "SpellCheckerDisableBlock",
+                          "SpellCheckerDisableLine",
+                          "SpellCheckerDisableNext",
+                          "SpellCheckerIgnoreInDocSetting",
+                          "string",
+                          "UnicodeRef",
+                          "Urls",
+                          "UUID",
+                          "Everything"
+                        ],
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId."
                   },
                   "markdownDescription": "List of regular expression patterns or pattern names to exclude from spell checking.\n\nExample: `[\"href\"]` - to exclude html href pattern.\n\nRegular expressions use JavaScript regular expression syntax.\n\nExample: to ignore ALL-CAPS words\n\nJSON\n```json\n\"ignoreRegExpList\": [\"/\\\\b[A-Z]+\\\\b/g\"]\n```\n\nYAML\n```yaml\nignoreRegExpList:\n  - >-\n   /\\b[A-Z]+\\b/g\n```\n\nBy default, several patterns are excluded. See\n[Configuration](https://cspell.org/configuration/patterns) for more details.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
@@ -2324,8 +2719,49 @@
                 },
                 "includeRegExpList": {
                   "items": {
-                    "markdownDescription": "A PatternRef is a Pattern or PatternId.",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This matches the name in a pattern definition.",
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "Base64",
+                          "Base64MultiLine",
+                          "Base64SingleLine",
+                          "CStyleComment",
+                          "CStyleHexValue",
+                          "CSSHexValue",
+                          "CommitHash",
+                          "CommitHashLink",
+                          "Email",
+                          "EscapeCharacters",
+                          "HexValues",
+                          "href",
+                          "PhpHereDoc",
+                          "PublicKey",
+                          "RsaCert",
+                          "SshRsa",
+                          "SHA",
+                          "HashStrings",
+                          "SpellCheckerDisable",
+                          "SpellCheckerDisableBlock",
+                          "SpellCheckerDisableLine",
+                          "SpellCheckerDisableNext",
+                          "SpellCheckerIgnoreInDocSetting",
+                          "string",
+                          "UnicodeRef",
+                          "Urls",
+                          "UUID",
+                          "Everything"
+                        ],
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "A PatternRef is a Pattern or PatternId."
                   },
                   "markdownDescription": "List of regular expression patterns or defined pattern names to match for spell checking.\n\nIf this property is defined, only text matching the included patterns will be checked.\n\nWhile you can create your own patterns, you can also leverage several patterns that are\n[built-in to CSpell](https://cspell.org/types/cspell-types/types/PredefinedPatterns.html).",
                   "type": "array"
@@ -2349,7 +2785,23 @@
                     },
                     {
                       "items": {
-                        "type": "string"
+                        "anyOf": [
+                          {
+                            "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                            "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
+                            "type": "string"
+                          },
+                          {
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
+                            "type": "string"
+                          },
+                          {
+                            "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                            "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                            "type": "string"
+                          }
+                        ]
                       },
                       "type": "array"
                     }
@@ -2378,8 +2830,19 @@
                 },
                 "noSuggestDictionaries": {
                   "items": {
-                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                        "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      },
+                      {
+                        "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                        "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                        "type": "string"
+                      }
+                    ],
+                    "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
                   },
                   "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
                   "type": "array"
@@ -2446,8 +2909,19 @@
           },
           "cSpell.noSuggestDictionaries": {
             "items": {
-              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }",
-              "type": "string"
+              "anyOf": [
+                {
+                  "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
+                  "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                  "type": "string"
+                },
+                {
+                  "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
+                  "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
+                  "type": "string"
+                }
+              ],
+              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
             },
             "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
             "scope": "resource",
@@ -2492,28 +2966,28 @@
                 "default": "#fc4c",
                 "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecoration": {
                 "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationColor": {
                 "default": "#fc4",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationColorFlagged": {
                 "default": "#f44",
                 "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationLine": {
                 "default": "underline",
@@ -2524,8 +2998,8 @@
                 ],
                 "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationStyle": {
                 "default": "wavy",
@@ -2538,15 +3012,15 @@
                 ],
                 "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationThickness": {
                 "default": "auto",
                 "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               }
             },
             "scope": "application",
@@ -2556,8 +3030,8 @@
             "default": true,
             "markdownDescription": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
             "scope": "application",
-            "type": "boolean",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "boolean"
           },
           "cSpell.light": {
             "additionalProperties": false,
@@ -2567,28 +3041,28 @@
                 "default": "#fc4c",
                 "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecoration": {
                 "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationColor": {
                 "default": "#fc4",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationColorFlagged": {
                 "default": "#f44",
                 "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationLine": {
                 "default": "underline",
@@ -2599,8 +3073,8 @@
                 ],
                 "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationStyle": {
                 "default": "wavy",
@@ -2613,15 +3087,15 @@
                 ],
                 "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               },
               "textDecorationThickness": {
                 "default": "auto",
                 "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
                 "scope": "application",
-                "type": "string",
-                "version": "4.0.0"
+                "since": "4.0.0",
+                "type": "string"
               }
             },
             "scope": "application",
@@ -2631,28 +3105,28 @@
             "default": "#fc4c",
             "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecoration": {
             "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecorationColor": {
             "default": "#fc4",
             "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecorationColorFlagged": {
             "default": "#f44",
             "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecorationLine": {
             "default": "underline",
@@ -2663,8 +3137,8 @@
             ],
             "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecorationStyle": {
             "default": "wavy",
@@ -2677,15 +3151,15 @@
             ],
             "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           },
           "cSpell.textDecorationThickness": {
             "default": "auto",
             "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
             "scope": "application",
-            "type": "string",
-            "version": "4.0.0"
+            "since": "4.0.0",
+            "type": "string"
           }
         },
         "title": "Appearance",
@@ -3297,9 +3771,9 @@
             ],
             "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
             "scope": "resource",
+            "since": "4.0.0",
             "title": "Set Diagnostic Reporting Level for Flagged Words",
-            "type": "string",
-            "version": "4.0.0"
+            "type": "string"
           },
           "cSpell.diagnosticLevelSCM": {
             "enum": [
@@ -3430,6 +3904,7 @@
   },
   "workspaces": [
     "docs",
+    "docs/_scripts",
     "tools/build-tools",
     "packages/utils-logger",
     "packages/utils-disposables",
@@ -3452,10 +3927,10 @@
     "build:docs": "npm run gen-docs",
     "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown docs && prettier -w docs",
     "build:schema": "npm run build-package-schema",
-    "build:workspaces": "npm --workspaces run build",
+    "build:workspaces": "npm --workspaces --if-present run build",
     "build:extension": "npm run package-extension",
-    "clean": "npm --workspaces run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
-    "build-production": "npm --workspaces run build-production",
+    "clean": "npm --workspaces --if-present run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
+    "build-production": "npm --workspaces --if-present run build-production",
     "build-release": "npm run build && npm run package-extension",
     "gen-docs": "npm --workspace=@internal/docs run gen-docs",
     "package-extension": "vsce package -o ./build",
@@ -3470,7 +3945,7 @@
     "lint-docs": "prettier -w \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
-    "test": "npm --workspaces run test && echo OK",
+    "test": "npm --workspaces --if-present run test && echo OK",
     "update-packages": "npx npm-check-updates --root -ws --target semver -u && npm i",
     "preinstall": "npx only-allow npm"
   },
@@ -3481,10 +3956,10 @@
     "@types/node": "^18.19.31",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
-    "@typescript-eslint/eslint-plugin": "^7.7.1",
-    "@typescript-eslint/parser": "^7.7.1",
-    "@vitest/coverage-istanbul": "^1.5.2",
-    "@vscode/vsce": "^2.26.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vitest/coverage-istanbul": "^1.6.0",
+    "@vscode/vsce": "^2.26.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.20.2",
@@ -3492,8 +3967,8 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jest": "^28.3.0",
-    "eslint-plugin-n": "^17.3.1",
+    "eslint-plugin-jest": "^28.4.0",
+    "eslint-plugin-n": "^17.4.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-promise": "^6.1.1",
@@ -3502,7 +3977,7 @@
     "globals": "^15.1.0",
     "inject-markdown": "^3.0.0",
     "jest": "^29.7.0",
-    "jest-mock-vscode": "^3.0.2",
+    "jest-mock-vscode": "^3.0.3",
     "jest-when": "^3.6.0",
     "ovsx": "^0.9.1",
     "prettier": "^3.2.5",
@@ -3512,15 +3987,15 @@
     "shx": "^0.3.4",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.7.1",
-    "vite": "^5.2.10",
-    "vitest": "^1.5.2"
+    "typescript-eslint": "^7.8.0",
+    "vite": "^5.2.11",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.7.0",
-    "@cspell/cspell-types": "^8.7.0",
+    "@cspell/cspell-bundled-dicts": "^8.8.0",
+    "@cspell/cspell-types": "^8.8.0",
     "@types/react": "^17.0.80",
-    "cspell": "^8.7.0",
+    "cspell": "^8.8.0",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {

@@ -1,4 +1,5 @@
 import type { ParseArgsConfig } from 'node:util';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { parseArgs } from 'node:util';
 
 import assert from 'assert';

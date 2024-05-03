@@ -66,7 +66,7 @@ export interface CheckDocumentsOptions {
     log: typeof console.log;
     error: typeof console.error;
     output: (text: string) => void;
-    cancelationToken: CancellationToken;
+    cancellationToken: CancellationToken;
     forceCheck?: boolean;
     width: number;
 }
@@ -75,7 +75,7 @@ export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDo
     const count = uris.length;
     for (let index = 0; index < count; index++) {
         const uri = uris[index];
-        if (options.cancelationToken.isCancellationRequested) {
+        if (options.cancellationToken.isCancellationRequested) {
             return;
         }
         try {

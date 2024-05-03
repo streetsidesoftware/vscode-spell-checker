@@ -27,7 +27,7 @@ Name
 : `cSpell.enabled`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -65,7 +65,7 @@ Name
 : `cSpell.caseSensitive`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -90,7 +90,7 @@ Name
 : `cSpell.customDictionaries` -- Custom Dictionaries
 
 Type
-: object
+: `object`
 
 Scope
 : resource
@@ -125,7 +125,7 @@ Name
 : `cSpell.dictionaries`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -157,7 +157,7 @@ Name
 : `cSpell.dictionaryDefinitions` -- Dictionary Definitions
 
 Type
-: []
+: `object[]`
 
 Scope
 : resource
@@ -194,7 +194,7 @@ Name
 : `cSpell.flagWords`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -227,7 +227,7 @@ Name
 : `cSpell.ignoreWords`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -246,7 +246,7 @@ Name
 : `cSpell.language`
 
 Type
-: string
+: `string`
 
 Scope
 : resource
@@ -269,7 +269,7 @@ Name
 : `cSpell.languageSettings`
 
 Type
-: object[]
+: `object[]`
 
 Scope
 : resource
@@ -288,7 +288,7 @@ Name
 : `cSpell.noSuggestDictionaries`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -313,7 +313,7 @@ Name
 : `cSpell.suggestWords`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 :
@@ -342,7 +342,7 @@ Name
 : `cSpell.userWords`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -361,7 +361,7 @@ Name
 : `cSpell.words`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -404,7 +404,7 @@ Name
 : `cSpell.autoFormatConfigFile` -- Auto Format Configuration File
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : window
@@ -425,7 +425,7 @@ Name
 : `cSpell.diagnosticLevel` -- Set Diagnostic Reporting Level
 
 Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+: `( "Error" | "Warning" | "Information" | "Hint" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
@@ -451,7 +451,7 @@ Name
 : `cSpell.diagnosticLevelFlaggedWords` -- Set Diagnostic Reporting Level for Flagged Words
 
 Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` )
+: `( "Error" | "Warning" | "Information" | "Hint" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
@@ -468,7 +468,7 @@ By default, flagged words will use the same diagnostic level as general issues. 
 Default
 : _- none -_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -479,7 +479,7 @@ Name
 : `cSpell.diagnosticLevelSCM` -- Set Diagnostic Reporting Level in SCM Commit Message
 
 Type
-: ( `"Error"` \| `"Warning"` \| `"Information"` \| `"Hint"` \| `"Off"` )
+: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
@@ -507,7 +507,7 @@ Name
 : `cSpell.hideAddToDictionaryCodeActions`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -526,7 +526,7 @@ Name
 : `cSpell.maxDuplicateProblems`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -545,7 +545,7 @@ Name
 : `cSpell.maxNumberOfProblems`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -564,7 +564,7 @@ Name
 : `cSpell.minWordLength`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -583,7 +583,7 @@ Name
 : `cSpell.numSuggestions`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -602,7 +602,7 @@ Name
 : `cSpell.showAutocompleteDirectiveSuggestions`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : language-overridable
@@ -623,7 +623,7 @@ Name
 : `cSpell.showCommandsInEditorContextMenu`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -642,7 +642,7 @@ Name
 : `cSpell.showStatus`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -661,7 +661,7 @@ Name
 : `cSpell.showStatusAlignment`
 
 Type
-: ( `"Left"` \| `"Right"` )
+: `( "Left" | "Right" )`
 
     | `Left` | Left Side of Statusbar |
     | `Right` | Right Side of Statusbar |
@@ -683,7 +683,7 @@ Name
 : `cSpell.showSuggestionsLinkInEditorContextMenu`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -702,7 +702,7 @@ Name
 : `cSpell.suggestionMenuType`
 
 Type
-: ( `"quickPick"` \| `"quickFix"` )
+: `( "quickPick" | "quickFix" )`
 
     | `quickPick` | Suggestions will appear as a drop down at the top of the IDE. (Best choice for Vim Key Bindings) |
     | `quickFix` | Suggestions will appear inline near the word, inside the text editor. |
@@ -724,7 +724,7 @@ Name
 : `cSpell.suggestionNumChanges`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -747,7 +747,7 @@ Name
 : `cSpell.validateDirectives`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : window
@@ -787,7 +787,7 @@ Name
 : `cSpell.allowedSchemas` -- Define Allowed Schemas
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : window
@@ -813,7 +813,7 @@ Name
 : `cSpell.checkOnlyEnabledFileTypes` -- Check Only Enabled File Types
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -836,7 +836,7 @@ Name
 : `cSpell.enableFiletypes` -- File Types to Check
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -874,7 +874,7 @@ Name
 : `cSpell.files`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -894,7 +894,7 @@ Name
 : `cSpell.globRoot`
 
 Type
-: string
+: `string`
 
 Scope
 : resource
@@ -921,7 +921,7 @@ Name
 : `cSpell.ignorePaths` -- Glob patterns of files to be ignored
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -940,7 +940,7 @@ Name
 : `cSpell.import`
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
@@ -961,7 +961,7 @@ Name
 : `cSpell.mergeCSpellSettings`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -982,7 +982,7 @@ This only applies when there is a CSpell configuration file in the workspace.
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -993,7 +993,7 @@ Name
 : `cSpell.mergeCSpellSettingsFields`
 
 Type
-: object
+: `object`
 
 Scope
 : resource
@@ -1014,7 +1014,7 @@ This only applies when there is a CSpell configuration file in the workspace and
 Default
 : _`{"allowCompoundWords":true,"caseSensitive":true,"dictionaries":true,"dictionaryDefinitions":true,"enableGlobDot":true,"features":true,"files":true,"flagWords":true,"gitignoreRoot":true,"globRoot":true,"ignorePaths":true,"ignoreRegExpList":true,"ignoreWords":true,"import":true,"includeRegExpList":true,"language":true,"languageId":true,"languageSettings":true,"loadDefaultConfiguration":true,"minWordLength":true,"noConfigSearch":true,"noSuggestDictionaries":true,"numSuggestions":true,"overrides":true,"patterns":true,"pnpFiles":true,"reporters":true,"suggestWords":true,"useGitignore":true,"usePnP":true,"userWords":true,"validateDirectives":true,"words":true}`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1025,7 +1025,7 @@ Name
 : `cSpell.noConfigSearch`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -1044,7 +1044,7 @@ Name
 : `cSpell.spellCheckOnlyWorkspaceFiles` -- Spell Check Only Workspace Files
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : window
@@ -1068,7 +1068,7 @@ Name
 : `cSpell.useGitignore`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -1087,7 +1087,7 @@ Name
 : `cSpell.usePnP`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -1110,7 +1110,7 @@ Name
 : `cSpell.workspaceRootPath` -- Workspace Root Folder Path
 
 Type
-: string
+: `string`
 
 Scope
 : resource
@@ -1151,7 +1151,7 @@ Name
 : `cSpell.blockCheckingWhenAverageChunkSizeGreaterThan`
 
 Type
-: number
+: `number`
 
 Scope
 : language-overridable
@@ -1180,7 +1180,7 @@ Name
 : `cSpell.blockCheckingWhenLineLengthGreaterThan`
 
 Type
-: number
+: `number`
 
 Scope
 : language-overridable
@@ -1205,7 +1205,7 @@ Name
 : `cSpell.blockCheckingWhenTextChunkSizeGreaterThan`
 
 Type
-: number
+: `number`
 
 Scope
 : language-overridable
@@ -1237,7 +1237,7 @@ Name
 : `cSpell.checkLimit`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -1257,7 +1257,7 @@ Name
 : `cSpell.spellCheckDelayMs`
 
 Type
-: number
+: `number`
 
 Scope
 : application
@@ -1276,7 +1276,7 @@ Name
 : `cSpell.suggestionsTimeout`
 
 Type
-: number
+: `number`
 
 Scope
 : resource
@@ -1307,7 +1307,7 @@ Name
 : `cSpell.ignoreRegExpList`
 
 Type
-: string[]
+: `( string | "Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything" )[]`
 
 Scope
 : resource
@@ -1339,7 +1339,7 @@ Name
 : `cSpell.includeRegExpList`
 
 Type
-: string[]
+: `( string | "Base64" | "Base64MultiLine" | "Base64SingleLine" | "CStyleComment" | "CStyleHexValue" | "CSSHexValue" | "CommitHash" | "CommitHashLink" | "Email" | "EscapeCharacters" | "HexValues" | "href" | "PhpHereDoc" | "PublicKey" | "RsaCert" | "SshRsa" | "SHA" | "HashStrings" | "SpellCheckerDisable" | "SpellCheckerDisableBlock" | "SpellCheckerDisableLine" | "SpellCheckerDisableNext" | "SpellCheckerIgnoreInDocSetting" | "string" | "UnicodeRef" | "Urls" | "UUID" | "Everything" )[]`
 
 Scope
 : resource
@@ -1360,7 +1360,7 @@ Name
 : `cSpell.overrides`
 
 Type
-: object[]
+: `object[]`
 
 Scope
 : resource
@@ -1396,7 +1396,7 @@ Name
 : `cSpell.patterns`
 
 Type
-: object[]
+: `object[]`
 
 Scope
 : resource
@@ -1431,7 +1431,7 @@ Name
 : `cSpell.useLocallyInstalledCSpellDictionaries`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -1442,7 +1442,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1470,7 +1470,7 @@ Name
 : `cSpell.dark`
 
 Type
-: object
+: `object`
 
 Scope
 : application
@@ -1493,7 +1493,7 @@ Name
 : `cSpell.decorateIssues`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -1504,7 +1504,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1515,7 +1515,7 @@ Name
 : `cSpell.light`
 
 Type
-: object
+: `object`
 
 Scope
 : application
@@ -1538,7 +1538,7 @@ Name
 : `cSpell.overviewRulerColor`
 
 Type
-: string
+: `string`
 
 Scope
 : application
@@ -1561,7 +1561,7 @@ Description
 Default
 : _`"#fc4c"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1572,7 +1572,7 @@ Name
 : `cSpell.textDecoration`
 
 Type
-: string
+: `string`
 
 Scope
 : application
@@ -1603,7 +1603,7 @@ Description
 Default
 : _- none -_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1614,7 +1614,7 @@ Name
 : `cSpell.textDecorationColor`
 
 Type
-: string
+: `string`
 
 Scope
 : application
@@ -1633,7 +1633,7 @@ Description
 Default
 : _`"#fc4"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1644,7 +1644,7 @@ Name
 : `cSpell.textDecorationColorFlagged`
 
 Type
-: string
+: `string`
 
 Scope
 : application
@@ -1663,7 +1663,7 @@ Description
 Default
 : _`"#f44"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1674,7 +1674,7 @@ Name
 : `cSpell.textDecorationLine`
 
 Type
-: ( `"underline"` \| `"overline"` \| `"line-through"` )
+: `( "underline" | "overline" | "line-through" )`
 
 Scope
 : application
@@ -1688,7 +1688,7 @@ Description
 Default
 : _`"underline"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1699,7 +1699,7 @@ Name
 : `cSpell.textDecorationStyle`
 
 Type
-: ( `"solid"` \| `"wavy"` \| `"dotted"` \| `"dashed"` \| `"double"` )
+: `( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
 
 Scope
 : application
@@ -1713,7 +1713,7 @@ Description
 Default
 : _`"wavy"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1724,7 +1724,7 @@ Name
 : `cSpell.textDecorationThickness`
 
 Type
-: string
+: `string`
 
 Scope
 : application
@@ -1745,7 +1745,7 @@ Description
 Default
 : _`"auto"`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1769,7 +1769,7 @@ Name
 : `cSpell.advanced.feature.useReferenceProviderRemove` -- Remove Matching Characters Before Rename
 
 Type
-: string
+: `string`
 
 Scope
 : language-overridable
@@ -1797,7 +1797,7 @@ Name
 : `cSpell.advanced.feature.useReferenceProviderWithRename` -- Use Reference Provider During Rename
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : language-overridable
@@ -1817,7 +1817,7 @@ Name
 : `cSpell.fixSpellingWithRenameProvider`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : language-overridable
@@ -1836,7 +1836,7 @@ Name
 : `cSpell.logFile` -- Write Logs to a File
 
 Type
-: string
+: `string`
 
 Scope
 : window
@@ -1855,7 +1855,7 @@ Name
 : `cSpell.logLevel` -- Set Logging Level
 
 Type
-: ( `"None"` \| `"Error"` \| `"Warning"` \| `"Information"` \| `"Debug"` )
+: `( "None" | "Error" | "Warning" | "Information" | "Debug" )`
 
     | `None` | Do not log |
     | `Error` | Log only errors |
@@ -1880,7 +1880,7 @@ Name
 : `cSpell.trustedWorkspace`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : window
@@ -1898,7 +1898,7 @@ Description
 Default
 : _`true`_
 
-Version
+Since Version
 : 4.0.0
 
 ---
@@ -1918,7 +1918,7 @@ Name
 : `cSpell.experimental.enableRegexpView`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -1937,7 +1937,7 @@ Name
 : `cSpell.experimental.enableSettingsViewerV2`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : application
@@ -1965,7 +1965,7 @@ Name
 : `cSpell.allowCompoundWords`
 
 Type
-: boolean
+: `boolean`
 
 Scope
 : resource
@@ -1986,7 +1986,7 @@ Name
 : ~~`cSpell.customFolderDictionaries`~~ -- Custom Folder Dictionaries
 
 Type
-: []
+: `( object | string )[]`
 
 Scope
 : resource
@@ -2009,7 +2009,7 @@ Name
 : ~~`cSpell.customUserDictionaries`~~ -- Custom User Dictionaries
 
 Type
-: []
+: `( object | string )[]`
 
 Scope
 : application
@@ -2032,7 +2032,7 @@ Name
 : ~~`cSpell.customWorkspaceDictionaries`~~ -- Custom Workspace Dictionaries
 
 Type
-: []
+: `( object | string )[]`
 
 Scope
 : resource
@@ -2055,7 +2055,7 @@ Name
 : `cSpell.enabledLanguageIds` -- Enabled Language Ids
 
 Type
-: string[]
+: `string[]`
 
 Scope
 : resource
