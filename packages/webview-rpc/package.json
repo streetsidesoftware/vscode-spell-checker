@@ -9,11 +9,11 @@
   "type": "commonjs",
   "scripts": {
     "build": "npm run build:tsc && npm run build:ts2mjs",
-    "build:tsc": "tsc -b tsconfig.json",
+    "build:tsc": "tsc -b tsconfig.json -f",
     "build:ts2mjs": "ts2mjs dist/esm",
     "build-production": "npm run clean && npm run build",
     "watch": "concurrently npm:watch:*",
-    "watch:tsc": "tsc -b tsconfig.json --watch",
+    "watch:tsc": "tsc -b tsconfig.json --watch -f",
     "watch:ts2mjs": "chokidar \"dist/esm/**/*.js\" -c \"ts2mjs dist/esm\"",
     "clean": "shx rm -rf dist",
     "coverage": "jest --coverage",
