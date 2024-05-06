@@ -59,7 +59,7 @@
     "@internal/locale-resolver": "file:../__locale-resolver",
     "@internal/server-pattern-matcher": "file:../_serverPatternMatcher",
     "@internal/settings-webview": "file:../_settingsViewer",
-    "ansi-escapes": "^6.2.1",
+    "ansi-escapes": "^7.0.0",
     "ansi-styles": "^6.2.1",
     "as-table": "^1.0.55",
     "camelize": "^1.0.1",
