@@ -5,9 +5,7 @@ flagWords:
   - hte
 ignorePaths:
   - .git/*/**
-  - .git/index
-  - .git/*HEAD
-  - .git/*refs
+  - .git/!(COMMIT_EDITMSG)
   - .gitignore
   - .vscodeignore
   - '*.lock'
