@@ -383,10 +383,12 @@ Default
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords)                       | resource             | Set Diagnostic Reporting Level for Flagged Words                                |
 | [`cSpell.diagnosticLevelSCM`](#cspelldiagnosticlevelscm)                                         | resource             | Set Diagnostic Reporting Level in SCM Commit Message                            |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
+| [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping)                                   | machine              | Hide Issues While Typing                                                        |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
 | [`cSpell.maxNumberOfProblems`](#cspellmaxnumberofproblems)                                       | resource             | Controls the maximum number of spelling errors per document.                    |
 | [`cSpell.minWordLength`](#cspellminwordlength)                                                   | resource             | The minimum length of a word before checking it against a dictionary.           |
 | [`cSpell.numSuggestions`](#cspellnumsuggestions)                                                 | resource             | Controls the number of suggestions shown.                                       |
+| [`cSpell.revealIssuesAfterDelayMS`](#cspellrevealissuesafterdelayms)                             | machine              | Reveal Issues After a Delay in Milliseconds                                     |
 | [`cSpell.showAutocompleteDirectiveSuggestions`](#cspellshowautocompletedirectivesuggestions)     | language-overridable | Show CSpell in-document directives as you type.                                 |
 | [`cSpell.showCommandsInEditorContextMenu`](#cspellshowcommandsineditorcontextmenu)               | application          | Show Spell Checker actions in Editor Context Menu                               |
 | [`cSpell.showStatus`](#cspellshowstatus)                                                         | application          | Display the spell checker status on the status bar.                             |
@@ -426,12 +428,13 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-: `( "Error" | "Warning" | "Information" | "Hint" )`
+: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+    | `Off` | Do not Report Spelling Issues |
 
 <!-- prettier-ignore-end -->
 
@@ -440,8 +443,10 @@ Scope
 
 Description
 : The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
 to control how issues are displayed in the document.
+
+    See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
 Default
 : _`"Hint"`_
@@ -455,12 +460,13 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-: `( "Error" | "Warning" | "Information" | "Hint" )`
+: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
+    | `Off` | Do not Report Spelling Issues |
 
 <!-- prettier-ignore-end -->
 
@@ -470,6 +476,8 @@ Scope
 Description
 : Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
 By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+
+    See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
 Default
 : _- none -_
@@ -505,8 +513,13 @@ This affects the color of the squiggle.
 
     By default, this setting will match `#cSpell.diagnosticLevel#`.
 
+    See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+
 Default
 : _- none -_
+
+Since Version
+: 4.0.0
 
 ---
 
@@ -526,6 +539,37 @@ Description
 
 Default
 : _`false`_
+
+---
+
+### `cSpell.hideIssuesWhileTyping`
+
+Name
+: `cSpell.hideIssuesWhileTyping` -- Hide Issues While Typing
+
+<!-- prettier-ignore-start -->
+Type
+: `( "Off" | "Word" | "Line" | "Document" )`
+
+    | `Off` | Show issues while typing |
+    | `Word` | Hide issues in the current word |
+    | `Line` | Hide issues on the line |
+    | `Document` | Hide all issues in the document |
+
+<!-- prettier-ignore-end -->
+
+Scope
+: machine
+
+Description
+: Control how spelling issues are displayed while typing.
+See: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.
+
+Default
+: _`"Word"`_
+
+Since Version
+: 4.0.0
 
 ---
 
@@ -602,6 +646,28 @@ Description
 
 Default
 : _`8`_
+
+---
+
+### `cSpell.revealIssuesAfterDelayMS`
+
+Name
+: `cSpell.revealIssuesAfterDelayMS` -- Reveal Issues After a Delay in Milliseconds
+
+Type
+: `number`
+
+Scope
+: machine
+
+Description
+: Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.
+
+Default
+: _`1500`_
+
+Since Version
+: 4.0.0
 
 ---
 
@@ -1525,18 +1591,18 @@ Since Version
 
 # Appearance
 
-| Setting                                                                  | Scope       | Description                                                                               |
-| ------------------------------------------------------------------------ | ----------- | ----------------------------------------------------------------------------------------- |
-| [`cSpell.dark`](#cspelldark)                                             | application | Decoration for dark themes.                                                               |
-| [`cSpell.decorateIssues`](#cspelldecorateissues)                         | application | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
-| [`cSpell.light`](#cspelllight)                                           | application | Decoration for light themes.                                                              |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | application | The CSS color used to show issues in the ruler.                                           |
-| [`cSpell.textDecoration`](#cspelltextdecoration)                         | application | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.   |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | application | The decoration color for normal spelling issues.                                          |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | application | The decoration color for flagged issues.                                                  |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | application | The CSS line type used to decorate issues.                                                |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | application | The CSS line style used to decorate issues.                                               |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | application | The CSS line thickness used to decorate issues.                                           |
+| Setting                                                                  | Scope   | Description                                                                               |
+| ------------------------------------------------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
+| [`cSpell.dark`](#cspelldark)                                             | machine | Decoration for dark themes.                                                               |
+| [`cSpell.decorateIssues`](#cspelldecorateissues)                         | machine | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
+| [`cSpell.light`](#cspelllight)                                           | machine | Decoration for light themes.                                                              |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | machine | The CSS color used to show issues in the ruler.                                           |
+| [`cSpell.textDecoration`](#cspelltextdecoration)                         | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.   |
+| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | machine | The decoration color for normal spelling issues.                                          |
+| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | machine | The decoration color for flagged issues.                                                  |
+| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | machine | The CSS line type used to decorate issues.                                                |
+| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | machine | The CSS line style used to decorate issues.                                               |
+| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | machine | The CSS line thickness used to decorate issues.                                           |
 
 ## Definitions
 
@@ -1549,7 +1615,7 @@ Type
 : `object`
 
 Scope
-: application
+: machine
 
 Description
 : Decoration for dark themes.
@@ -1560,6 +1626,9 @@ Description
 
 Default
 : _- none -_
+
+Since Version
+: 4.0.0
 
 ---
 
@@ -1572,7 +1641,7 @@ Type
 : `boolean`
 
 Scope
-: application
+: machine
 
 Description
 : Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
@@ -1594,7 +1663,7 @@ Type
 : `object`
 
 Scope
-: application
+: machine
 
 Description
 : Decoration for light themes.
@@ -1605,6 +1674,9 @@ Description
 
 Default
 : _- none -_
+
+Since Version
+: 4.0.0
 
 ---
 
@@ -1617,7 +1689,7 @@ Type
 : `string`
 
 Scope
-: application
+: machine
 
 Description
 : The CSS color used to show issues in the ruler.
@@ -1651,7 +1723,7 @@ Type
 : `string`
 
 Scope
-: application
+: machine
 
 Description
 : The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.
@@ -1693,7 +1765,7 @@ Type
 : `string`
 
 Scope
-: application
+: machine
 
 Description
 : The decoration color for normal spelling issues.
@@ -1723,7 +1795,7 @@ Type
 : `string`
 
 Scope
-: application
+: machine
 
 Description
 : The decoration color for flagged issues.
@@ -1753,7 +1825,7 @@ Type
 : `( "underline" | "overline" | "line-through" )`
 
 Scope
-: application
+: machine
 
 Description
 : The CSS line type used to decorate issues.
@@ -1778,7 +1850,7 @@ Type
 : `( "solid" | "wavy" | "dotted" | "dashed" | "double" )`
 
 Scope
-: application
+: machine
 
 Description
 : The CSS line style used to decorate issues.
@@ -1803,7 +1875,7 @@ Type
 : `string`
 
 Scope
-: application
+: machine
 
 Description
 : The CSS line thickness used to decorate issues.

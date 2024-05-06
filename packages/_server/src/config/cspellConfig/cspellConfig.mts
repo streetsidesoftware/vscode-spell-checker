@@ -7,7 +7,7 @@ import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
 import type { DictionaryDef } from './CustomDictionary.mjs';
 import type { PrefixWithCspell } from './Generics.mjs';
-import type { SpellCheckerSettings } from './SpellCheckerSettings.mjs';
+import type { SpellCheckerBehaviorSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
 
 interface InternalSettings {
     /**
@@ -173,6 +173,7 @@ type _VSConfigReporting = Pick<
     | 'suggestionMenuType'
     | 'suggestionNumChanges'
     | 'validateDirectives'
+    | keyof SpellCheckerBehaviorSettings
 >;
 
 /**

@@ -4,7 +4,8 @@ language: en-US
 flagWords:
   - hte
 ignorePaths:
-  - .git
+  - .git/*/**
+  - .git/!(COMMIT_EDITMSG)
   - .gitignore
   - .vscodeignore
   - '*.lock'

@@ -1,28 +1,46 @@
+import assert from 'node:assert';
+
+import { isDefined } from '@internal/common-utils';
 import { createDisposableList } from 'utils-disposables';
 import type { DecorationOptions, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
-import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString, window, workspace } from 'vscode';
+import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString, Range, window, workspace } from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
 import { commandUri, createTextEditCommand } from '../commands.mjs';
 import type { Disposable } from '../disposable.js';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
+import { findEditor } from '../util/findEditor.js';
+
+const defaultHideIssuesWhileTyping: Required<CSpellUserSettings>['hideIssuesWhileTyping'] = 'Word';
+const defaultRevealIssuesAfterDelayMS: Required<CSpellUserSettings>['revealIssuesAfterDelayMS'] = 1000;
+
+const debug = true;
+const logDbg: typeof console.log = debug ? console.log : () => undefined;
 
 export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForIssues: TextEditorDecorationType | undefined;
     private decorationTypeForFlagged: TextEditorDecorationType | undefined;
+    private decorationTypeForDebug: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
     private visibleEditors = new Set<TextEditor>();
     private _visible = true;
     public dispose = this.disposables.dispose;
+    private docChanges = new Map<string, LastDocumentChange>();
+    private refreshTimeout: NodeJS.Timeout | undefined;
+    private urisToRefresh = new Set<vscode.Uri>();
+    private hideIssuesWhileTyping = defaultHideIssuesWhileTyping;
+    private revealIssuesAfterDelayMS = defaultRevealIssuesAfterDelayMS;
 
     constructor(
         readonly context: vscode.ExtensionContext,
         readonly issueTracker: IssueTracker,
     ) {
+        this.getConfiguration();
         const decorators = this.createDecorators();
         this._visible = context.globalState.get(SpellingIssueDecorator.globalStateKey, true);
         this.decorationTypeForIssues = decorators?.decoratorIssues;
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
+        this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.disposables.push(
             () => this.clearDecoration(),
             workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
@@ -30,6 +48,9 @@ export class SpellingIssueDecorator implements Disposable {
             issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
             window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
             window.onDidChangeVisibleTextEditors((e) => this.handleOnDidChangeVisibleTextEditors(e)),
+            window.onDidChangeTextEditorSelection((e) => this.#onSelectionChange(e)),
+            workspace.onDidChangeTextDocument((e) => this.#onDocumentChange(e)),
+            workspace.onDidCloseTextDocument((doc) => this.docChanges.delete(doc.uri.toString())),
         );
         this.setContext(this._visible);
     }
@@ -52,7 +73,7 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     refreshDiagnostics(docUris?: readonly Uri[]) {
-        // console.log('refreshDiagnostics %o', {
+        // log('refreshDiagnostics %o', {
         //     docUris: docUris?.map((u) => u.toString(true)),
         //     docs: workspace.textDocuments.map((d) => ({ uri: d.uri.toString(true), languageId: d.languageId })),
         //     notebooks: workspace.notebookDocuments.map((d) => d.uri.toString(true)),
@@ -67,21 +88,69 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     refreshDiagnosticsInEditor(editor: TextEditor) {
-        if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged) return;
+        if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged || !this.decorationTypeForDebug) return;
         const doc = editor.document;
-        const issues = this.issueTracker.getIssues(doc.uri) || [];
+
+        const delay = this.revealIssuesAfterDelayMS;
+        const mode = this.hideIssuesWhileTyping;
+        const rangeDoc = doc.validateRange(new Range(doc.positionAt(0), doc.positionAt(doc.getText().length)));
+        const activeRangeMap =
+            mode === 'Word'
+                ? (r: Range) => union(r, doc.getWordRangeAtPosition(r.start), doc.getWordRangeAtPosition(r.end))
+                : mode === 'Line'
+                  ? (r: Range) => doc.lineAt(r.start.line).range
+                  : (_r: Range) => rangeDoc;
+        const now = performance.now();
+        const recentChanges = this.docChanges.get(doc.uri.toString());
+        const toDelay = recentChanges && delay - (now - recentChanges.timestamp);
+        logDbg('refreshDiagnosticsInEditor %o', {
+            t: performance.now().toFixed(2),
+            version: recentChanges?.version,
+            delay,
+            mode,
+            delta: now - (recentChanges?.timestamp || now),
+            toDelay,
+        });
+        const activeRanges = ((mode !== 'Off' && recentChanges && now - recentChanges.timestamp < delay && recentChanges.ranges) || []).map(
+            activeRangeMap,
+        );
+        const active = editor.selections
+            .map((s) => {
+                const intersections = activeRanges.filter((r) => r.intersection(s));
+                if (!intersections.length) return undefined;
+                return union(s, ...intersections);
+            })
+            .filter(isDefined);
+
+        let hasHidden = false;
+
+        const issues = (this.issueTracker.getIssues(doc.uri) || [])
+            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
+            // .filter((issue) => doc.version - issue.version < 2)
+            .filter((issue) => {
+                assert(issue.version <= doc.version, 'Issue version should be less than or equal to document version.');
+                const range = issue.range;
+                const hide = active.some((r) => r.intersection(range));
+                hasHidden ||= hide;
+                return !hide;
+            });
+
+        if (hasHidden) {
+            this.#addUriToRefreshTimeout(doc.uri);
+        }
 
         const decorationsIssues: DecorationOptions[] = issues
-            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
             .filter((issue) => !issue.isFlagged())
-            .map((diag) => diagToDecorationOptions(diag));
+            .map((diag) => diagToDecorationOptions(diag))
+            .filter(isDefined);
         editor.setDecorations(this.decorationTypeForIssues, decorationsIssues);
 
         const decorationsFlagged: DecorationOptions[] = issues
-            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
-            .filter((issue) => issue.isFlagged())
-            .map((diag) => diagToDecorationOptions(diag));
+            .filter((issue) => issue.isFlagged() && issue.isIssueTypeSpelling())
+            .map((diag) => diagToDecorationOptions(diag))
+            .filter(isDefined);
         editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
+        // editor.setDecorations(this.decorationTypeForDebug, activeRanges);
     }
 
     get visible() {
@@ -110,18 +179,35 @@ export class SpellingIssueDecorator implements Disposable {
         this.decorationTypeForIssues = undefined;
         this.decorationTypeForFlagged?.dispose();
         this.decorationTypeForFlagged = undefined;
+        this.decorationTypeForDebug?.dispose();
+        this.decorationTypeForDebug = undefined;
+    }
+
+    private getConfiguration() {
+        const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
+        this.hideIssuesWhileTyping = cfg.hideIssuesWhileTyping ?? defaultHideIssuesWhileTyping;
+        this.revealIssuesAfterDelayMS = cfg.revealIssuesAfterDelayMS ?? defaultRevealIssuesAfterDelayMS;
     }
 
     private resetDecorator() {
+        this.docChanges.clear();
+        this.getConfiguration();
         const decorators = this.createDecorators();
         this.decorationTypeForIssues = decorators?.decoratorIssues;
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
+        this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.refreshDiagnostics();
     }
 
-    private createDecorators(): { decoratorIssues: TextEditorDecorationType; decoratorFlagged: TextEditorDecorationType } | undefined {
+    private createDecorators():
+        | {
+              decoratorIssues: TextEditorDecorationType;
+              decoratorFlagged: TextEditorDecorationType;
+              decoratorDebug: TextEditorDecorationType;
+          }
+        | undefined {
         this.clearDecoration();
-        const decorateIssues = this.visible && workspace.getConfiguration('cSpell').get('decorateIssues');
+        const decorateIssues = this.visible && (workspace.getConfiguration('cSpell').get<boolean>('decorateIssues') ?? true);
         if (!decorateIssues) return undefined;
 
         const mode = calcMode(window.activeColorTheme.kind);
@@ -145,7 +231,82 @@ export class SpellingIssueDecorator implements Disposable {
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorFlagged'),
         });
 
-        return { decoratorIssues, decoratorFlagged };
+        const decoratorDebug = window.createTextEditorDecorationType({
+            isWholeLine: false,
+            rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+        });
+
+        return { decoratorIssues, decoratorFlagged, decoratorDebug };
+    }
+
+    #scheduleUriRefresh() {
+        if (this.refreshTimeout || this.urisToRefresh.size < 1) return;
+        this.refreshTimeout = setTimeout(() => {
+            this.refreshTimeout = undefined;
+            const uris = [...this.urisToRefresh];
+            this.urisToRefresh.clear();
+            const now = performance.now();
+            uris.forEach((uri) => {
+                const change = this.docChanges.get(uri.toString());
+                if (!change || now - change.timestamp >= this.revealIssuesAfterDelayMS) return;
+                this.urisToRefresh.add(uri);
+            });
+            const toRefresh = uris.filter((uri) => !this.urisToRefresh.has(uri));
+            this.refreshDiagnostics(toRefresh);
+            this.#scheduleUriRefresh();
+        }, 100);
+    }
+
+    #addUriToRefreshTimeout(uri: vscode.Uri) {
+        this.urisToRefresh.add(uri);
+        this.#scheduleUriRefresh();
+    }
+
+    #onSelectionChange(_e: vscode.TextEditorSelectionChangeEvent) {
+        logDbg('onSelectionChange %o', {
+            t: performance.now().toFixed(2),
+            kind: _e.kind,
+            v: _e.textEditor.document.version,
+            sel: JSON.stringify(_e.selections.map((s) => s.active)),
+            uri: _e.textEditor.document.uri.toString(),
+        });
+    }
+    #onDocumentChange(e: vscode.TextDocumentChangeEvent) {
+        const { document, contentChanges } = e;
+        const uriKey = document.uri.toString();
+
+        const editor = findEditor(document.uri);
+        if (!editor) {
+            this.docChanges.delete(uriKey);
+            return;
+        }
+
+        logDbg('onDocumentChange %o', {
+            t: performance.now().toFixed(2),
+            v: document.version,
+            sel: JSON.stringify(editor.selections.map((s) => s.active)),
+            c: JSON.stringify(contentChanges.map((c) => ({ r: c.range, t: c.text }))),
+            uri: document.uri.toString(),
+        });
+
+        const ranges = changesToRanges(contentChanges);
+
+        if (!ranges.length) {
+            this.docChanges.delete(uriKey);
+            return;
+        }
+
+        this.docChanges.set(uriKey, {
+            uri: document.uri,
+            version: document.version,
+            ranges,
+            timestamp: performance.now(),
+        });
+    }
+
+    public clearActiveChanges() {
+        this.docChanges.clear();
     }
 
     static globalStateKey = 'showDecorations';
@@ -160,7 +321,7 @@ function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField
     return textDecoration || `${line} ${style} ${color} ${thickness}`;
 }
 
-function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions {
+function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions | undefined {
     const { range } = issue;
     const suggestions = issue.providedSuggestions();
     const isFlagged = issue.isFlagged();
@@ -179,18 +340,26 @@ function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions
 
     hoverMessage.appendMarkdown('***').appendText(text).appendMarkdown('***: ');
 
-    if (isSuggestion) {
-        hoverMessage.appendText('Has Suggestions.');
-        if (!suggestions?.length) {
+    if (issue.isIssueTypeSpelling()) {
+        if (isSuggestion) {
+            hoverMessage.appendText('Has Suggestions.');
+            if (!suggestions?.length) {
+                hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
+            }
+        } else {
+            if (isFlagged) {
+                hoverMessage.appendText('Forbidden word.');
+            } else {
+                hoverMessage.appendText('Unknown word.');
+            }
             hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
         }
-    } else {
-        if (isFlagged) {
-            hoverMessage.appendText('Forbidden word.');
-        } else {
-            hoverMessage.appendText('Unknown word.');
-        }
+    } else if (issue.isIssueTypeDirective()) {
+        hoverMessage.appendText('Unknown directive.');
         hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
+    } else {
+        logDbg('Unknown issue type: %o', issue);
+        return undefined;
     }
 
     if (suggestions?.length) {
@@ -221,4 +390,28 @@ function calcMode(kind: ColorThemeKind): ColorMode {
         case ColorThemeKind.Light:
             return 'light';
     }
+}
+
+interface LastDocumentChange {
+    uri: vscode.Uri;
+    version: number;
+    ranges: Range[];
+    /**
+     * The time the change notification was received.
+     * `performance.now()` is used to get the current time in milliseconds.
+     */
+    timestamp: number;
+}
+
+function changeToRange(change: vscode.TextDocumentContentChangeEvent): Range {
+    // Note: the start of the range is the right location, but the end, doesn't contain the text.
+    return change.range.with(undefined, change.range.start.with(undefined, change.text.length + change.range.start.character));
+}
+
+function changesToRanges(changes: readonly vscode.TextDocumentContentChangeEvent[]): Range[] {
+    return changes.map(changeToRange);
+}
+
+function union(r: Range, ...ranges: (Range | undefined)[]) {
+    return ranges.filter(isDefined).reduce((acc, r2) => acc.union(r2), r);
 }

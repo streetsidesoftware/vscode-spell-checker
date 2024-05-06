@@ -5,9 +5,9 @@ import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictiona
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
 export type DiagnosticLevel = 'Error' | 'Warning' | 'Information' | 'Hint';
-export type DiagnosticLevelExt = DiagnosticLevel | 'Off';
+export type DiagnosticLevelExt = 'Error' | 'Warning' | 'Information' | 'Hint' | 'Off';
 
-export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, AppearanceSettings {
+export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, SpellCheckerBehaviorSettings, AppearanceSettings {
     /**
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
@@ -28,8 +28,10 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-     * Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+     * Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
      * to control how issues are displayed in the document.
+     *
+     * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level
      * @scope resource
      * @default "Hint"
@@ -37,13 +39,16 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
      *  "Report Spelling Issues as Information",
-     *  "Report Spelling Issues as Hints, will not show up in Problems"]
+     *  "Report Spelling Issues as Hints, will not show up in Problems",
+     *  "Do not Report Spelling Issues"]
      */
-    diagnosticLevel?: DiagnosticLevel;
+    diagnosticLevel?: DiagnosticLevelExt;
 
     /**
      * Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
      * By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
+     *
+     * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level for Flagged Words
      * @scope resource
      * @since 4.0.0
@@ -51,9 +56,10 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
      *  "Report Spelling Issues as Information",
-     *  "Report Spelling Issues as Hints, will not show up in Problems"]
+     *  "Report Spelling Issues as Hints, will not show up in Problems",
+     *  "Do not Report Spelling Issues"]
      */
-    diagnosticLevelFlaggedWords?: DiagnosticLevel;
+    diagnosticLevelFlaggedWords?: DiagnosticLevelExt;
 
     /**
      * Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
@@ -61,8 +67,10 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *
      * By default, this setting will match `#cSpell.diagnosticLevel#`.
      *
+     * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level in SCM Commit Message
      * @scope resource
+     * @since 4.0.0
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
@@ -431,6 +439,37 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default true
      */
     trustedWorkspace?: boolean;
+}
+
+export interface SpellCheckerBehaviorSettings {
+    /**
+     * Control how spelling issues are displayed while typing.
+     * See: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.
+     * @title Hide Issues While Typing
+     * @scope machine
+     * @since 4.0.0
+     * @default "Word"
+     * @enumDescriptions [
+     *  "Show issues while typing",
+     *  "Hide issues in the current word",
+     *  "Hide issues on the line",
+     *  "Hide all issues in the document"]
+     */
+    hideIssuesWhileTyping?: 'Off' | 'Word' | 'Line' | 'Document';
+
+    /**
+     * Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.
+     * @title Reveal Issues After a Delay in Milliseconds
+     * @scope machine
+     * @since 4.0.0
+     * @default 1500
+     * @enumDescriptions [
+     *  "Show issues while typing",
+     *  "Hide issues in the current word",
+     *  "Hide issues on the line",
+     *  "Hide all issues in the document"]
+     */
+    revealIssuesAfterDelayMS?: number;
 }
 
 type AutoOrBoolean = boolean | 'auto';

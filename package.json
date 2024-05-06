@@ -547,7 +547,7 @@
       {
         "command": "cSpell.show",
         "category": "Spell",
-        "title": "Show Decorations",
+        "title": "Show Spelling Decorations",
         "shortTitle": "Show",
         "when": "config.cSpell.decorateIssues && !cSpell.showDecorations",
         "icon": "$(eye)"
@@ -555,7 +555,7 @@
       {
         "command": "cSpell.hide",
         "category": "Spell",
-        "title": "Hide Decorations",
+        "title": "Hide Spelling Decorations",
         "shortTitle": "Hide",
         "when": "config.cSpell.decorateIssues && cSpell.showDecorations",
         "icon": "$(eye-closed)"
@@ -827,15 +827,17 @@
                     "Error",
                     "Warning",
                     "Information",
-                    "Hint"
+                    "Hint",
+                    "Off"
                   ],
                   "enumDescriptions": [
                     "Report Spelling Issues as Errors",
                     "Report Spelling Issues as Warnings",
                     "Report Spelling Issues as Information",
-                    "Report Spelling Issues as Hints, will not show up in Problems"
+                    "Report Spelling Issues as Hints, will not show up in Problems",
+                    "Do not Report Spelling Issues"
                   ],
-                  "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.",
+                  "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
                   "scope": "resource",
                   "title": "Set Diagnostic Reporting Level",
                   "type": "string"
@@ -845,15 +847,17 @@
                     "Error",
                     "Warning",
                     "Information",
-                    "Hint"
+                    "Hint",
+                    "Off"
                   ],
                   "enumDescriptions": [
                     "Report Spelling Issues as Errors",
                     "Report Spelling Issues as Warnings",
                     "Report Spelling Issues as Information",
-                    "Report Spelling Issues as Hints, will not show up in Problems"
+                    "Report Spelling Issues as Hints, will not show up in Problems",
+                    "Do not Report Spelling Issues"
                   ],
-                  "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
+                  "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
                   "scope": "resource",
                   "since": "4.0.0",
                   "title": "Set Diagnostic Reporting Level for Flagged Words",
@@ -2965,27 +2969,27 @@
               "overviewRulerColor": {
                 "default": "#fc4c",
                 "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecoration": {
                 "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationColor": {
                 "default": "#fc4",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationColorFlagged": {
                 "default": "#f44",
                 "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
@@ -2997,7 +3001,7 @@
                   "line-through"
                 ],
                 "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
@@ -3011,25 +3015,26 @@
                   "double"
                 ],
                 "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationThickness": {
                 "default": "auto",
                 "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               }
             },
-            "scope": "application",
+            "scope": "machine",
+            "since": "4.0.0",
             "type": "object"
           },
           "cSpell.decorateIssues": {
             "default": true,
             "markdownDescription": "Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "boolean"
           },
@@ -3040,27 +3045,27 @@
               "overviewRulerColor": {
                 "default": "#fc4c",
                 "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecoration": {
                 "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationColor": {
                 "default": "#fc4",
                 "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationColorFlagged": {
                 "default": "#f44",
                 "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
@@ -3072,7 +3077,7 @@
                   "line-through"
                 ],
                 "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
@@ -3086,45 +3091,46 @@
                   "double"
                 ],
                 "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               },
               "textDecorationThickness": {
                 "default": "auto",
                 "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
-                "scope": "application",
+                "scope": "machine",
                 "since": "4.0.0",
                 "type": "string"
               }
             },
-            "scope": "application",
+            "scope": "machine",
+            "since": "4.0.0",
             "type": "object"
           },
           "cSpell.overviewRulerColor": {
             "default": "#fc4c",
             "markdownDescription": "The CSS color used to show issues in the ruler.\n\nSee:\n- [`<color>` CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value)\n- [CSS Colors, W3C Schools](https://www.w3schools.com/cssref/css_colors.php)\n- Hex colors\n- Use \"\" (empty string) to disable.\n\nExamples:\n- `green`\n- `DarkYellow`\n- `#ffff0080` - semi-transparent yellow.\n- `rgb(255 153 0 / 80%)`",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
           "cSpell.textDecoration": {
             "markdownDescription": "The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.\n\nThis setting is used to manually configure the text decoration. If it is not set, the following settings are used:\n- `#cSpell.textDecorationLine#` to pick the line type\n- `#cSpell.textDecorationStyle#` to pick the style\n- `#cSpell.textDecorationColor#` to set the color\n- `#cSpell.textDecorationThickness#` to set the thickness.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n\nFormat:  `<line> [style] <color> [thickness]`\n\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `underline green`\n- `underline dotted yellow 0.2rem`\n- `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
           "cSpell.textDecorationColor": {
             "default": "#fc4",
             "markdownDescription": "The decoration color for normal spelling issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
           "cSpell.textDecorationColorFlagged": {
             "default": "#f44",
             "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
@@ -3136,7 +3142,7 @@
               "line-through"
             ],
             "markdownDescription": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
@@ -3150,14 +3156,14 @@
               "double"
             ],
             "markdownDescription": "The CSS line style used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           },
           "cSpell.textDecorationThickness": {
             "default": "auto",
             "markdownDescription": "The CSS line thickness used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- thickness - see: [text-decoration-thickness, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-thickness)\n\nExamples:\n- `auto`\n- `from-font`\n- `0.2rem`\n- `1.5px`\n- `10%`",
-            "scope": "application",
+            "scope": "machine",
             "since": "4.0.0",
             "type": "string"
           }
@@ -3743,15 +3749,17 @@
               "Error",
               "Warning",
               "Information",
-              "Hint"
+              "Hint",
+              "Off"
             ],
             "enumDescriptions": [
               "Report Spelling Issues as Errors",
               "Report Spelling Issues as Warnings",
               "Report Spelling Issues as Information",
-              "Report Spelling Issues as Hints, will not show up in Problems"
+              "Report Spelling Issues as Hints, will not show up in Problems",
+              "Do not Report Spelling Issues"
             ],
-            "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.",
+            "markdownDescription": "The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.\nSet the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`\nto control how issues are displayed in the document.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
             "scope": "resource",
             "title": "Set Diagnostic Reporting Level",
             "type": "string"
@@ -3761,15 +3769,17 @@
               "Error",
               "Warning",
               "Information",
-              "Hint"
+              "Hint",
+              "Off"
             ],
             "enumDescriptions": [
               "Report Spelling Issues as Errors",
               "Report Spelling Issues as Warnings",
               "Report Spelling Issues as Information",
-              "Report Spelling Issues as Hints, will not show up in Problems"
+              "Report Spelling Issues as Hints, will not show up in Problems",
+              "Do not Report Spelling Issues"
             ],
-            "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.",
+            "markdownDescription": "Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.\nBy default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
             "scope": "resource",
             "since": "4.0.0",
             "title": "Set Diagnostic Reporting Level for Flagged Words",
@@ -3790,8 +3800,9 @@
               "Report Spelling Issues as Hints, will not show up in Problems",
               "Do not Report Spelling Issues"
             ],
-            "markdownDescription": "Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.\nThis affects the color of the squiggle.\n\nBy default, this setting will match `#cSpell.diagnosticLevel#`.",
+            "markdownDescription": "Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.\nThis affects the color of the squiggle.\n\nBy default, this setting will match `#cSpell.diagnosticLevel#`.\n\nSee: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)",
             "scope": "resource",
+            "since": "4.0.0",
             "title": "Set Diagnostic Reporting Level in SCM Commit Message",
             "type": "string"
           },
@@ -3800,6 +3811,26 @@
             "markdownDescription": "Hide the options to add words to dictionaries or settings.",
             "scope": "resource",
             "type": "boolean"
+          },
+          "cSpell.hideIssuesWhileTyping": {
+            "default": "Word",
+            "enum": [
+              "Off",
+              "Word",
+              "Line",
+              "Document"
+            ],
+            "enumDescriptions": [
+              "Show issues while typing",
+              "Hide issues in the current word",
+              "Hide issues on the line",
+              "Hide all issues in the document"
+            ],
+            "markdownDescription": "Control how spelling issues are displayed while typing.\nSee: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.",
+            "scope": "machine",
+            "since": "4.0.0",
+            "title": "Hide Issues While Typing",
+            "type": "string"
           },
           "cSpell.maxDuplicateProblems": {
             "default": 20,
@@ -3823,6 +3854,20 @@
             "default": 8,
             "markdownDescription": "Controls the number of suggestions shown.",
             "scope": "resource",
+            "type": "number"
+          },
+          "cSpell.revealIssuesAfterDelayMS": {
+            "default": 1500,
+            "enumDescriptions": [
+              "Show issues while typing",
+              "Hide issues in the current word",
+              "Hide issues on the line",
+              "Hide all issues in the document"
+            ],
+            "markdownDescription": "Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.",
+            "scope": "machine",
+            "since": "4.0.0",
+            "title": "Reveal Issues After a Delay in Milliseconds",
             "type": "number"
           },
           "cSpell.showAutocompleteDirectiveSuggestions": {

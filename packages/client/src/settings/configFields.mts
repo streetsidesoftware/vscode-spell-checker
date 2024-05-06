@@ -52,6 +52,10 @@ export const ConfigFields: CSpellUserSettingsFields = {
     useLocallyInstalledCSpellDictionaries: 'useLocallyInstalledCSpellDictionaries',
     workspaceRootPath: 'workspaceRootPath',
     trustedWorkspace: 'trustedWorkspace',
+    // Behavior
+    hideIssuesWhileTyping: 'hideIssuesWhileTyping',
+    revealIssuesAfterDelayMS: 'revealIssuesAfterDelayMS',
+    // Appearance
     decorateIssues: 'decorateIssues',
     textDecoration: 'textDecoration',
     textDecorationLine: 'textDecorationLine',

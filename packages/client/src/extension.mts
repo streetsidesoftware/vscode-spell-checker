@@ -79,7 +79,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     const configWatcher = createConfigWatcher();
-    console.log('config files: %o', await configWatcher.scanWorkspaceForConfigFiles());
+    // console.log('config files: %o', await configWatcher.scanWorkspaceForConfigFiles());
     const decorator = new SpellingIssueDecorator(context, issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
     activateIssueViewer(context, issueTracker);

@@ -59,7 +59,7 @@ class ConfigWatcherImpl implements ConfigWatcher {
     };
 
     async scanWorkspaceForConfigFiles(cancellationToken?: vscode.CancellationToken): Promise<Uri[]> {
-        console.log('scanWorkspaceForConfigFiles %o', this.#configFileNames);
+        // console.log('scanWorkspaceForConfigFiles %o', this.#configFileNames);
 
         const found = await vscode.workspace.findFiles(
             `**/{${this.#configFileNames.join(',')}}`,

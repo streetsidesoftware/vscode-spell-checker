@@ -450,10 +450,30 @@ export function run(): void {
 
         const diags: Required<PublishDiagnosticsParams> = { uri, version, diagnostics };
 
-        const diagsForVSCode = result.hideHints
-            ? { ...diags, diagnostics: diags.diagnostics.filter((d) => d.severity !== DiagnosticSeverity.Hint) }
-            : diags;
-        catchPromise(clientServerApi.clientNotification.onDiagnostics(diags));
+        // This is to filter out the "Off" severity that is used to hide issues from the VS Code Problems panel.
+        const knownDiagnosticSeverityLevels = new Set<number | undefined>([
+            DiagnosticSeverity.Error,
+            DiagnosticSeverity.Warning,
+            DiagnosticSeverity.Information,
+            DiagnosticSeverity.Hint,
+        ]);
+
+        const allowedDiags = new Set<number | undefined>(knownDiagnosticSeverityLevels);
+
+        if (result.hideHints) {
+            allowedDiags.delete(DiagnosticSeverity.Hint);
+        }
+
+        function mapDiagnostic(diag: Diagnostic): Diagnostic {
+            return {
+                ...diag,
+                severity: knownDiagnosticSeverityLevels.has(diag.severity) ? diag.severity : undefined,
+            };
+        }
+
+        const diagsForClient = { ...diags, diagnostics: diags.diagnostics.map(mapDiagnostic) };
+        catchPromise(clientServerApi.clientNotification.onDiagnostics(diagsForClient));
+        const diagsForVSCode = { ...diags, diagnostics: diags.diagnostics.filter((d) => allowedDiags.has(d.severity)) };
         catchPromise(connection.sendDiagnostics(diagsForVSCode), 'sendDiagnostics');
     }
 
@@ -563,7 +583,7 @@ export function run(): void {
             const { doc, settings } = dsp;
             const { uri, version } = doc;
 
-            const hideHints = !isScmUri(uri) && !!settings.decorateIssues;
+            const hideHints = !isScmUri(uri) && (settings.decorateIssues ?? true);
             const result: ValidationResult = { uri, version, hideHints, diagnostics: [] };
 
             try {

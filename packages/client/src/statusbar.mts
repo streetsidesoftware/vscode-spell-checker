@@ -82,7 +82,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         debounceStatusBar = entry;
     }
 
-    async function _updateStatusBarWithSpellCheckStatus(document: vscode.TextDocument, showClock?: boolean) {
+    async function _updateStatusBarWithSpellCheckStatus(document: vscode.TextDocument | undefined, showClock?: boolean) {
         if (showClock ?? true) {
             sbCheck.text = `$(clock) ${cspellStatusBarIcon}`;
             sbCheck.tooltip = 'cSpell waiting...';
@@ -98,16 +98,20 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
             const diags = getCSpellDiags(docUri);
             const { languageEnabled = true, fileEnabled = true } = response;
             const isChecked = languageEnabled && fileEnabled;
-            const isCheckedText = isChecked ? 'is' : 'is NOT';
-            const langReason = languageEnabled ? '' : `The "${languageId}" filetype is not enabled.`;
+            const isCheckedText = isChecked ? 'Is' : 'Is NOT';
+            const langReason = `File type: **\`${languageId}\`** ${languageEnabled ? '' : 'is NOT enabled.'}`;
             const fileReason = formatFileReason(response);
             const fileName = path.basename(uri.fsPath);
-            const issuesText = `Issues: ${diags.length}`;
+            const issuesText = `Issues: **${diags.length}**\n\n`;
             sbCheck.text = statusBarText({ languageEnabled, fileEnabled, diags });
-            const reason = [issuesText, `"${fileName}" ${isCheckedText} spell checked.`, langReason, fileReason]
-                .filter((a) => !!a)
-                .join('\n');
-            sbCheck.tooltip = reason;
+            const toolTip = new vscode.MarkdownString();
+            toolTip.appendMarkdown(`**\`\`\`\`${fileName}\`\`\`\`**\n`);
+            !isChecked && toolTip.appendMarkdown(`- ${isCheckedText} spell checked.\n`);
+            langReason && toolTip.appendMarkdown(`- ${langReason}\n`);
+            fileReason && toolTip.appendMarkdown(`- ${fileReason}\n`);
+            isChecked && toolTip.appendMarkdown(`- ${issuesText}\n`);
+            toolTip.isTrusted = true;
+            sbCheck.tooltip = toolTip;
             sbCheck.command = infoViewer.commandDisplayCSpellInfo;
             sbCheck.show();
         }
@@ -123,7 +127,8 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         const ex = response.excludedBy[0];
         const { glob, name, id } = ex;
         const configPath = ex.configUri && uriToName(vscode.Uri.parse(ex.configUri));
-        return `File excluded by ${JSON.stringify(glob)} in ${configPath || id || name || 'settings'}`;
+        const configPathLink = configPath ? `[${configPath}](${ex.configUri})` : '';
+        return `File excluded by ${JSON.stringify(glob)} in ${configPathLink || id || name || 'settings'}`;
     }
 
     function toStatusBarAlignment(showStatusAlignment: CSpellUserSettings['showStatusAlignment']): vscode.StatusBarAlignment {
@@ -200,7 +205,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         return docs[0];
     }
 
-    sbCheck.text = '$(clock)';
+    sbCheck.text = `$(loading~spin) ${cspellStatusBarIcon}`;
     sbCheck.show();
 
     context.subscriptions.push(
