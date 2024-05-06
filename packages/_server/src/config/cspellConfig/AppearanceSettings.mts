@@ -17,9 +17,9 @@ interface Decoration {
      * - `#ffff0080` - semi-transparent yellow.
      * - `rgb(255 153 0 / 80%)`
      *
-     * @scope application
-     * @default "#fc4c"
+     * @scope machine
      * @since 4.0.0
+     * @default "#fc4c"
      */
     overviewRulerColor?: string;
 
@@ -46,7 +46,7 @@ interface Decoration {
      * - `underline dotted yellow 0.2rem`
      * - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
      *
-     * @scope application
+     * @scope machine
      * @since 4.0.0
      */
     textDecoration?: string;
@@ -57,9 +57,9 @@ interface Decoration {
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
      *
-     * @scope application
-     * @default "underline"
+     * @scope machine
      * @since 4.0.0
+     * @default "underline"
      */
     textDecorationLine?: 'underline' | 'overline' | 'line-through';
 
@@ -69,9 +69,9 @@ interface Decoration {
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
      *
-     * @scope application
-     * @default "wavy"
+     * @scope machine
      * @since 4.0.0
+     * @default "wavy"
      */
     textDecorationStyle?: 'solid' | 'wavy' | 'dotted' | 'dashed' | 'double';
 
@@ -88,9 +88,9 @@ interface Decoration {
      * - `1.5px`
      * - `10%`
      *
-     * @scope application
-     * @default "auto"
+     * @scope machine
      * @since 4.0.0
+     * @default "auto"
      */
     textDecorationThickness?: 'auto' | 'from-font' | string;
 
@@ -105,9 +105,9 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope application
-     * @default "#fc4"
+     * @scope machine
      * @since 4.0.0
+     * @default "#fc4"
      */
     textDecorationColor?: string;
 
@@ -122,9 +122,9 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope application
-     * @default "#f44"
+     * @scope machine
      * @since 4.0.0
+     * @default "#f44"
      */
     textDecorationColorFlagged?: string;
 
@@ -139,9 +139,9 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope application
-     * @default "#888"
+     * @scope machine
      * @since 4.0.0
+     * @default "#888"
      * @hidden hide this for now. It won't be used until we have a way to get pure suggestions.
      */
     textDecorationColorSuggestion?: string;
@@ -157,7 +157,8 @@ interface Appearance extends Decoration {
      * See:
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
-     * @scope application
+     * @scope machine
+     * @since 4.0.0
      */
     light?: Decoration;
 
@@ -167,7 +168,8 @@ interface Appearance extends Decoration {
      * See:
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
-     * @scope application
+     * @scope machine
+     * @since 4.0.0
      */
     dark?: Decoration;
 }
@@ -176,7 +178,7 @@ export interface AppearanceSettings extends Appearance {
     /**
      * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
      *
-     * @scope application
+     * @scope machine
      * @since 4.0.0
      * @default true
      */
