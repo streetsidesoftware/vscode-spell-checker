@@ -381,7 +381,6 @@ Default
 | [`cSpell.autoFormatConfigFile`](#cspellautoformatconfigfile)                                     | window               | Auto Format Configuration File                                                  |
 | [`cSpell.diagnosticLevel`](#cspelldiagnosticlevel)                                               | resource             | Set Diagnostic Reporting Level                                                  |
 | [`cSpell.diagnosticLevelFlaggedWords`](#cspelldiagnosticlevelflaggedwords)                       | resource             | Set Diagnostic Reporting Level for Flagged Words                                |
-| [`cSpell.diagnosticLevelSCM`](#cspelldiagnosticlevelscm)                                         | resource             | Set Diagnostic Reporting Level in SCM Commit Message                            |
 | [`cSpell.hideAddToDictionaryCodeActions`](#cspellhideaddtodictionarycodeactions)                 | resource             | Hide the options to add words to dictionaries or settings.                      |
 | [`cSpell.hideIssuesWhileTyping`](#cspellhideissueswhiletyping)                                   | machine              | Hide Issues While Typing                                                        |
 | [`cSpell.maxDuplicateProblems`](#cspellmaxduplicateproblems)                                     | resource             | The maximum number of times the same word can be flagged as an error in a file. |
@@ -428,13 +427,12 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
+: `( "Error" | "Warning" | "Information" | "Hint" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-    | `Off` | Do not Report Spelling Issues |
 
 <!-- prettier-ignore-end -->
 
@@ -443,13 +441,13 @@ Scope
 
 Description
 : The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`
+Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`
 to control how issues are displayed in the document.
 
     See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
 Default
-: _`"Hint"`_
+: _`"Information"`_
 
 ---
 
@@ -460,13 +458,12 @@ Name
 
 <!-- prettier-ignore-start -->
 Type
-: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
+: `( "Error" | "Warning" | "Information" | "Hint" )`
 
     | `Error` | Report Spelling Issues as Errors |
     | `Warning` | Report Spelling Issues as Warnings |
     | `Information` | Report Spelling Issues as Information |
     | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-    | `Off` | Do not Report Spelling Issues |
 
 <!-- prettier-ignore-end -->
 
@@ -476,42 +473,6 @@ Scope
 Description
 : Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
 By default, flagged words will use the same diagnostic level as general issues. Use this setting to customize them.
-
-    See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
-
-Default
-: _- none -_
-
-Since Version
-: 4.0.0
-
----
-
-### `cSpell.diagnosticLevelSCM`
-
-Name
-: `cSpell.diagnosticLevelSCM` -- Set Diagnostic Reporting Level in SCM Commit Message
-
-<!-- prettier-ignore-start -->
-Type
-: `( "Error" | "Warning" | "Information" | "Hint" | "Off" )`
-
-    | `Error` | Report Spelling Issues as Errors |
-    | `Warning` | Report Spelling Issues as Warnings |
-    | `Information` | Report Spelling Issues as Information |
-    | `Hint` | Report Spelling Issues as Hints, will not show up in Problems |
-    | `Off` | Do not Report Spelling Issues |
-
-<!-- prettier-ignore-end -->
-
-Scope
-: resource
-
-Description
-: Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
-This affects the color of the squiggle.
-
-    By default, this setting will match `#cSpell.diagnosticLevel#`.
 
     See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
 
@@ -1591,18 +1552,19 @@ Since Version
 
 # Appearance
 
-| Setting                                                                  | Scope   | Description                                                                                   |
-| ------------------------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------- |
-| [`cSpell.dark`](#cspelldark)                                             | machine | Decoration for dark themes.                                                                   |
-| [`cSpell.useCustomDecorations`](#cspelldecorateissues)                   | machine | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.     |
-| [`cSpell.light`](#cspelllight)                                           | machine | Decoration for light themes.                                                                  |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | machine | The CSS color used to show issues in the ruler.                                               |
-| [`cSpell.textDecoration`](#cspelltextdecoration)                         | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | machine | The decoration color for normal spelling issues.                                              |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | machine | The decoration color for flagged issues.                                                      |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | machine | The CSS line type used to decorate issues.                                                    |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | machine | The CSS line style used to decorate issues.                                                   |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | machine | The CSS line thickness used to decorate issues.                                               |
+| Setting                                                                                | Scope   | Description                                                                                   |
+| -------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| [`cSpell.dark`](#cspelldark)                                                           | machine | Decoration for dark themes.                                                                   |
+| [`cSpell.doNotUseCustomDecorationForScheme`](#cspelldonotusecustomdecorationforscheme) | machine | Use VS Code to Render Spelling Issues                                                         |
+| [`cSpell.light`](#cspelllight)                                                         | machine | Decoration for light themes.                                                                  |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                               | machine | The CSS color used to show issues in the ruler.                                               |
+| [`cSpell.textDecoration`](#cspelltextdecoration)                                       | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
+| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)                             | machine | The decoration color for normal spelling issues.                                              |
+| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged)               | machine | The decoration color for flagged issues.                                                      |
+| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                               | machine | The CSS line type used to decorate issues.                                                    |
+| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)                             | machine | The CSS line style used to decorate issues.                                                   |
+| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)                     | machine | The CSS line thickness used to decorate issues.                                               |
+| [`cSpell.useCustomDecorations`](#cspellusecustomdecorations)                           | machine | Draw custom decorations on Spelling Issues.                                                   |
 
 ## Definitions
 
@@ -1632,22 +1594,25 @@ Since Version
 
 ---
 
-### `cSpell.useCustomDecorations`
+### `cSpell.doNotUseCustomDecorationForScheme`
 
 Name
-: `cSpell.useCustomDecorations`
+: `cSpell.doNotUseCustomDecorationForScheme` -- Use VS Code to Render Spelling Issues
 
 Type
-: `boolean`
+: `object`
 
 Scope
 : machine
 
 Description
-: Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
+: Use the VS Code Diagnostic Collection to render spelling issues.
+
+    With some edit boxes, like the source control message box, the custom decorations do not show up.
+    This setting allows the use of the VS Code Diagnostic Collection to render spelling issues.
 
 Default
-: _`true`_
+: _`{"vscode-scm":true}`_
 
 Since Version
 : 4.0.0
@@ -1892,6 +1857,28 @@ Description
 
 Default
 : _`"auto"`_
+
+Since Version
+: 4.0.0
+
+---
+
+### `cSpell.useCustomDecorations`
+
+Name
+: `cSpell.useCustomDecorations`
+
+Type
+: `boolean`
+
+Scope
+: machine
+
+Description
+: Draw custom decorations on Spelling Issues.
+
+Default
+: _`true`_
 
 Since Version
 : 4.0.0
