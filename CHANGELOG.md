@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.7](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.6...code-spell-checker-v4.0.0-alpha.7) (2024-05-07)
+
+
+### Updates and Bug Fixes
+
+* change the approach to custom decorations ([#3239](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3239)) ([bc6df01](https://github.com/streetsidesoftware/vscode-spell-checker/commit/bc6df0136bdad925f680d260a150ee73000fb403))
+
 ## [4.0.0-alpha.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.5...code-spell-checker-v4.0.0-alpha.6) (2024-05-07)
 
 
