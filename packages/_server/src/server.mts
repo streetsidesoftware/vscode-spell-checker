@@ -43,7 +43,6 @@ import {
     isUriBlocked,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
-import { isScmUri } from './config/docUriHelper.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
@@ -278,7 +277,7 @@ export function run(): void {
             }
             documentSettings.releaseUriSettings(uri);
             // A text document was closed we clear the diagnostics
-            catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }), 'onDidClose');
+            // catchPromise(connection.sendDiagnostics({ uri, diagnostics: [] }), 'onDidClose');
         }),
     );
 
@@ -458,12 +457,6 @@ export function run(): void {
             DiagnosticSeverity.Hint,
         ]);
 
-        const allowedDiags = new Set<number | undefined>(knownDiagnosticSeverityLevels);
-
-        if (result.hideHints) {
-            allowedDiags.delete(DiagnosticSeverity.Hint);
-        }
-
         function mapDiagnostic(diag: Diagnostic): Diagnostic {
             return {
                 ...diag,
@@ -473,8 +466,6 @@ export function run(): void {
 
         const diagsForClient = { ...diags, diagnostics: diags.diagnostics.map(mapDiagnostic) };
         catchPromise(clientServerApi.clientNotification.onDiagnostics(diagsForClient));
-        const diagsForVSCode = { ...diags, diagnostics: diags.diagnostics.filter((d) => allowedDiags.has(d.severity)) };
-        catchPromise(connection.sendDiagnostics(diagsForVSCode), 'sendDiagnostics');
     }
 
     type ShouldValidateDocument = Pick<TextDocument, 'uri'> & Partial<TextDocument>;
@@ -583,8 +574,7 @@ export function run(): void {
             const { doc, settings } = dsp;
             const { uri, version } = doc;
 
-            const hideHints = !isScmUri(uri) && (settings.decorateIssues ?? true);
-            const result: ValidationResult = { uri, version, hideHints, diagnostics: [] };
+            const result: ValidationResult = { uri, version, diagnostics: [] };
 
             try {
                 if (!isUriAllowed(uri, settings.allowedSchemas)) {
@@ -746,7 +736,6 @@ interface TextDocumentInfo {
 
 interface ValidationResult extends PublishDiagnosticsParams {
     version: number;
-    hideHints: boolean;
 }
 
 interface OnChangeParam extends DidChangeConfigurationParams {

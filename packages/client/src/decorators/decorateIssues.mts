@@ -1,20 +1,19 @@
-import assert from 'node:assert';
-
 import { isDefined } from '@internal/common-utils';
 import { createDisposableList } from 'utils-disposables';
 import type { DecorationOptions, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
-import vscode, { ColorThemeKind, DiagnosticSeverity, MarkdownString, Range, window, workspace } from 'vscode';
+import vscode, { ColorThemeKind, MarkdownString, Range, window, workspace } from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
 import { commandUri, createTextEditCommand } from '../commands.mjs';
 import type { Disposable } from '../disposable.js';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
+import { ConfigFields, CSpellSettings } from '../settings/index.mjs';
 import { findEditor } from '../util/findEditor.js';
 
 const defaultHideIssuesWhileTyping: Required<CSpellUserSettings>['hideIssuesWhileTyping'] = 'Word';
 const defaultRevealIssuesAfterDelayMS: Required<CSpellUserSettings>['revealIssuesAfterDelayMS'] = 1000;
 
-const debug = true;
+const debug = false;
 const logDbg: typeof console.log = debug ? console.log : () => undefined;
 
 export class SpellingIssueDecorator implements Disposable {
@@ -30,6 +29,8 @@ export class SpellingIssueDecorator implements Disposable {
     private urisToRefresh = new Set<vscode.Uri>();
     private hideIssuesWhileTyping = defaultHideIssuesWhileTyping;
     private revealIssuesAfterDelayMS = defaultRevealIssuesAfterDelayMS;
+    private emitterVisibility: vscode.EventEmitter<boolean> = new vscode.EventEmitter();
+    private overrides: Exclude<CSpellSettings[typeof ConfigFields.doNotUseCustomDecorationForScheme], undefined> = {};
 
     constructor(
         readonly context: vscode.ExtensionContext,
@@ -43,7 +44,7 @@ export class SpellingIssueDecorator implements Disposable {
         this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.disposables.push(
             () => this.clearDecoration(),
-            workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && this.resetDecorator()),
+            workspace.onDidChangeConfiguration((e) => this.#onConfigChange(e)),
             window.onDidChangeActiveColorTheme(() => this.resetDecorator()),
             issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
             window.onDidChangeActiveTextEditor((e) => this.refreshEditor(e)),
@@ -90,6 +91,11 @@ export class SpellingIssueDecorator implements Disposable {
     refreshDiagnosticsInEditor(editor: TextEditor) {
         if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged || !this.decorationTypeForDebug) return;
         const doc = editor.document;
+        if (!this.#useCustomDecorators(doc.uri)) {
+            editor.setDecorations(this.decorationTypeForIssues, []);
+            editor.setDecorations(this.decorationTypeForFlagged, []);
+            return;
+        }
 
         const delay = this.revealIssuesAfterDelayMS;
         const mode = this.hideIssuesWhileTyping;
@@ -124,16 +130,12 @@ export class SpellingIssueDecorator implements Disposable {
 
         let hasHidden = false;
 
-        const issues = (this.issueTracker.getIssues(doc.uri) || [])
-            .filter((issue) => issue.severity === DiagnosticSeverity.Hint)
-            // .filter((issue) => doc.version - issue.version < 2)
-            .filter((issue) => {
-                assert(issue.version <= doc.version, 'Issue version should be less than or equal to document version.');
-                const range = issue.range;
-                const hide = active.some((r) => r.intersection(range));
-                hasHidden ||= hide;
-                return !hide;
-            });
+        const issues = (this.issueTracker.getIssues(doc.uri) || []).filter((issue) => {
+            const range = issue.range;
+            const hide = active.some((r) => r.intersection(range));
+            hasHidden ||= hide;
+            return !hide;
+        });
 
         if (hasHidden) {
             this.#addUriToRefreshTimeout(doc.uri);
@@ -168,8 +170,11 @@ export class SpellingIssueDecorator implements Disposable {
         this.visible = !this.visible;
     }
 
+    onDidChangeVisibility = this.emitterVisibility.event;
+
     private setContext(value: boolean) {
         this.context.globalState.update(SpellingIssueDecorator.globalStateKey, value);
+        this.emitterVisibility.fire(value);
         Promise.resolve(vscode.commands.executeCommand('setContext', 'cSpell.showDecorations', value)).catch(() => undefined);
     }
 
@@ -187,6 +192,7 @@ export class SpellingIssueDecorator implements Disposable {
         const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
         this.hideIssuesWhileTyping = cfg.hideIssuesWhileTyping ?? defaultHideIssuesWhileTyping;
         this.revealIssuesAfterDelayMS = cfg.revealIssuesAfterDelayMS ?? defaultRevealIssuesAfterDelayMS;
+        this.overrides = cfg[ConfigFields.doNotUseCustomDecorationForScheme] ?? this.overrides;
     }
 
     private resetDecorator() {
@@ -207,8 +213,8 @@ export class SpellingIssueDecorator implements Disposable {
           }
         | undefined {
         this.clearDecoration();
-        const decorateIssues = this.visible && (workspace.getConfiguration('cSpell').get<boolean>('decorateIssues') ?? true);
-        if (!decorateIssues) return undefined;
+        const useCustomDecorations = this.visible && (workspace.getConfiguration('cSpell').get<boolean>('useCustomDecorations') ?? true);
+        if (!useCustomDecorations) return undefined;
 
         const mode = calcMode(window.activeColorTheme.kind);
         const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
@@ -303,6 +309,15 @@ export class SpellingIssueDecorator implements Disposable {
             ranges,
             timestamp: performance.now(),
         });
+    }
+
+    #useCustomDecorators(uri: vscode.Uri): boolean {
+        return !this.overrides[uri.scheme];
+    }
+
+    #onConfigChange(e: vscode.ConfigurationChangeEvent) {
+        if (!e.affectsConfiguration('cSpell')) return;
+        this.resetDecorator();
     }
 
     public clearActiveChanges() {

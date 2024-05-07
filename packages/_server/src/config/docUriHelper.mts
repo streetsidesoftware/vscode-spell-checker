@@ -73,8 +73,14 @@ function getHandler(uri: Uri): SpecialHandlingFunction {
 }
 
 export function isScmUri(uri: Uri | string): boolean {
+    return usesScheme(uri, schemasWithSpecialHandling.vscodeScm);
+}
+
+export function usesScheme(uri: Uri | string, scheme: string): boolean {
+    const schemeColon = scheme.endsWith(':') ? scheme : scheme + ':';
+    scheme = scheme.endsWith(':') ? scheme.slice(0, -1) : scheme;
     if (typeof uri === 'string') {
-        return uri.startsWith(schemasWithSpecialHandling.vscodeScm + ':');
+        return uri.startsWith(schemeColon);
     }
-    return uri.scheme === schemasWithSpecialHandling.vscodeScm;
+    return uri.scheme === scheme;
 }

@@ -443,7 +443,7 @@ Scope
 
 Description
 : The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`
 to control how issues are displayed in the document.
 
     See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
@@ -1591,18 +1591,18 @@ Since Version
 
 # Appearance
 
-| Setting                                                                  | Scope   | Description                                                                               |
-| ------------------------------------------------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
-| [`cSpell.dark`](#cspelldark)                                             | machine | Decoration for dark themes.                                                               |
-| [`cSpell.decorateIssues`](#cspelldecorateissues)                         | machine | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`. |
-| [`cSpell.light`](#cspelllight)                                           | machine | Decoration for light themes.                                                              |
-| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | machine | The CSS color used to show issues in the ruler.                                           |
-| [`cSpell.textDecoration`](#cspelltextdecoration)                         | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.   |
-| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | machine | The decoration color for normal spelling issues.                                          |
-| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | machine | The decoration color for flagged issues.                                                  |
-| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | machine | The CSS line type used to decorate issues.                                                |
-| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | machine | The CSS line style used to decorate issues.                                               |
-| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | machine | The CSS line thickness used to decorate issues.                                           |
+| Setting                                                                  | Scope   | Description                                                                                   |
+| ------------------------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------- |
+| [`cSpell.dark`](#cspelldark)                                             | machine | Decoration for dark themes.                                                                   |
+| [`cSpell.useCustomDecorations`](#cspelldecorateissues)                   | machine | Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.     |
+| [`cSpell.light`](#cspelllight)                                           | machine | Decoration for light themes.                                                                  |
+| [`cSpell.overviewRulerColor`](#cspelloverviewrulercolor)                 | machine | The CSS color used to show issues in the ruler.                                               |
+| [`cSpell.textDecoration`](#cspelltextdecoration)                         | machine | The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`. |
+| [`cSpell.textDecorationColor`](#cspelltextdecorationcolor)               | machine | The decoration color for normal spelling issues.                                              |
+| [`cSpell.textDecorationColorFlagged`](#cspelltextdecorationcolorflagged) | machine | The decoration color for flagged issues.                                                      |
+| [`cSpell.textDecorationLine`](#cspelltextdecorationline)                 | machine | The CSS line type used to decorate issues.                                                    |
+| [`cSpell.textDecorationStyle`](#cspelltextdecorationstyle)               | machine | The CSS line style used to decorate issues.                                                   |
+| [`cSpell.textDecorationThickness`](#cspelltextdecorationthickness)       | machine | The CSS line thickness used to decorate issues.                                               |
 
 ## Definitions
 
@@ -1632,10 +1632,10 @@ Since Version
 
 ---
 
-### `cSpell.decorateIssues`
+### `cSpell.useCustomDecorations`
 
 Name
-: `cSpell.decorateIssues`
+: `cSpell.useCustomDecorations`
 
 Type
 : `boolean`
@@ -1726,7 +1726,7 @@ Scope
 : machine
 
 Description
-: The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.
+: The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`.
 
     This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
     - `#cSpell.textDecorationLine#` to pick the line type

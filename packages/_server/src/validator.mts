@@ -5,7 +5,6 @@ import { DiagnosticSeverity } from 'vscode-languageserver-types';
 
 import type { SpellCheckerDiagnosticData, SpellingDiagnostic, Suggestion } from './api.js';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
-import { isScmUri } from './config/docUriHelper.mjs';
 import { diagnosticSource } from './constants.mjs';
 import { createDocumentValidator } from './DocumentValidationController.mjs';
 
@@ -61,17 +60,16 @@ function haveSuggestionsMatchCase(example: string, suggestions: Suggestion[] | u
     return suggestions.map((sug) => (TextUtil.isLowerCase(sug.word) ? { ...sug, word: TextUtil.matchCase(example, sug.word) } : sug));
 }
 
-type SeverityOptions = Pick<CSpellUserSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords' | 'diagnosticLevelSCM'>;
+type SeverityOptions = Pick<CSpellUserSettings, 'diagnosticLevel' | 'diagnosticLevelFlaggedWords'>;
 
 interface Severity {
     severity: DiagnosticSeverity | undefined;
     severityFlaggedWords: DiagnosticSeverity | undefined;
 }
 
-function calcSeverity(docUri: string, options: SeverityOptions): Severity {
-    const { diagnosticLevel = 'Information', diagnosticLevelFlaggedWords, diagnosticLevelSCM } = options;
-    const scmLevel = isScmUri(docUri) ? diagnosticLevelSCM : undefined;
-    const severity = diagSeverityMap.get((scmLevel || diagnosticLevel).toLowerCase());
-    const severityFlaggedWords = diagSeverityMap.get((scmLevel || diagnosticLevelFlaggedWords || diagnosticLevel).toLowerCase());
+function calcSeverity(_docUri: string, options: SeverityOptions): Severity {
+    const { diagnosticLevel = 'Information', diagnosticLevelFlaggedWords } = options;
+    const severity = diagSeverityMap.get(diagnosticLevel.toLowerCase());
+    const severityFlaggedWords = diagSeverityMap.get((diagnosticLevelFlaggedWords || diagnosticLevel).toLowerCase());
     return { severity, severityFlaggedWords };
 }

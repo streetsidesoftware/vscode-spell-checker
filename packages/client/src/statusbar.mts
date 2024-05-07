@@ -108,8 +108,10 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
             toolTip.appendMarkdown(`**\`\`\`\`${fileName}\`\`\`\`**\n`);
             !isChecked && toolTip.appendMarkdown(`- ${isCheckedText} spell checked.\n`);
             langReason && toolTip.appendMarkdown(`- ${langReason}\n`);
+            toolTip.appendMarkdown(`- Scheme: \`${response.uri.scheme}\`.\n`);
             fileReason && toolTip.appendMarkdown(`- ${fileReason}\n`);
             isChecked && toolTip.appendMarkdown(`- ${issuesText}\n`);
+            response.blockedReason && toolTip.appendMarkdown(`- ${response.blockedReason.message}\n`);
             toolTip.isTrusted = true;
             sbCheck.tooltip = toolTip;
             sbCheck.command = infoViewer.commandDisplayCSpellInfo;
