@@ -1,10 +1,13 @@
 import type { IssueType } from '@cspell/cspell-types';
-import type { Diagnostic, Range, Selection, TextDocument, Uri } from 'vscode';
+import { createDisposableList } from 'utils-disposables';
+import type { Diagnostic, Disposable, Event, Range, Selection, TextDocument, Uri } from 'vscode';
+import vscode from 'vscode';
 
 import { diagnosticSource } from './constants.js';
 import { getDependencies } from './di.mjs';
 import type { SpellingDiagnostic } from './issueTracker.mjs';
-import { isWordLike } from './settings/CSpellSettings.mjs';
+import { CSpellSettings, isWordLike } from './settings/CSpellSettings.mjs';
+import { ConfigFields } from './settings/index.mjs';
 import { isDefined, uniqueFilter } from './util/index.js';
 
 /**
@@ -77,6 +80,67 @@ function determineWordRangeToAddToDictionaryFromSelection(
     // was wanted, otherwise use the diag range.
 
     return isWordLike(selectedText) ? selection : diagRange;
+}
+
+export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>): Disposable {
+    const dList = createDisposableList();
+    const issueTracker = getDependencies().issueTracker;
+    const collection = vscode.languages.createDiagnosticCollection('cSpell');
+    let overrides: CSpellSettings[typeof ConfigFields.doNotUseCustomDecorationForScheme];
+    let useDiagnosticCollection = true;
+
+    function updateConfig() {
+        const cfg = vscode.workspace.getConfiguration('cSpell');
+        useDiagnosticCollection = !cfg.get(ConfigFields.useCustomDecorations);
+        overrides = cfg.get(ConfigFields.doNotUseCustomDecorationForScheme);
+    }
+
+    function useDiagnosticsCollectionForScheme(uri: Uri): boolean {
+        const scheme = uri.scheme;
+        const diagLevel = overrides?.[scheme];
+        if (!diagLevel) return useDiagnosticCollection;
+        return !!diagLevel;
+    }
+
+    function updateDiags(uris?: readonly Uri[]) {
+        if (!show) {
+            collection.clear();
+            return;
+        }
+        if (!uris) {
+            collection.clear();
+            uris = issueTracker.getUrisWithIssues();
+        }
+
+        // clean up the collection
+        collection.forEach((uri) => {
+            if (!useDiagnosticsCollectionForScheme(uri)) {
+                collection.delete(uri);
+            }
+        });
+
+        for (const uri of uris) {
+            if (!useDiagnosticsCollectionForScheme(uri)) continue;
+            const diags = issueTracker.getIssues(uri);
+            collection.set(
+                uri,
+                diags?.map((issue) => issue.diag),
+            );
+        }
+    }
+
+    dList.push(
+        collection,
+        onShowChange((showIssues) => {
+            show = showIssues;
+            updateDiags();
+        }),
+        vscode.workspace.onDidChangeConfiguration(updateConfig),
+        issueTracker.onDidChangeDiagnostics(({ uris }) => updateDiags(uris)),
+    );
+
+    updateConfig();
+    return dList;
 }
 
 export const __testing__ = {

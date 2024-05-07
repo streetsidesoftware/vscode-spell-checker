@@ -5,7 +5,26 @@ import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictiona
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
 export type DiagnosticLevel = 'Error' | 'Warning' | 'Information' | 'Hint';
+
+/**
+ * Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
+ * This affects the color of the squiggle.
+ *
+ * By default, this setting will match `#cSpell.diagnosticLevel#`.
+ *
+ * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
+ * @title Set Diagnostic Reporting Level
+ * @since 4.0.0
+ * @enumDescriptions [
+ *  "Report Spelling Issues as Errors",
+ *  "Report Spelling Issues as Warnings",
+ *  "Report Spelling Issues as Information",
+ *  "Report Spelling Issues as Hints, will not show up in Problems"
+ *  "Do not Report Spelling Issues"]
+ */
 export type DiagnosticLevelExt = 'Error' | 'Warning' | 'Information' | 'Hint' | 'Off';
+
+export type UseVSCodeDiagnosticSeverity = Record<string, DiagnosticLevelExt>;
 
 export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, SpellCheckerBehaviorSettings, AppearanceSettings {
     /**
@@ -28,21 +47,20 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
 
     /**
      * The Diagnostic Severity Level determines how issues are shown in the Problems Pane and within the document.
-     * Set the level to `Hint` or `Off` to hide the issues from the Problems Pane. Use the `#cSpell.decorateIssues#`
+     * Set the level to `Hint` to hide the issues from the Problems Pane. Use the `#cSpell.useCustomDecorations#`
      * to control how issues are displayed in the document.
      *
      * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
      * @title Set Diagnostic Reporting Level
      * @scope resource
-     * @default "Hint"
+     * @default "Information"
      * @enumDescriptions [
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
      *  "Report Spelling Issues as Information",
-     *  "Report Spelling Issues as Hints, will not show up in Problems",
-     *  "Do not Report Spelling Issues"]
+     *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
-    diagnosticLevel?: DiagnosticLevelExt;
+    diagnosticLevel?: DiagnosticLevel;
 
     /**
      * Flagged word issues found by the spell checker are marked with a Diagnostic Severity Level. This affects the color of the squiggle.
@@ -56,29 +74,9 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Errors",
      *  "Report Spelling Issues as Warnings",
      *  "Report Spelling Issues as Information",
-     *  "Report Spelling Issues as Hints, will not show up in Problems",
-     *  "Do not Report Spelling Issues"]
+     *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
-    diagnosticLevelFlaggedWords?: DiagnosticLevelExt;
-
-    /**
-     * Diagnostic level for source control _commit_ messages. Issues found by the spell checker are marked with a Diagnostic Severity Level.
-     * This affects the color of the squiggle.
-     *
-     * By default, this setting will match `#cSpell.diagnosticLevel#`.
-     *
-     * See: [VS Code Diagnostic Severity Level](https://code.visualstudio.com/api/references/vscode-api#DiagnosticSeverity)
-     * @title Set Diagnostic Reporting Level in SCM Commit Message
-     * @scope resource
-     * @since 4.0.0
-     * @enumDescriptions [
-     *  "Report Spelling Issues as Errors",
-     *  "Report Spelling Issues as Warnings",
-     *  "Report Spelling Issues as Information",
-     *  "Report Spelling Issues as Hints, will not show up in Problems",
-     *  "Do not Report Spelling Issues"]
-     */
-    diagnosticLevelSCM?: DiagnosticLevelExt;
+    diagnosticLevelFlaggedWords?: DiagnosticLevel;
 
     /**
      * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).

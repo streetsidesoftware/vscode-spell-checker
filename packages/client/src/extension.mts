@@ -14,11 +14,13 @@ import { createConfigWatcher } from './configWatcher.mjs';
 import { updateDocumentRelatedContext } from './context.mjs';
 import { SpellingExclusionsDecorator, SpellingIssueDecorator } from './decorate.mjs';
 import * as di from './di.mjs';
+import { registerDiagWatcher } from './diags.mjs';
 import type { ExtensionApi } from './extensionApi.mjs';
 import * as ExtensionRegEx from './extensionRegEx/index.mjs';
 import * as settingsViewer from './infoViewer/infoView.mjs';
 import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
+import { createLanguageStatus } from './languageStatus.mjs';
 import * as modules from './modules.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
@@ -111,6 +113,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         decorator,
         decoratorExclusions,
         registerSpellCheckerCodeActionProvider(issueTracker),
+        registerDiagWatcher(decorator.visible, decorator.onDidChangeVisibility),
         await registerTerminalProfileProvider(),
 
         ...commands.registerCommands(extensionCommand),
@@ -123,6 +126,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          * adding a word to be ignored for the first time.
          */
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
+        createLanguageStatus(),
     );
 
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);

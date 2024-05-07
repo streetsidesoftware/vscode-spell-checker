@@ -1,5 +1,5 @@
 /**
- * Text Decoration Settings used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+ * Text Decoration Settings used to decorate spelling issues.
  */
 interface Decoration {
     /**
@@ -24,7 +24,7 @@ interface Decoration {
     overviewRulerColor?: string;
 
     /**
-     * The CSS Style used to decorate spelling issues. Depends upon `#cSpell.decorateIssues#`.
+     * The CSS Style used to decorate spelling issues. Depends upon `#cSpell.useCustomDecorations#`.
      *
      * This setting is used to manually configure the text decoration. If it is not set, the following settings are used:
      * - `#cSpell.textDecorationLine#` to pick the line type
@@ -148,7 +148,7 @@ interface Decoration {
 }
 
 /**
- * Text Decoration Settings used to decorate spelling issues when `#cSpell.diagnosticLevel#` is `Hint`.
+ * Text Decoration Settings used to decorate spelling issues.
  */
 interface Appearance extends Decoration {
     /**
@@ -176,11 +176,24 @@ interface Appearance extends Decoration {
 
 export interface AppearanceSettings extends Appearance {
     /**
-     * Draw custom decorations on Spelling Issues when the `#cSpell.diagnosticLevel#` is `Hint`.
+     * Draw custom decorations on Spelling Issues.
      *
      * @scope machine
      * @since 4.0.0
      * @default true
      */
-    decorateIssues?: boolean;
+    useCustomDecorations?: boolean;
+
+    /**
+     * Use the VS Code Diagnostic Collection to render spelling issues.
+     *
+     * With some edit boxes, like the source control message box, the custom decorations do not show up.
+     * This setting allows the use of the VS Code Diagnostic Collection to render spelling issues.
+     *
+     * @title Use VS Code to Render Spelling Issues
+     * @scope machine
+     * @since 4.0.0
+     * @default { "vscode-scm": true }
+     */
+    doNotUseCustomDecorationForScheme?: Record<string, boolean>;
 }
