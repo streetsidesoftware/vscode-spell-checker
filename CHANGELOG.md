@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.6](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.5...code-spell-checker-v4.0.0-alpha.6) (2024-05-07)
+
+
+### Features
+
+* Hide spelling issues while typing. ([#3233](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3233)) ([fbd5134](https://github.com/streetsidesoftware/vscode-spell-checker/commit/fbd513486f6bf4a0e17f40932b0cca8b4481b757))
+
+
+### Updates and Bug Fixes
+
+* Add CSpell Repl Terminal Profile ([#3182](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3182)) ([6840cf7](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6840cf72649703dcdf121933ff3fe899875d46cc))
+
+
+### Code Refactoring
+
+* convert most client files to ESM ([#3195](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3195)) ([f60410a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/f60410ac5070789ed40505a35a4912cdaa9572f5))
+* move `repl/*` to `.mts` ([#3185](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3185)) ([26446bb](https://github.com/streetsidesoftware/vscode-spell-checker/commit/26446bb32e769ac70c73e5a2824672619714a4bc))
+
 ## [4.0.0-alpha.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.4...code-spell-checker-v4.0.0-alpha.5) (2024-04-13)
 
 
