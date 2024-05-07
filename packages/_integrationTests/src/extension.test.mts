@@ -111,9 +111,8 @@ describe('Launch code spell extension', function () {
         logYellow('Verifies that some spelling errors were found');
         await loadFolder(getDocUri('.'));
         const uri = getDocUri('example.md');
-        const config = getVscodeWorkspace().getConfiguration(undefined, uri);
-        await config.update('cSpell.diagnosticLevel', 'Information');
-        await config.update('cSpell.useCustomDecorations', false);
+        await getVscodeWorkspace().getConfiguration(undefined, uri).update('cSpell.diagnosticLevel', 'Information');
+        await getVscodeWorkspace().getConfiguration().update('cSpell.useCustomDecorations', false);
         const docContextMaybe = await loadDocument(uri);
         await sleep(500);
         // Force a spell check by making an edit.
