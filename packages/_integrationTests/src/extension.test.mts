@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { expect } from 'chai';
 import type { Stream } from 'kefir';
 import { stream } from 'kefir';
-import type { Diagnostic, languages as vscodeLanguages, Position, Uri, window as vscodeWindow } from 'vscode';
+import { type Diagnostic, type languages as vscodeLanguages, type Position, type Uri, type window as vscodeWindow } from 'vscode';
 
 import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.mjs';
 import {
@@ -111,8 +111,9 @@ describe('Launch code spell extension', function () {
         logYellow('Verifies that some spelling errors were found');
         await loadFolder(getDocUri('.'));
         const uri = getDocUri('example.md');
-        await getVscodeWorkspace().getConfiguration(undefined, uri).update('cSpell.diagnosticLevel', 'Information');
-        await getVscodeWorkspace().getConfiguration().update('cSpell.useCustomDecorations', false);
+        const config = getVscodeWorkspace().getConfiguration(undefined, uri);
+        await config.update('cSpell.diagnosticLevel', 'Information');
+        await config.update('cSpell.useCustomDecorations', false, 1);
         const docContextMaybe = await loadDocument(uri);
         await sleep(500);
         // Force a spell check by making an edit.
