@@ -510,7 +510,9 @@ interface FileIssue {
 type SpellingIssue = SpellingCheckerIssue;
 
 function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
-    const fileIssues: FileIssue[] = context.issueTracker.getIssues().map(([uri, issues]) => ({ uri, doc: findTextDocument(uri), issues }));
+    const fileIssues: FileIssue[] = context.issueTracker
+        .getIssues()
+        .map(([uri, issues]) => ({ uri, doc: findTextDocument(uri), issues: issues.getSpellingIssues() }));
     const groupedByFile = groupIssues(fileIssues);
 
     const comp = new Intl.Collator().compare;

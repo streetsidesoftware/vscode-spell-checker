@@ -52,6 +52,14 @@ export function get<K extends keyof GlobalDependencies>(key: K): GlobalDependenc
     return globals[key];
 }
 
+export function getClient(): CSpellClient {
+    return get('client');
+}
+
+export function getIssueTracker(): IssueTracker {
+    return get('issueTracker');
+}
+
 export function set<K extends keyof GlobalDependencies>(key: K, value: GlobalDependencies[K]): void {
     Object.defineProperty(globals, key, {
         value,

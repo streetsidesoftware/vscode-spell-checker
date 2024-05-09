@@ -3331,14 +3331,14 @@
         "cSpell.enabledLanguageIds": {
           "deprecated": true,
           "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
-          "description": "Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.",
+          "description": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
           "items": {
             "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
             "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
             "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
             "type": "string"
           },
-          "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.",
+          "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
           "scope": "resource",
           "title": "Enabled Language Ids",
           "type": "array",

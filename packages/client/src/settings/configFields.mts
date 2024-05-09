@@ -2,6 +2,8 @@ import { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
 
+export { ConfigFields as CSpellConfigFields } from '@cspell/cspell-types';
+
 export type ConfigKeys = Exclude<
     keyof CSpellUserSettings,
     '$schema' | 'version' | 'id' | 'experimental.enableRegexpView' | 'experimental.enableSettingsViewerV2'

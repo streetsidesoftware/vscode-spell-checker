@@ -26,7 +26,7 @@ export class PanelFile extends React.Component<{ appState: AppState }> {
         const settings = appState.settings;
         const config = settings.configs.file;
         const languageId = config?.languageId || 'unknown';
-        const languageEnabled = config?.languageEnabled;
+        const languageEnabled = config?.languageIdEnabled;
         const url = config?.uri ? new URL(config.uri) : undefined;
         const name = decodeURIComponent(url?.pathname.split('/').pop() || 'File');
         const dictionaries = config?.dictionaries || [];

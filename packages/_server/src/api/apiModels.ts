@@ -50,11 +50,13 @@ export interface IsSpellCheckEnabledResult {
     /** The Uri used to determine the settings. */
     uriUsed: DocumentUri | undefined;
     workspaceFolderUri: UriString | undefined;
-    languageEnabled: boolean | undefined;
+    languageIdEnabled: boolean | undefined;
     languageId: string | undefined;
     fileEnabled: boolean;
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;
+    schemeIsAllowed: boolean | undefined;
+    schemeIsKnown: boolean | undefined;
     excludedBy: ExcludeRef[] | undefined;
     gitignored: boolean | undefined;
     gitignoreInfo: GitignoreInfo | undefined;

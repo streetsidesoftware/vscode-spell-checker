@@ -145,12 +145,12 @@ function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): F
 function extractFileConfig(
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
-    log: Logger,
+    _log: Logger,
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
     const {
-        languageEnabled,
+        languageIdEnabled,
         docSettings,
         fileEnabled,
         fileIsExcluded,
@@ -162,7 +162,7 @@ function extractFileConfig(
     } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
-    log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
+    // _log(`extractFileConfig languageIdEnabled: ${languageIdEnabled ? 'true' : 'false'}`);
 
     const uriToUse = uriUsed ? Uri.parse(uriUsed) : uri;
     const folder =
@@ -191,7 +191,7 @@ function extractFileConfig(
         isUntitled,
         languageId,
         dictionaries,
-        languageEnabled,
+        languageIdEnabled: languageIdEnabled,
         fileEnabled,
         configFiles: extractConfigFiles(docConfig),
         fileIsExcluded,

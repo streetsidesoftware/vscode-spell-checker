@@ -15,9 +15,9 @@ describe('File Panel Verification', () => {
     it('tests the handler', () => {
         const appState = getSampleAppState();
         const panelRenderer = create(<PanelFile appState={appState}></PanelFile>);
-        expect(appState.settings.configs.file?.languageEnabled).toBe(true);
+        expect(appState.settings.configs.file?.languageIdEnabled).toBe(true);
         panelRenderer.toTree()?.instance.enableLanguageId(false);
-        expect(appState.settings.configs.file?.languageEnabled).toBe(false);
+        expect(appState.settings.configs.file?.languageIdEnabled).toBe(false);
         expect(appState._postedMessages).toEqual([
             {
                 command: 'EnableLanguageIdMessage',

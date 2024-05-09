@@ -522,6 +522,8 @@ export function run(): void {
             ignored: gitignored = undefined,
             gitignoreInfo = undefined,
             uriUsed = undefined,
+            schemeIsAllowed = undefined,
+            schemeIsKnown = undefined,
         } = uri ? await calcFileIncludeExclude(uri) : {};
         const blockedReason = uri ? blockedFiles.get(uri) : undefined;
         const fileEnabled = fileIsIncluded && !fileIsExcluded && !gitignored && !blockedReason;
@@ -535,11 +537,13 @@ export function run(): void {
             fileEnabled,
             fileIsExcluded,
             fileIsIncluded,
-            languageEnabled,
+            languageIdEnabled: languageEnabled,
             languageId,
             gitignored,
             gitignoreInfo,
             blockedReason: uri ? blockedFiles.get(uri) : undefined,
+            schemeIsAllowed,
+            schemeIsKnown,
         };
     }
     async function isUriExcluded(uri: string): Promise<boolean> {

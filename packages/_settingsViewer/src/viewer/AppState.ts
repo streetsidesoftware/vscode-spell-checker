@@ -251,7 +251,7 @@ export class AppState implements State {
     @action actionEnableLanguageId(languageId: string, enable: boolean, target?: ConfigTarget) {
         const fileConfig = this.settings.configs.file;
         if (!target && fileConfig?.languageId === languageId) {
-            fileConfig.languageEnabled = enable;
+            fileConfig.languageIdEnabled = enable;
         }
         const uri = (!target && fileConfig?.uri) || this.settings.activeFolderUri;
         this.messageBus.postMessage({ command: 'EnableLanguageIdMessage', value: { languageId, enable, target, uri } });

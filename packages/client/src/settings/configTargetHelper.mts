@@ -5,6 +5,7 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
 import * as vscode from 'vscode';
 
+import { CSpellUserSettings } from '../client/index.mjs';
 import { toUri } from '../util/uriHelper.js';
 import type {
     ClientConfigKind,
@@ -15,6 +16,7 @@ import type {
     ClientConfigTargetVSCode,
 } from './clientConfigTarget.js';
 import { ConfigKinds } from './clientConfigTarget.js';
+import { CSpellConfigFields } from './configFields.mjs';
 import { configurationTargetToDictionaryScope } from './targetAndScope.mjs';
 
 type ConfigKindMask = {
@@ -182,6 +184,10 @@ export function filterClientConfigTargets(
 ): ClientConfigTarget[] {
     const fn: TargetMatchFn = typeof filterBy === 'function' ? filterBy : filterClientConfigTarget(filterBy);
     return targets.filter(fn);
+}
+
+export function filterClientConfigTargetsByField(targets: ClientConfigTarget[], field: keyof CSpellUserSettings): ClientConfigTarget[] {
+    return targets.filter((t) => t.kind !== 'cspell' || field in CSpellConfigFields);
 }
 
 export function filterClientConfigTarget(pattern: ConfigTargetMatchPattern): TargetMatchFn {

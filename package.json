@@ -331,13 +331,13 @@
       {
         "command": "cSpell.enableCurrentLanguage",
         "category": "Spell",
-        "title": "Enable Spell Checking Document Language",
+        "title": "Enable Spell Checking Document Type",
         "when": "cSpell.showLegacyCommands.enableCurrentLanguage"
       },
       {
         "command": "cSpell.disableCurrentLanguage",
         "category": "Spell",
-        "title": "Disable Spell Checking Document Language",
+        "title": "Disable Spell Checking Document Type",
         "when": "cSpell.showLegacyCommands.disableCurrentLanguage"
       },
       {
@@ -3603,7 +3603,7 @@
               "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
               "type": "string"
             },
-            "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.",
+            "markdownDescription": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
             "scope": "resource",
             "title": "Enabled Language Ids",
             "type": "array",

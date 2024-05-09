@@ -71,7 +71,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     maxDuplicateProblems?: number;
 
     /**
-     * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
+     * Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.
      * @title Enabled Language Ids
      * @scope resource
      * @deprecated true

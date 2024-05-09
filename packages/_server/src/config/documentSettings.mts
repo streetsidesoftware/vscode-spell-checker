@@ -96,6 +96,10 @@ export interface ExcludeIncludeIgnoreInfo {
     ignored: boolean | undefined;
     /** Information related to .gitignore */
     gitignoreInfo: GitignoreResultInfo | undefined;
+    /** Indicate that the scheme is known and checked. */
+    schemeIsAllowed: boolean;
+    /** Indicate that it is an unknown scheme. */
+    schemeIsKnown: boolean;
 }
 
 const defaultExclude: Glob[] = [
@@ -166,12 +170,15 @@ export class DocumentSettings {
         const settings = await this.fetchSettingsForUri(_uri.toString());
         const ie = calcIncludeExclude(settings, _uri);
         const ignoredEx = await this._isGitIgnoredEx(settings, _uri);
+        const schemaAllowed = settings.settings.enabledSchemes?.[uri.scheme];
         return {
             ...ie,
             ignored: ignoredEx?.matched,
             gitignoreInfo: ignoredEx,
             uri: uri.toString(),
             uriUsed: _uri.toString(),
+            schemeIsAllowed: schemaAllowed === true,
+            schemeIsKnown: schemaAllowed !== undefined,
         };
     }
 

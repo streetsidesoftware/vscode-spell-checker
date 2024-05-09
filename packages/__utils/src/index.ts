@@ -1,4 +1,4 @@
-export { AutoResolveCache, createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve.js';
+export { autoResolve, AutoResolveCache, createAutoResolveCache, createAutoResolveWeakCache } from './AutoResolve.js';
 export * from './errors.js';
 export { groupByField, groupByKey } from './groupBy.js';
 export { log, logDebug, logError, logInfo } from './log.js';

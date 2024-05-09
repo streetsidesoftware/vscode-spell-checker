@@ -78,7 +78,7 @@ export interface BlockedFileReason {
 }
 
 export interface IsSpellCheckEnabledResult {
-    languageEnabled?: boolean | undefined;
+    languageIdEnabled?: boolean | undefined;
     fileEnabled: boolean;
     fileIsIncluded: boolean;
     fileIsExcluded: boolean;

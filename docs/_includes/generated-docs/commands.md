@@ -22,12 +22,12 @@
 | `cSpell.createCSpellTerminal`                        | Create CSpell REPL Terminal                                                                                     |
 | `cSpell.createCustomDictionary`                      | Create a Custom Dictionary File.                                                                                |
 | `cSpell.disableCurrentFileType`                      | Disable Spell Checking File Type                                                                                |
-| `cSpell.disableCurrentLanguage`                      | Disable Spell Checking Document Language                                                                        |
+| `cSpell.disableCurrentLanguage`                      | Disable Spell Checking Document Type                                                                            |
 | `cSpell.disableForGlobal`                            | Disable Spell Checking by Default                                                                               |
 | `cSpell.disableForWorkspace`                         | Disable Spell Checking For Workspace                                                                            |
 | `cSpell.displayCSpellInfo`                           | Show Spell Checker Configuration Info                                                                           |
 | `cSpell.enableCurrentFileType`                       | Enable Spell Checking File Type                                                                                 |
-| `cSpell.enableCurrentLanguage`                       | Enable Spell Checking Document Language                                                                         |
+| `cSpell.enableCurrentLanguage`                       | Enable Spell Checking Document Type                                                                             |
 | `cSpell.enableForGlobal`                             | Enable Spell Checking by Default                                                                                |
 | `cSpell.enableForWorkspace`                          | Enable Spell Checking For Workspace                                                                             |
 | `cSpell.goToNextSpellingIssue`                       | Go to Next Spelling Issue                                                                                       |

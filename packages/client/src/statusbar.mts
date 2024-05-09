@@ -96,14 +96,14 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         const docUri = window.activeTextEditor?.document?.uri;
         if (docUri?.toString() === response.uri.toString() || !docUri || docUri.scheme !== 'file') {
             const diags = getCSpellDiags(docUri);
-            const { languageEnabled = true, fileEnabled = true } = response;
-            const isChecked = languageEnabled && fileEnabled;
+            const { languageIdEnabled = true, fileEnabled = true } = response;
+            const isChecked = languageIdEnabled && fileEnabled;
             const isCheckedText = isChecked ? 'Is' : 'Is NOT';
-            const langReason = `File type: **\`${languageId}\`** ${languageEnabled ? '' : 'is NOT enabled.'}`;
+            const langReason = `File type: **\`${languageId}\`** ${languageIdEnabled ? '' : 'is NOT enabled.'}`;
             const fileReason = formatFileReason(response);
             const fileName = path.basename(uri.fsPath);
             const issuesText = `Issues: **${diags.length}**\n\n`;
-            sbCheck.text = statusBarText({ languageEnabled, fileEnabled, diags });
+            sbCheck.text = statusBarText({ languageEnabled: languageIdEnabled, fileEnabled, diags });
             const toolTip = new vscode.MarkdownString();
             toolTip.appendMarkdown(`**\`\`\`\`${fileName}\`\`\`\`**\n`);
             !isChecked && toolTip.appendMarkdown(`- ${isCheckedText} spell checked.\n`);
