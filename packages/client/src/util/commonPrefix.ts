@@ -1,7 +1,7 @@
 export function commonPrefix(values: string[]): string {
     if (!values.length) return '';
-    const min = values.reduce((min, curr) => (min <= curr ? min : curr), '');
-    const max = values.reduce((max, curr) => (max >= curr ? max : curr), '');
+    const min = values.reduce((min, curr) => (min <= curr ? min : curr));
+    const max = values.reduce((max, curr) => (max >= curr ? max : curr));
     return pfx(min, max);
 }
 

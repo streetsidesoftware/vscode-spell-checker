@@ -2264,19 +2264,7 @@
           },
           "cSpell.dictionaries": {
             "items": {
-              "anyOf": [
-                {
-                  "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
-                  "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                  "type": "string"
-                },
-                {
-                  "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
-                  "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                  "type": "string"
-                }
-              ],
-              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
+              "type": "string"
             },
             "markdownDescription": "Optional list of dictionaries to use.\n\nEach entry should match the name of the dictionary.\n\nTo remove a dictionary from the list add `!` before the name.\ni.e. `!typescript` will turn off the dictionary with the name `typescript`.\n\n\nExample:\n\n```jsonc\n// Enable `lorem-ipsum` and disable `typescript`\n\"cSpell.dictionaries\": [\"lorem-ipsum\", \"!typescript\"]\n```",
             "scope": "resource",
@@ -2915,19 +2903,7 @@
           },
           "cSpell.noSuggestDictionaries": {
             "items": {
-              "anyOf": [
-                {
-                  "markdownDescription": "This a reference to a named dictionary.\nIt is expected to match the name of a dictionary.",
-                  "pattern": "^(?=[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                  "type": "string"
-                },
-                {
-                  "markdownDescription": "This a negative reference to a named dictionary.\n\nIt is used to exclude or include a dictionary by name.\n\nThe reference starts with 1 or more `!`.\n- `!<dictionary_name>` - Used to exclude the dictionary matching `<dictionary_name>`.\n- `!!<dictionary_name>` - Used to re-include a dictionary matching `<dictionary_name>`.\n   Overrides `!<dictionary_name>`.\n- `!!!<dictionary_name>` - Used to exclude a dictionary matching `<dictionary_name>`.\n   Overrides `!!<dictionary_name>`.",
-                  "pattern": "^(?=!+[^!*,;{}[\\]~\\n]+$)(?=(.*\\w)).+$",
-                  "type": "string"
-                }
-              ],
-              "markdownDescription": "Reference to a dictionary by name.\nOne of:\n-  {@link  DictionaryRef } \n-  {@link  DictionaryNegRef }"
+              "type": "string"
             },
             "markdownDescription": "Optional list of dictionaries that will not be used for suggestions.\nWords in these dictionaries are considered correct, but will not be\nused when making spell correction suggestions.\n\nNote: if a word is suggested by another dictionary, but found in\none of these dictionaries, it will be removed from the set of\npossible suggestions.",
             "scope": "resource",

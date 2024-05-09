@@ -513,9 +513,9 @@ Type
 : `( "Off" | "Word" | "Line" | "Document" )`
 
     | `Off` | Show issues while typing |
-    | `Word` | Hide issues in the current word |
-    | `Line` | Hide issues on the line |
-    | `Document` | Hide all issues in the document |
+    | `Word` | Hide issues while typing in the current word |
+    | `Line` | Hide issues while typing on the line |
+    | `Document` | Hide all issues while typing in the document |
 
 <!-- prettier-ignore-end -->
 
@@ -806,9 +806,9 @@ Default
 
 | Setting                                                                      | Scope    | Description                                                                                        |
 | ---------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| [`cSpell.allowedSchemas`](#cspellallowedschemas)                             | window   | Define Allowed Schemas                                                                             |
 | [`cSpell.checkOnlyEnabledFileTypes`](#cspellcheckonlyenabledfiletypes)       | resource | Check Only Enabled File Types                                                                      |
-| [`cSpell.enableFiletypes`](#cspellenablefiletypes)                           | resource | File Types to Check                                                                                |
+| [`cSpell.enabledFileTypes`](#cspellenabledfiletypes)                         | resource | Enabled File Types to Check                                                                        |
+| [`cSpell.enabledSchemes`](#cspellenabledschemes)                             | window   | Specify Allowed Schemes                                                                            |
 | [`cSpell.files`](#cspellfiles)                                               | resource | Glob patterns of files to be checked. Glob patterns are relative to the `#cSpell.globRoot#`…       |
 | [`cSpell.globRoot`](#cspellglobroot)                                         | resource | The root to use for glob patterns found in this configuration. Default: The current workspace…     |
 | [`cSpell.ignorePaths`](#cspellignorepaths)                                   | resource | Glob patterns of files to be ignored                                                               |
@@ -823,10 +823,10 @@ Default
 
 ## Definitions
 
-### `cSpell.allowedSchemas`
+### ~~`cSpell.allowedSchemas`~~
 
 Name
-: `cSpell.allowedSchemas` -- Define Allowed Schemas
+: ~~`cSpell.allowedSchemas`~~ -- Define Allowed Schemes
 
 Type
 : `string[]`
@@ -835,26 +835,20 @@ Scope
 : window
 
 Description
-: Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
+: Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
 
-    Some schemas have special meaning like:
+    Some schemes have special meaning like:
     - `untitled` - Used for new documents that have not yet been saved
     - `vscode-notebook-cell` - Used for validating segments of a Notebook.
     - `vscode-userdata` - Needed to spell check `.code-snippets`
     - `vscode-scm` - Needed to spell check Source Control commit messages.
     - `comment` - Used for new comment editors.
 
-<!-- prettier-ignore-start -->
-Default
-: code
-    ```js
-    [
-    "file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell",
-    "vscode-scm", "comment", "vscode-userdata", "vscode-vfs", "vsls"
-    ]
-    ```
+Deprecation Message
+: - Use `#cSpell.enabledSchemes#` instead.
 
-<!-- prettier-ignore-end -->
+Default
+: _- none -_
 
 ---
 
@@ -873,7 +867,7 @@ Description
 : By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
 to turn on / off various file types.
 
-    When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enableFiletypes#`.
+    When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enabledFileTypes#`.
     See `#cSpell.enableFiletypes#` on how to disable a file type.
 
 Default
@@ -881,10 +875,102 @@ Default
 
 ---
 
-### `cSpell.enableFiletypes`
+### `cSpell.enabledFileTypes`
 
 Name
-: `cSpell.enableFiletypes` -- File Types to Check
+: `cSpell.enabledFileTypes` -- Enabled File Types to Check
+
+Type
+: `object`
+
+Scope
+: resource
+
+Description
+: Enable / Disable checking file types (languageIds).
+
+    This setting replaces: `#cSpell.enabledLanguageIds#` and `#cSpell.enableFiletypes#`.
+
+    A Value of:
+    - `true` - enable checking for the file type
+    - `false` - disable checking for the file type
+
+    A file type of `*` is a wildcard that enables all file types.
+
+    **Example: enable all file types**
+
+    | File Type | Enabled | Comment |
+    | --------- | ------- | ------- |
+    | `*`       | `true`  | Enable all file types. |
+    | `json`    | `false` | Disable checking for json files. |
+
+<!-- prettier-ignore-start -->
+Default
+: code
+    ```js
+    {
+    "asciidoc": true, "bat": true, "c": true, "clojure": true, "coffeescript":
+    true, "cpp": true, "csharp": true, "css": true, "dart": true, "diff": true,
+    "dockerfile": true, "elixir": true, "erlang": true, "fsharp": true,
+    "git-commit": true, "git-rebase": true, "github-actions-workflow": true, "go":
+    true, "graphql": true, "groovy": true, "handlebars": true, "haskell": true,
+    "html": true, "ini": true, "jade": true, "java": true, "javascript": true,
+    "javascriptreact": true, "json": true, "jsonc": true, "julia": true, "jupyter":
+    true, "latex": true, "less": true, "lua": true, "makefile": true, "markdown":
+    true, "objective-c": true, "perl": true, "perl6": true, "php": true,
+    "plaintext": true, "powershell": true, "properties": true, "pug": true,
+    "python": true, "r": true, "razor": true, "restructuredtext": true, "ruby":
+    true, "rust": true, "scala": true, "scminput": true, "scss": true, "shaderlab":
+    true, "shellscript": true, "sql": true, "swift": true, "text": true,
+    "typescript": true, "typescriptreact": true, "vb": true, "vue": true, "xml":
+    true, "xsl": true, "yaml": true
+    }
+    ```
+
+<!-- prettier-ignore-end -->
+
+---
+
+### `cSpell.enabledSchemes`
+
+Name
+: `cSpell.enabledSchemes` -- Specify Allowed Schemes
+
+Type
+: `object`
+
+Scope
+: window
+
+Description
+: Control which file schemes will be checked for spelling (VS Code must be restarted for this setting to take effect).
+
+    Some schemes have special meaning like:
+    - `untitled` - Used for new documents that have not yet been saved
+    - `vscode-notebook-cell` - Used for validating segments of a Notebook.
+    - `vscode-userdata` - Needed to spell check `.code-snippets`
+    - `vscode-scm` - Needed to spell check Source Control commit messages.
+    - `comment` - Used for new comment editors.
+
+<!-- prettier-ignore-start -->
+Default
+: code
+    ```js
+    {
+    "comment": true, "file": true, "gist": true, "repo": true, "sftp": true,
+    "untitled": true, "vscode-notebook-cell": true, "vscode-scm": true,
+    "vscode-userdata": true, "vscode-vfs": true, "vsls": true
+    }
+    ```
+
+<!-- prettier-ignore-end -->
+
+---
+
+### ~~`cSpell.enableFiletypes`~~
+
+Name
+: ~~`cSpell.enableFiletypes`~~ -- Enable File Types
 
 Type
 : `string[]`
@@ -913,6 +999,9 @@ Description
     *           // enable checking for all file types
     !json       // except for json
     ```
+
+Deprecation Message
+: - Use `#cSpell.enabledFileTypes#` instead.
 
 Default
 : _- none -_
@@ -985,8 +1074,9 @@ Default
 : code
     ```js
     [
-    "package-lock.json", "node_modules", "vscode-extension", ".git/objects",
-    ".vscode", ".vscode-insiders"
+    "package-lock.json", "node_modules", "vscode-extension",
+    ".git/{info,lfs,logs,refs,objects}/**", ".git/{index,*refs,*HEAD}", ".vscode",
+    ".vscode-insiders"
     ]
     ```
 
@@ -1383,21 +1473,8 @@ Default
 Name
 : `cSpell.ignoreRegExpList`
 
-<!-- prettier-ignore-start -->
 Type
-: definition
-    ```
-    ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
-     "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
-     "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
-     "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
-     "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
-     "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
-     "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
-     "UUID"  | "Everything" )[]
-    ```
-
-<!-- prettier-ignore-end -->
+: `string[]`
 
 Scope
 : resource
@@ -1428,21 +1505,8 @@ Default
 Name
 : `cSpell.includeRegExpList`
 
-<!-- prettier-ignore-start -->
 Type
-: definition
-    ```
-    ( string  | "Base64"  | "Base64MultiLine"  | "Base64SingleLine"  |
-     "CStyleComment"  | "CStyleHexValue"  | "CSSHexValue"  | "CommitHash"  |
-     "CommitHashLink"  | "Email"  | "EscapeCharacters"  | "HexValues"  | "href"  |
-     "PhpHereDoc"  | "PublicKey"  | "RsaCert"  | "SshRsa"  | "SHA"  |
-     "HashStrings"  | "SpellCheckerDisable"  | "SpellCheckerDisableBlock"  |
-     "SpellCheckerDisableLine"  | "SpellCheckerDisableNext"  |
-     "SpellCheckerIgnoreInDocSetting"  | "string"  | "UnicodeRef"  | "Urls"  |
-     "UUID"  | "Everything" )[]
-    ```
-
-<!-- prettier-ignore-end -->
+: `string[]`
 
 Scope
 : resource
@@ -2093,7 +2157,6 @@ Default
 | Setting                                                  | Scope    | Description                               |
 | -------------------------------------------------------- | -------- | ----------------------------------------- |
 | [`cSpell.allowCompoundWords`](#cspellallowcompoundwords) | resource | Enable / Disable allowing word compounds. |
-| [`cSpell.enabledLanguageIds`](#cspellenabledlanguageids) | resource | Enabled Language Ids                      |
 
 ## Definitions
 
@@ -2187,10 +2250,10 @@ Default
 
 ---
 
-### `cSpell.enabledLanguageIds`
+### ~~`cSpell.enabledLanguageIds`~~
 
 Name
-: `cSpell.enabledLanguageIds` -- Enabled Language Ids
+: ~~`cSpell.enabledLanguageIds`~~ -- Enabled Language Ids
 
 Type
 : `string[]`
@@ -2201,24 +2264,10 @@ Scope
 Description
 : Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
 
-<!-- prettier-ignore-start -->
-Default
-: code
-    ```js
-    [
-    "asciidoc", "bat", "c", "clojure", "coffeescript", "cpp", "csharp", "css",
-    "dart", "diff", "dockerfile", "elixir", "erlang", "fsharp", "git-commit",
-    "git-rebase", "github-actions-workflow", "go", "graphql", "groovy",
-    "handlebars", "haskell", "html", "ini", "jade", "java", "javascript",
-    "javascriptreact", "json", "jsonc", "julia", "jupyter", "latex", "less", "lua",
-    "makefile", "markdown", "objective-c", "perl", "perl6", "php", "plaintext",
-    "powershell", "properties", "pug", "python", "r", "razor", "restructuredtext",
-    "ruby", "rust", "scala", "scminput", "scss", "shaderlab", "shellscript", "sql",
-    "swift", "text", "typescript", "typescriptreact", "vb", "vue", "xml", "xsl",
-    "yaml"
-    ]
-    ```
+Deprecation Message
+: - Use `#cSpell.enabledFileTypes#` instead.
 
-<!-- prettier-ignore-end -->
+Default
+: _- none -_
 
 ---
