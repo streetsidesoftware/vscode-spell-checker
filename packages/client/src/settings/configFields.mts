@@ -16,7 +16,6 @@ export const ConfigFields: CSpellUserSettingsFields = {
     'advanced.feature.useReferenceProviderRemove': 'advanced.feature.useReferenceProviderRemove',
     'advanced.feature.useReferenceProviderWithRename': 'advanced.feature.useReferenceProviderWithRename',
     autoFormatConfigFile: 'autoFormatConfigFile',
-    allowedSchemas: 'allowedSchemas',
     blockCheckingWhenAverageChunkSizeGreaterThan: 'blockCheckingWhenAverageChunkSizeGreaterThan',
     blockCheckingWhenLineLengthGreaterThan: 'blockCheckingWhenLineLengthGreaterThan',
     blockCheckingWhenTextChunkSizeGreaterThan: 'blockCheckingWhenTextChunkSizeGreaterThan',
@@ -32,7 +31,6 @@ export const ConfigFields: CSpellUserSettingsFields = {
     hideAddToDictionaryCodeActions: 'hideAddToDictionaryCodeActions',
     logLevel: 'logLevel',
     logFile: 'logFile',
-    mapOfEnabledFileTypes: 'mapOfEnabledFileTypes',
     maxDuplicateProblems: 'maxDuplicateProblems',
     maxNumberOfProblems: 'maxNumberOfProblems',
     mergeCSpellSettings: 'mergeCSpellSettings',
@@ -51,6 +49,11 @@ export const ConfigFields: CSpellUserSettingsFields = {
     useLocallyInstalledCSpellDictionaries: 'useLocallyInstalledCSpellDictionaries',
     workspaceRootPath: 'workspaceRootPath',
     trustedWorkspace: 'trustedWorkspace',
+    // File Types and Schemes
+    allowedSchemas: 'allowedSchemas',
+    enabledFileTypes: 'enabledFileTypes',
+    enabledLanguageIds: 'enabledLanguageIds',
+    enabledSchemes: 'enabledSchemes',
     // Behavior
     hideIssuesWhileTyping: 'hideIssuesWhileTyping',
     revealIssuesAfterDelayMS: 'revealIssuesAfterDelayMS',

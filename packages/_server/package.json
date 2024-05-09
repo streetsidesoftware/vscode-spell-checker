@@ -14,6 +14,7 @@
   },
   "type": "module",
   "main": "dist/main.cjs",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/main.cjs",
@@ -23,6 +24,9 @@
       "types": "./dist/api.d.cts",
       "import": "./dist/api.cjs",
       "require": "./dist/api.cjs"
+    },
+    "./lib": {
+      "import": "./dist/lib/index.mjs"
     }
   },
   "devDependencies": {

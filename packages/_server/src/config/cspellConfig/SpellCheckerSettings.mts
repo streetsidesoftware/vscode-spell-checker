@@ -1,7 +1,8 @@
-import type { EnableFileTypeId, RegExpString } from './annotatedTypes.mjs';
+import type { RegExpString } from './annotatedTypes.mjs';
 import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellMergeFields } from './CSpellSettingsPackageProperties.mjs';
 import type { CustomDictionaries, CustomDictionaryEntry } from './CustomDictionary.mjs';
+import type { FileTypesAndSchemeSettings } from './FileTypesAndSchemeSettings.mjs';
 import type { SpellCheckerShouldCheckDocSettings } from './SpellCheckerShouldCheckDocSettings.mjs';
 
 export type DiagnosticLevel = 'Error' | 'Warning' | 'Information' | 'Hint';
@@ -26,7 +27,11 @@ export type DiagnosticLevelExt = 'Error' | 'Warning' | 'Information' | 'Hint' | 
 
 export type UseVSCodeDiagnosticSeverity = Record<string, DiagnosticLevelExt>;
 
-export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings, SpellCheckerBehaviorSettings, AppearanceSettings {
+export interface SpellCheckerSettings
+    extends SpellCheckerShouldCheckDocSettings,
+        FileTypesAndSchemeSettings,
+        SpellCheckerBehaviorSettings,
+        AppearanceSettings {
     /**
      * If a `cspell` configuration file is updated, format the configuration file
      * using the VS Code Format Document Provider. This will cause the configuration
@@ -77,22 +82,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      *  "Report Spelling Issues as Hints, will not show up in Problems"]
      */
     diagnosticLevelFlaggedWords?: DiagnosticLevel;
-
-    /**
-     * Control which file schemas will be checked for spelling (VS Code must be restarted for this setting to take effect).
-     *
-     *
-     * Some schemas have special meaning like:
-     * - `untitled` - Used for new documents that have not yet been saved
-     * - `vscode-notebook-cell` - Used for validating segments of a Notebook.
-     * - `vscode-userdata` - Needed to spell check `.code-snippets`
-     * - `vscode-scm` - Needed to spell check Source Control commit messages.
-     * - `comment` - Used for new comment editors.
-     * @title Define Allowed Schemas
-     * @scope window
-     * @default ["file", "gist", "repo", "sftp", "untitled", "vscode-notebook-cell", "vscode-scm", "comment", "vscode-userdata", "vscode-vfs", "vsls"]
-     */
-    allowedSchemas?: string[];
 
     /**
      * Set the Debug Level for logging messages.
@@ -193,45 +182,6 @@ export interface SpellCheckerSettings extends SpellCheckerShouldCheckDocSettings
      * @default true
      */
     showSuggestionsLinkInEditorContextMenu?: boolean;
-
-    /**
-     * Enable / Disable checking file types (languageIds).
-     *
-     * These are in additional to the file types specified by `#cSpell.enabledLanguageIds#`.
-     * To disable a language, prefix with `!` as in `!json`,
-     *
-     *
-     * **Example: individual file types**
-     *
-     * ```
-     * jsonc       // enable checking for jsonc
-     * !json       // disable checking for json
-     * kotlin      // enable checking for kotlin
-     * ```
-     *
-     * **Example: enable all file types**
-     *
-     * ```
-     * *           // enable checking for all file types
-     * !json       // except for json
-     * ```
-     * @title File Types to Check
-     * @scope resource
-     * @uniqueItems true
-     */
-    enableFiletypes?: EnableFileTypeId[];
-
-    /**
-     * By default, the spell checker checks only enabled file types. Use `#cSpell.enableFiletypes#`
-     * to turn on / off various file types.
-     *
-     * When this setting is `false`, all file types are checked except for the ones disabled by `#cSpell.enableFiletypes#`.
-     * See `#cSpell.enableFiletypes#` on how to disable a file type.
-     * @title Check Only Enabled File Types
-     * @scope resource
-     * @default true
-     */
-    checkOnlyEnabledFileTypes?: boolean;
 
     /**
      * Define the path to the workspace root folder in a multi-root workspace.
@@ -449,9 +399,9 @@ export interface SpellCheckerBehaviorSettings {
      * @default "Word"
      * @enumDescriptions [
      *  "Show issues while typing",
-     *  "Hide issues in the current word",
-     *  "Hide issues on the line",
-     *  "Hide all issues in the document"]
+     *  "Hide issues while typing in the current word",
+     *  "Hide issues while typing on the line",
+     *  "Hide all issues while typing in the document"]
      */
     hideIssuesWhileTyping?: 'Off' | 'Word' | 'Line' | 'Document';
 

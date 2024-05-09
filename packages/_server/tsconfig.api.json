@@ -2,9 +2,9 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./dist",
-        "emitDeclarationOnly": true,
+        "rootDir": "./src",
         "skipLibCheck": true,
         "types": ["node"]
     },
-    "files": ["src/api.ts"]
+    "files": ["src/api.ts", "src/lib/index.mts"]
 }

@@ -6,7 +6,13 @@ import { languageIds } from './languageIds';
 describe('settings/index', () => {
     test('Default languageIds', async () => {
         const defaultSettings = await readDefaults();
-        const enabled = defaultSettings.get('cSpell.enabledLanguageIds');
-        await expect([...languageIds].sort()).toEqual((Array.isArray(enabled) ? [...enabled] : [enabled]).sort());
+        const enabledLanguageIds = defaultSettings.get('cSpell.enabledLanguageIds');
+        const enabledFileTypes = defaultSettings.get('cSpell.enabledFileTypes');
+        const enabled = Object.entries(enabledFileTypes || {})
+            .filter(([, enabled]) => enabled)
+            .map(([lang]) => lang)
+            .sort();
+        expect([...languageIds].sort()).toEqual(enabled);
+        expect(enabledLanguageIds).toBeUndefined();
     });
 });

@@ -42,9 +42,11 @@ import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
+import { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
+import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
@@ -101,23 +103,9 @@ const defaultExclude: Glob[] = [
     '__pycache__/**', // ignore cache files. cspell:ignore pycache
 ];
 
-const defaultAllowedSchemes = [
-    'gist',
-    'repo',
-    'file',
-    'sftp',
-    'untitled',
-    'vscode-notebook-cell',
-    'vscode-vfs', // Visual Studio Remote File System
-    'vsls', // Visual Studio Live Share
-];
-const schemeBlockList = ['git', 'output', 'debug'];
-
 const defaultRootUri = toFileUri(process.cwd()).toString();
 
 const _defaultSettings: CSpellUserSettings = Object.freeze(Object.create(null));
-
-const defaultCheckOnlyEnabledFileTypes = true;
 
 type ClearFn = () => void;
 
@@ -435,6 +423,8 @@ export class DocumentSettings {
         const searchForUri = Uri.parse(useUriForConfig);
         const searchForFsPath = path.normalize(searchForUri.fsPath);
         const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
+        const enabledFileTypes = extractEnabledFileTypes(vscodeCSpellConfigSettingsRel);
+        const enabledSchemes = extractEnabledSchemes(vscodeCSpellConfigSettingsRel);
         const vscodeCSpellConfigSettingsForDocument = await this.resolveWorkspacePaths(vscodeCSpellConfigSettingsRel, useUriForConfig);
         const vscodeCSpellConfigFileForDocument = loader.createCSpellConfigFile(useURLForConfig, vscodeCSpellConfigSettingsForDocument);
         const vscodeCSpellSettings: CSpellUserSettings = await loader.mergeConfigFileWithImports(vscodeCSpellConfigFileForDocument);
@@ -459,9 +449,9 @@ export class DocumentSettings {
             settings,
         );
 
-        const enabledFiletypes = extractEnableFiletypes(mergedSettings);
-        const spellSettings = applyEnableFiletypes(enabledFiletypes, mergedSettings);
-        const fileSettings = calcOverrideSettings(spellSettings, searchForFsPath);
+        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, searchForFsPath);
+        fileSettings = applyEnabledFileTypes(fileSettings, enabledFileTypes);
+        fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
 
         const globRoot = Uri.parse(globRootFolder.uri).fsPath;
@@ -535,63 +525,18 @@ function resolvePath(...parts: string[]): string {
     return path.resolve(...normalizedParts);
 }
 
-export function isUriAllowed(uri: string, schemes?: string[]): boolean {
-    schemes = schemes || defaultAllowedSchemes;
+export function isUriAllowedBySettings(uri: string, settings: CSpellUserSettings): boolean {
+    const schemes = extractEnabledSchemes(settings);
     return doesUriMatchAnyScheme(uri, schemes);
 }
 
-export function isUriBlocked(uri: string, schemes: string[] = schemeBlockList): boolean {
-    return doesUriMatchAnyScheme(uri, schemes);
+export function isUriBlockedBySettings(uri: string, settings: CSpellUserSettings): boolean {
+    const schemes = extractEnabledSchemes(settings);
+    return schemes[Uri.parse(uri).scheme] === false;
 }
 
-export function doesUriMatchAnyScheme(uri: string, schemes: string[]): boolean {
-    const schema = Uri.parse(uri).scheme;
-    return schemes.findIndex((v) => v === schema) >= 0;
-}
-
-function extractEnableFiletypes(...settings: CSpellUserSettings[]): string[] {
-    return settings.map(({ enableFiletypes = [] }) => enableFiletypes).reduce((acc, next) => acc.concat(next), []);
-}
-
-function applyEnableFiletypes(enableFiletypes: string[], settings: CSpellUserSettings): CSpellUserSettings {
-    const mapOfEnabledFileTypes = calcMapOfEnabledFileTypes(enableFiletypes, settings);
-    const enabledLanguageIds = [...mapOfEnabledFileTypes.entries()].filter(([_, enabled]) => enabled).map(([lang]) => lang);
-    const { enableFiletypes: _, enabledLanguageIds: __, ...rest } = settings;
-    return { enabledLanguageIds, mapOfEnabledFileTypes, ...rest };
-}
-
-function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
-    const ids = enableFiletypes
-        .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
-        .sort()
-        .map((id) => id.replace(/~/g, '!')) // Restore the !
-        .map((id) => id.replace(/^(!!)+/, '')); // Remove extra !! pairs
-
-    return ids;
-}
-
-function calcMapOfEnabledFileTypes(
-    enableFiletypes: string[],
-    settings: CSpellUserSettings,
-): Required<CSpellUserSettings>['mapOfEnabledFileTypes'] {
-    const { enabledLanguageIds = [] } = settings;
-    const enabled = new Map<string, boolean>();
-    normalizeEnableFiletypes(enabledLanguageIds.concat(enableFiletypes)).forEach((lang) => {
-        if (lang[0] === '!') {
-            enabled.set(lang.slice(1), false);
-        } else {
-            enabled.set(lang, true);
-        }
-    });
-    return enabled;
-}
-
-export function isLanguageEnabled(languageId: string, settings: CSpellUserSettings): boolean {
-    const mapOfEnabledFileTypes = settings.mapOfEnabledFileTypes || calcMapOfEnabledFileTypes(settings.enableFiletypes || [], settings);
-    const enabled = mapOfEnabledFileTypes.get(languageId);
-    const starEnabled = mapOfEnabledFileTypes.get('*');
-    const checkOnly = settings.checkOnlyEnabledFileTypes ?? defaultCheckOnlyEnabledFileTypes;
-    return checkOnly && starEnabled !== true ? !!enabled : enabled !== false;
+export function doesUriMatchAnyScheme(uri: string, schemes: EnabledSchemes): boolean {
+    return schemes[Uri.parse(uri).scheme] === true;
 }
 
 function _bestMatchingFolderForUri(folders: WorkspaceFolder[], docUri: string | undefined, defaultFolder: WorkspaceFolder): WorkspaceFolder;
@@ -881,9 +826,8 @@ function toDirURL(url: string | URL): URL {
 
 export const __testing__ = {
     extractTargetDictionaries,
-    extractEnableFiletypes,
-    normalizeEnableFiletypes,
-    applyEnableFiletypes,
+    extractEnabledFileTypes,
+    applyEnabledFileTypes,
     fileConfigsToImport,
     fileVSCodeSettings,
 };

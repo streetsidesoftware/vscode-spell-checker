@@ -38,11 +38,11 @@ import type { SettingsCspell } from './config/documentSettings.mjs';
 import {
     correctBadSettings,
     DocumentSettings,
-    isLanguageEnabled,
-    isUriAllowed,
-    isUriBlocked,
+    isUriAllowedBySettings,
+    isUriBlockedBySettings,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
+import { isLanguageEnabled } from './config/extractEnabledFileTypes.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
@@ -179,7 +179,7 @@ export function run(): void {
 
             log('Register Document Handler:', uri);
 
-            if (isUriBlocked(uri)) {
+            if (isUriBlockedBySettings(uri, {})) {
                 validationByDoc.set(
                     doc.uri,
                     validationRequestStream
@@ -553,7 +553,7 @@ export function run(): void {
 
     async function getBaseSettings(doc: TextDocumentUri | undefined) {
         const settings = await getActiveSettings(doc);
-        return { ...settings, enabledLanguageIds: settings.enabledLanguageIds };
+        return settings;
     }
 
     async function getSettingsToUseForDocument(doc: TextDocument) {
@@ -577,7 +577,7 @@ export function run(): void {
             const result: ValidationResult = { uri, version, diagnostics: [] };
 
             try {
-                if (!isUriAllowed(uri, settings.allowedSchemas)) {
+                if (!isUriAllowedBySettings(uri, settings)) {
                     const schema = uri.split(':')[0];
                     log(`Schema not allowed (${schema}), skipping:`, uri);
                     return result;

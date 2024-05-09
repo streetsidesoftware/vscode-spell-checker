@@ -1,5 +1,6 @@
 import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
 import type { SpellingSuggestionsResult, WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
+import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
 import type { DisposableHybrid } from 'utils-disposables';
 import type { CodeAction, Diagnostic, DiagnosticCollection, ExtensionContext, Range, TextDocument } from 'vscode';
 import { Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
@@ -8,7 +9,7 @@ import { diagnosticSource } from '../constants.js';
 import { isLcCodeAction, mapDiagnosticToLc, mapLcCodeAction, mapRangeToLc } from '../languageServer/clientHelpers.js';
 import type { Inspect } from '../settings/index.mjs';
 import * as Settings from '../settings/index.mjs';
-import { inspectConfigKeys, sectionCSpell } from '../settings/index.mjs';
+import { ConfigFields, inspectConfigKeys, sectionCSpell } from '../settings/index.mjs';
 import * as LanguageIds from '../settings/languageIds.js';
 import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
@@ -71,18 +72,23 @@ export class CSpellClient implements Disposable {
         // The server is implemented in node
         const module = context.asAbsolutePath('packages/_server/dist/main.cjs');
 
-        const enabledLanguageIds = Settings.getScopedSettingFromVSConfig('enabledLanguageIds', Settings.Scopes.Workspace);
-        this.allowedSchemas = new Set(
-            Settings.getScopedSettingFromVSConfig('allowedSchemas', Settings.Scopes.Workspace) || supportedSchemes,
-        );
+        const settings: Settings.CSpellSettings = {
+            enabledLanguageIds: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledLanguageIds, Settings.Scopes.Workspace),
+            enableFiletypes: Settings.getScopedSettingFromVSConfig(ConfigFields.enableFiletypes, Settings.Scopes.Workspace),
+            enabledFileTypes: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledFileTypes, Settings.Scopes.Workspace),
+            allowedSchemas:
+                Settings.getScopedSettingFromVSConfig(ConfigFields.allowedSchemas, Settings.Scopes.Workspace) || supportedSchemes,
+            enabledSchemes: Settings.getScopedSettingFromVSConfig(ConfigFields.enabledSchemes, Settings.Scopes.Workspace),
+        };
+
+        this.allowedSchemas = new Set(extractEnabledSchemeList(settings));
         setOfSupportedSchemes.clear();
         this.allowedSchemas.forEach((schema) => setOfSupportedSchemes.add(schema));
 
-        this.languageIds = new Set([...languageIds, ...(enabledLanguageIds || []), ...LanguageIds.languageIds]);
+        this.languageIds = new Set([...languageIds, ...LanguageIds.languageIds, ...extractKnownFileTypeIds(settings)]);
+
         const uniqueLangIds = [...this.languageIds];
-        const documentSelector = [...this.allowedSchemas]
-            .map((scheme) => uniqueLangIds.map((language) => ({ language, scheme })))
-            .reduce((a, b) => a.concat(b));
+        const documentSelector = [...this.allowedSchemas].flatMap((scheme) => uniqueLangIds.map((language) => ({ language, scheme })));
         // Options to control the language client
         const clientOptions: LanguageClientOptions = {
             documentSelector,
