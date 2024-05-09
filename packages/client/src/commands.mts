@@ -189,6 +189,8 @@ export const commandHandlers = {
     'cSpell.show': handlerResolvedLater,
     'cSpell.hide': handlerResolvedLater,
     'cSpell.createCSpellTerminal': handlerResolvedLater,
+
+    'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -641,4 +643,8 @@ function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorE
             new Range(textLine.range.start, textLine.range.start),
         );
     }, 'handleInsertWordsDirective');
+}
+
+function callCommand(command: string): () => void {
+    return () => commands.executeCommand(command);
 }

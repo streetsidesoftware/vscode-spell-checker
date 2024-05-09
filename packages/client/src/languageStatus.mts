@@ -92,7 +92,7 @@ export function createLanguageStatus(): Disposable {
         const parts = [];
         stats.flagged && parts.push(`Flagged: ${stats.flagged}`);
         issuesItem.detail = parts.join('\n');
-        issuesItem.command = { command: 'cspell.issuesViewByFile.focus', title: 'open' };
+        issuesItem.command = { command: 'cSpell.openIssuesPanel', title: 'open' };
     }
 
     function updateNow(requestSettings = true) {

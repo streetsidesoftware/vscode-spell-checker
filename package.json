@@ -570,6 +570,13 @@
         "category": "Spell",
         "title": "Create CSpell REPL Terminal",
         "icon": "$(terminal)"
+      },
+      {
+        "command": "cSpell.openIssuesPanel",
+        "category": "Spell",
+        "title": "Open Spell Checker Issues Panel",
+        "shortTitle": "Open Spelling Issues",
+        "icon": "$(eye)"
       }
     ],
     "languages": [
