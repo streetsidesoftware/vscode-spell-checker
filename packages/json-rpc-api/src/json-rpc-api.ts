@@ -106,19 +106,19 @@ type DefUsePubSubAPI<T> = {
     [P in keyof T]: boolean | T[P] | ReturnPromise<T[P]>;
 };
 
-export type ServerAPIDef<T extends RpcAPI> = {
+export interface ServerAPIDef<T extends RpcAPI> {
     clientRequests: DefUseAPI<ClientRequests<T>>;
     clientNotifications: DefUseAPI<ClientNotifications<T>>;
     serverRequests: DefUsePubSubAPI<ServerRequests<T>>;
     serverNotifications: DefUsePubSubAPI<ServerNotifications<T>>;
-};
+}
 
-export type ClientAPIDef<T extends RpcAPI> = {
+export interface ClientAPIDef<T extends RpcAPI> {
     clientRequests: DefUsePubSubAPI<ClientRequests<T>>;
     clientNotifications: DefUsePubSubAPI<ClientNotifications<T>>;
     serverRequests: DefUseAPI<ServerRequests<T>>;
     serverNotifications: DefUseAPI<ServerNotifications<T>>;
-};
+}
 
 /**
  * Create an API Interface that can be used on the Server

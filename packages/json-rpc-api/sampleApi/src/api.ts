@@ -45,11 +45,11 @@ export interface TodoAPI extends RpcAPI {
 /**
  * Used on the server side (in the extension) to communicate with the webviews.
  */
-export interface ServerSideApi extends ServerSideMethods<TodoAPI> {}
+export type ServerSideApi = ServerSideMethods<TodoAPI>;
 /**
  * Used in the webviews to communicate with the extension.
  */
-export interface ClientSideApi extends ClientSideMethods<TodoAPI> {}
+export type ClientSideApi = ClientSideMethods<TodoAPI>;
 
 export type ServerSideApiDef = ServerAPIDef<TodoAPI>;
 export type ClientSideApiDef = ClientAPIDef<TodoAPI>;

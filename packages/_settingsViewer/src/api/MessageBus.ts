@@ -21,12 +21,12 @@ export interface Messenger {
     postMessage<M extends CommandMessage>(msg: M): void;
 }
 
-export type Logger = {
+export interface Logger {
     log: typeof console.log;
     warn: typeof console.warn;
     error: typeof console.error;
     debug: typeof console.debug;
-};
+}
 
 export class MessageBus implements Messenger {
     protected listeners = new Map<Commands, Set<Listener>>();

@@ -8,7 +8,7 @@ export const noop = () => undefined;
 export class InheritableDisposable implements DisposableHybrid {
     public dispose: () => void;
     public [Symbol.dispose]: () => void = noop;
-    public [symbolIsDisposed]: boolean = false;
+    public [symbolIsDisposed] = false;
 
     /** the inherited class can safely add disposables to _disposables */
     protected readonly _disposables: DisposableLike[];

@@ -205,8 +205,8 @@ const icons = {
 
 class WordIssueTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
-    suggestionsByDocument: Map<TextDocument, Suggestion[]> = new Map();
-    conicalDocuments: Set<TextDocument | vscode.NotebookDocument> = new Set();
+    suggestionsByDocument = new Map<TextDocument, Suggestion[]>();
+    conicalDocuments = new Set<TextDocument | vscode.NotebookDocument>();
     readonly issues: SpellingCheckerIssue[] = [];
 
     constructor(

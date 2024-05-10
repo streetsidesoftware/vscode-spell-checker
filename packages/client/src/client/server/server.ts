@@ -60,9 +60,9 @@ interface ExtensionSide {
 }
 export interface ServerApi extends ServerSide, ExtensionSide, Disposable {}
 
-type Disposable = {
+interface Disposable {
     dispose: () => void;
-};
+}
 
 type RequestCodeActionResult = (Command | CodeAction)[] | null;
 

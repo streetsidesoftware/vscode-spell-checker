@@ -39,7 +39,7 @@ export interface LanguageConfig {
     inherited?: ConfigSource;
 }
 
-export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
+export type LanguageConfigs = SettingByConfigTarget<LanguageConfig>;
 
 export interface State {
     activeTabName: string;
@@ -54,10 +54,10 @@ export interface FoundInConfig<T> {
     source: ConfigSource;
 }
 
-type InheritedFromSource<T> = {
+interface InheritedFromSource<T> {
     value: Exclude<T, undefined>;
     source: ConfigSource;
-};
+}
 
 export class AppState implements State {
     @observable _activeTabName = '';

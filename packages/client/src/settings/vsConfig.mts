@@ -227,11 +227,11 @@ export function getConfigurationTargetFromLegacy(target: ConfigTargetLegacy): Co
     return typeof target === 'object' ? target.target : target;
 }
 
-type TargetToScopeMap = {
+interface TargetToScopeMap {
     [ConfigurationTarget.Global]: 'globalValue';
     [ConfigurationTarget.Workspace]: 'workspaceValue';
     [ConfigurationTarget.WorkspaceFolder]: 'workspaceFolderValue';
-};
+}
 
 const targetToScopeMap: TargetToScopeMap = {
     [ConfigurationTarget.Global]: 'globalValue',

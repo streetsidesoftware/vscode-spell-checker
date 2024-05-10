@@ -15,7 +15,7 @@ export function createLanguageStatus(): Disposable {
     if (!showLanguageStatus) return dList;
 
     const statusIds = new Set<string>();
-    const statusItems: Map<string, vscode.LanguageStatusItem> = new Map();
+    const statusItems = new Map<string, vscode.LanguageStatusItem>();
     let pendingTimeout: NodeJS.Timeout | undefined = undefined;
 
     dList.push(vscode.window.onDidChangeActiveTextEditor(queueUpdate));

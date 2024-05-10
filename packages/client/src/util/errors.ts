@@ -4,7 +4,7 @@ import { window } from 'vscode';
 export function isError(e: unknown): e is Error {
     if (e instanceof Error) return true;
     if (!e || typeof e !== 'object') return false;
-    const err = <Error>e;
+    const err = e as Error;
     return err.message !== undefined && err.name !== undefined;
 }
 

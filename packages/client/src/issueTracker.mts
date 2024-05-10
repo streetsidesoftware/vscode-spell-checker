@@ -186,9 +186,9 @@ export class SpellingCheckerIssue {
 }
 
 export class SpellingCheckerIssuesCollection implements Iterable<SpellingCheckerIssue> {
-    map: Array<SpellingCheckerIssue>['map'];
-    filter: Array<SpellingCheckerIssue>['filter'];
-    forEach: Array<SpellingCheckerIssue>['forEach'];
+    map: SpellingCheckerIssue[]['map'];
+    filter: SpellingCheckerIssue[]['filter'];
+    forEach: SpellingCheckerIssue[]['forEach'];
 
     constructor(readonly issues: SpellingCheckerIssue[]) {
         this.map = issues.map.bind(issues);

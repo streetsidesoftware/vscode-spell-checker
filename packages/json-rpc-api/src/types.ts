@@ -17,13 +17,9 @@ export type MakeMethodsAsync<T> = {
     [K in keyof T]: ReturnPromise<T[K]>;
 };
 
-export interface GenericRequestHandler<R> {
-    (params: any): R | Promise<R>;
-}
+export type GenericRequestHandler<R> = (params: any) => R | Promise<R>;
 
-export interface GenericNotificationHandler {
-    (params: any): void;
-}
+export type GenericNotificationHandler = (params: any) => void;
 
 export interface Disposable {
     dispose(): void;

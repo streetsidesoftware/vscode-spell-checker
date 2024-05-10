@@ -8,7 +8,7 @@ import type { WebViewState } from './types';
 export type { Todo } from 'webview-api';
 export { supportedViewsByName } from 'webview-api';
 
-export interface API extends ClientSideApi {}
+export type API = ClientSideApi;
 
 const logger = createLogger(console, LogLevel.none);
 

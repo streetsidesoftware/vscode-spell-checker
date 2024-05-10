@@ -9,7 +9,9 @@ export function debounce<V, R>(fn: FN<V, R>, timeoutMs: number, extractKey?: (k:
  * @returns a function
  */
 export function debounce<V, R>(fn: FN<V, R>, timeoutMs: number, extractKey: (k: V) => V = (k) => k): FN<V, R> {
-    type Box<T> = { v: T };
+    interface Box<T> {
+        v: T;
+    }
     const m = new Map<V, Box<R>>();
     return (value: V) => {
         const key = extractKey(value);

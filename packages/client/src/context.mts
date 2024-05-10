@@ -103,7 +103,11 @@ async function setContext(context: ContextTypes): Promise<void> {
     await Promise.all(calls);
 }
 
-type DebounceEntry = { value: Promise<void>; pending: boolean; stale: boolean };
+interface DebounceEntry {
+    value: Promise<void>;
+    pending: boolean;
+    stale: boolean;
+}
 const cachedUpdateDocumentRelatedContext = new WeakMap<TextDocument, DebounceEntry>();
 const cachedTimeout = 1000;
 

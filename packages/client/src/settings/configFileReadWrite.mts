@@ -12,7 +12,10 @@ export type { ConfigUpdateFn } from './configReaderWriter.mjs';
 
 const SymbolFormat = Symbol('format');
 
-type HandlerDef = { match: RegExp; handler: (uri: Uri) => ConfigFileReaderWriter };
+interface HandlerDef {
+    match: RegExp;
+    handler: (uri: Uri) => ConfigFileReaderWriter;
+}
 
 const handlers: HandlerDef[] = [
     { match: /package\.json$/i, handler: (uri) => new ConfigFileReaderWriterPackage(uri) },

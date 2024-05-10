@@ -21,5 +21,5 @@ export function extendExpect(e: typeof expect): AsymmetricMatchers {
         },
     });
 
-    return (<unknown>e) as AsymmetricMatchers;
+    return e as unknown as AsymmetricMatchers;
 }

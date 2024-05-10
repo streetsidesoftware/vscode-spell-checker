@@ -65,10 +65,8 @@ export interface SettingsVSCode {
     };
 }
 
-interface VsCodeSettings {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type VsCodeSettings = Record<string, any>;
 
 interface ExtSettings {
     uri: string;

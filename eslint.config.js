@@ -17,6 +17,7 @@ export default tsEslint.config(
     nodePlugin.configs['flat/recommended'],
     eslintPluginPrettierRecommended,
     ...tsEslint.configs.recommended,
+    ...tsEslint.configs.stylistic,
     {
         ignores: [
             '.github/**/*.yaml',
@@ -54,6 +55,8 @@ export default tsEslint.config(
         rules: {
             // Note: you must disable the base rule as it can report incorrect errors
             'no-unused-vars': 'off',
+            '@typescript-eslint/no-empty-interface': 'off',
+            '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/consistent-type-imports': ['error'],
             '@typescript-eslint/no-unused-vars': [
                 'error',

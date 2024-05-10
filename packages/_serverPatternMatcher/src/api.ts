@@ -14,9 +14,9 @@ export type ServerRequestApiHandlers = ApiHandlers<ServerMethods>;
 /**
  * Server RPC Request and Result types
  */
-export type ServerMethods = {
+export interface ServerMethods {
     matchPatternsInDocument: ReqRes<MatchPatternsToDocumentRequest, MatchPatternsToDocumentResult>;
-};
+}
 
 export type ServerRequestMethods = keyof ServerMethods;
 
@@ -33,9 +33,9 @@ export interface NamedPattern {
     pattern: string | string[];
 }
 
-export type PatternSettings = {
+export interface PatternSettings {
     patterns: CSpellUserSettings['patterns'];
-};
+}
 
 export interface MatchPatternsToDocumentRequest extends TextDocumentRef {
     patterns: (string | NamedPattern)[];
@@ -76,19 +76,19 @@ export type Res<T> = T extends { response: infer R } ? R : never;
 export type Fn<T> = T extends { fn: infer R } ? R : never;
 export type OrPromise<T> = Promise<T> | T;
 
-export type ReqRes<Req, Res> = {
+export interface ReqRes<Req, Res> {
     request: Req;
     response: Res;
-};
+}
 
 /**
  * Utility type to combine the Request and Response to create the Handler function
  */
-export type RequestResponseFn<ReqRes> = {
+export interface RequestResponseFn<ReqRes> {
     request: Req<ReqRes>;
     response: Res<ReqRes>;
     fn: ApiReqHandler<ReqRes>;
-};
+}
 
 export type ApiReqResFn<ReqRes> = ApiFn<Req<ReqRes>, Res<ReqRes>>;
 export type ApiFn<Req, Res> = (req: Req) => Promise<Res>;
