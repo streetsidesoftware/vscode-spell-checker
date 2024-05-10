@@ -368,16 +368,16 @@
                 "type": "array"
               },
               "enableFiletypes": {
-                "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\n\nTo disable a language, prefix with `!` as in `!json`,\n\nExample: ``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```",
+                "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by  {@link  Settings.enabledLanguageIds } . To disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
                 "items": {
                   "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                   "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                   "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
-                "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by `cSpell.enabledLanguageIds`.\n\nTo disable a language, prefix with `!` as in `!json`,\n\nExample:\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```",
+                "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by  {@link  Settings.enabledLanguageIds } .\nTo disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n```\njsonc       // enable checking for jsonc\n!json       // disable checking for json\nkotlin      // enable checking for kotlin\n```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types\n!json       // except for json\n```",
                 "scope": "resource",
-                "title": "File Types to Check",
+                "title": "Enable File Types",
                 "type": "array",
                 "uniqueItems": true
               },
@@ -387,16 +387,28 @@
                 "markdownDescription": "Is the spell checker enabled.",
                 "type": "boolean"
               },
+              "enabledFileTypes": {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "description": "Enable / Disable checking file types (languageIds).\n\nThis setting replaces:  {@link  Settings.enabledLanguageIds }  and  {@link  Settings.enableFiletypes } .\n\nA Value of:\n- `true` - enable checking for the file type\n- `false` - disable checking for the file type\n\nA file type of `*` is a wildcard that enables all file types.\n\n**Example: enable all file types**\n\n| File Type | Enabled | Comment | | --------- | ------- | ------- | | `*`       | `true`  | Enable all file types. | | `json`    | `false` | Disable checking for json files. |",
+                "markdownDescription": "Enable / Disable checking file types (languageIds).\n\nThis setting replaces:  {@link  Settings.enabledLanguageIds }  and  {@link  Settings.enableFiletypes } .\n\nA Value of:\n- `true` - enable checking for the file type\n- `false` - disable checking for the file type\n\nA file type of `*` is a wildcard that enables all file types.\n\n**Example: enable all file types**\n\n| File Type | Enabled | Comment |\n| --------- | ------- | ------- |\n| `*`       | `true`  | Enable all file types. |\n| `json`    | `false` | Disable checking for json files. |",
+                "since": "8.8.1",
+                "title": "Enabled File Types to Check",
+                "type": "object"
+              },
               "enabledLanguageIds": {
-                "description": "languageIds for the files to spell check.",
+                "description": "Specify a list of file types to spell check. It is better to use  {@link  Settings.enabledFileTypes }  to Enable / Disable checking files types.",
                 "items": {
                   "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                   "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
                   "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
-                "markdownDescription": "languageIds for the files to spell check.",
-                "type": "array"
+                "markdownDescription": "Specify a list of file types to spell check. It is better to use  {@link  Settings.enabledFileTypes }  to Enable / Disable checking files types.",
+                "title": "Enabled Language Ids",
+                "type": "array",
+                "uniqueItems": true
               },
               "filename": {
                 "anyOf": [
