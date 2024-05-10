@@ -1,4 +1,6 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
+import type { EnabledFileTypes } from 'code-spell-checker-server/lib';
+import { extractEnabledFileTypes } from 'code-spell-checker-server/lib';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
 import type {
@@ -8,6 +10,7 @@ import type {
     ConfigSource,
     DictionaryEntry,
     FileConfig,
+    FileTypeList,
     Settings,
     TextDocument,
     Workspace,
@@ -24,9 +27,9 @@ import type {
     GetConfigurationForDocumentResult,
 } from '../client/index.mjs';
 import type { Inspect, InspectValues } from '../settings/index.mjs';
-import { inspectConfig } from '../settings/index.mjs';
+import { ConfigFields, inspectConfig } from '../settings/index.mjs';
 import type { Maybe } from '../util/index.js';
-import { uniqueFilter } from '../util/index.js';
+import { isDefined, uniqueFilter } from '../util/index.js';
 import { defaultTo, map, pipe } from '../util/pipe.js';
 import { toUri } from '../util/uriHelper.js';
 
@@ -112,11 +115,13 @@ function findNearestConfigField<K extends keyof CSpellUserSettings>(
 
 function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpellUserSettings>): Config {
     const localeSource = findNearestConfigField(orderPos, 'language', config);
-    const languageIdsEnabledSource = findNearestConfigField(orderPos, 'enabledLanguageIds', config);
-    const enableFiletypesSource = findNearestConfigField(orderPos, 'enableFiletypes', config);
-    const languageIdsEnabled = applyEnableFiletypesToEnabledLanguageIds(
-        config[languageIdsEnabledSource]?.enabledLanguageIds,
-        config[enableFiletypesSource]?.enableFiletypes,
+    const languageIdsEnabledSource = findNearestConfigField(orderPos, ConfigFields.enabledLanguageIds, config);
+    const enableFiletypesSource = findNearestConfigField(orderPos, ConfigFields.enableFiletypes, config);
+    const enabledFileTypesSource = findNearestConfigField(orderPos, ConfigFields.enabledFileTypes, config);
+    const languageIdsEnabled = extractEnabledLanguageIds(
+        config[languageIdsEnabledSource],
+        config[enableFiletypesSource],
+        config[enabledFileTypesSource],
     );
     const langSource = mergeSource(languageIdsEnabledSource, enableFiletypesSource);
 
@@ -140,12 +145,12 @@ function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): F
 function extractFileConfig(
     docConfig: GetConfigurationForDocumentResult,
     doc: vscode.TextDocument | undefined,
-    log: Logger,
+    _log: Logger,
 ): FileConfig | undefined {
     if (!doc) return undefined;
     const { uri, fileName, languageId, isUntitled } = doc;
     const {
-        languageEnabled,
+        languageIdEnabled,
         docSettings,
         fileEnabled,
         fileIsExcluded,
@@ -157,7 +162,7 @@ function extractFileConfig(
     } = docConfig;
     const enabledDicts = new Set<string>((docSettings && docSettings.dictionaries) || []);
     const dictionaries = extractDictionariesFromConfig(docSettings).filter((dic) => enabledDicts.has(dic.name));
-    log(`extractFileConfig languageEnabled: ${languageEnabled ? 'true' : 'false'}`);
+    // _log(`extractFileConfig languageIdEnabled: ${languageIdEnabled ? 'true' : 'false'}`);
 
     const uriToUse = uriUsed ? Uri.parse(uriUsed) : uri;
     const folder =
@@ -186,7 +191,7 @@ function extractFileConfig(
         isUntitled,
         languageId,
         dictionaries,
-        languageEnabled,
+        languageIdEnabled: languageIdEnabled,
         fileEnabled,
         configFiles: extractConfigFiles(docConfig),
         fileIsExcluded,
@@ -356,49 +361,24 @@ function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace)
     return workspace;
 }
 
-function applyEnableFiletypesToEnabledLanguageIds(
-    languageIds: string[] | undefined = [],
-    enableFiletypes: string[] | undefined = [],
-): string[] {
-    const ids = new Set<string>();
-    normalizeEnableFiletypes(languageIds.concat(enableFiletypes))
-        .map(calcEnableLang)
-        .forEach(({ enable, lang }) => {
-            enable ? ids.add(lang) : ids.delete(lang);
-        });
-    return [...ids].sort();
+function calcEnabledFileTypes(...settings: CSpellUserSettings[]): EnabledFileTypes {
+    const enabled: EnabledFileTypes = {};
+
+    return settings.reduce((acc, s) => extractEnabledFileTypes(s, acc), enabled);
 }
 
-function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
-    const ids = enableFiletypes
-        .map((id) => id.replace(/!/g, '~')) // Use ~ for better sorting
-        .sort()
-        .map((id) => id.replace(/~/g, '!')); // Restore the !
-
-    return ids;
-}
-
-function calcEnableLang(lang: string): { enable: boolean; lang: string } {
-    const [pfx, value] = splitBangPrefix(lang);
-    return {
-        enable: !(pfx.length & 1),
-        lang: value,
-    };
-}
-
-function splitBangPrefix(value: string): [prefix: string, value: string] {
-    const m = value.match(/^!*/);
-    const pfx = m?.[0] || '';
-    return [pfx, value.slice(pfx.length)];
+function extractEnabledLanguageIds(...settings: (CSpellUserSettings | undefined)[]): FileTypeList {
+    const enabled = calcEnabledFileTypes(...settings.filter(isDefined));
+    return Object.entries(enabled)
+        .filter(([, v]) => v)
+        .map(([k]) => k);
 }
 
 export const __testing__ = {
-    applyEnableFiletypesToEnabledLanguageIds,
-    calcEnableLang,
     extractConfigFiles,
+    extractEnabledLanguageIds,
     extractDictionariesFromConfig,
     extractViewerConfigFromConfig,
     mapWorkspace,
     normalizeLocales,
-    splitBangPrefix,
 };

@@ -16,10 +16,10 @@ import {
     correctBadSettings,
     debugExports,
     DocumentSettings,
-    isLanguageEnabled,
-    isUriAllowed,
-    isUriBlocked,
+    isUriAllowedBySettings,
+    isUriBlockedBySettings,
 } from './documentSettings.mjs';
+import { isLanguageEnabled } from './extractEnabledFileTypes.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 
 const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
@@ -77,7 +77,7 @@ const configFiles = {
     serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
 };
 
-const ac = expect.arrayContaining;
+// const ac = expect.arrayContaining;
 
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {
@@ -93,16 +93,16 @@ describe('Validate DocumentSettings', () => {
     });
 
     test('checks isUriAllowed', () => {
-        expect(isUriAllowed(Uri.parse(import.meta.url).toString())).toBe(true);
+        expect(isUriAllowedBySettings(Uri.parse(import.meta.url).toString(), {})).toBe(true);
     });
 
     test('checks isUriBlocked', () => {
         const uriFile = Uri.parse(import.meta.url);
-        expect(isUriBlocked(uriFile.toString())).toBe(false);
+        expect(isUriBlockedBySettings(uriFile.toString(), {})).toBe(false);
 
         const uriGit = uriFile.with({ scheme: 'debug' });
 
-        expect(isUriBlocked(uriGit.toString())).toBe(true);
+        expect(isUriBlockedBySettings(uriGit.toString(), {})).toBe(true);
     });
 
     test('folders', async () => {
@@ -176,21 +176,41 @@ describe('Validate DocumentSettings', () => {
         await docSettings.registerConfigurationFile(configFile);
 
         const settings = await docSettings.getSettings({ uri: Uri.parse(import.meta.url).toString() });
-        expect(settings.enabledLanguageIds).not.toContain('typescript');
-        expect(settings.enabledLanguageIds).toEqual(expect.arrayContaining(['php', 'json', 'pug']));
+        expect(settings.enabledLanguageIds).toBeUndefined();
+        expect(settings.enabledFileTypes).toEqual({
+            dart: true,
+            fsharp: true,
+            javascript: false,
+            json: true,
+            jsonc: true,
+            julia: true,
+            php: true,
+            pug: true,
+            r: true,
+            sql: true,
+            svelte: true,
+            terraform: true,
+            typescript: false,
+        });
     });
 
     test('applyEnableFiletypes', () => {
         const settings: CSpellUserSettings = {
             enabledLanguageIds: ['typescript', 'markdown', 'plaintext', 'json'],
             enableFiletypes: ['!json', '!!!javascript'],
+            enabledFileTypes: { typescript: true, plaintext: false, FreeFormFortran: true, json: true },
         };
-        const enabled = __testing__.extractEnableFiletypes(settings, {
-            enableFiletypes: ['typescript', '!plaintext', 'FreeFormFortran', '!!json', '!!javascript'],
+        Object.freeze(settings);
+        const r = __testing__.applyEnabledFileTypes(settings);
+        expect(r.enabledLanguageIds).toBeUndefined();
+        expect(r.enabledFileTypes).toEqual({
+            FreeFormFortran: true,
+            javascript: false,
+            json: true,
+            markdown: true,
+            plaintext: false,
+            typescript: true,
         });
-        const r = __testing__.applyEnableFiletypes(enabled, settings);
-        // cspell:ignore freeformfortran
-        expect(r.enabledLanguageIds).toEqual(ac(['typescript', 'markdown', 'FreeFormFortran', 'json']));
     });
 
     test.each`

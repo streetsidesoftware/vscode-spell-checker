@@ -24,11 +24,15 @@ export class IssueTracker {
         this.disposables.push(workspace.onDidCloseTextDocument((doc) => this.handleDocClose(doc)));
     }
 
-    public getIssues(uri: Uri): SpellingCheckerIssue[] | undefined;
-    public getIssues(): [Uri, SpellingCheckerIssue[]][];
-    public getIssues(uri?: Uri): SpellingCheckerIssue[] | [Uri, SpellingCheckerIssue[]][] | undefined {
-        if (!uri) return [...this.issues.values()].map((d) => [d.uri, d.issues] as [Uri, SpellingCheckerIssue[]]);
-        return this.issues.get(uri.toString())?.issues;
+    public getIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined;
+    public getIssues(): [Uri, SpellingCheckerIssuesCollection][];
+    public getIssues(uri?: Uri): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
+        if (!uri)
+            return [...this.issues.values()].map(
+                (d) => [d.uri, new SpellingCheckerIssuesCollection(d.issues)] as [Uri, SpellingCheckerIssuesCollection],
+            );
+        const issues = this.issues.get(uri.toString())?.issues;
+        return issues ? new SpellingCheckerIssuesCollection(issues) : undefined;
     }
 
     public getIssueCount(uri?: Uri): number {
@@ -179,4 +183,60 @@ export class SpellingCheckerIssue {
     static fromDiagnostic(document: TextDocument, diag: SpellingDiagnostic, version: number): SpellingCheckerIssue {
         return new SpellingCheckerIssue(document, diag, version);
     }
+}
+
+export class SpellingCheckerIssuesCollection implements Iterable<SpellingCheckerIssue> {
+    map: Array<SpellingCheckerIssue>['map'];
+    filter: Array<SpellingCheckerIssue>['filter'];
+    forEach: Array<SpellingCheckerIssue>['forEach'];
+
+    constructor(readonly issues: SpellingCheckerIssue[]) {
+        this.map = issues.map.bind(issues);
+        this.filter = issues.filter.bind(issues);
+        this.forEach = issues.forEach.bind(issues);
+    }
+
+    get length(): number {
+        return this.issues.length;
+    }
+
+    getSpellingIssues(): SpellingCheckerIssue[] {
+        return this.issues.filter((issue) => issue.isIssueTypeSpelling());
+    }
+
+    getDirectiveIssues(): SpellingCheckerIssue[] {
+        return this.issues.filter((issue) => issue.isIssueTypeDirective());
+    }
+
+    getStats(): IssuesStats {
+        const result = { spelling: 0, directive: 0, flagged: 0, suggestions: 0, haveSuggestions: 0 };
+        for (const issue of this.issues) {
+            if (issue.isIssueTypeSpelling()) {
+                result.spelling++;
+                if (issue.isFlagged()) result.flagged++;
+                if (issue.isSuggestion()) result.suggestions++;
+                if (issue.providedSuggestions()?.length) result.haveSuggestions++;
+            } else if (issue.isIssueTypeDirective()) {
+                result.directive++;
+            }
+        }
+        return result;
+    }
+
+    [Symbol.iterator](): Iterator<SpellingCheckerIssue> {
+        return this.issues[Symbol.iterator]();
+    }
+}
+
+export interface IssuesStats {
+    /** Number of spelling issues including ({@link flagged} and {@link suggestions}) */
+    spelling: number;
+    /** Number of directive issues, NOT including in {@link spelling} */
+    directive: number;
+    /** Number of issues that are flagged. */
+    flagged: number;
+    /** Number of issues that are pure suggestions. */
+    suggestions: number;
+    /** Number of issues that have suggestions. */
+    haveSuggestions: number;
 }

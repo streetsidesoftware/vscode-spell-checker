@@ -15,7 +15,7 @@ import type { ConfigScope, ConfigTarget, ConfigTargetCSpell, ConfigTargetDiction
 import { ConfigKinds, ConfigScopes } from './config/configTargets.mjs';
 import { calculateConfigTargets } from './config/configTargetsHelper.mjs';
 import type { CSpellUserSettings } from './config/cspellConfig/index.mjs';
-import { isUriAllowed } from './config/documentSettings.mjs';
+import { isUriAllowedBySettings } from './config/documentSettings.mjs';
 import type { GetSettingsResult } from './SuggestionsGenerator.mjs';
 import { SuggestionGenerator } from './SuggestionsGenerator.mjs';
 import { uniqueFilter } from './utils/index.mjs';
@@ -137,7 +137,7 @@ class CodeActionHandler {
         if (spellCheckerDiags.length > 1) return [];
 
         const { settings: docSetting, dictionary } = await this.getSettings(textDocument);
-        if (!isUriAllowed(uri, docSetting.allowedSchemas)) {
+        if (!isUriAllowedBySettings(uri, docSetting)) {
             log(`CodeAction Uri Not allowed: ${uri}`);
             return [];
         }

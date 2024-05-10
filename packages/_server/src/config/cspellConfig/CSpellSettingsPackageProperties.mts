@@ -3,6 +3,12 @@ import type { CSpellSettings, FsPath, GlobDef, SimpleGlob } from '@cspell/cspell
 
 import type { HiddenFsPath } from './annotatedTypes.mjs';
 
+/** @hidden */
+type InternalRegExp = RegExp;
+type Pattern = string | InternalRegExp;
+
+type RegExpList = Pattern[]; // CSpellSettings['includeRegExpList'] | CSpellSettings['ignoreRegExpList'];
+
 /**
  * CSpellSettingsPackageProperties are used to annotate CSpellSettings found in
  * the `package.json#contributes.configuration`
@@ -65,17 +71,12 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     maxDuplicateProblems?: number;
 
     /**
-     * Specify a list of file types to spell check. It is better to use `#cSpell.enableFiletypes#` to Enable / Disable checking files types.
+     * Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.
      * @title Enabled Language Ids
      * @scope resource
+     * @deprecated true
+     * @deprecationMessage - Use `#cSpell.enabledFileTypes#` instead.
      * @uniqueItems true
-     * @default [
-     *      "asciidoc","bat","c","clojure","coffeescript","cpp","csharp","css","dart","diff","dockerfile","elixir","erlang","fsharp","git-commit",
-     *      "git-rebase","github-actions-workflow","go","graphql","groovy","handlebars","haskell","html","ini","jade","java","javascript","javascriptreact",
-     *      "json","jsonc","julia","jupyter","latex","less","lua","makefile","markdown","objective-c","perl","perl6","php","plaintext","powershell",
-     *      "properties","pug","python","r","razor","restructuredtext","ruby","rust","scala","scminput","scss","shaderlab","shellscript","sql","swift",
-     *      "text","typescript","typescriptreact","vb","vue","xml","xsl","yaml"
-     *  ]
      */
     enabledLanguageIds?: CSpellSettings['enabledLanguageIds'];
 
@@ -107,7 +108,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      * Glob patterns of files to be ignored. The patterns are relative to the `#cSpell.globRoot#` of the configuration file that defines them.
      * @title Glob patterns of files to be ignored
      * @scope resource
-     * @default ["package-lock.json","node_modules","vscode-extension",".git/objects",".vscode",".vscode-insiders"]
+     * @default ["package-lock.json","node_modules","vscode-extension",".git/{info,lfs,logs,refs,objects}/**", ".git/{index,*refs,*HEAD}", ".vscode",".vscode-insiders"]
      */
     ignorePaths?: (SimpleGlob | GlobDefX)[];
 
@@ -168,7 +169,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *
      * @scope resource
      */
-    includeRegExpList?: CSpellSettings['includeRegExpList'];
+    includeRegExpList?: RegExpList;
 
     // cspell:ignore mapsto venv
     /**
@@ -189,7 +190,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *
      * @scope resource
      */
-    ignoreRegExpList?: CSpellSettings['ignoreRegExpList'];
+    ignoreRegExpList?: RegExpList;
 
     /**
      * Enable / Disable allowing word compounds.
@@ -226,7 +227,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
      *
      * @scope resource
      */
-    dictionaries?: CSpellSettings['dictionaries'];
+    dictionaries?: string[]; // CSpellSettings['dictionaries'];
 
     /**
      * @scope resource
@@ -287,7 +288,7 @@ export interface CSpellSettingsPackageProperties extends CSpellSettings {
     /**
      * @scope resource
      */
-    noSuggestDictionaries?: CSpellSettings['noSuggestDictionaries'];
+    noSuggestDictionaries?: string[]; // CSpellSettings['noSuggestDictionaries'];
 
     /**
      * @scope window

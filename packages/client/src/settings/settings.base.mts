@@ -9,6 +9,7 @@ import { applyUpdateToConfigTargets, readFromConfigTargets } from './configRepos
 import type { ConfigTargetMatchPattern } from './configTargetHelper.mjs';
 import {
     filterClientConfigTargets,
+    filterClientConfigTargetsByField,
     patternMatchNoDictionaries,
     quickPickBestMatchTarget,
     quickPickTargets,
@@ -63,6 +64,7 @@ export async function setConfigFieldQuickPick<K extends keyof CSpellUserSettings
     key: K,
     value: ApplyValueOrFn<K>,
 ): Promise<void> {
+    targets = filterClientConfigTargetsByField(targets, key);
     const t = await quickPickTargets(targets);
     if (!t || !t.length) return;
     return applyToConfig(t, key, value);

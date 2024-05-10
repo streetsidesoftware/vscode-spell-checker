@@ -1,6 +1,6 @@
 import { logError } from '@internal/common-utils/log';
 import { format } from 'util';
-import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit, Uri } from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit } from 'vscode';
 import {
     commands,
     FileType,
@@ -10,6 +10,7 @@ import {
     Selection,
     SnippetString,
     TextEditorRevealType,
+    Uri,
     window,
     workspace,
 } from 'vscode';
@@ -188,6 +189,8 @@ export const commandHandlers = {
     'cSpell.show': handlerResolvedLater,
     'cSpell.hide': handlerResolvedLater,
     'cSpell.createCSpellTerminal': handlerResolvedLater,
+
+    'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -334,22 +337,36 @@ export function enableDisableLocaleLegacy(target: ConfigTargetLegacy | boolean, 
     return enableDisableLocale(locale, t.uri, t.target, t.configScope, enable);
 }
 
-export function enableCurrentFileType(): Promise<void> {
+export function enableCurrentFileType(languageId?: string, uri?: string | Uri): Promise<void> {
+    const resolved = resolveLanguageIdAndUri(languageId, uri);
     return handleErrors(async () => {
-        const document = window.activeTextEditor?.document;
-        if (!document) return;
-        const targets = await targetsForTextDocument(document);
-        return Settings.enableLanguageId(targets, document.languageId);
+        const { languageId, uri } = resolved;
+        if (!uri || !languageId) return;
+        const targets = await targetsForUri(uri);
+        return Settings.enableLanguageId(targets, languageId);
     }, 'enableCurrentFileType');
 }
 
-export function disableCurrentFileType(): Promise<void> {
+export function disableCurrentFileType(languageId?: string, uri?: string | Uri): Promise<void> {
+    const resolved = resolveLanguageIdAndUri(languageId, uri);
     return handleErrors(async () => {
-        const document = window.activeTextEditor?.document;
-        if (!document) return;
-        const targets = await targetsForTextDocument(document);
-        return Settings.disableLanguageId(targets, document.languageId);
+        const { languageId, uri } = resolved;
+        if (!uri || !languageId) return;
+        const targets = await targetsForUri(uri);
+        return Settings.disableLanguageId(targets, languageId);
     }, 'disableCurrentFileType');
+}
+
+function resolveLanguageIdAndUri(
+    languageId?: string,
+    uri?: string | Uri,
+): { languageId: string | undefined; uri: Uri | string | undefined } {
+    languageId = typeof languageId === 'string' ? languageId : undefined;
+    uri = typeof uri === 'string' || uri instanceof Uri ? uri : undefined;
+    const document = window.activeTextEditor?.document;
+    uri ??= document?.uri;
+    languageId ??= document?.languageId;
+    return { languageId, uri };
 }
 
 async function targetsAndScopeFromConfigurationTarget(
@@ -626,4 +643,8 @@ function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorE
             new Range(textLine.range.start, textLine.range.start),
         );
     }, 'handleInsertWordsDirective');
+}
+
+function callCommand(command: string): () => void {
+    return () => commands.executeCommand(command);
 }

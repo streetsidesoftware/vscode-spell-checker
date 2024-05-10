@@ -71,9 +71,33 @@ describe('disposable', () => {
         expect(count).toBe(110);
     });
 
-    test('', () => {
+    test('isDisposableHybrid', () => {
         const list = createDisposableList();
         expect(isDisposableHybrid(list)).toBe(true);
-        expect(list.isDisposed());
+        expect(list.isDisposed()).toBe(false);
+    });
+
+    test('delete', () => {
+        const dispose = jest.fn();
+        const list = createDisposableList();
+        list.push(dispose);
+        expect(list.disposables).toContain(dispose);
+        list.delete(dispose);
+        expect(list.disposables).not.toContain(dispose);
+        // It is ok to delete undefined items from the list.
+        expect(list.delete(undefined)).toBe(true);
+    });
+
+    test('add', () => {
+        const dispose = jest.fn();
+        const list = createDisposableList();
+        expect(list.add(dispose)).toBe(true);
+        expect(list.add(dispose)).toBe(false);
+        expect(list.has(dispose)).toBe(true);
+        expect(list.delete(dispose)).toBe(true);
+        expect(list.has(dispose)).toBe(false);
+        expect(list.delete(dispose)).toBe(false);
+        expect(list.add(undefined)).toBe(false);
+        expect(list.has(undefined)).toBe(false);
     });
 });

@@ -6,18 +6,11 @@ import type { LanguageSetting, OverrideSettings } from '@cspell/cspell-types';
 import type { AppearanceSettings } from './AppearanceSettings.mjs';
 import type { CSpellSettingsPackageProperties } from './CSpellSettingsPackageProperties.mjs';
 import type { DictionaryDef } from './CustomDictionary.mjs';
+import type { FileTypesAndSchemeSettings } from './FileTypesAndSchemeSettings.mjs';
 import type { PrefixWithCspell } from './Generics.mjs';
 import type { SpellCheckerBehaviorSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
 
-interface InternalSettings {
-    /**
-     * Map of known and enabled file types.
-     * `true` - enabled
-     * `false` - disabled
-     * @hidden
-     */
-    mapOfEnabledFileTypes?: Map<string, boolean>;
-}
+interface InternalSettings {}
 
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
 
@@ -229,6 +222,7 @@ type _VSConfigFilesAndFolders = Pick<
     | 'useGitignore'
     | 'usePnP'
     | 'workspaceRootPath'
+    | keyof FileTypesAndSchemeSettings
 >;
 
 /**

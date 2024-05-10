@@ -245,7 +245,7 @@ function calcFileConfig() {
     }
     const languageId = doc.languageId;
     const dictionaries = appState.settings.dictionaries;
-    const languageEnabled = appState.enabledLanguageIds.includes(languageId);
+    const languageIdEnabled = appState.enabledLanguageIds.includes(languageId);
     const folderPath = Path.dirname(Path.dirname(doc.uri));
     const workspacePath = Path.dirname(folderPath);
     const config = appState.findMatchingSampleConfig(doc.uri);
@@ -256,7 +256,7 @@ function calcFileConfig() {
         fileIsExcluded: false,
         fileIsInWorkspace: true,
         excludedBy: undefined,
-        languageEnabled,
+        languageIdEnabled,
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
         gitignoreInfo: config?.file?.gitignoreInfo,

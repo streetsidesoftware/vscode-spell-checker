@@ -32,18 +32,58 @@ export class InheritableDisposable implements DisposableHybrid {
 }
 
 export class DisposableList extends InheritableDisposable {
+    #known: WeakSet<DisposableLike>;
+
     constructor(
         public readonly disposables: DisposableLike[] = [],
         readonly name = 'DisposableList',
     ) {
         super(disposables);
+        this.#known = new WeakSet(disposables);
     }
 
+    /**
+     * pushes
+     * @param disposables
+     * @returns
+     */
     public push(...disposables: DisposableLike[]) {
         if (this.isDisposed()) {
             throw new Error('Already disposed, cannot add items.');
         }
-        this.disposables.push(...disposables);
+        let count = 0;
+        for (const d of disposables) {
+            this.add(d) && count++;
+        }
+        return count;
+    }
+
+    /**
+     * Add a disposable to the list.
+     * Duplicates will not be added.
+     * @param disposable to add.
+     * @returns true if the disposable was added.
+     */
+    public add(disposable: DisposableLike | undefined): boolean {
+        if (!disposable) return false;
+        if (this.#known.has(disposable)) return false;
+        this.#known.add(disposable);
+        this.disposables.push(disposable);
+        return true;
+    }
+
+    /**
+     * Delete a disposable from the list. It does NOT dispose of the disposable.
+     * @param disposable - the disposable to delete.
+     * @returns false if the disposable was not found.
+     */
+    public delete(disposable: DisposableLike | undefined) {
+        if (!disposable) return true;
+        this.#known.delete(disposable);
+        const index = this.disposables.indexOf(disposable);
+        if (index < 0) return false;
+        this.disposables.splice(index, 1);
+        return true;
     }
 
     get length() {
@@ -52,6 +92,11 @@ export class DisposableList extends InheritableDisposable {
 
     public isDisposed(): boolean {
         return super.isDisposed();
+    }
+
+    public has(disposable: DisposableLike | undefined): boolean {
+        if (!disposable) return false;
+        return this.#known.has(disposable);
     }
 }
 

@@ -52,32 +52,15 @@ export function addIgnoreWordsToSettings(targets: ClientConfigTarget[], words: s
  * @param enable true == enable / false == disable
  * @param currentValues the value to update.
  */
-function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: string[] | undefined) {
-    const values = new Set(currentValues || []);
-    const disabledLangId = '!' + languageId;
-    if (enable) {
-        if (values.has(disabledLangId)) {
-            values.delete(disabledLangId);
-        } else {
-            values.add(languageId);
-        }
-    } else {
-        if (values.has(languageId)) {
-            values.delete(languageId);
-        } else {
-            values.add(disabledLangId);
-        }
-    }
-
-    // values.delete(languageId);
-    // values.delete(disabledLangId);
-    // values.add(enable ? languageId : disabledLangId);
-    return values.size ? [...values].sort() : undefined;
+function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: Record<string, boolean> | undefined) {
+    const values = { ...currentValues };
+    values[languageId] = enable;
+    return values;
 }
 
 export function enableLanguageIdForTarget(languageId: string, enable: boolean, targets: ClientConfigTarget[]): Promise<void> {
-    const fn = (src: string[] | undefined) => updateEnableFiletypes(languageId, enable, src);
-    return setConfigFieldQuickPick(targets, 'enableFiletypes', fn);
+    const fn = (src: Record<string, boolean> | undefined) => updateEnableFiletypes(languageId, enable, src);
+    return setConfigFieldQuickPick(targets, 'enabledFileTypes', fn);
 }
 
 const settingsFileTemplate: CSpellSettings = {
