@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import { fromAsyncIterable } from './helpers/fromAsyncIterable';
 import { fromIterable } from './helpers/fromIterable';
 import { fromSubscribableLike } from './helpers/toSubscribable';

@@ -59,7 +59,6 @@ export default tsEslint.config(
             '@typescript-eslint/no-empty-interface': 'off',
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-non-null-assertion': 'error',
-            '@typescript-eslint/unified-signatures': 'warn',
             '@typescript-eslint/prefer-literal-enum-member': 'off',
             '@typescript-eslint/consistent-type-imports': ['error'],
             '@typescript-eslint/no-unused-vars': [

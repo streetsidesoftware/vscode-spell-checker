@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 /**
  * This helper is to help with matching possible configuration targets to configuration fields.
  */

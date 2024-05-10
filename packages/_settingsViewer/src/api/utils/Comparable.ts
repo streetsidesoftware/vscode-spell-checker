@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 export type Comparable = number | string | boolean | undefined | null | Date;
 export type ComparableFilter<T> = T extends Comparable ? T : never;
 export type ComparablePropertyNames<T> = { [K in keyof T]: T[K] extends Comparable ? K : never }[keyof T];

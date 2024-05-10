@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import type { Socket } from 'node:net';
 import stream from 'node:stream';
 import type { Direction, WriteStream as TTYWriteStream } from 'node:tty';

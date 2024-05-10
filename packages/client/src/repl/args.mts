@@ -480,12 +480,9 @@ function formatTwoColumns(columns: readonly (readonly [string, string])[], width
     return lines.join('\n');
 }
 
-function typeNameToBaseTypeName(type: 'boolean'): 'boolean';
-function typeNameToBaseTypeName(type: 'number'): 'number';
-function typeNameToBaseTypeName(type: 'string'): 'string';
-function typeNameToBaseTypeName(type: 'boolean[]'): 'boolean';
-function typeNameToBaseTypeName(type: 'number[]'): 'number';
-function typeNameToBaseTypeName(type: 'string[]'): 'string';
+function typeNameToBaseTypeName(type: 'boolean' | 'boolean[]'): 'boolean';
+function typeNameToBaseTypeName(type: 'number' | 'number[]'): 'number';
+function typeNameToBaseTypeName(type: 'string' | 'string[]'): 'string';
 function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames;
 function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames {
     return type.replace('[]', '') as OptionTypeBaseNames;

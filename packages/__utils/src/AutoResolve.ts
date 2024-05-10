@@ -56,7 +56,6 @@ class CacheStatsTracker implements CacheStats {
 export class AutoResolveCache<K, V> implements IDisposable {
     readonly map = new Map<K, V>();
 
-    get(k: K): V | undefined;
     get(k: K, resolve: (k: K) => V): V;
     get(k: K, resolve?: (k: K) => V): V | undefined;
     get(k: K, resolve?: (k: K) => V): V | undefined {
@@ -109,7 +108,6 @@ export class AutoResolveWeakCache<K extends object, V> implements IWeakMap<K, V>
 
     private _stats = new CacheStatsTracker();
 
-    get(k: K): V | undefined;
     get(k: K, resolve: (k: K) => V): V;
     get(k: K, resolve?: (k: K) => V): V | undefined;
     get(k: K, resolve?: (k: K) => V): V | undefined {
