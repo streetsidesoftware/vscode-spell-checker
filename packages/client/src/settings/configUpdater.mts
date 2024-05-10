@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import type { CSpellUserSettings } from '../client/index.mjs';
 
 export type ConfigKeys = keyof CSpellUserSettings;

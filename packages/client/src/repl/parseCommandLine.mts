@@ -277,8 +277,7 @@ function quoteString(value: string, quote: QuoteChar): string {
 
     let arg = '';
 
-    for (let i = 0; i < value.length; i++) {
-        const c = value[i];
+    for (const c of value) {
         const v = escapeQuotedStringMap[c] || c;
         if (v === quote) {
             arg += '\\' + quote;
@@ -295,8 +294,7 @@ function escapeArg(value: string): string {
 
     let arg = '';
 
-    for (let i = 0; i < value.length; i++) {
-        const c = value[i];
+    for (const c of value) {
         arg += escapeMap[c] || c;
     }
 

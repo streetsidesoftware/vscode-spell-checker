@@ -54,7 +54,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
     #dimensions: vscode.TerminalDimensions | undefined;
     #application: Application | undefined;
 
-    constructor() {}
+    // constructor() {}
 
     open(dimensions: vscode.TerminalDimensions | undefined) {
         consoleDebug('Repl.open');
@@ -263,7 +263,7 @@ class Repl implements vscode.Disposable, vscode.Pseudoterminal {
 
         output(eraseLine() + 'Gathering Files...');
 
-        const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as { [key: string]: boolean };
+        const cfgSearchExclude = vscode.workspace.getConfiguration('search.exclude') as Record<string, boolean>;
         const searchExclude = Object.keys(cfgSearchExclude).filter((k) => cfgSearchExclude[k] === true);
         const excludePattern = globsToGlob(searchExclude);
         const files = await globSearch(pattern, currentDirectory(), excludePattern, undefined, this.#getCancellationTokenForAction());

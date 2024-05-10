@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import { homedir } from 'node:os';
 
 import type { GlobPattern } from 'vscode';

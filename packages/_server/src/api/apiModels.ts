@@ -189,7 +189,7 @@ export interface WorkspaceConfigForDocument {
     ignoreWords: FieldExistsInTarget;
 }
 
-export interface WorkspaceConfigForDocumentResponse extends WorkspaceConfigForDocument {}
+export type WorkspaceConfigForDocumentResponse = WorkspaceConfigForDocument;
 
 export type FieldExistsInTarget = {
     [key in ConfigurationTarget]?: boolean;

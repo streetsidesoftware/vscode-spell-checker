@@ -17,6 +17,8 @@ export default tsEslint.config(
     nodePlugin.configs['flat/recommended'],
     eslintPluginPrettierRecommended,
     ...tsEslint.configs.recommended,
+    ...tsEslint.configs.strict,
+    ...tsEslint.configs.stylistic,
     {
         ignores: [
             '.github/**/*.yaml',
@@ -54,6 +56,11 @@ export default tsEslint.config(
         rules: {
             // Note: you must disable the base rule as it can report incorrect errors
             'no-unused-vars': 'off',
+            '@typescript-eslint/no-empty-interface': 'off',
+            '@typescript-eslint/no-empty-function': 'off',
+            '@typescript-eslint/no-non-null-assertion': 'error',
+            '@typescript-eslint/prefer-literal-enum-member': 'off',
+            '@typescript-eslint/consistent-type-imports': ['error'],
             '@typescript-eslint/no-unused-vars': [
                 'error',
                 {
@@ -81,6 +88,8 @@ export default tsEslint.config(
             'n/no-extraneous-import': 'off',
             'n/no-unpublished-import': 'off',
             '@typescript-eslint/no-explicit-any': 'off', // any is allowed in tests
+            '@typescript-eslint/no-useless-constructor': 'off', // useful for tests
+            '@typescript-eslint/no-dynamic-delete': 'off', // useful for tests
         },
     },
     {

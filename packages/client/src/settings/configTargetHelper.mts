@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 /**
  * This helper is to help with matching possible configuration targets to configuration fields.
  */
@@ -5,7 +6,7 @@
 import { uriToName } from '@internal/common-utils/uriHelper';
 import * as vscode from 'vscode';
 
-import { CSpellUserSettings } from '../client/index.mjs';
+import type { CSpellUserSettings } from '../client/index.mjs';
 import { toUri } from '../util/uriHelper.js';
 import type {
     ClientConfigKind,
@@ -315,8 +316,4 @@ export function createClientConfigTargetVSCode(
     return ct;
 }
 
-export class UnableToFindTarget extends Error {
-    constructor(msg: string) {
-        super(msg);
-    }
-}
+export class UnableToFindTarget extends Error {}

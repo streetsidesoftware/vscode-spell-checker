@@ -39,7 +39,7 @@ export interface LanguageConfig {
     inherited?: ConfigSource;
 }
 
-export interface LanguageConfigs extends SettingByConfigTarget<LanguageConfig> {}
+export type LanguageConfigs = SettingByConfigTarget<LanguageConfig>;
 
 export interface State {
     activeTabName: string;
@@ -54,10 +54,10 @@ export interface FoundInConfig<T> {
     source: ConfigSource;
 }
 
-type InheritedFromSource<T> = {
+interface InheritedFromSource<T> {
     value: Exclude<T, undefined>;
     source: ConfigSource;
-};
+}
 
 export class AppState implements State {
     @observable _activeTabName = '';
@@ -119,7 +119,7 @@ export class AppState implements State {
                     .forEach((localInfo) => {
                         const { code, lang, language, script = '', country } = localInfo;
                         const name = language + (country && ' - ' + country) + (script && ' - ' + script);
-                        const found = this.isLocalEnabledEx(target, code);
+                        const found = this.isLocaleEnabledEx(target, code);
                         const enabled = (found && found.value) || false;
                         const info: LanguageInfo = infos.get(name) || {
                             code,
@@ -213,12 +213,12 @@ export class AppState implements State {
         this.debugMode = isEnabled;
     }
 
-    private isLocalEnabledEx(field: ConfigTarget, code: LocaleId): InheritedFromSource<boolean> {
+    private isLocaleEnabledEx(field: ConfigTarget, code: LocaleId): InheritedFromSource<boolean> {
         const config = this.settings.configs[field];
         const source = config.inherited.locales || field;
         const locales = config.locales;
         return {
-            value: locales.map(normalizeCode).includes(code),
+            value: locales.map((locale) => normalizeCode(locale)).includes(code),
             source,
         };
     }

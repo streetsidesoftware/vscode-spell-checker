@@ -1,7 +1,7 @@
 // Poly fill
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error
 Symbol.dispose ??= Symbol('Symbol.dispose');
 // Symbol.asyncDispose ??= Symbol('Symbol.asyncDispose');
 

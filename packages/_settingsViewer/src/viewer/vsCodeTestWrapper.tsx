@@ -32,7 +32,7 @@ import {
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 class AppState {
-    currentSample: number = 0;
+    currentSample = 0;
     sampleSettings: Settings[] = [
         sampleSettings,
         sampleSettingsSingleFolder,
@@ -42,7 +42,7 @@ class AppState {
         sampleSettingsBlocked,
     ];
     _settings: Settings = this.sampleSettings[this.currentSample];
-    _activeTab: string = 'About';
+    _activeTab = 'About';
 
     constructor() {
         makeObservable(this, {

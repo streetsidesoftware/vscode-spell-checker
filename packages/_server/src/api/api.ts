@@ -82,11 +82,11 @@ export interface SpellCheckerServerAPI extends RpcAPI {
 /**
  * Used on the server side  to communicate with the client(extension).
  */
-export interface ServerSideApi extends ServerSideMethods<SpellCheckerServerAPI> {}
+export type ServerSideApi = ServerSideMethods<SpellCheckerServerAPI>;
 /**
  * Used in the client(extension) to communicate with the server.
  */
-export interface ClientSideApi extends ClientSideMethods<SpellCheckerServerAPI> {}
+export type ClientSideApi = ClientSideMethods<SpellCheckerServerAPI>;
 
 export type ServerSideApiDef = ServerAPIDef<SpellCheckerServerAPI>;
 export type ClientSideApiDef = ClientAPIDef<SpellCheckerServerAPI>;

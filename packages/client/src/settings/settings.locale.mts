@@ -82,7 +82,6 @@ function removeLocaleFromCurrentLocale(locale: string, currentLocale: string | u
     return [...currentSet].join(',') || undefined;
 }
 
-function doLocalesIntersect(localeA: string, localeB: string): boolean;
 function doLocalesIntersect(localeA: string, localeB: undefined): false;
 function doLocalesIntersect(localeA: string, localeB: string | undefined): boolean;
 function doLocalesIntersect(localeA: string, localeB: string | undefined): boolean {
@@ -96,7 +95,6 @@ function doLocalesIntersect(localeA: string, localeB: string | undefined): boole
     return false;
 }
 
-function isLocaleSubsetOf(localeA: string, localeB: string): boolean;
 function isLocaleSubsetOf(localeA: string, localeB: undefined): false;
 function isLocaleSubsetOf(localeA: string, localeB: string | undefined): boolean;
 function isLocaleSubsetOf(localeA: string, localeB: string | undefined): boolean {

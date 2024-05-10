@@ -11,7 +11,7 @@ export type UpdateFn<T> = (v: T | undefined) => T;
 type UpdateMethod<T> = (u: UpdateFn<T>) => void;
 export type SubscribeFn<T> = (s: Subscriber<T>) => DisposableFn;
 
-export interface ReadonlyStore<T> extends Subscribable<T> {}
+export type ReadonlyStore<T> = Subscribable<T>;
 
 export interface Store<T> extends ReadonlyStore<T> {
     set: SetMethod<T>;
@@ -65,10 +65,6 @@ class StoreObservable<T> implements Store<T> {
 }
 
 class ValueStoreObservable<T> extends StoreObservable<T> implements ValueStore<T> {
-    constructor(value: T) {
-        super(value);
-    }
-
     get value() {
         return this._value !== symbolNotSet ? Promise.resolve(this._value) : awaitForSubscribable(this);
     }

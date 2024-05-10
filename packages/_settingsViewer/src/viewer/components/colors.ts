@@ -1,6 +1,6 @@
 import { staticColors } from './colorsStatic';
 export const themeColors = staticColors.dark;
-export const colorsUsed: Set<string> = new Set();
+export const colorsUsed = new Set<string>();
 export const backgroundDefault = getColor('editor.background'); // 'var(--vscode-editor-background, #1e1e1e)'; // 'var(--cspell-background, red)'
 export const colorPrimary = getColor('button.background'); // 'var(--vscode-button-background, #0e639c)';
 export const colorOnPrimary = getColor('button.foreground'); // 'var(--vscode-button-foreground, #ffffff)';

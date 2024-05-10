@@ -126,8 +126,8 @@ export class Application {
 
     constructor(
         public name: string,
-        public description: string = '',
-        public usage: string = '',
+        public description = '',
+        public usage = '',
     ) {}
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -455,11 +455,11 @@ type OptDefsToOpts<T extends OptionDefinitions> = {
     [k in keyof T]: TypeNameToType<T[k]['type']>;
 };
 
-type ParsedResults<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> = {
+interface ParsedResults<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> {
     args: ArgDefsToArgs<ArgDefs>;
     options: OptDefsToOpts<OptDefs>;
     argv: string[];
-};
+}
 
 type HandlerFn<ArgDefs extends ArgsDefinitions, OptDefs extends OptionDefinitions> = (
     parsedArgs: ParsedResults<ArgDefs, OptDefs>,
@@ -480,12 +480,9 @@ function formatTwoColumns(columns: readonly (readonly [string, string])[], width
     return lines.join('\n');
 }
 
-function typeNameToBaseTypeName(type: 'boolean'): 'boolean';
-function typeNameToBaseTypeName(type: 'number'): 'number';
-function typeNameToBaseTypeName(type: 'string'): 'string';
-function typeNameToBaseTypeName(type: 'boolean[]'): 'boolean';
-function typeNameToBaseTypeName(type: 'number[]'): 'number';
-function typeNameToBaseTypeName(type: 'string[]'): 'string';
+function typeNameToBaseTypeName(type: 'boolean' | 'boolean[]'): 'boolean';
+function typeNameToBaseTypeName(type: 'number' | 'number[]'): 'number';
+function typeNameToBaseTypeName(type: 'string' | 'string[]'): 'string';
 function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames;
 function typeNameToBaseTypeName(type: OptionTypeNames): OptionTypeBaseNames {
     return type.replace('[]', '') as OptionTypeBaseNames;

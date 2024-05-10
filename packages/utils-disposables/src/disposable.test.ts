@@ -1,6 +1,6 @@
 import { describe, expect, jest, test } from '@jest/globals';
 
-import type { DisposableHybrid, DisposableLike, DisposeFn, ExcludeDisposableHybrid } from './disposable.js';
+import type { DisposableHybrid, DisposeFn, ExcludeDisposableHybrid } from './disposable.js';
 import {
     createDisposable,
     createDisposableFromList,
@@ -135,11 +135,7 @@ describe('disposable', () => {
 
     test('InheritableDisposable', () => {
         let count = 0;
-        class MyDisposable extends InheritableDisposable {
-            constructor(disposables: DisposableLike[]) {
-                super(disposables);
-            }
-        }
+        class MyDisposable extends InheritableDisposable {}
 
         function use() {
             using _d = new MyDisposable([() => (count += 10)]);

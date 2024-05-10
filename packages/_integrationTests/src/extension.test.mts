@@ -26,12 +26,12 @@ import {
 type VscodeLanguages = typeof vscodeLanguages;
 type VscodeWindow = typeof vscodeWindow;
 
-type Vscode = {
+interface Vscode {
     languages: VscodeLanguages;
     window: VscodeWindow;
     Position: typeof Position;
     Uri: typeof Uri;
-};
+}
 
 const require = createRequire(import.meta.url);
 

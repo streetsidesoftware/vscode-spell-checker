@@ -3,7 +3,7 @@ export function defaultTo<T>(value: T): (v: T | undefined) => T {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type Obj = {};
+interface Obj {}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type Nested<T, K extends keyof T> = T extends {} ? Exclude<T[K], undefined> : never;

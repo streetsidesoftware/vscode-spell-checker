@@ -28,12 +28,12 @@ export type CommandMessage = DefinedCommands[Commands];
 
 function isIMessage(data: unknown): data is IMessage {
     if (typeof data !== 'object' || !data || !('command' in data)) return false;
-    return typeof (<IMessage>data).command === 'string';
+    return typeof (data as IMessage).command === 'string';
 }
 
 export function isMessage(data: unknown): data is CommandMessage {
     if (!isIMessage(data)) return false;
-    const msg = <CommandMessage>data;
+    const msg = data as CommandMessage;
     return isMessageOf<CommandMessage>(msg);
 }
 

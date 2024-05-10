@@ -12,7 +12,10 @@ export type { ConfigUpdateFn } from './configReaderWriter.mjs';
 
 const SymbolFormat = Symbol('format');
 
-type HandlerDef = { match: RegExp; handler: (uri: Uri) => ConfigFileReaderWriter };
+interface HandlerDef {
+    match: RegExp;
+    handler: (uri: Uri) => ConfigFileReaderWriter;
+}
 
 const handlers: HandlerDef[] = [
     { match: /package\.json$/i, handler: (uri) => new ConfigFileReaderWriterPackage(uri) },
@@ -120,11 +123,7 @@ export class SysLikeError extends Error {
     }
 }
 
-export class FormatError extends Error {
-    constructor(msg: string) {
-        super(msg);
-    }
-}
+export class FormatError extends Error {}
 
 export function parseJson(content: string): CSpellSettings {
     const formatting = detectFormatting(content);

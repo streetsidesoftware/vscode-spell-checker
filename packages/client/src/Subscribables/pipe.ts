@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import type { OperatorFn, Subscribable } from './Subscribables';
 
 export function pipe<T>(subscribable: Subscribable<T>): Subscribable<T>;

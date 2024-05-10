@@ -56,14 +56,14 @@ interface TextDocumentInfo {
 
 export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
-    readonly import: Set<string> = new Set();
+    readonly import = new Set<string>();
     readonly languageIds: Set<string>;
     readonly allowedSchemas: Set<string>;
 
     serverApi: ServerApi;
-    private disposables: Set<Disposable> = new Set();
+    private disposables = new Set<Disposable>();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
-    private ready: Resolvable<void> = new Resolvable();
+    private ready = new Resolvable<void>();
 
     /**
      * @param: {string} module -- absolute path to the server module.

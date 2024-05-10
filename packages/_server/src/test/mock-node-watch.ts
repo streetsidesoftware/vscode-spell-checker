@@ -21,7 +21,7 @@ interface WatcherInternal extends FSWatcher {
     /**
      * Returns all watched paths.
      */
-    getWatchedPaths(): Array<string>;
+    getWatchedPaths(): string[];
 }
 
 type Watcher = Pick<FSWatcher, 'close'>;
@@ -47,12 +47,12 @@ interface WatcherInternal extends FSWatcher {
     /**
      * Returns all watched paths.
      */
-    getWatchedPaths(): Array<string>;
+    getWatchedPaths(): string[];
 
     callback?: WatcherCallback | undefined;
 }
 
-type Options = {
+interface Options {
     /**
      * Indicates whether the process should continue to run
      * as long as files are being watched.
@@ -84,7 +84,7 @@ type Options = {
      * @default 200
      */
     delay?: number;
-};
+}
 
 export function addNodeWatchMockImplementation(mock: MockedNodeWatch): NodeWatchMock {
     const callbacks = new Map<string, Set<WatcherInternal>>();

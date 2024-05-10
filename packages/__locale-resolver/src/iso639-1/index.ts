@@ -108,10 +108,8 @@ const localeLoremIpsum: Locale = Object.freeze({
 
 const regExIsLoremIpsum = /^lorem(?:[-_]?ipsum)?$/i;
 
-export function normalizeCode(code: string): string;
-export function normalizeCode(code: string, strict: false): string;
-export function normalizeCode(code: string, strict: true): string | undefined;
-export function normalizeCode(code: string, strict: boolean): string | undefined;
+export function normalizeCode(code: string, strict?: false): string;
+export function normalizeCode(code: string, strict: true | boolean): string | undefined;
 export function normalizeCode(code: string, strict = false): string | undefined {
     const locale = parseLocale(code);
     if (!locale) return strict ? undefined : code;

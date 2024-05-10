@@ -124,4 +124,4 @@ export interface CustomDictionary extends CustomDictionaryBase, Omit<DictionaryD
     path: FsPath;
 }
 
-export interface CustomDictionaryWithScope extends CustomDictionary {}
+export type CustomDictionaryWithScope = CustomDictionary;

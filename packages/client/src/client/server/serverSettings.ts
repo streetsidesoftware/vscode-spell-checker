@@ -59,7 +59,7 @@ export function extractCustomDictionaries(config: CSpellUserSettings): Dictionar
 }
 
 function isDictionaryDefinitionCustom(d: DictionaryDefinition): d is DictionaryDefinitionCustom {
-    return (<DictionaryDefinitionCustom>d).addWords ?? false;
+    return (d as DictionaryDefinitionCustom).addWords ?? false;
 }
 
 export function extractScope(d: DictionaryDefinitionCustom): Set<CustomDictionaryScope> {

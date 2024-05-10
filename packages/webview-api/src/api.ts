@@ -53,11 +53,11 @@ export interface SpellInfoWebviewAPI extends RpcAPI {
 /**
  * Used on the server side (in the extension) to communicate with the webviews.
  */
-export interface ServerSideApi extends ServerSideMethods<SpellInfoWebviewAPI> {}
+export type ServerSideApi = ServerSideMethods<SpellInfoWebviewAPI>;
 /**
  * Used in the webviews to communicate with the extension.
  */
-export interface ClientSideApi extends ClientSideMethods<SpellInfoWebviewAPI> {}
+export type ClientSideApi = ClientSideMethods<SpellInfoWebviewAPI>;
 
 export type ServerSideApiDef = ServerAPIDef<SpellInfoWebviewAPI>;
 export type ClientSideApiDef = ClientAPIDef<SpellInfoWebviewAPI>;

@@ -35,6 +35,7 @@ function orderFieldsInObject(obj: SchemaObj, keys: string[]) {
     const newObj = Object.fromEntries(keys.map((key) => [key, obj[key]]));
 
     // clean
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     Object.keys(obj).forEach((key) => delete obj[key]);
     Object.assign(obj, newObj);
 }

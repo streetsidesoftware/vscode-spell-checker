@@ -23,13 +23,13 @@ export interface CacheStats {
 export type AutoResolveCacheStats = Readonly<CacheStats>;
 
 class CacheStatsTracker implements CacheStats {
-    hits: number = 0;
-    misses: number = 0;
-    resolved: number = 0;
-    deletes: number = 0;
-    sets: number = 0;
-    clears: number = 0;
-    disposals: number = 0;
+    hits = 0;
+    misses = 0;
+    resolved = 0;
+    deletes = 0;
+    sets = 0;
+    clears = 0;
+    disposals = 0;
 
     stats(): AutoResolveCacheStats {
         return {
@@ -56,7 +56,6 @@ class CacheStatsTracker implements CacheStats {
 export class AutoResolveCache<K, V> implements IDisposable {
     readonly map = new Map<K, V>();
 
-    get(k: K): V | undefined;
     get(k: K, resolve: (k: K) => V): V;
     get(k: K, resolve?: (k: K) => V): V | undefined;
     get(k: K, resolve?: (k: K) => V): V | undefined {
@@ -109,7 +108,6 @@ export class AutoResolveWeakCache<K extends object, V> implements IWeakMap<K, V>
 
     private _stats = new CacheStatsTracker();
 
-    get(k: K): V | undefined;
     get(k: K, resolve: (k: K) => V): V;
     get(k: K, resolve?: (k: K) => V): V | undefined;
     get(k: K, resolve?: (k: K) => V): V | undefined {

@@ -6,10 +6,6 @@ import { FileWatcher } from '../utils/fileWatcher.mjs';
 export type Listener = (eventType?: string, filename?: string) => void;
 
 export class DictionaryWatcher extends FileWatcher implements Disposable {
-    constructor() {
-        super();
-    }
-
     processSettings(finalizedSettings: CSpellUserSettings): void {
         // Only watch used dictionaries.
         const defs = new Map(finalizedSettings.dictionaryDefinitions?.map((def) => [def.name, def.path]));

@@ -18,9 +18,7 @@ export interface LoggerConnection {
     onExit: (handler: () => void) => void;
 }
 
-interface LoggerFunctionMap {
-    [index: number]: LoggerFunction;
-}
+type LoggerFunctionMap = Record<number, LoggerFunction>;
 
 export interface LogEntry {
     seq: number;

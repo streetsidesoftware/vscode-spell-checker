@@ -4,7 +4,7 @@ import { window } from 'vscode';
 export function isError(e: unknown): e is Error {
     if (e instanceof Error) return true;
     if (!e || typeof e !== 'object') return false;
-    const err = <Error>e;
+    const err = e as Error;
     return err.message !== undefined && err.name !== undefined;
 }
 
@@ -91,7 +91,7 @@ export function catchErrors<Fn extends Func, R = ReturnType<Fn>>(
     fn: Fn,
     context: string,
     onErrorResolver: OnErrorResolver = showError,
-): (...p: Parameters<Fn>) => Promise<R | void> {
+): (...p: Parameters<Fn>) => Promise<R | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (...p: any) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }
