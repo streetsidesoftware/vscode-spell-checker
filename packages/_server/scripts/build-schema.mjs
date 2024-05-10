@@ -2,8 +2,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import stringify from 'safe-stable-stringify';
 
+import stringify from 'safe-stable-stringify';
 import * as tsj from 'ts-json-schema-generator';
 
 const rootDir = fileURLToPath(new URL('..', import.meta.url));
