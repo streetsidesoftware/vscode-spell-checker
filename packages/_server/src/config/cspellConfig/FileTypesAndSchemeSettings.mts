@@ -1,6 +1,6 @@
 import type { EnableFileTypeId } from './annotatedTypes.mjs';
 
-export type EnabledFileTypes = Readonly<Record<string, boolean>>;
+export type EnabledFileTypes = Record<string, boolean>;
 export type EnabledSchemes = Readonly<Record<string, boolean>>;
 
 export interface FileTypesAndSchemeSettings {
