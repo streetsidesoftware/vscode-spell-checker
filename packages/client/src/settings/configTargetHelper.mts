@@ -315,8 +315,4 @@ export function createClientConfigTargetVSCode(
     return ct;
 }
 
-export class UnableToFindTarget extends Error {
-    constructor(msg: string) {
-        super(msg);
-    }
-}
+export class UnableToFindTarget extends Error {}

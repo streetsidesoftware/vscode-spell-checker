@@ -91,7 +91,7 @@ export function catchErrors<Fn extends Func, R = ReturnType<Fn>>(
     fn: Fn,
     context: string,
     onErrorResolver: OnErrorResolver = showError,
-): (...p: Parameters<Fn>) => Promise<R | void> {
+): (...p: Parameters<Fn>) => Promise<R | undefined> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (...p: any) => handleErrors<R>(() => fn(...p), context, onErrorResolver);
 }

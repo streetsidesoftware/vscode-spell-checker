@@ -11,7 +11,7 @@ function roundFloat(number: number, decimalPoints: number): number {
 }
 
 export class RGBA {
-    _rgbaBrand: void = undefined;
+    _rgbaBrand = undefined;
 
     /**
      * Red: integer in [0-255]
@@ -46,7 +46,7 @@ export class RGBA {
 }
 
 export class HSLA {
-    _hslaBrand: void = undefined;
+    _hslaBrand = undefined;
 
     /**
      * Hue: integer in [0, 360]
@@ -164,7 +164,7 @@ export class HSLA {
 }
 
 export class HSVA {
-    _hsvaBrand: void = undefined;
+    _hsvaBrand = undefined;
 
     /**
      * Hue: integer in [0, 360]

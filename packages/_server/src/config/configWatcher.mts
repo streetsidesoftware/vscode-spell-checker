@@ -5,10 +5,6 @@ import type { Disposable } from 'vscode-languageserver/node.js';
 import { FileWatcher } from '../utils/fileWatcher.mjs';
 
 export class ConfigWatcher extends FileWatcher implements Disposable {
-    constructor() {
-        super();
-    }
-
     processSettings(finalizedSettings: CSpellUserSettings): void {
         try {
             const sourceConfigs = getSources(finalizedSettings);

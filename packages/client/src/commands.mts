@@ -88,7 +88,7 @@ const commandsFromServer: ClientSideCommandHandlerApi = {
 };
 
 type CommandHandler = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-invalid-void-type
     [key in string]: (...params: any[]) => void | Promise<void> | Promise<unknown>;
 };
 

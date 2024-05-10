@@ -65,10 +65,6 @@ class StoreObservable<T> implements Store<T> {
 }
 
 class ValueStoreObservable<T> extends StoreObservable<T> implements ValueStore<T> {
-    constructor(value: T) {
-        super(value);
-    }
-
     get value() {
         return this._value !== symbolNotSet ? Promise.resolve(this._value) : awaitForSubscribable(this);
     }
