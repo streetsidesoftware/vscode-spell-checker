@@ -6,7 +6,8 @@ import vscode from 'vscode';
 import { diagnosticSource } from './constants.js';
 import { getDependencies } from './di.mjs';
 import type { SpellingDiagnostic } from './issueTracker.mjs';
-import { CSpellSettings, isWordLike } from './settings/CSpellSettings.mjs';
+import type { CSpellSettings } from './settings/CSpellSettings.mjs';
+import { isWordLike } from './settings/CSpellSettings.mjs';
 import { ConfigFields } from './settings/index.mjs';
 import { isDefined, uniqueFilter } from './util/index.js';
 

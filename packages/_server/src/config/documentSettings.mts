@@ -42,7 +42,7 @@ import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
-import { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
+import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';

@@ -3,7 +3,7 @@ import { createDisposableList } from 'utils-disposables';
 import type { Disposable } from 'vscode';
 import vscode from 'vscode';
 
-import { ServerResponseIsSpellCheckEnabledForFile } from './client/client.mjs';
+import type { ServerResponseIsSpellCheckEnabledForFile } from './client/client.mjs';
 import { getClient, getIssueTracker } from './di.mjs';
 import { handleErrors } from './util/errors.js';
 
