@@ -191,6 +191,8 @@ export const commandHandlers = {
     'cSpell.createCSpellTerminal': handlerResolvedLater,
 
     'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
+
+    'cSpell.restart': handleRestart,
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -647,4 +649,8 @@ function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorE
 
 function callCommand(command: string): () => void {
     return () => commands.executeCommand(command);
+}
+
+function handleRestart() {
+    return handleErrors(di.getClient().restart(), 'handle restart server');
 }
