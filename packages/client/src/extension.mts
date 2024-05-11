@@ -35,6 +35,7 @@ import { activate as activateWebview } from './webview/index.mjs';
 performance.mark('cspell_done_import');
 
 const debugMode = false;
+let currLogLevel: CSpellSettings['logLevel'] = undefined;
 
 modules.init();
 
@@ -77,6 +78,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     function triggerConfigChange(uri: vscode.Uri) {
         logger.log(`Configuration Change: ${uri.toString()}`);
+        currLogLevel = undefined;
         triggerGetSettings();
     }
 
@@ -239,8 +241,10 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
 function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposable {
     const disposableList = createDisposableList();
+    const logLevel = getLogLevel();
     const console = {
-        log: debugMode ? logOutput.info.bind(logOutput) : logOutput.debug.bind(logOutput),
+        log: (...args: Parameters<typeof logOutput.info>) =>
+            debugMode || logLevel === 'Debug' ? logOutput.info(...args) : logOutput.debug(...args),
         error: logOutput.error.bind(logOutput),
         info: logOutput.info.bind(logOutput),
         warn: logOutput.warn.bind(logOutput),
@@ -253,7 +257,13 @@ function bindLoggerToOutput(logOutput: vscode.LogOutputChannel): vscode.Disposab
 
 performance.mark('cspell_done_load');
 
+function getLogLevel() {
+    if (currLogLevel) return currLogLevel;
+    currLogLevel = settings.getSettingFromVSConfig('logLevel', undefined) || 'Error';
+    return currLogLevel;
+}
+
 function setOutputChannelLogLevel(level?: CSpellSettings['logLevel']) {
-    const logLevel = level ?? (settings.getSettingFromVSConfig('logLevel', undefined) || 'Error');
+    const logLevel = level ?? getLogLevel();
     logger.level = logLevel;
 }

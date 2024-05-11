@@ -1,3 +1,4 @@
+import { logger } from '@internal/common-utils/log';
 import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
 import type { SpellingSuggestionsResult, WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
 import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
@@ -13,7 +14,7 @@ import { ConfigFields, inspectConfigKeys, sectionCSpell } from '../settings/inde
 import * as LanguageIds from '../settings/languageIds.js';
 import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
-import { logErrors, silenceErrors } from '../util/errors.js';
+import { logErrors, silenceErrors, toError } from '../util/errors.js';
 import type { Maybe } from '../util/index.js';
 import { Resolvable } from './Resolvable.js';
 import type {
@@ -130,6 +131,16 @@ export class CSpellClient implements Disposable {
             this.ready.attach(this.client.start());
         }
         return this.ready.promise;
+    }
+
+    public async restart(): Promise<void> {
+        try {
+            logger.log('Restarting the server');
+            await this.client.restart();
+            logger.log('Server restarted');
+        } catch (e) {
+            logger.error(`Failed to restart the server: ${toError(e).message}`);
+        }
     }
 
     public async isSpellCheckEnabled(document: TextDocument): Promise<ServerResponseIsSpellCheckEnabledForFile> {

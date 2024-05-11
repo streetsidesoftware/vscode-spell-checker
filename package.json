@@ -577,6 +577,13 @@
         "title": "Open Spell Checker Issues Panel",
         "shortTitle": "Open Spelling Issues",
         "icon": "$(eye)"
+      },
+      {
+        "command": "cSpell.restart",
+        "category": "Spell",
+        "title": "Restart Spell Checker Server",
+        "shortTitle": "Restart Spell Checker",
+        "icon": "$(sync)"
       }
     ],
     "languages": [
