@@ -1,3 +1,4 @@
+export { ConfigFields } from './configFields.mjs';
 export type {
     AllSpellCheckerSettingsInVSCode,
     AllSpellCheckerSettingsInVSCodeWithPrefix,

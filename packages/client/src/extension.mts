@@ -1,4 +1,5 @@
 import { logger } from '@internal/common-utils/log';
+import type { ConfigFieldSelector, ConfigurationFields } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
@@ -208,7 +209,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         disableLocale: (target: ConfigTargetLegacy | boolean, locale: string) => commands.enableDisableLocaleLegacy(target, locale, false),
     };
 
-    const getConfigurationForDocument = (doc: vscode.TextDocument) => client.getConfigurationForDocument(doc);
+    const getConfigurationForDocument = <F extends ConfigurationFields>(doc: vscode.TextDocument, fields: ConfigFieldSelector<F>) =>
+        client.getConfigurationForDocument(doc, fields);
 
     const server = {
         registerConfig,

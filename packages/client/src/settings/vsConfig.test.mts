@@ -1,3 +1,4 @@
+import type { CSpellUserSettings } from 'code-spell-checker-server/api';
 import type { MockWorkspaceConfigurationData } from 'jest-mock-vscode';
 import { createMockWorkspaceConfiguration, readTextDocument } from 'jest-mock-vscode';
 import rfdc from 'rfdc';
@@ -5,7 +6,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ConfigurationScope, WorkspaceConfiguration } from 'vscode';
 import { Uri, workspace } from 'vscode';
 
-import type { CSpellUserSettings } from '../client/index.mjs';
 import {
     __testing__,
     ConfigurationTarget,

@@ -106,6 +106,34 @@
           "scope": "resource",
           "type": "array"
         },
+        "cSpell.languageStatusFields": {
+          "additionalProperties": false,
+          "default": {
+            "fileType": true,
+            "issues": true,
+            "scheme": true
+          },
+          "description": "Select which fields to display in the language status bar.",
+          "markdownDescription": "Select which fields to display in the language status bar.",
+          "properties": {
+            "fileType": {
+              "type": "boolean"
+            },
+            "issues": {
+              "type": "boolean"
+            },
+            "scheme": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "fileType",
+            "scheme",
+            "issues"
+          ],
+          "scope": "machine",
+          "type": "object"
+        },
         "cSpell.overrides": {
           "description": "Overrides are used to apply settings for specific files in your project.\n\n**Example:**\n\n```jsonc \"cSpell.overrides\": [   // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:   {     \"filename\": \"**/{*.hrr,*.crr}\",     \"languageId\": \"cpp\"   },   // Force `dutch/**/*.txt` to be treated as Dutch (dictionary needs to be installed separately):   {     \"filename\": \"**/dutch/**/*.txt\",     \"language\": \"nl\"   } ] ```",
           "items": {

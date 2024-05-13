@@ -175,7 +175,10 @@ async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocu
         editorMenuContext: { ...defaultEditorMenuContext },
     };
 
-    const pCfg = client.getConfigurationForDocument(doc);
+    const pCfg = client.getConfigurationForDocument(doc, {
+        showCommandsInEditorContextMenu: true,
+        showSuggestionsLinkInEditorContextMenu: true,
+    });
     const diag = getCSpellDiags(doc.uri);
     const cfg = await pCfg;
 

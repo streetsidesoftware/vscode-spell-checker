@@ -1,7 +1,8 @@
+import type { PartialCSpellUserSettings } from 'code-spell-checker-server/api';
 import { format } from 'util';
 import * as vscode from 'vscode';
 
-import type { CSpellClient, CSpellUserSettings } from '../client/index.mjs';
+import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { catchErrors, isError, logError, logErrors, showError } from '../util/errors.js';
 import { toRegExp } from './evaluateRegExp.js';
@@ -61,7 +62,11 @@ export function activate(context: vscode.ExtensionContext, clientSpellChecker: C
 
         const document = activeEditor.document;
         const version = document.version;
-        const config = await clientSpellChecker.getConfigurationForDocument(document);
+        const config = await clientSpellChecker.getConfigurationForDocument(document, {
+            includeRegExpList: true,
+            ignoreRegExpList: true,
+            patterns: true,
+        });
         const extractedPatterns = extractPatternsFromConfig(config.docSettings, history);
         const patterns = extractedPatterns.map((p) => p.pattern);
 
@@ -264,7 +269,10 @@ interface ExtractedPattern {
     pattern: string | NamedPattern;
 }
 
-function extractPatternsFromConfig(config: CSpellUserSettings | undefined, userPatterns: string[]): ExtractedPattern[] {
+function extractPatternsFromConfig(
+    config: PartialCSpellUserSettings<'includeRegExpList' | 'ignoreRegExpList' | 'patterns'> | undefined,
+    userPatterns: string[],
+): ExtractedPattern[] {
     const extractedPatterns: ExtractedPattern[] = [];
 
     userPatterns.forEach((p) => extractedPatterns.push({ category: 'User Patterns', pattern: p }));

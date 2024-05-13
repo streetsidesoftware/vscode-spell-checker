@@ -1,6 +1,11 @@
 import { logger } from '@internal/common-utils/log';
 import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/uriHelper';
-import type { SpellingSuggestionsResult, WorkspaceConfigForDocument } from 'code-spell-checker-server/api';
+import type {
+    ConfigFieldSelector,
+    ConfigurationFields,
+    SpellingSuggestionsResult,
+    WorkspaceConfigForDocument,
+} from 'code-spell-checker-server/api';
 import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
 import type { DisposableHybrid } from 'utils-disposables';
 import type { CodeAction, Diagnostic, DiagnosticCollection, ExtensionContext, Range, TextDocument } from 'vscode';
@@ -153,14 +158,25 @@ export class CSpellClient implements Disposable {
         return { ...response, uri };
     }
 
-    readonly getConfigurationForDocument = this.factoryGetConfigurationForDocument();
+    #getConfigurationForDocument = this.factoryGetConfigurationForDocument();
+
+    /**
+     * @deprecated
+     */
+    getConfigurationForDocument<F extends ConfigurationFields>(
+        document: TextDocument | TextDocumentInfo | undefined,
+        fields: ConfigFieldSelector<F>,
+    ): Promise<GetConfigurationForDocumentResult<F>> {
+        return this.#getConfigurationForDocument(document, fields as ConfigFieldSelector<ConfigurationFields>);
+    }
 
     private async _getConfigurationForDocument(
         document: TextDocument | TextDocumentInfo | undefined,
-    ): Promise<GetConfigurationForDocumentResult> {
+        fields: ConfigFieldSelector<ConfigurationFields>,
+    ): Promise<GetConfigurationForDocumentResult<ConfigurationFields>> {
         const { uri, languageId } = document || {};
 
-        const emptyResult: GetConfigurationForDocumentResult = {
+        const emptyResult: GetConfigurationForDocumentResult<ConfigurationFields> = {
             configFiles: [],
             configTargets: [],
             fileEnabled: false,
@@ -171,25 +187,29 @@ export class CSpellClient implements Disposable {
         try {
             const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
             if (!uri || !workspaceConfig.uri) {
-                return await this.serverApi.getConfigurationForDocument({ workspaceConfig });
+                return await this.serverApi.getConfigurationForDocument({ workspaceConfig, fields });
             }
-            return await this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig });
+            return await this.serverApi.getConfigurationForDocument({ uri: uri.toString(), languageId, workspaceConfig, fields });
         } catch (e) {
             console.error(`Failed to get configuration for document: ${uri} ${languageId} ${e}`);
             return emptyResult;
         }
     }
 
-    private cacheGetConfigurationForDocument = new Map<string | undefined, Promise<GetConfigurationForDocumentResult>>();
+    private cacheGetConfigurationForDocument = new Map<
+        string | undefined,
+        Promise<GetConfigurationForDocumentResult<ConfigurationFields>>
+    >();
 
     private factoryGetConfigurationForDocument(): (
         document: TextDocument | TextDocumentInfo | undefined,
-    ) => Promise<GetConfigurationForDocumentResult> {
-        return (document: TextDocument | TextDocumentInfo | undefined) => {
-            const key = document?.uri?.toString();
+        fields: ConfigFieldSelector<ConfigurationFields>,
+    ) => Promise<GetConfigurationForDocumentResult<ConfigurationFields>> {
+        return (document: TextDocument | TextDocumentInfo | undefined, fields) => {
+            const key = document?.uri?.toString() + ':' + Object.keys(fields).sort().join(',');
             const found = this.cacheGetConfigurationForDocument.get(key);
             if (found) return found;
-            const result = this._getConfigurationForDocument(document);
+            const result = this._getConfigurationForDocument(document, fields);
             this.cacheGetConfigurationForDocument.set(key, result);
             setTimeout(() => this.cacheGetConfigurationForDocument.delete(key), cacheTimeout);
             return result;

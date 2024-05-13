@@ -1,4 +1,6 @@
 import { createAutoResolveCache } from '@internal/common-utils';
+import type { ConfigFieldSelector } from 'code-spell-checker-server/api';
+import type { ConfigFields } from 'code-spell-checker-server/lib';
 import type { InlineCompletionContext, InlineCompletionItemProvider, Position, TextDocument } from 'vscode';
 import * as vscode from 'vscode';
 import { InlineCompletionItem, InlineCompletionList, Range, SnippetString } from 'vscode';
@@ -118,12 +120,21 @@ interface DictionaryInfoForDoc {
     enabled: string[] | undefined;
 }
 
+type ConfigFields = typeof ConfigFields.dictionaryDefinitions | typeof ConfigFields.dictionaries;
+
+const configFields: ConfigFieldSelector<ConfigFields> = {
+    dictionaryDefinitions: true,
+    dictionaries: true,
+};
+
 class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemProvider {
-    private cacheConfig: DocumentConfigCache;
+    private cacheConfig: DocumentConfigCache<GetConfigurationForDocumentResult<ConfigFields>>;
     private cacheDocDictionaries = createAutoResolveCache<string, DictionaryInfoForDoc>();
 
     constructor() {
-        this.cacheConfig = new DocumentConfigCache((doc) => di.get('client').getConfigurationForDocument(doc));
+        this.cacheConfig = new DocumentConfigCache((uri) =>
+            di.get('client').getConfigurationForDocument<ConfigFields>({ uri }, configFields),
+        );
     }
 
     provideInlineCompletionItems(
@@ -187,7 +198,7 @@ class CSpellInlineDirectiveCompletionProvider implements InlineCompletionItemPro
         return result;
     }
 
-    getConfigForDocument(document: TextDocument): GetConfigurationForDocumentResult | undefined {
+    getConfigForDocument(document: TextDocument): GetConfigurationForDocumentResult<ConfigFields> | undefined {
         return this.cacheConfig.get(document.uri);
     }
 
@@ -360,7 +371,7 @@ function findNextNonWordChar(line: string, start: number): number {
 
 const inlineDirectiveCompletionProvider: InlineCompletionItemProvider = new CSpellInlineDirectiveCompletionProvider();
 
-function createDictionaryInfoForDoc(config: GetConfigurationForDocumentResult): DictionaryInfoForDoc {
+function createDictionaryInfoForDoc(config: GetConfigurationForDocumentResult<ConfigFields>): DictionaryInfoForDoc {
     try {
         const dicts = (config.docSettings?.dictionaryDefinitions || [])
             .filter((a) => !!a)

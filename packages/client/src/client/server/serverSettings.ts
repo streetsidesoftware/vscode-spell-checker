@@ -1,14 +1,15 @@
 import type { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { normalizeCode } from '@internal/locale-resolver';
+import type { PartialCSpellUserSettings } from 'code-spell-checker-server/api';
 
 import { isDefined, uniqueFilter } from '../../util';
-import type { CSpellUserSettings, LanguageSetting } from './server';
+import type { LanguageSetting } from './server';
 
-export function extractLanguage(config?: CSpellUserSettings): string[] | undefined {
-    return (config && config.language && normalizeToLocales(config.language)) || undefined;
+export function extractLanguage(config?: PartialCSpellUserSettings<'language'>): string[] | undefined {
+    return (config?.language && normalizeToLocales(config.language)) || undefined;
 }
 
-export function extractLocales(config: CSpellUserSettings = {}): string[] {
+export function extractLocales(config: PartialCSpellUserSettings<'languageSettings'>): string[] {
     return extractLocalesFromLanguageSettings(config.languageSettings);
 }
 
@@ -20,7 +21,7 @@ export function extractLocalesFromLanguageSettings(langSettings: LanguageSetting
     return normalizeToLocales(locales);
 }
 
-export function extractDictionariesByLocale(config: CSpellUserSettings = {}): Map<string, string[]> {
+export function extractDictionariesByLocale(config: PartialCSpellUserSettings<'languageSettings'>): Map<string, string[]> {
     return extractDictionariesByLocaleLanguageSettings(config.languageSettings);
 }
 
@@ -43,16 +44,22 @@ export function extractDictionariesByLocaleLanguageSettings(langSettings: Langua
  * @param config - cspell configuration
  * @returns dictionary definitions grouped by name.
  */
-export function extractDictionariesGroupByName(config: CSpellUserSettings): Map<string, DictionaryDefinition> {
+export function extractDictionariesGroupByName(
+    config: PartialCSpellUserSettings<'dictionaryDefinitions'>,
+): Map<string, DictionaryDefinition> {
     return new Map(config.dictionaryDefinitions?.map((def) => [def.name, def]) || []);
 }
 
-export function extractActiveDictionaries(config: CSpellUserSettings): DictionaryDefinition[] {
+export function extractActiveDictionaries(
+    config: PartialCSpellUserSettings<'dictionaryDefinitions' | 'dictionaries'>,
+): DictionaryDefinition[] {
     const dictMap = extractDictionariesGroupByName(config);
     return (config.dictionaries || []).map((name) => dictMap.get(name)).filter(isDefined);
 }
 
-export function extractCustomDictionaries(config: CSpellUserSettings): DictionaryDefinitionCustom[] {
+export function extractCustomDictionaries(
+    config: PartialCSpellUserSettings<'dictionaryDefinitions' | 'dictionaries'>,
+): DictionaryDefinitionCustom[] {
     return extractActiveDictionaries(config)
         .filter(isDictionaryDefinitionCustom)
         .filter((d) => d.addWords);

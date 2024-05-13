@@ -3,7 +3,7 @@ import { createDisposableList } from 'utils-disposables';
 import type { DecorationOptions, DiagnosticChangeEvent, TextEditor, TextEditorDecorationType, Uri } from 'vscode';
 import vscode, { ColorThemeKind, MarkdownString, Range, window, workspace } from 'vscode';
 
-import type { CSpellUserSettings } from '../client/index.mjs';
+import type { PartialCSpellUserSettings } from '../client/index.mjs';
 import { commandUri, createTextEditCommand } from '../commands.mjs';
 import type { Disposable } from '../disposable.js';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
@@ -11,8 +11,8 @@ import type { CSpellSettings } from '../settings/index.mjs';
 import { ConfigFields } from '../settings/index.mjs';
 import { findEditor } from '../util/findEditor.js';
 
-const defaultHideIssuesWhileTyping: Required<CSpellUserSettings>['hideIssuesWhileTyping'] = 'Word';
-const defaultRevealIssuesAfterDelayMS: Required<CSpellUserSettings>['revealIssuesAfterDelayMS'] = 1000;
+const defaultHideIssuesWhileTyping: Required<PartialCSpellUserSettings<'hideIssuesWhileTyping'>>['hideIssuesWhileTyping'] = 'Word';
+const defaultRevealIssuesAfterDelayMS: Required<PartialCSpellUserSettings<'revealIssuesAfterDelayMS'>>['revealIssuesAfterDelayMS'] = 1000;
 
 const debug = false;
 const logDbg: typeof console.log = debug ? console.log : () => undefined;
@@ -190,7 +190,9 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     private getConfiguration() {
-        const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
+        const cfg = workspace.getConfiguration('cSpell') as PartialCSpellUserSettings<
+            'hideIssuesWhileTyping' | 'revealIssuesAfterDelayMS' | 'doNotUseCustomDecorationForScheme'
+        >;
         this.hideIssuesWhileTyping = cfg.hideIssuesWhileTyping ?? defaultHideIssuesWhileTyping;
         this.revealIssuesAfterDelayMS = cfg.revealIssuesAfterDelayMS ?? defaultRevealIssuesAfterDelayMS;
         this.overrides = cfg[ConfigFields.doNotUseCustomDecorationForScheme] ?? this.overrides;
@@ -218,7 +220,20 @@ export class SpellingIssueDecorator implements Disposable {
         if (!useCustomDecorations) return undefined;
 
         const mode = calcMode(window.activeColorTheme.kind);
-        const cfg = workspace.getConfiguration('cSpell') as CSpellUserSettings;
+        const cfg = workspace.getConfiguration('cSpell') as PartialCSpellUserSettings<
+            | 'dark'
+            | 'doNotUseCustomDecorationForScheme'
+            | 'hideIssuesWhileTyping'
+            | 'light'
+            | 'overviewRulerColor'
+            | 'revealIssuesAfterDelayMS'
+            | 'textDecoration'
+            | 'textDecorationColor'
+            | 'textDecorationColorFlagged'
+            | 'textDecorationLine'
+            | 'textDecorationStyle'
+            | 'textDecorationThickness'
+        >;
 
         const overviewRulerColor: string | undefined = cfg[mode]?.overviewRulerColor || cfg.overviewRulerColor || undefined;
 
@@ -328,7 +343,20 @@ export class SpellingIssueDecorator implements Disposable {
     static globalStateKey = 'showDecorations';
 }
 
-function calcTextDecoration(cfg: CSpellUserSettings, mode: ColorMode, colorField: 'textDecorationColor' | 'textDecorationColorFlagged') {
+function calcTextDecoration(
+    cfg: PartialCSpellUserSettings<
+        | 'light'
+        | 'dark'
+        | 'textDecoration'
+        | 'textDecorationLine'
+        | 'textDecorationStyle'
+        | 'textDecorationThickness'
+        | 'textDecorationColor'
+        | 'textDecorationColorFlagged'
+    >,
+    mode: ColorMode,
+    colorField: 'textDecorationColor' | 'textDecorationColorFlagged',
+) {
     const textDecoration = cfg[mode]?.textDecoration || cfg.textDecoration || '';
     const line = cfg[mode]?.textDecorationLine || cfg.textDecorationLine || 'underline';
     const style = cfg[mode]?.textDecorationStyle || cfg.textDecorationStyle || 'wavy';

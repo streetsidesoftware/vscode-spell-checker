@@ -50,10 +50,14 @@ import {
 import type { DictionaryTarget } from './settings/DictionaryTarget.mjs';
 import { createDictionaryTargetForFile } from './settings/DictionaryTarget.mjs';
 import type { ConfigTargetLegacy, TargetsAndScopes } from './settings/index.mjs';
-import * as Settings from './settings/index.mjs';
 import {
+    addIgnoreWordsToSettings,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
+    disableLanguageId,
+    enableLanguageId,
+    enableLanguageIdForTarget,
+    enableLocaleForTarget,
     normalizeTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
@@ -265,7 +269,7 @@ async function _addIgnoreWordsToTarget(
     uri = toUri(uri);
     const targets = await targetsForUri(uri);
     const filteredTargets = target ? targets.filter((t) => t.scope === configurationTargetToDictionaryScope(target)) : targets;
-    return Settings.addIgnoreWordsToSettings(filteredTargets, word);
+    return addIgnoreWordsToSettings(filteredTargets, word);
 }
 
 function removeWordFromFolderDictionary(word: string, uri: string | null | Uri | undefined): Promise<void> {
@@ -307,7 +311,7 @@ export function enableDisableLanguageId(
     return handleErrors(
         async () => {
             const t = await (configTarget ? targetsFromConfigurationTarget(configTarget, uri) : targetsForUri(uri));
-            return Settings.enableLanguageIdForTarget(languageId, enable, t);
+            return enableLanguageIdForTarget(languageId, enable, t);
         },
         ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri),
     );
@@ -327,7 +331,7 @@ export function enableDisableLocale(
                 uri,
                 configScope,
             );
-            return Settings.enableLocaleForTarget(locale, enable, targets, scopes);
+            return enableLocaleForTarget(locale, enable, targets, scopes);
         },
         ctx(`enableDisableLocale enable: ${enable}`, configTarget, uri),
     );
@@ -345,7 +349,7 @@ export function enableCurrentFileType(languageId?: string, uri?: string | Uri): 
         const { languageId, uri } = resolved;
         if (!uri || !languageId) return;
         const targets = await targetsForUri(uri);
-        return Settings.enableLanguageId(targets, languageId);
+        return enableLanguageId(targets, languageId);
     }, 'enableCurrentFileType');
 }
 
@@ -355,7 +359,7 @@ export function disableCurrentFileType(languageId?: string, uri?: string | Uri):
         const { languageId, uri } = resolved;
         if (!uri || !languageId) return;
         const targets = await targetsForUri(uri);
-        return Settings.disableLanguageId(targets, languageId);
+        return disableLanguageId(targets, languageId);
     }, 'disableCurrentFileType');
 }
 
@@ -406,7 +410,7 @@ async function targetsForTextDocument(
     patternMatch = patternMatchNoDictionaries,
 ) {
     const { uri, languageId } = document || {};
-    const config = await di.get('client').getConfigurationForDocument({ uri, languageId });
+    const config = await di.get('client').getConfigurationForDocument({ uri, languageId }, {});
     const targets = config.configTargets.map(mapConfigTargetToClientConfigTarget);
     return filterClientConfigTargets(targets, patternMatch);
 }

@@ -5,6 +5,8 @@ import vscode from 'vscode';
 
 import type { ServerResponseIsSpellCheckEnabledForFile } from './client/client.mjs';
 import { getClient, getIssueTracker } from './di.mjs';
+import type { CSpellSettings } from './settings/CSpellSettings.mjs';
+import { ConfigFields } from './settings/index.mjs';
 import { handleErrors } from './util/errors.js';
 
 const showLanguageStatus = true;
@@ -17,9 +19,15 @@ export function createLanguageStatus(): Disposable {
     const statusIds = new Set<string>();
     const statusItems = new Map<string, vscode.LanguageStatusItem>();
     let pendingTimeout: NodeJS.Timeout | undefined = undefined;
+    let showLanguageStatusFields = getShowLanguageStatusFields();
 
     dList.push(vscode.window.onDidChangeActiveTextEditor(queueUpdate));
-    dList.push(vscode.workspace.onDidChangeConfiguration((e) => e.affectsConfiguration('cSpell') && queueUpdate()));
+    dList.push(
+        vscode.workspace.onDidChangeConfiguration((e) => {
+            e.affectsConfiguration('cSpell') && queueUpdate();
+            showLanguageStatusFields = getShowLanguageStatusFields();
+        }),
+    );
     dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow(false)));
 
     updateNow();
@@ -54,7 +62,7 @@ export function createLanguageStatus(): Disposable {
         }
 
         // file type
-        if (!response.languageIdEnabled || alwaysShowFiletype) {
+        if ((!response.languageIdEnabled || alwaysShowFiletype) && showLanguageStatusFields.fileType) {
             const fileTypeItem = getUpdateCheckedStatusItem('cspell-file-type');
             fileTypeItem.name = 'Spell';
             fileTypeItem.severity = response.languageIdEnabled
@@ -66,7 +74,7 @@ export function createLanguageStatus(): Disposable {
             deleteItem('cspell-file-type');
         }
 
-        if (!response.schemeIsAllowed) {
+        if (!response.schemeIsAllowed && showLanguageStatusFields.scheme) {
             const fileTypeItem = getUpdateCheckedStatusItem('cspell-scheme');
             fileTypeItem.name = 'Scheme';
             fileTypeItem.severity = vscode.LanguageStatusSeverity.Information;
@@ -80,7 +88,7 @@ export function createLanguageStatus(): Disposable {
         const id = 'cspell-issues';
         const document = vscode.window.activeTextEditor?.document;
         const issues = document ? getIssueTracker().getIssues(document.uri) : undefined;
-        if (!issues?.length) {
+        if (!issues?.length || !showLanguageStatusFields.issues) {
             deleteItem(id);
             return;
         }
@@ -130,4 +138,15 @@ function command(command: string, title: string, tooltip?: string): vscode.Comma
         title,
         tooltip,
     };
+}
+
+function getShowLanguageStatusFields() {
+    const showLanguageStatusFields: Partial<Exclude<CSpellSettings[typeof ConfigFields.languageStatusFields], undefined>> = vscode.workspace
+        .getConfiguration('cSpell')
+        .get(ConfigFields.languageStatusFields) || {
+        fileType: true,
+        scheme: true,
+        issues: true,
+    };
+    return showLanguageStatusFields;
 }
