@@ -16,6 +16,7 @@ export type {
     DictionaryDefinition,
     DictionaryDefinitionCustom,
     NamedPattern,
+    PartialCSpellUserSettings,
     PatternMatch,
     SpellCheckerDiagnosticData,
     SpellCheckerSettingsProperties,

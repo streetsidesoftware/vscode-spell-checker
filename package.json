@@ -3903,7 +3903,7 @@
     "build-production": "npm --workspaces --if-present run build-production",
     "build-release": "npm run build && npm run package-extension",
     "gen-docs": "npm --workspace=@internal/docs run gen-docs",
-    "package-extension": "vsce package -o ./build",
+    "package-extension": "vsce package --pre-release -o ./build",
     "prettier:check": "prettier \"**/*.{ts,tsx,js,json,md,svelte}\" -c",
     "prettier:fix": "npm run prettier:check -- -w",
     "prettier:fix-schema": "prettier -w \"**/*.schema.json\"",

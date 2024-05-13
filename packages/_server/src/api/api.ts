@@ -15,6 +15,7 @@ import { createClientApi, createServerApi } from 'json-rpc-api';
 import type {
     CheckDocumentOptions,
     CheckDocumentResult,
+    ConfigurationFields,
     GetConfigurationForDocumentRequest,
     GetConfigurationForDocumentResult,
     GetSpellCheckingOffsetsResult,
@@ -36,7 +37,9 @@ export type { Logger, MessageConnection } from 'json-rpc-api';
 
 /** Requests that can be made to the server */
 export interface ServerRequestsAPI {
-    getConfigurationForDocument(req: GetConfigurationForDocumentRequest): GetConfigurationForDocumentResult;
+    getConfigurationForDocument<Fields extends ConfigurationFields>(
+        req: GetConfigurationForDocumentRequest<Fields>,
+    ): GetConfigurationForDocumentResult<Fields>;
     isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult;
     splitTextIntoWords(req: string): SplitTextIntoWordsResult;
     spellingSuggestions(word: string, doc?: TextDocumentInfo): SpellingSuggestionsResult;

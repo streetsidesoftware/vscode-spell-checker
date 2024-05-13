@@ -1,10 +1,11 @@
 import { isSupportedDoc, isSupportedUri, uriToName } from '@internal/common-utils/uriHelper';
+import type { PartialCSpellUserSettings, SpellCheckerSettings } from 'code-spell-checker-server/api';
 import * as path from 'path';
 import type { ExtensionContext, TextEditor } from 'vscode';
 import { window, workspace } from 'vscode';
 import * as vscode from 'vscode';
 
-import type { CSpellClient, CSpellUserSettings, ServerResponseIsSpellCheckEnabledForFile } from './client/index.mjs';
+import type { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client/index.mjs';
 import { getCSpellDiags } from './diags.mjs';
 import * as infoViewer from './infoViewer/index.js';
 import { sectionCSpell } from './settings/index.mjs';
@@ -18,7 +19,7 @@ export interface SpellCheckerStatusBar {
 }
 
 export function initStatusBar(context: ExtensionContext, client: CSpellClient): SpellCheckerStatusBar {
-    const settings: CSpellUserSettings = workspace.getConfiguration().get(sectionCSpell) as CSpellUserSettings;
+    const settings: SpellCheckerSettings = workspace.getConfiguration().get(sectionCSpell) as SpellCheckerSettings;
     const { showStatusAlignment } = settings;
     const alignment = toStatusBarAlignment(showStatusAlignment);
     const sbCheck = window.createStatusBarItem(statusBarId, alignment);
@@ -133,7 +134,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         return `File excluded by ${JSON.stringify(glob)} in ${configPathLink || id || name || 'settings'}`;
     }
 
-    function toStatusBarAlignment(showStatusAlignment: CSpellUserSettings['showStatusAlignment']): vscode.StatusBarAlignment {
+    function toStatusBarAlignment(showStatusAlignment: SpellCheckerSettings['showStatusAlignment']): vscode.StatusBarAlignment {
         switch (showStatusAlignment) {
             case 'Left':
                 return vscode.StatusBarAlignment.Left;
@@ -146,7 +147,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
     function updateStatusBar(doc?: vscode.TextDocument, showClock?: boolean) {
         const document = isSupportedDoc(doc) ? doc : selectDocument();
         const vsConfig = workspace.getConfiguration(undefined, doc);
-        const settings: CSpellUserSettings = vsConfig.get(sectionCSpell) as CSpellUserSettings;
+        const settings = vsConfig.get(sectionCSpell) as PartialCSpellUserSettings<'enabled' | 'showStatus'>;
         const { enabled, showStatus = true } = settings;
 
         if (!showStatus) {

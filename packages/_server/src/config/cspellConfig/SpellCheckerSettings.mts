@@ -122,6 +122,13 @@ export interface SpellCheckerSettings
     showStatusAlignment?: 'Left' | 'Right';
 
     /**
+     * Select which fields to display in the language status bar.
+     * @scope machine
+     * @default { "fileType": true, "scheme": true, "issues": true }
+     */
+    languageStatusFields?: LanguageStatusFields;
+
+    /**
      * Show CSpell in-document directives as you type.
      *
      * **Note:** VS Code must be restarted for this setting to take effect.
@@ -466,4 +473,10 @@ export interface AddToTargets extends AddToDictionaryTarget {
      * @default "auto"
      */
     cspell?: AutoOrBoolean;
+}
+
+export interface LanguageStatusFields {
+    fileType: boolean;
+    scheme: boolean;
+    issues: boolean;
 }

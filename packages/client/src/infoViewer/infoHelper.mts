@@ -21,10 +21,10 @@ import type {
     ConfigTarget,
     ConfigTargetCSpell,
     CSpellClient,
-    CSpellUserSettings,
     DictionaryDefinition,
     DictionaryDefinitionCustom,
     GetConfigurationForDocumentResult,
+    PartialCSpellUserSettings,
 } from '../client/index.mjs';
 import type { Inspect, InspectValues } from '../settings/index.mjs';
 import { ConfigFields, inspectConfig } from '../settings/index.mjs';
@@ -32,6 +32,17 @@ import type { Maybe } from '../util/index.js';
 import { isDefined, uniqueFilter } from '../util/index.js';
 import { defaultTo, map, pipe } from '../util/pipe.js';
 import { toUri } from '../util/uriHelper.js';
+
+type ConfigFields =
+    | typeof ConfigFields.dictionaryDefinitions
+    | typeof ConfigFields.dictionaries
+    | typeof ConfigFields.languageSettings
+    | typeof ConfigFields.language
+    | typeof ConfigFields.enabledLanguageIds
+    | typeof ConfigFields.enabledFileTypes
+    | typeof ConfigFields.enableFiletypes;
+
+type SelectedCSpellUserSettings = PartialCSpellUserSettings<ConfigFields>;
 
 type Logger = typeof console.log;
 
@@ -43,7 +54,15 @@ export async function calcSettings(
 ): Promise<Settings> {
     const activeFolderUri = folderUri || getDefaultWorkspaceFolderUri(document?.uri);
     const config = inspectConfig(activeFolderUri);
-    const docConfig = await client.getConfigurationForDocument(document);
+    const docConfig = await client.getConfigurationForDocument<ConfigFields>(document, {
+        enabledFileTypes: true,
+        enabledLanguageIds: true,
+        enableFiletypes: true,
+        dictionaries: true,
+        dictionaryDefinitions: true,
+        languageSettings: true,
+        language: true,
+    });
     const settings: Settings = {
         knownLanguageIds: [...client.languageIds].sort(),
         dictionaries: extractDictionariesFromConfig(docConfig.settings),
@@ -55,7 +74,7 @@ export async function calcSettings(
     return settings;
 }
 
-type InspectKeys = keyof InspectValues<CSpellUserSettings>;
+type InspectKeys = keyof InspectValues<SelectedCSpellUserSettings>;
 const keyMap: { [k in InspectKeys]: ConfigSource } = {
     defaultValue: 'default',
     globalValue: 'user',
@@ -77,8 +96,8 @@ const configOrder: ConfigOrderArray = ['defaultValue', 'globalValue', 'workspace
 const configOrderRev = new Map(configOrder.map((v, i) => [v, i]));
 
 function extractViewerConfigFromConfig(
-    config: Inspect<CSpellUserSettings>,
-    docConfig: GetConfigurationForDocumentResult,
+    config: Inspect<SelectedCSpellUserSettings>,
+    docConfig: GetConfigurationForDocumentResult<ConfigFields>,
     doc: vscode.TextDocument | undefined,
     log: Logger,
 ): Configs {
@@ -98,10 +117,10 @@ function mergeSource(a: InspectKeys, b: InspectKeys): InspectKeys {
     return inspectKeyToOrder(a) > inspectKeyToOrder(b) ? a : b;
 }
 
-function findNearestConfigField<K extends keyof CSpellUserSettings>(
+function findNearestConfigField<K extends keyof SelectedCSpellUserSettings>(
     orderPos: keyof ConfigOrder,
     key: K,
-    config: Inspect<CSpellUserSettings>,
+    config: Inspect<SelectedCSpellUserSettings>,
 ): InspectKeys {
     for (let i = orderPos; i > 0; --i) {
         const inspectKey = configOrder[i];
@@ -113,7 +132,7 @@ function findNearestConfigField<K extends keyof CSpellUserSettings>(
     return 'defaultValue';
 }
 
-function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpellUserSettings>): Config {
+function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<SelectedCSpellUserSettings>): Config {
     const localeSource = findNearestConfigField(orderPos, 'language', config);
     const languageIdsEnabledSource = findNearestConfigField(orderPos, ConfigFields.enabledLanguageIds, config);
     const enableFiletypesSource = findNearestConfigField(orderPos, ConfigFields.enableFiletypes, config);
@@ -133,7 +152,7 @@ function extractNearestConfig(orderPos: keyof ConfigOrder, config: Inspect<CSpel
     return cfg;
 }
 
-function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): FileConfig['excludedBy'] {
+function mapExcludedBy(refs: GetConfigurationForDocumentResult<ConfigFields>['excludedBy']): FileConfig['excludedBy'] {
     if (!refs) return undefined;
 
     return refs.map((r) => ({
@@ -143,7 +162,7 @@ function mapExcludedBy(refs: GetConfigurationForDocumentResult['excludedBy']): F
 }
 
 function extractFileConfig(
-    docConfig: GetConfigurationForDocumentResult,
+    docConfig: GetConfigurationForDocumentResult<ConfigFields>,
     doc: vscode.TextDocument | undefined,
     _log: Logger,
 ): FileConfig | undefined {
@@ -257,7 +276,7 @@ function isConfigTargetCSpell(t: ConfigTarget): t is ConfigTargetCSpell {
 const regIsTextFile = /\.txt$/;
 const regIsCspellDict = /(?:@|%40)cspell\//;
 
-function extractDictionariesFromConfig(config: CSpellUserSettings | undefined): DictionaryEntry[] {
+function extractDictionariesFromConfig(config: PartialCSpellUserSettings<ConfigFields> | undefined): DictionaryEntry[] {
     if (!config) {
         return [];
     }
@@ -361,13 +380,13 @@ function mapWorkspace(allowedSchemas: Set<string>, vsWorkspace: VSCodeWorkspace)
     return workspace;
 }
 
-function calcEnabledFileTypes(...settings: CSpellUserSettings[]): EnabledFileTypes {
+function calcEnabledFileTypes(...settings: SelectedCSpellUserSettings[]): EnabledFileTypes {
     const enabled: EnabledFileTypes = {};
 
     return settings.reduce((acc, s) => extractEnabledFileTypes(s, acc), enabled);
 }
 
-function extractEnabledLanguageIds(...settings: (CSpellUserSettings | undefined)[]): FileTypeList {
+function extractEnabledLanguageIds(...settings: (SelectedCSpellUserSettings | undefined)[]): FileTypeList {
     const enabled = calcEnabledFileTypes(...settings.filter(isDefined));
     return Object.entries(enabled)
         .filter(([, v]) => v)

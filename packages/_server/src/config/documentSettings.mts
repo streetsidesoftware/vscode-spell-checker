@@ -1,5 +1,3 @@
-import { stat } from 'node:fs/promises';
-
 import { opConcatMap, opFilter, pipe } from '@cspell/cspell-pipe/sync';
 import type {
     CSpellSettingsWithSourceTrace,
@@ -40,6 +38,7 @@ import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigF
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
+import { stat } from '../vfs/index.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
@@ -789,7 +788,6 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {
-    if (uri.scheme !== 'file' && uri.scheme !== 'vscode-vfs') return undefined;
     const url = new URL(uri.toString());
     try {
         const stats = await stat(url);

@@ -1,18 +1,16 @@
 import type { Uri } from 'vscode';
 
-import type { CSpellClient, GetConfigurationForDocumentResult } from './client.mjs';
-
-interface CacheItem {
-    config: GetConfigurationForDocumentResult | undefined;
+interface CacheItem<T> {
+    config: T | undefined;
     timestamp: number;
-    pending: Promise<GetConfigurationForDocumentResult> | undefined;
+    pending: Promise<T> | undefined;
 }
 
-export class DocumentConfigCache {
-    private configs = new Map<string, CacheItem>();
+export class DocumentConfigCache<T> {
+    private configs = new Map<string, CacheItem<T>>();
 
     constructor(
-        public getConfigurationForDocument: CSpellClient['getConfigurationForDocument'],
+        public getConfigurationForDocument: (uri: Uri) => Promise<T>,
         public staleTimeMs = 1000,
         public maxAgeMs = 5000,
     ) {
@@ -31,7 +29,7 @@ export class DocumentConfigCache {
         return item.config;
     }
 
-    set(uri: Uri, config: GetConfigurationForDocumentResult) {
+    set(uri: Uri, config: T) {
         const key = uri.toString();
         const item = this.configs.get(key) || { config, timestamp: performance.now(), pending: undefined };
         item.config = config;
@@ -47,9 +45,9 @@ export class DocumentConfigCache {
         this.configs.clear();
     }
 
-    private async fetchAsync(uri: Uri, item: CacheItem): Promise<GetConfigurationForDocumentResult> {
+    private async fetchAsync(uri: Uri, item: CacheItem<T>): Promise<T> {
         try {
-            const config = await this.getConfigurationForDocument({ uri });
+            const config = await this.getConfigurationForDocument(uri);
             item.config = config;
             item.timestamp = performance.now();
             item.pending = undefined;
@@ -62,7 +60,7 @@ export class DocumentConfigCache {
 
     private fetch(uri: Uri) {
         const key = uri.toString();
-        const item: CacheItem = this.configs.get(key) || { config: undefined, timestamp: performance.now(), pending: undefined };
+        const item: CacheItem<T> = this.configs.get(key) || { config: undefined, timestamp: performance.now(), pending: undefined };
         if (item.pending) {
             return item.pending;
         }
@@ -72,11 +70,11 @@ export class DocumentConfigCache {
         return pending;
     }
 
-    private isState(item: CacheItem) {
+    private isState(item: CacheItem<T>) {
         return item.timestamp + this.staleTimeMs > performance.now();
     }
 
-    private isTooOld(item: CacheItem) {
+    private isTooOld(item: CacheItem<T>) {
         return item.timestamp + this.maxAgeMs < performance.now();
     }
 

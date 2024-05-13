@@ -43,6 +43,7 @@ import {
     stringifyPatterns,
 } from './config/documentSettings.mjs';
 import { isLanguageEnabled } from './config/extractEnabledFileTypes.mjs';
+import { objectFieldSizes, objectKeysNested, sanitizeSettings } from './config/sanitizeSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
@@ -366,27 +367,36 @@ export function run(): void {
     }
 
     async function handleGetConfigurationForDocument(
-        params: Api.GetConfigurationForDocumentRequest,
-    ): Promise<Api.GetConfigurationForDocumentResult> {
+        params: Api.GetConfigurationForDocumentRequest<Api.ConfigurationFields>,
+    ): Promise<Api.GetConfigurationForDocumentResult<Api.ConfigurationFields>> {
         return _handleGetConfigurationForDocument(params);
     }
 
     async function __handleGetConfigurationForDocument(
-        params: Api.GetConfigurationForDocumentRequest,
-    ): Promise<Api.GetConfigurationForDocumentResult> {
+        params: Api.GetConfigurationForDocumentRequest<Api.ConfigurationFields>,
+    ): Promise<Api.GetConfigurationForDocumentResult<Api.ConfigurationFields>> {
         log('handleGetConfigurationForDocument', params.uri);
-        const { uri, workspaceConfig } = params;
+        const { uri, workspaceConfig, fields } = params;
         const doc = (uri && documents.get(uri)) || undefined;
         // console.warn('__handleGetConfigurationForDocument: %o', {
         //     params,
         //     doc: { uri: doc?.uri, languageId: doc?.languageId, version: doc?.version },
         // });
-        const docSettings = stringifyPatterns((doc && (await getSettingsToUseForDocument(doc))) || undefined);
-        const activeSettings = await getActiveUriSettings(uri);
-        const settings = stringifyPatterns(activeSettings);
+        const docSettingsRaw = (doc && (await getSettingsToUseForDocument(doc))) || undefined;
+        const settingsRaw = await getActiveUriSettings(uri);
         const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
-        const configTargets = workspaceConfig ? await calculateConfigTargets(settings, workspaceConfig, configFiles) : [];
-        const ieInfo = await calcIncludeExcludeInfo(activeSettings, params);
+        const configTargets = workspaceConfig ? await calculateConfigTargets(settingsRaw, workspaceConfig, configFiles) : [];
+        const ieInfo = await calcIncludeExcludeInfo(settingsRaw, params);
+
+        const docSettings = stringifyPatterns(sanitizeSettings(docSettingsRaw, fields));
+        const settings = stringifyPatterns(sanitizeSettings(settingsRaw, fields));
+
+        console.warn('%o', {
+            fields,
+            settingsKeys: objectKeysNested(settings),
+            settingsSize: JSON.stringify(settings).length,
+            sizes: objectFieldSizes(settings),
+        });
 
         return {
             configFiles,

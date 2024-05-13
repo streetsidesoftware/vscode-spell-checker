@@ -1,6 +1,7 @@
 import type {
     ClientSideApi,
     ClientSideApiDef,
+    ConfigurationFields,
     GetConfigurationForDocumentResult as APIGetConfigurationForDocumentResult,
 } from 'code-spell-checker-server/api';
 import { createClientSideApi } from 'code-spell-checker-server/api';
@@ -31,6 +32,7 @@ export type {
     MatchPatternsToDocumentResult,
     NamedPattern,
     OnSpellCheckDocumentStep,
+    PartialCSpellUserSettings,
     PatternMatch,
     SpellCheckerDiagnosticData,
     SpellCheckerSettingsProperties,
@@ -39,8 +41,8 @@ export type {
     WorkspaceConfigForDocumentResponse,
 } from 'code-spell-checker-server/api';
 
-export type GetConfigurationForDocumentResult = Partial<APIGetConfigurationForDocumentResult> &
-    Pick<APIGetConfigurationForDocumentResult, 'configFiles' | 'configTargets' | 'fileEnabled' | 'fileIsIncluded' | 'fileIsExcluded'>;
+export type GetConfigurationForDocumentResult<F extends ConfigurationFields> = Partial<APIGetConfigurationForDocumentResult<F>> &
+    Pick<APIGetConfigurationForDocumentResult<F>, 'configFiles' | 'configTargets' | 'fileEnabled' | 'fileIsIncluded' | 'fileIsExcluded'>;
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];

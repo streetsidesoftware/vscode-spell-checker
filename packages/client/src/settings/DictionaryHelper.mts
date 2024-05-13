@@ -13,6 +13,7 @@ import type {
     CustomDictionaryEntry,
     CustomDictionaryScope,
     DictionaryDefinitionCustom,
+    PartialCSpellUserSettings,
 } from '../client/index.mjs';
 import { getCSpellDiags } from '../diags.mjs';
 import { scrollToText } from '../util/textEditor.js';
@@ -193,9 +194,9 @@ export class DictionaryHelper {
     private async getDocConfig(uri: Uri | undefined) {
         if (uri) {
             const doc = await vscode.workspace.openTextDocument(uri);
-            return this.client.getConfigurationForDocument(doc);
+            return this.client.getConfigurationForDocument(doc, {});
         }
-        return this.client.getConfigurationForDocument(undefined);
+        return this.client.getConfigurationForDocument(undefined, {});
     }
 
     private async resolveTargets(
@@ -333,13 +334,15 @@ function updaterForCustomDictionaryToConfigVSCode(def: DictionaryDefinitionCusto
     );
 }
 
+type RequiredKeys = 'customDictionaries' | 'customFolderDictionaries' | 'customWorkspaceDictionaries' | 'customUserDictionaries';
+
 interface CombineCustomDictionariesResult extends Required<Pick<CSpellUserSettings, 'customDictionaries'>> {
     customFolderDictionaries: undefined;
     customWorkspaceDictionaries: undefined;
     customUserDictionaries: undefined;
 }
 
-function combineCustomDictionaries(s: CSpellUserSettings): CombineCustomDictionariesResult {
+function combineCustomDictionaries(s: PartialCSpellUserSettings<RequiredKeys>): CombineCustomDictionariesResult {
     const { customDictionaries = {}, customFolderDictionaries = [], customWorkspaceDictionaries = [], customUserDictionaries = [] } = s;
 
     const cdLegacy = [
