@@ -49,6 +49,7 @@
 | `cSpell.removeWordFromFolderDictionary`              | Remove Words from the Folder Dictionary                                                                         |
 | `cSpell.removeWordFromUserDictionary`                | Remove Words from the Global Dictionary                                                                         |
 | `cSpell.removeWordFromWorkspaceDictionary`           | Remove Words from the Workspace Dictionaries                                                                    |
+| `cSpell.restart`                                     | Restart Spell Checker Server                                                                                    |
 | `cSpell.show`                                        | Show Spelling Issues                                                                                            |
 | `cSpell.suggestSpellingCorrections`                  | Spelling Suggestions...<br>**When:**<br> `editorTextFocus && cSpell.editorMenuContext.showSuggestions`          |
 | `cSpell.toggleEnableForGlobal`                       | Toggle Spell Checking in User Settings                                                                          |
