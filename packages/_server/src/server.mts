@@ -392,6 +392,7 @@ export function run(): void {
         const settings = stringifyPatterns(sanitizeSettings(settingsRaw, fields));
 
         console.warn('%o', {
+            fields,
             settingsKeys: objectKeysNested(settings),
             settingsSize: JSON.stringify(settings).length,
             sizes: objectFieldSizes(settings),

@@ -160,9 +160,6 @@ export class CSpellClient implements Disposable {
 
     #getConfigurationForDocument = this.factoryGetConfigurationForDocument();
 
-    /**
-     * @deprecated
-     */
     getConfigurationForDocument<F extends ConfigurationFields>(
         document: TextDocument | TextDocumentInfo | undefined,
         fields: ConfigFieldSelector<F>,

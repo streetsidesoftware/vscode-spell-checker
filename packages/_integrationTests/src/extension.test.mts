@@ -96,7 +96,7 @@ describe('Launch code spell extension', function () {
             expect(docContextMaybe).to.not.be.undefined;
             const docContext = isDefined(docContextMaybe);
 
-            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc);
+            const config = await ext.extApi.cSpellClient().getConfigurationForDocument(docContext.doc, {});
 
             const { excludedBy, fileEnabled, configFiles } = config;
             log('config: %o', { excludedBy, fileEnabled, configFiles });
