@@ -732,6 +732,33 @@
             "scope": "resource",
             "type": "array"
           },
+          "cSpell.languageStatusFields": {
+            "additionalProperties": false,
+            "default": {
+              "fileType": true,
+              "issues": true,
+              "scheme": true
+            },
+            "markdownDescription": "Select which fields to display in the language status bar.",
+            "properties": {
+              "fileType": {
+                "type": "boolean"
+              },
+              "issues": {
+                "type": "boolean"
+              },
+              "scheme": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "fileType",
+              "scheme",
+              "issues"
+            ],
+            "scope": "machine",
+            "type": "object"
+          },
           "cSpell.overrides": {
             "items": {
               "additionalProperties": false,
@@ -3932,7 +3959,7 @@
     "@vscode/vsce": "^2.26.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "esbuild": "^0.21.1",
+    "esbuild": "^0.21.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",

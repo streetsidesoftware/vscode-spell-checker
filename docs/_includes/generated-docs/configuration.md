@@ -1462,6 +1462,7 @@ Default
 | ---------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
 | [`cSpell.ignoreRegExpList`](#cspellignoreregexplist)                                           | resource | List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from…                     |
 | [`cSpell.includeRegExpList`](#cspellincluderegexplist)                                         | resource | List of regular expression patterns or defined pattern names to match for spell checking.                          |
+| [`cSpell.languageStatusFields`](#cspelllanguagestatusfields)                                   | machine  | Select which fields to display in the language status bar.                                                         |
 | [`cSpell.overrides`](#cspelloverrides)                                                         | resource | Overrides are used to apply settings for specific files in your project.                                           |
 | [`cSpell.patterns`](#cspellpatterns)                                                           | resource | Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and `#cSpell.includeRegExpList#`… |
 | [`cSpell.useLocallyInstalledCSpellDictionaries`](#cspelluselocallyinstalledcspelldictionaries) | resource | Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.                             |
@@ -1518,6 +1519,25 @@ Description
 
 Default
 : _- none -_
+
+---
+
+### `cSpell.languageStatusFields`
+
+Name
+: `cSpell.languageStatusFields`
+
+Type
+: `object`
+
+Scope
+: machine
+
+Description
+: Select which fields to display in the language status bar.
+
+Default
+: _`{"fileType":true,"issues":true,"scheme":true}`_
 
 ---
 
