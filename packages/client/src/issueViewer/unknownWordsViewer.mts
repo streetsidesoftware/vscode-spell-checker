@@ -10,6 +10,7 @@ import { createEmitter, debounce, rx } from '../Subscribables/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { logErrors } from '../util/errors.js';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
+import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
 export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
     context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
@@ -75,6 +76,7 @@ class UnknownWordsExplorer {
     }
 
     private handleTextEditorChange(e: vscode.TextEditor | undefined) {
+        if (!this.treeView.visible) return;
         if (!e) return;
         const found = this.treeDataProvider.findRelatedIssue(e);
         if (!found) return;
@@ -179,18 +181,6 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         this.options.setMessage(msg);
         return undefined;
     }
-
-    // private hasPreferred(): boolean {
-    //     for (const group of this.suggestions.values()) {
-    //         return !!(group[0]?.isPreferred && !group[1].isPreferred);
-    //     }
-    //     return false;
-    // }
-
-    // private updateVSCodeContext() {
-    //     const context = this.hasPreferred() ? { hasPreferred: true } : {};
-    //     logErrors(vscode.commands.executeCommand('setContext', 'cspell-info.issueViewer', context), 'updateVSCodeContext');
-    // }
 
     readonly dispose = this.disposeList.dispose;
 }
@@ -432,12 +422,27 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
         item.description = isPreferred && '(preferred)';
         const inlineWord = markdownInlineCode(word);
         const cleanedWord = cleanWord(word);
-        const fixMessage = 'Fix Issue with: ' + cleanedWord;
+        const fixMessage = 'Find and Replace Issue with: ' + cleanedWord;
         // item.command = {
         //     title: fixMessage,
         //     command: knownCommands['cSpell.fixSpellingIssue'],
         //     arguments: [this.issue.doc.uri, this.issue.word, word, this.issue..map((d) => d.range)],
         // };
+        item.command = {
+            title: fixMessage,
+            command: 'workbench.action.findInFiles',
+            arguments: [
+                {
+                    query: this.word,
+                    replace: word,
+                    preserveCase: true,
+                    triggerSearch: true,
+                    isRegex: false,
+                    isCaseSensitive: false,
+                    onlyOpenEditors: true,
+                },
+            ],
+        };
         item.tooltip = new vscode.MarkdownString().appendMarkdown(`Fix Issue with: ${inlineWord}`);
         item.accessibilityInformation = { label: fixMessage };
         item.contextValue = isPreferred ? 'issue.suggestion-preferred' : 'issue.suggestion';
@@ -504,28 +509,6 @@ interface PreferredFix {
     text: string;
     newText: string;
     ranges: Range[];
-}
-
-// function getPreferredFixes(issueTracker: IssueTracker, uri: Uri): PreferredFix[] | undefined {
-//     const issues = issueTracker.getDiagnostics(uri);
-//     if (!issues.length) return undefined;
-// }
-
-function cleanWord(word: string) {
-    const inlineWord = markdownInlineCode(word);
-    return inlineWord.replace(/^`+/g, '').replace(/`+$/g, '');
-}
-
-/**
- * Create valid markdown for inline code.
- * @param text - text to inline
- * @returns string
- */
-function markdownInlineCode(text: string): string {
-    const countTicks = [...text.matchAll(/`+/g)].map((m) => m[0].length).reduce((a, b) => Math.max(a, b), 0);
-    const ticks = '`'.repeat(countTicks + 1);
-    text = text.replace(/\t/g, '⇥').replace(/\r?\n/g, '⏎').replace(/\r/g, '⏎').replace(/\s/g, ' ').replace('`$', '` ').replace('^`', ' `');
-    return ticks + text + ticks;
 }
 
 function nText(n: number, singular: string, plural: string): string {

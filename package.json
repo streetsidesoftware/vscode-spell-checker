@@ -168,13 +168,7 @@
           "when": "view == cSpellRegExpView"
         }
       ],
-      "view/title": [
-        {
-          "command": "cSpell.autoFixSpellingIssues",
-          "when": "view == cspell-info.issuesView",
-          "group": "navigation"
-        }
-      ],
+      "view/title": [],
       "view/item/context": [
         {
           "command": "cSpellRegExpTester.editRegExp",
@@ -548,7 +542,7 @@
         "category": "Spell",
         "title": "Show Spelling Issues",
         "shortTitle": "Show",
-        "when": "!cSpell.showDecorations",
+        "when": "!cSpell.context.showDecorations",
         "icon": "$(eye)"
       },
       {
@@ -556,7 +550,7 @@
         "category": "Spell",
         "title": "Hide Spelling Issues",
         "shortTitle": "Hide",
-        "when": "cSpell.showDecorations",
+        "when": "cSpell.context.showDecorations",
         "icon": "$(eye-closed)"
       },
       {

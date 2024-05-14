@@ -40,6 +40,22 @@ describe('pipe', () => {
         expect(listener).toHaveBeenLastCalledWith('test');
     });
 
+    test('pipe vscode EventEmitter 2', () => {
+        const emitter = new EventEmitter<string>();
+        const event = pipe(emitter);
+        const listener = vi.fn();
+
+        expect(event).toBeTypeOf('function');
+        const disposable = event(listener);
+        emitter.fire('test');
+        expect(listener).toHaveBeenCalledTimes(1);
+        expect(listener).toHaveBeenLastCalledWith('test');
+        disposable.dispose();
+        emitter.fire('test2');
+        expect(listener).toHaveBeenCalledTimes(1);
+        expect(listener).toHaveBeenLastCalledWith('test');
+    });
+
     test('pipe operators', () => {
         const result: string[] = [];
         const result2: string[] = [];

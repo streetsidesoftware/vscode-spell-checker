@@ -117,7 +117,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         decoratorExclusions,
         registerSpellCheckerCodeActionProvider(issueTracker),
         registerDiagWatcher(decorator.visible, decorator.onDidChangeVisibility),
-        await registerTerminalProfileProvider(),
+        registerTerminalProfileProvider(),
 
         ...commands.registerCommands(extensionCommand),
 
