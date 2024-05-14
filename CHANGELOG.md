@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.8...code-spell-checker-v4.0.0-alpha.9) (2024-05-14)
+
+
+### Updates and Bug Fixes
+
+* Add a restart server command. ([#3253](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3253)) ([9c1a345](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9c1a34597120d707f3c08387a4bff35fd58afee2))
+* Be able to fix spelling issues from the CSpell Panel ([#3260](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3260)) ([2ab2a41](https://github.com/streetsidesoftware/vscode-spell-checker/commit/2ab2a41973aa13c7c4c8e6ef944a2387294383b0))
+* Reduce traffic volume between client/server ([#3256](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3256)) ([9d46a5b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9d46a5b48cc4035454cd78047ae70985c44945d9))
+
 ## [4.0.0-alpha.8](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.7...code-spell-checker-v4.0.0-alpha.8) (2024-05-10)
 
 
