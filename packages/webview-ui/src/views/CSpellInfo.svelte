@@ -18,7 +18,7 @@
   $: fileInfo = [
     { key: 'Name', value: name },
     // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
-    { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
+    // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
     { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
     { key: 'File Type', value: fileConfig?.languageId ?? 'n/a' },
     { key: 'File Scheme', value: fileUrl?.protocol ?? 'n/a' },
@@ -30,7 +30,7 @@
   <h1>Spell Checker</h1>
 
   <h2>File Information</h2>
-  <dl>
+  <dl class="file-info">
     {#each fileInfo as entry}
       <dt>{entry.key}:</dt>
       <dd>{entry.value}</dd>
@@ -87,6 +87,34 @@
     font-size: smaller;
     margin-inline-start: 1em;
   }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dt sup {
+    font-size: smaller;
+    font-weight: normal;
+    opacity: 80%;
+  }
+
+  .file-info dd {
+    margin: 0 0 0 80px;
+    padding: 0 0 0.5em 0;
+  }
+
+  .file-info dt {
+    float: left;
+    clear: left;
+    width: 110px;
+    /* color: green; */
+  }
+
+  /*
+  dt::after {
+    content: ':';
+  }
+  */
 
   .dictionary-entry dd {
     margin-inline-start: 0;
