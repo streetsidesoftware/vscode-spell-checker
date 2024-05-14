@@ -6,6 +6,7 @@ import { Uri } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
 import type {
+    ConfigTarget,
     CSpellClient,
     CSpellUserSettings,
     CustomDictionaries,
@@ -210,6 +211,11 @@ export class DictionaryHelper {
         const cfgTarget = await target(targets);
         return cfgTarget && configTargetsToDictionaryTargets(cfgTarget);
     }
+
+    public addWordsToTargetServerConfigTarget(words: string | string[], target: ConfigTarget, docUri?: Uri | undefined): Promise<void> {
+        docUri = docUri || (target.docUri && Uri.parse(target.docUri)) || undefined;
+        return this.addWordsToTargets(words, [configTargetToClientConfigTarget(target, docUri)], docUri);
+    }
 }
 
 function isTextDocument(d: vscode.TextDocument | vscode.Uri): d is vscode.TextDocument {
@@ -379,6 +385,34 @@ function combineDictionaryEntry(c: CustomDictionaries, entry: CustomDictionaryEn
     }
 
     return r;
+}
+
+function configTargetToClientConfigTarget(target: ConfigTarget, docUri: Uri | undefined): ClientConfigTarget {
+    switch (target.kind) {
+        case 'cspell':
+            return {
+                kind: target.kind,
+                name: target.name,
+                scope: 'unknown',
+                configUri: Uri.parse(target.configUri),
+            };
+        case 'vscode':
+            return {
+                kind: target.kind,
+                name: target.name,
+                scope: target.scope,
+                docUri: (target.docUri && Uri.parse(target.docUri)) || docUri || undefined,
+                configScope: docUri,
+            };
+        case 'dictionary':
+            return {
+                kind: target.kind,
+                name: target.name,
+                scope: 'unknown',
+                docUri: (target.docUri && Uri.parse(target.docUri)) || docUri || undefined,
+                dictionaryUri: Uri.parse(target.dictionaryUri),
+            };
+    }
 }
 
 export class DictionaryTargetError extends Error {

@@ -18,6 +18,8 @@ import type {
     ConfigurationFields,
     GetConfigurationForDocumentRequest,
     GetConfigurationForDocumentResult,
+    GetConfigurationTargetsRequest,
+    GetConfigurationTargetsResult,
     GetSpellCheckingOffsetsResult,
     IsSpellCheckEnabledResult,
     OnSpellCheckDocumentStep,
@@ -40,6 +42,7 @@ export interface ServerRequestsAPI {
     getConfigurationForDocument<Fields extends ConfigurationFields>(
         req: GetConfigurationForDocumentRequest<Fields>,
     ): GetConfigurationForDocumentResult<Fields>;
+    getConfigurationTargets(req: GetConfigurationTargetsRequest): GetConfigurationTargetsResult;
     isSpellCheckEnabled(req: TextDocumentInfo): IsSpellCheckEnabledResult;
     splitTextIntoWords(req: string): SplitTextIntoWordsResult;
     spellingSuggestions(word: string, doc?: TextDocumentInfo): SpellingSuggestionsResult;

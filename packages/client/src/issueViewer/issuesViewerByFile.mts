@@ -1,5 +1,5 @@
-import { groupByField, logDebug } from '@internal/common-utils';
-import type { Suggestion } from 'code-spell-checker-server/api';
+import { groupByField } from '@internal/common-utils';
+import type { ConfigTarget, Suggestion } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
 import * as vscode from 'vscode';
@@ -7,18 +7,20 @@ import { TreeItem } from 'vscode';
 
 import { actionAutoFixSpellingIssues } from '../applyCorrections.mjs';
 import { commandHandlers, knownCommands } from '../commands.mjs';
+import * as di from '../di.mjs';
 import { createEmitter, pipe } from '../EventEmitter/index.mjs';
 import { debounce } from '../EventEmitter/operators/index.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
+import { consoleDebug } from '../repl/consoleDebug.mjs';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
-import { logErrors } from '../util/errors.js';
+import { handleErrors, logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
 import { isDefined } from '../util/index.js';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
-const useConsoleLog = true;
-const log = useConsoleLog ? console.log : logDebug;
+const useConsoleLog = false;
+const log = useConsoleLog ? console.log : consoleDebug;
 
 // const debounceRevealDelay = 100;
 const debounceUIDelay = 200;
@@ -32,6 +34,7 @@ export function activate(context: ExtensionContext, issueTracker: IssueTracker) 
         // ),
         vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.autoFixSpellingIssues'], handleAutoFixSpellingIssues),
         vscode.commands.registerCommand(knownCommands['cSpell.issuesViewByFile.item.addWordToDictionary'], handleAddWordToDictionary),
+        vscode.commands.registerCommand('cSpell.issuesViewByFile.item.addWordToTarget', handleAddWordToTarget),
     );
 }
 
@@ -285,6 +288,7 @@ const icons = {
     doc: new vscode.ThemeIcon('go-to-file'),
     suggestion: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb'),
     suggestionPreferred: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb-autofix'),
+    gear: new vscode.ThemeIcon('gear'),
 } as const;
 
 interface CalcRevealResult {
@@ -294,8 +298,13 @@ interface CalcRevealResult {
     bottom: IssueTreeItemBase | undefined;
 }
 
+interface Targets {
+    targets: ConfigTarget[];
+}
+
 class FileWithIssuesTreeItem extends IssueTreeItemBase {
     private children: FileIssueTreeItem[] | undefined;
+    private targets: Promise<Targets> | undefined;
     constructor(
         readonly context: Context,
         readonly document: TextDocument | vscode.NotebookDocument,
@@ -328,7 +337,9 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
 
     getChildren() {
         if (this.children) return this.children;
-        this.children = this.issues.map((issue) => new FileIssueTreeItem(this.context, this, issue)).sort(FileIssueTreeItem.compare);
+        this.children = this.issues
+            .map((issue) => new FileIssueTreeItem(this.context, this, issue, this.getTargets))
+            .sort(FileIssueTreeItem.compare);
         return this.children;
     }
 
@@ -341,11 +352,17 @@ class FileWithIssuesTreeItem extends IssueTreeItemBase {
         const found = this.children?.filter((c) => c.findMatchingIssues(ranges));
         return found?.length ? found : undefined;
     }
+
+    getTargets = () => {
+        if (this.targets) return this.targets;
+        this.targets = this.context.issueTracker.getConfigurationTargets(this.document.uri).then((r) => ({ targets: r.configTargets }));
+        return this.targets;
+    };
 }
 
 class FileIssueTreeItem extends IssueTreeItemBase {
-    private children: IssueSuggestionTreeItem[] | undefined;
-    private pChildren: Promise<IssueSuggestionTreeItem[]> | undefined;
+    private children: IssueFixTreeItem[] | undefined;
+    private pChildren: Promise<IssueFixTreeItem[]> | undefined;
     readonly cell: vscode.NotebookCell | undefined;
     readonly document: TextDocument;
     readonly cellIndex: number;
@@ -354,6 +371,7 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         readonly context: Context,
         readonly file: FileWithIssuesTreeItem,
         readonly issue: SpellingIssue,
+        readonly getTargets: (uri: Uri) => Promise<Targets>,
     ) {
         super();
         this.cell = findNotebookCellForDocument(issue.document);
@@ -399,7 +417,12 @@ class FileIssueTreeItem extends IssueTreeItemBase {
     async #getChildren() {
         if (this.children) return this.children;
         const suggestions = await this.context.requestSuggestions(this.issue);
-        const items = (this.children = suggestions.map((sug) => new IssueSuggestionTreeItem(this, this.issue, sug)));
+        const targets = await this.getTargets(this.issue.uri);
+        const items = (this.children = [
+            ...suggestions.map((sug) => new IssueSuggestionTreeItem(this, this.issue, sug)),
+            ...targets.targets.map((t) => new IssueAddToTargetTreeItem(this, this.issue, t)),
+        ]);
+
         this.pChildren = undefined;
         this.context.invalidate(this);
         return items;
@@ -432,6 +455,8 @@ class FileIssueTreeItem extends IssueTreeItemBase {
     }
 }
 
+type IssueFixTreeItem = IssueSuggestionTreeItem | IssueAddToTargetTreeItem;
+
 class IssueSuggestionTreeItem extends IssueTreeItemBase {
     constructor(
         readonly parent: FileIssueTreeItem,
@@ -445,13 +470,12 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
         const issue = this.issue;
         const { word, isPreferred } = this.suggestion;
         const item = new TreeItem(word);
-        const range = issue.range;
-        item.id = [issue.uri.toString(), range.start.line, range.start.character, range.end.line, range.end.character, word].join(':');
+        item.id = calcItemId(issue.uri, issue.range, word);
         item.iconPath = isPreferred ? icons.suggestionPreferred : icons.suggestion;
         item.description = isPreferred && '(preferred)';
         const inlineWord = markdownInlineCode(word);
         const cleanedWord = cleanWord(word);
-        const fixMessage = 'Find and Replace Issue with: ' + cleanedWord;
+        const fixMessage = 'Replace Issue with: ' + cleanedWord;
         item.command = {
             title: fixMessage,
             command: knownCommands['cSpell.fixSpellingIssue'],
@@ -473,6 +497,51 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 
     isPreferred(): boolean {
         return this.suggestion.isPreferred || false;
+    }
+}
+
+class IssueAddToTargetTreeItem extends IssueTreeItemBase {
+    constructor(
+        readonly parent: FileIssueTreeItem,
+        readonly issue: SpellingIssue,
+        readonly target: ConfigTarget,
+    ) {
+        super();
+    }
+
+    getTreeItem(): TreeItem {
+        const issue = this.issue;
+        const item = new TreeItem('Add to ' + this.target.name);
+        item.id = calcItemId(issue.uri, issue.range, this.target.name);
+        item.iconPath = icons.gear;
+        item.description = '';
+        const inlineWord = markdownInlineCode(issue.word);
+        const tType = this.target.kind === 'dictionary' ? 'dictionary' : 'configuration';
+        const fixMessage = `Add ${inlineWord} to ${this.target.name} ${tType}.`;
+        item.tooltip = new vscode.MarkdownString().appendMarkdown(fixMessage);
+        item.accessibilityInformation = { label: fixMessage };
+        item.command = { title: fixMessage, command: 'cSpell.issuesViewByFile.item.addWordToTarget', arguments: [this] };
+        // item.contextValue = isPreferred ? 'issue.suggestion-preferred' : 'issue.suggestion';
+        return item;
+    }
+
+    getChildren() {
+        return undefined;
+    }
+
+    getParent(): IssueTreeItemBase | undefined {
+        return this.parent;
+    }
+
+    isPreferred(): boolean {
+        return false;
+    }
+
+    applyFix() {
+        return handleErrors(
+            di.get('dictionaryHelper').addWordsToTargetServerConfigTarget(this.issue.word, this.target, this.issue.document.uri),
+            'addWordsToConfig',
+        );
     }
 }
 
@@ -529,4 +598,15 @@ function handleAddWordToDictionary(item?: unknown) {
 
     const doc = item.document;
     return commandHandlers['cSpell.addWordToDictionary'](item.issue.word, doc.uri);
+}
+
+function handleAddWordToTarget(item?: unknown) {
+    if (!(item instanceof IssueAddToTargetTreeItem)) return;
+
+    log('handleAddWordToTarget %o', { word: item.issue.word, target: item.target });
+    return item.applyFix();
+}
+
+function calcItemId(uri: Uri, range: Range, ...parts: string[]) {
+    return [uri.toString(), range.start.line, range.start.character, range.end.line, range.end.character, ...parts].join(':');
 }

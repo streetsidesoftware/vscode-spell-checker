@@ -1,3 +1,5 @@
+import { format } from 'node:util';
+
 import { Logger } from './logger.js';
 
 export { LogLevel } from './logger.js';
@@ -20,6 +22,26 @@ export function logInfo(msg: string, uri?: string | string[]) {
 
 export function logDebug(msg: string, uri?: string | string[]) {
     logger.debug(formatMessage(msg, uri));
+}
+
+export function consoleLog(...args: Parameters<typeof console.log>) {
+    logger.log(format(...args));
+}
+
+export function consoleInfo(...args: Parameters<typeof console.log>) {
+    logger.info(format(...args));
+}
+
+export function consoleWarn(...args: Parameters<typeof console.log>) {
+    logger.warn(format(...args));
+}
+
+export function consoleDebug(...args: Parameters<typeof console.log>) {
+    logger.debug(format(...args));
+}
+
+export function consoleError(...args: Parameters<typeof console.log>) {
+    logger.error(format(...args));
 }
 
 export function setWorkspaceBase(uri: string) {

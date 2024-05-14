@@ -46,6 +46,7 @@ export type GetConfigurationForDocumentResult<F extends ConfigurationFields> = P
 
 interface ServerSide {
     getConfigurationForDocument: ClientSideApi['serverRequest']['getConfigurationForDocument'];
+    getConfigurationTargets: ClientSideApi['serverRequest']['getConfigurationTargets'];
     getSpellCheckingOffsets: ClientSideApi['serverRequest']['getSpellCheckingOffsets'];
     isSpellCheckEnabled: ClientSideApi['serverRequest']['isSpellCheckEnabled'];
     notifyConfigChange: ClientSideApi['serverNotification']['notifyConfigChange'];
@@ -79,6 +80,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
         serverRequests: {
             isSpellCheckEnabled: true,
             getConfigurationForDocument: true,
+            getConfigurationTargets: true,
             getSpellCheckingOffsets: true,
             spellingSuggestions: true,
             splitTextIntoWords: true,
@@ -108,6 +110,7 @@ export function createServerApi(client: LanguageClient): ServerApi {
     const api: ServerApi = {
         isSpellCheckEnabled: log2Sfn(serverRequest.isSpellCheckEnabled, 'isSpellCheckEnabled'),
         getConfigurationForDocument: log2Sfn(serverRequest.getConfigurationForDocument, 'getConfigurationForDocument'),
+        getConfigurationTargets: log2Sfn(serverRequest.getConfigurationTargets, 'getConfigurationTargets'),
         getSpellCheckingOffsets: log2Sfn(serverRequest.getSpellCheckingOffsets, 'getSpellCheckingOffsets'),
         spellingSuggestions: log2Sfn(serverRequest.spellingSuggestions, 'spellingSuggestions'),
         notifyConfigChange: log2Sfn(serverNotification.notifyConfigChange, 'notifyConfigChange'),

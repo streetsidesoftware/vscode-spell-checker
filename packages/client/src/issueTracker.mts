@@ -103,6 +103,10 @@ export class IssueTracker {
             issues: diag.diagnostics.map((d) => SpellingCheckerIssue.fromDiagnostic(document, d, diag.version || document.version)),
         };
     }
+
+    getConfigurationTargets(uri: Uri) {
+        return this.client.getConfigurationTargets({ uri });
+    }
 }
 
 interface FileIssues {
