@@ -217,7 +217,7 @@ class WordIssueTreeItem extends IssueTreeItemBase {
         });
         this.suggestionsByDocument.set(document, suggestions || []);
         this.conicalDocuments.add(findConicalDocument(document));
-        this.issues.push(issue);
+        return this.issues.push(issue);
     }
 
     getTreeItem(): TreeItem {
@@ -463,7 +463,10 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 }
 
 function collectIssues(context: Context): WordIssueTreeItem[] {
-    const issues = context.issueTracker.getIssues().flatMap(([_, issues]) => issues.issues);
+    const issues = context.issueTracker
+        .getIssues()
+        .flatMap(([_, issues]) => issues.issues)
+        .filter((issue) => issue.isIssueTypeSpelling());
     const groupedByWord = new Map<string, WordIssueTreeItem>();
     const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
