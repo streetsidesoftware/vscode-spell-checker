@@ -464,7 +464,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 
 function collectIssues(context: Context): WordIssueTreeItem[] {
     const issues = context.issueTracker
-        .getIssues()
+        .getSpellingIssues()
         .flatMap(([_, issues]) => issues.issues)
         .filter((issue) => issue.isIssueTypeSpelling());
     const groupedByWord = new Map<string, WordIssueTreeItem>();

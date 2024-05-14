@@ -198,7 +198,7 @@ export async function actionAutoFixSpellingIssues(uri?: Uri) {
     const issueTracker = di.get('issueTracker');
 
     const autoFixes = issueTracker
-        .getIssues(uri)
+        .getSpellingIssues(uri)
         ?.map((issue) => ({
             issue,
             suggestions: issue.providedSuggestions(),

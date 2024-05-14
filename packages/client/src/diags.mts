@@ -19,7 +19,7 @@ import { isDefined, uniqueFilter } from './util/index.js';
  */
 export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): SpellingDiagnostic[] {
     const issueTracker = getDependencies().issueTracker;
-    const diags = (docUri && issueTracker.getIssues(docUri))?.map((issue) => issue.diag) || [];
+    const diags = (docUri && issueTracker.getSpellingIssues(docUri))?.map((issue) => issue.diag) || [];
     const cSpellDiags = filterDiags(diags).filter((d) => d.data?.issueType === issueType || (!d.data?.issueType && !issueType));
     return cSpellDiags;
 }
@@ -122,7 +122,7 @@ export function registerDiagWatcher(show: boolean, onShowChange: Event<boolean>)
 
         for (const uri of uris) {
             if (!useDiagnosticsCollectionForScheme(uri)) continue;
-            const diags = issueTracker.getIssues(uri);
+            const diags = issueTracker.getSpellingIssues(uri);
             collection.set(
                 uri,
                 diags?.map((issue) => issue.diag),

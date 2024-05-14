@@ -132,7 +132,7 @@ export class SpellingIssueDecorator implements Disposable {
 
         let hasHidden = false;
 
-        const issues = (this.issueTracker.getIssues(doc.uri) || []).filter((issue) => {
+        const issues = (this.issueTracker.getSpellingIssues(doc.uri) || []).filter((issue) => {
             const range = issue.range;
             const hide = active.some((r) => r.intersection(range));
             hasHidden ||= hide;
