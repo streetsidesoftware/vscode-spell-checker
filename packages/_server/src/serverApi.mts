@@ -9,6 +9,7 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
     const api: ServerSideApiDef = {
         serverRequests: {
             getConfigurationForDocument: true,
+            getConfigurationTargets: true,
             getSpellCheckingOffsets: true,
             isSpellCheckEnabled: true,
             splitTextIntoWords: true,

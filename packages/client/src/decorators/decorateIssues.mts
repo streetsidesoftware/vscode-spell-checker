@@ -10,6 +10,7 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import type { CSpellSettings } from '../settings/index.mjs';
 import { ConfigFields } from '../settings/index.mjs';
 import { findEditor } from '../util/findEditor.js';
+import { setContext } from '../context.mjs';
 
 const defaultHideIssuesWhileTyping: Required<PartialCSpellUserSettings<'hideIssuesWhileTyping'>>['hideIssuesWhileTyping'] = 'Word';
 const defaultRevealIssuesAfterDelayMS: Required<PartialCSpellUserSettings<'revealIssuesAfterDelayMS'>>['revealIssuesAfterDelayMS'] = 1000;
@@ -176,7 +177,7 @@ export class SpellingIssueDecorator implements Disposable {
     private setContext(value: boolean) {
         this.context.globalState.update(SpellingIssueDecorator.globalStateKey, value);
         this.emitterVisibility.fire(value);
-        Promise.resolve(vscode.commands.executeCommand('setContext', 'cSpell.showDecorations', value)).catch(() => undefined);
+        Promise.resolve(setContext({ showDecorations: value })).catch(() => undefined);
     }
 
     private clearDecoration() {

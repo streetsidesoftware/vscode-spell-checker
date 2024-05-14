@@ -168,13 +168,7 @@
           "when": "view == cSpellRegExpView"
         }
       ],
-      "view/title": [
-        {
-          "command": "cSpell.autoFixSpellingIssues",
-          "when": "view == cspell-info.issuesView",
-          "group": "navigation"
-        }
-      ],
+      "view/title": [],
       "view/item/context": [
         {
           "command": "cSpellRegExpTester.editRegExp",
@@ -217,7 +211,7 @@
       "activitybar": [
         {
           "id": "cspell-info-explorer",
-          "title": "Spell Checker",
+          "title": "Spell Checker Info",
           "icon": "resources/dark/check_circle.svg"
         }
       ],
@@ -240,8 +234,7 @@
         {
           "type": "webview",
           "id": "cspell-info.infoView",
-          "name": "Spell Checker",
-          "when": "config.cSpell.experimental.enableSettingsViewerV2"
+          "name": "Spell Checker"
         },
         {
           "id": "cSpellRegExpView",
@@ -254,7 +247,7 @@
           "type": "tree",
           "id": "cspell.issuesViewByFile",
           "name": "File Issues",
-          "contextualTitle": "Spell Checker",
+          "contextualTitle": "Spell Checker issues by file.",
           "icon": "$(lightbulb)",
           "initialSize": 4,
           "visibility": "visible"
@@ -263,7 +256,7 @@
           "type": "tree",
           "id": "cspell-info.issuesView",
           "name": "Issues",
-          "contextualTitle": "Spell Checker",
+          "contextualTitle": "Spell Checker Issues",
           "icon": "$(lightbulb)",
           "initialSize": 1,
           "visibility": "visible"
@@ -548,7 +541,7 @@
         "category": "Spell",
         "title": "Show Spelling Issues",
         "shortTitle": "Show",
-        "when": "!cSpell.showDecorations",
+        "when": "!cSpell.context.showDecorations",
         "icon": "$(eye)"
       },
       {
@@ -556,7 +549,7 @@
         "category": "Spell",
         "title": "Hide Spelling Issues",
         "shortTitle": "Hide",
-        "when": "cSpell.showDecorations",
+        "when": "cSpell.context.showDecorations",
         "icon": "$(eye-closed)"
       },
       {

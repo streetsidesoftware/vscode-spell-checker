@@ -3,6 +3,7 @@ import { setOfSupportedSchemes, supportedSchemes } from '@internal/common-utils/
 import type {
     ConfigFieldSelector,
     ConfigurationFields,
+    GetConfigurationTargetsResult,
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
@@ -156,6 +157,25 @@ export class CSpellClient implements Disposable {
         }
         const response = await this.serverApi.isSpellCheckEnabled({ uri: uri.toString(), languageId });
         return { ...response, uri };
+    }
+
+    async getConfigurationTargets(document: TextDocument | TextDocumentInfo | undefined): Promise<GetConfigurationTargetsResult> {
+        const { uri, languageId } = document || {};
+
+        const emptyResult: GetConfigurationTargetsResult = {
+            configTargets: [],
+        };
+
+        try {
+            const workspaceConfig = calculateWorkspaceConfigForDocument(uri);
+            if (!uri || !workspaceConfig.uri) {
+                return await this.serverApi.getConfigurationTargets({ workspaceConfig });
+            }
+            return await this.serverApi.getConfigurationTargets({ uri: uri.toString(), languageId, workspaceConfig });
+        } catch (e) {
+            console.error(`Failed to get configuration for document: ${uri} ${languageId} ${e}`);
+            return emptyResult;
+        }
     }
 
     #getConfigurationForDocument = this.factoryGetConfigurationForDocument();

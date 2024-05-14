@@ -113,6 +113,7 @@ export function run(): void {
         },
         serverRequests: {
             getConfigurationForDocument: handleGetConfigurationForDocument,
+            getConfigurationTargets: handleGetConfigurationTargets,
             getSpellCheckingOffsets: simpleDebounce(_handleGetSpellCheckingOffsets, 100, ({ uri }) => uri),
             traceWord: simpleDebounce(_handleGetWordTrace, 100, ({ uri, word }) => uri + '|' + word),
             checkDocument: simpleDebounce(_handleCheckDocument, 100, ({ uri }) => uri),
@@ -171,6 +172,7 @@ export function run(): void {
     );
 
     const _handleGetConfigurationForDocument = simpleDebounce(__handleGetConfigurationForDocument, 100, (params) => JSON.stringify(params));
+    const _handleGetConfigurationTargets = simpleDebounce(__handleGetConfigurationTargets, 100, (params) => JSON.stringify(params));
 
     // validate documents
     ds(
@@ -404,6 +406,22 @@ export function run(): void {
             docSettings,
             settings,
             ...ieInfo,
+        };
+    }
+
+    async function handleGetConfigurationTargets(params: Api.GetConfigurationTargetsRequest): Promise<Api.GetConfigurationTargetsResult> {
+        return _handleGetConfigurationTargets(params);
+    }
+
+    async function __handleGetConfigurationTargets(params: Api.GetConfigurationTargetsRequest): Promise<Api.GetConfigurationTargetsResult> {
+        log('handleGetConfigurationTargets', params.uri);
+        const { uri, workspaceConfig } = params;
+        const settingsRaw = await getActiveUriSettings(uri);
+        const configFiles = uri ? (await documentSettings.findCSpellConfigurationFilesForUri(uri)).map((uri) => uri.toString()) : [];
+        const configTargets = workspaceConfig ? await calculateConfigTargets(settingsRaw, workspaceConfig, configFiles) : [];
+
+        return {
+            configTargets,
         };
     }
 

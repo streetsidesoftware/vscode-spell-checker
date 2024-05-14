@@ -82,18 +82,18 @@ export interface GetSpellCheckingOffsetsResult {
 export type ConfigurationFields = keyof CSpellUserSettings;
 export type ConfigFieldSelector<T extends ConfigurationFields> = Readonly<Record<T, true>>;
 
+export type AllowUndefined<T> = {
+    [P in keyof T]: T[P] | undefined;
+};
+
+export type PartialCSpellUserSettings<T extends ConfigurationFields> = Pick<CSpellUserSettings, T> & { _fields?: ConfigFieldSelector<T> };
+
 export interface GetConfigurationForDocumentRequest<Fields extends ConfigurationFields> extends Partial<TextDocumentInfo> {
     /** used to calculate configTargets, configTargets will be empty if undefined. */
     workspaceConfig?: WorkspaceConfigForDocument;
     /** List of Settings fields to return. */
     fields: ConfigFieldSelector<Fields>;
 }
-
-export type AllowUndefined<T> = {
-    [P in keyof T]: T[P] | undefined;
-};
-
-export type PartialCSpellUserSettings<T extends ConfigurationFields> = Pick<CSpellUserSettings, T> & { _fields?: ConfigFieldSelector<T> };
 
 export interface GetConfigurationForDocumentResult<T extends ConfigurationFields> extends IsSpellCheckEnabledResult {
     /** Merged configuration settings. Does NOT include in-document directives. */
@@ -102,6 +102,16 @@ export interface GetConfigurationForDocumentResult<T extends ConfigurationFields
     docSettings: PartialCSpellUserSettings<T> | undefined;
     /** Configuration files used. */
     configFiles: UriString[];
+    /** Possible configuration targets. */
+    configTargets: ConfigTarget[];
+}
+
+export interface GetConfigurationTargetsRequest extends Partial<TextDocumentInfo> {
+    /** used to calculate configTargets, configTargets will be empty if undefined. */
+    workspaceConfig?: WorkspaceConfigForDocument;
+}
+
+export interface GetConfigurationTargetsResult {
     /** Possible configuration targets. */
     configTargets: ConfigTarget[];
 }

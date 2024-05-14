@@ -155,6 +155,10 @@ export class Logger {
     getPendingEntries(): LogEntry[] {
         return this.logs;
     }
+
+    clearPendingEntries() {
+        this.logs = [];
+    }
 }
 
 function toLogLevel(level: string | LogLevel) {

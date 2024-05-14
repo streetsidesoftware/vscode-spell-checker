@@ -257,6 +257,7 @@ function calcFileConfig() {
         fileIsInWorkspace: true,
         excludedBy: undefined,
         languageIdEnabled,
+        locales: ['en'],
         dictionaries: dictionaries.filter((dic) => dic.languageIds.includes(languageId)),
         configFiles: [cfgFile(folderPath, 'cspell.json'), cfgFile(workspacePath, 'cspell.config.json')],
         gitignoreInfo: config?.file?.gitignoreInfo,

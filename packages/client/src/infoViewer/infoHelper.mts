@@ -208,6 +208,7 @@ function extractFileConfig(
         fileName,
         name: uriToName(uriToUse, { relativeTo: folder?.uri }),
         isUntitled,
+        locales: normalizeLocales(docSettings?.language),
         languageId,
         dictionaries,
         languageIdEnabled: languageIdEnabled,

@@ -1,3 +1,5 @@
+import assert from 'node:assert';
+
 import type { TextDocument } from 'vscode';
 import { commands, workspace } from 'vscode';
 
@@ -39,7 +41,9 @@ interface EditorMenuContext extends Record<string, ContextValue> {
     addIgnoreWord: boolean;
 }
 
-export interface ContextTypes extends Record<string, ContextValue> {
+export interface ContextTypes extends Record<string, ContextValue> {}
+
+interface KnownContexts extends ContextTypes {
     documentConfigContext: DocumentContext;
     editorMenuContext: EditorMenuContext;
 }
@@ -88,7 +92,17 @@ const allowContextMenuForScheme: Record<string, boolean | undefined> = {
  * @param value - object containing key / values pairs to set
  * @returns resolves on success.
  */
-async function setContext(context: ContextTypes): Promise<void> {
+async function _setContext(context: ContextTypes): Promise<void> {
+    return setContext(context, prefix);
+}
+
+/**
+ * Set context values to be used by VS Code Menus and Commands.
+ * @param context - object containing key / values pairs to set
+ * @param prefix - optional prefix to use for the context keys
+ */
+export async function setContext(context: ContextTypes, prefix = 'cSpell.context'): Promise<void> {
+    assert(prefix.startsWith('cSpell'));
     const kvpValues = [...flatten(prefix, context)];
     const filteredKvpValues = kvpValues.filter(([k, v]) => v !== currentContext.get(k));
 
@@ -124,7 +138,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
     };
 
     if (!doc) {
-        await setContext(context);
+        await _setContext(context);
         return;
     }
 
@@ -170,7 +184,7 @@ export async function updateDocumentRelatedContext(client: CSpellClient, doc: Te
  * @returns resolves on success.
  */
 async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocument): Promise<void> {
-    const context: ContextTypes = {
+    const context: KnownContexts = {
         documentConfigContext: { ...defaultDocumentConfigContext },
         editorMenuContext: { ...defaultEditorMenuContext },
     };
@@ -226,7 +240,7 @@ async function _updateDocumentRelatedContext(client: CSpellClient, doc: TextDocu
 
     context.editorMenuContext.showSuggestions = (show || cfg.settings?.showSuggestionsLinkInEditorContextMenu || false) && hasIssues;
 
-    await setContext(context);
+    await _setContext(context);
     return;
 }
 

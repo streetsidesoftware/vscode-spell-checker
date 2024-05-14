@@ -1,5 +1,5 @@
 import { IssueType } from '@cspell/cspell-types';
-import { logError } from '@internal/common-utils';
+import { autoResolve, logError } from '@internal/common-utils';
 import type { Suggestion } from 'code-spell-checker-server/api';
 import type { DisposableHybrid } from 'utils-disposables';
 import { createDisposableList } from 'utils-disposables';
@@ -18,6 +18,10 @@ export class IssueTracker {
     private disposables = createDisposableList();
     private issues = new Map<UriString, FileIssues>();
     private subscribable = createEmitter<IssueTrackerChangeEvent>();
+    /**
+     * cached suggestions for a given word in a given document uri.
+     */
+    private cachedSuggestions = new Map<UriString, Map<string, Promise<Suggestion[]>>>();
 
     constructor(readonly client: CSpellClient) {
         this.disposables.push(client.onDiagnostics((diags) => this.handleDiagsFromServer(diags)));
@@ -48,9 +52,25 @@ export class IssueTracker {
         return this.subscribable.subscribe(fn);
     }
 
-    public async getSuggestionsForIssue(issue: SpellingCheckerIssue | { word: string; document: TextDocument }): Promise<Suggestion[]> {
-        const result = await this.client.requestSpellingSuggestions(issue.word, issue.document);
-        return result.suggestions;
+    /**
+     * Get suggestions for a given issue. The suggestions are cached.
+     * @param issue - issues to get suggestions for.
+     * @returns a promise that resolves to an array of suggestions.
+     */
+    public getSuggestionsForIssue(issue: SpellingCheckerIssue | { word: string; document: TextDocument }): Promise<Suggestion[]> {
+        const key = issue.document.uri.toString();
+        const cached = autoResolve(this.cachedSuggestions, key, () => new Map<string, Promise<Suggestion[]>>());
+        return autoResolve(cached, issue.word, () => this.fetchSuggestionsForIssue(issue));
+    }
+
+    /**
+     * Fetch suggestions for a given issue from the server. This does NOT cache the results.
+     * @param issue - issues to get suggestions for.
+     * @returns a promise that resolves to an array of suggestions.
+     */
+    public async fetchSuggestionsForIssue(issue: SpellingCheckerIssue | { word: string; document: TextDocument }): Promise<Suggestion[]> {
+        const results = await this.client.requestSpellingSuggestions(issue.word, issue.document);
+        return results.suggestions;
     }
 
     public readonly dispose = this.disposables.dispose;
@@ -58,12 +78,15 @@ export class IssueTracker {
     private handleDiagsFromServer(diags: DiagnosticsFromServer) {
         const fileIssue = this.mapToFileIssues(diags);
         if (!fileIssue) return;
-        this.issues.set(fileIssue.uri.toString(), fileIssue);
+        const uriKey = fileIssue.uri.toString();
+        this.cachedSuggestions.delete(uriKey);
+        this.issues.set(uriKey, fileIssue);
         this.subscribable.notify({ uris: [diags.uri] });
     }
 
     private handleDocClose(doc: TextDocument) {
         const uri = doc.uri.toString();
+        this.cachedSuggestions.delete(uri);
         this.issues.delete(uri);
     }
 
@@ -79,6 +102,10 @@ export class IssueTracker {
             document,
             issues: diag.diagnostics.map((d) => SpellingCheckerIssue.fromDiagnostic(document, d, diag.version || document.version)),
         };
+    }
+
+    getConfigurationTargets(uri: Uri) {
+        return this.client.getConfigurationTargets({ uri });
     }
 }
 
