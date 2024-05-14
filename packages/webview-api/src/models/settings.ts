@@ -53,6 +53,7 @@ export interface FileConfig extends TextDocument, IsSpellCheckEnabledResult {
     workspaceFolder?: WorkspaceFolder | undefined;
     /** Uri used to calculate the settings. Might be different from the document uri. */
     uriActual?: FileUri;
+    locales: Extends<LocaleList>;
 }
 
 export interface ExcludeRef {
