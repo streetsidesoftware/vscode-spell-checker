@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 import {
     consoleDebug,
@@ -14,6 +14,10 @@ import {
 } from './log.js';
 
 describe('Validate Util Functions', () => {
+    beforeEach(() => {
+        logger.clearPendingEntries();
+    });
+
     test('Logging', () => {
         setWorkspaceFolders([__dirname, __dirname]);
         log('log', __filename);
