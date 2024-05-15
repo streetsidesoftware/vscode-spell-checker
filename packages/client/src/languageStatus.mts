@@ -87,7 +87,7 @@ export function createLanguageStatus(): Disposable {
     function updateIssues() {
         const id = 'cspell-issues';
         const document = vscode.window.activeTextEditor?.document;
-        const issues = document ? getIssueTracker().getIssues(document.uri) : undefined;
+        const issues = document ? getIssueTracker().getSpellingIssues(document.uri) : undefined;
         if (!issues?.length || !showLanguageStatusFields.issues) {
             deleteItem(id);
             return;

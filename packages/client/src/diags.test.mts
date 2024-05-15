@@ -21,7 +21,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getIssues: vi.fn(implGetIssues) },
+                    issueTracker: { getSpellingIssues: vi.fn(implGetIssues) },
                 }) as any,
         );
     });
@@ -34,7 +34,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getIssues: vi.fn(() => []) },
+                    issueTracker: { getSpellingIssues: vi.fn(() => []) },
                 }) as any,
         );
         const uri = Uri.parse(import.meta.url);

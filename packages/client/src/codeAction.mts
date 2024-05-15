@@ -24,7 +24,7 @@ export class SpellCheckerCodeActionProvider implements CodeActionProvider {
             return [];
         }
 
-        const diags = this.issueTracker.getIssues(document.uri)?.filter((diag) => diag.range.contains(range));
+        const diags = this.issueTracker.getSpellingIssues(document.uri)?.filter((diag) => diag.range.contains(range));
         if (diags?.length !== 1) return [];
         const pendingDiags = diags.map((diag) => this.diagToAction(document, diag));
         return (await Promise.all(pendingDiags)).flatMap((action) => action);

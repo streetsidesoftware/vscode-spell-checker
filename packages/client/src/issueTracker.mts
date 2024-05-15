@@ -28,20 +28,38 @@ export class IssueTracker {
         this.disposables.push(workspace.onDidCloseTextDocument((doc) => this.handleDocClose(doc)));
     }
 
-    public getIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined;
-    public getIssues(): [Uri, SpellingCheckerIssuesCollection][];
-    public getIssues(uri?: Uri): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
+    public getSpellingIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined;
+    public getSpellingIssues(uri?: undefined): [Uri, SpellingCheckerIssuesCollection][];
+    public getSpellingIssues(
+        uri?: Uri | undefined,
+    ): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
+        return uri
+            ? this.getIssues(uri, (issue) => issue.isIssueTypeSpelling())
+            : this.getIssues(undefined, (issue) => issue.isIssueTypeSpelling());
+    }
+
+    public getDirectiveIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined {
+        return this.getIssues(uri, (issue) => issue.isIssueTypeDirective());
+    }
+
+    public getIssues(uri: Uri, predicate?: (issue: SpellingCheckerIssue) => boolean): SpellingCheckerIssuesCollection | undefined;
+    public getIssues(uri?: undefined, predicate?: (issue: SpellingCheckerIssue) => boolean): [Uri, SpellingCheckerIssuesCollection][];
+    public getIssues(
+        uri?: Uri,
+        predicate?: (issue: SpellingCheckerIssue) => boolean,
+    ): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
+        predicate ??= () => true;
         if (!uri)
             return [...this.issues.values()].map(
-                (d) => [d.uri, new SpellingCheckerIssuesCollection(d.issues)] as [Uri, SpellingCheckerIssuesCollection],
+                (d) => [d.uri, new SpellingCheckerIssuesCollection(d.issues.filter(predicate))] as [Uri, SpellingCheckerIssuesCollection],
             );
-        const issues = this.issues.get(uri.toString())?.issues;
+        const issues = this.issues.get(uri.toString())?.issues.filter(predicate);
         return issues ? new SpellingCheckerIssuesCollection(issues) : undefined;
     }
 
-    public getIssueCount(uri?: Uri): number {
-        if (!uri) return [...this.issues.values()].reduce((a, b) => a + b.issues.length, 0);
-        return this.issues.get(uri.toString())?.issues.length || 0;
+    public getIssueCount(uri?: Uri, predicate: (issue: SpellingCheckerIssue) => boolean = (issue) => issue.isIssueTypeSpelling()): number {
+        if (!uri) return [...this.issues.values()].reduce((a, b) => a + b.issues.filter(predicate).length, 0);
+        return this.issues.get(uri.toString())?.issues.filter(predicate).length || 0;
     }
 
     public getUrisWithIssues(): Uri[] {

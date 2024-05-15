@@ -98,23 +98,29 @@
     opacity: 80%;
   }
 
-  .file-info dd {
-    margin: 0 0 0 80px;
-    padding: 0 0 0.5em 0;
-  }
+  @media (min-width: 240px) {
+    dl.file-info {
+      display: grid;
+      grid-gap: 4px 1em;
+      grid-template-columns: auto auto;
+      /*
+      margin-block-start: 0;
+      margin-block-end: 0.5em;
+      */
+    }
 
-  .file-info dt {
-    float: left;
-    clear: left;
-    width: 110px;
-    /* color: green; */
-  }
+    .file-info dd {
+      margin: 0;
+      word-break: break-word;
+      /* grid-column-start: 2; */
+    }
 
-  /*
-  dt::after {
-    content: ':';
+    .file-info dt {
+      /* color: green; */
+      font-weight: bolder;
+      word-break: break-word;
+    }
   }
-  */
 
   .dictionary-entry dd {
     margin-inline-start: 0;
