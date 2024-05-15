@@ -104,9 +104,9 @@
       grid-gap: 4px 1em;
       grid-template-columns: auto auto;
       /*
-    margin-block-start: 0;
-    margin-block-end: 0.5em;
-    */
+      margin-block-start: 0;
+      margin-block-end: 0.5em;
+      */
     }
 
     .file-info dd {
