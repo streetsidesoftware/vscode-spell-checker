@@ -23,7 +23,7 @@ import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
 import { createLanguageStatus } from './languageStatus.mjs';
 import * as modules from './modules.mjs';
-import { registerActionsMenu } from './quickMenu.mjs';
+import { registerActionsMenu } from './actionMenu.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
