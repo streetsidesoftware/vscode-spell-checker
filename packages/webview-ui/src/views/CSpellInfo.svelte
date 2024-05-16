@@ -1,29 +1,86 @@
 <script lang="ts">
-  import CheckboxLogDebug from '../components/CheckboxLogDebug.svelte';
   import { appState } from '../state/appState';
-  import { useQuery } from '@sveltestack/svelte-query';
-  import { getClientApi } from '../api';
+  import { createMutation, createQuery, getQueryClientContext } from '@tanstack/svelte-query';
+  import { getServerApi, getServerNotificationApi } from '../api';
+  import type { Settings } from 'webview-api';
+  import VscodeLink from '../components/VscodeLink.svelte';
+  import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
+  import type { UpdateEnabledFileTypesRequest } from 'webview-api/dist/apiModels';
 
-  const getDocSettings = (url: string | undefined) => getClientApi().serverRequest.getDocSettings(url);
+  const queryClient = getQueryClientContext();
+  const api = getServerApi();
+  const getDocSettings = (url: string | undefined) => api.getDocSettings(url);
+
+  const mutateEnabledFileType = (request: UpdateEnabledFileTypesRequest) => api.updateEnabledFileTypes(request);
+
+  interface DisplayInfo {
+    key: string;
+    value: string | undefined;
+  }
+
+  const maxDelay = 10000;
+  const initialDelay = 1000;
+  let fileInfo: DisplayInfo[] = [];
+  let delay = initialDelay;
 
   $: currentDoc = appState.currentDocument();
   $: docUrl = $currentDoc?.url ? new URL($currentDoc.url) : undefined;
-  $: queryResult = useQuery(['docSettings', docUrl?.toString()], (ctx) => getDocSettings(ctx.queryKey[1]));
+  $: queryResult = createQuery({
+    queryKey: ['docSettings', docUrl?.toString()],
+    queryFn: (ctx) => getDocSettings(ctx.queryKey[1]),
+    refetchInterval: delay,
+  });
+  $: mutation = createMutation({
+    mutationFn: mutateEnabledFileType,
+    onSettled: async () => {
+      await queryClient.resetQueries({ queryKey: ['docSettings'] });
+      delay = initialDelay;
+      // await $queryResult.refetch();
+      setTimeout(() => $queryResult.refetch().catch(() => undefined), 300);
+    },
+  });
   $: settings = $queryResult.data;
-  $: fileConfig = settings?.configs.file;
-  $: dictionaries = fileConfig?.dictionaries;
-  $: name = fileConfig?.name || (docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>');
-  $: uriActual = fileConfig?.uriActual || fileConfig?.uri;
-  $: fileUrl = uriActual ? new URL(uriActual) : undefined;
-  $: fileInfo = [
-    { key: 'Name', value: name },
-    // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
-    // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
-    { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
-    { key: 'File Type', value: fileConfig?.languageId ?? 'n/a' },
-    { key: 'File Scheme', value: fileUrl?.protocol ?? 'n/a' },
-    { key: 'Language', value: fileConfig?.locales?.join(', ') || 'n/a' },
-  ];
+  $: configFiles = settings?.configs.file?.configFiles;
+  $: dictionaries = settings?.configs.file?.dictionaries;
+  $: fileInfo = calcDisplayInfo(settings);
+  $: languageIdEnabled = settings?.configs.file?.languageIdEnabled;
+  $: languageId = settings?.configs.file?.languageId;
+
+  function openTextDocument(uri: string) {
+    getServerNotificationApi().openTextDocument(uri);
+  }
+
+  async function updateEnabledFileType(fileType: string | undefined, enable: boolean, url: URL | undefined) {
+    if (!fileType || !url) return;
+    return $mutation.mutateAsync({ enabledFileTypes: { [fileType]: enable }, url: url?.toString() });
+  }
+
+  function calcDisplayInfo(settings: Settings | undefined | null): DisplayInfo[] {
+    if (!settings) return [];
+    const fileConfig = settings.configs.file;
+    const name = fileConfig?.name || (docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>');
+    const uriActual = fileConfig?.uriActual || fileConfig?.uri;
+    const fileUrl = uriActual ? new URL(uriActual) : undefined;
+    const blocked = fileConfig?.blockedReason;
+
+    const info = [
+      { key: 'Name', value: name },
+      { key: 'Enabled', value: (fileConfig?.fileEnabled === undefined && 'n/a') || (fileConfig?.fileEnabled && 'Yes') || 'No' },
+      // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
+      // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
+      { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
+      { key: 'File Type', value: fileConfig?.languageId ?? 'n/a' },
+      { key: 'File Scheme', value: fileUrl?.protocol.replaceAll(':', '') ?? 'n/a' },
+      { key: 'Language', value: fileConfig?.locales?.join(', ') || 'n/a' },
+      (fileConfig?.fileIsExcluded && { key: 'Excluded', value: 'Yes' }) || undefined,
+      (fileConfig?.fileIsInWorkspace === false && { key: 'In Workspace', value: 'No' }) || undefined,
+      (blocked && { key: 'Blocked Message', value: blocked.message }) || undefined,
+      (blocked && { key: 'Blocked Code', value: blocked.code }) || undefined,
+      (blocked && { key: 'Blocked Dock Ref Uri', value: blocked.documentationRefUri }) || undefined,
+    ].filter((a): a is DisplayInfo => !!a?.value);
+
+    return info;
+  }
 </script>
 
 <section>
@@ -35,23 +92,34 @@
       <dt>{entry.key}:</dt>
       <dd>{entry.value}</dd>
     {/each}
-    {#if fileConfig?.configFiles.length}
+    {#if configFiles?.length}
       <dt>Config Files:</dt>
       <dd>
-        <ul>
-          {#each fileConfig.configFiles as configFile}
-            <li>
-              <a href={configFile.uri} on:click={() => getClientApi().serverNotification.openTextDocument(configFile.uri)}
-                >{configFile.name}</a
-              >
-            </li>
-          {/each}
-        </ul>
+        {#if configFiles.length > 1}
+          <ul>
+            {#each configFiles as configFile}
+              <li>
+                <VscodeLink href={configFile.uri} on:click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
+              </li>
+            {/each}
+          </ul>
+        {:else}
+          <VscodeLink href={configFiles[0].uri} on:click={() => openTextDocument(configFiles[0].uri)}>{configFiles[0].name}</VscodeLink>
+        {/if}
       </dd>
     {/if}
   </dl>
 
-  <CheckboxLogDebug />
+  {#if languageIdEnabled !== undefined}
+    <VscodeCheckbox
+      checked={languageIdEnabled}
+      on:change={(e) => {
+        return e.detail.checked === !languageIdEnabled && updateEnabledFileType(languageId, !languageIdEnabled, docUrl);
+      }}>{languageId}</VscodeCheckbox
+    >
+  {/if}
+
+  <!-- <CheckboxLogDebug /> -->
 
   {#if dictionaries && dictionaries.length}
     <h2>Dictionaries</h2>
@@ -64,10 +132,8 @@
             {#if dictionary.uriName}
               <dd>
                 {#if dictionary.uri}
-                  <a
-                    href={dictionary.uri}
-                    on:click={() => dictionary.uri && getClientApi().serverNotification.openTextDocument(dictionary.uri)}
-                    >{dictionary.uriName}</a
+                  <VscodeLink href={dictionary.uri} on:click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                    >{dictionary.uriName}</VscodeLink
                   >
                 {:else}
                   {dictionary.uriName}

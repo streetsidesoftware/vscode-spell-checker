@@ -19,7 +19,7 @@ import {
     isUriAllowedBySettings,
     isUriBlockedBySettings,
 } from './documentSettings.mjs';
-import { isLanguageEnabled } from './extractEnabledFileTypes.mjs';
+import { isFileTypeEnabled } from './extractEnabledFileTypes.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 
 const { toEqualCaseInsensitive: expectToEqualCaseInsensitive } = extendExpect(expect);
@@ -228,7 +228,7 @@ describe('Validate DocumentSettings', () => {
         ${'typescript'} | ${{ enableFiletypes: ['!*'], checkOnlyEnabledFileTypes: false }}              | ${true}
         ${'java'}       | ${{ enableFiletypes: ['!*', 'java'], checkOnlyEnabledFileTypes: true }}       | ${true}
     `('isLanguageEnabled $languageId $settings', ({ languageId, settings, expected }) => {
-        expect(isLanguageEnabled(languageId, settings)).toBe(expected);
+        expect(isFileTypeEnabled(languageId, settings)).toBe(expected);
     });
 
     test('isExcludedBy', async () => {

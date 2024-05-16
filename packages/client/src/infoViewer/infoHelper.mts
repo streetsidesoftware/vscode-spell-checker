@@ -71,6 +71,12 @@ export async function calcSettings(
         activeFileUri: document?.uri.toString(),
         activeFolderUri: activeFolderUri?.toString(),
     };
+
+    // console.log('settings: %o', {
+    //     ...pickFields(settings, ['activeFileUri', 'activeFolderUri']),
+    //     ...pickFields(settings.configs.file, ['fileName', 'name', 'isUntitled', 'languageIdEnabled']),
+    //     ...pickFields(docConfig.docSettings, ['enabledFileTypes']),
+    // });
     return settings;
 }
 
@@ -206,7 +212,7 @@ function extractFileConfig(
         uri: uri.toString(),
         uriActual: uriToUse.toString(),
         fileName,
-        name: uriToName(uriToUse, { relativeTo: folder?.uri }),
+        name: uriToUse.path.split('/').slice(-1)[0],
         isUntitled,
         locales: normalizeLocales(docSettings?.language),
         languageId,

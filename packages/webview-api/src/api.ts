@@ -11,7 +11,16 @@ import type {
 } from 'json-rpc-api';
 import { createClientApi, createServerApi } from 'json-rpc-api';
 
-import type { RequestResult, Settings, SetValueRequest, SetValueResult, TextDocumentRef, TodoList, WatchFieldList } from './apiModels';
+import type {
+    RequestResult,
+    Settings,
+    SetValueRequest,
+    SetValueResult,
+    TextDocumentRef,
+    TodoList,
+    UpdateEnabledFileTypesRequest,
+    WatchFieldList,
+} from './apiModels';
 
 /** Requests that can be made to the extension */
 export interface ServerRequestsAPI {
@@ -21,6 +30,7 @@ export interface ServerRequestsAPI {
     getTodos(): RequestResult<TodoList>;
     getCurrentDocument(): RequestResult<TextDocumentRef | null>;
     getDocSettings(docUrl?: string): Settings | null;
+    updateEnabledFileTypes(request: UpdateEnabledFileTypesRequest): void;
     resetTodos(): SetValueResult<TodoList>;
     setTodos(req: SetValueRequest<TodoList>): SetValueResult<TodoList>;
     watchFields(req: WatchFieldList): void;

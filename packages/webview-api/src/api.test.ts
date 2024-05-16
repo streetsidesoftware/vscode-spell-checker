@@ -29,6 +29,7 @@ describe('api', () => {
                 resetTodos: true,
                 setLogDebug: true,
                 setTodos: true,
+                updateEnabledFileTypes: true,
                 watchFields: true,
                 whatTimeIsIt: true,
             },

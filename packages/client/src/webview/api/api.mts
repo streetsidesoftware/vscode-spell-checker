@@ -5,6 +5,7 @@ import type { MessageConnection } from 'vscode-jsonrpc/node' with { 'resolution-
 import type { RequestResult, SetValueRequest, SetValueResult, WatchFieldList, WatchFields } from 'webview-api';
 import { createServerSideSpellInfoWebviewApi } from 'webview-api';
 
+import { updateEnabledFileTypeForResource } from '../../settings/index.mjs';
 import type { StoreValue } from '../../Subscribables/StoreValue.js';
 import type { Subscribable } from '../../Subscribables/Subscribables.js';
 import type { ServerSideApi, ServerSideApiDef } from '../apiTypes.js';
@@ -40,6 +41,7 @@ export function bindApiAndStore(connection: MessageConnection, store: Storage): 
             getTodos: () => resolveRequest(store.state.todos),
             getCurrentDocument: () => resolveRequest(store.state.currentDocument),
             getDocSettings: calcDocSettings,
+            updateEnabledFileTypes: (request) => updateEnabledFileTypeForResource(request.enabledFileTypes, request.url),
             setLogDebug: (r) => (store.state.logDebug.value = r),
             setTodos: (r) => updateStateRequest(r, store.state.todos),
             watchFields,

@@ -7,7 +7,7 @@
   import Todo from './views/Todo.svelte';
   import { createDisposableList } from 'utils-disposables';
   import { appState } from './state/appState';
-  import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
+  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
   import { LogLevel } from 'utils-logger';
 
   // In order to use the Webview UI Toolkit web components they
@@ -34,7 +34,14 @@
 
   const disposable = createDisposableList();
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000,
+        enabled: true,
+      },
+    },
+  });
 
   onDestroy(() => {
     disposable.dispose();
