@@ -170,7 +170,10 @@ export const commandHandlers = {
     'cSpell.hide': handlerResolvedLater,
     'cSpell.createCSpellTerminal': handlerResolvedLater,
 
+    'cspell.showActionsMenu': handlerResolvedLater,
+
     'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
+    'cSpell.openFileInfoView': callCommand('cspell-info.infoView.focus'),
 
     'cSpell.restart': handleRestart,
 
