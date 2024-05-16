@@ -572,11 +572,25 @@
         "icon": "$(eye)"
       },
       {
+        "command": "cSpell.openFileInfoView",
+        "category": "Spell",
+        "title": "Open Spell Checker File Information View",
+        "shortTitle": "Open File Info",
+        "icon": "$(eye)"
+      },
+      {
         "command": "cSpell.restart",
         "category": "Spell",
         "title": "Restart Spell Checker Server",
         "shortTitle": "Restart Spell Checker",
         "icon": "$(sync)"
+      },
+      {
+        "command": "cspell.showActionsMenu",
+        "category": "Spell",
+        "title": "Show Spell Checker Actions Menu",
+        "shortTitle": "Spell Checker Actions",
+        "icon": "$(list-unordered)"
       }
     ],
     "languages": [

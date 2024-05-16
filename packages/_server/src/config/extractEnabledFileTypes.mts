@@ -98,7 +98,7 @@ export function normalizeEnableFiletypes(enableFiletypes: string[]): string[] {
     return ids;
 }
 
-export function isLanguageEnabled(languageId: string, settings: CSpellUserSettings): boolean {
+export function isFileTypeEnabled(languageId: string, settings: CSpellUserSettings): boolean {
     const enabledFileTypes = extractEnabledFileTypes(settings);
     const enabled = enabledFileTypes[languageId];
     if (enabled !== undefined) return enabled;

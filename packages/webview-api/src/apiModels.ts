@@ -6,10 +6,12 @@ export interface Todo {
     text: string;
 }
 
+export type UrlString = string;
+
 export type TodoList = Todo[];
 
 export interface TextDocumentRef {
-    url: string;
+    url: UrlString;
     version: number;
 }
 
@@ -38,4 +40,15 @@ export interface SetValueRequest<T> {
 export interface SetValueResult<T> extends RequestResult<T> {
     /** was it successful? */
     success: boolean;
+}
+
+export interface UpdateEnabledFileTypesRequest {
+    /**
+     * The file types to enable or disable.
+     */
+    enabledFileTypes: Record<string, boolean>;
+    /**
+     * The url of the related resource.
+     */
+    url?: UrlString;
 }

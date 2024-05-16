@@ -6,8 +6,9 @@ import { window, workspace } from 'vscode';
 import * as vscode from 'vscode';
 
 import type { CSpellClient, ServerResponseIsSpellCheckEnabledForFile } from './client/index.mjs';
+import { knownCommands } from './commands.mjs';
+import { getIssueTracker } from './di.mjs';
 import { getCSpellDiags } from './diags.mjs';
-import * as infoViewer from './infoViewer/index.js';
 import { sectionCSpell } from './settings/index.mjs';
 
 const statusBarId = 'spell checker status id';
@@ -115,7 +116,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
             response.blockedReason && toolTip.appendMarkdown(`- ${response.blockedReason.message}\n`);
             toolTip.isTrusted = true;
             sbCheck.tooltip = toolTip;
-            sbCheck.command = infoViewer.commandDisplayCSpellInfo;
+            sbCheck.command = knownCommands['cspell.showActionsMenu'];
             sbCheck.show();
         }
     }
@@ -215,7 +216,7 @@ export function initStatusBar(context: ExtensionContext, client: CSpellClient): 
         window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor),
         workspace.onDidChangeConfiguration(onDidChangeConfiguration),
         workspace.onDidCloseTextDocument(updateStatusBar),
-        vscode.languages.onDidChangeDiagnostics(onDidChangeDiag),
+        getIssueTracker().onDidChangeDiagnostics(onDidChangeDiag),
         sbCheck,
     );
 

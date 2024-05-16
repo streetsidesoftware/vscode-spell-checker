@@ -1,19 +1,7 @@
 import { logError } from '@internal/common-utils/log';
 import { format } from 'util';
-import type { Command, ConfigurationScope, Diagnostic, Disposable, TextDocument, TextEdit, TextEditor, TextEditorEdit } from 'vscode';
-import {
-    commands,
-    FileType,
-    NotebookRange,
-    Position,
-    Range,
-    Selection,
-    SnippetString,
-    TextEditorRevealType,
-    Uri,
-    window,
-    workspace,
-} from 'vscode';
+import type { Command, ConfigurationScope, Diagnostic, Disposable, TextEdit, TextEditor, TextEditorEdit } from 'vscode';
+import { commands, NotebookRange, Position, Range, Selection, SnippetString, TextEditorRevealType, Uri, window } from 'vscode';
 
 import {
     addWordToFolderDictionary,
@@ -29,53 +17,45 @@ import { actionSuggestSpellingCorrections } from './codeActions/actionSuggestSpe
 import * as di from './di.mjs';
 import { getCSpellDiags } from './diags.mjs';
 import { onCommandUseDiagsSelectionOrPrompt } from './promptUser.mjs';
-import type { ClientConfigTarget } from './settings/clientConfigTarget.js';
 import type { ConfigRepository } from './settings/configRepository.mjs';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './settings/configRepository.mjs';
 import { configTargetToConfigRepo } from './settings/configRepositoryHelper.mjs';
 import {
     createClientConfigTargetVSCode,
-    createConfigTargetMatchPattern,
     dictionaryTargetBestMatches,
     dictionaryTargetBestMatchesCSpell,
     dictionaryTargetBestMatchesVSCodeFolder as dtVSCodeFolder,
     dictionaryTargetBestMatchesVSCodeUser as dtVSCodeUser,
     dictionaryTargetBestMatchesVSCodeWorkspace as dtVSCodeWorkspace,
-    filterClientConfigTargets,
-    matchKindAll,
-    matchScopeAll,
-    patternMatchNoDictionaries,
     quickPickTarget,
 } from './settings/configTargetHelper.mjs';
 import type { DictionaryTarget } from './settings/DictionaryTarget.mjs';
 import { createDictionaryTargetForFile } from './settings/DictionaryTarget.mjs';
-import type { ConfigTargetLegacy, TargetsAndScopes } from './settings/index.mjs';
+import type { ConfigTargetLegacy } from './settings/index.mjs';
 import {
     addIgnoreWordsToSettings,
     ConfigurationTarget,
     createConfigFileRelativeToDocumentUri,
-    disableLanguageId,
-    enableLanguageId,
-    enableLanguageIdForTarget,
     enableLocaleForTarget,
     normalizeTarget,
     setEnableSpellChecking,
     toggleEnableSpellChecker,
+    updateEnabledFileTypeForResource,
+    updateEnabledFileTypeForTarget,
 } from './settings/index.mjs';
-import { mapConfigTargetToClientConfigTarget } from './settings/mappers/configTarget.mjs';
+import { configurationTargetToDictionaryScope, dictionaryScopeToConfigurationTarget } from './settings/targetAndScope.mjs';
 import {
-    configurationTargetToClientConfigScope,
-    configurationTargetToClientConfigScopeInfluenceRange,
-    configurationTargetToDictionaryScope,
-    dictionaryScopeToConfigurationTarget,
-} from './settings/targetAndScope.mjs';
+    targetsAndScopeFromConfigurationTarget,
+    targetsForTextDocument,
+    targetsForUri,
+    targetsFromConfigurationTarget,
+} from './settings/targetHelpers.mjs';
 import { findNotebookCell } from './util/documentUri.js';
 import { catchErrors, handleErrors } from './util/errors.js';
 import { performance, toMilliseconds } from './util/perf.js';
 import { pVoid } from './util/pVoid.js';
 import { scrollToText } from './util/textEditor.js';
 import { toUri } from './util/uriHelper.js';
-import { findMatchingDocument } from './vscode/findDocument.js';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -147,8 +127,6 @@ export const commandHandlers = {
     'cSpell.goToNextSpellingIssueAndSuggest': () => actionJumpToSpellingError('next', true),
     'cSpell.goToPreviousSpellingIssueAndSuggest': () => actionJumpToSpellingError('previous', true),
 
-    'cSpell.enableLanguage': enableLanguageIdCmd,
-    'cSpell.disableLanguage': disableLanguageIdCmd,
     'cSpell.enableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), true),
     'cSpell.disableForGlobal': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Global), false),
     'cSpell.toggleEnableForGlobal': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global, true)),
@@ -156,8 +134,6 @@ export const commandHandlers = {
     'cSpell.disableForWorkspace': async () => setEnableSpellChecking(await tsFCfg(ConfigurationTarget.Workspace), false),
     'cSpell.toggleEnableForWorkspace': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Workspace)),
     'cSpell.toggleEnableSpellChecker': async () => toggleEnableSpellChecker(await tsFCfg(ConfigurationTarget.Global)),
-    'cSpell.enableCurrentLanguage': enableCurrentFileType, // legacy
-    'cSpell.disableCurrentLanguage': disableCurrentFileType, // legacy
     'cSpell.enableCurrentFileType': enableCurrentFileType,
     'cSpell.disableCurrentFileType': disableCurrentFileType,
 
@@ -194,9 +170,18 @@ export const commandHandlers = {
     'cSpell.hide': handlerResolvedLater,
     'cSpell.createCSpellTerminal': handlerResolvedLater,
 
+    'cspell.showActionsMenu': handlerResolvedLater,
+
     'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
+    'cSpell.openFileInfoView': callCommand('cspell-info.infoView.focus'),
 
     'cSpell.restart': handleRestart,
+
+    // Deprecated Commands
+    'cSpell.enableLanguage': enableLanguageIdCmd,
+    'cSpell.disableLanguage': disableLanguageIdCmd,
+    'cSpell.enableCurrentLanguage': enableCurrentFileType, // legacy
+    'cSpell.disableCurrentLanguage': disableCurrentFileType, // legacy
 } as const satisfies CommandHandler;
 
 type ImplementedCommandHandlers = typeof commandHandlers;
@@ -311,7 +296,7 @@ export function enableDisableLanguageId(
     return handleErrors(
         async () => {
             const t = await (configTarget ? targetsFromConfigurationTarget(configTarget, uri) : targetsForUri(uri));
-            return enableLanguageIdForTarget(languageId, enable, t);
+            return updateEnabledFileTypeForTarget({ [languageId]: enable }, t);
         },
         ctx(`enableDisableLanguageId enable: ${enable}`, configTarget, uri),
     );
@@ -348,8 +333,7 @@ export function enableCurrentFileType(languageId?: string, uri?: string | Uri): 
     return handleErrors(async () => {
         const { languageId, uri } = resolved;
         if (!uri || !languageId) return;
-        const targets = await targetsForUri(uri);
-        return enableLanguageId(targets, languageId);
+        return updateEnabledFileTypeForResource({ [languageId]: true }, uri);
     }, 'enableCurrentFileType');
 }
 
@@ -358,8 +342,7 @@ export function disableCurrentFileType(languageId?: string, uri?: string | Uri):
     return handleErrors(async () => {
         const { languageId, uri } = resolved;
         if (!uri || !languageId) return;
-        const targets = await targetsForUri(uri);
-        return disableLanguageId(targets, languageId);
+        return updateEnabledFileTypeForResource({ [languageId]: false }, uri);
     }, 'disableCurrentFileType');
 }
 
@@ -373,60 +356,6 @@ function resolveLanguageIdAndUri(
     uri ??= document?.uri;
     languageId ??= document?.languageId;
     return { languageId, uri };
-}
-
-async function targetsAndScopeFromConfigurationTarget(
-    cfgTarget: ConfigurationTarget,
-    docUri?: string | null | Uri | undefined,
-    configScope?: ConfigurationScope,
-    cfgTargetIsExact?: boolean,
-): Promise<TargetsAndScopes> {
-    const scopes = cfgTargetIsExact
-        ? [configurationTargetToClientConfigScope(cfgTarget)]
-        : configurationTargetToClientConfigScopeInfluenceRange(cfgTarget);
-    const pattern = createConfigTargetMatchPattern(matchKindAll, matchScopeAll, { dictionary: false });
-
-    docUri = toUri(docUri);
-    const targets = await (docUri ? targetsForUri(docUri, pattern) : targetsForTextDocument(window.activeTextEditor?.document, pattern));
-    return {
-        targets: targets.map((t) => (t.kind === 'vscode' ? { ...t, configScope } : t)),
-        scopes,
-    };
-}
-
-async function targetsFromConfigurationTarget(
-    cfgTarget: ConfigurationTarget,
-    docUri?: string | null | Uri | undefined,
-    configScope?: ConfigurationScope,
-): Promise<ClientConfigTarget[]> {
-    const r = await targetsAndScopeFromConfigurationTarget(cfgTarget, docUri, configScope);
-    const { targets, scopes } = r;
-    const allowedScopes = new Set(scopes);
-    return targets.filter((t) => allowedScopes.has(t.scope));
-}
-
-async function targetsForTextDocument(
-    document: TextDocument | { uri: Uri; languageId?: string } | undefined,
-    patternMatch = patternMatchNoDictionaries,
-) {
-    const { uri, languageId } = document || {};
-    const config = await di.get('client').getConfigurationForDocument({ uri, languageId }, {});
-    const targets = config.configTargets.map(mapConfigTargetToClientConfigTarget);
-    return filterClientConfigTargets(targets, patternMatch);
-}
-
-async function targetsForUri(docUri?: string | null | Uri | undefined, patternMatch = patternMatchNoDictionaries) {
-    docUri = toUri(docUri);
-    const document = docUri ? await uriToTextDocInfo(docUri) : window.activeTextEditor?.document;
-    return targetsForTextDocument(document, patternMatch);
-}
-
-async function uriToTextDocInfo(uri: Uri): Promise<{ uri: Uri; languageId?: string }> {
-    const doc = findMatchingDocument(uri);
-    if (doc) return doc;
-    const fsStat = await workspace.fs.stat(uri);
-    if (fsStat.type !== FileType.File) return { uri };
-    return await workspace.openTextDocument(uri);
 }
 
 function ctx(method: string, target: ConfigurationTarget | undefined, uri: Uri | string | null | undefined): string {

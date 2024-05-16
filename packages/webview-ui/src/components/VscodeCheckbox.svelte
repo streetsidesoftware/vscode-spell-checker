@@ -23,7 +23,7 @@
 
   function handleChecked(e: ChangeEvent<Checkbox>) {
     checked = e.currentTarget.checked;
-    return dispatch('change', e);
+    return dispatch('change', e.currentTarget);
   }
 </script>
 

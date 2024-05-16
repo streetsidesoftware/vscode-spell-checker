@@ -8,6 +8,7 @@ import type { ClientConfigTarget } from './clientConfigTarget.js';
 import { readConfigFile, writeConfigFile } from './configFileReadWrite.mjs';
 import { normalizeWords, preferredConfigFiles } from './CSpellSettings.mjs';
 import { setConfigFieldQuickPick } from './settings.base.mjs';
+import { targetsForUri } from './targetHelpers.mjs';
 
 export { setEnableSpellChecking, toggleEnableSpellChecker } from './settings.enable.mjs';
 export { enableLocaleForTarget } from './settings.locale.mjs';
@@ -27,39 +28,26 @@ export function hasWorkspaceLocation(): boolean {
     return !!workspace.workspaceFile || !!workspace.workspaceFolders?.[0];
 }
 
-/**
- * Enable a programming language
- * @param target - which level of setting to set
- * @param languageId - the language id, e.g. 'typescript'
- */
-export async function enableLanguageId(targets: ClientConfigTarget[], languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, true, targets);
-}
-
-export async function disableLanguageId(targets: ClientConfigTarget[], languageId: string): Promise<void> {
-    await enableLanguageIdForTarget(languageId, false, targets);
-}
-
 export function addIgnoreWordsToSettings(targets: ClientConfigTarget[], words: string | string[]): Promise<void> {
     const addWords = normalizeWords(words);
     return setConfigFieldQuickPick(targets, 'ignoreWords', (words) => unique(addWords.concat(words || []).sort()));
 }
 
-/**
- * It is a two step logic to minimize a build up of values in the configuration.
- * The idea is to use defaults whenever possible.
- * @param languageId The language id / filetype to enable / disable
- * @param enable true == enable / false == disable
- * @param currentValues the value to update.
- */
-function updateEnableFiletypes(languageId: string, enable: boolean, currentValues: Record<string, boolean> | undefined) {
-    const values = { ...currentValues };
-    values[languageId] = enable;
-    return values;
+function mergeEnableFiletypes(
+    update: Record<string, boolean>,
+    currentValues: Record<string, boolean> | undefined,
+): Record<string, boolean> {
+    return { ...currentValues, ...update };
 }
 
-export function enableLanguageIdForTarget(languageId: string, enable: boolean, targets: ClientConfigTarget[]): Promise<void> {
-    const fn = (src: Record<string, boolean> | undefined) => updateEnableFiletypes(languageId, enable, src);
+/**
+ * Update the enabled file types.
+ * @param update - file types to update
+ * @param targets - possible targets to update
+ * @returns resolves if successful.
+ */
+export function updateEnabledFileTypeForTarget(update: Record<string, boolean>, targets: ClientConfigTarget[]): Promise<void> {
+    const fn = (src: Record<string, boolean> | undefined) => mergeEnableFiletypes(update, src);
     return setConfigFieldQuickPick(targets, 'enabledFileTypes', fn);
 }
 
@@ -126,4 +114,25 @@ export async function createConfigFileRelativeToDocumentUri(referenceDocUri?: Ur
     const configFile = Uri.joinPath(folder.uri, choice);
     await createConfigFile(configFile, overwrite);
     return configFile;
+}
+
+export async function updateEnabledFileTypeForResource(update: Record<string, boolean>, uri?: Uri | string): Promise<void> {
+    const targets = await targetsForUri(uri);
+    return updateEnabledFileTypeForTarget(update, targets);
+}
+
+/**
+ * Update the enabled schemes.
+ * @param update - schemes to update
+ * @param targets - possible targets to update
+ * @returns resolves if successful.
+ */
+export function updateEnabledSchemesForTarget(update: Record<string, boolean>, targets: ClientConfigTarget[]): Promise<void> {
+    const fn = (src: Record<string, boolean> | undefined) => mergeEnableFiletypes(update, src);
+    return setConfigFieldQuickPick(targets, 'enabledSchemes', fn);
+}
+
+export async function updateEnabledSchemesResource(update: Record<string, boolean>, uri?: Uri | string): Promise<void> {
+    const targets = await targetsForUri(uri);
+    return updateEnabledSchemesForTarget(update, targets);
 }

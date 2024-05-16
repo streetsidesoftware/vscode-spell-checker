@@ -42,7 +42,7 @@ import {
     isUriBlockedBySettings,
     stringifyPatterns,
 } from './config/documentSettings.mjs';
-import { isLanguageEnabled } from './config/extractEnabledFileTypes.mjs';
+import { isFileTypeEnabled } from './config/extractEnabledFileTypes.mjs';
 import { objectFieldSizes, objectKeysNested, sanitizeSettings } from './config/sanitizeSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
@@ -502,7 +502,7 @@ export function run(): void {
         const { uri, languageId } = textDocument;
         return (
             !!settings.enabled &&
-            (!languageId || isLanguageEnabled(languageId, settings)) &&
+            (!languageId || isFileTypeEnabled(languageId, settings)) &&
             !(await isUriExcluded(uri)) &&
             !isBlocked(textDocument, settings)
         );
@@ -542,7 +542,7 @@ export function run(): void {
     ): Promise<Api.IsSpellCheckEnabledResult> {
         log('calcIncludeExcludeInfo', params.uri);
         const { uri, languageId } = params;
-        const languageEnabled = languageId ? isLanguageEnabled(languageId, settings) : undefined;
+        const languageIdEnabled = languageId ? isFileTypeEnabled(languageId, settings) : undefined;
 
         const {
             include: fileIsIncluded = true,
@@ -565,7 +565,7 @@ export function run(): void {
             fileEnabled,
             fileIsExcluded,
             fileIsIncluded,
-            languageIdEnabled: languageEnabled,
+            languageIdEnabled: languageIdEnabled,
             languageId,
             gitignored,
             gitignoreInfo,

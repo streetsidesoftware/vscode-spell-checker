@@ -23,6 +23,7 @@ import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
 import { createLanguageStatus } from './languageStatus.mjs';
 import * as modules from './modules.mjs';
+import { registerActionsMenu } from './quickMenu.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
@@ -58,10 +59,10 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
 
     // Start the client.
     await client.start();
-    const statusBar = initStatusBar(context, client);
-
     const issueTracker = new IssueTracker(client);
     di.set('issueTracker', issueTracker);
+
+    const statusBar = initStatusBar(context, client);
 
     function triggerGetSettings(delayInMs = 0) {
         setTimeout(triggerGetSettingsNow, delayInMs);
@@ -130,6 +131,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          */
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
         createLanguageStatus(),
+        registerActionsMenu({ areIssuesVisible: () => decorator.visible }),
     );
 
     await registerCspellInlineCompletionProviders(context.subscriptions).catch(() => undefined);

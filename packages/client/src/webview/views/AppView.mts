@@ -95,6 +95,9 @@ export class AppView {
           <meta property="view-name" content="${viewName}" />
           <link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesUri}">
           <link rel="stylesheet" type="text/css" nonce="${nonce}" href="${stylesCodiconUri}">
+          <script nonce="${nonce}">
+            var process = { env: { NODE_ENV: 'production' } };
+          </script>
           <script defer nonce="${nonce}" src="${scriptUri}"></script>
         </head>
         <body>

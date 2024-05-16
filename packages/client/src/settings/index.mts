@@ -4,13 +4,12 @@ export {
     addIgnoreWordsToSettings,
     ConfigTargetLegacy,
     createConfigFileRelativeToDocumentUri,
-    disableLanguageId,
-    enableLanguageId,
-    enableLanguageIdForTarget,
     enableLocaleForTarget,
     setEnableSpellChecking,
     TargetsAndScopes,
     toggleEnableSpellChecker,
+    updateEnabledFileTypeForResource,
+    updateEnabledFileTypeForTarget,
 } from './settings.mjs';
 export {
     ConfigurationTarget,

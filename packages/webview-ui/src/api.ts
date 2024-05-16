@@ -20,6 +20,14 @@ export function getClientApi(): API {
     return _api;
 }
 
+export function getServerApi() {
+    return getClientApi().serverRequest;
+}
+
+export function getServerNotificationApi() {
+    return getClientApi().serverNotification;
+}
+
 export function getLogger(): LoggerWithLogLevel {
     return logger;
 }
@@ -53,6 +61,7 @@ function createApi(): API {
                 resetTodos: true,
                 setLogDebug: true,
                 setTodos: true,
+                updateEnabledFileTypes: true,
                 watchFields: true,
                 whatTimeIsIt: true,
             },
