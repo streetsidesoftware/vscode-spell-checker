@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.10](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.9...code-spell-checker-v4.0.0-alpha.10) (2024-05-16)
+
+
+### Updates and Bug Fixes
+
+* Be able to enable/disable file type from info view ([#3266](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3266)) ([5a5a435](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5a5a435c74b4f89b089078b685848d05c3df9709))
+* Only show spelling issues, not directives ([#3263](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3263)) ([9c3334b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9c3334b1e8b3f6bd2d379f76de392147889d59f7))
+
 ## [4.0.0-alpha.9](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.8...code-spell-checker-v4.0.0-alpha.9) (2024-05-14)
 
 
