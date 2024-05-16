@@ -45,6 +45,7 @@
 | `cSpell.issueViewer.item.autoFixSpellingIssues`      | Fix issue with preferred suggestion in the current document.<br>**When:**<br> `view == cspell-info.issuesView`  |
 | `cSpell.issueViewer.item.openSuggestionsForIssue`    | Show Suggestions<br>**When:**<br> `view == cspell-info.issuesView`                                              |
 | `cSpell.logPerfTimeline`                             | Log CSpell performance times to console                                                                         |
+| `cSpell.openFileInfoView`                            | Open Spell Checker File Information View                                                                        |
 | `cSpell.openIssuesPanel`                             | Open Spell Checker Issues Panel                                                                                 |
 | `cSpell.removeWordFromFolderDictionary`              | Remove Words from the Folder Dictionary                                                                         |
 | `cSpell.removeWordFromUserDictionary`                | Remove Words from the Global Dictionary                                                                         |

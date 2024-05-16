@@ -56,11 +56,11 @@ export class CommandMenuItem extends MenuItem {
 
 async function quickPickMenu(options: ActionsMenuOptions) {
     const items: QuickPickItem[] = [
-        menuItem('Item 1', 'Description for Item 1'),
-        menuItem('Item 2', 'Description for Item 2'),
-        { label: '', kind: vscode.QuickPickItemKind.Separator },
+        // menuItem('Item 1', 'Description for Item 1'),
+        // menuItem('Item 2', 'Description for Item 2'),
+        // { label: '', kind: vscode.QuickPickItemKind.Separator },
         itemIssuesShowHide(options),
-        menuItem({ label: '$(book) Dictionaries...' }),
+        // menuItem({ label: '$(book) Dictionaries...' }),
         itemCommand({ title: '$(file) Show File Info...', command: knownCommands['cSpell.openFileInfoView'] }),
         itemCommand({ title: '$(console) Open Spell Checker REPL Console.', command: knownCommands['cSpell.createCSpellTerminal'] }),
         itemCommand({ title: '$(issues) Open Spelling Issues Panel.', command: 'cSpell.openIssuesPanel' }),
@@ -95,19 +95,19 @@ async function quickPickMenu(options: ActionsMenuOptions) {
     quickPick.show();
 }
 
-function menuItem(item: QuickPickItem): MenuItem;
-function menuItem(label: string, description?: string): MenuItem;
-function menuItem(labelOrItem: string | QuickPickItem, description?: string): MenuItem {
-    if (typeof labelOrItem === 'string') return new MenuItem(labelOrItem, description);
-    const item = new MenuItem(labelOrItem.label, labelOrItem.description);
-    item.kind = labelOrItem.kind;
-    item.iconPath = labelOrItem.iconPath;
-    item.alwaysShow = labelOrItem.alwaysShow;
-    item.buttons = labelOrItem.buttons;
-    item.detail = labelOrItem.detail;
-    item.picked = labelOrItem.picked;
-    return item;
-}
+// function menuItem(item: QuickPickItem): MenuItem;
+// function menuItem(label: string, description?: string): MenuItem;
+// function menuItem(labelOrItem: string | QuickPickItem, description?: string): MenuItem {
+//     if (typeof labelOrItem === 'string') return new MenuItem(labelOrItem, description);
+//     const item = new MenuItem(labelOrItem.label, labelOrItem.description);
+//     item.kind = labelOrItem.kind;
+//     item.iconPath = labelOrItem.iconPath;
+//     item.alwaysShow = labelOrItem.alwaysShow;
+//     item.buttons = labelOrItem.buttons;
+//     item.detail = labelOrItem.detail;
+//     item.picked = labelOrItem.picked;
+//     return item;
+// }
 
 function itemCommand(command: vscode.Command, description?: string) {
     return new CommandMenuItem(command, description);
