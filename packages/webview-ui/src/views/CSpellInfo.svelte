@@ -5,7 +5,7 @@
   import type { Settings } from 'webview-api';
   import VscodeLink from '../components/VscodeLink.svelte';
   import VscodeCheckbox from '../components/VscodeCheckbox.svelte';
-  import type { UpdateEnabledFileTypesRequest } from 'webview-api/dist/apiModels';
+  import type { TextDocumentRef, UpdateEnabledFileTypesRequest } from 'webview-api/dist/apiModels';
 
   const queryClient = getQueryClientContext();
   const api = getServerApi();
@@ -42,7 +42,7 @@
   $: settings = $queryResult.data;
   $: configFiles = settings?.configs.file?.configFiles;
   $: dictionaries = settings?.configs.file?.dictionaries;
-  $: fileInfo = calcDisplayInfo(settings);
+  $: fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
   $: languageIdEnabled = settings?.configs.file?.languageIdEnabled;
   $: languageId = settings?.configs.file?.languageId;
 
@@ -55,31 +55,33 @@
     return $mutation.mutateAsync({ enabledFileTypes: { [fileType]: enable }, url: url?.toString() });
   }
 
-  function calcDisplayInfo(settings: Settings | undefined | null): DisplayInfo[] {
+  function calcDisplayInfo(doc: TextDocumentRef | undefined, settings: Settings | undefined | null): DisplayInfo[] {
     if (!settings) return [];
+    const info: (DisplayInfo | undefined)[] = [];
     const fileConfig = settings.configs.file;
+    const docUrl = doc?.url ? new URL(doc.url) : undefined;
     const name = fileConfig?.name || (docUrl ? docUrl.pathname.split('/').at(-1) : '<unknown>');
     const uriActual = fileConfig?.uriActual || fileConfig?.uri;
     const fileUrl = uriActual ? new URL(uriActual) : undefined;
     const blocked = fileConfig?.blockedReason;
 
-    const info = [
+    info.push(
       { key: 'Name', value: name },
       { key: 'Enabled', value: (fileConfig?.fileEnabled === undefined && 'n/a') || (fileConfig?.fileEnabled && 'Yes') || 'No' },
       // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
       // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
       { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
       { key: 'File Type', value: fileConfig?.languageId ?? 'n/a' },
-      { key: 'File Scheme', value: fileUrl?.protocol.replaceAll(':', '') ?? 'n/a' },
+      { key: 'File Scheme', value: (docUrl || fileUrl)?.protocol.replaceAll(':', '') ?? 'n/a' },
       { key: 'Language', value: fileConfig?.locales?.join(', ') || 'n/a' },
       (fileConfig?.fileIsExcluded && { key: 'Excluded', value: 'Yes' }) || undefined,
       (fileConfig?.fileIsInWorkspace === false && { key: 'In Workspace', value: 'No' }) || undefined,
       (blocked && { key: 'Blocked Message', value: blocked.message }) || undefined,
       (blocked && { key: 'Blocked Code', value: blocked.code }) || undefined,
       (blocked && { key: 'Blocked Dock Ref Uri', value: blocked.documentationRefUri }) || undefined,
-    ].filter((a): a is DisplayInfo => !!a?.value);
+    );
 
-    return info;
+    return info.filter((a): a is DisplayInfo => !!a?.value);
   }
 </script>
 
