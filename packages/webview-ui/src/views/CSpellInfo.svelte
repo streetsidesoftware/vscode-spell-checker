@@ -43,6 +43,8 @@
   $: configFiles = settings?.configs.file?.configFiles;
   $: excludedBy = settings?.configs.file?.excludedBy;
   $: dictionaries = settings?.configs.file?.dictionaries;
+  $: dictionariesInUse = new Set(dictionaries?.map((d) => d.name) || []);
+  $: unusedDictionaries = settings?.dictionaries.filter((d) => !dictionariesInUse.has(d.name));
   $: fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
   $: languageIdEnabled = settings?.configs.file?.languageIdEnabled;
   $: languageId = settings?.configs.file?.languageId;
@@ -150,6 +152,31 @@
     <h2>Dictionaries</h2>
     <ul>
       {#each dictionaries as dictionary}
+        <li>
+          <dl class="dictionary-entry">
+            <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
+            <dd>{dictionary.description || ''}</dd>
+            {#if dictionary.uriName}
+              <dd>
+                {#if dictionary.uri}
+                  <VscodeLink href={dictionary.uri} on:click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                    >{dictionary.uriName}</VscodeLink
+                  >
+                {:else}
+                  {dictionary.uriName}
+                {/if}
+              </dd>
+            {/if}
+          </dl>
+        </li>
+      {/each}
+    </ul>
+  {/if}
+
+  {#if unusedDictionaries && unusedDictionaries.length}
+    <h2>Other Dictionaries</h2>
+    <ul>
+      {#each unusedDictionaries as dictionary}
         <li>
           <dl class="dictionary-entry">
             <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>

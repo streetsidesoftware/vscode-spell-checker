@@ -57,7 +57,7 @@ export function createLanguageStatus(): Disposable {
         enabled && flaggedCount && icons.push(`$(error) ${flaggedCount}`);
         enabled && warnCount && icons.push(`$(warning) ${warnCount}`);
         const icon = icons.join(' ');
-        issuesItem.severity = vscode.LanguageStatusSeverity.Information; // issues.length ? vscode.LanguageStatusSeverity.Warning : vscode.LanguageStatusSeverity.Information;
+        issuesItem.severity = vscode.LanguageStatusSeverity.Information; // enabled ? vscode.LanguageStatusSeverity.Information : vscode.LanguageStatusSeverity.Warning;
         issuesItem.text = `${icon} Spell`;
         const detailParts: string[] = [];
         if (enabled === false) {
@@ -67,8 +67,9 @@ export function createLanguageStatus(): Disposable {
             detailParts.push(`- File Type: \`${languageId}\` is NOT enabled.`);
         }
         if (response?.fileIsExcluded) {
-            const parts: string[] = ['Excluded'];
-            response.excludedBy?.forEach((excludedBy) => parts.push(`- ${excludedBy.name}`));
+            const parts: string[] = [];
+            response.excludedBy?.forEach((excludedBy) => parts.push(`- Excluded by ${excludedBy.name}`));
+            detailParts.push(...parts);
         }
         issuesItem.detail = detailParts.length ? detailParts.join('\n') : undefined;
         issuesItem.command = { command: knownCommands['cspell.showActionsMenu'], title: 'menu' };
