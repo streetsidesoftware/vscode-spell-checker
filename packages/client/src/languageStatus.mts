@@ -26,7 +26,7 @@ export function createLanguageStatus(): Disposable {
             e.affectsConfiguration('cSpell') && queueUpdate();
         }),
     );
-    dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow(false)));
+    dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow()));
 
     updateNow();
 
@@ -40,7 +40,8 @@ export function createLanguageStatus(): Disposable {
 
     function updateIssues(response: ServerResponseIsSpellCheckEnabledForFile | undefined) {
         const id = 'cspell-issues';
-        const enabled = response?.fileEnabled;
+        const { fileEnabled, languageIdEnabled, languageId = '' } = response || {};
+        const enabled = fileEnabled && languageIdEnabled;
         const document = vscode.window.activeTextEditor?.document;
         const issues = document ? getIssueTracker().getSpellingIssues(document.uri) : undefined;
         const stats: Partial<IssuesStats> = issues?.getStats() || {};
@@ -58,11 +59,18 @@ export function createLanguageStatus(): Disposable {
         const icon = icons.join(' ');
         issuesItem.severity = vscode.LanguageStatusSeverity.Information; // issues.length ? vscode.LanguageStatusSeverity.Warning : vscode.LanguageStatusSeverity.Information;
         issuesItem.text = `${icon} Spell`;
+        const detailParts: string[] = [];
+        if (enabled === false) {
+            detailParts.push('- Spell checking is NOT enabled for this file.');
+        }
+        if (languageIdEnabled === false) {
+            detailParts.push(`- File Type: \`${languageId}\` is NOT enabled.`);
+        }
         if (response?.fileIsExcluded) {
             const parts: string[] = ['Excluded'];
             response.excludedBy?.forEach((excludedBy) => parts.push(`- ${excludedBy.name}`));
-            issuesItem.detail = parts.join('\n');
         }
+        issuesItem.detail = detailParts.length ? detailParts.join('\n') : undefined;
         issuesItem.command = { command: knownCommands['cspell.showActionsMenu'], title: 'menu' };
     }
 
