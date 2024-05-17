@@ -19,9 +19,9 @@ import { isDefined, uniqueFilter } from './util/index.js';
  */
 export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): SpellingDiagnostic[] {
     const issueTracker = getDependencies().issueTracker;
-    const diags = (docUri && issueTracker.getSpellingIssues(docUri))?.map((issue) => issue.diag) || [];
-    const cSpellDiags = filterDiags(diags).filter((d) => d.data?.issueType === issueType || (!d.data?.issueType && !issueType));
-    return cSpellDiags;
+    if (!docUri) return [];
+    const collection = issueType !== undefined ? issueTracker.getIssuesByIssueType(issueType, docUri) : issueTracker.getIssues(docUri);
+    return collection?.map((issue) => issue.diag) || [];
 }
 
 export function filterDiags<D extends Diagnostic>(diags: readonly D[], source = diagnosticSource): D[] {

@@ -4,28 +4,26 @@ import type { Disposable } from 'vscode';
 import vscode from 'vscode';
 
 import type { ServerResponseIsSpellCheckEnabledForFile } from './client/client.mjs';
+import { knownCommands } from './commands.mjs';
 import { getClient, getIssueTracker } from './di.mjs';
-import type { CSpellSettings } from './settings/CSpellSettings.mjs';
-import { ConfigFields } from './settings/index.mjs';
+import type { IssuesStats } from './issueTracker.mjs';
 import { handleErrors } from './util/errors.js';
 
 const showLanguageStatus = true;
-const alwaysShowFiletype = true;
 
 export function createLanguageStatus(): Disposable {
     const dList = createDisposableList();
     if (!showLanguageStatus) return dList;
 
-    const statusIds = new Set<string>();
     const statusItems = new Map<string, vscode.LanguageStatusItem>();
     let pendingTimeout: NodeJS.Timeout | undefined = undefined;
-    let showLanguageStatusFields = getShowLanguageStatusFields();
+    let isEnabledResponse: ServerResponseIsSpellCheckEnabledForFile | undefined = undefined;
+    let currDocument: vscode.TextDocument | undefined = undefined;
 
     dList.push(vscode.window.onDidChangeActiveTextEditor(queueUpdate));
     dList.push(
         vscode.workspace.onDidChangeConfiguration((e) => {
             e.affectsConfiguration('cSpell') && queueUpdate();
-            showLanguageStatusFields = getShowLanguageStatusFields();
         }),
     );
     dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow(false)));
@@ -40,77 +38,46 @@ export function createLanguageStatus(): Disposable {
         return item;
     }
 
-    function deleteItem(...ids: string[]) {
-        for (const id of ids) {
-            const item = statusItems.get(id);
-            item?.dispose();
-            statusItems.delete(id);
-            dList.delete(item);
-        }
-    }
-
-    function getUpdateCheckedStatusItem(id: string) {
-        statusIds.add(id);
-        return getItem(id);
-    }
-
-    function updateChecked(response: ServerResponseIsSpellCheckEnabledForFile | undefined) {
-        const document = vscode.window.activeTextEditor?.document;
-        if (!document || !response) {
-            deleteItem(...statusIds);
-            return;
-        }
-
-        // file type
-        if ((!response.languageIdEnabled || alwaysShowFiletype) && showLanguageStatusFields.fileType) {
-            const fileTypeItem = getUpdateCheckedStatusItem('cspell-file-type');
-            fileTypeItem.name = 'Spell';
-            fileTypeItem.severity = response.languageIdEnabled
-                ? vscode.LanguageStatusSeverity.Information
-                : vscode.LanguageStatusSeverity.Warning;
-            fileTypeItem.text = `Spell Checker is ${response.languageIdEnabled ? 'enabled' : 'disabled'} for ${document.languageId}`;
-            fileTypeItem.command = commandEnableFileType(document.uri, document.languageId, !response.languageIdEnabled);
-        } else {
-            deleteItem('cspell-file-type');
-        }
-
-        if (!response.schemeIsAllowed && showLanguageStatusFields.scheme) {
-            const fileTypeItem = getUpdateCheckedStatusItem('cspell-scheme');
-            fileTypeItem.name = 'Scheme';
-            fileTypeItem.severity = vscode.LanguageStatusSeverity.Information;
-            fileTypeItem.text = 'Scheme is not allowed';
-        } else {
-            deleteItem('cspell-scheme');
-        }
-    }
-
-    function updateIssues() {
+    function updateIssues(response: ServerResponseIsSpellCheckEnabledForFile | undefined) {
         const id = 'cspell-issues';
+        const enabled = response?.fileEnabled;
         const document = vscode.window.activeTextEditor?.document;
         const issues = document ? getIssueTracker().getSpellingIssues(document.uri) : undefined;
-        if (!issues?.length || !showLanguageStatusFields.issues) {
-            deleteItem(id);
-            return;
-        }
-        const stats = issues.getStats();
+        const stats: Partial<IssuesStats> = issues?.getStats() || {};
         const issuesItem = getItem(id);
         issuesItem.name = 'Issues';
+        const icons = [];
+        const issuesCount = stats.spelling || 0;
+        const flaggedCount = stats.flagged || 0;
+        const warnCount = issuesCount - flaggedCount;
+        enabled === undefined && icons.push('$(repo-sync)');
+        enabled === false && icons.push('$(exclude)');
+        enabled && !issuesCount && icons.push('$(check)');
+        enabled && flaggedCount && icons.push(`$(error) ${flaggedCount}`);
+        enabled && warnCount && icons.push(`$(warning) ${warnCount}`);
+        const icon = icons.join(' ');
         issuesItem.severity = vscode.LanguageStatusSeverity.Information; // issues.length ? vscode.LanguageStatusSeverity.Warning : vscode.LanguageStatusSeverity.Information;
-        issuesItem.text = `${stats.spelling ? '$(warning)' : '$(check)'} ${stats.spelling} Spelling Issues`;
-        const parts = [];
-        stats.flagged && parts.push(`Flagged: ${stats.flagged}`);
-        issuesItem.detail = parts.join('\n');
-        issuesItem.command = { command: 'cSpell.openIssuesPanel', title: 'open' };
+        issuesItem.text = `${icon} Spell`;
+        if (response?.fileIsExcluded) {
+            const parts: string[] = ['Excluded'];
+            response.excludedBy?.forEach((excludedBy) => parts.push(`- ${excludedBy.name}`));
+            issuesItem.detail = parts.join('\n');
+        }
+        issuesItem.command = { command: knownCommands['cspell.showActionsMenu'], title: 'menu' };
     }
 
     function updateNow(requestSettings = true) {
         if (requestSettings) {
             const document = vscode.window.activeTextEditor?.document;
+            if (document !== currDocument) {
+                currDocument = document;
+                isEnabledResponse = undefined;
+            }
             handleErrors(document ? getClient().isSpellCheckEnabled(document) : Promise.resolve(undefined), 'Language Status').then(
-                updateChecked,
+                (response) => updateIssues((isEnabledResponse = response)),
             );
         }
-        updateIssues();
+        updateIssues(isEnabledResponse);
     }
 
     function queueUpdate() {
@@ -122,31 +89,4 @@ export function createLanguageStatus(): Disposable {
             updateNow();
         }, 100);
     }
-}
-
-function commandEnableFileType(uri: vscode.Uri, languageId: string, enable: boolean) {
-    const cmd = enable
-        ? command('cSpell.enableCurrentFileType', `enable`, `Enable Spell Checking for ${languageId} files.`)
-        : command('cSpell.disableCurrentFileType', `disable`, `Disable Spell Checking for ${languageId} files.`);
-    cmd.arguments = [languageId, uri];
-    return cmd;
-}
-
-function command(command: string, title: string, tooltip?: string): vscode.Command {
-    return {
-        command,
-        title,
-        tooltip,
-    };
-}
-
-function getShowLanguageStatusFields() {
-    const showLanguageStatusFields: Partial<Exclude<CSpellSettings[typeof ConfigFields.languageStatusFields], undefined>> = vscode.workspace
-        .getConfiguration('cSpell')
-        .get(ConfigFields.languageStatusFields) || {
-        fileType: true,
-        scheme: true,
-        issues: true,
-    };
-    return showLanguageStatusFields;
 }

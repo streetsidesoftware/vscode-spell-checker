@@ -60,7 +60,7 @@
       "editor/context": [
         {
           "command": "cSpell.suggestSpellingCorrections",
-          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && cSpell.showDecorations",
+          "when": "!editorReadonly && editorTextFocus && config.cSpell.showSuggestionsLinkInEditorContextMenu && cSpell.editorMenuContext.showSuggestions && cSpell.context.showDecorations",
           "group": "A_cspell@000"
         },
         {
@@ -70,12 +70,12 @@
         },
         {
           "command": "cSpell.show",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && !cSpell.showDecorations",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && !cSpell.context.showDecorations",
           "group": "A_cspell@002"
         },
         {
           "command": "cSpell.hide",
-          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && cSpell.showDecorations",
+          "when": "editorTextFocus && config.cSpell.showCommandsInEditorContextMenu && cSpell.editorMenuContext.hasIssues && cSpell.context.showDecorations",
           "group": "A_cspell@002"
         }
       ],
