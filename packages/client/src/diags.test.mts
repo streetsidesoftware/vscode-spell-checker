@@ -21,7 +21,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getSpellingIssues: vi.fn(implGetIssues) },
+                    issueTracker: { rawIssues: vi.fn(implGetIssues) },
                 }) as any,
         );
     });
@@ -34,7 +34,7 @@ describe('Validate diags', () => {
         mockGetDependencies.mockImplementation(
             () =>
                 ({
-                    issueTracker: { getSpellingIssues: vi.fn(() => []) },
+                    issueTracker: { rawIssues: vi.fn(() => []) },
                 }) as any,
         );
         const uri = Uri.parse(import.meta.url);
@@ -114,12 +114,13 @@ describe('Validate text extractors', () => {
     });
 });
 
-function implGetIssues(): [Uri, SpellingCheckerIssue[]][];
-function implGetIssues(uri: Uri): SpellingCheckerIssue[];
-function implGetIssues(uri?: Uri): [Uri, SpellingCheckerIssue[]][] | SpellingCheckerIssue[] {
+function implGetIssues(uri?: Uri): SpellingCheckerIssue[] {
+    const diags = sampleDiags()
+        .flatMap(([, diags]) => diags)
+        .filter((d) => d.diag.source === 'cSpell');
     // console.error('implGetDiagnostics %s', uri);
-    if (!uri) return sampleDiags();
-    return sampleDiags()[0][1];
+    if (!uri) return diags;
+    return diags.filter((d) => d.uri.toString() === uri.toString());
 }
 
 function sampleDiags(): [Uri, SpellingCheckerIssue[]][] {

@@ -20,7 +20,8 @@ import { isDefined, uniqueFilter } from './util/index.js';
 export function getCSpellDiags(docUri: Uri | undefined, issueType?: IssueType): SpellingDiagnostic[] {
     const issueTracker = getDependencies().issueTracker;
     if (!docUri) return [];
-    const collection = issueType !== undefined ? issueTracker.getIssuesByIssueType(issueType, docUri) : issueTracker.getIssues(docUri);
+    const issues = issueTracker.rawIssues(docUri);
+    const collection = issueType !== undefined ? issues?.filter((issue) => issue.isIssueType(issueType)) : issues;
     return collection?.map((issue) => issue.diag) || [];
 }
 

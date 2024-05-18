@@ -37,7 +37,7 @@ export class IssueTracker {
     }
 
     public getIssues(uri?: Uri, predicate?: (issue: SpellingCheckerIssue) => boolean): SpellingCheckerIssuesCollection | undefined {
-        const issues = this.#getIssues(uri);
+        const issues = this.rawIssues(uri);
         if (!issues) return undefined;
         if (!predicate) return new SpellingCheckerIssuesCollection(issues);
         return new SpellingCheckerIssuesCollection(issues.filter(predicate));
@@ -116,7 +116,7 @@ export class IssueTracker {
         };
     }
 
-    #getIssues(uri?: Uri): SpellingCheckerIssue[] | undefined {
+    rawIssues(uri?: Uri): SpellingCheckerIssue[] | undefined {
         if (uri) {
             const fileIssues = this.issues.get(uri.toString());
             return fileIssues?.issues;
