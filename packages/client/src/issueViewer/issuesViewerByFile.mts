@@ -555,8 +555,8 @@ type SpellingIssue = SpellingCheckerIssue;
 
 function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
     const fileIssues: FileIssue[] = context.issueTracker
-        .getSpellingIssues()
-        .map(([uri, issues]) => ({ uri, doc: findTextDocument(uri), issues: issues.getSpellingIssues() }));
+        .getSpellingIssueByFile()
+        .map((file) => ({ ...file, doc: findTextDocument(file.uri) }));
     const groupedByFile = groupIssues(fileIssues);
 
     const comp = new Intl.Collator().compare;

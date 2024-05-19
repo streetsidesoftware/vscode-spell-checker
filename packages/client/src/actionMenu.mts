@@ -1,4 +1,5 @@
 import { isDefined } from '@internal/common-utils';
+import { ConfigFields } from 'code-spell-checker-server/lib';
 import { createDisposableList } from 'utils-disposables';
 import type { Disposable, QuickPickItem } from 'vscode';
 import vscode from 'vscode';
@@ -6,7 +7,10 @@ import vscode from 'vscode';
 import { knownCommands } from './commands.mjs';
 import { getClient } from './di.mjs';
 import { updateEnabledFileTypeForResource, updateEnabledSchemesResource } from './settings/settings.mjs';
-import { handleErrors, logErrors } from './util/errors.js';
+import { handleErrors } from './util/errors.js';
+
+const debug = false;
+const consoleLog = debug ? console.log : () => undefined;
 
 export interface ActionsMenuOptions {
     areIssuesVisible: () => boolean;
@@ -14,16 +18,18 @@ export interface ActionsMenuOptions {
 
 export function registerActionsMenu(options: ActionsMenuOptions): Disposable {
     const dList = createDisposableList();
-    dList.push(vscode.commands.registerCommand('cspell.showActionsMenu', () => quickPickMenu(options)));
+    dList.push(vscode.commands.registerCommand('cspell.showActionsMenu', () => actionMenu(options)));
     return dList;
 }
 
+type Action = () => Promise<void>;
+
 interface ActionMenuItem extends QuickPickItem {
     resourceUri?: vscode.Uri;
-    action?: (() => void | Promise<void>) | undefined;
+    action?: Action | undefined;
 }
 
-async function quickPickMenu(options: ActionsMenuOptions) {
+async function actionMenu(options: ActionsMenuOptions) {
     const document = vscode.window.activeTextEditor?.document;
     const isEnabledForDoc = await handleErrors(
         document ? getClient().getConfigurationForDocument(document, {}) : Promise.resolve(undefined),
@@ -38,9 +44,12 @@ async function quickPickMenu(options: ActionsMenuOptions) {
         ...itemsConfigFiles(isEnabledForDoc?.configFiles.map((uri) => vscode.Uri.parse(uri))),
         { label: '', kind: vscode.QuickPickItemKind.Separator },
         itemIssuesShowHide(options),
-        // menuItem({ label: '$(book) Dictionaries...' }),
+        // itemDictionaries(),
         itemCommand({ title: '$(file) Show File Info...', command: knownCommands['cSpell.openFileInfoView'] }),
-        itemCommand({ title: '$(console) Open Spell Checker REPL Console.', command: knownCommands['cSpell.createCSpellTerminal'] }),
+        itemCommand({
+            title: '$(console) Open Spell Checker REPL Console.',
+            command: knownCommands['cSpell.createCSpellTerminal'],
+        }),
         itemCommand({ title: '$(issues) Open Spelling Issues Panel.', command: 'cSpell.openIssuesPanel' }),
         itemSeparator(),
         itemCommand({
@@ -50,31 +59,137 @@ async function quickPickMenu(options: ActionsMenuOptions) {
         }),
         itemCommand({ title: '$(gear) Edit Settings...', command: 'workbench.action.openSettings', arguments: ['cSpell'] }),
     ].filter(isDefined);
-    const quickPick = vscode.window.createQuickPick<QuickPickItem>();
-    quickPick.title = 'Spell Checker Actions Menu';
-    quickPick.items = items;
-    quickPick.onDidChangeSelection((selection) => {
-        console.log('onDidChangeSelection', selection);
-    });
-    quickPick.onDidChangeActive((active) => {
-        console.log('onDidChangeActive', active);
-    });
-    quickPick.onDidAccept(() => {
-        console.log('onDidAccept', quickPick.activeItems);
-        const item = quickPick.activeItems[0];
-        if (item instanceof MenuItem && item.action) {
-            logErrors(Promise.resolve(item.action()), 'quickPickMenu');
+
+    return quickPickMenu({ items, title: 'Spell Checker Actions Menu' }).catch(() => undefined);
+}
+
+type QuickPick = vscode.QuickPick<QuickPickItem>;
+
+interface QuickPickMenuOptions extends Partial<Pick<QuickPick, 'matchOnDescription' | 'matchOnDetail'>> {
+    title: string;
+    items: QuickPickItem[];
+    selected?: QuickPickItem | undefined;
+    enableBackButton?: boolean;
+}
+
+async function quickPickMenu(options: QuickPickMenuOptions): Promise<void> {
+    options = { ...options };
+    let active = true;
+    while (active) {
+        try {
+            active = false;
+            const result = await openMenu(options);
+            if (result instanceof MenuItem) {
+                options.selected = result;
+                await result.action();
+                continue;
+            }
+            if (typeof result === 'function') {
+                await result();
+                continue;
+            }
+            return;
+        } catch (e) {
+            if (e === NavigationStep.back) {
+                consoleLog('Going back', options.title);
+                throw NavigationStep.redraw;
+            }
+            if (e === NavigationStep.cancel) {
+                consoleLog('Cancel', options.title);
+                return;
+            }
+            if (e === NavigationStep.redraw) {
+                consoleLog('Redraw', options.title);
+                active = true;
+                continue;
+            }
+            throw e;
         }
-        quickPick.dispose();
-    });
-    quickPick.onDidHide(() => {
-        console.log('onDidHide');
-    });
-    quickPick.show();
+    }
+}
+
+async function openMenu(options: QuickPickMenuOptions): Promise<QuickPickItem | Action> {
+    const instanceId = performance.now();
+    const dList = createDisposableList();
+    try {
+        return await new Promise<QuickPickItem | Action>((resolve, reject) => {
+            const quickPick = vscode.window.createQuickPick<QuickPickItem>();
+            dList.push(quickPick);
+            quickPick.title = options.title;
+            quickPick.items = options.items;
+            if (options.enableBackButton) {
+                quickPick.buttons = [vscode.QuickInputButtons.Back];
+            }
+            if (options.selected) {
+                quickPick.activeItems = [options.selected];
+            }
+            if (options.matchOnDescription !== undefined) quickPick.matchOnDescription = options.matchOnDescription;
+            if (options.matchOnDetail !== undefined) quickPick.matchOnDetail = options.matchOnDetail;
+            dList.push(
+                quickPick.onDidChangeSelection((selection) => {
+                    consoleLog('onDidChangeSelection', selection);
+                }),
+                quickPick.onDidChangeActive((active) => {
+                    consoleLog('onDidChangeActive', active);
+                }),
+                quickPick.onDidTriggerButton((button) => {
+                    consoleLog('onDidTriggerButton', button);
+                    if (button === vscode.QuickInputButtons.Back) {
+                        reject(NavigationStep.back);
+                    }
+                }),
+                quickPick.onDidTriggerItemButton((e) => {
+                    consoleLog('onDidTriggerItemButton', e);
+                    const button = e.button;
+                    if (button instanceof ActionButtonItem && button.action) {
+                        resolve(button.action);
+                    }
+                }),
+                quickPick.onDidAccept(() => {
+                    consoleLog('onDidAccept', quickPick.selectedItems);
+                    const item = quickPick.selectedItems[0];
+                    resolve(item);
+                }),
+                quickPick.onDidHide(() => {
+                    consoleLog(`onDidHide: ${options.title} - ${instanceId}`);
+                    reject(NavigationStep.cancel);
+                }),
+            );
+            consoleLog(`Showing menu: ${options.title} - ${instanceId}`);
+            quickPick.show();
+        });
+    } finally {
+        consoleLog(`Disposing of menu: ${options.title} - ${instanceId}`);
+        dList.dispose();
+    }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+class NavigationStep {
+    static back = new NavigationStep();
+    static cancel = new NavigationStep();
+    static redraw = new NavigationStep();
+}
+
+class ActionButtonItem implements vscode.QuickInputButton {
+    constructor(
+        public iconPath: vscode.ThemeIcon,
+        public tooltip?: string | undefined,
+        public action?: Action | undefined,
+    ) {}
+}
+
+class CommandButtonItem extends ActionButtonItem {
+    constructor(
+        public iconPath: vscode.ThemeIcon,
+        public command: vscode.Command,
+    ) {
+        super(new vscode.ThemeIcon('gear'), command.tooltip ?? command.title, commandFn(command));
+    }
 }
 
 class MenuItem implements ActionMenuItem {
-    #action: () => void | Promise<void>;
+    #action: Action;
     kind?: QuickPickItem['kind'] | undefined;
     detail?: string | undefined;
     picked?: boolean | undefined;
@@ -85,16 +200,16 @@ class MenuItem implements ActionMenuItem {
     constructor(
         public label: string,
         public description?: string,
-        action?: (() => void | Promise<void>) | undefined,
+        action?: Action | undefined,
     ) {
-        this.#action = action || (() => undefined);
+        this.#action = action || (() => Promise.resolve(undefined));
     }
 
     get action() {
         return this.#action;
     }
 
-    set action(fn: () => void | Promise<void>) {
+    set action(fn: Action) {
         this.#action = fn;
     }
 }
@@ -104,25 +219,9 @@ class CommandMenuItem extends MenuItem {
         readonly command: vscode.Command,
         public description?: string,
     ) {
-        super(command.title, description, async () => {
-            await vscode.commands.executeCommand(this.command.command, ...(this.command.arguments || []));
-        });
+        super(command.title, description, commandFn(command));
     }
 }
-
-// function menuItem(item: QuickPickItem): MenuItem;
-// function menuItem(label: string, description?: string): MenuItem;
-// function menuItem(labelOrItem: string | QuickPickItem, description?: string): MenuItem {
-//     if (typeof labelOrItem === 'string') return new MenuItem(labelOrItem, description);
-//     const item = new MenuItem(labelOrItem.label, labelOrItem.description);
-//     item.kind = labelOrItem.kind;
-//     item.iconPath = labelOrItem.iconPath;
-//     item.alwaysShow = labelOrItem.alwaysShow;
-//     item.buttons = labelOrItem.buttons;
-//     item.detail = labelOrItem.detail;
-//     item.picked = labelOrItem.picked;
-//     return item;
-// }
 
 function itemCommand(command: vscode.Command, description?: string) {
     return new CommandMenuItem(command, description);
@@ -147,6 +246,13 @@ function itemDocFileType(uri: vscode.Uri | undefined, fileType: string | undefin
     };
     const item = new MenuItem(`${icon} ${enabled ? 'Disable' : 'Enable'} File Type:`, fileType, action);
     item.detail = `File Type: "${fileType}" is currently ${enabled ? 'enabled' : 'disabled'}.`;
+    item.buttons = [
+        new CommandButtonItem(new vscode.ThemeIcon('gear'), {
+            title: 'Edit Enable File Type in Settings',
+            command: 'workbench.action.openSettings',
+            arguments: [ConfigFields.enabledFileTypes],
+        }),
+    ];
     return item;
 }
 
@@ -158,6 +264,13 @@ function itemDocScheme(uri: vscode.Uri | undefined, schemeAllowed: boolean | und
     item.action = () => {
         return updateEnabledSchemesResource({ [uri.scheme]: !schemeAllowed }, uri);
     };
+    item.buttons = [
+        new CommandButtonItem(new vscode.ThemeIcon('gear'), {
+            title: 'Edit Enable Scheme in Settings',
+            command: 'workbench.action.openSettings',
+            arguments: [ConfigFields.enabledSchemes],
+        }),
+    ];
     return item;
 }
 
@@ -170,8 +283,27 @@ function itemsConfigFiles(configUris?: vscode.Uri[]) {
             vscode.workspace.asRelativePath(uri),
         );
         item.iconPath = vscode.ThemeIcon.File;
-        item.detail = uri.fsPath;
+        item.detail = vscode.workspace.asRelativePath(uri, true);
         item.resourceUri = uri;
         return item;
     });
+}
+
+// function itemDictionaries() {
+//     const item = new MenuItem('$(book) Dictionaries...', undefined, () => {
+//         const items: QuickPickItem[] = [
+//             { label: 'Add Dictionary', description: 'Add a new dictionary.', alwaysShow: true },
+//             itemSeparator(),
+//         ];
+//         return quickPickMenu({ items, enableBackButton: true, title: 'Dictionaries' });
+//     });
+//     return item;
+// }
+
+async function runCommand(command: vscode.Command) {
+    await vscode.commands.executeCommand(command.command, ...(command.arguments || []));
+}
+
+function commandFn(command: vscode.Command) {
+    return () => runCommand(command);
 }

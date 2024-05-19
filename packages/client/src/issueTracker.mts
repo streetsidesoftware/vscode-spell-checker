@@ -28,33 +28,27 @@ export class IssueTracker {
         this.disposables.push(workspace.onDidCloseTextDocument((doc) => this.handleDocClose(doc)));
     }
 
-    public getSpellingIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined;
-    public getSpellingIssues(uri?: undefined): [Uri, SpellingCheckerIssuesCollection][];
-    public getSpellingIssues(
-        uri?: Uri | undefined,
-    ): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
-        return uri
-            ? this.getIssues(uri, (issue) => issue.isIssueTypeSpelling())
-            : this.getIssues(undefined, (issue) => issue.isIssueTypeSpelling());
+    public getSpellingIssues(uri?: Uri): SpellingCheckerIssuesCollection | undefined {
+        return this.getIssues(uri, (issue) => issue.isIssueTypeSpelling());
     }
 
-    public getDirectiveIssues(uri: Uri): SpellingCheckerIssuesCollection | undefined {
+    public getDirectiveIssues(uri?: Uri): SpellingCheckerIssuesCollection | undefined {
         return this.getIssues(uri, (issue) => issue.isIssueTypeDirective());
     }
 
-    public getIssues(uri: Uri, predicate?: (issue: SpellingCheckerIssue) => boolean): SpellingCheckerIssuesCollection | undefined;
-    public getIssues(uri?: undefined, predicate?: (issue: SpellingCheckerIssue) => boolean): [Uri, SpellingCheckerIssuesCollection][];
-    public getIssues(
-        uri?: Uri,
-        predicate?: (issue: SpellingCheckerIssue) => boolean,
-    ): SpellingCheckerIssuesCollection | [Uri, SpellingCheckerIssuesCollection][] | undefined {
-        predicate ??= () => true;
-        if (!uri)
-            return [...this.issues.values()].map(
-                (d) => [d.uri, new SpellingCheckerIssuesCollection(d.issues.filter(predicate))] as [Uri, SpellingCheckerIssuesCollection],
-            );
-        const issues = this.issues.get(uri.toString())?.issues.filter(predicate);
-        return issues ? new SpellingCheckerIssuesCollection(issues) : undefined;
+    public getIssues(uri?: Uri, predicate?: (issue: SpellingCheckerIssue) => boolean): SpellingCheckerIssuesCollection | undefined {
+        const issues = this.rawIssues(uri);
+        if (!issues) return undefined;
+        if (!predicate) return new SpellingCheckerIssuesCollection(issues);
+        return new SpellingCheckerIssuesCollection(issues.filter(predicate));
+    }
+
+    public getSpellingIssueByFile(): FileIssues[] {
+        return [...this.issues.values()].map((f) => ({ ...f, issues: f.issues.filter((i) => i.isIssueTypeSpelling()) }));
+    }
+
+    public getIssuesByIssueType(issueType: IssueType, uri?: Uri): SpellingCheckerIssuesCollection | undefined {
+        return this.getIssues(uri, (issue) => issue.isIssueType(issueType));
     }
 
     public getIssueCount(uri?: Uri, predicate: (issue: SpellingCheckerIssue) => boolean = (issue) => issue.isIssueTypeSpelling()): number {
@@ -120,6 +114,14 @@ export class IssueTracker {
             document,
             issues: diag.diagnostics.map((d) => SpellingCheckerIssue.fromDiagnostic(document, d, diag.version || document.version)),
         };
+    }
+
+    rawIssues(uri?: Uri): SpellingCheckerIssue[] | undefined {
+        if (uri) {
+            const fileIssues = this.issues.get(uri.toString());
+            return fileIssues?.issues;
+        }
+        return [...this.issues.values()].flatMap((d) => d.issues);
     }
 
     getConfigurationTargets(uri: Uri) {
@@ -198,6 +200,10 @@ export class SpellingCheckerIssue {
      */
     isIssueTypeDirective(): boolean {
         return this.diag.data?.issueType === IssueType.directive;
+    }
+
+    isIssueType(issueType: IssueType): boolean {
+        return this.diag.data?.issueType === issueType;
     }
 
     /**

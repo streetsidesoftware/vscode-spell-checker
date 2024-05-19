@@ -41,7 +41,10 @@
   });
   $: settings = $queryResult.data;
   $: configFiles = settings?.configs.file?.configFiles;
+  $: excludedBy = settings?.configs.file?.excludedBy;
   $: dictionaries = settings?.configs.file?.dictionaries;
+  $: dictionariesInUse = new Set(dictionaries?.map((d) => d.name) || []);
+  $: unusedDictionaries = settings?.dictionaries.filter((d) => !dictionariesInUse.has(d.name));
   $: fileInfo = calcDisplayInfo($currentDoc || undefined, settings);
   $: languageIdEnabled = settings?.configs.file?.languageIdEnabled;
   $: languageId = settings?.configs.file?.languageId;
@@ -64,10 +67,11 @@
     const uriActual = fileConfig?.uriActual || fileConfig?.uri;
     const fileUrl = uriActual ? new URL(uriActual) : undefined;
     const blocked = fileConfig?.blockedReason;
+    const enabled = fileConfig?.fileEnabled && fileConfig?.languageIdEnabled && !fileConfig?.fileIsExcluded;
 
     info.push(
       { key: 'Name', value: name },
-      { key: 'Enabled', value: (fileConfig?.fileEnabled === undefined && 'n/a') || (fileConfig?.fileEnabled && 'Yes') || 'No' },
+      { key: 'Enabled', value: (enabled === undefined && 'n/a') || (enabled && 'Yes') || 'No' },
       // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
       // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
       { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },
@@ -94,20 +98,41 @@
       <dt>{entry.key}:</dt>
       <dd>{entry.value}</dd>
     {/each}
+  </dl>
+  <dl>
     {#if configFiles?.length}
       <dt>Config Files:</dt>
       <dd>
-        {#if configFiles.length > 1}
-          <ul>
-            {#each configFiles as configFile}
-              <li>
-                <VscodeLink href={configFile.uri} on:click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
-              </li>
-            {/each}
-          </ul>
-        {:else}
-          <VscodeLink href={configFiles[0].uri} on:click={() => openTextDocument(configFiles[0].uri)}>{configFiles[0].name}</VscodeLink>
-        {/if}
+        <ul>
+          {#each configFiles as configFile}
+            <li>
+              <VscodeLink href={configFile.uri} on:click={() => openTextDocument(configFile.uri)}>{configFile.name}</VscodeLink>
+            </li>
+          {/each}
+        </ul>
+      </dd>
+    {/if}
+    {#if excludedBy}
+      <dt>Excluded By</dt>
+      <dd>
+        <ul>
+          {#each excludedBy as excluded}
+            <li>
+              <dl>
+                <dt>{excluded.name}</dt>
+                <dd>Glob: {excluded.glob}</dd>
+                {#if excluded.configUri}
+                  <dd>
+                    Config File:
+                    <VscodeLink href={excluded.configUri} on:click={() => openTextDocument(excluded.configUri || '')}
+                      >{excluded.configUri?.split('/').slice(-2).join('/')}</VscodeLink
+                    >
+                  </dd>
+                {/if}
+              </dl>
+            </li>
+          {/each}
+        </ul>
       </dd>
     {/if}
   </dl>
@@ -147,6 +172,31 @@
       {/each}
     </ul>
   {/if}
+
+  {#if unusedDictionaries && unusedDictionaries.length}
+    <h2>Other Dictionaries</h2>
+    <ul>
+      {#each unusedDictionaries as dictionary}
+        <li>
+          <dl class="dictionary-entry">
+            <dt>{dictionary.name} <sup>{dictionary.locales.join(', ')}</sup></dt>
+            <dd>{dictionary.description || ''}</dd>
+            {#if dictionary.uriName}
+              <dd>
+                {#if dictionary.uri}
+                  <VscodeLink href={dictionary.uri} on:click={() => dictionary.uri && openTextDocument(dictionary.uri)}
+                    >{dictionary.uriName}</VscodeLink
+                  >
+                {:else}
+                  {dictionary.uriName}
+                {/if}
+              </dd>
+            {/if}
+          </dl>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </section>
 
 <style>
@@ -166,7 +216,7 @@
     opacity: 80%;
   }
 
-  @media (min-width: 240px) {
+  @media (min-width: 230px) {
     dl.file-info {
       display: grid;
       grid-gap: 4px 1em;
@@ -178,7 +228,7 @@
     }
 
     .file-info dd {
-      margin: 0;
+      margin: 0.25em 0;
       word-break: break-word;
       /* grid-column-start: 2; */
     }
@@ -190,13 +240,27 @@
     }
   }
 
+  dd ul {
+    margin-block-start: 0.25em;
+    margin-block-end: 0.5em;
+    padding-inline-start: 1em;
+  }
+
+  dd ul dd {
+    margin: 0.25em 0;
+  }
+
   .dictionary-entry dd {
     margin-inline-start: 0;
   }
 
   dl {
-    margin-block-start: 0;
+    margin-block-start: 0.25em;
     margin-block-end: 0.5em;
+  }
+
+  dl + dl {
+    margin-block-start: 0em;
   }
 
   ul {

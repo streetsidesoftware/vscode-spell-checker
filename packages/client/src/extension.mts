@@ -5,6 +5,7 @@ import type { ExtensionContext } from 'vscode';
 import * as vscode from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
+import { registerActionsMenu } from './actionMenu.mjs';
 import * as addWords from './addWords.mjs';
 import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
 import { CSpellClient } from './client/index.mjs';
@@ -23,7 +24,6 @@ import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
 import { createLanguageStatus } from './languageStatus.mjs';
 import * as modules from './modules.mjs';
-import { registerActionsMenu } from './actionMenu.mjs';
 import { createTerminal, registerTerminalProfileProvider } from './repl/index.mjs';
 import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
@@ -113,7 +113,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         vscode.workspace.onDidChangeConfiguration(handleConfigChange),
         vscode.window.onDidChangeActiveTextEditor(handleOnDidChangeActiveTextEditor),
         vscode.window.onDidChangeVisibleTextEditors(handleOnDidChangeVisibleTextEditors),
-        vscode.languages.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
+        issueTracker.onDidChangeDiagnostics(handleOnDidChangeDiagnostics),
         decorator,
         decoratorExclusions,
         registerSpellCheckerCodeActionProvider(issueTracker),

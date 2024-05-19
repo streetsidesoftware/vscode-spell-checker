@@ -463,10 +463,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 }
 
 function collectIssues(context: Context): WordIssueTreeItem[] {
-    const issues = context.issueTracker
-        .getSpellingIssues()
-        .flatMap(([_, issues]) => issues.issues)
-        .filter((issue) => issue.isIssueTypeSpelling());
+    const issues = context.issueTracker.getSpellingIssues() || [];
     const groupedByWord = new Map<string, WordIssueTreeItem>();
     const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
