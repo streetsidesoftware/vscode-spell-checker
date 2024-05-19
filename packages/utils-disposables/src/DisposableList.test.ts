@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import { type DisposableLike, disposeOf, isDisposableHybrid, isDisposed } from './disposable.js';
 import { createDisposableList, DisposableList, InheritableDisposable } from './DisposableList.js';
@@ -78,7 +78,7 @@ describe('disposable', () => {
     });
 
     test('delete', () => {
-        const dispose = jest.fn();
+        const dispose = vi.fn();
         const list = createDisposableList();
         list.push(dispose);
         expect(list.disposables).toContain(dispose);
@@ -89,7 +89,7 @@ describe('disposable', () => {
     });
 
     test('add', () => {
-        const dispose = jest.fn();
+        const dispose = vi.fn();
         const list = createDisposableList();
         expect(list.add(dispose)).toBe(true);
         expect(list.add(dispose)).toBe(false);
