@@ -10,3 +10,6 @@ print('Hello, world!')
 # We have lines without errors.
 # It is important for checking the minimap.
 # But it is not obvious what should happen.
+
+# mycodingproject is in our own dictionary.
+# codding errors.

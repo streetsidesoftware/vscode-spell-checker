@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import type { DisposableHybrid, DisposeFn, ExcludeDisposableHybrid } from './disposable.js';
 import {
@@ -18,7 +18,7 @@ import { InheritableDisposable } from './DisposableList.js';
 
 describe('disposable', () => {
     test('createDisposable', () => {
-        const dispose = jest.fn();
+        const dispose = vi.fn();
         const myDisposable = createDisposable(dispose);
 
         function use() {
@@ -29,7 +29,7 @@ describe('disposable', () => {
     });
 
     test('createDisposable named', () => {
-        const dispose = jest.fn();
+        const dispose = vi.fn();
         const myDisposable = createDisposable(dispose, undefined, 'MyDisposable');
 
         function use() {
@@ -44,9 +44,9 @@ describe('disposable', () => {
 
     test('createDisposable thisArg', () => {
         const myObj = {
-            callMe: jest.fn(),
+            callMe: vi.fn(),
         };
-        const dispose = jest.fn(myObj.callMe);
+        const dispose = vi.fn(myObj.callMe);
         const myDisposable = createDisposable(dispose, myObj);
 
         function use() {
@@ -59,9 +59,9 @@ describe('disposable', () => {
 
     test('injectDisposable', () => {
         const myObj = {
-            callMe: jest.fn(),
+            callMe: vi.fn(),
         };
-        const dispose = jest.fn(myObj.callMe);
+        const dispose = vi.fn(myObj.callMe);
         const myDisposable = injectDisposable(myObj, dispose);
 
         function use() {
@@ -74,10 +74,10 @@ describe('disposable', () => {
 
     test('injectDisposable into Disposable type', () => {
         const myObj = {
-            callMe: jest.fn(),
+            callMe: vi.fn(),
         };
         type MyObj = typeof myObj & DisposableHybrid;
-        const dispose = jest.fn(myObj.callMe);
+        const dispose = vi.fn(myObj.callMe);
         const myDisposable: MyObj = injectDisposable<ExcludeDisposableHybrid<MyObj>>(myObj, dispose);
 
         function use() {
@@ -89,7 +89,7 @@ describe('disposable', () => {
     });
 
     test('double disposed', () => {
-        const dispose = jest.fn();
+        const dispose = vi.fn();
         const myDisposable = createDisposable(dispose);
 
         function use() {
@@ -197,8 +197,8 @@ describe('disposable', () => {
 
 describe('disposable debug', () => {
     const logger = {
-        debug: jest.fn(),
-        warn: jest.fn(),
+        debug: vi.fn(),
+        warn: vi.fn(),
     };
 
     beforeEach(() => {
