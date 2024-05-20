@@ -3984,7 +3984,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.3",
     "rollup": "^4.17.2",
-    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.9.0",
