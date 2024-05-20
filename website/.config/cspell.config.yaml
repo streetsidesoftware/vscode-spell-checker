@@ -1,0 +1,9 @@
+ignorePaths:
+  - '*.svg'
+  - '*.xml'
+  - '/build'
+dictionaryDefinitions:
+  - name: website
+    path: ./website-terms.txt
+dictionaries:
+  - website

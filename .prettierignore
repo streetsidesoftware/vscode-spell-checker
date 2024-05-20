@@ -21,3 +21,6 @@ packages/webview-ui/public/build
 **/*.schema.json
 **/*.lock
 **/*.log
+website/build/**
+website/node_modules
+website/.docusaurus
