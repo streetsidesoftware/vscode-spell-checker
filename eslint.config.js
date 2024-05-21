@@ -40,6 +40,10 @@ export default tsEslint.config(
             'packages/*/dist/**',
             'packages/*/out/**',
             'packages/client/server/**',
+            'website/build/**',
+            'website/node_modules/**',
+            'website/.docusaurus/**',
+            'website/**',
         ],
     },
     {

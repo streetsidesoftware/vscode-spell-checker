@@ -1,0 +1,4 @@
+autofix
+Infima
+typecheck
+vsix
