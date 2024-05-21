@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>VS Code Spell Checker Blog</title>
-        <link>https://streetsidesoftware.com/vscode-spell-checker/docs2/blog</link>
+        <link>https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog</link>
         <description>VS Code Spell Checker Blog</description>
         <lastBuildDate>Mon, 20 May 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
@@ -10,8 +10,8 @@
         <language>en</language>
         <item>
             <title><![CDATA[MDX Blog Post]]></title>
-            <link>https://streetsidesoftware.com/vscode-spell-checker/docs2/blog/mdx-blog-post</link>
-            <guid>https://streetsidesoftware.com/vscode-spell-checker/docs2/blog/mdx-blog-post</guid>
+            <link>https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog/mdx-blog-post</link>
+            <guid>https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog/mdx-blog-post</guid>
             <pubDate>Mon, 20 May 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Blog posts support Docusaurus Markdown features, such as MDX.]]></description>
             <content:encoded><![CDATA[<p>Blog posts support <a href="https://docusaurus.io/docs/markdown-features" target="_blank" rel="noopener noreferrer">Docusaurus Markdown features</a>, such as <a href="https://mdxjs.com/" target="_blank" rel="noopener noreferrer">MDX</a>.</p>

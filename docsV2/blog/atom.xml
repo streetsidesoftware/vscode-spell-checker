@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://streetsidesoftware.com/vscode-spell-checker/docs2/blog</id>
+    <id>https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog</id>
     <title>VS Code Spell Checker Blog</title>
     <updated>2024-05-20T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://streetsidesoftware.com/vscode-spell-checker/docs2/blog"/>
+    <link rel="alternate" href="https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog"/>
     <subtitle>VS Code Spell Checker Blog</subtitle>
-    <icon>https://streetsidesoftware.com/vscode-spell-checker/docs2/img/favicon.ico</icon>
+    <icon>https://streetsidesoftware.com/vscode-spell-checker/docsV2/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[MDX Blog Post]]></title>
-        <id>https://streetsidesoftware.com/vscode-spell-checker/docs2/blog/mdx-blog-post</id>
-        <link href="https://streetsidesoftware.com/vscode-spell-checker/docs2/blog/mdx-blog-post"/>
+        <id>https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog/mdx-blog-post</id>
+        <link href="https://streetsidesoftware.com/vscode-spell-checker/docsV2/blog/mdx-blog-post"/>
         <updated>2024-05-20T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Blog posts support Docusaurus Markdown features, such as MDX.]]></summary>
         <content type="html"><![CDATA[<p>Blog posts support <a href="https://docusaurus.io/docs/markdown-features" target="_blank" rel="noopener noreferrer">Docusaurus Markdown features</a>, such as <a href="https://mdxjs.com/" target="_blank" rel="noopener noreferrer">MDX</a>.</p>

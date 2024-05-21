@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[891],{6806:s=>{s.exports=JSON.parse('{"tags":[{"label":"docusaurus","permalink":"/vscode-spell-checker/docs2/blog/tags/docusaurus","count":1}]}')}}]);

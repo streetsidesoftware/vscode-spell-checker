@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[91],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"MDX Blog Post","permalink":"/vscode-spell-checker/docs2/blog/mdx-blog-post","unlisted":false}]}')}}]);
