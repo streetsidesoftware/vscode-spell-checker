@@ -15,8 +15,10 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build Website
+  build-and-deploy-website:
+    name: Build and Deploy Website
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
