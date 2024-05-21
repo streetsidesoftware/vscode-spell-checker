@@ -1,0 +1,11 @@
+{
+  "name": "docs_scripts",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@types/json-schema": "^7.0.15"
+  }
+}
