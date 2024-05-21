@@ -1,0 +1,6 @@
+
+_site/**
+.docusaurus/**
+.vscode/**
+**/auto_*
+build/**

@@ -9,6 +9,7 @@
 CHANGELOG.md
 coverage
 docs/_site
+docs/docsV2
 node_modules
 packages/_integrationTests/out/
 packages/*/dist/
@@ -24,3 +25,6 @@ packages/webview-ui/public/build
 website/build/**
 website/node_modules
 website/.docusaurus
+website/**/configuration.md
+website/**/commands.md
+website/**/auto_*
