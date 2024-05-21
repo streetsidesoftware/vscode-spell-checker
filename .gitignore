@@ -48,6 +48,8 @@ packages/*/out/
 packages/*/temp/
 tools/*/dist/
 tools/*/temp/
+docs/docsV2/
+
 
 !**/server/.vscode
 !**/client/.vscode
