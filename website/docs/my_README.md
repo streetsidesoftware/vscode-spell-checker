@@ -1,3 +1,11 @@
+---
+format: markdown
+title: ReadMe
+slug: readme
+---
+
+<!--- @@inject: ../../../README.md --->
+
 # Spelling Checker for Visual Studio Code
 
 A basic spell checker that works well with code and documents.
@@ -45,8 +53,6 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 ## Add-On Dictionaries
 
 <!--- cspell:disable --->
-
-<!--- @@inject: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->
 
 ### Language Dictionaries
 
@@ -99,8 +105,6 @@ Open up VS Code and hit `F1` and type `ext` select install and type `code-spell-
 -   [Medical Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-medical-terms) - Medical Terms Add-On for Code Spell Checker
 -   [Scientific Terms](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-scientific-terms) - Scientific Terms dictionary extension for VS Code.
 -   [Win32](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker-win32) - Win32 dictionary extension for VS Code.
-
-<!--- @@inject-end: https://github.com/streetsidesoftware/vscode-cspell-dict-extensions/blob/main/static/generated/marketplace_language_extensions.md --->
 
 <!--- cspell:enable --->
 
@@ -767,16 +771,10 @@ See: [FAQ](https://github.com/streetsidesoftware/vscode-spell-checker/blob/main/
     cSpell:locale en
 -->
 
-<!--- @@inject: ./static/footer.md --->
-
 <br/>
 
 ---
 
-<p align="center">
-Brought to you by <a href="https://streetsidesoftware.com" title="Street Side Software">
-<img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" /> Street Side Software
-</a>
-</p>
+<p align="center">Brought to you by <a href="https://streetsidesoftware.com" title="Street Side Software"><img width="16" alt="Street Side Software Logo" src="https://i.imgur.com/CyduuVY.png" />Street Side Software</a></p>
 
-<!--- @@inject-end: ./static/footer.md --->
+<!--- @@inject-end: ../../../README.md --->

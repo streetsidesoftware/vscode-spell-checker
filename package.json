@@ -3936,6 +3936,7 @@
     "clean": "npm --workspaces --if-present run clean && shx rm -rf \"packages/*/node_modules\" \"modules/*/node_modules\" \"modules/**/dist\" ",
     "build-production": "npm --workspaces --if-present run build-production",
     "build-release": "npm run build && npm run package-extension",
+    "build-website": "cd website && npm i && npm run build",
     "gen-docs": "npm --workspace=@internal/docs run gen-docs",
     "package-extension": "vsce package --pre-release -o ./build",
     "prettier:check": "prettier \"**/*.{ts,tsx,js,json,md,svelte}\" -c",
