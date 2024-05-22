@@ -1,6 +1,6 @@
 import type { Req, Res, ServerMethods, ServerRequestApi } from '@internal/server-pattern-matcher/api';
-import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node';
-import { CodeActionRequest, RequestType } from 'vscode-languageclient/node';
+import type { CodeAction, CodeActionParams, Command, LanguageClient } from 'vscode-languageclient/node.js';
+import { CodeActionRequest, RequestType } from 'vscode-languageclient/node.js';
 
 export type {
     MatchPatternsToDocumentResult,
