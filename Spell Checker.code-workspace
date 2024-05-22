@@ -17,10 +17,6 @@
             "path": "packages/_serverPatternMatcher"
         },
         {
-            "name": "Settings Viewer",
-            "path": "packages/_settingsViewer"
-        },
-        {
             "name": "Integration Tests",
             "path": "packages/_integrationTests"
         },
@@ -32,12 +28,24 @@
             "name": "Tools",
             "path": "tools/build-tools"
         },
-        { "path": "packages/utils-disposables" },
-        { "path": "packages/utils-logger" },
-        { "path": "packages/json-rpc-api" },
-        { "path": "packages/webview-api" },
-        { "path": "packages/webview-rpc" },
-        { "path": "packages/webview-ui" },
+        {
+            "path": "packages/utils-disposables"
+        },
+        {
+            "path": "packages/utils-logger"
+        },
+        {
+            "path": "packages/json-rpc-api"
+        },
+        {
+            "path": "packages/webview-api"
+        },
+        {
+            "path": "packages/webview-rpc"
+        },
+        {
+            "path": "packages/webview-ui"
+        },
         {
             "name": "Docs",
             "path": "docs"

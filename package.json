@@ -3920,15 +3920,15 @@
     "packages/__utils",
     "packages/_server",
     "packages/_serverPatternMatcher",
-    "packages/_settingsViewer",
     "packages/client",
     "packages/_integrationTests"
   ],
   "scripts": {
     "build-package-schema": "npm --workspace=code-spell-checker-server run build-schema && build-tools update-package-schema && npm run prettier:fix-schema",
     "postinstall": "echo postinstall",
-    "build": "npm run build:workspaces && npm run build:schema && npm run build:docs",
+    "build": "npm run build:workspaces && npm run build:schema",
     "build:docs": "npm run gen-docs",
+    "build:all": "npm run build && npm run build:docs",
     "build:readme": "inject-markdown README.md && prettier -w README.md && inject-markdown docs && prettier -w docs",
     "build:schema": "npm run build-package-schema",
     "build:workspaces": "npm --workspaces --if-present run build",
