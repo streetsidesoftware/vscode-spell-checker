@@ -70,7 +70,7 @@
     "optionator": "^0.9.4",
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
-    "vscode-jsonrpc": "^8.2.0",
+    "vscode-jsonrpc": "^8.2.1",
     "vscode-languageclient": "^9.0.1",
     "vscode-uri": "^3.0.8",
     "vscode-webview-rpc": "file:../webview-rpc",
