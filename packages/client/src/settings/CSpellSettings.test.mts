@@ -4,10 +4,10 @@ import { Uri } from 'vscode';
 import type { CSpellUserSettings } from '../client/index.mjs';
 import { fsRemove, getPathToTemp, getUriToSample, mkdirUri, oc, readFile, writeFile } from '../test/helpers.mjs';
 import { unique } from '../util/index.mjs';
+import { vscodeFs } from '../vscode/fs.mjs';
 import * as CSS from './CSpellSettings.mjs';
 import { readSettings, writeSettings } from './CSpellSettings.mjs';
 import { createDictionaryTargetForFile } from './DictionaryTarget.mjs';
-import { vscodeFs } from '../vscode/fs.mjs';
 import { replaceDocText } from './replaceDocText.js';
 
 vi.mock('vscode');

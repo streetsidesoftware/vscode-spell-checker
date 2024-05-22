@@ -5,12 +5,12 @@ import type { TextEdit, WorkspaceFolder } from 'vscode';
 import { commands, ConfigurationTarget, Uri, window, workspace, WorkspaceEdit } from 'vscode';
 
 import type { CSpellUserSettings, CustomDictionaryScope } from '../client/index.mjs';
+import { findOpenDocument } from '../vscode/fs.mjs';
 import { ConfigFields } from './configFields.mjs';
 import type { ConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import { createConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import type { ConfigUpdater } from './configUpdater.mjs';
 import { configUpdaterForKey } from './configUpdater.mjs';
-import { findOpenDocument } from '../vscode/fs.mjs';
 import { configurationTargetToDictionaryScope } from './targetAndScope.mjs';
 import type { GetConfigurationScope } from './vsConfig.mjs';
 import { getSettingFromVSConfig } from './vsConfig.mjs';
