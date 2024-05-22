@@ -4,7 +4,7 @@ import { logError } from '@internal/common-utils/log';
 import { RegExpWorker, type TimeoutError } from 'regexp-worker';
 import { format } from 'util';
 
-import type { PatternSettings } from './api';
+import type { PatternSettings } from './api.js';
 
 export type Range = [number, number];
 

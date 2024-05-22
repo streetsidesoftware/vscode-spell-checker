@@ -2,8 +2,8 @@ import assert from 'assert';
 import { getDefaultSettings } from 'cspell-lib';
 import { describe, expect, test } from 'vitest';
 
-import type { Range } from './PatternMatcher.js';
-import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher } from './PatternMatcher.js';
+import type { Range } from './PatternMatcher.mjs';
+import { isRegExpMatch, isRegExpMatchTimeout, PatternMatcher } from './PatternMatcher.mjs';
 
 const settings = {
     patterns: [],

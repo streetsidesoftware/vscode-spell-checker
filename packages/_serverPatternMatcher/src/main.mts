@@ -1,4 +1,4 @@
-import { run } from './server';
+import { run } from './server.mjs';
 
 process.on('unhandledRejection', (error) => {
     // Will print "unhandledRejection err is not defined"

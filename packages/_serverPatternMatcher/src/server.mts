@@ -1,11 +1,11 @@
 import { log, setWorkspaceBase } from '@internal/common-utils/log';
-import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node';
-import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node';
+import type { Disposable, InitializeParams, InitializeResult, ServerCapabilities } from 'vscode-languageserver/node.js';
+import { createConnection, ProposedFeatures, TextDocuments, TextDocumentSyncKind } from 'vscode-languageserver/node.js';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-import type * as Api from './api';
-import type { MatchResult, RegExpMatches } from './PatternMatcher';
-import { PatternMatcher } from './PatternMatcher';
+import type * as Api from './api.js';
+import type { MatchResult, RegExpMatches } from './PatternMatcher.mjs';
+import { PatternMatcher } from './PatternMatcher.mjs';
 
 log('Starting Pattern Matcher Server');
 

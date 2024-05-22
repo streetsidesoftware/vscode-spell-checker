@@ -17,12 +17,10 @@
   "typings": "dist/main.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/main.cjs",
-      "require": "./dist/main.cjs"
+      "import": "./dist/main.cjs"
     },
     "./api": {
-      "import": "./dist/api.cjs",
-      "require": "./dist/api.cjs"
+      "import": "./dist/api.cjs"
     }
   },
   "typesVersions": {
