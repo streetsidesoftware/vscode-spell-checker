@@ -28,10 +28,10 @@ import type {
 } from '../client/index.mjs';
 import type { Inspect, InspectValues } from '../settings/index.mjs';
 import { ConfigFields, inspectConfig } from '../settings/index.mjs';
-import type { Maybe } from '../util/index.js';
-import { isDefined, uniqueFilter } from '../util/index.js';
+import type { Maybe } from '../util/index.mjs';
+import { isDefined, uniqueFilter } from '../util/index.mjs';
 import { defaultTo, map, pipe } from '../util/pipe.js';
-import { toUri } from '../util/uriHelper.js';
+import { toUri } from '../util/uriHelper.mjs';
 
 type ConfigFields =
     | typeof ConfigFields.dictionaryDefinitions

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { run } from './server';
+import { run } from './server.mjs';
 
 describe('Validate Server', () => {
     test('run', () => {

@@ -1,5 +1,3 @@
-import { fileExists } from '@internal/common-utils/file';
-import * as fs from 'fs/promises';
 import { homedir } from 'os';
 import * as vscode from 'vscode';
 import { Uri } from 'vscode';
@@ -18,6 +16,7 @@ import type {
 } from '../client/index.mjs';
 import { getCSpellDiags } from '../diags.mjs';
 import { scrollToText } from '../util/textEditor.js';
+import { vscodeFs } from '../vscode/fs.mjs';
 import type { ClientConfigTarget } from './clientConfigTarget.js';
 import { ConfigFields } from './configFields.mjs';
 import type { ConfigRepository } from './configRepository.mjs';
@@ -286,11 +285,11 @@ function cleanFolderName(name: string): string {
 }
 
 async function createCustomDictionaryFile(dictUri: Uri, overwrite = false): Promise<void> {
-    overwrite = overwrite || !(await fileExists(dictUri));
+    overwrite = overwrite || !(await vscodeFs.fileExists(dictUri));
     if (!overwrite) return;
 
-    await fs.mkdir(UriUtils.dirname(dictUri).fsPath, { recursive: true });
-    await fs.writeFile(dictUri.fsPath, dictionaryTemplate, 'utf8');
+    await vscodeFs.createDirectory(UriUtils.dirname(dictUri));
+    await vscodeFs.writeFile(dictUri, dictionaryTemplate, 'utf8');
 }
 
 async function addCustomDictionaryToConfig(cfgRep: ConfigRepository, def: DictionaryDefinitionCustom): Promise<void> {

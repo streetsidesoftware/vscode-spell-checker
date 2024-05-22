@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import { readDefaults } from '../test/schema';
-import { languageIds } from './languageIds';
+import { readDefaults } from '../test/schema.mjs';
+import { languageIds } from './languageIds.js';
 
 describe('settings/index', () => {
     test('Default languageIds', async () => {

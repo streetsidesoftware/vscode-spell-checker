@@ -1,5 +1,5 @@
 import type { ConfigTarget, ConfigTargetCSpell, ConfigTargetDictionary, ConfigTargetVSCode } from '../../client/index.mjs';
-import { toUri } from '../../util/uriHelper.js';
+import { toUri } from '../../util/uriHelper.mjs';
 import type {
     ClientConfigTarget,
     ClientConfigTargetCSpell,

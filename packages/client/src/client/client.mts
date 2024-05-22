@@ -21,7 +21,7 @@ import * as LanguageIds from '../settings/languageIds.js';
 import { createBroadcaster } from '../util/broadcaster.js';
 import { extractUriFromConfigurationScope, findConicalDocumentScope } from '../util/documentUri.js';
 import { logErrors, silenceErrors, toError } from '../util/errors.js';
-import type { Maybe } from '../util/index.js';
+import type { Maybe } from '../util/index.mjs';
 import { Resolvable } from './Resolvable.js';
 import type {
     FieldExistsInTarget,
@@ -31,8 +31,8 @@ import type {
     ServerApi,
     WorkspaceConfigForDocumentRequest,
     WorkspaceConfigForDocumentResponse,
-} from './server/index.js';
-import { createServerApi, requestCodeAction } from './server/index.js';
+} from './server/index.mjs';
+import { createServerApi, requestCodeAction } from './server/index.mjs';
 import type { CodeActionParams, ForkOptions, LanguageClientOptions, ServerOptions } from './vscode-languageclient.js';
 import {
     CodeActionContext as VSCodeLangClientCodeActionContext,
@@ -41,7 +41,7 @@ import {
     TransportKind as VSCodeLangClientTransportKind,
 } from './vscode-languageclient.js';
 
-export { GetConfigurationForDocumentResult } from './server/index.js';
+export { GetConfigurationForDocumentResult } from './server/index.mjs';
 
 // The debug options for the server
 const debugExecArgv = ['--nolazy', '--inspect=60048'];

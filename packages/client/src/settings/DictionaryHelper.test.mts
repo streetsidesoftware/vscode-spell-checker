@@ -7,7 +7,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 
 import { CSpellClient } from '../client/client.mjs';
 import type { CSpellUserSettings, CustomDictionaries, CustomDictionaryEntry, DictionaryDefinitionCustom } from '../client/index.mjs';
-import { getPathToTemp } from '../test/helpers.js';
+import { getPathToTemp } from '../test/helpers.mjs';
 import { createConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import { createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.mjs';
 import { createClientConfigTargetCSpell } from './configTargetHelper.mjs';

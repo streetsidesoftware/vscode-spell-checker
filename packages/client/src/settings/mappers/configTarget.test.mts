@@ -9,7 +9,7 @@ import type {
     ConfigTargetDictionary,
     ConfigTargetVSCode,
 } from '../../client/index.mjs';
-import { oc } from '../../test/helpers.js';
+import { oc } from '../../test/helpers.mjs';
 import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary, ClientConfigTargetVSCode } from '../clientConfigTarget.js';
 import { mapConfigTargetToClientConfigTarget } from './configTarget.mjs';
 

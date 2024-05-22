@@ -7,7 +7,7 @@ import { uriToName } from '@internal/common-utils/uriHelper';
 import * as vscode from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
-import { toUri } from '../util/uriHelper.js';
+import { toUri } from '../util/uriHelper.mjs';
 import type {
     ClientConfigKind,
     ClientConfigScope,

@@ -1,7 +1,7 @@
 import { Uri } from 'vscode';
 
 import type { CSpellUserSettings, DictionaryDefinitionCustom } from '../client/index.mjs';
-import { unique, uniqueFilter } from '../util/index.js';
+import { unique, uniqueFilter } from '../util/index.mjs';
 import type { ConfigUpdateFn } from './configFileReadWrite.mjs';
 import { isHandled, readConfigFile, UnhandledFileType, updateConfigFile, writeConfigFile } from './configFileReadWrite.mjs';
 import type { CustomDictDef } from './DictionaryTarget.mjs';

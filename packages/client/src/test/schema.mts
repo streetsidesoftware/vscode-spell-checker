@@ -1,5 +1,8 @@
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 export const schemaFile = path.join(__dirname, '../../../_server/spell-checker-config.schema.json');
 

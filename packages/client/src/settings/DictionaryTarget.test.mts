@@ -3,13 +3,13 @@ import {} from 'vscode';
 import type { URI as Uri } from 'vscode-uri';
 import { Utils as UriUtils } from 'vscode-uri';
 
-import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers.js';
+import { getPathToTemp, mustBeDefined, readFile, writeFile } from '../test/helpers.mjs';
 import type { ClientConfigTargetCSpell, ClientConfigTargetDictionary } from './clientConfigTarget.js';
 import { readConfigFile } from './configFileReadWrite.mjs';
 import { __testing__ as DictionaryHelperTesting } from './DictionaryHelper.mjs';
 import type { DictionaryTarget } from './DictionaryTarget.mjs';
 import { configTargetToDictionaryTarget } from './DictionaryTargetHelper.mjs';
-import { vscodeFs } from './fs.js';
+import { vscodeFs } from '../vscode/fs.mjs';
 import { replaceDocText } from './replaceDocText.js';
 import { createConfigFile } from './settings.mjs';
 

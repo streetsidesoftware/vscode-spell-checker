@@ -7,7 +7,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import type { CSpellUserSettings } from '../client/index.mjs';
 import type { ConfigReaderWriter, ConfigUpdateFn } from './configReaderWriter.mjs';
 import { extractKeys } from './configReaderWriter.mjs';
-import { vscodeFs as fs } from './fs.js';
+import { vscodeFs as fs } from '../vscode/fs.mjs';
 export type { ConfigUpdateFn } from './configReaderWriter.mjs';
 
 const SymbolFormat = Symbol('format');

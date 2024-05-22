@@ -8,7 +8,7 @@ import { createClientSideApi } from 'code-spell-checker-server/api';
 
 import type { CodeAction, CodeActionParams, Command, LanguageClient } from '../vscode-languageclient.js';
 import { CodeActionRequest } from '../vscode-languageclient.js';
-import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs';
+import { vfsReadDirectory, vfsReadFile, vfsStat } from './vfs.js';
 
 export type {
     CheckDocumentIssue,

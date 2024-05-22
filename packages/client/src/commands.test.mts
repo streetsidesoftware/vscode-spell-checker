@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 import { __testing__ } from './commands.mjs';
 import { extensionId } from './constants.js';
-import { mustBeDefined, readExtensionPackage } from './test/helpers.js';
+import { mustBeDefined, readExtensionPackage } from './test/helpers.mjs';
 import { registeredCommands as webviewCommands } from './webview/index.mjs';
 
 vi.mock('vscode');

@@ -4,7 +4,7 @@ import { Uri, window } from 'vscode';
 import { extractMatchingDiagTexts, getCSpellDiags } from './diags.mjs';
 import { normalizeWords } from './settings/CSpellSettings.mjs';
 import { findEditor } from './util/findEditor.js';
-import { toUri } from './util/uriHelper.js';
+import { toUri } from './util/uriHelper.mjs';
 
 const compareStrings = new Intl.Collator().compare;
 

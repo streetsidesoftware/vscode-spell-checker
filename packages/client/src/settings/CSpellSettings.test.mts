@@ -2,12 +2,12 @@ import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { Uri } from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
-import { fsRemove, getPathToTemp, getUriToSample, mkdirUri, oc, readFile, writeFile } from '../test/helpers.js';
-import { unique } from '../util/index.js';
+import { fsRemove, getPathToTemp, getUriToSample, mkdirUri, oc, readFile, writeFile } from '../test/helpers.mjs';
+import { unique } from '../util/index.mjs';
 import * as CSS from './CSpellSettings.mjs';
 import { readSettings, writeSettings } from './CSpellSettings.mjs';
 import { createDictionaryTargetForFile } from './DictionaryTarget.mjs';
-import { vscodeFs } from './fs.js';
+import { vscodeFs } from '../vscode/fs.mjs';
 import { replaceDocText } from './replaceDocText.js';
 
 vi.mock('vscode');

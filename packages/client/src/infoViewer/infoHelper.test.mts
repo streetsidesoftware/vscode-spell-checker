@@ -3,7 +3,7 @@ import * as cspell from 'cspell-lib';
 import { describe, expect, test, vi } from 'vitest';
 import {} from 'vscode';
 
-import { isDefined } from '../util/index.js';
+import { isDefined } from '../util/index.mjs';
 import { __testing__ } from './infoHelper.mjs';
 
 vi.mock('vscode');

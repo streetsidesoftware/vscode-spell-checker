@@ -4,7 +4,7 @@ import { when } from 'vitest-when';
 import type { WorkspaceFolder } from 'vscode';
 import { ConfigurationTarget, Uri, workspace } from 'vscode';
 
-import { getPathToTemp } from '../test/helpers.js';
+import { getPathToTemp } from '../test/helpers.mjs';
 import { __testing__, createCSpellConfigRepository, createVSCodeConfigRepository } from './configRepository.mjs';
 import { addWordsFn } from './configUpdaters.mjs';
 import { MemoryConfigFileReaderWriter, MemoryConfigVSReaderWriter } from './test/memoryReaderWriter.mjs';

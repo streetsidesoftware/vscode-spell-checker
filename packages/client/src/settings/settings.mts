@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { Uri, workspace } from 'vscode';
 
 import type { CSpellUserSettings } from '../client/index.mjs';
-import { unique } from '../util/index.js';
+import { unique } from '../util/index.mjs';
 import type { ClientConfigTarget } from './clientConfigTarget.js';
 import { readConfigFile, writeConfigFile } from './configFileReadWrite.mjs';
 import { normalizeWords, preferredConfigFiles } from './CSpellSettings.mjs';

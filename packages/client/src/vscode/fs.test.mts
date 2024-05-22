@@ -2,8 +2,8 @@ import { describe, expect, test, vi } from 'vitest';
 import { FileSystemError, Uri } from 'vscode';
 import { URI, Utils as UriUtils } from 'vscode-uri';
 
-import { fsRemove, getPathToTemp } from '../test/helpers.js';
-import { vscodeFs } from './fs.js';
+import { fsRemove, getPathToTemp } from '../test/helpers.mjs';
+import { vscodeFs } from './fs.mjs';
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');

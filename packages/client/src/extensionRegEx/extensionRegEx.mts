@@ -6,10 +6,10 @@ import type { CSpellClient } from '../client/index.mjs';
 import { extensionId } from '../constants.js';
 import { catchErrors, isError, logError, logErrors, showError } from '../util/errors.js';
 import { toRegExp } from './evaluateRegExp.js';
-import { PatternMatcherClient } from './patternMatcherClient.js';
-import type { RegexpOutlineItem } from './RegexpOutlineProvider.js';
-import { RegexpOutlineProvider } from './RegexpOutlineProvider.js';
-import type { NamedPattern, PatternMatch, PatternSettings } from './server/index.js';
+import { PatternMatcherClient } from './patternMatcherClient.mjs';
+import type { RegexpOutlineItem } from './RegexpOutlineProvider.mjs';
+import { RegexpOutlineProvider } from './RegexpOutlineProvider.mjs';
+import type { NamedPattern, PatternMatch, PatternSettings } from './server/index.mjs';
 
 interface DisposableLike {
     dispose(): unknown;

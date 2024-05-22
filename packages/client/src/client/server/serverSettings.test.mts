@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import type * as server from './server.js';
-import * as serverSettings from './serverSettings.js';
+import type * as server from './server.mjs';
+import * as serverSettings from './serverSettings.mjs';
 
 describe('Validate Server Settings', () => {
     test('Tests extracting dictionaries by locale', () => {

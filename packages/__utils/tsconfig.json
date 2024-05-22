@@ -1,8 +1,18 @@
 {
     "extends": "@tsconfig/node18",
     "compilerOptions": {
-        "esModuleInterop": true
+        "outDir": "./dist",
+        "lib": ["es2023", "dom"],
+        "types": ["node"],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "rootDir": "./src",
+        "strict": true
     },
-    "files": [],
-    "references": [{ "path": "./tsconfig.cjs.json" }, { "path": "./tsconfig.esm.json" }]
+    "include": ["src"]
 }

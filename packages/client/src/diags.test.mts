@@ -6,7 +6,7 @@ import { Diagnostic, DiagnosticSeverity, Position, Range, Uri } from 'vscode';
 import { getDependencies } from './di.mjs';
 import { __testing__, extractMatchingDiagText, getCSpellDiags } from './diags.mjs';
 import { SpellingCheckerIssue } from './issueTracker.mjs';
-import { isDefined, mustBeDefined } from './util/index.js';
+import { isDefined, mustBeDefined } from './util/index.mjs';
 
 const { determineWordRangeToAddToDictionaryFromSelection, extractMatchingDiagTexts } = __testing__;
 

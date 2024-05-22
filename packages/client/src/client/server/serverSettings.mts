@@ -2,8 +2,8 @@ import type { CustomDictionaryScope, DictionaryDefinition, DictionaryDefinitionC
 import { normalizeCode } from '@internal/locale-resolver';
 import type { PartialCSpellUserSettings } from 'code-spell-checker-server/api';
 
-import { isDefined, uniqueFilter } from '../../util';
-import type { LanguageSetting } from './server';
+import { isDefined, uniqueFilter } from '../../util/index.mjs';
+import type { LanguageSetting } from './server.mjs';
 
 export function extractLanguage(config?: PartialCSpellUserSettings<'language'>): string[] | undefined {
     return (config?.language && normalizeToLocales(config.language)) || undefined;

@@ -55,7 +55,7 @@ import { catchErrors, handleErrors } from './util/errors.js';
 import { performance, toMilliseconds } from './util/perf.js';
 import { pVoid } from './util/pVoid.js';
 import { scrollToText } from './util/textEditor.js';
-import { toUri } from './util/uriHelper.js';
+import { toUri } from './util/uriHelper.mjs';
 
 const commandsFromServer: ClientSideCommandHandlerApi = {
     'cSpell.addWordsToConfigFileFromServer': (words, _documentUri, config) => {
@@ -177,6 +177,7 @@ export const commandHandlers = {
     'cSpell.displayCSpellInfo': callCommand('cspell-info.infoView.focus'),
 
     'cSpell.restart': handleRestart,
+    'cSpell.reload': handleReload,
 
     // Deprecated Commands
     'cSpell.enableLanguage': enableLanguageIdCmd,
@@ -587,4 +588,8 @@ function callCommand(command: string): () => void {
 
 function handleRestart() {
     return handleErrors(di.getClient().restart(), 'handle restart server');
+}
+
+function handleReload() {
+    return handleErrors(di.getClient().notifySettingsChanged(), 'handle restart server');
 }
