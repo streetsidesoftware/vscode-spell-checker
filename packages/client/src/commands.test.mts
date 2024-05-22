@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 
 import { __testing__ } from './commands.mjs';
 import { extensionId } from './constants.js';
-import { commandDisplayCSpellInfo } from './infoViewer/index.js';
 import { mustBeDefined, readExtensionPackage } from './test/helpers.js';
 import { registeredCommands as webviewCommands } from './webview/index.mjs';
 
