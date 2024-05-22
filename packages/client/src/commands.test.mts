@@ -25,11 +25,7 @@ describe('Validate Commands', () => {
         const commands = mustBeDefined(pkg.contributes?.commands)
             .map((cmd) => cmd.command)
             .filter((cmd) => cmd.startsWith(cmdPrefix));
-        const implemented = new Set([
-            ...Object.keys(commandHandlers),
-            ...webviewCommands,
-            commandDisplayCSpellInfo, // Handled by infoView
-        ]);
+        const implemented = new Set([...Object.keys(commandHandlers), ...webviewCommands]);
         const found = commands.filter((cmd) => implemented.has(cmd));
         expect(found).toEqual(commands);
     });

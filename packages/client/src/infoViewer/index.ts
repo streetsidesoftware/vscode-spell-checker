@@ -1,1 +1,0 @@
-export { commandDisplayCSpellInfo } from './commands';

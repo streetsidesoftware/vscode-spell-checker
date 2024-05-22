@@ -19,7 +19,6 @@ import * as di from './di.mjs';
 import { registerDiagWatcher } from './diags.mjs';
 import type { ExtensionApi } from './extensionApi.mjs';
 import * as ExtensionRegEx from './extensionRegEx/index.mjs';
-import * as settingsViewer from './infoViewer/infoView.mjs';
 import { IssueTracker } from './issueTracker.mjs';
 import { activateFileIssuesViewer, activateIssueViewer } from './issueViewer/index.mjs';
 import { createLanguageStatus } from './languageStatus.mjs';
@@ -29,7 +28,6 @@ import type { ConfigTargetLegacy, CSpellSettings } from './settings/index.mjs';
 import * as settings from './settings/index.mjs';
 import { sectionCSpell } from './settings/index.mjs';
 import { getSectionName } from './settings/vsConfig.mjs';
-import { initStatusBar } from './statusbar.mjs';
 import { logErrors, silenceErrors } from './util/errors.js';
 import { performance } from './util/perf.js';
 import { activate as activateWebview } from './webview/index.mjs';
@@ -62,8 +60,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const issueTracker = new IssueTracker(client);
     di.set('issueTracker', issueTracker);
 
-    const statusBar = initStatusBar(context, client);
-
     function triggerGetSettings(delayInMs = 0) {
         setTimeout(triggerGetSettingsNow, delayInMs);
     }
@@ -71,8 +67,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     function triggerGetSettingsNow() {
         silenceErrors(client.triggerSettingsRefresh(), 'triggerGetSettings')
             .then(() => {
-                settingsViewer.update();
-                statusBar.refresh();
+                // settingsViewer.update();
                 return;
             })
             .catch(() => undefined);
@@ -200,7 +195,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     }
 
     // infoViewer.activate(context, client);
-    settingsViewer.activate(context, client);
 
     function registerConfig(path: string) {
         client.registerConfiguration(path);

@@ -174,6 +174,7 @@ export const commandHandlers = {
 
     'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
     'cSpell.openFileInfoView': callCommand('cspell-info.infoView.focus'),
+    'cSpell.displayCSpellInfo': callCommand('cspell-info.infoView.focus'),
 
     'cSpell.restart': handleRestart,
 
