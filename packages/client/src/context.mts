@@ -6,7 +6,7 @@ import { commands, workspace } from 'vscode';
 import type { ConfigKind, ConfigScope, ConfigTarget, CSpellClient } from './client/index.mjs';
 import { extensionId } from './constants.js';
 import { getCSpellDiags } from './diags.mjs';
-import { toUri } from './util/uriHelper.js';
+import { toUri } from './util/uriHelper.mjs';
 
 const prefix = extensionId;
 

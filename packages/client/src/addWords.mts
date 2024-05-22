@@ -8,7 +8,7 @@ import {
     dictionaryTargetBestMatchesWorkspace,
 } from './settings/configTargetHelper.mjs';
 import { handleErrors } from './util/errors.js';
-import { toUri } from './util/uriHelper.js';
+import { toUri } from './util/uriHelper.mjs';
 
 export function addWordToFolderDictionary(word: string, docUri: string | null | Uri | undefined): Promise<void> {
     return addWordToTarget(word, dictionaryTargetBestMatchesFolder, docUri);

@@ -2,8 +2,8 @@ import type { ConfigurationScope, TextDocument, Uri } from 'vscode';
 import { FileType, window, workspace } from 'vscode';
 
 import * as di from '../di.mjs';
-import { toUri } from '../util/uriHelper.js';
-import { findMatchingDocument } from '../vscode/findDocument.js';
+import { toUri } from '../util/uriHelper.mjs';
+import { findMatchingDocument } from '../vscode/findDocument.mjs';
 import type { ClientConfigTarget } from './clientConfigTarget.js';
 import {
     createConfigTargetMatchPattern,

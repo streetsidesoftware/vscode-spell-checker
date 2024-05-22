@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import type { Maybe } from '../util';
+import type { Maybe } from '../util/index.mjs';
 
 export function findDocumentInVisibleTextEditors(uri: vscode.Uri): Maybe<vscode.TextDocument> {
     const u = uri.toString();

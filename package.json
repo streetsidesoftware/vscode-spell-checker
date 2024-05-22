@@ -579,6 +579,13 @@
         "icon": "$(eye)"
       },
       {
+        "command": "cSpell.reload",
+        "category": "Spell",
+        "title": "Reload Spell Checker Configuration and Dictionaries",
+        "shortTitle": "Reload Config & Dictionaries",
+        "icon": "$(sync)"
+      },
+      {
         "command": "cSpell.restart",
         "category": "Spell",
         "title": "Restart Spell Checker Server",

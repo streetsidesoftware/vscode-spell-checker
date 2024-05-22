@@ -15,7 +15,7 @@ import { consoleDebug } from '../repl/consoleDebug.mjs';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { handleErrors, logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
-import { isDefined } from '../util/index.js';
+import { isDefined } from '../util/index.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 

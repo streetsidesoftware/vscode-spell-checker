@@ -2,7 +2,7 @@ import { assign, parse as parseJsonc, stringify as stringifyJsonc } from 'commen
 import { describe, expect, test, vi } from 'vitest';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
-import { fsRemove, getPathToTemp, readFile, writeFile } from '../test/helpers.js';
+import { fsRemove, getPathToTemp, readFile, writeFile } from '../test/helpers.mjs';
 import { __testing__, readConfigFile, updateConfigFile, writeConfigFile } from './configFileReadWrite.mjs';
 
 vi.mock('vscode');

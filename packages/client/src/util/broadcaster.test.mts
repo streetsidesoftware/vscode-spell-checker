@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import {} from 'vscode';
 
-import { createBroadcaster } from './broadcaster';
+import { createBroadcaster } from './broadcaster.js';
 
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');

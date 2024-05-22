@@ -4,10 +4,10 @@ import * as path from 'path';
 import { expect } from 'vitest';
 import { Uri } from 'vscode';
 
-import { isDefined } from '../util';
-import type { PackageJson } from '../vscode/packageJson';
+import { isDefined } from '../util/index.mjs';
+import type { PackageJson } from '../vscode/packageJson.js';
 
-export { isDefined } from '../util';
+export { isDefined } from '../util/index.mjs';
 export { mustBeDefined } from '@internal/common-utils/util';
 
 const rootClient = path.join(__dirname, '../..');

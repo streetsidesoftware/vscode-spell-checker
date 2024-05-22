@@ -4,63 +4,40 @@
   "description": "Shared Utils between server and client",
   "private": true,
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "dist/cjs/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/cjs/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/index.js"
     },
     "./autoLoad": {
-      "types": "./dist/cjs/autoLoad.d.ts",
-      "import": "./dist/esm/autoLoad.mjs",
-      "require": "./dist/cjs/autoLoad.js"
+      "import": "./dist/autoLoad.js"
     },
     "./errors": {
-      "types": "./dist/cjs/errors.d.ts",
-      "import": "./dist/esm/errors.mjs",
-      "require": "./dist/cjs/errors.js"
-    },
-    "./file": {
-      "types": "./dist/cjs/file.d.ts",
-      "import": "./dist/esm/file.mjs",
-      "require": "./dist/cjs/file.js"
+      "import": "./dist/errors.js"
     },
     "./log": {
-      "types": "./dist/cjs/log.d.ts",
-      "import": "./dist/esm/log.mjs",
-      "require": "./dist/cjs/log.js"
+      "import": "./dist/log.js"
     },
     "./logger": {
-      "types": "./dist/cjs/logger.d.ts",
-      "import": "./dist/esm/logger.mjs",
-      "require": "./dist/cjs/logger.js"
+      "import": "./dist/logger.js"
     },
     "./timer": {
-      "types": "./dist/cjs/timer.d.ts",
-      "import": "./dist/esm/timer.mjs",
-      "require": "./dist/cjs/timer.js"
+      "import": "./dist/timer.js"
     },
     "./uriHelper": {
-      "types": "./dist/cjs/uriHelper.d.ts",
-      "import": "./dist/esm/uriHelper.mjs",
-      "require": "./dist/cjs/uriHelper.js"
+      "import": "./dist/uriHelper.js"
     },
     "./util": {
-      "types": "./dist/cjs/util.d.ts",
-      "import": "./dist/esm/util.mjs",
-      "require": "./dist/cjs/util.js"
+      "import": "./dist/util.js"
     }
   },
   "scripts": {
     "build-production": "npm run clean-build",
-    "build": "tsc -b . && ts2mjs ./dist/esm",
+    "build": "tsc -p .",
     "clean-build": "npm run clean && npm run build",
     "clean": "shx rm -rf out dist coverage",
     "test": "vitest run .",
-    "watch": "tsc -b . --watch"
+    "watch": "tsc -p . --watch"
   },
   "devDependencies": {},
   "dependencies": {

@@ -20,5 +20,5 @@ export type {
     PatternMatch,
     SpellCheckerDiagnosticData,
     SpellCheckerSettingsProperties,
-} from './server/index.js';
-export { normalizeLocale } from './server/index.js';
+} from './server/index.mjs';
+export { normalizeLocale } from './server/index.mjs';

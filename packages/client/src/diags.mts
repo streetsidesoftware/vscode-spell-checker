@@ -9,7 +9,7 @@ import type { SpellingDiagnostic } from './issueTracker.mjs';
 import type { CSpellSettings } from './settings/CSpellSettings.mjs';
 import { isWordLike } from './settings/CSpellSettings.mjs';
 import { ConfigFields } from './settings/index.mjs';
-import { isDefined, uniqueFilter } from './util/index.js';
+import { isDefined, uniqueFilter } from './util/index.mjs';
 
 /**
  * Return cspell diags for a given uri.

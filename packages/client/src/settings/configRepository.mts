@@ -10,7 +10,7 @@ import type { ConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import { createConfigFileReaderWriter } from './configFileReadWrite.mjs';
 import type { ConfigUpdater } from './configUpdater.mjs';
 import { configUpdaterForKey } from './configUpdater.mjs';
-import { findOpenDocument } from './fs.js';
+import { findOpenDocument } from '../vscode/fs.mjs';
 import { configurationTargetToDictionaryScope } from './targetAndScope.mjs';
 import type { GetConfigurationScope } from './vsConfig.mjs';
 import { getSettingFromVSConfig } from './vsConfig.mjs';

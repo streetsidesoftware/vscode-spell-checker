@@ -2,6 +2,8 @@ import { isErrorCodeException } from '@internal/common-utils';
 import type { TextDocument, Uri } from 'vscode';
 import { FileSystemError, Range, workspace, WorkspaceEdit } from 'vscode';
 
+import { fileExists } from './fileExists.js';
+
 const fs = workspace.fs;
 
 const FileNotFoundErrorCodes: Record<string, undefined | true> = {
@@ -46,16 +48,6 @@ async function _writeFile(uri: Uri, content: string, encoding: 'utf8'): Promise<
 
 async function readFile(uri: Uri, encoding: 'utf8'): Promise<string> {
     return Buffer.from(await fs.readFile(uri)).toString(encoding);
-}
-
-async function fileExists(file: Uri): Promise<boolean> {
-    try {
-        const result = await workspace.fs.stat(file);
-        return !!result.type;
-    } catch (e) {
-        if (!(e instanceof FileSystemError)) throw e;
-        return false;
-    }
 }
 
 function isFileNotFoundError(e: unknown): boolean {

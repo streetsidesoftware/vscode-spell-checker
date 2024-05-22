@@ -1,5 +1,5 @@
 import type { CSpellUserSettings } from '../client/index.mjs';
-import { toUri } from '../util/uriHelper.js';
+import { toUri } from '../util/uriHelper.mjs';
 import type {
     ClientConfigKind,
     ClientConfigTarget,
