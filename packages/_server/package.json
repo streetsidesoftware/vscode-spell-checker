@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.8.1",
-    "@cspell/cspell-pipe": "^8.8.1",
+    "@cspell/cspell-pipe": "^8.8.2",
     "@cspell/cspell-types": "^8.8.1",
     "@internal/common-utils": "file:../__utils",
     "cspell-config-lib": "^8.8.1",
