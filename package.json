@@ -4003,7 +4003,6 @@
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.8.2",
     "@cspell/cspell-types": "^8.8.2",
-    "@types/react": "^17.0.80",
     "cspell": "^8.8.2",
     "regexp-worker": "^2.0.2"
   },
