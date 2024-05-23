@@ -4001,9 +4001,9 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.8.2",
-    "@cspell/cspell-types": "^8.8.2",
-    "cspell": "^8.8.2",
+    "@cspell/cspell-bundled-dicts": "^8.8.3",
+    "@cspell/cspell-types": "^8.8.3",
+    "cspell": "^8.8.3",
     "regexp-worker": "^2.0.2"
   },
   "comment-resolutions": {
