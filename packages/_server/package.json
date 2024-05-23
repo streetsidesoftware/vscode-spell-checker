@@ -44,7 +44,7 @@
     "@cspell/cspell-pipe": "^8.8.1",
     "@cspell/cspell-types": "^8.8.1",
     "@internal/common-utils": "file:../__utils",
-    "cspell-config-lib": "^8.8.1",
+    "cspell-config-lib": "^8.8.2",
     "cspell-gitignore": "^8.8.1",
     "cspell-glob": "^8.8.1",
     "cspell-io": "^8.8.1",
