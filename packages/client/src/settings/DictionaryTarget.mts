@@ -5,10 +5,10 @@ import type { Uri } from 'vscode';
 import { window, workspace } from 'vscode';
 import { Utils as UriUtils } from 'vscode-uri';
 
+import { vscodeFs as fs } from '../vscode/fs.mjs';
 import type { ConfigRepository } from './configRepository.mjs';
 import { createCSpellConfigRepository } from './configRepository.mjs';
 import { addWordsFn, removeWordsFn, updaterAddWords, updaterRemoveWords } from './configUpdaters.mjs';
-import { vscodeFs as fs } from '../vscode/fs.mjs';
 import { replaceDocText } from './replaceDocText.js';
 
 const regBlockUpdateDictionaryFormat = /(\.((gz|jsonc?|yaml|yml|c?js)$|trie\b)|^$|[/\\]$)/i;
