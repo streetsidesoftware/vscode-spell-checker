@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0-alpha.14](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.13...code-spell-checker-v4.0.0-alpha.14) (2024-05-23)
+
+
+### Updates and Bug Fixes
+
+* Remove references to fsPath ([#3306](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3306)) ([0145f10](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0145f1007a5734dbb8efcc6701b5251bb4afd326))
+
 ## [4.0.0-alpha.13](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.12...code-spell-checker-v4.0.0-alpha.13) (2024-05-23)
 
 
