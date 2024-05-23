@@ -1,4 +1,4 @@
-import { groupByField } from '@internal/common-utils';
+import { createEmitter, debounce, groupByField, pipe } from '@internal/common-utils';
 import type { ConfigTarget, Suggestion } from 'code-spell-checker-server/api';
 import { createDisposableList } from 'utils-disposables';
 import type { ExtensionContext, ProviderResult, Range, TextDocument, TreeDataProvider, Uri } from 'vscode';
@@ -8,8 +8,6 @@ import { TreeItem } from 'vscode';
 import { actionAutoFixSpellingIssues } from '../applyCorrections.mjs';
 import { commandHandlers, knownCommands } from '../commands.mjs';
 import * as di from '../di.mjs';
-import { createEmitter, pipe } from '../EventEmitter/index.mjs';
-import { debounce } from '../EventEmitter/operators/index.mjs';
 import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { consoleDebug } from '../repl/consoleDebug.mjs';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';

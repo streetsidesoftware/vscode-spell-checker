@@ -1,5 +1,4 @@
 import { describe, expect, test, vi } from 'vitest';
-import { EventEmitter } from 'vscode';
 
 import { createEmitter, numListeners } from './createEmitter.mjs';
 import { filter, map, tap } from './operators/index.mjs';
@@ -11,38 +10,6 @@ describe('pipe', () => {
     test('pipe', () => {
         const emitter = createEmitter<string>();
         const event = pipe(emitter.event);
-        const listener = vi.fn();
-
-        expect(event).toBeTypeOf('function');
-        const disposable = event(listener);
-        emitter.fire('test');
-        expect(listener).toHaveBeenCalledTimes(1);
-        expect(listener).toHaveBeenLastCalledWith('test');
-        disposable.dispose();
-        emitter.fire('test2');
-        expect(listener).toHaveBeenCalledTimes(1);
-        expect(listener).toHaveBeenLastCalledWith('test');
-    });
-
-    test('pipe vscode EventEmitter', () => {
-        const emitter = new EventEmitter<string>();
-        const event = pipe((e) => emitter.event(e));
-        const listener = vi.fn();
-
-        expect(event).toBeTypeOf('function');
-        const disposable = event(listener);
-        emitter.fire('test');
-        expect(listener).toHaveBeenCalledTimes(1);
-        expect(listener).toHaveBeenLastCalledWith('test');
-        disposable.dispose();
-        emitter.fire('test2');
-        expect(listener).toHaveBeenCalledTimes(1);
-        expect(listener).toHaveBeenLastCalledWith('test');
-    });
-
-    test('pipe vscode EventEmitter 2', () => {
-        const emitter = new EventEmitter<string>();
-        const event = pipe(emitter);
         const listener = vi.fn();
 
         expect(event).toBeTypeOf('function');

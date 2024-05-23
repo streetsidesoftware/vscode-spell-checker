@@ -359,3 +359,7 @@ export interface IsSpellCheckingEnabledForUrisResponse {
     uris: DocumentUri[];
     shouldCheck: boolean[];
 }
+
+export interface OnDocumentConfigChange {
+    uris: DocumentUri[];
+}

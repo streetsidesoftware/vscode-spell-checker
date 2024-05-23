@@ -1,5 +1,4 @@
 import { describe, expect, test, vi } from 'vitest';
-import { EventEmitter } from 'vscode';
 
 import { assert, createEmitter, isEventEmitter } from './createEmitter.mjs';
 
@@ -120,7 +119,6 @@ describe('createEmitter', () => {
         expect(isEventEmitter(createEmitter())).toBe(true);
         expect(isEventEmitter({})).toBe(false);
         expect(isEventEmitter({ event: () => ({ dispose: () => {} }), fire: () => {}, dispose: () => {} })).toBe(true);
-        expect(isEventEmitter(new EventEmitter())).toBe(true);
     });
 
     test('assert', () => {
