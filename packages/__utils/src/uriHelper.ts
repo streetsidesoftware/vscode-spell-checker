@@ -112,3 +112,8 @@ function splitUri(uri: Uri) {
         .split('/')
         .filter((a) => !!a);
 }
+
+export function uriToFilePathOrHref(url: Uri | URL | string): string {
+    const uri = Uri.isUri(url) ? url : toUri(url.toString());
+    return uri.scheme === 'file' ? uri.fsPath : uri.toString();
+}

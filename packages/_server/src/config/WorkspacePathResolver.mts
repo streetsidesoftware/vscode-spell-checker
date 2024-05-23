@@ -1,4 +1,5 @@
 import { logError } from '@internal/common-utils/log';
+import { uriToFilePathOrHref } from '@internal/common-utils/uriHelper';
 import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
 import * as Path from 'path';
@@ -72,7 +73,7 @@ function toFolderPath(w: WorkspaceFolder): FolderPath {
     const uri = Uri.parse(w.uri);
     return {
         name: w.name,
-        path: uri.fsPath,
+        path: uriToFilePathOrHref(uri),
         uri: uri,
     };
 }

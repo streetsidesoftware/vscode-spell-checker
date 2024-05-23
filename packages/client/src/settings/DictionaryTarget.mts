@@ -1,5 +1,5 @@
 import { isErrnoException } from '@internal/common-utils';
-import { uriToName } from '@internal/common-utils/uriHelper';
+import { uriToFilePathOrHref, uriToName } from '@internal/common-utils/uriHelper';
 import { format } from 'util';
 import type { Uri } from 'vscode';
 import { window, workspace } from 'vscode';
@@ -88,7 +88,9 @@ async function addWordsToCustomDictionary(words: string[], dict: CustomDictDef):
 
 async function updateWordInCustomDictionary(updateFn: (words: string[]) => string[], dict: CustomDictDef): Promise<void> {
     if (regBlockUpdateDictionaryFormat.test(dict.uri.path)) {
-        return Promise.reject(new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${dict.uri.fsPath}".`));
+        return Promise.reject(
+            new Error(`Failed to add words to dictionary "${dict.name}", unsupported format: "${uriToFilePathOrHref(dict.uri)}".`),
+        );
     }
     try {
         await ensureFileExists(dict.uri);
