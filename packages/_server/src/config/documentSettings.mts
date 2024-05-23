@@ -14,8 +14,8 @@ import { createEmitter, setIfDefined } from '@internal/common-utils';
 import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
 import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
 import { log } from '@internal/common-utils/log';
-import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
-import { findRepoRoot, GitIgnore } from 'cspell-gitignore';
+import { toFileUri, toUri, uriToFilePathOrHref } from '@internal/common-utils/uriHelper';
+import { GitIgnore } from 'cspell-gitignore';
 import type { GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import { GlobMatcher } from 'cspell-glob';
 import type { ExcludeFilesGlobMap } from 'cspell-lib';
@@ -39,7 +39,7 @@ import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigF
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
-import { stat } from '../vfs/index.mjs';
+import { findRepoRoot, stat } from '../vfs/index.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
@@ -58,7 +58,6 @@ const cSpellSection: keyof SettingsCspell = extensionId;
 
 const configKeyTrustedWorkspace = 'cSpell.trustedWorkspace' as const satisfies keyof VSConfigAdvanced;
 
-type FsPath = string;
 export interface SettingsVSCode {
     search?: {
         exclude?: ExcludeFilesGlobMap;
@@ -122,7 +121,7 @@ export class DocumentSettings {
     private valuesToClearOnReset: ClearFn[] = [];
     private readonly fetchSettingsForUri = this.createCache((docUri: string | undefined) => this._fetchSettingsForUri(docUri));
     private readonly fetchVSCodeConfiguration = this.createCache((uri?: string) => this._fetchVSCodeConfiguration(uri));
-    private readonly fetchRepoRootForDir = this.createCache((dir: FsPath) => findRepoRoot(dir));
+    private readonly fetchRepoRootForDir = this.createCache((dir: Uri) => findRepoRoot(dir));
     private readonly pendingUrisToRelease = new Map<string, NodeJS.Timeout>();
     public readonly fetchWorkspaceConfiguration = this.createCache((docUri: DocumentUri) => this._fetchWorkspaceConfiguration(docUri));
     private readonly _folders = this.createLazy(() => this.fetchFolders());
@@ -210,7 +209,7 @@ export class DocumentSettings {
      */
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!extSettings.settings.useGitignore) return undefined;
-        return await this.gitIgnore.isIgnored(uri.fsPath);
+        return await this.gitIgnore.isIgnored(uriToFilePathOrHref(uri));
     }
 
     /**
@@ -225,9 +224,9 @@ export class DocumentSettings {
         if (!extSettings.settings.useGitignore) return undefined;
         const root = await this.fetchRepoRootForFile(uri);
         if (root) {
-            this.gitIgnore.addRoots([root]);
+            this.gitIgnore.addRoots([uriToFilePathOrHref(root)]);
         }
-        return await this.gitIgnore.isIgnoredEx(uri.fsPath);
+        return await this.gitIgnore.isIgnoredEx(uriToFilePathOrHref(uri));
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
@@ -342,7 +341,7 @@ export class DocumentSettings {
     private async fetchRepoRootForFile(uriFile: string | Uri) {
         const u = toUri(uriFile);
         const uriDir = UriUtils.dirname(u);
-        return this.fetchRepoRootForDir(uriDir.fsPath);
+        return this.fetchRepoRootForDir(uriDir);
     }
 
     public async findCSpellConfigurationFilesForUri(docUri: string | Uri): Promise<Uri[]> {
@@ -437,7 +436,6 @@ export class DocumentSettings {
         // console.error('fetchSettingsForUri: %o', { fileVSCodeSettings, useUriForConfig });
         const useURLForConfig = new URL(fileVSCodeSettings, useUriForConfig);
         const searchForUri = Uri.parse(useUriForConfig);
-        const searchForFsPath = path.normalize(searchForUri.fsPath);
         const vscodeCSpellConfigSettingsRel = await this.fetchSettingsFromVSCode(docUri);
         const enabledFileTypes = extractEnabledFileTypes(vscodeCSpellConfigSettingsRel);
         const enabledSchemes = extractEnabledSchemes(vscodeCSpellConfigSettingsRel);
@@ -465,15 +463,15 @@ export class DocumentSettings {
             settings,
         );
 
-        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, searchForFsPath);
+        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, uriToFilePathOrHref(searchForUri));
         fileSettings = applyEnabledFileTypes(fileSettings, enabledFileTypes);
         fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
 
-        const globRoot = Uri.parse(globRootFolder.uri).fsPath;
+        const globRoot = uriToFilePathOrHref(globRootFolder.uri);
         if (!files.length && vscodeCSpellConfigSettingsForDocument.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
-            folders.forEach((folder) => files.push({ glob: '/**', root: Uri.parse(folder.uri).fsPath }));
+            folders.forEach((folder) => files.push({ glob: '/**', root: uriToFilePathOrHref(folder.uri) }));
             fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
         }
         fileSettings.files = files;
@@ -646,7 +644,7 @@ export interface ExcludedByMatch {
 }
 
 function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[] {
-    const filename = path.normalize(Uri.parse(uri).fsPath);
+    const filename = uriToFilePathOrHref(uri);
     const matchResult = extSettings.excludeGlobMatcher.matchEx(filename);
 
     if (matchResult.matched === false) {
@@ -792,11 +790,11 @@ export function calcIncludeExclude(settings: ExtSettings, uri: Uri): { include: 
 
 export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
     const files = settings.settings.files;
-    return !files?.length || settings.includeGlobMatcher.match(uri.fsPath);
+    return !files?.length || settings.includeGlobMatcher.match(uriToFilePathOrHref(uri));
 }
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
-    return settings.excludeGlobMatcher.match(uri.fsPath);
+    return settings.excludeGlobMatcher.match(uriToFilePathOrHref(uri));
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {

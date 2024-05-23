@@ -86,8 +86,8 @@ function normalizeDictionaryDefinition(def: DictionaryDefinition): NormalizedDic
         return isInlineDict(def) ? undefined : def;
     }
     const { file, path, ...rest } = def;
-    const fsPath = [path || '', file || ''].filter((a) => !!a).join('/');
-    const nDef: NormalizedDictionaryDefinition = { ...rest, path: fsPath, file: undefined };
+    const usePath = [path || '', file || ''].filter((a) => !!a).join('/');
+    const nDef: NormalizedDictionaryDefinition = { ...rest, path: usePath, file: undefined };
     nDef.addWords = canAddWordsToDictionary(nDef);
     return nDef;
 }
