@@ -32,6 +32,7 @@ export function createServerApi(connection: MessageConnection, handlers: Partial
         clientNotifications: {
             onSpellCheckDocument: true,
             onDiagnostics: true,
+            onDocumentConfigChange: true,
         },
     };
     return createServerSideApi(connection, api, logger);

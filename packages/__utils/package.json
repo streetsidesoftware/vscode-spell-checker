@@ -12,6 +12,12 @@
     "./autoLoad": {
       "import": "./dist/autoLoad.js"
     },
+    "./eventEmitter": {
+      "import": "./dist/EventEmitter/index.mjs"
+    },
+    "./eventEmitter/operators": {
+      "import": "./dist/EventEmitter/operators/index.mjs"
+    },
     "./errors": {
       "import": "./dist/errors.js"
     },

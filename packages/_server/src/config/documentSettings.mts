@@ -10,7 +10,7 @@ import type {
     Pattern,
     RegExpPatternDefinition,
 } from '@cspell/cspell-types';
-import { setIfDefined } from '@internal/common-utils';
+import { createEmitter, setIfDefined } from '@internal/common-utils';
 import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
 import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
 import { log } from '@internal/common-utils/log';
@@ -31,6 +31,7 @@ import {
 import * as os from 'os';
 import * as path from 'path';
 import { pathToFileURL } from 'url';
+import type { DisposableClassic } from 'utils-disposables';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
@@ -132,6 +133,7 @@ export class DocumentSettings {
     private loader = getDefaultConfigLoader();
     private isTrusted: boolean | undefined;
     private pIsTrusted: Promise<boolean> | undefined;
+    private emitterOnDidUpdateConfiguration = createEmitter<ExtSettings>();
 
     constructor(
         readonly connection: Connection,
@@ -160,6 +162,10 @@ export class DocumentSettings {
                 this.fetchSettingsForUri.delete(uri);
             }, holdSettingsForMs),
         );
+    }
+
+    onDidUpdateConfiguration(fn: (settings: ExtSettings) => void): DisposableClassic {
+        return this.emitterOnDidUpdateConfiguration.event(fn);
     }
 
     async calcIncludeExclude(uri: Uri): Promise<ExcludeIncludeIgnoreInfo> {
@@ -395,19 +401,25 @@ export class DocumentSettings {
     }
 
     private async _fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {
-        try {
-            await this.determineIsTrusted();
-            return await this.__fetchSettingsForUri(docUri);
-        } catch {
-            // console.error('fetchSettingsForUri: %s %s', docUri, e);
-            return {
-                uri: docUri || '',
-                vscodeSettings: { cSpell: {} },
-                settings: {},
-                excludeGlobMatcher: new GlobMatcher([]),
-                includeGlobMatcher: new GlobMatcher([]),
-            };
-        }
+        const calc = async () => {
+            try {
+                await this.determineIsTrusted();
+                return await this.__fetchSettingsForUri(docUri);
+            } catch {
+                // console.error('fetchSettingsForUri: %s %s', docUri, e);
+                return {
+                    uri: docUri || '',
+                    vscodeSettings: { cSpell: {} },
+                    settings: {},
+                    excludeGlobMatcher: new GlobMatcher([]),
+                    includeGlobMatcher: new GlobMatcher([]),
+                };
+            }
+        };
+
+        const settings = await calc();
+        this.emitterOnDidUpdateConfiguration.fire(settings);
+        return settings;
     }
 
     private async __fetchSettingsForUri(docUri: string | undefined): Promise<ExtSettings> {

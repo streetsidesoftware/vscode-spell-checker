@@ -4,13 +4,14 @@ import type {
     ConfigFieldSelector,
     ConfigurationFields,
     GetConfigurationTargetsResult,
+    OnDocumentConfigChange,
     SpellingSuggestionsResult,
     WorkspaceConfigForDocument,
 } from 'code-spell-checker-server/api';
 import { extractEnabledSchemeList, extractKnownFileTypeIds } from 'code-spell-checker-server/lib';
-import type { DisposableHybrid } from 'utils-disposables';
-import type { CodeAction, Diagnostic, DiagnosticCollection, ExtensionContext, Range, TextDocument } from 'vscode';
-import { Disposable, languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
+import { createDisposableList, type DisposableHybrid } from 'utils-disposables';
+import type { CodeAction, Diagnostic, DiagnosticCollection, Disposable, ExtensionContext, Range, TextDocument } from 'vscode';
+import { languages as vsCodeSupportedLanguages, Uri, workspace } from 'vscode';
 
 import { diagnosticSource } from '../constants.js';
 import { isLcCodeAction, mapDiagnosticToLc, mapLcCodeAction, mapRangeToLc } from '../languageServer/clientHelpers.js';
@@ -54,12 +55,12 @@ export interface ServerResponseIsSpellCheckEnabledForFile extends ServerResponse
     uri: Uri;
 }
 
-const cacheTimeout = 2000;
-
 interface TextDocumentInfo {
     uri?: Uri;
     languageId?: string;
 }
+
+const uriSeparator = '||';
 
 export class CSpellClient implements Disposable {
     readonly client: LanguageClient;
@@ -68,8 +69,9 @@ export class CSpellClient implements Disposable {
     readonly allowedSchemas: Set<string>;
 
     serverApi: ServerApi;
-    private disposables = new Set<Disposable>();
+    private disposables = createDisposableList();
     private broadcasterOnSpellCheckDocument = createBroadcaster<OnSpellCheckDocumentStep>();
+    private broadcasterOnDocumentConfigChange = createBroadcaster<OnDocumentConfigChange>();
     private ready = new Resolvable<void>();
 
     /**
@@ -123,6 +125,10 @@ export class CSpellClient implements Disposable {
             run: { module, transport: VSCodeLangClientTransportKind.ipc, options },
             debug: { module, transport: VSCodeLangClientTransportKind.ipc, options: debugOptions },
         };
+
+        this.registerDisposable(
+            this.broadcasterOnDocumentConfigChange.listen((change) => this.clearCacheGetConfigurationForDocument(change.uris)),
+        );
 
         // Create the language client and start the client.
         this.client = new LanguageClient('cspell', 'Code Spell Checker Server', serverOptions, clientOptions);
@@ -223,19 +229,34 @@ export class CSpellClient implements Disposable {
         fields: ConfigFieldSelector<ConfigurationFields>,
     ) => Promise<GetConfigurationForDocumentResult<ConfigurationFields>> {
         return (document: TextDocument | TextDocumentInfo | undefined, fields) => {
-            const key = document?.uri?.toString() + ':' + Object.keys(fields).sort().join(',');
+            const key = document?.uri?.toString() + uriSeparator + Object.keys(fields).sort().join(',');
             const found = this.cacheGetConfigurationForDocument.get(key);
             if (found) return found;
             const result = this._getConfigurationForDocument(document, fields);
             this.cacheGetConfigurationForDocument.set(key, result);
-            setTimeout(() => this.cacheGetConfigurationForDocument.delete(key), cacheTimeout);
             return result;
         };
     }
 
+    private clearCacheGetConfigurationForDocument(uris?: string[]) {
+        if (!uris) {
+            this.cacheGetConfigurationForDocument.clear();
+            return;
+        }
+
+        const urisToClear = new Set(uris.map((sUri) => Uri.parse(sUri).toString()));
+        for (const key of this.cacheGetConfigurationForDocument.keys()) {
+            if (!key) continue;
+            const uri = key?.split(uriSeparator)[0];
+            if (urisToClear.has(uri)) {
+                this.cacheGetConfigurationForDocument.delete(key);
+            }
+        }
+    }
+
     public notifySettingsChanged(): Promise<void> {
-        this.cacheGetConfigurationForDocument.clear();
-        setTimeout(() => this.cacheGetConfigurationForDocument.clear(), 250);
+        this.clearCacheGetConfigurationForDocument();
+        setTimeout(() => this.clearCacheGetConfigurationForDocument(), 250);
         return silenceErrors(
             this.whenReady(() => this.serverApi.notifyConfigChange()),
             'notifySettingsChanged',
@@ -271,16 +292,12 @@ export class CSpellClient implements Disposable {
     }
 
     private registerDisposable(...disposables: Disposable[]) {
-        for (const d of disposables) {
-            this.disposables.add(d);
-        }
+        this.disposables.push(...disposables);
     }
 
     public dispose(): void {
         this.client.stop();
-        const toDispose = [...this.disposables];
-        this.disposables.clear();
-        Disposable.from(...toDispose).dispose();
+        this.disposables.dispose();
     }
 
     private calcServerArgs(): string[] {
@@ -290,6 +307,10 @@ export class CSpellClient implements Disposable {
 
     public onSpellCheckDocumentNotification(fn: (p: OnSpellCheckDocumentStep) => void): Disposable {
         return this.broadcasterOnSpellCheckDocument.listen(fn);
+    }
+
+    public onDocumentConfigChangeNotification(fn: (p: OnDocumentConfigChange) => void): Disposable {
+        return this.broadcasterOnDocumentConfigChange.listen(fn);
     }
 
     public async requestSpellingSuggestionsCodeActions(doc: TextDocument, range: Range, diagnostics: Diagnostic[]): Promise<CodeAction[]> {
@@ -335,6 +356,7 @@ export class CSpellClient implements Disposable {
 
     private registerHandleNotificationsFromServer() {
         this.registerDisposable(this.serverApi.onSpellCheckDocument((p) => this.broadcasterOnSpellCheckDocument.send(p)));
+        this.registerDisposable(this.serverApi.onDocumentConfigChange((p) => this.broadcasterOnDocumentConfigChange.send(p)));
     }
 }
 

@@ -135,6 +135,15 @@ export function run(): void {
 
     const progressNotifier = createProgressNotifier(clientServerApi);
 
+    // Notify the client when the config has changed for a document.
+    dd(
+        documentSettings.onDidUpdateConfiguration(
+            (update) => (
+                logInfo('onDidUpdateConfiguration'), clientServerApi.clientNotification.onDocumentConfigChange({ uris: [update.uri] })
+            ),
+        ),
+    );
+
     dd(
         connection.onInitialize((params: InitializeParams): InitializeResult => {
             // Hook up the logger to the connection.

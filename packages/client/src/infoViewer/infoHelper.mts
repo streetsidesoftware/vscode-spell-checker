@@ -246,7 +246,7 @@ function getDefaultWorkspaceFolder() {
 }
 
 function getDefaultWorkspaceFolderUri(docUri?: Uri) {
-    const docFolder = docUri && vscode.workspace.getWorkspaceFolder(docUri);
+    const docFolder = docUri && vscode.workspace.getWorkspaceFolder(docUri)?.uri;
     return docFolder || getDefaultWorkspaceFolder()?.uri;
 }
 

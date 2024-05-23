@@ -22,6 +22,7 @@ import type {
     GetConfigurationTargetsResult,
     GetSpellCheckingOffsetsResult,
     IsSpellCheckEnabledResult,
+    OnDocumentConfigChange,
     OnSpellCheckDocumentStep,
     PublishDiagnostics,
     SpellingSuggestionsResult,
@@ -57,8 +58,19 @@ export interface ServerRequestsAPI {
 
 /** Notifications that can be sent to the server */
 export interface ServerNotificationsAPI {
+    /**
+     * Tell the server that the configuration has changed. Causes the server to reload the configuration and
+     * check all documents.
+     * @returns void
+     */
     notifyConfigChange: () => void;
-    registerConfigurationFile: (path: string) => void;
+    /**
+     * Register a configuration file to be loaded.
+     * This is how to add a configuration file to the spell checker. It is mainly used to add language dictionaries.
+     * @param url - The url of the configuration file.
+     * @returns void
+     */
+    registerConfigurationFile: (url: string) => void;
 }
 
 /**
@@ -74,8 +86,22 @@ export interface ClientRequestsAPI {
 
 /** Notifications from the server to the client(vscode extension) */
 export interface ClientNotificationsAPI {
+    /**
+     * Notify the client that the document is being spell checked.
+     * @param step - The step in the spell checking process.
+     */
     onSpellCheckDocument(step: OnSpellCheckDocumentStep): void;
+    /**
+     * Send updated document diagnostics to the client.
+     * @param pub - The diagnostics to publish.
+     */
     onDiagnostics(pub: PublishDiagnostics): void;
+
+    /**
+     * Notify the client that the configuration has for the listed document URIs.
+     * @param notification - The notification.
+     */
+    onDocumentConfigChange(notification: OnDocumentConfigChange): void;
 }
 
 export interface SpellCheckerServerAPI extends RpcAPI {
