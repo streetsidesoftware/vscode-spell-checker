@@ -88,6 +88,14 @@
       "additionalProperties": false,
       "order": 5,
       "properties": {
+        "cSpell.experimental.symbols": {
+          "default": false,
+          "description": "Experiment with executeDocumentSymbolProvider. This feature is experimental and will be removed in the future.",
+          "markdownDescription": "Experiment with executeDocumentSymbolProvider.\nThis feature is experimental and will be removed in the future.",
+          "scope": "application",
+          "title": "Experiment with `executeDocumentSymbolProvider`",
+          "type": "boolean"
+        },
         "cSpell.ignoreRegExpList": {
           "description": "List of regular expressions or Pattern names (defined in `#cSpell.patterns#`) to exclude from spell checking.\n\n- When using the VS Code Preferences UI, it is not necessary to escape the `\\`, VS Code takes care of that.\n- When editing the VS Code `settings.json` file,   it is necessary to escape `\\`.   Each `\\` becomes `\\\\`.\n\nThe default regular expression flags are `gi`. Add `u` (`gui`), to enable Unicode.\n\n| VS Code UI          | settings.json         | Description                                  | | :------------------ | :-------------------- | :------------------------------------------- | | `/\\\\[a-z]+/gi`      | `/\\\\\\\\[a-z]+/gi`      | Exclude LaTeX command like `\\mapsto`         | | `/\\b[A-Z]{3,5}\\b/g` | `/\\\\b[A-Z]{3,5}\\\\b/g` | Exclude full-caps acronyms of 3-5 length.    | | `CStyleComment`     | `CStyleComment`       | A built in pattern                           |",
           "items": {

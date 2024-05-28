@@ -299,6 +299,15 @@ export interface SpellCheckerSettings
     'experimental.enableSettingsViewerV2'?: boolean;
 
     /**
+     * Experiment with executeDocumentSymbolProvider.
+     * This feature is experimental and will be removed in the future.
+     * @title Experiment with `executeDocumentSymbolProvider`
+     * @scope application
+     * @default false
+     */
+    'experimental.symbols'?: boolean;
+
+    /**
      * Hide the options to add words to dictionaries or settings.
      * @scope resource
      * @default false
