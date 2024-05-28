@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0...code-spell-checker-v4.0.1) (2024-05-28)
+
+
+### Updates and Bug Fixes
+
+* Change scope of decoration settings ([#3319](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3319)) ([c3bfe3b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/c3bfe3b70099735248433c689f2f9be470d64186))
+* Stop gap until GlobMatcher supports URLs ([#3324](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3324)) ([9ef3093](https://github.com/streetsidesoftware/vscode-spell-checker/commit/9ef30934aae341ab5702f03be787615788819b0a))
+
+
+### Miscellaneous
+
+* release 4.0.1 ([432d5ed](https://github.com/streetsidesoftware/vscode-spell-checker/commit/432d5edb2964c26261525bed93b9f09602ef328b))
+
 ## [4.0.0](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0-alpha.14...code-spell-checker-v4.0.0) (2024-05-24)
 
 
