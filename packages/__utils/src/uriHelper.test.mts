@@ -32,9 +32,9 @@ describe('Validate uriHelper', () => {
         ${'http://www.streetsidesoftware.nl'}            | ${'http://www.streetsidesoftware.nl/'}
         ${Uri.parse('http://www.streetsidesoftware.nl')} | ${'http://www.streetsidesoftware.nl/'}
         ${new URL('http://www.streetsidesoftware.nl')}   | ${'http://www.streetsidesoftware.nl/'}
-        ${'/path/to/file.txt'}                           | ${pathToFileURL('/path/to/file.txt').toString()}
-        ${'path/to/file.txt'}                            | ${pathToFileURL('path/to/file.txt').toString()}
-        ${''}                                            | ${pathToFileURL('').toString()}
+        ${'/path/to/file.txt'}                           | ${Uri.parse(pathToFileURL('/path/to/file.txt').toString()).toString()}
+        ${'path/to/file.txt'}                            | ${Uri.parse(pathToFileURL('path/to/file.txt').toString()).toString()}
+        ${''}                                            | ${Uri.parse(pathToFileURL('').toString()).toString()}
     `('toUri $uri', ({ uri, expected }) => {
         expect(toUri(uri).toString()).toBe(expected.toString());
     });
