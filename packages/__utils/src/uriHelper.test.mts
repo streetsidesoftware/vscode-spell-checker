@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import { describe, expect, test } from 'vitest';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
@@ -30,6 +31,10 @@ describe('Validate uriHelper', () => {
         ${uri}                                           | ${uri}
         ${'http://www.streetsidesoftware.nl'}            | ${'http://www.streetsidesoftware.nl/'}
         ${Uri.parse('http://www.streetsidesoftware.nl')} | ${'http://www.streetsidesoftware.nl/'}
+        ${new URL('http://www.streetsidesoftware.nl')}   | ${'http://www.streetsidesoftware.nl/'}
+        ${'/path/to/file.txt'}                           | ${pathToFileURL('/path/to/file.txt').toString()}
+        ${'path/to/file.txt'}                            | ${pathToFileURL('path/to/file.txt').toString()}
+        ${''}                                            | ${pathToFileURL('').toString()}
     `('toUri $uri', ({ uri, expected }) => {
         expect(toUri(uri).toString()).toBe(expected.toString());
     });

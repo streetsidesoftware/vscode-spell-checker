@@ -14,10 +14,11 @@ import { createEmitter, setIfDefined } from '@internal/common-utils';
 import type { AutoLoadCache, LazyValue } from '@internal/common-utils/autoLoad';
 import { createAutoLoadCache, createLazyValue } from '@internal/common-utils/autoLoad';
 import { log } from '@internal/common-utils/log';
-import { toFileUri, toUri, uriToFilePathOrHref } from '@internal/common-utils/uriHelper';
+import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { GitIgnore } from 'cspell-gitignore';
 import type { GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import { GlobMatcher } from 'cspell-glob';
+import { isUrlLike } from 'cspell-io';
 import type { ExcludeFilesGlobMap } from 'cspell-lib';
 import {
     calcOverrideSettings,
@@ -185,8 +186,10 @@ export class DocumentSettings {
     }
 
     async isExcluded(uri: string): Promise<boolean> {
+        const uUri = Uri.parse(uri);
+        if (!canCheckAgainstGlob(uUri)) return false;
         const settings = await this.fetchSettingsForUri(uri);
-        return isExcluded(settings, Uri.parse(uri));
+        return isExcluded(settings, uUri);
     }
 
     /**
@@ -208,8 +211,9 @@ export class DocumentSettings {
      *   - `false` otherwise
      */
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
+        if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
-        return await this.gitIgnore.isIgnored(uriToFilePathOrHref(uri));
+        return await this.gitIgnore.isIgnored(uriToGlobPath(uri));
     }
 
     /**
@@ -221,12 +225,13 @@ export class DocumentSettings {
      *   - `false` otherwise
      */
     private async _isGitIgnoredEx(extSettings: ExtSettings, uri: Uri): Promise<GitignoreResultInfo | undefined> {
+        if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
         const root = await this.fetchRepoRootForFile(uri);
         if (root) {
-            this.gitIgnore.addRoots([uriToFilePathOrHref(root)]);
+            this.gitIgnore.addRoots([uriToGlobPath(root)]);
         }
-        return await this.gitIgnore.isIgnoredEx(uriToFilePathOrHref(uri));
+        return await this.gitIgnore.isIgnoredEx(uriToGlobPath(uri));
     }
 
     async calcExcludedBy(uri: string): Promise<ExcludedByMatch[]> {
@@ -463,15 +468,15 @@ export class DocumentSettings {
             settings,
         );
 
-        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, uriToFilePathOrHref(searchForUri));
+        let fileSettings: CSpellUserSettings = calcOverrideSettings(mergedSettings, uriToGlobPath(searchForUri));
         fileSettings = applyEnabledFileTypes(fileSettings, enabledFileTypes);
         fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
 
-        const globRoot = uriToFilePathOrHref(globRootFolder.uri);
+        const globRoot = uriToGlobPath(globRootFolder.uri);
         if (!files.length && vscodeCSpellConfigSettingsForDocument.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
-            folders.forEach((folder) => files.push({ glob: '/**', root: uriToFilePathOrHref(folder.uri) }));
+            folders.forEach((folder) => files.push({ glob: '/**', root: uriToGlobPath(folder.uri) }));
             fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
         }
         fileSettings.files = files;
@@ -644,7 +649,7 @@ export interface ExcludedByMatch {
 }
 
 function calcExcludedBy(uri: string, extSettings: ExtSettings): ExcludedByMatch[] {
-    const filename = uriToFilePathOrHref(uri);
+    const filename = uriToGlobPath(uri);
     const matchResult = extSettings.excludeGlobMatcher.matchEx(filename);
 
     if (matchResult.matched === false) {
@@ -790,11 +795,11 @@ export function calcIncludeExclude(settings: ExtSettings, uri: Uri): { include: 
 
 export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
     const files = settings.settings.files;
-    return !files?.length || settings.includeGlobMatcher.match(uriToFilePathOrHref(uri));
+    return !canCheckAgainstGlob(uri) || !files?.length || settings.includeGlobMatcher.match(uriToGlobPath(uri));
 }
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
-    return settings.excludeGlobMatcher.match(uriToFilePathOrHref(uri));
+    return !canCheckAgainstGlob(uri) || settings.excludeGlobMatcher.match(uriToGlobPath(uri));
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {
@@ -835,6 +840,18 @@ function toDirURL(url: string | URL): URL {
         url.pathname += '/';
     }
     return url;
+}
+
+function uriToGlobPath(uri: string | URL | Uri): string {
+    if (typeof uri === 'string' && !isUrlLike(uri)) {
+        return uri;
+    }
+    const u = toFileUri(uri);
+    return u.path;
+}
+
+function canCheckAgainstGlob(uri: Uri): boolean {
+    return uri.scheme === 'file';
 }
 
 export const __testing__ = {
