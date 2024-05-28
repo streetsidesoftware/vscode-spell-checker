@@ -50,6 +50,7 @@ import {
     targetsForUri,
     targetsFromConfigurationTarget,
 } from './settings/targetHelpers.mjs';
+import { experimentWithSymbols } from './symbolServer/index.mjs';
 import { findNotebookCell } from './util/documentUri.js';
 import { catchErrors, handleErrors } from './util/errors.js';
 import { performance, toMilliseconds } from './util/perf.js';
@@ -175,6 +176,8 @@ export const commandHandlers = {
     'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
     'cSpell.openFileInfoView': callCommand('cspell-info.infoView.focus'),
     'cSpell.displayCSpellInfo': callCommand('cspell-info.infoView.focus'),
+
+    'cSpell.experimental.executeDocumentSymbolProvider': handleCmdExperimentalExecuteDocumentSymbolProvider,
 
     'cSpell.restart': handleRestart,
     'cSpell.reload': handleReload,
@@ -582,8 +585,11 @@ function handleInsertWordsDirective(textEditor?: TextEditor, _edit?: TextEditorE
     }, 'handleInsertWordsDirective');
 }
 
-function callCommand(command: string): () => void {
-    return () => commands.executeCommand(command);
+function callCommand<T>(command: string, calcArgs?: () => unknown[]): () => Promise<T> {
+    return async () => {
+        const args = calcArgs?.() || [];
+        return commands.executeCommand<T>(command, ...args);
+    };
 }
 
 function handleRestart() {
@@ -592,4 +598,8 @@ function handleRestart() {
 
 function handleReload() {
     return handleErrors(di.getClient().notifySettingsChanged(), 'handle restart server');
+}
+
+function handleCmdExperimentalExecuteDocumentSymbolProvider() {
+    return handleErrors(experimentWithSymbols(), 'handleCmdExperimentalExecuteDocumentSymbolProvider');
 }

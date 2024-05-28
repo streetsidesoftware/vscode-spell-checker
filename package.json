@@ -470,6 +470,12 @@
         "enablement": "config.cSpell.experimental.enableRegexpView"
       },
       {
+        "command": "cSpell.experimental.executeDocumentSymbolProvider",
+        "title": "Execute Document Symbol Provider on the current document.",
+        "icon": "$(code)",
+        "enablement": "config.cSpell.experimental.symbols"
+      },
+      {
         "command": "cSpell.autoFixSpellingIssues",
         "title": "Fix all issues with a preferred suggestion in the current document.",
         "icon": "$(lightbulb-autofix)"
@@ -731,6 +737,13 @@
         "additionalProperties": false,
         "order": 5,
         "properties": {
+          "cSpell.experimental.symbols": {
+            "default": false,
+            "markdownDescription": "Experiment with executeDocumentSymbolProvider.\nThis feature is experimental and will be removed in the future.",
+            "scope": "application",
+            "title": "Experiment with `executeDocumentSymbolProvider`",
+            "type": "boolean"
+          },
           "cSpell.ignoreRegExpList": {
             "items": {
               "type": "string"
