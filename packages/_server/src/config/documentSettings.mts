@@ -847,7 +847,7 @@ function uriToGlobPath(uri: string | URL | Uri): string {
         return uri;
     }
     const u = toFileUri(uri);
-    return u.path;
+    return u.scheme === 'file' ? u.fsPath : u.path;
 }
 
 function canCheckAgainstGlob(uri: Uri): boolean {
