@@ -68,10 +68,14 @@
     const fileUrl = uriActual ? new URL(uriActual) : undefined;
     const blocked = fileConfig?.blockedReason;
     const enabled = fileConfig?.fileEnabled && fileConfig?.languageIdEnabled && !fileConfig?.fileIsExcluded;
+    const fileIsIncluded = fileConfig?.fileIsIncluded;
+    const fileIsExcluded = fileConfig?.fileIsExcluded;
 
     info.push(
       { key: 'Name', value: name },
       { key: 'Enabled', value: (enabled === undefined && 'n/a') || (enabled && 'Yes') || 'No' },
+      (!fileIsIncluded && { key: 'In Files', value: 'No' }) || undefined,
+      (fileIsExcluded && { key: 'Excluded', value: 'Yes' }) || undefined,
       // { key: 'Version', value: $currentDoc?.version ?? 'n/a' },
       // { key: 'File Name', value: fileUrl ? fileUrl.pathname.split('/').slice(-2).join('/') : '<unknown>' },
       { key: 'Workspace', value: fileConfig?.workspaceFolder?.name || 'n/a' },

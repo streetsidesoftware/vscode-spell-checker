@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'url';
 import { URI as Uri, Utils as UriUtils } from 'vscode-uri';
 
 export const supportedSchemes = [
@@ -28,19 +29,23 @@ export function isSupportedDoc(doc?: TextDocumentLike): boolean {
 
 const regExpIsUri = /^[\w._-]{2,}:/;
 
-export function toUri(uri: string | Uri): Uri;
+export function toUri(uri: string | Uri | URL): Uri;
 export function toUri(uri: undefined | null): undefined;
-export function toUri(uri: string | Uri | undefined | null): Uri | undefined;
-export function toUri(uri: string | Uri | undefined | null): Uri | undefined {
-    return toFileUri(uri || undefined);
+export function toUri(uri: string | Uri | URL | undefined | null): Uri | undefined;
+export function toUri(uri: string | Uri | URL | undefined | null): Uri | undefined {
+    return toFileUri(uri);
 }
 
-export function toFileUri(uri: string | Uri): Uri;
-export function toFileUri(uri: undefined): undefined;
-export function toFileUri(uri: string | Uri | undefined): Uri | undefined;
-export function toFileUri(uri: string | Uri | undefined): Uri | undefined {
+export function toFileUri(uri: string | Uri | URL): Uri;
+export function toFileUri(uri: undefined | null): undefined;
+export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined;
+export function toFileUri(uri: string | Uri | URL | undefined | null): Uri | undefined {
     if (typeof uri === 'string') {
-        return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.file(uri);
+        return regExpIsUri.test(uri) ? Uri.parse(uri) : Uri.parse(pathToFileURL(uri).toString());
+    }
+    if (!uri) return undefined;
+    if (uri instanceof URL) {
+        return Uri.parse(uri.toString());
     }
     return uri;
 }
