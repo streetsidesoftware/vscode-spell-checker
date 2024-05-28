@@ -17,7 +17,7 @@ interface Decoration {
      * - `#ffff0080` - semi-transparent yellow.
      * - `rgb(255 153 0 / 80%)`
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "#fc4c"
      */
@@ -46,7 +46,7 @@ interface Decoration {
      * - `underline dotted yellow 0.2rem`
      * - `underline wavy #ff0c 1.5px` - Wavy underline with 1.5px thickness in semi-transparent yellow.
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      */
     textDecoration?: string;
@@ -57,7 +57,7 @@ interface Decoration {
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "underline"
      */
@@ -69,7 +69,7 @@ interface Decoration {
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - style - `solid`, `wavy`, `dotted`, see: [text-decoration-style, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style)
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "wavy"
      */
@@ -88,7 +88,7 @@ interface Decoration {
      * - `1.5px`
      * - `10%`
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "auto"
      */
@@ -105,7 +105,7 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "#fc4"
      */
@@ -122,7 +122,7 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "#f44"
      */
@@ -139,7 +139,7 @@ interface Decoration {
      * - `yellow`
      * - `#ff0c`
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "#888"
      * @hidden hide this for now. It won't be used until we have a way to get pure suggestions.
@@ -157,7 +157,7 @@ interface Appearance extends Decoration {
      * See:
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      */
     light?: Decoration;
@@ -168,7 +168,7 @@ interface Appearance extends Decoration {
      * See:
      * - `#cSpell.overviewRulerColor#`
      * - `#cSpell.textDecoration#`
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      */
     dark?: Decoration;
@@ -178,7 +178,7 @@ export interface AppearanceSettings extends Appearance {
     /**
      * Draw custom decorations on Spelling Issues.
      *
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default true
      */
@@ -191,7 +191,7 @@ export interface AppearanceSettings extends Appearance {
      * This setting allows the use of the VS Code Diagnostic Collection to render spelling issues.
      *
      * @title Use VS Code to Render Spelling Issues
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default { "vscode-scm": true }
      */
