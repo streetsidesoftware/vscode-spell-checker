@@ -123,7 +123,7 @@ export interface SpellCheckerSettings
 
     /**
      * Select which fields to display in the language status bar.
-     * @scope machine
+     * @scope application
      * @default { "fileType": true, "scheme": true, "issues": true }
      */
     languageStatusFields?: LanguageStatusFields;
@@ -401,7 +401,7 @@ export interface SpellCheckerBehaviorSettings {
      * Control how spelling issues are displayed while typing.
      * See: `#cSpell.revealIssuesAfterMS#` to control when issues are revealed.
      * @title Hide Issues While Typing
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default "Word"
      * @enumDescriptions [
@@ -415,7 +415,7 @@ export interface SpellCheckerBehaviorSettings {
     /**
      * Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.
      * @title Reveal Issues After a Delay in Milliseconds
-     * @scope machine
+     * @scope application
      * @since 4.0.0
      * @default 1500
      * @enumDescriptions [
