@@ -11,7 +11,12 @@ import { handleErrors } from './util/errors.js';
 
 const showLanguageStatus = true;
 
-export function createLanguageStatus(): Disposable {
+interface LanguageStatusOptions {
+    areIssuesVisible: () => boolean;
+    onDidChangeVisibility: (fn: () => void) => Disposable;
+}
+
+export function createLanguageStatus(options: LanguageStatusOptions): Disposable {
     const dList = createDisposableList();
     if (!showLanguageStatus) return dList;
 
@@ -27,6 +32,7 @@ export function createLanguageStatus(): Disposable {
         }),
     );
     dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow()));
+    dList.push(options.onDidChangeVisibility(() => updateNow(false)));
 
     updateNow();
 
@@ -53,6 +59,7 @@ export function createLanguageStatus(): Disposable {
         const warnCount = issuesCount - flaggedCount;
         enabled === undefined && icons.push('$(repo-sync)');
         enabled === false && icons.push('$(exclude)');
+        enabled && !options.areIssuesVisible() && icons.push('$(eye-closed)');
         enabled && !issuesCount && icons.push('$(check)');
         enabled && flaggedCount && icons.push(`$(error) ${flaggedCount}`);
         enabled && warnCount && icons.push(`$(warning) ${warnCount}`);
