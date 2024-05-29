@@ -47,6 +47,7 @@ export const ConfigFields: CSpellUserSettingsFields = {
     showSuggestionsLinkInEditorContextMenu: 'showSuggestionsLinkInEditorContextMenu',
     spellCheckDelayMs: 'spellCheckDelayMs',
     spellCheckOnlyWorkspaceFiles: 'spellCheckOnlyWorkspaceFiles',
+    strict: 'strict',
     suggestionMenuType: 'suggestionMenuType',
     suggestionNumChanges: 'suggestionNumChanges',
     suggestionsTimeout: 'suggestionsTimeout',

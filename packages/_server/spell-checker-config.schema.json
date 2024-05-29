@@ -1353,6 +1353,15 @@
           "scope": "resource",
           "type": "array"
         },
+        "cSpell.strict": {
+          "default": true,
+          "description": "Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior. When strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.",
+          "markdownDescription": "Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior.\nWhen strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.",
+          "scope": "language-overridable",
+          "since": "4.0.2",
+          "title": "Strict Spell Checking",
+          "type": "boolean"
+        },
         "cSpell.useLocallyInstalledCSpellDictionaries": {
           "default": true,
           "description": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
@@ -2677,6 +2686,14 @@
               "since": "4.0.0",
               "type": "string"
             },
+            "textDecorationColorSuggestion": {
+              "default": "#8884",
+              "description": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+              "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+              "scope": "application",
+              "since": "4.0.2",
+              "type": "string"
+            },
             "textDecorationLine": {
               "default": "underline",
               "description": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
@@ -2768,6 +2785,14 @@
               "since": "4.0.0",
               "type": "string"
             },
+            "textDecorationColorSuggestion": {
+              "default": "#8884",
+              "description": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+              "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+              "scope": "application",
+              "since": "4.0.2",
+              "type": "string"
+            },
             "textDecorationLine": {
               "default": "underline",
               "description": "The CSS line type used to decorate issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- line - `underline`, `overline`, see: [text-decoration-line, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line)",
@@ -2838,6 +2863,14 @@
           "markdownDescription": "The decoration color for flagged issues.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
           "scope": "application",
           "since": "4.0.0",
+          "type": "string"
+        },
+        "cSpell.textDecorationColorSuggestion": {
+          "default": "#8884",
+          "description": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+          "markdownDescription": "The decoration color for spelling suggestions.\n\nSee: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)\n- color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)\n\nCommon Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`\n\nExamples:\n- `green`\n- `yellow`\n- `#ff0c`",
+          "scope": "application",
+          "since": "4.0.2",
           "type": "string"
         },
         "cSpell.textDecorationLine": {

@@ -14,6 +14,7 @@ import { findConicalDocument, findNotebookCellForDocument } from '../util/docume
 import { handleErrors, logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
 import { isDefined } from '../util/index.mjs';
+import { getIconForSpellingIssue, icons } from './icons.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
@@ -280,15 +281,6 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     readonly dispose = this.disposeList.dispose;
 }
 
-const icons = {
-    warning: new vscode.ThemeIcon('warning', new vscode.ThemeColor('list.warningForeground')),
-    error: new vscode.ThemeIcon('error', new vscode.ThemeColor('list.errorForeground')),
-    doc: new vscode.ThemeIcon('go-to-file'),
-    suggestion: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb'),
-    suggestionPreferred: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb-autofix'),
-    gear: new vscode.ThemeIcon('gear'),
-} as const;
-
 interface CalcRevealResult {
     top: IssueTreeItemBase | undefined;
     closest: IssueTreeItemBase | undefined;
@@ -393,7 +385,7 @@ class FileIssueTreeItem extends IssueTreeItemBase {
         item.contextValue = 'issue.FileIssueTreeItem' + (isFlagged ? '.flagged' : '');
         item.collapsibleState =
             !this.children || this.children.length ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
-        item.iconPath = isFlagged ? icons.error : icons.warning;
+        item.iconPath = getIconForSpellingIssue(this.issue);
         item.tooltip = this.tooltip();
         item.command = this.getCommand();
         return item;
@@ -469,7 +461,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
         const { word, isPreferred } = this.suggestion;
         const item = new TreeItem(word);
         item.id = calcItemId(issue.uri, issue.range, word);
-        item.iconPath = isPreferred ? icons.suggestionPreferred : icons.suggestion;
+        item.iconPath = isPreferred ? icons.applySuggestionPreferred : icons.applySuggestion;
         item.description = isPreferred && '(preferred)';
         const inlineWord = markdownInlineCode(word);
         const cleanedWord = cleanWord(word);

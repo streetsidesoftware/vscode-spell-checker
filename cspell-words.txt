@@ -81,6 +81,8 @@ readonly
 restructuredtext
 rfdc
 rmwc
+RRGGBB
+RRGGBBAA
 scminput
 scrollbar
 shortname

@@ -25,6 +25,7 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
     const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
+    const strictMode = options.strict ?? true;
     const diags = r
         // Convert the offset into a position
         .map((issue) => ({ ...issue, position: textDocument.positionAt(issue.offset) }))
@@ -39,13 +40,16 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
         }))
         // Convert it to a Diagnostic
         .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
-            const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
+            const isKnown = suggestionsEx?.some((sug) => sug.isPreferred) || false;
+            const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : isKnown ? 'Misspelled' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
             const data: SpellCheckerDiagnosticData = {
                 text,
                 issueType,
                 isFlagged,
+                isKnown,
                 isSuggestion: undefined, // This is a future enhancement to CSpell.
+                strict: strictMode,
                 suggestions: haveSuggestionsMatchCase(text, sugs),
             };
             const diag: SpellingDiagnostic = { severity, range, message: diagMessage, source: diagSource, data };

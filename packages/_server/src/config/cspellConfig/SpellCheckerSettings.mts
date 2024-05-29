@@ -403,6 +403,16 @@ export interface SpellCheckerSettings
      * @default true
      */
     trustedWorkspace?: boolean;
+
+    /**
+     * Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior.
+     * When strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.
+     * @title Strict Spell Checking
+     * @scope language-overridable
+     * @since 4.0.2
+     * @default true
+     */
+    strict?: boolean;
 }
 
 export interface SpellCheckerBehaviorSettings {
