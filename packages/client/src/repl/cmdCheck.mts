@@ -1,21 +1,20 @@
 import type * as API from 'code-spell-checker-server/api';
 import type { CancellationToken, Uri } from 'vscode';
 
-import * as di from '../di.mjs';
+import { checkDocument } from '../api.mjs';
 import { colors } from './ansiUtils.mjs';
 import { formatPath, relative } from './formatPath.mjs';
 
 const maxPathLen = 60;
 
 export async function cmdCheckDocument(uri: Uri | string, options: CheckDocumentsOptions, index?: number, count?: number): Promise<void> {
-    const client = di.get('client');
     const { forceCheck, output, log, width } = options;
 
     const startTs = performance.now();
     const prefix = countPrefix(index, count);
 
     output(`${prefix}${colors.gray(formatPath(relative(uri), Math.min(maxPathLen, width - 10 - prefix.length)))}`);
-    const result = await client.serverApi.checkDocument({ uri: uri.toString() }, { forceCheck });
+    const result = await checkDocument({ uri: uri.toString() }, { forceCheck });
 
     const elapsed = performance.now() - startTs;
     const elapsedTime = elapsed.toFixed(2) + 'ms';

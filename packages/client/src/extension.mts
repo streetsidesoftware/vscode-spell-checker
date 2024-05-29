@@ -7,6 +7,7 @@ import { Utils as UriUtils } from 'vscode-uri';
 
 import { registerActionsMenu } from './actionMenu.mjs';
 import * as addWords from './addWords.mjs';
+import { checkDocument } from './api.mjs';
 import { registerCspellInlineCompletionProviders } from './autocomplete.mjs';
 import { CSpellClient } from './client/index.mjs';
 import { registerSpellCheckerCodeActionProvider } from './codeAction.mjs';
@@ -222,6 +223,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
         updateSettings: () => false,
         cSpellClient: () => client,
         getConfigurationForDocument,
+        checkDocument,
 
         // Legacy
         enableLocal: methods.enableLocale,
