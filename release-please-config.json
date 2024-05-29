@@ -1,7 +1,5 @@
 {
     "release-type": "node",
-    "versioning": "prerelease",
-    "prerelease-type": "alpha",
     "changelog-sections": [
         {
             "type": "feat",
