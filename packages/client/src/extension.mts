@@ -125,7 +125,7 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
          * adding a word to be ignored for the first time.
          */
         vscode.workspace.onDidChangeConfiguration(handleOnDidChangeConfiguration),
-        createLanguageStatus(),
+        createLanguageStatus({ areIssuesVisible: () => decorator.visible, onDidChangeVisibility: decorator.onDidChangeVisibility }),
         registerActionsMenu({ areIssuesVisible: () => decorator.visible }),
     );
 
