@@ -81,6 +81,7 @@ readonly
 restructuredtext
 rfdc
 rmwc
+RGBA
 RRGGBB
 RRGGBBAA
 scminput
