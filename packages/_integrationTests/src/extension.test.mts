@@ -54,6 +54,7 @@ const apiSignature: Api = {
     cSpellClient: 'cSpellClient',
     enableCurrentFileType: 'enableCurrentFileType',
     disableCurrentFileType: 'disableCurrentFileType',
+    checkDocument: 'checkDocument',
 
     // Legacy
     enableLocal: 'enableLocal',
