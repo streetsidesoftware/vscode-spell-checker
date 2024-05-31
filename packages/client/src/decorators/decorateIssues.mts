@@ -21,6 +21,7 @@ const logDbg: typeof console.log = debug ? console.log : () => undefined;
 export class SpellingIssueDecorator implements Disposable {
     private decorationTypeForIssues: TextEditorDecorationType | undefined;
     private decorationTypeForFlagged: TextEditorDecorationType | undefined;
+    private decorationTypeForSuggestions: TextEditorDecorationType | undefined;
     private decorationTypeForDebug: TextEditorDecorationType | undefined;
     private disposables = createDisposableList();
     private visibleEditors = new Set<TextEditor>();
@@ -43,6 +44,7 @@ export class SpellingIssueDecorator implements Disposable {
         this._visible = context.globalState.get(SpellingIssueDecorator.globalStateKey, true);
         this.decorationTypeForIssues = decorators?.decoratorIssues;
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
+        this.decorationTypeForSuggestions = decorators?.decoratorSuggestions;
         this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.disposables.push(
             () => this.clearDecoration(),
@@ -91,11 +93,18 @@ export class SpellingIssueDecorator implements Disposable {
     }
 
     refreshDiagnosticsInEditor(editor: TextEditor) {
-        if (!this.decorationTypeForIssues || !this.decorationTypeForFlagged || !this.decorationTypeForDebug) return;
+        if (
+            !this.decorationTypeForIssues ||
+            !this.decorationTypeForFlagged ||
+            !this.decorationTypeForDebug ||
+            !this.decorationTypeForSuggestions
+        )
+            return;
         const doc = editor.document;
         if (!this.#useCustomDecorators(doc.uri)) {
             editor.setDecorations(this.decorationTypeForIssues, []);
             editor.setDecorations(this.decorationTypeForFlagged, []);
+            editor.setDecorations(this.decorationTypeForSuggestions, []);
             return;
         }
 
@@ -144,16 +153,23 @@ export class SpellingIssueDecorator implements Disposable {
         }
 
         const decorationsIssues: DecorationOptions[] = issues
-            .filter((issue) => !issue.isFlagged())
+            .filter((issue) => !issue.isFlagged() && !issue.treatAsSuggestion())
             .map((diag) => diagToDecorationOptions(diag))
             .filter(isDefined);
         editor.setDecorations(this.decorationTypeForIssues, decorationsIssues);
+
+        const decorationsSuggestions: DecorationOptions[] = issues
+            .filter((issue) => issue.treatAsSuggestion())
+            .map((diag) => diagToDecorationOptions(diag))
+            .filter(isDefined);
+        editor.setDecorations(this.decorationTypeForSuggestions, decorationsSuggestions);
 
         const decorationsFlagged: DecorationOptions[] = issues
             .filter((issue) => issue.isFlagged() && issue.isIssueTypeSpelling())
             .map((diag) => diagToDecorationOptions(diag))
             .filter(isDefined);
         editor.setDecorations(this.decorationTypeForFlagged, decorationsFlagged);
+
         // editor.setDecorations(this.decorationTypeForDebug, activeRanges);
     }
 
@@ -186,6 +202,8 @@ export class SpellingIssueDecorator implements Disposable {
         this.decorationTypeForIssues = undefined;
         this.decorationTypeForFlagged?.dispose();
         this.decorationTypeForFlagged = undefined;
+        this.decorationTypeForSuggestions?.dispose();
+        this.decorationTypeForSuggestions = undefined;
         this.decorationTypeForDebug?.dispose();
         this.decorationTypeForDebug = undefined;
     }
@@ -205,6 +223,7 @@ export class SpellingIssueDecorator implements Disposable {
         const decorators = this.createDecorators();
         this.decorationTypeForIssues = decorators?.decoratorIssues;
         this.decorationTypeForFlagged = decorators?.decoratorFlagged;
+        this.decorationTypeForSuggestions = decorators?.decoratorSuggestions;
         this.decorationTypeForDebug = decorators?.decoratorDebug;
         this.refreshDiagnostics();
     }
@@ -213,6 +232,7 @@ export class SpellingIssueDecorator implements Disposable {
         | {
               decoratorIssues: TextEditorDecorationType;
               decoratorFlagged: TextEditorDecorationType;
+              decoratorSuggestions: TextEditorDecorationType;
               decoratorDebug: TextEditorDecorationType;
           }
         | undefined {
@@ -231,6 +251,7 @@ export class SpellingIssueDecorator implements Disposable {
             | 'textDecoration'
             | 'textDecorationColor'
             | 'textDecorationColorFlagged'
+            | 'textDecorationColorSuggestion'
             | 'textDecorationLine'
             | 'textDecorationStyle'
             | 'textDecorationThickness'
@@ -254,13 +275,21 @@ export class SpellingIssueDecorator implements Disposable {
             textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorFlagged'),
         });
 
+        const decoratorSuggestions = window.createTextEditorDecorationType({
+            isWholeLine: false,
+            rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+            overviewRulerLane: vscode.OverviewRulerLane.Right,
+            overviewRulerColor: overviewRulerColor,
+            textDecoration: calcTextDecoration(cfg, mode, 'textDecorationColorSuggestion'),
+        });
+
         const decoratorDebug = window.createTextEditorDecorationType({
             isWholeLine: false,
             rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
         });
 
-        return { decoratorIssues, decoratorFlagged, decoratorDebug };
+        return { decoratorIssues, decoratorFlagged, decoratorSuggestions, decoratorDebug };
     }
 
     #scheduleUriRefresh() {
@@ -354,9 +383,10 @@ function calcTextDecoration(
         | 'textDecorationThickness'
         | 'textDecorationColor'
         | 'textDecorationColorFlagged'
+        | 'textDecorationColorSuggestion'
     >,
     mode: ColorMode,
-    colorField: 'textDecorationColor' | 'textDecorationColorFlagged',
+    colorField: 'textDecorationColor' | 'textDecorationColorFlagged' | 'textDecorationColorSuggestion',
 ) {
     const textDecoration = cfg[mode]?.textDecoration || cfg.textDecoration || '';
     const line = cfg[mode]?.textDecorationLine || cfg.textDecorationLine || 'underline';
@@ -370,7 +400,8 @@ function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions
     const { range } = issue;
     const suggestions = issue.providedSuggestions();
     const isFlagged = issue.isFlagged();
-    const isSuggestion = issue.isSuggestion();
+    const isKnown = issue.isKnown();
+    const isSuggestion = issue.treatAsSuggestion();
     const text = issue.word;
     const doc = issue.document;
 
@@ -379,24 +410,21 @@ function diagToDecorationOptions(issue: SpellingCheckerIssue): DecorationOptions
 
     const mdShowSuggestions = markdownLink('Suggestions $(chevron-right)', commandSuggest, 'Show suggestions.');
 
-    const icon = isFlagged ? '$(error)' : isSuggestion ? '$(info)' : '$(warning)';
+    const icon = isFlagged ? '$(error)' : isSuggestion ? '$(info)' : isKnown ? '$(warning)' : '$(issues)';
 
     const hoverMessage = new MarkdownString(icon + ' ', true);
 
     hoverMessage.appendMarkdown('***').appendText(text).appendMarkdown('***: ');
+    const issueMsg = isFlagged ? 'Forbidden word.' : isKnown ? 'Misspelled word.' : 'Unknown word.';
 
     if (issue.isIssueTypeSpelling()) {
-        if (isSuggestion) {
+        if (issue.isSuggestion()) {
             hoverMessage.appendText('Has Suggestions.');
             if (!suggestions?.length) {
                 hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
             }
         } else {
-            if (isFlagged) {
-                hoverMessage.appendText('Forbidden word.');
-            } else {
-                hoverMessage.appendText('Unknown word.');
-            }
+            hoverMessage.appendText(issueMsg);
             hoverMessage.appendText(' ').appendMarkdown(mdShowSuggestions);
         }
     } else if (issue.isIssueTypeDirective()) {

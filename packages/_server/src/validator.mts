@@ -1,4 +1,4 @@
-import { Text as TextUtil } from 'cspell-lib';
+import { getDictionary, Text as TextUtil } from 'cspell-lib';
 import type { TextDocument } from 'vscode-languageserver-textdocument';
 import type { Diagnostic } from 'vscode-languageserver-types';
 import { DiagnosticSeverity } from 'vscode-languageserver-types';
@@ -25,6 +25,8 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
     const { severity, severityFlaggedWords } = calcSeverity(textDocument.uri, options);
     const docVal = await createDocumentValidator(textDocument, options);
     const r = await docVal.checkDocumentAsync(true);
+    const strictMode = options.reportUnknownWords ?? true;
+    const dictionary = await getDictionary(options);
     const diags = r
         // Convert the offset into a position
         .map((issue) => ({ ...issue, position: textDocument.positionAt(issue.offset) }))
@@ -39,19 +41,32 @@ export async function validateTextDocument(textDocument: TextDocument, options: 
         }))
         // Convert it to a Diagnostic
         .map(({ text, range, isFlagged, message, issueType, suggestions, suggestionsEx, severity }) => {
-            const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : 'Unknown'} word`}.`;
+            const isKnown = suggestionsEx?.some((sug) => sug.isPreferred) || false;
+            const diagMessage = `"${text}": ${message ?? `${isFlagged ? 'Forbidden' : isKnown ? 'Misspelled' : 'Unknown'} word`}.`;
             const sugs = suggestionsEx || suggestions?.map((word) => ({ word }));
+
+            let useStrict = strictMode;
+            if (!useStrict) {
+                // turn strict on if there are simple suggestions.
+                const s = dictionary.suggest(text, { numSuggestions: 1, numChanges: 1.8, compoundMethod: 0 });
+                // console.log('%o', { s });
+                useStrict = s.some((sug) => sug.cost < 200);
+            }
+
             const data: SpellCheckerDiagnosticData = {
                 text,
                 issueType,
                 isFlagged,
+                isKnown,
                 isSuggestion: undefined, // This is a future enhancement to CSpell.
+                strict: useStrict,
                 suggestions: haveSuggestionsMatchCase(text, sugs),
             };
             const diag: SpellingDiagnostic = { severity, range, message: diagMessage, source: diagSource, data };
             return diag;
         })
         .filter((diag) => !!diag.severity);
+
     return diags;
 }
 

@@ -134,15 +134,16 @@ interface Decoration {
      * See: [text-decoration - CSS: Cascading Style Sheets, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration)
      * - color - see: [text-decoration-color, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color)
      *
+     * Common Format: `#RGBA` or `#RRGGBBAA` or `#RGB` or `#RRGGBB`
+     *
      * Examples:
      * - `green`
      * - `yellow`
      * - `#ff0c`
      *
      * @scope application
-     * @since 4.0.0
-     * @default "#888"
-     * @hidden hide this for now. It won't be used until we have a way to get pure suggestions.
+     * @since 4.0.2
+     * @default "#8884"
      */
     textDecorationColorSuggestion?: string;
 }

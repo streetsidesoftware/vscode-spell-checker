@@ -161,10 +161,28 @@ export class SpellingCheckerIssue {
     }
 
     /**
+     * @returns true if the issue is a known spelling issue that is always considered misspelled.
+     */
+    isKnown(): boolean {
+        return this.diag.data?.isKnown || false;
+    }
+
+    /**
      * @returns true if the issue is a suggestion, but not a real problem.
      */
     isSuggestion(): boolean {
         return this.diag.data?.isSuggestion || false;
+    }
+
+    /**
+     * @returns true if the issue should be treated as a suggestion instead of an error.
+     */
+    treatAsSuggestion(): boolean {
+        return this.isSuggestion() || (!this.applyStrictRules() && !this.isFlagged() && !this.isKnown());
+    }
+
+    applyStrictRules(): boolean {
+        return this.diag.data?.strict ?? true;
     }
 
     hasPreferredSuggestions(): boolean {

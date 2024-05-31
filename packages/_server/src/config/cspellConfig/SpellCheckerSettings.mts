@@ -403,6 +403,19 @@ export interface SpellCheckerSettings
      * @default true
      */
     trustedWorkspace?: boolean;
+
+    /**
+     * By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
+     * reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
+     *
+     * - `true` - report unknown words as misspelled
+     * - `false` - report unknown words as suggestions
+     * @title Strict Spell Checking
+     * @scope language-overridable
+     * @since 4.0.2
+     * @default true
+     */
+    reportUnknownWords?: boolean;
 }
 
 export interface SpellCheckerBehaviorSettings {
@@ -427,11 +440,6 @@ export interface SpellCheckerBehaviorSettings {
      * @scope application
      * @since 4.0.0
      * @default 1500
-     * @enumDescriptions [
-     *  "Show issues while typing",
-     *  "Hide issues in the current word",
-     *  "Hide issues on the line",
-     *  "Hide all issues in the document"]
      */
     revealIssuesAfterDelayMS?: number;
 }
@@ -483,6 +491,8 @@ export interface AddToTargets extends AddToDictionaryTarget {
      */
     cspell?: AutoOrBoolean;
 }
+
+export type UnknownWordsReportingLevel = 'all' | 'simple' | 'none';
 
 export interface LanguageStatusFields {
     fileType: boolean;

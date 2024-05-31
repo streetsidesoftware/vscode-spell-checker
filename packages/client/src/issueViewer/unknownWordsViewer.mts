@@ -9,6 +9,7 @@ import type { IssueTracker, SpellingCheckerIssue } from '../issueTracker.mjs';
 import { createEmitter, debounce, rx } from '../Subscribables/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { logErrors } from '../util/errors.js';
+import { getIconForIssues, icons } from './icons.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
@@ -65,7 +66,7 @@ class UnknownWordsExplorer {
                 this.handleTextEditorChange(vscode.window.activeTextEditor),
             ),
         );
-        this.treeView.title = 'Unknown Words';
+        this.treeView.title = 'Words with Issues';
         this.treeView.message = 'No open documents.';
     }
 
@@ -185,14 +186,6 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     readonly dispose = this.disposeList.dispose;
 }
 
-const icons = {
-    warning: new vscode.ThemeIcon('warning', new vscode.ThemeColor('list.warningForeground')),
-    error: new vscode.ThemeIcon('error', new vscode.ThemeColor('list.errorForeground')),
-    doc: new vscode.ThemeIcon('go-to-file'),
-    suggestion: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb'),
-    suggestionPreferred: new vscode.ThemeIcon('pencil'), // new vscode.ThemeIcon('lightbulb-autofix'),
-} as const;
-
 class WordIssueTreeItem extends IssueTreeItemBase {
     suggestions: Suggestion[] | undefined;
     suggestionsByDocument = new Map<TextDocument, Suggestion[]>();
@@ -223,8 +216,13 @@ class WordIssueTreeItem extends IssueTreeItemBase {
     getTreeItem(): TreeItem {
         const item = new TreeItem(this.word);
         const hasPreferred = this.hasPreferred();
-        const isFlagged = !!this.issues.find((issue) => issue.diag.data?.isFlagged);
-        item.iconPath = isFlagged ? icons.error : icons.warning;
+        const isFlagged = this.issues.some((issue) => issue.isFlagged());
+        const isKnown = this.issues.some((issue) => issue.isKnown());
+        item.iconPath = getIconForIssues({
+            isFlagged: () => isFlagged,
+            isKnown: () => isKnown,
+            isSuggestion: () => this.issues.some((issue) => issue.treatAsSuggestion()),
+        });
 
         item.description = `${nText(this.issues.length, 'issue', 'issues')} in ${nText(this.conicalDocuments.size, 'file', 'files')}${
             hasPreferred ? '*' : ''
@@ -234,7 +232,7 @@ class WordIssueTreeItem extends IssueTreeItemBase {
             `Number of occurrences: ${this.issues.length}, files: ${this.conicalDocuments.size}` + (hasPreferred ? ' (auto fix)' : '');
         const inlineWord = markdownInlineCode(this.word);
         item.tooltip = new vscode.MarkdownString()
-            .appendMarkdown((isFlagged ? 'Flagged' : 'Unknown') + ' word: ' + inlineWord)
+            .appendMarkdown((isFlagged ? 'Flagged' : isKnown ? 'Misspelled' : 'Unknown') + ' word: ' + inlineWord)
             .appendText('\n\n')
             .appendText(verboseDescription);
         // if (this.diags.length === 1) {
@@ -418,7 +416,7 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
     getTreeItem(): TreeItem {
         const { word, isPreferred } = this.suggestion;
         const item = new TreeItem(word);
-        item.iconPath = isPreferred ? icons.suggestionPreferred : icons.suggestion;
+        item.iconPath = isPreferred ? icons.applySuggestionPreferred : icons.applySuggestion;
         item.description = isPreferred && '(preferred)';
         const inlineWord = markdownInlineCode(word);
         const cleanedWord = cleanWord(word);
