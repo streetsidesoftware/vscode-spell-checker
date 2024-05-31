@@ -1,0 +1,3 @@
+language: en,de
+import:
+  - '@cspell/dict-de-de'

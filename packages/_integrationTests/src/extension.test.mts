@@ -1,8 +1,3 @@
-/* --------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- * ------------------------------------------------------------------------------------------ */
-
 import { createRequire } from 'node:module';
 
 import { expect } from 'chai';
@@ -13,6 +8,7 @@ import { type Diagnostic, type languages as vscodeLanguages, type Position, type
 import type { CSpellClient, ExtensionApi, OnSpellCheckDocumentStep } from './ExtensionApi.mjs';
 import {
     activateExtension,
+    getDocPath,
     getDocUri,
     getVscodeWorkspace,
     loadDocument,
@@ -143,6 +139,24 @@ describe('Launch code spell extension', function () {
         // cspell:ignore spellling
         expect(msgs).contains('spellling');
         logYellow('Done: Verifies that some spelling errors were found');
+    });
+
+    it('register a config and check doc', async () => {
+        const ext = await activateExtension();
+        const api = ext.extApi;
+        const configPath = getDocPath('german/cspell.config.yaml');
+        api.registerConfig(configPath);
+        const secondsToWait = 1;
+        await sleep(secondsToWait * 1000);
+        const result = await api.checkDocument({
+            uri: sampleWorkspaceUri('german/README.md').toString(),
+            // cspell:disable-next-line
+            text: 'Straße',
+            languageId: 'markdown',
+        });
+        // console.error('Result: %o', result);
+        expect(result).to.not.be.undefined;
+        expect(result.issues).to.be.empty;
     });
 
     it('Wait a bit', async () => {
