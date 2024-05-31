@@ -3590,12 +3590,6 @@
         "cSpell.revealIssuesAfterDelayMS": {
           "default": 1500,
           "description": "Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.",
-          "enumDescriptions": [
-            "Show issues while typing",
-            "Hide issues in the current word",
-            "Hide issues on the line",
-            "Hide all issues in the document"
-          ],
           "markdownDescription": "Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.",
           "scope": "application",
           "since": "4.0.0",
