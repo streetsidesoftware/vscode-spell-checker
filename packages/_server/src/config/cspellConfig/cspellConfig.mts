@@ -159,7 +159,7 @@ type _VSConfigReporting = Pick<
     | 'maxNumberOfProblems'
     | 'minWordLength'
     | 'numSuggestions'
-    | 'reportUnknownWords'
+    // | 'reportUnknownWords' // to ba added when it has been finalized.
     | 'showAutocompleteDirectiveSuggestions'
     | 'showCommandsInEditorContextMenu'
     | 'showStatus'
@@ -265,7 +265,13 @@ type _VSConfigAdvanced = Pick<
  * @order 19
  */
 type VSConfigExperimental = PrefixWithCspell<_VSConfigExperimental>;
-type _VSConfigExperimental = Pick<SpellCheckerSettingsVSCodeBase, 'experimental.enableRegexpView' | 'experimental.enableSettingsViewerV2'>;
+type _VSConfigExperimental = Pick<
+    SpellCheckerSettingsVSCodeBase,
+    | 'experimental.enableRegexpView'
+    | 'experimental.enableSettingsViewerV2'
+    // The plan is to move `reportUnknownWords` to the reporting section.
+    | 'reportUnknownWords'
+>;
 
 export type SpellCheckerSettingsVSCode = [
     VSConfigRoot,
