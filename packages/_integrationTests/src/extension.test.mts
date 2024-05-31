@@ -154,7 +154,7 @@ describe('Launch code spell extension', function () {
             text: 'Straße',
             languageId: 'markdown',
         });
-        console.error('Result: %o', result);
+        // console.error('Result: %o', result);
         expect(result).to.not.be.undefined;
         expect(result.issues).to.be.empty;
     });
