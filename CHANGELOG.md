@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.2](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.1...code-spell-checker-v4.0.2) (2024-05-31)
+
+
+### Updates and Bug Fixes
+
+* Expose API to check documents from other extensions ([#3327](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3327)) ([98003f2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/98003f279ec7d2588ab38ccd0477b0c1700656e3))
+* First pass at supporting non-strict checking ([#3329](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3329)) ([895998b](https://github.com/streetsidesoftware/vscode-spell-checker/commit/895998b1b0f54077b6652130f90fe931c5efbd63))
+* Indicate on the status bar that issues are hidden ([#3326](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3326)) ([1d9d2c6](https://github.com/streetsidesoftware/vscode-spell-checker/commit/1d9d2c6caee178a12ce427f53c37700f20a2075c))
+* move `reportUnknownWords` to Experimental ([#3333](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3333)) ([ed20aa9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/ed20aa92441b5a5cb7628893e3d60f29097c372f))
+
 ## [4.0.1](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.0...code-spell-checker-v4.0.1) (2024-05-28)
 
 
