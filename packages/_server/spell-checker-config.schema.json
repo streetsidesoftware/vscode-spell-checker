@@ -114,34 +114,6 @@
           "scope": "resource",
           "type": "array"
         },
-        "cSpell.languageStatusFields": {
-          "additionalProperties": false,
-          "default": {
-            "fileType": true,
-            "issues": true,
-            "scheme": true
-          },
-          "description": "Select which fields to display in the language status bar.",
-          "markdownDescription": "Select which fields to display in the language status bar.",
-          "properties": {
-            "fileType": {
-              "type": "boolean"
-            },
-            "issues": {
-              "type": "boolean"
-            },
-            "scheme": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "fileType",
-            "scheme",
-            "issues"
-          ],
-          "scope": "application",
-          "type": "object"
-        },
         "cSpell.overrides": {
           "description": "Overrides are used to apply settings for specific files in your project.\n\n**Example:**\n\n```jsonc \"cSpell.overrides\": [   // Force `*.hrr` and `*.crr` files to be treated as `cpp` files:   {     \"filename\": \"**/{*.hrr,*.crr}\",     \"languageId\": \"cpp\"   },   // Force `dutch/**/*.txt` to be treated as Dutch (dictionary needs to be installed separately):   {     \"filename\": \"**/dutch/**/*.txt\",     \"language\": \"nl\"   } ] ```",
           "items": {
@@ -1352,23 +1324,6 @@
           "markdownDescription": "Defines a list of patterns that can be used with the `#cSpell.ignoreRegExpList#` and\n`#cSpell.includeRegExpList#` options.\n\n**Example:**\n\n```jsonc\n\"cSpell.patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  }\n]\n```",
           "scope": "resource",
           "type": "array"
-        },
-        "cSpell.reportUnknownWords": {
-          "default": true,
-          "description": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
-          "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
-          "scope": "language-overridable",
-          "since": "4.0.2",
-          "title": "Strict Spell Checking",
-          "type": "boolean"
-        },
-        "cSpell.useLocallyInstalledCSpellDictionaries": {
-          "default": true,
-          "description": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
-          "markdownDescription": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
-          "scope": "resource",
-          "since": "4.0.0",
-          "type": "boolean"
         }
       },
       "title": "CSpell",
@@ -2624,6 +2579,14 @@
           "markdownDescription": "A list of suggested replacements for words.\nSuggested words provide a way to make preferred suggestions on word replacements.\nTo hint at a preferred change, but not to require it.\n\nFormat of `suggestWords`\n- Single suggestion (possible auto fix)\n    - `word: suggestion`\n    - `word->suggestion`\n- Multiple suggestions (not auto fixable)\n   - `word: first, second, third`\n   - `word->first, second, third`",
           "type": "array"
         },
+        "cSpell.useLocallyInstalledCSpellDictionaries": {
+          "default": true,
+          "description": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
+          "markdownDescription": "Search for `@cspell/cspell-bundled-dicts` in the workspace folder and use it if found.",
+          "scope": "resource",
+          "since": "4.0.0",
+          "type": "boolean"
+        },
         "cSpell.userWords": {
           "description": "Words to add to global dictionary -- should only be in the user config file.",
           "items": {
@@ -3559,6 +3522,34 @@
           "title": "Hide Issues While Typing",
           "type": "string"
         },
+        "cSpell.languageStatusFields": {
+          "additionalProperties": false,
+          "default": {
+            "fileType": true,
+            "issues": true,
+            "scheme": true
+          },
+          "description": "Select which fields to display in the language status bar.",
+          "markdownDescription": "Select which fields to display in the language status bar.",
+          "properties": {
+            "fileType": {
+              "type": "boolean"
+            },
+            "issues": {
+              "type": "boolean"
+            },
+            "scheme": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "fileType",
+            "scheme",
+            "issues"
+          ],
+          "scope": "application",
+          "type": "object"
+        },
         "cSpell.maxDuplicateProblems": {
           "default": 20,
           "description": "The maximum number of times the same word can be flagged as an error in a file.",
@@ -3586,6 +3577,15 @@
           "markdownDescription": "Controls the number of suggestions shown.",
           "scope": "resource",
           "type": "number"
+        },
+        "cSpell.reportUnknownWords": {
+          "default": true,
+          "description": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
+          "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
+          "scope": "language-overridable",
+          "since": "4.0.2",
+          "title": "Strict Spell Checking",
+          "type": "boolean"
         },
         "cSpell.revealIssuesAfterDelayMS": {
           "default": 1500,
