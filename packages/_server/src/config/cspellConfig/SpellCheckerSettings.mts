@@ -440,11 +440,6 @@ export interface SpellCheckerBehaviorSettings {
      * @scope application
      * @since 4.0.0
      * @default 1500
-     * @enumDescriptions [
-     *  "Show issues while typing",
-     *  "Hide issues in the current word",
-     *  "Hide issues on the line",
-     *  "Hide all issues in the document"]
      */
     revealIssuesAfterDelayMS?: number;
 }
