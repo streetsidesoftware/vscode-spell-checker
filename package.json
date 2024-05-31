@@ -1849,6 +1849,14 @@
             "markdownDescription": "Enable the Settings Viewer V2 Extension",
             "scope": "application",
             "type": "boolean"
+          },
+          "cSpell.reportUnknownWords": {
+            "default": true,
+            "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
+            "scope": "language-overridable",
+            "since": "4.0.2",
+            "title": "Strict Spell Checking",
+            "type": "boolean"
           }
         },
         "title": "Experimental",
@@ -3857,22 +3865,8 @@
             "scope": "resource",
             "type": "number"
           },
-          "cSpell.reportUnknownWords": {
-            "default": true,
-            "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
-            "scope": "language-overridable",
-            "since": "4.0.2",
-            "title": "Strict Spell Checking",
-            "type": "boolean"
-          },
           "cSpell.revealIssuesAfterDelayMS": {
             "default": 1500,
-            "enumDescriptions": [
-              "Show issues while typing",
-              "Hide issues in the current word",
-              "Hide issues on the line",
-              "Hide all issues in the document"
-            ],
             "markdownDescription": "Reveal hidden issues related to `#cSpell.hideIssuesWhileTyping#` after a delay in milliseconds.",
             "scope": "application",
             "since": "4.0.0",
