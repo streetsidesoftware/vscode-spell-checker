@@ -405,14 +405,17 @@ export interface SpellCheckerSettings
     trustedWorkspace?: boolean;
 
     /**
-     * Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior.
-     * When strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.
+     * By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only
+     * reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.
+     *
+     * - `true` - report unknown words as misspelled
+     * - `false` - report unknown words as suggestions
      * @title Strict Spell Checking
      * @scope language-overridable
      * @since 4.0.2
      * @default true
      */
-    strict?: boolean;
+    reportUnknownWords?: boolean;
 }
 
 export interface SpellCheckerBehaviorSettings {
@@ -493,6 +496,8 @@ export interface AddToTargets extends AddToDictionaryTarget {
      */
     cspell?: AutoOrBoolean;
 }
+
+export type UnknownWordsReportingLevel = 'all' | 'simple' | 'none';
 
 export interface LanguageStatusFields {
     fileType: boolean;

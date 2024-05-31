@@ -1353,10 +1353,10 @@
           "scope": "resource",
           "type": "array"
         },
-        "cSpell.strict": {
+        "cSpell.reportUnknownWords": {
           "default": true,
-          "description": "Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior. When strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.",
-          "markdownDescription": "Strict spell checking implies that unknown words are flagged as misspelled. This is the default behavior.\nWhen strict spell checking is disabled, unknown words are flagged as suggestions while common spelling errors are still flagged as misspelled.",
+          "description": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only reporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
+          "markdownDescription": "By default, the spell checker reports all unknown words as misspelled. This setting allows for a more relaxed spell checking, by only\nreporting unknown words as suggestions. Common spelling errors are still flagged as misspelled.\n\n- `true` - report unknown words as misspelled\n- `false` - report unknown words as suggestions",
           "scope": "language-overridable",
           "since": "4.0.2",
           "title": "Strict Spell Checking",
