@@ -118,12 +118,14 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
         const doc = findOpenDocument(uri);
         if (doc && doc.isDirty) {
             const name = posix.basename(uri.path);
-            const answer = await window.showInformationMessage(`Overwrite "${name}"?`, 'Yes', 'No', 'Open');
+            const answer = await window.showInformationMessage(`Save "${name}"?`, 'Yes', 'No', 'Open');
             if (answer === 'Open') {
                 await window.showTextDocument(doc);
                 return;
             }
             if (answer !== 'Yes') return;
+            await doc.save();
+            await workspace.save(doc.uri);
         }
         await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
         formatConfig && (await formatDocument(uri));
@@ -141,7 +143,11 @@ async function formatDocument(uri: Uri) {
     const wsEdit = new WorkspaceEdit();
     wsEdit.set(uri, edits);
     await workspace.applyEdit(wsEdit);
-    await doc.save();
+    await workspace.save(doc.uri);
+    // Sometimes it gets updated after save by the formatter.
+    // Wait a bit and try to save again.
+    await wait(1000);
+    doc.isDirty && (await workspace.save(doc.uri));
 }
 
 export class VSCodeRepository extends ConfigRepositoryBase {
@@ -271,3 +277,7 @@ export const __testing__ = {
     isUri,
     isWorkspaceFolder,
 };
+
+function wait(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}

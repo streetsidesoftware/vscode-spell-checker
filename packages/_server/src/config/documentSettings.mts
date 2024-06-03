@@ -799,7 +799,10 @@ export function isIncluded(settings: ExtSettings, uri: Uri): boolean {
 }
 
 export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
-    return !canCheckAgainstGlob(uri) || settings.excludeGlobMatcher.match(uriToGlobPath(uri));
+    if (!canCheckAgainstGlob(uri)) {
+        return false;
+    }
+    return settings.excludeGlobMatcher.match(uriToGlobPath(uri));
 }
 
 async function filterUrl(uri: Uri): Promise<Uri | undefined> {

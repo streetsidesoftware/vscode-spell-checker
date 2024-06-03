@@ -43,7 +43,7 @@ import {
     stringifyPatterns,
 } from './config/documentSettings.mjs';
 import { isFileTypeEnabled } from './config/extractEnabledFileTypes.mjs';
-import { objectFieldSizes, objectKeysNested, sanitizeSettings } from './config/sanitizeSettings.mjs';
+import { sanitizeSettings } from './config/sanitizeSettings.mjs';
 import type { TextDocumentUri } from './config/vscode.config.mjs';
 import { defaultCheckLimit } from './constants.mjs';
 import { DocumentValidationController } from './DocumentValidationController.mjs';
@@ -402,12 +402,12 @@ export function run(): void {
         const docSettings = stringifyPatterns(sanitizeSettings(docSettingsRaw, fields));
         const settings = stringifyPatterns(sanitizeSettings(settingsRaw, fields));
 
-        console.warn('%o', {
-            fields,
-            settingsKeys: objectKeysNested(settings),
-            settingsSize: JSON.stringify(settings).length,
-            sizes: objectFieldSizes(settings),
-        });
+        // console.warn('%o', {
+        //     fields,
+        //     settingsKeys: objectKeysNested(settings),
+        //     settingsSize: JSON.stringify(settings).length,
+        //     sizes: objectFieldSizes(settings),
+        // });
 
         return {
             configFiles,
