@@ -23,7 +23,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@cspell/cspell-types": "^8.8.3",
+    "@cspell/cspell-types": "^8.8.4",
     "@cspell/dict-de-de": "^4.0.0",
     "@types/chai": "^4.3.16",
     "@types/decompress": "^4.2.7",
