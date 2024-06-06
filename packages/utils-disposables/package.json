@@ -17,7 +17,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/node": "^18.19.34",
     "ts2mjs": "^3.0.0",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
