@@ -28,28 +28,14 @@
             "name": "Tools",
             "path": "tools/build-tools"
         },
-        {
-            "path": "packages/utils-disposables"
-        },
-        {
-            "path": "packages/utils-logger"
-        },
-        {
-            "path": "packages/json-rpc-api"
-        },
-        {
-            "path": "packages/webview-api"
-        },
-        {
-            "path": "packages/webview-rpc"
-        },
-        {
-            "path": "packages/webview-ui"
-        },
-        {
-            "name": "Docs",
-            "path": "docs"
-        }
+        { "path": "packages/utils-disposables" },
+        { "path": "packages/utils-logger" },
+        { "path": "packages/json-rpc-api" },
+        { "path": "packages/webview-api" },
+        { "path": "packages/webview-rpc" },
+        { "path": "packages/webview-ui" },
+        { "name": "Docs", "path": "docs" },
+        { "path": "website" }
     ],
     "settings": {
         "cSpell.import": ["${workspaceFolder:Spell Checker Root}/cspell.config.yaml"],
@@ -58,7 +44,7 @@
         "editor.formatOnSave": true,
         "files.eol": "\n",
         "cSpell.flagWords": [],
-        "cSpell.enableFiletypes": ["github-actions-workflow"],
+        "cSpell.enabledFileTypes": { "github-actions-workflow": true },
         "svg.preview.background": "dark-transparent"
     },
     "launch": {

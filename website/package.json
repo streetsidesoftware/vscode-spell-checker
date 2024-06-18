@@ -17,7 +17,8 @@
     "gen-docs": "npm run gen-commands && npm run gen-config",
     "gen-commands": "node ./_scripts/extract-commands.mjs > ./docs/auto_commands.md",
     "gen-config": "node ./_scripts/extract-config.mjs > ./docs/auto_configuration.md",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "update-packages": "npx npm-check-updates --target semver -u && npm i"
   },
   "dependencies": {
     "@docusaurus/core": "3.3.2",
