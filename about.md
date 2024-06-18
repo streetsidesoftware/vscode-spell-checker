@@ -7,7 +7,7 @@ permalink: /about/
 
 # About
 
-When we started using VS Code, it did not have a spell checker. As a person that has trouble with spelling, I found this to be a great hinderance, thus the extension was born.
+When we started using VS Code, it did not have a spell checker. As a person that has trouble with spelling, I found this to be a great hindrance, thus the extension was born.
 At the suggestion of users, [`cspell`](https://github.com/streetsidesoftware/cspell) was pulled out of the extension and into its own library and command line tools.
 
 ## Goals
