@@ -120,7 +120,7 @@ ZipArchive::deleteName
 ZipArchive::extractTo
 ```
 
-The word list complier will convert camelCase and snake_case words into a simple word list.
+The word list compiler will convert camelCase and snake_case words into a simple word list.
 This is both for speed and predictability.
 
 ```php

@@ -8,7 +8,7 @@ permalink: /about/
 # About
 
 CSpell started out as an extension for [VS Code](https://code.visualstudio.com/): [Code Spell Checker - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker).
-When we started using VS Code, it did not have a spell checker. As a person that has trouble with spelling, I found this to be a great hinderance, thus the extension was born.
+When we started using VS Code, it did not have a spell checker. As a person that has trouble with spelling, I found this to be a great hindrance, thus the extension was born.
 At the suggestion of users, `cspell` was pulled out of the extension and into its own library and command line tools.
 
 ## Goals
