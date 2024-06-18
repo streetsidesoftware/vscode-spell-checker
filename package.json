@@ -4001,7 +4001,7 @@
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^18.19.34",
+    "@types/node": "^18.19.36",
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^1.6.0",
