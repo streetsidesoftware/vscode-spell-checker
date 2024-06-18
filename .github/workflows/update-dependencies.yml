@@ -1,4 +1,4 @@
-name: ' 🔗 Update Dependencies Main'
+name: ' 🔗 Update Dependencies'
 
 on:
   push:
