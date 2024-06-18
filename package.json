@@ -3995,7 +3995,9 @@
     "lint-docs-ci": "prettier -c \"docs/**/*.{md,markdown,yaml,yml,json,html,htm,js,ts}\"",
     "test-client-integration": "npm --workspace=@internal/integration-tests run test-integration",
     "test": "npm --workspaces --if-present run test && echo OK",
-    "update-packages": "npx npm-check-updates --root -ws --target semver -u && npm i",
+    "update-packages": "npm run update:packages:root && npm run update:packages:website",
+    "update:packages:root": "npx npm-check-updates --root -ws --target semver -u && npm i",
+    "update:packages:website": "cd website && npm run update-packages",
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
