@@ -4007,7 +4007,7 @@
     "@types/vscode": "1.80.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^1.6.0",
-    "@vscode/vsce": "^2.27.0",
+    "@vscode/vsce": "^2.29.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.21.5",
