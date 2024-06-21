@@ -4037,7 +4037,7 @@
   },
   "dependencies": {
     "@cspell/cspell-bundled-dicts": "^8.9.0",
-    "@cspell/cspell-types": "^8.9.0",
+    "@cspell/cspell-types": "^8.9.1",
     "cspell": "^8.9.0",
     "regexp-worker": "^2.0.2"
   },
