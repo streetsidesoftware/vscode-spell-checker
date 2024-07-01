@@ -28,7 +28,7 @@
     "@types/chai": "^4.3.16",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^18.19.39",
+    "@types/node": "^20.14.9",
     "chai": "^5.1.1",
     "cross-env": "^7.0.3"
   },
@@ -42,6 +42,6 @@
     "mocha": "^10.5.2"
   },
   "engines": {
-    "node": ">18.0.0"
+    "node": ">20.0.0"
   }
 }

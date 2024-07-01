@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@types/yargs": "^17.0.32",
-    "esbuild": "^0.21.5",
     "safe-stable-stringify": "^2.4.3",
     "ts-json-schema-generator": "^2.3.0",
     "ts-loader": "^9.5.1",
@@ -81,6 +80,6 @@
     "watch:tsc": "npm run build:tsc -- --watch"
   },
   "engines": {
-    "node": ">18.0.0"
+    "node": ">20.0.0"
   }
 }

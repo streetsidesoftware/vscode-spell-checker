@@ -24,7 +24,7 @@ For the readme on the plugin: [README](./packages/client/README.md).
     1. Choose `Client: Launch Extension (Spell Checker Root)` configuration.
     1. `F5`
 
-<sup>\*</sup> Requires Node >= 18
+<sup>\*</sup> Requires Node >= 20
 
 ### Debugging the Client
 

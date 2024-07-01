@@ -35,6 +35,7 @@ async function watch(options) {
 const optionsBase = {
     absWorkingDir: __dirname,
     bundle: true,
+    packages: 'bundle',
     minify,
     platform: 'node',
     sourcemap: true,

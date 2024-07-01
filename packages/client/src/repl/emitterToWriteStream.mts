@@ -28,6 +28,7 @@ const allowedEncodings: Readonly<Record<string, true>> = {
     hex: true,
     'utf-8': true, // Alias of 'utf8'
     'ucs-2': true, // Alias of 'usc2'
+    'utf-16le': true, // Alias of 'utf16le'
 } as const satisfies Readonly<Record<BufferEncoding, true>>;
 
 class WriteableEmitter extends stream.Writable implements WriteStream {
