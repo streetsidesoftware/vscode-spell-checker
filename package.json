@@ -4010,7 +4010,7 @@
     "@vscode/vsce": "^2.29.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.22.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
