@@ -20,7 +20,7 @@
   },
   "homepage": "https://streetsidesoftware.github.io/vscode-spell-checker",
   "engines": {
-    "node": ">18.0.0",
+    "node": ">20.0.0",
     "vscode": "^1.90.0"
   },
   "sponsor": {
@@ -4002,12 +4002,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
-    "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^18.19.39",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.14.9",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^1.6.0",
     "@vscode/vsce": "^2.29.0",
+    "ansi-styles": "^6.2.1",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.22.0",
@@ -4040,11 +4041,5 @@
     "@cspell/cspell-types": "^8.9.1",
     "cspell": "^8.9.1",
     "regexp-worker": "^2.0.2"
-  },
-  "comment-resolutions": {
-    "@types/react": "Can be removed after moving to react 18."
-  },
-  "resolutions": {
-    "@types/react": "^17.0.44"
   }
 }

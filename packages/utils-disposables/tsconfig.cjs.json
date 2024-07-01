@@ -1,5 +1,5 @@
 {
-    "extends": "@tsconfig/node18",
+    "extends": "@tsconfig/node20",
     "compilerOptions": {
         "outDir": "./dist/cjs",
         "target": "es2022",

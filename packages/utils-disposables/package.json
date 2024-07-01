@@ -14,8 +14,8 @@
     }
   },
   "devDependencies": {
-    "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^18.19.39",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.14.9",
     "ts2mjs": "^3.0.0",
     "tslib": "^2.6.3"
   },
@@ -40,7 +40,7 @@
     "disposables"
   ],
   "engines": {
-    "node": ">18.0.0"
+    "node": ">20.0.0"
   },
   "author": "Street Side Software",
   "license": "MIT"
