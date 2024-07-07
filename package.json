@@ -4040,6 +4040,6 @@
     "@cspell/cspell-bundled-dicts": "^8.9.1",
     "@cspell/cspell-types": "^8.9.1",
     "cspell": "^8.9.1",
-    "regexp-worker": "^2.0.2"
+    "regexp-worker": "^3.0.0"
   }
 }
