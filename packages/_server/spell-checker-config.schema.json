@@ -121,14 +121,14 @@
             "properties": {
               "allowCompoundWords": {
                 "default": false,
-                "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
-                "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                "description": "True to enable compound word checking.",
+                "markdownDescription": "True to enable compound word checking.",
                 "type": "boolean"
               },
               "caseSensitive": {
                 "default": false,
-                "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
-                "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                "description": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                "markdownDescription": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                 "type": "boolean"
               },
               "description": {
@@ -277,8 +277,8 @@
                       "additionalProperties": false,
                       "properties": {
                         "description": {
-                          "description": "Optional description.",
-                          "markdownDescription": "Optional description.",
+                          "description": "Optional description of the contents / purpose of the dictionary.",
+                          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                           "type": "string"
                         },
                         "name": {
@@ -312,8 +312,8 @@
                           "type": "boolean"
                         },
                         "description": {
-                          "description": "Optional description.",
-                          "markdownDescription": "Optional description.",
+                          "description": "Optional description of the contents / purpose of the dictionary.",
+                          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                           "type": "string"
                         },
                         "name": {
@@ -378,8 +378,8 @@
               "enableFiletypes": {
                 "description": "Enable / Disable checking file types (languageIds).\n\nThese are in additional to the file types specified by  {@link  Settings.enabledLanguageIds } . To disable a language, prefix with `!` as in `!json`,\n\n\n**Example: individual file types**\n\n``` jsonc       // enable checking for jsonc !json       // disable checking for json kotlin      // enable checking for kotlin ```\n\n**Example: enable all file types**\n\n```\n*           // enable checking for all file types !json       // except for json ```",
                 "items": {
-                  "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                  "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                  "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                  "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                   "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
@@ -408,8 +408,8 @@
               "enabledLanguageIds": {
                 "description": "Specify a list of file types to spell check. It is better to use  {@link  Settings.enabledFileTypes }  to Enable / Disable checking files types.",
                 "items": {
-                  "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                  "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                  "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                  "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                   "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                   "type": "string"
                 },
@@ -570,42 +570,42 @@
               "languageId": {
                 "anyOf": [
                   {
-                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                    "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                    "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                     "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                     "type": "string"
                   },
                   {
-                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                    "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                     "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                     "type": "string"
                   },
                   {
-                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                    "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                    "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                    "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                     "type": "string"
                   },
                   {
                     "items": {
                       "anyOf": [
                         {
-                          "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                          "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                          "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                           "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                          "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                           "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                          "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                           "type": "string"
                         }
                       ]
@@ -623,14 +623,14 @@
                   "properties": {
                     "allowCompoundWords": {
                       "default": false,
-                      "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
-                      "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                      "description": "True to enable compound word checking.",
+                      "markdownDescription": "True to enable compound word checking.",
                       "type": "boolean"
                     },
                     "caseSensitive": {
                       "default": false,
-                      "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
-                      "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                      "description": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                      "markdownDescription": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                       "type": "boolean"
                     },
                     "description": {
@@ -739,8 +739,8 @@
                             "additionalProperties": false,
                             "properties": {
                               "description": {
-                                "description": "Optional description.",
-                                "markdownDescription": "Optional description.",
+                                "description": "Optional description of the contents / purpose of the dictionary.",
+                                "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                                 "type": "string"
                               },
                               "name": {
@@ -774,8 +774,8 @@
                                 "type": "boolean"
                               },
                               "description": {
-                                "description": "Optional description.",
-                                "markdownDescription": "Optional description.",
+                                "description": "Optional description of the contents / purpose of the dictionary.",
+                                "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                                 "type": "string"
                               },
                               "name": {
@@ -971,42 +971,42 @@
                     "languageId": {
                       "anyOf": [
                         {
-                          "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                          "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                          "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                           "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                          "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                           "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                          "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                           "type": "string"
                         },
                         {
                           "items": {
                             "anyOf": [
                               {
-                                "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                                "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                                "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                                "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                                 "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                                 "type": "string"
                               },
                               {
-                                "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                                "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                                "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                                "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                                 "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                                 "type": "string"
                               },
                               {
-                                "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                                "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                                "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                                "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                                "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                                "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                                 "type": "string"
                               }
                             ]
@@ -1014,27 +1014,27 @@
                           "type": "array"
                         }
                       ],
-                      "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages.",
-                      "markdownDescription": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
+                      "description": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
+                      "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages."
                     },
                     "locale": {
                       "anyOf": [
                         {
-                          "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                          "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                          "description": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
+                          "markdownDescription": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
                           "type": "string"
                         },
                         {
                           "items": {
-                            "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                            "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                            "description": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
+                            "markdownDescription": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
                             "type": "string"
                           },
                           "type": "array"
                         }
                       ],
-                      "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales.",
-                      "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
+                      "description": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
+                      "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales."
                     },
                     "name": {
                       "description": "Optional name of configuration.",
@@ -1065,7 +1065,7 @@
                       "type": "array"
                     },
                     "patterns": {
-                      "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ``` Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.",
+                      "description": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and  {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                       "items": {
                         "additionalProperties": false,
                         "properties": {
@@ -1101,7 +1101,7 @@
                         ],
                         "type": "object"
                       },
-                      "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
+                      "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                       "type": "array"
                     },
                     "suggestWords": {
@@ -1189,7 +1189,7 @@
                 "type": "number"
               },
               "patterns": {
-                "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ``` Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.",
+                "description": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and  {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                 "items": {
                   "additionalProperties": false,
                   "properties": {
@@ -1225,7 +1225,7 @@
                   ],
                   "type": "object"
                 },
-                "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
+                "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                 "type": "array"
               },
               "pnpFiles": {
@@ -1934,8 +1934,8 @@
                 "additionalProperties": false,
                 "properties": {
                   "description": {
-                    "description": "Optional description.",
-                    "markdownDescription": "Optional description.",
+                    "description": "Optional description of the contents / purpose of the dictionary.",
+                    "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                     "type": "string"
                   },
                   "name": {
@@ -1969,8 +1969,8 @@
                     "type": "boolean"
                   },
                   "description": {
-                    "description": "Optional description.",
-                    "markdownDescription": "Optional description.",
+                    "description": "Optional description of the contents / purpose of the dictionary.",
+                    "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                     "type": "string"
                   },
                   "name": {
@@ -2064,14 +2064,14 @@
             "properties": {
               "allowCompoundWords": {
                 "default": false,
-                "description": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
-                "markdownDescription": "True to enable compound word checking. See [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.",
+                "description": "True to enable compound word checking.",
+                "markdownDescription": "True to enable compound word checking.",
                 "type": "boolean"
               },
               "caseSensitive": {
                 "default": false,
-                "description": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
-                "markdownDescription": "Determines if words must match case and accent rules.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                "description": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.   Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
+                "markdownDescription": "Determines if words must match case and accent rules.\n\nSee [Case Sensitivity](https://cspell.org/docs/case-sensitive/) for more details.\n\n- `false` - Case is ignored and accents can be missing on the entire word.\n  Incorrect accents or partially missing accents will be marked as incorrect.\n- `true` - Case and accents are enforced.",
                 "type": "boolean"
               },
               "description": {
@@ -2180,8 +2180,8 @@
                       "additionalProperties": false,
                       "properties": {
                         "description": {
-                          "description": "Optional description.",
-                          "markdownDescription": "Optional description.",
+                          "description": "Optional description of the contents / purpose of the dictionary.",
+                          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                           "type": "string"
                         },
                         "name": {
@@ -2215,8 +2215,8 @@
                           "type": "boolean"
                         },
                         "description": {
-                          "description": "Optional description.",
-                          "markdownDescription": "Optional description.",
+                          "description": "Optional description of the contents / purpose of the dictionary.",
+                          "markdownDescription": "Optional description of the contents / purpose of the dictionary.",
                           "type": "string"
                         },
                         "name": {
@@ -2412,42 +2412,42 @@
               "languageId": {
                 "anyOf": [
                   {
-                    "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                    "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                    "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                    "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                     "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                     "type": "string"
                   },
                   {
-                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                    "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                    "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                     "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                     "type": "string"
                   },
                   {
-                    "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                    "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                    "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                    "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                    "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                     "type": "string"
                   },
                   {
                     "items": {
                       "anyOf": [
                         {
-                          "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-                          "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+                          "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+                          "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
                           "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
+                          "description": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
+                          "markdownDescription": "A single string with a comma separated list of file types:\n- `typescript,cpp`\n- `json,jsonc,yaml`\n- etc.",
                           "pattern": "^([-\\w_\\s]+)(,[-\\w_\\s]+)*$",
                           "type": "string"
                         },
                         {
-                          "description": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "markdownDescription": "This can be 'typescript,cpp,json,literal haskell', etc.",
-                          "pattern": "^(![-\\w_\\s]+)(,![-\\w_\\s]+)*$",
+                          "description": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "markdownDescription": "A Negative File Type used to exclude files of that type.\n- `!typescript` - will exclude typescript files.\n- `!cpp,!json` - will exclude cpp and json files.\n- `!typescript,javascript` - will exclude typescript files and include javascript files.",
+                          "pattern": "^(![-\\w_\\s]+)(,!?[-\\w_\\s]+)*$",
                           "type": "string"
                         }
                       ]
@@ -2455,27 +2455,27 @@
                     "type": "array"
                   }
                 ],
-                "description": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages.",
-                "markdownDescription": "The language id.  Ex: \"typescript\", \"html\", or \"php\".  \"*\" -- will match all languages."
+                "description": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages.",
+                "markdownDescription": "The language id.  Ex: `typescript`, `html`, or `php`.  `*` -- will match all languages."
               },
               "locale": {
                 "anyOf": [
                   {
-                    "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                    "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                    "description": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
+                    "markdownDescription": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
                     "type": "string"
                   },
                   {
                     "items": {
-                      "description": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
-                      "markdownDescription": "This is a written language locale like: 'en', 'en-GB', 'fr', 'es', 'de', etc.",
+                      "description": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
+                      "markdownDescription": "This is a written language locale like: `en`, `en-GB`, `fr`, `es`, `de` or `en,fr` for both English and French",
                       "type": "string"
                     },
                     "type": "array"
                   }
                 ],
-                "description": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales.",
-                "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. \"*\" will match all locales."
+                "description": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales.",
+                "markdownDescription": "The locale filter, matches against the language. This can be a comma separated list. `*` will match all locales."
               },
               "name": {
                 "description": "Optional name of configuration.",
@@ -2506,7 +2506,7 @@
                 "type": "array"
               },
               "patterns": {
-                "description": "Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ``` Defines a list of patterns that can be used with the `ignoreRegExpList` and `includeRegExpList` options.",
+                "description": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and  {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript \"ignoreRegExpList\": [\"comments\"], \"patterns\": [   {     \"name\": \"comment-single-line\",     \"pattern\": \"/#.*/g\"   },   {     \"name\": \"comment-multi-line\",     \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"   },   // You can also combine multiple named patterns into one single named pattern   {     \"name\": \"comments\",     \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]   } ] ```",
                 "items": {
                   "additionalProperties": false,
                   "properties": {
@@ -2542,7 +2542,7 @@
                   ],
                   "type": "object"
                 },
-                "markdownDescription": "Defines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```\nDefines a list of patterns that can be used with the `ignoreRegExpList` and\n`includeRegExpList` options.",
+                "markdownDescription": "Defines a list of patterns that can be used with the  {@link  ignoreRegExpList }  and\n {@link  includeRegExpList }  options.\n\nFor example:\n\n```javascript\n\"ignoreRegExpList\": [\"comments\"],\n\"patterns\": [\n  {\n    \"name\": \"comment-single-line\",\n    \"pattern\": \"/#.*/g\"\n  },\n  {\n    \"name\": \"comment-multi-line\",\n    \"pattern\": \"/(?:\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/)/g\"\n  },\n  // You can also combine multiple named patterns into one single named pattern\n  {\n    \"name\": \"comments\",\n    \"pattern\": [\"comment-single-line\", \"comment-multi-line\"]\n  }\n]\n```",
                 "type": "array"
               },
               "suggestWords": {
@@ -3386,8 +3386,8 @@
           "deprecationMessage": "- Use `#cSpell.enabledFileTypes#` instead.",
           "description": "Specify a list of file types to spell check. It is better to use `#cSpell.enabledFileTypes#` to Enable / Disable checking files types.",
           "items": {
-            "description": "This can be '*', 'typescript', 'cpp', 'json', etc.",
-            "markdownDescription": "This can be '*', 'typescript', 'cpp', 'json', etc.",
+            "description": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
+            "markdownDescription": "A file type:\n- `*` - will match ALL file types.\n- `typescript`, `cpp`, `json`, etc.",
             "pattern": "^(!?[-\\w_\\s]+)|(\\*)$",
             "type": "string"
           },
