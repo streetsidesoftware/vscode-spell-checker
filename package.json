@@ -4032,7 +4032,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "shx": "^0.3.4",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0",
+    "typescript-eslint": "^7.16.1",
     "vite": "^5.3.3",
     "vitest": "^2.0.3"
   },
