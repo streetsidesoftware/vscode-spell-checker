@@ -111,4 +111,4 @@ export function isString(s: unknown): s is string {
     return typeof s === 'string';
 }
 
-export const oc = expect.objectContaining;
+export const oc: typeof expect.objectContaining = (...p) => expect.objectContaining(...p);

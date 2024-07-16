@@ -77,7 +77,7 @@ const configFiles = {
     serverConfigVSCode: Path.resolve(pathWorkspaceServer, '.vscode/cspell.json'),
 };
 
-// const ac = expect.arrayContaining;
+// const ac: typeof expect.arrayContaining = (...p) => expect.arrayContaining(...p);
 
 describe('Validate DocumentSettings', () => {
     beforeEach(() => {

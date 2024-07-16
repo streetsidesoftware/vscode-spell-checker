@@ -9,7 +9,7 @@ import { Application, castValueToType, Command, toBoolean } from './args.mjs';
 import { parseCommandLineIntoArgs } from './parseCommandLine.mjs';
 import { unindent } from './textUtils.mjs';
 
-const ac = expect.arrayContaining;
+const ac: typeof expect.arrayContaining = (...p) => expect.arrayContaining(...p);
 
 const tokens = ac([]);
 

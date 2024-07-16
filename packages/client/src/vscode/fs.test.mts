@@ -8,7 +8,7 @@ import { vscodeFs } from './fs.mjs';
 vi.mock('vscode');
 vi.mock('vscode-languageclient/node');
 
-const sc = expect.stringContaining;
+const sc: typeof expect.stringContaining = (...p) => expect.stringContaining(...p);
 
 const uriPackageRoot = Uri.joinPath(Uri.parse(new URL('.', import.meta.url).toString()), '../..');
 
