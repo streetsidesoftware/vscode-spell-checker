@@ -1,4 +1,4 @@
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { isUrlLike as _isUrlLike } from 'cspell-io';
 import { URI as Uri } from 'vscode-uri';
@@ -51,6 +51,11 @@ export function toDirURL(url: string | URL | Uri): URL {
         url.pathname += '/';
     }
     return url;
+}
+
+export function urlToFilePathOrHref(url: string | URL | Uri): string {
+    const u = uriToUrl(url);
+    return u.protocol === 'file:' ? fileURLToPath(u) : u.href;
 }
 
 export function uriToGlobPath(uri: string | URL | Uri): string {
