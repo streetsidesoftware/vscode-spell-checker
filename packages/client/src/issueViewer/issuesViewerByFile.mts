@@ -15,7 +15,7 @@ import { handleErrors, logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
 import { isDefined } from '../util/index.mjs';
 import { getIconForSpellingIssue, icons } from './icons.mjs';
-import { createIsItemVisibleFilter } from './issuefilter.mjs';
+import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 

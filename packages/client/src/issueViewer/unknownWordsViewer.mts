@@ -10,7 +10,7 @@ import { createEmitter, debounce, rx } from '../Subscribables/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { logErrors } from '../util/errors.js';
 import { getIconForIssues, icons } from './icons.mjs';
-import { createIsItemVisibleFilter } from './issuefilter.mjs';
+import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
