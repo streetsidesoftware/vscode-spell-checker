@@ -1,6 +1,6 @@
 import { pathToFileURL } from 'node:url';
 
-import { isUrlLike } from 'cspell-io';
+import { isUrlLike as _isUrlLike } from 'cspell-io';
 import { URI as Uri } from 'vscode-uri';
 
 import { stat } from '../vfs/vfs.mjs';
@@ -15,6 +15,15 @@ export async function filterUrl(uri: Uri | string | URL): Promise<Uri | undefine
         return undefined;
     }
 }
+
+const regExpIsUriLike = /^[a-z][\w-]+:/;
+
+export function isUriLike(uri: string | URL | Uri): boolean {
+    if (typeof uri !== 'string') return true;
+    return _isUrlLike(uri) || regExpIsUriLike.test(uri);
+}
+
+export const isUrlLike = isUriLike;
 
 /**
  * See if it is possible to join the rel to the base.
@@ -45,24 +54,24 @@ export function toDirURL(url: string | URL | Uri): URL {
 }
 
 export function uriToGlobPath(uri: string | URL | Uri): string {
-    if (typeof uri === 'string' && !isUrlLike(uri)) {
-        console.log(`uriToGlobPath: uri is not a URL: %s`, uri);
+    if (typeof uri === 'string' && !isUriLike(uri)) {
+        // console.log(`uriToGlobPath: uri is not a URL: %s`, uri);
         return uri;
     }
     const url = uriToUrl(uri);
-    console.log('uriToGlobPath:\n\t%s ->\n\t%s', uri.toString(), url.href);
+    // console.log('uriToGlobPath:\n\t%s ->\n\t%s', uri.toString(), url.href);
     return url.href;
 }
 
 export function uriToGlobRoot(uri: string | URL | Uri): string {
     const url = toDirURL(uriToUrl(uri));
-    console.log('uriToGlobRoot:\n\t%s ->\n\t%s', uri.toString(), url.href);
+    // console.log('uriToGlobRoot:\n\t%s ->\n\t%s', uri.toString(), url.href);
     return url.href;
 }
 
 export function uriToUrl(uri: string | URL | Uri): URL {
     if (uri instanceof URL) return uri;
-    uri = typeof uri === 'string' && !isUrlLike(uri) ? pathToFileURL(uri) : uri;
+    uri = typeof uri === 'string' && !isUriLike(uri) ? pathToFileURL(uri) : uri;
     const href = typeof uri === 'string' ? uri : uri.toString();
     const [front, pHash] = href.split('#');
     const hash = pHash ? `#` + pHash : '';

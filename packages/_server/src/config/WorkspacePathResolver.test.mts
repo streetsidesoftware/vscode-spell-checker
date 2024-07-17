@@ -1,3 +1,6 @@
+import { homedir } from 'node:os';
+import { pathToFileURL } from 'node:url';
+
 import { logError } from '@internal/common-utils/log';
 import * as Path from 'path';
 import { describe, expect, type Mock, test, vi } from 'vitest';
@@ -5,6 +8,7 @@ import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
 import type { CSpellUserSettings, CustomDictionaries } from './cspellConfig/index.mjs';
+import { toDirURL, uriToGlobRoot } from './urlUtil.mjs';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver.mjs';
 
 vi.mock('vscode-languageserver/node');
@@ -105,10 +109,10 @@ describe('Validate workspace substitution resolver', () => {
     };
 
     const paths = {
-        root: uriToFsPath(workspaceFolders.root.uri),
-        client: uriToFsPath(workspaceFolders.client.uri),
-        server: uriToFsPath(workspaceFolders.server.uri),
-        test: uriToFsPath(workspaceFolders.test.uri),
+        root: uriToRoot(workspaceFolders.root.uri),
+        client: uriToRoot(workspaceFolders.client.uri),
+        server: uriToRoot(workspaceFolders.server.uri),
+        test: uriToRoot(workspaceFolders.test.uri),
     };
 
     const workspaces: WorkspaceFolder[] = [workspaceFolders.root, workspaceFolders.client, workspaceFolders.server, workspaceFolders.test];
@@ -251,11 +255,11 @@ describe('Validate workspace substitution resolver', () => {
         // '${workspaceFolder:Server}/samples/**',
         // '${workspaceFolder:client-test}/**/*.json',
         expect(result.ignorePaths).toEqual([
-            { glob: '**/node_modules/**', root: uriToFsPath(workspaceFolders.client.uri) },
-            { glob: '/node_modules/**', root: uriToFsPath(workspaceFolders.client.uri) },
-            { glob: '/samples/**', root: uriToFsPath(workspaceFolders.server.uri) },
-            { glob: '/**/*.json', root: uriToFsPath(workspaceFolders.test.uri) },
-            { glob: 'dist/**', root: uriToFsPath(workspaceFolders.server.uri) },
+            { glob: '**/node_modules/**', root: uriToRoot(workspaceFolders.client.uri) },
+            { glob: '/node_modules/**', root: uriToRoot(workspaceFolders.client.uri) },
+            { glob: '/samples/**', root: uriToRoot(workspaceFolders.server.uri) },
+            { glob: '/**/*.json', root: uriToRoot(workspaceFolders.test.uri) },
+            { glob: 'dist/**', root: uriToRoot(workspaceFolders.server.uri) },
         ]);
     });
 
@@ -263,7 +267,7 @@ describe('Validate workspace substitution resolver', () => {
         files                               | globRoot                   | expected
         ${undefined}                        | ${undefined}               | ${undefined}
         ${['**']}                           | ${undefined}               | ${[{ glob: '**', root: paths.client }]}
-        ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: '~/glob-root' }]}
+        ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: new URL('glob-root/', pathToFileURL(homedir() + '/')).href }]}
         ${['**']}                           | ${'${workspaceFolder}/..'} | ${[{ glob: '**', root: paths.root }]}
         ${['${workspaceFolder}/**']}        | ${''}                      | ${[{ glob: '/**', root: paths.client }]}
         ${['${workspaceFolder}/**']}        | ${undefined}               | ${[{ glob: '/**', root: paths.client }]}
@@ -320,29 +324,29 @@ describe('Validate workspace substitution resolver', () => {
             [
                 {
                     glob: '*.md',
-                    root: uriToFsPath(workspaceFolders.client.uri),
+                    root: uriToGlobRoot(workspaceFolders.client.uri),
                 },
                 {
                     glob: '**/*.ts',
-                    root: uriToFsPath(workspaceFolders.client.uri),
+                    root: uriToGlobRoot(workspaceFolders.client.uri),
                 },
                 {
                     glob: '**/*.js',
-                    root: uriToFsPath(workspaceFolders.client.uri),
+                    root: uriToGlobRoot(workspaceFolders.client.uri),
                 },
             ],
             {
                 glob: '/docs/nl_NL/**',
-                root: uriToFsPath(workspaceFolders.client.uri),
+                root: uriToGlobRoot(workspaceFolders.client.uri),
             },
             [
                 {
                     glob: '/**/*.config.json',
-                    root: uriToFsPath(workspaceFolders.client.uri),
+                    root: uriToGlobRoot(workspaceFolders.client.uri),
                 },
                 {
                     glob: '**/*.config.json',
-                    root: uriToFsPath(workspaceFolders.server.uri),
+                    root: uriToGlobRoot(workspaceFolders.server.uri),
                 },
             ],
         ]);
@@ -462,11 +466,11 @@ describe('Validate workspace substitution resolver', () => {
         expect(mockLogError).toHaveBeenCalledWith('Failed to resolve ${workspaceFolder:_server}');
     });
 
-    function uriToFsPath(u: string | Uri): string {
+    function uriToRoot(u: string | Uri): string {
         if (typeof u === 'string') {
             u = Uri.parse(u);
         }
-        return u.fsPath;
+        return toDirURL(u).href;
     }
 
     function normalizePath<T extends { path?: string }>(values?: T[]): T[] | undefined {

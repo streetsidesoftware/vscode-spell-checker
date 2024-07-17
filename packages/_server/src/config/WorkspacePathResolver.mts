@@ -109,7 +109,7 @@ function createWorkspaceNameToGlobResolver(
         );
         workspaceRoot = workspaceRoot || _folder.path;
         const map = new Map(folderPairs);
-        const regEx = /^\$\{workspaceFolder(?:[^}]*)\}[/\\]?/i;
+        const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
         const root = resolveRoot(globRoot || '${workspaceFolder}');
 
         function lookUpWorkspaceFolder(match: string): URL {
@@ -121,10 +121,14 @@ function createWorkspaceNameToGlobResolver(
 
         function resolveRoot(globRoot: string | URL | undefined): URL | undefined {
             if (globRoot instanceof URL) return globRoot;
+            globRoot = globRoot?.startsWith('~') ? os.homedir() + globRoot.slice(1) : globRoot;
             const matchRoot = globRoot?.match(regEx);
             if (matchRoot && globRoot) {
                 const workspaceRoot = lookUpWorkspaceFolder(matchRoot[0]);
-                return new URL(globRoot.slice(matchRoot[0].length), workspaceRoot);
+                let path = globRoot.slice(matchRoot[0].length).replace('\\', '/');
+                path = path.startsWith('/') ? path.slice(1) : path;
+                // console.log('matchRoot: %o', { globRoot, matchRoot, path, workspaceRoot: workspaceRoot.href });
+                return new URL(path, workspaceRoot);
             }
             return globRoot ? toDirURL(globRoot) : undefined;
         }
@@ -155,7 +159,7 @@ function createWorkspaceNameToGlobResolver(
 
         return (glob: Glob) => {
             const r = resolver(glob);
-            console.log('resolveGlob: %o -> %o', glob, r);
+            // console.log('resolveGlob: %o -> %o', glob, r);
             return r;
         };
     };

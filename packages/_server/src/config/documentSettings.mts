@@ -453,7 +453,7 @@ export class DocumentSettings {
         );
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(useURLForConfig);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
-        console.log('__fetchSettingsForUri Root Folder: %o', { rootFolder, docUri });
+        // console.log('__fetchSettingsForUri Root Folder: %o', { rootFolder, docUri });
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
@@ -483,7 +483,7 @@ export class DocumentSettings {
         fileSettings.files = files;
 
         const globs = ignorePaths.concat(defaultExclude);
-        console.log('Glob Root: %o', { globRoot: globRoot, docUri });
+        // console.log('Glob Root: %o', { globRoot: globRoot, docUri });
         const excludeGlobMatcher = new GlobMatcher(globs, globRoot);
         const includeOptions: GlobMatchOptions = { root: globRoot, mode: 'include' };
         setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
@@ -823,7 +823,7 @@ const checkScheme: Record<string, boolean | undefined> = {
 
 function canCheckAgainstGlob(uri: Uri): boolean {
     const r = checkScheme[uri.scheme] ?? false;
-    console.log('canCheckAgainstGlob %o %o', uri.toString(true), r);
+    // console.log('canCheckAgainstGlob %o %o', uri.toString(true), r);
     return r;
 }
 
