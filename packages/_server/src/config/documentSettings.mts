@@ -47,7 +47,7 @@ import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
-import { filterUrl, toDirURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilePathOrHref } from './urlUtil.mjs';
+import { filterUrl, toDirURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
@@ -213,7 +213,7 @@ export class DocumentSettings {
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
-        return await this.gitIgnore.isIgnored(urlToFilePathOrHref(uri));
+        return await this.gitIgnore.isIgnored(urlToFilepath(uri));
     }
 
     /**

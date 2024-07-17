@@ -53,6 +53,23 @@ export function toDirURL(url: string | URL | Uri): URL {
     return url;
 }
 
+/**
+ * Try to extract a file path from a URL.
+ * If the URL is not a file URL, then the pathname is returned.
+ * @param url - url
+ * @returns path
+ */
+export function urlToFilepath(url: string | URL | Uri): string {
+    const u = uriToUrl(url);
+    return u.protocol === 'file:' ? fileURLToPath(u) : u.pathname;
+}
+
+/**
+ * Try to extract a file path from a URL.
+ * If the URL is not a file URL, then the href is returned.
+ * @param url - url
+ * @returns path or href
+ */
 export function urlToFilePathOrHref(url: string | URL | Uri): string {
     const u = uriToUrl(url);
     return u.protocol === 'file:' ? fileURLToPath(u) : u.href;
