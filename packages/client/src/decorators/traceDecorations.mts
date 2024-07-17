@@ -81,14 +81,15 @@ export class SpellingExclusionsDecorator implements Disposable {
     private createDecorator() {
         this.decorationType?.dispose();
         this.decorationType = vscode.window.createTextEditorDecorationType({
-            light: {
-                // this color will be used in light color themes
-                backgroundColor: '#8884',
-            },
-            dark: {
-                // this color will be used in dark color themes
-                backgroundColor: '#8884',
-            },
+            opacity: '0.5',
+            // light: {
+            //     // this color will be used in light color themes
+            //     backgroundColor: '#8884',
+            // },
+            // dark: {
+            //     // this color will be used in dark color themes
+            //     backgroundColor: '#8884',
+            // },
         });
     }
 
