@@ -125,7 +125,7 @@ function createWorkspaceNameToGlobResolver(
             const matchRoot = globRoot?.match(regEx);
             if (matchRoot && globRoot) {
                 const workspaceRoot = lookUpWorkspaceFolder(matchRoot[0]);
-                let path = globRoot.slice(matchRoot[0].length).replace('\\', '/');
+                let path = globRoot.slice(matchRoot[0].length).replaceAll('\\', '/');
                 path = path.startsWith('/') ? path.slice(1) : path;
                 // console.log('matchRoot: %o', { globRoot, matchRoot, path, workspaceRoot: workspaceRoot.href });
                 return new URL(path, workspaceRoot);
