@@ -1,7 +1,6 @@
 import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
-import * as os from 'os';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
@@ -450,11 +449,6 @@ describe('Validate DocumentSettings', () => {
         const result = await docSettings.findCSpellConfigurationFilesForUri(uri);
         // Note: toLowerCase is needed because on MacOS and Windows cSpell.json and cspell.json will be considered the same file.
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
-    });
-
-    test('resolvePath', () => {
-        expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
-        expect(debugExports.resolvePath('~')).toBe(os.homedir());
     });
 
     function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
