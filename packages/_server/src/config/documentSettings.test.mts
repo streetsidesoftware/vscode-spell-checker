@@ -452,11 +452,6 @@ describe('Validate DocumentSettings', () => {
         expect(result.map((f) => f.toString().toLowerCase())).toEqual(expected.map((u) => filePathToUri(u).toString().toLowerCase()));
     });
 
-    test('resolvePath', () => {
-        expect(debugExports.resolvePath(__dirname)).toBe(__dirname);
-        expect(debugExports.resolvePath('~')).toBe(os.homedir());
-    });
-
     function newDocumentSettings(defaultSettings: CSpellUserSettings = {}) {
         const connection = createMockConnection();
         const mockWorkspaceGetConfiguration = vi.mocked(connection.workspace.getConfiguration);

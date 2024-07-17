@@ -28,8 +28,6 @@ import {
     mergeSettings,
     searchForConfig,
 } from 'cspell-lib';
-import * as os from 'os';
-import * as path from 'path';
 import { pathToFileURL } from 'url';
 import type { DisposableClassic } from 'utils-disposables';
 import type { Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
@@ -541,11 +539,6 @@ export class DocumentSettings {
     }
 }
 
-function resolvePath(...parts: string[]): string {
-    const normalizedParts = parts.map((part) => (part[0] === '~' ? os.homedir() + part.slice(1) : part));
-    return path.resolve(...normalizedParts);
-}
-
 export function isUriAllowedBySettings(uri: string, settings: CSpellUserSettings): boolean {
     const schemes = extractEnabledSchemes(settings);
     return doesUriMatchAnyScheme(uri, schemes);
@@ -641,7 +634,6 @@ export function stringifyPatterns(settings: CSpellUserSettings | undefined): CSp
 export const debugExports = {
     fixRegEx: fixRegPattern,
     fixPattern,
-    resolvePath,
     filterConfigFilesToMatchInheritedPathOfFile,
 };
 

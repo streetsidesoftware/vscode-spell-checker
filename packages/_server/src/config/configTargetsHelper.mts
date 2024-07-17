@@ -1,7 +1,6 @@
 import type { DictionaryDefinitionCustom } from '@cspell/cspell-types';
 import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { capitalize } from '@internal/common-utils/util';
-import * as Path from 'path';
 
 import type { WorkspaceConfigForDocument } from '../api.js';
 import type {
@@ -70,12 +69,16 @@ function* workspaceConfigToTargets(workspaceConfig: WorkspaceConfigForDocument):
     }
 }
 
+function basename(path: string): string {
+    return path.split(/[/\\]/g).slice(-1).join('');
+}
+
 function cspellToTargets(sources: CSpellSettingsWithFileSource[]): ConfigTargetCSpell[] {
     function toTarget(cfg: CSpellSettingsWithFileSource, index: number): ConfigTargetCSpell {
         return {
             kind: ConfigKinds.Cspell,
             scope: ConfigScopes.Unknown,
-            name: cfg.name || Path.basename(cfg.source.filename),
+            name: cfg.name || basename(cfg.source.filename),
             configUri: toUri(cfg.source.filename).toString(),
             has: {
                 words: cfg.words && true,
