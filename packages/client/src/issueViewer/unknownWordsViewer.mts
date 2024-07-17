@@ -10,6 +10,7 @@ import { createEmitter, debounce, rx } from '../Subscribables/index.js';
 import { findConicalDocument, findNotebookCellForDocument } from '../util/documentUri.js';
 import { logErrors } from '../util/errors.js';
 import { getIconForIssues, icons } from './icons.mjs';
+import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
@@ -96,6 +97,7 @@ class UnknownWordsExplorer {
 }
 
 interface Context {
+    onlyVisible: boolean;
     issueTracker: IssueTracker;
     invalidate: (item: OnDidChangeEventType) => void;
     requestSuggestions: (item: RequestSuggestionsParam) => Suggestion[] | undefined;
@@ -119,6 +121,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
         this.disposeList.push(
             this.emitOnDidChange,
             this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
+            vscode.window.onDidChangeVisibleTextEditors(() => this.refresh()),
         );
     }
 
@@ -131,6 +134,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
             return element.getChildren();
         }
         const context: Context = {
+            onlyVisible: true, // Maybe add a setting for this.
             issueTracker: this.issueTracker,
             invalidate: (item) => this.emitOnDidChange.notify(item),
             requestSuggestions: (item) => {
@@ -167,7 +171,11 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     }
 
     private handleOnDidChangeDiagnostics(_e: vscode.DiagnosticChangeEvent) {
-        this.emitOnDidChange.notify(undefined);
+        this.refresh();
+    }
+
+    private refresh(item?: OnDidChangeEventType) {
+        this.emitOnDidChange.notify(item);
     }
 
     private async fetchSuggestions(item: RequestSuggestionsParam) {
@@ -461,7 +469,8 @@ class IssueSuggestionTreeItem extends IssueTreeItemBase {
 }
 
 function collectIssues(context: Context): WordIssueTreeItem[] {
-    const issues = context.issueTracker.getSpellingIssues() || [];
+    const isVisible = createIsItemVisibleFilter(context.onlyVisible);
+    const issues = (context.issueTracker.getSpellingIssues() || []).filter(isVisible);
     const groupedByWord = new Map<string, WordIssueTreeItem>();
     const getGroup = getResolve(groupedByWord, (word) => new WordIssueTreeItem(context, word));
     issues.forEach(groupIssue);
