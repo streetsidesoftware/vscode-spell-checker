@@ -4003,7 +4003,7 @@
   "devDependencies": {
     "@eslint/js": "^8.57.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "@types/vscode": "1.90.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitest/coverage-istanbul": "^2.0.3",
@@ -4033,13 +4033,13 @@
     "shx": "^0.3.4",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.1",
-    "vite": "^5.3.3",
+    "vite": "^5.3.4",
     "vitest": "^2.0.3"
   },
   "dependencies": {
-    "@cspell/cspell-bundled-dicts": "^8.10.4",
-    "@cspell/cspell-types": "^8.10.4",
-    "cspell": "^8.10.4",
+    "@cspell/cspell-bundled-dicts": "^8.11.0",
+    "@cspell/cspell-types": "^8.11.0",
+    "cspell": "^8.11.0",
     "regexp-worker": "^3.0.0"
   }
 }
