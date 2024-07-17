@@ -15,6 +15,7 @@ import { handleErrors, logErrors } from '../util/errors.js';
 import { findTextDocument } from '../util/findEditor.js';
 import { isDefined } from '../util/index.mjs';
 import { getIconForSpellingIssue, icons } from './icons.mjs';
+import { createIsItemVisibleFilter } from './issuefilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
@@ -186,6 +187,7 @@ class IssueExplorerByFile {
 }
 
 interface Context {
+    onlyVisible: boolean;
     issueTracker: IssueTracker;
     invalidate: (item: OnDidChangeEventType) => void;
     requestSuggestions: (item: RequestSuggestionsParam) => Promise<Suggestion[]>;
@@ -214,7 +216,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         this.issueTracker = options.issueTracker;
         this.disposeList.push(
             this.emitOnDidChange,
-            // vscode.window.onDidChangeActiveTextEditor((editor) => this.updateEditor(editor)),
+            vscode.window.onDidChangeVisibleTextEditors(() => this.updateChild()),
             this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
         );
     }
@@ -229,6 +231,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
         }
         if (this.children) return this.children;
         const context: Context = {
+            onlyVisible: true,
             issueTracker: this.issueTracker,
             invalidate: (item) => this.updateChild(item),
             requestSuggestions: (item) => this.issueTracker.getSuggestionsForIssue(item),
@@ -271,7 +274,8 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     }
 
     getIssueCount(): number {
-        return this.issueTracker.getIssueCount();
+        const filter = createIsItemVisibleFilter(true);
+        return this.issueTracker.getIssueCount(undefined, (issue) => issue.isIssueTypeSpelling() && filter(issue));
     }
 
     findMatchingChild(uri: Uri): FileWithIssuesTreeItem | undefined {
@@ -544,8 +548,10 @@ interface FileIssue {
 type SpellingIssue = SpellingCheckerIssue;
 
 function collectIssuesByFile(context: Context): FileWithIssuesTreeItem[] {
+    const isVisible = createIsItemVisibleFilter(true);
     const fileIssues: FileIssue[] = context.issueTracker
         .getSpellingIssueByFile()
+        .filter(isVisible)
         .map((file) => ({ ...file, doc: findTextDocument(file.uri) }));
     const groupedByFile = groupIssues(fileIssues);
 
