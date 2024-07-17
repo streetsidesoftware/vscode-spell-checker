@@ -61,7 +61,7 @@ export function toDirURL(url: string | URL | Uri): URL {
  */
 export function urlToFilepath(url: string | URL | Uri): string {
     const u = uriToUrl(url);
-    return u.protocol === 'file:' ? fileURLToPath(u) : u.pathname;
+    return u.protocol === 'file:' ? normalizeWindowsRoot(fileURLToPath(u)) : u.pathname;
 }
 
 /**
@@ -72,7 +72,11 @@ export function urlToFilepath(url: string | URL | Uri): string {
  */
 export function urlToFilePathOrHref(url: string | URL | Uri): string {
     const u = uriToUrl(url);
-    return u.protocol === 'file:' ? fileURLToPath(u) : u.href;
+    return u.protocol === 'file:' ? normalizeWindowsRoot(fileURLToPath(u)) : u.href;
+}
+
+export function normalizeWindowsRoot(path: string): string {
+    return path.replace(/^[a-z]:[/\\]/i, (p) => p.toUpperCase());
 }
 
 export function uriToGlobPath(uri: string | URL | Uri): string {
@@ -95,12 +99,20 @@ export function uriToUrl(uri: string | URL | Uri): URL {
     if (uri instanceof URL) return uri;
     uri = typeof uri === 'string' && !isUriLike(uri) ? pathToFileURL(uri) : uri;
     const href = typeof uri === 'string' ? uri : uri.toString();
-    const [front, pHash] = href.split('#');
-    const hash = pHash ? `#` + pHash : '';
-    let [path, query] = front.split('?');
-    query = query ? `?` + query : '';
-    // Clean up windows paths.
-    path = path.replace(/\/([A-Z])%3A\//i, (_, a) => `/${a.toLowerCase()}:/`).replace(/\/[a-z]:\//i, (a) => a.toLowerCase());
-    const url = path + query + hash;
-    return new URL(url);
+    return normalizeWindowsUrl(new URL(href));
+}
+
+const regExpDoesUrlHaveEncodedWindowsPath = /^\/([A-Z])%3A\//i;
+const regExpDoesUrlContainsWindowsPath = /^\/[A-Z]:\//;
+
+export function normalizeWindowsUrl(url: URL): URL {
+    if (regExpDoesUrlHaveEncodedWindowsPath.test(url.pathname)) {
+        url = new URL(url);
+        url.pathname = url.pathname.replace(regExpDoesUrlHaveEncodedWindowsPath, (_, a) => `/${a.toLowerCase()}:/`);
+    }
+    if (regExpDoesUrlContainsWindowsPath.test(url.pathname)) {
+        url = new URL(url);
+        url.pathname = url.pathname.replace(regExpDoesUrlContainsWindowsPath, (a) => a.toLowerCase());
+    }
+    return url;
 }

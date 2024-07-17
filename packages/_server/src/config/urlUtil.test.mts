@@ -1,8 +1,8 @@
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
-import { toDirURL, uriToUrl, urlToFilepath, urlToFilePathOrHref } from './urlUtil.mjs';
+import { normalizeWindowsRoot, normalizeWindowsUrl, toDirURL, uriToUrl, urlToFilepath, urlToFilePathOrHref } from './urlUtil.mjs';
 
 describe('urlUtil', () => {
     test.each`
@@ -51,5 +51,34 @@ describe('urlUtil', () => {
     `('urlToFilepath $uri', ({ uri, expected }) => {
         const r = urlToFilepath(uri);
         expect(r).toBe(expected);
+    });
+
+    test.each`
+        uri                               | expected
+        ${'http://example.com/files'}     | ${'http://example.com/files'}
+        ${import.meta.url}                | ${import.meta.url}
+        ${'output:my_output'}             | ${'output:my_output'}
+        ${'a:/driveA'}                    | ${'A:/driveA'}
+        ${'A:/driveA'}                    | ${'A:/driveA'}
+        ${'c:\\Root\\Users'}              | ${'C:\\Root\\Users'}
+        ${'f:\\'}                         | ${'F:\\'}
+        ${fileURLToPath(import.meta.url)} | ${fileURLToPath(import.meta.url)}
+    `('normalizeWindowsRoot $uri', ({ uri, expected }) => {
+        const r = normalizeWindowsRoot(uri);
+        expect(r).toBe(expected);
+    });
+
+    test.each`
+        uri                                        | expected
+        ${'http://example.com/files'}              | ${'http://example.com/files'}
+        ${'file:///'}                              | ${'file:///'}
+        ${'file:///C:/users/home'}                 | ${'file:///c:/users/home'}
+        ${'file:///C%3a/users/home/'}              | ${'file:///c:/users/home/'}
+        ${'output:my_output'}                      | ${'output:my_output'}
+        ${'vscode-vfs://github/vitest-dev/vitest'} | ${'vscode-vfs://github/vitest-dev/vitest'}
+    `('normalizeWindowsUrl $uri', ({ uri, expected }) => {
+        const r = normalizeWindowsUrl(new URL(uri));
+        expect(r).toBeInstanceOf(URL);
+        expect(r.href).toBe(expected);
     });
 });

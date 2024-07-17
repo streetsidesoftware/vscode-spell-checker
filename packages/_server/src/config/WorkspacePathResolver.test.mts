@@ -1,5 +1,5 @@
 import { homedir } from 'node:os';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { logError } from '@internal/common-utils/log';
 import * as Path from 'path';
@@ -8,7 +8,7 @@ import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
 import type { CSpellUserSettings, CustomDictionaries } from './cspellConfig/index.mjs';
-import { toDirURL, uriToGlobRoot } from './urlUtil.mjs';
+import { normalizeWindowsRoot, normalizeWindowsUrl, toDirURL, uriToGlobRoot } from './urlUtil.mjs';
 import { createWorkspaceNamesResolver, debugExports, resolveSettings } from './WorkspacePathResolver.mjs';
 
 vi.mock('vscode-languageserver/node');
@@ -271,7 +271,7 @@ describe('Validate workspace substitution resolver', () => {
         files                               | globRoot                   | expected
         ${undefined}                        | ${undefined}               | ${undefined}
         ${['**']}                           | ${undefined}               | ${[{ glob: '**', root: paths.client }]}
-        ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: new URL('glob-root/', pathToFileURL(homedir() + '/')).href }]}
+        ${['**']}                           | ${'~/glob-root'}           | ${[{ glob: '**', root: normalizeWindowsUrl(new URL('glob-root/', pathToFileURL(homedir() + '/'))).href }]}
         ${['**']}                           | ${'${workspaceFolder}/..'} | ${[{ glob: '**', root: paths.root }]}
         ${['${workspaceFolder}/**']}        | ${''}                      | ${[{ glob: '/**', root: paths.client }]}
         ${['${workspaceFolder}/**']}        | ${undefined}               | ${[{ glob: '/**', root: paths.client }]}
@@ -491,6 +491,6 @@ describe('Validate workspace substitution resolver', () => {
     }
 
     function p(path: string): string {
-        return Uri.file(path).fsPath;
+        return normalizeWindowsRoot(fileURLToPath(pathToFileURL(path)));
     }
 });
