@@ -2,12 +2,12 @@ import { logError } from '@internal/common-utils/log';
 import { uriToFilePathOrHref } from '@internal/common-utils/uriHelper';
 import type { BaseSetting, Glob, GlobDef } from 'cspell-lib';
 import * as os from 'os';
-import * as Path from 'path';
 import type { WorkspaceFolder } from 'vscode-languageserver/node.js';
 import { URI as Uri } from 'vscode-uri';
 
 import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { extractDictionaryDefinitions, extractDictionaryList } from './customDictionaries.mjs';
+import { toDirURL } from './urlUtil.mjs';
 
 export type WorkspaceGlobResolverFn = (glob: Glob) => GlobDef;
 export type WorkspacePathResolverFn = (path: string) => string;
@@ -103,36 +103,37 @@ function createWorkspaceNameToGlobResolver(
 ): (globRoot: string | undefined) => WorkspaceGlobResolverFn {
     const _folder = { ...folder };
     const _folders = [...folders];
-    return (globRoot: string | undefined) => {
-        const folderPairs = [['${workspaceFolder}', _folder.path] as [string, string]].concat(
-            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, folder.path]),
+    return (globRoot: string | URL | undefined) => {
+        const folderPairs = [['${workspaceFolder}', toDirURL(_folder.path)] as [string, URL]].concat(
+            _folders.map((folder) => [`\${workspaceFolder:${folder.name}}`, toDirURL(folder.path)]),
         );
         workspaceRoot = workspaceRoot || _folder.path;
         const map = new Map(folderPairs);
-        const regEx = /^\$\{workspaceFolder(?:[^}]*)\}/i;
+        const regEx = /^\$\{workspaceFolder(?:[^}]*)\}[/\\]?/i;
         const root = resolveRoot(globRoot || '${workspaceFolder}');
 
-        function lookUpWorkspaceFolder(match: string): string {
+        function lookUpWorkspaceFolder(match: string): URL {
             const r = map.get(match);
             if (r !== undefined) return r;
             logError(`Failed to resolve ${match}`);
-            return match;
+            return toDirURL(match);
         }
 
-        function resolveRoot(globRoot: string | undefined): string | undefined {
+        function resolveRoot(globRoot: string | URL | undefined): URL | undefined {
+            if (globRoot instanceof URL) return globRoot;
             const matchRoot = globRoot?.match(regEx);
             if (matchRoot && globRoot) {
                 const workspaceRoot = lookUpWorkspaceFolder(matchRoot[0]);
-                return Path.join(workspaceRoot, globRoot.slice(matchRoot[0].length));
+                return new URL(globRoot.slice(matchRoot[0].length), workspaceRoot);
             }
-            return globRoot;
+            return globRoot ? toDirURL(globRoot) : undefined;
         }
 
-        return (glob: Glob) => {
+        function resolver(glob: Glob) {
             if (typeof glob == 'string') {
                 glob = {
                     glob,
-                    root,
+                    root: root?.href,
                 };
             }
 
@@ -142,14 +143,20 @@ function createWorkspaceNameToGlobResolver(
                 return {
                     ...glob,
                     glob: glob.glob.slice(matchGlob[0].length),
-                    root,
+                    root: root.href,
                 };
             }
 
             return {
                 ...glob,
-                root: resolveRoot(glob.root),
+                root: resolveRoot(glob.root)?.href,
             };
+        }
+
+        return (glob: Glob) => {
+            const r = resolver(glob);
+            console.log('resolveGlob: %o -> %o', glob, r);
+            return r;
         };
     };
 }
