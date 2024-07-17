@@ -85,10 +85,14 @@ describe('Validate workspace substitution resolver', () => {
     const clientPath = Path.join(rootPath, 'client');
     const serverPath = Path.join(rootPath, '_server');
     const clientTestPath = Path.join(clientPath, 'test');
-    const rootFolderUri = Uri.file(rootPath);
-    const clientUri = Uri.file(clientPath);
-    const serverUri = Uri.file(serverPath);
-    const testUri = Uri.file(clientTestPath);
+    const rootFolderUrl = pathToFileURL(rootPath);
+    const clientUrl = pathToFileURL(clientPath);
+    const serverUrl = pathToFileURL(serverPath);
+    const testUrl = pathToFileURL(clientTestPath);
+    const rootFolderUri = Uri.parse(rootFolderUrl.href);
+    const clientUri = Uri.parse(clientUrl.href);
+    const serverUri = Uri.parse(serverUrl.href);
+    const testUri = Uri.parse(testUrl.href);
     const workspaceFolders = {
         root: {
             name: 'Root Folder',
