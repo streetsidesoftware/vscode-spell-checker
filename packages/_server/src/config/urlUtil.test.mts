@@ -1,4 +1,4 @@
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 import { describe, expect, test } from 'vitest';
 import { URI } from 'vscode-uri';
 
