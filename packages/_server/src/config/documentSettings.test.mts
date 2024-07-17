@@ -1,7 +1,6 @@
 import type { Pattern } from 'cspell-lib';
 import * as cspell from 'cspell-lib';
 import { getDefaultSettings } from 'cspell-lib';
-import * as os from 'os';
 import * as Path from 'path';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ConfigurationItem, Connection, WorkspaceFolder } from 'vscode-languageserver/node.js';
