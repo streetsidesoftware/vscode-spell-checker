@@ -18,7 +18,6 @@ import { toFileUri, toUri } from '@internal/common-utils/uriHelper';
 import { GitIgnore } from 'cspell-gitignore';
 import type { GlobMatchOptions, GlobMatchRule, GlobPatternNormalized } from 'cspell-glob';
 import { GlobMatcher } from 'cspell-glob';
-import { isUrlLike } from 'cspell-io';
 import type { ExcludeFilesGlobMap } from 'cspell-lib';
 import {
     calcOverrideSettings,
@@ -40,7 +39,7 @@ import type { DocumentUri, ServerSideApi, VSCodeSettingsCspell, WorkspaceConfigF
 import { extensionId } from '../constants.mjs';
 import { uniqueFilter } from '../utils/index.mjs';
 import { findMatchingFoldersForUri } from '../utils/matchingFoldersForUri.mjs';
-import { findRepoRoot, stat } from '../vfs/index.mjs';
+import { findRepoRoot } from '../vfs/index.mjs';
 import type { VSConfigAdvanced } from './cspellConfig/cspellConfig.mjs';
 import { filterMergeFields } from './cspellConfig/cspellMergeFields.mjs';
 import type { EnabledSchemes } from './cspellConfig/FileTypesAndSchemeSettings.mjs';
@@ -48,6 +47,7 @@ import type { CSpellUserSettings } from './cspellConfig/index.mjs';
 import { canAddWordsToDictionary } from './customDictionaries.mjs';
 import { handleSpecialUri } from './docUriHelper.mjs';
 import { applyEnabledFileTypes, applyEnabledSchemes, extractEnabledFileTypes, extractEnabledSchemes } from './extractEnabledFileTypes.mjs';
+import { filterUrl, toDirURL, tryJoinURL, uriToGlobPath, uriToGlobRoot, urlToFilepath } from './urlUtil.mjs';
 import type { TextDocumentUri } from './vscode.config.mjs';
 import { getConfiguration, getWorkspaceFolders } from './vscode.config.mjs';
 import { createWorkspaceNamesResolver, resolveSettings } from './WorkspacePathResolver.mjs';
@@ -213,7 +213,7 @@ export class DocumentSettings {
     private async _isGitIgnored(extSettings: ExtSettings, uri: Uri): Promise<boolean | undefined> {
         if (!canCheckAgainstGlob(uri)) return undefined;
         if (!extSettings.settings.useGitignore) return undefined;
-        return await this.gitIgnore.isIgnored(uriToGlobPath(uri));
+        return await this.gitIgnore.isIgnored(urlToFilepath(uri));
     }
 
     /**
@@ -453,6 +453,7 @@ export class DocumentSettings {
         );
         const settings = vscodeCSpellConfigSettingsForDocument.noConfigSearch ? undefined : await searchForConfig(useURLForConfig);
         const rootFolder = this.rootSchemaAndDomainFolderForUri(docUri);
+        // console.log('__fetchSettingsForUri Root Folder: %o', { rootFolder, docUri });
         const folder = await this.findMatchingFolder(docUri, folders[0] || rootFolder);
         const globRootFolder = folder !== rootFolder ? folder : folders[0] || folder;
 
@@ -473,15 +474,16 @@ export class DocumentSettings {
         fileSettings = applyEnabledSchemes(fileSettings, enabledSchemes);
         const { ignorePaths = [], files = [] } = fileSettings;
 
-        const globRoot = uriToGlobPath(globRootFolder.uri);
+        const globRoot = uriToGlobRoot(globRootFolder.uri);
         if (!files.length && vscodeCSpellConfigSettingsForDocument.spellCheckOnlyWorkspaceFiles !== false) {
             // Add file globs that will match the entire workspace.
-            folders.forEach((folder) => files.push({ glob: '/**', root: uriToGlobPath(folder.uri) }));
+            folders.forEach((folder) => files.push({ glob: '/**', root: uriToGlobRoot(folder.uri) }));
             fileSettings.enableGlobDot = fileSettings.enableGlobDot ?? true;
         }
         fileSettings.files = files;
 
         const globs = ignorePaths.concat(defaultExclude);
+        // console.log('Glob Root: %o', { globRoot: globRoot, docUri });
         const excludeGlobMatcher = new GlobMatcher(globs, globRoot);
         const includeOptions: GlobMatchOptions = { root: globRoot, mode: 'include' };
         setIfDefined(includeOptions, 'dot', fileSettings.enableGlobDot);
@@ -805,56 +807,24 @@ export function isExcluded(settings: ExtSettings, uri: Uri): boolean {
     return settings.excludeGlobMatcher.match(uriToGlobPath(uri));
 }
 
-async function filterUrl(uri: Uri): Promise<Uri | undefined> {
-    const url = new URL(uri.toString());
-    try {
-        const stats = await stat(url);
-        const found = stats.isFile() ? uri : undefined;
-        return found;
-    } catch {
-        return undefined;
-    }
-}
-
-/**
- * See if it is possible to join the rel to the base.
- * This helps detect `untitled:untitled-1` uri's that are not valid.
- * @param rel - relative path
- * @param base - base URL
- * @returns the joined path or undefined if it is not possible.
- */
-function tryJoinURL(rel: string, base: URL | string): URL | undefined {
-    try {
-        return new URL(rel, base);
-    } catch {
-        return undefined;
-    }
-}
-
-function toDirURL(url: string | URL): URL {
-    if (url instanceof URL) {
-        if (url.pathname.endsWith('/')) {
-            return url;
-        }
-        url = url.href;
-    }
-    url = new URL(url);
-    if (!url.pathname.endsWith('/')) {
-        url.pathname += '/';
-    }
-    return url;
-}
-
-function uriToGlobPath(uri: string | URL | Uri): string {
-    if (typeof uri === 'string' && !isUrlLike(uri)) {
-        return uri;
-    }
-    const u = toFileUri(uri);
-    return u.scheme === 'file' ? u.fsPath : u.path;
-}
+const checkScheme: Record<string, boolean | undefined> = {
+    comment: false,
+    file: true,
+    gist: false,
+    repo: true,
+    sftp: true,
+    untitled: true,
+    'vscode-notebook-cell': true,
+    'vscode-scm': false,
+    'vscode-userdata': false,
+    'vscode-vfs': true,
+    vsls: true,
+};
 
 function canCheckAgainstGlob(uri: Uri): boolean {
-    return uri.scheme === 'file';
+    const r = checkScheme[uri.scheme] ?? false;
+    // console.log('canCheckAgainstGlob %o %o', uri.toString(true), r);
+    return r;
 }
 
 export const __testing__ = {
