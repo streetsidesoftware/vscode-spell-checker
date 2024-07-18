@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.3...code-spell-checker-v4.0.4) (2024-07-17)
+
+
+### Updates and Bug Fixes
+
+* glob support for non-file urls ([#3447](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3447)) ([714ed0d](https://github.com/streetsidesoftware/vscode-spell-checker/commit/714ed0d56d9f440bcb3528197054a80d1ada9f97))
+* Hide non-visible issues ([#3445](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3445)) ([6f1c13e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/6f1c13e06d849129f358aae2d1ddd01f8d065854))
+* make sure issues in all tabs are visible ([#3448](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3448)) ([435032e](https://github.com/streetsidesoftware/vscode-spell-checker/commit/435032ec042b35e2dc4aa8acd3f975f92c825ba1))
+* use opacity instead of background in trace ([#3450](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3450)) ([dd2957c](https://github.com/streetsidesoftware/vscode-spell-checker/commit/dd2957c7c6ae801ecd19a1c3e3beb40b9620d2a4))
+
+
+### Code Refactoring
+
+* remove unused node:path ([#3449](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3449)) ([5eb6c4a](https://github.com/streetsidesoftware/vscode-spell-checker/commit/5eb6c4a6c5d6f6e89638a2553943a9f279c002cb))
+
 ## [4.0.3](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.2...code-spell-checker-v4.0.3) (2024-06-03)
 
 
