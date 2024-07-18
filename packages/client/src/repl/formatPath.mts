@@ -6,7 +6,7 @@ export function relative(uri: Uri | string): string {
     const rel = vscode.workspace.asRelativePath(uri, false);
     if (urlLike.test(rel)) return rel;
 
-    return './' + rel.split('\\').join('/');
+    return rel.split('\\').join('/');
 }
 
 export function formatPath(uri: Uri | string, width: number): string {
