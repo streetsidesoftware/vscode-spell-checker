@@ -19,7 +19,7 @@ export type SpellCheckerSettingsVSCodePropertyKeys = `cspell.${keyof CSpellUserS
 
 interface DictionaryDefinitions {
     /**
-     * Define custom dictionaries..
+     * Define custom dictionaries.
      * If `addWords` is `true` words will be added to this dictionary.
      *
      * This setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).

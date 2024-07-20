@@ -985,7 +985,7 @@
                       }
                     ]
                   },
-                  "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
+                  "markdownDescription": "Define custom dictionaries.\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                   "scope": "resource",
                   "title": "Dictionary Definitions",
                   "type": "array"
@@ -1392,7 +1392,7 @@
                             }
                           ]
                         },
-                        "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
+                        "markdownDescription": "Define custom dictionaries.\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                         "scope": "resource",
                         "title": "Dictionary Definitions",
                         "type": "array"
@@ -2474,7 +2474,7 @@
                 }
               ]
             },
-            "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
+            "markdownDescription": "Define custom dictionaries.\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
             "scope": "resource",
             "title": "Dictionary Definitions",
             "type": "array"
@@ -2688,7 +2688,7 @@
                       }
                     ]
                   },
-                  "markdownDescription": "Define custom dictionaries..\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
+                  "markdownDescription": "Define custom dictionaries.\nIf `addWords` is `true` words will be added to this dictionary.\n\nThis setting is subject to User/Workspace settings precedence rules: [Visual Studio Code User and Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-precedence).\n\nIt is better to use `#cSpell.customDictionaries#`\n\n**Example:**\n\n```js\n\"cSpell.dictionaryDefinitions\": [\n  {\n    \"name\": \"project-words\",\n    \"path\": \"${workspaceRoot}/project-words.txt\",\n    \"description\": \"Words used in this project\",\n    \"addWords\": true\n  }\n]\n```",
                   "scope": "resource",
                   "title": "Dictionary Definitions",
                   "type": "array"
