@@ -4001,7 +4001,7 @@
     "preinstall": "npx only-allow npm"
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.0",
+    "@eslint/js": "^9.7.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.14.11",
     "@types/vscode": "1.90.0",
