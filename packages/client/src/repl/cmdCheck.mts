@@ -1,26 +1,27 @@
 import type * as API from 'code-spell-checker-server/api';
 import type { CancellationToken, Uri } from 'vscode';
 
+import type { CheckDocumentResponse } from '../api.mjs';
 import { checkDocument } from '../api.mjs';
-import { colors } from './ansiUtils.mjs';
+import { clearLine, colors } from './ansiUtils.mjs';
 import { formatPath, relative } from './formatPath.mjs';
 
 const maxPathLen = 60;
 
-export async function cmdCheckDocument(uri: Uri | string, options: CheckDocumentsOptions, index?: number, count?: number): Promise<void> {
-    const { forceCheck, output, log, width } = options;
+async function cmdCheckDocument(prep: CheckDocumentPrep): Promise<void> {
+    const { uri, options, index, count, result: pResult, startTs, endTs } = prep;
+    const { output, log, width } = options;
 
-    const startTs = performance.now();
     const prefix = countPrefix(index, count);
 
     output(`${prefix}${colors.gray(formatPath(relative(uri), Math.min(maxPathLen, width - 10 - prefix.length)))}`);
-    const result = await checkDocument({ uri: uri.toString() }, { forceCheck });
+    const result = await pResult;
 
-    const elapsed = performance.now() - startTs;
+    const elapsed = (endTs || performance.now()) - startTs;
     const elapsedTime = elapsed.toFixed(2) + 'ms';
 
     if (result.skipped) {
-        log(` ${elapsedTime} S`);
+        log(` ${elapsedTime} Skipped`);
         return;
     }
 
@@ -31,6 +32,11 @@ export async function cmdCheckDocument(uri: Uri | string, options: CheckDocument
     const failed = !!(result.errors || issues?.length);
 
     lines.push(` ${elapsedTime}${failed ? colors.red(' X') : ''}`);
+
+    if (!failed) {
+        output(lines.join('') + '\r' + clearLine(0));
+        return;
+    }
 
     if (result.errors) {
         lines.push(`${colors.red('Errors: ')} ${result.errors}`);
@@ -70,18 +76,60 @@ export interface CheckDocumentsOptions {
     width: number;
 }
 
+interface CheckDocumentPrep {
+    index: number;
+    count: number;
+    uri: string | Uri;
+    startTs: number;
+    endTs?: number;
+    options: CheckDocumentsOptions;
+    result: Promise<CheckDocumentResponse>;
+}
+
+function prepareCheckDocument(uri: string | Uri, options: CheckDocumentsOptions, index: number, count: number): CheckDocumentPrep {
+    const { forceCheck } = options;
+
+    const startTs = performance.now();
+
+    const result = checkDocument({ uri: uri.toString() }, { forceCheck });
+    const prep: CheckDocumentPrep = { index, count, uri, startTs, options, result };
+    result.finally(() => (prep.endTs = performance.now()));
+    return prep;
+}
+
+const prefetchCount = 10;
+
 export async function cmdCheckDocuments(uris: (string | Uri)[], options: CheckDocumentsOptions): Promise<void> {
     const count = uris.length;
-    for (let index = 0; index < count; index++) {
-        const uri = uris[index];
-        if (options.cancellationToken.isCancellationRequested) {
-            return;
+
+    const pending: CheckDocumentPrep[] = [];
+
+    try {
+        let index = 0;
+        for (; index < prefetchCount && index < count; index++) {
+            const uri = uris[index];
+            pending.push(prepareCheckDocument(uri, options, index, count));
         }
-        try {
-            await cmdCheckDocument(uri, options, index, count);
-        } catch (error) {
-            options.error(error);
-            return;
+
+        while (!options.cancellationToken.isCancellationRequested) {
+            try {
+                const prep = pending.shift();
+                if (!prep) break;
+                await cmdCheckDocument(prep);
+                if (index < count) {
+                    const uri = uris[index];
+                    pending.push(prepareCheckDocument(uri, options, index, count));
+                    index++;
+                }
+            } catch (error) {
+                options.error(error);
+                break;
+            }
         }
+        //
+        Promise.all(pending.map((p) => p.result)).catch((error) => options.error(error));
+    } catch {
+        // All errors should have been reported.
+        return;
     }
 }
