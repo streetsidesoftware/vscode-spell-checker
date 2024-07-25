@@ -4021,7 +4021,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-promise": "^7.0.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-unicorn": "^54.0.0",
+    "eslint-plugin-unicorn": "^55.0.0",
     "globals": "^15.8.0",
     "inject-markdown": "^3.1.0",
     "jest-mock-vscode": "^3.0.5",
