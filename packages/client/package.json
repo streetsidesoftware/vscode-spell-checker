@@ -40,7 +40,7 @@
     "watch:tsc": "npm run build:tsc -- --watch"
   },
   "devDependencies": {
-    "@types/camelize": "^1.0.0",
+    "@types/camelize": "^1.0.1",
     "@types/kefir": "^3.8.11",
     "@types/source-map-support": "^0.5.10",
     "cross-env": "^7.0.3",
@@ -75,7 +75,7 @@
     "vscode-uri": "^3.0.8",
     "vscode-webview-rpc": "file:../webview-rpc",
     "webview-api": "file:../webview-api",
-    "yaml": "^2.4.5",
+    "yaml": "^2.5.0",
     "yargs": "^17.7.2"
   },
   "engines": {
