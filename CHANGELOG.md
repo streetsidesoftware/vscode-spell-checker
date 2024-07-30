@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.5](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.4...code-spell-checker-v4.0.5) (2024-07-30)
+
+
+### Updates and Bug Fixes
+
+* Improve the REPL Check output ([#3478](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3478)) ([b546916](https://github.com/streetsidesoftware/vscode-spell-checker/commit/b54691603e0f60358c97f008dcbcf201a3f0c25e))
+* remove typo ([#3463](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3463)) ([d6212e9](https://github.com/streetsidesoftware/vscode-spell-checker/commit/d6212e97b6d7bc5c753b492268a6aefbd954c034))
+* REPL - remove `./` from rel path ([#3452](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3452)) ([0e03b63](https://github.com/streetsidesoftware/vscode-spell-checker/commit/0e03b63f7b3fb744a3a7ec661cb3774fede5ea8e))
+* Update CSpell (main) ([#3487](https://github.com/streetsidesoftware/vscode-spell-checker/issues/3487)) ([de554f2](https://github.com/streetsidesoftware/vscode-spell-checker/commit/de554f2cb1fbfbcbc1be00c68c9f0906e69dd5a0))
+
 ## [4.0.4](https://github.com/streetsidesoftware/vscode-spell-checker/compare/code-spell-checker-v4.0.3...code-spell-checker-v4.0.4) (2024-07-17)
 
 
