@@ -5,8 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { downloadAndUnzipVSCode, runTests } from '@vscode/test-electron';
 import decompress from 'decompress';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const __dirname = fileURLToPath(new URL('./', import.meta.url));
 const root = path.resolve(__dirname, '../../../');
 const fixtureFolder = path.resolve(__dirname, '../testFixtures');
 
