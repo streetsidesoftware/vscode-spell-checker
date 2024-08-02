@@ -89,7 +89,7 @@ class UnknownWordsExplorer {
         return event((e) => this.uiEventFnEmitter.notify(() => fn(e)));
     }
 
-    static viewID = 'cspell-info.issuesView';
+    static viewID = 'cSpellIssuesViewByIssue';
 
     static register(issueTracker: IssueTracker) {
         return new UnknownWordsExplorer(issueTracker);

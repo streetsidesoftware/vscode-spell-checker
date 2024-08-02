@@ -16,6 +16,7 @@
         "noUnusedParameters": true,
         "sourceMap": true,
         "strictNullChecks": true,
-        "types": ["node"]
+        "types": ["node"],
+        "outDir": "${configDir}/dist"
     }
 }

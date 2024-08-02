@@ -25,7 +25,7 @@ export function activate(context: ExtensionContext) {
 
     const views = [
         new TodoViewProvider(extensionUri),
-        new WebviewApiViewProvider(extensionUri, supportedViewsByName['cspell-info'], 'cspell-info.infoView'),
+        new WebviewApiViewProvider(extensionUri, supportedViewsByName['cspell-info'], 'cSpellInfoView'),
     ];
 
     for (const view of views) {

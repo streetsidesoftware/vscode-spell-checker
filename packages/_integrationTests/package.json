@@ -11,6 +11,7 @@
     "clean": "shx rm -rf out temp",
     "build-production": "npm run build",
     "test-integration-vscode": "node ./out/runTests.mjs",
+    "test-integration-insiders": "VSCODE_VERSION=insiders node ./out/runTests.mjs",
     "test-integration": "npm run build2 && npm run test-integration-vscode",
     "test": "echo Run test-integration"
   },

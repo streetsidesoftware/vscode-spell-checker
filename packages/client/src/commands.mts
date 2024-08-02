@@ -173,9 +173,9 @@ export const commandHandlers = {
 
     'cspell.showActionsMenu': handlerResolvedLater,
 
-    'cSpell.openIssuesPanel': callCommand('cspell.issuesViewByFile.focus'),
-    'cSpell.openFileInfoView': callCommand('cspell-info.infoView.focus'),
-    'cSpell.displayCSpellInfo': callCommand('cspell-info.infoView.focus'),
+    'cSpell.openIssuesPanel': callCommand('cSpellIssuesViewByFile.focus'),
+    'cSpell.openFileInfoView': callCommand('cSpellInfoView.focus'),
+    'cSpell.displayCSpellInfo': callCommand('cSpellInfoView.focus'),
 
     'cSpell.experimental.executeDocumentSymbolProvider': handleCmdExperimentalExecuteDocumentSymbolProvider,
 
