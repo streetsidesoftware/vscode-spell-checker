@@ -42,7 +42,8 @@
   "devDependencies": {
     "ts-loader": "^9.5.1",
     "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "yargs": "^17.7.2"
   },
   "dependencies": {
     "@cspell/cspell-types": "^8.13.1",
