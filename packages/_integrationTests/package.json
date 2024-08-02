@@ -26,10 +26,10 @@
   "devDependencies": {
     "@cspell/cspell-types": "^8.13.1",
     "@cspell/dict-de-de": "^4.0.0",
-    "@types/chai": "^4.3.16",
+    "@types/chai": "^4.3.17",
     "@types/decompress": "^4.2.7",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.13",
+    "@types/node": "^20.14.14",
     "chai": "^5.1.1",
     "cross-env": "^7.0.3"
   },

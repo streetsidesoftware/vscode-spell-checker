@@ -54,7 +54,7 @@
     "utils-disposables": "file:../utils-disposables",
     "utils-logger": "file:../utils-logger",
     "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-languageserver-types": "^3.17.5",
     "vscode-uri": "^3.0.8"
   },

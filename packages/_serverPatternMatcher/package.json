@@ -50,7 +50,7 @@
     "cspell-lib": "^8.13.1",
     "regexp-worker": "^3.0.0",
     "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11",
+    "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-uri": "^3.0.8"
   },
   "scripts": {
