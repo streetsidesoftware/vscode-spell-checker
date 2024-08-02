@@ -65,10 +65,14 @@ describe('Launch code spell extension', function () {
     this.timeout(120000);
     const docUri = getDocUri('diagnostics.txt');
 
-    this.beforeAll(async () => {
-        await loadFolder(getDocUri('.'));
-        await activateExtension();
-    });
+    this.beforeAll(
+        logError(async () => {
+            await activateExtension();
+            logYellow('Activated');
+            logYellow('Load Folder %o', getDocUri('./').toJSON());
+            await loadFolder(getDocUri('./'));
+        }),
+    );
 
     it(
         'Verify the extension starts',
