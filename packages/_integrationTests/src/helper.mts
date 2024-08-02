@@ -111,3 +111,9 @@ export function logYellow(...params: Parameters<typeof console.log>): void {
     if (!message) return log('');
     log(chalk.yellow(message), ...rest);
 }
+
+export function logRed(...params: Parameters<typeof console.log>): void {
+    const [message, ...rest] = params;
+    if (!message) return log('');
+    log(chalk.red(message), ...rest);
+}

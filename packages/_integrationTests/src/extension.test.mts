@@ -15,6 +15,7 @@ import {
     loadDocument,
     loadFolder,
     log,
+    logRed,
     logYellow,
     sampleWorkspaceUri,
     sleep,
@@ -65,6 +66,7 @@ describe('Launch code spell extension', function () {
     const docUri = getDocUri('diagnostics.txt');
 
     this.beforeAll(async () => {
+        await loadFolder(getDocUri('.'));
         await activateExtension();
     });
 
@@ -105,42 +107,48 @@ describe('Launch code spell extension', function () {
         });
     });
 
-    it('Verifies that some spelling errors were found', async () => {
-        logYellow('Verifies that some spelling errors were found');
-        await loadFolder(getDocUri('.'));
-        const uri = getDocUri('example.md');
-        const config = getVscodeWorkspace().getConfiguration(undefined, uri);
-        await config.update('cSpell.diagnosticLevel', 'Information');
-        await config.update('cSpell.useCustomDecorations', false, 1);
-        const docContextMaybe = await loadDocument(uri);
-        await sleep(500);
-        // Force a spell check by making an edit.
-        const r = vscode.window.activeTextEditor?.edit((edit) => edit.insert(new vscode.Position(0, 0), '#'));
-        expect(docContextMaybe).to.not.be.undefined;
-        const wait = waitForSpellComplete(uri, 5000);
-        await r;
+    it(
+        'Verifies that some spelling errors were found',
+        logError(async () => {
+            logYellow('Verifies that some spelling errors were found');
+            await loadFolder(getDocUri('.'));
+            const uri = getDocUri('example.md');
+            const config = getVscodeWorkspace().getConfiguration(undefined, uri);
+            await config.update('cSpell.diagnosticLevel', 'Information', 3);
+            await config.update('cSpell.useCustomDecorations', false, 1);
+            const docContextMaybe = await loadDocument(uri);
+            await sleep(1000);
+            logYellow('document loaded');
+            // Force a spell check by making an edit.
+            logYellow('edit start');
+            const r = vscode.window.activeTextEditor?.edit((edit) => edit.insert(new vscode.Position(0, 0), '#'));
+            expect(docContextMaybe).to.not.be.undefined;
+            const wait = waitForSpellComplete(uri, 5000);
+            await r;
+            logYellow('edit finished');
 
-        const found = await wait;
-        log('found %o', found);
+            const found = await wait;
+            log('found %o', found);
 
-        const diags = await getDiagsFromVsCode(uri, 2000);
+            const diags = await getDiagsFromVsCode(uri, 2000);
 
-        if (!diags.length) {
-            log('all diags: %o', vscode.languages.getDiagnostics());
-        }
+            if (!diags.length) {
+                log('all diags: %o', vscode.languages.getDiagnostics());
+            }
 
-        // await sleep(5 * 1000);
+            // await sleep(5 * 1000);
 
-        expect(found).to.not.be.undefined;
+            expect(found).to.not.be.undefined;
 
-        const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
-        log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
-        log('diags: %o', diags);
+            const msgs = diags.map((a) => `C: ${a.source} M: ${a.message}`).join('\n');
+            log(`Diag Messages: size(${diags.length}) msg: \n${msgs}`);
+            log('diags: %o', diags);
 
-        // cspell:ignore spellling
-        expect(msgs).contains('spellling');
-        logYellow('Done: Verifies that some spelling errors were found');
-    });
+            // cspell:ignore spellling
+            expect(msgs).contains('spellling');
+            logYellow('Done: Verifies that some spelling errors were found');
+        }),
+    );
 
     it('register a config and check doc', async () => {
         const ext = await activateExtension();
@@ -168,6 +176,17 @@ describe('Launch code spell extension', function () {
         expect(true).to.be.true;
     });
 });
+
+function logError(fn: () => Promise<void>): () => Promise<void> {
+    return async () => {
+        try {
+            await fn();
+        } catch (e) {
+            logRed('Error: %o', e);
+            throw e;
+        }
+    };
+}
 
 function streamOnSpellCheckDocumentNotification(cSpellClient: CSpellClient): Stream<OnSpellCheckDocumentStep, undefined> {
     return stream<OnSpellCheckDocumentStep, undefined>((emitter) => {
