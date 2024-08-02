@@ -14,16 +14,23 @@ const cacheDirName = '.vscode-test';
 async function run(version: undefined | 'stable' | 'insiders' | string, extensionDevelopmentPath: string) {
     // Delete `.vscode-test` to prevent socket issues
     await fs.rm(cacheDirName, { recursive: true, force: true });
+    await fs.rm(path.resolve(root, cacheDirName), { recursive: true, force: true });
+
+    // try and have a short path to prevent socket errors.
+    const cachePath = path.join(root, cacheDirName);
 
     // The path to the extension test runner script
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, './index.cjs');
 
     const fileToOpen = path.relative(process.cwd(), __filename);
-    const launchArgs: string[] = ['--disable-extensions', fileToOpen];
+    const launchArgs: string[] = [
+        '--disable-extensions',
+        fileToOpen,
+        `--extensions-dir=${path.join(cachePath, `${version}`, 'extensions')}`,
+        `--user-data-dir=${path.join(cachePath, `${version}`, 'user-data')}`,
+    ];
 
-    // try and have a short path to prevent socket errors.
-    const cachePath = path.join(root, cacheDirName);
     const vscodeExecutablePath = await downloadAndUnzipVSCode({ cachePath, version });
     const options = { vscodeExecutablePath, extensionDevelopmentPath, extensionTestsPath, launchArgs };
     await runTests(options);

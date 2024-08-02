@@ -70,19 +70,22 @@ describe('Launch code spell extension', function () {
         await activateExtension();
     });
 
-    it('Verify the extension starts', async () => {
-        logYellow('Verify the extension starts');
-        const extContext = await activateExtension();
-        const docContext = await loadDocument(docUri);
-        expect(extContext).to.not.be.undefined;
-        expect(docContext).to.not.be.undefined;
-        const extApi = extContext.extApi;
-        expect(extApi).to.not.be.undefined;
-        expect(extApi).to.equal(extContext?.extActivate);
-        expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
-        expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
-        logYellow('Done: Verify the extension starts');
-    });
+    it(
+        'Verify the extension starts',
+        logError(async () => {
+            logYellow('Verify the extension starts');
+            const extContext = await activateExtension();
+            const docContext = await loadDocument(docUri);
+            expect(extContext).to.not.be.undefined;
+            expect(docContext).to.not.be.undefined;
+            const extApi = extContext.extApi;
+            expect(extApi).to.not.be.undefined;
+            expect(extApi).to.equal(extContext?.extActivate);
+            expect(extApi).haveOwnProperty(apiSignature.addWordToUserDictionary);
+            expect(extApi).to.include.all.keys(...Object.keys(apiSignature));
+            logYellow('Done: Verify the extension starts');
+        }),
+    );
 
     [
         [getDocUri('example.md'), getDocUri('cspell.json')],
