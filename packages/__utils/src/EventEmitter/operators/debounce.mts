@@ -28,7 +28,7 @@ export function debounce<T>(waitMs: number): EventOperator<T, T> {
             function handleTimer() {
                 const value = pendingValue;
                 clear();
-                value !== symbolNotSet && fire(value);
+                if (value !== symbolNotSet) fire(value);
             }
         },
         {

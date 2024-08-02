@@ -28,7 +28,7 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
     dList.push(vscode.window.onDidChangeActiveTextEditor(queueUpdate));
     dList.push(
         vscode.workspace.onDidChangeConfiguration((e) => {
-            e.affectsConfiguration('cSpell') && queueUpdate();
+            if (e.affectsConfiguration('cSpell')) queueUpdate();
         }),
     );
     dList.push(getIssueTracker().onDidChangeDiagnostics(() => updateNow()));
@@ -57,12 +57,12 @@ export function createLanguageStatus(options: LanguageStatusOptions): Disposable
         const issuesCount = stats.spelling || 0;
         const flaggedCount = stats.flagged || 0;
         const warnCount = issuesCount - flaggedCount;
-        enabled === undefined && icons.push('$(repo-sync)');
-        enabled === false && icons.push('$(exclude)');
-        enabled && !options.areIssuesVisible() && icons.push('$(eye-closed)');
-        enabled && !issuesCount && icons.push('$(check)');
-        enabled && flaggedCount && icons.push(`$(error) ${flaggedCount}`);
-        enabled && warnCount && icons.push(`$(warning) ${warnCount}`);
+        if (enabled === undefined) icons.push('$(repo-sync)');
+        if (enabled === false) icons.push('$(exclude)');
+        if (enabled && !options.areIssuesVisible()) icons.push('$(eye-closed)');
+        if (enabled && !issuesCount) icons.push('$(check)');
+        if (enabled && flaggedCount) icons.push(`$(error) ${flaggedCount}`);
+        if (enabled && warnCount) icons.push(`$(warning) ${warnCount}`);
         const icon = icons.join(' ');
         issuesItem.severity = vscode.LanguageStatusSeverity.Information; // enabled ? vscode.LanguageStatusSeverity.Information : vscode.LanguageStatusSeverity.Warning;
         issuesItem.text = `${icon} Spell`;

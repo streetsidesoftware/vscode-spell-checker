@@ -106,7 +106,11 @@ export function createDisposable<T extends object>(disposeFn: DisposeFn, thisArg
             }
             --activeDisposables;
             disposable[symbolIsDisposed] = isDisposed = true;
-            thisArg ? disposeFn.call(thisArg) : disposeFn();
+            if (thisArg) {
+                disposeFn.call(thisArg);
+            } else {
+                disposeFn();
+            }
         } catch (err) {
             errors = true;
             throw err;
@@ -159,7 +163,7 @@ export function createDisposeMethodFromList(disposables: DisposableLike[], name 
     let disposed = false;
     const tsId = performance.now().toFixed(4);
 
-    _logger && (name = 'createDisposeMethodFromList ' + (name || '<anonymous>'));
+    if (_logger) name = 'createDisposeMethodFromList ' + (name || '<anonymous>');
 
     _logger?.debug(dbgPad() + 'Create: %s %s', name, tsId);
 

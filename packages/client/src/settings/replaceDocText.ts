@@ -7,6 +7,6 @@ export async function replaceDocText(doc: TextDocument, text: string): Promise<b
     const teReplaceDoc = TextEdit.replace(range, text);
     wsEdit.set(doc.uri, [teReplaceDoc]);
     const success = await workspace.applyEdit(wsEdit);
-    success && (await doc.save());
+    if (success) await doc.save();
     return success;
 }

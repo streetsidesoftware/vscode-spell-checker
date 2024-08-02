@@ -41,7 +41,7 @@ interface EditorMenuContext extends Record<string, ContextValue> {
     addIgnoreWord: boolean;
 }
 
-export interface ContextTypes extends Record<string, ContextValue> {}
+export type ContextTypes = Record<string, ContextValue>;
 
 interface KnownContexts extends ContextTypes {
     documentConfigContext: DocumentContext;

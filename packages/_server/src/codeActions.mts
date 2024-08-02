@@ -177,7 +177,7 @@ class CodeActionHandler {
             if (isSpellingIssue && word && spellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
                 const targets = await calculateConfigTargets(docSetting, wConfig);
-                debugTargets && logTargets(targets);
+                if (debugTargets) logTargets(targets);
 
                 if (!docSetting.hideAddToDictionaryCodeActions) {
                     actions.push(...generateTargetActions(textDocument, spellCheckerDiags, word, targets));
@@ -216,7 +216,7 @@ class CodeActionHandler {
             if (word && eslintSpellCheckerDiags.length) {
                 const wConfig = await pWorkspaceConfig;
                 const targets = await calculateConfigTargets(docSetting, wConfig);
-                debugTargets && logTargets(targets);
+                if (debugTargets) logTargets(targets);
 
                 if (!docSetting.hideAddToDictionaryCodeActions) {
                     actions.push(...generateTargetActions(textDocument, eslintSpellCheckerDiags, word, targets));

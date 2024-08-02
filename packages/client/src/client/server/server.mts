@@ -156,11 +156,11 @@ function log2C<P, T>(params: P, value: Promise<T> | T, reqName: string): Promise
 async function logCommunication<P, T>(kind: string, params: P, value: Promise<T> | T, name: string, log: boolean): Promise<Awaited<T>> {
     const id = ++reqNum;
     let result: Awaited<T> | undefined = undefined;
-    log && debugCommunication && console.log('%s %i Start %s: %s(%o)', new Date().toISOString(), id, kind, name, params);
+    if (log && debugCommunication) console.log('%s %i Start %s: %s(%o)', new Date().toISOString(), id, kind, name, params);
     try {
         result = await value;
         return result;
     } finally {
-        log && debugCommunication && console.log('%s %i End   %s: %s, %o', new Date().toISOString(), id, kind, name, result);
+        if (log && debugCommunication) console.log('%s %i End   %s: %s, %o', new Date().toISOString(), id, kind, name, result);
     }
 }

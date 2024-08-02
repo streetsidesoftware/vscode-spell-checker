@@ -55,7 +55,7 @@ class StoreObservable<T> implements Store<T> {
 
     subscribe(s: Subscriber<T>): DisposableFn {
         const disposableFn = this.pubSub.subscribe(s);
-        this._value !== symbolNotSet && s(this._value);
+        if (this._value !== symbolNotSet) s(this._value);
         return disposableFn;
     }
 
@@ -122,7 +122,7 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
 
         this.disposables.push(this.server.subscribe((v) => this._mutate(v)));
 
-        options.watch && this.disposables.push(options.watch.subscribe(() => this._query()));
+        if (options.watch) this.disposables.push(options.watch.subscribe(() => this._query()));
 
         this.dispose = createDisposeMethodFromList(this.disposables);
         this._query();
@@ -151,7 +151,7 @@ class ClientServerStoreImpl<T, N> implements ClientServerStore<T, N> {
 
     private subscribe(subscriptions: Set<Subscriber<T>>, subscriber: Subscriber<T>, notify: boolean): DisposableFn {
         subscriptions.add(subscriber);
-        notify && this._value !== symbolNotSet && subscriber(this._value);
+        if (notify && this._value !== symbolNotSet) subscriber(this._value);
         return () => subscriptions.delete(subscriber);
     }
 
@@ -231,7 +231,7 @@ class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T
             subscribe: (s) => this.subscribe(this.subServer, s, false),
         };
 
-        options.watch && this.disposables.push(options.watch.subscribe(() => this._query()));
+        if (options.watch) this.disposables.push(options.watch.subscribe(() => this._query()));
 
         this.dispose = createDisposeMethodFromList(this.disposables);
         this._query();
@@ -260,7 +260,7 @@ class ReadonlyClientServerStoreImpl<T, N> implements ReadonlyClientServerStore<T
 
     private subscribe(subscriptions: Set<Subscriber<T>>, subscriber: Subscriber<T>, notify: boolean): DisposableFn {
         subscriptions.add(subscriber);
-        notify && this._value !== symbolNotSet && subscriber(this._value);
+        if (notify && this._value !== symbolNotSet) subscriber(this._value);
         return () => subscriptions.delete(subscriber);
     }
 

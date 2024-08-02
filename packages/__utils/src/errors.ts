@@ -1,7 +1,7 @@
-function getTypeOf(t: unknown) {
+function _getTypeOf(t: unknown) {
     return typeof t;
 }
-type TypeOfTypes = ReturnType<typeof getTypeOf>;
+type TypeOfTypes = ReturnType<typeof _getTypeOf>;
 
 type AllowedTypes = Partial<Record<TypeOfTypes, true>>;
 

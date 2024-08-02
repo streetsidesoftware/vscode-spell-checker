@@ -104,4 +104,10 @@ export default tsEslint.config(
             'no-undef': 'off',
         },
     },
+    {
+        files: ['**/*.json'],
+        rules: {
+            '@typescript-eslint/no-unused-expressions': 'off',
+        },
+    },
 );

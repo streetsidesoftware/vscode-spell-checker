@@ -23,7 +23,7 @@ export function debounce<T>(waitMs: number): OperatorFn<T, T> {
                 const value = pendingValue;
                 pendingValue = symbolNotSet;
                 timer = undefined;
-                value !== symbolNotSet && notify(value);
+                if (value !== symbolNotSet) notify(value);
             }
         });
         subscribable.onEvent('onStop', () => clearTimeout(timer));

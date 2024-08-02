@@ -5,6 +5,7 @@ import { vi } from 'vitest';
 
 // declare function watch(pathName: PathName): Watcher;
 // declare function watch(pathName: PathName, options: Options): Watcher;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare function watch(pathName: PathName, callback: Callback): Watcher;
 // declare function watch(pathName: PathName, options: Options, callback: Callback): Watcher;
 
