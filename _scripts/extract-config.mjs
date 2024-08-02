@@ -377,7 +377,7 @@ function beautifyJSON(json, width) {
                 continue;
             }
             if (line.length + text.length > width) {
-                line && lines.push(line);
+                if (line) lines.push(line);
                 line = '';
             }
             line += text;
@@ -401,7 +401,7 @@ function beautifyJSON(json, width) {
         addToLine('\n', '}');
     }
 
-    line && lines.push(line);
+    if (line) lines.push(line);
 
     // console.error('%o', lines);
 
@@ -432,7 +432,7 @@ function beautifyType(dataType, width) {
                 continue;
             }
             if (line.length + text.length > width) {
-                line && lines.push(line);
+                if (line) lines.push(line);
                 line = '';
             }
             line += text;
@@ -443,7 +443,7 @@ function beautifyType(dataType, width) {
     const fixed = items.map((item, index) => item + (index === items.length - 1 ? '' : ' |'));
 
     addToLine(...fixed);
-    line && lines.push(line);
+    if (line) lines.push(line);
 
     // console.error('%o', lines);
 
