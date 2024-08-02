@@ -60,7 +60,7 @@ const cspellConfigInVsCode: CSpellUserSettings = {
 const sampleFiles = {
     sampleClientEsLint: Path.resolve(pathWorkspaceRoot, 'packages/client/.eslintrc.js'),
     sampleClientReadme: Path.resolve(pathWorkspaceRoot, 'packages/client/README.md'),
-    sampleNodePackage: require.resolve('yargs'),
+    sampleNodePackage: require.resolve('eslint'),
     sampleSamplesReadme: Path.resolve(pathWorkspaceRoot, 'samples/custom-dictionary/README.md'),
     sampleServerCSpell: Path.resolve(pathWorkspaceRoot, 'packages/_server/cspell.json'),
     sampleServerPackageLock: Path.resolve(pathWorkspaceRoot, 'packages/_server/package-lock.json'),
