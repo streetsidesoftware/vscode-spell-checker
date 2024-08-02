@@ -128,7 +128,7 @@ export class CSpellConfigRepository extends ConfigRepositoryBase {
             await workspace.save(doc.uri);
         }
         await this.configRW.update(fnUpdateFilterKeys(updater), updater.keys);
-        formatConfig && (await formatDocument(uri));
+        if (formatConfig) await formatDocument(uri);
     }
 
     static isCSpellConfigRepository(rep: ConfigRepository): rep is CSpellConfigRepository {
@@ -147,7 +147,7 @@ async function formatDocument(uri: Uri) {
     // Sometimes it gets updated after save by the formatter.
     // Wait a bit and try to save again.
     await wait(1000);
-    doc.isDirty && (await workspace.save(doc.uri));
+    if (doc.isDirty) await workspace.save(doc.uri);
 }
 
 export class VSCodeRepository extends ConfigRepositoryBase {

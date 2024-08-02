@@ -2,11 +2,9 @@ export function defaultTo<T>(value: T): (v: T | undefined) => T {
     return (v: T | undefined) => (v === undefined ? value : v);
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-interface Obj {}
+type Obj = object;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type Nested<T, K extends keyof T> = T extends {} ? Exclude<T[K], undefined> : never;
+export type Nested<T, K extends keyof T> = T extends object ? Exclude<T[K], undefined> : never;
 export type NestedKey<T, K extends keyof T> = keyof Nested<T, K>;
 
 export function extract<T extends Obj, K extends keyof T>(key: K): (t: T | undefined) => T[K] | undefined;

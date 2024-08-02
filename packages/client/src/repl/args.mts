@@ -29,7 +29,7 @@ export class Command<ArgDefs extends ArgsDefinitions = ArgsDefinitions, OptDefs 
             this.#options.push(new Option(key, def));
         }
         const found = this.#options.find((o) => o.name == 'help');
-        !found && this.#options.push(new Option('help', { type: 'boolean', description: 'Show help', short: 'h' }));
+        if (!found) this.#options.push(new Option('help', { type: 'boolean', description: 'Show help', short: 'h' }));
         this.#handler = handler;
     }
 

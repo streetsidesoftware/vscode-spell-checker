@@ -46,7 +46,7 @@ export interface ServerNotificationsAPI {
  * Requests that can be made from the extension to the webview or webviews
  * Note: RPC requests to the client/webview is rare.
  */
-export interface ClientRequestsAPI {}
+export type ClientRequestsAPI = object;
 
 /** Notifications from the extension to the webview. */
 export interface ClientNotificationsAPI {

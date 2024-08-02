@@ -28,7 +28,7 @@ export interface ServerNotificationsAPI {
  * Requests that can be made from the server to the client
  * Note: RPC requests to the client is rare.
  */
-export interface ClientRequestsAPI {}
+export type ClientRequestsAPI = object;
 
 /** Notifications from the server to the client. */
 export interface ClientNotificationsAPI {

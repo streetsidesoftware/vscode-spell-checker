@@ -23,7 +23,7 @@ export interface Storage {
 
 const debug = false;
 
-debug && getLogger().setLogLevelMask(LogLevelMasks.everything);
+if (debug) getLogger().setLogLevelMask(LogLevelMasks.everything);
 
 let store: Storage | undefined = undefined;
 

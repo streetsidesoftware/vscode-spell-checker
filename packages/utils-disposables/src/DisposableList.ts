@@ -53,7 +53,7 @@ export class DisposableList extends InheritableDisposable {
         }
         let count = 0;
         for (const d of disposables) {
-            this.add(d) && count++;
+            if (this.add(d)) count++;
         }
         return count;
     }

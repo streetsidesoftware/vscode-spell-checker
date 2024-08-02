@@ -10,7 +10,7 @@ import type { FileTypesAndSchemeSettings } from './FileTypesAndSchemeSettings.mj
 import type { PrefixWithCspell } from './Generics.mjs';
 import type { SpellCheckerBehaviorSettings, SpellCheckerSettings } from './SpellCheckerSettings.mjs';
 
-interface InternalSettings {}
+type InternalSettings = object;
 
 export interface CSpellUserSettings extends SpellCheckerSettings, CSpellSettingsPackageProperties, InternalSettings {}
 
