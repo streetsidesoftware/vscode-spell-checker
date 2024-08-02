@@ -13,7 +13,7 @@ export { log } from './logger.mjs';
 
 const require = createRequire(import.meta.url);
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const __dirname = fileURLToPath(new URL('./', import.meta.url));
 
 const extensionPackage = require('../../../package.json');
 const fixturesPath = path.resolve(__dirname, '../testFixtures');
@@ -70,7 +70,7 @@ export async function loadDocument(docUri: Uri): Promise<DocumentContext | undef
 }
 
 export async function loadFolder(folderUri: Uri): Promise<void> {
-    return await vscode.commands.executeCommand('vscode.openFolder', folderUri);
+    return await vscode.commands.executeCommand('vscode.openFolder', folderUri, { forceNewWindow: false, forceReuseWindow: true });
 }
 
 export function getVscodeWorkspace(): typeof vscode.workspace {
@@ -85,7 +85,8 @@ export const getDocPath = (p: string) => {
     return path.resolve(fixturesPath, p);
 };
 export const getDocUri = (p: string) => {
-    return vscode.Uri.file(getDocPath(p));
+    const r = getDocPath(p) + (p.endsWith('/') ? '/' : '');
+    return vscode.Uri.file(r);
 };
 
 export async function setTestContent(context: DocumentContext, content: string): Promise<boolean> {
