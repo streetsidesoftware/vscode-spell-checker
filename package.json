@@ -178,22 +178,22 @@
         },
         {
           "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
-          "when": "view == cspell-info.issuesView && viewItem == issue.hasPreferred",
+          "when": "view == cSpellIssuesViewByIssue && viewItem == issue.hasPreferred",
           "group": "inline"
         },
         {
           "command": "cSpell.issueViewer.item.addWordToDictionary",
-          "when": "view == cspell-info.issuesView && viewItem == issue",
+          "when": "view == cSpellIssuesViewByIssue && viewItem == issue",
           "group": "inline"
         },
         {
           "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
-          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileWithIssuesTreeItem.hasPreferred",
+          "when": "view == cSpellIssuesViewByFile && viewItem == issue.FileWithIssuesTreeItem.hasPreferred",
           "group": "inline"
         },
         {
           "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
-          "when": "view == cspell.issuesViewByFile && viewItem == issue.FileIssueTreeItem",
+          "when": "view == cSpellIssuesViewByFile && viewItem == issue.FileIssueTreeItem",
           "group": "inline"
         }
       ]
@@ -234,7 +234,7 @@
       "cspell-info-explorer": [
         {
           "type": "webview",
-          "id": "cspell-info.infoView",
+          "id": "cSpellInfoView",
           "name": "Spell Checker"
         },
         {
@@ -246,7 +246,7 @@
       "cspellPanel": [
         {
           "type": "tree",
-          "id": "cspell.issuesViewByFile",
+          "id": "cSpellIssuesViewByFile",
           "name": "File Issues",
           "contextualTitle": "Spell Checker issues by file.",
           "icon": "$(lightbulb)",
@@ -255,7 +255,7 @@
         },
         {
           "type": "tree",
-          "id": "cspell-info.issuesView",
+          "id": "cSpellIssuesViewByIssue",
           "name": "Issues",
           "contextualTitle": "Spell Checker Issues",
           "icon": "$(lightbulb)",
@@ -484,33 +484,33 @@
         "command": "cSpell.issueViewer.item.openSuggestionsForIssue",
         "title": "Show Suggestions",
         "icon": "$(list-unordered)",
-        "enablement": "view == cspell-info.issuesView"
+        "enablement": "view == cSpellIssuesViewByIssue"
       },
       {
         "command": "cSpell.issueViewer.item.autoFixSpellingIssues",
         "title": "Fix issue with preferred suggestion in the current document.",
         "icon": "$(lightbulb-autofix)",
-        "enablement": "view == cspell-info.issuesView"
+        "enablement": "view == cSpellIssuesViewByIssue"
       },
       {
         "command": "cSpell.issueViewer.item.addWordToDictionary",
         "category": "Spell",
         "title": "Add Word to Dictionary",
         "icon": "$(book)",
-        "enablement": "view == cspell-info.issuesView"
+        "enablement": "view == cSpellIssuesViewByIssue"
       },
       {
         "command": "cSpell.issuesViewByFile.item.autoFixSpellingIssues",
         "title": "Fix issue with preferred suggestion in the current document.",
         "icon": "$(lightbulb-autofix)",
-        "enablement": "view == cspell.issuesViewByFile"
+        "enablement": "view == cSpellIssuesViewByFile"
       },
       {
         "command": "cSpell.issuesViewByFile.item.addWordToDictionary",
         "category": "Spell",
         "title": "Add Word to Dictionary",
         "icon": "$(book)",
-        "enablement": "view == cspell.issuesViewByFile"
+        "enablement": "view == cSpellIssuesViewByFile"
       },
       {
         "command": "cSpell.insertDisableNextLineDirective",

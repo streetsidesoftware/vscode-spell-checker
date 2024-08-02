@@ -179,7 +179,7 @@ class IssueExplorerByFile {
 
     readonly dispose = this.disposeList.dispose;
 
-    static viewID = 'cspell.issuesViewByFile';
+    static viewID = 'cSpellIssuesViewByFile';
 
     static register(issueTracker: IssueTracker) {
         return new IssueExplorerByFile(issueTracker);

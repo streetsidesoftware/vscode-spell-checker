@@ -45,11 +45,11 @@ slug: commands
 | `cSpell.insertDisableNextLineDirective` |  Insert Disable Next Line Directive |
 | `cSpell.insertIgnoreWordsDirective` |  Insert Ignore Words Directive |
 | `cSpell.insertWordsDirective` |  Insert Words Directive |
-| `cSpell.issuesViewByFile.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cspell.issuesViewByFile` |
-| `cSpell.issuesViewByFile.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cspell.issuesViewByFile` |
-| `cSpell.issueViewer.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cspell-info.issuesView` |
-| `cSpell.issueViewer.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cspell-info.issuesView` |
-| `cSpell.issueViewer.item.openSuggestionsForIssue` |  Show Suggestions<br />**When:**<br />  `view == cspell-info.issuesView` |
+| `cSpell.issuesViewByFile.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cSpellIssuesViewByFile` |
+| `cSpell.issuesViewByFile.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cSpellIssuesViewByFile` |
+| `cSpell.issueViewer.item.addWordToDictionary` |  Add Word to Dictionary<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
+| `cSpell.issueViewer.item.autoFixSpellingIssues` |  Fix issue with preferred suggestion in the current document.<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
+| `cSpell.issueViewer.item.openSuggestionsForIssue` |  Show Suggestions<br />**When:**<br />  `view == cSpellIssuesViewByIssue` |
 | `cSpell.logPerfTimeline` |  Log CSpell performance times to console |
 | `cSpell.openFileInfoView` |  Open Spell Checker File Information View |
 | `cSpell.openIssuesPanel` |  Open Spell Checker Issues Panel |
