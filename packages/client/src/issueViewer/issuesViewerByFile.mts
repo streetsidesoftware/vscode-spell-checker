@@ -25,7 +25,7 @@ const log = useConsoleLog ? console.log : consoleDebug;
 // const debounceRevealDelay = 100;
 const debounceUIDelay = 200;
 
-export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
+export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>) {
     context.subscriptions.push(IssueExplorerByFile.register(issueTracker));
     context.subscriptions.push(
         // vscode.commands.registerCommand(
@@ -46,7 +46,7 @@ class IssueExplorerByFile {
     private treeDataProvider: IssuesTreeDataProvider;
     private uiEventFnEmitter = createEmitter<() => void>();
 
-    constructor(issueTracker: IssueTracker) {
+    constructor(issueTracker: Promise<IssueTracker>) {
         const treeDataProvider = new IssuesTreeDataProvider({
             issueTracker,
             setDescription: (des) => {
@@ -181,7 +181,7 @@ class IssueExplorerByFile {
 
     static viewID = 'cSpellIssuesViewByFile';
 
-    static register(issueTracker: IssueTracker) {
+    static register(issueTracker: Promise<IssueTracker>) {
         return new IssueExplorerByFile(issueTracker);
     }
 }
@@ -199,7 +199,7 @@ interface RequestSuggestionsParam {
 }
 
 interface ProviderOptions {
-    issueTracker: IssueTracker;
+    issueTracker: Promise<IssueTracker>;
     setMessage(msg: string | undefined): void;
     setDescription(des: string | undefined): void;
     /** This function is called after the children have been generated. */
@@ -209,16 +209,20 @@ interface ProviderOptions {
 class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     private emitOnDidChange = new vscode.EventEmitter<OnDidChangeEventType>();
     private disposeList = createDisposableList();
-    private issueTracker: IssueTracker;
+    private issueTracker: IssueTracker | undefined;
     private children: FileWithIssuesTreeItem[] | undefined;
 
     constructor(private options: ProviderOptions) {
-        this.issueTracker = options.issueTracker;
+        this.issueTracker = undefined;
         this.disposeList.push(
             this.emitOnDidChange,
             vscode.window.onDidChangeVisibleTextEditors(() => this.updateChild()),
-            this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
         );
+        options.issueTracker.then((tracker) => {
+            this.issueTracker = tracker;
+            this.disposeList.push(this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)));
+            this.updateChild();
+        });
     }
 
     getTreeItem(element: IssueTreeItemBase): TreeItem | Promise<TreeItem> {
@@ -226,6 +230,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     }
 
     getChildren(element?: IssueTreeItemBase | undefined): ProviderResult<IssueTreeItemBase[]> {
+        if (!this.issueTracker) return undefined;
         if (element) {
             return element.getChildren();
         }
@@ -234,7 +239,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
             onlyVisible: true,
             issueTracker: this.issueTracker,
             invalidate: (item) => this.updateChild(item),
-            requestSuggestions: (item) => this.issueTracker.getSuggestionsForIssue(item),
+            requestSuggestions: (item) => this.issueTracker?.getSuggestionsForIssue(item) || Promise.resolve([]),
         };
         this.children = collectIssuesByFile(context);
         this.updateMessage(this.children.length ? undefined : 'No issues found...');
@@ -274,6 +279,7 @@ class IssuesTreeDataProvider implements TreeDataProvider<IssueTreeItemBase> {
     }
 
     getIssueCount(): number {
+        if (!this.issueTracker) return 0;
         const filter = createIsItemVisibleFilter(true);
         return this.issueTracker.getIssueCount(undefined, (issue) => issue.isIssueTypeSpelling() && filter(issue));
     }

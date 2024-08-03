@@ -14,7 +14,7 @@ import { createIsItemVisibleFilter } from './issueFilter.mjs';
 import { IssueTreeItemBase } from './IssueTreeItemBase.js';
 import { cleanWord, markdownInlineCode } from './markdownHelper.mjs';
 
-export function activate(context: ExtensionContext, issueTracker: IssueTracker) {
+export function activate(context: ExtensionContext, issueTracker: Promise<IssueTracker>) {
     context.subscriptions.push(UnknownWordsExplorer.register(issueTracker));
     context.subscriptions.push(
         vscode.commands.registerCommand(knownCommands['cSpell.issueViewer.item.openSuggestionsForIssue'], handleOpenSuggestionsForIssue),
@@ -44,9 +44,9 @@ class UnknownWordsExplorer {
     private uiEventFnEmitter = createEmitter<() => void>();
     private treeDataProvider: UnknownWordsTreeDataProvider;
 
-    constructor(issueTracker: IssueTracker) {
+    constructor(issueTracker: Promise<IssueTracker>) {
         this.treeDataProvider = new UnknownWordsTreeDataProvider({
-            issueTracker,
+            issueTracker: undefined,
             setDescription: (des) => {
                 this.treeView.description = des;
             },
@@ -54,6 +54,7 @@ class UnknownWordsExplorer {
                 this.treeView.message = msg;
             },
         });
+        issueTracker.then((tracker) => this.treeDataProvider.setIssuesTracker(tracker));
         this.treeView = vscode.window.createTreeView(UnknownWordsExplorer.viewID, {
             treeDataProvider: this.treeDataProvider,
             showCollapseAll: true,
@@ -91,7 +92,7 @@ class UnknownWordsExplorer {
 
     static viewID = 'cSpellIssuesViewByIssue';
 
-    static register(issueTracker: IssueTracker) {
+    static register(issueTracker: Promise<IssueTracker>) {
         return new UnknownWordsExplorer(issueTracker);
     }
 }
@@ -104,7 +105,7 @@ interface Context {
 }
 
 interface ProviderOptions {
-    issueTracker: IssueTracker;
+    issueTracker: IssueTracker | undefined;
     setMessage(msg: string | undefined): void;
     setDescription(des: string | undefined): void;
 }
@@ -113,16 +114,24 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     private emitOnDidChange = createEmitter<OnDidChangeEventType>();
     private disposeList = createDisposableList();
     private suggestions = new Map<string, Suggestion[]>();
-    private issueTracker: IssueTracker;
+    private issueTracker: IssueTracker | undefined;
     private children: WordIssueTreeItem[] | undefined;
 
     constructor(private options: ProviderOptions) {
-        this.issueTracker = options.issueTracker;
+        this.issueTracker = undefined;
         this.disposeList.push(
             this.emitOnDidChange,
-            this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)),
             vscode.window.onDidChangeVisibleTextEditors(() => this.refresh()),
         );
+        if (this.options.issueTracker) {
+            this.setIssuesTracker(this.options.issueTracker);
+        }
+    }
+
+    setIssuesTracker(issueTracker: IssueTracker) {
+        this.issueTracker = issueTracker;
+        this.disposeList.push(this.issueTracker.onDidChangeDiagnostics((e) => this.handleOnDidChangeDiagnostics(e)));
+        this.refresh();
     }
 
     getTreeItem(element: IssueTreeItemBase): TreeItem | Promise<TreeItem> {
@@ -130,6 +139,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     }
 
     getChildren(element?: IssueTreeItemBase | undefined): ProviderResult<IssueTreeItemBase[]> {
+        if (!this.issueTracker) return undefined;
         if (element) {
             return element.getChildren();
         }
@@ -179,6 +189,7 @@ class UnknownWordsTreeDataProvider implements TreeDataProvider<IssueTreeItemBase
     }
 
     private async fetchSuggestions(item: RequestSuggestionsParam) {
+        if (!this.issueTracker) return;
         const { word } = item;
         const suggestions = await this.issueTracker.getSuggestionsForIssue(item);
         this.suggestions.set(word, suggestions);
