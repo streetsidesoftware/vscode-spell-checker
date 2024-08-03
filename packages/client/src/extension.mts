@@ -47,6 +47,12 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     const dLogger = bindLoggerToOutput(logOutput);
     setOutputChannelLogLevel();
 
+    const eIssueTracker = new vscode.EventEmitter<IssueTracker>();
+    const pIssueTracker = new Promise<IssueTracker>((resolve) => eIssueTracker.event(resolve));
+
+    activateIssueViewer(context, pIssueTracker);
+    activateFileIssuesViewer(context, pIssueTracker);
+
     // Get the cSpell Client
     const client = await CSpellClient.create(context);
     context.subscriptions.push(client, logOutput, dLogger);
@@ -60,6 +66,8 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     await client.start();
     const issueTracker = new IssueTracker(client);
     di.set('issueTracker', issueTracker);
+    eIssueTracker.fire(issueTracker);
+    eIssueTracker.dispose();
 
     function triggerGetSettings(delayInMs = 0) {
         setTimeout(triggerGetSettingsNow, delayInMs);
@@ -84,8 +92,6 @@ export async function activate(context: ExtensionContext): Promise<ExtensionApi>
     // console.log('config files: %o', await configWatcher.scanWorkspaceForConfigFiles());
     const decorator = new SpellingIssueDecorator(context, issueTracker);
     const decoratorExclusions = new SpellingExclusionsDecorator(context, client);
-    activateIssueViewer(context, issueTracker);
-    activateFileIssuesViewer(context, issueTracker);
 
     const extensionCommand: InjectableCommandHandlers = {
         'cSpell.toggleTraceMode': () => decoratorExclusions.toggleVisible(),
