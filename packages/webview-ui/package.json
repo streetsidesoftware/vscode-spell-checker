@@ -14,7 +14,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@tanstack/svelte-query": "^5.51.20",
+    "@tanstack/svelte-query": "^5.51.21",
     "@vscode/webview-ui-toolkit": "^1.4.0",
     "fast-equals": "^5.0.1",
     "sirv-cli": "^2.0.2",
@@ -31,7 +31,7 @@
     "@tsconfig/svelte": "^5.0.4",
     "@types/vscode-webview": "^1.57.5",
     "@vscode/codicons": "^0.0.36",
-    "rollup": "^4.19.2",
+    "rollup": "^4.20.0",
     "rollup-plugin-css-only": "^4.5.2",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-svelte": "^7.2.2",
