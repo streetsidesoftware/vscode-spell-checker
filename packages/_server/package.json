@@ -30,7 +30,7 @@
     }
   },
   "devDependencies": {
-    "@types/yargs": "^17.0.32",
+    "@types/yargs": "^17.0.33",
     "safe-stable-stringify": "^2.4.3",
     "ts-json-schema-generator": "^2.3.0",
     "ts-loader": "^9.5.1",
